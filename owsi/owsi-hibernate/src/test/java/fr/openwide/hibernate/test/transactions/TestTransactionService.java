@@ -1,10 +1,13 @@
 package fr.openwide.hibernate.test.transactions;
 
+import org.hibernate.LazyInitializationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.openwide.hibernate.example.business.company.model.Company;
+import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.example.business.util.service.ServiceExceptionServiceImpl;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
@@ -45,8 +48,7 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 	   
 	    try {
 	        serviceExceptionService.throwServiceInheritedException();
-	    } catch (ServiceException e) {
-	    }
+	    } catch (ServiceException e) {}
 	   
 	    assertEquals(1, serviceExceptionService.size());
 	}
@@ -63,6 +65,37 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 	    }
 	   
 	    assertEquals(1, serviceExceptionService.size());
+	}
+	
+	@Test
+	public void testReloadOnRollback() throws ServiceException, SecurityServiceException {
+		Company company = new Company("test");
+		Person person = createPerson("Person", "Test");
+		company.addEmployee1(person);
+		companyService.create(company);
+		
+		//On ouvre une nouvelle session pour que les objets ne soient plus liés à la session
+		hibernateSessionUtils.closeSession();
+		hibernateSessionUtils.initSession();
+		
+		//On recharge seulement la Company
+		company = companyService.getById(company.getId());
+		
+		try {
+			serviceExceptionService.throwServiceInheritedException();
+			fail("La méthode précédente se finit en exception");
+		}
+		catch (ServiceException e) {}
+		
+		try {
+			company.getEmployees1().get(0);
+			fail("Faire une opération sur un objet après un rollback lève une LazyInitializationException " +
+			"car l'objet n'est plus lié à la sesssion");
+		} catch (LazyInitializationException e) {}
+		
+		//Il faut recharger l'objet après l'exception pour pouvoir agir dessus
+		company = companyService.getById(company.getId());
+		company.getEmployees1().get(0);
 	}
 	
 	@Before
