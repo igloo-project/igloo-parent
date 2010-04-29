@@ -1,10 +1,10 @@
-package fr.openwide.hibernate.business.util.service;
+package fr.openwide.hibernate.example.business.util.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.hibernate.business.company.model.Company;
-import fr.openwide.hibernate.business.company.service.CompanyService;
+import fr.openwide.hibernate.example.business.company.model.Company;
+import fr.openwide.hibernate.example.business.company.service.CompanyService;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
 
@@ -32,7 +32,7 @@ public class ServiceExceptionServiceImpl {
 	    throw new ServiceException();
 	}
 
-	public void throwTCPServerException() throws ServiceException, SecurityServiceException {
+	public void throwServiceInheritedException() throws ServiceException, SecurityServiceException {
 	    Company company = new Company("Company Test");
 	    companyService.create(company);
 	    throw new MyException() ;

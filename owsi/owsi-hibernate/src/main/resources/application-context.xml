@@ -120,7 +120,7 @@
 			<tx:method name="get*" read-only="true" />
 			<tx:method name="list*" read-only="true" />
 			<tx:method name="search*" read-only="true" />
-			<tx:method name="*" read-only="false" rollback-for="fr.openwide.hibernate.exception.SecurityServiceException" />
+			<tx:method name="*" read-only="false" rollback-for="fr.openwide.hibernate.exception.ServiceException" />
 		</tx:attributes>
 	</tx:advice>
 	

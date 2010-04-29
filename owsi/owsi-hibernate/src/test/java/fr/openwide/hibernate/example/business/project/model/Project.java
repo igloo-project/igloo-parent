@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.business.project.model;
+package fr.openwide.hibernate.example.business.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import fr.openwide.hibernate.business.company.model.Company;
 import fr.openwide.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.hibernate.business.person.model.Person;
+import fr.openwide.hibernate.example.business.company.model.Company;
+import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.util.StringUtils;
 
 @Entity

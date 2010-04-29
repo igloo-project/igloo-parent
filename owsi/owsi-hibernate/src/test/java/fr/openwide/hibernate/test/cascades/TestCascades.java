@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
-import fr.openwide.hibernate.business.company.model.Company;
-import fr.openwide.hibernate.business.company.service.CompanyService;
-import fr.openwide.hibernate.business.person.model.Person;
-import fr.openwide.hibernate.business.person.service.PersonService;
-import fr.openwide.hibernate.business.project.service.ProjectService;
+import fr.openwide.hibernate.example.business.company.model.Company;
+import fr.openwide.hibernate.example.business.company.service.CompanyService;
+import fr.openwide.hibernate.example.business.person.model.Person;
+import fr.openwide.hibernate.example.business.person.service.PersonService;
+import fr.openwide.hibernate.example.business.project.service.ProjectService;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.test.AbstractHibernateTestCase;

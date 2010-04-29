@@ -13,12 +13,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import fr.openwide.hibernate.business.company.model.Company;
-import fr.openwide.hibernate.business.company.service.CompanyService;
-import fr.openwide.hibernate.business.person.model.Person;
-import fr.openwide.hibernate.business.person.service.PersonService;
-import fr.openwide.hibernate.business.project.model.Project;
-import fr.openwide.hibernate.business.project.service.ProjectService;
+import fr.openwide.hibernate.example.business.company.model.Company;
+import fr.openwide.hibernate.example.business.company.service.CompanyService;
+import fr.openwide.hibernate.example.business.person.model.Person;
+import fr.openwide.hibernate.example.business.person.service.PersonService;
+import fr.openwide.hibernate.example.business.project.model.Project;
+import fr.openwide.hibernate.example.business.project.service.ProjectService;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.util.hibernate.HibernateSessionUtils;

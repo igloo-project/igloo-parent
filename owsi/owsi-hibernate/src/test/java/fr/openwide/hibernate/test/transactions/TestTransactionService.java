@@ -2,11 +2,10 @@ package fr.openwide.hibernate.test.transactions;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.hibernate.business.util.service.ServiceExceptionServiceImpl;
+import fr.openwide.hibernate.example.business.util.service.ServiceExceptionServiceImpl;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.test.AbstractHibernateTestCase;
@@ -39,14 +38,13 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 	}
 	
 	@Test
-	@Ignore
-	public void testRollbackOnTCPServerException() throws ServiceException, SecurityServiceException {
+	public void testRollbackOnServiceInheritedException() throws ServiceException, SecurityServiceException {
 	    serviceExceptionService.dontThrow();
 	   
 	    assertEquals(1, serviceExceptionService.size());
 	   
 	    try {
-	        serviceExceptionService.throwTCPServerException();
+	        serviceExceptionService.throwServiceInheritedException();
 	    } catch (ServiceException e) {
 	    }
 	   

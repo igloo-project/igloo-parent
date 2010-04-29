@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.business.company.model;
+package fr.openwide.hibernate.example.business.company.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import fr.openwide.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.hibernate.business.person.model.Person;
-import fr.openwide.hibernate.business.project.model.Project;
+import fr.openwide.hibernate.example.business.person.model.Person;
+import fr.openwide.hibernate.example.business.project.model.Project;
 
 @Entity
 public class Company extends GenericEntity<Company> {

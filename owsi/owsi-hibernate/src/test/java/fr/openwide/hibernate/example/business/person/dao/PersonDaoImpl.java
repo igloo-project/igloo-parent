@@ -1,11 +1,11 @@
-package fr.openwide.hibernate.business.person.dao;
+package fr.openwide.hibernate.example.business.person.dao;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fr.openwide.hibernate.business.generic.dao.GenericEntityDaoImpl;
-import fr.openwide.hibernate.business.person.model.Person;
+import fr.openwide.hibernate.example.business.person.model.Person;
 
 @Repository("personDao")
 public class PersonDaoImpl extends GenericEntityDaoImpl<Person> implements PersonDao {
