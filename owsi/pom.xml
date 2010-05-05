@@ -10,26 +10,35 @@
 	<name>Capitalisation OWSI</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur la plateforme OWSI</description>
 	
+	<modules>
+		<module>owsi-hibernate</module>
+		<module>owsi-spring-security-web</module>
+	</modules>
+	
 	<properties>
         <owsi.asm.version>3.1</owsi.asm.version>
         <owsi.aspectj.version>1.6.1</owsi.aspectj.version>
 		<owsi.cglib.version>2.1_3</owsi.cglib.version>
+		<owsi.common.version>2.4</owsi.common.version>
+		<owsi.commons-logging.version>1.1.1</owsi.commons-logging.version>
 		<owsi.c3p0.version>0.9.1.2</owsi.c3p0.version>
 		<owsi.ehcache.version>1.5.0</owsi.ehcache.version>
 		<owsi.hibernate-core.version>3.5.1-Final</owsi.hibernate-core.version>
 		<owsi.hibernate-annotations.version>${owsi.hibernate-core.version}</owsi.hibernate-annotations.version>		
 		<owsi.javassist.version>3.4.GA</owsi.javassist.version>
+		<owsi.jstl.version>1.2</owsi.jstl.version>
 		
 		<!--
 		4.5 is not compatible with spring-test
 		see http://jira.springframework.org/browse/SPR-5145
 		-->
-		<owsi.junit.version>4.4</owsi.junit.version>
+		<owsi.junit.version>4.8.1</owsi.junit.version>
 		
 		<owsi.postgresql.version>8.4-701.jdbc3</owsi.postgresql.version>
+		<owsi.servlet.version>2.5</owsi.servlet.version>
 		<owsi.slf4j.version>1.5.2</owsi.slf4j.version>
-		<owsi.spring.version>2.5.6.SEC01</owsi.spring.version>
-		<owsi.common.version>2.4</owsi.common.version>
+		<owsi.spring.version>3.0.2.RELEASE</owsi.spring.version>
+		<owsi.taglib.version>1.1.2</owsi.taglib.version>
 	</properties>
 	
 	<repositories>
