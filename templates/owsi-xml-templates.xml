@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="xml_all" deleted="false" description="Generate a simple hibernate config" enabled="true" name="hibernateconfig">&lt;!-- Configuration --&gt;
+	&lt;!-- Vous devez spécifier l'emplacement de votre Configurer --&gt;
+	&lt;!--
+	&lt;bean id="configurer" class="fr.openwide.${package_name}.util.spring.OwsiHibernateConfigurer"&gt;
+		&lt;property name="locations"&gt;
+			&lt;list&gt;
+				&lt;value&gt;classpath:${project}.properties&lt;/value&gt;
+			&lt;/list&gt;
+		&lt;/property&gt;
+		&lt;property name="ignoreResourceNotFound" value="true" /&gt;
+    &lt;/bean&gt;
+    --&gt;
+
+	&lt;!-- Database Connexion --&gt;
+	&lt;bean id="${project}.datasource.hibernate"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		p:driverClass="$${db.driverClass}" p:jdbcUrl="$${db.jdbcUrl}"
+		p:user="$${db.user}" p:password="$${db.password}"
+		p:initialPoolSize="$${db.initialPoolSize}" p:minPoolSize="$${db.minPoolSize}"
+		p:maxPoolSize="$${db.maxPoolSize}"
+		p:preferredTestQuery="SELECT 1"
+		p:testConnectionOnCheckin="true"
+		p:idleConnectionTestPeriod="300"
+		destroy-method="close" /&gt;
+	
+	&lt;bean id="sessionFactory" 
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+		&lt;property name="dataSource" ref="${project}.datasource.hibernate" /&gt;
+		&lt;property name="hibernateProperties"&gt;
+			&lt;props&gt;
+				&lt;prop key="hibernate.dialect"&gt;$${db.dialect}&lt;/prop&gt;
+				&lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;
+				&lt;prop key="hibernate.format_sql"&gt;false&lt;/prop&gt;
+				&lt;prop key="hibernate.cache.use_second_level_cache"&gt;true&lt;/prop&gt;
+				&lt;prop key="hibernate.cache.use_query_cache"&gt;true&lt;/prop&gt;
+				&lt;prop key="hibernate.cache.use_structured_entries"&gt;true&lt;/prop&gt; 
+				&lt;prop key="hibernate.cache.provider_class"&gt;net.sf.ehcache.hibernate.EhCacheProvider&lt;/prop&gt;
+				&lt;prop key="hibernate.cache.provider_configuration_file_resource_path"&gt;/ehcache-wombat.xml&lt;/prop&gt;
+				&lt;prop key="net.sf.ehcache.configurationResourceName"&gt;/ehcache-wombat.xml&lt;/prop&gt;
+				&lt;prop key="hibernate.generate_statistics"&gt;true&lt;/prop&gt;
+				&lt;prop key="hibernate.bytecode.use_reflection_optimizer"&gt;true&lt;/prop&gt;
+				&lt;prop key="hibernate.search.default.directory_provider"&gt;org.hibernate.search.store.FSDirectoryProvider&lt;/prop&gt;
+			&lt;/props&gt;
+		&lt;/property&gt;
+		&lt;property name="packagesToScan"&gt;
+			&lt;list&gt;
+				&lt;value&gt;fr.openwide.${package_name}.*.business.*.model&lt;/value&gt;
+			&lt;/list&gt;
+		&lt;/property&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" /&gt;
+	 
+	&lt;aop:config&gt;
+		&lt;aop:pointcut id="txPointCutDef" expression="execution(* fr.openwide.${package_name}..business..service.*ServiceImpl.*(..))" /&gt;
+		&lt;aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCutDef"  /&gt;
+	&lt;/aop:config&gt;
+
+	&lt;tx:advice id="txAdvice" transaction-manager="transactionManager"&gt;
+		&lt;tx:attributes&gt;
+			&lt;tx:method name="get*" read-only="true" /&gt;
+			&lt;tx:method name="list*" read-only="true" /&gt;
+			&lt;tx:method name="search*" read-only="true" /&gt;
+			&lt;!--&lt;tx:method name="*" read-only="false" rollback-for="fr.openwide.${package_name}.exception.ServiceException" /&gt;--&gt;
+		&lt;/tx:attributes&gt;
+	&lt;/tx:advice&gt;
+</template><template autoinsert="true" context="xml_all" deleted="false" description="Generate a simple spring context xml file" enabled="true" name="springcontext">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
+	- Root application context
+--&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-${version}.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-${version}.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-${version}.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-${version}.xsd"&gt;
+	
+	&lt;!-- Scan des packages --&gt;
+	&lt;context:component-scan base-package="fr.openwide" /&gt;
+
+	&lt;!-- Injection par annotation --&gt;
+	&lt;context:annotation-config /&gt;
+
+	${cursor}
+		
+&lt;/beans&gt;</template></templates>
