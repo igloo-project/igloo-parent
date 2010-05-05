@@ -40,10 +40,10 @@
 	-->
 	<bean id="owsi-hibernate.datasource.hibernate"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		p:driverClass="${hibernate.db.driverClass}" p:jdbcUrl="${hibernate.db.jdbcUrl}"
-		p:user="${hibernate.db.user}" p:password="${hibernate.db.password}"
-		p:initialPoolSize="${hibernate.db.initialPoolSize}" p:minPoolSize="${hibernate.db.minPoolSize}"
-		p:maxPoolSize="${hibernate.db.maxPoolSize}"
+		p:driverClass="${db.driverClass}" p:jdbcUrl="${db.jdbcUrl}"
+		p:user="${db.user}" p:password="${db.password}"
+		p:initialPoolSize="${db.initialPoolSize}" p:minPoolSize="${db.minPoolSize}"
+		p:maxPoolSize="${db.maxPoolSize}"
 		p:preferredTestQuery="SELECT 1"
 		p:testConnectionOnCheckin="true"
 		p:idleConnectionTestPeriod="300"
@@ -54,7 +54,7 @@
 		<property name="dataSource" ref="owsi-hibernate.datasource.hibernate" />
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">${hibernate.db.dialect}</prop>
+				<prop key="hibernate.dialect">${db.dialect}</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.format_sql">false</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
