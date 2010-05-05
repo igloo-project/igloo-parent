@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="Create a new DAO implementation" enabled="true" name="daoimpl">${:import(org.springframework.stereotype.Repository)}
+@Repository()
+public class ${newName}DaoImpl extends GenericEntityDaoImpl&lt;${newName}&gt; implements ${newName}Dao {
+
+	@Autowired
+	public ${newName}DaoImpl(SessionFactory sessionFactory) {
+		super(sessionFactory);
+	}
+
+	${cursor}
+}</template><template autoinsert="true" context="java" deleted="false" description="Create a new DAO interface" enabled="true" name="daoitf">public interface ${newName}Dao extends GenericEntityDao&lt;${newName}&gt; {
+	${cursor}
+}</template><template autoinsert="true" context="java" deleted="false" description="Generate an entity" enabled="true" name="genentity">${:import(javax.persistence.Entity, javax.persistence.Id, javax.persistence.GeneratedValue)}
+@Entity
+public class ${newName} extends GenericEntity&lt;${newName}&gt; {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue
+	private Integer id;
+
+	${cursor}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Override
+	public String getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getNameForToString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(Test o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}</template><template autoinsert="true" context="java" deleted="false" description="Create a new logger" enabled="true" name="logger">${:import(org.apache.commons.logging.Log, org.apache.commons.logging.LogFactory)}
+private static final Log LOGGER = LogFactory.getLog(${enclosing_type}.class); </template><template autoinsert="true" context="java" deleted="false" description="Generate a new Service implementation" enabled="true" name="serviceimpl">${:import(org.springframework.stereotype.Service, org.springframework.beans.factory.annotation.Autowired)}
+@Service("${newName}Service")
+public class ${newName}ServiceImpl extends GenericEntityServiceImpl&lt;${newName}&gt; implements ${newName}Service {
+	
+	@Autowired
+	public ${newName}ServiceImpl(${newName}Dao ${newName}Dao) {
+		super(${newName}Dao);
+	}	
+
+	${cursor}
+}</template><template autoinsert="true" context="java" deleted="false" description="Generate a new Service interface" enabled="true" name="serviceitf">public interface ${newName}Service extends GenericEntityService&lt;${newName}&gt; {
+	${cursor}
+}</template></templates>
