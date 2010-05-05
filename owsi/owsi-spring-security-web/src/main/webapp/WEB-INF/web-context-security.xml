@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  - Sample namespace-based configuration
+  -
+  -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+                        
+	<context:component-scan base-package="fr.openwide.springsec.web"/>
+
+    <http use-expressions="true">
+        <intercept-url pattern="/index.jsp" access="permitAll"/>
+        <intercept-url pattern="/secured/admin.jsp" access="hasRole('ROLE_SUPERVISOR')"/>
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <form-login />
+        <logout />
+        <remember-me />
+        
+        <!--<session-management>
+        	<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+    	</session-management>-->
+    </http>
+
+    <!--
+    Usernames/Passwords are
+ 		admin/admin
+ 		user/user
+    -->
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder hash="md5"/>
+            <user-service>
+                <user name="admin" password="21232f297a57a5a743894a0e4a801fc3" authorities="ROLE_SUPERVISOR, ROLE_USER" />
+                <user name="user" password="ee11cbb19052e40b07aac0ca060c23ee" authorities="ROLE_USER" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+	<!-- Par défaut, Spring Security utilise un DefaultMethodSecurityExpressionHandler pour interpreter les expressions
+	de securisation des méthodes (@Pre/@Post). Il est possible définir ses propres expressions. Pour cela il faut créer 
+	un classe qui s'inspire de DefaultMethodSecurityExpressionHandler mais en utilisant une classe customisée qui étends 
+	org.springframework.security.access.expression.method.MethodSecurityExpressionRoot -->
+	<!--<beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler"/>-->
+
+</beans:beans>
