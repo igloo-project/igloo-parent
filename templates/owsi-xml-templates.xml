@@ -54,6 +54,11 @@
 		p:sessionFactory-ref="sessionFactory" /&gt;
 	 
 	&lt;aop:config&gt;
+		&lt;!--
+		AspectJ Quick Reference Documentation : 
+		An embedded * in an identifier matches any sequence of characters, but does not match the package (or inner-type) separator ".".
+		An embedded .. in an identifier matches any sequence of characters that starts and ends with the package (or inner-type) separator ".". 
+		--&gt;
 		&lt;aop:pointcut id="txPointCutDef" expression="execution(* fr.openwide.${package_name}..business..service.*ServiceImpl.*(..))" /&gt;
 		&lt;aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCutDef"  /&gt;
 	&lt;/aop:config&gt;
@@ -63,6 +68,11 @@
 			&lt;tx:method name="get*" read-only="true" /&gt;
 			&lt;tx:method name="list*" read-only="true" /&gt;
 			&lt;tx:method name="search*" read-only="true" /&gt;
+			&lt;!--
+			La configuration par défaut impose le rollback pour toutes les unchecked exceptions ;
+			On peut choisir d'ajouter des exceptions supplémentaires (héritage pris en compte) qui
+			provoqueront un rollback
+			--&gt;
 			&lt;!--&lt;tx:method name="*" read-only="false" rollback-for="fr.openwide.${package_name}.exception.ServiceException" /&gt;--&gt;
 		&lt;/tx:attributes&gt;
 	&lt;/tx:advice&gt;
