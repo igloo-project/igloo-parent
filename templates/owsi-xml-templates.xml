@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="xml_all" deleted="false" description="Generate a simple hibernate config" enabled="true" name="hibernateconfig">&lt;!-- Configuration --&gt;
-	&lt;!-- Vous devez spécifier l'emplacement de votre Configurer --&gt;
-	&lt;!--
-	&lt;bean id="configurer" class="fr.openwide.${package_name}.util.spring.OwsiHibernateConfigurer"&gt;
+	&lt;bean id="configurer" class="fr.openwide.commons.spring.OwPropertyPlaceholderConfigurer"&gt;
 		&lt;property name="locations"&gt;
 			&lt;list&gt;
 				&lt;value&gt;classpath:${project}.properties&lt;/value&gt;
 			&lt;/list&gt;
 		&lt;/property&gt;
 		&lt;property name="ignoreResourceNotFound" value="true" /&gt;
-    &lt;/bean&gt;
-    --&gt;
+	&lt;/bean&gt;
 
 	&lt;!-- Database Connexion --&gt;
 	&lt;bean id="${project}.datasource.hibernate"
@@ -40,19 +37,54 @@
 				&lt;prop key="hibernate.generate_statistics"&gt;true&lt;/prop&gt;
 				&lt;prop key="hibernate.bytecode.use_reflection_optimizer"&gt;true&lt;/prop&gt;
 				&lt;prop key="hibernate.search.default.directory_provider"&gt;org.hibernate.search.store.FSDirectoryProvider&lt;/prop&gt;
+				&lt;!--
+					En cas d'utilisation d'Hibernate Search (hibernate search est un outil permettant la mise à jour
+					et l'exploitation d'un index lucene à partir d'une base de données relationnelle.
+				--&gt;
+				&lt;!--&lt;prop key="hibernate.search.default.indexBase"&gt;$${lucene.index.path}&lt;/prop&gt;--&gt;
+				
 			&lt;/props&gt;
 		&lt;/property&gt;
+		
+		&lt;!-- Cette propriété indique les paquets contenant les entités --&gt;
 		&lt;property name="packagesToScan"&gt;
 			&lt;list&gt;
 				&lt;value&gt;fr.openwide.${package_name}.*.business.*.model&lt;/value&gt;
 			&lt;/list&gt;
 		&lt;/property&gt;
+		
+		&lt;!-- En cas d'utilisation d'hibernate search --&gt;
+		&lt;!--
+			&lt;property name="eventListeners"&gt;
+				&lt;map&gt;
+					&lt;entry key="post-insert"&gt;
+						&lt;set&gt;
+							&lt;ref bean="fullTextIndexEventListener" /&gt;
+						&lt;/set&gt;
+					&lt;/entry&gt;
+					&lt;entry key="post-update"&gt;
+						&lt;set&gt;
+							&lt;ref bean="fullTextIndexEventListener" /&gt;
+						&lt;/set&gt;
+					&lt;/entry&gt;
+					&lt;entry key="post-delete"&gt;
+						&lt;set&gt;
+							&lt;ref bean="fullTextIndexEventListener" /&gt;
+						&lt;/set&gt;
+					&lt;/entry&gt;
+				&lt;/map&gt;
+			&lt;/property&gt;
+		--&gt;
 	&lt;/bean&gt;
 
+	&lt;!-- En cas d'utilisation d'hibernate search --&gt;
+	&lt;!--&lt;bean id="fullTextIndexEventListener" class="org.hibernate.search.event.FullTextIndexEventListener" /&gt;--&gt;
+	
+	&lt;!-- Définition de la gestion des transactions --&gt;
 	&lt;bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
 		p:sessionFactory-ref="sessionFactory" /&gt;
-	 
+	
 	&lt;aop:config&gt;
 		&lt;!--
 		AspectJ Quick Reference Documentation : 
