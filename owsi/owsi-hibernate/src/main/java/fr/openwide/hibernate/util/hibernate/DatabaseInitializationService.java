@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
@@ -27,7 +27,8 @@ public class DatabaseInitializationService {
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public void setDataSource(@Qualifier("owsi-hibernate.datasource.hibernate") DataSource dataSource) {
+	@Resource(name = "owsi-hibernate.datasource.hibernate")
+	public void setDataSource(DataSource dataSource) {
 		/*
 		 * Il faut utiliser une DelegatingDataSource car le transaction manager d'hibernate
 		 * n'accepte pas de partager la gestion d'un data-source avec un autre transaction
