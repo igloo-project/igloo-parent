@@ -18,15 +18,15 @@ public class DefaultController {
 	
 	@Autowired
 	protected SecuredService securedService;
-	
-	@RequestMapping("/preauthorize.html")
+
+	@RequestMapping("/preauthorize")
 	public ModelAndView preAuthorizeMethod() {
 		String now = securedService.getDate();
 		LOGGER.info("Returning preauthorize view with : " + now);
 		return new ModelAndView("preauthorize", "now", now);
 	}
-	
-	@RequestMapping("/postfilter.html")
+
+	@RequestMapping("/postfilter")
 	public ModelAndView preFilterMethod() {
 		List<String> list = securedService.getList();
 		LOGGER.info("Returning posfilter view with : " + list);

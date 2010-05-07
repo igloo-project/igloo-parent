@@ -10,7 +10,7 @@ public interface SecuredService {
 	/*
 	 * @PreAuthorize : Permits access if expression evaluates to true
 	 * @PostAuthorize : Restricts access to a method’s return value
-	 */             
+	 */
 	@PreAuthorize("hasRole('ROLE_SUPERVISOR')")
 	public String getDate();
 	
