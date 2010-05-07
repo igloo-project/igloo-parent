@@ -3,7 +3,7 @@
 <!--
   - Sample namespace-based configuration
   -
-  -->
+-->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:security="http://www.springframework.org/schema/security"
@@ -17,14 +17,20 @@
 
 	<context:component-scan base-package="fr.openwide.springsec.web.business"/>
 
+	<!--
+		Active la prise en compte des annotations @Pre/PostFilter et @Pre/PostAuthorize
+		Voir aussi les attributs secured-annotations et jsr250-annotations pour les annotations
+		@Secured et les annotations JSR250.
+	-->
 	<security:global-method-security pre-post-annotations="enabled">
-			<!--
-			Le protect-pointcut est pris en compte si d'autres annotations Pre/Post n'existent pas
-			et vérifie que l'utilisateur est bien ROLE_USER
-			-->
-			<security:protect-pointcut expression="execution(* fr.openwide.springsec.web.business.*Service.*(..))" access="ROLE_USER"/>
+		<!--
+		Le protect-pointcut est pris en compte si d'autres annotations Pre/Post n'existent pas
+		et vérifie que l'utilisateur est bien ROLE_USER
+		-->
+		<security:protect-pointcut expression="execution(* fr.openwide.springsec.web.business.*Service.*(..))" access="ROLE_USER"/>
 	</security:global-method-security>
 
+	<!-- Filtrage de sécurité selon les URLs appellées -->
 	<security:http use-expressions="true">
 		<security:intercept-url pattern="/index.jsp" access="permitAll"/>
 		<security:intercept-url pattern="/secured/admin.jsp" access="hasRole('ROLE_SUPERVISOR')"/>
@@ -33,15 +39,16 @@
 		<security:logout />
 		<security:remember-me />
 
-			<!--<security:session-management>
-				<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
-			</security:session-management>-->
+		<!--<security:session-management>
+			<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+		</security:session-management>-->
 	</security:http>
 
 	<!--
-	Usernames/Passwords are
- 		admin/admin
- 		user/user
+		Simple In-Memory Authentication Manager 
+		Les Usernames/Passwords sont :
+		admin/admin
+		user/user
 	-->
 	<security:authentication-manager>
 		<security:authentication-provider>
@@ -54,11 +61,11 @@
 	</security:authentication-manager>
 
 	<!--
-	Par défaut, Spring Security utilise un DefaultMethodSecurityExpressionHandler pour interpreter les expressions
-	de securisation des méthodes (@Pre/@Post). Il est possible définir ses propres expressions. Pour cela il faut créer 
-	une classe qui s'inspire de DefaultMethodSecurityExpressionHandler mais en utilisant une classe customisée qui étend
-	org.springframework.security.access.expression.method.MethodSecurityExpressionRoot
-	Un peu trop complexe si les fonctionnalités à ajouter sont peu nombreuses.
+		Par défaut, Spring Security utilise un DefaultMethodSecurityExpressionHandler pour interpreter les expressions
+		de securisation des méthodes (@Pre/@Post). Il est possible définir ses propres expressions. Pour cela il faut créer 
+		une classe qui s'inspire de DefaultMethodSecurityExpressionHandler mais en utilisant une classe customisée qui étend
+		org.springframework.security.access.expression.method.MethodSecurityExpressionRoot
+		Un peu trop complexe si les fonctionnalités à ajouter sont peu nombreuses.
 	-->
 	<!--<bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler"/>-->
 

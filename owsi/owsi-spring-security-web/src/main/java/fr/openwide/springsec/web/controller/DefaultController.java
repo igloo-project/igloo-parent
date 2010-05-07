@@ -19,6 +19,12 @@ public class DefaultController {
 	@Autowired
 	protected SecuredService securedService;
 
+	/*
+	 * Le RequestMapping est fait de manière absolue
+	 * par rapport au servlet appelant ce controlleur.
+	 * Le servlet est bindé sur /springmvc donc cette 
+	 * méthode sera bindée /<context>/springmvc/preauthorize
+	 */
 	@RequestMapping("/preauthorize")
 	public ModelAndView preAuthorizeMethod() {
 		String now = securedService.getDate();

@@ -9,8 +9,13 @@
 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
+	<!-- 
+		Scan les paquets et traite les annotations @Controller, @Service,
+		@Repository, @Autowired, etc. 
+	-->
 	<context:component-scan base-package="fr.openwide.springsec.web.controller"/>
 	
+	<!-- Configuration minimale requise en plus du web.xml pour mise en route de spring MVC -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
 		<property name="prefix" value="/WEB-INF/spring-views/"></property>
