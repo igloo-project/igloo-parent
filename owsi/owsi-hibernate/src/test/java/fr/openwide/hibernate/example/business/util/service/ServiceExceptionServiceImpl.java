@@ -27,25 +27,25 @@ public class ServiceExceptionServiceImpl {
 	}
 
 	public void throwServiceException() throws ServiceException, SecurityServiceException {
-	    Company company = new Company("Company Test");
-	    companyService.create(company);
-	    throw new ServiceException();
+		Company company = new Company("Company Test");
+		companyService.create(company);
+		throw new ServiceException();
 	}
 
 	public void throwServiceInheritedException() throws ServiceException, SecurityServiceException {
-	    Company company = new Company("Company Test");
-	    companyService.create(company);
-	    throw new MyException() ;
+		Company company = new Company("Company Test");
+		companyService.create(company);
+		throw new MyException() ;
 	}
 
 	public void throwUncheckedException() throws ServiceException, SecurityServiceException {
-	    Company company = new Company("Company Test");
-	    companyService.create(company);
-	    throw new IllegalStateException();
+		Company company = new Company("Company Test");
+		companyService.create(company);
+		throw new IllegalStateException();
 	}
 
 	public long size() {
-	    return companyService.count();
+		return companyService.count();
 	}
 	
 	private class MyException extends ServiceException {

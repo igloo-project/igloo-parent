@@ -6,13 +6,13 @@ import javax.sql.DataSource;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit38.AbstractJUnit38SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+import fr.openwide.commons.spring.OwPropertyPlaceholderConfigurer;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.company.service.CompanyService;
 import fr.openwide.hibernate.example.business.person.model.Person;
@@ -22,18 +22,17 @@ import fr.openwide.hibernate.example.business.project.service.ProjectService;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.util.hibernate.HibernateSessionUtils;
-import fr.openwide.hibernate.util.spring.OwsiHibernateConfigurer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @ContextConfiguration(locations = {
 		"classpath:database-initialization-context.xml",
 		"classpath:application-context.xml"
 })
-public abstract class AbstractHibernateTestCase extends AbstractTransactionalDataSourceSpringContextTests {
+public abstract class AbstractHibernateTestCase extends AbstractJUnit38SpringContextTests {
 	
 	@Autowired
-	OwsiHibernateConfigurer configurer;
+	OwPropertyPlaceholderConfigurer configurer;
 	
 	@Autowired
 	protected HibernateSessionUtils hibernateSessionUtils;
@@ -51,7 +50,6 @@ public abstract class AbstractHibernateTestCase extends AbstractTransactionalDat
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
-		super.setDataSource(dataSource);
 		this.hibernateDataSource = dataSource;
 	}
 	

@@ -10,29 +10,29 @@ import org.hibernate.type.Type;
 
 public class PostgreSQLSequenceGenerator extends SequenceGenerator {
 
-    public static final String SEQUENCE_NAME_SEPARATOR = "_";
-    
-    public static final String SEQUENCE_NAME_SUFFIX = "seq";
+	public static final String SEQUENCE_NAME_SEPARATOR = "_";
 
-    @Override
-    public void configure(Type type, Properties params, Dialect dialect) throws MappingException {
+	public static final String SEQUENCE_NAME_SUFFIX = "seq";
 
-        String tableName = params.getProperty(PersistentIdentifierGenerator.TABLE);
-        String columnName = params.getProperty(PersistentIdentifierGenerator.PK);
+	@Override
+	public void configure(Type type, Properties params, Dialect dialect) throws MappingException {
 
-        if (tableName != null && columnName != null) {
-            StringBuilder sequenceNameBuilder = new StringBuilder();
+		String tableName = params.getProperty(PersistentIdentifierGenerator.TABLE);
+		String columnName = params.getProperty(PersistentIdentifierGenerator.PK);
 
-            sequenceNameBuilder.append(tableName);
-            sequenceNameBuilder.append(SEQUENCE_NAME_SEPARATOR);
-            sequenceNameBuilder.append(columnName);
-            sequenceNameBuilder.append(SEQUENCE_NAME_SEPARATOR);
-            sequenceNameBuilder.append(SEQUENCE_NAME_SUFFIX);
+		if (tableName != null && columnName != null) {
+			StringBuilder sequenceNameBuilder = new StringBuilder();
 
-            params.setProperty(SEQUENCE, sequenceNameBuilder.toString());
-        }
+			sequenceNameBuilder.append(tableName);
+			sequenceNameBuilder.append(SEQUENCE_NAME_SEPARATOR);
+			sequenceNameBuilder.append(columnName);
+			sequenceNameBuilder.append(SEQUENCE_NAME_SEPARATOR);
+			sequenceNameBuilder.append(SEQUENCE_NAME_SUFFIX);
 
-        super.configure(type, params, dialect);
-    }
+			params.setProperty(SEQUENCE, sequenceNameBuilder.toString());
+		}
+
+		super.configure(type, params, dialect);
+	}
 
 }

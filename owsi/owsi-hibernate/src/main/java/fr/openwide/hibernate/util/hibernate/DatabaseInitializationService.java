@@ -16,13 +16,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import fr.openwide.hibernate.util.spring.OwsiHibernateConfigurer;
+import fr.openwide.commons.spring.OwPropertyPlaceholderConfigurer;
 
 public class DatabaseInitializationService {
 	private static final Log LOGGER = LogFactory.getLog(DatabaseInitializationService.class);
 
 	@Autowired
-	private OwsiHibernateConfigurer configurer;
+	private OwPropertyPlaceholderConfigurer configurer;
 
 	private JdbcTemplate jdbcTemplate;
 

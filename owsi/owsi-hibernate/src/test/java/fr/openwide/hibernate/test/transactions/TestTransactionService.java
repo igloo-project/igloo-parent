@@ -28,45 +28,45 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 	
 	@Test
 	public void testRollbackOnServiceException() throws ServiceException, SecurityServiceException {
-	    serviceExceptionService.dontThrow();
-	   
-	    assertEquals(1, serviceExceptionService.size());
-	   
-	    try {
-	        serviceExceptionService.throwServiceException();
-	    } catch (ServiceException e) {
-	    }
-	   
-	    assertEquals(1, serviceExceptionService.size());
+		serviceExceptionService.dontThrow();
+
+		assertEquals(1, serviceExceptionService.size());
+
+		try {
+			serviceExceptionService.throwServiceException();
+		} catch (ServiceException e) {
+		}
+
+		assertEquals(1, serviceExceptionService.size());
 	}
-	
+
 	@Test
 	public void testRollbackOnServiceInheritedException() throws ServiceException, SecurityServiceException {
-	    serviceExceptionService.dontThrow();
-	   
-	    assertEquals(1, serviceExceptionService.size());
-	   
-	    try {
-	        serviceExceptionService.throwServiceInheritedException();
-	    } catch (ServiceException e) {}
-	   
-	    assertEquals(1, serviceExceptionService.size());
+		serviceExceptionService.dontThrow();
+
+		assertEquals(1, serviceExceptionService.size());
+
+		try {
+			serviceExceptionService.throwServiceInheritedException();
+		} catch (ServiceException e) {}
+
+		assertEquals(1, serviceExceptionService.size());
 	}
 	
 	@Test
 	public void testRollbackOnUncheckedException() throws ServiceException, SecurityServiceException {
-	    serviceExceptionService.dontThrow();
-	   
-	    assertEquals(1, serviceExceptionService.size());
-	   
-	    try {
-	        serviceExceptionService.throwUncheckedException();
-	    } catch (IllegalStateException e) {
-	    }
-	   
-	    assertEquals(1, serviceExceptionService.size());
+		serviceExceptionService.dontThrow();
+
+		assertEquals(1, serviceExceptionService.size());
+
+		try {
+			serviceExceptionService.throwUncheckedException();
+		} catch (IllegalStateException e) {
+		}
+
+		assertEquals(1, serviceExceptionService.size());
 	}
-	
+
 	@Test
 	public void testReloadOnRollback() throws ServiceException, SecurityServiceException {
 		Company company = new Company("test");
@@ -100,11 +100,11 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 	
 	@Before
 	public void init() throws ServiceException, SecurityServiceException {
-	    super.init();
+		super.init();
 	}
 	
 	@After
 	public void close() {
-	    super.close();
+		super.close();
 	}
 }

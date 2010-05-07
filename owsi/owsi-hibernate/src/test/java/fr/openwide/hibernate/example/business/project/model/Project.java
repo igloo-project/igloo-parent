@@ -9,10 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import fr.openwide.commons.string.StringUtils;
 import fr.openwide.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.util.StringUtils;
 
 @Entity
 public class Project extends GenericEntity<Project> {

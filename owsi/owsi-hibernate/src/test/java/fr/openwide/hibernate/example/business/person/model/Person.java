@@ -11,10 +11,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import fr.openwide.commons.string.StringUtils;
 import fr.openwide.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.project.model.Project;
-import fr.openwide.hibernate.util.StringUtils;
 
 @Entity
 public class Person extends GenericEntity<Person> {

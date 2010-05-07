@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.util;
+package fr.openwide.commons.string;
 
 import java.util.Arrays;
 import java.util.List;

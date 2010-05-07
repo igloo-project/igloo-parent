@@ -44,11 +44,6 @@ public class TestCascades extends AbstractHibernateTestCase {
 		Person person5 = new Person("Persist5", "Numéro5");
 		Person person6 = new Person("Persist6", "Numéro6");
 		
-		
-		/* Aucune Cascade (pas de table Join) :
-		 * 
-		 */
-		
 		/* Aucune Cascade (avec une table Join) :
 		 * 
 		 * Lorsque l'on tente de créer la Company liée à une Person non persisté, 
@@ -65,7 +60,6 @@ public class TestCascades extends AbstractHibernateTestCase {
 			assertFalse(personService.list().contains(person));
 		}
 		
-		// On crée de nouveaux objets car les anciens sont ???
 		company = new Company("Company Test Persist");
 		person = new Person("Persist", "Numéro");
 		
@@ -75,7 +69,6 @@ public class TestCascades extends AbstractHibernateTestCase {
 		companyService.create(company);
 		assertTrue(companyService.list().contains(company));
 		assertTrue(personService.list().contains(person));
-		
 		
 		/* Cascade SAVE_UPDATE :
 		 * 
@@ -89,7 +82,6 @@ public class TestCascades extends AbstractHibernateTestCase {
 		companyService.create(company1);
 		assertTrue(companyService.list().contains(company1));
 		assertTrue(personService.list().contains(person1));
-		
 		
 		/* Cascade PERSIST :
 		 * 
@@ -107,7 +99,6 @@ public class TestCascades extends AbstractHibernateTestCase {
 			assertFalse(companyService.list().contains(company2));
 			assertFalse(personService.list().contains(person2));
 		}
-
 		
 		/* Cascade REMOVE :
 		 * 
@@ -124,7 +115,6 @@ public class TestCascades extends AbstractHibernateTestCase {
 		} catch (InvalidDataAccessApiUsageException e) {
 			assertFalse(companyService.list().contains(company3));
 		}
-		
 		
 		/* Cascade DELETE :
 		 * 
@@ -143,7 +133,14 @@ public class TestCascades extends AbstractHibernateTestCase {
 			assertFalse(companyService.list().contains(company4));
 		}
 		
-		// Cascade DELETE_ORPHAN
+		/* Cascade DELETE_ORPHAN :
+		 * 
+		 * La méthode create() ne déclenchent pas la cascade
+		 * DELETE_ORPHAN. Lorsque l'on tente de créer la Company liée à une 
+		 * Person non persisté, on déclenche une exception. Il faut absolument que 
+		 * la Person soit persistée dans la base pour remplir correctement la table 
+		 * Join de cette relation. Il faut créer la Person avant de créer la Company.
+		 */
 		company5.addEmployee5(person5);
 		
 		try {
@@ -153,7 +150,14 @@ public class TestCascades extends AbstractHibernateTestCase {
 			assertFalse(companyService.list().contains(company5));
 		}
 		
-		// Cascade MERGE
+		/* Cascade MERGE :
+		 * 
+		 * La méthode create() ne déclenchent pas la cascade
+		 * MERGE. Lorsque l'on tente de créer la Company liée à une 
+		 * Person non persisté, on déclenche une exception. Il faut absolument que 
+		 * la Person soit persistée dans la base pour remplir correctement la table 
+		 * Join de cette relation. Il faut créer la Person avant de créer la Company.
+		 */
 		company6.addEmployee6(person6);
 		
 		try {
