@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.util.hibernate;
+package fr.openwide.hibernate.util;
 
 import org.hibernate.FlushMode;
 import org.hibernate.Session;

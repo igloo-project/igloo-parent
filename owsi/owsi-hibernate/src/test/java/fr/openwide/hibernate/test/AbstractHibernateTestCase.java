@@ -21,7 +21,7 @@ import fr.openwide.hibernate.example.business.project.model.Project;
 import fr.openwide.hibernate.example.business.project.service.ProjectService;
 import fr.openwide.hibernate.exception.SecurityServiceException;
 import fr.openwide.hibernate.exception.ServiceException;
-import fr.openwide.hibernate.util.hibernate.HibernateSessionUtils;
+import fr.openwide.hibernate.util.HibernateSessionUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})

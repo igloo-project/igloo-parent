@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 	<bean id="databaseInitializationService"
-		class="fr.openwide.hibernate.util.hibernate.DatabaseInitializationService"
+		class="fr.openwide.hibernate.util.DatabaseInitializationService"
 		init-method="initDatabaseSchema" />
 
 </beans>

@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.util.hibernate;
+package fr.openwide.hibernate.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
