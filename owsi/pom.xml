@@ -16,6 +16,8 @@
 	</modules>
 	
 	<properties>
+		<jdk.version>1.6</jdk.version>
+		
 		<owsi.asm.version>3.1</owsi.asm.version>
 		<owsi.aspectj.version>1.6.1</owsi.aspectj.version>
 		<owsi.cglib.version>2.1_3</owsi.cglib.version>
@@ -43,6 +45,27 @@
 		<owsi.spring.version>3.0.2.RELEASE</owsi.spring.version>
 		<owsi.taglib.version>1.1.2</owsi.taglib.version>
 	</properties>
+	
+	<build>
+		<!--
+			pluginManagement permet de configurer les plugins utilisés
+			dans les projets enfants.
+		-->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <configuration>
+	                	<!--
+	                		Utilisation de java 1.6 
+	                	-->
+	                    <source>${jdk.version}</source>
+	                    <target>${jdk.version}</target>
+	                </configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 	
 	<repositories>
 		<!-- Maven repository for hibernate dependency-->
