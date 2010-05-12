@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>owsi-core</artifactId>
+		<groupId>fr.openwide.core</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>fr.openwide.core</groupId>
+	<artifactId>owsi-core-commons</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Capitalisation OWSI Commons</name>
+	<description>Capitalisation pour les outils communs sur la plateforme OWSI</description>
+
+	<dependencies>
+		<!-- Misc dependencies -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${owsi.common.version}</version>
+		</dependency>
+	</dependencies>
+</project>
