@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import fr.openwide.commons.string.StringUtils;
-import fr.openwide.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.person.model.Person;
 

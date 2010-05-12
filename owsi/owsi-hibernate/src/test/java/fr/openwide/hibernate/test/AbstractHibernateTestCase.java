@@ -12,16 +12,16 @@ import org.springframework.test.context.junit38.AbstractJUnit38SpringContextTest
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import fr.openwide.commons.spring.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.hibernate.exception.SecurityServiceException;
+import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.hibernate.util.HibernateSessionUtils;
+import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.company.service.CompanyService;
 import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.example.business.person.service.PersonService;
 import fr.openwide.hibernate.example.business.project.model.Project;
 import fr.openwide.hibernate.example.business.project.service.ProjectService;
-import fr.openwide.hibernate.exception.SecurityServiceException;
-import fr.openwide.hibernate.exception.ServiceException;
-import fr.openwide.hibernate.util.HibernateSessionUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})

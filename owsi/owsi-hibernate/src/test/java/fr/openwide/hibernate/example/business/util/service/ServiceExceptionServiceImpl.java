@@ -3,10 +3,10 @@ package fr.openwide.hibernate.example.business.util.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.openwide.core.hibernate.exception.SecurityServiceException;
+import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.company.service.CompanyService;
-import fr.openwide.hibernate.exception.SecurityServiceException;
-import fr.openwide.hibernate.exception.ServiceException;
 
 
 /**

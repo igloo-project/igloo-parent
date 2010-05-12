@@ -1,6 +1,6 @@
 package fr.openwide.hibernate.example.business.company.service;
 
-import fr.openwide.hibernate.business.generic.service.GenericEntityService;
+import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
 import fr.openwide.hibernate.example.business.company.model.Company;
 
 public interface CompanyService extends GenericEntityService<Company> {

@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import fr.openwide.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.example.business.project.model.Project;
 

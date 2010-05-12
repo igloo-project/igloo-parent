@@ -3,7 +3,7 @@ package fr.openwide.hibernate.example.business.company.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.hibernate.business.generic.service.GenericEntityServiceImpl;
+import fr.openwide.core.hibernate.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.hibernate.example.business.company.dao.CompanyDao;
 import fr.openwide.hibernate.example.business.company.model.Company;
 
