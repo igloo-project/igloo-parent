@@ -15,6 +15,18 @@
 	</parent>
 
 	<dependencies>
+		<!-- Owsi-Core dependencies -->
+		<dependency>
+			<groupId>fr.openwide.core</groupId>
+			<artifactId>owsi-core-spring</artifactId>
+			<version>${owsi.core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core</groupId>
+			<artifactId>owsi-core-hibernate</artifactId>
+			<version>${owsi.core.version}</version>
+		</dependency>
 
 		<!-- Spring framework dependencies -->
 		<dependency>
