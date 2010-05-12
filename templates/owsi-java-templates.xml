@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="Create a new DAO implementation" enabled="true" name="daoimpl">${:import(org.springframework.stereotype.Repository)}
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="Create a new DAO implementation" enabled="true" name="daoimpl">${:import(fr.openwide.core.hibernate.business.generic.dao.GenericEntityDaoImpl, org.springframework.beans.factory.annotation.Autowired, org.springframework.stereotype.Repository, org.hibernate.SessionFactory)}
 @Repository()
 public class ${newName}DaoImpl extends GenericEntityDaoImpl&lt;${newName}&gt; implements ${newName}Dao {
 
@@ -8,9 +8,10 @@ public class ${newName}DaoImpl extends GenericEntityDaoImpl&lt;${newName}&gt; im
 	}
 
 	${cursor}
-}</template><template autoinsert="true" context="java" deleted="false" description="Create a new DAO interface" enabled="true" name="daoitf">public interface ${newName}Dao extends GenericEntityDao&lt;${newName}&gt; {
+}</template><template autoinsert="true" context="java" deleted="false" description="Create a new DAO interface" enabled="true" name="daoitf">${:import(fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao)}
+public interface ${newName}Dao extends GenericEntityDao&lt;${newName}&gt; {
 	${cursor}
-}</template><template autoinsert="true" context="java" deleted="false" description="Generate an entity" enabled="true" name="genentity">${:import(javax.persistence.Entity, javax.persistence.Id, javax.persistence.GeneratedValue)}
+}</template><template autoinsert="true" context="java" deleted="false" description="Generate an entity" enabled="true" name="genentity">${:import(javax.persistence.Entity, javax.persistence.Id, javax.persistence.GeneratedValue, fr.openwide.core.hibernate.business.generic.model.GenericEntity)}
 @Entity
 public class ${newName} extends GenericEntity&lt;${newName}&gt; {
 
@@ -48,7 +49,7 @@ public class ${newName} extends GenericEntity&lt;${newName}&gt; {
 		return 0;
 	}
 }</template><template autoinsert="true" context="java" deleted="false" description="Create a new logger" enabled="true" name="logger">${:import(org.apache.commons.logging.Log, org.apache.commons.logging.LogFactory)}
-private static final Log LOGGER = LogFactory.getLog(${enclosing_type}.class); </template><template autoinsert="true" context="java" deleted="false" description="Generate a new Service implementation" enabled="true" name="serviceimpl">${:import(org.springframework.stereotype.Service, org.springframework.beans.factory.annotation.Autowired)}
+private static final Log LOGGER = LogFactory.getLog(${enclosing_type}.class); </template><template autoinsert="true" context="java" deleted="false" description="Generate a new Service implementation" enabled="true" name="serviceimpl">${:import(org.springframework.stereotype.Service, org.springframework.beans.factory.annotation.Autowired, fr.openwide.core.hibernate.business.generic.service.GenericEntityServiceImpl)}
 @Service("${newName}Service")
 public class ${newName}ServiceImpl extends GenericEntityServiceImpl&lt;${newName}&gt; implements ${newName}Service {
 	
@@ -58,6 +59,7 @@ public class ${newName}ServiceImpl extends GenericEntityServiceImpl&lt;${newName
 	}	
 
 	${cursor}
-}</template><template autoinsert="true" context="java" deleted="false" description="Generate a new Service interface" enabled="true" name="serviceitf">public interface ${newName}Service extends GenericEntityService&lt;${newName}&gt; {
+}</template><template autoinsert="true" context="java" deleted="false" description="Generate a new Service interface" enabled="true" name="serviceitf">${:import(fr.openwide.core.hibernate.business.generic.service.GenericEntityService)}
+public interface ${newName}Service extends GenericEntityService&lt;${newName}&gt; {
 	${cursor}
 }</template></templates>

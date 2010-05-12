@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="xml_all" deleted="false" description="Generate a simple hibernate config" enabled="true" name="hibernateconfig">&lt;!-- Configuration --&gt;
-	&lt;bean id="configurer" class="fr.openwide.commons.spring.OwPropertyPlaceholderConfigurer"&gt;
+	&lt;bean id="configurer" class="fr.openwide.core.spring.OwPropertyPlaceholderConfigurer"&gt;
 		&lt;property name="locations"&gt;
 			&lt;list&gt;
 				&lt;value&gt;classpath:${project}.properties&lt;/value&gt;
@@ -91,7 +91,7 @@
 		An embedded * in an identifier matches any sequence of characters, but does not match the package (or inner-type) separator ".".
 		An embedded .. in an identifier matches any sequence of characters that starts and ends with the package (or inner-type) separator ".". 
 		--&gt;
-		&lt;aop:pointcut id="txPointCutDef" expression="execution(* fr.openwide.${package_name}..business..service.*ServiceImpl.*(..))" /&gt;
+		&lt;aop:pointcut id="txPointCutDef" expression="execution(* fr.openwide..${package_name}..business..service.*ServiceImpl.*(..))" /&gt;
 		&lt;aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCutDef"  /&gt;
 	&lt;/aop:config&gt;
 
@@ -105,7 +105,7 @@
 			On peut choisir d'ajouter des exceptions supplémentaires (héritage pris en compte) qui
 			provoqueront un rollback
 			--&gt;
-			&lt;!--&lt;tx:method name="*" read-only="false" rollback-for="fr.openwide.${package_name}.exception.ServiceException" /&gt;--&gt;
+			&lt;!--&lt;tx:method name="*" read-only="false" rollback-for="fr.openwide.core.hibernate.exception.ServiceException" /&gt;--&gt;
 		&lt;/tx:attributes&gt;
 	&lt;/tx:advice&gt;
 </template><template autoinsert="true" context="xml_all" deleted="false" description="Generate a simple spring context xml file" enabled="true" name="springcontext">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
