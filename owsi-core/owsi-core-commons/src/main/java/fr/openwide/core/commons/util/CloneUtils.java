@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.commons;
+package fr.openwide.core.commons.util;
 
 import java.util.Date;
 
