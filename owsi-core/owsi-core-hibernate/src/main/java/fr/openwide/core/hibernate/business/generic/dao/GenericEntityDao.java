@@ -109,13 +109,6 @@ public interface GenericEntityDao<T extends GenericEntity<T>> {
 	List<T> listByField(String fieldName, Object fieldValue);
 	
 	/**
-	 * 
-	 * 
-	 * @param object
-	 */
-	void evict(T object);
-
-	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.
 	 * 
 	 * @return nombre d'entités
