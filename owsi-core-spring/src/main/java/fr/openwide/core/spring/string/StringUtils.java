@@ -163,13 +163,6 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 	
 	/**
-	 * @see #cleanString(String)
-	 */
-	public static String cleanAutocompleteQuery(String query) {
-		return cleanString(query);
-	}
-	
-	/**
 	 * Supprime les accents d'une chaîne de caractères.
 	 * 
 	 * @param text chaîne à nettoyer
