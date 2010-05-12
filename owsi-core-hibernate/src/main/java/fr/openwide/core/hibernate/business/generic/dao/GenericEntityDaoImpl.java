@@ -225,9 +225,4 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 		return criteria;
 	}
 	
-	public void evict(T object) {
-		getSession().flush();
-		getSession().evict(object);
-	}
-	
 }
