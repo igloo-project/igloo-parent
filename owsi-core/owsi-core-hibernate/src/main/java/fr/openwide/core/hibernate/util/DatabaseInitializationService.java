@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import fr.openwide.core.spring.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
 
 /**
  * <p>Initialise le schéma de la base.</p>
@@ -70,7 +70,7 @@ public class DatabaseInitializationService {
 	 */
 	protected void initDatabaseSchema() throws IOException {
 		if (configurer.isConfigurationTypeDevelopment()) {
-			LOGGER.warn("Initialisation de la base de données PostgreSQL");
+			LOGGER.warn("Initialisation de la base de données");
 
 			InputStream sqlDropFile = new ClassPathResource("sql/drop_tables.sql").getInputStream();
 			InputStream sqlInitFile = new ClassPathResource("sql/create_tables.sql").getInputStream();
