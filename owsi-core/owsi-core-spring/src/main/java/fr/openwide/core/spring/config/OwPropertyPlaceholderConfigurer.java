@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.spring;
+package fr.openwide.core.spring.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
-import fr.openwide.core.spring.string.StringUtils;
+import fr.openwide.core.spring.util.StringUtils;
 
 /**
  * <p>Gère la récupération des propriétés de configuration.</p>
