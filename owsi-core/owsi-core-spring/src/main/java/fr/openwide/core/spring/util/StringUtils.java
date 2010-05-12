@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.spring.string;
+package fr.openwide.core.spring.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
