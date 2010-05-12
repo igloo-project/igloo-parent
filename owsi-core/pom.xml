@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.openwide.core</groupId>
+	<artifactId>owsi-core</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Capitalisation OWSI Core</name>
+	<description>Capitalisation pour diverses technolgoies couramment utilisées sur la plateforme OWSI</description>
+	
+	<properties>
+		<jdk.version>1.6</jdk.version>
+		<owsi.common.version>2.4</owsi.common.version>
+		<owsi.hibernate-core.version>3.5.1-Final</owsi.hibernate-core.version>
+		<owsi.spring.version>3.0.2.RELEASE</owsi.spring.version>
+	</properties>
+	
+	<build>
+		<!--
+			pluginManagement permet de configurer les plugins utilisés
+			dans les projets enfants.
+		-->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<!--
+							Utilisation de java 1.6 
+						-->
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	
+	<repositories>
+		<!-- Maven repository for hibernate dependency-->
+		<repository>
+			<id>jboss</id>
+			<name>JBoss Maven Repository</name>
+			<url>http://repository.jboss.org/maven2/</url>
+		</repository>
+	</repositories>
+	
+</project>
