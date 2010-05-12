@@ -23,12 +23,14 @@
 		<owsi.cglib.version>2.1_3</owsi.cglib.version>
 		<owsi.common.version>2.4</owsi.common.version>
 		<owsi.commons-logging.version>1.1.1</owsi.commons-logging.version>
+		<owsi.core.version>0.0.1-SNAPSHOT</owsi.core.version>
 		<owsi.c3p0.version>0.9.1.2</owsi.c3p0.version>
 		<owsi.ehcache.version>1.5.0</owsi.ehcache.version>
 		<owsi.hibernate-core.version>3.5.1-Final</owsi.hibernate-core.version>
 		<owsi.hibernate-annotations.version>${owsi.hibernate-core.version}</owsi.hibernate-annotations.version>
 		<owsi.hibernate-ehcache.version>${owsi.hibernate-core.version}</owsi.hibernate-ehcache.version>
 		<owsi.javassist.version>3.4.GA</owsi.javassist.version>
+		<owsi.jersey.version>1.0.3.1</owsi.jersey.version>
 		<owsi.jstl.version>1.2</owsi.jstl.version>
 		
 		<!--
