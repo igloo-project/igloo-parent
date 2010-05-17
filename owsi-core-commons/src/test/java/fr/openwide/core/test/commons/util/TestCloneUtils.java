@@ -14,10 +14,10 @@ public class TestCloneUtils {
 
 	@Test
 	public void testCloneDate() {
-		Calendar calendar = new GregorianCalendar();
-		calendar.set(2010, 05, 24, 17, 0, 15);
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.set(2010, 5, 24, 17, 0, 15);
 
-		Date date1 = new Date(calendar.getTimeInMillis());
+		Date date1 = calendar.getTime();
 
 		Date date2 = CloneUtils.clone(date1);
 
