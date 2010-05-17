@@ -41,13 +41,13 @@ public class TestGenericEntity extends AbstractHibernateCoreTestCase {
 		personService.create(person);
 
 		assertFalse(person.isNew());
-		assertEquals(1, (int) person.getId());
-
+		
+		Integer oldId = person.getId();
+		
 		person.setId(2);
+		assertEquals(2, person.getId().intValue());
 
-		assertEquals(2, (int) person.getId());
-
-		person.setId(1);
+		person.setId(oldId);
 
 		Person person1 = new Person("FirstName1", "LastName1");
 		personService.create(person1);
