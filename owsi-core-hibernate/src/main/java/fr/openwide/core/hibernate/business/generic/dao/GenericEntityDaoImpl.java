@@ -78,9 +78,10 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 		return objectClass;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public GenericEntity<?> getEntity(Class<? extends GenericEntity<?>> clazz, Integer id) {
-		return (GenericEntity<?>) getSession().get(clazz, id);
+	public T getEntity(Class<? extends T> clazz, Integer id) {
+		return (T) getSession().get(clazz, id);
 	}
 	
 	@SuppressWarnings("unchecked")

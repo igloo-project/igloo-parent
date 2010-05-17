@@ -45,7 +45,7 @@ public abstract class GenericEntityServiceImpl<T extends GenericEntity<T>> imple
 	}
 
 	@Override
-	public GenericEntity<?> getEntity(Class<? extends GenericEntity<?>> clazz, Integer id) {
+	public T getEntity(Class<? extends T> clazz, Integer id) {
 		return genericDao.getEntity(clazz, id);
 	}
 
