@@ -1,6 +1,6 @@
-create schema hibernatetest;
+create schema owsicore;
 
-set search_path = hibernatetest;
+set search_path = owsicore;
 
 create table person (
 	id integer not null,
