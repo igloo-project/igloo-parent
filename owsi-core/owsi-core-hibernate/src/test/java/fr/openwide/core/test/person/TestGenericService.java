@@ -52,7 +52,7 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 
 		try {
 			personService.create(person2, true);
-			fail("Créer deux fois la même entitée doit lever une exception");
+			fail("Créer deux fois la même entité doit lever une exception");
 		} catch (ServiceException e) {
 		}
 	}
@@ -125,7 +125,7 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 
-		Person person1 = (Person) personService.getEntity(Person.class, person.getId());
+		Person person1 = personService.getEntity(Person.class, person.getId());
 		Person person2 = personService.getById(person.getId());
 
 		assertTrue(person.equals(person1));

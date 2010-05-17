@@ -19,7 +19,6 @@ package fr.openwide.core.hibernate.business.generic.service;
 
 import java.util.List;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 
@@ -98,7 +97,7 @@ public interface GenericEntityService<T> {
 	 * @param id identifiant
 	 * @return entité
 	 */
-	GenericEntity<?> getEntity(Class<? extends GenericEntity<?>> clazz, Integer id);
+	T getEntity(Class<? extends T> clazz, Integer id);
 	
 	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.
