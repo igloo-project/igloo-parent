@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.hibernate.AssertionFailure;
 import org.hibernate.UnresolvableObjectException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,5 +160,15 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 
 		assertEquals(new Long(4), personDao.count());
 		assertEquals(new Long(2), personDao.countByField("lastName", "AAAA"));
+	}
+	
+	@Before
+	public void init() throws ServiceException, SecurityServiceException {
+		super.init();
+	}
+	
+	@After
+	public void close() {
+		super.close();
 	}
 }
