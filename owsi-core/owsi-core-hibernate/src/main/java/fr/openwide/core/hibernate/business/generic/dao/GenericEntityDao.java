@@ -44,7 +44,7 @@ public interface GenericEntityDao<T extends GenericEntity<T>> {
 	 * @param id identifiant
 	 * @return entité
 	 */
-	GenericEntity<?> getEntity(Class<? extends GenericEntity<?>> clazz, Integer id);
+	T getEntity(Class<? extends T> clazz, Integer id);
 	
 	/**
 	 * Retourne une entité à partir de son id.
