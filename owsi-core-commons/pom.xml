@@ -14,7 +14,14 @@
 	<name>Capitalisation OWSI Commons</name>
 	<description>Capitalisation pour les outils communs sur la plateforme OWSI</description>
 
-	<dependencies>
+	<dependencies>		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi.junit.version}</version>
+		</dependency>
+		
 		<!-- Misc dependencies -->
 		<dependency>
 			<groupId>commons-lang</groupId>
