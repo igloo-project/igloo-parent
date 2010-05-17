@@ -22,6 +22,8 @@ import java.util.List;
 import org.hibernate.AssertionFailure;
 import org.hibernate.TransientObjectException;
 import org.hibernate.UnresolvableObjectException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -163,5 +165,15 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		personService.create(person1);
 		
 		assertEquals(new Long(2), personService.count());
+	}
+	
+	@Before
+	public void init() throws ServiceException, SecurityServiceException {
+		super.init();
+	}
+	
+	@After
+	public void close() {
+		super.close();
 	}
 }

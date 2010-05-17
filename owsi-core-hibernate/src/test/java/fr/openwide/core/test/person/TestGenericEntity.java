@@ -17,6 +17,8 @@
 
 package fr.openwide.core.test.person;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -64,5 +66,15 @@ public class TestGenericEntity extends AbstractHibernateCoreTestCase {
 
 		assertEquals("LastName FirstName", person.getDisplayName());
 		assertEquals("LastName FirstName", person.getNameForToString());
+	}
+	
+	@Before
+	public void init() throws ServiceException, SecurityServiceException {
+		super.init();
+	}
+	
+	@After
+	public void close() {
+		super.close();
 	}
 }
