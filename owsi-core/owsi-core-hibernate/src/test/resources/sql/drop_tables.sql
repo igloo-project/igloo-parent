@@ -1,1 +1,1 @@
-drop schema hibernatetest cascade;
+drop schema owsicore cascade;
