@@ -23,7 +23,6 @@ import org.hibernate.AssertionFailure;
 import org.hibernate.UnresolvableObjectException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,18 +56,18 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testSaveDelete() {
 		Person person = new Person("Firstname", "Lastname");
 		personDao.save(person);
+		personService.flush();
 		assertTrue(personService.list().contains(person));
 
 		personDao.delete(person);
+		personService.flush();
 		assertFalse(personService.list().contains(person));
 	}
 
 	@Test
-	@Ignore
 	public void testUpdate() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
@@ -110,8 +109,6 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 
 	@Test
 	public void testLists() throws ServiceException, SecurityServiceException {
-		cleanAll();
-		
 		List<Person> emptyList = personDao.list();
 		assertEquals(0, emptyList.size());
 		
@@ -144,8 +141,6 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 
 	@Test
 	public void testCounts() throws ServiceException, SecurityServiceException {
-		cleanAll();
-		
 		assertEquals(new Long(0), personDao.count());
 		assertEquals(new Long(0), personDao.countByField("lastName", "AAAA"));
 
