@@ -7,30 +7,34 @@ public final class LuceneUtils {
 	public static String getAutocompleteQuery(String searchPattern) {
 		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
-		StringBuilder autocompleteQuery = new StringBuilder();
-		
 		if(StringUtils.hasText(cleanSearchPattern)) {
+			StringBuilder autocompleteQuery = new StringBuilder();
+			
 			autocompleteQuery.append(cleanSearchPattern);
 			autocompleteQuery.append("*");
+			
+			cleanSearchPattern = autocompleteQuery.toString();
 		}
 		
-		return autocompleteQuery.toString();
+		return cleanSearchPattern;
 	}
 	
 	public static String getSimilarityQuery(String searchPattern, Float minSimilarity) {
 		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
-		StringBuilder similarityQuery = new StringBuilder();
-		
 		if(StringUtils.hasText(cleanSearchPattern)) {
+			StringBuilder similarityQuery = new StringBuilder();
+			
 			String[] searchPatternElements = StringUtils.delimitedListToStringArray(cleanSearchPattern, StringUtils.SPACE);
 			
 			for (int i = 0; i < searchPatternElements.length; i++) {
-				similarityQuery.append(searchPatternElements[i]).append("~").append(minSimilarity.toString());
+				similarityQuery.append(searchPatternElements[i]).append("~").append(minSimilarity.toString()).append(" ");
 			}
+			
+			cleanSearchPattern = similarityQuery.toString().trim();
 		}
 		
-		return similarityQuery.toString();
+		return cleanSearchPattern;
 	}
 	
 	private static String cleanSearchPattern(String searchPattern) {
