@@ -5,7 +5,7 @@ import fr.openwide.core.spring.util.StringUtils;
 public final class LuceneUtils {
 	
 	public static String getAutocompleteQuery(String searchPattern) {
-		String cleanSearchPattern = StringUtils.clean(searchPattern);
+		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
 		StringBuilder autocompleteQuery = new StringBuilder();
 		
@@ -18,7 +18,7 @@ public final class LuceneUtils {
 	}
 	
 	public static String getSimilarityQuery(String searchPattern, Float minSimilarity) {
-		String cleanSearchPattern = StringUtils.clean(searchPattern);
+		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
 		StringBuilder similarityQuery = new StringBuilder();
 		
@@ -31,6 +31,29 @@ public final class LuceneUtils {
 		}
 		
 		return similarityQuery.toString();
+	}
+	
+	private static String cleanSearchPattern(String searchPattern) {
+		String cleanSearchPattern = StringUtils.clean(searchPattern);
+		
+		if(StringUtils.hasText(cleanSearchPattern)) {
+			StringBuilder cleanSearchPatternSb = new StringBuilder();
+			
+			String[] searchPatternElements = StringUtils.delimitedListToStringArray(cleanSearchPattern, StringUtils.SPACE);
+			
+			for (int i = 0; i < searchPatternElements.length; i++) {
+				String fragment = StringUtils.trimLeadingCharacter(searchPatternElements[i], StringUtils.DASH_CHAR);
+				
+				if (StringUtils.hasText(fragment)) {
+					cleanSearchPatternSb.append(fragment)
+							.append(StringUtils.SPACE);
+				}
+			}
+			
+			cleanSearchPattern = cleanSearchPatternSb.toString().trim();
+		}
+		
+		return cleanSearchPattern;
 	}
 	
 	private LuceneUtils() {
