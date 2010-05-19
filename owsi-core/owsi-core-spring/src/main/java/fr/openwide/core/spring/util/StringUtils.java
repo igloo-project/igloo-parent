@@ -40,16 +40,17 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	
 	public static final char NON_BREAKABLE_SPACE_CHAR = (char) 160;
 	public static final char SPACE_CHAR = ' ';
+	public static final String SPACE = " ";
 	public static final char DASH_CHAR = '-';
 	public static final String DASH = "-";
 	public static final String CLEAN_SPECIAL_CHARS_REGEXP;
 	public static final String CLEAN_DUPLICATE_DASHES_REGEXP = "--*";
+	public static final String CLEAN_DUPLICATE_SPACES_REGEXP = "  *";
 	public static final String COLLECTION_DEFAULT_DELIMITER = ", ";
 	
 	static {
 		StringBuilder regExp = new StringBuilder();
 		regExp.append('[');
-		regExp.append(' ');
 		regExp.append("’'`«»");
 		regExp.append("\n\r\t");
 		regExp.append('\"');
@@ -143,7 +144,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @param strToClean chaîne à nettoyer
 	 * @return chaîne nettoyée
 	 */
-	public static String cleanString(String strToClean) {
+	public static String urlize(String strToClean) {
 		if (strToClean == null) {
 			return null;
 		}
@@ -154,7 +155,36 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		str = StringUtils.removeAccents(str);
 		
 		str = str.replaceAll(CLEAN_SPECIAL_CHARS_REGEXP, DASH);
+		str = str.replace(SPACE_CHAR, DASH_CHAR);
 		str = str.replaceAll(CLEAN_DUPLICATE_DASHES_REGEXP, DASH);
+		
+		str = StringUtils.trimLeadingCharacter(str, DASH_CHAR);
+		str = StringUtils.trimTrailingCharacter(str, DASH_CHAR);
+		
+		return str;
+	}
+	
+	/**
+	 * Nettoie une chaîne de caractères
+	 * 
+	 * @param strToClean chaîne à nettoyer
+	 * @return chaîne nettoyée
+	 */
+	public static String clean(String strToClean) {
+		if (strToClean == null) {
+			return null;
+		}
+		
+		String str = strToClean.trim();
+		str = str.replace(NON_BREAKABLE_SPACE_CHAR, SPACE_CHAR);
+		str = StringUtils.lowerCase(str);
+		str = StringUtils.removeAccents(str);
+		
+		str = str.replaceAll(CLEAN_SPECIAL_CHARS_REGEXP, SPACE);
+		str = str.replaceAll(CLEAN_DUPLICATE_SPACES_REGEXP, SPACE);
+		
+		str = StringUtils.trimLeadingCharacter(str, SPACE_CHAR);
+		str = StringUtils.trimTrailingCharacter(str, SPACE_CHAR);
 		
 		str = StringUtils.trimLeadingCharacter(str, DASH_CHAR);
 		str = StringUtils.trimTrailingCharacter(str, DASH_CHAR);

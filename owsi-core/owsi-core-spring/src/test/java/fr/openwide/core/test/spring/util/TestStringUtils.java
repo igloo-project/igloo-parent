@@ -38,35 +38,72 @@ public class TestStringUtils {
 	}
 
 	@Test
-	public void testCleanString() {
+	public void testUrlize() {
 		String cleanStr;
 
 		String str_maj = "ABCDEFG";
-		cleanStr = StringUtils.cleanString(str_maj);
+		cleanStr = StringUtils.urlize(str_maj);
 		assertEquals("abcdefg", cleanStr);
 
 		String str_accent = "éèàçù";
-		cleanStr = StringUtils.cleanString(str_accent);
+		cleanStr = StringUtils.urlize(str_accent);
 		assertEquals("eeacu", cleanStr);
 
 		String str_dashes = "---------";
-		cleanStr = StringUtils.cleanString(str_dashes);
+		cleanStr = StringUtils.urlize(str_dashes);
 		assertEquals("", cleanStr);
 
 		String str_spaces = "         ";
-		cleanStr = StringUtils.cleanString(str_spaces);
+		cleanStr = StringUtils.urlize(str_spaces);
 		assertEquals("", cleanStr);
 
 		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
-		cleanStr = StringUtils.cleanString(str_regEx);
+		cleanStr = StringUtils.urlize(str_regEx);
 		assertEquals("", cleanStr);
 
 		String str_trimDash = " --test-test--";
-		cleanStr = StringUtils.cleanString(str_trimDash);
+		cleanStr = StringUtils.urlize(str_trimDash);
 		assertEquals("test-test", cleanStr);
 
 		String str_null = null;
-		cleanStr = StringUtils.cleanString(str_null);
+		cleanStr = StringUtils.urlize(str_null);
+		assertNull(cleanStr);
+	}
+	
+	@Test
+	public void testClean() {
+		String cleanStr;
+
+		String str_maj = "ABCDEFG";
+		cleanStr = StringUtils.clean(str_maj);
+		assertEquals("abcdefg", cleanStr);
+
+		String str_accent = "éèàçù";
+		cleanStr = StringUtils.clean(str_accent);
+		assertEquals("eeacu", cleanStr);
+
+		String str_dashes = "---------";
+		cleanStr = StringUtils.clean(str_dashes);
+		assertEquals("", cleanStr);
+
+		String str_spaces = "         ";
+		cleanStr = StringUtils.clean(str_spaces);
+		assertEquals("", cleanStr);
+		
+		String str_words = " test word   wo-rd";
+		cleanStr = StringUtils.clean(str_words);
+		assertEquals("test word wo-rd", cleanStr);
+
+		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
+		cleanStr = StringUtils.clean(str_regEx);
+		assertEquals("", cleanStr);
+
+		String str_trimDash = " --test-test--";
+		cleanStr = StringUtils.clean(str_trimDash);
+		assertEquals("test-test", cleanStr);
+
+		String str_null = null;
+		cleanStr = StringUtils.clean(str_null);
 		assertNull(cleanStr);
 	}
 
