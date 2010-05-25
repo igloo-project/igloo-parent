@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<description>Taglib utilitaires OWSI</description>
+	<display-name>Taglib OWSI</display-name>
+	<tlib-version>1.0</tlib-version>
+	<short-name>owsi</short-name>
+
+	<!--
+		Définition d'un tag dateformat pour formater la 
+		date dans une vue selon le format souhaité 
+	 -->
+	<tag>
+		<name>dateformat</name>
+		<tag-class>fr.openwide.springmvc.web.taglib.DateFormatTag</tag-class>
+		<body-content>empty</body-content>
+		
+		<attribute>
+			<description>Date à afficher</description>
+			<name>date</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.util.Date</type>
+		</attribute>
+		
+		<attribute>
+			<description>Code du message contenant le format</description>
+			<name>format</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+</taglib>
