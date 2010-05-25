@@ -42,7 +42,7 @@
 	<servlet>
 		<!--
 			Point d'entrée de springMVC.
-			Le contexte associé à la servlet est chargé à partir du fichier <servlet-name>-portlet.xml
+			Le contexte associé à la servlet est chargé à partir du fichier <servlet-name>-servlet.xml
 			donc SpringMVC-servlet.xml.
 			Le contexte spring construit sera un contexte enfant du contexte global tel que chargé par
 			org.springframework.web.context.ContextLoaderListener.
