@@ -37,4 +37,27 @@
 	<!-- Locale Resolver pour les changements de langue -->
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 	
+	<!-- Chaîne d'intercepteurs appliquée lors de la récèption d'une requête HTTP -->
+	<bean id="interceptorChain" class="java.util.ArrayList">
+		<description>Applies an interceptor chain to each mapped HTTP request</description>
+		<constructor-arg type="java.util.Collection">
+			<list>
+				<bean class="fr.openwide.springmvc.web.interceptor.MyInterceptor" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- Mappeur entre la requête HTTP et l'annotation @RequestMapping -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<description>Use the @RequestMapping defined in Controller beans</description>
+		<property name="order" value="1" />
+		<property name="interceptors" ref="interceptorChain" />
+		<!-- 
+			useDefaultSuffixPattern défini si les path définis dans @RequestMapping 
+			doivent aussi traité les sous chemins. Par exemple pour /users on traitera 
+			également /users.* et /users/ si useDefaultSuffixPattern est à true.
+		-->
+		<property name="useDefaultSuffixPattern" value="false" />
+	</bean>
+	
 </beans>

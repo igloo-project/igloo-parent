@@ -20,6 +20,9 @@ import java.beans.PropertyEditorSupport;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.springframework.core.convert.ConversionFailedException;
+import org.springframework.core.convert.TypeDescriptor;
+
 import fr.openwide.springmvc.web.util.DateFormatUtils;
 
 	/**
@@ -58,7 +61,17 @@ import fr.openwide.springmvc.web.util.DateFormatUtils;
 		try {
 			date = DateFormatUtils.parseFromFormat(text, DateFormatUtils.DATE_FORMAT);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException();
+			/*
+			 * Pour afficher notre message dans la vue au lieu de l'exception,
+			 * il faut reprendre les codes définis par convention. Dans notre
+			 * cas typeMismatch.myEntityForm.date. Il faut associer notre
+			 * message à ce code dans Global.properties.
+			 * 
+			 * On pourrait faire cette vérification dans le validateur pour plus
+			 * de souplesse avec le message d'erreur. Mais on préfère réserver
+			 * le validateur pour les vérifications sur l'objet peuplé.
+			 */
+			throw new ConversionFailedException(TypeDescriptor.forObject(new String()), TypeDescriptor.forObject(new Date()), text, e);
 		}
 		setValue(date);
 	}
