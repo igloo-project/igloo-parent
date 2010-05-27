@@ -23,16 +23,20 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 
 import fr.openwide.springmvc.web.business.common.validator.AbstractValidator;
-import fr.openwide.springmvc.web.business.myentity.model.MyEntity;
 import fr.openwide.springmvc.web.business.myentity.model.MyEntityForm;
 
+/**
+ * <p>Validateur utilisé pour le formulaire MyEntityForm</p>
+ * 
+ * @author Open Wide
+ */
 public class MyEntityValidator extends AbstractValidator {
 
 	private static final Log LOGGER = LogFactory.getLog(MyEntityValidator.class);
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return clazz.equals(MyEntity.class) || clazz.equals(MyEntityForm.class);
+		return clazz.equals(MyEntityForm.class);
 	}
 
 	@Override

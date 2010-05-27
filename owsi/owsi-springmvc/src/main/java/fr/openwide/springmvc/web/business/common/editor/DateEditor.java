@@ -25,12 +25,12 @@ import org.springframework.core.convert.TypeDescriptor;
 
 import fr.openwide.springmvc.web.util.DateFormatUtils;
 
-	/**
-	 * <p>Permet d'éditer une date.</p>
-	 * 
-	 * @author Open Wide
-	 */
-	public class DateEditor extends PropertyEditorSupport {
+/**
+ * <p>Permet d'éditer une date.</p>
+ * 
+ * @author Open Wide
+ */
+public class DateEditor extends PropertyEditorSupport {
 	
 	private String format;
 	

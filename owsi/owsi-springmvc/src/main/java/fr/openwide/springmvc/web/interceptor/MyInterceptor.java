@@ -24,6 +24,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * <p>Intercepteur simple permettant de logguer les requêtes URL</p>
+ * 
+ * @author Open Wide
+ */
 public class MyInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Log LOGGER = LogFactory.getLog(MyInterceptor.class);

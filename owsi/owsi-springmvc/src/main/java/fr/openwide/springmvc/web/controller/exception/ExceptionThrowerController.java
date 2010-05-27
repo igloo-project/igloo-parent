@@ -14,29 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.openwide.springmvc.web.controller;
+package fr.openwide.springmvc.web.controller.exception;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * <p>Contrôleur qui redirige le / vers la page d'accueil.</p>
+ * <p>
+ * Contrôleur qui lève des exceptions pour tester le
+ * SimpleMappingExceptionResolver.
+ * </p>
  * 
  * @author Open Wide
  */
-@Controller("accueilController")
-@RequestMapping("/index.html")
-public class AccueilController {
-	private static final String DEFAULT_VIEW = "accueil";
+@Controller("exceptionController")
+@RequestMapping("exceptioncontroller")
+public class ExceptionThrowerController {
 	
-	private static final Log LOGGER = LogFactory.getLog(AccueilController.class);
+	@RequestMapping("general-error")
+	public String throwException() {
+		throw new RuntimeException();
+	}
 	
-	@RequestMapping
-	public String handleRequest(Model model) {
-		LOGGER.info("Accueil!!");
-		return DEFAULT_VIEW;
+	@RequestMapping("state-error")
+	public String throwStateException() {
+		throw new IllegalStateException();
 	}
 }

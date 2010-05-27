@@ -68,6 +68,18 @@
 		<url-pattern>/springmvc/*</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<!--
+			Permet de livrer les ressources statiques.
+			
+			ATTENTION, ceci donne accès à l'intégralité du répertoire
+			de la webapp. Il faut restreindre les accès via Apache ou
+			ne pas activer cette servlet en production.
+		-->
+		<servlet-name>default</servlet-name>
+		<url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
+	
 	<jsp-config>
 		<!-- les JSP sont toutes en UTF-8 -->
 		<jsp-property-group>

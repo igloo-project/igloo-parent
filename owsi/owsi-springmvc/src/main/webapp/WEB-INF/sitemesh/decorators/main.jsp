@@ -20,7 +20,9 @@
 			<spring:param name="locale" value="fr" />
 		</spring:url>
 		<a href="${url_fr}"><spring:message code="main.changeLocaleFr" /></a><br>
-		
+	</p>
+	<hr>
+	<p>
 		<!-- [CONTENU DE LA PAGE] -->
 		<decorator:body />
 		<!-- [CONTENU DE LA PAGE] -->

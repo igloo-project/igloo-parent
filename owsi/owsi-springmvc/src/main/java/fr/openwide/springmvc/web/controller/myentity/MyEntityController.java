@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.openwide.springmvc.web.controller;
+package fr.openwide.springmvc.web.controller.myentity;
 
 import javax.servlet.http.HttpSession;
 
@@ -40,6 +40,11 @@ import fr.openwide.springmvc.web.business.myentity.validator.MyEntityValidator;
 import fr.openwide.springmvc.web.util.DateFormatUtils;
 import fr.openwide.springmvc.web.util.SessionUtils;
 
+/**
+ * <p>Controlleur associé aux requêtes GET/POST sur une entité MyEntity.</p>
+ * 
+ * @author Open Wide
+ */
 @Controller
 /*
  * Le RequestMapping est fait de manière absolue par rapport au servlet
@@ -61,8 +66,8 @@ public class MyEntityController {
 	MyEntityService myService;
 
 	/*
-	 * Initialisation du dataBinder qui peuple le formulaire à partir des champs
-	 * de la page.
+	 * Permet d'enregistrer des editeurs supplémentaires par rapport au
+	 * WebBindingInitializer, qui sont spécifique au contrôleur.
 	 */
 	@InitBinder
 	public void initEntityBinding(WebDataBinder dataBinder) {
@@ -90,6 +95,7 @@ public class MyEntityController {
 	 */
 	@RequestMapping(value = "getentity", method = RequestMethod.GET)
 	public String formGet(Model model) {
+		
 		LOGGER.info("The controller call the service method getEntity");
 		MyEntity entity = myService.getEntity();
 

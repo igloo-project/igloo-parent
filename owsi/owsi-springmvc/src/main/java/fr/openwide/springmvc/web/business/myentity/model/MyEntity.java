@@ -18,6 +18,11 @@ package fr.openwide.springmvc.web.business.myentity.model;
 
 import java.util.Date;
 
+/**
+ * <p>Exemple d'entité basique.</p>
+ *
+ * @author Open Wide
+ */
 public class MyEntity {
 
 	private int id;

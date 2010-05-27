@@ -18,6 +18,11 @@ package fr.openwide.springmvc.web.business.myentity.service;
 
 import fr.openwide.springmvc.web.business.myentity.model.MyEntity;
 
+/**
+ * <p>Interface du service associé aux entités MyEntity</p>
+ * 
+ * @author Open Wide
+ */
 public interface MyEntityService {
 
 	public MyEntity getEntity();

@@ -24,6 +24,11 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.springmvc.web.business.myentity.model.MyEntity;
 
+/**
+ * <p>Implémentation du service associé aux entités MyEntity</p>
+ * 
+ * @author Open Wide
+ */
 @Service("myService")
 public class MyEntityServiceImpl implements MyEntityService {
 

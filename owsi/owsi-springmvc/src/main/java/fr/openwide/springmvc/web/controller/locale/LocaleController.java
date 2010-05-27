@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.openwide.springmvc.web.controller;
+package fr.openwide.springmvc.web.controller.locale;
 
 import java.util.Locale;
 
@@ -27,6 +27,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+/**
+ * <p>
+ * Contrôleur permettant le changement de Locale, utilisé ici pour la langue
+ * dans l'interface
+ * </p>
+ * 
+ * @author Open Wide
+ */
 @Controller
 @RequestMapping("localecontroller")
 public class LocaleController {
