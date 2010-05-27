@@ -7,7 +7,8 @@
 	
 	<spring:message code="aide.texte" />
 	
-	<img src="<owsi:url code="aide.image.file" arguments="logo-openwide.png" />" />
+	<!-- addTimestampVersion permet d'ajouter timestampVersion=yyyyMMddHHmmss pour forcer le cache navigateur-->
+	<img src="<owsi:url code="aide.image.file" arguments="logo-openwide.png" addTimestampVersion="true" />" />
 	
 	<p><a href="<spring:url value="/index.html" />"><spring:message code="common.retour" /></a></p>
 </body>

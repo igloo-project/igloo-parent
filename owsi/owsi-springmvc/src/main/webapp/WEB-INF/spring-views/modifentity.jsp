@@ -37,7 +37,6 @@
 					<spring:message code="validation.one-or-more-errors-found" />
 				</div>
 			</c:if>
-			<br>
 		</spring:bind>
 		<table>
 			<tr>
@@ -85,5 +84,8 @@
 		méthode getModelAttribute du controleur.
 	-->
 	<p><c:out value="${model_attribute_name}"/></p>
+
+	<h3><br><spring:message code="modifentity.titre4" /></h3>
+	<p><c:out value="${resource}"/></p>
 </body>
 </html>

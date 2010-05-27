@@ -106,4 +106,25 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 	</tag>
+
+	<tag>
+		<name>timestampVersion</name>
+		<tag-class>fr.openwide.springmvc.web.taglib.TimestampVersionTag</tag-class>
+		<body-content>empty</body-content>
+
+		<attribute>
+			<description>Indique dans quelle variable stocker le résultat (optionnel)</description>
+			<name>var</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+
+		<attribute>
+			<description>Indique dans quel scope stocker le résultat (optionnel)
+			</description>
+			<name>scope</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
 </taglib>

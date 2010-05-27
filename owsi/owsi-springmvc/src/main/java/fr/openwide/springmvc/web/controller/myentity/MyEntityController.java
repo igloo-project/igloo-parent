@@ -16,6 +16,13 @@
  */
 package fr.openwide.springmvc.web.controller.myentity;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -94,10 +101,35 @@ public class MyEntityController {
 	 * /<context>/springmvc/mycontroller/getentity
 	 */
 	@RequestMapping(value = "getentity", method = RequestMethod.GET)
-	public String formGet(Model model) {
-		
+	public String formGet(Model model, HttpServletRequest request) throws IOException {
+
 		LOGGER.info("The controller call the service method getEntity");
 		MyEntity entity = myService.getEntity();
+
+		/*
+		 * Les méthodes getResource et getResourceAsStream permettent de
+		 * récupérer une ressource contenu dans un war sans se soucier du fait
+		 * qu'il soit décompresser ou non (variable unpackWar dans Tomcat). Dans
+		 * le cas où un war n'est pas décompresser, un accès à une ressource en
+		 * utilisant un File ne sera pas possible.
+		 */
+		ServletContext servletContext = request.getSession().getServletContext();
+		InputStream inStream = servletContext.getResourceAsStream("/WEB-INF/ressource.properties");
+
+		if (inStream != null) {
+			StringBuilder sb = new StringBuilder();
+			String line;
+
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+				while ((line = reader.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+			} finally {
+				inStream.close();
+			}
+			model.addAttribute("resource", sb.toString());
+		}
 
 		MyEntityForm myEntityForm = new MyEntityForm();
 		myEntityForm.setId(entity.getId());
