@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>owsi-core</artifactId>
 		<groupId>fr.openwide.core</groupId>
-		<version>0.1</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-spring</artifactId>
-	<version>0.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>Capitalisation OWSI Core Spring</name>
 	<description>Capitalisation des outils génériques pour la technologie Spring</description>
 
