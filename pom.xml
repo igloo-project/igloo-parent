@@ -116,7 +116,7 @@
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/grp/trunk/owsi-core</developerConnection>
+		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/trunk/owsi-core</developerConnection>
 		<tag>trunk</tag>
 		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/trunk/owsi-core</url>
 	</scm>
