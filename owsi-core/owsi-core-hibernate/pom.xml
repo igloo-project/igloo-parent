@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>owsi-core</artifactId>
 		<groupId>fr.openwide.core</groupId>
-		<version>0.1.1</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-hibernate</artifactId>
-	<version>0.1.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>Capitalisation OWSI Core Hibernate</name>
 	<description>Capitalisation des outils génériques pour la technologie Hibernate</description>
 
