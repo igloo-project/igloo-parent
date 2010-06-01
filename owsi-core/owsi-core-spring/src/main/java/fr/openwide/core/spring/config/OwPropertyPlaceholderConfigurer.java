@@ -19,6 +19,7 @@ package fr.openwide.core.spring.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -162,11 +163,12 @@ public class OwPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigur
 	 * @param key la clé
 	 * @return l'objet propriété
 	 */
+	@SuppressWarnings("deprecation")
 	private Object getProperty(String key) {
 		Object value = properties.get(key);
 		// If the value contain a ${, this means it as to be _placeholdered_
-		if (value != null && value.toString().contains("${"))  {
-			value = resolvePlaceholder(value.toString(), properties);
+		if (value != null && value.toString().contains(PropertyPlaceholderConfigurer.DEFAULT_PLACEHOLDER_PREFIX))  {
+			value = parseStringValue(value.toString(), properties, new HashSet<String>());
 		}
 		return value;
 	}
