@@ -6,13 +6,13 @@ import org.springframework.core.io.ClassPathResource;
 
 import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
 
-public class TestConfigurer extends OwPropertyPlaceholderConfigurer {
+public class OwsiCoreTestConfigurer extends OwPropertyPlaceholderConfigurer {
 
 	private static final String PROPERTY1 = "property1";
 	private static final String PROPERTY2 = "property2";
 	private static final String PROPERTY3 = "property3";
 	
-	public TestConfigurer() throws IOException {
+	public OwsiCoreTestConfigurer() throws IOException {
 		super();
 		setLocation(new ClassPathResource("test/testOwPropertyPlaceholderConfigurer.properties"));
 		mergeProperties();

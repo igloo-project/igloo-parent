@@ -10,7 +10,7 @@ public class TestOwPropertyPlaceholderConfigurer {
 
 	@Test
 	public void testPlaceholder() throws IOException {
-		TestConfigurer configurer = new TestConfigurer();
+		OwsiCoreTestConfigurer configurer = new OwsiCoreTestConfigurer();
 		
 		assertEquals("value1", configurer.getProperty1());
 		assertEquals("value2", configurer.getProperty2());
