@@ -24,7 +24,7 @@
 		<owsi.cglib.version>2.1_3</owsi.cglib.version>
 		<owsi.common.version>2.4</owsi.common.version>
 		<owsi.commons-logging.version>1.1.1</owsi.commons-logging.version>
-		<owsi.core.version>0.0.1-SNAPSHOT</owsi.core.version>
+		<owsi.core.version>0.1.2</owsi.core.version>
 		<owsi.c3p0.version>0.9.1.2</owsi.c3p0.version>
 		<owsi.ehcache.version>1.5.0</owsi.ehcache.version>
 		<owsi.hibernate-core.version>3.5.1-Final</owsi.hibernate-core.version>
@@ -74,6 +74,13 @@
 	</build>
 	
 	<repositories>
+		<!-- Maven repository for owsi-core dependencies -->
+		<repository>
+			<id>nexus-owsi-core</id>
+			<name>Nexus OWSI Core</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+		</repository>
+		
 		<!-- Maven repository for hibernate dependency-->
 		<repository>
 			<id>jboss</id>
