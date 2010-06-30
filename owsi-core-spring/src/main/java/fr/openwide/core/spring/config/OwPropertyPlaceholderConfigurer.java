@@ -147,13 +147,19 @@ public class OwPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigur
 	 *         si la valeur de la propriété n'est pas un entier valide
 	 */
 	protected Integer getPropertyAsInteger(String key, Integer defaultValue) {
-		Integer property = defaultValue;
-		try {
-			property = Integer.parseInt(getPropertyAsString(key));
-		} catch(NumberFormatException e) {
-			LOGGER.warn("La valeur de la propriété " + key + " n'est pas un entier valide.", e);
+		Integer integerProperty = defaultValue;
+		String stringProperty = getPropertyAsString(key);
+		
+		if (!StringUtils.hasText(stringProperty)) {
+			LOGGER.warn("La propriété " + key + " n'est pas définie : utilisation de la valeur par défaut.");
+			return integerProperty;
 		}
-		return property;
+		try {
+			integerProperty = Integer.parseInt(stringProperty);
+		} catch(NumberFormatException e) {
+			LOGGER.warn("La valeur de la propriété " + key + " n'est pas un entier valide : utilisation de la valeur par défaut.", e);
+		}
+		return integerProperty;
 	}
 
 	/**
