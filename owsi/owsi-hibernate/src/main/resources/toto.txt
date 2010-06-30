@@ -1,0 +1,1 @@
+test du plugin SVN Eclipse 3.6
