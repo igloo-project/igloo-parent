@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
- * <p>Classe abstraite permettant des tableaux Excel.</p>
+ * <p>Classe abstraite permettant de construire des tableaux Excel.</p>
  *
  * @author Open Wide
  */
