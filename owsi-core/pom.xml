@@ -12,6 +12,7 @@
 		<module>owsi-core-commons</module>
 		<module>owsi-core-hibernate</module>
 		<module>owsi-core-spring</module>
+		<module>owsi-core-export</module>
 	</modules>
 	
 	<properties>
@@ -26,6 +27,7 @@
 		<owsi.javassist.version>3.8.0.GA</owsi.javassist.version>
 		<owsi.junit.version>4.8.1</owsi.junit.version>
 		<owsi.spring.version>3.0.3.RELEASE</owsi.spring.version>
+		<owsi.poi.version>3.6</owsi.poi.version>
 		<owsi.postgresql.version>8.4-701.jdbc3</owsi.postgresql.version>
 		<owsi.slf4j.version>1.5.8</owsi.slf4j.version>
 		<owsi.log4j.version>1.2.16</owsi.log4j.version>
