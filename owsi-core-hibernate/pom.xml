@@ -11,7 +11,7 @@
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-hibernate</artifactId>
 	<version>0.2-SNAPSHOT</version>
-	<name>Capitalisation OWSI Core Hibernate</name>
+	<name>OWSI Core - Hibernate</name>
 	<description>Capitalisation des outils génériques pour la technologie Hibernate</description>
 
 	<dependencies>
