@@ -31,14 +31,15 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 
-import fr.openwide.core.spring.util.StringUtils;
-
 /**
  * <p>Classe abstraite permettant de construire un document Excel.</p>
  *
  * @author Open Wide
  */
 public abstract class AbstractExcelExport {
+	
+	private static final String SHEET_DEFAULT_TITLE = "Untitled";
+	private static final int SHEET_TITLE_MAX_LENGTH = 32;
 
 	/**
 	 * Document Workbook POI.
@@ -79,14 +80,18 @@ public abstract class AbstractExcelExport {
 	 * @param titre titre de la feuille de calcul
 	 * @return feuille de calcul
 	 */
-	protected Sheet createSheet(String titre) {
-		String titreDocument = "Titre";
+	protected Sheet createSheet(String title) {
+		String sheetTitle = SHEET_DEFAULT_TITLE;
 
-		if (StringUtils.hasText(titre)) {
-			titreDocument = StringUtils.substring(titre, 0, 31);
+		if (title != null) {
+			if (title.length() > SHEET_TITLE_MAX_LENGTH + 1) {
+				sheetTitle = title.substring(0, 31);
+			} else {
+				sheetTitle = title;
+			}
 		}
 
-		return workbook.createSheet(titreDocument);
+		return workbook.createSheet(sheetTitle);
 	}
 
 	/**
@@ -160,10 +165,10 @@ public abstract class AbstractExcelExport {
 	 * @param hexaColor code hexadécimal de la couleur
 	 */
 	protected final void registerColor(short index, String hexaColor) {
-		if (StringUtils.hasText(hexaColor) && hexaColor.matches("#[0-9a-fA-F]{6}")) {
-			int red = Integer.parseInt(StringUtils.substring(hexaColor, 1, 3), 16);
-			int green = Integer.parseInt(StringUtils.substring(hexaColor, 3, 5), 16);
-			int blue = Integer.parseInt(StringUtils.substring(hexaColor, 5, 7), 16);
+		if (hexaColor != null && hexaColor.matches("#[0-9a-fA-F]{6}")) {
+			int red = Integer.parseInt(hexaColor.substring(1, 3), 16);
+			int green = Integer.parseInt(hexaColor.substring(3, 5), 16);
+			int blue = Integer.parseInt(hexaColor.substring(5, 7), 16);
 
 			colorRegistry.put(index, new Color(red, green, blue));
 

@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-spring</artifactId>
+			<artifactId>owsi-core-commons</artifactId>
 			<version>${version}</version>
 		</dependency>
 		
