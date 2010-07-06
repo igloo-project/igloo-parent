@@ -17,8 +17,10 @@
 
 package fr.openwide.core.hibernate.business.generic.service;
 
+import java.io.Serializable;
 import java.util.List;
 
+import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 
@@ -29,7 +31,7 @@ import fr.openwide.core.hibernate.exception.ServiceException;
  *
  * @param <T> type d'entité
  */
-public interface GenericEntityService<T> {
+public interface GenericEntityService<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
 
 	/**
 	 * Crée l'entité dans la base de données. Mis à part dans les tests pour faire des sauvegardes simples, utiliser
@@ -37,43 +39,35 @@ public interface GenericEntityService<T> {
 	 * 
 	 * @param entity entité
 	 */
-	void save(T entity) throws ServiceException, SecurityServiceException;
+	void save(E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
 	 * Met à jour l'entité dans la base de données.
 	 * 
 	 * @param entity entité
 	 */
-	void update(T entity) throws ServiceException, SecurityServiceException;
+	void update(E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
 	 * Crée l'entité dans la base de données.
 	 * 
 	 * @param entity entité
 	 */
-	void create(T entity) throws ServiceException, SecurityServiceException;
-
-	/**
-	 * Crée l'entité dans la base de données en vérifiant si elle existe déjà.
-	 * 
-	 * @param entity entité
-	 * @param checkNew vérification
-	 */
-	void create(T entity, boolean checkNew) throws ServiceException, SecurityServiceException;
+	void create(E entity) throws ServiceException, SecurityServiceException;
 
 	/**
 	 * Supprime l'entité de la base de données
 	 * 
 	 * @param entity entité
 	 */
-	void delete(T entity);
+	void delete(E entity);
 	
 	/**
 	 * Rafraîchit l'entité depuis la base de données
 	 * 
 	 * @param entity entité
 	 */
-	T refresh(T entity);
+	E refresh(E entity);
 	
 	/**
 	 * Retourne une entité à partir de son id.
@@ -81,14 +75,14 @@ public interface GenericEntityService<T> {
 	 * @param id identifiant
 	 * @return entité
 	 */
-	T getById(Number id);
+	E getById(K id);
 	
 	/**
 	 * Renvoie la liste de l'ensemble des entités de ce type.
 	 * 
 	 * @return liste d'entités
 	 */
-	List<T> list();
+	List<E> list();
 	
 	/**
 	 * Retourne une entité à partir de sa classe et son id.
@@ -97,7 +91,7 @@ public interface GenericEntityService<T> {
 	 * @param id identifiant
 	 * @return entité
 	 */
-	T getEntity(Class<? extends T> clazz, Integer id);
+	E getEntity(Class<? extends E> clazz, K id);
 	
 	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.

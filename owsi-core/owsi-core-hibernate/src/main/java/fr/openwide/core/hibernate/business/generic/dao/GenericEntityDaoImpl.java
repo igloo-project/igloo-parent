@@ -17,9 +17,10 @@
 
 package fr.openwide.core.hibernate.business.generic.dao;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -29,7 +30,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.impl.SessionImpl;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -42,14 +42,15 @@ import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
  *
  * @param <T> type de l'entité
  */
-public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends HibernateDaoSupport implements GenericEntityDao<T> {
+public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+		extends HibernateDaoSupport implements GenericEntityDao<K, E> {
 	
 	protected static final String SQL_LIKE_WILDCARD = "%";
 	
 	/**
 	 * Classe de l'entité, déterminé à partir des paramètres generics.
 	 */
-	private Class<T> objectClass;
+	private Class<E> objectClass;
 	
 	/**
 	 * Constructeur.
@@ -66,7 +67,7 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 			clazz = clazz.getSuperclass();
 			retriesCount ++;
 		}
-		objectClass = (Class<T>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
+		objectClass = (Class<E>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[1];
 	}
 	
 	/**
@@ -74,49 +75,45 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 	 * 
 	 * @return classe de l'entité
 	 */
-	protected final Class<T> getObjectClass() {
+	protected final Class<E> getObjectClass() {
 		return objectClass;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T getEntity(Class<? extends T> clazz, Integer id) {
-		return (T) getSession().get(clazz, id);
+	public E getEntity(Class<? extends E> clazz, K id) {
+		return (E) getSession().get(clazz, id);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T getById(Number id) {
-		return (T) getSession().get(getObjectClass(), id);
+	public E getById(K id) {
+		return (E) getSession().get(getObjectClass(), id);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T getByField(String fieldName, Object fieldValue) {
-		return (T) getSession().createCriteria(getObjectClass()).add(Restrictions.eq(fieldName, fieldValue)).uniqueResult();
+	public E getByField(String fieldName, Object fieldValue) {
+		return (E) getSession().createCriteria(getObjectClass()).add(Restrictions.eq(fieldName, fieldValue)).uniqueResult();
 	}
 	
 	@Override
-	public void update(T entity) {
+	public void update(E entity) {
 		getSession().update(entity);
 	}
 	
 	@Override
-	public void save(T entity) {
-		if(entity.getId() == null) {
-			getSession().save(entity);
-		} else {
-			((SessionImpl) getSession()).save(entity, entity.getId());
-		}
+	public void save(E entity) {
+		getSession().save(entity);
 	}
 	
 	@Override
-	public void delete(T entity) {
+	public void delete(E entity) {
 		getSession().delete(entity);
 	}
 	
 	@Override
-	public T refresh(T entity) {
+	public E refresh(E entity) {
 		getSession().refresh(entity);
 		
 		return entity;
@@ -128,12 +125,12 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 	}
 	
 	@Override
-	public List<T> list() {
+	public List<E> list() {
 		return list(getObjectClass(), null, null, null, null);
 	}
 	
 	@Override
-	public List<T> listByField(String fieldName, Object fieldValue) {
+	public List<E> listByField(String fieldName, Object fieldValue) {
 		Criterion filter = Restrictions.eq(fieldName, fieldValue);
 		return list(getObjectClass(), filter, null, null, null);
 	}
@@ -149,8 +146,8 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 	 * @return liste d'entités
 	 */
 	@SuppressWarnings("unchecked")
-	public List<T> list(Class<? extends T> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
-		List<T> entities = new LinkedList<T>();
+	public List<E> list(Class<? extends E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
+		List<E> entities = new ArrayList<E>();
 		try {
 			Criteria criteria = buildCriteria(objectClass, null, filter, order, limit, offset);
 			
@@ -187,7 +184,7 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 	 * @param offset offset
 	 * @return nombre d'entités
 	 */
-	public Long count(Class<? extends T> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
+	public Long count(Class<? extends E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
 		Criteria criteria = buildCriteria(objectClass, Projections.rowCount(), filter, order, limit, offset);
 		
 		Long count = (Long) criteria.uniqueResult();
@@ -206,7 +203,7 @@ public abstract class GenericEntityDaoImpl<T extends GenericEntity<T>> extends H
 	 * @param offset offset
 	 * @return criteria
 	 */
-	protected Criteria buildCriteria(Class<? extends T> objectClass, Projection projection, Criterion filter, Order order, Integer limit, Integer offset) {
+	protected Criteria buildCriteria(Class<? extends E> objectClass, Projection projection, Criterion filter, Order order, Integer limit, Integer offset) {
 		Criteria criteria = getSession().createCriteria(objectClass);
 		if(projection != null) {
 			criteria.setProjection(projection);

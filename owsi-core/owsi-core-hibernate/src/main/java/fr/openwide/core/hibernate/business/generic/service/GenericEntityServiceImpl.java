@@ -17,6 +17,7 @@
 
 package fr.openwide.core.hibernate.business.generic.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao;
@@ -31,26 +32,27 @@ import fr.openwide.core.hibernate.exception.ServiceException;
  *
  * @param <T> type de l'entité
  */
-public abstract class GenericEntityServiceImpl<T extends GenericEntity<T>> implements GenericEntityService<T> {
+public abstract class GenericEntityServiceImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+		implements GenericEntityService<K, E> {
 
-	private GenericEntityDao<T> genericDao;
+	private GenericEntityDao<K, E> genericDao;
 
 	/**
 	 * Constructeur.
 	 *
 	 * @param genericDao DAO associé au type d'entité
 	 */
-	public GenericEntityServiceImpl(GenericEntityDao<T> genericDao) {
+	public GenericEntityServiceImpl(GenericEntityDao<K, E> genericDao) {
 		this.genericDao = genericDao;
 	}
 
 	@Override
-	public T getEntity(Class<? extends T> clazz, Integer id) {
+	public E getEntity(Class<? extends E> clazz, K id) {
 		return genericDao.getEntity(clazz, id);
 	}
 
 	@Override
-	public T getById(Number id) {
+	public E getById(K id) {
 		return genericDao.getById(id);
 	}
 
@@ -63,38 +65,28 @@ public abstract class GenericEntityServiceImpl<T extends GenericEntity<T>> imple
 	 * @param fieldValue valeur du champ
 	 * @return entité
 	 */
-	protected T getByField(String fieldName, String fieldValue) {
+	protected E getByField(String fieldName, String fieldValue) {
 		return genericDao.getByField(fieldName, fieldValue);
 	}
 	
 	@Override
-	public void save(T entity) throws ServiceException,
+	public void save(E entity) throws ServiceException,
 			SecurityServiceException {
 		genericDao.save(entity);
 	}
 	
 	@Override
-	public final void create(T entity) throws ServiceException,
+	public final void create(E entity) throws ServiceException,
 			SecurityServiceException {
-		create(entity, true);
+		createEntity(entity);
 	}
 	
-	@Override
-	public final void create(T entity, boolean checkNew) throws ServiceException,
-			SecurityServiceException {
-		if(!checkNew || entity.isNew()) {
-			createEntity(entity);
-		} else {
-			throw new ServiceException("The entity is not a new entity. You should use update instead of create.");
-		}
-	}
-	
-	protected void createEntity(T entity) throws ServiceException, SecurityServiceException {
+	protected void createEntity(E entity) throws ServiceException, SecurityServiceException {
 		save(entity);
 	}
 	
 	@Override
-	public final void update(T entity) throws ServiceException,
+	public final void update(E entity) throws ServiceException,
 			SecurityServiceException {
 		updateEntity(entity);
 	}
@@ -107,13 +99,13 @@ public abstract class GenericEntityServiceImpl<T extends GenericEntity<T>> imple
 	 * @throws ServiceException si problème d'exécution
 	 * @throws SecurityServiceException si problème de droit
 	 */
-	protected void updateEntity(T entity) throws ServiceException,
+	protected void updateEntity(E entity) throws ServiceException,
 			SecurityServiceException {
 		genericDao.update(entity);
 	}
 	
 	@Override
-	public void delete(T entity) {
+	public void delete(E entity) {
 		genericDao.delete(entity);
 	}
 	
@@ -123,12 +115,12 @@ public abstract class GenericEntityServiceImpl<T extends GenericEntity<T>> imple
 	}
 	
 	@Override
-	public T refresh(T entity) {
+	public E refresh(E entity) {
 		return genericDao.refresh(entity);
 	}
 
 	@Override
-	public List<T> list() {
+	public List<E> list() {
 		return genericDao.list();
 	}
 	
@@ -139,7 +131,7 @@ public abstract class GenericEntityServiceImpl<T extends GenericEntity<T>> imple
 	 * @param fieldValue valeur du champ
 	 * @return liste d'entités
 	 */
-	protected List<T> listByField(String fieldName, Object fieldValue) {
+	protected List<E> listByField(String fieldName, Object fieldValue) {
 		return genericDao.listByField(fieldName, fieldValue);
 	}
 	

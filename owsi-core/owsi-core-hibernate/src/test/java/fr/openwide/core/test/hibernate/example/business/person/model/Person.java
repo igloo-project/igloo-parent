@@ -24,7 +24,7 @@ import javax.persistence.Id;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 
 @Entity
-public class Person extends GenericEntity<Person> {
+public class Person extends GenericEntity<Integer, Person> {
 
 	private static final long serialVersionUID = -2471930493134125282L;
 

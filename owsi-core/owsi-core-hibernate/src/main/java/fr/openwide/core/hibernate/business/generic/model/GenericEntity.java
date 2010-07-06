@@ -24,9 +24,9 @@ import java.io.Serializable;
  *
  * @author Open Wide
  *
- * @param <T> type de l'entité
+ * @param <E> type de l'entité
  */
-public abstract class GenericEntity<T extends GenericEntity<T>> implements Serializable, Comparable<T> {
+public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> implements Serializable, Comparable<E> {
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
@@ -35,14 +35,14 @@ public abstract class GenericEntity<T extends GenericEntity<T>> implements Seria
 	 * 
 	 * @return id
 	 */
-	public abstract Integer getId();
+	public abstract K getId();
 
 	/**
 	 * Définit la valeur de l'identifiant unique.
 	 * 
 	 * @param id id
 	 */
-	public abstract void setId(Integer id);
+	public abstract void setId(K id);
 	
 	/**
 	 * Indique si l'objet a déjà été persisté ou non
@@ -64,8 +64,8 @@ public abstract class GenericEntity<T extends GenericEntity<T>> implements Seria
 			return false;
 		}
 		
-		GenericEntity<T> entity = (GenericEntity<T>) object;
-		Number id = getId();
+		GenericEntity<K, E> entity = (GenericEntity<K, E>) object;
+		K id = getId();
 		
 		if(id == null) {
 			return false;
@@ -78,14 +78,14 @@ public abstract class GenericEntity<T extends GenericEntity<T>> implements Seria
 	public int hashCode() {
 		int hash = 7;
 		
-		Integer id = getId();
+		K id = getId();
 		hash = 31 * hash + ((id == null) ? 0 : id.hashCode());
 
 		return hash;
 	}
 
 	@Override
-	public int compareTo(T o) {
+	public int compareTo(E o) {
 		if (this == o) {
 			return 0;
 		}
