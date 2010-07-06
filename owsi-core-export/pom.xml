@@ -3,11 +3,11 @@
 	<parent>
 		<artifactId>owsi-core</artifactId>
 		<groupId>fr.openwide.core</groupId>
-		<version>0.2</version>
+		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-export</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>OWSI Core - Export</name>
 	<description>Capitalisation des outils génériques pour les exports PDF et Excel</description>
 
