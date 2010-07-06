@@ -33,6 +33,8 @@ import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.hibernate.util.HibernateSessionUtils;
 import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.test.hibernate.example.business.label.model.Label;
+import fr.openwide.core.test.hibernate.example.business.label.service.LabelService;
 import fr.openwide.core.test.hibernate.example.business.person.model.Person;
 import fr.openwide.core.test.hibernate.example.business.person.service.PersonService;
 
@@ -53,6 +55,9 @@ public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38Sprin
 	@Autowired
 	protected PersonService personService;
 	
+	@Autowired
+	protected LabelService labelService;
+	
 	protected DataSource hibernateDataSource;
 	
 	@Autowired
@@ -66,9 +71,17 @@ public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38Sprin
 			personService.delete(person);
 		}
 	}
+	
+	protected void cleanLabels() {
+		List<Label> labels = labelService.list();
+		for (Label label : labels) {
+			labelService.delete(label);
+		}
+	}
 
 	protected void cleanAll() {
 		cleanPersons();
+		cleanLabels();
 	}
 	
 	public void init() throws ServiceException, SecurityServiceException {

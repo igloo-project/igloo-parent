@@ -18,6 +18,7 @@
 package fr.openwide.core.hibernate.util;
 
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.id.IdentifierGenerator;
 
 /**
  * <p>Surcharge du dialecte PostgreSQL qui permet de gérer les séquences par table plutôt que d'avoir une seule séquence
@@ -32,9 +33,8 @@ import org.hibernate.dialect.PostgreSQLDialect;
  */
 public class PostgreSQLSerialDialect extends PostgreSQLDialect {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class getNativeIdentifierGeneratorClass() {
+	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {
 		return PostgreSQLSequenceGenerator.class;
 	}
 

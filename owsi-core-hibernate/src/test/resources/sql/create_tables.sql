@@ -10,3 +10,9 @@ create table person (
 );
 
 create sequence person_id_seq owned by person.id;
+
+create table label (
+	id text not null,
+	value text,
+	primary key(id)
+);

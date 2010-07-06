@@ -25,7 +25,8 @@ import fr.openwide.core.test.hibernate.example.business.person.dao.PersonDao;
 import fr.openwide.core.test.hibernate.example.business.person.model.Person;
 
 @Service("personService")
-public class PersonServiceImpl extends GenericEntityServiceImpl<Person> implements PersonService {
+public class PersonServiceImpl extends GenericEntityServiceImpl<Integer, Person>
+		implements PersonService {
 
 	@Autowired
 	public PersonServiceImpl(PersonDao personDao) {
