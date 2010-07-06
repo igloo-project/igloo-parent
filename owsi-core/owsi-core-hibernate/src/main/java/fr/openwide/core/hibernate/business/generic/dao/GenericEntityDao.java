@@ -24,6 +24,7 @@
  */
 package fr.openwide.core.hibernate.business.generic.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
@@ -35,7 +36,7 @@ import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
  *
  * @param <T> type de l'entité à prendre en charge
  */
-public interface GenericEntityDao<T extends GenericEntity<T>> {
+public interface GenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
 
 	/**
 	 * Retourne une entité à partir de sa classe et son id.
@@ -44,7 +45,7 @@ public interface GenericEntityDao<T extends GenericEntity<T>> {
 	 * @param id identifiant
 	 * @return entité
 	 */
-	T getEntity(Class<? extends T> clazz, Integer id);
+	E getEntity(Class<? extends E> clazz, K id);
 	
 	/**
 	 * Retourne une entité à partir de son id.
@@ -52,7 +53,7 @@ public interface GenericEntityDao<T extends GenericEntity<T>> {
 	 * @param id identifiant
 	 * @return entité
 	 */
-	T getById(Number id);
+	E getById(K id);
 	
 	/**
 	 * Retourne une entité à partir du nom d'un champ et de sa valeur. Il faut forcément que le champ fasse l'objet
@@ -62,42 +63,42 @@ public interface GenericEntityDao<T extends GenericEntity<T>> {
 	 * @param fieldValue valeur du champ
 	 * @return entité
 	 */
-	T getByField(String fieldName, Object fieldValue);
+	E getByField(String fieldName, Object fieldValue);
 	
 	/**
 	 * Crée l'entité dans la base de données.
 	 * 
 	 * @param entity entité
 	 */
-	void save(T entity);
+	void save(E entity);
 	
 	/**
 	 * Met à jour l'entité dans la base de données.
 	 * 
 	 * @param entity entité
 	 */
-	void update(T entity);
+	void update(E entity);
 	
 	/**
 	 * Supprime l'entité de la base de données
 	 * 
 	 * @param entity entité
 	 */
-	void delete(T entity);
+	void delete(E entity);
 	
 	/**
 	 * Rafraîchit l'entité depuis la base de données
 	 * 
 	 * @param entity entité
 	 */
-	T refresh(T entity);
+	E refresh(E entity);
 	
 	/**
 	 * Renvoie la liste de l'ensemble des entités de ce type.
 	 * 
 	 * @return liste d'entités
 	 */
-	List<T> list();
+	List<E> list();
 	
 	/**
 	 * Renvoie la liste des entités dont le champ donné en paramètre a la bonne valeur.
@@ -106,7 +107,7 @@ public interface GenericEntityDao<T extends GenericEntity<T>> {
 	 * @param fieldValue valeur du champ
 	 * @return liste d'entités
 	 */
-	List<T> listByField(String fieldName, Object fieldValue);
+	List<E> listByField(String fieldName, Object fieldValue);
 	
 	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.

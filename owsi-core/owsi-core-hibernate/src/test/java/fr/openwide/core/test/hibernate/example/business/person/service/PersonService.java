@@ -20,6 +20,6 @@ package fr.openwide.core.test.hibernate.example.business.person.service;
 import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
 import fr.openwide.core.test.hibernate.example.business.person.model.Person;
 
-public interface PersonService extends GenericEntityService<Person> {
+public interface PersonService extends GenericEntityService<Integer, Person> {
 	
 }
