@@ -5,7 +5,7 @@
 	<artifactId>owsi-core</artifactId>
 	<version>0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Capitalisation OWSI Core</name>
+	<name>OWSI Core</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur les projets OWSI</description>
 	
 	<modules>
