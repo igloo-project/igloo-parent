@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>owsi-core</artifactId>
 		<groupId>fr.openwide.core</groupId>
-		<version>0.2-SNAPSHOT</version>
+		<version>0.2</version>
 	</parent>
 
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-commons</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>OWSI Core - Commons</name>
 	<description>Capitalisation pour les outils communs sur la plateforme OWSI</description>
 

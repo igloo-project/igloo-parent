@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2</version>
 	<packaging>pom</packaging>
 	<name>OWSI Core</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur les projets OWSI</description>
@@ -129,8 +129,8 @@
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/trunk/owsi-core</developerConnection>
-		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/trunk/owsi-core</url>
+		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/tags/owsi-core-0.2</developerConnection>
+		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/tags/owsi-core-0.2</url>
 	</scm>
 	
 </project>
