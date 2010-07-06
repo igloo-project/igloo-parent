@@ -112,8 +112,7 @@ public abstract class AbstractExcelExport {
 	 */
 	protected final CellStyle getStyle(String name) {
 		if (styleRegistry.containsKey(name)) {
-			CellStyle style = styleRegistry.get(name);
-			return style;
+			return styleRegistry.get(name);
 		} else {
 			throw new IllegalArgumentException("Style " + name + " is not registered");
 		}
@@ -151,8 +150,7 @@ public abstract class AbstractExcelExport {
 	 */
 	protected final Font getFont(String name) {
 		if (fontRegistry.containsKey(name)) {
-			Font font = fontRegistry.get(name);
-			return font;
+			return fontRegistry.get(name);
 		} else {
 			throw new IllegalArgumentException("Font " + name + " is not registered");
 		}
