@@ -11,7 +11,7 @@
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-commons</artifactId>
 	<version>0.2-SNAPSHOT</version>
-	<name>Capitalisation OWSI Commons</name>
+	<name>OWSI Core - Commons</name>
 	<description>Capitalisation pour les outils communs sur la plateforme OWSI</description>
 
 	<dependencies>		
