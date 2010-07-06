@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -45,6 +46,11 @@ public abstract class AbstractExcelExport {
 	 * Document Workbook POI.
 	 */
 	protected Workbook workbook;
+	
+	/**
+	 * Gestionnaire de formats
+	 */
+	protected DataFormat dataFormat;
 
 	/**
 	 * Registre des styles.
@@ -72,6 +78,7 @@ public abstract class AbstractExcelExport {
 	public AbstractExcelExport(Workbook workbook) {
 		this.workbook = workbook;
 		this.creationHelper = this.workbook.getCreationHelper();
+		this.dataFormat = this.creationHelper.createDataFormat();
 	}
 	
 	/**

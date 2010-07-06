@@ -30,5 +30,12 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${owsi.poi.version}</version>
 		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi.junit.version}</version>
+		</dependency>
 	</dependencies>
 </project>

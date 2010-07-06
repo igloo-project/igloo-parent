@@ -22,7 +22,6 @@ import java.util.List;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -55,40 +54,72 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected static final short EVEN_ROW_BACKGROUND_COLOR_INDEX = (short) 38;
 
+	protected static final String FONT_NORMAL_NAME = "fontNormal";
+	protected static final String FONT_HEADER_NAME = "fontHeader";
+	protected static final String ROW_ODD_NAME = "Odd";
+	protected static final String ROW_EVEN_NAME = "Even";
+	protected static final String STYLE_DEFAULT_NAME = "default";
+	protected static final String STYLE_HEADER_NAME = "header";
+	protected static final String STYLE_STANDARD_NAME = "standard";
+	protected static final String STYLE_NUMERIC_NAME = "numeric";
+	protected static final String STYLE_DATE_NAME = "date";
+	protected static final String STYLE_DATE_TIME_NAME = "datetime";
+	protected static final String STYLE_PERCENT_NAME = "percent";
+
 	/**
 	 * Police utilisée dans le document
 	 */
-	protected String fontName = "Verdana";
+	private String fontName = "Verdana";
 	
 	/**
 	 * Taille de police utilisée dans le corps d'une table
 	 */
-	protected short normalFontHeight = 9;
+	private short normalFontHeight = 9;
 	
 	/**
 	 * Taille de police utilisée dans le header d'une table
 	 */
-	protected short headerFontHeight = 9;
+	private short headerFontHeight = 9;
 
 	/**
 	 * Couleur des bordures
 	 */
-	protected String borderColor = "#D1D1D1";
+	private String borderColor = "#D1D1D1";
 
 	/**
 	 * Couleur de fond du header
 	 */
-	protected String headerBackgroundColor = "#007CAF";
+	private String headerBackgroundColor = "#007CAF";
 
 	/**
 	 * Couleur du texte du header
 	 */
-	protected String headerFontColor = "#000000";
+	private String headerFontColor = "#000000";
 
 	/**
 	 * Couleur des lignes paires
 	 */
-	protected String evenRowBackgroundColor = "#EEEEEE";
+	private String evenRowBackgroundColor = "#EEEEEE";
+	
+	/**
+	 * Format des données numériques
+	 */
+	private String numericDataFormat = "# ### ### ### ###";
+	
+	/**
+	 * Format des dates
+	 */
+	private String dateDataFormat = "DD/MM/YYYY";
+	
+	/**
+	 * Format des dates avec heure
+	 */
+	private String dateTimeDataFormat = "DD/MM/YYYY H:mm";
+	
+	/**
+	 * Format des pourcentages
+	 */
+	private String percentDataFormat = "0.00%";
 	
 	/**
 	 * Constructeur
@@ -125,12 +156,12 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		fontHeader.setFontName(getFontName());
 		fontHeader.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		setFontColor(fontHeader, colorRegistry, HEADER_FONT_COLOR_INDEX);
-		registerFont("fontHeader", fontHeader);
+		registerFont(FONT_HEADER_NAME, fontHeader);
 
 		Font fontNormal = workbook.createFont();
 		fontNormal.setFontHeightInPoints(getNormalFontHeight());
 		fontNormal.setFontName(getFontName());
-		registerFont("fontNormal", fontNormal);
+		registerFont(FONT_NORMAL_NAME, fontNormal);
 	}
 	
 	/**
@@ -138,7 +169,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected void initStyles() {
 		CellStyle defaultStyle = workbook.createCellStyle();
-		defaultStyle.setFont(getFont("fontNormal"));
+		defaultStyle.setFont(getFont(FONT_NORMAL_NAME));
 		setStyleFillForegroundColor(defaultStyle, colorRegistry, HSSFColor.WHITE.index);
 		defaultStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		defaultStyle.setBorderBottom(CellStyle.BORDER_THIN);
@@ -150,11 +181,11 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		defaultStyle.setBorderTop(CellStyle.BORDER_THIN);
 		setStyleTopBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
 		defaultStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		registerStyle("default", defaultStyle);
+		registerStyle(STYLE_DEFAULT_NAME, defaultStyle);
 
 		CellStyle styleHeader = workbook.createCellStyle();
 		styleHeader.setAlignment(CellStyle.ALIGN_CENTER);
-		styleHeader.setFont(getFont("fontHeader"));
+		styleHeader.setFont(getFont(FONT_HEADER_NAME));
 		setStyleFillForegroundColor(styleHeader, colorRegistry, HEADER_BACKGROUND_COLOR_INDEX);
 		styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
@@ -166,52 +197,60 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		styleHeader.setBorderTop(CellStyle.BORDER_THIN);
 		setStyleTopBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
 		styleHeader.setDataFormat((short) 0);
-		registerStyle("header", styleHeader);
+		registerStyle(STYLE_HEADER_NAME, styleHeader);
 
 		CellStyle styleOdd = cloneStyle(defaultStyle);
-		registerStyle("standardOdd", styleOdd);
+		registerStyle(STYLE_STANDARD_NAME + ROW_ODD_NAME, styleOdd);
 
 		CellStyle styleEven = cloneStyle(styleOdd);
 		setStyleFillForegroundColor(styleEven, colorRegistry, EVEN_ROW_BACKGROUND_COLOR_INDEX);
-		registerStyle("standardEven", styleEven);
+		registerStyle(STYLE_STANDARD_NAME + ROW_EVEN_NAME, styleEven);
 
 		// Styles pour les nombres
-		DataFormat numericFormat = creationHelper.createDataFormat();
-		short numericFormatIndex = numericFormat.getFormat("# ### ### ### ###");
+		short numericFormatIndex = dataFormat.getFormat(numericDataFormat);
 
 		CellStyle styleOddNumeric = cloneStyle(styleOdd);
 		styleOddNumeric.setAlignment(CellStyle.ALIGN_RIGHT);
 		styleOddNumeric.setDataFormat(numericFormatIndex);
-		registerStyle("numericOdd", styleOddNumeric);
+		registerStyle(STYLE_NUMERIC_NAME + ROW_ODD_NAME, styleOddNumeric);
 
 		CellStyle styleEvenNumeric = cloneStyle(styleEven);
 		styleEvenNumeric.setAlignment(CellStyle.ALIGN_RIGHT);
 		styleEvenNumeric.setDataFormat(numericFormatIndex);
-		registerStyle("numericEven", styleEvenNumeric);
+		registerStyle(STYLE_NUMERIC_NAME + ROW_EVEN_NAME, styleEvenNumeric);
 
 		// styles pour les dates
-		DataFormat dateFormat = creationHelper.createDataFormat();
-		short dateFormatIndex = dateFormat.getFormat("DD/MM/YYYY");
+		short dateFormatIndex = dataFormat.getFormat(dateDataFormat);
 
 		CellStyle styleOddDate = cloneStyle(styleOdd);
 		styleOddDate.setDataFormat(dateFormatIndex);
-		registerStyle("dateOdd", styleOddDate);
+		registerStyle(STYLE_DATE_NAME + ROW_ODD_NAME, styleOddDate);
 
 		CellStyle styleEvenDate = cloneStyle(styleEven);
 		styleEvenDate.setDataFormat(dateFormatIndex);
-		registerStyle("dateEven", styleEvenDate);
+		registerStyle(STYLE_DATE_NAME + ROW_EVEN_NAME, styleEvenDate);
 
+		// styles pour les dates avec heure
+		short dateTimeFormatIndex = dataFormat.getFormat(dateTimeDataFormat);
+		
+		CellStyle styleOddDateTime = cloneStyle(styleOdd);
+		styleOddDateTime.setDataFormat(dateTimeFormatIndex);
+		registerStyle(STYLE_DATE_TIME_NAME + ROW_ODD_NAME, styleOddDateTime);
+		
+		CellStyle styleEvenDateTime = cloneStyle(styleEven);
+		styleEvenDateTime.setDataFormat(dateTimeFormatIndex);
+		registerStyle(STYLE_DATE_TIME_NAME + ROW_EVEN_NAME, styleEvenDateTime);
+		
 		// styles pour les pourcentages
-		DataFormat percentFormat = creationHelper.createDataFormat();
-		short percentFormatIndex = percentFormat.getFormat("0.00%");
+		short percentFormatIndex = dataFormat.getFormat(percentDataFormat);
 
 		CellStyle styleOddPercent = cloneStyle(styleOdd);
 		styleOddPercent.setDataFormat(percentFormatIndex);
-		registerStyle("percentOdd", styleOddPercent);
+		registerStyle(STYLE_PERCENT_NAME + ROW_ODD_NAME, styleOddPercent);
 
 		CellStyle styleEvenPercent = cloneStyle(styleEven);
 		styleEvenPercent.setDataFormat(percentFormatIndex);
-		registerStyle("percentEven", styleEvenPercent);
+		registerStyle(STYLE_PERCENT_NAME + ROW_EVEN_NAME, styleEvenPercent);
 	}
 	
 	/**
@@ -224,7 +263,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addTextCell(Row row, int columnIndex, String text) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellStyle(getRowStyle("standard", row.getRowNum()));
+		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
 		cell.setCellType(Cell.CELL_TYPE_STRING);
 		cell.setCellValue(creationHelper.createRichTextString(text));
 
@@ -241,7 +280,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addHeaderCell(Row row, int columnIndex, String text) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellStyle(getStyle("header"));
+		cell.setCellStyle(getStyle(STYLE_HEADER_NAME));
 		cell.setCellType(Cell.CELL_TYPE_STRING);
 		cell.setCellValue(creationHelper.createRichTextString(text));
 
@@ -258,7 +297,23 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addDateCell(Row row, int columnIndex, Date date) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellStyle(getRowStyle("date", row.getRowNum()));
+		cell.setCellStyle(getRowStyle(STYLE_DATE_NAME, row.getRowNum()));
+		cell.setCellValue(date);
+
+		return cell;
+	}
+	
+	/**
+	 * Ajoute une cellule au format date + heure.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param date date à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addDateTimeCell(Row row, int columnIndex, Date date) {
+		Cell cell = row.createCell(columnIndex);
+		cell.setCellStyle(getRowStyle(STYLE_DATE_TIME_NAME, row.getRowNum()));
 		cell.setCellValue(date);
 
 		return cell;
@@ -275,7 +330,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addNumericCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-		cell.setCellStyle(getRowStyle("numeric", row.getRowNum()));
+		cell.setCellStyle(getRowStyle(STYLE_NUMERIC_NAME, row.getRowNum()));
 
 		cell.setCellValue(number.doubleValue());
 
@@ -293,7 +348,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addPercentCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-		cell.setCellStyle(getRowStyle("percent", row.getRowNum()));
+		cell.setCellStyle(getRowStyle(STYLE_PERCENT_NAME, row.getRowNum()));
 		
 		cell.setCellValue(number.doubleValue());
 
@@ -311,9 +366,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected CellStyle getRowStyle(String prefix, int rowIndex) {
 		StringBuilder styleName = new StringBuilder(prefix);
 		if (rowIndex % 2 == 0) {
-			styleName.append("Even");
+			styleName.append(ROW_EVEN_NAME);
 		} else {
-			styleName.append("Odd");
+			styleName.append(ROW_ODD_NAME);
 		}
 		return getStyle(styleName.toString());
 	}
@@ -349,6 +404,14 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 			sheet.autoSizeColumn((short) i);
 		}
 	}
+	
+	/**
+	 * Retourne le message correspondant à la clé en fonction du Locale
+	 * 
+	 * @param key clé
+	 * @return message
+	 */
+	protected abstract String getLocalizedLabel(String key);
 
 	public String getFontName() {
 		return fontName;
@@ -406,11 +469,35 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		this.evenRowBackgroundColor = evenRoxBackgroundColor;
 	}
 
-	/**
-	 * Retourne le message correspondant à la clé en fonction du Locale
-	 * 
-	 * @param key clé
-	 * @return message
-	 */
-	protected abstract String getLocalizedLabel(String key);
+	public String getNumericDataFormat() {
+		return numericDataFormat;
+	}
+
+	public void setNumericDataFormat(String numericDataFormat) {
+		this.numericDataFormat = numericDataFormat;
+	}
+
+	public String getDateDataFormat() {
+		return dateDataFormat;
+	}
+
+	public void setDateDataFormat(String dateDataFormat) {
+		this.dateDataFormat = dateDataFormat;
+	}
+
+	public String getDateTimeDataFormat() {
+		return dateTimeDataFormat;
+	}
+
+	public void setDateTimeDataFormat(String dateTimeDataFormat) {
+		this.dateTimeDataFormat = dateTimeDataFormat;
+	}
+
+	public String getPercentDataFormat() {
+		return percentDataFormat;
+	}
+
+	public void setPercentDataFormat(String percentDataFormat) {
+		this.percentDataFormat = percentDataFormat;
+	}
 }
