@@ -114,7 +114,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	/**
 	 * Format des dates avec heure
 	 */
-	private String dateTimeDataFormat = "DD/MM/YYYY H:mm";
+	private String dateTimeDataFormat = "DD/MM/YYYY HH:mm";
 	
 	/**
 	 * Format des pourcentages
@@ -385,8 +385,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 
 		Row rowHeader = sheet.createRow(rowIndex);
 		for (String header : headers) {
-			header = getLocalizedLabel(header);
-			addHeaderCell(rowHeader, columnIndex, header);
+			addHeaderCell(rowHeader, columnIndex, getLocalizedLabel(header));
 			columnIndex++;
 		}
 	}
