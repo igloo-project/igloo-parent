@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.openwide.owsi</groupId>
+	<artifactId>owsi</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Capitalisation OWSI</name>
+	<description>Capitalisation pour diverses technologies couramment utilisées sur la plateforme OWSI</description>
+	
+	<modules>
+		<module>owsi-hibernate</module>
+		<module>owsi-spring-security-web</module>
+		<module>owsi-springmvc</module>
+	</modules>
+	
+	<properties>
+		<jdk.version>1.6</jdk.version>
+		
+		<owsi.asm.version>3.1</owsi.asm.version>
+		<owsi.aspectj.version>1.6.1</owsi.aspectj.version>
+		<owsi.cglib.version>2.1_3</owsi.cglib.version>
+		<owsi.common.version>2.4</owsi.common.version>
+		<owsi.commons-logging.version>1.1.1</owsi.commons-logging.version>
+		<owsi.core.version>0.1.2</owsi.core.version>
+		<owsi.c3p0.version>0.9.1.2</owsi.c3p0.version>
+		<owsi.ehcache.version>1.5.0</owsi.ehcache.version>
+		<owsi.hibernate-core.version>3.5.1-Final</owsi.hibernate-core.version>
+		<owsi.hibernate-annotations.version>${owsi.hibernate-core.version}</owsi.hibernate-annotations.version>
+		<owsi.hibernate-ehcache.version>${owsi.hibernate-core.version}</owsi.hibernate-ehcache.version>
+		<owsi.javassist.version>3.4.GA</owsi.javassist.version>
+		<owsi.jersey.version>1.0.3.1</owsi.jersey.version>
+		<owsi.jstl.version>1.2</owsi.jstl.version>
+		<owsi.jsp.version>2.0</owsi.jsp.version>
+		
+		<!--
+		4.5 is not compatible with spring-test
+		see http://jira.springframework.org/browse/SPR-5145
+		-->
+		<owsi.junit.version>4.8.1</owsi.junit.version>
+		
+		<owsi.postgresql.version>8.4-701.jdbc3</owsi.postgresql.version>
+		<owsi.servlet.version>2.5</owsi.servlet.version>
+		<owsi.slf4j.version>1.5.2</owsi.slf4j.version>
+		<!-- La version 1.3 est abandonnée et la 2.0 est expérimentale -->
+		<owsi.log4j.version>1.2.16</owsi.log4j.version>
+		<owsi.sitemesh.version>2.4.2</owsi.sitemesh.version>
+		<owsi.spring.version>3.0.2.RELEASE</owsi.spring.version>
+		<owsi.taglib.version>1.1.2</owsi.taglib.version>
+		<owsi.validation.version>1.0.0.GA</owsi.validation.version>
+	</properties>
+	
+	<build>
+		<!--
+			pluginManagement permet de configurer les plugins utilisés
+			dans les projets enfants.
+		-->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+					<!--
+						Utilisation de java 1.6 
+					-->
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	
+	<repositories>
+		<!-- Maven repository for owsi-core dependencies -->
+		<repository>
+			<id>nexus-owsi-core</id>
+			<name>Nexus OWSI Core</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+		</repository>
+		
+		<!-- Maven repository for hibernate dependency-->
+		<repository>
+			<id>jboss</id>
+			<name>JBoss Maven Repository</name>
+			<url>http://repository.jboss.org/maven2/</url>
+		</repository>
+	</repositories>
+
+</project>
