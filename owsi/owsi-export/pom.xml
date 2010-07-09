@@ -6,62 +6,66 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>fr.openwide.owsi</groupId>
-	<artifactId>owsi-pdf-xls-exports</artifactId>
+	<artifactId>owsi-export</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Capitalisation OWSI Export PDF/XLS</name>
 	<description>Capitalisation OWSI des développements d'exports PDF et Excel</description>
 	
 	<properties>
-		<itext.version>2.1.5</itext.version>
-		<owsi-core.version>0.1.2</owsi-core.version>
 		<servlet.version>2.4</servlet.version>
-		<spring.version>2.5.6.SEC01</spring.version>
-		<poi.version>3.6</poi.version>
 	</properties>
 	
 	<dependencies>
 		<dependency>
 			<groupId>fr.openwide.core</groupId>
 			<artifactId>owsi-core-export</artifactId>
-			<version>0.2</version>
+			<version>${owsi.core.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>fr.openwide.core</groupId>
 			<artifactId>owsi-core-commons</artifactId>
-			<version>${owsi-core.version}</version>
+			<version>${owsi.core.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>fr.openwide.core</groupId>
 			<artifactId>owsi-core-hibernate</artifactId>
-			<version>${owsi-core.version}</version>
+			<version>${owsi.core.version}</version>
 		</dependency>
 		
+		<!--
+			Utilisé pour l'instant ds les exports PDF
+			A VIRER PLUS TARD
+		-->
 		<dependency>
 			<groupId>fr.openwide.core</groupId>
 			<artifactId>owsi-core-spring</artifactId>
-			<version>${owsi-core.version}</version>
+			<version>${owsi.core.version}</version>
 		</dependency>
-	
+		
+		<!--
+			Utilisé pour l'instant ds les exports PDF
+			A VIRER PLUS TARD
+		-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
+			<version>${owsi.spring.version}</version>
 		</dependency>
 		
 		<!-- Export PDF -->
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
-			<version>${itext.version}</version>
+			<version>${owsi.itext.version}</version>
 		</dependency>
 		
 		<!-- Export Excel -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>${poi.version}</version>
+			<version>${owsi.poi.version}</version>
 		</dependency>
 		
 		<dependency>

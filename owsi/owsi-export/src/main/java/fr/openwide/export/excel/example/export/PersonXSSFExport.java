@@ -20,8 +20,9 @@ public class PersonXSSFExport extends AbstractExcelTableExport {
 
 	private static final String STYLE_TITLE_NAME = "titleStyle";
 	private static final String FONT_TITLE_NAME = "titleFont";
-	private static final String COLOR_TITLE_HEXA = "#007CAF";
+	private static final short FONT_TITLE_SIZE = 18;
 	private static final short COLOR_TITLE_INDEX = 80;
+	private static final String COLOR_TITLE_HEXA = "#007CAF";
 
 	public PersonXSSFExport() {
 		super(new XSSFWorkbook());
@@ -85,8 +86,8 @@ public class PersonXSSFExport extends AbstractExcelTableExport {
 	}
 	
 	/**
-	 * Exemple d'ajout d'une cellule de titre composée de plusieurs cellules
-	 * fusionnées.
+	 * Exemple d'ajout d'une cellule de titre, composée de plusieurs cellules
+	 * fusionnées grâce à la méthode Sheet.addMergedRegion.
 	 * 
 	 * @param sheet
 	 * @return
@@ -94,14 +95,14 @@ public class PersonXSSFExport extends AbstractExcelTableExport {
 	private Cell addTitleCell(Sheet sheet) {
 		CellRangeAddress mergedRegion = new CellRangeAddress(0, 0, 0, 6);
 		sheet.addMergedRegion(mergedRegion);
-		
+
 		Row titleRow = sheet.createRow(0);
-		
+
 		Cell titleCell = titleRow.createCell(0);
 		titleCell.setCellStyle(getStyle(STYLE_TITLE_NAME));
 		titleCell.setCellType(Cell.CELL_TYPE_STRING);
 		titleCell.setCellValue(creationHelper.createRichTextString("Title of the document"));
- 
+
 		return titleCell;
 	}
 	
@@ -109,7 +110,7 @@ public class PersonXSSFExport extends AbstractExcelTableExport {
 		Font titleFont = workbook.createFont();
 		titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		setFontColor(titleFont, colorRegistry, HSSFColor.WHITE.index);
-		titleFont.setFontHeightInPoints((short) 18);
+		titleFont.setFontHeightInPoints(FONT_TITLE_SIZE);
 		registerFont(FONT_TITLE_NAME, titleFont);
 
 		registerColor(COLOR_TITLE_INDEX, COLOR_TITLE_HEXA);
