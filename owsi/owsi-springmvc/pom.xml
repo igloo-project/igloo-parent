@@ -8,7 +8,7 @@
 	</parent>
 	
 	<groupId>fr.openwide.owsi</groupId>
-	<artifactId>owsi-example-springmvc</artifactId>
+	<artifactId>owsi-springmvc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Capitalisation OWSI Spring MVC</name>
