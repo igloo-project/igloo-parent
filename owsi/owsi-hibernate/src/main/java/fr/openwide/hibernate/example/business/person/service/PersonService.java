@@ -6,7 +6,7 @@ import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.example.business.project.model.Project;
 
-public interface PersonService extends GenericEntityService<Person> {
+public interface PersonService extends GenericEntityService<Integer, Person> {
 	
 	void addProject(Person person, Project project) throws ServiceException, SecurityServiceException;
 }

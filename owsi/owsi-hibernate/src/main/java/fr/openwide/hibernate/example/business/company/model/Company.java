@@ -19,7 +19,7 @@ import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.example.business.project.model.Project;
 
 @Entity
-public class Company extends GenericEntity<Company> {
+public class Company extends GenericEntity<Integer, Company> {
 
 	private static final long serialVersionUID = -2003394192412589142L;
 

@@ -8,7 +8,7 @@ import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.hibernate.example.business.company.model.Company;
 
 @Repository("companyDao")
-public class CompanyDaoImpl extends GenericEntityDaoImpl<Company> implements CompanyDao {
+public class CompanyDaoImpl extends GenericEntityDaoImpl<Integer, Company> implements CompanyDao {
 
 	@Autowired
 	public CompanyDaoImpl(SessionFactory sessionFactory) {

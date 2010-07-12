@@ -8,7 +8,7 @@ import fr.openwide.hibernate.example.business.company.dao.CompanyDao;
 import fr.openwide.hibernate.example.business.company.model.Company;
 
 @Service("companyService")
-public class CompanyServiceImpl extends GenericEntityServiceImpl<Company> implements CompanyService {
+public class CompanyServiceImpl extends GenericEntityServiceImpl<Integer, Company> implements CompanyService {
 	
 	@Autowired
 	public CompanyServiceImpl(CompanyDao companyDao) {
