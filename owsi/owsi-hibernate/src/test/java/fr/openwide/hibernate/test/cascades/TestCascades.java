@@ -245,7 +245,7 @@ public class TestCascades extends AbstractHibernateTestCase {
 		companyService.update(company);
 		assertTrue(personService.list().contains(person3));
 		
-		/* Cascade REMOVE : 
+		/* Cascade DELETE : 
 		 * 
 		 * Lorsque l'on update, la cascade REMOVE n'est pas déclanchée. On a une exception
 		 * puisque l'on esssaye d'ajouter à la Company une Person qui n'est pas persistée.

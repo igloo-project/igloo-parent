@@ -90,7 +90,7 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 		try {
 			company.getEmployees1().get(0);
 			fail("Faire une opération sur un objet après un rollback lève une LazyInitializationException " +
-			"car l'objet n'est plus lié à la sesssion");
+			"car l'objet n'est plus lié à la session");
 		} catch (LazyInitializationException e) {}
 		
 		//Il faut recharger l'objet après l'exception pour pouvoir agir dessus
