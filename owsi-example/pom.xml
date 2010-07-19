@@ -7,7 +7,7 @@
 	<artifactId>owsi-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Capitalisation OWSI</name>
+	<name>OWSI Core Example</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur la plateforme OWSI</description>
 	
 	<modules>

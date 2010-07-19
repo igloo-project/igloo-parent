@@ -11,7 +11,7 @@
 	<artifactId>owsi-example-springmvc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Capitalisation OWSI Spring MVC</name>
+	<name>OWSI Core Example - Spring MVC</name>
 	<description>Capitalisation OWSI pour la technologie Spring MVC</description>
 	
 	<dependencies>
