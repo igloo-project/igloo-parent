@@ -18,6 +18,8 @@ package fr.openwide.springmvc.web.business.myentity.model;
 
 import java.util.Date;
 
+import fr.openwide.core.commons.util.CloneUtils;
+
 /**
  * <p>Exemple de formulaire basique pour un objet de type MyEntity.</p>
  *
@@ -51,10 +53,10 @@ public class MyEntityForm {
 	}
 
 	public Date getDate() {
-		return date;
+		return CloneUtils.clone(date);
 	}
 
 	public void setDate(Date date) {
-		this.date = date;
+		this.date = CloneUtils.clone(date);
 	}
 }

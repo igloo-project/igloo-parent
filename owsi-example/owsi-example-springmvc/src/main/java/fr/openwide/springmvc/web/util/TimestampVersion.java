@@ -42,7 +42,7 @@ public class TimestampVersion implements InitializingBean {
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		initTimestampVersion();
 	}
 

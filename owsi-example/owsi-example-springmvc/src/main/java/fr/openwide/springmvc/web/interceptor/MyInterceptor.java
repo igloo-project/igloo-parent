@@ -39,15 +39,14 @@ public class MyInterceptor extends HandlerInterceptorAdapter {
 	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception ex)
-			throws Exception {
+			HttpServletResponse response, Object handler, Exception ex) {
 		LOGGER.info("afterCompletion URL : " + request.getRequestURL());
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
+			ModelAndView modelAndView) {
 		LOGGER.info("postHandle URL : " + request.getRequestURL());
 	}
 
@@ -59,7 +58,7 @@ public class MyInterceptor extends HandlerInterceptorAdapter {
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
+			HttpServletResponse response, Object handler) {
 		LOGGER.info("preHandle URL : " + request.getRequestURL());
 		return true;
 	}

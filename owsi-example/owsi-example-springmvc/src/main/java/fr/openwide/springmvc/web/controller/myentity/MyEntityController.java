@@ -70,7 +70,7 @@ public class MyEntityController {
 	private static final String SUCCESS_VIEW = "modifsuccess";
 
 	@Autowired
-	MyEntityService myService;
+	protected MyEntityService myService;
 
 	/*
 	 * Permet d'enregistrer des editeurs supplémentaires par rapport au

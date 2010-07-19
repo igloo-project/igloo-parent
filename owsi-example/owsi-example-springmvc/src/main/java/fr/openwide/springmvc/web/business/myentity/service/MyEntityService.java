@@ -25,7 +25,7 @@ import fr.openwide.springmvc.web.business.myentity.model.MyEntity;
  */
 public interface MyEntityService {
 
-	public MyEntity getEntity();
+	MyEntity getEntity();
 
-	public void postEntity(MyEntity entity);
+	void postEntity(MyEntity entity);
 }

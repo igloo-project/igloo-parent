@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import fr.openwide.export.excel.example.export.PersonXSSFExport;
@@ -15,7 +17,9 @@ import fr.openwide.export.excel.example.person.Person;
 
 public class XSSFExcelGeneration {
 
-	private static final String XLS_FILE_NAME = "/home/jgonzalez/Bureau/my_person_example.xlsx";
+	private static final String XLS_FILE_NAME = "my_person_example.xlsx";
+
+	private static final Log LOGGER = LogFactory.getLog(XSSFExcelGeneration.class);
 
 	public static void main(String[] args) {
 		List<String> columns = new ArrayList<String>();
@@ -42,9 +46,9 @@ public class XSSFExcelGeneration {
 			workbook.write(outputStream);
 			outputStream.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			LOGGER.error("File not found", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("I/O error", e);
 		}
 	}
 }

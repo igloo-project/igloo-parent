@@ -2,19 +2,21 @@ package fr.openwide.export.excel.example.person;
 
 import java.util.Date;
 
+import fr.openwide.core.commons.util.CloneUtils;
+
 public class Person {
 	
-	String userName;
+	private String userName;
 	
-	String firstName;
+	private String firstName;
 	
-	String lastName;
+	private String lastName;
 	
-	Date birthDate;
+	private Date birthDate;
 	
-	int size;
+	private int size;
 	
-	double percentage;
+	private double percentage;
 
 	public Person(String userName, String firstName, String lastName,
 			Date birthDate, int size, double percentage) {
@@ -22,7 +24,7 @@ public class Person {
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.birthDate = birthDate;
+		this.birthDate = CloneUtils.clone(birthDate);
 		this.size = size;
 		this.percentage = percentage;
 	}
@@ -52,11 +54,11 @@ public class Person {
 	}
 
 	public Date getBirthDate() {
-		return birthDate;
+		return CloneUtils.clone(birthDate);
 	}
 
 	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
+		this.birthDate = CloneUtils.clone(birthDate);
 	}
 
 	public int getSize() {

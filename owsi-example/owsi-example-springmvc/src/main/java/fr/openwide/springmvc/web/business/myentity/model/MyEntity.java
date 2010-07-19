@@ -18,6 +18,8 @@ package fr.openwide.springmvc.web.business.myentity.model;
 
 import java.util.Date;
 
+import fr.openwide.core.commons.util.CloneUtils;
+
 /**
  * <p>Exemple d'entité basique.</p>
  *
@@ -37,7 +39,7 @@ public class MyEntity {
 	public MyEntity(int id, String descr, Date date) {
 		this.id = id;
 		this.descr = descr;
-		this.date = date;
+		this.date = CloneUtils.clone(date);
 	}
 
 	public int getId() {
@@ -57,10 +59,10 @@ public class MyEntity {
 	}
 
 	public Date getDate() {
-		return date;
+		return CloneUtils.clone(date);
 	}
 
 	public void setDate(Date date) {
-		this.date = date;
+		this.date = CloneUtils.clone(date);
 	}
 }

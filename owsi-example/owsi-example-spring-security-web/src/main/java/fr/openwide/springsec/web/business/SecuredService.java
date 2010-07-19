@@ -12,12 +12,12 @@ public interface SecuredService {
 	 * @PostAuthorize : Restricts access to a method’s return value
 	 */
 	@PreAuthorize("hasRole('ROLE_SUPERVISOR')")
-	public String getDate();
+	String getDate();
 	
 	/*
 	 * @PreFilter : Filters collection method arguments according to expression evaluation
 	 * @PostFilter : Filters a collection return value according to expression evaluation
 	 */
 	@PostFilter("filterObject == 'User' or hasRole('ROLE_SUPERVISOR')")
-	public List<String> getList();
+	List<String> getList();
 }

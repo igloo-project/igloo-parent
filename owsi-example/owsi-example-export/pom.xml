@@ -34,26 +34,6 @@
 			<version>${owsi.core.version}</version>
 		</dependency>
 		
-		<!--
-			Utilisé pour l'instant ds les exports PDF
-			A VIRER PLUS TARD
-		-->
-		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-spring</artifactId>
-			<version>${owsi.core.version}</version>
-		</dependency>
-		
-		<!--
-			Utilisé pour l'instant ds les exports PDF
-			A VIRER PLUS TARD
-		-->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${owsi.spring.version}</version>
-		</dependency>
-		
 		<!-- Export PDF -->
 		<dependency>
 			<groupId>com.lowagie</groupId>
@@ -74,6 +54,13 @@
 			<version>${servlet.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${owsi.log4j.version}</version>
 		</dependency>
 	</dependencies>
 </project>
