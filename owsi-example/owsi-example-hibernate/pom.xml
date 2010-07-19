@@ -3,13 +3,13 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.openwide.owsi</groupId>
-	<artifactId>owsi-hibernate</artifactId>
+	<artifactId>owsi-example-hibernate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Capitalisation OWSI Hibernate</name>
 	<description>Capitalisation OWSI pour la technologie Hibernate</description>
 
 	<parent>
-		<artifactId>owsi</artifactId>
+		<artifactId>owsi-example</artifactId>
 		<groupId>fr.openwide.owsi</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>

@@ -2,13 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>owsi</artifactId>
+		<artifactId>owsi-example</artifactId>
 		<groupId>fr.openwide.owsi</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.owsi</groupId>
-	<artifactId>owsi-spring-security-web</artifactId>
+	<artifactId>owsi-example-spring-security-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Capitalisation OWSI Spring Security (web component)</name>
