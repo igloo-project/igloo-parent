@@ -1,6 +1,6 @@
-create schema hibernate;
+create schema owsiexample_test;
 
-set search_path = hibernate;
+set search_path = owsiexample_test;
 
 create table company (
 	id integer not null,
