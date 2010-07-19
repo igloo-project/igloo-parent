@@ -126,11 +126,4 @@
 		</tx:attributes>
 	</tx:advice>
 
-	<!--
-		<bean id="taskFactory"
-		class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean"
-		p:serviceLocatorInterface="fr.openwide.wombat.core.business.process.factory.TaskFactory"
-		/>
-	-->
-
 </beans>
