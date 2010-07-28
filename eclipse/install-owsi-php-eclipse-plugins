@@ -15,7 +15,6 @@ path_eclipse=$1
 
 features="org.eclipse.team.svn.feature.group,
 org.polarion.eclipse.team.svn.connector,
-org.polarion.eclipse.team.svn.connector.svnkit16,
 org.polarion.eclipse.team.svn.connector.javahl16"
 
 repositories="http://download.eclipse.org/releases/helios/,

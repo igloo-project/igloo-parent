@@ -16,20 +16,16 @@ path_eclipse=$1
 features="org.eclipse.team.svn.feature.group,
 org.maven.ide.eclipse.feature.feature.group,
 org.polarion.eclipse.team.svn.connector,
-org.polarion.eclipse.team.svn.connector.svnkit16,
 org.polarion.eclipse.team.svn.connector.javahl16,
 org.polarion.eclipse.team.svn.m2eclipse,
 org.maven.ide.eclipse.wtp.feature.feature.group,
 org.maven.ide.eclipse.cvs.feature.feature.group,
-org.maven.ide.eclipse.scm.feature.feature.group,
-org.eclipse.tptp.platform.runtime.feature.group,
-org.eclipse.tptp.wtp.feature.group"
+org.maven.ide.eclipse.scm.feature.feature.group"
 
 repositories="http://download.eclipse.org/releases/helios/,
 http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/,
 http://community.polarion.com/projects/subversive/download/integrations/update-site/,
 http://m2eclipse.sonatype.org/sites/m2e/,
-http://m2eclipse.sonatype.org/sites/m2e-extras/,
-http://download.eclipse.org/tptp/updates/"
+http://m2eclipse.sonatype.org/sites/m2e-extras/"
 
 install_plugins "${path_eclipse}" "${features}" "${repositories}"
