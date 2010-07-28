@@ -110,7 +110,7 @@ public class MyEntityController {
 		 * Les méthodes getResource et getResourceAsStream permettent de
 		 * récupérer une ressource contenu dans un war sans se soucier du fait
 		 * qu'il soit décompresser ou non (variable unpackWar dans Tomcat). Dans
-		 * le cas où un war n'est pas décompresser, un accès à une ressource en
+		 * le cas où un war n'est pas décompressé, un accès à une ressource en
 		 * utilisant un File ne sera pas possible.
 		 */
 		ServletContext servletContext = request.getSession().getServletContext();
