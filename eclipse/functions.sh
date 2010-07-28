@@ -13,8 +13,6 @@ function install_plugins() {
 		-installIU "${features}"
 	
 	library_path=`grep -r "java.library.path" ${path_eclipse}/eclipse.ini`
-
-	echo ${library_path}
 	
 	if [ "${library_path}" != "${correct_library_path}" ]
 	then 
