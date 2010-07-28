@@ -49,8 +49,7 @@ public final class LuceneUtils {
 				String fragment = StringUtils.trimLeadingCharacter(searchPatternElements[i], StringUtils.DASH_CHAR);
 				
 				if (StringUtils.hasText(fragment)) {
-					cleanSearchPatternSb.append(fragment)
-							.append(StringUtils.SPACE);
+					cleanSearchPatternSb.append(fragment).append(StringUtils.SPACE);
 				}
 			}
 			
