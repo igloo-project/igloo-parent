@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -73,6 +74,11 @@ public abstract class AbstractExcelExport {
 	protected CreationHelper creationHelper;
 	
 	/**
+	 * Taille du papier.
+	 */
+	private short paperSize = PrintSetup.A4_PAPERSIZE;
+	
+	/**
 	 * Constructeur.
 	 */
 	public AbstractExcelExport(Workbook workbook) {
@@ -98,7 +104,10 @@ public abstract class AbstractExcelExport {
 			}
 		}
 
-		return workbook.createSheet(sheetTitle);
+		Sheet sheet = workbook.createSheet(sheetTitle);
+		sheet.getPrintSetup().setPaperSize(paperSize);
+		
+		return sheet;
 	}
 
 	/**
@@ -239,4 +248,9 @@ public abstract class AbstractExcelExport {
 			style.setRightBorderColor(color);
 		}
 	}
+
+	public void setPaperSize(short paperSize) {
+		this.paperSize = paperSize;
+	}
+
 }
