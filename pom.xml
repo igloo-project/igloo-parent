@@ -22,11 +22,11 @@
 		<owsi.cglib.version>2.2</owsi.cglib.version>
 		<owsi.c3p0.version>0.9.1.2</owsi.c3p0.version>
 		<owsi.commons-lang.version>2.5</owsi.commons-lang.version>
-		<owsi.hibernate-core.version>3.5.3-Final</owsi.hibernate-core.version>
+		<owsi.hibernate-core.version>3.5.5-Final</owsi.hibernate-core.version>
 		<owsi.hibernate-annotations.version>${owsi.hibernate-core.version}</owsi.hibernate-annotations.version>
 		<owsi.javassist.version>3.8.0.GA</owsi.javassist.version>
 		<owsi.junit.version>4.8.1</owsi.junit.version>
-		<owsi.spring.version>3.0.3.RELEASE</owsi.spring.version>
+		<owsi.spring.version>3.0.4.RELEASE</owsi.spring.version>
 		<owsi.poi.version>3.6</owsi.poi.version>
 		<owsi.postgresql.version>8.4-701.jdbc3</owsi.postgresql.version>
 		<owsi.slf4j.version>1.5.8</owsi.slf4j.version>
