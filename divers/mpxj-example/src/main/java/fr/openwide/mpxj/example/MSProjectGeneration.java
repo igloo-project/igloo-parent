@@ -63,7 +63,7 @@ public class MSProjectGeneration {
 
 		initTasks(project);
 
-		writeProject("/home/jgonzalez/Documents/mpxj/tools/toto.xml", project);
+		writeProject("src/main/resources/my_mspdi.xml", project);
 	}
 
 	private static void writeProject(String fileName, ProjectFile project) throws IOException {
