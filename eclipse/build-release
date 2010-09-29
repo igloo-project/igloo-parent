@@ -4,37 +4,61 @@ root_directory=`dirname $0`
 source ${root_directory}/functions.sh
 
 if [ $# != 1 ]; then
-	usage 
+	echo "Usage: $0 <version>"
+	echo "Example: $0 3.6.1"
+	exit 1
 fi
 
 version=$1
 
 if [ ! -f releases/$version ]; then
-	echo "Version $version not supported"
+	echo "Version $version not supported: file releases/$version does not exist"
 	exit 1
 fi
 
 source releases/$version
 
-mkdir -p target/$version/{download,build,release}
+full_version="${version}-`date +%Y%m%d`"
 
-download_directory=${root_directory}/target/$version/download
-build_directory=${root_directory}/target/$version/build
-target_directory=${root_directory}/target/$version/release
+mkdir -p target/$full_version/{download,build,release}
+
+download_directory=${root_directory}/target/$full_version/download
+build_directory=${root_directory}/target/$full_version/build
+target_directory=${root_directory}/target/$full_version/release
 
 mkdir -p ${download_directory} ${build_directory} ${target_directory}
 
 for build in $builds; do
 	package_name=${build%.tar.gz}
 
+	echo "Building ${package_name}"
+	echo "--"
+
 	if [ ! -f "${download_directory}/${build}" ]; then
-		wget -P ${download_directory} "${root_url}/${build}"
+		echo "  ...downloading the archive"
+		wget -q -P ${download_directory} "${root_url}/${build}" || die " ERROR: unable to download ${root_url}/${build}"
+	else
+		echo "  Archive already present: no need to download it again"
 	fi
+
+	echo " #"
+	echo "  ...extracting the archive"
 	
 	mkdir -p ${build_directory}/${package_name}
-	tar -C ${build_directory}/$package_name --strip-components=1 -zxf ${download_directory}/${build}
+	tar -C ${build_directory}/$package_name --strip-components=1 -zxf ${download_directory}/${build} || die " ERROR: unable to extract ${download_directory}/${build}"
+
+	echo " #"
+	echo "  ...installing the plugins"
 
 	install_plugins "${build_directory}/${package_name}" "${features[$package_name]}" "${repositories[$package_name]}"
 
-	tar -zcf ${target_directory}/owsi-${build} ${build_directory}/${package_name}
+	echo " #"
+	echo "  ...building the package"
+
+	tar -C ${build_directory} -zcf ${target_directory}/owsi-${build} ${package_name} || die " ERROR: unable to build the package"
+
+	echo " #"
+	echo " -> build successful: ${target_directory}/owsi-${build}"
+	echo "--"
+	echo
 done
