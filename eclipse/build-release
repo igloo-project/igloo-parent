@@ -1,0 +1,40 @@
+#!/bin/bash
+
+root_directory=`dirname $0`
+source ${root_directory}/functions.sh
+
+if [ $# != 1 ]; then
+	usage 
+fi
+
+version=$1
+
+if [ ! -f releases/$version ]; then
+	echo "Version $version not supported"
+	exit 1
+fi
+
+source releases/$version
+
+mkdir -p target/$version/{download,build,release}
+
+download_directory=${root_directory}/target/$version/download
+build_directory=${root_directory}/target/$version/build
+target_directory=${root_directory}/target/$version/release
+
+mkdir -p ${download_directory} ${build_directory} ${target_directory}
+
+for build in $builds; do
+	package_name=${build%.tar.gz}
+
+	if [ ! -f "${download_directory}/${build}" ]; then
+		wget -P ${download_directory} "${root_url}/${build}"
+	fi
+	
+	mkdir -p ${build_directory}/${package_name}
+	tar -C ${build_directory}/$package_name --strip-components=1 -zxf ${download_directory}/${build}
+
+	install_plugins "${build_directory}/${package_name}" "${features[$package_name]}" "${repositories[$package_name]}"
+
+	tar -zcf ${target_directory}/owsi-${build} ${build_directory}/${package_name}
+done
