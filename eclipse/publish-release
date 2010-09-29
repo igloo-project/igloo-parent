@@ -1,0 +1,29 @@
+#!/bin/bash
+
+root_directory=`dirname $0`
+source ${root_directory}/functions.sh
+
+scp_url="webspace.projects.openwide.fr:/data/services/webspace/owsi-tools/private/eclipse"
+
+if [ $# != 1 ]; then
+	echo "Usage: $0 <eclipse directory>"
+	echo "Example: $0 ./target/3.6.1-20100930"
+	exit 1
+fi
+
+directory=$1
+full_version=`basename $directory`
+
+if [ ! -d ${directory}/release  ]; then
+	echo "Directory ${directory}/release does not exist: unable to publish the release"
+	exit 1
+fi
+
+
+echo "Publishing release ${full_version}"
+echo "--"
+
+scp -r ${directory}/release "${scp_url}/${full_version}" || die " ERROR: unable to publish the release"
+
+echo " -> done"
+echo "--"
