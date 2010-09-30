@@ -18,3 +18,8 @@ function install_plugins() {
 		echo "${correct_library_path}" >> ${path_eclipse}/eclipse.ini
 	fi
 }
+
+function die() {
+	echo $1
+	exit 1
+}
