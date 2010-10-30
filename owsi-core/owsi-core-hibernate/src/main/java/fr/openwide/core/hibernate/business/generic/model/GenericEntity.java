@@ -60,7 +60,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 		if(this == object) {
 			return true;
 		}
-		if(!this.getClass().isInstance(object)) {
+		if(object.getClass() != this.getClass()) {
 			return false;
 		}
 		
