@@ -57,20 +57,23 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object object) {
-		if(this == object) {
+		if (object == null) {
+			return false;
+		}
+		if (object == this) {
 			return true;
 		}
-		if(object.getClass() != this.getClass()) {
+		if (object.getClass() != this.getClass()) {
 			return false;
 		}
-		
+
 		GenericEntity<K, E> entity = (GenericEntity<K, E>) object;
 		K id = getId();
-		
-		if(id == null) {
+
+		if (id == null) {
 			return false;
 		}
-		
+
 		return id.equals(entity.getId());
 	}
 
