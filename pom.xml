@@ -1,77 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	
 	<name>OWSI Core</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur les projets OWSI</description>
 	
 	<modules>
-		<module>owsi-core-commons</module>
-		<module>owsi-core-hibernate</module>
-		<module>owsi-core-spring</module>
-		<module>owsi-core-export</module>
+		<module>owsi-core-parents</module>
+		<module>owsi-core-components</module>
 	</modules>
-	
-	<properties>
-		<jdk.version>1.6</jdk.version>
-		
-		<owsi.aspectj.version>1.6.8</owsi.aspectj.version>
-		<owsi.cglib.version>2.2</owsi.cglib.version>
-		<owsi.c3p0.version>0.9.1.2</owsi.c3p0.version>
-		<owsi.commons-lang.version>2.5</owsi.commons-lang.version>
-		<owsi.hibernate-core.version>3.6.0.Final</owsi.hibernate-core.version>
-		<owsi.javassist.version>3.8.0.GA</owsi.javassist.version>
-		<owsi.junit.version>4.8.1</owsi.junit.version>
-		<owsi.spring.version>3.0.5.RELEASE</owsi.spring.version>
-		<owsi.poi.version>3.6</owsi.poi.version>
-		<owsi.postgresql.version>9.0-801.jdbc3</owsi.postgresql.version>
-		<owsi.slf4j.version>1.6.1</owsi.slf4j.version>
-		<owsi.log4j.version>1.2.16</owsi.log4j.version>
-	</properties>
-	
-	<build>
-		<!--
-			pluginManagement permet de configurer les plugins utilisés
-			dans les projets enfants.
-		-->
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<!--
-							Utilisation de java 1.6 
-						-->
-						<source>${jdk.version}</source>
-						<target>${jdk.version}</target>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.3</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.0</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	
-	<repositories>
-		<!-- Maven repository for hibernate dependency-->
-		<repository>
-			<id>jboss</id>
-			<name>JBoss Maven Repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
 	
 	<!-- Project information -->
 
