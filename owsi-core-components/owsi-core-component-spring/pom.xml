@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>owsi-core</artifactId>
+		<artifactId>owsi-core-components</artifactId>
 		<groupId>fr.openwide.core</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.core</groupId>
-	<artifactId>owsi-core-spring</artifactId>
+	<artifactId>owsi-core-component-spring</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<name>OWSI Core - Spring</name>
 	<description>Capitalisation des outils génériques pour la technologie Spring</description>
