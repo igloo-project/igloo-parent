@@ -1,0 +1,54 @@
+package fr.openwide.export.excel.example;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import fr.openwide.export.excel.example.export.PersonHSSFExport;
+import fr.openwide.export.excel.example.person.Person;
+
+public class HSSFExcelGeneration {
+
+	private static final String XLS_FILE_NAME = "my_person_example.xls";
+
+	private static final Log LOGGER = LogFactory.getLog(HSSFExcelGeneration.class);
+
+	public static void main(String[] args) {
+		List<String> columns = new ArrayList<String>();
+		columns.add("username");
+		columns.add("firstname");
+		columns.add("lastname");
+		columns.add("birth date");
+		columns.add("birth hour");
+		columns.add("size");
+		columns.add("percentage");
+
+		List<Person> persons = new LinkedList<Person>();
+		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 180, .88));
+		persons.add(new Person("username2", "firstname2", "lastname2", new Date(), 170, .20));
+		persons.add(new Person("username3", "firstname3", "lastname3", new Date(), 175, .50));
+		persons.add(new Person("username4", "firstname4", "lastname4", new Date(), 172, .21));
+		persons.add(new Person("username5", "firstname5", "lastname5", new Date(), 188, .23));
+
+		PersonHSSFExport export = new PersonHSSFExport();
+		HSSFWorkbook workbook = export.generate(persons, columns);
+
+		try {
+			FileOutputStream outputStream = new FileOutputStream(XLS_FILE_NAME);
+			workbook.write(outputStream);
+			outputStream.close();
+		} catch (FileNotFoundException e) {
+			LOGGER.error("File not found", e);
+		} catch (IOException e) {
+			LOGGER.error("I/O error", e);
+		}
+	}
+}

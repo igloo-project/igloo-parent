@@ -1,0 +1,195 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.openwide.owsi</groupId>
+	<artifactId>owsi-example-hibernate</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>OWSI Core Example - OWSI Hibernate</name>
+	<description>Capitalisation OWSI pour la technologie Hibernate</description>
+
+	<parent>
+		<artifactId>owsi-example</artifactId>
+		<groupId>fr.openwide.owsi</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<!-- Owsi-Core dependencies -->
+		<dependency>
+			<groupId>fr.openwide.core</groupId>
+			<artifactId>owsi-core-spring</artifactId>
+			<version>${owsi.core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core</groupId>
+			<artifactId>owsi-core-hibernate</artifactId>
+			<version>${owsi.core.version}</version>
+		</dependency>
+
+		<!-- Spring framework dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${owsi.spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${owsi.spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${owsi.spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${owsi.spring.version}</version>
+		</dependency>
+
+		<!-- Hibernate dependencies -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${owsi.postgresql.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${owsi.hibernate-core.version}</version>
+			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm-attrs</artifactId>
+				</exclusion>
+
+				<!--
+					Cglib2.2 est exclu car trop inactif et trop instable, on ajoute
+					plus loin une version antérieure préférée à celle-ci.
+				-->
+				<exclusion>
+					<groupId>cglib</groupId>
+					<artifactId>cglib</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${owsi.hibernate-annotations.version}</version>
+		</dependency>
+
+		<!--
+			Hibernate donne le choix entre deux outils de génération de bytecode,
+			javassist et cglib.
+		-->
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${owsi.javassist.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>${owsi.cglib.version}</version>
+		</dependency>
+
+		<!--
+			Extension Java pour la programmation orientée
+			aspect.
+		-->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${owsi.aspectj.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${owsi.aspectj.version}</version>
+		</dependency>
+
+		<!--
+			Outil de génération de bytecode sur lequel est basé cglib.
+		-->
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>${owsi.asm.version}</version>
+		</dependency>
+		
+		<!--
+		Cache de second niveau géré via l'intermédiaire des outils fournis
+		par hibernate et délégué à EHCache
+		-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>${owsi.hibernate-ehcache.version}</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${owsi.ehcache.version}</version>
+			<type>jar</type>
+		</dependency>
+
+		<!--
+			Hibernate utilise slf4j pour le logging Usuellement, on utilise log4j
+			comme backend
+		-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${owsi.slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${owsi.log4j.version}</version>
+		</dependency>
+
+		<!--
+			Gestionnaire de DataSources/Resource Pools JDBC
+		-->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${owsi.c3p0.version}</version>
+			<type>jar</type>
+		</dependency>
+
+		<!--  Utils dependencies -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${owsi.common.version}</version>
+		</dependency>
+
+		<!--  Junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi.junit.version}</version>
+		</dependency>
+
+	</dependencies>
+</project>
