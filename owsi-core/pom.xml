@@ -28,7 +28,7 @@
 		<owsi.spring.version>3.0.5.RELEASE</owsi.spring.version>
 		<owsi.poi.version>3.6</owsi.poi.version>
 		<owsi.postgresql.version>9.0-801.jdbc3</owsi.postgresql.version>
-		<owsi.slf4j.version>1.5.8</owsi.slf4j.version>
+		<owsi.slf4j.version>1.6.1</owsi.slf4j.version>
 		<owsi.log4j.version>1.2.16</owsi.log4j.version>
 	</properties>
 	
