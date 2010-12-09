@@ -13,6 +13,7 @@
 	<modules>
 		<module>owsi-core-parents</module>
 		<module>owsi-core-components</module>
+		<module>owsi-core-examples</module>
 	</modules>
 	
 	<!-- Project information -->

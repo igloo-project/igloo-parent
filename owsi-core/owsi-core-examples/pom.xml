@@ -3,18 +3,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>fr.openwide.owsi</groupId>
 	<artifactId>owsi-example</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
 	<name>OWSI Core Example</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur la plateforme OWSI</description>
 	
 	<modules>
-		<module>owsi-example-hibernate</module>
-		<module>owsi-example-spring-security-web</module>
-		<module>owsi-example-springmvc</module>
-		<module>owsi-example-export</module>
+		<module>owsi-core-example-hibernate</module>
+		<module>owsi-core-example-spring-security-web</module>
+		<module>owsi-core-example-springmvc</module>
+		<module>owsi-core-example-export</module>
 	</modules>
 	
 	<properties>

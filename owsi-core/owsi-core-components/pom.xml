@@ -10,4 +10,11 @@
 
 	<name>OWSI Core - Components</name>
 
+	<modules>
+		<module>owsi-core-component-commons</module>
+		<module>owsi-core-component-spring</module>
+		<module>owsi-core-component-hibernate</module>
+		<module>owsi-core-component-export</module>
+	</modules>
+
 </project>

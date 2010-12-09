@@ -2,17 +2,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>owsi-core-examples</artifactId>
+		<groupId>fr.openwide.owsi</groupId>
+		<version>0.4-SNAPSHOT</version>
+	</parent>
+
 	<groupId>fr.openwide.owsi</groupId>
-	<artifactId>owsi-example-hibernate</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>owsi-core-example-hibernate</artifactId>
+	<version>0.4-SNAPSHOT</version>
+
 	<name>OWSI Core Example - OWSI Hibernate</name>
 	<description>Capitalisation OWSI pour la technologie Hibernate</description>
 
-	<parent>
-		<artifactId>owsi-example</artifactId>
-		<groupId>fr.openwide.owsi</groupId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
 
 	<dependencies>
 		<!-- Owsi-Core dependencies -->
