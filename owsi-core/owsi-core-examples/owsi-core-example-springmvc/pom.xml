@@ -12,7 +12,7 @@
 	<version>0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>OWSI Core Example - Spring MVC</name>
+	<name>OWSI Core - Examples - Spring MVC</name>
 	<description>Capitalisation OWSI pour la technologie Spring MVC</description>
 	
 	<dependencies>

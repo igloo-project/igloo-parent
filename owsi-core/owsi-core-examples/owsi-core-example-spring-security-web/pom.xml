@@ -12,7 +12,7 @@
 	<version>0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>OWSI Core Example - Spring Security</name>
+	<name>OWSI Core - Examples - Spring Security</name>
 
 	<dependencies>
 		<!-- Spring Security -->
