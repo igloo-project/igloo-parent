@@ -11,7 +11,7 @@
 	<artifactId>owsi-core-example-export</artifactId>
 	<version>0.4-SNAPSHOT</version>
 
-	<name>OWSI Core Example - Export PDF/XLS</name>
+	<name>OWSI Core - Examples - Export PDF/XLS</name>
 	<description>Capitalisation OWSI des développements d'exports PDF et Excel</description>
 	
 	<properties>

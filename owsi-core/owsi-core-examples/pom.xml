@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.openwide.owsi</groupId>
-	<artifactId>owsi-example</artifactId>
+	<artifactId>owsi-core-examples</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>OWSI Core Example</name>
+	<name>OWSI Core - Examples</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur la plateforme OWSI</description>
 	
 	<modules>

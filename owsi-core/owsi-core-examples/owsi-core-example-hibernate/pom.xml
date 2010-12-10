@@ -13,7 +13,7 @@
 	<artifactId>owsi-core-example-hibernate</artifactId>
 	<version>0.4-SNAPSHOT</version>
 
-	<name>OWSI Core Example - OWSI Hibernate</name>
+	<name>OWSI Core - Examples - OWSI Hibernate</name>
 	<description>Capitalisation OWSI pour la technologie Hibernate</description>
 
 
