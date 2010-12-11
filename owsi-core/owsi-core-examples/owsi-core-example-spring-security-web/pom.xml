@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<groupId>fr.openwide.owsi</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>fr.openwide.owsi</groupId>
+	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-spring-security-web</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -19,41 +19,41 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${owsi.spring-security.version}</version>
+			<version>${owsi-core.spring-security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${owsi.spring-security.version}</version>
+			<version>${owsi-core.spring-security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<version>${owsi.spring-security.version}</version>
+			<version>${owsi-core.spring-security.version}</version>
 		</dependency>
 
 		<!-- Spring MVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 
 		<!-- Miscellaneous -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>${owsi.commons-logging.version}</version>
+			<version>${owsi-core.commons-logging.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>${owsi.jstl.version}</version>
+			<version>${owsi-core.jstl.version}</version>
 		</dependency>
 	</dependencies>
 	

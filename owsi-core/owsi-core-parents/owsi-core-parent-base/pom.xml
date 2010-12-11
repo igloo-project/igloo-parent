@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>fr.openwide.core</groupId>
+	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-base</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -14,18 +14,40 @@
 		<jdk.version>1.6</jdk.version>
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
-		<owsi-core.aspectj.version>1.6.8</owsi-core.aspectj.version>
-		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
-		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
-		<owsi-core.commons-lang.version>2.5</owsi-core.commons-lang.version>
-		<owsi-core.hibernate-core.version>3.6.0.Final</owsi-core.hibernate-core.version>
-		<owsi-core.javassist.version>3.8.0.GA</owsi-core.javassist.version>
-		<owsi-core.junit.version>4.8.1</owsi-core.junit.version>
+		
 		<owsi-core.spring.version>3.0.5.RELEASE</owsi-core.spring.version>
-		<owsi-core.poi.version>3.6</owsi-core.poi.version>
+		<owsi-core.aspectj.version>1.6.8</owsi-core.aspectj.version>
+
+		<owsi-core.hibernate-core.version>3.6.0.Final</owsi-core.hibernate-core.version>
+		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
+		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
+		<owsi-core.ehcache.version>1.5.0</owsi-core.ehcache.version>
+		
+		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
+		<owsi-core.javassist.version>3.8.0.GA</owsi-core.javassist.version>
+		<owsi-core.asm.version>3.1</owsi-core.asm.version>
+		
+		<owsi-core.spring-security.version>3.0.5.RELEASE</owsi-core.spring-security.version>
+
+		<owsi-core.commons-lang.version>2.5</owsi-core.commons-lang.version>
+		<owsi-core.commons-logging.version>1.1.1</owsi-core.commons-logging.version>
+		
 		<owsi-core.slf4j.version>1.6.1</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.16</owsi-core.log4j.version>
+		
+		<owsi-core.poi.version>3.6</owsi-core.poi.version>
+		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
+		
+		<owsi-core.junit.version>4.8.1</owsi-core.junit.version>
+		
+		<owsi-core.jersey.version>1.0.3.1</owsi-core.jersey.version>
+		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
+		<owsi-core.jsp.version>2.0</owsi-core.jsp.version>
+		<owsi-core.servlet.version>2.5</owsi-core.servlet.version>
+		<owsi-core.sitemesh.version>2.4.2</owsi-core.sitemesh.version>
+		<owsi-core.taglib.version>1.1.2</owsi-core.taglib.version>
+		<owsi-core.validation.version>1.0.0.GA</owsi-core.validation.version>
 		
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.1</owsi-core.maven-release-plugin.version>
@@ -64,5 +86,64 @@
 			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
+	
+	<!-- Project information -->
+
+	<organization>
+		<name>Open Wide</name>
+		<url>http://www.openwide.fr/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>gsmet</id>
+			<name>Guillaume Smet</name>
+			<email>guillaume.smet@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>lalmeras</id>
+			<name>Laurent Almeras</name>
+			<email>laurent.almeras@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>jgonzalez</id>
+			<name>Julien Gonzalez</name>
+			<email>julien.gonzalez@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+	</developers>
+	
+	<profiles>
+		<profile>
+			<activation>
+				<property>
+					<name>distribution</name>
+					<value>owsi-core-release</value>
+				</property>
+			</activation>
+			<distributionManagement>
+				<repository>
+					<id>nexus-owsi-core</id>
+					<name>Nexus OWSI Core</name>
+					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+				</repository>
+				<snapshotRepository>
+					<id>nexus-owsi-core-snapshots</id>
+					<name>Nexus OWSI Core Snapshots</name>
+					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 	
 </project>

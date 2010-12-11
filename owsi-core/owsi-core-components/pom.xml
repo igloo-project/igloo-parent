@@ -3,7 +3,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>fr.openwide.core</groupId>
+	<parent>
+		<groupId>fr.openwide.core.parents</groupId>
+		<artifactId>owsi-core-parent-base</artifactId>
+		<version>0.4-SNAPSHOT</version>
+		<relativePath>../owsi-core-parents/owsi-core-parent-base/pom.xml</relativePath>
+	</parent>
+	
+	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-components</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>

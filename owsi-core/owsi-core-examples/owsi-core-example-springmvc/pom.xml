@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
+		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<groupId>fr.openwide.owsi</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>fr.openwide.owsi</groupId>
+	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-springmvc</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -16,55 +16,55 @@
 	<description>Capitalisation OWSI pour la technologie Spring MVC</description>
 	
 	<dependencies>
+		<!-- OSWI-Core -->
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-spring</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
 		<!-- Spring MVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 
-		<!-- OSWI-Core -->
-		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-spring</artifactId>
-			<version>${owsi.core.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-commons</artifactId>
-			<version>${owsi.core.version}</version>
-		</dependency>
-		
 		<!-- Logging -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${owsi.log4j.version}</version>
+			<version>${owsi-core.log4j.version}</version>
 		</dependency>
 		
 		<!-- Miscellaneous -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>${owsi.commons-logging.version}</version>
+			<version>${owsi-core.commons-logging.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
-			<version>${owsi.sitemesh.version}</version>
+			<version>${owsi-core.sitemesh.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>${owsi.servlet.version}</version>
+			<version>${owsi-core.servlet.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>${owsi.validation.version}</version>
+			<version>${owsi-core.validation.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -80,13 +80,13 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>${owsi.jstl.version}</version>
+			<version>${owsi-core.jstl.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>${owsi.jsp.version}</version>
+			<version>${owsi-core.jsp.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
