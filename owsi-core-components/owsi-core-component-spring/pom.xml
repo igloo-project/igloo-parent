@@ -3,15 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<groupId>fr.openwide.core</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>fr.openwide.core</groupId>
+	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-spring</artifactId>
 	<version>0.4-SNAPSHOT</version>
-	<name>OWSI Core - Spring</name>
+	
+	<name>OWSI Core - Component - Spring</name>
 	<description>Capitalisation des outils génériques pour la technologie Spring</description>
 
 	<dependencies>
@@ -19,21 +20,23 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${owsi.spring.version}</version>
-		</dependency>
-		
-		<!-- Test dependencies -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${owsi.junit.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		
 		<!-- Misc dependencies -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>${owsi.commons-lang.version}</version>
+			<version>${owsi-core.commons-lang.version}</version>
 		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi-core.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 </project>

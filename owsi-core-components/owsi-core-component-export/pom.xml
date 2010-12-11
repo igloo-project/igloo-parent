@@ -1,41 +1,44 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
+		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<groupId>fr.openwide.core</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
-	<groupId>fr.openwide.core</groupId>
+	
+	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-export</artifactId>
 	<version>0.4-SNAPSHOT</version>
-	<name>OWSI Core - Export</name>
+	
+	<name>OWSI Core - Component - Export</name>
 	<description>Capitalisation des outils génériques pour les exports PDF et Excel</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-commons</artifactId>
-			<version>${version}</version>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<!-- Export Excel -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>${owsi.poi.version}</version>
+			<version>${owsi-core.poi.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>${owsi.poi.version}</version>
+			<version>${owsi-core.poi.version}</version>
 		</dependency>
 		
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${owsi.junit.version}</version>
+			<version>${owsi-core.junit.version}</version>
 		</dependency>
 	</dependencies>
 </project>

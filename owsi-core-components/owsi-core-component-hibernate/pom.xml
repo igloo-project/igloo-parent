@@ -3,22 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<groupId>fr.openwide.core</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>fr.openwide.core</groupId>
+	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-hibernate</artifactId>
 	<version>0.4-SNAPSHOT</version>
-	<name>OWSI Core - Hibernate</name>
+	
+	<name>OWSI Core - Component - Hibernate</name>
 	<description>Capitalisation des outils génériques pour la technologie Hibernate</description>
 
 	<dependencies>
 		<!-- Owsi-Core dependencies -->
 		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-spring</artifactId>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-spring</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
@@ -26,14 +27,14 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>${owsi.postgresql.version}</version>
+			<version>${owsi-core.postgresql.version}</version>
 		</dependency>
 		
 		<!-- Hibernate dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${owsi.hibernate-core.version}</version>
+			<version>${owsi-core.hibernate-core.version}</version>
 			<type>jar</type>
 			<exclusions>
 				<exclusion>
@@ -55,88 +56,94 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${owsi.spring.version}</version>
+			<version>${owsi-core.spring.version}</version>
 		</dependency>
 
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${owsi.junit.version}</version>
+			<version>${owsi-core.junit.version}</version>
 		</dependency>
 		
 		<!-- Logging dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${owsi.slf4j.version}</version>
+			<version>${owsi-core.slf4j.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>${owsi.slf4j.version}</version>
+			<version>${owsi-core.slf4j.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${owsi.log4j.version}</version>
+			<version>${owsi-core.log4j.version}</version>
 		</dependency>
 
 		<!-- Misc dependencies -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>${owsi.commons-lang.version}</version>
+			<version>${owsi-core.commons-lang.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${owsi.aspectj.version}</version>
+			<version>${owsi-core.aspectj.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${owsi.aspectj.version}</version>
+			<version>${owsi-core.aspectj.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>${owsi.javassist.version}</version>
+			<version>${owsi-core.javassist.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-			<version>${owsi.cglib.version}</version>
+			<version>${owsi-core.cglib.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>${owsi-core.asm.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
-			<version>${owsi.c3p0.version}</version>
+			<version>${owsi-core.c3p0.version}</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>
