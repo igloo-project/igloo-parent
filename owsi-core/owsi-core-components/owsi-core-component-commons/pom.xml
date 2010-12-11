@@ -3,16 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<groupId>fr.openwide.core</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>fr.openwide.core</groupId>
+	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-commons</artifactId>
 	<version>0.4-SNAPSHOT</version>
 
-	<name>OWSI Core - Commons</name>
+	<name>OWSI Core - Component - Commons</name>
 	<description>Capitalisation pour les outils communs sur la plateforme OWSI</description>
 
 	<dependencies>		
@@ -20,14 +20,14 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${owsi.junit.version}</version>
+			<version>${owsi-core.junit.version}</version>
 		</dependency>
 		
 		<!-- Misc dependencies -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>${owsi.commons-lang.version}</version>
+			<version>${owsi-core.commons-lang.version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -2,59 +2,55 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<groupId>fr.openwide.owsi</groupId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>fr.openwide.owsi</groupId>
+	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-export</artifactId>
 	<version>0.4-SNAPSHOT</version>
 
 	<name>OWSI Core - Examples - Export PDF/XLS</name>
 	<description>Capitalisation OWSI des développements d'exports PDF et Excel</description>
 	
-	<properties>
-		<servlet.version>2.4</servlet.version>
-	</properties>
-	
 	<dependencies>
 		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-export</artifactId>
-			<version>${owsi.core.version}</version>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-export</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-commons</artifactId>
-			<version>${owsi.core.version}</version>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>fr.openwide.core</groupId>
-			<artifactId>owsi-core-hibernate</artifactId>
-			<version>${owsi.core.version}</version>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-hibernate</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<!-- Export PDF -->
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
-			<version>${owsi.itext.version}</version>
+			<version>${owsi-core.itext.version}</version>
 		</dependency>
 		
 		<!-- Export Excel -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>${owsi.poi.version}</version>
+			<version>${owsi-core.poi.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>${servlet.version}</version>
+			<version>${owsi-core.servlet.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -63,7 +59,7 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${owsi.log4j.version}</version>
+			<version>${owsi-core.log4j.version}</version>
 		</dependency>
 	</dependencies>
 </project>
