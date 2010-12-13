@@ -14,6 +14,7 @@
 		<module>owsi-core-parents</module>
 		<module>owsi-core-components</module>
 		<module>owsi-core-examples</module>
+		<module>owsi-core-packages</module>
 	</modules>
 	
 	<!-- Project information -->
