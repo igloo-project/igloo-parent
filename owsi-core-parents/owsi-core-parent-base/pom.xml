@@ -22,36 +22,56 @@
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
-		<owsi-core.ehcache.version>1.5.0</owsi-core.ehcache.version>
+		<owsi-core.ehcache.version>2.2.0</owsi-core.ehcache.version>
 		
 		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.8.0.GA</owsi-core.javassist.version>
 		<owsi-core.asm.version>3.1</owsi-core.asm.version>
 		
 		<owsi-core.spring-security.version>3.0.5.RELEASE</owsi-core.spring-security.version>
+		
+		<owsi-core.spring-ldap.version>1.3.1.RELEASE</owsi-core.spring-ldap.version>
+		
+		<owsi-core.hibernate-search.version>3.2.1.Final</owsi-core.hibernate-search.version>
+		<owsi-core.lucene.version>2.9.4</owsi-core.lucene.version>
+		
+		<owsi-core.quartz.version>1.8.4</owsi-core.quartz.version>
 
+		<owsi-core.commons-io.version>2.0</owsi-core.commons-io.version>
 		<owsi-core.commons-lang.version>2.5</owsi-core.commons-lang.version>
 		<owsi-core.commons-logging.version>1.1.1</owsi-core.commons-logging.version>
+		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
+		<owsi-core.commons-codec.version>1.4</owsi-core.commons-codec.version>
+		
+		<owsi-core.jta.version>1.1</owsi-core.jta.version>
+		<owsi-core.javax-mail.version>1.4.1</owsi-core.javax-mail.version>
 		
 		<owsi-core.slf4j.version>1.6.1</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.16</owsi-core.log4j.version>
 		
+		<owsi-core.opencsv.version>2.1</owsi-core.opencsv.version>
+		<owsi-core.freemarker.version>2.3.16</owsi-core.freemarker.version>
+		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		<owsi-core.poi.version>3.6</owsi-core.poi.version>
 		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
+		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
+		<owsi-core.truezip.version>6.8.1</owsi-core.truezip.version>
 		
-		<owsi-core.junit.version>4.8.1</owsi-core.junit.version>
+		<owsi-core.junit.version>4.8.2</owsi-core.junit.version>
 		
 		<owsi-core.jersey.version>1.0.3.1</owsi-core.jersey.version>
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
-		<owsi-core.jsp.version>2.0</owsi-core.jsp.version>
-		<owsi-core.servlet.version>2.5</owsi-core.servlet.version>
+		<owsi-core.jsp-api.version>2.0</owsi-core.jsp-api.version>
+		<owsi-core.servlet-api.version>2.5</owsi-core.servlet-api.version>
 		<owsi-core.sitemesh.version>2.4.2</owsi-core.sitemesh.version>
-		<owsi-core.taglib.version>1.1.2</owsi-core.taglib.version>
-		<owsi-core.validation.version>1.0.0.GA</owsi-core.validation.version>
+		<owsi-core.taglibs-standard.version>1.1.2</owsi-core.taglibs-standard.version>
+		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
 		
+		<owsi-core.maven-surefire-plugin.version>2.6</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.1</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
+		<owsi-core.maven-assembly-plugin.version>2.2</owsi-core.maven-assembly-plugin.version>
 	</properties>
 	
 	<build>

@@ -46,14 +46,13 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>${owsi-core.hibernate-ehcache.version}</version>
-			<type>jar</type>
 		</dependency>
 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>${owsi-core.ehcache.version}</version>
-			<type>jar</type>
+			<type>pom</type>
 		</dependency>
 
 		<!--  Junit -->
