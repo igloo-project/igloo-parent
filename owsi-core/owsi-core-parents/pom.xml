@@ -3,6 +3,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
+	<parent>
+		<groupId>fr.openwide.core</groupId>
+		<artifactId>owsi-core</artifactId>
+		<version>0.4-SNAPSHOT</version>
+	</parent>
+	
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parents</artifactId>
 	<version>0.4-SNAPSHOT</version>	
@@ -13,5 +19,19 @@
 	<modules>
 		<module>owsi-core-parent-base</module>
 	</modules>
-	
+	<!--
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	-->
 </project>
