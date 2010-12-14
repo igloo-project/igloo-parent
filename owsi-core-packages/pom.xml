@@ -17,4 +17,12 @@
 	
 	<name>OWSI Core - Packages</name>
 	
+	<modules>
+		<module>owsi-core-package-core-hibernate</module>
+		<module>owsi-core-package-core-spring-security</module>
+
+		<module>owsi-core-package-web-wicket</module>
+		<module>owsi-core-package-web-jersey</module>
+	</modules>
+	
 </project>
