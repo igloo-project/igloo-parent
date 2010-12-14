@@ -16,7 +16,7 @@
 	<description>Capitalisation des outils génériques pour la technologie Hibernate</description>
 
 	<dependencies>
-		<!-- Owsi-Core dependencies -->
+		<!-- OWSI Core dependencies -->
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-spring</artifactId>
@@ -145,5 +145,13 @@
 			<version>${owsi-core.c3p0.version}</version>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>jboss</id>
+			<name>JBoss Maven Repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
 
 </project>
