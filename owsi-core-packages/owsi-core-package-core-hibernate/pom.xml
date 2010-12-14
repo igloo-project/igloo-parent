@@ -17,11 +17,53 @@
 	<name>OWSI Core - Package - Core - Spring / Hibernate</name>
 	
 	<dependencies>
+	
+		<!-- OWSI Core -->
+	
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-spring</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-hibernate</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<!-- Other dependencies -->
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${owsi-core.spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${owsi-core.quartz.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${owsi-core.javax-mail.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${owsi-core.freemarker.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 </project>
