@@ -25,6 +25,42 @@
 		<module>owsi-core-example-export</module>
 	</modules>
 	
+	<!-- Project information -->
+
+	<organization>
+		<name>Open Wide</name>
+		<url>http://www.openwide.fr/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>gsmet</id>
+			<name>Guillaume Smet</name>
+			<email>guillaume.smet@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>lalmeras</id>
+			<name>Laurent Almeras</name>
+			<email>laurent.almeras@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>jgonzalez</id>
+			<name>Julien Gonzalez</name>
+			<email>julien.gonzalez@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+	</developers>
+	
 	<issueManagement>
 		<system>Trac</system>
 		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/report</url>
