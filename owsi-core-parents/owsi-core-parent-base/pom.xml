@@ -116,14 +116,6 @@
 		</pluginManagement>
 	</build>
 	
-	<repositories>
-		<repository>
-			<id>jboss</id>
-			<name>JBoss Maven Repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
-	
 	<!-- Project information -->
 
 	<organization>
