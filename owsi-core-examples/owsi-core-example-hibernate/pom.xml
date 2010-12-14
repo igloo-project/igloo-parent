@@ -37,16 +37,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>${owsi-core.postgresql.version}</version>
 		</dependency>
-		
-		<!--
-		Cache de second niveau géré via l'intermédiaire des outils fournis
-		par hibernate et délégué à EHCache
-		-->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-			<version>${owsi-core.hibernate-ehcache.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
