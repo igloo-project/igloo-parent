@@ -59,52 +59,16 @@
 				<prop key="net.sf.ehcache.configurationResourceName">/ehcache-hibernate.xml</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
-				<prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop>
-				<!--
-					En cas d'utilisation d'Hibernate Search (hibernate search est un outil permettant la mise à jour
-					et l'exploitation d'un index lucene à partir d'une base de données relationnelle.
-					<prop
-					key="hibernate.search.default.indexBase">${lucene.index.path}</prop>
-				-->
 			</props>
 		</property>
-		
 		<!-- Cette propriété indique les paquets contenant les entités -->
 		<property name="packagesToScan">
 			<list>
 				<value>fr.openwide.hibernate.*.business.*.model</value>
 			</list>
 		</property>
-		<!--
-			En cas d'utilisation d'hibernate search
-			<property name="eventListeners">
-				<map>
-					<entry key="post-insert">
-						<set>
-							<ref bean="fullTextIndexEventListener" />
-						</set>
-					</entry>
-					<entry key="post-update">
-						<set>
-							<ref bean="fullTextIndexEventListener" />
-						</set>
-					</entry>
-					<entry key="post-delete">
-						<set>
-							<ref bean="fullTextIndexEventListener" />
-						</set>
-					</entry>
-				</map>
-			</property>
-		-->
 	</bean>
-
-	<!--
-		En cas d'sutilisation d'hibernate search
-		<bean id="fullTextIndexEventListener"
-		class="org.hibernate.search.event.FullTextIndexEventListener" />
-	-->
-	
+		
 	<!-- Définition de la gestion des transactions -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
