@@ -19,6 +19,7 @@ package fr.openwide.core.hibernate.business.generic.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,11 +64,29 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		
 		int retriesCount = 0;
 		Class<?> clazz = getClass();
-		while(!(clazz.getGenericSuperclass() instanceof ParameterizedType) && (retriesCount < 5)) {
-			clazz = clazz.getSuperclass();
-			retriesCount ++;
+		
+		mainLoop: {
+			while(true) {
+				if (clazz.getGenericSuperclass() instanceof ParameterizedType) {
+					Type[] argumentTypes = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
+					
+					for (Type argumentType : argumentTypes) {
+						Class<?> argumentClass = (Class<?>) argumentType;
+						if (GenericEntity.class.isAssignableFrom(argumentClass)) {
+							objectClass = (Class<E>) argumentClass;
+							break mainLoop;
+						}
+					}
+				}
+				
+				clazz = clazz.getSuperclass();
+				retriesCount ++;
+				
+				if (retriesCount > 5) {
+					throw new IllegalArgumentException("Unable to find a generic type extending GenericEntity.");
+				}
+			}
 		}
-		objectClass = (Class<E>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[1];
 	}
 	
 	/**
