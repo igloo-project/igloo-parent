@@ -52,7 +52,7 @@
 		<owsi-core.opencsv.version>2.1</owsi-core.opencsv.version>
 		<owsi-core.freemarker.version>2.3.16</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
-		<owsi-core.poi.version>3.6</owsi-core.poi.version>
+		<owsi-core.poi.version>3.7</owsi-core.poi.version>
 		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.truezip.version>6.8.1</owsi-core.truezip.version>
