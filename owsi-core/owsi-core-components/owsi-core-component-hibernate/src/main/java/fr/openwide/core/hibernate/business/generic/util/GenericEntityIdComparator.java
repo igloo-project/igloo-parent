@@ -1,11 +1,14 @@
 package fr.openwide.core.hibernate.business.generic.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 
-public class GenericEntityIdComparator implements Comparator<GenericEntity<Integer, ?>> {
+public class GenericEntityIdComparator implements Comparator<GenericEntity<Integer, ?>>, Serializable {
 	
+	private static final long serialVersionUID = -9178542049081510289L;
+
 	public static Comparator<GenericEntity<Integer, ?>> INSTANCE = new GenericEntityIdComparator();
 
 	@Override
