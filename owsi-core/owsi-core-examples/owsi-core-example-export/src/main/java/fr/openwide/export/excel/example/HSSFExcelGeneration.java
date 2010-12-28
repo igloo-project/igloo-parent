@@ -15,7 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import fr.openwide.export.excel.example.export.PersonHSSFExport;
 import fr.openwide.export.excel.example.person.Person;
 
-public class HSSFExcelGeneration {
+public final class HSSFExcelGeneration {
 
 	private static final String XLS_FILE_NAME = "my_person_example.xls";
 
@@ -51,4 +51,8 @@ public class HSSFExcelGeneration {
 			LOGGER.error("I/O error", e);
 		}
 	}
+	
+	private HSSFExcelGeneration() {
+	}
+	
 }
