@@ -22,6 +22,7 @@
 		<module>owsi-core-component-spring</module>
 		<module>owsi-core-component-hibernate</module>
 		<module>owsi-core-component-export</module>
+		<module>owsi-core-component-wicket</module>
 	</modules>
 	
 	<!-- Project information -->
