@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import fr.openwide.export.excel.example.export.PersonXSSFExport;
 import fr.openwide.export.excel.example.person.Person;
 
-public class XSSFExcelGeneration {
+public final class XSSFExcelGeneration {
 
 	private static final String XLS_FILE_NAME = "my_person_example.xlsx";
 
@@ -50,5 +50,8 @@ public class XSSFExcelGeneration {
 		} catch (IOException e) {
 			LOGGER.error("I/O error", e);
 		}
+	}
+	
+	private XSSFExcelGeneration() {
 	}
 }

@@ -9,7 +9,7 @@ public class GenericEntityIdComparator implements Comparator<GenericEntity<Integ
 	
 	private static final long serialVersionUID = -9178542049081510289L;
 
-	public static Comparator<GenericEntity<Integer, ?>> INSTANCE = new GenericEntityIdComparator();
+	public static final Comparator<GenericEntity<Integer, ?>> INSTANCE = new GenericEntityIdComparator();
 
 	@Override
 	public int compare(GenericEntity<Integer, ?> o1, GenericEntity<Integer, ?> o2) {
