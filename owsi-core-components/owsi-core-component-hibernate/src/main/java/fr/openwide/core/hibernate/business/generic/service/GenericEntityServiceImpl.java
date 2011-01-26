@@ -105,7 +105,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	}
 	
 	@Override
-	public void delete(E entity) {
+	public void delete(E entity) throws ServiceException, SecurityServiceException {
 		genericDao.delete(entity);
 	}
 	
