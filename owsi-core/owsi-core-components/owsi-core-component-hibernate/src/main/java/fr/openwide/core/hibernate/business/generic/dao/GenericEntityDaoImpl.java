@@ -71,7 +71,14 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 					Type[] argumentTypes = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
 					
 					for (Type argumentType : argumentTypes) {
-						Class<?> argumentClass = (Class<?>) argumentType;
+						Class<?> argumentClass;
+						
+						if (argumentType instanceof ParameterizedType) {
+							argumentClass = (Class<?>) ((ParameterizedType) argumentType).getRawType();
+						} else {
+							argumentClass = (Class<?>) argumentType;
+						}
+						
 						if (GenericEntity.class.isAssignableFrom(argumentClass)) {
 							objectClass = (Class<E>) argumentClass;
 							break mainLoop;
