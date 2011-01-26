@@ -65,7 +65,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 * @param fieldValue valeur du champ
 	 * @return entité
 	 */
-	protected E getByField(String fieldName, String fieldValue) {
+	protected E getByField(String fieldName, Object fieldValue) {
 		return genericDao.getByField(fieldName, fieldValue);
 	}
 	
