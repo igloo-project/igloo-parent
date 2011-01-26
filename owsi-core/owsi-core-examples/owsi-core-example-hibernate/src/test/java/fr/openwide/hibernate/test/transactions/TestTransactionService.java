@@ -104,7 +104,7 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 	}
 	
 	@After
-	public void close() {
+	public void close() throws ServiceException, SecurityServiceException {
 		super.close();
 	}
 }

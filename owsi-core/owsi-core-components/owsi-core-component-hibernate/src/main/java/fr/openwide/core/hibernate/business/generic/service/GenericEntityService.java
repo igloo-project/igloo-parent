@@ -60,7 +60,7 @@ public interface GenericEntityService<K extends Serializable & Comparable<K>, E 
 	 * 
 	 * @param entity entité
 	 */
-	void delete(E entity);
+	void delete(E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
 	 * Rafraîchit l'entité depuis la base de données

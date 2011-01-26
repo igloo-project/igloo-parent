@@ -65,21 +65,21 @@ public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38Sprin
 		this.hibernateDataSource = dataSource;
 	}
 	
-	protected void cleanPersons() {
+	protected void cleanPersons() throws ServiceException, SecurityServiceException {
 		List<Person> persons = personService.list();
 		for (Person person : persons) {
 			personService.delete(person);
 		}
 	}
 	
-	protected void cleanLabels() {
+	protected void cleanLabels() throws ServiceException, SecurityServiceException {
 		List<Label> labels = labelService.list();
 		for (Label label : labels) {
 			labelService.delete(label);
 		}
 	}
 
-	protected void cleanAll() {
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanPersons();
 		cleanLabels();
 	}
@@ -90,7 +90,7 @@ public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38Sprin
 		cleanAll();
 	}
 	
-	public void close() {
+	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		
 		hibernateSessionUtils.closeSession();
