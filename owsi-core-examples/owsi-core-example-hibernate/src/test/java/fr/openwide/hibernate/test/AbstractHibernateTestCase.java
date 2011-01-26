@@ -77,28 +77,28 @@ public abstract class AbstractHibernateTestCase extends AbstractJUnit38SpringCon
 		return project;
 	}
 	
-	protected void cleanCompanies() {
+	protected void cleanCompanies() throws ServiceException, SecurityServiceException {
 		List<Company> companies = companyService.list();
 		for (Company company : companies) {
 			companyService.delete(company);
 		}
 	}
 	
-	protected void cleanPersons() {
+	protected void cleanPersons() throws ServiceException, SecurityServiceException {
 		List<Person> persons = personService.list();
 		for (Person person : persons) {
 			personService.delete(person);
 		}
 	}
 	
-	protected void cleanProjects() {
+	protected void cleanProjects() throws ServiceException, SecurityServiceException {
 		List<Project> projects = projectService.list();
 		for (Project project : projects) {
 			projectService.delete(project);
 		}
 	}
 
-	protected void cleanAll() {
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanProjects();
 		cleanCompanies();
 		cleanPersons();
@@ -110,7 +110,7 @@ public abstract class AbstractHibernateTestCase extends AbstractJUnit38SpringCon
 		cleanAll();
 	}
 	
-	public void close() {
+	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		
 		hibernateSessionUtils.closeSession();
