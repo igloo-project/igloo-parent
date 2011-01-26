@@ -163,7 +163,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 	}
 	
 	@After
-	public void close() {
+	public void close() throws ServiceException, SecurityServiceException {
 		super.close();
 	}
 }

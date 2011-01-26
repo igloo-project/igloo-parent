@@ -37,7 +37,7 @@ public class TestLabel extends AbstractHibernateCoreTestCase {
 	
 	@After
 	@Override
-	public void close() {
+	public void close() throws ServiceException, SecurityServiceException {
 		super.close();
 	}
 
