@@ -4,13 +4,13 @@ import fr.openwide.core.spring.util.StringUtils;
 
 public final class LuceneUtils {
 	
+	private static final int ENABLE_WILDCARD_MIN_CHARS = 2;
+	
 	public static String getAutocompleteQuery(String searchPattern) {
 		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
-		if(StringUtils.hasText(cleanSearchPattern)) {
-			StringBuilder autocompleteQuery = new StringBuilder();
-			
-			autocompleteQuery.append(cleanSearchPattern);
+		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= ENABLE_WILDCARD_MIN_CHARS) {
+			StringBuilder autocompleteQuery = new StringBuilder(cleanSearchPattern);
 			autocompleteQuery.append("*");
 			
 			cleanSearchPattern = autocompleteQuery.toString();
