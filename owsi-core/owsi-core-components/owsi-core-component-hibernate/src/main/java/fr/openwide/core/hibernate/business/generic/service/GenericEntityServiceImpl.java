@@ -22,6 +22,7 @@ import java.util.List;
 
 import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 
@@ -34,7 +35,15 @@ import fr.openwide.core.hibernate.exception.ServiceException;
  */
 public abstract class GenericEntityServiceImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
 		implements GenericEntityService<K, E> {
+	
+	/**
+	 * Classe de l'entité, déterminé à partir des paramètres generics.
+	 */
+	private Class<E> objectClass;
 
+	/**
+	 * DAO
+	 */
 	private GenericEntityDao<K, E> genericDao;
 
 	/**
@@ -42,8 +51,20 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 *
 	 * @param genericDao DAO associé au type d'entité
 	 */
+	@SuppressWarnings("unchecked")
 	public GenericEntityServiceImpl(GenericEntityDao<K, E> genericDao) {
 		this.genericDao = genericDao;
+		
+		this.objectClass = (Class<E>) GenericEntityUtils.getGenericEntityClassFromComponentDefinition(getClass());
+	}
+	
+	/**
+	 * Retourne la classe de l'entité.
+	 * 
+	 * @return classe de l'entité
+	 */
+	protected final Class<E> getObjectClass() {
+		return objectClass;
 	}
 
 	@Override
