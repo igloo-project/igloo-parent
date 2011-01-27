@@ -18,8 +18,6 @@
 package fr.openwide.core.hibernate.business.generic.dao;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +33,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
 
 /**
  * <p>Implémentation de {@link GenericEntityDao}</p>
@@ -62,38 +61,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	public GenericEntityDaoImpl(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);
 		
-		int retriesCount = 0;
-		Class<?> clazz = getClass();
-		
-		mainLoop: {
-			while(true) {
-				if (clazz.getGenericSuperclass() instanceof ParameterizedType) {
-					Type[] argumentTypes = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
-					
-					for (Type argumentType : argumentTypes) {
-						Class<?> argumentClass;
-						
-						if (argumentType instanceof ParameterizedType) {
-							argumentClass = (Class<?>) ((ParameterizedType) argumentType).getRawType();
-						} else {
-							argumentClass = (Class<?>) argumentType;
-						}
-						
-						if (GenericEntity.class.isAssignableFrom(argumentClass)) {
-							objectClass = (Class<E>) argumentClass;
-							break mainLoop;
-						}
-					}
-				}
-				
-				clazz = clazz.getSuperclass();
-				retriesCount ++;
-				
-				if (retriesCount > 5) {
-					throw new IllegalArgumentException("Unable to find a generic type extending GenericEntity.");
-				}
-			}
-		}
+		this.objectClass = (Class<E>) GenericEntityUtils.getGenericEntityClassFromComponentDefinition(getClass());
 	}
 	
 	/**
