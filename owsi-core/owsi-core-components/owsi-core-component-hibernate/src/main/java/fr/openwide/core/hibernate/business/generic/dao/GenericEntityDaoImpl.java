@@ -140,8 +140,8 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	 * @return liste d'entités
 	 */
 	@SuppressWarnings("unchecked")
-	public List<E> list(Class<? extends E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
-		List<E> entities = new ArrayList<E>();
+	public <T extends E> List<T> list(Class<T> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
+		List<T> entities = new ArrayList<T>();
 		try {
 			Criteria criteria = buildCriteria(objectClass, null, filter, order, limit, offset);
 			
