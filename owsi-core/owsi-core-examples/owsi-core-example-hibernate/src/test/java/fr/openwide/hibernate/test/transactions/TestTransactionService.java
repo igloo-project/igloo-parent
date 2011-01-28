@@ -10,7 +10,7 @@ import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.hibernate.example.business.company.model.Company;
 import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.example.business.util.service.ServiceExceptionServiceImpl;
+import fr.openwide.hibernate.example.business.util.service.ServiceExceptionService;
 import fr.openwide.hibernate.test.AbstractHibernateTestCase;
 
 
@@ -24,7 +24,7 @@ import fr.openwide.hibernate.test.AbstractHibernateTestCase;
 public class TestTransactionService extends AbstractHibernateTestCase {
 	
 	@Autowired
-	ServiceExceptionServiceImpl serviceExceptionService;
+	private ServiceExceptionService serviceExceptionService;
 	
 	@Test
 	public void testRollbackOnServiceException() throws ServiceException, SecurityServiceException {

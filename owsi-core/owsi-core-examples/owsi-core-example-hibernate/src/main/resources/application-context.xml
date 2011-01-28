@@ -76,7 +76,7 @@
 
 	<aop:config>
 		<aop:pointcut id="txPointCutDef"
-			expression="execution(* fr.openwide..hibernate..business..service.*ServiceImpl.*(..))" />
+			expression="this(fr.openwide.core.hibernate.business.generic.service.TransactionalAspectAwareService)" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCutDef" />
 	</aop:config>
 
