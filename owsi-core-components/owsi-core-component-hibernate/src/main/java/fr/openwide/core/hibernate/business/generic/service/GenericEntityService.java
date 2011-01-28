@@ -31,7 +31,8 @@ import fr.openwide.core.hibernate.exception.ServiceException;
  *
  * @param <T> type d'entité
  */
-public interface GenericEntityService<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
+public interface GenericEntityService<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+		extends TransactionalAspectAwareService {
 
 	/**
 	 * Crée l'entité dans la base de données. Mis à part dans les tests pour faire des sauvegardes simples, utiliser

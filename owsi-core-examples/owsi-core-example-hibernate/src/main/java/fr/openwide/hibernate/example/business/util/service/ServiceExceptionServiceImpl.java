@@ -16,34 +16,39 @@ import fr.openwide.hibernate.example.business.company.service.CompanyService;
  * @author Open Wide
  */
 @Service
-public class ServiceExceptionServiceImpl {
+public class ServiceExceptionServiceImpl implements ServiceExceptionService {
 	
 	@Autowired
 	private CompanyService companyService;
 
+	@Override
 	public void dontThrow() throws ServiceException, SecurityServiceException {
 		Company company = new Company("Company Test");
 		companyService.create(company);
 	}
 
+	@Override
 	public void throwServiceException() throws ServiceException, SecurityServiceException {
 		Company company = new Company("Company Test");
 		companyService.create(company);
 		throw new ServiceException();
 	}
 
+	@Override
 	public void throwServiceInheritedException() throws ServiceException, SecurityServiceException {
 		Company company = new Company("Company Test");
 		companyService.create(company);
 		throw new MyException() ;
 	}
 
+	@Override
 	public void throwUncheckedException() throws ServiceException, SecurityServiceException {
 		Company company = new Company("Company Test");
 		companyService.create(company);
 		throw new IllegalStateException();
 	}
 
+	@Override
 	public long size() {
 		return companyService.count();
 	}
