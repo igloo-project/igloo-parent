@@ -77,6 +77,7 @@
 
 		<!-- Spring dependencies -->
 		<!--
+		TODO: déterminer si l'utilisation du load time weaver est nécessaire
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-agent</artifactId>
@@ -199,8 +200,7 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
-				<!-- TODO: version à paramétrer -->
-				<version>2.0.0</version>
+				<version>${owsi-core.maven-processor-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>process</id>
@@ -221,8 +221,7 @@
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-jpamodelgen</artifactId>
-						<!-- TODO: version à paramétrer -->
-						<version>1.1.1.Final</version>
+						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
 						<scope>compile</scope>
 					</dependency>
 				</dependencies>
