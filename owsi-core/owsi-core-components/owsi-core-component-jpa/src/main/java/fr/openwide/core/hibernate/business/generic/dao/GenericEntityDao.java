@@ -27,6 +27,12 @@ package fr.openwide.core.hibernate.business.generic.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
+import javax.persistence.metamodel.SingularAttribute;
+
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 
 /**
@@ -34,7 +40,7 @@ import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
  *
  * @author Open Wide
  *
- * @param <T> type de l'entité à prendre en charge
+ * @param <E> type de l'entité à prendre en charge
  */
 public interface GenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
 
@@ -54,16 +60,6 @@ public interface GenericEntityDao<K extends Serializable & Comparable<K>, E exte
 	 * @return entité
 	 */
 	E getById(K id);
-	
-	/**
-	 * Retourne une entité à partir du nom d'un champ et de sa valeur. Il faut forcément que le champ fasse l'objet
-	 * d'une contrainte d'unicité.
-	 * 
-	 * @param fieldName nom du champ
-	 * @param fieldValue valeur du champ
-	 * @return entité
-	 */
-	E getByField(String fieldName, Object fieldValue);
 	
 	/**
 	 * Crée l'entité dans la base de données.
@@ -101,15 +97,6 @@ public interface GenericEntityDao<K extends Serializable & Comparable<K>, E exte
 	List<E> list();
 	
 	/**
-	 * Renvoie la liste des entités dont le champ donné en paramètre a la bonne valeur.
-	 * 
-	 * @param fieldName nom du champ
-	 * @param fieldValue valeur du champ
-	 * @return liste d'entités
-	 */
-	List<E> listByField(String fieldName, Object fieldValue);
-	
-	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.
 	 * 
 	 * @return nombre d'entités
@@ -117,17 +104,44 @@ public interface GenericEntityDao<K extends Serializable & Comparable<K>, E exte
 	Long count();
 	
 	/**
-	 * Compte le nombre d'entités de ce type présentes dans la base dont le champ donné en paramètre a la bonne valeur.
-	 * 
-	 * @param fieldName nom du champ
-	 * @param fieldValue valeur du champ
-	 * @return nombre d'entités
-	 */
-	Long countByField(String fieldName, Object fieldValue);
-	
-	/**
 	 * Flushe la session.
 	 */
 	void flush();
+
+	/**
+	 * Compte le nombre d'entités respectant la condition attribut = valeur
+	 * 
+	 * @param <V> le type de la valeur
+	 * @param attribute
+	 * @param fieldValue
+	 * @return le nombre d'entités
+	 */
+	<V> Long countByField(SingularAttribute<E, V> attribute, V fieldValue);
+
+	/**
+	 * Liste les entités respectant la condition de recherche attribut = valeur
+	 * 
+	 * @param <V> le type de la valeur
+	 * @param attribute
+	 * @param fieldValue
+	 * @return
+	 */
+	<V> List<E> listByField(SingularAttribute<E, V> attribute, V fieldValue);
+
+	/**
+	 * Obtient un objet par la condition attribut = valeur
+	 * 
+	 * @param <V>
+	 * @param attribute
+	 * @param fieldValue
+	 * @return
+	 * @throws NoResultException
+	 * @throws {@link NonUniqueResultException}
+	 */
+	<V> E getByField(SingularAttribute<E, V> attribute, V fieldValue);
+
+	<T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders);
+
+	Long count(Expression<Boolean> filter);
 
 }
