@@ -4,28 +4,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
-import org.hibernate.SessionFactory;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import fr.openwide.core.hibernate.exception.ServiceException;
 
 @Repository("hibernateSearchDao")
-public class HibernateSearchDaoImpl extends HibernateDaoSupport implements HibernateSearchDao {
+public class HibernateSearchDaoImpl implements HibernateSearchDao {
 	
-	@Autowired
-	public HibernateSearchDaoImpl(SessionFactory sessionFactory) {
-		setSessionFactory(sessionFactory);
+	@PersistenceContext
+	private EntityManager entityManager;
+	
+	public HibernateSearchDaoImpl() {
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
 		
-		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(clazz));
+		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz));
 	}
 	
 	@Override
@@ -44,14 +46,14 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 		}
 		
 		try {
-			FullTextSession fullTextSession = Search.getFullTextSession(getSession());
+			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 			
-			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextSession, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
+			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextEntityManager, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
 			
 			org.apache.lucene.search.Query luceneQuery = parser.parse(searchPattern);
-			org.hibernate.Query hibernateQuery = fullTextSession.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[0]));
+			FullTextQuery hibernateQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[0]));
 			
-			return (List<T>) hibernateQuery.list();
+			return (List<T>) hibernateQuery.getResultList();
 		} catch(ParseException e) {
 			throw new ServiceException(String.format("Error parsing request: %1$s", searchPattern), e);
 		} catch (Exception e) {
@@ -62,9 +64,9 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 	@Override
 	public void reindexAll() throws ServiceException {
 		try {
-			FullTextSession fullTextSession = Search.getFullTextSession(getSession());
+			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 			
-			fullTextSession.createIndexer()
+			fullTextEntityManager.createIndexer()
 					.batchSizeToLoadObjects(30)
 					.threadsForSubsequentFetching(8)
 					.threadsToLoadObjects(4)
@@ -75,11 +77,14 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 		}
 	}
 	
-	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextSession fullTextSession, String[] fields, Operator defaultOperator, Analyzer analyzer) {
+	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextEntityManager fullTextEntityManager, String[] fields, Operator defaultOperator, Analyzer analyzer) {
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_30, fields, analyzer);
 		parser.setDefaultOperator(defaultOperator);
 		
 		return parser;
 	}
 	
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
 }

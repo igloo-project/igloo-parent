@@ -22,15 +22,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
@@ -43,9 +43,12 @@ import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
  * @param <T> type de l'entité
  */
 public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-		extends HibernateDaoSupport implements GenericEntityDao<K, E> {
+		implements GenericEntityDao<K, E> {
 	
 	protected static final String SQL_LIKE_WILDCARD = "%";
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 	
 	/**
 	 * Classe de l'entité, déterminé à partir des paramètres generics.
@@ -55,12 +58,10 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	/**
 	 * Constructeur.
 	 *
-	 * @param sessionFactory session factory Hibernate injectée par Spring
+	 * @param entityManagerFactory entity manager factory Hibernate injectée par Spring
 	 */
 	@SuppressWarnings("unchecked")
-	public GenericEntityDaoImpl(SessionFactory sessionFactory) {
-		setSessionFactory(sessionFactory);
-		
+	public GenericEntityDaoImpl() {
 		this.objectClass = (Class<E>) GenericEntityUtils.getGenericEntityClassFromComponentDefinition(getClass());
 	}
 	
@@ -73,148 +74,175 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		return objectClass;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public E getEntity(Class<? extends E> clazz, K id) {
-		return (E) getSession().get(clazz, id);
+		return (E) getEntityManager().find(clazz, id);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public E getById(K id) {
-		return (E) getSession().get(getObjectClass(), id);
+		return (E) getEntityManager().find(getObjectClass(), id);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public E getByField(String fieldName, Object fieldValue) {
-		return (E) getSession().createCriteria(getObjectClass()).add(Restrictions.eq(fieldName, fieldValue)).uniqueResult();
+	public <V> E getByField(SingularAttribute<E, V> attribute, V fieldValue) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<E> criteria = builder.createQuery(getObjectClass());
+		Root<E> root = criteria.from(getObjectClass());
+		criteria.where(builder.equal(root.get(attribute), fieldValue));
+		return (E) buildTypedQuery(criteria, null, null).getSingleResult();
 	}
 	
 	@Override
 	public void update(E entity) {
-		getSession().update(entity);
+		//TODO: http://blog.xebia.com/2009/03/23/jpa-implementation-patterns-saving-detached-entities/
 	}
 	
 	@Override
 	public void save(E entity) {
-		getSession().save(entity);
+		getEntityManager().persist(entity);
 	}
 	
 	@Override
 	public void delete(E entity) {
-		getSession().delete(entity);
+		getEntityManager().remove(entity);
 	}
 	
 	@Override
 	public E refresh(E entity) {
-		getSession().refresh(entity);
+		getEntityManager().refresh(entity);
 		
 		return entity;
 	}
 	
 	@Override
 	public void flush() {
-		getSession().flush();
+		getEntityManager().flush();
 	}
 	
 	@Override
 	public List<E> list() {
-		return list(getObjectClass(), null, null, null, null);
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<E> criteria = builder.createQuery(getObjectClass());
+		rootCriteriaQuery(builder, criteria, objectClass);
+		return getEntityManager().createQuery(criteria).getResultList();
 	}
 	
 	@Override
-	public List<E> listByField(String fieldName, Object fieldValue) {
-		Criterion filter = Restrictions.eq(fieldName, fieldValue);
-		return list(getObjectClass(), filter, null, null, null);
+	public <V> List<E> listByField(SingularAttribute<E, V> attribute, V fieldValue) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<E> criteria = builder.createQuery(getObjectClass());
+		
+		Root<E> root = rootCriteriaQuery(builder, criteria, getObjectClass());
+		criteria.where(builder.equal(root.get(attribute), fieldValue));
+		
+		return buildTypedQuery(criteria, null, null).getResultList();
 	}
 	
-	/**
-	 * Retourne une liste d'entités correspondant aux paramètres. N'a pas vocation à être appelée directement.
-	 * 
-	 * @param objectClass classe de l'entité
-	 * @param filter filtre Hibernate
-	 * @param order ordre de tri
-	 * @param limit limit
-	 * @param offset offset
-	 * @return liste d'entités
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends E> List<T> list(Class<T> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
+	@Override
+	public <T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(objectClass);
+		rootCriteriaQuery(builder, criteria, objectClass);
+		filterCriteriaQuery(criteria, filter);
+		TypedQuery<T> query = buildTypedQuery(criteria, limit, offset);
+		
 		List<T> entities = new ArrayList<T>();
-		try {
-			Criteria criteria = buildCriteria(objectClass, null, filter, order, limit, offset);
-			
-			entities = criteria.list();
-			
-			if(order == null) {
-				Collections.sort(entities);
-			}
-			
-			return entities;
-		} catch(DataAccessException e) {
-			return entities;
+		entities = query.getResultList();
+		
+		if(orders == null || orders.length == 0) {
+			Collections.sort(entities);
 		}
+		
+		return entities;
 	}
 	
 	@Override
 	public Long count() {
-		return count(getObjectClass(), null, null, null, null);
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<E> root = rootCriteriaQuery(builder, criteria, getObjectClass());
+		
+		criteria.select(builder.count(root));
+		
+		return buildTypedQuery(criteria, null, null).getSingleResult();
 	}
 	
 	@Override
-	public Long countByField(String fieldName, Object fieldValue) {
-		Criterion filter = Restrictions.eq(fieldName, fieldValue);
-		return count(getObjectClass(), filter, null, null, null);
+	public <V> Long countByField(SingularAttribute<E, V> attribute, V fieldValue) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		
+		Root<E> root = rootCriteriaQuery(builder, criteria, getObjectClass());
+		criteria.select(builder.count(root));
+		
+		Expression<Boolean> filter = builder.equal(root.get(attribute), fieldValue);
+		filterCriteriaQuery(criteria, filter);
+		
+		return buildTypedQuery(criteria, null, null).getSingleResult();
+	}
+	
+	@Override
+	public Long count(Expression<Boolean> filter) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		
+		Root<E> root = rootCriteriaQuery(builder, criteria, getObjectClass());
+		criteria.select(builder.count(root));
+		
+		filterCriteriaQuery(criteria, filter);
+		
+		return buildTypedQuery(criteria, null, null).getSingleResult();
 	}
 	
 	/**
-	 * Compte le nombre d'entités correspondant aux paramètres. N'a pas vocation à être appelée directement.
+	 * Crée la requête et applique les conditions de limite / offset et retourne la {@link TypedQuery}
+	 * correspondante.
 	 * 
-	 * @param objectClass classe de l'entité
-	 * @param filter filtre Hibernate
-	 * @param order ordre de tri
-	 * @param limit limit
-	 * @param offset offset
-	 * @return nombre d'entités
+	 * @param <T> le type de l'entité retournée
+	 * @param criteria
+	 * @param limit null si pas de limite
+	 * @param offset null si pas d'offset
+	 * @return la {@link TypedQuery} avec limite et offset le cas échéant
 	 */
-	public Long count(Class<? extends E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
-		Criteria criteria = buildCriteria(objectClass, Projections.rowCount(), filter, order, limit, offset);
+	protected <T> TypedQuery<T> buildTypedQuery(CriteriaQuery<T> criteria, Integer limit, Integer offset) {
+		TypedQuery<T> query = getEntityManager().createQuery(criteria);
+		if (offset != null) {
+			query.setFirstResult(offset);
+		}
+		if (limit != null) {
+			query.setMaxResults(limit);
+		}
+		return query;
 		
-		Long count = (Long) criteria.uniqueResult();
-		
-		return count;
 	}
 	
 	/**
-	 * Construit un criteria Hibernate à partir de l'ensemble des paramètres.
+	 * Applique le filtre sur le criteria si non nul
 	 * 
-	 * @param objectClass classe de l'entité
-	 * @param projection projection (au sens de l'API Criteria Hibernate)
-	 * @param filter filtre Hibernate
-	 * @param order ordre de tri
-	 * @param limit limit
-	 * @param offset offset
-	 * @return criteria
+	 * @param criteria
+	 * @param filter
 	 */
-	protected Criteria buildCriteria(Class<? extends E> objectClass, Projection projection, Criterion filter, Order order, Integer limit, Integer offset) {
-		Criteria criteria = getSession().createCriteria(objectClass);
-		if(projection != null) {
-			criteria.setProjection(projection);
+	protected void filterCriteriaQuery(CriteriaQuery<?> criteria, Expression<Boolean> filter) {
+		if (filter != null) {
+			criteria.where(filter);
 		}
-		if(filter != null) {
-			criteria.add(filter);
-		}
-		if(limit != null) {
-			criteria.setMaxResults(limit);
-		}
-		if(offset != null) {
-			criteria.setFirstResult(offset);
-		}
-		if(order != null) {
-			criteria.addOrder(order);
-		}
-		return criteria;
 	}
 	
+	/**
+	 * Equivalent à select Object from Object. Retourne le root lié à Object permettant ensuite de réaliser des requêtes
+	 * sur les attributs de Object.
+	 * 
+	 * @param builder
+	 * @param criteria
+	 * @return le Root créé sur la requête
+	 */
+	protected <T extends E> Root<T> rootCriteriaQuery(CriteriaBuilder builder, CriteriaQuery<?> criteria, Class<T> objectClass) {
+		Root<T> root = criteria.from(objectClass);
+		return root;
+	}
+	
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
 }
