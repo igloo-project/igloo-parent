@@ -20,6 +20,8 @@ package fr.openwide.core.hibernate.business.generic.service;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.metamodel.SingularAttribute;
+
 import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
@@ -82,11 +84,11 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 * d'une contrainte d'unicité. Cette méthode ne doit pas être utilisée directement et droit être wrappée (par
 	 * exemple via un getByPropriete(valeur)).
 	 * 
-	 * @param fieldName nom du champ
+	 * @param fieldName le champ sur lequel la condition est appliquée
 	 * @param fieldValue valeur du champ
 	 * @return entité
 	 */
-	protected E getByField(String fieldName, Object fieldValue) {
+	protected <V> E getByField(SingularAttribute<E, V> fieldName, V fieldValue) {
 		return genericDao.getByField(fieldName, fieldValue);
 	}
 	
@@ -148,11 +150,11 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	/**
 	 * Renvoie la liste des entités dont le champ donné en paramètre a la bonne valeur.
 	 * 
-	 * @param fieldName nom du champ
+	 * @param fieldName le champ sur lequel appliquer la condition
 	 * @param fieldValue valeur du champ
 	 * @return liste d'entités
 	 */
-	protected List<E> listByField(String fieldName, Object fieldValue) {
+	protected <V> List<E> listByField(SingularAttribute<E, V> fieldName, V fieldValue) {
 		return genericDao.listByField(fieldName, fieldValue);
 	}
 	

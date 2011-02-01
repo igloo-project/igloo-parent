@@ -17,6 +17,8 @@
 
 package fr.openwide.core.test.hibernate.example.business.person.service;
 
+import javax.persistence.metamodel.SingularAttribute;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +29,18 @@ import fr.openwide.core.test.hibernate.example.business.person.model.Person;
 @Service("personService")
 public class PersonServiceImpl extends GenericEntityServiceImpl<Integer, Person>
 		implements PersonService {
-
+	
+	@Autowired
+	private PersonDao personDao;
+	
 	@Autowired
 	public PersonServiceImpl(PersonDao personDao) {
 		super(personDao);
+	}
+	
+	@Override
+	public Long count(SingularAttribute<Person, String> attribute, String value) {
+		return personDao.countByField(attribute, value);
 	}
 
 }

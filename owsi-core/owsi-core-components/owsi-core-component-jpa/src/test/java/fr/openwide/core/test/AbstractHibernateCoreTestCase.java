@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,7 +33,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.util.HibernateSessionUtils;
+import fr.openwide.core.hibernate.util.EntityManagerUtils;
 import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
 import fr.openwide.core.test.hibernate.example.business.label.model.Label;
 import fr.openwide.core.test.hibernate.example.business.label.service.LabelService;
@@ -50,7 +52,7 @@ public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38Sprin
 	OwPropertyPlaceholderConfigurer configurer;
 	
 	@Autowired
-	protected HibernateSessionUtils hibernateSessionUtils;
+	protected EntityManagerUtils entityManagerUtils;
 	
 	@Autowired
 	protected PersonService personService;
@@ -84,15 +86,17 @@ public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38Sprin
 		cleanLabels();
 	}
 	
+	@Before
 	public void init() throws ServiceException, SecurityServiceException {
-		hibernateSessionUtils.initSession();
+		entityManagerUtils.openEntityManager();
 		
 		cleanAll();
 	}
 	
+	@After
 	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		
-		hibernateSessionUtils.closeSession();
+		entityManagerUtils.closeEntityManager();
 	}
 }

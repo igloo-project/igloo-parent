@@ -19,8 +19,6 @@ package fr.openwide.core.test.person;
 
 import java.util.List;
 
-import org.hibernate.AssertionFailure;
-import org.hibernate.UnresolvableObjectException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +29,7 @@ import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.test.AbstractHibernateCoreTestCase;
 import fr.openwide.core.test.hibernate.example.business.person.dao.PersonDao;
 import fr.openwide.core.test.hibernate.example.business.person.model.Person;
+import fr.openwide.core.test.hibernate.example.business.person.model.Person_;
 import fr.openwide.core.test.hibernate.example.business.person.service.PersonService;
 
 public class TestGenericDao extends AbstractHibernateCoreTestCase {
@@ -47,7 +46,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 		personService.create(person);
 
 		Person person1 = (Person) personDao.getEntity(Person.class, person.getId());
-		Person person2 = personDao.getByField("lastName", "Lastname");
+		Person person2 = personDao.getByField(Person_.lastName, "Lastname");
 		Person person3 = personDao.getById(person.getId());
 
 		assertTrue(person.equals(person1));
@@ -94,7 +93,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 		try {
 			personDao.refresh(person1);
 			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
-		} catch (AssertionFailure e) {
+		} catch (IllegalArgumentException e) {
 		}
 
 		personService.create(person1);
@@ -103,7 +102,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 		try {
 			personDao.refresh(person1);
 			fail("Faire un refresh sur un objet non persisté doit lever une exception");
-		} catch (UnresolvableObjectException e) {
+		} catch (IllegalArgumentException e) {
 		}
 	}
 
@@ -112,7 +111,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 		List<Person> emptyList = personDao.list();
 		assertEquals(0, emptyList.size());
 		
-		List<Person> emptyListByField = personDao.listByField("lastName", "AAAA");
+		List<Person> emptyListByField = personDao.listByField(Person_.lastName, "AAAA");
 		assertEquals(0, emptyListByField.size());
 		
 		Person person1 = new Person("Firstname1", "Lastname1");
@@ -132,7 +131,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 		assertTrue(list.contains(person3));
 		assertTrue(list.contains(person4));
 		
-		List<Person> listByField = personDao.listByField("lastName", "AAAA");
+		List<Person> listByField = personDao.listByField(Person_.lastName, "AAAA");
 		
 		assertEquals(2, listByField.size());
 		assertTrue(listByField.contains(person2));
@@ -142,7 +141,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 	@Test
 	public void testCounts() throws ServiceException, SecurityServiceException {
 		assertEquals(new Long(0), personDao.count());
-		assertEquals(new Long(0), personDao.countByField("lastName", "AAAA"));
+		assertEquals(new Long(0), personDao.countByField(Person_.lastName, "AAAA"));
 
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
@@ -154,7 +153,7 @@ public class TestGenericDao extends AbstractHibernateCoreTestCase {
 		personService.create(person4);
 
 		assertEquals(new Long(4), personDao.count());
-		assertEquals(new Long(2), personDao.countByField("lastName", "AAAA"));
+		assertEquals(new Long(2), personDao.countByField(Person_.lastName, "AAAA"));
 	}
 	
 	@Before

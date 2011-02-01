@@ -19,7 +19,7 @@ public class TestLabel extends AbstractHibernateCoreTestCase {
 		Label label2 = new Label("label2", "value2");
 		labelService.create(label2);
 		
-		assertTrue(labelService.count() == 2);
+		assertEquals(2, (long) labelService.count());
 		
 		assertEquals(label1, labelService.getById("label1"));
 		assertEquals(-1, label1.compareTo(label2));

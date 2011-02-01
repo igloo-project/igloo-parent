@@ -19,9 +19,8 @@ package fr.openwide.core.test.person;
 
 import java.util.List;
 
-import org.hibernate.AssertionFailure;
-import org.hibernate.TransientObjectException;
-import org.hibernate.UnresolvableObjectException;
+import junit.framework.AssertionFailedError;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,7 @@ import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.test.AbstractHibernateCoreTestCase;
 import fr.openwide.core.test.hibernate.example.business.person.model.Person;
+import fr.openwide.core.test.hibernate.example.business.person.model.Person_;
 import fr.openwide.core.test.hibernate.example.business.person.service.PersonService;
 
 public class TestGenericService extends AbstractHibernateCoreTestCase {
@@ -91,7 +91,7 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		try {
 			personService.update(person1);
 			fail("Faire un update sur un objet non persisté doit lever une exception");
-		} catch (TransientObjectException e) {	
+		} catch (AssertionFailedError e) {	
 		}
 	}
 
@@ -111,7 +111,7 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		try {
 			personService.refresh(person1);
 			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
-		} catch (AssertionFailure e) {
+		} catch (IllegalArgumentException e) {
 		}
 
 		personService.create(person1);
@@ -120,7 +120,7 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		try {
 			personService.refresh(person1);
 			fail("Faire un refresh sur un objet non persisté doit lever une exception");
-		} catch (UnresolvableObjectException e) {
+		} catch (IllegalArgumentException e) {
 		}
 	}
 
@@ -129,11 +129,25 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 
+		personService.count();
 		Person person1 = personService.getEntity(Person.class, person.getId());
 		Person person2 = personService.getById(person.getId());
 
 		assertTrue(person.equals(person1));
 		assertTrue(person.equals(person2));
+		
+		cleanAll();
+		assertEquals(new Long(0), personService.count());
+		
+		person = new Person("Firstname", "Lastname");
+		personService.create(person);
+		cleanAll();
+		person1 = new Person("Firstname1", "Lastname1");
+		personService.create(person1);
+		person = new Person("Firstname", "Lastname");
+		personService.create(person);
+		
+		assertEquals(new Long(2), personService.count());
 	}
 	
 	@Test
@@ -153,12 +167,12 @@ public class TestGenericService extends AbstractHibernateCoreTestCase {
 		
 		assertTrue(list.contains(person));
 		assertTrue(list.contains(person1));
+		assertEquals(1, (long) personService.count(Person_.lastName, "Lastname"));
+		assertEquals(1, (long) personService.count(Person_.lastName, "Lastname1"));
 	}
 	
 	@Test
 	public void testCount() throws ServiceException, SecurityServiceException {
-		cleanAll();
-		
 		assertEquals(new Long(0), personService.count());
 		
 		Person person = new Person("Firstname", "Lastname");

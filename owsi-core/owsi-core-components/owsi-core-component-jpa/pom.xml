@@ -9,11 +9,11 @@
 	</parent>
 
 	<groupId>fr.openwide.core.components</groupId>
-	<artifactId>owsi-core-component-hibernate</artifactId>
+	<artifactId>owsi-core-component-jpa</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	
-	<name>OWSI Core - Component - Hibernate</name>
-	<description>Capitalisation des outils génériques pour la technologie Hibernate</description>
+	<name>OWSI Core - Component - JPA</name>
+	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<dependencies>
 		<!-- OWSI Core dependencies -->
@@ -29,11 +29,11 @@
 			<artifactId>postgresql</artifactId>
 			<version>${owsi-core.postgresql.version}</version>
 		</dependency>
-		
+	
 		<!-- Hibernate dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${owsi-core.hibernate-core.version}</version>
 			<exclusions>
 				<exclusion>
@@ -76,6 +76,14 @@
 		</dependency>
 
 		<!-- Spring dependencies -->
+		<!--
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-agent</artifactId>
+			<scope>test</scope>
+		</dependency> 
+		-->
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -177,6 +185,51 @@
 			<version>${owsi-core.ehcache.version}</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArgument>-proc:none</compilerArgument>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<!-- TODO: version à paramétrer -->
+				<version>2.0.0</version>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>generate-sources</phase>
+					</execution>
+					<execution>
+						<id>process-test</id>
+						<goals>
+							<goal>process-test</goal>
+						</goals>
+						<phase>generate-test-sources</phase>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-jpamodelgen</artifactId>
+						<!-- TODO: version à paramétrer -->
+						<version>1.1.1.Final</version>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		
+	</build>
 	
 	<repositories>
 		<repository>
