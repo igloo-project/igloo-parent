@@ -44,13 +44,16 @@
 		p:preferredTestQuery="SELECT 1" p:testConnectionOnCheckin="true"
 		p:idleConnectionTestPeriod="300" destroy-method="close" />
 
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="owsi-hibernate.datasource.hibernate" />
-		<property name="hibernateProperties">
+		<property name="jpaVendorAdapter" ref="jpaAdapter" />
+		<property name="persistenceUnitName" value="testPU" />
+		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">${db.dialect}</prop>
-				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">false</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
@@ -61,18 +64,18 @@
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
 			</props>
 		</property>
-		<!-- Cette propriété indique les paquets contenant les entités -->
-		<property name="packagesToScan">
-			<list>
-				<value>fr.openwide.hibernate.*.business.*.model</value>
-			</list>
-		</property>
 	</bean>
-		
+	
+	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="database" value="POSTGRESQL" />
+	</bean>
+	
+	<!-- <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" /> -->
+	
 	<!-- Définition de la gestion des transactions -->
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
-		p:sessionFactory-ref="sessionFactory" />
+		class="org.springframework.orm.jpa.JpaTransactionManager"
+		p:entityManagerFactory-ref="entityManagerFactory" />
 
 	<aop:config>
 		<aop:pointcut id="txPointCutDef"

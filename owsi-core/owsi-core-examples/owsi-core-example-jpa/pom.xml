@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>fr.openwide.core.examples</groupId>
-	<artifactId>owsi-core-example-jpa</artifactId>
+	<artifactId>owsi-core-example-hibernate</artifactId>
 	<version>0.4-SNAPSHOT</version>
 
 	<name>OWSI Core - Example - Hibernate</name>
@@ -27,7 +27,7 @@
 		
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-component-jpa</artifactId>
+			<artifactId>owsi-core-component-hibernate</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

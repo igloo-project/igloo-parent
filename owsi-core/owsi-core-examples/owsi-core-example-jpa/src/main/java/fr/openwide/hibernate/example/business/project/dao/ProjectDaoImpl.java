@@ -10,8 +10,7 @@ import fr.openwide.hibernate.example.business.project.model.Project;
 @Repository("projectDao")
 public class ProjectDaoImpl extends GenericEntityDaoImpl<Integer, Project> implements ProjectDao {
 
-	@Autowired
-	public ProjectDaoImpl(SessionFactory sessionFactory) {
-		super(sessionFactory);
+	public ProjectDaoImpl() {
+		super();
 	}
 }

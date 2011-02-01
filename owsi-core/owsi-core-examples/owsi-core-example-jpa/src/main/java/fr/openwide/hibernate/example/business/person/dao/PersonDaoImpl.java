@@ -10,8 +10,7 @@ import fr.openwide.hibernate.example.business.person.model.Person;
 @Repository("personDao")
 public class PersonDaoImpl extends GenericEntityDaoImpl<Integer, Person> implements PersonDao {
 
-	@Autowired
-	public PersonDaoImpl(SessionFactory sessionFactory) {
-		super(sessionFactory);
+	public PersonDaoImpl() {
+		super();
 	}
 }

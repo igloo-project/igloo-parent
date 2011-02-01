@@ -75,8 +75,8 @@ public class TestTransactionService extends AbstractHibernateTestCase {
 		companyService.create(company);
 		
 		//On ouvre une nouvelle session pour que les objets ne soient plus liés à la session
-		hibernateSessionUtils.closeSession();
-		hibernateSessionUtils.initSession();
+		entityManagerUtils.closeEntityManager();
+		entityManagerUtils.openEntityManager();
 		
 		//On recharge seulement la Company
 		company = companyService.getById(company.getId());
