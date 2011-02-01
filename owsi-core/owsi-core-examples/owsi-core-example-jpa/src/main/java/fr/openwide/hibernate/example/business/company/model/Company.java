@@ -3,6 +3,7 @@ package fr.openwide.hibernate.example.business.company.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,9 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.hibernate.example.business.person.model.Person;
@@ -30,53 +28,48 @@ public class Company extends GenericEntity<Integer, Company> {
 	private String name;
 
 	@OneToMany(mappedBy = "company")
-	@Cascade({})
 	private List<Person> directors = new LinkedList<Person>();
 	
 	@OneToMany
 	@JoinTable(name="company_employees", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees_id"))
-	@Cascade({})
 	private List<Person> employees = new LinkedList<Person>();
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name="company_employees1", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees1_id"))
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private List<Person> employees1 = new LinkedList<Person>();
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name="company_employees2", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees2_id"))
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<Person> employees2 = new LinkedList<Person>();
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinTable(name="company_employees3", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees3_id"))
-	@Cascade({org.hibernate.annotations.CascadeType.REMOVE})
 	private List<Person> employees3 = new LinkedList<Person>();
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinTable(name="company_employees4", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees4_id"))
-	@Cascade({org.hibernate.annotations.CascadeType.DELETE})
+	//TODO: inutile, pas de distinction delete / remove
+	//@Cascade({org.hibernate.annotations.CascadeType.DELETE})
 	private List<Person> employees4 = new LinkedList<Person>();
 	
 	/**
 	 * {@link CascadeType#DELETE_ORPHAN} a été remplacé par {@link OneToMany#orphanRemoval()} ou
 	 * {@link OneToOne#orphanRemoval()}
 	 */
-	@OneToMany(orphanRemoval=true)
+	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinTable(name="company_employees5", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees5_id"))
-	@Cascade({})
 	private List<Person> employees5 = new LinkedList<Person>();
-	
-	@OneToMany
+
+	//TODO: on n'utilise pas merge dans nos développements
+	@OneToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name="company_employees6", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees6_id"))
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Person> employees6 = new LinkedList<Person>();
 	
 	@OneToMany(mappedBy = "company")

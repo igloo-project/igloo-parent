@@ -1,5 +1,7 @@
 package fr.openwide.hibernate.example.business.company.dao;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,8 +12,7 @@ import fr.openwide.hibernate.example.business.company.model.Company;
 @Repository("companyDao")
 public class CompanyDaoImpl extends GenericEntityDaoImpl<Integer, Company> implements CompanyDao {
 
-	@Autowired
-	public CompanyDaoImpl(SessionFactory sessionFactory) {
-		super(sessionFactory);
+	public CompanyDaoImpl() {
+		super();
 	}
 }
