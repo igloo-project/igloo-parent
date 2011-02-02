@@ -1,12 +1,12 @@
-package fr.openwide.core.hibernate.business.generic.listener;
+package fr.openwide.core.jpa.business.generic.listener;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 public class GenericEntityNotifier<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>, L extends GenericEntityListener<K, E>> {
 

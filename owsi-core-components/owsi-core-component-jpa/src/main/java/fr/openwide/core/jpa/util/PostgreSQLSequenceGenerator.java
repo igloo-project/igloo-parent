@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.util;
+package fr.openwide.core.jpa.util;
 
 import java.util.Properties;
 

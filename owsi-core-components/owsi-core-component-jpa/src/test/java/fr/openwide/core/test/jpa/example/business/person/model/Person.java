@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.test.hibernate.example.business.person.model;
+package fr.openwide.core.test.jpa.example.business.person.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
 public class Person extends GenericEntity<Integer, Person> {

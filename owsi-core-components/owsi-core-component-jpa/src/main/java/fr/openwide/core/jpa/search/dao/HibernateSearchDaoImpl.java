@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.search.dao;
+package fr.openwide.core.jpa.search.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import org.hibernate.search.jpa.Search;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements HibernateSearchDao {

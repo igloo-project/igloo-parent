@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.exception;
+package fr.openwide.core.jpa.exception;
 
 /**
  * <p>Exception générée lorsqu'un service refuse l'accès aux données à un

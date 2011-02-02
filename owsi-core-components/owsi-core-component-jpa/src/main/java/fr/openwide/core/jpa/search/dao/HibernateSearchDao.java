@@ -1,10 +1,10 @@
-package fr.openwide.core.hibernate.search.dao;
+package fr.openwide.core.jpa.search.dao;
 
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 
 public interface HibernateSearchDao {

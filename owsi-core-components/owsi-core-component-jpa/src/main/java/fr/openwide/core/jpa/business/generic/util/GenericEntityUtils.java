@@ -1,9 +1,9 @@
-package fr.openwide.core.hibernate.business.generic.util;
+package fr.openwide.core.jpa.business.generic.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public final class GenericEntityUtils {
 
