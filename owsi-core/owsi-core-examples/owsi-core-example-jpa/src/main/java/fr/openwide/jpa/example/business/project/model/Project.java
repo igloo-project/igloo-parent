@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.example.business.project.model;
+package fr.openwide.jpa.example.business.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,10 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.spring.util.StringUtils;
-import fr.openwide.hibernate.example.business.company.model.Company;
-import fr.openwide.hibernate.example.business.person.model.Person;
+import fr.openwide.jpa.example.business.company.model.Company;
+import fr.openwide.jpa.example.business.person.model.Person;
 
 @Entity
 public class Project extends GenericEntity<Integer, Project> {
