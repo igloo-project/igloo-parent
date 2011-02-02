@@ -22,6 +22,7 @@
 		<module>owsi-core-package-core-spring-security</module>
 
 		<module>owsi-core-package-web-wicket</module>
+		<module>owsi-core-package-web-wicket-app</module>
 		<module>owsi-core-package-web-jersey</module>
 		<module>owsi-core-package-web-spring-security</module>
 	</modules>
