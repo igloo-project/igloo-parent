@@ -20,6 +20,7 @@
 	
 	<modules>
 		<module>owsi-core-example-hibernate</module>
+		<module>owsi-core-example-jpa</module>
 		<module>owsi-core-example-spring-security-web</module>
 		<module>owsi-core-example-springmvc</module>
 		<module>owsi-core-example-export</module>
