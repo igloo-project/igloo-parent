@@ -13,8 +13,8 @@
 	<artifactId>owsi-core-example-jpa</artifactId>
 	<version>0.4-SNAPSHOT</version>
 
-	<name>OWSI Core - Example - Hibernate</name>
-	<description>Capitalisation OWSI pour la technologie Hibernate</description>
+	<name>OWSI Core - Example - JPA</name>
+	<description>Capitalisation OWSI pour la technologie JPA</description>
 
 
 	<dependencies>
