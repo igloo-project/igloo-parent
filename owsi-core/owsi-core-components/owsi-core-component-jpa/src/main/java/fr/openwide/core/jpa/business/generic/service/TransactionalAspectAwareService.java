@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.business.generic.service;
+package fr.openwide.core.jpa.business.generic.service;
 
 /**
  * Indique que le service doit être rendu transactionnel via un aspect.
  * 
  * Cela permet de simplifier la configuration Spring de la partie transactionnelle car
  * il suffit alors de déclarer le pointcut de l'aspect sur
- * this(fr.openwide.core.hibernate.business.generic.service.TransactionalAspectAwareService)
+ * this(fr.openwide.core.jpa.business.generic.service.TransactionalAspectAwareService)
  */
 public interface TransactionalAspectAwareService {
 

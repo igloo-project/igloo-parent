@@ -1,9 +1,9 @@
-package fr.openwide.core.hibernate.business.generic.util;
+package fr.openwide.core.jpa.business.generic.util;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public class GenericEntityIdComparator implements Comparator<GenericEntity<Integer, ?>>, Serializable {
 	

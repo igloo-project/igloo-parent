@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.search.service;
+package fr.openwide.core.jpa.search.service;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.apache.lucene.analysis.Analyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.search.dao.HibernateSearchDao;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.search.dao.HibernateSearchDao;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 @Service("hibernateSearchService")

@@ -22,7 +22,7 @@
  *
  * @param <T> type de l'entité à prendre en charge
  */
-package fr.openwide.core.hibernate.business.generic.dao;
+package fr.openwide.core.jpa.business.generic.dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,7 +33,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 /**
  * <p>DAO racine pour la gestion des entités.</p>

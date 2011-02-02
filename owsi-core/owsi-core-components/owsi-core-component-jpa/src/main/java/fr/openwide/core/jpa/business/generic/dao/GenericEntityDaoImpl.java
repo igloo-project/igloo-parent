@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.business.generic.dao;
+package fr.openwide.core.jpa.business.generic.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 
 /**
  * <p>Implémentation de {@link GenericEntityDao}</p>

@@ -24,15 +24,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.test.AbstractHibernateCoreTestCase;
-import fr.openwide.core.test.hibernate.example.business.person.dao.PersonDao;
-import fr.openwide.core.test.hibernate.example.business.person.model.Person;
-import fr.openwide.core.test.hibernate.example.business.person.model.Person_;
-import fr.openwide.core.test.hibernate.example.business.person.service.PersonService;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.test.AbstractJpaCoreTestCase;
+import fr.openwide.core.test.jpa.example.business.person.dao.PersonDao;
+import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.jpa.example.business.person.model.Person_;
+import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
-public class TestGenericDao extends AbstractHibernateCoreTestCase {
+public class TestGenericDao extends AbstractJpaCoreTestCase {
 
 	@Autowired
 	PersonService personService;
