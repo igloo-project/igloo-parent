@@ -21,13 +21,18 @@
 		<owsi-core.hibernate-core.version>3.6.0.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.1.1.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
-		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.2.0</owsi-core.ehcache.version>
+		
+		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
+		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
+		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
 		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.8.0.GA</owsi-core.javassist.version>
 		<owsi-core.asm.version>3.1</owsi-core.asm.version>
+		
+		<owsi-core.bindgen.version>2.21.OWSI2</owsi-core.bindgen.version>
 		
 		<owsi-core.spring-security.version>3.0.5.RELEASE</owsi-core.spring-security.version>
 		
@@ -57,6 +62,8 @@
 		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.truezip.version>6.8.2</owsi-core.truezip.version>
+		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
+		<owsi-core.jfreechart.version>1.0.13</owsi-core.jfreechart.version>
 		
 		<owsi-core.junit.version>4.8.2</owsi-core.junit.version>
 		
@@ -68,6 +75,7 @@
 		<owsi-core.taglibs-standard.version>1.1.2</owsi-core.taglibs-standard.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
 		<owsi-core.wicket.version>1.4.15</owsi-core.wicket.version>
+		<owsi-core.wiquery.version>1.2.1</owsi-core.wiquery.version>
 		
 		<owsi-core.maven-compiler-plugin.version>2.3.2</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.7.2</owsi-core.maven-surefire-plugin.version>
@@ -76,8 +84,6 @@
 		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.2</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-processor-plugin.version>2.0.0</owsi-core.maven-processor-plugin.version>
-		
-		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 	</properties>
 	
 	<build>
