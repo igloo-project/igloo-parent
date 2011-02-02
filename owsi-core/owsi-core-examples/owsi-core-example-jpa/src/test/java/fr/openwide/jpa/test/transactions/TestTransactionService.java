@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.test.transactions;
+package fr.openwide.jpa.test.transactions;
 
 import org.hibernate.LazyInitializationException;
 import org.junit.After;
@@ -6,12 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.hibernate.example.business.company.model.Company;
-import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.example.business.util.service.ServiceExceptionService;
-import fr.openwide.hibernate.test.AbstractHibernateTestCase;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.jpa.example.business.company.model.Company;
+import fr.openwide.jpa.example.business.person.model.Person;
+import fr.openwide.jpa.example.business.util.service.ServiceExceptionService;
+import fr.openwide.jpa.test.AbstractJpaTestCase;
 
 
 /**
@@ -21,7 +21,7 @@ import fr.openwide.hibernate.test.AbstractHibernateTestCase;
  *
  * @author Open Wide
  */
-public class TestTransactionService extends AbstractHibernateTestCase {
+public class TestTransactionService extends AbstractJpaTestCase {
 	
 	@Autowired
 	private ServiceExceptionService serviceExceptionService;

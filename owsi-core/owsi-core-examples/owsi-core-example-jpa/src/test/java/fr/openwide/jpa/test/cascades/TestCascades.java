@@ -1,26 +1,20 @@
-package fr.openwide.hibernate.test.cascades;
+package fr.openwide.jpa.test.cascades;
 
-import javax.persistence.FlushModeType;
-
-import org.hibernate.TransientObjectException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import org.springframework.orm.jpa.JpaSystemException;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.util.EntityManagerUtils;
-import fr.openwide.hibernate.example.business.company.model.Company;
-import fr.openwide.hibernate.example.business.company.service.CompanyService;
-import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.example.business.person.service.PersonService;
-import fr.openwide.hibernate.example.business.project.service.ProjectService;
-import fr.openwide.hibernate.test.AbstractHibernateTestCase;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.jpa.example.business.company.model.Company;
+import fr.openwide.jpa.example.business.company.service.CompanyService;
+import fr.openwide.jpa.example.business.person.model.Person;
+import fr.openwide.jpa.example.business.person.service.PersonService;
+import fr.openwide.jpa.example.business.project.service.ProjectService;
+import fr.openwide.jpa.test.AbstractJpaTestCase;
 
-public class TestCascades extends AbstractHibernateTestCase {
+public class TestCascades extends AbstractJpaTestCase {
 	
 	@Autowired
 	protected CompanyService companyService;

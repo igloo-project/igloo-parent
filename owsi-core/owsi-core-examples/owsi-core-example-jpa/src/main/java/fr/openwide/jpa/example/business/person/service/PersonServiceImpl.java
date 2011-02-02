@@ -1,14 +1,14 @@
-package fr.openwide.hibernate.example.business.person.service;
+package fr.openwide.jpa.example.business.person.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityServiceImpl;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.hibernate.example.business.person.dao.PersonDao;
-import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.example.business.project.model.Project;
+import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.jpa.example.business.person.dao.PersonDao;
+import fr.openwide.jpa.example.business.person.model.Person;
+import fr.openwide.jpa.example.business.project.model.Project;
 
 @Service("personService")
 public class PersonServiceImpl extends GenericEntityServiceImpl<Integer, Person> implements PersonService {
