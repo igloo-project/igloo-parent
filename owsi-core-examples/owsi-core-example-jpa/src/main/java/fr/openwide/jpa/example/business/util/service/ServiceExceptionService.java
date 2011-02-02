@@ -1,8 +1,8 @@
-package fr.openwide.hibernate.example.business.util.service;
+package fr.openwide.jpa.example.business.util.service;
 
-import fr.openwide.core.hibernate.business.generic.service.TransactionalAspectAwareService;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.business.generic.service.TransactionalAspectAwareService;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 public interface ServiceExceptionService extends TransactionalAspectAwareService {
 

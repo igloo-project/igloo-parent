@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.test;
+package fr.openwide.jpa.test;
 
 import java.util.List;
 
@@ -14,16 +14,16 @@ import org.springframework.test.context.junit38.AbstractJUnit38SpringContextTest
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.util.EntityManagerUtils;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
-import fr.openwide.hibernate.example.business.company.model.Company;
-import fr.openwide.hibernate.example.business.company.service.CompanyService;
-import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.example.business.person.service.PersonService;
-import fr.openwide.hibernate.example.business.project.model.Project;
-import fr.openwide.hibernate.example.business.project.service.ProjectService;
+import fr.openwide.jpa.example.business.company.model.Company;
+import fr.openwide.jpa.example.business.company.service.CompanyService;
+import fr.openwide.jpa.example.business.person.model.Person;
+import fr.openwide.jpa.example.business.person.service.PersonService;
+import fr.openwide.jpa.example.business.project.model.Project;
+import fr.openwide.jpa.example.business.project.service.ProjectService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
@@ -31,7 +31,7 @@ import fr.openwide.hibernate.example.business.project.service.ProjectService;
 		"classpath:database-initialization-context.xml",
 		"classpath:application-context.xml"
 })
-public abstract class AbstractHibernateTestCase extends AbstractJUnit38SpringContextTests {
+public abstract class AbstractJpaTestCase extends AbstractJUnit38SpringContextTests {
 	
 	@Autowired
 	OwPropertyPlaceholderConfigurer configurer;

@@ -1,4 +1,4 @@
-package fr.openwide.hibernate.example.business.company.model;
+package fr.openwide.jpa.example.business.company.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,9 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.hibernate.example.business.person.model.Person;
-import fr.openwide.hibernate.example.business.project.model.Project;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.jpa.example.business.person.model.Person;
+import fr.openwide.jpa.example.business.project.model.Project;
 
 @Entity
 public class Company extends GenericEntity<Integer, Company> {
