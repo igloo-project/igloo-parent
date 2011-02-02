@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import fr.openwide.core.hibernate.business.generic.util.GenericEntityIdComparator;
-import fr.openwide.core.test.AbstractHibernateCoreTestCase;
-import fr.openwide.core.test.hibernate.example.business.person.model.Person;
+import fr.openwide.core.jpa.business.generic.util.GenericEntityIdComparator;
+import fr.openwide.core.test.AbstractJpaCoreTestCase;
+import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
 public class TestGenericEntityIdComparator extends
-		AbstractHibernateCoreTestCase {
+		AbstractJpaCoreTestCase {
 
 	@Test
 	public void testCompare() {

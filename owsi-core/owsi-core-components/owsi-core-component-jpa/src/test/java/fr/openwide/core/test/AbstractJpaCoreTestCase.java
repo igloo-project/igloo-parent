@@ -31,14 +31,14 @@ import org.springframework.test.context.junit38.AbstractJUnit38SpringContextTest
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.util.EntityManagerUtils;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
-import fr.openwide.core.test.hibernate.example.business.label.model.Label;
-import fr.openwide.core.test.hibernate.example.business.label.service.LabelService;
-import fr.openwide.core.test.hibernate.example.business.person.model.Person;
-import fr.openwide.core.test.hibernate.example.business.person.service.PersonService;
+import fr.openwide.core.test.jpa.example.business.label.model.Label;
+import fr.openwide.core.test.jpa.example.business.label.service.LabelService;
+import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
@@ -46,7 +46,7 @@ import fr.openwide.core.test.hibernate.example.business.person.service.PersonSer
 		"classpath*:database-initialization-context.xml",
 		"classpath*:application-context.xml"
 })
-public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38SpringContextTests {
+public abstract class AbstractJpaCoreTestCase extends AbstractJUnit38SpringContextTests {
 	
 	@Autowired
 	OwPropertyPlaceholderConfigurer configurer;

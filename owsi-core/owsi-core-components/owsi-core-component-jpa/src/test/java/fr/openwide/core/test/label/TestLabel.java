@@ -4,12 +4,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.test.AbstractHibernateCoreTestCase;
-import fr.openwide.core.test.hibernate.example.business.label.model.Label;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.test.AbstractJpaCoreTestCase;
+import fr.openwide.core.test.jpa.example.business.label.model.Label;
 
-public class TestLabel extends AbstractHibernateCoreTestCase {
+public class TestLabel extends AbstractJpaCoreTestCase {
 	
 	@Test
 	public void testLabel() throws ServiceException, SecurityServiceException {

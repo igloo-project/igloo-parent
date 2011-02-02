@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.business.generic.model;
+package fr.openwide.core.jpa.business.generic.model;
 
 import java.io.Serializable;
 import java.text.Collator;

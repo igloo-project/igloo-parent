@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.business.generic.service;
+package fr.openwide.core.jpa.business.generic.service;
 
 import java.io.Serializable;
 import java.util.List;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 /**
  * <p>Service racine pour la gestion des entités.</p>

@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.business.generic.service;
+package fr.openwide.core.jpa.business.generic.service;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao;
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.business.generic.util.GenericEntityUtils;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.business.generic.dao.GenericEntityDao;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 /**
  * <p>Implémentation de {@link GenericEntityService}</p>

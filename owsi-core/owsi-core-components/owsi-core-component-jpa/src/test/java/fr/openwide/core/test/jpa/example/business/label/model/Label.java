@@ -1,9 +1,9 @@
-package fr.openwide.core.test.hibernate.example.business.label.model;
+package fr.openwide.core.test.jpa.example.business.label.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
 public class Label extends GenericEntity<String, Label> {

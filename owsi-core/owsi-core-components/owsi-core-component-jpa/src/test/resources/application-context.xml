@@ -75,7 +75,7 @@
 
 	<aop:config>
 		<aop:pointcut id="txPointCutDef"
-			expression="this(fr.openwide.core.hibernate.business.generic.service.TransactionalAspectAwareService)" />
+			expression="this(fr.openwide.core.jpa.business.generic.service.TransactionalAspectAwareService)" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCutDef" />
 	</aop:config>
 
@@ -85,7 +85,7 @@
 			<tx:method name="list*" read-only="true" />
 			<tx:method name="search*" read-only="true" />
 			<tx:method name="*" read-only="false"
-				rollback-for="fr.openwide.core.hibernate.exception.ServiceException" />
+				rollback-for="fr.openwide.core.jpa.exception.ServiceException" />
 		</tx:attributes>
 	</tx:advice>
 </beans>

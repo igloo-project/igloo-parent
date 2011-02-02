@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.test.hibernate.example.business.person.service;
+package fr.openwide.core.test.jpa.example.business.person.service;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
-import fr.openwide.core.test.hibernate.example.business.person.model.Person;
+import fr.openwide.core.jpa.business.generic.service.GenericEntityService;
+import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
 public interface PersonService extends GenericEntityService<Integer, Person> {
 
