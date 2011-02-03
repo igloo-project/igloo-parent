@@ -7,11 +7,11 @@ public class GenericPanel<T> extends Panel {
 
 	private static final long serialVersionUID = 7229728038574137817L;
 
-	public GenericPanel(String id, IModel<T> model) {
+	public GenericPanel(String id, IModel<? extends T> model) {
 		super(id, model);
 	}
 	
-	public final void setModel(IModel<T> model) {
+	public final void setModel(IModel<? extends T> model) {
 		super.setDefaultModel(model);
 	}
 	
