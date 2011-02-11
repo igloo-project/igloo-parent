@@ -49,6 +49,12 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		return id;
 	}
 	
+	@Override
+	public void setObject(E object) {
+		id = object.getId();
+		super.setObject(object);
+	}
+	
 	protected void setService(GenericEntityService<K, E> service) {
 		this.service = service;
 	}
