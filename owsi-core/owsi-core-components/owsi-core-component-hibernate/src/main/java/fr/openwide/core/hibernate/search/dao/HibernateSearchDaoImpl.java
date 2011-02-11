@@ -29,6 +29,14 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 	}
 	
 	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, analyzerName);
+	}
+	
+	@Override
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
@@ -37,8 +45,12 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 	}
 	
 	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(analyzerName));
+	}
+	
 	@SuppressWarnings("unchecked")
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer) throws ServiceException {
+	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
 			return Collections.emptyList();
 		}
