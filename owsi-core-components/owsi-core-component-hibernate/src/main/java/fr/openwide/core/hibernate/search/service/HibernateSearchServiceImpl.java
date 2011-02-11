@@ -2,7 +2,6 @@ package fr.openwide.core.hibernate.search.service;
 
 import java.util.List;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +21,23 @@ public class HibernateSearchServiceImpl implements HibernateSearchService {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer) throws ServiceException {
-		return hibernateSearchDao.search(classes, fields, searchPattern, analyzer);
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		return hibernateSearchDao.search(clazz, fields, searchPattern, analyzerName);
+	}
+	
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName);
 	}
 	
 	@Override
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern));
+	}
+	
+	@Override
+	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName);
 	}
 	
 	@Override
