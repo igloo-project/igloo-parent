@@ -15,17 +15,18 @@
 	<name>OWSI Core - Example - Spring Security</name>
 
 	<dependencies>
+		
+		<!-- OWSI Core -->
+		
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-web-spring-security</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+	
 		<!-- Spring Security -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>${owsi-core.spring-security.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${owsi-core.spring-security.version}</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
@@ -33,28 +34,39 @@
 		</dependency>
 
 		<!-- Spring MVC -->
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${owsi-core.spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${owsi-core.spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Miscellaneous -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>${owsi-core.commons-logging.version}</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${owsi-core.jstl.version}</version>
 		</dependency>
+		
 	</dependencies>
 	
 </project>

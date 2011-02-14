@@ -18,8 +18,8 @@ package fr.openwide.springmvc.web.business.myentity.validator;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 
 import fr.openwide.springmvc.web.business.common.validator.AbstractValidator;
@@ -32,7 +32,7 @@ import fr.openwide.springmvc.web.business.myentity.model.MyEntityForm;
  */
 public class MyEntityValidator extends AbstractValidator {
 
-	private static final Log LOGGER = LogFactory.getLog(MyEntityValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MyEntityValidator.class);
 
 	@Override
 	public boolean supports(Class<?> clazz) {

@@ -15,7 +15,18 @@
 	<name>OWSI Core - Component - Commons</name>
 	<description>Capitalisation pour les outils communs sur la plateforme OWSI</description>
 
-	<dependencies>		
+	<dependencies>
+	
+		<!-- OWSI Core -->
+		
+		<dependency>
+			<groupId>fr.openwide.core.dependencies</groupId>
+			<artifactId>owsi-core-dependency-core-logging</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!-- Apache Commons -->
 		
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -29,6 +40,8 @@
 			<version>${owsi-core.commons-io.version}</version>
 		</dependency>
 		
+		<!-- TrueZIP -->
+		
 		<dependency>
 			<groupId>de.schlichtherle</groupId>
 			<artifactId>truezip</artifactId>
@@ -36,6 +49,7 @@
 		</dependency>
 		
 		<!-- Test dependencies -->
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
