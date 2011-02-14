@@ -25,6 +25,7 @@
 		<module>owsi-core-component-export</module>
 		<module>owsi-core-component-wicket</module>
 		<module>owsi-core-component-wicket-more</module>
+		<module>owsi-core-component-hibernate-more</module>
 	</modules>
 	
 	<!-- Project information -->
