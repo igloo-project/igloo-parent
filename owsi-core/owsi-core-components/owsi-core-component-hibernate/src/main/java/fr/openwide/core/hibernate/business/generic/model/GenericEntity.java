@@ -32,7 +32,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
-	protected static final Collator DEFAULT_STRING_COLLATOR = Collator.getInstance(Locale.FRENCH);
+	public static final Collator DEFAULT_STRING_COLLATOR = Collator.getInstance(Locale.FRENCH);
 	
 	static {
 		DEFAULT_STRING_COLLATOR.setStrength(Collator.PRIMARY);
