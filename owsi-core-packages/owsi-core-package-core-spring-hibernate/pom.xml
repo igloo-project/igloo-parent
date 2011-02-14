@@ -41,12 +41,6 @@
 		<!-- Other dependencies -->
 		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>${owsi-core.quartz.version}</version>
