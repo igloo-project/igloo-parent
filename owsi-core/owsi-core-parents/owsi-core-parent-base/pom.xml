@@ -97,6 +97,7 @@
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
 						<encoding>UTF-8</encoding>
+						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>
