@@ -19,8 +19,8 @@ package fr.openwide.springmvc.web.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -31,7 +31,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class MyInterceptor extends HandlerInterceptorAdapter {
 
-	private static final Log LOGGER = LogFactory.getLog(MyInterceptor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MyInterceptor.class);
 	
 	/*
 	 * Pratique pour l'interception d'exceptions remontées par les vues car

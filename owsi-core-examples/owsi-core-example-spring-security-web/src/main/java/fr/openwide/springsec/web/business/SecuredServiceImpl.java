@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service("securedService")
 public class SecuredServiceImpl implements SecuredService {
 
-	private static final Log LOGGER = LogFactory.getLog(SecuredServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecuredServiceImpl.class);
 	
 	public SecuredServiceImpl() {
 	}

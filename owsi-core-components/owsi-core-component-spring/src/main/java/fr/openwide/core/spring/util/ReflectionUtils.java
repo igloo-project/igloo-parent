@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
@@ -14,7 +14,7 @@ import org.springframework.core.type.filter.TypeFilter;
 
 public final class ReflectionUtils {
 	
-	private static final Log LOGGER = LogFactory.getLog(ReflectionUtils.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtils.class);
 
 	public static <T> Set<Class<? extends T>> findAssignableClasses(String rootPackage, Class<T> clazz) {
 		return findClasses(rootPackage, clazz, new AssignableTypeFilter(clazz));

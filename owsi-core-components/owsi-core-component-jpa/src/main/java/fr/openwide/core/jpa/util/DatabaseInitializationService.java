@@ -27,6 +27,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +43,7 @@ import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
  * @author Open Wide
  */
 public class DatabaseInitializationService {
-	private static final Log LOGGER = LogFactory.getLog(DatabaseInitializationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInitializationService.class);
 
 	@Autowired
 	private OwPropertyPlaceholderConfigurer configurer;

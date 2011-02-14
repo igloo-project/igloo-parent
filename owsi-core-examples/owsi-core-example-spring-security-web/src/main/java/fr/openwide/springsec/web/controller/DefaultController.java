@@ -2,8 +2,8 @@ package fr.openwide.springsec.web.controller;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ import fr.openwide.springsec.web.business.SecuredService;
 @Controller
 public class DefaultController {
 	
-	private static final Log LOGGER = LogFactory.getLog(DefaultController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultController.class);
 	
 	@Autowired
 	protected SecuredService securedService;

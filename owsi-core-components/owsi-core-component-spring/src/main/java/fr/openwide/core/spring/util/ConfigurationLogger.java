@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.context.ApplicationContext;
@@ -40,7 +40,7 @@ import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
  */
 public class ConfigurationLogger implements ApplicationListener<ContextRefreshedEvent> {
 	
-	private static final Log LOGGER = LogFactory.getLog(ConfigurationLogger.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLogger.class);
 	
 	private static final String FORCE_LOG_METHOD = "getPropertyAsString";
 	
