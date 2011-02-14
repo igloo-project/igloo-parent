@@ -14,7 +14,7 @@
 	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<name>OWSI Core - Dependency - Core - Spring</name>
+	<name>OWSI Core - Dependency - Core - Logging</name>
 	
 	<dependencies>
 		
