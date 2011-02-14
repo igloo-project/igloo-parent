@@ -20,6 +20,7 @@ package fr.openwide.core.hibernate.more.business.generic.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.openwide.core.hibernate.more.business.generic.dao.GenericListItemDao;
@@ -36,9 +37,9 @@ public class GenericListItemServiceImpl implements GenericListItemService {
 	protected GenericListItemDao genericListItemDao;
 	
 	@Autowired
-	public GenericListItemServiceImpl(GenericListItemDao governisListItemDao) {
+	public GenericListItemServiceImpl(@Qualifier("genericListItemDao") GenericListItemDao genericListItemDao) {
 		super();
-		this.genericListItemDao = governisListItemDao;
+		this.genericListItemDao = genericListItemDao;
 	}
 	
 	@Override
