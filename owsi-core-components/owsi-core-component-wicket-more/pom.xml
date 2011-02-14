@@ -25,7 +25,7 @@
 		
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-component-hibernate</artifactId>
+			<artifactId>owsi-core-component-hibernate-more</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
