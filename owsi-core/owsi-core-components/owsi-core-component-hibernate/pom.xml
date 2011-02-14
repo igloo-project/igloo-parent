@@ -16,14 +16,24 @@
 	<description>Capitalisation des outils génériques pour la technologie Hibernate</description>
 
 	<dependencies>
+	
 		<!-- OWSI Core dependencies -->
+		
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-spring</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.dependencies</groupId>
+			<artifactId>owsi-core-dependency-core-logging</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
 		<!-- Database dependencies -->
+		
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -31,6 +41,7 @@
 		</dependency>
 		
 		<!-- Hibernate dependencies -->
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -76,59 +87,53 @@
 		</dependency>
 
 		<!-- Spring dependencies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${owsi-core.spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${owsi-core.spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-jdbc</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
-		<!-- Test dependencies -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${owsi-core.junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${owsi-core.spring.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- Logging dependencies -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${owsi-core.slf4j.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${owsi-core.slf4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${owsi-core.log4j.version}</version>
-		</dependency>
-
 		<!-- Misc dependencies -->
+		
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -176,6 +181,23 @@
 			<artifactId>ehcache-core</artifactId>
 			<version>${owsi-core.ehcache.version}</version>
 		</dependency>
+		
+		<!-- Test dependencies -->
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi-core.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${owsi-core.spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 	
 	<repositories>

@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.openwide.export.excel.example.export.PersonXSSFExport;
 import fr.openwide.export.excel.example.person.Person;
@@ -19,7 +19,7 @@ public final class XSSFExcelGeneration {
 
 	private static final String XLS_FILE_NAME = "my_person_example.xlsx";
 
-	private static final Log LOGGER = LogFactory.getLog(XSSFExcelGeneration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XSSFExcelGeneration.class);
 
 	public static void main(String[] args) {
 		List<String> columns = new ArrayList<String>();

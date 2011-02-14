@@ -27,12 +27,12 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.taglibs.standard.resources.Resources;
 import org.apache.taglibs.standard.tag.common.core.ImportSupport;
 import org.apache.taglibs.standard.tag.common.core.ParamParent;
 import org.apache.taglibs.standard.tag.common.core.ParamSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
@@ -60,7 +60,7 @@ public class UrlTag extends BodyTagSupport implements ParamParent,
 		TryCatchFinally {
 	private static final long serialVersionUID = 1L;
 
-	private final Log logger = LogFactory.getLog(getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UrlTag.class);
 
 	/**
 	 * Default separator for splitting an arguments String: a comma (",")
@@ -180,13 +180,13 @@ public class UrlTag extends BodyTagSupport implements ParamParent,
 			}
 			return doStartTagInternal();
 		} catch (JspException ex) {
-			logger.error(ex.getMessage(), ex);
+			LOGGER.error(ex.getMessage(), ex);
 			throw ex;
 		} catch (RuntimeException ex) {
-			logger.error(ex.getMessage(), ex);
+			LOGGER.error(ex.getMessage(), ex);
 			throw ex;
 		} catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
+			LOGGER.error(ex.getMessage(), ex);
 			throw new JspTagException(ex.getMessage(), ex);
 		}
 	}

@@ -17,6 +17,15 @@
 	<name>OWSI Core - Package - Core - Spring Security</name>
 	
 	<dependencies>
+	
+		<!-- OWSI Core -->
+		
+		<dependency>
+			<groupId>fr.openwide.core.dependencies</groupId>
+			<artifactId>owsi-core-dependency-core-spring</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
 		
 		<!-- Spring Security -->
 		
@@ -67,42 +76,6 @@
 		</dependency>
 		
 		<!-- Dependencies -->
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${owsi-core.spring.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
