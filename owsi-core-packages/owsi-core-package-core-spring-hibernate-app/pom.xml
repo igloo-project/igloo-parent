@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>owsi-core-packages</artifactId>
+		<groupId>fr.openwide.core.packages</groupId>
+		<version>0.4-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>fr.openwide.core.packages</groupId>
+	<artifactId>owsi-core-package-core-spring-hibernate-app</artifactId>
+	<version>0.4-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<name>OWSI Core - Package - Core - Spring / Hibernate Application</name>
+	
+	<dependencies>
+	
+		<!-- OWSI Core -->
+	
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-core-spring-hibernate</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-core-spring-security</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+	
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-hibernate-more</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+</project>
