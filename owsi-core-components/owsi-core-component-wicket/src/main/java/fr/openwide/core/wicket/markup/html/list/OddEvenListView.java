@@ -10,7 +10,7 @@ public abstract class OddEvenListView<T> extends ListView<T> {
 
 	private static final long serialVersionUID = -7408299272975588957L;
 	
-	public OddEvenListView(final String id, final IModel<List<T>> model) {
+	public OddEvenListView(final String id, final IModel<? extends List<T>> model) {
 		super(id, model);
 	}
 
