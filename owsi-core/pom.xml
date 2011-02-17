@@ -11,11 +11,11 @@
 	<description>Capitalisation pour diverses technologies couramment utilisées sur les projets OWSI</description>
 	
 	<modules>
+		<module>owsi-core-dependencies</module>
 		<module>owsi-core-parents</module>
 		<module>owsi-core-components</module>
 		<module>owsi-core-examples</module>
 		<module>owsi-core-packages</module>
-		<module>owsi-core-dependencies</module>
 	</modules>
 	
 	<!-- Project information -->
