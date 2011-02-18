@@ -71,7 +71,7 @@ public class DateEditor extends PropertyEditorSupport {
 			 * de souplesse avec le message d'erreur. Mais on préfère réserver
 			 * le validateur pour les vérifications sur l'objet peuplé.
 			 */
-			throw new ConversionFailedException(TypeDescriptor.forObject(new String()), TypeDescriptor.forObject(new Date()), text, e);
+			throw new ConversionFailedException(TypeDescriptor.forObject(""), TypeDescriptor.forObject(new Date()), text, e);
 		}
 		setValue(date);
 	}
