@@ -18,7 +18,6 @@
 package fr.openwide.core.jpa.business.generic.dao;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -147,8 +146,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		filterCriteriaQuery(criteria, filter);
 		TypedQuery<T> query = buildTypedQuery(criteria, limit, offset);
 		
-		List<T> entities = new ArrayList<T>();
-		entities = query.getResultList();
+		List<T> entities = query.getResultList();
 		
 		if(orders == null || orders.length == 0) {
 			Collections.sort(entities);

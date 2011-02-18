@@ -35,10 +35,10 @@ public abstract class AbstractWicketApplication extends WebApplication {
 		mountApplicationPages();
 	}
 	
-	private final void mountCommonPages() {
+	private void mountCommonPages() {
 	}
 	
-	private final void mountCommonResources() {
+	private void mountCommonResources() {
 		mountStaticResourceDirectory("/common", AbstractWebPageTemplate.class);
 	}
 	

@@ -51,7 +51,7 @@ public class HibernateSearchDaoImpl implements HibernateSearchDao {
 			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextEntityManager, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
 			
 			org.apache.lucene.search.Query luceneQuery = parser.parse(searchPattern);
-			FullTextQuery hibernateQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[0]));
+			FullTextQuery hibernateQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[classes.size()]));
 			
 			return (List<T>) hibernateQuery.getResultList();
 		} catch(ParseException e) {

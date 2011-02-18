@@ -32,11 +32,11 @@ public class Css3PieHeaderContributor extends TextTemplateHeaderContributor {
 		super(template, variablesModel);
 	}
 	
-	private static final TextTemplate getTemplate() {
+	private static TextTemplate getTemplate() {
 		return new PackagedTextTemplate(Css3PieHeaderContributor.class, CSS_TEMPLATE_FILENAME);
 	}
 	
-	private static final IModel<Map<String, Object>> getVariablesModel(String[] stylesWithCss3Properties) {
+	private static IModel<Map<String, Object>> getVariablesModel(String[] stylesWithCss3Properties) {
 		Map<String, Object> variables = new MiniMap<String, Object>(2);
 		variables.put(STYLES_VARIABLE, StringUtils.arrayToCommaDelimitedString(stylesWithCss3Properties));
 		variables.put(PIE_HTC_URL_VARIABLE, RequestCycle.get().urlFor(new ResourceReference(Css3PieHeaderContributor.class, PIE_HTC_FILENAME)).toString());
