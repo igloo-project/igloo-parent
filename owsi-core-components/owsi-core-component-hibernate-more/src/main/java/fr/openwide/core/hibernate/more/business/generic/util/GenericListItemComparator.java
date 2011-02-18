@@ -1,12 +1,15 @@
 package fr.openwide.core.hibernate.more.business.generic.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
 
-public class GenericListItemComparator implements Comparator<GenericListItem<?>> {
+public class GenericListItemComparator implements Comparator<GenericListItem<?>>, Serializable {
 	
+	private static final long serialVersionUID = 2641214465049416075L;
+
 	public static final Comparator<GenericListItem<?>> INSTANCE = new GenericListItemComparator();
 	
 	@Override
