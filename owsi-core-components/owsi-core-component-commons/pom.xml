@@ -40,6 +40,12 @@
 			<version>${owsi-core.commons-io.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-exec</artifactId>
+			<version>${owsi-core.commons-exec.version}</version>
+		</dependency>
+		
 		<!-- TrueZIP -->
 		
 		<dependency>
