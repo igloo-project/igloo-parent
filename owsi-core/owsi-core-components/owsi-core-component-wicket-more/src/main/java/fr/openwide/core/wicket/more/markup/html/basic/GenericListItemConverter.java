@@ -20,12 +20,20 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 import java.util.Locale;
 
 import org.apache.wicket.util.convert.converters.AbstractConverter;
+import org.bindgen.Binding;
 
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.spring.util.SpringBeanUtils;
 
 class GenericListItemConverter extends AbstractConverter {
 
 	private static final long serialVersionUID = -6934415690685574154L;
+	
+	private Binding<String> binding;
+
+	public GenericListItemConverter(Binding<String> binding) {
+		this.binding = binding;
+	}
 
 	@Override
 	public Object convertToObject(String value, Locale locale) {
@@ -37,7 +45,7 @@ class GenericListItemConverter extends AbstractConverter {
 		if (value == null) {
 			return "";
 		} else {
-			return ((GenericListItem<?>) value).getLabel();
+			return SpringBeanUtils.getBeanWrapper(value).getPropertyValue(binding.getPath()).toString();
 		}
 	}
 
