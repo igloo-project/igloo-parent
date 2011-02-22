@@ -60,6 +60,16 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 		}
 	}
 	
+	@Override
+	public void removeFile(String fileKey, String extension) {
+		for (ImageThumbnailFormat thumbnailFormat : thumbnailFormats) {
+			if (!getThumbnailFile(fileKey, extension, thumbnailFormat).delete()) {
+				LOGGER.error("Error removing thumbnail file " + fileKey + " " + extension + " " + thumbnailFormat);
+			}
+		}
+		super.removeFile(fileKey, extension);
+	}
+
 	private File getImageMagickConvertBinary(File imageMagickConvertBinaryCandidate) {
 		if (imageMagickConvertBinaryCandidate == null) {
 			LOGGER.warn("ImageMagick's convert is not configured. Using Java to scale images.");
