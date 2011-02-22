@@ -19,23 +19,33 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
+import org.bindgen.Binding;
 
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.hibernate.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 
 public class GenericListItemHideableLabel extends HideableLabel {
 	
 	private static final long serialVersionUID = -8036310899053519542L;
 	
-	private static final IConverter CONVERTER = new GenericListItemConverter();
+	@SuppressWarnings("rawtypes")
+	private static final GenericListItemBinding<?> GENERIC_LIST_ITEM_BINDING = new GenericListItemBinding();
+	
+	private final Binding<String> binding;
+
+	public GenericListItemHideableLabel(String id, IModel<? extends GenericListItem<?>> listItemModel, Binding<String> binding) {
+		super(id, listItemModel);
+		this.binding = binding;
+	}
 	
 	public GenericListItemHideableLabel(String id, IModel<? extends GenericListItem<?>> listItemModel) {
-		super(id, listItemModel);
+		this(id, listItemModel, GENERIC_LIST_ITEM_BINDING.label());
 	}
 	
 	@Override
 	public IConverter getConverter(Class<?> type) {
-		return CONVERTER;
+		return new GenericListItemConverter(binding);
 	}
 	
 }
