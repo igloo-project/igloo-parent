@@ -16,4 +16,6 @@ public interface FileStore {
 
 	File getFile(String fileKey, String extension);
 
+	void removeFile(String fileKey, String extension);
+
 }

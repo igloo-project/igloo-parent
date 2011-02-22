@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.schlichtherle.io.FileOutputStream;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
@@ -13,6 +15,8 @@ import fr.openwide.core.hibernate.exception.ServiceException;
 
 
 public class SimpleFileStoreImpl implements FileStore {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFileStoreImpl.class);
 	
 	private String key;
 	
@@ -50,6 +54,13 @@ public class SimpleFileStoreImpl implements FileStore {
 					throw new ServiceException(e);
 				}
 			}
+		}
+	}
+	
+	@Override
+	public void removeFile(String fileKey, String extension) {
+		if(!getFile(fileKey, extension).delete()) {
+			LOGGER.error("Error removing file " + fileKey + " " + extension);
 		}
 	}
 	
