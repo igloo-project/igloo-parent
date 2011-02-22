@@ -6,7 +6,9 @@ public enum DatePattern {
 	SHORT_DATETIME("date.format.short.datetime", null),
 	
 	REALLY_SHORT_DATE("date.format.really.short.date", "javascript.date.format.really.short.date"),
-	REALLY_SHORT_DATETIME("date.format.really.short.datetime", null);
+	REALLY_SHORT_DATETIME("date.format.really.short.datetime", null),
+
+	YEAR("date.format.year", "javascript.date.format.year");
 	
 	private String javaPatternKey;
 	
