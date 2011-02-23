@@ -53,8 +53,8 @@ public abstract class FancyboxPopupPanel extends Panel {
 	}
 
 	public void show(AjaxRequestTarget target) {
-		initializePopupContent();
 		hideableContainer.setVisible(true);
+		initializePopupContent();
 		if (target != null) {
 			target.addComponent(replaceableContainer);
 		}
