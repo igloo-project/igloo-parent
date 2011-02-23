@@ -37,6 +37,7 @@ public abstract class FancyboxPopupPanel extends Panel {
 
 	@Override
 	public void onInitialize() {
+		super.onInitialize();
 		initializePopupContent();
 	}
 
