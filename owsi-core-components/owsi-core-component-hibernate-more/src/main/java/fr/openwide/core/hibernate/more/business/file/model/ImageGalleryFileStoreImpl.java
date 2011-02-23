@@ -53,9 +53,9 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 		
 		for (ImageThumbnailFormat thumbnailFormat : thumbnailFormats) {
 			if (isImageMagickConvertAvailable()) {
-				generateThumbnailWithImageMagickConvert(file, fileKey, extension, thumbnailFormat);
+				generateThumbnailWithImageMagickConvert(getFile(fileKey, extension), fileKey, extension, thumbnailFormat);
 			} else {
-				generateThumbnailWithJava(file, fileKey, extension, thumbnailFormat);
+				generateThumbnailWithJava(getFile(fileKey, extension), fileKey, extension, thumbnailFormat);
 			}
 		}
 	}
