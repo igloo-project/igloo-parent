@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.odlabs.wiquery.core.javascript.JsUtils;
 
 /**
  * Behavior associant un élément de type lien et un composant {@link FancyboxPopupPanel}
@@ -35,6 +36,10 @@ public class FancyboxPopupPanelBehavior extends WiQueryAbstractBehavior {
 				fancyboxPopupPanel.show(target);
 				DefaultTipsyFancybox fancybox = new FancyboxAnchor(fancyboxPopupPanel.getReplaceableContainer());
 				target.appendJavascript(new JsStatement().$().chain(fancybox).render().toString());
+				String markupId = "#" + fancyboxPopupPanel.getReplaceableContainer().getMarkupId();
+				target.appendJavascript(new JsStatement().append("document.lastPopupElement")
+						.append(" = ")
+						.append(JsUtils.quotes(markupId)).render().toString());
 			}
 		});
 	}
