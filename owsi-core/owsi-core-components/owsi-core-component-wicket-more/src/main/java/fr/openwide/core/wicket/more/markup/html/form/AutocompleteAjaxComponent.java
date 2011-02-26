@@ -30,7 +30,7 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 	}
 
 	public AutocompleteAjaxComponent(String id, IModel<T> model) {
-		super(id, model);
+		this(id, model, null);
 	}
 
 	@Override
