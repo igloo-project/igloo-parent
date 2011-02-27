@@ -16,22 +16,22 @@
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
 		<owsi-core.spring.version>3.0.5.RELEASE</owsi-core.spring.version>
-		<owsi-core.aspectj.version>1.6.8</owsi-core.aspectj.version>
+		<owsi-core.aspectj.version>1.6.10</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>3.6.1.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.0-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.0-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.1.1.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
-		<owsi-core.ehcache.version>2.2.0</owsi-core.ehcache.version>
+		<owsi-core.ehcache.version>2.3.1</owsi-core.ehcache.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
 		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
-		<owsi-core.javassist.version>3.8.0.GA</owsi-core.javassist.version>
-		<owsi-core.asm.version>3.1</owsi-core.asm.version>
+		<owsi-core.javassist.version>3.9.0.GA</owsi-core.javassist.version>
+		<owsi-core.asm.version>3.3</owsi-core.asm.version>
 		
 		<owsi-core.bindgen.version>2.21.OWSI2</owsi-core.bindgen.version>
 		
@@ -51,7 +51,7 @@
 		<owsi-core.commons-exec.version>1.1</owsi-core.commons-exec.version>
 		
 		<owsi-core.jta.version>1.1</owsi-core.jta.version>
-		<owsi-core.javax-mail.version>1.4.1</owsi-core.javax-mail.version>
+		<owsi-core.javax-mail.version>1.4.4</owsi-core.javax-mail.version>
 		
 		<owsi-core.slf4j.version>1.6.1</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.16</owsi-core.log4j.version>
@@ -75,7 +75,7 @@
 		<owsi-core.sitemesh.version>2.4.2</owsi-core.sitemesh.version>
 		<owsi-core.taglibs-standard.version>1.1.2</owsi-core.taglibs-standard.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
-		<owsi-core.wicket.version>1.4.15</owsi-core.wicket.version>
+		<owsi-core.wicket.version>1.4.16</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>1.2.1</owsi-core.wiquery.version>
 		
 		<owsi-core.maven-compiler-plugin.version>2.3.2</owsi-core.maven-compiler-plugin.version>
