@@ -30,8 +30,8 @@
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
 		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
-		<owsi-core.javassist.version>3.9.0.GA</owsi-core.javassist.version>
-		<owsi-core.asm.version>3.3</owsi-core.asm.version>
+		<owsi-core.javassist.version>3.12.1.GA</owsi-core.javassist.version>
+		<owsi-core.asm.version>3.3.1</owsi-core.asm.version>
 		
 		<owsi-core.bindgen.version>2.21.OWSI2</owsi-core.bindgen.version>
 		
