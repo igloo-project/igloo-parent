@@ -65,6 +65,7 @@
 		<owsi-core.truezip.version>6.8.2</owsi-core.truezip.version>
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
 		<owsi-core.jfreechart.version>1.0.13</owsi-core.jfreechart.version>
+		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		
 		<owsi-core.junit.version>4.8.2</owsi-core.junit.version>
 		
