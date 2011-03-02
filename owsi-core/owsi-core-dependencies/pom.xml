@@ -20,6 +20,7 @@
 	<modules>
 		<module>owsi-core-dependency-core-spring</module>
 		<module>owsi-core-dependency-core-logging</module>
+		<module>owsi-core-dependency-core-spring-security</module>
 	</modules>
 	
 	<!-- Project information -->
