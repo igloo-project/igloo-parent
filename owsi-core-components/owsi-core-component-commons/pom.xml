@@ -41,6 +41,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${owsi-core.commons-codec.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-exec</artifactId>
 			<version>${owsi-core.commons-exec.version}</version>
