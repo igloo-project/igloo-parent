@@ -15,7 +15,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.MethodInvoker;
 
-import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.spring.config.CoreConfigurer;
 
 /**
  * <p>Ce listener Spring permet de logguer la configuration Spring lors de l'émission
@@ -63,12 +63,12 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 				refresh.getSource() instanceof AbstractApplicationContext &&
 				((AbstractApplicationContext) refresh.getSource()).getParent() == null) {
 			ApplicationContext context = refresh.getApplicationContext();
-			String[] configurerNames = context.getBeanNamesForType(OwPropertyPlaceholderConfigurer.class);
+			String[] configurerNames = context.getBeanNamesForType(CoreConfigurer.class);
 			if (configurerNames.length > 0) {
 				String configurerName = configurerNames[0];
 				
 				LOGGER.info("Configuration found, start logging");
-				OwPropertyPlaceholderConfigurer configurer = (OwPropertyPlaceholderConfigurer) context.getBean(configurerName);
+				CoreConfigurer configurer = (CoreConfigurer) context.getBean(configurerName);
 				BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(configurer);
 				List<String> loggedProperties = new ArrayList<String>();
 				
@@ -99,7 +99,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			}
 			
 			if (configurerNames.length != 1) {
-				LOGGER.warn(String.format("0 or multiple %1$s found. Only first instance is logged", OwPropertyPlaceholderConfigurer.class.getSimpleName()));
+				LOGGER.warn(String.format("0 or multiple %1$s found. Only first instance is logged", CoreConfigurer.class.getSimpleName()));
 			}
 		}
 		LOGGER.info("Configuration logging end");
@@ -117,7 +117,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 		}
 	}
 	
-	private void forceLogProperty(OwPropertyPlaceholderConfigurer configurer, String name)
+	private void forceLogProperty(CoreConfigurer configurer, String name)
 			throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		MethodInvoker invoker = new MethodInvoker();
 		invoker.setTargetObject(configurer);

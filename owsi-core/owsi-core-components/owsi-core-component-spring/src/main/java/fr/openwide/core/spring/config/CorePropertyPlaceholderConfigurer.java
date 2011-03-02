@@ -37,9 +37,9 @@ import fr.openwide.core.spring.util.StringUtils;
  * 
  * @author Open Wide
  */
-public class OwPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
+public class CorePropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(OwPropertyPlaceholderConfigurer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CorePropertyPlaceholderConfigurer.class);
 	
 	/**
 	 * Espace séparant deux valeurs dans une liste.
@@ -47,26 +47,9 @@ public class OwPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigur
 	public static final String SEPARATOR = " ";
 	
 	/**
-	 * Propriété définissant le type de configuration
-	 */
-	private static final String CONFIGURATION_TYPE = "configurationType";
-	
-	/**
-	 * Type de configuration : development / deployment
-	 */
-	static final String CONFIGURATION_TYPE_DEVELOPMENT = "development";
-	
-	/**
 	 * Propriétés de configuration.
 	 */
 	private Properties properties;
-	
-	/**
-	 * Vérifie le type de configuration
-	 */
-	public boolean isConfigurationTypeDevelopment() {
-		return CONFIGURATION_TYPE_DEVELOPMENT.equals(getPropertyAsString(CONFIGURATION_TYPE));
-	}
 	
 	/**
 	 * Charge les propriétés.
