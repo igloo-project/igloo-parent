@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.springframework.core.io.ClassPathResource;
 
-import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 
-public class OwsiCoreTestConfigurer extends OwPropertyPlaceholderConfigurer {
+public class OwsiCoreTestConfigurer extends CorePropertyPlaceholderConfigurer {
 
 	private static final String PROPERTY1 = "property1";
 	private static final String PROPERTY2 = "property2";
