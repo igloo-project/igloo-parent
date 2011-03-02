@@ -15,12 +15,12 @@ import fr.openwide.core.hibernate.security.business.authority.service.AuthorityS
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.hibernate.security.business.person.dao.PersonDao;
 import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
-import fr.openwide.core.hibernate.security.business.person.model.AbstractPersonBinding;
+import fr.openwide.core.hibernate.security.business.person.model.CorePersonBinding;
 
 public class CorePersonServiceImpl extends GenericEntityServiceImpl<Integer, CorePerson>
 		implements PersonService {
 	
-	private static final AbstractPersonBinding BINDING = new AbstractPersonBinding();
+	private static final CorePersonBinding BINDING = new CorePersonBinding();
 
 	@Autowired
 	private AuthorityService authorityService;

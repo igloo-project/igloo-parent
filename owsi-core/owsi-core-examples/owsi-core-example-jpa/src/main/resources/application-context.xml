@@ -20,7 +20,7 @@
 
 	<!-- CONFIGURATION -->
 	<bean id="configurer"
-		class="fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer">
+		class="fr.openwide.core.spring.config.CoreConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:owsi-hibernate.properties</value>
