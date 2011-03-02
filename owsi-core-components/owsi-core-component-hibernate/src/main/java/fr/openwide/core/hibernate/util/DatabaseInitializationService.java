@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.spring.config.CoreConfigurer;
 
 /**
  * <p>Initialise le schéma de la base.</p>
@@ -44,7 +44,7 @@ public class DatabaseInitializationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInitializationService.class);
 
 	@Autowired
-	private OwPropertyPlaceholderConfigurer configurer;
+	private CoreConfigurer configurer;
 
 	private JdbcTemplate jdbcTemplate;
 

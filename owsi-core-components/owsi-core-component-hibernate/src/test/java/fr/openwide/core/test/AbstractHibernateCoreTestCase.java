@@ -32,7 +32,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.hibernate.util.HibernateSessionUtils;
-import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.test.hibernate.example.business.label.model.Label;
 import fr.openwide.core.test.hibernate.example.business.label.service.LabelService;
 import fr.openwide.core.test.hibernate.example.business.person.model.Person;
@@ -47,7 +47,7 @@ import fr.openwide.core.test.hibernate.example.business.person.service.PersonSer
 public abstract class AbstractHibernateCoreTestCase extends AbstractJUnit38SpringContextTests {
 	
 	@Autowired
-	OwPropertyPlaceholderConfigurer configurer;
+	protected CoreConfigurer configurer;
 	
 	@Autowired
 	protected HibernateSessionUtils hibernateSessionUtils;
