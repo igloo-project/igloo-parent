@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.security.acl.domain.User;
-import fr.openwide.core.hibernate.security.runsas.RunAsTask;
+import fr.openwide.core.hibernate.security.runas.RunAsTask;
 
 public interface SecurityService {
 	
