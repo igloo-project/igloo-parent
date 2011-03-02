@@ -12,7 +12,7 @@
 	<artifactId>owsi-core-component-hibernate-more</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	
-	<name>OWSI Core - Component - More Hibernate fun</name>
+	<name>OWSI Core - Component - Hibernate - More Hibernate fun</name>
 
 	<dependencies>
 		
