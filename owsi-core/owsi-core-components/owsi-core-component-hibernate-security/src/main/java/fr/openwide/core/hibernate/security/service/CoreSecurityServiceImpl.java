@@ -31,8 +31,8 @@ import fr.openwide.core.hibernate.security.acl.domain.User;
 import fr.openwide.core.hibernate.security.acl.domain.UserConstants;
 import fr.openwide.core.hibernate.security.acl.service.SidRetrievalService;
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.runsas.RunAsSystemToken;
-import fr.openwide.core.hibernate.security.runsas.RunAsTask;
+import fr.openwide.core.hibernate.security.runas.RunAsSystemToken;
+import fr.openwide.core.hibernate.security.runas.RunAsTask;
 
 public class CoreSecurityServiceImpl implements SecurityService {
 	
