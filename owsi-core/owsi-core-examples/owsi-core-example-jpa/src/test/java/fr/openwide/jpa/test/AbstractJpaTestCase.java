@@ -17,7 +17,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
-import fr.openwide.core.spring.config.OwPropertyPlaceholderConfigurer;
+import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.jpa.example.business.company.model.Company;
 import fr.openwide.jpa.example.business.company.service.CompanyService;
 import fr.openwide.jpa.example.business.person.model.Person;
@@ -34,7 +34,7 @@ import fr.openwide.jpa.example.business.project.service.ProjectService;
 public abstract class AbstractJpaTestCase extends AbstractJUnit38SpringContextTests {
 	
 	@Autowired
-	OwPropertyPlaceholderConfigurer configurer;
+	protected CoreConfigurer configurer;
 	
 	@Autowired
 	protected EntityManagerUtils entityManagerUtils;
