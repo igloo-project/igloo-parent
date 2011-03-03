@@ -16,6 +16,7 @@
  */
 package fr.openwide.core.wicket.more.model;
 
+import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.bindgen.Binding;
 import org.bindgen.BindingRoot;
@@ -23,6 +24,12 @@ import org.bindgen.BindingRoot;
 /**
  * An improved and simplified version of the BindingModel implementation of
  * wicket-bindgen.
+ * 
+ * It is based on PropertyModel instead of using bindgen features because
+ * bindgen behavior is not the same as Wicket one. Typically, when an
+ * object is null in the path, Wicket tries to instantiate using the default
+ * constructor which allows to have cost().quantity() working even if
+ * cost property is null.
  * 
  * @author igor.vaynberg
  * @author Open Wide
@@ -32,52 +39,16 @@ import org.bindgen.BindingRoot;
  * @param <T>
  *            type of object returned by the expression
  */
-public class BindingModel<R, T> implements IModel<T> {
+public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	private static final long serialVersionUID = -4018038300151228083L;
 
 	private final Binding<T> binding;
 	
-	private final IModel<? extends R> root;
-
 	public BindingModel(IModel<? extends R> root, BindingRoot<R, T> binding) {
-		this.root = root;
+		super(root);
 		this.binding = binding;
 	}
-
-	/** {@inheritDoc} */
-	@SuppressWarnings("unchecked")
-	@Override
-	public T getObject() {
-		if (root == null) {
-			return binding.get();
-		} else {
-			return ((BindingRoot<R, T>) binding).getSafelyWithRoot(root.getObject());
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	@SuppressWarnings("unchecked")
-	public void setObject(T object) {
-		try {
-			if (root == null) {
-				binding.set(object);
-			} else {
-				((BindingRoot<R, T>) binding).setWithRoot(root.getObject(), object);
-			}
-		} catch (NullPointerException e) {
-			// we ignore NPE like Wicket does with its own implementation of PropertyModel.
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void detach() {
-		if (root != null) {
-			root.detach();
-		}
-	}
-
+	
 	/**
 	 * Convenience method to convert a {@link BindingRoot} into a
 	 * {@link BindingRootModel}
@@ -88,6 +59,11 @@ public class BindingModel<R, T> implements IModel<T> {
 	 */
 	public static <R, T> IModel<T> of(IModel<? extends R> root, BindingRoot<R, T> binding) {
 		return new BindingModel<R, T>(root, binding);
+	}
+
+	@Override
+	protected String propertyExpression() {
+		return binding.getPath();
 	}
 
 }
