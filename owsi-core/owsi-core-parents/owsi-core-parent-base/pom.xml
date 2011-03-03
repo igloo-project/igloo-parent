@@ -33,7 +33,7 @@
 		<owsi-core.javassist.version>3.12.1.GA</owsi-core.javassist.version>
 		<owsi-core.asm.version>3.3.1</owsi-core.asm.version>
 		
-		<owsi-core.bindgen.version>2.21.OWSI2</owsi-core.bindgen.version>
+		<owsi-core.bindgen.version>2.22</owsi-core.bindgen.version>
 		
 		<owsi-core.spring-security.version>3.0.5.RELEASE</owsi-core.spring-security.version>
 		
