@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 
 import fr.openwide.core.hibernate.security.service.AuthenticationService;
-import fr.openwide.core.wicket.more.CoreSession;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
@@ -86,10 +85,6 @@ public abstract class CoreWicketAuthenticatedApplication extends
 		}
 	}
 
-	protected Class<? extends AuthenticatedWebSession> getWebSessionClass() {
-		return CoreSession.class;
-	}
-	
 	protected IAuthorizationStrategy newAuthorizationStrategy() {
 		return new CoreAuthorizationStrategy(this, authenticationService, permissionFactory);
 	}
@@ -97,7 +92,9 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	protected IUnauthorizedComponentInstantiationListener newUnauthorizedComponentInstantiationListener() {
 		return new StandardUnauthorizedComponentInstantiationListener();
 	}
-
+	
+	protected abstract Class<? extends AuthenticatedWebSession> getWebSessionClass();
+	
 	public abstract Class<? extends WebPage> getSignInPageClass();
 
 }

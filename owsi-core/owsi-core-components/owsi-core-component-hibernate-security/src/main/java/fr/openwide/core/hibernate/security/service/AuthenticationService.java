@@ -6,15 +6,12 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
 
 public interface AuthenticationService {
 
 	String getUserName();
 	
 	boolean isLoggedIn();
-	
-	CorePerson getPerson();
 	
 	Collection<GrantedAuthority> getAuthorities();
 

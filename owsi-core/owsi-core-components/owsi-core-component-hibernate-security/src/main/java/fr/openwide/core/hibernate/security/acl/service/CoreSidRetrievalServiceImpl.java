@@ -10,8 +10,8 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 
 import fr.openwide.core.hibernate.security.acl.domain.PersonGroupSid;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
-import fr.openwide.core.hibernate.security.business.person.model.CorePersonGroup;
+import fr.openwide.core.hibernate.security.business.person.model.Person;
+import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
 import fr.openwide.core.hibernate.security.business.person.service.PersonService;
 
 public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implements SidRetrievalService {
@@ -19,7 +19,7 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 	private static final int USERNAME_PERSONID_MAP_INITIAL_CAPACITY = 300;
 	
 	@Autowired
-	protected PersonService personService;
+	protected PersonService<? extends Person> personService;
 	
 	private boolean cacheEnabled = true;
 	
@@ -31,11 +31,11 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		
 		Integer personId = getPersonIdByUserName(authentication.getName());
 		if (personId != null) {
-			CorePerson person = personService.getById(personId);
+			Person person = personService.getById(personId);
 			if (person != null) {
-				List<CorePersonGroup> groups = person.getGroups();
+				List<PersonGroup> groups = person.getPersonGroups();
 
-				for (CorePersonGroup group : groups) {
+				for (PersonGroup group : groups) {
 					sids.add(new PersonGroupSid(group));
 				}
 			}
@@ -50,7 +50,7 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		if (userNamePersonIdMap.containsKey(userName) && cacheEnabled) {
 			personId = userNamePersonIdMap.get(userName);
 		} else {
-			CorePerson person = personService.getByUserName(userName);
+			Person person = personService.getByUserName(userName);
 			if (person != null) {
 				personId = person.getId();
 				userNamePersonIdMap.put(userName, personId);
