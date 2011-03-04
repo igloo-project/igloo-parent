@@ -8,16 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
-import fr.openwide.core.hibernate.security.business.person.service.PersonService;
 
 public class CoreAuthenticationServiceImpl implements AuthenticationService {
 	
 	@Autowired
 	private SecurityService securityService;
-	
-	@Autowired
-	private PersonService personService;
 	
 	@Override
 	public String getUserName() {
@@ -27,11 +22,6 @@ public class CoreAuthenticationServiceImpl implements AuthenticationService {
 	@Override
 	public boolean isLoggedIn() {
 		return AuthenticationUtil.isLoggedIn();
-	}
-	
-	@Override
-	public CorePerson getPerson() {
-		return personService.getByUserName(AuthenticationUtil.getUserName());
 	}
 	
 	@Override

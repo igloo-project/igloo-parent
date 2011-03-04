@@ -6,30 +6,30 @@ import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.hibernate.security.business.authority.model.Authority;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
+import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
 
-public interface PersonService extends GenericEntityService<Integer, CorePerson> {
+public interface PersonService<P extends AbstractPerson<P>> extends GenericEntityService<Integer, P> {
 	
-	CorePerson getByUserName(String userName);
+	P getByUserName(String userName);
 	
-	List<CorePerson> search(String searchPattern) throws ServiceException, SecurityServiceException;
+	List<P> search(String searchPattern) throws ServiceException, SecurityServiceException;
 	
-	List<CorePerson> searchAutocomplete(String string) throws ServiceException, SecurityServiceException;
+	List<P> searchAutocomplete(String string) throws ServiceException, SecurityServiceException;
 
-	void setActive(CorePerson person, boolean active) throws ServiceException, SecurityServiceException;
+	void setActive(P person, boolean active) throws ServiceException, SecurityServiceException;
 
 	Long countActive();
 
-	void setPasswords(CorePerson person, String clearTextPassword) throws ServiceException, SecurityServiceException;
+	void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException;
 
-	boolean comparePasswordToMd5Passwords(CorePerson person, String clearTextPassword);
+	boolean comparePasswordToMd5Passwords(P person, String clearTextPassword);
 
-	void addAuthority(CorePerson person, Authority authority) throws ServiceException, SecurityServiceException;
+	void addAuthority(P person, Authority authority) throws ServiceException, SecurityServiceException;
 
-	void addAuthority(CorePerson person, String authorityName) throws ServiceException, SecurityServiceException;
+	void addAuthority(P person, String authorityName) throws ServiceException, SecurityServiceException;
 
-	void updateLastLoginDate(CorePerson person) throws ServiceException, SecurityServiceException;
+	void updateLastLoginDate(P person) throws ServiceException, SecurityServiceException;
 
-	void updateProfileInformation(CorePerson person) throws ServiceException, SecurityServiceException;
+	void updateProfileInformation(P person) throws ServiceException, SecurityServiceException;
 
 }

@@ -5,17 +5,18 @@ import java.util.List;
 import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
 import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
-import fr.openwide.core.hibernate.security.business.person.model.CorePersonGroup;
+import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
+import fr.openwide.core.hibernate.security.business.person.model.AbstractPersonGroup;
 
-public interface PersonGroupService extends GenericEntityService<Integer, CorePersonGroup> {
+public interface PersonGroupService<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
+		extends GenericEntityService<Integer, G> {
 
-	CorePersonGroup getByName(String name);
+	G getByName(String name);
 
-	void addPerson(CorePersonGroup personGroup, CorePerson person) throws ServiceException, SecurityServiceException;
+	void addPerson(G personGroup, P person) throws ServiceException, SecurityServiceException;
 	
-	void removePerson(CorePersonGroup personGroup, CorePerson person) throws ServiceException, SecurityServiceException;
+	void removePerson(G personGroup, P person) throws ServiceException, SecurityServiceException;
 
-	List<CorePerson> getPersonsFromPersonGroup(CorePersonGroup personGroup) throws ServiceException, SecurityServiceException;
+	List<P> getPersonsFromPersonGroup(G personGroup) throws ServiceException, SecurityServiceException;
 	
 }

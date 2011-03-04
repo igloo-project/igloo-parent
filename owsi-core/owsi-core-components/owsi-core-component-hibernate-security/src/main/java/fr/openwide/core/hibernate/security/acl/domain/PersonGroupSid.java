@@ -4,7 +4,7 @@ import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.model.Sid;
 
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.CorePersonGroup;
+import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
 
 public class PersonGroupSid extends GrantedAuthoritySid {
 
@@ -16,7 +16,7 @@ public class PersonGroupSid extends GrantedAuthoritySid {
 		super(CoreAuthorityConstants.PERSON_GROUP_PREFIX + groupName);
 	}
 
-	public PersonGroupSid(CorePersonGroup personGroup) {
+	public PersonGroupSid(PersonGroup personGroup) {
 		super(CoreAuthorityConstants.PERSON_GROUP_PREFIX + personGroup.getId() + SEPARATOR + personGroup.getName());
 	}
 	

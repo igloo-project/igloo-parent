@@ -14,19 +14,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.openwide.core.hibernate.security.business.authority.model.Authority;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
-import fr.openwide.core.hibernate.security.business.person.model.CorePersonGroup;
+import fr.openwide.core.hibernate.security.business.person.model.Person;
+import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
 import fr.openwide.core.hibernate.security.business.person.service.PersonService;
 
 public class CoreHibernateUserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private PersonService personService; 
+	private PersonService<? extends Person> personService; 
 	
 	private RoleHierarchy roleHierarchy;
 
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
-		CorePerson person = personService.getByUserName(userName);
+		Person person = personService.getByUserName(userName);
 		
 		if (person == null) {
 			throw new UsernameNotFoundException("CoreHibernateUserDetailsServiceImpl: User not found: " + userName);
@@ -36,7 +36,7 @@ public class CoreHibernateUserDetailsServiceImpl implements UserDetailsService {
 		
 		addAuthorities(grantedAuthorities, person.getAuthorities());
 		
-		for (CorePersonGroup personGroup : person.getGroups()) {
+		for (PersonGroup personGroup : person.getPersonGroups()) {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
 		}
 		

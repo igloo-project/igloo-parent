@@ -23,12 +23,12 @@ import org.springframework.security.acls.model.Sid;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.security.acl.domain.CoreAcl;
 import fr.openwide.core.hibernate.security.acl.domain.PersonGroupSid;
-import fr.openwide.core.hibernate.security.acl.domain.User;
 import fr.openwide.core.hibernate.security.acl.domain.hierarchy.PermissionHierarchy;
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.CorePersonGroup;
+import fr.openwide.core.hibernate.security.business.person.model.Person;
+import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
 
-public abstract class CoreAclServiceImpl extends HibernateDaoSupport implements AclService {
+public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport implements AclService {
 	
 	@Autowired
 	private PermissionHierarchy permissionHierarchy;
@@ -37,7 +37,7 @@ public abstract class CoreAclServiceImpl extends HibernateDaoSupport implements 
 	private PermissionRegistryService permissionRegistryService;
 	
 	@Autowired
-	public CoreAclServiceImpl(SessionFactory sessionFactory) {
+	public AbstractCoreAclServiceImpl(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);
 	}
 	
@@ -128,11 +128,11 @@ public abstract class CoreAclServiceImpl extends HibernateDaoSupport implements 
 		return getAccessControlEntry(acl, new GrantedAuthoritySid(role), permission);
 	}
 	
-	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, User person, Permission permission) {
+	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, Person person, Permission permission) {
 		return getAccessControlEntry(acl, new PrincipalSid(person.getUserName()), permission);
 	}
 	
-	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, CorePersonGroup personGroup, Permission permission) {
+	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, PersonGroup personGroup, Permission permission) {
 		return getAccessControlEntry(acl, new PersonGroupSid(personGroup), permission);
 	}
 	
