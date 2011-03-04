@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.feedback;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -14,7 +15,7 @@ import org.apache.wicket.markup.html.panel.Panel;
  * Seuls les niveaux INFO et ERROR sont gérés.
  *
  */
-public class ComponentFeedbackPanel extends Panel {
+public class ComponentFeedbackPanel extends Panel implements IFeedback {
 	private static final long serialVersionUID = 6100876122634391019L;
 	
 	public ComponentFeedbackPanel(String id, MarkupContainer container) {
