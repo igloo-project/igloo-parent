@@ -20,7 +20,7 @@ public class ComponentFeedbackPanel extends Panel {
 	public ComponentFeedbackPanel(String id, MarkupContainer container) {
 		super(id);
 		
-		FeedbackPanel errorFeedbackPanel = new FeedbackPanel("error-feedback-panel", new LevelComponentFeedbackMessageFilter(container, FeedbackMessage.ERROR)) {
+		FeedbackPanel errorFeedbackPanel = new FeedbackPanel("errorFeedbackPanel", new LevelComponentFeedbackMessageFilter(container, FeedbackMessage.ERROR)) {
 			private static final long serialVersionUID = 7521787479719533147L;
 
 			public boolean isVisible() {
@@ -30,7 +30,7 @@ public class ComponentFeedbackPanel extends Panel {
 		errorFeedbackPanel.setEnabled(true);
 		errorFeedbackPanel.setOutputMarkupId(true);
 		
-		FeedbackPanel successFeedbackPanel = new FeedbackPanel("success-feedback-panel", new LevelComponentFeedbackMessageFilter(container, FeedbackMessage.INFO)) {
+		FeedbackPanel successFeedbackPanel = new FeedbackPanel("successFeedbackPanel", new LevelComponentFeedbackMessageFilter(container, FeedbackMessage.INFO)) {
 			private static final long serialVersionUID = -3133860085898074341L;
 
 			public boolean isVisible() {
