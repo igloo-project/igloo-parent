@@ -15,11 +15,10 @@ import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Store;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
@@ -38,16 +37,17 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@DocumentId
 	private Integer id;
 	
-	@Field(index=Index.TOKENIZED, store=Store.NO)
-	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
+	@Column(nullable = false, unique = true)
+	@Index(name = "idx_person_userName")
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String userName;
 	
-	@Field(index=Index.TOKENIZED, store=Store.NO)
-	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
+	@Column(nullable = false)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String firstName;
 	
-	@Field(index=Index.TOKENIZED, store=Store.NO)
-	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
+	@Column(nullable = false)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String lastName;
 	
 	private String email;
