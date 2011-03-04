@@ -5,31 +5,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderBy;
 
+import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.hibernate.security.business.authority.model.Authority;
 
-@Entity
-@Indexed
-@Inheritance(strategy=InheritanceType.JOINED)
-public class CorePersonGroup extends GenericEntity<Integer, CorePersonGroup> {
+@MappedSuperclass
+@Bindable
+public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
+		extends GenericEntity<Integer, G>
+		implements PersonGroup {
 
 	private static final long serialVersionUID = 2156717229285615454L;
 	
@@ -45,17 +44,17 @@ public class CorePersonGroup extends GenericEntity<Integer, CorePersonGroup> {
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("lastName")
-	private List<CorePerson> persons = new LinkedList<CorePerson>();
+	private List<P> persons = new LinkedList<P>();
 	
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
 	
-	public CorePersonGroup() {
+	public AbstractPersonGroup() {
 	}
 
-	public CorePersonGroup(String name) {
+	public AbstractPersonGroup(String name) {
 		this.name = name;
 	}
 
@@ -79,22 +78,22 @@ public class CorePersonGroup extends GenericEntity<Integer, CorePersonGroup> {
 		return this.getName();
 	}
 	
-	public List<CorePerson> getPersons() {
+	public List<P> getPersons() {
 		return persons;
 	}
 
-	public void setPersons(List<CorePerson> persons) {
+	public void setPersons(List<P> persons) {
 		this.persons = persons;
 	}
 	
-	public void addPerson(CorePerson person) {
+	public void addPerson(P person) {
 		this.persons.add(person);
-		person.getGroups().add(this);
+		person.getPersonGroups().add(this);
 	}
 	
-	public void removePerson(CorePerson person) {
+	public void removePerson(P person) {
 		this.persons.remove(person);
-		person.getGroups().remove(this);
+		person.getPersonGroups().remove(this);
 	}
 	
 	public Set<Authority> getAuthorities() {
@@ -114,7 +113,7 @@ public class CorePersonGroup extends GenericEntity<Integer, CorePersonGroup> {
 	}
 
 	@Override
-	public int compareTo(CorePersonGroup group) {
+	public int compareTo(G group) {
 		if(this == group) {
 			return 0;
 		}

@@ -27,10 +27,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.acl.domain.User;
 import fr.openwide.core.hibernate.security.acl.domain.UserConstants;
 import fr.openwide.core.hibernate.security.acl.service.SidRetrievalService;
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.hibernate.security.business.person.model.Person;
 import fr.openwide.core.hibernate.security.runas.RunAsSystemToken;
 import fr.openwide.core.hibernate.security.runas.RunAsTask;
 
@@ -80,7 +80,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public boolean hasPermission(User person, GenericEntity<?, ?> securedObject,
+	public boolean hasPermission(Person person, GenericEntity<?, ?> securedObject,
 			Permission permission) {
 		return hasPermission(getAuthentication(person), securedObject, permission);
 	}
@@ -91,7 +91,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasSystemRole(User person) {
+	public boolean hasSystemRole(Person person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_SYSTEM);
 	}
 	
@@ -101,7 +101,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasAdminRole(User person) {
+	public boolean hasAdminRole(Person person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_ADMIN);
 	}
 	
@@ -111,7 +111,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasAuthenticatedRole(User person) {
+	public boolean hasAuthenticatedRole(Person person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_AUTHENTICATED);
 	}
 	
@@ -130,7 +130,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasRole(User person, String role) {
+	public boolean hasRole(Person person, String role) {
 		return hasRole(getAuthentication(person), role);
 	}
 	
@@ -178,7 +178,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 		}
 	}
 
-	private Authentication getAuthentication(User person) {
+	private Authentication getAuthentication(Person person) {
 		return getAuthentication(person.getUserName());
 	}
 	

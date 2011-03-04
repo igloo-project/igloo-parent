@@ -6,7 +6,7 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 
-import fr.openwide.core.wicket.more.CoreSession;
+import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 
 /**
@@ -25,7 +25,7 @@ public class StandardUnauthorizedComponentInstantiationListener extends
 				page.getSession().error(page.getLocalizer().getString("access.denied", page));
 				String currentUrl = getCurrentPageUrl(page);
 				if (currentUrl != null) {
-					CoreSession.get().registerRedirectUrl(currentUrl);
+					AbstractCoreSession.get().registerRedirectUrl(currentUrl);
 				}
 				throw new RestartResponseAtInterceptPageException(
 						CoreWicketAuthenticatedApplication.get().getSignInPageClass());

@@ -2,75 +2,34 @@ package fr.openwide.core.hibernate.security.business.person.model;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
-import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
-import org.apache.solr.analysis.KeywordTokenizerFactory;
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.WhitespaceTokenizerFactory;
-import org.apache.solr.analysis.WordDelimiterFilterFactory;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.AnalyzerDefs;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.search.util.HibernateSearchAnalyzer;
-import fr.openwide.core.hibernate.security.acl.domain.User;
 import fr.openwide.core.hibernate.security.business.authority.model.Authority;
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Indexed
+@MappedSuperclass
 @Bindable
-@AnalyzerDefs({
-	@AnalyzerDef(name = HibernateSearchAnalyzer.KEYWORD,
-			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class)
-	),
-	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT,
-			tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-			filters = {
-					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
-					@TokenFilterDef(factory = WordDelimiterFilterFactory.class, params = {
-									@Parameter(name = "generateWordParts", value = "1"),
-									@Parameter(name = "generateNumberParts", value = "1"),
-									@Parameter(name = "catenateWords", value = "0"),
-									@Parameter(name = "catenateNumbers", value = "0"),
-									@Parameter(name = "catenateAll", value = "0"),
-									@Parameter(name = "splitOnCaseChange", value = "0"),
-									@Parameter(name = "splitOnNumerics", value = "0"),
-									@Parameter(name = "preserveOriginal", value = "1")
-							}
-					),
-					@TokenFilterDef(factory = LowerCaseFilterFactory.class)
-			}
-	)
-})
-public class CorePerson extends GenericEntity<Integer, CorePerson>
-		implements User {
+public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Integer, P>
+		implements Person {
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
@@ -121,10 +80,14 @@ public class CorePerson extends GenericEntity<Integer, CorePerson>
 	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
 	
-	@ManyToMany(mappedBy="persons")
-	private List<CorePersonGroup> groups = new LinkedList<CorePersonGroup>();
+	public AbstractPerson() {
+	}
 	
-	public CorePerson() {
+	public AbstractPerson(String userName, String firstName, String lastName, String md5Password) {
+		this.userName = userName;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.md5Password = md5Password;
 	}
 	
 	public Integer getId() {
@@ -187,14 +150,6 @@ public class CorePerson extends GenericEntity<Integer, CorePerson>
 	
 	public void removeAuthority(Authority authority) {
 		this.authorities.remove(authority);
-	}
-	
-	public List<CorePersonGroup> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(List<CorePersonGroup> groups) {
-		this.groups = groups;
 	}
 
 	@Override
@@ -292,7 +247,7 @@ public class CorePerson extends GenericEntity<Integer, CorePerson>
 	}
 
 	@Override
-	public int compareTo(CorePerson person) {
+	public int compareTo(P person) {
 		if(this.equals(person)) {
 			return 0;
 		}

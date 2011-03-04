@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.acl.domain.User;
+import fr.openwide.core.hibernate.security.business.person.model.Person;
 import fr.openwide.core.hibernate.security.runas.RunAsTask;
 
 public interface SecurityService {
@@ -13,24 +13,24 @@ public interface SecurityService {
 	boolean hasPermission(Authentication authentication, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	
-	boolean hasPermission(User person, GenericEntity<?, ?> securedObject,
+	boolean hasPermission(Person person, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	
 	boolean hasRole(Authentication authentication, String role);
 	
-	boolean hasRole(User person, String role);
+	boolean hasRole(Person person, String role);
 
 	boolean hasSystemRole(Authentication authentication);
 	
-	boolean hasSystemRole(User person);
+	boolean hasSystemRole(Person person);
 	
 	boolean hasAdminRole(Authentication authentication);
 	
-	boolean hasAdminRole(User person);
+	boolean hasAdminRole(Person person);
 	
 	boolean hasAuthenticatedRole(Authentication authentication);
 	
-	boolean hasAuthenticatedRole(User person);
+	boolean hasAuthenticatedRole(Person person);
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 

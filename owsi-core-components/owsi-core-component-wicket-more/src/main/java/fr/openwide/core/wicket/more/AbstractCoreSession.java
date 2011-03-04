@@ -14,33 +14,33 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
+import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
 import fr.openwide.core.hibernate.security.business.person.service.PersonService;
 import fr.openwide.core.hibernate.security.service.AuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
-public class CoreSession extends AuthenticatedWebSession {
+public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 2591467597835056981L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CoreSession.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
 	
 	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirect";
 	
 	@SpringBean(name="personService")
-	private PersonService personService;
+	protected PersonService<P> personService;
 	
 	@SpringBean(name="authenticationService")
-	private AuthenticationService authenticationService;
+	protected AuthenticationService authenticationService;
 	
 	@SpringBean(name="configurer")
-	private CoreConfigurer configurer;
+	protected CoreConfigurer configurer;
 	
 	private Integer userId;
 	
 	private Roles roles = new Roles();
 
-	public CoreSession(Request request) {
+	public AbstractCoreSession(Request request) {
 		super(request);
 		
 		InjectorHolder.getInjector().inject(this);
@@ -50,8 +50,8 @@ public class CoreSession extends AuthenticatedWebSession {
 		setLocale(getLocale());
 	}
 	
-	public static CoreSession get() {
-		return (CoreSession) Session.get();
+	public static AbstractCoreSession<?> get() {
+		return (AbstractCoreSession<?>) Session.get();
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class CoreSession extends AuthenticatedWebSession {
 		boolean loggedIn = authenticationService.isLoggedIn();
 		
 		if (loggedIn) {
-			CorePerson person = authenticationService.getPerson();
+			P person = personService.getByUserName(authenticationService.getUserName());
 			if (person != null) {
 				userId = person.getId();
 				Locale locale = person.getLocale();
@@ -115,8 +115,8 @@ public class CoreSession extends AuthenticatedWebSession {
 		return userName;
 	}
 
-	public CorePerson getPerson() {
-		CorePerson person = null;
+	public P getPerson() {
+		P person = null;
 
 		if (isSignedIn() && userId != null) {
 			person = personService.getById(userId);

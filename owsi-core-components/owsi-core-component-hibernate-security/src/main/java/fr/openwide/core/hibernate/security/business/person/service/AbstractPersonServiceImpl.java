@@ -14,13 +14,14 @@ import fr.openwide.core.hibernate.security.business.authority.model.Authority;
 import fr.openwide.core.hibernate.security.business.authority.service.AuthorityService;
 import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.hibernate.security.business.person.dao.PersonDao;
-import fr.openwide.core.hibernate.security.business.person.model.CorePerson;
-import fr.openwide.core.hibernate.security.business.person.model.CorePersonBinding;
+import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
+import fr.openwide.core.hibernate.security.business.person.model.PersonBinding;
 
-public class CorePersonServiceImpl extends GenericEntityServiceImpl<Integer, CorePerson>
-		implements PersonService {
+public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
+		extends GenericEntityServiceImpl<Integer, P>
+		implements PersonService<P> {
 	
-	private static final CorePersonBinding BINDING = new CorePersonBinding();
+	private static final PersonBinding BINDING = new PersonBinding();
 
 	@Autowired
 	private AuthorityService authorityService;
@@ -28,35 +29,35 @@ public class CorePersonServiceImpl extends GenericEntityServiceImpl<Integer, Cor
 	@Autowired
 	private HibernateSearchService hibernateSearchService;
 	
-	private PersonDao personDao;
+	private PersonDao<P> personDao;
 	
 	@Autowired
-	public CorePersonServiceImpl(PersonDao personDao) {
+	public AbstractPersonServiceImpl(PersonDao<P> personDao) {
 		super(personDao);
 		this.personDao = personDao;
 	}
 	
 	@Override
-	public CorePerson getByUserName(String userName) {
+	public P getByUserName(String userName) {
 		return getByField("userName", userName);
 	}
 	
 	@Override
-	public List<CorePerson> search(String searchPattern) throws ServiceException, SecurityServiceException {
+	public List<P> search(String searchPattern) throws ServiceException, SecurityServiceException {
 		String[] searchFields = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
 		
 		return hibernateSearchService.search(getObjectClass(), searchFields, searchPattern);
 	}
 	
 	@Override
-	public List<CorePerson> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
+	public List<P> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
 		String[] searchFields = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
 		
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern);
 	}
 	
 	@Override
-	protected void createEntity(CorePerson person) throws ServiceException, SecurityServiceException {
+	protected void createEntity(P person) throws ServiceException, SecurityServiceException {
 		super.createEntity(person);
 		
 		Date date = new Date();
@@ -76,30 +77,30 @@ public class CorePersonServiceImpl extends GenericEntityServiceImpl<Integer, Cor
 	}
 	
 	@Override
-	protected void updateEntity(CorePerson person) throws ServiceException, SecurityServiceException {
+	protected void updateEntity(P person) throws ServiceException, SecurityServiceException {
 		person.setLastUpdateDate(new Date());
 		super.updateEntity(person);
 	}
 	
 	@Override
-	public void updateProfileInformation(CorePerson person) throws ServiceException, SecurityServiceException {
+	public void updateProfileInformation(P person) throws ServiceException, SecurityServiceException {
 		person.setLastLoginDate(new Date());
 		super.updateEntity(person);
 	}
 	
 	@Override
-	public void addAuthority(CorePerson person, Authority authority) throws ServiceException, SecurityServiceException {
+	public void addAuthority(P person, Authority authority) throws ServiceException, SecurityServiceException {
 		person.addAuthority(authority);
 		super.update(person);
 	}
 	
 	@Override
-	public void addAuthority(CorePerson person, String authorityName) throws ServiceException, SecurityServiceException {
+	public void addAuthority(P person, String authorityName) throws ServiceException, SecurityServiceException {
 		addAuthority(person, authorityService.getByName(authorityName));
 	}
 	
 	@Override
-	public void setActive(CorePerson person, boolean active) throws ServiceException, SecurityServiceException {
+	public void setActive(P person, boolean active) throws ServiceException, SecurityServiceException {
 		person.setActive(active);
 		super.update(person);
 	}
@@ -110,13 +111,13 @@ public class CorePersonServiceImpl extends GenericEntityServiceImpl<Integer, Cor
 	}
 	
 	@Override
-	public void setPasswords(CorePerson person, String clearTextPassword) throws ServiceException, SecurityServiceException {
+	public void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException {
 		person.setMd5Password(DigestUtils.md5Hex(clearTextPassword));
 		super.update(person);
 	}
 	
 	@Override
-	public boolean comparePasswordToMd5Passwords(CorePerson person, String clearTextPassword) {
+	public boolean comparePasswordToMd5Passwords(P person, String clearTextPassword) {
 		String md5Password = person.getMd5Password();
 		if (md5Password != null) {
 			return md5Password.equals(DigestUtils.md5Hex(clearTextPassword));
@@ -126,7 +127,7 @@ public class CorePersonServiceImpl extends GenericEntityServiceImpl<Integer, Cor
 	}
 
 	@Override
-	public void updateLastLoginDate(CorePerson person) throws ServiceException, SecurityServiceException {
+	public void updateLastLoginDate(P person) throws ServiceException, SecurityServiceException {
 		person.setLastLoginDate(new Date());
 		super.update(person);
 	}
