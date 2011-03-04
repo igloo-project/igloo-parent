@@ -2,11 +2,11 @@ package fr.openwide.core.wicket.more.util;
 
 public enum DatePattern {
 	
-	SHORT_DATE("date.format.short.date", "javascript.date.format.short.date"),
-	SHORT_DATETIME("date.format.short.datetime", null),
+	SHORT_DATE("date.format.shortDate", "javascript.date.format.shortDate"),
+	SHORT_DATETIME("date.format.shortDateTime", null),
 	
-	REALLY_SHORT_DATE("date.format.really.short.date", "javascript.date.format.really.short.date"),
-	REALLY_SHORT_DATETIME("date.format.really.short.datetime", null),
+	REALLY_SHORT_DATE("date.format.reallyShortDate", "javascript.date.format.reallyShortDate"),
+	REALLY_SHORT_DATETIME("date.format.reallyShortDateTime", null),
 
 	YEAR("date.format.year", "javascript.date.format.year");
 	
