@@ -115,7 +115,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		return userName;
 	}
 
-	public P getPerson() {
+	protected P getPerson() {
 		P person = null;
 
 		if (isSignedIn() && userId != null) {
