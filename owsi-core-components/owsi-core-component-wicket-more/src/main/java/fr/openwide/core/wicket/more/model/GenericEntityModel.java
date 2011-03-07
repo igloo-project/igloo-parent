@@ -37,12 +37,18 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		super(entity);
 		InjectorHolder.getInjector().inject(this);
 		
-		id = entity.getId();
+		if (entity != null) {
+			id = entity.getId();
+		}
 	}
 
 	@Override
 	protected E load() {
-		return service.getById(id);
+		E entity = null;
+		if (id != null) {
+			entity = service.getById(id);
+		}
+		return entity;
 	}
 	
 	protected K getId() {
@@ -51,7 +57,9 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	
 	@Override
 	public void setObject(E object) {
-		id = object.getId();
+		if (object != null) {
+			id = object.getId();
+		}
 		super.setObject(object);
 	}
 	
