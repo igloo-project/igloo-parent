@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -38,7 +37,6 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	private Integer id;
 	
 	@Column(nullable = false, unique = true)
-	@Index(name = "idx_person_userName")
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String userName;
 	
