@@ -11,7 +11,7 @@ import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class GenericEntityListModelDataProvider<K extends Serializable & Comparable<K>,
-		E extends GenericEntity<K, E>> implements IDataProvider<E> {
+		E extends GenericEntity<K, ?>> implements IDataProvider<E> {
 
 	private static final long serialVersionUID = -238640572566596234L;
 	

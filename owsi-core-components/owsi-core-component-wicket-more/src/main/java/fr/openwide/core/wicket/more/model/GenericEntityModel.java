@@ -26,7 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.business.generic.service.EntityService;
 
-public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> extends LoadableDetachableModel<E> {
+public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> extends LoadableDetachableModel<E> {
 	
 	private static final long serialVersionUID = 1L;
 
