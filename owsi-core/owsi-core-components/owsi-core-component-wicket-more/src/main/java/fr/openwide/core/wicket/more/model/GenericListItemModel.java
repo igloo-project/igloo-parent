@@ -18,6 +18,7 @@ package fr.openwide.core.wicket.more.model;
 
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
 import fr.openwide.core.hibernate.more.business.generic.service.GenericListItemService;
@@ -30,6 +31,7 @@ public class GenericListItemModel<E extends GenericListItem<E>> extends Loadable
 	
 	private Integer id;
 	
+	@SpringBean
 	private GenericListItemService genericListItemService;
 	
 	@SuppressWarnings("unchecked")
