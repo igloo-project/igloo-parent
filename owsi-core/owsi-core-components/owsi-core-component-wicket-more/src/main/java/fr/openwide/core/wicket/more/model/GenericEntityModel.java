@@ -21,23 +21,29 @@ import java.io.Serializable;
 
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
+import fr.openwide.core.hibernate.business.generic.service.EntityService;
 
 public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> extends LoadableDetachableModel<E> {
 	
 	private static final long serialVersionUID = 1L;
 
-	private GenericEntityService<K, E> service;
+	@SpringBean
+	private EntityService entityService;
 	
-	protected K id;
+	private K id;
 	
+	private Class<E> clazz;
+	
+	@SuppressWarnings("unchecked")
 	public GenericEntityModel(E entity) {
 		super(entity);
 		InjectorHolder.getInjector().inject(this);
 		
 		if (entity != null) {
+			clazz = (Class<E>) entity.getClass();
 			id = entity.getId();
 		}
 	}
@@ -45,28 +51,27 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@Override
 	protected E load() {
 		E entity = null;
-		if (id != null) {
-			entity = service.getById(id);
+		if (clazz != null && id != null) {
+			entity = entityService.getEntity(clazz, id);
 		}
 		return entity;
 	}
 	
-	protected K getId() {
-		return id;
-	}
-	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void setObject(E object) {
-		if (object != null) {
-			id = object.getId();
+	public void setObject(E entity) {
+		if (entity != null) {
+			clazz = (Class<E>) entity.getClass();
+			id = entity.getId();
 		} else {
 			id = null;
+			clazz = null;
 		}
-		super.setObject(object);
+		super.setObject(entity);
 	}
 	
-	protected void setService(GenericEntityService<K, E> service) {
-		this.service = service;
+	protected K getId() {
+		return id;
 	}
 
 }
