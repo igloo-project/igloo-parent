@@ -60,6 +60,9 @@ public class GenericListItemModel<E extends GenericListItem<E>> extends Loadable
 		if (listItem != null) {
 			clazz = (Class<E>) listItem.getClass();
 			id = listItem.getId();
+		} else {
+			id = null;
+			clazz = null;
 		}
 		super.setObject(listItem);
 	}
