@@ -19,7 +19,7 @@ public class EntityDaoImpl extends HibernateDaoSupport implements EntityDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> E getEntity(
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(
 			Class<E> clazz, K id) {
 		return (E) getSession().get(clazz, id);
 	}
