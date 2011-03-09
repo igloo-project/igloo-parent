@@ -8,9 +8,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +62,8 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 			
 			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextSession, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
 			
-			org.apache.lucene.search.Query luceneQuery = parser.parse(searchPattern);
-			org.hibernate.Query hibernateQuery = fullTextSession.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[classes.size()]));
+			Query luceneQuery = parser.parse(searchPattern);
+			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[classes.size()]));
 			
 			return (List<T>) hibernateQuery.list();
 		} catch(ParseException e) {
