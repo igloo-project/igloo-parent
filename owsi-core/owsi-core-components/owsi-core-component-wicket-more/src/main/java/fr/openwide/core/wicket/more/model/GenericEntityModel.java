@@ -59,6 +59,8 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	public void setObject(E object) {
 		if (object != null) {
 			id = object.getId();
+		} else {
+			id = null;
 		}
 		super.setObject(object);
 	}
