@@ -28,7 +28,8 @@ import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 
 @MappedSuperclass
 @Bindable
-public abstract class GenericListItem<E extends GenericListItem<?>> extends GenericEntity<Integer, E> {
+public abstract class GenericListItem<E extends GenericListItem<?>> extends GenericEntity<Integer, E>
+		implements GenericListItemBindingInterface {
 	
 	private static final long serialVersionUID = -6270832991786371463L;
 
@@ -79,6 +80,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		this.label = label;
 	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -87,6 +89,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		this.shortLabel = shortLabel;
 	}
 
+	@Override
 	public String getShortLabel() {
 		return shortLabel;
 	}
@@ -95,10 +98,12 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		this.position = order;
 	}
 
+	@Override
 	public Integer getPosition() {
 		return position;
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
