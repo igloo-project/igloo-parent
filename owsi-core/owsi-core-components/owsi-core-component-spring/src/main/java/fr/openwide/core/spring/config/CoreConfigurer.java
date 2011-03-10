@@ -29,6 +29,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String LOCALE_AVAILABLE_LOCALES = "locale.availableLocales";
 	private static final String LOCALE_DEFAULT = "locale.default";
 	
+	private static final String HIBERNATE_SEARCH_REINDEX_BATCH_SIZE = "hibernate.search.reindex.batchSize";
+	private static final String HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS = "hibernate.search.reindex.fetchingThreads";
+	private static final String HIBERNATE_SEARCH_REINDEX_LOAD_THREADS = "hibernate.search.reindex.loadThreads";
+	
 	public String getVersion() {
 		return getPropertyAsString(VERSION_PROPERTY);
 	}
@@ -147,6 +151,18 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		
 		// default locale from configuration
 		return getDefaultLocale();
+	}
+	
+	public int getHibernateSearchReindexBatchSize() {
+		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 10);
+	}
+	
+	public int getHibernateSearchReindexFetchingThreads() {
+		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS, 2);
+	}
+	
+	public int getHibernateSearchReindexLoadThreads() {
+		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 2);
 	}
 	
 }

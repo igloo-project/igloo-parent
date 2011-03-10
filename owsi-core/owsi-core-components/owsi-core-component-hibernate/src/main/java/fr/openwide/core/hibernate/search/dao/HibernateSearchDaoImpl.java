@@ -21,9 +21,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.spring.config.CoreConfigurer;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl extends HibernateDaoSupport implements HibernateSearchDao {
+	
+	@Autowired
+	private CoreConfigurer configurer;
 	
 	@Autowired
 	public HibernateSearchDaoImpl(SessionFactory sessionFactory) {
@@ -79,9 +83,9 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 			FullTextSession fullTextSession = Search.getFullTextSession(getSession());
 			
 			fullTextSession.createIndexer()
-					.batchSizeToLoadObjects(30)
-					.threadsForSubsequentFetching(8)
-					.threadsToLoadObjects(4)
+					.batchSizeToLoadObjects(configurer.getHibernateSearchReindexBatchSize())
+					.threadsForSubsequentFetching(configurer.getHibernateSearchReindexFetchingThreads())
+					.threadsToLoadObjects(configurer.getHibernateSearchReindexLoadThreads())
 					.cacheMode(CacheMode.NORMAL)
 					.startAndWait();
 		} catch (Exception e) {
