@@ -1,6 +1,6 @@
 package fr.openwide.core.hibernate.security.business.authority.util;
 
-public final class CoreAuthorityConstants {
+public class CoreAuthorityConstants {
 
 	public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 	public static final String ROLE_AUTHENTICATED = "ROLE_AUTHENTICATED";
@@ -17,7 +17,7 @@ public final class CoreAuthorityConstants {
 	 */
 	public static final String PERSON_GROUP_PREFIX = "group:";
 
-	private CoreAuthorityConstants() {
+	protected CoreAuthorityConstants() {
 	}
 	
 }
