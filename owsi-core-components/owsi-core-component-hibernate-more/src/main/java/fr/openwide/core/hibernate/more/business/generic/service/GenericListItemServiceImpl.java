@@ -63,7 +63,7 @@ public class GenericListItemServiceImpl implements GenericListItemService {
 	}
 
 	@Override
-	public <E extends GenericListItem<? super E>> List<E> list(Class<E> clazz) {
+	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
 		return genericListItemDao.list(clazz);
 	}
 	
