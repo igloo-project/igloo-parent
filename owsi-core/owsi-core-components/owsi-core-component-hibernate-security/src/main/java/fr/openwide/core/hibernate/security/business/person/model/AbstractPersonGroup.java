@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -14,6 +15,7 @@ import javax.persistence.OrderBy;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -51,6 +53,12 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
 	
+	@Type(type = "org.hibernate.type.StringClobType")
+	private String description;
+	
+	@Column(nullable = false)
+	private boolean locked = false;
+	
 	public AbstractPersonGroup() {
 	}
 
@@ -58,6 +66,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 		this.name = name;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -66,6 +75,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -74,6 +84,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 		this.name = name;
 	}
 	
+	@Override
 	public String getDisplayName() {
 		return this.getName();
 	}
@@ -96,6 +107,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 		person.getPersonGroups().remove(this);
 	}
 	
+	@Override
 	public Set<Authority> getAuthorities() {
 		return authorities;
 	}
@@ -110,6 +122,22 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	
 	public void removeAuthority(Authority authority) {
 		this.authorities.remove(authority);
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	@Override
