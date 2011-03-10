@@ -9,6 +9,9 @@ public abstract class AbstractGenericEntityIdFieldBridge implements FieldBridge,
 	
 	@Override
 	public String objectToString(Object object) {
+		if (object == null) {
+			return null;
+		}
 		if (!(object instanceof GenericEntity)) {
 			throw new IllegalArgumentException("This FieldBridge only supports GenericEntity properties.");
 		}

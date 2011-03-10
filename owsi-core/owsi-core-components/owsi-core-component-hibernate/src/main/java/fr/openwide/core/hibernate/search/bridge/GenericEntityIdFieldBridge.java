@@ -7,6 +7,9 @@ public class GenericEntityIdFieldBridge extends AbstractGenericEntityIdFieldBrid
 	
 	@Override
 	public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {
+		if (value == null) {
+			return;
+		}
 		luceneOptions.addFieldToDocument(name, objectToString(value), document);
 	}
 	
