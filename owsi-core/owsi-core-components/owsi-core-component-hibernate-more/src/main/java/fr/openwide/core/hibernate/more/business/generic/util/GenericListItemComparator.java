@@ -14,13 +14,15 @@ public class GenericListItemComparator implements Comparator<GenericListItem<?>>
 	
 	@Override
 	public int compare(GenericListItem<?> o1, GenericListItem<?> o2) {
-		if (!o1.getClass().equals(o2.getClass())) {
-			throw new IllegalArgumentException("Compared objects must have the same type.");
+		int order = 0;
+		
+		if (order == 0 && !o1.getClass().equals(o2.getClass())) {
+			order = GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getClass().getSimpleName(),
+					o2.getClass().getSimpleName());
 		}
 		
 		// on trie en priorité sur la position, puis sur le libellé et enfin par l'identifiant
-		int order = 0;
-		if (o1.getPosition() != null) {
+		if (order == 0 && o1.getPosition() != null) {
 			order = o1.getPosition().compareTo(o2.getPosition());
 		}
 		if (order == 0 && o1.getLabel() != null) {
