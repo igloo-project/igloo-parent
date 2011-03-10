@@ -20,11 +20,11 @@
 	<wicket:panel>
 		<div class="pager-outer">
 			<div class="pager">
-				<a wicket:id="first"><img class="icon" src="static/common/images/icons/resultset_first.png" /></a>&nbsp;&nbsp;<a wicket:id="prev"><img class="icon" src="static/common/images/icons/resultset_previous.png" /></a>
-				<span wicket:id="navigation" class="navigation">
+				<span class="navigation-images navigation-images-left"><a wicket:id="first"><img class="icon" src="static/common/images/icons/resultset_first.png" wicket:message="alt:common.paging.first" /></a>&nbsp;&nbsp;<a wicket:id="prev"><img class="icon" src="static/common/images/icons/resultset_previous.png" wicket:message="alt:common.paging.previous" /></a></span>
+				<span wicket:id="navigation" class="navigation-pages">
 					<a wicket:id="pageLink" href="#"><span wicket:id="pageNumber">5</span></a>
 				</span>
-				<a wicket:id="next"><img class="icon" src="static/common/images/icons/resultset_next.png" /></a>&nbsp;&nbsp;<a wicket:id="last"><img class="icon" src="static/common/images/icons/resultset_last.png" /></a>
+				<span class="navigation-images navigation-images-right"><a wicket:id="next"><img class="icon" src="static/common/images/icons/resultset_next.png" wicket:message="alt:common.paging.next" /></a>&nbsp;&nbsp;<a wicket:id="last"><img class="icon" src="static/common/images/icons/resultset_last.png" wicket:message="alt:common.paging.last" /></a></span>
 			</div>
 		</div>
 	</wicket:panel>
