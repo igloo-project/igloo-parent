@@ -46,6 +46,15 @@ public abstract class GenericListItem<E extends GenericListItem<E>> extends Gene
 	@Column(nullable = false)
 	private boolean enabled = true;
 	
+	@Column(nullable = false)
+	private boolean editable = true;
+	
+	@Column(nullable = false)
+	private boolean disableable = true;
+	
+	@Column(nullable = false)
+	private boolean deleteable = false;
+	
 	protected GenericListItem() {
 	}
 	
@@ -96,6 +105,30 @@ public abstract class GenericListItem<E extends GenericListItem<E>> extends Gene
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public boolean isDisableable() {
+		return disableable;
+	}
+
+	public void setDisableable(boolean disableable) {
+		this.disableable = disableable;
+	}
+
+	public boolean isDeleteable() {
+		return deleteable;
+	}
+
+	public void setDeleteable(boolean deleteable) {
+		this.deleteable = deleteable;
 	}
 
 	@Override
