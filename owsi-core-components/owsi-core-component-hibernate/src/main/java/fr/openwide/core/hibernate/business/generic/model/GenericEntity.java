@@ -28,7 +28,7 @@ import java.util.Locale;
  *
  * @param <E> type de l'entité
  */
-public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> implements Serializable, Comparable<E> {
+public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable, Comparable<E> {
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
