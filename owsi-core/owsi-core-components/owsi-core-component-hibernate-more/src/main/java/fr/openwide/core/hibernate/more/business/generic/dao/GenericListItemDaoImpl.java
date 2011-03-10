@@ -34,6 +34,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.hibernate.more.business.generic.util.GenericListItemComparator;
 
 @Component("genericListItemDao")
 public class GenericListItemDaoImpl extends HibernateDaoSupport implements GenericListItemDao {
@@ -83,12 +84,12 @@ public class GenericListItemDaoImpl extends HibernateDaoSupport implements Gener
 	}
 	
 	@Override
-	public <E extends GenericListItem<? super E>> List<E> list(Class<E> clazz) {
+	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
 		return list(clazz, null, null, null, null);
 	}
 	
 	@Override
-	public <E extends GenericListItem<? super E>> List<E> listByField(Class<E> clazz, String fieldName, Object fieldValue) {
+	public <E extends GenericListItem<?>> List<E> listByField(Class<E> clazz, String fieldName, Object fieldValue) {
 		Criterion filter = Restrictions.eq(fieldName, fieldValue);
 		return list(clazz, filter, null, null, null);
 	}
@@ -104,7 +105,7 @@ public class GenericListItemDaoImpl extends HibernateDaoSupport implements Gener
 	 * @return liste d'entités
 	 */
 	@SuppressWarnings("unchecked")
-	public <E extends GenericListItem<? super E>> List<E> list(Class<E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
+	public <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
 		List<E> entities = new ArrayList<E>();
 		try {
 			Criteria criteria = buildCriteria(objectClass, null, filter, order, limit, offset);
@@ -112,7 +113,7 @@ public class GenericListItemDaoImpl extends HibernateDaoSupport implements Gener
 			entities = criteria.list();
 			
 			if (order == null) {
-				Collections.sort(entities);
+				Collections.sort(entities, GenericListItemComparator.INSTANCE);
 			}
 			
 			return entities;
