@@ -9,6 +9,9 @@ public class GenericEntityCollectionIdFieldBridge extends AbstractGenericEntityI
 	
 	@Override
 	public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {
+		if (value == null) {
+			return;
+		}
 		if (!(value instanceof Collection)) {
 			throw new IllegalArgumentException("This FieldBridge only supports Collection of GenericEntity properties.");
 		}
