@@ -28,7 +28,7 @@ import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 
 @MappedSuperclass
 @Bindable
-public abstract class GenericListItem<E extends GenericListItem<E>> extends GenericEntity<Integer, E> {
+public abstract class GenericListItem<E extends GenericListItem<?>> extends GenericEntity<Integer, E> {
 	
 	private static final long serialVersionUID = -6270832991786371463L;
 
