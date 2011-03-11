@@ -134,16 +134,24 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		return roles;
 	}
 	
-	private boolean hasRole(String authority) {
+	protected boolean hasRole(String authority) {
 		return roles.contains(authority);
 	}
 
-	public boolean hasAdminRole() {
+	public boolean hasRoleAdmin() {
 		return hasRole(CoreAuthorityConstants.ROLE_ADMIN);
 	}
 	
-	public boolean hasAuthenticatedRole() {
+	public boolean hasRoleAuthenticated() {
 		return hasRole(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+	}
+	
+	public boolean hasRoleSystem() {
+		return hasRole(CoreAuthorityConstants.ROLE_SYSTEM);
+	}
+	
+	public boolean hasRoleAnonymous() {
+		return hasRole(CoreAuthorityConstants.ROLE_ANONYMOUS);
 	}
 
 	/**
