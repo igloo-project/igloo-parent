@@ -16,6 +16,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor;
+import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -38,6 +39,8 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	
 	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass, PageParameters parameters) {
 		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLinkContainer", pageClass, parameters);
+		link.setVisible(AbstractCoreSession.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass));
+		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLink");
 		if (pageClass.equals(selectedPageClass)) {
 			link.add(new AttributeAppender("class", true, new Model<String>("selected"), " "));
