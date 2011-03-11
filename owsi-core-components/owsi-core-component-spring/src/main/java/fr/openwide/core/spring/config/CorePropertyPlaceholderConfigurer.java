@@ -80,9 +80,24 @@ public class CorePropertyPlaceholderConfigurer extends PropertyPlaceholderConfig
 	 * @return chaîne de la propriété
 	 */
 	protected String getPropertyAsString(String key) {
+		return getPropertyAsString(key, null);
+	}
+	
+	/**
+	 * Retourne une propriété spécifique à partir de sa clé sous la forme d'une
+	 * chaîne. Retourne la valeur par défaut si on récupère null.
+	 * 
+	 * /!\ bien renvoyer la chaîne vide si la chaîne est vide : il ne faut pas
+	 * envoyer la valeur par défaut dans ce cas.
+	 * 
+	 * @param key la clé
+	 * @param defaultValue la valeur par défaut
+	 * @return chaîne de la propriété
+	 */
+	protected String getPropertyAsString(String key, String defaultValue) {
 		Object property = getProperty(key);
 		if(property == null) {
-			return null;
+			return defaultValue;
 		} else {
 			return property.toString();
 		}
