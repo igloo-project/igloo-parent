@@ -39,7 +39,7 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	
 	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass, PageParameters parameters) {
 		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLinkContainer", pageClass, parameters);
-		link.setVisible(AbstractCoreSession.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass));
+		link.setVisible(isPageAccessible(pageClass));
 		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLink");
 		if (pageClass.equals(selectedPageClass)) {
@@ -48,6 +48,10 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 		link.add(container);
 		
 		add(link);
+	}
+	
+	protected boolean isPageAccessible(Class<? extends Page> pageClass) {
+		return AbstractCoreSession.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 	
 	protected abstract Class<? extends WebPage> getFirstMenuPage();
