@@ -8,8 +8,8 @@ import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
-import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
+import org.apache.wicket.authorization.strategies.CompoundAuthorizationStrategy;
 import org.apache.wicket.authorization.strategies.role.IRoleCheckingStrategy;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
@@ -85,7 +85,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 		}
 	}
 
-	protected IAuthorizationStrategy newAuthorizationStrategy() {
+	protected CompoundAuthorizationStrategy newAuthorizationStrategy() {
 		return new CoreAuthorizationStrategy(this, authenticationService, permissionFactory);
 	}
 	
