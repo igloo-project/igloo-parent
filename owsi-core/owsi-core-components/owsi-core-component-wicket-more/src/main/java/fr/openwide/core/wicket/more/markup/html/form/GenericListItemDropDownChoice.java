@@ -17,27 +17,20 @@
 
 package fr.openwide.core.wicket.more.markup.html.form;
 
-import java.util.List;
-
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
-import fr.openwide.core.hibernate.more.business.generic.service.GenericListItemService;
+import fr.openwide.core.wicket.more.markup.html.model.GenericListItemListModel;
 
 public class GenericListItemDropDownChoice<T extends GenericListItem<? super T>> extends DropDownChoice<T> {
 	private static final long serialVersionUID = 6111025269398387253L;
 	
-	@SpringBean(name = "genericListItemService")
-	private GenericListItemService genericListItemService;
-	
-	@SuppressWarnings("unchecked")
-	public GenericListItemDropDownChoice(String id, IModel<T> model, Class<? extends T> clazz) {
+	public GenericListItemDropDownChoice(String id, IModel<T> model, Class<T> clazz) {
 		super(id);
 		setModel(model);
-		setChoices((List<T>) genericListItemService.listEnabled(clazz));
+		setChoices(new GenericListItemListModel<T>(clazz, true));
 		setChoiceRenderer(new GenericListItemChoiceRenderer());
 		setNullValid(true);
 	}
