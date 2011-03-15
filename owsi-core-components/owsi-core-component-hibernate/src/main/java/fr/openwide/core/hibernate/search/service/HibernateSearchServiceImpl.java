@@ -2,6 +2,7 @@ package fr.openwide.core.hibernate.search.service;
 
 import java.util.List;
 
+import org.apache.lucene.search.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,11 @@ public class HibernateSearchServiceImpl implements HibernateSearchService {
 	
 	@Autowired
 	private HibernateSearchDao hibernateSearchDao;
+	
+	@Override
+	public void reindexAll() throws ServiceException {
+		hibernateSearchDao.reindexAll();
+	}
 	
 	@Override
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
@@ -41,8 +47,29 @@ public class HibernateSearchServiceImpl implements HibernateSearchService {
 	}
 	
 	@Override
-	public void reindexAll() throws ServiceException {
-		hibernateSearchDao.reindexAll();
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
+		return hibernateSearchDao.search(clazz, fields, searchPattern, additionalLuceneQuery);
 	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
+		return hibernateSearchDao.search(clazz, fields, searchPattern, analyzerName, additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
+		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
+		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
+		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName, additionalLuceneQuery);
+	}
+	
 	
 }
