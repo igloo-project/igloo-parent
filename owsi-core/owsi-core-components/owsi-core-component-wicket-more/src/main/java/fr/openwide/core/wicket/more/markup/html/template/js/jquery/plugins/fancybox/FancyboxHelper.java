@@ -11,7 +11,7 @@ public final class FancyboxHelper {
 	}
 	
 	public static String getTriggerFancyboxCleanup() {
-		return "$.fancybox.trigger('fancybox-cleanup')";
+		return "$.event.trigger('fancybox-cleanup')";
 	}
 	
 	private FancyboxHelper() {
