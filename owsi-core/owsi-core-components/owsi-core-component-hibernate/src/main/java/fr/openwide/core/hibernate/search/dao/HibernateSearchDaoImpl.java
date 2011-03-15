@@ -8,6 +8,8 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
@@ -47,16 +49,39 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
 		
-		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(clazz));
+		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(clazz), null);
 	}
 	
 	@Override
 	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
-		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(analyzerName));
+		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(analyzerName), null);
+	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
+			Query additionalLuceneQuery) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(clazz), additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+			Query additionalLuceneQuery) throws ServiceException {
+		return search(classes, fields, searchPattern, Search.getFullTextSession(getSession()).getSearchFactory().getAnalyzer(analyzerName), additionalLuceneQuery);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer) throws ServiceException {
+	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer, Query additionalLuceneQuery) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
 			return Collections.emptyList();
 		}
@@ -66,8 +91,14 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 			
 			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextSession, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
 			
-			Query luceneQuery = parser.parse(searchPattern);
-			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[classes.size()]));
+			BooleanQuery booleanQuery = new BooleanQuery();
+			booleanQuery.add(parser.parse(searchPattern), BooleanClause.Occur.MUST);
+			
+			if (additionalLuceneQuery != null) {
+				booleanQuery.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
+			}
+			
+			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, classes.toArray(new Class<?>[classes.size()]));
 			
 			return (List<T>) hibernateQuery.list();
 		} catch(ParseException e) {
