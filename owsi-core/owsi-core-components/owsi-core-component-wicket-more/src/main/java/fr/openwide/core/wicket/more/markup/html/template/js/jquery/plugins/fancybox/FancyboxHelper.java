@@ -10,6 +10,10 @@ public final class FancyboxHelper {
 		return "$.fancybox.close()";
 	}
 	
+	public static String getTriggerFancyboxCleanup() {
+		return "$.fancybox.trigger('fancybox-cleanup')";
+	}
+	
 	private FancyboxHelper() {
 	}
 
