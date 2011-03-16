@@ -2,6 +2,7 @@ package fr.openwide.core.hibernate.security.business.person.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,12 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	@Override
 	public void updateLastLoginDate(P person) throws ServiceException, SecurityServiceException {
 		person.setLastLoginDate(new Date());
+		super.update(person);
+	}
+	
+	@Override
+	public void updateLocale(P person, Locale locale) throws ServiceException, SecurityServiceException {
+		person.setLocale(locale);
 		super.update(person);
 	}
 
