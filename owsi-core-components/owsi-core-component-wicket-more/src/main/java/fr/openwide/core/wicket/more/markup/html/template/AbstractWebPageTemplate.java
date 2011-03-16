@@ -19,11 +19,16 @@ import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionGravity;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public abstract class AbstractWebPageTemplate extends WebPage {
 	
 	private static final String META_TITLE_SEPARATOR = " › ";
+	
+	private static final String TIPSY_DATA_TOOLTIP = "data-tooltip";
+	private static final String TIPSY_DATA_FORM_FIELD_HELP = "data-form-field-help";
 	
 	private List<String> pageTitleElements = new ArrayList<String>();
 	
@@ -97,13 +102,25 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 		return sb.toString();
 	}
 	
-	protected void enableTipsyTooltips() {
+	protected void enableDefaultTipsyTooltips() {
+		enableTipsyTooltips("[" + TIPSY_DATA_TOOLTIP + "]", TIPSY_DATA_TOOLTIP);
+		enableTipsyTooltips("[" + TIPSY_DATA_FORM_FIELD_HELP + "]", TIPSY_DATA_FORM_FIELD_HELP,
+				TipsyOptionGravity.WEST, TipsyOptionTrigger.FOCUS);
+	}
+	
+	protected void enableTipsyTooltips(String selector, String tooltipAttributeName) {
+		enableTipsyTooltips(selector, tooltipAttributeName, TipsyOptionGravity.NORTH, TipsyOptionTrigger.HOVER);
+	}
+	
+	protected void enableTipsyTooltips(String selector, String tooltipAttributeName, TipsyOptionGravity gravity, TipsyOptionTrigger trigger) {
 		final Tipsy tipsy = new Tipsy();
 		tipsy.setFade(true);
 		tipsy.setLive(true);
-		tipsy.setTitle(JsUtils.quotes("data-tooltip"));
-		
-		add(new TipsyBehavior("[data-tooltip]", tipsy));
+		tipsy.setTitle(JsUtils.quotes(tooltipAttributeName));
+		tipsy.setGravity(gravity);
+		tipsy.setTrigger(trigger);
+			
+		add(new TipsyBehavior(selector, tipsy));
 	}
 	
 	protected void enableCss3Pie(String[] styles) {
