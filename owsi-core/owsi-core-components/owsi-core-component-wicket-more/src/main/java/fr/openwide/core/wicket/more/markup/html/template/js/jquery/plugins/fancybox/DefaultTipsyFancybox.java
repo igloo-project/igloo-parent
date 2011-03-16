@@ -18,14 +18,14 @@ public class DefaultTipsyFancybox implements ChainableStatement, Serializable {
 	
 	private Options options = new Options();
 	
-	private FancyBoxOptionType type;
+	private FancyboxOptionType type;
 	
 	public DefaultTipsyFancybox() {
 		JsScope scope = JsScope.quickScope(TipsyHelper.closeTipsyStatement().render());
 		options.put("onStart", scope);
 	}
 	
-	public void setType(FancyBoxOptionType type) {
+	public void setType(FancyboxOptionType type) {
 		this.type = type;
 	}
 
