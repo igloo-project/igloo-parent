@@ -1,6 +1,7 @@
 package fr.openwide.core.hibernate.security.business.person.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
 import fr.openwide.core.hibernate.exception.SecurityServiceException;
@@ -29,6 +30,8 @@ public interface PersonService<P extends AbstractPerson<P>> extends GenericEntit
 	void addAuthority(P person, String authorityName) throws ServiceException, SecurityServiceException;
 
 	void updateLastLoginDate(P person) throws ServiceException, SecurityServiceException;
+	
+	void updateLocale(P person, Locale locale) throws ServiceException, SecurityServiceException;
 
 	void updateProfileInformation(P person) throws ServiceException, SecurityServiceException;
 

@@ -73,23 +73,21 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 			P person = personService.getByUserName(authenticationService.getUserName());
 			if (person != null) {
 				userId = person.getId();
-				Locale locale = person.getLocale();
-				if (locale != null) {
-					setLocale(person.getLocale());
-				} else {
-					// si la personne ne possède pas de locale
-					// alors on enregistre celle mise en place
-					// automatiquement par le navigateur.
-					try {
-						person.setLocale(getLocale());
-						personService.update(person);
-					} catch (Exception e) {
-						LOGGER.error(String.format(
-								"Unable to save the locale of the user %1$s (locale: %2$s)",
-								person,
-								getLocale()
-						));
+				
+				try {
+					personService.updateLastLoginDate(person);
+					
+					Locale locale = person.getLocale();
+					if (locale != null) {
+						setLocale(person.getLocale());
+					} else {
+						// si la personne ne possède pas de locale
+						// alors on enregistre celle mise en place
+						// automatiquement par le navigateur.
+						personService.updateLocale(person, getLocale());
 					}
+				} catch (Exception e) {
+					LOGGER.error(String.format("Unable to update the user information on sign in", person), e);
 				}
 			}
 			
