@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -36,12 +36,19 @@ public class Css3PieHeaderContributor extends TextTemplateHeaderContributor {
 		return new PackagedTextTemplate(Css3PieHeaderContributor.class, CSS_TEMPLATE_FILENAME);
 	}
 	
-	private static IModel<Map<String, Object>> getVariablesModel(String[] stylesWithCss3Properties) {
-		Map<String, Object> variables = new MiniMap<String, Object>(2);
-		variables.put(STYLES_VARIABLE, StringUtils.arrayToCommaDelimitedString(stylesWithCss3Properties));
-		variables.put(PIE_HTC_URL_VARIABLE, RequestCycle.get().urlFor(new ResourceReference(Css3PieHeaderContributor.class, PIE_HTC_FILENAME)).toString());
-		
-		return Model.ofMap(variables);
+	private static IModel<Map<String, Object>> getVariablesModel(final String[] stylesWithCss3Properties) {
+		return new LoadableDetachableModel<Map<String, Object>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Map<String, Object> load() {
+				Map<String, Object> variables = new MiniMap<String, Object>(2);
+				variables.put(STYLES_VARIABLE, StringUtils.arrayToCommaDelimitedString(stylesWithCss3Properties));
+				variables.put(PIE_HTC_URL_VARIABLE, RequestCycle.get().urlFor(new ResourceReference(Css3PieHeaderContributor.class, PIE_HTC_FILENAME)).toString());
+				
+				return variables;
+			}
+		};
 	}
 
 }
