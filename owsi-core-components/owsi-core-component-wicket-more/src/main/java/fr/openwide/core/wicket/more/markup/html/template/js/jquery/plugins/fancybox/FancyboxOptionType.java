@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
-public enum FancyBoxOptionType {
+public enum FancyboxOptionType {
 
 	HTML("'html'"),
 	IMAGE("'image'"),
@@ -11,7 +11,7 @@ public enum FancyBoxOptionType {
 	
 	private String value;
 	
-	private FancyBoxOptionType(String value) {
+	private FancyboxOptionType(String value) {
 		this.value = value;
 	}
 	
