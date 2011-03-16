@@ -9,7 +9,7 @@ public class FancyboxStyleSheetResourceReference extends
 	private static final FancyboxStyleSheetResourceReference INSTANCE = new FancyboxStyleSheetResourceReference();
 
 	public FancyboxStyleSheetResourceReference() {
-		super(FancyboxStyleSheetResourceReference.class, "jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css");
+		super(FancyboxStyleSheetResourceReference.class, "jquery.fancybox-1.3.4/fancybox/jquery.fancybox-modified-1.3.4.css");
 	}
 	
 	public static FancyboxStyleSheetResourceReference get() {
