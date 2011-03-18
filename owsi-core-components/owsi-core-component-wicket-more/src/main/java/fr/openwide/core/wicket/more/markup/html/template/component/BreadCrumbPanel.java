@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.markup.html.template.component;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -15,7 +14,6 @@ public class BreadCrumbPanel extends Panel {
 	public BreadCrumbPanel(String id, IModel<List<BreadCrumbElement>> breadCrumbModel) {
 		super(id, breadCrumbModel);
 		
-		add(new BookmarkablePageLink<Void>("homeBreadCrumbLink", getApplication().getHomePage()));
 		add(new BreadCrumbListView("breadCrumbElement", breadCrumbModel));
 	}
 	
