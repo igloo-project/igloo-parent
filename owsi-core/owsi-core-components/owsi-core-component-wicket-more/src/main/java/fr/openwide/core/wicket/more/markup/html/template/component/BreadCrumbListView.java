@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.component;
 
 import java.util.List;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -22,6 +23,10 @@ public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 	@Override
 	protected void populateItem(ListItem<BreadCrumbElement> item) {
 		BreadCrumbElement breadCrumbElement = item.getModelObject();
+		
+		WebMarkupContainer separator = new WebMarkupContainer("separator");
+		separator.setVisible(item.getIndex() != 0);
+		item.add(separator);
 		
 		Link<Void> link = new BookmarkablePageLink<Void>("breadCrumbElementLink", breadCrumbElement.getPageClass(), breadCrumbElement.getPageParameters());
 		link.add(new Label("breadCrumbElementLabel", getString(breadCrumbElement.getLabelKey(), null, breadCrumbElement.getLabelKey())));
