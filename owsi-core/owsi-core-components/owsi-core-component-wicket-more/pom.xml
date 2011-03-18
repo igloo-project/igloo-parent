@@ -56,6 +56,12 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.asual.lesscss</groupId>
+			<artifactId>lesscss-engine</artifactId>
+			<version>${owsi-core.lesscss-engine.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>
@@ -77,6 +83,12 @@
 			<id>org.bindgen</id>
 			<name>Bindgen Repository</name>
 			<url>http://repo.joist.ws</url>
+		</repository>
+		
+		<repository>
+			<id>com.asual.maven.public</id>
+			<name>Asual Public Repository</name>
+			<url>http://www.asual.com/maven/content/groups/public</url>
 		</repository>
 		
 		<repository>
