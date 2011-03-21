@@ -22,14 +22,32 @@ public class GenericListItemComparator implements Comparator<GenericListItem<?>>
 		}
 		
 		// on trie en priorité sur la position, puis sur le libellé et enfin par l'identifiant
-		if (order == 0 && o1.getPosition() != null) {
+		if (order == 0 && o1.getPosition() != null && o2.getPosition() != null) {
 			order = o1.getPosition().compareTo(o2.getPosition());
 		}
+		
+		if (order == 0 && o1.getPosition() != null && o2.getPosition() == null) {
+			order = -1;
+		}
+		
+		if (order == 0 && o1.getPosition() == null && o2.getPosition() != null) {
+			order = 1;
+		}
+		
 		if (order == 0 && o1.getLabel() != null) {
 			order = GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getLabel(), o2.getLabel());
 		}
-		if (order == 0) {
+		
+		if (order == 0 && o1.getId() != null && o2.getId() != null) {
 			order = o1.getId().compareTo(o2.getId());
+		}
+		
+		if (order == 0 && o1.getId() != null && o2.getId() == null) {
+			order = -1;
+		}
+		
+		if (order == 0 && o1.getId() == null && o2.getId() != null) {
+			order = 1;
 		}
 		return order;
 	}
