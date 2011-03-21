@@ -9,14 +9,11 @@ import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.ui.autocomplete.Autocomplete;
 
 public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent<T>
 		implements IWiQueryPlugin {
 	
 	private static final long serialVersionUID = 2543997784221712556L;
-	
-	private static final String NOT_ENTERED = "NOT_ENTERED";
 	
 	private WebMarkupContainer cleanLink;
 
@@ -31,12 +28,6 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 
 	public AutocompleteAjaxComponent(String id, IModel<T> model) {
 		this(id, model, null);
-	}
-
-	@Override
-	protected void onBeforeRenderAutocomplete(Autocomplete<?> autocomplete) {
-		super.onBeforeRenderAutocomplete(autocomplete);
-		getAutocompleteHidden().setModelObject(NOT_ENTERED);
 	}
 	
 	@Override
