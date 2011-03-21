@@ -98,7 +98,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public Locale getDefaultLocale() {
 		Locale defaultLocale = LocaleUtils.toLocale(getPropertyAsString(LOCALE_DEFAULT));
 		if (defaultLocale == null) {
-			defaultLocale = Locale.ENGLISH;
+			defaultLocale = Locale.US;
 		}
 		return defaultLocale;
 	}
