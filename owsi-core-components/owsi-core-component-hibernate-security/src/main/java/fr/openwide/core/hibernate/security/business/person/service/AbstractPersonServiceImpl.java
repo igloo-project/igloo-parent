@@ -85,8 +85,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public void updateProfileInformation(P person) throws ServiceException, SecurityServiceException {
-		person.setLastLoginDate(new Date());
-		super.updateEntity(person);
+		super.update(person);
 	}
 	
 	@Override
@@ -130,13 +129,13 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	@Override
 	public void updateLastLoginDate(P person) throws ServiceException, SecurityServiceException {
 		person.setLastLoginDate(new Date());
-		super.update(person);
+		super.updateEntity(person);
 	}
 	
 	@Override
 	public void updateLocale(P person, Locale locale) throws ServiceException, SecurityServiceException {
 		person.setLocale(locale);
-		super.update(person);
+		super.updateEntity(person);
 	}
 
 }
