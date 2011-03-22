@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -16,7 +17,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor;
-import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
@@ -57,7 +57,7 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	}
 	
 	protected boolean isPageAccessible(Class<? extends Page> pageClass) {
-		return AbstractCoreSession.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 	
 	protected abstract Class<? extends WebPage> getFirstMenuPage();
