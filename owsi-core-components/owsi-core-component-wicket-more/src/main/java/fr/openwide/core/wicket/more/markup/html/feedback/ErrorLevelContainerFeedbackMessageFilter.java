@@ -10,7 +10,7 @@ import org.apache.wicket.feedback.IFeedbackMessageFilter;
  * niveaux).
  *
  */
-public class LevelComponentFeedbackMessageFilter implements IFeedbackMessageFilter {
+class ErrorLevelContainerFeedbackMessageFilter implements IFeedbackMessageFilter {
 
 	private static final long serialVersionUID = -8307834623085786613L;
 	
@@ -18,7 +18,7 @@ public class LevelComponentFeedbackMessageFilter implements IFeedbackMessageFilt
 	
 	private final int level;
 
-	public LevelComponentFeedbackMessageFilter(MarkupContainer component, int level) {
+	public ErrorLevelContainerFeedbackMessageFilter(MarkupContainer component, int level) {
 		super();
 		
 		this.level = level;
