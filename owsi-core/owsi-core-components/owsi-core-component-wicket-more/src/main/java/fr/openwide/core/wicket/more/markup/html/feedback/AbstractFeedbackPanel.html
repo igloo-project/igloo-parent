@@ -1,14 +1,40 @@
 <wicket:panel>
-	<div wicket:id="FATALfeedbackPanel" class="feedback-panel fatal">
-	</div>
-	<div wicket:id="ERRORfeedbackPanel" class="feedback-panel error">
-	</div>
-	<div wicket:id="WARNINGfeedbackPanel" class="feedback-panel warning">
-	</div>
-	<div wicket:id="INFOfeedbackPanel" class="feedback-panel info">
-	</div>
-	<div wicket:id="DEBUGfeedbackPanel" class="feedback-panel debug">
-	</div>
-	<div wicket:id="UNDEFINEDfeedbackPanel" class="feedback-panel undefined">
+	<div class="feedback-panel">
+		<wicket:enclosure child="FATALfeedbackPanel">
+			<div class="feedback-level-outer fatal">
+				<div wicket:id="FATALfeedbackPanel" class="feedback-level">
+				</div>
+			</div>
+		</wicket:enclosure>
+		<wicket:enclosure child="ERRORfeedbackPanel">
+			<div class="feedback-level-outer error">
+				<div wicket:id="ERRORfeedbackPanel" class="feedback-level">
+				</div>
+			</div>
+		</wicket:enclosure>
+		<wicket:enclosure child="WARNINGfeedbackPanel">
+			<div class="feedback-level-outer warning">
+				<div wicket:id="WARNINGfeedbackPanel" class="feedback-level">
+				</div>
+			</div>
+		</wicket:enclosure>
+		<wicket:enclosure child="INFOfeedbackPanel">
+			<div class="feedback-level-outer info">
+				<div wicket:id="INFOfeedbackPanel" class="feedback-level">
+				</div>
+			</div>
+		</wicket:enclosure>
+		<wicket:enclosure child="DEBUGfeedbackPanel">
+			<div class="feedback-level-outer debug">
+				<div wicket:id="DEBUGfeedbackPanel" class="feedback-level">
+				</div>
+			</div>
+		</wicket:enclosure>
+		<wicket:enclosure child="UNDEFINEDfeedbackPanel">
+			<div class="feedback-level-outer undefined">
+				<div wicket:id="UNDEFINEDfeedbackPanel" class="feedback-level">
+				</div>
+			</div>
+		</wicket:enclosure>
 	</div>
 </wicket:panel>
