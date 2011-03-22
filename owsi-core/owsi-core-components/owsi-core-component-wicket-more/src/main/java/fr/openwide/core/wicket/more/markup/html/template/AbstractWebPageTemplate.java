@@ -132,7 +132,7 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 		add(Css3PieHeaderContributor.forStyles(styles));
 	}
 	
-	protected void enableCloseFancyboxOnLoad() {
+	protected void enableCloseTipsyOnLoad() {
 		add(TipsyHelper.getCloseOnLoadHeaderContributor());
 	}
 }
