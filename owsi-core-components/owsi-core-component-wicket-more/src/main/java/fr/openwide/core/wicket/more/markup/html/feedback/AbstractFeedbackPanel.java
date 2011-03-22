@@ -44,15 +44,5 @@ public abstract class AbstractFeedbackPanel extends Panel {
 		}
 	}
 	
-	@Override
-	public boolean isVisible() {
-		for(FeedbackPanel f:feedbackPanels) {
-			if(f.isVisible()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public abstract FeedbackPanel getFeedbackPanel(String id, int level, MarkupContainer container);
 }
