@@ -39,12 +39,12 @@ public interface GenericListItemDao {
 
 	<E extends GenericListItem<?>> E refresh(E entity);
 
-	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
+	<E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz);
 
-	<E extends GenericListItem<?>> List<E> listByField(Class<E> clazz, String fieldName, Object fieldValue);
+	<E extends GenericListItem<?>> List<E> listByField(Class<? extends E> clazz, String fieldName, Object fieldValue);
 
-	<E extends GenericListItem<?>> Long count(Class<E> clazz);
+	<E extends GenericListItem<?>> Long count(Class<? extends E> clazz);
 
-	<E extends GenericListItem<?>> Long countByField(Class<E> clazz, String fieldName, Object fieldValue);
+	<E extends GenericListItem<?>> Long countByField(Class<? extends E> clazz, String fieldName, Object fieldValue);
 
 }

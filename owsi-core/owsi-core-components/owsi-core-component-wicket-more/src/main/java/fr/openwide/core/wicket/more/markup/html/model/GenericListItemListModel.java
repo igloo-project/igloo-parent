@@ -13,14 +13,14 @@ public class GenericListItemListModel<T extends GenericListItem<? super T>> exte
 
 	private static final long serialVersionUID = 1385903058801258105L;
 
-	private Class<T> clazz;
+	private Class<? extends T> clazz;
 
 	private boolean enabled;
 
-	@SpringBean
+	@SpringBean(name = "genericListItemService")
 	private GenericListItemService genericListItemService;
 
-	public GenericListItemListModel(Class<T> clazz, boolean enabled) {
+	public GenericListItemListModel(Class<? extends T> clazz, boolean enabled) {
 		super();
 		InjectorHolder.getInjector().inject(this);
 		

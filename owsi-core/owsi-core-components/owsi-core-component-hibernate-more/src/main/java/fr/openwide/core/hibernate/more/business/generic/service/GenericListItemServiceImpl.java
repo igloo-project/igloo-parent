@@ -63,19 +63,17 @@ public class GenericListItemServiceImpl implements GenericListItemService {
 	}
 
 	@Override
-	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
+	public <E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz) {
 		return genericListItemDao.list(clazz);
 	}
 	
 	@Override
-	public <E extends GenericListItem<? super E>> List<E> listEnabled(Class<E> clazz) {
-		
-		
+	public <E extends GenericListItem<? super E>> List<E> listEnabled(Class<? extends E> clazz) {
 		return genericListItemDao.listByField(clazz, GENERIC_LIST_ITEM_BINDING.enabled().getPath(), true);
 	}
 
 	@Override
-	public <E extends GenericListItem<?>> long count(Class<E> clazz) {
+	public <E extends GenericListItem<?>> long count(Class<? extends E> clazz) {
 		return genericListItemDao.count(clazz);
 	}
 
