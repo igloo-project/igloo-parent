@@ -32,10 +32,10 @@ public interface GenericListItemService extends TransactionalAspectAwareService 
 
 	<E extends GenericListItem<?>> void delete(E entity);
 
-	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
+	<E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz);
 
-	<E extends GenericListItem<?>> long count(Class<E> clazz);
+	<E extends GenericListItem<?>> long count(Class<? extends E> clazz);
 
-	<E extends GenericListItem<? super E>> List<E> listEnabled(Class<E> clazz);
+	<E extends GenericListItem<? super E>> List<E> listEnabled(Class<? extends E> clazz);
 
 }

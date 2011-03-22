@@ -84,12 +84,12 @@ public class GenericListItemDaoImpl extends HibernateDaoSupport implements Gener
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
+	public <E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz) {
 		return list(clazz, null, null, null, null);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> List<E> listByField(Class<E> clazz, String fieldName, Object fieldValue) {
+	public <E extends GenericListItem<?>> List<E> listByField(Class<? extends E> clazz, String fieldName, Object fieldValue) {
 		Criterion filter = Restrictions.eq(fieldName, fieldValue);
 		return list(clazz, filter, null, null, null);
 	}
@@ -105,7 +105,7 @@ public class GenericListItemDaoImpl extends HibernateDaoSupport implements Gener
 	 * @return liste d'entités
 	 */
 	@SuppressWarnings("unchecked")
-	public <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
+	public <E extends GenericListItem<?>> List<E> list(Class<? extends E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
 		List<E> entities = new ArrayList<E>();
 		try {
 			Criteria criteria = buildCriteria(objectClass, null, filter, order, limit, offset);
@@ -123,12 +123,12 @@ public class GenericListItemDaoImpl extends HibernateDaoSupport implements Gener
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> Long count(Class<E> clazz) {
+	public <E extends GenericListItem<?>> Long count(Class<? extends E> clazz) {
 		return count(clazz, null, null, null, null);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> Long countByField(Class<E> clazz, String fieldName, Object fieldValue) {
+	public <E extends GenericListItem<?>> Long countByField(Class<? extends E> clazz, String fieldName, Object fieldValue) {
 		Criterion filter = Restrictions.eq(fieldName, fieldValue);
 		return count(clazz, filter, null, null, null);
 	}
