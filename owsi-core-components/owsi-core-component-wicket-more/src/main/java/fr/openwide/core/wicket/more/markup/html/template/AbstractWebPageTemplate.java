@@ -114,6 +114,7 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	}
 	
 	protected void enableTipsyTooltips(String selector, String tooltipAttributeName) {
+		enableCloseTipsyOnLoad();
 		enableTipsyTooltips(selector, tooltipAttributeName, TipsyOptionGravity.NORTH, TipsyOptionTrigger.HOVER);
 	}
 	
