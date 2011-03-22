@@ -19,6 +19,7 @@ import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionGravity;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -129,5 +130,9 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	
 	protected void enableCss3Pie(String[] styles) {
 		add(Css3PieHeaderContributor.forStyles(styles));
+	}
+	
+	protected void enableCloseFancyboxOnLoad() {
+		add(TipsyHelper.getCloseOnLoadHeaderContributor());
 	}
 }
