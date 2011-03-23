@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.wicket.util.convert.converters.AbstractConverter;
 import org.apache.wicket.util.string.Strings;
@@ -45,8 +46,10 @@ public class PatternDateConverter extends AbstractConverter {
 		} else {
 			locale = Locale.ENGLISH;
 		}
-
-		return new SimpleDateFormat(datePattern, locale);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern, locale);
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		return dateFormat;
 	}
 	
 }
