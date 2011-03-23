@@ -43,6 +43,7 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 				// focus du champ -> on vide -> on quitte le champ
 				scopeContext.append(new JsQuery(getAutocompleteField()).$().chain("trigger", "'focus'").render());
 				scopeContext.append(new JsStatement().$(getAutocompleteField()).chain("val", "''").render());
+				scopeContext.append(new JsStatement().$(getAutocompleteHidden()).chain("val", "''").render());
 				scopeContext.append(new JsQuery(getAutocompleteField()).$().chain("trigger", "'blur'").render());
 			}
 		};
