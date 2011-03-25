@@ -1,3 +1,6 @@
-if (typeof jQuery != 'undefined') {
-	$(document).ready(function () { $(".tipsy").detach(); });
-}
+
+$(document).ready(function () {
+	if (typeof jQuery != 'undefined') {
+		$(".tipsy").detach();
+	}
+});
