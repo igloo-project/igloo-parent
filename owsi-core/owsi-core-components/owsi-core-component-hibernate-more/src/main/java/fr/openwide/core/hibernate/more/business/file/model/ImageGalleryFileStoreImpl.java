@@ -104,7 +104,11 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 		try {
 			CommandLine commandLine = new CommandLine(imageMagickConvertBinary);
 			commandLine.addArgument("-resize");
+			if (thumbnailFormat.isAllowEnlarge()) {
+				commandLine.addArgument("${width}x${height}");
+			} else {
 				commandLine.addArgument("${width}x${height}>");
+			}
 			commandLine.addArgument("-quality");
 				commandLine.addArgument("${quality}");
 			commandLine.addArgument("${originalFilePath}");

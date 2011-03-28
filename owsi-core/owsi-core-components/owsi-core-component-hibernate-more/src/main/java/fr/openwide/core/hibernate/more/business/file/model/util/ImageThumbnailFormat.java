@@ -20,11 +20,21 @@ public class ImageThumbnailFormat {
 	
 	private int quality;
 	
+	private boolean allowEnlarge;
+	
 	public ImageThumbnailFormat(String name, int width, int height) {
-		this(name, width, height, 80, EXTENSION_JPG);
+		this(name, width, height, false, 80, EXTENSION_JPG);
+	}
+	
+	public ImageThumbnailFormat(String name, int width, int height, boolean allowEnlarge) {
+		this(name, width, height, allowEnlarge, 80, EXTENSION_JPG);
 	}
 	
 	public ImageThumbnailFormat(String name, int width, int height, int quality, String extension) {
+		this(name, width, height, false, quality, extension);
+	}
+	
+	public ImageThumbnailFormat(String name, int width, int height, boolean allowEnlarge, int quality, String extension) {
 		if (!NAME_PATTERN.matcher(name).matches()) {
 			throw new IllegalArgumentException("Thumbnail format name must respect the following pattern: '[a-z0-9_-]+'.");
 		}
@@ -32,6 +42,7 @@ public class ImageThumbnailFormat {
 		this.name = name;
 		this.width = width;
 		this.height = height;
+		this.allowEnlarge = allowEnlarge;
 		this.quality = quality;
 		this.extension = extension;
 	}
@@ -46,6 +57,10 @@ public class ImageThumbnailFormat {
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public boolean isAllowEnlarge() {
+		return allowEnlarge;
 	}
 	
 	public int getQuality() {
