@@ -44,6 +44,14 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	}
 	
 	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass, PageParameters parameters) {
+		addMenuElement(this, selectedPageClass, name, pageClass, parameters);
+	}
+	
+	protected void addMenuElement(MarkupContainer menuContainer,
+			Class<? extends Page> selectedPageClass,
+			String name,
+			Class<? extends Page> pageClass,
+			PageParameters parameters) {
 		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLinkContainer", pageClass, parameters);
 		link.setVisible(isPageAccessible(pageClass));
 		
@@ -53,7 +61,7 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 		}
 		link.add(container);
 		
-		add(link);
+		menuContainer.add(link);
 	}
 	
 	protected boolean isPageAccessible(Class<? extends Page> pageClass) {
