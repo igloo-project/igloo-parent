@@ -1,17 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.5-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 		<relativePath>../owsi-core-parents/owsi-core-parent-base/pom.xml</relativePath>
 	</parent>
 
 	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-examples</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>OWSI Core - Examples</name>
