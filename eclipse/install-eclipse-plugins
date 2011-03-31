@@ -1,0 +1,19 @@
+#! /bin/bash
+
+source `dirname $0`/functions.sh
+
+function usage() {
+	echo -e "Usage: $0 <path to eclipse> <comma separated list of features> <comma separated list of repositories>"
+}
+
+if [ $# -ne 3 ]; then
+	usage
+	exit 1
+fi
+
+
+path_eclipse=$1
+features=$2
+repositories=$3
+
+install_plugins "${path_eclipse}" "${features}" "${repositories}"

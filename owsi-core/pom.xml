@@ -78,8 +78,8 @@
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/tags/owsi-core-0.4</developerConnection>
-		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/tags/owsi-core-0.4</url>
+		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/tags/owsi-core-0.4/owsi-core</developerConnection>
+		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/tags/owsi-core-0.4/owsi-core</url>
 	</scm>
 	
 </project>

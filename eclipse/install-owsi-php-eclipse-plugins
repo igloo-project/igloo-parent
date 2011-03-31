@@ -1,0 +1,24 @@
+#! /bin/bash
+
+source `dirname $0`/functions.sh
+
+function usage() {
+	echo -e "Usage: $0 <path to eclipse>"
+}
+
+if [ $# -ne 1 ]; then
+	usage
+	exit 1
+fi
+
+path_eclipse=$1
+
+features="org.eclipse.team.svn.feature.group,
+org.polarion.eclipse.team.svn.connector,
+org.polarion.eclipse.team.svn.connector.javahl16"
+
+repositories="http://download.eclipse.org/releases/helios/,
+http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/,
+http://community.polarion.com/projects/subversive/download/integrations/update-site/"
+
+install_plugins "${path_eclipse}" "${features}" "${repositories}"

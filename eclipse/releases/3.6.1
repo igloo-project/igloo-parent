@@ -1,0 +1,37 @@
+declare -A features
+declare -A repositories
+
+# Download URLs
+
+root_url="http://eclipse.ialto.org/technology/epp/downloads/release/helios/SR1"
+
+builds="eclipse-php-helios-SR1-linux-gtk.tar.gz eclipse-jee-helios-SR1-linux-gtk.tar.gz"
+
+# JEE package
+
+features["eclipse-jee-helios-SR1-linux-gtk"]="org.eclipse.team.svn.feature.group,
+org.maven.ide.eclipse.feature.feature.group,
+org.polarion.eclipse.team.svn.connector,
+org.polarion.eclipse.team.svn.connector.javahl16,
+org.polarion.eclipse.team.svn.m2eclipse,
+org.maven.ide.eclipse.wtp.feature.feature.group,
+org.maven.ide.eclipse.cvs.feature.feature.group,
+org.maven.ide.eclipse.scm.feature.feature.group,
+org.jboss.ide.eclipse.freemarker"
+
+repositories["eclipse-jee-helios-SR1-linux-gtk"]="http://download.eclipse.org/releases/helios/,
+http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/,
+http://community.polarion.com/projects/subversive/download/integrations/update-site/,
+http://m2eclipse.sonatype.org/sites/m2e/,
+http://m2eclipse.sonatype.org/sites/m2e-extras/,
+http://download.jboss.org/jbosstools/updates/jbosstools-3.2.0.M1/"
+
+# PHP package
+
+features["eclipse-php-helios-SR1-linux-gtk"]="org.eclipse.team.svn.feature.group,
+org.polarion.eclipse.team.svn.connector,
+org.polarion.eclipse.team.svn.connector.javahl16"
+
+repositories["eclipse-php-helios-SR1-linux-gtk"]="http://download.eclipse.org/releases/helios/,
+http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/,
+http://community.polarion.com/projects/subversive/download/integrations/update-site/"

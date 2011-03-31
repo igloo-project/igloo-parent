@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.openwide.example</groupId>
+	<artifactId>mpxj-example</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>MPXJ example</name>
+	<description>Example of projet using MPXJ to generate a Microsoft Project File</description>
+
+	<properties>
+		<mpxj.version>4.0.0</mpxj.version>
+		<owsi-core.version>0.2</owsi-core.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide</groupId>
+			<artifactId>mpxj</artifactId>
+			<version>${mpxj.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.openwide.core</groupId>
+			<artifactId>owsi-core-commons</artifactId>
+			<version>${owsi-core.version}</version>
+		</dependency>
+	</dependencies>
+</project>
