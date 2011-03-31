@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-base</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Base</name>
@@ -153,5 +153,19 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus-owsi-core</id>
+			<name>Nexus OWSI Core</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-owsi-core-snapshots</id>
+			<name>Nexus OWSI Core Snapshots</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 </project>
