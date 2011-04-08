@@ -1,5 +1,6 @@
 package fr.openwide.hibernate.test.cascades;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.TransientObjectException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,43 @@ public class TestCascades extends AbstractHibernateTestCase {
 	
 	@Autowired
 	protected ProjectService projectService;
+	
+	@Autowired
+	protected SessionFactory sessionFactory;
+	
+	public void testCache() throws ServiceException, SecurityServiceException {
+		// ce test, s'il est activé, fait exploser les tests des cascades.
+		// il n'est donc pas annoté, donc pas lancé.
+		
+		sessionFactory.getStatistics().setStatisticsEnabled(true);
+		Company company = new Company("Company Test Persist");
+		Person person = new Person("Persist", "Numéro");
+		companyService.create(company);
+		personService.create(person);
+		
+		hibernateSessionUtils.closeSession();
+		hibernateSessionUtils.initSession();
+		company = companyService.getById(company.getId());
+		hibernateSessionUtils.closeSession();
+		hibernateSessionUtils.initSession();
+		company = companyService.getById(company.getId());
+		
+		assertEquals(2, sessionFactory.getStatistics().getSecondLevelCacheHitCount());
+		assertEquals(0, sessionFactory.getStatistics().getSecondLevelCacheMissCount());
+		
+		hibernateSessionUtils.closeSession();
+		hibernateSessionUtils.initSession();
+		company = companyService.getById(company.getId());
+		
+		assertEquals(3, sessionFactory.getStatistics().getSecondLevelCacheHitCount());
+		assertEquals(0, sessionFactory.getStatistics().getSecondLevelCacheMissCount());
+		
+		personService.getById(person.getId());
+		
+		// l'entité Person n'a pas l'annotation @Cache donc ne provoque pas de cache hit
+		assertEquals(3, sessionFactory.getStatistics().getSecondLevelCacheHitCount());
+		assertEquals(0, sessionFactory.getStatistics().getSecondLevelCacheMissCount());
+	}
 	
 	@Test
 	public void testCreate() throws ServiceException, SecurityServiceException {

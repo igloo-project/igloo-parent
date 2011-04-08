@@ -5,15 +5,7 @@
 		memoryStoreEvictionPolicy="LRU" timeToLiveSeconds="3600"
 		overflowToDisk="false" />
 
-	<cache name="fr.openwide.hibernate.test.business.company.model.Company"
-		maxElementsInMemory="50" eternal="false" timeToLiveSeconds="3600"
-		overflowToDisk="false" memoryStoreEvictionPolicy="LRU" />
-	
-	<cache name="fr.openwide.hibernate.test.business.person.model.Person"
-		maxElementsInMemory="50" eternal="false" timeToLiveSeconds="3600"
-		overflowToDisk="false" memoryStoreEvictionPolicy="LRU" />
-
-	<cache name="fr.openwide.hibernate.test.business.project.model.Project"
+	<cache name="fr.openwide.hibernate.example.business.company.model.Company"
 		maxElementsInMemory="50" eternal="false" timeToLiveSeconds="3600"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LRU" />
 

@@ -11,6 +11,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -19,6 +21,7 @@ import fr.openwide.hibernate.example.business.person.model.Person;
 import fr.openwide.hibernate.example.business.project.model.Project;
 
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Company extends GenericEntity<Integer, Company> {
 
 	private static final long serialVersionUID = -2003394192412589142L;
