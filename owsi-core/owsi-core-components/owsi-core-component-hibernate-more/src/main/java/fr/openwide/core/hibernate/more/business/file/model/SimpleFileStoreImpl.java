@@ -1,7 +1,9 @@
 package fr.openwide.core.hibernate.more.business.file.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -37,20 +39,45 @@ public class SimpleFileStoreImpl implements FileStore {
 	}
 	
 	@Override
+	public void addFile(byte[] content, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(content);
+		addFile(inputStream, fileKey, extension);
+	}
+	
+	@Override
 	public void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		de.schlichtherle.io.FileInputStream fileInputStream = null;
 		try {
 			// Attention le fichier peut être contenu dans un zip d'où cette
 			// manipulation spécifique.
 			fileInputStream = new de.schlichtherle.io.FileInputStream(file);
-			IOUtils.copy(fileInputStream,
-					new FileOutputStream(new File(getFilePath(fileKey, extension))));
+			addFile(fileInputStream, fileKey, extension);
 		} catch (Exception e) {
-			throw new ServiceException(e);
+			if (!(e instanceof ServiceException)) {
+				throw new ServiceException(e);
+			} else {
+				throw (ServiceException) e;
+			}
 		} finally {
 			if (fileInputStream != null) {
 				try {
 					fileInputStream.close();
+				} catch (IOException e) {
+					throw new ServiceException(e);
+				}
+			}
+		}
+	}
+	
+	protected void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException {
+		try {
+			IOUtils.copy(inputStream, new FileOutputStream(new File(getFilePath(fileKey, extension))));
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
 				} catch (IOException e) {
 					throw new ServiceException(e);
 				}
