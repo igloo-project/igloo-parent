@@ -11,11 +11,12 @@ public interface FileStore {
 	
 	void check() throws IllegalStateException;
 
-	void addFile(File file, String fileKey, String extension)
-			throws ServiceException, SecurityServiceException;
+	void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException;
 
 	File getFile(String fileKey, String extension);
 
 	void removeFile(String fileKey, String extension);
+
+	void addFile(byte[] content, String fileKey, String extension) throws ServiceException, SecurityServiceException;
 
 }
