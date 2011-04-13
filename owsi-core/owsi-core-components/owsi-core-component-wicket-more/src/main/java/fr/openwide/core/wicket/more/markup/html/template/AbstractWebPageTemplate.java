@@ -8,12 +8,14 @@ import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.odlabs.wiquery.core.commons.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor;
@@ -142,6 +144,7 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	}
 	
 	protected void enableCloseTipsyOnLoad() {
+		add(JavascriptPackageResource.getHeaderContribution(CoreJavaScriptResourceReference.get()));
 		add(TipsyHelper.getCloseOnLoadHeaderContributor());
 	}
 }
