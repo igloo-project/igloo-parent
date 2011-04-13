@@ -33,17 +33,27 @@ public class DateTimeLabel extends Label {
 	
 	private DatePattern datePattern;
 	
+	private boolean forceGmt;
+	
+	/**
+	 * Use forceGmt = true by default.
+	 */
 	public DateTimeLabel(String id, IModel<Date> model, DatePattern dateFormat) {
+		this(id, model, dateFormat, true);
+	}
+	
+	public DateTimeLabel(String id, IModel<Date> model, DatePattern dateFormat, boolean forceGmt) {
 		super(id, model);
 		
 		this.datePattern = dateFormat;
+		this.forceGmt = forceGmt;
 	}
 	
 	@Override
 	public void onInitialize() {
 		super.onInitialize();
 		
-		this.converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
+		this.converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()), forceGmt);
 	}
 	
 	@Override
