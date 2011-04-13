@@ -29,7 +29,8 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 	@Override
 	public IConverter getConverter(Class<?> type) {
 		if (converter == null) {
-			converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
+			/* As we are interested in date only, GMT timezone is forced */
+			converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()), true);
 		}
 		return converter;
 	}
