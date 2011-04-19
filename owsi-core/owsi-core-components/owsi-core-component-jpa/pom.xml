@@ -206,7 +206,13 @@
 						<goals>
 							<goal>process-test</goal>
 						</goals>
-						<phase>generate-test-sources</phase>
+						<!--
+						as eclipse doesn't process generate-test-sources,
+						we need to plug on generate-sources.
+						This is not needed if entities are not declared
+						inside test directory
+						-->
+						<phase>generate-sources</phase>
 					</execution>
 				</executions>
 				<dependencies>
