@@ -32,7 +32,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
  * @param <T> type d'entité
  */
 public interface IGenericEntityService<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-		extends TransactionalAspectAwareService {
+		extends ITransactionalAspectAwareService {
 
 	/**
 	 * Crée l'entité dans la base de données. Mis à part dans les tests pour faire des sauvegardes simples, utiliser

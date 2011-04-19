@@ -24,6 +24,6 @@ package fr.openwide.core.jpa.business.generic.service;
  * il suffit alors de déclarer le pointcut de l'aspect sur
  * this(fr.openwide.core.jpa.business.generic.service.TransactionalAspectAwareService)
  */
-public interface TransactionalAspectAwareService {
+public interface ITransactionalAspectAwareService {
 
 }
