@@ -7,6 +7,6 @@ import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 
 @Repository("parameterDao")
 public class ParameterDaoImpl extends GenericEntityDaoImpl<Integer, Parameter>
-		implements ParameterDao {
+		implements IParameterDao {
 
 }

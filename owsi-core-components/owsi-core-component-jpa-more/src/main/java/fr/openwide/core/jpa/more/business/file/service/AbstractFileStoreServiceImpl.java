@@ -5,13 +5,13 @@ import java.util.Map;
 
 import org.springframework.context.ApplicationContextException;
 
-import fr.openwide.core.jpa.more.business.file.model.FileStore;
+import fr.openwide.core.jpa.more.business.file.model.IFileStore;
 
 public class AbstractFileStoreServiceImpl {
 	
-	private Map<String, FileStore> fileStores = new HashMap<String, FileStore>();
+	private Map<String, IFileStore> fileStores = new HashMap<String, IFileStore>();
 	
-	protected void registerFileStore(FileStore fileStore) {
+	protected void registerFileStore(IFileStore fileStore) {
 		try {
 			fileStore.check();
 			
@@ -21,7 +21,7 @@ public class AbstractFileStoreServiceImpl {
 		}
 	}
 	
-	protected FileStore getFileStore(String key) {
+	protected IFileStore getFileStore(String key) {
 		if (fileStores.containsKey(key)) {
 			return fileStores.get(key);
 		} else {
@@ -31,7 +31,7 @@ public class AbstractFileStoreServiceImpl {
 	
 	
 	@SuppressWarnings("unchecked")
-	protected <T extends FileStore> T getFileStore(Class<T> clazz, String key) {
+	protected <T extends IFileStore> T getFileStore(Class<T> clazz, String key) {
 		if (fileStores.containsKey(key) && clazz.isAssignableFrom(fileStores.get(key).getClass())) {
 			return (T) fileStores.get(key);
 		} else {

@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.more.business.generic.model;
 import org.bindgen.Bindable;
 
 @Bindable
-public interface GenericListItemBindingInterface {
+public interface IGenericListItemBindingInterface {
 	
 	public Integer getId();
 	

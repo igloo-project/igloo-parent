@@ -11,7 +11,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.parameter.dao.ParameterDao;
+import fr.openwide.core.jpa.more.business.parameter.dao.IParameterDao;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter_;
 
@@ -20,9 +20,9 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Integ
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterServiceImpl.class);
 
-	private ParameterDao dao;
+	private IParameterDao dao;
 
-	public AbstractParameterServiceImpl(ParameterDao dao) {
+	public AbstractParameterServiceImpl(IParameterDao dao) {
 		super(dao);
 		this.dao = dao;
 	}

@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
 
-public class SimpleFileStoreImpl implements FileStore {
+public class SimpleFileStoreImpl implements IFileStore {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFileStoreImpl.class);
 	

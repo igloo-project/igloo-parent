@@ -29,7 +29,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 @MappedSuperclass
 @Bindable
 public abstract class GenericListItem<E extends GenericListItem<?>> extends GenericEntity<Integer, E>
-		implements GenericListItemBindingInterface {
+		implements IGenericListItemBindingInterface {
 	
 	private static final long serialVersionUID = -6270832991786371463L;
 
