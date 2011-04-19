@@ -1,11 +1,11 @@
-package fr.openwide.core.hibernate.more.business.file.service;
+package fr.openwide.core.jpa.more.business.file.service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.context.ApplicationContextException;
 
-import fr.openwide.core.hibernate.more.business.file.model.FileStore;
+import fr.openwide.core.jpa.more.business.file.model.FileStore;
 
 public class AbstractFileStoreServiceImpl {
 	

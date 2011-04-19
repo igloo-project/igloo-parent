@@ -15,11 +15,13 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.more.business.generic.dao;
+package fr.openwide.core.jpa.more.business.generic.dao;
 
 import java.util.List;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import javax.persistence.metamodel.SingularAttribute;
+
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 /**
  * Note : les définitions de generics n'ont pas été choisies par hasard. Elles permettent
@@ -39,12 +41,12 @@ public interface GenericListItemDao {
 
 	<E extends GenericListItem<?>> E refresh(E entity);
 
-	<E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz);
+	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
-	<E extends GenericListItem<?>> List<E> listByField(Class<? extends E> clazz, String fieldName, Object fieldValue);
+	<E extends GenericListItem<?>,V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
-	<E extends GenericListItem<?>> Long count(Class<? extends E> clazz);
+	<E extends GenericListItem<?>> Long count(Class<E> clazz);
 
-	<E extends GenericListItem<?>> Long countByField(Class<? extends E> clazz, String fieldName, Object fieldValue);
+	<E extends GenericListItem<?>,V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 }

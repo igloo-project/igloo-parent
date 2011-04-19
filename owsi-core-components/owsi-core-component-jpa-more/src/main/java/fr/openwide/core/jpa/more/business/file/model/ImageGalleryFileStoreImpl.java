@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.more.business.file.model;
+package fr.openwide.core.jpa.more.business.file.model;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -25,9 +25,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.hibernate.more.business.file.model.util.ImageThumbnailFormat;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.file.model.util.ImageThumbnailFormat;
 
 public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	

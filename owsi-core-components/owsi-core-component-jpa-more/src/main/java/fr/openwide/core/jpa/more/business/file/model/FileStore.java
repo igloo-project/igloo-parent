@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.more.business.file.model;
+package fr.openwide.core.jpa.more.business.file.model;
 
 import java.io.File;
 

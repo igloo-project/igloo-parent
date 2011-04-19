@@ -1,7 +1,7 @@
-package fr.openwide.core.hibernate.more.business.parameter.dao;
+package fr.openwide.core.jpa.more.business.parameter.dao;
 
-import fr.openwide.core.hibernate.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
+import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 
 public interface ParameterDao extends IGenericEntityDao<Integer, Parameter> {
 

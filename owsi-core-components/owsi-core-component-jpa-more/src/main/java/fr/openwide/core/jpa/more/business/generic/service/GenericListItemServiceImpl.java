@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.more.business.generic.service;
+package fr.openwide.core.jpa.more.business.generic.service;
 
 import java.util.List;
 
@@ -23,16 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.hibernate.more.business.generic.dao.GenericListItemDao;
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItemBinding;
+import fr.openwide.core.jpa.more.business.generic.dao.GenericListItemDao;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem_;
 
 @Service("genericListItemService")
 public class GenericListItemServiceImpl implements GenericListItemService {
-	
-	@SuppressWarnings("rawtypes")
-	private static final GenericListItemBinding GENERIC_LIST_ITEM_BINDING =
-			new GenericListItemBinding();
 	
 	protected GenericListItemDao genericListItemDao;
 	
@@ -63,17 +59,17 @@ public class GenericListItemServiceImpl implements GenericListItemService {
 	}
 
 	@Override
-	public <E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz) {
+	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
 		return genericListItemDao.list(clazz);
 	}
 	
 	@Override
-	public <E extends GenericListItem<? super E>> List<E> listEnabled(Class<? extends E> clazz) {
-		return genericListItemDao.listByField(clazz, GENERIC_LIST_ITEM_BINDING.enabled().getPath(), true);
+	public <E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz) {
+		return genericListItemDao.listByField(clazz, GenericListItem_.enabled, true);
 	}
 
 	@Override
-	public <E extends GenericListItem<?>> long count(Class<? extends E> clazz) {
+	public <E extends GenericListItem<?>> long count(Class<E> clazz) {
 		return genericListItemDao.count(clazz);
 	}
 
