@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.more.business.file.model.util;
+package fr.openwide.core.jpa.more.business.file.model.util;
 
 import java.util.regex.Pattern;
 

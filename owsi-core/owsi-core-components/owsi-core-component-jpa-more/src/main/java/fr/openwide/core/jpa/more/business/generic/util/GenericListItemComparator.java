@@ -1,10 +1,10 @@
-package fr.openwide.core.hibernate.more.business.generic.util;
+package fr.openwide.core.jpa.more.business.generic.util;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 public class GenericListItemComparator implements Comparator<GenericListItem<?>>, Serializable {
 	

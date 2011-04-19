@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.more.business.parameter.model;
+package fr.openwide.core.jpa.more.business.parameter.model;
 
 import java.util.Date;
 

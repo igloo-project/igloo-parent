@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.more.business.generic.model;
+package fr.openwide.core.jpa.more.business.generic.model;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

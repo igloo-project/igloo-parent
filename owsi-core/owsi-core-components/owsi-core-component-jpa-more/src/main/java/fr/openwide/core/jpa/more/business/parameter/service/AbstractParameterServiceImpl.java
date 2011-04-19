@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.more.business.parameter.service;
+package fr.openwide.core.jpa.more.business.parameter.service;
 
 import java.util.Date;
 
@@ -8,12 +8,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import fr.openwide.core.hibernate.more.business.parameter.dao.ParameterDao;
-import fr.openwide.core.hibernate.more.business.parameter.model.Parameter;
-import fr.openwide.core.hibernate.more.business.parameter.model.Parameter_;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.parameter.dao.ParameterDao;
+import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
+import fr.openwide.core.jpa.more.business.parameter.model.Parameter_;
 
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Integer, Parameter>
 		implements ApplicationListener<ContextRefreshedEvent> {

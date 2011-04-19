@@ -15,171 +15,92 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.more.business.generic.dao;
+package fr.openwide.core.jpa.more.business.generic.dao;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
+import javax.persistence.metamodel.SingularAttribute;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
-import fr.openwide.core.hibernate.more.business.generic.util.GenericListItemComparator;
+import fr.openwide.core.jpa.business.generic.dao.JpaDaoSupport;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.util.GenericListItemComparator;
 
 @Component("genericListItemDao")
-public class GenericListItemDaoImpl extends HibernateDaoSupport implements GenericListItemDao {
+public class GenericListItemDaoImpl extends JpaDaoSupport implements GenericListItemDao {
 	
 	/**
 	 * Constructeur.
-	 *
-	 * @param sessionFactory session factory Hibernate injectée par Spring
 	 */
 	@Autowired
-	public GenericListItemDaoImpl(SessionFactory sessionFactory) {
-		setSessionFactory(sessionFactory);
+	public GenericListItemDaoImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends GenericListItem<?>> E getEntity(Class<E> clazz, Integer id) {
-		return (E) getSession().get(clazz, id);
+		return super.getEntity(clazz, id);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id) {
-		return (E) getSession().get(clazz, id);
+		return super.getById(clazz, id);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> void update(E entity) {
-		getSession().update(entity);
+		super.update(entity);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> void save(E entity) {
-		getSession().save(entity);
+		super.save(entity);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> void delete(E entity) {
-		getSession().delete(entity);
+		super.delete(entity);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> E refresh(E entity) {
-		getSession().refresh(entity);
-		
-		return entity;
+		return super.refresh(entity);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz) {
-		return list(clazz, null, null, null, null);
+	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
+		return super.listEntity(clazz);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> List<E> listByField(Class<? extends E> clazz, String fieldName, Object fieldValue) {
-		Criterion filter = Restrictions.eq(fieldName, fieldValue);
-		return list(clazz, filter, null, null, null);
+	public <E extends GenericListItem<?>,V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
+		return super.listEntityByField(clazz, field, fieldValue);
 	}
 	
-	/**
-	 * Retourne une liste d'entités correspondant aux paramètres. N'a pas vocation à être appelée directement.
-	 * 
-	 * @param objectClass classe de l'entité
-	 * @param filter filtre Hibernate
-	 * @param order ordre de tri
-	 * @param limit limit
-	 * @param offset offset
-	 * @return liste d'entités
-	 */
-	@SuppressWarnings("unchecked")
-	public <E extends GenericListItem<?>> List<E> list(Class<? extends E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
-		List<E> entities = new ArrayList<E>();
-		try {
-			Criteria criteria = buildCriteria(objectClass, null, filter, order, limit, offset);
-			
-			entities = criteria.list();
-			
-			if (order == null) {
-				Collections.sort(entities, GenericListItemComparator.INSTANCE);
-			}
-			
-			return entities;
-		} catch(DataAccessException e) {
-			return entities;
+	public <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Expression<Boolean> filter, Order order, Integer limit, Integer offset) {
+		List<E> entities = super.listEntity(objectClass, filter, limit, offset, order);
+		if (order == null) {
+			Collections.sort(entities, GenericListItemComparator.INSTANCE);
 		}
+		return entities;
+	}
+	
+	public <E extends GenericListItem<?>> Long count(Class<E> clazz) {
+		return super.countEntity(clazz);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> Long count(Class<? extends E> clazz) {
-		return count(clazz, null, null, null, null);
+	public <E extends GenericListItem<?>, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
+		return super.countEntityByField(clazz, attribute, fieldValue);
 	}
 	
-	@Override
-	public <E extends GenericListItem<?>> Long countByField(Class<? extends E> clazz, String fieldName, Object fieldValue) {
-		Criterion filter = Restrictions.eq(fieldName, fieldValue);
-		return count(clazz, filter, null, null, null);
-	}
 	
-	/**
-	 * Compte le nombre d'entités correspondant aux paramètres. N'a pas vocation à être appelée directement.
-	 * 
-	 * @param objectClass classe de l'entité
-	 * @param filter filtre Hibernate
-	 * @param order ordre de tri
-	 * @param limit limit
-	 * @param offset offset
-	 * @return nombre d'entités
-	 */
-	public <E extends GenericListItem<?>> Long count(Class<E> objectClass, Criterion filter, Order order, Integer limit, Integer offset) {
-		Criteria criteria = buildCriteria(objectClass, Projections.rowCount(), filter, order, limit, offset);
-		
-		Long count = (Long) criteria.uniqueResult();
-		
-		return count;
-	}
-	
-	/**
-	 * Construit un criteria Hibernate à partir de l'ensemble des paramètres.
-	 * 
-	 * @param objectClass classe de l'entité
-	 * @param projection projection (au sens de l'API Criteria Hibernate)
-	 * @param filter filtre Hibernate
-	 * @param order ordre de tri
-	 * @param limit limit
-	 * @param offset offset
-	 * @return criteria
-	 */
-	protected <E extends GenericListItem<?>> Criteria buildCriteria(Class<E> objectClass, Projection projection, Criterion filter, Order order, Integer limit, Integer offset) {
-		Criteria criteria = getSession().createCriteria(objectClass);
-		if(projection != null) {
-			criteria.setProjection(projection);
-		}
-		if(filter != null) {
-			criteria.add(filter);
-		}
-		if(limit != null) {
-			criteria.setMaxResults(limit);
-		}
-		if(offset != null) {
-			criteria.setFirstResult(offset);
-		}
-		if(order != null) {
-			criteria.addOrder(order);
-		}
-		return criteria;
+	public <E extends GenericListItem<?>> Long count(Class<E> objectClass, Expression<Boolean> filter) {
+		return super.countEntity(objectClass, filter);
 	}
 	
 }

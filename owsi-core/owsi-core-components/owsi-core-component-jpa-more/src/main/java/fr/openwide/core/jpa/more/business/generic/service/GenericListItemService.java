@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.more.business.generic.service;
+package fr.openwide.core.jpa.more.business.generic.service;
 
 import java.util.List;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 public interface GenericListItemService extends ITransactionalAspectAwareService {
 	
@@ -32,10 +32,10 @@ public interface GenericListItemService extends ITransactionalAspectAwareService
 
 	<E extends GenericListItem<?>> void delete(E entity);
 
-	<E extends GenericListItem<?>> List<E> list(Class<? extends E> clazz);
+	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
-	<E extends GenericListItem<?>> long count(Class<? extends E> clazz);
+	<E extends GenericListItem<?>> long count(Class<E> clazz);
 
-	<E extends GenericListItem<? super E>> List<E> listEnabled(Class<? extends E> clazz);
+	<E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz);
 
 }

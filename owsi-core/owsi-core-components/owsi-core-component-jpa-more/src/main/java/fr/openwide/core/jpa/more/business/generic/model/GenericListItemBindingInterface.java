@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.more.business.generic.model;
+package fr.openwide.core.jpa.more.business.generic.model;
 
 import org.bindgen.Bindable;
 
