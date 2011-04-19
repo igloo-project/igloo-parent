@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>owsi-core-packages</artifactId>
+		<groupId>fr.openwide.core.packages</groupId>
+		<version>0.5-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>fr.openwide.core.packages</groupId>
+	<artifactId>owsi-core-package-core-spring-hibernate</artifactId>
+	<version>0.5-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<name>OWSI Core - Package - Core - Spring / Hibernate</name>
+	
+	<dependencies>
+	
+		<!-- OWSI Core -->
+	
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-spring</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-hibernate</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- Other dependencies -->
+		
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${owsi-core.quartz.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${owsi-core.javax-mail.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${owsi-core.freemarker.version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+	</repositories>
+	
+</project>
