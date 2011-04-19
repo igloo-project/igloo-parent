@@ -25,6 +25,7 @@
 		<module>owsi-core-component-wicket</module>
 		<module>owsi-core-component-wicket-more</module>
 		<module>owsi-core-component-hibernate-more</module>
+		<module>owsi-core-component-jpa-more</module>
 		<module>owsi-core-component-hibernate-security</module>
 	</modules>
 	
