@@ -1,10 +1,10 @@
 package fr.openwide.jpa.example.business.util.service;
 
-import fr.openwide.core.jpa.business.generic.service.TransactionalAspectAwareService;
+import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
-public interface ServiceExceptionService extends TransactionalAspectAwareService {
+public interface ServiceExceptionService extends ITransactionalAspectAwareService {
 
 	void dontThrow() throws ServiceException, SecurityServiceException;
 
