@@ -29,14 +29,14 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
 /**
- * <p>Implémentation de {@link GenericEntityService}</p>
+ * <p>Implémentation de {@link IGenericEntityService}</p>
  * 
  * @author Open Wide
  *
  * @param <T> type de l'entité
  */
 public abstract class GenericEntityServiceImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-		implements GenericEntityService<K, E> {
+		implements IGenericEntityService<K, E> {
 	
 	/**
 	 * Classe de l'entité, déterminé à partir des paramètres generics.

@@ -19,10 +19,10 @@ package fr.openwide.core.test.jpa.example.business.person.service;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-import fr.openwide.core.jpa.business.generic.service.GenericEntityService;
+import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
-public interface PersonService extends GenericEntityService<Integer, Person> {
+public interface PersonService extends IGenericEntityService<Integer, Person> {
 
 	Long count(SingularAttribute<Person, String> attribute, String value);
 }
