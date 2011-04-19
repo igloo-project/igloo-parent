@@ -11,7 +11,7 @@ import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 
 import fr.openwide.core.commons.util.CloneUtils;
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
 @Bindable

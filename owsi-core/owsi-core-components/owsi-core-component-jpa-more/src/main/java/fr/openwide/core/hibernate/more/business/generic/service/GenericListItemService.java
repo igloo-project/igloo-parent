@@ -19,10 +19,10 @@ package fr.openwide.core.hibernate.more.business.generic.service;
 
 import java.util.List;
 
-import fr.openwide.core.hibernate.business.generic.service.TransactionalAspectAwareService;
 import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 
-public interface GenericListItemService extends TransactionalAspectAwareService {
+public interface GenericListItemService extends ITransactionalAspectAwareService {
 	
 	<E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id);
 

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import de.schlichtherle.io.FileOutputStream;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 
 public class SimpleFileStoreImpl implements FileStore {
