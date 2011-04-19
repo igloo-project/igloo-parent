@@ -42,7 +42,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  *
  * @param <E> type de l'entité à prendre en charge
  */
-public interface GenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
+public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
 
 	/**
 	 * Retourne une entité à partir de sa classe et son id.

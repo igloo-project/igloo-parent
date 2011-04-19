@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-import fr.openwide.core.jpa.business.generic.dao.GenericEntityDao;
+import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -46,7 +46,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	/**
 	 * DAO
 	 */
-	private GenericEntityDao<K, E> genericDao;
+	private IGenericEntityDao<K, E> genericDao;
 
 	/**
 	 * Constructeur.
@@ -54,7 +54,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 * @param genericDao DAO associé au type d'entité
 	 */
 	@SuppressWarnings("unchecked")
-	public GenericEntityServiceImpl(GenericEntityDao<K, E> genericDao) {
+	public GenericEntityServiceImpl(IGenericEntityDao<K, E> genericDao) {
 		this.genericDao = genericDao;
 		
 		this.objectClass = (Class<E>) GenericEntityUtils.getGenericEntityClassFromComponentDefinition(getClass());

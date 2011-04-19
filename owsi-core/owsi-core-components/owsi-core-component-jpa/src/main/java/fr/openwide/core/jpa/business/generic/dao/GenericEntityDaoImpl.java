@@ -35,14 +35,14 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 
 /**
- * <p>Implémentation de {@link GenericEntityDao}</p>
+ * <p>Implémentation de {@link IGenericEntityDao}</p>
  *
  * @author Open Wide
  *
  * @param <T> type de l'entité
  */
 public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-		implements GenericEntityDao<K, E> {
+		implements IGenericEntityDao<K, E> {
 	
 	protected static final String SQL_LIKE_WILDCARD = "%";
 	
