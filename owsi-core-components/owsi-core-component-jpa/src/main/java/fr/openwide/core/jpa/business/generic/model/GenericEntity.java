@@ -22,17 +22,18 @@ import java.text.Collator;
 import java.util.Locale;
 
 /**
- * <p>Entité racine pour la persistence des objets via Hibernate.</p>
+ * <p>Entité racine pour la persistence des objets via JPA.</p>
  *
  * @author Open Wide
  *
  * @param <E> type de l'entité
  */
-public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> implements Serializable, Comparable<E> {
+public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+		implements Serializable, Comparable<E> {
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
-	protected static final Collator DEFAULT_STRING_COLLATOR = Collator.getInstance(Locale.FRENCH);
+	public static final Collator DEFAULT_STRING_COLLATOR = Collator.getInstance(Locale.FRENCH);
 	
 	static {
 		DEFAULT_STRING_COLLATOR.setStrength(Collator.PRIMARY);
