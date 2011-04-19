@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.search.dao.HibernateSearchDao;
+import fr.openwide.core.jpa.search.dao.IHibernateSearchDao;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 @Service("hibernateSearchService")
 public class HibernateSearchServiceImpl implements HibernateSearchService {
 	
 	@Autowired
-	private HibernateSearchDao hibernateSearchDao;
+	private IHibernateSearchDao hibernateSearchDao;
 	
 	@Override
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {

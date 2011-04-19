@@ -11,19 +11,26 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.config.CoreConfigurer;
 
 @Repository("hibernateSearchDao")
-public class HibernateSearchDaoImpl implements HibernateSearchDao {
+public class HibernateSearchDaoImpl implements IHibernateSearchDao {
+	
+	@Autowired
+	private CoreConfigurer configurer;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -32,27 +39,68 @@ public class HibernateSearchDaoImpl implements HibernateSearchDao {
 	}
 	
 	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, analyzerName);
+	}
+	
+	@Override
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
 		
-		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz));
+		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz), null);
 	}
 	
 	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName), null);
+	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
+			Query additionalLuceneQuery) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz), additionalLuceneQuery);
+	}
+	
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+			Query additionalLuceneQuery) throws ServiceException {
+		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName), additionalLuceneQuery);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer) throws ServiceException {
+	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer, Query additionalLuceneQuery) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
 			return Collections.emptyList();
 		}
 		
 		try {
-			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+			FullTextEntityManager fullTextSession = Search.getFullTextEntityManager(entityManager);
 			
-			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextEntityManager, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
+			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextSession, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
 			
-			Query luceneQuery = parser.parse(searchPattern);
-			FullTextQuery hibernateQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, classes.toArray(new Class<?>[classes.size()]));
+			BooleanQuery booleanQuery = new BooleanQuery();
+			booleanQuery.add(parser.parse(searchPattern), BooleanClause.Occur.MUST);
+			
+			if (additionalLuceneQuery != null) {
+				booleanQuery.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
+			}
+			
+			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, classes.toArray(new Class<?>[classes.size()]));
 			
 			return (List<T>) hibernateQuery.getResultList();
 		} catch(ParseException e) {
@@ -68,9 +116,9 @@ public class HibernateSearchDaoImpl implements HibernateSearchDao {
 			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 			
 			fullTextEntityManager.createIndexer()
-					.batchSizeToLoadObjects(30)
-					.threadsForSubsequentFetching(8)
-					.threadsToLoadObjects(4)
+					.batchSizeToLoadObjects(configurer.getHibernateSearchReindexBatchSize())
+					.threadsForSubsequentFetching(configurer.getHibernateSearchReindexFetchingThreads())
+					.threadsToLoadObjects(configurer.getHibernateSearchReindexLoadThreads())
 					.cacheMode(CacheMode.NORMAL)
 					.startAndWait();
 		} catch (Exception e) {
