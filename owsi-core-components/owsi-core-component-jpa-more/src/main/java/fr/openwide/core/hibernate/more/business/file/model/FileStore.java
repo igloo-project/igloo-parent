@@ -2,8 +2,8 @@ package fr.openwide.core.hibernate.more.business.file.model;
 
 import java.io.File;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 public interface FileStore {
 	

@@ -8,20 +8,18 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityServiceImpl;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.hibernate.more.business.parameter.dao.ParameterDao;
 import fr.openwide.core.hibernate.more.business.parameter.model.Parameter;
-import fr.openwide.core.hibernate.more.business.parameter.model.ParameterBinding;
+import fr.openwide.core.hibernate.more.business.parameter.model.Parameter_;
+import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Integer, Parameter>
 		implements ApplicationListener<ContextRefreshedEvent> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterServiceImpl.class);
 
-	private static final ParameterBinding PARAMETER_BINDING = new ParameterBinding();
-	
 	private ParameterDao dao;
 
 	public AbstractParameterServiceImpl(ParameterDao dao) {
@@ -30,7 +28,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Integ
 	}
 
 	protected Parameter getByName(String name) {
-		return dao.getByField(PARAMETER_BINDING.name().getPath(), name);
+		return dao.getByField(Parameter_.name, name);
 	}
 	
 	protected boolean getBooleanValue(String name, boolean defaultValue) {

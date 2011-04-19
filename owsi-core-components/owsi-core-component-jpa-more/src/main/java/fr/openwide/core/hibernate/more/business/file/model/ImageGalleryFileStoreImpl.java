@@ -25,9 +25,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
 import fr.openwide.core.hibernate.more.business.file.model.util.ImageThumbnailFormat;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	

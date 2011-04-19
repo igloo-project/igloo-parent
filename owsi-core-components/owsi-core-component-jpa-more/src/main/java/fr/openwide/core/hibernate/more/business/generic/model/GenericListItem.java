@@ -24,7 +24,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.bindgen.Bindable;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @MappedSuperclass
 @Bindable
