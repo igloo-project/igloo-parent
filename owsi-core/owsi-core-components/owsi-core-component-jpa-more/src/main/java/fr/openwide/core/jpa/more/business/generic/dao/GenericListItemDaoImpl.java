@@ -32,7 +32,7 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.util.GenericListItemComparator;
 
 @Component("genericListItemDao")
-public class GenericListItemDaoImpl extends JpaDaoSupport implements GenericListItemDao {
+public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericListItemDao {
 	
 	/**
 	 * Constructeur.

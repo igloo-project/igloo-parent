@@ -23,17 +23,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.jpa.more.business.generic.dao.GenericListItemDao;
+import fr.openwide.core.jpa.more.business.generic.dao.IGenericListItemDao;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem_;
 
 @Service("genericListItemService")
-public class GenericListItemServiceImpl implements GenericListItemService {
+public class GenericListItemServiceImpl implements IGenericListItemService {
 	
-	protected GenericListItemDao genericListItemDao;
+	protected IGenericListItemDao genericListItemDao;
 	
 	@Autowired
-	public GenericListItemServiceImpl(@Qualifier("genericListItemDao") GenericListItemDao genericListItemDao) {
+	public GenericListItemServiceImpl(@Qualifier("genericListItemDao") IGenericListItemDao genericListItemDao) {
 		super();
 		this.genericListItemDao = genericListItemDao;
 	}

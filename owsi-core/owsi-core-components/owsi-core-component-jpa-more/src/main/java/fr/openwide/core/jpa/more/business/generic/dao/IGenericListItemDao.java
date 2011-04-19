@@ -15,27 +15,38 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.jpa.more.business.generic.service;
+package fr.openwide.core.jpa.more.business.generic.dao;
 
 import java.util.List;
 
-import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
+import javax.persistence.metamodel.SingularAttribute;
+
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
-public interface GenericListItemService extends ITransactionalAspectAwareService {
-	
-	<E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id);
+/**
+ * Note : les définitions de generics n'ont pas été choisies par hasard. Elles permettent
+ * de répondre à des besoins concrets sur des projets.
+ */
+public interface IGenericListItemDao {
 
-	<E extends GenericListItem<?>> void create(E entity);
+	<E extends GenericListItem<?>> E getEntity(Class<E> clazz, Integer id);
+
+	<E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id);
 
 	<E extends GenericListItem<?>> void update(E entity);
 
+	<E extends GenericListItem<?>> void save(E entity);
+
 	<E extends GenericListItem<?>> void delete(E entity);
+
+	<E extends GenericListItem<?>> E refresh(E entity);
 
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
-	<E extends GenericListItem<?>> long count(Class<E> clazz);
+	<E extends GenericListItem<?>,V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
-	<E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz);
+	<E extends GenericListItem<?>> Long count(Class<E> clazz);
+
+	<E extends GenericListItem<?>,V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 }

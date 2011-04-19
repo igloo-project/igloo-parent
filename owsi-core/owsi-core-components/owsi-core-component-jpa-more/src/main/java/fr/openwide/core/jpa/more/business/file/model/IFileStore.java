@@ -5,7 +5,7 @@ import java.io.File;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
-public interface FileStore {
+public interface IFileStore {
 	
 	String getKey();
 	
