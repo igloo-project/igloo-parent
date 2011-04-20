@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -65,6 +66,7 @@ public class DatabaseInitializationService {
 	/**
 	 * Méthode permettant de mettre en place le schéma de la base.
 	 */
+	@PostConstruct
 	protected void initDatabaseSchema() throws IOException {
 		if (configurer.isConfigurationTypeDevelopment()) {
 			LOGGER.warn("Initialisation de la base de données");
