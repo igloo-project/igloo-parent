@@ -6,5 +6,7 @@
 
 	<persistence-unit name="testPU" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<!-- needed to enable @Cacheable annotation -->
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 	</persistence-unit>
 </persistence>

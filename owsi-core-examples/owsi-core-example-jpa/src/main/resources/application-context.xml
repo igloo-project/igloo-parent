@@ -55,13 +55,25 @@
 				<prop key="hibernate.hbm2ddl.auto">none</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">false</prop>
-				<prop key="hibernate.cache.use_second_level_cache">true</prop>
-				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.cache.use_structured_entries">true</prop>
-				<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
-				<prop key="net.sf.ehcache.configurationResourceName">/ehcache-hibernate.xml</prop>
+				
 				<prop key="hibernate.generate_statistics">true</prop>
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				
+				<!--
+				Enable entity caching ; it is also needed that :
+				 * cached entities must be annotated with @Cache (hibernate)
+				 * OR cached entities must be annotated with @Cacheable (jpa2) and persistence.xml must specify
+				        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+				 * cached entities may be declared in ehcache-hibernate.xml
+				-->
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+				<prop key="net.sf.ehcache.configurationResourceName">/ehcache-hibernate.xml</prop>
+				<!-- enabled hibernate to store entries in a more readable format (from documentation) -->
+				<prop key="hibernate.cache.use_structured_entries">true</prop>
+				<prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
 			</props>
 		</property>
 	</bean>
