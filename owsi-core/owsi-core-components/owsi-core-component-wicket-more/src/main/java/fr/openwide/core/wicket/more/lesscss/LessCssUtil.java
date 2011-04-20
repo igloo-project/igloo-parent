@@ -9,7 +9,7 @@ import fr.openwide.core.spring.util.StringUtils;
 public class LessCssUtil {
 
 	public static final Pattern LESSCSS_IMPORT_PATTERN =
-		Pattern.compile("^\\p{Blank}*@import\\p{Blank}+\"([^\"]+.less)\";\\p{Blank}*$", Pattern.MULTILINE);
+		Pattern.compile("^\\p{Blank}*@import\\p{Blank}+\"([^\"]+)\"\\p{Blank}*;\\p{Blank}*$", Pattern.MULTILINE);
 
 	public static String getRelativeToScopePath(String sourceFile, String importFilename) {
 		String contextPath = FilenameUtils.getFullPath(sourceFile);
