@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,8 +12,6 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
-
-import junit.framework.AssertionFailedError;
 
 public class JpaDaoSupport {
 
@@ -70,7 +69,7 @@ public class JpaDaoSupport {
 	
 	protected <T> void update(T entity) {
 		if (!getEntityManager().contains(entity)) {
-			throw new AssertionFailedError("Updated entity must be attached");
+			throw new PersistenceException("Updated entity must be attached");
 		}
 		//TODO: http://blog.xebia.com/2009/03/23/jpa-implementation-patterns-saving-detached-entities/
 	}
