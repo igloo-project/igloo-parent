@@ -3,6 +3,7 @@ package fr.openwide.jpa.example.business.company.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import fr.openwide.jpa.example.business.person.model.Person;
 import fr.openwide.jpa.example.business.project.model.Project;
 
 @Entity
+@Cacheable(true)
 public class Company extends GenericEntity<Integer, Company> {
 
 	private static final long serialVersionUID = -2003394192412589142L;

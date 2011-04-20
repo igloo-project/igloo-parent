@@ -1,29 +1,16 @@
 package fr.openwide.jpa.test.cascades;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.jpa.example.business.company.model.Company;
-import fr.openwide.jpa.example.business.company.service.CompanyService;
 import fr.openwide.jpa.example.business.person.model.Person;
-import fr.openwide.jpa.example.business.person.service.PersonService;
-import fr.openwide.jpa.example.business.project.service.ProjectService;
 import fr.openwide.jpa.test.AbstractJpaTestCase;
 
 public class TestCascades extends AbstractJpaTestCase {
-	
-	@Autowired
-	protected CompanyService companyService;
-	
-	@Autowired
-	protected PersonService personService;
-	
-	@Autowired
-	protected ProjectService projectService;
 	
 	@Test
 	public void testCreate() throws ServiceException, SecurityServiceException {
