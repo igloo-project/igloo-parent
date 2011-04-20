@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.acl.domain;
+package fr.openwide.core.jpa.security.acl.domain;
 
 public final class UserConstants {
 

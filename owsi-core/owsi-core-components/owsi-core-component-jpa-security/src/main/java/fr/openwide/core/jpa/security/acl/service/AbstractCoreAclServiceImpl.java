@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.acl.service;
+package fr.openwide.core.jpa.security.acl.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,13 +20,13 @@ import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.acl.domain.CoreAcl;
-import fr.openwide.core.hibernate.security.acl.domain.PersonGroupSid;
-import fr.openwide.core.hibernate.security.acl.domain.hierarchy.PermissionHierarchy;
-import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.Person;
-import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.security.acl.domain.CoreAcl;
+import fr.openwide.core.jpa.security.acl.domain.PersonGroupSid;
+import fr.openwide.core.jpa.security.acl.domain.hierarchy.PermissionHierarchy;
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.business.person.model.Person;
+import fr.openwide.core.jpa.security.business.person.model.PersonGroup;
 
 public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport implements AclService {
 	

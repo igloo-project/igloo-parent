@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.acl;
+package fr.openwide.core.jpa.security.acl;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.model.AclService;
 import org.springframework.security.core.Authentication;
 
-import fr.openwide.core.hibernate.security.service.SecurityService;
+import fr.openwide.core.jpa.security.service.SecurityService;
 
 public class CoreAclPermissionEvaluator extends AclPermissionEvaluator {
 	

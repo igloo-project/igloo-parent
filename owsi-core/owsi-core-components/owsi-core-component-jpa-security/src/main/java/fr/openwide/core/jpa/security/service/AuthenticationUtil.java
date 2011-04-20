@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.service;
+package fr.openwide.core.jpa.security.service;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.business.authority.model;
+package fr.openwide.core.jpa.security.business.authority.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 import org.bindgen.Bindable;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
 @Bindable

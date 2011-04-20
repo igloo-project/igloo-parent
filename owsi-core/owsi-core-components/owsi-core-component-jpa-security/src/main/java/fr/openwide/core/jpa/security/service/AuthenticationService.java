@@ -1,11 +1,11 @@
-package fr.openwide.core.hibernate.security.service;
+package fr.openwide.core.jpa.security.service;
 
 import java.util.Collection;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public interface AuthenticationService {
 

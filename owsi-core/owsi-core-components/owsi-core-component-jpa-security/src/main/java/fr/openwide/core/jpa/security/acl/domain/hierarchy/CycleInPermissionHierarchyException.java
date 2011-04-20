@@ -12,14 +12,14 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.security.acl.domain.hierarchy;
+package fr.openwide.core.jpa.security.acl.domain.hierarchy;
 
 public class CycleInPermissionHierarchyException extends RuntimeException {
 
-    private static final long serialVersionUID = -4970510612118296707L;
+	private static final long serialVersionUID = -4970510612118296707L;
 
-    public CycleInPermissionHierarchyException() {
-        super("Exception thrown because of a cycle in the permission hierarchy definition!");
-    }
+	public CycleInPermissionHierarchyException() {
+		super("Exception thrown because of a cycle in the permission hierarchy definition!");
+	}
 
 }

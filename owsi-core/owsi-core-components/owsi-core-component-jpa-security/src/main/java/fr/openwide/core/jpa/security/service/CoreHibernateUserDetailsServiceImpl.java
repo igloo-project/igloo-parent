@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.service;
+package fr.openwide.core.jpa.security.service;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,10 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
-import fr.openwide.core.hibernate.security.business.person.model.Person;
-import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
-import fr.openwide.core.hibernate.security.business.person.service.PersonService;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.person.model.Person;
+import fr.openwide.core.jpa.security.business.person.model.PersonGroup;
+import fr.openwide.core.jpa.security.business.person.service.PersonService;
 
 public class CoreHibernateUserDetailsServiceImpl implements UserDetailsService {
 

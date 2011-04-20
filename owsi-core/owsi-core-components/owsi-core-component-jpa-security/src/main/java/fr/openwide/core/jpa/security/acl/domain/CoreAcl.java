@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.acl.domain;
+package fr.openwide.core.jpa.security.acl.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.acls.model.UnloadedSidException;
 import org.springframework.util.Assert;
 
-import fr.openwide.core.hibernate.security.acl.domain.hierarchy.PermissionHierarchy;
+import fr.openwide.core.jpa.security.acl.domain.hierarchy.PermissionHierarchy;
 
 public class CoreAcl implements Acl {
 	

@@ -1,9 +1,9 @@
-package fr.openwide.core.hibernate.security.business.authority.service;
+package fr.openwide.core.jpa.security.business.authority.service;
 
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityService;
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
-public interface AuthorityService extends GenericEntityService<Integer, Authority> {
+public interface AuthorityService extends IGenericEntityService<Integer, Authority> {
 
 	Authority getByName(String name);
 	

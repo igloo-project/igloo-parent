@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.acl.service;
+package fr.openwide.core.jpa.security.acl.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
-import fr.openwide.core.hibernate.security.acl.domain.PermissionConstants;
+import fr.openwide.core.jpa.security.acl.domain.PermissionConstants;
 
 public class CorePermissionRegistryServiceImpl implements PermissionRegistryService {
 	

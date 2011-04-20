@@ -1,11 +1,12 @@
-package fr.openwide.core.hibernate.security.business.authority.service;
+package fr.openwide.core.jpa.security.business.authority.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityServiceImpl;
-import fr.openwide.core.hibernate.security.business.authority.dao.AuthorityDao;
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
+import fr.openwide.core.jpa.security.business.authority.dao.AuthorityDao;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.authority.model.Authority_;
 
 @Service("authorityService")
 public class AuthorityServiceImpl extends GenericEntityServiceImpl<Integer, Authority>
@@ -17,7 +18,7 @@ public class AuthorityServiceImpl extends GenericEntityServiceImpl<Integer, Auth
 	}
 	
 	public Authority getByName(String name) {
-		return getByField("name", name);
+		return getByField(Authority_.name, name);
 	}
 
 }

@@ -1,10 +1,10 @@
-package fr.openwide.core.hibernate.security.acl.domain;
+package fr.openwide.core.jpa.security.acl.domain;
 
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.model.Sid;
 
-import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.PersonGroup;
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.business.person.model.PersonGroup;
 
 public class PersonGroupSid extends GrantedAuthoritySid {
 

@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.service;
+package fr.openwide.core.jpa.security.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,13 +26,13 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.acl.domain.UserConstants;
-import fr.openwide.core.hibernate.security.acl.service.SidRetrievalService;
-import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.Person;
-import fr.openwide.core.hibernate.security.runas.RunAsSystemToken;
-import fr.openwide.core.hibernate.security.runas.RunAsTask;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.security.acl.domain.UserConstants;
+import fr.openwide.core.jpa.security.acl.service.SidRetrievalService;
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.business.person.model.Person;
+import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
+import fr.openwide.core.jpa.security.runas.RunAsTask;
 
 public class CoreSecurityServiceImpl implements SecurityService {
 	

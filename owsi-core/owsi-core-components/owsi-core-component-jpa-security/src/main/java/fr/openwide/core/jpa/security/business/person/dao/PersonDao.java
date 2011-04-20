@@ -1,10 +1,10 @@
-package fr.openwide.core.hibernate.security.business.person.dao;
+package fr.openwide.core.jpa.security.business.person.dao;
 
-import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao;
-import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
+import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
+import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 
 public interface PersonDao<P extends AbstractPerson<P>>
-		extends GenericEntityDao<Integer, P> {
+		extends IGenericEntityDao<Integer, P> {
 	
 	Long countActive();
 	

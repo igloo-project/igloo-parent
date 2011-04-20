@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.business.person.service;
+package fr.openwide.core.jpa.security.business.person.service;
 
 import java.util.Date;
 import java.util.List;
@@ -7,16 +7,17 @@ import java.util.Locale;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.core.hibernate.business.generic.service.GenericEntityServiceImpl;
-import fr.openwide.core.hibernate.exception.SecurityServiceException;
-import fr.openwide.core.hibernate.exception.ServiceException;
-import fr.openwide.core.hibernate.search.service.HibernateSearchService;
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
-import fr.openwide.core.hibernate.security.business.authority.service.AuthorityService;
-import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.dao.PersonDao;
-import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
-import fr.openwide.core.hibernate.security.business.person.model.PersonBinding;
+import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.authority.service.AuthorityService;
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.business.person.dao.PersonDao;
+import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
+import fr.openwide.core.jpa.security.business.person.model.AbstractPerson_;
+import fr.openwide.core.jpa.security.business.person.model.PersonBinding;
 
 public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 		extends GenericEntityServiceImpl<Integer, P>
@@ -28,7 +29,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	private AuthorityService authorityService;
 	
 	@Autowired
-	private HibernateSearchService hibernateSearchService;
+	private IHibernateSearchService hibernateSearchService;
 	
 	private PersonDao<P> personDao;
 	
@@ -40,7 +41,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public P getByUserName(String userName) {
-		return getByField("userName", userName);
+		return getByField(AbstractPerson_.userName, userName);
 	}
 	
 	@Override

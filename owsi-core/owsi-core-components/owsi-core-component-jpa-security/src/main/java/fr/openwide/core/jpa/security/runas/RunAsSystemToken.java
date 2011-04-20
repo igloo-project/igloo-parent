@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.runas;
+package fr.openwide.core.jpa.security.runas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
-import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 
 /**
  * Implémentation de {@link Authentication} permettant de faire tourner des tâches
