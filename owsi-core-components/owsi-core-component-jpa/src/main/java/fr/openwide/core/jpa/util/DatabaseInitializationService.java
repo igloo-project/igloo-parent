@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -52,8 +51,6 @@ public class DatabaseInitializationService {
 	 * Méthode utilisée par l'initialisation spring pour la mise en place
 	 * du {@link DataSource}
 	 */
-	@Autowired
-	@Resource(name = "owsi-hibernate.datasource.hibernate")
 	public void setDataSource(DataSource dataSource) {
 		/*
 		 * Il faut utiliser une DelegatingDataSource car le transaction manager d'hibernate
