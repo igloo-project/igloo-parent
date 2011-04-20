@@ -58,7 +58,7 @@ public class JpaDaoSupport {
 		return getEntityManager().find(clazz, id);
 	}
 	
-	public <T,V> T getByField(Class<T> clazz, SingularAttribute<T, V> attribute, V fieldValue) {
+	public <T,V> T getByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(clazz);
 		Root<T> root = criteria.from(clazz);
