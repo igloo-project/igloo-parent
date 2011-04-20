@@ -39,7 +39,7 @@ public class PersonServiceImpl extends GenericEntityServiceImpl<Integer, Person>
 	}
 	
 	@Override
-	public Long count(SingularAttribute<Person, String> attribute, String value) {
+	public Long count(SingularAttribute<? super Person, String> attribute, String value) {
 		return personDao.countByField(attribute, value);
 	}
 

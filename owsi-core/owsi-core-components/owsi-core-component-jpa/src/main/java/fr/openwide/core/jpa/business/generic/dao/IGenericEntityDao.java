@@ -116,7 +116,7 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @param fieldValue
 	 * @return le nombre d'entités
 	 */
-	<V> Long countByField(SingularAttribute<E, V> attribute, V fieldValue);
+	<V> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
 	/**
 	 * Liste les entités respectant la condition de recherche attribut = valeur
@@ -126,7 +126,7 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @param fieldValue
 	 * @return
 	 */
-	<V> List<E> listByField(SingularAttribute<E, V> attribute, V fieldValue);
+	<V> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
 	/**
 	 * Obtient un objet par la condition attribut = valeur
@@ -138,7 +138,7 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @throws NoResultException
 	 * @throws {@link NonUniqueResultException}
 	 */
-	<V> E getByField(SingularAttribute<E, V> attribute, V fieldValue);
+	<V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
 	<T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders);
 

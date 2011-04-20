@@ -76,7 +76,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public <V> E getByField(SingularAttribute<E, V> attribute, V fieldValue) {
+	public <V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.getByField(getObjectClass(), attribute, fieldValue);
 	}
 	
@@ -111,7 +111,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public <V> List<E> listByField(SingularAttribute<E, V> attribute, V fieldValue) {
+	public <V> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.listEntityByField(getObjectClass(), attribute, fieldValue);
 	}
 	
@@ -132,7 +132,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public <V> Long countByField(SingularAttribute<E, V> attribute, V fieldValue) {
+	public <V> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.countEntityByField(getObjectClass(), attribute, fieldValue);
 	}
 	

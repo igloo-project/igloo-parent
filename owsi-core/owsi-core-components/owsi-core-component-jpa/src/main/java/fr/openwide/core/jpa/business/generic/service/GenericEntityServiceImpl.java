@@ -88,7 +88,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 * @param fieldValue valeur du champ
 	 * @return entité
 	 */
-	protected <V> E getByField(SingularAttribute<E, V> fieldName, V fieldValue) {
+	protected <V> E getByField(SingularAttribute<? super E, V> fieldName, V fieldValue) {
 		return genericDao.getByField(fieldName, fieldValue);
 	}
 	
@@ -154,7 +154,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 * @param fieldValue valeur du champ
 	 * @return liste d'entités
 	 */
-	protected <V> List<E> listByField(SingularAttribute<E, V> fieldName, V fieldValue) {
+	protected <V> List<E> listByField(SingularAttribute<? super E, V> fieldName, V fieldValue) {
 		return genericDao.listByField(fieldName, fieldValue);
 	}
 	
