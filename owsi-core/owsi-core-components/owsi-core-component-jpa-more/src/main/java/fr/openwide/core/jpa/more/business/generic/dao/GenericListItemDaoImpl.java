@@ -24,7 +24,6 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import fr.openwide.core.jpa.business.generic.dao.JpaDaoSupport;
