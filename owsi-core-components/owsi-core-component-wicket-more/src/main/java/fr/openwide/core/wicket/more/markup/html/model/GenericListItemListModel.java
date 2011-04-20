@@ -9,7 +9,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
 
-public class GenericListItemListModel<T extends GenericListItem<? super T>> extends LoadableDetachableModel<List<T>> {
+public class GenericListItemListModel<T extends GenericListItem<?>> extends LoadableDetachableModel<List<T>> {
 
 	private static final long serialVersionUID = 1385903058801258105L;
 
