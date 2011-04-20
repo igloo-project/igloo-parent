@@ -17,9 +17,9 @@
 	<name>OWSI Core - Packages</name>
 	
 	<modules>
-		<module>owsi-core-package-core-spring-hibernate</module>
+		<module>owsi-core-package-core-spring-jpa</module>
 		<module>owsi-core-package-core-spring-security</module>
-		<module>owsi-core-package-core-spring-hibernate-app</module>
+		<module>owsi-core-package-core-spring-jpa-app</module>
 
 		<module>owsi-core-package-web-wicket</module>
 		<module>owsi-core-package-web-wicket-app</module>

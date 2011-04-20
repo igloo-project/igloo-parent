@@ -27,6 +27,7 @@
 		<module>owsi-core-component-hibernate-more</module>
 		<module>owsi-core-component-jpa-more</module>
 		<module>owsi-core-component-hibernate-security</module>
+		<module>owsi-core-component-jpa-security</module>
 	</modules>
 	
 	<!-- Project information -->
