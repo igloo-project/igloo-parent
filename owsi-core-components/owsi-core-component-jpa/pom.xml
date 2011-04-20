@@ -104,18 +104,25 @@
 		</dependency>
 		
 		<!-- Test dependencies -->
+		<!--
+		Scope provided is necessary because test helpers are
+		included in artifact (AbstractTestCase and
+		EntityManagerExecutionListener) so we need to compile them,
+		but we don't want to pollute dependencies of dependant
+		projects.
+		-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${owsi-core.junit.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${owsi-core.spring.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Logging dependencies -->
