@@ -30,14 +30,7 @@
 	</bean>
 
 	<!-- DB CONNEXION -->
-	<!--
-		2 datasources are needed because HibernateTransactionManager and
-		DataSourceTransactionManager each bind connection resource on the
-		thread with the datasource object as key. So if the transactions
-		overlap, the transaction manager complains that value is already
-		registered for given datasource
-	-->
-	<bean id="owsi-hibernate.datasource.hibernate" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="owsi-jpa.datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		p:driverClass="${db.driverClass}" p:jdbcUrl="${db.jdbcUrl}" p:user="${db.user}"
 		p:password="${db.password}" p:initialPoolSize="${db.initialPoolSize}"
 		p:minPoolSize="${db.minPoolSize}" p:maxPoolSize="${db.maxPoolSize}"
@@ -47,7 +40,7 @@
 	<!--<context:load-time-weaver/>-->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="owsi-hibernate.datasource.hibernate" />
+		<property name="dataSource" ref="owsi-jpa.datasource" />
 		<property name="jpaVendorAdapter" ref="jpaAdapter" />
 		<property name="persistenceUnitName" value="testPU" />
 		<property name="jpaProperties">
