@@ -22,6 +22,7 @@ import java.util.List;
 import junit.framework.AssertionFailedError;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +43,15 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 	public void testSaveCreate() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.save(person);
-		assertNotNull(person.getId());
+		Assert.assertNotNull(person.getId());
 
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
-		assertNotNull(person1.getId());
+		Assert.assertNotNull(person1.getId());
 
 		Person person2 = new Person("Firstname2", "Lastname2");
 		personService.create(person2);
-		assertNotNull(person2.getId());
+		Assert.assertNotNull(person2.getId());
 
 		/*
 		try {
@@ -65,10 +66,10 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 	public void testDelete() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
-		assertTrue(personService.list().contains(person));
+		Assert.assertTrue(personService.list().contains(person));
 
 		personService.delete(person);
-		assertFalse(personService.list().contains(person));
+		Assert.assertFalse(personService.list().contains(person));
 
 		/*
 		 * La suppression d'un objet non persisté ne lève aucune exception
@@ -81,16 +82,16 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 	public void testUpdate() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
-		assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
+		Assert.assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
 
 		person.setFirstName("NewFirstname");
 		personService.update(person);
-		assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
+		Assert.assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
 		
 		Person person1 = new Person("Firstname1", "Lastname1");
 		try {
 			personService.update(person1);
-			fail("Faire un update sur un objet non persisté doit lever une exception");
+			Assert.fail("Faire un update sur un objet non persisté doit lever une exception");
 		} catch (AssertionFailedError e) {	
 		}
 	}
@@ -101,16 +102,16 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		personService.create(person);
 
 		person.setFirstName("AAAAA");
-		assertEquals("AAAAA", person.getFirstName());
+		Assert.assertEquals("AAAAA", person.getFirstName());
 
 		personService.refresh(person);
-		assertEquals("Firstname", person.getFirstName());
+		Assert.assertEquals("Firstname", person.getFirstName());
 
 		Person person1 = new Person("Firstname", "Lastname");
 
 		try {
 			personService.refresh(person1);
-			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
+			Assert.fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
 
@@ -119,7 +120,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 
 		try {
 			personService.refresh(person1);
-			fail("Faire un refresh sur un objet non persisté doit lever une exception");
+			Assert.fail("Faire un refresh sur un objet non persisté doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
 	}
@@ -133,11 +134,11 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		Person person1 = personService.getEntity(Person.class, person.getId());
 		Person person2 = personService.getById(person.getId());
 
-		assertTrue(person.equals(person1));
-		assertTrue(person.equals(person2));
+		Assert.assertTrue(person.equals(person1));
+		Assert.assertTrue(person.equals(person2));
 		
 		cleanAll();
-		assertEquals(new Long(0), personService.count());
+		Assert.assertEquals(new Long(0), personService.count());
 		
 		person = new Person("Firstname", "Lastname");
 		personService.create(person);
@@ -147,7 +148,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		person = new Person("Firstname", "Lastname");
 		personService.create(person);
 		
-		assertEquals(new Long(2), personService.count());
+		Assert.assertEquals(new Long(2), personService.count());
 	}
 	
 	@Test
@@ -156,7 +157,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		
 		List<Person> emptyList = personService.list();
 		
-		assertEquals(0, emptyList.size());
+		Assert.assertEquals(0, emptyList.size());
 
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
@@ -165,22 +166,22 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		
 		List<Person> list = personService.list();
 		
-		assertTrue(list.contains(person));
-		assertTrue(list.contains(person1));
-		assertEquals(1, (long) personService.count(Person_.lastName, "Lastname"));
-		assertEquals(1, (long) personService.count(Person_.lastName, "Lastname1"));
+		Assert.assertTrue(list.contains(person));
+		Assert.assertTrue(list.contains(person1));
+		Assert.assertEquals(1, (long) personService.count(Person_.lastName, "Lastname"));
+		Assert.assertEquals(1, (long) personService.count(Person_.lastName, "Lastname1"));
 	}
 	
 	@Test
 	public void testCount() throws ServiceException, SecurityServiceException {
-		assertEquals(new Long(0), personService.count());
+		Assert.assertEquals(new Long(0), personService.count());
 		
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
 		
-		assertEquals(new Long(2), personService.count());
+		Assert.assertEquals(new Long(2), personService.count());
 	}
 	
 	@Before

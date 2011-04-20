@@ -3,10 +3,13 @@ package fr.openwide.core.jpa.junit;
 import java.beans.PropertyDescriptor;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.After;
@@ -34,7 +37,7 @@ import fr.openwide.core.jpa.util.EntityManagerUtils;
 public abstract class AbstractTestCase {
 	
 	@Autowired
-	protected EntityManagerUtils entityManagerUtils;
+	private EntityManagerUtils entityManagerUtils;
 	
 	protected abstract void cleanAll() throws ServiceException, SecurityServiceException;
 	
@@ -79,23 +82,20 @@ public abstract class AbstractTestCase {
 	}
 	
 	private void checkEmptyDatabase() {
-		CriteriaBuilder cb = entityManagerUtils.getEntityManager().getCriteriaBuilder();
-		@SuppressWarnings("rawtypes")
-		CriteriaQuery<GenericEntity> cq = cb.createQuery(GenericEntity.class);
-		cq.from(GenericEntity.class);
-		
-		@SuppressWarnings("rawtypes")
-		List<GenericEntity> entities = entityManagerUtils.getEntityManager().createQuery(cq).getResultList();
-		
-		if (entities.size() > 0) {
-			Assert.fail(String.format("Il reste des objets de type %1$s", entities.get(0).getClass().getSimpleName()));
+		Set<EntityType<?>> entityTypes = getEntityManager().getEntityManagerFactory().getMetamodel().getEntities();
+		for (EntityType<?> entityType : entityTypes) {
+			List<?> entities = listEntities(entityType.getBindableJavaType());
+			
+			if (entities.size() > 0) {
+				Assert.fail(String.format("Il reste des objets de type %1$s", entities.get(0).getClass().getSimpleName()));
+			}
 		}
 	}
 	
-	protected <E extends GenericEntity<?, ?>> List<E> listEntities(Class<E> clazz) {
+	protected <E> List<E> listEntities(Class<E> clazz) {
 		CriteriaBuilder cb = entityManagerUtils.getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
-		cq.from(GenericEntity.class);
+		cq.from(clazz);
 		
 		return entityManagerUtils.getEntityManager().createQuery(cq).getResultList();
 	}
@@ -114,14 +114,28 @@ public abstract class AbstractTestCase {
 		Assert.assertTrue(Math.abs(date1.getTime() - date2.getTime()) < delayInSeconds * 1000);
 	}
 
-	/**
-	 * Clear current session. Beware that all current entities will be detached
-	 */
-	protected void clearSession() {
+	protected EntityManager getEntityManager() {
+		return entityManagerUtils.getEntityManager();
+	}
+
+	protected void entityManagerOpen() {
+		entityManagerUtils.openEntityManager();
+	}
+
+	protected void entityManagerClose() {
+		entityManagerUtils.closeEntityManager();
+	}
+
+	protected void entityManagerReset() {
+		entityManagerClose();
+		entityManagerOpen();
+	}
+
+	protected void entityManagerClear() {
 		entityManagerUtils.getEntityManager().clear();
 	}
 	
-	protected void sessionDetach(Object object) {
+	protected void entityManagerDetach(Object object) {
 		entityManagerUtils.getEntityManager().detach(object);
 	}
 

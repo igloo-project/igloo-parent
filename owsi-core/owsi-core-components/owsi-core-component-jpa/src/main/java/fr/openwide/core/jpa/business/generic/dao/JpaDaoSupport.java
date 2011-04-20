@@ -12,6 +12,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
+import junit.framework.AssertionFailedError;
+
 public class JpaDaoSupport {
 
 	@PersistenceContext
@@ -67,6 +69,9 @@ public class JpaDaoSupport {
 	}
 	
 	protected <T> void update(T entity) {
+		if (!getEntityManager().contains(entity)) {
+			throw new AssertionFailedError("Updated entity must be attached");
+		}
 		//TODO: http://blog.xebia.com/2009/03/23/jpa-implementation-patterns-saving-detached-entities/
 	}
 	
