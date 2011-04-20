@@ -19,7 +19,7 @@ package fr.openwide.core.test.person;
 
 import java.util.List;
 
-import junit.framework.AssertionFailedError;
+import javax.persistence.PersistenceException;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -92,7 +92,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		try {
 			personService.update(person1);
 			Assert.fail("Faire un update sur un objet non persisté doit lever une exception");
-		} catch (AssertionFailedError e) {	
+		} catch (PersistenceException e) {	
 		}
 	}
 
