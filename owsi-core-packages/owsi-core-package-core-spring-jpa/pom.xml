@@ -13,7 +13,7 @@
 	<version>0.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<name>OWSI Core - Package - Core - Spring / JPA2</name>
+	<name>OWSI Core - Package - Core - Spring / JPA</name>
 	
 	<dependencies>
 	
