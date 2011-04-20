@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import fr.openwide.core.jpa.business.generic.util.GenericEntityIdComparator;
@@ -35,10 +36,10 @@ public class TestGenericEntityIdComparator extends
 		
 		Collections.sort(personList, GenericEntityIdComparator.INSTANCE);
 		
-		assertSame(person1, personList.get(0));
-		assertSame(person2, personList.get(1));
-		assertSame(person3, personList.get(2));
-		assertSame(person4, personList.get(3));
+		Assert.assertSame(person1, personList.get(0));
+		Assert.assertSame(person2, personList.get(1));
+		Assert.assertSame(person3, personList.get(2));
+		Assert.assertSame(person4, personList.get(3));
 	}
 	
 }

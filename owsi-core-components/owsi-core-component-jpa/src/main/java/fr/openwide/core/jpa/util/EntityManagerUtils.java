@@ -60,8 +60,10 @@ public class EntityManagerUtils {
 	 * Suppression du EntityManager.
 	 */
 	public void closeEntityManager() {
-		EntityManagerHolder entityManagerHolder = (EntityManagerHolder) TransactionSynchronizationManager.unbindResource(entityManagerFactory);
-		EntityManagerFactoryUtils.closeEntityManager(entityManagerHolder.getEntityManager());
+		if (TransactionSynchronizationManager.hasResource(entityManagerFactory)) {
+			EntityManagerHolder entityManagerHolder = (EntityManagerHolder) TransactionSynchronizationManager.unbindResource(entityManagerFactory);
+			EntityManagerFactoryUtils.closeEntityManager(entityManagerHolder.getEntityManager());
+		}
 	}
 	
 	public EntityManager getEntityManager() {

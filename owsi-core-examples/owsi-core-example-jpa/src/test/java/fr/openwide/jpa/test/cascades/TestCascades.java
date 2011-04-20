@@ -1,5 +1,6 @@
 package fr.openwide.jpa.test.cascades;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
@@ -40,10 +41,10 @@ public class TestCascades extends AbstractJpaTestCase {
 		company.addEmployee(person);
 		try {
 			companyService.create(company);
-			fail("La création d'une entité liée à un élément non persisté lève une exception");
+			Assert.fail("La création d'une entité liée à un élément non persisté lève une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(companyService.list().contains(company));
-			assertFalse(personService.list().contains(person));
+			Assert.assertFalse(companyService.list().contains(company));
+			Assert.assertFalse(personService.list().contains(person));
 		}
 		
 		company = new Company("Company Test Persist");
@@ -53,8 +54,8 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		personService.create(person);
 		companyService.create(company);
-		assertTrue(companyService.list().contains(company));
-		assertTrue(personService.list().contains(person));
+		Assert.assertTrue(companyService.list().contains(company));
+		Assert.assertTrue(personService.list().contains(person));
 		
 		/* Cascade SAVE_UPDATE :
 		 * 
@@ -66,8 +67,8 @@ public class TestCascades extends AbstractJpaTestCase {
 		company1.addEmployee1(person1);
 		
 		companyService.create(company1);
-		assertTrue(companyService.list().contains(company1));
-		assertTrue(personService.list().contains(person1));
+		Assert.assertTrue(companyService.list().contains(company1));
+		Assert.assertTrue(personService.list().contains(person1));
 		
 		/* Cascade PERSIST :
 		 * 
@@ -83,8 +84,8 @@ public class TestCascades extends AbstractJpaTestCase {
 			//TODO: il n'y a plus de distinction MERGE / PERSIST
 			//fail("La création d'une entité liée à un élément non persisté lève une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(companyService.list().contains(company2));
-			assertFalse(personService.list().contains(person2));
+			Assert.assertFalse(companyService.list().contains(company2));
+			Assert.assertFalse(personService.list().contains(person2));
 		}
 		
 		/* Cascade REMOVE :
@@ -98,9 +99,9 @@ public class TestCascades extends AbstractJpaTestCase {
 		company3.addEmployee3(person3);
 		try {
 			companyService.create(company3);
-			fail("La création d'une entité liée à un élément non persisté lève une exception");
+			Assert.fail("La création d'une entité liée à un élément non persisté lève une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(companyService.list().contains(company3));
+			Assert.assertFalse(companyService.list().contains(company3));
 		}
 		
 		/* Cascade DELETE :
@@ -115,9 +116,9 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		try {
 			companyService.create(company4);
-			fail("La création d'une entité liée à un élément non persisté lève une exception");
+			Assert.fail("La création d'une entité liée à un élément non persisté lève une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(companyService.list().contains(company4));
+			Assert.assertFalse(companyService.list().contains(company4));
 		}
 		
 		/* Cascade DELETE_ORPHAN :
@@ -132,9 +133,9 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		try {
 			companyService.create(company5);
-			fail("La création d'une entité liée à un élément non persisté lève une exception");
+			Assert.fail("La création d'une entité liée à un élément non persisté lève une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(companyService.list().contains(company5));
+			Assert.assertFalse(companyService.list().contains(company5));
 		}
 		
 		/* Cascade MERGE :
@@ -149,9 +150,9 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		try {
 			companyService.create(company6);
-			fail("La création d'une entité liée à un élément non persisté lève une exception");
+			Assert.fail("La création d'une entité liée à un élément non persisté lève une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(companyService.list().contains(company6));
+			Assert.assertFalse(companyService.list().contains(company6));
 		}
 	}
 	
@@ -177,15 +178,15 @@ public class TestCascades extends AbstractJpaTestCase {
 
 		try {
 			companyService.update(company);
-			fail("Le fait d'updater et d'avoir un élément non persisté lié à l'entité doit provoquer une exception");
+			Assert.fail("Le fait d'updater et d'avoir un élément non persisté lié à l'entité doit provoquer une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(personService.list().contains(person));
+			Assert.assertFalse(personService.list().contains(person));
 		}
 
 		company = companyService.getById(company.getId());
 		personService.create(person);
 		companyService.update(company);
-		assertTrue(personService.list().contains(person));
+		Assert.assertTrue(personService.list().contains(person));
 		
 		/* Cascade SAVE_UPDATE :
 		 * 
@@ -195,7 +196,7 @@ public class TestCascades extends AbstractJpaTestCase {
 		company.addEmployee1(person1);
 		
 		companyService.update(company);
-		assertTrue(personService.list().contains(person1));
+		Assert.assertTrue(personService.list().contains(person1));
 		
 		/* Cascade PERSIST : 
 		 * 
@@ -209,14 +210,14 @@ public class TestCascades extends AbstractJpaTestCase {
 			//TODO: on n'a plus de distinction update / persist
 			//fail("Le fait d'updater et d'avoir une cascade PERSIST sur un élément non persisté doit provoquer une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(personService.list().contains(person2));
+			Assert.assertFalse(personService.list().contains(person2));
 			//TODO
-			fail("erreur");
+			Assert.fail("erreur");
 		}
 
 		personService.create(person2);
 		companyService.update(company);
-		assertTrue(personService.list().contains(person2));
+		Assert.assertTrue(personService.list().contains(person2));
 		
 		/* Cascade REMOVE : 
 		 * 
@@ -227,15 +228,15 @@ public class TestCascades extends AbstractJpaTestCase {
 
 		try {
 			companyService.update(company);
-			fail("Le fait d'updater et d'avoir une cascade REMOVE sur un élément non persisté doit provoquer une exception");
+			Assert.fail("Le fait d'updater et d'avoir une cascade REMOVE sur un élément non persisté doit provoquer une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(personService.list().contains(person3));
+			Assert.assertFalse(personService.list().contains(person3));
 		}
 		
 		company = companyService.getById(company.getId());
 		personService.create(person3);
 		companyService.update(company);
-		assertTrue(personService.list().contains(person3));
+		Assert.assertTrue(personService.list().contains(person3));
 		
 		/* Cascade DELETE : 
 		 * 
@@ -246,15 +247,15 @@ public class TestCascades extends AbstractJpaTestCase {
 
 		try {
 			companyService.update(company);
-			fail("Le fait d'updater et d'avoir une cascade DELETE sur un élément non persisté doit provoquer une exception");
+			Assert.fail("Le fait d'updater et d'avoir une cascade DELETE sur un élément non persisté doit provoquer une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(personService.list().contains(person4));
+			Assert.assertFalse(personService.list().contains(person4));
 		}
 
 		company = companyService.getById(company.getId());
 		personService.create(person4);
 		companyService.update(company);
-		assertTrue(personService.list().contains(person4));
+		Assert.assertTrue(personService.list().contains(person4));
 		
 		/* Cascade DELETE_ORPHAN : 
 		 * 
@@ -265,15 +266,15 @@ public class TestCascades extends AbstractJpaTestCase {
 
 		try {
 			companyService.update(company);
-			fail("Le fait d'updater et d'avoir une cascade DELETE_ORPHAN sur un élément non persisté doit provoquer une exception");
+			Assert.fail("Le fait d'updater et d'avoir une cascade DELETE_ORPHAN sur un élément non persisté doit provoquer une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(personService.list().contains(person5));
+			Assert.assertFalse(personService.list().contains(person5));
 		}
 
 		company = companyService.getById(company.getId());
 		personService.create(person5);
 		companyService.update(company);
-		assertTrue(personService.list().contains(person5));
+		Assert.assertTrue(personService.list().contains(person5));
 
 		/* Cascade MERGE : 
 		 * 
@@ -284,15 +285,15 @@ public class TestCascades extends AbstractJpaTestCase {
 
 		try {
 			companyService.update(company);
-			fail("Le fait d'updater et d'avoir une cascade MERGE sur un élément non persisté doit provoquer une exception");
+			Assert.fail("Le fait d'updater et d'avoir une cascade MERGE sur un élément non persisté doit provoquer une exception");
 		} catch (InvalidDataAccessApiUsageException e) {
-			assertFalse(personService.list().contains(person6));
+			Assert.assertFalse(personService.list().contains(person6));
 		}
 
 		company = companyService.getById(company.getId());
 		personService.create(person6);
 		companyService.update(company);
-		assertTrue(personService.list().contains(person6));
+		Assert.assertTrue(personService.list().contains(person6));
 	}
 	
 	@Test
@@ -321,11 +322,11 @@ public class TestCascades extends AbstractJpaTestCase {
 		company.addEmployee(person);
 		companyService.update(company);
 		personService.update(person);
-		assertTrue(companyService.list().contains(company));
+		Assert.assertTrue(companyService.list().contains(company));
 		
 		companyService.delete(company);
-		assertFalse(companyService.list().contains(company));
-		assertTrue(personService.list().contains(person));
+		Assert.assertFalse(companyService.list().contains(company));
+		Assert.assertTrue(personService.list().contains(person));
 
 		/* Cascade SAVE_UPDATE :
 		 * 
@@ -334,11 +335,11 @@ public class TestCascades extends AbstractJpaTestCase {
 		 */
 		//company1.addEmployee1(person1);
 		companyService.update(company1);
-		assertTrue(companyService.list().contains(company1));
+		Assert.assertTrue(companyService.list().contains(company1));
 		
 		companyService.delete(company1);
-		assertFalse(companyService.list().contains(company1));
-		assertTrue(personService.list().contains(person1));
+		Assert.assertFalse(companyService.list().contains(company1));
+		Assert.assertTrue(personService.list().contains(person1));
 		
 		
 		/* Cascade PERSIST :
@@ -348,11 +349,11 @@ public class TestCascades extends AbstractJpaTestCase {
 		 */
 		company2.addEmployee2(person2);
 		companyService.update(company2);
-		assertTrue(companyService.list().contains(company2));
+		Assert.assertTrue(companyService.list().contains(company2));
 		
 		companyService.delete(company2);
-		assertFalse(companyService.list().contains(company2));
-		assertTrue(personService.list().contains(person2));
+		Assert.assertFalse(companyService.list().contains(company2));
+		Assert.assertTrue(personService.list().contains(person2));
 
 		
 		/* Cascade REMOVE : 
@@ -362,11 +363,11 @@ public class TestCascades extends AbstractJpaTestCase {
 		 */
 		company3.addEmployee3(person3);
 		companyService.update(company3);
-		assertTrue(companyService.list().contains(company3));
+		Assert.assertTrue(companyService.list().contains(company3));
 		
 		companyService.delete(company3);
-		assertFalse(companyService.list().contains(company3));
-		assertFalse(personService.list().contains(person3));
+		Assert.assertFalse(companyService.list().contains(company3));
+		Assert.assertFalse(personService.list().contains(person3));
 
 		
 		/* Cascade DELETE
@@ -382,7 +383,7 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		try {
 			companyService.delete(company4);
-			fail("Supprimer en cascade une entité qui à encore des relations lève une exception");
+			Assert.fail("Supprimer en cascade une entité qui à encore des relations lève une exception");
 		} catch (JpaObjectRetrievalFailureException e) {
 			/* La tentative de suppression de la personne viole une contrainte d'intégrité
 			 * de la base de données. On ne peut pas supprimer en cascade une Person encore 
@@ -391,8 +392,8 @@ public class TestCascades extends AbstractJpaTestCase {
 			 */
 			company4 = companyService.getById(company4.getId());
 			company5 = companyService.getById(company5.getId());
-			assertTrue(companyService.list().contains(company4));
-			assertTrue(personService.list().contains(person4));
+			Assert.assertTrue(companyService.list().contains(company4));
+			Assert.assertTrue(personService.list().contains(person4));
 		}
 		person4 = personService.getById(person4.getId());
 		company5.removeEmployee1(person4);
@@ -402,8 +403,8 @@ public class TestCascades extends AbstractJpaTestCase {
 		/* Une fois l'entité Person déliée de la seconde Company, elle est supprimée sans
 		 * problèmes par la cascade.
 		 */
-		assertFalse(companyService.list().contains(company4));
-		assertFalse(personService.list().contains(person4));
+		Assert.assertFalse(companyService.list().contains(company4));
+		Assert.assertFalse(personService.list().contains(person4));
 
 		
 		/* Cascade DELETE_ORPHAN :
@@ -416,11 +417,11 @@ public class TestCascades extends AbstractJpaTestCase {
 		person5 = personService.getById(person5.getId());
 		company5.addEmployee5(person5);
 		companyService.update(company5);
-		assertTrue(companyService.list().contains(company5));
+		Assert.assertTrue(companyService.list().contains(company5));
 		
 		companyService.delete(company5);
-		assertFalse(companyService.list().contains(company5));
-		assertFalse(personService.list().contains(person5));
+		Assert.assertFalse(companyService.list().contains(company5));
+		Assert.assertFalse(personService.list().contains(person5));
 
 		
 		/* Cascade MERGE :
@@ -432,10 +433,10 @@ public class TestCascades extends AbstractJpaTestCase {
 		company6 = companyService.getById(company6.getId());
 		company6.addEmployee6(person6);
 		companyService.update(company6);
-		assertTrue(companyService.list().contains(company6));
+		Assert.assertTrue(companyService.list().contains(company6));
 		
 		companyService.delete(company6);
-		assertFalse(companyService.list().contains(company6));
-		assertTrue(personService.list().contains(person6));
+		Assert.assertFalse(companyService.list().contains(company6));
+		Assert.assertTrue(personService.list().contains(person6));
 	}
 }

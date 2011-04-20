@@ -1,6 +1,7 @@
 package fr.openwide.core.test.label;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,14 +20,14 @@ public class TestLabel extends AbstractJpaCoreTestCase {
 		Label label2 = new Label("label2", "value2");
 		labelService.create(label2);
 		
-		assertEquals(2, (long) labelService.count());
+		Assert.assertEquals(2, (long) labelService.count());
 		
-		assertEquals(label1, labelService.getById("label1"));
-		assertEquals(-1, label1.compareTo(label2));
+		Assert.assertEquals(label1, labelService.getById("label1"));
+		Assert.assertEquals(-1, label1.compareTo(label2));
 		
 		labelService.delete(label2);
 		
-		assertTrue(labelService.count() == 1);
+		Assert.assertTrue(labelService.count() == 1);
 	}
 	
 	@Before

@@ -2,21 +2,12 @@ package fr.openwide.jpa.test;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit38.AbstractJUnit38SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.util.EntityManagerUtils;
+import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.jpa.example.business.company.model.Company;
 import fr.openwide.jpa.example.business.company.service.CompanyService;
@@ -25,19 +16,14 @@ import fr.openwide.jpa.example.business.person.service.PersonService;
 import fr.openwide.jpa.example.business.project.model.Project;
 import fr.openwide.jpa.example.business.project.service.ProjectService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @ContextConfiguration(locations = {
 		"classpath:database-initialization-context.xml",
 		"classpath:application-context.xml"
 })
-public abstract class AbstractJpaTestCase extends AbstractJUnit38SpringContextTests {
+public abstract class AbstractJpaTestCase extends AbstractTestCase {
 	
 	@Autowired
 	protected CoreConfigurer configurer;
-	
-	@Autowired
-	protected EntityManagerUtils entityManagerUtils;
 	
 	@Autowired
 	protected CompanyService companyService;
@@ -47,13 +33,6 @@ public abstract class AbstractJpaTestCase extends AbstractJUnit38SpringContextTe
 	
 	@Autowired
 	protected ProjectService projectService;
-	
-	protected DataSource hibernateDataSource;
-	
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.hibernateDataSource = dataSource;
-	}
 	
 	protected Company createCompany(String name) throws ServiceException, SecurityServiceException {
 		Company company = new Company(name);
@@ -104,19 +83,5 @@ public abstract class AbstractJpaTestCase extends AbstractJUnit38SpringContextTe
 		cleanProjects();
 		cleanCompanies();
 		cleanPersons();
-	}
-	
-	@Before
-	public void init() throws ServiceException, SecurityServiceException {
-		entityManagerUtils.openEntityManager();
-		
-		cleanAll();
-	}
-	
-	@After
-	public void close() throws ServiceException, SecurityServiceException {
-		cleanAll();
-		
-		entityManagerUtils.closeEntityManager();
 	}
 }

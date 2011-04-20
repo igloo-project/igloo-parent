@@ -20,6 +20,7 @@ package fr.openwide.core.test.person;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,9 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Person person2 = personDao.getByField(Person_.lastName, "Lastname");
 		Person person3 = personDao.getById(person.getId());
 
-		assertTrue(person.equals(person1));
-		assertTrue(person.equals(person2));
-		assertTrue(person.equals(person3));
+		Assert.assertTrue(person.equals(person1));
+		Assert.assertTrue(person.equals(person2));
+		Assert.assertTrue(person.equals(person3));
 	}
 
 	@Test
@@ -59,22 +60,22 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Person person = new Person("Firstname", "Lastname");
 		personDao.save(person);
 		personService.flush();
-		assertTrue(personService.list().contains(person));
+		Assert.assertTrue(personService.list().contains(person));
 
 		personDao.delete(person);
 		personService.flush();
-		assertFalse(personService.list().contains(person));
+		Assert.assertFalse(personService.list().contains(person));
 	}
 
 	@Test
 	public void testUpdate() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
-		assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
+		Assert.assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
 
 		person.setFirstName("NewFirstname");
 		personDao.update(person);
-		assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
+		Assert.assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
 	}
 
 	@Test
@@ -83,16 +84,16 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		personService.create(person);
 
 		person.setFirstName("AAAAA");
-		assertEquals("AAAAA", person.getFirstName());
+		Assert.assertEquals("AAAAA", person.getFirstName());
 
 		personDao.refresh(person);
-		assertEquals("Firstname", person.getFirstName());
+		Assert.assertEquals("Firstname", person.getFirstName());
 
 		Person person1 = new Person("Firstname", "Lastname");
 
 		try {
 			personDao.refresh(person1);
-			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
+			Assert.fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
 
@@ -101,7 +102,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 
 		try {
 			personDao.refresh(person1);
-			fail("Faire un refresh sur un objet non persisté doit lever une exception");
+			Assert.fail("Faire un refresh sur un objet non persisté doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
 	}
@@ -109,10 +110,10 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 	@Test
 	public void testLists() throws ServiceException, SecurityServiceException {
 		List<Person> emptyList = personDao.list();
-		assertEquals(0, emptyList.size());
+		Assert.assertEquals(0, emptyList.size());
 		
 		List<Person> emptyListByField = personDao.listByField(Person_.lastName, "AAAA");
-		assertEquals(0, emptyListByField.size());
+		Assert.assertEquals(0, emptyListByField.size());
 		
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
@@ -125,23 +126,23 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		
 		List<Person> list = personDao.list();
 		
-		assertEquals(4, list.size());
-		assertTrue(list.contains(person1));
-		assertTrue(list.contains(person2));
-		assertTrue(list.contains(person3));
-		assertTrue(list.contains(person4));
+		Assert.assertEquals(4, list.size());
+		Assert.assertTrue(list.contains(person1));
+		Assert.assertTrue(list.contains(person2));
+		Assert.assertTrue(list.contains(person3));
+		Assert.assertTrue(list.contains(person4));
 		
 		List<Person> listByField = personDao.listByField(Person_.lastName, "AAAA");
 		
-		assertEquals(2, listByField.size());
-		assertTrue(listByField.contains(person2));
-		assertTrue(listByField.contains(person3));
+		Assert.assertEquals(2, listByField.size());
+		Assert.assertTrue(listByField.contains(person2));
+		Assert.assertTrue(listByField.contains(person3));
 	}
 
 	@Test
 	public void testCounts() throws ServiceException, SecurityServiceException {
-		assertEquals(new Long(0), personDao.count());
-		assertEquals(new Long(0), personDao.countByField(Person_.lastName, "AAAA"));
+		Assert.assertEquals(new Long(0), personDao.count());
+		Assert.assertEquals(new Long(0), personDao.countByField(Person_.lastName, "AAAA"));
 
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
@@ -152,8 +153,8 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Person person4 = new Person("Firstname4", "Lastname4");
 		personService.create(person4);
 
-		assertEquals(new Long(4), personDao.count());
-		assertEquals(new Long(2), personDao.countByField(Person_.lastName, "AAAA"));
+		Assert.assertEquals(new Long(4), personDao.count());
+		Assert.assertEquals(new Long(2), personDao.countByField(Person_.lastName, "AAAA"));
 	}
 	
 	@Before

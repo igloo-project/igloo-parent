@@ -18,6 +18,7 @@
 package fr.openwide.core.test.person;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +38,17 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 	public void testGenericEntity() throws ServiceException, SecurityServiceException {
 		Person person = new Person("FirstName", "LastName");
 
-		assertNull(person.getId());
-		assertTrue(person.isNew());
+		Assert.assertNull(person.getId());
+		Assert.assertTrue(person.isNew());
 
 		personService.create(person);
 
-		assertFalse(person.isNew());
+		Assert.assertFalse(person.isNew());
 		
 		Integer oldId = person.getId();
 		
 		person.setId(2);
-		assertEquals(2, person.getId().intValue());
+		Assert.assertEquals(2, person.getId().intValue());
 
 		person.setId(oldId);
 
@@ -56,16 +57,16 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 
 		Person person2 = personService.getById(person.getId());
 
-		assertFalse(person.equals(person1));
-		assertTrue(person.equals(person2));
+		Assert.assertFalse(person.equals(person1));
+		Assert.assertTrue(person.equals(person2));
 
 		Person person4 = person;
 
-		assertFalse(person.compareTo(person1) == 0);
-		assertTrue(person.compareTo(person4) == 0);
+		Assert.assertFalse(person.compareTo(person1) == 0);
+		Assert.assertTrue(person.compareTo(person4) == 0);
 
-		assertEquals("LastName FirstName", person.getDisplayName());
-		assertEquals("LastName FirstName", person.getNameForToString());
+		Assert.assertEquals("LastName FirstName", person.getDisplayName());
+		Assert.assertEquals("LastName FirstName", person.getNameForToString());
 	}
 	
 	@Before
