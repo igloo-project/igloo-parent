@@ -9,11 +9,11 @@
 	</parent>
 	
 	<groupId>fr.openwide.core.packages</groupId>
-	<artifactId>owsi-core-package-core-spring-hibernate</artifactId>
+	<artifactId>owsi-core-package-core-spring-jpa</artifactId>
 	<version>0.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<name>OWSI Core - Package - Core - Spring / Hibernate</name>
+	<name>OWSI Core - Package - Core - Spring / JPA2</name>
 	
 	<dependencies>
 	
@@ -33,7 +33,7 @@
 	
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-component-hibernate</artifactId>
+			<artifactId>owsi-core-component-jpa</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

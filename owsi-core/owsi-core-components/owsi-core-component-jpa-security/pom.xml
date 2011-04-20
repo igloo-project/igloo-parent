@@ -9,10 +9,10 @@
 	</parent>
 
 	<groupId>fr.openwide.core.components</groupId>
-	<artifactId>owsi-core-component-hibernate-security</artifactId>
+	<artifactId>owsi-core-component-jpa-security</artifactId>
 	<version>0.6-SNAPSHOT</version>
 	
-	<name>OWSI Core - Component - Hibernate - Spring Security support</name>
+	<name>OWSI Core - Component - JPA2 - Spring Security support</name>
 
 	<dependencies>
 		
@@ -20,7 +20,7 @@
 		
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-component-hibernate-more</artifactId>
+			<artifactId>owsi-core-component-jpa-more</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
