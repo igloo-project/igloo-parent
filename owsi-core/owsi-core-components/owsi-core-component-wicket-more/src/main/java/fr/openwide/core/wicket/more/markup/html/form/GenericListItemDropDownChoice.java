@@ -27,7 +27,7 @@ import fr.openwide.core.wicket.more.markup.html.model.GenericListItemListModel;
 public class GenericListItemDropDownChoice<T extends GenericListItem<? super T>> extends DropDownChoice<T> {
 	private static final long serialVersionUID = 6111025269398387253L;
 	
-	public GenericListItemDropDownChoice(String id, IModel<T> model, Class<? extends T> clazz) {
+	public GenericListItemDropDownChoice(String id, IModel<T> model, Class<T> clazz) {
 		super(id);
 		setModel(model);
 		setChoices(new GenericListItemListModel<T>(clazz, true));
