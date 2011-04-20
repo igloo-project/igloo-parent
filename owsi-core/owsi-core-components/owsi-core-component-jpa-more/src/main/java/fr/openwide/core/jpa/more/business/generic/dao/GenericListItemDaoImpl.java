@@ -37,7 +37,6 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 	/**
 	 * Constructeur.
 	 */
-	@Autowired
 	public GenericListItemDaoImpl() {
 	}
 	
