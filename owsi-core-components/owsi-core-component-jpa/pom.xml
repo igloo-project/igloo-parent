@@ -164,7 +164,7 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>javassist</groupId>
+			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>${owsi-core.javassist.version}</version>
 		</dependency>
@@ -248,6 +248,10 @@
 			<id>jboss</id>
 			<name>JBoss Maven Repository</name>
 			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven-annotation-plugin</id>
+			<url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
 		</pluginRepository>
 	</pluginRepositories>
 
