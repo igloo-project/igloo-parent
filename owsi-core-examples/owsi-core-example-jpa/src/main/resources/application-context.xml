@@ -29,15 +29,7 @@
 		<property name="ignoreResourceNotFound" value="true" />
 	</bean>
 
-	<!-- DB CONNEXION -->
-	<!--
-		2 datasources are needed because HibernateTransactionManager and
-		DataSourceTransactionManager each bind connection resource on the
-		thread with the datasource object as key. So if the transactions
-		overlap, the transaction manager complains that value is already
-		registered for given datasource
-	-->
-	<bean id="owsi-hibernate.datasource.hibernate" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="owsi-jpa.datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		p:driverClass="${db.driverClass}" p:jdbcUrl="${db.jdbcUrl}" p:user="${db.user}"
 		p:password="${db.password}" p:initialPoolSize="${db.initialPoolSize}"
 		p:minPoolSize="${db.minPoolSize}" p:maxPoolSize="${db.maxPoolSize}"
@@ -46,7 +38,7 @@
 
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="owsi-hibernate.datasource.hibernate" />
+		<property name="dataSource" ref="owsi-jpa.datasource" />
 		<property name="jpaVendorAdapter" ref="jpaAdapter" />
 		<property name="persistenceUnitName" value="testPU" />
 		<property name="jpaProperties">
@@ -78,11 +70,7 @@
 		</property>
 	</bean>
 	
-	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-		<property name="database" value="POSTGRESQL" />
-	</bean>
-	
-	<!-- <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" /> -->
+	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 	
 	<!-- Définition de la gestion des transactions -->
 	<bean id="transactionManager"
@@ -97,6 +85,8 @@
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
+			<tx:method name="is*" read-only="true" />
+			<tx:method name="has*" read-only="true" />
 			<tx:method name="get*" read-only="true" />
 			<tx:method name="list*" read-only="true" />
 			<tx:method name="search*" read-only="true" />
