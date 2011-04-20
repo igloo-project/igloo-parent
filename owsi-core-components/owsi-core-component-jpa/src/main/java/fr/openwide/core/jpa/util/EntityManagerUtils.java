@@ -19,6 +19,7 @@ package fr.openwide.core.jpa.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
@@ -38,7 +39,10 @@ public class EntityManagerUtils {
 	
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
-
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	/**
 	 * Mise en place du EntityManager
 	 */
@@ -58,5 +62,9 @@ public class EntityManagerUtils {
 	public void closeEntityManager() {
 		EntityManagerHolder entityManagerHolder = (EntityManagerHolder) TransactionSynchronizationManager.unbindResource(entityManagerFactory);
 		EntityManagerFactoryUtils.closeEntityManager(entityManagerHolder.getEntityManager());
+	}
+	
+	public EntityManager getEntityManager() {
+		return entityManager;
 	}
 }
