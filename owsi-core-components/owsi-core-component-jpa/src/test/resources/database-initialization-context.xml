@@ -10,6 +10,6 @@
 
 	<bean id="databaseInitializationService"
 		class="fr.openwide.core.jpa.util.DatabaseInitializationService"
-		init-method="initDatabaseSchema" />
+		p:dataSource-ref="owsi-jpa.datasource" />
 
 </beans>
