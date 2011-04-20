@@ -1,12 +1,12 @@
-package fr.openwide.core.hibernate.security.service;
+package fr.openwide.core.jpa.security.service;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.business.person.model.Person;
-import fr.openwide.core.hibernate.security.runas.RunAsTask;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.security.business.person.model.Person;
+import fr.openwide.core.jpa.security.runas.RunAsTask;
 
 public interface SecurityService {
 	

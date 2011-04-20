@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.business.person.model;
+package fr.openwide.core.jpa.security.business.person.model;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -22,9 +22,9 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.search.util.HibernateSearchAnalyzer;
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
 @MappedSuperclass
 @Bindable

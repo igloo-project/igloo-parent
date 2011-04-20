@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.hibernate.security.acl.domain.hierarchy;
+package fr.openwide.core.jpa.security.acl.domain.hierarchy;
 
 
 import java.io.Serializable;

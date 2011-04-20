@@ -1,11 +1,11 @@
-package fr.openwide.core.hibernate.security.business.person.model;
+package fr.openwide.core.jpa.security.business.person.model;
 
 import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
 
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
 @Bindable
 public interface Person {

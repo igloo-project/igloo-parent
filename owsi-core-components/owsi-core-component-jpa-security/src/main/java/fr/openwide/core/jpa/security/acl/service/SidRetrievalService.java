@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.acl.service;
+package fr.openwide.core.jpa.security.acl.service;
 
 import java.util.List;
 

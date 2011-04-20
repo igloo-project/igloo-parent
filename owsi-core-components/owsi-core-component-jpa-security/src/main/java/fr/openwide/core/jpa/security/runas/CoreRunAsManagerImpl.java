@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.runas;
+package fr.openwide.core.jpa.security.runas;
 
 import java.util.ArrayList;
 import java.util.Collection;

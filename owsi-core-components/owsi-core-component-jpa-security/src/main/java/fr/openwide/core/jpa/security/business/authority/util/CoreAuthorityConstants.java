@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.business.authority.util;
+package fr.openwide.core.jpa.security.business.authority.util;
 
 public class CoreAuthorityConstants {
 

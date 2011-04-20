@@ -1,7 +1,7 @@
-package fr.openwide.core.hibernate.security.business.authority.dao;
+package fr.openwide.core.jpa.security.business.authority.dao;
 
-import fr.openwide.core.hibernate.business.generic.dao.GenericEntityDao;
-import fr.openwide.core.hibernate.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
-public interface AuthorityDao extends GenericEntityDao<Integer, Authority> {
+public interface AuthorityDao extends IGenericEntityDao<Integer, Authority> {
 }

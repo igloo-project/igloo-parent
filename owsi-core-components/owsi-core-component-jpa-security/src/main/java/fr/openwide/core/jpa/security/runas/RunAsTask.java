@@ -1,4 +1,4 @@
-package fr.openwide.core.hibernate.security.runas;
+package fr.openwide.core.jpa.security.runas;
 /**
  * Interface wrapper permettant l'exécution d'une tâche sous une identité tierce.
  */
