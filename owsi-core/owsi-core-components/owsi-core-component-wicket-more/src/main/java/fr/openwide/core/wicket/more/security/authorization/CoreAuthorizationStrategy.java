@@ -6,12 +6,12 @@ import org.apache.wicket.authorization.strategies.role.annotations.AnnotationsRo
 import org.apache.wicket.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy;
 import org.springframework.security.acls.domain.PermissionFactory;
 
-import fr.openwide.core.hibernate.security.service.AuthenticationService;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 
 public class CoreAuthorizationStrategy extends CompoundAuthorizationStrategy {
 
 	public CoreAuthorizationStrategy(final IRoleCheckingStrategy roleCheckingStrategy,
-			AuthenticationService authenticationService,
+			IAuthenticationService authenticationService,
 			PermissionFactory permissionFactory) {
 		add(new AnnotationsRoleAuthorizationStrategy(roleCheckingStrategy));
 		add(new MetaDataRoleAuthorizationStrategy(roleCheckingStrategy));

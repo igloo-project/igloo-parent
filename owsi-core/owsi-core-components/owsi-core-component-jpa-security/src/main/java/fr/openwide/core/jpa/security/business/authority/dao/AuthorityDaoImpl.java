@@ -7,7 +7,7 @@ import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
 @Repository("authorityDao")
-public class AuthorityDaoImpl extends GenericEntityDaoImpl<Integer, Authority> implements AuthorityDao {
+public class AuthorityDaoImpl extends GenericEntityDaoImpl<Integer, Authority> implements IAuthorityDao {
 	
 	@Autowired
 	public AuthorityDaoImpl() {

@@ -23,15 +23,15 @@ import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.business.generic.service.EntityService;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.service.IEntityService;
 
 public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> extends LoadableDetachableModel<E> {
 	
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private EntityService entityService;
+	private IEntityService entityService;
 	
 	private K id;
 	

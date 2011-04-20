@@ -22,7 +22,7 @@ import java.util.Locale;
 import org.apache.wicket.util.convert.converters.AbstractConverter;
 import org.bindgen.Binding;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
 class GenericListItemConverter extends AbstractConverter {

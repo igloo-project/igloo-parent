@@ -21,7 +21,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.wicket.more.markup.html.model.GenericListItemListModel;
 
 public class GenericListItemDropDownChoice<T extends GenericListItem<? super T>> extends DropDownChoice<T> {

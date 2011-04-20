@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
-public interface AuthenticationService {
+public interface IAuthenticationService {
 
 	String getUserName();
 	

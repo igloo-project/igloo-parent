@@ -27,8 +27,8 @@ import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converters.AbstractConverter;
 import org.bindgen.Binding;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItemBinding;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public class GenericListItemListLabel extends Label {

@@ -2,7 +2,7 @@ package fr.openwide.core.jpa.security.acl.service;
 
 import org.springframework.security.acls.model.Permission;
 
-public interface PermissionRegistryService {
+public interface IPermissionRegistryService {
 
 	String getPermissionName(Permission permission);
 	

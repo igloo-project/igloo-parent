@@ -23,18 +23,18 @@ import org.springframework.security.acls.model.Sid;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.acl.domain.CoreAcl;
 import fr.openwide.core.jpa.security.acl.domain.PersonGroupSid;
-import fr.openwide.core.jpa.security.acl.domain.hierarchy.PermissionHierarchy;
+import fr.openwide.core.jpa.security.acl.domain.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.model.Person;
-import fr.openwide.core.jpa.security.business.person.model.PersonGroup;
+import fr.openwide.core.jpa.security.business.person.model.IPerson;
+import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 
 public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport implements AclService {
 	
 	@Autowired
-	private PermissionHierarchy permissionHierarchy;
+	private IPermissionHierarchy permissionHierarchy;
 	
 	@Autowired
-	private PermissionRegistryService permissionRegistryService;
+	private IPermissionRegistryService permissionRegistryService;
 	
 	@Autowired
 	public AbstractCoreAclServiceImpl(SessionFactory sessionFactory) {
@@ -128,11 +128,11 @@ public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport imp
 		return getAccessControlEntry(acl, new GrantedAuthoritySid(role), permission);
 	}
 	
-	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, Person person, Permission permission) {
+	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, IPerson person, Permission permission) {
 		return getAccessControlEntry(acl, new PrincipalSid(person.getUserName()), permission);
 	}
 	
-	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, PersonGroup personGroup, Permission permission) {
+	protected AccessControlEntry getAccessControlEntry(CoreAcl acl, IPersonGroup personGroup, Permission permission) {
 		return getAccessControlEntry(acl, new PersonGroupSid(personGroup), permission);
 	}
 	

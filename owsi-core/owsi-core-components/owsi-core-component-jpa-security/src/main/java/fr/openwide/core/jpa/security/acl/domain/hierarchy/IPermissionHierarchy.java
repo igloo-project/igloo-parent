@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.security.acls.model.Permission;
 
-public interface PermissionHierarchy {
+public interface IPermissionHierarchy {
 	
 	List<Permission> getAcceptablePermissions(Permission permission);
 

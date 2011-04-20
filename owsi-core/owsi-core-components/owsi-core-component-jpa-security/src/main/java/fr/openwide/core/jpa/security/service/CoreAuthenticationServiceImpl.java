@@ -9,10 +9,10 @@ import org.springframework.security.core.GrantedAuthority;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 
-public class CoreAuthenticationServiceImpl implements AuthenticationService {
+public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	
 	@Autowired
-	private SecurityService securityService;
+	private ISecurityService securityService;
 	
 	@Override
 	public String getUserName() {

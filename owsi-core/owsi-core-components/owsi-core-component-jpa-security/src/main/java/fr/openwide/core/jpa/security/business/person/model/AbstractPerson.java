@@ -27,7 +27,7 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 @MappedSuperclass
 @Bindable
 public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Integer, P>
-		implements Person {
+		implements IPerson {
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	

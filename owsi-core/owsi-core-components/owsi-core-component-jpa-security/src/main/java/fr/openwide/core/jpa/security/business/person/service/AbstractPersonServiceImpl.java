@@ -12,29 +12,29 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.jpa.security.business.authority.service.AuthorityService;
+import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.dao.PersonDao;
+import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson_;
-import fr.openwide.core.jpa.security.business.person.model.PersonBinding;
+import fr.openwide.core.jpa.security.business.person.model.IPersonBinding;
 
 public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 		extends GenericEntityServiceImpl<Integer, P>
-		implements PersonService<P> {
+		implements IPersonService<P> {
 	
-	private static final PersonBinding BINDING = new PersonBinding();
+	private static final IPersonBinding BINDING = new IPersonBinding();
 
 	@Autowired
-	private AuthorityService authorityService;
+	private IAuthorityService authorityService;
 	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
 	
-	private PersonDao<P> personDao;
+	private IPersonDao<P> personDao;
 	
 	@Autowired
-	public AbstractPersonServiceImpl(PersonDao<P> personDao) {
+	public AbstractPersonServiceImpl(IPersonDao<P> personDao) {
 		super(personDao);
 		this.personDao = personDao;
 	}
