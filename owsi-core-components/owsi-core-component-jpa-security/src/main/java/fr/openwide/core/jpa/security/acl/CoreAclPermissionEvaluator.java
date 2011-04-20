@@ -7,12 +7,12 @@ import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.model.AclService;
 import org.springframework.security.core.Authentication;
 
-import fr.openwide.core.jpa.security.service.SecurityService;
+import fr.openwide.core.jpa.security.service.ISecurityService;
 
 public class CoreAclPermissionEvaluator extends AclPermissionEvaluator {
 	
 	@Autowired
-	private SecurityService securityService;
+	private ISecurityService securityService;
 
 	public CoreAclPermissionEvaluator(AclService aclService) {
 		super(aclService);

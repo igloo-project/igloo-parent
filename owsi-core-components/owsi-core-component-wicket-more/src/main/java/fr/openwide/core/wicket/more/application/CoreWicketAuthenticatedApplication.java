@@ -16,7 +16,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 
-import fr.openwide.core.hibernate.security.service.AuthenticationService;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
@@ -30,7 +30,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	private final WeakReference<Class<? extends AuthenticatedWebSession>> webSessionClassRef;
 	
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IAuthenticationService authenticationService;
 	
 	@Autowired
 	private PermissionFactory permissionFactory;

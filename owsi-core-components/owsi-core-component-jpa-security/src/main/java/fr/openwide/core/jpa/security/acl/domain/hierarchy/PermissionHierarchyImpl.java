@@ -70,7 +70,7 @@ import org.springframework.security.acls.model.Permission;
  * @author Michael Mayr
  *
  */
-public class PermissionHierarchyImpl implements PermissionHierarchy, Serializable {
+public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializable {
 
 	private static final long serialVersionUID = -6242073226861679992L;
 

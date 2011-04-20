@@ -16,7 +16,7 @@
  */
 package fr.openwide.core.wicket.more.model;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 public class GenericListItemModel<E extends GenericListItem<E>> extends GenericEntityModel<Integer, E> {
 	

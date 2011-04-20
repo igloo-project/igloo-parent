@@ -6,7 +6,7 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.acls.model.SidRetrievalStrategy;
 import org.springframework.security.core.Authentication;
 
-public interface SidRetrievalService extends SidRetrievalStrategy {
+public interface ISidRetrievalService extends SidRetrievalStrategy {
 
 	List<Sid> getSids(Authentication authentication);
 	

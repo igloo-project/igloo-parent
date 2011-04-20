@@ -10,7 +10,7 @@ import org.springframework.security.acls.model.Permission;
 
 import fr.openwide.core.jpa.security.acl.domain.PermissionConstants;
 
-public class CorePermissionRegistryServiceImpl implements PermissionRegistryService {
+public class CorePermissionRegistryServiceImpl implements IPermissionRegistryService {
 	
 	@Autowired
 	private PermissionFactory permissionFactory;

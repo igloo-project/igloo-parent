@@ -13,10 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 
-import fr.openwide.core.hibernate.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.hibernate.security.business.person.model.AbstractPerson;
-import fr.openwide.core.hibernate.security.business.person.service.PersonService;
-import fr.openwide.core.hibernate.security.service.AuthenticationService;
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
+import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
 public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
@@ -28,10 +28,10 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirect";
 	
 	@SpringBean(name="personService")
-	protected PersonService<P> personService;
+	protected IPersonService<P> personService;
 	
 	@SpringBean(name="authenticationService")
-	protected AuthenticationService authenticationService;
+	protected IAuthenticationService authenticationService;
 	
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;

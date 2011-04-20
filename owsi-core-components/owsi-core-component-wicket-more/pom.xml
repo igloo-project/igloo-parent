@@ -24,7 +24,7 @@
 		
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-component-hibernate-security</artifactId>
+			<artifactId>owsi-core-component-jpa-security</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

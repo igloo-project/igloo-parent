@@ -6,17 +6,17 @@ import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
-import fr.openwide.core.hibernate.security.service.AuthenticationService;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 
 public class AnnotationsPermissionAuthorizationStrategy implements
 		IAuthorizationStrategy {
 	
-	private AuthenticationService authenticationService;
+	private IAuthenticationService authenticationService;
 	
 	private PermissionFactory permissionFactory;
 
-	public AnnotationsPermissionAuthorizationStrategy(AuthenticationService authenticationService, PermissionFactory permissionFactory) {
+	public AnnotationsPermissionAuthorizationStrategy(IAuthenticationService authenticationService, PermissionFactory permissionFactory) {
 		this.authenticationService = authenticationService;
 		this.permissionFactory = permissionFactory;
 	}

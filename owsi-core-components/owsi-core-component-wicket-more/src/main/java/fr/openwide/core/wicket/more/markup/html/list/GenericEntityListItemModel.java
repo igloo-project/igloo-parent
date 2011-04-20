@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 /**
  * Modèle pour l'utilisation dans les {@link ListView}, se basant sur les ids au

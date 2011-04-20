@@ -5,37 +5,37 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.security.business.person.model.Person;
-import fr.openwide.core.jpa.security.runas.RunAsTask;
+import fr.openwide.core.jpa.security.business.person.model.IPerson;
+import fr.openwide.core.jpa.security.runas.IRunAsTask;
 
-public interface SecurityService {
+public interface ISecurityService {
 	
 	boolean hasPermission(Authentication authentication, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	
-	boolean hasPermission(Person person, GenericEntity<?, ?> securedObject,
+	boolean hasPermission(IPerson person, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	
 	boolean hasRole(Authentication authentication, String role);
 	
-	boolean hasRole(Person person, String role);
+	boolean hasRole(IPerson person, String role);
 
 	boolean hasSystemRole(Authentication authentication);
 	
-	boolean hasSystemRole(Person person);
+	boolean hasSystemRole(IPerson person);
 	
 	boolean hasAdminRole(Authentication authentication);
 	
-	boolean hasAdminRole(Person person);
+	boolean hasAdminRole(IPerson person);
 	
 	boolean hasAuthenticatedRole(Authentication authentication);
 	
-	boolean hasAuthenticatedRole(Person person);
+	boolean hasAuthenticatedRole(IPerson person);
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 
 	SecurityContext buildSecureContext(String userName);
 	
-	<T> T runAsSystem(RunAsTask<T> task);
+	<T> T runAsSystem(IRunAsTask<T> task);
 	
 }

@@ -6,8 +6,8 @@ import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.hibernate.more.business.generic.model.GenericListItem;
-import fr.openwide.core.hibernate.more.business.generic.service.GenericListItemService;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
 
 public class GenericListItemListModel<T extends GenericListItem<? super T>> extends LoadableDetachableModel<List<T>> {
 
@@ -18,7 +18,7 @@ public class GenericListItemListModel<T extends GenericListItem<? super T>> exte
 	private boolean enabled;
 
 	@SpringBean(name = "genericListItemService")
-	private GenericListItemService genericListItemService;
+	private IGenericListItemService genericListItemService;
 
 	public GenericListItemListModel(Class<? extends T> clazz, boolean enabled) {
 		super();

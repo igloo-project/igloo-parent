@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class GenericEntityListModelDataProvider<K extends Serializable & Comparable<K>,

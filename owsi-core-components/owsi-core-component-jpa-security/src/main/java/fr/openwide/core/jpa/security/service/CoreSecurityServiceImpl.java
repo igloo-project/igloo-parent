@@ -28,13 +28,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.acl.domain.UserConstants;
-import fr.openwide.core.jpa.security.acl.service.SidRetrievalService;
+import fr.openwide.core.jpa.security.acl.service.ISidRetrievalService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.model.Person;
+import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
-import fr.openwide.core.jpa.security.runas.RunAsTask;
+import fr.openwide.core.jpa.security.runas.IRunAsTask;
 
-public class CoreSecurityServiceImpl implements SecurityService {
+public class CoreSecurityServiceImpl implements ISecurityService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreSecurityServiceImpl.class);
 
@@ -42,7 +42,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	private AclService aclService;
 	
 	@Autowired
-	private SidRetrievalService sidRetrievalService;
+	private ISidRetrievalService sidRetrievalService;
 	
 	@Resource(name = "hibernateUserDetailsService")
 	private UserDetailsService userDetailsService;
@@ -80,7 +80,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public boolean hasPermission(Person person, GenericEntity<?, ?> securedObject,
+	public boolean hasPermission(IPerson person, GenericEntity<?, ?> securedObject,
 			Permission permission) {
 		return hasPermission(getAuthentication(person), securedObject, permission);
 	}
@@ -91,7 +91,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasSystemRole(Person person) {
+	public boolean hasSystemRole(IPerson person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_SYSTEM);
 	}
 	
@@ -101,7 +101,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasAdminRole(Person person) {
+	public boolean hasAdminRole(IPerson person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_ADMIN);
 	}
 	
@@ -111,7 +111,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasAuthenticatedRole(Person person) {
+	public boolean hasAuthenticatedRole(IPerson person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_AUTHENTICATED);
 	}
 	
@@ -130,7 +130,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	@Override
-	public boolean hasRole(Person person, String role) {
+	public boolean hasRole(IPerson person, String role) {
 		return hasRole(getAuthentication(person), role);
 	}
 	
@@ -159,16 +159,16 @@ public class CoreSecurityServiceImpl implements SecurityService {
 	}
 	
 	/**
-	 * Exécute une {@link RunAsTask} en tant qu'utilisateur système. Le contexte
+	 * Exécute une {@link IRunAsTask} en tant qu'utilisateur système. Le contexte
 	 * de sécurité est modifié au début de la tâche et rétabli à la fin de la
 	 * tâche.
 	 *
-	 * @param task un objet de type {@link RunAsTask}
+	 * @param task un objet de type {@link IRunAsTask}
 	 * 
-	 * @return l'objet retourné par la méthode {@link RunAsTask#execute()}
+	 * @return l'objet retourné par la méthode {@link IRunAsTask#execute()}
 	 */
 	@Override
-	public <T> T runAsSystem(RunAsTask<T> task) {
+	public <T> T runAsSystem(IRunAsTask<T> task) {
 		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
 		authenticateAsSystem();
 		try {
@@ -178,7 +178,7 @@ public class CoreSecurityServiceImpl implements SecurityService {
 		}
 	}
 
-	private Authentication getAuthentication(Person person) {
+	private Authentication getAuthentication(IPerson person) {
 		return getAuthentication(person.getUserName());
 	}
 	

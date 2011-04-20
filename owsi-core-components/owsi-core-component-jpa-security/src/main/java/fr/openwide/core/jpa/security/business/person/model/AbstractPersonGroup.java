@@ -30,7 +30,7 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 @Bindable
 public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
 		extends GenericEntity<Integer, G>
-		implements PersonGroup {
+		implements IPersonGroup {
 
 	private static final long serialVersionUID = 2156717229285615454L;
 	

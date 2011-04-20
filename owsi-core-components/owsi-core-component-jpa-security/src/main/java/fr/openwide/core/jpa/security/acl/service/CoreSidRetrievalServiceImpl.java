@@ -10,16 +10,16 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 
 import fr.openwide.core.jpa.security.acl.domain.PersonGroupSid;
-import fr.openwide.core.jpa.security.business.person.model.Person;
-import fr.openwide.core.jpa.security.business.person.model.PersonGroup;
-import fr.openwide.core.jpa.security.business.person.service.PersonService;
+import fr.openwide.core.jpa.security.business.person.model.IPerson;
+import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
+import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 
-public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implements SidRetrievalService {
+public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implements ISidRetrievalService {
 
 	private static final int USERNAME_PERSONID_MAP_INITIAL_CAPACITY = 300;
 	
 	@Autowired
-	protected PersonService<? extends Person> personService;
+	protected IPersonService<? extends IPerson> personService;
 	
 	private boolean cacheEnabled = true;
 	
@@ -31,11 +31,11 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		
 		Integer personId = getPersonIdByUserName(authentication.getName());
 		if (personId != null) {
-			Person person = personService.getById(personId);
+			IPerson person = personService.getById(personId);
 			if (person != null) {
-				List<PersonGroup> groups = person.getPersonGroups();
+				List<IPersonGroup> groups = person.getPersonGroups();
 
-				for (PersonGroup group : groups) {
+				for (IPersonGroup group : groups) {
 					sids.add(new PersonGroupSid(group));
 				}
 			}
@@ -50,7 +50,7 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		if (userNamePersonIdMap.containsKey(userName) && cacheEnabled) {
 			personId = userNamePersonIdMap.get(userName);
 		} else {
-			Person person = personService.getByUserName(userName);
+			IPerson person = personService.getByUserName(userName);
 			if (person != null) {
 				personId = person.getId();
 				userNamePersonIdMap.put(userName, personId);

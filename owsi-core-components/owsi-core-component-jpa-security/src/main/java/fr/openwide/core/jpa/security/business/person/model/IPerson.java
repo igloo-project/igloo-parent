@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.model;
 
+import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
@@ -7,12 +8,24 @@ import org.bindgen.Bindable;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
 @Bindable
-public interface PersonGroup {
+public interface IPerson {
 	
 	Integer getId();
 	
-	String getName();
+	String getUserName();
+	
+	String getFirstName();
+	
+	String getLastName();
+	
+	String getFullName();
+	
+	List<IPersonGroup> getPersonGroups();
 
 	Set<Authority> getAuthorities();
+
+	boolean isActive();
+
+	String getMd5Password();
 
 }

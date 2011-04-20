@@ -12,13 +12,13 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.acls.model.UnloadedSidException;
 import org.springframework.util.Assert;
 
-import fr.openwide.core.jpa.security.acl.domain.hierarchy.PermissionHierarchy;
+import fr.openwide.core.jpa.security.acl.domain.hierarchy.IPermissionHierarchy;
 
 public class CoreAcl implements Acl {
 	
 	private static final long serialVersionUID = -4850094246182483507L;
 	
-	private PermissionHierarchy permissionHierarchy;
+	private IPermissionHierarchy permissionHierarchy;
 	
 	private ObjectIdentity objectIdentity;
 	
@@ -26,12 +26,12 @@ public class CoreAcl implements Acl {
 	
 	private List<AccessControlEntry> entries = new ArrayList<AccessControlEntry>();
 	
-	public CoreAcl(PermissionHierarchy permissionHierarchy, ObjectIdentity objectIdentity) {
+	public CoreAcl(IPermissionHierarchy permissionHierarchy, ObjectIdentity objectIdentity) {
 		this.permissionHierarchy = permissionHierarchy;
 		this.objectIdentity = objectIdentity;
 	}
 	
-	public CoreAcl(PermissionHierarchy permissionHierarchy, ObjectIdentity objectIdentity, List<Sid> loadedSids) {
+	public CoreAcl(IPermissionHierarchy permissionHierarchy, ObjectIdentity objectIdentity, List<Sid> loadedSids) {
 		this.permissionHierarchy = permissionHierarchy;
 		this.objectIdentity = objectIdentity;
 		this.loadedSids = loadedSids;

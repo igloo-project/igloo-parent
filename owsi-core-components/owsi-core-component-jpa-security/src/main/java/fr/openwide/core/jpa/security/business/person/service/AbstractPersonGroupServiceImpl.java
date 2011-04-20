@@ -7,18 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.security.business.person.dao.PersonGroupDao;
+import fr.openwide.core.jpa.security.business.person.dao.IPersonGroupDao;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup_;
 
 public abstract class AbstractPersonGroupServiceImpl<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
-		extends GenericEntityServiceImpl<Integer, G> implements PersonGroupService<G, P> {
+		extends GenericEntityServiceImpl<Integer, G> implements IPersonGroupService<G, P> {
 
-	protected PersonGroupDao<G, P> personGroupDao;
+	protected IPersonGroupDao<G, P> personGroupDao;
 	
 	@Autowired
-	public AbstractPersonGroupServiceImpl(PersonGroupDao<G, P> personGroupDao) {
+	public AbstractPersonGroupServiceImpl(IPersonGroupDao<G, P> personGroupDao) {
 		super(personGroupDao);
 		
 		this.personGroupDao = personGroupDao;
