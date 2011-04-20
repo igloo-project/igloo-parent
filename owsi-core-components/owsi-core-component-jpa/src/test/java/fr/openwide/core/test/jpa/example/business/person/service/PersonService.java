@@ -24,5 +24,5 @@ import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
 public interface PersonService extends IGenericEntityService<Integer, Person> {
 
-	Long count(SingularAttribute<Person, String> attribute, String value);
+	Long count(SingularAttribute<? super Person, String> attribute, String value);
 }
