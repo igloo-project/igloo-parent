@@ -18,13 +18,14 @@ import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 
-public class CoreHibernateUserDetailsServiceImpl implements UserDetailsService {
+public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private IPersonService<? extends IPerson> personService; 
 	
 	private RoleHierarchy roleHierarchy;
 
+	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
 		IPerson person = personService.getByUserName(userName);
 		

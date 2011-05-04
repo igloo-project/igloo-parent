@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.security.acls.domain.AccessControlEntryImpl;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
@@ -20,6 +18,7 @@ import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 
+import fr.openwide.core.jpa.business.generic.dao.JpaDaoSupport;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.acl.domain.CoreAcl;
 import fr.openwide.core.jpa.security.acl.domain.PersonGroupSid;
@@ -28,7 +27,7 @@ import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConsta
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 
-public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport implements AclService {
+public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implements AclService {
 	
 	@Autowired
 	private IPermissionHierarchy permissionHierarchy;
@@ -36,9 +35,7 @@ public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport imp
 	@Autowired
 	private IPermissionRegistryService permissionRegistryService;
 	
-	@Autowired
-	public AbstractCoreAclServiceImpl(SessionFactory sessionFactory) {
-		setSessionFactory(sessionFactory);
+	public AbstractCoreAclServiceImpl() {
 	}
 	
 	@Override
@@ -78,7 +75,7 @@ public abstract class AbstractCoreAclServiceImpl extends HibernateDaoSupport imp
 			Class<?> clazz = Class.forName(objectIdentity.getType());
 			
 			if (GenericEntity.class.isAssignableFrom(clazz) && objectIdentity.getIdentifier() instanceof Integer) {
-				return (GenericEntity<Integer, ?>) getSession().get(clazz, objectIdentity.getIdentifier());
+				return (GenericEntity<Integer, ?>) getEntity(clazz, objectIdentity.getIdentifier());
 			}
 		} catch (ClassNotFoundException e) {
 			throw new NotFoundException("objectIdentity " + objectIdentity + " is not a valid GenericEntity", e);
