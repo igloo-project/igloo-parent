@@ -7,14 +7,62 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
+import org.apache.solr.analysis.KeywordTokenizerFactory;
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.PatternReplaceFilterFactory;
+import org.apache.solr.analysis.TrimFilterFactory;
+import org.apache.solr.analysis.WhitespaceTokenizerFactory;
+import org.apache.solr.analysis.WordDelimiterFilterFactory;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.AnalyzerDefs;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @Entity
 @Bindable
+@AnalyzerDefs({
+	@AnalyzerDef(name = HibernateSearchAnalyzer.KEYWORD,
+			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class)
+	),
+	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT,
+			tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+			filters = {
+					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+					@TokenFilterDef(factory = WordDelimiterFilterFactory.class, params = {
+									@org.hibernate.search.annotations.Parameter(name = "generateWordParts", value = "1"),
+									@org.hibernate.search.annotations.Parameter(name = "generateNumberParts", value = "1"),
+									@org.hibernate.search.annotations.Parameter(name = "catenateWords", value = "0"),
+									@org.hibernate.search.annotations.Parameter(name = "catenateNumbers", value = "0"),
+									@org.hibernate.search.annotations.Parameter(name = "catenateAll", value = "0"),
+									@org.hibernate.search.annotations.Parameter(name = "splitOnCaseChange", value = "0"),
+									@org.hibernate.search.annotations.Parameter(name = "splitOnNumerics", value = "0"),
+									@org.hibernate.search.annotations.Parameter(name = "preserveOriginal", value = "1")
+							}
+					),
+					@TokenFilterDef(factory = LowerCaseFilterFactory.class)
+			}
+	),
+	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT_SORT,
+			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class),
+			filters = {
+					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+					@TokenFilterDef(factory = TrimFilterFactory.class),
+					@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+					@TokenFilterDef(factory = PatternReplaceFilterFactory.class, params = {
+						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "([^0-9a-z ])"),
+						@org.hibernate.search.annotations.Parameter(name = "replacement", value = ""),
+						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
+					})
+			}
+	)
+})
 public class Parameter extends GenericEntity<Integer, Parameter> {
 	
 	private static final long serialVersionUID = 4739408616523513971L;
