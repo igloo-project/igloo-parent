@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.5</version>
+		<version>0.5.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-wicket</artifactId>
-	<version>0.5</version>
+	<version>0.5.1-SNAPSHOT</version>
 	
 	<name>OWSI Core - Component - Wicket</name>
 	
