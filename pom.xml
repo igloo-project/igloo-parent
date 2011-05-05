@@ -18,6 +18,18 @@
 		<module>owsi-core-packages</module>
 	</modules>
 	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	
 	<!-- Project information -->
 
 	<organization>
@@ -78,8 +90,8 @@
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/branches/owsi-core-0.5-MAINTENANCE/owsi-core</developerConnection>
-		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/branches/owsi-core-0.5-MAINTENANCE/owsi-core</url>
+		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/branches/owsi-core-0.5-MAINTENANCE</developerConnection>
+		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/branches/owsi-core-0.5-MAINTENANCE</url>
 	</scm>
 	
 </project>
