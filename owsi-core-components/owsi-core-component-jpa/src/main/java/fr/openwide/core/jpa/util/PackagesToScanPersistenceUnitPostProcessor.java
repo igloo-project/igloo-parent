@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
 
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
@@ -32,17 +33,16 @@ public class PackagesToScanPersistenceUnitPostProcessor implements PersistenceUn
 	/**
 	 * the calculated list of additional persistent classes
 	 */
-	private Set<Class<? extends Object>> persistentClasses;
+	private Set<Class<? extends Object>> persistentClasses = new HashSet<Class<? extends Object>>();
 
 	/**
 	 * Looks for any persistent class in the classpath under the specified packages
 	 */
-	public void afterPropertiesSet() throws Exception {
+	@PostConstruct
+	public void init() {
 		if (packagesToScan == null || packagesToScan.isEmpty()) {
 			throw new IllegalArgumentException("packages property must be set");
 		}
-		
-		persistentClasses = new HashSet<Class<? extends Object>>();
 		
 		for (String packageToScan : packagesToScan) {
 			persistentClasses.addAll(ReflectionUtils.findAnnotatedClasses(packageToScan, Entity.class));
@@ -56,6 +56,7 @@ public class PackagesToScanPersistenceUnitPostProcessor implements PersistenceUn
 	/**
 	 * Add all the persistent classes found to the PersistentUnit
 	 */
+	@Override
 	public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo persistenceUnitInfo) {
 		for (Class<? extends Object> c : persistentClasses) {
 			persistenceUnitInfo.addManagedClassName(c.getName());
