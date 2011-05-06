@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.business.generic.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -51,20 +52,21 @@ public class JpaDaoSupport {
 		return root;
 	}
 	
-	public <T,K> T getEntity(Class<T> clazz, K id) {
+	public <T, K> T getEntity(Class<T> clazz, K id) {
 		return getEntityManager().find(clazz, id);
 	}
 	
-	public <T,K> T getById(Class<T> clazz, K id) {
-		return getEntityManager().find(clazz, id);
-	}
-	
-	public <T,V> T getByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
+	public <T, V> T getByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(clazz);
 		Root<T> root = criteria.from(clazz);
 		criteria.where(builder.equal(root.get(attribute), fieldValue));
-		return buildTypedQuery(criteria, null, null).getSingleResult();
+		
+		try {
+			return buildTypedQuery(criteria, null, null).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 	
 	protected <T> void update(T entity) {
