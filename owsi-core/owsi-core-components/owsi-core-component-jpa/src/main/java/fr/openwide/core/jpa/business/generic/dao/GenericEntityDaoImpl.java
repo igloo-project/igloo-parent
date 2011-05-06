@@ -72,7 +72,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	
 	@Override
 	public E getById(K id) {
-		return super.getById(getObjectClass(), id);
+		return super.getEntity(getObjectClass(), id);
 	}
 	
 	@Override

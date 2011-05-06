@@ -46,7 +46,7 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 	
 	@Override
 	public <E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id) {
-		return super.getById(clazz, id);
+		return super.getEntity(clazz, id);
 	}
 	
 	@Override
