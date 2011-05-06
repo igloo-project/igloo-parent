@@ -32,6 +32,20 @@
 			<version>${owsi-core.bindgen.version}</version>
 		</dependency>
 		
+		<!-- Excel Import -->
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${owsi-core.poi.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${owsi-core.poi.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>
