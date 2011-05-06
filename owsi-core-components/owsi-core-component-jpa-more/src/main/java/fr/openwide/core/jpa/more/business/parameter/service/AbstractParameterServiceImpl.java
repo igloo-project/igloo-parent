@@ -16,15 +16,28 @@ import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter_;
 
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Integer, Parameter>
-		implements ApplicationListener<ContextRefreshedEvent> {
+		implements ApplicationListener<ContextRefreshedEvent>, IAbstractParameterService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterServiceImpl.class);
+	
+	private static final String DATABASE_INITIALIZED = "databaseInitialized";
 
 	private IParameterDao dao;
 
 	public AbstractParameterServiceImpl(IParameterDao dao) {
 		super(dao);
 		this.dao = dao;
+	}
+	
+	@Override
+	public boolean isDatabaseInitialized() {
+		return getBooleanValue(DATABASE_INITIALIZED, false);
+	}
+	
+	@Override
+	public void setDatabaseInitialized(boolean databaseInitialized)
+			throws ServiceException, SecurityServiceException {
+		updateBooleanValue(DATABASE_INITIALIZED, databaseInitialized);
 	}
 
 	protected Parameter getByName(String name) {
