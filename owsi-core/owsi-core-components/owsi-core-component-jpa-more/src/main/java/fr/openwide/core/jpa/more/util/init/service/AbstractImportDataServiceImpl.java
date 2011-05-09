@@ -98,7 +98,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	protected abstract void importMainBusinessItems(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping, Workbook workbook);
 	
-	private <E extends GenericEntity<Integer, ?>> void doImportItem(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping,
+	protected <E extends GenericEntity<Integer, ?>> void doImportItem(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping,
 				Workbook workbook, Class<E> clazz) {
 		Sheet sheet = workbook.getSheet(clazz.getSimpleName());
 		if (sheet != null) {
