@@ -16,6 +16,7 @@ public class HideableLabel extends Label {
 		super(id, label);
 	}
 
+	@Override
 	public boolean isVisible() {
 		return StringUtils.hasText(getDefaultModelObjectAsString());
 	}
