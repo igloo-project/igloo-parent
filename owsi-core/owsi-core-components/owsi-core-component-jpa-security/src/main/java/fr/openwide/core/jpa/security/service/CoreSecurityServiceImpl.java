@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +29,8 @@ import fr.openwide.core.jpa.security.acl.domain.UserConstants;
 import fr.openwide.core.jpa.security.acl.service.ISidRetrievalService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
-import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
 import fr.openwide.core.jpa.security.runas.IRunAsTask;
+import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
 
 public class CoreSecurityServiceImpl implements ISecurityService {
 	
@@ -44,7 +42,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	@Autowired
 	private ISidRetrievalService sidRetrievalService;
 	
-	@Resource(name = "hibernateUserDetailsService")
+	@Autowired
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
