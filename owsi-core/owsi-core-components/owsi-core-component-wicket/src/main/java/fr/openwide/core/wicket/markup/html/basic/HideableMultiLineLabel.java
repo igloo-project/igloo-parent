@@ -16,6 +16,7 @@ public class HideableMultiLineLabel extends MultiLineLabel {
 		super(id, label);
 	}
 
+	@Override
 	public boolean isVisible() {
 		return StringUtils.hasText(getDefaultModelObjectAsString());
 	}

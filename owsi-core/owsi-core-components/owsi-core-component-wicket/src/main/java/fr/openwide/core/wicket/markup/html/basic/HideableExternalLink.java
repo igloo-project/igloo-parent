@@ -16,6 +16,7 @@ public class HideableExternalLink extends ExternalLink {
 		super(id, label);
 	}
 
+	@Override
 	public boolean isVisible() {
 		return StringUtils.hasText(getDefaultModelObjectAsString());
 	}
