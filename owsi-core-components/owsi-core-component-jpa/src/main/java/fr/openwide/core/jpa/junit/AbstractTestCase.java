@@ -103,8 +103,7 @@ public abstract class AbstractTestCase {
 	protected <E extends GenericEntity<?, ?>> Long countEntities(Class<E> clazz) {
 		CriteriaBuilder cb = entityManagerUtils.getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		@SuppressWarnings("rawtypes")
-		Root<GenericEntity> root = cq.from(GenericEntity.class);
+		Root<E> root = cq.from(clazz);
 		cq.select(cb.count(root));
 		
 		return (Long) entityManagerUtils.getEntityManager().createQuery(cq).getSingleResult();
