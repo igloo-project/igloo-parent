@@ -1,0 +1,53 @@
+<wicket:panel>
+	<wicket:enclosure child="actionLink">
+		<a wicket:id="actionLink">
+			<img wicket:id="actionImage" class="icon" width="16" height="16" />
+		</a>
+		&nbsp;
+	</wicket:enclosure>
+	<wicket:container wicket:id="actionLinkHidden">
+		<span class="placeholder-button"></span>
+		&nbsp;
+	</wicket:container>
+	<wicket:enclosure child="editLink">
+		<a wicket:id="editLink">
+			<img src="static/common/images/icons/pencil.png" class="icon"
+				wicket:message="alt:common.itemList.action.edit,data-tooltip:common.itemList.action.edit" width="16" height="16" />
+		</a>
+		&nbsp;
+	</wicket:enclosure>
+	<wicket:container wicket:id="editLinkHidden">
+		<span class="placeholder-button"></span>
+		&nbsp;
+	</wicket:container>
+	<wicket:enclosure child="deleteLink">
+		<a wicket:id="deleteLink">
+			<img src="static/common/images/icons/bin_closed.png" class="icon"
+				wicket:message="alt:common.itemList.action.delete,data-tooltip:common.itemList.action.delete" width="16" height="16" />
+		</a>
+		<div style="display: none;">
+			<div wicket:id="deleteLinkConfirmation" class="popup-box confirm-box">
+				<div class="popup-title"><wicket:message key="common.confirmTitle" /></div>
+				<div wicket:id="deleteLinkConfirmationMessage">message</div>
+				<div class="buttons">
+					<div class="button-outer">
+						<a wicket:id="confirmationDeleteLink" class="button button-yes" href="javascript:;">
+							<img src="static/common/images/icons/tick.png" width="16" height="16" />
+							<wicket:message key="common.yes" />
+						</a>
+					</div>
+					<div class="button-outer">
+						<a wicket:id="cancelDeleteLink" class="button button-no" href="javascript:;">
+							<img src="static/common/images/icons/cross.png" width="16" height="16" />
+							<wicket:message key="common.no" />
+						</a>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</wicket:enclosure>
+	<wicket:container wicket:id="deleteLinkHidden">
+		<span class="placeholder-button"></span>
+	</wicket:container>
+</wicket:panel>
