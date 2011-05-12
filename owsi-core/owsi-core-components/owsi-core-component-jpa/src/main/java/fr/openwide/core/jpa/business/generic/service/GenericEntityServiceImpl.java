@@ -35,7 +35,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
  *
  * @param <T> type de l'entité
  */
-public abstract class GenericEntityServiceImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+public abstract class GenericEntityServiceImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		implements IGenericEntityService<K, E> {
 	
 	/**

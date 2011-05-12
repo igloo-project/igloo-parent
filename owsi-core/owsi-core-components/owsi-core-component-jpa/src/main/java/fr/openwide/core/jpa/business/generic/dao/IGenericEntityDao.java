@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
@@ -42,7 +41,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  *
  * @param <E> type de l'entité à prendre en charge
  */
-public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>> {
+public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> {
 
 	/**
 	 * Retourne une entité à partir de sa classe et son id.

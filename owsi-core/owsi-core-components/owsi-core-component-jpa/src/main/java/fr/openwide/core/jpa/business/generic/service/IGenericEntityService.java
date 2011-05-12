@@ -31,7 +31,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
  *
  * @param <T> type d'entité
  */
-public interface IGenericEntityService<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+public interface IGenericEntityService<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends ITransactionalAspectAwareService {
 
 	/**
