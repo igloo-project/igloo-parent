@@ -21,16 +21,18 @@ public abstract class GenericPortfolioPanel<E extends GenericEntity<Integer, E>>
 	
 	public GenericPortfolioPanel(String id, IModel<? extends List<E>> listModel, int itemsPerPage) {
 		super(id, listModel);
+		
+		this.itemsPerPage = itemsPerPage;
 	}
 	
 	public GenericPortfolioPanel(String id, IDataProvider<E> dataProvider, int itemsPerPage) {
 		super(id, dataProvider);
+		
+		this.itemsPerPage = itemsPerPage;
 	}
 	
 	@Override
 	protected void onInitialize() {
-		getItemsPerPage();
-		
 		super.onInitialize();
 		
 		add(new HideablePagingNavigator("pager", getDataView()));
