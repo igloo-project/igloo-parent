@@ -18,8 +18,9 @@
 package fr.openwide.core.jpa.business.generic.dao;
 
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
@@ -35,7 +36,7 @@ import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
  *
  * @param <T> type de l'entité
  */
-public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends JpaDaoSupport
 		implements IGenericEntityDao<K, E> {
 	
@@ -120,7 +121,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		List<T> entities = super.listEntity(objectClass, filter, limit, offset, orders);
 		
 		if(orders == null || orders.length == 0) {
-			Collections.sort(entities);
+			sort(entities);
 		}
 		
 		return entities;
@@ -139,5 +140,16 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	@Override
 	public Long count(Expression<Boolean> filter) {
 		return super.countEntity(getObjectClass(), filter);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T extends E> void sort(List<T> entities) {
+		Object[] a = entities.toArray();
+		Arrays.sort(a);
+		ListIterator<T> i = entities.listIterator();
+		for (int j = 0; j < a.length; j++) {
+			i.next();
+			i.set((T) a[j]);
+		}
 	}
 }
