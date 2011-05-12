@@ -13,7 +13,8 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
 
 
-public abstract class GenericPortfolioPanel<E extends GenericEntity<Integer, E>> extends AbstractGenericItemListPanel<E> {
+public abstract class GenericPortfolioPanel<E extends GenericEntity<Integer, ?>>
+		extends AbstractGenericItemListPanel<E> {
 
 	private static final long serialVersionUID = 1L;
 	
