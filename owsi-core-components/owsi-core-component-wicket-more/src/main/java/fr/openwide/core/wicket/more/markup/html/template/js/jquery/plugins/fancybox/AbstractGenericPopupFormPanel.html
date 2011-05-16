@@ -1,0 +1,27 @@
+<wicket:panel>
+	<div wicket:id="feedback">
+	</div>
+	<div class="form-item">
+		<div class="form-outer">
+			<form wicket:id="itemForm">
+				<wicket:child></wicket:child>
+				<div class="clear"></div>
+				<div class="buttons">
+					<div class="button-outer">
+						<a wicket:id="submitButton" class="button button-validate" href="javascript:;">
+							<img src="static/application/images/icons/tick.png" width="16" height="16" />
+							<wicket:message key="common.validate" />
+						</a>
+					</div>
+					<div class="button-outer">
+						<a class="button button-cancel" href="javascript:;" onclick="$.fancybox.close();">
+							<img src="static/application/images/icons/cross.png" width="16" height="16" />
+							<wicket:message key="common.cancel" />
+						</a>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+</wicket:panel>
