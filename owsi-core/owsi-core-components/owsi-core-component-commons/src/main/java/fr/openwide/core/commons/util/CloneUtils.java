@@ -17,7 +17,9 @@
 
 package fr.openwide.core.commons.util;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 
@@ -53,6 +55,21 @@ public final class CloneUtils {
 	@SuppressWarnings("unchecked")
 	public static <T extends Object> T[] clone(T[] array) {
 		return (T[]) ArrayUtils.clone(array);
+	}
+	
+	/**
+	 * Clône une liste d'objets
+	 * 
+	 * @param <T> classe des objets stockés dans le tableau
+	 * @param list liste
+	 * @return clône de la liste
+	 */
+	public static <T extends Object> List<T> clone(List<T> list) {
+		if (list == null) {
+			return null;
+		} else {
+			return new ArrayList<T>(list);
+		}
 	}
 	
 	/**
