@@ -228,7 +228,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 	}
 
 	protected IModel<String> getActionIconPath() {
-		return Model.of("static/application/images/icons/magnifier.png");
+		return Model.of("static/common/images/icons/magnifier.png");
 	}
 	
 	protected Component getEditLink(final String id, final IModel<? extends T> itemModel) {
