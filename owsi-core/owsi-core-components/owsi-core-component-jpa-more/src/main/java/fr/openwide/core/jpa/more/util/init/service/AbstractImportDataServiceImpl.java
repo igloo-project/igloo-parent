@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.more.util.init.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +58,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final String SHA1_PASSWORD_FIELD_NAME = "sha1Password";
 	
+	private static final Map<Class<?>, List<Class<?>>> ADDITIONAL_CLASS_MAPPINGS = new HashMap<Class<?>, List<Class<?>>>();
+	
 	@Autowired
 	private IImportDataDao importDataDao;
 	
@@ -110,6 +113,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			Map<Integer, GenericEntity<Integer, ?>> idsMappingForClass = new HashMap<Integer, GenericEntity<Integer, ?>>();
 			idsMapping.put(clazz.getName(), idsMappingForClass);
 			
+			for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
+				if (!idsMapping.containsKey(referencedClass.getName())) {
+					idsMapping.put(referencedClass.getName(), new HashMap<Integer, GenericEntity<Integer, ?>>());
+				}
+			}
+			
 			for (Map<String, Object> line : WorkbookUtils.getSheetContent(sheet)) {
 				E item = BeanUtils.instantiateClass(clazz);
 				
@@ -125,6 +134,10 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 				importDataDao.create(item);
 				
 				idsMappingForClass.put(importId, item);
+				
+				for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
+					idsMapping.get(referencedClass.getName()).put(importId, item);
+				}
 			}
 			
 			LOGGER.info("Imported " + idsMappingForClass.size() + " objects for class: " + clazz.getSimpleName());
@@ -141,6 +154,21 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		if (line.containsKey(PASSWORD_FIELD_NAME)) {
 			line.put(MD5_PASSWORD_FIELD_NAME, DigestUtils.md5Hex(line.get(PASSWORD_FIELD_NAME).toString()));
 			line.put(SHA1_PASSWORD_FIELD_NAME, DigestUtils.shaHex(line.get(PASSWORD_FIELD_NAME).toString()));
+		}
+	}
+	
+	protected void addAdditionalClassMapping(Class<?> sourceClass, Class<?> targetClass) {
+		if (!ADDITIONAL_CLASS_MAPPINGS.containsKey(sourceClass)) {
+			ADDITIONAL_CLASS_MAPPINGS.put(sourceClass, new ArrayList<Class<?>>());
+		}
+		ADDITIONAL_CLASS_MAPPINGS.get(sourceClass).add(targetClass);
+	}
+	
+	protected List<Class<?>> getOtherReferencedClasses(Class<?> sourceClass) {
+		if (ADDITIONAL_CLASS_MAPPINGS.containsKey(sourceClass)) {
+			return ADDITIONAL_CLASS_MAPPINGS.get(sourceClass);
+		} else {
+			return new ArrayList<Class<?>>(0);
 		}
 	}
 	
