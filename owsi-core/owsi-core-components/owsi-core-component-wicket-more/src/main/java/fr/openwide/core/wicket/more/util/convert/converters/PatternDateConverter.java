@@ -35,6 +35,7 @@ public class PatternDateConverter extends AbstractConverter {
 	public PatternDateConverter(String datePattern, boolean forceGmt) {
 		super();
 		this.datePattern = datePattern;
+		this.forceGmt = forceGmt;
 	}
 
 	@Override
