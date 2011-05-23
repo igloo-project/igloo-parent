@@ -34,6 +34,7 @@ public class PatternDateConverter extends AbstractConverter {
 	 */
 	public PatternDateConverter(String datePattern, boolean forceGmt) {
 		super();
+		this.forceGmt = forceGmt;
 		this.datePattern = datePattern;
 	}
 
