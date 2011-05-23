@@ -60,6 +60,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final Map<Class<?>, List<Class<?>>> ADDITIONAL_CLASS_MAPPINGS = new HashMap<Class<?>, List<Class<?>>>();
 	
+	private static final Map<Class<?>, String> SHEET_NAME_MAPPING = new HashMap<Class<?>, String>();
+	
 	@Autowired
 	private IImportDataDao importDataDao;
 	
@@ -103,7 +105,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	protected <E extends GenericEntity<Integer, ?>> void doImportItem(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping,
 				Workbook workbook, Class<E> clazz) {
-		Sheet sheet = workbook.getSheet(clazz.getSimpleName());
+		Sheet sheet = workbook.getSheet(getSheetName(clazz));
 		if (sheet != null) {
 			GenericEntityConverter converter = new GenericEntityConverter(importDataDao, workbook,
 					new HashMap<Class<?>, Class<?>>(0), idsMapping);
@@ -169,6 +171,18 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			return ADDITIONAL_CLASS_MAPPINGS.get(sourceClass);
 		} else {
 			return new ArrayList<Class<?>>(0);
+		}
+	}
+	
+	protected void setSheetNameMapping(Class<?> clazz, String sheetName) {
+		SHEET_NAME_MAPPING.put(clazz, sheetName);
+	}
+	
+	protected String getSheetName(Class<?> clazz) {
+		if (SHEET_NAME_MAPPING.containsKey(clazz)) {
+			return SHEET_NAME_MAPPING.get(clazz);
+		} else {
+			return clazz.getSimpleName();
 		}
 	}
 	
