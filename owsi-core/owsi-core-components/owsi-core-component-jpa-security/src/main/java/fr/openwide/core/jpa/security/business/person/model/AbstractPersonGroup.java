@@ -45,7 +45,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
-	@OrderBy("lastName")
+	@OrderBy("lastName, firstName")
 	private List<P> persons = new LinkedList<P>();
 	
 	@ManyToMany
