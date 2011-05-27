@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<version>0.5.1-SNAPSHOT</version>
+		<version>0.5.1</version>
 	</parent>
 
 	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-jpa</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.5.1</version>
 
 	<name>OWSI Core - Example - JPA</name>
 	<description>Capitalisation OWSI pour la technologie JPA</description>
