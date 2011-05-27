@@ -2,10 +2,6 @@ package fr.openwide.core.wicket.more.markup.html.template.component;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -22,16 +18,11 @@ public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 
 	@Override
 	protected void populateItem(ListItem<BreadCrumbElement> item) {
-		BreadCrumbElement breadCrumbElement = item.getModelObject();
-		
-		WebMarkupContainer separator = new WebMarkupContainer("separator");
-		separator.setVisible(item.getIndex() != 0);
-		item.add(separator);
-		
-		Link<Void> link = new BookmarkablePageLink<Void>("breadCrumbElementLink", breadCrumbElement.getPageClass(), breadCrumbElement.getPageParameters());
-		link.add(new Label("breadCrumbElementLabel", getString(breadCrumbElement.getLabelKey(), null, breadCrumbElement.getLabelKey())));
-		
-		item.add(link);
+		if (item.getModelObject().getPageClass() != null) {
+			item.add(new LinkBreadCrumbElementPanel("breadCrumbElement", item.getModel(), item.getIndex() > 0));
+		} else {
+			item.add(new SimpleBreadCrumbElementPanel("breadCrumbElement", item.getModel(), item.getIndex() > 0));
+		}
 	}
 	
 }
