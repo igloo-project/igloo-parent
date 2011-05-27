@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -21,7 +22,7 @@ public class LinkBreadCrumbElementPanel extends GenericPanel<BreadCrumbElement> 
 		add(separator);
 		
 		Link<Void> link = new BookmarkablePageLink<Void>("breadCrumbElementLink", getModelObject().getPageClass(), getModelObject().getPageParameters());
-		link.add(new Label("breadCrumbElementLabel", getString(getModelObject().getLabelKey(), null, getModelObject().getLabelKey())));
+		link.add(new Label("breadCrumbElementLabel", new ResourceModel(getModelObject().getLabelKey(), getModelObject().getLabelKey())));
 		
 		add(link);
 	}
