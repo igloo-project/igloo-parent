@@ -150,8 +150,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	protected <E extends GenericEntity<Integer, ?>> void doFilterLine(Class<E> clazz, Map<String, Object> line) {
 		Date creationDate = new Date();
-		line.put(CREATION_DATE_FIELD_NAME, creationDate);
-		line.put(LAST_UPDATE_DATE_FIELD_NAME, creationDate);
+		if (!line.containsKey(CREATION_DATE_FIELD_NAME)) {
+			line.put(CREATION_DATE_FIELD_NAME, creationDate);
+		}
+		if (!line.containsKey(LAST_UPDATE_DATE_FIELD_NAME)) {
+			line.put(LAST_UPDATE_DATE_FIELD_NAME, creationDate);
+		}
 		
 		if (line.containsKey(PASSWORD_FIELD_NAME)) {
 			line.put(MD5_PASSWORD_FIELD_NAME, DigestUtils.md5Hex(line.get(PASSWORD_FIELD_NAME).toString()));
