@@ -54,6 +54,11 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected static final short EVEN_ROW_BACKGROUND_COLOR_INDEX = (short) 38;
 
+	/**
+	 * Ratio pour redimensionner les colonnes correctement
+	 */
+	private static final float COLUMN_RESIZE_RATIO = 1.25f; 
+
 	protected static final String FONT_NORMAL_NAME = "fontNormal";
 	protected static final String FONT_HEADER_NAME = "fontHeader";
 	protected static final String ROW_ODD_NAME = "Odd";
@@ -401,6 +406,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		int headersSize = headers.size();
 		for (int i = 0; i < headersSize; i++) {
 			sheet.autoSizeColumn((short) i);
+			sheet.setColumnWidth(i, (int) (sheet.getColumnWidth(i) * COLUMN_RESIZE_RATIO));
 		}
 	}
 	
