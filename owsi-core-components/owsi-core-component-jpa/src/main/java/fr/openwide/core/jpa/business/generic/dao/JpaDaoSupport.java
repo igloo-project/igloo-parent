@@ -163,6 +163,22 @@ public class JpaDaoSupport {
 		return buildTypedQuery(criteria, null, null).getSingleResult();
 	}
 	
+	protected <E> E getSingleResultOrNull(CriteriaQuery<E> cq) {
+		try {
+			return getEntityManager().createQuery(cq).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	protected <E> E getSingleResultOrNull(TypedQuery<E> tq) {
+		try {
+			return tq.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
 	protected EntityManager getEntityManager() {
 		return entityManager;
 	}
