@@ -162,7 +162,6 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 
 	@Override
 	public JsStatement statement() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
