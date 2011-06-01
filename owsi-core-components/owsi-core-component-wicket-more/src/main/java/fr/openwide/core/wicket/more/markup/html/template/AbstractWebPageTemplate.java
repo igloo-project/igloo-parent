@@ -8,7 +8,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -16,6 +15,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.odlabs.wiquery.core.commons.CoreJavaScriptResourceReference;
+import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
+import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor;
@@ -26,8 +28,8 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public abstract class AbstractWebPageTemplate extends WebPage {
-	
+public abstract class AbstractWebPageTemplate extends WebPage implements IWiQueryPlugin {
+
 	private static final String META_TITLE_SEPARATOR = " › ";
 	
 	private static final String TIPSY_DATA_TOOLTIP = "data-tooltip";
@@ -36,6 +38,8 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	private List<String> pageTitleElements = new ArrayList<String>();
 	
 	private List<BreadCrumbElement> breadCrumbElements = new ArrayList<BreadCrumbElement>();
+	
+	private boolean contributeJqueryCore = false;
 	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
@@ -144,7 +148,21 @@ public abstract class AbstractWebPageTemplate extends WebPage {
 	}
 	
 	protected void enableCloseTipsyOnLoad() {
-		add(JavascriptPackageResource.getHeaderContribution(CoreJavaScriptResourceReference.get()));
+		contributeJqueryCore = true;
 		add(TipsyHelper.getCloseOnLoadHeaderContributor());
+	}
+	
+	@Override
+	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
+		if (contributeJqueryCore) {
+			// this needs to be imported via wiquery contribute, else isMinified method can fails at application startup
+			wiQueryResourceManager.addJavaScriptResource(CoreJavaScriptResourceReference.get());
+		}
+	}
+
+	@Override
+	public JsStatement statement() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
