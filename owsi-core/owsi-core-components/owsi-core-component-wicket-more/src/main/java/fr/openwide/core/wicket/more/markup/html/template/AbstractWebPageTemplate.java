@@ -23,7 +23,7 @@ import org.odlabs.wiquery.core.javascript.JsUtils;
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyCloseOnLoadJavascriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionGravity;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -39,7 +39,7 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 	
 	private List<BreadCrumbElement> breadCrumbElements = new ArrayList<BreadCrumbElement>();
 	
-	private boolean contributeJqueryCore = false;
+	private boolean contributeTipsyCloseOnLoad = false;
 	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
@@ -148,15 +148,15 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 	}
 	
 	protected void enableCloseTipsyOnLoad() {
-		contributeJqueryCore = true;
-		add(TipsyHelper.getCloseOnLoadHeaderContributor());
+		contributeTipsyCloseOnLoad = true;
 	}
 	
 	@Override
 	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
-		if (contributeJqueryCore) {
+		if (contributeTipsyCloseOnLoad) {
 			// this needs to be imported via wiquery contribute, else isMinified method can fails at application startup
 			wiQueryResourceManager.addJavaScriptResource(CoreJavaScriptResourceReference.get());
+			wiQueryResourceManager.addJavaScriptResource(TipsyCloseOnLoadJavascriptResourceReference.get());
 		}
 	}
 
