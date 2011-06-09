@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<version>0.5.2</version>
+		<version>0.5.3-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-springmvc</artifactId>
-	<version>0.5.2</version>
+	<version>0.5.3-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>OWSI Core - Example - Spring MVC</name>
