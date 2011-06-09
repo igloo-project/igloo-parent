@@ -32,6 +32,13 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>${owsi-core.poi.version}</version>
+			<exclusions>
+				<!-- xml-apis may result in class loading issues and is provided by modern jre -->
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Test dependencies -->
