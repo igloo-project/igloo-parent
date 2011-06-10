@@ -85,7 +85,7 @@
 		<owsi-core.maven-release-plugin.version>2.1</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.2.1</owsi-core.maven-assembly-plugin.version>
-		<owsi-core.maven-processor-plugin.version>2.0.1</owsi-core.maven-processor-plugin.version>
+		<owsi-core.maven-processor-plugin.version>2.0.2</owsi-core.maven-processor-plugin.version>
 	</properties>
 	
 	<build>
