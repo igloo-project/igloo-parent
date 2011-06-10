@@ -44,6 +44,8 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 	
 	private static final String FORCE_LOG_METHOD = "getPropertyAsString";
 	
+	private static final String GET_PROPERTY_AS_PREFIX = "propertyAs";
+	
 	private String logPattern = "%1$30s : %2$s";
 	
 	private List<String> propertyNamesForInfoLogLevel = new ArrayList<String>();
@@ -58,29 +60,38 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent refresh) {
-		LOGGER.info("Configuration logging");
+		
 		if (refresh.getSource() != null &&
 				refresh.getSource() instanceof AbstractApplicationContext &&
 				((AbstractApplicationContext) refresh.getSource()).getParent() == null) {
+			LOGGER.info("Configuration logging");
+			
 			ApplicationContext context = refresh.getApplicationContext();
 			String[] configurerNames = context.getBeanNamesForType(CoreConfigurer.class);
+			
 			if (configurerNames.length > 0) {
 				String configurerName = configurerNames[0];
 				
+				if (configurerNames.length > 1) {
+					LOGGER.warn(String.format("Multiple %1$s found. We only log the configuration of the first instance.", CoreConfigurer.class.getSimpleName()));
+				}
+				
 				LOGGER.info("Configuration found, start logging");
+				
 				CoreConfigurer configurer = (CoreConfigurer) context.getBean(configurerName);
 				BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(configurer);
 				List<String> loggedProperties = new ArrayList<String>();
 				
+				/* On logge les informations qu'on a configurées dans le contexte Spring */
 				for (String name : propertyNamesForInfoLogLevel) {
 					if (!loggedProperties.contains(name)) {
 						if (wrapper.isReadableProperty(name)) {
 							loggedProperties.add(name);
-							logProperty(wrapper, name);
+							logPropertyAsInfo(wrapper, name);
 						} else {
 							try {
-								forceLogProperty(configurer, name);
 								loggedProperties.add(name);
+								logPropertyStringValueAsInfo(configurer, name);
 							} catch (Exception e) {
 								LOGGER.error(String.format("Error accessing %1$s property", name), e);
 							}
@@ -88,36 +99,37 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 					}
 				}
 				
-				for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
-					String name = descriptor.getName();
-					if (!loggedProperties.contains(name) && wrapper.isReadableProperty(name)
-							&& !descriptor.isHidden() && !name.startsWith("propertyAs")) {
-						loggedProperties.add(name);
-						logProperty(wrapper, name);
+				/* Si jamais on est en mode TRACE, on logge aussi les autres propriétés */
+				if (LOGGER.isTraceEnabled()) {
+					for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
+						String name = descriptor.getName();
+						
+						if (!propertyNamesForInfoLogLevel.contains(name)
+								&& !loggedProperties.contains(name)
+								&& wrapper.isReadableProperty(name)
+								&& !descriptor.isHidden() && !name.startsWith(GET_PROPERTY_AS_PREFIX)) {
+							loggedProperties.add(name);
+							logPropertyAsTrace(wrapper, name);
+						}
 					}
 				}
+			} else {
+				LOGGER.warn(String.format("No %1$s found. Unable to log the configuration.", CoreConfigurer.class.getSimpleName()));
 			}
 			
-			if (configurerNames.length != 1) {
-				LOGGER.warn(String.format("0 or multiple %1$s found. Only first instance is logged", CoreConfigurer.class.getSimpleName()));
-			}
-		}
-		LOGGER.info("Configuration logging end");
-	}
-	
-	private void logProperty(BeanWrapper wrapper, String propertyName) {
-		logProperty(propertyName, wrapper.getPropertyValue(propertyName));
-	}
-	
-	private void logProperty(String propertyName, Object value) {
-		if (propertyNamesForInfoLogLevel.contains(propertyName)) {
-			LOGGER.info(String.format(logPattern, propertyName, value));
-		} else {
-			LOGGER.trace(String.format(logPattern, propertyName, value));
+			LOGGER.info("Configuration logging end");
 		}
 	}
 	
-	private void forceLogProperty(CoreConfigurer configurer, String name)
+	private void logPropertyAsInfo(BeanWrapper wrapper, String propertyName) {
+		logPropertyAsInfo(propertyName, wrapper.getPropertyValue(propertyName));
+	}
+	
+	private void logPropertyAsInfo(String propertyName, Object value) {
+		LOGGER.info(String.format(logPattern, propertyName, value));
+	}
+	
+	private void logPropertyStringValueAsInfo(CoreConfigurer configurer, String name)
 			throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		MethodInvoker invoker = new MethodInvoker();
 		invoker.setTargetObject(configurer);
@@ -126,7 +138,16 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 		Object value;
 		invoker.prepare();
 		value = invoker.invoke();
-		logProperty(name, value);
+		
+		logPropertyAsInfo(name, value);
+	}
+	
+	private void logPropertyAsTrace(BeanWrapper wrapper, String propertyName) {
+		logPropertyAsTrace(propertyName, wrapper.getPropertyValue(propertyName));
+	}
+	
+	private void logPropertyAsTrace(String propertyName, Object value) {
+		LOGGER.trace(String.format(logPattern, propertyName, value));
 	}
 
 }
