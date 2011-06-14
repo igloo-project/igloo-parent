@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
-import fr.openwide.core.wicket.more.util.DatePattern;
+import fr.openwide.core.wicket.more.util.IDatePattern;
 import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter;
 
 public class DateTimeLabel extends Label {
@@ -31,21 +31,21 @@ public class DateTimeLabel extends Label {
 
 	private IConverter converter;
 	
-	private DatePattern datePattern;
+	private IDatePattern datePattern;
 	
 	private boolean forceGmt;
 	
 	/**
 	 * Use forceGmt = true by default.
 	 */
-	public DateTimeLabel(String id, IModel<Date> model, DatePattern dateFormat) {
-		this(id, model, dateFormat, true);
+	public DateTimeLabel(String id, IModel<Date> model, IDatePattern datePattern) {
+		this(id, model, datePattern, true);
 	}
 	
-	public DateTimeLabel(String id, IModel<Date> model, DatePattern dateFormat, boolean forceGmt) {
+	public DateTimeLabel(String id, IModel<Date> model, IDatePattern datePattern, boolean forceGmt) {
 		super(id, model);
 		
-		this.datePattern = dateFormat;
+		this.datePattern = datePattern;
 		this.forceGmt = forceGmt;
 	}
 	

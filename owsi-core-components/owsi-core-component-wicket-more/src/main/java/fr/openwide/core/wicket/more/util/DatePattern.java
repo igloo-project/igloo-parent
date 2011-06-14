@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.util;
 
-public enum DatePattern {
+public enum DatePattern implements IDatePattern {
 	
 	SHORT_DATE("date.format.shortDate", "javascript.date.format.shortDate"),
 	SHORT_DATETIME("date.format.shortDateTime", null),
@@ -19,6 +19,7 @@ public enum DatePattern {
 		this.javascriptPatternKey = javascriptPatternKey;
 	}
 	
+	@Override
 	public String getJavaPatternKey() {
 		if (javaPatternKey != null) {
 			return javaPatternKey;
@@ -27,6 +28,7 @@ public enum DatePattern {
 		}
 	}
 	
+	@Override
 	public String getJavascriptPatternKey() {
 		if (javascriptPatternKey != null) {
 			return javascriptPatternKey;
