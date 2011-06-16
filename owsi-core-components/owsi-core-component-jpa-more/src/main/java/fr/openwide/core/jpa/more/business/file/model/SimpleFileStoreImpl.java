@@ -72,7 +72,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 	protected void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException {
 		try {
 			String filePath = getFilePath(fileKey, extension);
-			String dirPath = FilenameUtils.getPathNoEndSeparator(filePath);
+			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
 			if (StringUtils.hasLength(dirPath)) {
 				File dir = new File(dirPath);
 				if (!dir.isDirectory()) {
