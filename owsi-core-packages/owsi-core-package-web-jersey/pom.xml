@@ -83,6 +83,12 @@
 			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${owsi-core.jackson.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<repositories>
