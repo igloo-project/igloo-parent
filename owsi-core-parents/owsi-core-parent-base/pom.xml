@@ -68,6 +68,7 @@
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		
 		<owsi-core.junit.version>4.8.2</owsi-core.junit.version>
+		<owsi-core.grizzly.version>1.9.36</owsi-core.grizzly.version>
 		
 		<owsi-core.jersey.version>1.7</owsi-core.jersey.version>
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
@@ -87,6 +88,7 @@
 		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.2.1</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-processor-plugin.version>2.0.2</owsi-core.maven-processor-plugin.version>
+		<owsi-core.maven-jar-plugin.version>2.3.1</owsi-core.maven-jar-plugin.version>
 	</properties>
 	
 	<build>
