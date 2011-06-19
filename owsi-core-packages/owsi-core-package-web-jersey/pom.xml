@@ -84,8 +84,38 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>${owsi-core.jersey.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-core-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-mapper-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-xc</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-jaxrs</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
+			<version>${owsi-core.jackson.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
 			<version>${owsi-core.jackson.version}</version>
 		</dependency>
 		
