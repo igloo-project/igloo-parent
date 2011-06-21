@@ -116,13 +116,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	
 	@Override
 	public <T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders) {
-		List<T> entities = super.listEntity(objectClass, filter, limit, offset, orders);
-		
-		if(orders == null || orders.length == 0) {
-			sort(entities);
-		}
-		
-		return entities;
+		return super.listEntity(objectClass, filter, limit, offset, orders);
 	}
 	
 	@Override

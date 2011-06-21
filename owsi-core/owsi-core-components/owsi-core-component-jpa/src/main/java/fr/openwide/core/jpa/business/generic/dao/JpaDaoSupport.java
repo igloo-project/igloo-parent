@@ -105,14 +105,14 @@ public class JpaDaoSupport {
 		if (filter != null) {
 			filterCriteriaQuery(criteria, filter);
 		}
-		if (orders != null) {
+		if (orders != null && orders.length > 0) {
 			criteria.orderBy(orders);
 		}
 		TypedQuery<T> query = buildTypedQuery(criteria, limit, offset);
 		
 		List<T> entities = query.getResultList();
 		
-		if (orders == null) {
+		if (orders == null || orders.length == 0) {
 			sort(entities);
 		}
 		
@@ -125,10 +125,6 @@ public class JpaDaoSupport {
 	
 	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter) {
 		return listEntity(objectClass, filter, null, null);
-	}
-	
-	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset) {
-		return listEntity(objectClass, filter, limit, offset, new Order[] {});
 	}
 	
 	protected <T, V> List<T> listEntityByField(Class<T> objectClass, SingularAttribute<? super T, V> attribute, V fieldValue) {
