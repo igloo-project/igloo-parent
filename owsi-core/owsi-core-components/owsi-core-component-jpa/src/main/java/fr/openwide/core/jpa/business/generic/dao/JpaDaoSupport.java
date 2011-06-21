@@ -1,6 +1,8 @@
 package fr.openwide.core.jpa.business.generic.dao;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -94,38 +96,53 @@ public class JpaDaoSupport {
 		getEntityManager().flush();
 	}
 	
-	protected <T> List<T> listEntity(Class<T> clazz) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> criteria = builder.createQuery(clazz);
-		rootCriteriaQuery(builder, criteria, clazz);
-		return getEntityManager().createQuery(criteria).getResultList();
-	}
-	
-	protected <T, V> List<T> listEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> criteria = builder.createQuery(clazz);
-		
-		Root<T> root = rootCriteriaQuery(builder, criteria, clazz);
-		criteria.where(builder.equal(root.get(attribute), fieldValue));
-		
-		return buildTypedQuery(criteria, null, null).getResultList();
-	}
-	
+	// TODO : à refaire : il n'est pas possible de construire un filter ou un order stateless
 	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(objectClass);
 		rootCriteriaQuery(builder, criteria, objectClass);
-		filterCriteriaQuery(criteria, filter);
-		criteria.orderBy(orders);
+		
+		if (filter != null) {
+			filterCriteriaQuery(criteria, filter);
+		}
+		if (orders != null) {
+			criteria.orderBy(orders);
+		}
 		TypedQuery<T> query = buildTypedQuery(criteria, limit, offset);
 		
 		List<T> entities = query.getResultList();
 		
+		if (orders == null) {
+			sort(entities);
+		}
+		
 		return entities;
+	}
+	
+	protected <T> List<T> listEntity(Class<T> objectClass) {
+		return listEntity(objectClass, null, null, null);
+	}
+	
+	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter) {
+		return listEntity(objectClass, filter, null, null);
 	}
 	
 	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset) {
 		return listEntity(objectClass, filter, limit, offset, new Order[] {});
+	}
+	
+	protected <T, V> List<T> listEntityByField(Class<T> objectClass, SingularAttribute<? super T, V> attribute, V fieldValue) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(objectClass);
+		
+		Root<T> root = rootCriteriaQuery(builder, criteria, objectClass);
+		criteria.where(builder.equal(root.get(attribute), fieldValue));
+		
+		List<T> entities = buildTypedQuery(criteria, null, null).getResultList();
+		
+		sort(entities);
+		
+		return entities;
 	}
 	
 	protected <T> Long countEntity(Class<T> clazz) {
@@ -181,6 +198,17 @@ public class JpaDaoSupport {
 	
 	protected EntityManager getEntityManager() {
 		return entityManager;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> void sort(List<T> entities) {
+		Object[] a = entities.toArray();
+		Arrays.sort(a);
+		ListIterator<T> i = entities.listIterator();
+		for (int j = 0; j < a.length; j++) {
+			i.next();
+			i.set((T) a[j]);
+		}
 	}
 
 }
