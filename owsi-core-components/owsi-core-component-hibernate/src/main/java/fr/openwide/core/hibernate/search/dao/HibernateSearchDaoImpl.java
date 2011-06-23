@@ -122,11 +122,15 @@ public class HibernateSearchDaoImpl extends HibernateDaoSupport implements Hiber
 		try {
 			FullTextSession fullTextSession = Search.getFullTextSession(getSession());
 			
+			int batchSize = configurer.getHibernateSearchReindexBatchSize();
+			int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
+			int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
+			
 			for (Class<?> clazz : getIndexedRootEntities(fullTextSession.getSearchFactory(), Object.class)) {
 				fullTextSession.createIndexer(clazz)
-						.batchSizeToLoadObjects(configurer.getHibernateSearchReindexBatchSize())
-						.threadsForSubsequentFetching(configurer.getHibernateSearchReindexFetchingThreads())
-						.threadsToLoadObjects(configurer.getHibernateSearchReindexLoadThreads())
+						.batchSizeToLoadObjects(batchSize)
+						.threadsForSubsequentFetching(fetchingThreads)
+						.threadsToLoadObjects(loadThreads)
 						.cacheMode(CacheMode.NORMAL)
 						.startAndWait();
 			}
