@@ -2,7 +2,9 @@ package fr.openwide.core.jpa.search.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,9 +18,14 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
+import org.hibernate.search.SearchFactory;
+import org.hibernate.search.engine.SearchFactoryImplementor;
+import org.hibernate.search.impl.MassIndexerImpl;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -28,6 +35,8 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateSearchDaoImpl.class);
 	
 	@Autowired
 	private CoreConfigurer configurer;
@@ -115,14 +124,70 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		try {
 			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 			
-			fullTextEntityManager.createIndexer()
-					.batchSizeToLoadObjects(configurer.getHibernateSearchReindexBatchSize())
-					.threadsForSubsequentFetching(configurer.getHibernateSearchReindexFetchingThreads())
-					.threadsToLoadObjects(configurer.getHibernateSearchReindexLoadThreads())
-					.cacheMode(CacheMode.NORMAL)
-					.startAndWait();
+			int batchSize = configurer.getHibernateSearchReindexBatchSize();
+			int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
+			int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
+			
+			for (Class<?> clazz : getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), Object.class)) {
+				fullTextEntityManager.createIndexer(clazz)
+						.batchSizeToLoadObjects(batchSize)
+						.threadsForSubsequentFetching(fetchingThreads)
+						.threadsToLoadObjects(loadThreads)
+						.cacheMode(CacheMode.NORMAL)
+						.startAndWait();
+			}
 		} catch (Exception e) {
 			throw new ServiceException(e);
+		}
+	}
+	
+	/**
+	 * @see MassIndexerImpl#toRootEntities
+	 */
+	protected Set<Class<?>> getIndexedRootEntities(SearchFactory searchFactory, Class<?>... selection) {
+		if (searchFactory instanceof SearchFactoryImplementor) {
+			SearchFactoryImplementor searchFactoryImplementor = (SearchFactoryImplementor) searchFactory;
+			
+			Set<Class<?>> entities = new HashSet<Class<?>>();
+			
+			// first build the "entities" set containing all indexed subtypes of "selection".
+			for (Class<?> entityType : selection) {
+				Set<Class<?>> targetedClasses = searchFactoryImplementor.getIndexedTypesPolymorphic(new Class[] { entityType });
+				if (targetedClasses.isEmpty()) {
+					String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
+					throw new IllegalArgumentException(msg);
+				}
+				entities.addAll(targetedClasses);
+			}
+			
+			Set<Class<?>> cleaned = new HashSet<Class<?>>();
+			Set<Class<?>> toRemove = new HashSet<Class<?>>();
+			
+			//now remove all repeated types to avoid duplicate loading by polymorphic query loading
+			for (Class<?> type : entities) {
+				boolean typeIsOk = true;
+				for (Class<?> existing : cleaned) {
+					if (existing.isAssignableFrom(type)) {
+						typeIsOk = false;
+						break;
+					}
+					if (type.isAssignableFrom(existing)) {
+						toRemove.add(existing);
+					}
+				}
+				if (typeIsOk) {
+					cleaned.add(type);
+				}
+			}
+			cleaned.removeAll(toRemove);
+			
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("Targets for indexing job: {}", cleaned);
+			}
+	
+			return cleaned;
+		} else {
+			throw new IllegalArgumentException("searchFactory should be a SearchFactoryImplementor");
 		}
 	}
 	
