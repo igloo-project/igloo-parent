@@ -47,7 +47,18 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 				scopeContext.append(new JsQuery(getAutocompleteField()).$().chain("trigger", "'blur'").render());
 			}
 		};
-		return new JsStatement().$(cleanLink).chain("bind", "'click'", jsScope.render());
+		JsStatement jsStatement = new JsStatement().$(cleanLink).chain("bind", "'click'", jsScope.render());
+		JsScope clearHiddenField = JsScope.quickScope(new JsStatement()
+			.append("if (")
+			.append(new JsStatement().$(getAutocompleteField()).chain("val").render(false))
+			.append(" == '') { ") // si le champ autocomplete est vide
+			.append(new JsStatement().$(getAutocompleteHidden()).chain("val", "''").render(true)) // alors on vide le champ identifiant
+			.append(" }"));
+		
+		// sur les modifications du champ autocomplete, on vérifie si le champ est vide de manière à vider aussi le champ
+		// caché
+		jsStatement.append(";").$(getAutocompleteField()).chain("bind", "'change'", clearHiddenField.render());
+		return jsStatement;
 	}
 
 	@Override
