@@ -72,12 +72,18 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 
 	private File getImageMagickConvertBinary(File imageMagickConvertBinaryCandidate) {
 		if (imageMagickConvertBinaryCandidate == null) {
-			LOGGER.warn("ImageMagick's convert is not configured. Using Java to scale images.");
+			LOGGER.warn("ImageMagick's convert binary is not configured. Using Java to scale images.");
 			return null;
 		}
 		
 		if (!imageMagickConvertBinaryCandidate.exists()) {
 			LOGGER.warn("ImageMagick's convert binary {} does not exist. Using Java to scale images.",
+					imageMagickConvertBinaryCandidate.getAbsolutePath());
+			return null;
+		}
+		
+		if (!imageMagickConvertBinaryCandidate.isFile()) {
+			LOGGER.warn("ImageMagick's convert binary {} is not a file. Using Java to scale images.",
 					imageMagickConvertBinaryCandidate.getAbsolutePath());
 			return null;
 		}
