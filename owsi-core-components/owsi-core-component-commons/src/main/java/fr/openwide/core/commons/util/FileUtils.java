@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.NameFileFilter;
 
+import de.schlichtherle.truezip.file.TFile;
+
 public final class FileUtils {
 	
 	public static File getFile(File directory, String name) {
@@ -29,9 +31,7 @@ public final class FileUtils {
 			if (filesPaths != null) {
 				Arrays.sort(filesPaths);
 				for (int i = 0; i < filesPaths.length; i++) {
-					de.schlichtherle.io.File file =
-						new de.schlichtherle.io.File(FilenameUtils.concat(directory.getAbsolutePath(),
-								filesPaths[i]));
+					TFile file = new TFile(FilenameUtils.concat(directory.getAbsolutePath(), filesPaths[i]));
 					if (file.canRead()) {
 						files.add(file);
 					}
