@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>owsi-core-dependencies</artifactId>
 		<groupId>fr.openwide.core.dependencies</groupId>
-		<version>0.5.3</version>
+		<version>0.5.4-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.dependencies</groupId>
 	<artifactId>owsi-core-dependency-core-logging</artifactId>
-	<version>0.5.3</version>
+	<version>0.5.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Dependency - Core - Logging</name>
