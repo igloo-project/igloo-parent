@@ -42,6 +42,18 @@
 			<groupId>org.odlabs.wiquery</groupId>
 			<artifactId>wiquery</artifactId>
 			<version>${owsi-core.wiquery.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.jackson</groupId>
+					<artifactId>jackson-mapper-asl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${owsi-core.jackson.version}</version>
 		</dependency>
 		
 		<!--
