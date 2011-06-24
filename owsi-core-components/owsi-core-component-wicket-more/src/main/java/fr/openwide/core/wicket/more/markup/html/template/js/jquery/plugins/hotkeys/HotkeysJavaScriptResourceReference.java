@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.hotkeys;
 
-import org.odlabs.wiquery.core.commons.compressed.WiQueryYUICompressedJavaScriptResourceReference;
+import org.odlabs.wiquery.core.commons.WiQueryJavaScriptResourceReference;
 
-public final class HotkeysJavaScriptResourceReference extends
-WiQueryYUICompressedJavaScriptResourceReference {
+
+public final class HotkeysJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = -4561149170895375399L;
 	
 	private static final HotkeysJavaScriptResourceReference INSTANCE = new HotkeysJavaScriptResourceReference();

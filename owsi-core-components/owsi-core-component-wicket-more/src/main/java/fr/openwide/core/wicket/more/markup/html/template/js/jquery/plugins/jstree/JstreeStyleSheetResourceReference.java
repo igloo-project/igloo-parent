@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.jstree;
 
-import org.odlabs.wiquery.core.commons.compressed.WiQueryYUICompressedStyleSheetResourceReference;
+import org.odlabs.wiquery.core.commons.WiQueryStyleSheetResourceReference;
 
-public class JstreeStyleSheetResourceReference extends WiQueryYUICompressedStyleSheetResourceReference {
+public class JstreeStyleSheetResourceReference extends WiQueryStyleSheetResourceReference {
 	private static final long serialVersionUID = 1762476460042247594L;
 	
 	private static final JstreeStyleSheetResourceReference INSTANCE = new JstreeStyleSheetResourceReference();

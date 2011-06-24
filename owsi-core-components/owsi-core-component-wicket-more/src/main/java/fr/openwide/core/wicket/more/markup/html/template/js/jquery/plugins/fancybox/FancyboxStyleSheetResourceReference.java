@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
-import org.odlabs.wiquery.core.commons.compressed.WiQueryYUICompressedStyleSheetResourceReference;
+import org.odlabs.wiquery.core.commons.WiQueryStyleSheetResourceReference;
 
 public class FancyboxStyleSheetResourceReference extends
-		WiQueryYUICompressedStyleSheetResourceReference {
+		WiQueryStyleSheetResourceReference {
 	private static final long serialVersionUID = -9209473494619975852L;
 	
 	private static final FancyboxStyleSheetResourceReference INSTANCE = new FancyboxStyleSheetResourceReference();
