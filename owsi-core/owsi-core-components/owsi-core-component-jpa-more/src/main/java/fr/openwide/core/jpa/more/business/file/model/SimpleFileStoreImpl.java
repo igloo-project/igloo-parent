@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.more.business.file.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -12,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import de.schlichtherle.io.FileOutputStream;
+import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
@@ -46,11 +47,11 @@ public class SimpleFileStoreImpl implements IFileStore {
 	
 	@Override
 	public void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
-		de.schlichtherle.io.FileInputStream fileInputStream = null;
+		TFileInputStream fileInputStream = null;
 		try {
 			// Attention le fichier peut être contenu dans un zip d'où cette
 			// manipulation spécifique.
-			fileInputStream = new de.schlichtherle.io.FileInputStream(file);
+			fileInputStream = new TFileInputStream(file);
 			addFile(fileInputStream, fileKey, extension);
 		} catch (Exception e) {
 			if (!(e instanceof ServiceException)) {

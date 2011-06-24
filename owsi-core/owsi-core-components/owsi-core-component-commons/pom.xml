@@ -55,8 +55,26 @@
 		<!-- TrueZIP -->
 		
 		<dependency>
-			<groupId>de.schlichtherle</groupId>
-			<artifactId>truezip</artifactId>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-file</artifactId>
+			<version>${owsi-core.truezip.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-driver-file</artifactId>
+			<version>${owsi-core.truezip.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-driver-tar</artifactId>
+			<version>${owsi-core.truezip.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-driver-zip</artifactId>
 			<version>${owsi-core.truezip.version}</version>
 		</dependency>
 		

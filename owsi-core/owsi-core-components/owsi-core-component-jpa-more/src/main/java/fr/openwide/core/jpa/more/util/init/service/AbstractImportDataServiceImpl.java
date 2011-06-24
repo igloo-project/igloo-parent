@@ -24,7 +24,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.core.convert.support.ConversionServiceFactory;
 import org.springframework.core.convert.support.GenericConversionService;
 
-import de.schlichtherle.io.FileInputStream;
+import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.commons.util.FileUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -75,10 +75,10 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping = new HashMap<String, Map<Integer, GenericEntity<Integer, ?>>>();
 		
-		Workbook genericListItemWorkbook = new HSSFWorkbook(new FileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
+		Workbook genericListItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
 		importGenericListItems(idsMapping, genericListItemWorkbook);
 		
-		Workbook businessItemWorkbook = new HSSFWorkbook(new FileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
+		Workbook businessItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
 		
 		hibernateSearchService.reindexAll();
