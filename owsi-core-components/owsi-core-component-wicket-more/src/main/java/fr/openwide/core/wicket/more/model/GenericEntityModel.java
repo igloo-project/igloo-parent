@@ -22,6 +22,7 @@ import java.io.Serializable;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.Hibernate;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
 import fr.openwide.core.hibernate.business.generic.service.EntityService;
@@ -43,7 +44,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		InjectorHolder.getInjector().inject(this);
 		
 		if (entity != null) {
-			clazz = (Class<E>) entity.getClass();
+			clazz = (Class<E>) Hibernate.getClass(entity);
 			id = entity.getId();
 		}
 	}
@@ -61,7 +62,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@Override
 	public void setObject(E entity) {
 		if (entity != null) {
-			clazz = (Class<E>) entity.getClass();
+			clazz = (Class<E>) Hibernate.getClass(entity);
 			id = entity.getId();
 		} else {
 			id = null;
