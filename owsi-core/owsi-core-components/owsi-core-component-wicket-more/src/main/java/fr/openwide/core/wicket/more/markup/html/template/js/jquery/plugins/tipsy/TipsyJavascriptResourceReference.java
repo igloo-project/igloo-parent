@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy;
 
-import org.odlabs.wiquery.core.commons.compressed.WiQueryYUICompressedJavaScriptResourceReference;
+import org.odlabs.wiquery.core.commons.WiQueryJavaScriptResourceReference;
 
 public final class TipsyJavascriptResourceReference extends
-		WiQueryYUICompressedJavaScriptResourceReference {
+		WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = 304303778975104796L;
 	
 	private static final TipsyJavascriptResourceReference INSTANCE = new TipsyJavascriptResourceReference();

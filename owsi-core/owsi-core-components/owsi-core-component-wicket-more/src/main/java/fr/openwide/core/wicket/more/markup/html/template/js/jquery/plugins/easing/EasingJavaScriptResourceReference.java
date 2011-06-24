@@ -1,8 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing;
 
-import org.odlabs.wiquery.core.commons.compressed.WiQueryYUICompressedJavaScriptResourceReference;
+import org.odlabs.wiquery.core.commons.WiQueryJavaScriptResourceReference;
 
-public final class EasingJavaScriptResourceReference extends WiQueryYUICompressedJavaScriptResourceReference {
+
+public final class EasingJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = -7107928462642160157L;
 	
 	private static final EasingJavaScriptResourceReference INSTANCE = new EasingJavaScriptResourceReference();

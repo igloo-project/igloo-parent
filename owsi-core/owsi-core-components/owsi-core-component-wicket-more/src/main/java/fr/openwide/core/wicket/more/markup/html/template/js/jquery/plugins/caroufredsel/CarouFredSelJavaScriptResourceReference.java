@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel;
 
-import org.odlabs.wiquery.core.commons.compressed.WiQueryYUICompressedJavaScriptResourceReference;
+import org.odlabs.wiquery.core.commons.WiQueryJavaScriptResourceReference;
 
 public class CarouFredSelJavaScriptResourceReference extends
-		WiQueryYUICompressedJavaScriptResourceReference {
+		WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = 4911695054626514694L;
 
 	private static final CarouFredSelJavaScriptResourceReference INSTANCE = new CarouFredSelJavaScriptResourceReference();
