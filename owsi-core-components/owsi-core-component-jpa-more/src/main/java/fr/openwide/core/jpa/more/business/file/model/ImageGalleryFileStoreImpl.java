@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -50,7 +51,16 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	@Override
 	public void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		super.addFile(file, fileKey, extension);
-		
+		generateThumbnails(fileKey, extension);
+	}
+	
+	@Override
+	public void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+		super.addFile(inputStream, fileKey, extension);
+		generateThumbnails(fileKey, extension);
+	}
+	
+	protected void generateThumbnails(String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		for (ImageThumbnailFormat thumbnailFormat : thumbnailFormats) {
 			if (isImageMagickConvertAvailable()) {
 				generateThumbnailWithImageMagickConvert(getFile(fileKey, extension), fileKey, extension, thumbnailFormat);
@@ -58,6 +68,7 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 				generateThumbnailWithJava(getFile(fileKey, extension), fileKey, extension, thumbnailFormat);
 			}
 		}
+		
 	}
 	
 	@Override

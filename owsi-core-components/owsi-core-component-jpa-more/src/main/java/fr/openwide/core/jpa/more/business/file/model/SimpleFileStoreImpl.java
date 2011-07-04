@@ -70,7 +70,8 @@ public class SimpleFileStoreImpl implements IFileStore {
 		}
 	}
 	
-	protected void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException {
+	@Override
+	public void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		try {
 			String filePath = getFilePath(fileKey, extension);
 			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
