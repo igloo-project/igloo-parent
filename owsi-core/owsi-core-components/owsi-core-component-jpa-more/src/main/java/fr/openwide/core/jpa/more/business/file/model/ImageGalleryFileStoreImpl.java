@@ -152,7 +152,10 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	private void generateThumbnailWithJava(File file, String fileKey, String extension, ImageThumbnailFormat thumbnailFormat)
 			throws ServiceException, SecurityServiceException {
 		try {
-			BufferedImage originalImage = ImageIO.read(getFile(fileKey, extension));
+			BufferedImage originalImage = ImageIO.read(file);
+			if (originalImage == null) {
+				throw new ServiceException("Image cannot be read.");
+			}
 			int type = (originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType());
 			
 			int originalImageWidth = originalImage.getWidth();
@@ -190,10 +193,12 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 					ImageWriter writer = imageWritersIterator.next();
 					
 					ImageWriteParam iwp = writer.getDefaultWriteParam();
-	
-					iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-					iwp.setCompressionQuality(thumbnailFormat.getQuality() / 100f);
-	
+					
+					if (iwp.canWriteCompressed()) {
+						iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+						iwp.setCompressionQuality(thumbnailFormat.getQuality() / 100f);
+					}
+					
 					outputStream = new FileImageOutputStream(getThumbnailFile(fileKey, extension, thumbnailFormat));
 					writer.setOutput(outputStream);
 					IIOImage image = new IIOImage(resizedImage, null, null);
