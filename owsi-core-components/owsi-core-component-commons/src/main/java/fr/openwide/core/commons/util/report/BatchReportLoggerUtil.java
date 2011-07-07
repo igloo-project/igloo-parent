@@ -21,19 +21,17 @@ public final class BatchReportLoggerUtil {
 			try {
 				MDC.put(MDC_CONTEXT_KEY, entry.getKey());
 				for (BatchReportItem reportItem : entry.getValue()) {
-					if (BatchReportItemSeverity.NOTICE.equals(reportItem
-							.getSeverity())
-							|| BatchReportItemSeverity.SUCCESS.equals(reportItem
-									.getSeverity())) {
+					if (BatchReportItemSeverity.INFO.equals(reportItem.getSeverity())) {
 						logger.info(reportItem.getMessage());
-					} else if (BatchReportItemSeverity.WARNING.equals(reportItem
-							.getSeverity())) {
+					} else if (BatchReportItemSeverity.DEBUG.equals(reportItem.getSeverity())) {
+						logger.debug(reportItem.getMessage());
+					} else if (BatchReportItemSeverity.TRACE.equals(reportItem.getSeverity())) {
+						logger.trace(reportItem.getMessage());
+					} else if (BatchReportItemSeverity.WARN.equals(reportItem.getSeverity())) {
 						logger.warn(reportItem.getMessage());
-					} else if (BatchReportItemSeverity.ERROR.equals(reportItem
-							.getSeverity())) {
+					} else if (BatchReportItemSeverity.ERROR.equals(reportItem.getSeverity())) {
 						if (reportItem.getException() != null) {
-							logger.error(reportItem.getMessage(),
-									reportItem.getException());
+							logger.error(reportItem.getMessage(), reportItem.getException());
 						} else {
 							logger.error(reportItem.getMessage());
 						}
