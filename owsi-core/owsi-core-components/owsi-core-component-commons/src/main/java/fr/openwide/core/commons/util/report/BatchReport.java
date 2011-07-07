@@ -31,23 +31,27 @@ public class BatchReport {
 		return context;
 	}
 
-	public void addSuccess(String message) {
-		addItem(BatchReportItemSeverity.SUCCESS, message);
+	public void info(String message) {
+		addItem(BatchReportItemSeverity.INFO, message);
 	}
 
-	public void addNotice(String message) {
-		addItem(BatchReportItemSeverity.NOTICE, message);
+	public void debug(String message) {
+		addItem(BatchReportItemSeverity.DEBUG, message);
+	}
+	
+	public void trace(String message) {
+		addItem(BatchReportItemSeverity.TRACE, message);
 	}
 
-	public void addWarning(String message) {
-		addItem(BatchReportItemSeverity.WARNING, message);
+	public void warn(String message) {
+		addItem(BatchReportItemSeverity.WARN, message);
 	}
 
-	public void addError(String message) {
-		addError(message, null);
+	public void error(String message) {
+		error(message, null);
 	}
 
-	public void addError(String message, Exception e) {
+	public void error(String message, Exception e) {
 		setOnError(true);
 		addItem(BatchReportItemSeverity.ERROR, message, e);
 	}
