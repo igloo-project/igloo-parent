@@ -37,13 +37,6 @@
 			<version>${owsi-core.postgresql.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<version>${owsi-core.ehcache.version}</version>
-			<type>pom</type>
-		</dependency>
-
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
