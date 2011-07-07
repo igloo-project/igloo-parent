@@ -81,6 +81,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		Workbook businessItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
 		
+		importFiles(directory, idsMapping);
+		
 		hibernateSearchService.reindexAll();
 		
 		parameterService.setDatabaseInitialized(true);
@@ -102,6 +104,10 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	}
 	
 	protected abstract void importMainBusinessItems(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping, Workbook workbook);
+	
+	protected void importFiles(File directory, Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping) {
+		// nothing, override if necessary
+	}
 	
 	protected <E extends GenericEntity<Integer, ?>> void doImportItem(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping,
 				Workbook workbook, Class<E> clazz) {
