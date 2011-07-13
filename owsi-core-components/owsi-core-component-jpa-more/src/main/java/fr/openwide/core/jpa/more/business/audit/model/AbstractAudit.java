@@ -85,7 +85,6 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Nom de l'objet contexte.
 	 */
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String contextDisplayName;
 
 	/**
@@ -104,7 +103,6 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Nom et prénom du sujet ayant effectué l'action.
 	 */
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String subjectDisplayName;
 
 	/**
@@ -123,7 +121,6 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Nom de l'objet.
 	 */
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String objectDisplayName;
 
 	/**
@@ -142,7 +139,6 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Nom de l'objet secondaire.
 	 */
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String secondaryObjectDisplayName;
 
 	/**
