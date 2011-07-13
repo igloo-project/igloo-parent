@@ -30,6 +30,10 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 public abstract class AbstractAuditFeature extends GenericListItem<AbstractAuditFeature> {
 	private static final long serialVersionUID = -188108294900406595L;
 	
+	protected AbstractAuditFeature() {
+		super();
+	}
+	
 	public AbstractAuditFeature(String label, Integer position) {
 		super(label, position);
 	}
