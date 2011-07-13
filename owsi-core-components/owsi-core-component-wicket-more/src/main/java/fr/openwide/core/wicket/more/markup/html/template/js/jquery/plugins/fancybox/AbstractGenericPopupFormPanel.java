@@ -32,7 +32,7 @@ public abstract class AbstractGenericPopupFormPanel<T> extends GenericPanel<T> i
 		
 		itemForm = new Form<T>("itemForm", model);
 		
-		AjaxButton submitButton = new AjaxButton("submitButton") {
+		AjaxButton submitButton = new AjaxButton("submitButton", itemForm) {
 			
 			private static final long serialVersionUID = -3721476446722988109L;
 
