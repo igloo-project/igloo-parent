@@ -25,10 +25,17 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.bridge.builtin.IntegerNumericFieldBridge;
+
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditAction;
 import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditFeature;
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 /**
  * <p>
@@ -38,8 +45,9 @@ import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditFeature;
  */
 @MappedSuperclass
 public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit> {
-
 	private static final long serialVersionUID = 8453330231866625186L;
+
+	public static final String SERVICE_SORT_FIELD_NAME = "service_sort";
 
 	/**
 	 * Identifiant technique.
@@ -52,6 +60,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	 * Service source de l'Audit.
 	 */
 	@Basic(optional = false)
+	@Field(name = SERVICE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	private String service;
 
 	/**
@@ -63,61 +72,77 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Classe de l'objet contexte.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String contextClass;
 
 	/**
 	 * Identifiant de l'objet contexte.
 	 */
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer contextId;
 
 	/**
 	 * Nom de l'objet contexte.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String contextDisplayName;
 
 	/**
 	 * Classe du sujet ayant effectué l'action.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String subjectClass;
 
 	/**
 	 * Identifiant du sujet ayant effectué l'action.
 	 */
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer subjectId;
 
 	/**
 	 * Nom et prénom du sujet ayant effectué l'action.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String subjectDisplayName;
 
 	/**
 	 * Classe de l'objet.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String objectClass;
 
 	/**
 	 * Identifiant de l'objet.
 	 */
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer objectId;
 
 	/**
 	 * Nom de l'objet.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String objectDisplayName;
 
 	/**
 	 * Classe de l'objet secondaire.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String secondaryObjectClass;
 
 	/**
 	 * Identifiant de l'objet secondaire.
 	 */
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer secondaryObjectId;
 
 	/**
 	 * Nom de l'objet secondaire.
 	 */
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String secondaryObjectDisplayName;
 
 	/**
@@ -131,6 +156,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	 * Date et heure de création.
 	 */
 	@Basic(optional = false)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private Date date;
 
 	public AbstractAudit() {
