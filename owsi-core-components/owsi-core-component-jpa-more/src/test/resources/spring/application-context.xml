@@ -29,6 +29,7 @@
 		<property name="packagesToScan">
 			<list>
 				<value>fr.openwide.core.test.jpa.more.business.*.model</value>
+				<value>fr.openwide.core.jpa</value>
 			</list>
 		</property>
 	</bean>
@@ -57,6 +58,7 @@
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
 			</props>
 		</property>
+		<property name="persistenceUnitPostProcessors" ref="additionalPackagesPersistenceUnitPostProcessor" />
 	</bean>
 	
 	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
