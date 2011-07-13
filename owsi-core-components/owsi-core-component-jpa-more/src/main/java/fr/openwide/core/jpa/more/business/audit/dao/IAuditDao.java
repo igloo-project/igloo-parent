@@ -43,7 +43,7 @@ public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<In
 	 * @param subject utilisateur ayant émis les Audits
 	 * @return liste des Audits correspondants
 	 */
-	List<AbstractAudit> listBySubject(GenericEntity<?, ?> subject);
+	List<T> listBySubject(GenericEntity<?, ?> subject);
 
 	/**
 	 * Renvoie la liste des Audits dont le contexte ou l'objet concernent
@@ -53,7 +53,7 @@ public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<In
 	 *            entité concernée par les Audits
 	 * @return liste des Audits correspondants
 	 */
-	List<AbstractAudit> listByContextOrObject(GenericEntity<?, ?> entity);
+	List<T> listByContextOrObject(GenericEntity<?, ?> entity);
 
 
 	/**
@@ -63,6 +63,6 @@ public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<In
 	 * @param daysToKeep nombre de jours de conservation
 	 * @return liste des lignes qu'on va supprimer
 	 */
-	List<AbstractAudit> listToDelete(Integer daysToKeep);
+	List<T> listToDelete(Integer daysToKeep);
 
 }

@@ -49,7 +49,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GenericEntity<?, ?> getContextEntity(AbstractAudit audit) {
+	public GenericEntity<?, ?> getContextEntity(T audit) {
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit.getContextClass());
 			return auditDao.getGenericEntity(clazz, audit.getContextId());
@@ -59,7 +59,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	}
 
 	@Override
-	public String getContextDisplayName(AbstractAudit audit) {
+	public String getContextDisplayName(T audit) {
 		String displayName = audit.getContextDisplayName();
 		if (displayName != null) {
 			GenericEntity<?, ?> context = getContextEntity(audit);
@@ -72,7 +72,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GenericEntity<?, ?> getSubjectEntity(AbstractAudit audit) {
+	public GenericEntity<?, ?> getSubjectEntity(T audit) {
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit.getSubjectClass());
 			return auditDao.getGenericEntity(clazz, audit.getSubjectId());
@@ -82,7 +82,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	}
 
 	@Override
-	public String getSubjectDisplayName(AbstractAudit audit) {
+	public String getSubjectDisplayName(T audit) {
 		String displayName = audit.getSubjectDisplayName();
 		if (displayName != null) {
 			GenericEntity<?, ?> subject = getSubjectEntity(audit);
@@ -95,7 +95,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GenericEntity<?, ?> getObjectEntity(AbstractAudit audit) {
+	public GenericEntity<?, ?> getObjectEntity(T audit) {
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit.getObjectClass());
 			return auditDao.getGenericEntity(clazz, audit.getObjectId());
@@ -105,7 +105,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	}
 
 	@Override
-	public String getObjectDisplayName(AbstractAudit audit) {
+	public String getObjectDisplayName(T audit) {
 		String displayName = audit.getObjectDisplayName();
 		if (displayName != null) {
 			GenericEntity<?, ?> object = getObjectEntity(audit);
@@ -118,7 +118,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GenericEntity<?, ?> getSecondaryObjectEntity(AbstractAudit audit) {
+	public GenericEntity<?, ?> getSecondaryObjectEntity(T audit) {
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit
 					.getSecondaryObjectClass());
@@ -129,7 +129,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	}
 
 	@Override
-	public String getSecondaryObjectDisplayName(AbstractAudit audit) {
+	public String getSecondaryObjectDisplayName(T audit) {
 		String displayName = audit.getSecondaryObjectDisplayName();
 		if (displayName != null) {
 			GenericEntity<?, ?> secondaryObject = getSecondaryObjectEntity(audit);
@@ -141,12 +141,12 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	}
 
 	@Override
-	public List<AbstractAudit> listByContextOrObject(GenericEntity<?, ?> entity) {
+	public List<T> listByContextOrObject(GenericEntity<?, ?> entity) {
 		return auditDao.listByContextOrObject(entity);
 	}
 
 	@Override
-	public List<AbstractAudit> listBySubject(GenericEntity<?, ?> subject) {
+	public List<T> listBySubject(GenericEntity<?, ?> subject) {
 		return auditDao.listBySubject(subject);
 	}
 
@@ -158,7 +158,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 //	}
 
 	@Override
-	public List<AbstractAudit> listAuditsASupprimer(Integer daysToKeep) {
+	public List<T> listToDelete(Integer daysToKeep) {
 		return auditDao.listToDelete(daysToKeep);
 	}
 }

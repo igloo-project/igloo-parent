@@ -17,19 +17,16 @@
 package fr.openwide.core.jpa.more.business.audit.dao;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
 import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit_;
-import fr.openwide.core.spring.util.StringUtils;
 
 /**
  * <p>
@@ -53,10 +50,10 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	}
 
 	@Override
-	public List<AbstractAudit> listByContextOrObject(GenericEntity<?, ?> entity) {
+	public List<T> listByContextOrObject(GenericEntity<?, ?> entity) {
 		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<AbstractAudit> cq = cb.createQuery(AbstractAudit.class);
-		Root<AbstractAudit> root = cq.from(AbstractAudit.class);
+		CriteriaQuery<T> cq = cb.createQuery(getObjectClass());
+		Root<T> root = cq.from(getObjectClass());
 		
 		cq.select(root);
 		
@@ -77,10 +74,10 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	}
 
 	@Override
-	public List<AbstractAudit> listBySubject(GenericEntity<?, ?> subject) {
+	public List<T> listBySubject(GenericEntity<?, ?> subject) {
 		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<AbstractAudit> cq = cb.createQuery(AbstractAudit.class);
-		Root<AbstractAudit> root = cq.from(AbstractAudit.class);
+		CriteriaQuery<T> cq = cb.createQuery(getObjectClass());
+		Root<T> root = cq.from(getObjectClass());
 		
 		cq.select(root);
 		
@@ -95,10 +92,10 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	}
 
 	@Override
-	public List<AbstractAudit> listToDelete(Integer daysToKeep) {
+	public List<T> listToDelete(Integer daysToKeep) {
 		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<AbstractAudit> cq = cb.createQuery(AbstractAudit.class);
-		Root<AbstractAudit> root = cq.from(AbstractAudit.class);
+		CriteriaQuery<T> cq = cb.createQuery(getObjectClass());
+		Root<T> root = cq.from(getObjectClass());
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -daysToKeep);
@@ -118,20 +115,20 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	 * @param subjectId id du sujet
 	 * @param subjectDisplayName nom du sujet
 	 */
-	private void addSubjectCriteria(Predicate filter, String subjectClass, Integer subjectId, String subjectDisplayName) {
-		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		Root<AbstractAudit> root = cb.createQuery(AbstractAudit.class).from(AbstractAudit.class);
-		
-		if (StringUtils.hasText(subjectClass)) {
-			filter = cb.and(filter, cb.equal(root.get(AbstractAudit_.subjectClass), subjectClass));
-			if (subjectId != null) {
-				filter = cb.and(filter, cb.equal(root.get(AbstractAudit_.subjectId), subjectId));
-			} else if (StringUtils.hasText(subjectDisplayName)) {
-				// TODO : équivalent pour OWSI-Core (à descendre dans SQM?)
+//	private void addSubjectCriteria(Predicate filter, String subjectClass, Integer subjectId, String subjectDisplayName) {
+//		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+//		Root<AbstractAudit> root = cb.createQuery(AbstractAudit.class).from(AbstractAudit.class);
+//		
+//		if (StringUtils.hasText(subjectClass)) {
+//			filter = cb.and(filter, cb.equal(root.get(AbstractAudit_.subjectClass), subjectClass));
+//			if (subjectId != null) {
+//				filter = cb.and(filter, cb.equal(root.get(AbstractAudit_.subjectId), subjectId));
+//			} else if (StringUtils.hasText(subjectDisplayName)) {
+//				// TODO : équivalent pour OWSI-Core (à descendre dans SQM?)
 //				criteria.add(SagivRestrictions.regex("subjectDisplayName", subjectDisplayName));
-			}
-		}
-	}
+//			}
+//		}
+//	}
 
 	/**
 	 * Ajoute un filtre sur la caméra au prédicat passé en paramètre.
@@ -141,38 +138,38 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	 * @param cameraDisplayName displayName de la caméra
 	 */
 	// TODO : descendre dans SQM?
-	private void addCameraCriteria(Predicate filter, Class<?> cameraClass, Integer cameraId, String cameraDisplayName) {
-		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		Root<AbstractAudit> root = cb.createQuery(AbstractAudit.class).from(AbstractAudit.class);
-		
-		Predicate cameraFilter = null;
-		if (cameraId != null || StringUtils.hasLength(cameraDisplayName)) {
-			Predicate cameraObjectFilter = cb.equal(root.get(AbstractAudit_.objectClass), cameraClass.getName());
-			Predicate cameraContextFilter  = cb.equal(root.get(AbstractAudit_.contextClass), cameraClass.getName());
-			Predicate cameraSecondaryObjectFilter  = cb.equal(root.get(AbstractAudit_.secondaryObjectClass), cameraClass.getName());
-			
-			if (cameraId != null) {
-				cameraObjectFilter = cb.and(cameraObjectFilter, cb.equal(root.get(AbstractAudit_.objectId), cameraId));
-				cameraContextFilter = cb.and(cameraObjectFilter, cb.equal(root.get(AbstractAudit_.contextId), cameraId));
-				cameraSecondaryObjectFilter = cb.and(cameraObjectFilter, cb.equal(root.get(AbstractAudit_.secondaryObjectId), cameraId));
-			} else {
-				// TODO : équivalent pour OWSI-Core (à descendre dans SQM?)
+//	private void addCameraCriteria(Predicate filter, Class<?> cameraClass, Integer cameraId, String cameraDisplayName) {
+//		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+//		Root<AbstractAudit> root = cb.createQuery(AbstractAudit.class).from(AbstractAudit.class);
+//		
+//		Predicate cameraFilter = null;
+//		if (cameraId != null || StringUtils.hasLength(cameraDisplayName)) {
+//			Predicate cameraObjectFilter = cb.equal(root.get(AbstractAudit_.objectClass), cameraClass.getName());
+//			Predicate cameraContextFilter  = cb.equal(root.get(AbstractAudit_.contextClass), cameraClass.getName());
+//			Predicate cameraSecondaryObjectFilter  = cb.equal(root.get(AbstractAudit_.secondaryObjectClass), cameraClass.getName());
+//			
+//			if (cameraId != null) {
+//				cameraObjectFilter = cb.and(cameraObjectFilter, cb.equal(root.get(AbstractAudit_.objectId), cameraId));
+//				cameraContextFilter = cb.and(cameraObjectFilter, cb.equal(root.get(AbstractAudit_.contextId), cameraId));
+//				cameraSecondaryObjectFilter = cb.and(cameraObjectFilter, cb.equal(root.get(AbstractAudit_.secondaryObjectId), cameraId));
+//			} else {
+//				// TODO : équivalent pour OWSI-Core (à descendre dans SQM?)
 //				cameraObjectCriterion = Restrictions.and(cameraObjectCriterion,
 //						SagivRestrictions.regex("objectDisplayName", cameraDisplayName));
 //				cameraContextCriterion = Restrictions.and(cameraContextCriterion,
 //						SagivRestrictions.regex("contextDisplayName", cameraDisplayName));
 //				cameraSecondaryObjectCriterion = Restrictions.and(cameraSecondaryObjectCriterion,
 //						Restrictions.eq("secondaryObjectDisplayName", cameraDisplayName));
-			}
-			
-			cameraFilter = cb.or(cameraObjectFilter, cameraContextFilter);
-			cameraFilter = cb.or(cameraFilter, cameraSecondaryObjectFilter);
-		}
-
-		if (cameraFilter != null) {
-			filter = cb.and(filter, cameraFilter);
-		}
-	}
+//			}
+//			
+//			cameraFilter = cb.or(cameraObjectFilter, cameraContextFilter);
+//			cameraFilter = cb.or(cameraFilter, cameraSecondaryObjectFilter);
+//		}
+//
+//		if (cameraFilter != null) {
+//			filter = cb.and(filter, cameraFilter);
+//		}
+//	}
 
 	/**
 	 * Ajoute des contraintes de dates au prédicat. La méthode est null safe et
@@ -186,17 +183,17 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	 *			date de fin (on ne récupère que les événements plus anciens
 	 *			que cette date)
 	 */
-	private void addDateCriteria(Predicate filter, Date debut, Date fin) {
-		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		Root<AbstractAudit> root = cb.createQuery(AbstractAudit.class).from(AbstractAudit.class);
-		
-		if (debut != null) {
-			filter = cb.and(filter, cb.greaterThan(root.get(AbstractAudit_.date), debut));
-		}
-		if (fin != null) {
-			filter = cb.and(filter, cb.lessThan(root.get(AbstractAudit_.date), fin));
-		}
-	}
+//	private void addDateCriteria(Predicate filter, Date debut, Date fin) {
+//		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+//		Root<AbstractAudit> root = cb.createQuery(AbstractAudit.class).from(AbstractAudit.class);
+//		
+//		if (debut != null) {
+//			filter = cb.and(filter, cb.greaterThan(root.get(AbstractAudit_.date), debut));
+//		}
+//		if (fin != null) {
+//			filter = cb.and(filter, cb.lessThan(root.get(AbstractAudit_.date), fin));
+//		}
+//	}
 
 	/**
 	 * Ajoute un filtre sur une fonction à un prédicat.

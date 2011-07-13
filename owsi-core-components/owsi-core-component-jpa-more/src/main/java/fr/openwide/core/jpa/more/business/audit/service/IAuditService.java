@@ -33,7 +33,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return le sujet de l'Audit
 	 */
-	GenericEntity<?, ?> getSubjectEntity(AbstractAudit audit);
+	GenericEntity<?, ?> getSubjectEntity(T audit);
 
 	/**
 	 * Renvoie le nom du sujet d'un Audit.
@@ -41,7 +41,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return le nom du sujet de l'Audit
 	 */
-	String getSubjectDisplayName(AbstractAudit audit);
+	String getSubjectDisplayName(T audit);
 
 	/**
 	 * Renvoie l'objet d'un Audit.
@@ -49,7 +49,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return l'objet de l'Audit
 	 */
-	GenericEntity<?, ?> getObjectEntity(AbstractAudit audit);
+	GenericEntity<?, ?> getObjectEntity(T audit);
 
 	/**
 	 * Renvoie le nom de l'objet d'un Audit.
@@ -57,7 +57,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return le nom de l'objet de l'Audit
 	 */
-	String getObjectDisplayName(AbstractAudit audit);
+	String getObjectDisplayName(T audit);
 
 	/**
 	 * Renvoie l'objet secondaire d'un Audit.
@@ -65,7 +65,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return l'objet secondaire de l'Audit
 	 */
-	GenericEntity<?, ?> getSecondaryObjectEntity(AbstractAudit audit);
+	GenericEntity<?, ?> getSecondaryObjectEntity(T audit);
 
 	/**
 	 * Renvoie le nom de l'objet secondaire d'un Audit.
@@ -73,7 +73,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return le nom de l'objet secondaire de l'Audit
 	 */
-	String getSecondaryObjectDisplayName(AbstractAudit audit);
+	String getSecondaryObjectDisplayName(T audit);
 
 	/**
 	 * Renvoie la liste des Audits émis par ce sujet.
@@ -81,7 +81,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param subject le sujet concerné
 	 * @return les Audits concernés
 	 */
-	List<AbstractAudit> listBySubject(GenericEntity<?, ?> subject);
+	List<T> listBySubject(GenericEntity<?, ?> subject);
 
 	/**
 	 * Renvoie la liste des Audits dont le contexte ou l'objet concernent l'entité indiquée.
@@ -89,7 +89,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param entity entité concernée par les Audits
 	 * @return liste des Audits correspondants
 	 */
-	List<AbstractAudit> listByContextOrObject(GenericEntity<?, ?> entity);
+	List<T> listByContextOrObject(GenericEntity<?, ?> entity);
 
 	/**
 	 * Renvoie le contexte d'un Audit.
@@ -97,7 +97,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return le contexte de l'Audit
 	 */
-	GenericEntity<?, ?> getContextEntity(AbstractAudit audit);
+	GenericEntity<?, ?> getContextEntity(T audit);
 
 	/**
 	 * Renvoie le nom du contexte d'un Audit.
@@ -105,7 +105,7 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @param audit l'Audit concerné
 	 * @return le nom du contexte de l'Audit
 	 */
-	String getContextDisplayName(AbstractAudit audit);
+	String getContextDisplayName(T audit);
 	
 	/**
 	 * <p>Effectue une recherche sur le journal d'activité.</p>
@@ -129,9 +129,9 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * Retourne la liste des lignes d'audit qui sont plus vieilles qu'un certain nombre de jours.
 	 * Ce sont les lignes qu'on va supprimer de la base.
 	 * 
-	 * @param joursDeConservation nombre de jours de conservation
+	 * @param daysToKeep nombre de jours de conservation
 	 * @return liste des lignes qu'on va supprimer
 	 */
-	List<AbstractAudit> listAuditsASupprimer(Integer joursDeConservation);
+	List<T> listToDelete(Integer daysToKeep);
 	
 }
