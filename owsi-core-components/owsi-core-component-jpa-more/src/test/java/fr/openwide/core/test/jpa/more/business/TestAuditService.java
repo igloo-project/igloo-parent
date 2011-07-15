@@ -1,5 +1,7 @@
 package fr.openwide.core.test.jpa.more.business;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Assert;
@@ -188,6 +190,16 @@ public class TestAuditService extends AbstractJpaMoreTestCase {
 				null
 		);
 		
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
+		audit1.setDate(calendar.getTime());
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
+		audit2.setDate(calendar.getTime());
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
+		audit3.setDate(calendar.getTime());
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
+		audit4.setDate(calendar.getTime());
+		
 		auditService.create(audit1);
 		auditService.create(audit2);
 		auditService.create(audit3);
@@ -211,5 +223,10 @@ public class TestAuditService extends AbstractJpaMoreTestCase {
 		
 		audits = auditService.listByContextOrObject(secondaryObject);
 		Assert.assertEquals(0, audits.size());
+		
+		audits = auditService.listToDelete(3);
+		Assert.assertEquals(2, audits.size());
+		Assert.assertTrue(audits.contains(audit3));
+		Assert.assertTrue(audits.contains(audit4));
 	}
 }
