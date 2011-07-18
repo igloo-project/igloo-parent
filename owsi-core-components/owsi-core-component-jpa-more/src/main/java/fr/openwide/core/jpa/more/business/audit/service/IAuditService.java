@@ -106,24 +106,6 @@ public interface IAuditService<T extends AbstractAudit> extends IGenericEntitySe
 	 * @return le nom du contexte de l'Audit
 	 */
 	String getContextDisplayName(T audit);
-	
-	/**
-	 * <p>Effectue une recherche sur le journal d'activité.</p>
-	 * <p>Tous les champs textuels supportent les expressions régulières.</p>
-	 * 
-	 * @param subjectClass classe du sujet
-	 * @param subjectId prioritaire sur subjectDisplayName
-	 * @param subjectDisplayName
-	 * @param cameraId prioritaire sur cameraDisplayName
-	 * @param cameraDisplayName nom de la caméra
-	 * @param debut date inférieure de la recherche (exclusive)
-	 * @param fin date supérieure de la recherche (exclusive)
-	 * @param auditFeature fonctionnalité
-	 * 
-	 * @return liste des lignes de journal d'activité répondant à la requête
-	 */
-//	PagingList<Audit> searchAudits(String subjectClass, Integer subjectId, String subjectDisplayName, Integer cameraId,
-//			String cameraDisplayName, Date debut, Date fin, AbstractAuditFeature auditFeature);
 
 	/**
 	 * Retourne la liste des lignes d'audit qui sont plus vieilles qu'un certain nombre de jours.
