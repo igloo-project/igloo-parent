@@ -150,13 +150,6 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 		return auditDao.listBySubject(subject);
 	}
 
-//	@Override
-//	public PagingList<Audit> searchAudits(String subjectClass, Integer subjectId, String subjectDisplayName,
-//			Integer cameraId, String cameraDisplayName, Date debut, Date fin, AbstractAuditFeature auditFeature) {
-//		return auditDao.searchAudits(subjectClass, subjectId, subjectDisplayName, cameraId, cameraDisplayName, debut,
-//				fin, auditFeature);
-//	}
-
 	@Override
 	public List<T> listToDelete(Integer daysToKeep) {
 		return auditDao.listToDelete(daysToKeep);
