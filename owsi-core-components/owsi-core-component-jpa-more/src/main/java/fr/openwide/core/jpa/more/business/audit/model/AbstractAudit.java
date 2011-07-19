@@ -28,6 +28,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.bridge.builtin.IntegerNumericFieldBridge;
 
@@ -47,7 +48,7 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit> {
 	private static final long serialVersionUID = 8453330231866625186L;
 
-	public static final String SERVICE_SORT_FIELD_NAME = "service_sort";
+	public static final String DATE_SORT_FIELD_NAME = "date_sort";
 
 	/**
 	 * Identifiant technique.
@@ -60,7 +61,6 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	 * Service source de l'Audit.
 	 */
 	@Basic(optional = false)
-	@Field(name = SERVICE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	private String service;
 
 	/**
@@ -152,7 +152,10 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	 * Date et heure de création.
 	 */
 	@Basic(optional = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private Date date;
 
 	public AbstractAudit() {
