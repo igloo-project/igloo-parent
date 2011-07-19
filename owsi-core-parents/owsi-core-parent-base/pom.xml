@@ -70,7 +70,7 @@
 		<owsi-core.junit.version>4.8.2</owsi-core.junit.version>
 		<owsi-core.grizzly.version>1.9.36</owsi-core.grizzly.version>
 		
-		<owsi-core.jersey.version>1.7</owsi-core.jersey.version>
+		<owsi-core.jersey.version>1.8</owsi-core.jersey.version>
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.0</owsi-core.jsp-api.version>
 		<owsi-core.servlet-api.version>2.5</owsi-core.servlet-api.version>
