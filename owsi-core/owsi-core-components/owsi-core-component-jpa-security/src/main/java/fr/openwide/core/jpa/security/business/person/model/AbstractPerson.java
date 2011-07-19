@@ -23,11 +23,12 @@ import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
 public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Integer, P>
-		implements IPerson {
+		implements IPerson, INotificationRecipient {
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
@@ -155,6 +156,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		return getUserName();
 	}
 
+	@Override
 	public String getEmail() {
 		return email;
 	}
@@ -236,6 +238,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	 * avoir un fonctionnement prédictible). 
 	 * @return une locale, possiblement null
 	 */
+	@Override
 	public Locale getLocale() {
 		return locale;
 	}
