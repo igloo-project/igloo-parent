@@ -33,6 +33,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS = "hibernate.search.reindex.fetchingThreads";
 	private static final String HIBERNATE_SEARCH_REINDEX_LOAD_THREADS = "hibernate.search.reindex.loadThreads";
 	
+	private static final String NOTIFICATION_MAIL_FROM = "notification.mail.from";
+	private static final String NOTIFICATION_MAIL_SUBJECT_PREFIX = "notification.mail.subjectPrefix";
+	private static final String NOTIFICATION_TEST_EMAILS = "notification.test.emails";
+	
 	public String getVersion() {
 		return getPropertyAsString(VERSION_PROPERTY);
 	}
@@ -166,6 +170,18 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public int getHibernateSearchReindexLoadThreads() {
 		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 2);
+	}
+	
+	public String getNotificationMailFrom() {
+		return getPropertyAsString(NOTIFICATION_MAIL_FROM);
+	}
+	
+	public String getNotificationMailSubjectPrefix() {
+		return getPropertyAsString(NOTIFICATION_MAIL_SUBJECT_PREFIX);
+	}
+	
+	public String[] getNotificationTestEmails() {
+		return getPropertyAsStringArray(NOTIFICATION_TEST_EMAILS);
 	}
 	
 }
