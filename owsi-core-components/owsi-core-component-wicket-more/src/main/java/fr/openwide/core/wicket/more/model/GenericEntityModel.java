@@ -34,28 +34,31 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@SpringBean
 	private IEntityService entityService;
 	
-	private K id;
-	
 	private Class<E> clazz;
 	
-	@SuppressWarnings("unchecked")
+	private transient boolean attached = false;
+
+	private K id;
+
+	private E transientEntity;
+	
 	public GenericEntityModel(E entity) {
-		super(entity);
+		super(null);
 		InjectorHolder.getInjector().inject(this);
 		
-		if (entity != null) {
-			clazz = (Class<E>) Hibernate.getClass(entity);
-			id = entity.getId();
-		}
+		setObject(entity);
 	}
 
 	@Override
 	protected E load() {
-		E entity = null;
-		if (clazz != null && id != null) {
-			entity = entityService.getEntity(clazz, id);
+		E result = null;
+		if (id != null) {
+			result = entityService.getEntity(clazz, id);
+		} else {
+			result = transientEntity;
 		}
-		return entity;
+		attached = true;
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -63,16 +66,32 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	public void setObject(E entity) {
 		if (entity != null) {
 			clazz = (Class<E>) Hibernate.getClass(entity);
-			id = entity.getId();
 		} else {
-			id = null;
 			clazz = null;
 		}
+		if (entity != null && entity.getId() != null) {
+			id = entity.getId();
+			transientEntity = null;
+		} else {
+			id = null;
+			transientEntity = entity;
+		}
+		
 		super.setObject(entity);
+		attached = true;
 	}
 	
 	protected K getId() {
 		return id;
+	}
+
+	@Override
+	public void detach() {
+		if (!attached) {
+			return;
+		}
+		super.detach();
+		attached = false;
 	}
 
 }
