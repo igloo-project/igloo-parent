@@ -22,9 +22,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
@@ -145,7 +145,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	 * Message contenant des informations complémentaires à mémoriser.
 	 */
 	@Column
-	@Lob
+	@Type(type = "org.hibernate.type.StringClobType")
 	private String message;
 
 	/**
