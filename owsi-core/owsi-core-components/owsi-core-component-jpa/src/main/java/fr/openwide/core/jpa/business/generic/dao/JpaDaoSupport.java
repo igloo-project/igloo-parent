@@ -92,8 +92,12 @@ public class JpaDaoSupport {
 		return entity;
 	}
 	
-	protected void flush() {
+	public void flush() {
 		getEntityManager().flush();
+	}
+	
+	public void clear() {
+		getEntityManager().clear();
 	}
 	
 	// TODO : à refaire : il n'est pas possible de construire un filter ou un order stateless

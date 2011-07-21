@@ -106,6 +106,11 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * Flushe la session.
 	 */
 	void flush();
+	
+	/**
+	 * Clear la session.
+	 */
+	void clear();
 
 	/**
 	 * Compte le nombre d'entités respectant la condition attribut = valeur
