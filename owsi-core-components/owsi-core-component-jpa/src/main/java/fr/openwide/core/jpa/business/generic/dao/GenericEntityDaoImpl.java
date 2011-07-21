@@ -100,11 +100,6 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public void flush() {
-		super.flush();
-	}
-	
-	@Override
 	public List<E> list() {
 		return super.listEntity(getObjectClass());
 	}

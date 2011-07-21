@@ -138,6 +138,11 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	}
 	
 	@Override
+	public void clear() {
+		genericDao.clear();
+	}
+	
+	@Override
 	public E refresh(E entity) {
 		return genericDao.refresh(entity);
 	}

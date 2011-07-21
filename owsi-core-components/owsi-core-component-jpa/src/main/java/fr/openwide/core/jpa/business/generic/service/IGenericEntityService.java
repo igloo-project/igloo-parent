@@ -105,4 +105,6 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	 * Flushe la session.
 	 */
 	void flush();
+
+	void clear();
 }
