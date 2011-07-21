@@ -97,8 +97,12 @@ public class SimpleFileStoreImpl implements IFileStore {
 	
 	@Override
 	public void removeFile(String fileKey, String extension) {
-		if(!getFile(fileKey, extension).delete()) {
-			LOGGER.error("Error removing file " + fileKey + " " + extension);
+		File file = getFile(fileKey, extension);
+		if(!file.delete()) {
+			LOGGER.error(String.format("Error removing file %1$s (key: %2$s; extension: %3$s)",
+					getFile(fileKey, extension).getAbsolutePath(),
+					fileKey,
+					extension));
 		}
 	}
 	
