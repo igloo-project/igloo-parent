@@ -78,6 +78,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- QueryDSL dependencies -->
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${owsi-core.querydsl.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- Spring dependencies -->
 		<!--
@@ -232,6 +245,29 @@
 						<artifactId>hibernate-jpamodelgen</artifactId>
 						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
 						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>maven-apt-plugin</artifactId>
+				<version>${owsi-core.querydsl.maven-apt-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/apt</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.mysema.querydsl</groupId>
+						<artifactId>querydsl-apt</artifactId>
+						<version>${owsi-core.querydsl.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
