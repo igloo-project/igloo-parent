@@ -130,6 +130,17 @@
 			<id>maven-annotation-plugin</id>
 			<url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
 		</pluginRepository>
+		<pluginRepository>
+			<id>nexus-owsi-core-snapshots</id>
+			<name>Nexus OWSI Core Snapshots</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<updatePolicy>interval:240</updatePolicy>
+			</snapshots>
+		</pluginRepository>
 	</pluginRepositories>
 	
 </project>
