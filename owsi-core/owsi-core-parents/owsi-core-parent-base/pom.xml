@@ -23,7 +23,7 @@
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.4.3</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>2.2.0</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>2.2.1-SNAPSHOT</owsi-core.querydsl.version>
 		<owsi-core.querydsl.maven-apt-plugin.version>1.0.2</owsi-core.querydsl.maven-apt-plugin.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
