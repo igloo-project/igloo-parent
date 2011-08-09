@@ -60,8 +60,10 @@ public class PersonXSSFExport extends AbstractExcelTableExport {
 			addDateCell(currentRow, columnIndex, person.getBirthDate());
 		} else if ("birth hour".equals(column)) {
 			addDateTimeCell(currentRow, columnIndex, person.getBirthDate());
+		} else if ("age".equals(column)) {
+			addIntegerCell(currentRow, columnIndex, person.getAge());
 		} else if ("size".equals(column)) {
-			addNumericCell(currentRow, columnIndex, person.getSize());
+			addDecimalCell(currentRow, columnIndex, person.getSize());
 		} else if ("percentage".equals(column)) {
 			addPercentCell(currentRow, columnIndex, person.getPercentage());
 		}

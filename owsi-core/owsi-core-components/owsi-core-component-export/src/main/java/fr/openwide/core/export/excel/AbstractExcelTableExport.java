@@ -66,7 +66,8 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected static final String STYLE_DEFAULT_NAME = "default";
 	protected static final String STYLE_HEADER_NAME = "header";
 	protected static final String STYLE_STANDARD_NAME = "standard";
-	protected static final String STYLE_NUMERIC_NAME = "numeric";
+	protected static final String STYLE_INTEGER_NAME = "integer";
+	protected static final String STYLE_DECIMAL_NAME = "decimal";
 	protected static final String STYLE_DATE_NAME = "date";
 	protected static final String STYLE_DATE_TIME_NAME = "datetime";
 	protected static final String STYLE_PERCENT_NAME = "percent";
@@ -107,9 +108,14 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	private String evenRowBackgroundColor = "#EEEEEE";
 	
 	/**
-	 * Format des données numériques
+	 * Format des pour les nombres entiers
 	 */
-	private String numericDataFormat = "# ### ### ### ###";
+	private String integerDataFormat = "# ### ### ### ###";
+	
+	/**
+	 * Format des pour les nombres décimaux
+	 */
+	private String decimalDataFormat = "# ### ### ### ###.##";
 	
 	/**
 	 * Format des dates
@@ -211,18 +217,31 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		setStyleFillForegroundColor(styleEven, colorRegistry, EVEN_ROW_BACKGROUND_COLOR_INDEX);
 		registerStyle(STYLE_STANDARD_NAME + ROW_EVEN_NAME, styleEven);
 
-		// Styles pour les nombres
-		short numericFormatIndex = dataFormat.getFormat(numericDataFormat);
+		// styles pour les nombres entiers
+		short integerFormatIndex = dataFormat.getFormat(integerDataFormat);
 
-		CellStyle styleOddNumeric = cloneStyle(styleOdd);
-		styleOddNumeric.setAlignment(CellStyle.ALIGN_RIGHT);
-		styleOddNumeric.setDataFormat(numericFormatIndex);
-		registerStyle(STYLE_NUMERIC_NAME + ROW_ODD_NAME, styleOddNumeric);
+		CellStyle styleOddInteger = cloneStyle(styleOdd);
+		styleOddInteger.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleOddInteger.setDataFormat(integerFormatIndex);
+		registerStyle(STYLE_INTEGER_NAME + ROW_ODD_NAME, styleOddInteger);
 
-		CellStyle styleEvenNumeric = cloneStyle(styleEven);
-		styleEvenNumeric.setAlignment(CellStyle.ALIGN_RIGHT);
-		styleEvenNumeric.setDataFormat(numericFormatIndex);
-		registerStyle(STYLE_NUMERIC_NAME + ROW_EVEN_NAME, styleEvenNumeric);
+		CellStyle styleEvenInteger = cloneStyle(styleEven);
+		styleEvenInteger.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleEvenInteger.setDataFormat(integerFormatIndex);
+		registerStyle(STYLE_INTEGER_NAME + ROW_EVEN_NAME, styleEvenInteger);
+		
+		// styles pour les nombres décimaux
+		short decimalFormatIndex = dataFormat.getFormat(decimalDataFormat);
+
+		CellStyle styleOddDecimal = cloneStyle(styleOdd);
+		styleOddDecimal.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleOddDecimal.setDataFormat(decimalFormatIndex);
+		registerStyle(STYLE_DECIMAL_NAME + ROW_ODD_NAME, styleOddDecimal);
+
+		CellStyle styleEvenDecimal = cloneStyle(styleEven);
+		styleEvenDecimal.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleEvenDecimal.setDataFormat(decimalFormatIndex);
+		registerStyle(STYLE_DECIMAL_NAME + ROW_EVEN_NAME, styleEvenDecimal);
 
 		// styles pour les dates
 		short dateFormatIndex = dataFormat.getFormat(dateDataFormat);
@@ -325,17 +344,35 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	}
 
 	/**
-	 * Ajoute une cellule numérique.
+	 * Ajoute une cellule contenant un nombre entier.
 	 * 
 	 * @param row ligne
 	 * @param columnIndex numéro de la colonne
 	 * @param number nombre à insérer dans la cellule
 	 * @return cellule
 	 */
-	protected Cell addNumericCell(Row row, int columnIndex, Number number) {
+	protected Cell addIntegerCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-		cell.setCellStyle(getRowStyle(STYLE_NUMERIC_NAME, row.getRowNum()));
+		cell.setCellStyle(getRowStyle(STYLE_INTEGER_NAME, row.getRowNum()));
+
+		cell.setCellValue(number.doubleValue());
+
+		return cell;
+	}
+	
+	/**
+	 * Ajoute une cellule contenant un nombre décimal.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param number nombre à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addDecimalCell(Row row, int columnIndex, Number number) {
+		Cell cell = row.createCell(columnIndex);
+		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellStyle(getRowStyle(STYLE_DECIMAL_NAME, row.getRowNum()));
 
 		cell.setCellValue(number.doubleValue());
 
@@ -343,7 +380,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	}
 
 	/**
-	 * Ajoute une cellule avec des pourcentages.
+	 * Ajoute une cellule contenant un pourcentage.
 	 * 
 	 * @param row ligne
 	 * @param columnIndex numéro de la colonne
@@ -474,12 +511,20 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		this.evenRowBackgroundColor = evenRoxBackgroundColor;
 	}
 
-	public String getNumericDataFormat() {
-		return numericDataFormat;
+	public String getIntegerDataFormat() {
+		return integerDataFormat;
 	}
 
-	public void setNumericDataFormat(String numericDataFormat) {
-		this.numericDataFormat = numericDataFormat;
+	public void setIntegerDataFormat(String numericDataFormat) {
+		this.integerDataFormat = numericDataFormat;
+	}
+
+	public String getDecimalDataFormat() {
+		return decimalDataFormat;
+	}
+
+	public void setDecimalDataFormat(String decimalDataFormat) {
+		this.decimalDataFormat = decimalDataFormat;
 	}
 
 	public String getDateDataFormat() {

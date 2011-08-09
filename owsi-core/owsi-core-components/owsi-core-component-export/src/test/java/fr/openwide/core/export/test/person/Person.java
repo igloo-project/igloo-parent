@@ -12,17 +12,20 @@ public class Person {
 	
 	Date birthDate;
 	
-	int size;
+	int age;
+	
+	double size;
 	
 	double percentage;
 
 	public Person(String userName, String firstName, String lastName,
-			Date birthDate, int size, double percentage) {
+			Date birthDate, int age, double size, double percentage) {
 		super();
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
+		this.age = age;
 		this.size = size;
 		this.percentage = percentage;
 	}
@@ -59,11 +62,19 @@ public class Person {
 		this.birthDate = birthDate;
 	}
 
-	public int getSize() {
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public double getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(double size) {
 		this.size = size;
 	}
 
