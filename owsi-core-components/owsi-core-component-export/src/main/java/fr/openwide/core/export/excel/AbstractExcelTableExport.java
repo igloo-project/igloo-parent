@@ -110,12 +110,12 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	/**
 	 * Format des pour les nombres entiers
 	 */
-	private String integerDataFormat = "# ### ### ### ###";
+	private String integerDataFormat = "# ### ### ### ##0";
 	
 	/**
 	 * Format des pour les nombres décimaux
 	 */
-	private String decimalDataFormat = "# ### ### ### ###.##";
+	private String decimalDataFormat = "# ### ### ### ##0.##";
 	
 	/**
 	 * Format des dates
