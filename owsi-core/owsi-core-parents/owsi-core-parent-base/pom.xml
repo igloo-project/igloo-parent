@@ -23,15 +23,15 @@
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.4.3</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>2.2.1-SNAPSHOT</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>2.2.1</owsi-core.querydsl.version>
 		<owsi-core.querydsl.maven-apt-plugin.version>1.0.2</owsi-core.querydsl.maven-apt-plugin.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
-		<owsi-core.cglib.version>2.2</owsi-core.cglib.version>
-		<owsi-core.javassist.version>3.14.0-GA</owsi-core.javassist.version>
+		<owsi-core.cglib.version>2.2.2</owsi-core.cglib.version>
+		<owsi-core.javassist.version>3.15.0-GA</owsi-core.javassist.version>
 		<owsi-core.asm.version>3.3.1</owsi-core.asm.version>
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
@@ -79,7 +79,7 @@
 		<owsi-core.sitemesh.version>2.4.2</owsi-core.sitemesh.version>
 		<owsi-core.taglibs-standard.version>1.1.2</owsi-core.taglibs-standard.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
-		<owsi-core.wicket.version>1.4.17</owsi-core.wicket.version>
+		<owsi-core.wicket.version>1.4.18</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>1.2.4</owsi-core.wiquery.version>
 		<owsi-core.lesscss-engine.version>1.0.41</owsi-core.lesscss-engine.version>
 		
