@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
+import org.odlabs.wiquery.core.events.WiQueryAjaxEventBehavior;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
 import org.odlabs.wiquery.core.javascript.JsScope;
 
@@ -64,21 +65,17 @@ public abstract class AbstractGenericPopupFormPanel<T> extends GenericPanel<T> i
 		
 		Component cancelButton;
 		if (this.bindCancel) {
-			cancelButton = new AjaxButton("cancelButton", itemForm) {
+			cancelButton = new WebMarkupContainer("cancelButton");
+			cancelButton.add(new WiQueryAjaxEventBehavior(MouseEvent.CLICK) {
 				
 				private static final long serialVersionUID = -3721476446722988109L;
 
 				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					AbstractGenericPopupFormPanel.this.onSubmitInternal(target, form);
+				protected void onEvent(AjaxRequestTarget target) {
+					onCancelInternal(target);
 				}
 				
-				@Override
-				protected void onError(AjaxRequestTarget target, Form<?> form) {
-					AbstractGenericPopupFormPanel.this.reloadPanel(target);
-				}
-				
-			};
+			});
 		} else {
 			// simple implementation, no ajax, whuch close popup
 			cancelButton = new WebMarkupContainer("cancelButton");
@@ -125,7 +122,11 @@ public abstract class AbstractGenericPopupFormPanel<T> extends GenericPanel<T> i
 		itemForm.clearInput();
 	}
 	
-	protected void onCancelInternal(AjaxRequestTarget target, Form<?> form) {
+	/**
+	 * if bindCancel is true, enable server-side processing. Be aware that form is not binded so modelObject is not updated
+	 * with last information passed in by user.
+	 */
+	protected void onCancelInternal(AjaxRequestTarget target) {
 		// dummy implementation
 		target.appendJavascript(FancyboxHelper.getClose());
 	}
