@@ -29,7 +29,7 @@ public class EnumLabelModel<E extends Enum<?>> extends ComponentModel<String> {
 	
 	protected String getObject(Component component) {
 		if (enumValueModel != null && enumValueModel.getObject() != null) {
-			return component.getString(enumValueModel.getClass().getSimpleName() + "." + enumValueModel.getObject().name());
+			return component.getString(enumValueModel.getObject().getClass().getSimpleName() + "." + enumValueModel.getObject().name());
 		} else if (nullKeyModel != null && nullKeyModel.getObject() != null) {
 			return component.getString(nullKeyModel.getObject());
 		} else {
