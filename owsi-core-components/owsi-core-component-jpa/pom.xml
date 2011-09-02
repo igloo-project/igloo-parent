@@ -236,6 +236,9 @@
 						inside test directory
 						-->
 						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>target/generated-test-sources/apt</outputDirectory>
+						</configuration>
 					</execution>
 				</executions>
 				<dependencies>
