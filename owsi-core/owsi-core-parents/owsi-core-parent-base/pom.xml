@@ -132,6 +132,22 @@
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>${owsi-core.maven-assembly-plugin.version}</version>
 				</plugin>
+				<plugin>
+					<groupId>org.bsc.maven</groupId>
+					<artifactId>maven-processor-plugin</artifactId>
+					<version>${owsi-core.maven-processor-plugin.version}</version>
+					<configuration>
+						<outputDirectory>target/generated-sources/apt</outputDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.mysema.maven</groupId>
+					<artifactId>maven-apt-plugin</artifactId>
+					<version>${owsi-core.querydsl.maven-apt-plugin.version}</version>
+					<configuration>
+						<outputDirectory>target/generated-sources/apt</outputDirectory>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
