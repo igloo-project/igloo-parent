@@ -14,11 +14,11 @@
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>3.0.5.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>3.0.6.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.6.10</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>3.6.5.Final</owsi-core.hibernate-core.version>
-		<owsi-core.hibernate-jpa-2.0-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.0-api.version>
+		<owsi-core.hibernate-core.version>3.6.7.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-jpa-2.0-api.version>1.0.1.Final</owsi-core.hibernate-jpa-2.0-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.1.1.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
@@ -38,7 +38,7 @@
 		
 		<owsi-core.spring-ldap.version>1.3.1.RELEASE</owsi-core.spring-ldap.version>
 		
-		<owsi-core.hibernate-search.version>3.4.0.Final</owsi-core.hibernate-search.version>
+		<owsi-core.hibernate-search.version>3.4.1.Final</owsi-core.hibernate-search.version>
 		<owsi-core.lucene.version>3.1.0</owsi-core.lucene.version>
 		
 		<owsi-core.quartz.version>1.8.4</owsi-core.quartz.version>
