@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.5.4</version>
+		<version>0.5.5-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-export</artifactId>
-	<version>0.5.4</version>
+	<version>0.5.5-SNAPSHOT</version>
 	
 	<name>OWSI Core - Component - Export</name>
 	<description>Capitalisation des outils génériques pour les exports PDF et Excel</description>
