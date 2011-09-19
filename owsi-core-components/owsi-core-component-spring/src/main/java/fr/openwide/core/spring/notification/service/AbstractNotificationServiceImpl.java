@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.mail.internet.MimeMessage;
 
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.util.MultiValueMap;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
@@ -38,8 +40,13 @@ public class AbstractNotificationServiceImpl {
 	protected Configuration templateConfiguration;
 	
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
-
+	
 	protected void sendMailToEmails(String[] emails, String subject, String body) {
+		MultiValueMap<String, String> headers = null;
+		sendMailToEmails(emails, subject, body, headers);
+	}
+
+	protected void sendMailToEmails(String[] emails, String subject, String body, MultiValueMap<String, String> headers) {
 		try {
 			String[] filteredEmails = filterEmails(emails);
 			if (filteredEmails.length == 0) {
@@ -71,6 +78,14 @@ public class AbstractNotificationServiceImpl {
 			helper.setSubject(getSubjectPrefix() + " " + subject);
 			helper.setText(emailContent);
 			
+			if (headers != null) {
+				for (Entry<String, List<String>> entry : headers.entrySet()) {
+					for (String value : entry.getValue()) {
+						message.addHeader(entry.getKey(), value);
+					}
+				}
+			}
+			
 			mailSender.send(message);
 		} catch(Exception e) {
 			LOGGER.error("Error during send mail process", e);
@@ -78,6 +93,10 @@ public class AbstractNotificationServiceImpl {
 	}
 
 	protected void sendMailToEmail(String email, String subject, String body) {
+		sendMailToEmails(new String[] { email }, subject, body);
+	}
+
+	protected void sendMailToEmail(String email, String subject, String body, MultiValueMap<String, String> headers) {
 		sendMailToEmails(new String[] { email }, subject, body);
 	}
 	
