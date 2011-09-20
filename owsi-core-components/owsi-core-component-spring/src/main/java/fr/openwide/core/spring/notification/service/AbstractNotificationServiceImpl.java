@@ -10,8 +10,8 @@ import java.util.Map.Entry;
 
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,7 +27,7 @@ import freemarker.template.TemplateException;
 
 public class AbstractNotificationServiceImpl {
 	
-	private static final Log LOGGER = LogFactory.getLog(AbstractNotificationServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNotificationServiceImpl.class);
 
 	@Autowired
 	protected JavaMailSender mailSender;
