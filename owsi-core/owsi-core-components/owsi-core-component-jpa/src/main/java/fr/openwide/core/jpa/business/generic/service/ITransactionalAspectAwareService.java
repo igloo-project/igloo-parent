@@ -22,7 +22,7 @@ package fr.openwide.core.jpa.business.generic.service;
  * 
  * Cela permet de simplifier la configuration Spring de la partie transactionnelle car
  * il suffit alors de déclarer le pointcut de l'aspect sur
- * this(fr.openwide.core.jpa.business.generic.service.TransactionalAspectAwareService)
+ * this(fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService)
  */
 public interface ITransactionalAspectAwareService {
 
