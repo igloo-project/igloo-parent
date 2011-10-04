@@ -91,6 +91,7 @@
 		<owsi-core.maven-assembly-plugin.version>2.2.1</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-processor-plugin.version>2.0.2</owsi-core.maven-processor-plugin.version>
 		<owsi-core.maven-jar-plugin.version>2.3.1</owsi-core.maven-jar-plugin.version>
+		<owsi-core.maven-yui-compressor-plugin.version>1.2</owsi-core.maven-yui-compressor-plugin.version>
 	</properties>
 	
 	<build>
@@ -147,6 +148,11 @@
 					<configuration>
 						<outputDirectory>target/generated-sources/apt</outputDirectory>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>net.alchim31.maven</groupId>
+					<artifactId>yuicompressor-maven-plugin</artifactId>
+					<version>${owsi-core.maven-yui-compressor-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
