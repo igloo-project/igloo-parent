@@ -9,6 +9,18 @@
 	
 	<name>OWSI Core</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur les projets OWSI</description>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.2.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 	
 	<profiles>
 		<profile>
