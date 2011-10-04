@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.openwide.core.components</groupId>
+		<artifactId>owsi-core-components</artifactId>
+		<version>0.6-SNAPSHOT</version>
+	</parent>
+
+	<groupId>fr.openwide.core.components</groupId>
+	<artifactId>owsi-core-component-jpa-security</artifactId>
+	<version>0.6-SNAPSHOT</version>
+	
+	<name>OWSI Core - Component - JPA - Spring Security support</name>
+
+	<dependencies>
+		
+		<!-- OWSI Core dependencies -->
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa-more</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.dependencies</groupId>
+			<artifactId>owsi-core-dependency-core-spring-security</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!-- Bindgen -->
+		
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+			<version>${owsi-core.bindgen.version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>generate-sources</phase>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-jpamodelgen</artifactId>
+						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>maven-apt-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.mysema.querydsl</groupId>
+						<artifactId>querydsl-apt</artifactId>
+						<version>${owsi-core.querydsl.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>nexus-owsi-core</id>
+			<name>OWSI - Core repository</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/</url>
+		</repository>
+		<repository>
+			<id>org.bindgen</id>
+			<name>Bindgen Repository</name>
+			<url>http://repo.joist.ws</url>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-annotation-plugin</id>
+			<url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>nexus-owsi-core-snapshots</id>
+			<name>Nexus OWSI Core Snapshots</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<updatePolicy>interval:240</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
+</project>
