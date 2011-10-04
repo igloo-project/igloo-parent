@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.openwide.core.examples</groupId>
+		<artifactId>owsi-core-examples</artifactId>
+		<version>0.5.5-SNAPSHOT</version>
+	</parent>
+
+	<groupId>fr.openwide.core.examples</groupId>
+	<artifactId>owsi-core-example-export</artifactId>
+	<version>0.5.5-SNAPSHOT</version>
+
+	<name>OWSI Core - Example - Export PDF/XLS</name>
+	<description>Capitalisation OWSI des développements d'exports PDF et Excel</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-export</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-hibernate</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- Export PDF -->
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>${owsi-core.itext.version}</version>
+		</dependency>
+		
+		<!-- Export Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${owsi-core.poi.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${owsi-core.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${owsi-core.log4j.version}</version>
+		</dependency>
+	</dependencies>
+</project>

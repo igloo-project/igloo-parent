@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.openwide.core.components</groupId>
+		<artifactId>owsi-core-components</artifactId>
+		<version>0.5.5-SNAPSHOT</version>
+	</parent>
+
+	<groupId>fr.openwide.core.components</groupId>
+	<artifactId>owsi-core-component-hibernate-security</artifactId>
+	<version>0.5.5-SNAPSHOT</version>
+	
+	<name>OWSI Core - Component - Hibernate - Spring Security support</name>
+
+	<dependencies>
+		
+		<!-- OWSI Core dependencies -->
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-hibernate-more</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.dependencies</groupId>
+			<artifactId>owsi-core-dependency-core-spring-security</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!-- Bindgen -->
+		
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+			<version>${owsi-core.bindgen.version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<version>${owsi-core.maven-processor-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>generate-sources</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>nexus-owsi-core</id>
+			<name>OWSI - Core repository</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/</url>
+		</repository>
+		<repository>
+			<id>org.bindgen</id>
+			<name>Bindgen Repository</name>
+			<url>http://repo.joist.ws</url>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
+</project>

@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>fr.openwide.core.components</groupId>
+		<artifactId>owsi-core-components</artifactId>
+		<version>0.5.5-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>fr.openwide.core.components</groupId>
+	<artifactId>owsi-core-component-export</artifactId>
+	<version>0.5.5-SNAPSHOT</version>
+	
+	<name>OWSI Core - Component - Export</name>
+	<description>Capitalisation des outils génériques pour les exports PDF et Excel</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- Export Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${owsi-core.poi.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${owsi-core.poi.version}</version>
+			<exclusions>
+				<!-- xml-apis may result in class loading issues and is provided by modern jre -->
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi-core.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
