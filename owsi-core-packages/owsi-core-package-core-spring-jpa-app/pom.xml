@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>owsi-core-packages</artifactId>
 		<groupId>fr.openwide.core.packages</groupId>
-		<version>0.6.1</version>
+		<version>0.6.2-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.packages</groupId>
 	<artifactId>owsi-core-package-core-spring-jpa-app</artifactId>
-	<version>0.6.1</version>
+	<version>0.6.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Package - Core - Spring / JPA Application</name>
