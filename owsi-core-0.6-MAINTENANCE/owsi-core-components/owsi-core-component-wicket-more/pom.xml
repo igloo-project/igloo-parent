@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.openwide.core.components</groupId>
+		<artifactId>owsi-core-components</artifactId>
+		<version>0.6-SNAPSHOT</version>
+	</parent>
+
+	<groupId>fr.openwide.core.components</groupId>
+	<artifactId>owsi-core-component-wicket-more</artifactId>
+	<version>0.6-SNAPSHOT</version>
+	
+	<name>OWSI Core - Component - Wicket - More Wicket fun</name>
+	
+	<dependencies>
+		<!-- OWSI Core dependencies -->
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-wicket</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa-security</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- Bindgen -->
+		
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+			<version>${owsi-core.bindgen.version}</version>
+		</dependency>
+		
+		<!-- WiQuery -->
+		
+		<dependency>
+			<groupId>org.odlabs.wiquery</groupId>
+			<artifactId>wiquery</artifactId>
+			<version>${owsi-core.wiquery.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.jackson</groupId>
+					<artifactId>jackson-mapper-asl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${owsi-core.jackson.version}</version>
+		</dependency>
+		
+		<!--
+		Nécessaire car déclaré provided dans wiquery, ce qui ne suffit pas
+		See http://code.google.com/p/wiquery/issues/detail?id=148
+		-->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${owsi-core.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.asual.lesscss</groupId>
+			<artifactId>lesscss-engine</artifactId>
+			<version>${owsi-core.lesscss-engine.version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>org.bindgen</id>
+			<name>Bindgen Repository</name>
+			<url>http://repo.joist.ws</url>
+		</repository>
+		
+		<repository>
+			<id>com.asual.maven.public</id>
+			<name>Asual Public Repository</name>
+			<url>http://www.asual.com/maven/content/groups/public</url>
+		</repository>
+		
+		<repository>
+			<id>wiquery</id>
+			<name>WiQuery repository</name>
+			<url>http://wiquery.googlecode.com/svn/repo</url>
+		</repository>
+	</repositories>
+	
+</project>

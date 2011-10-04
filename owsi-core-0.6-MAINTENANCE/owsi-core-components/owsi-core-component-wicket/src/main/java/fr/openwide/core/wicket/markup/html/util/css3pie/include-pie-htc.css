@@ -1,0 +1,9 @@
+<!--[if lt IE 9]>
+<style type="text/css">
+	${styles} {
+		behavior:url(${pieHtcUrl});
+		position:relative;
+		zoom:1;
+	}
+</style>
+<![endif]-->
