@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-base</artifactId>
-	<version>0.6.1-SNAPSHOT</version>
+	<version>0.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Base</name>
@@ -86,7 +86,7 @@
 		<owsi-core.maven-compiler-plugin.version>2.3.2</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.8.1</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
-		<owsi-core.maven-release-plugin.version>2.2</owsi-core.maven-release-plugin.version>
+		<owsi-core.maven-release-plugin.version>2.2.1</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.2.1</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-processor-plugin.version>2.0.2</owsi-core.maven-processor-plugin.version>
