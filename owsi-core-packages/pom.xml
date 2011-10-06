@@ -11,7 +11,6 @@
 	
 	<groupId>fr.openwide.core.packages</groupId>
 	<artifactId>owsi-core-packages</artifactId>
-	<version>0.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Packages</name>
