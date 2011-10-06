@@ -8,9 +8,7 @@
 		<version>0.7-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>fr.openwide.core.dependencies</groupId>
 	<artifactId>owsi-core-dependency-core-spring-security</artifactId>
-	<version>0.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Dependency - Core - Spring Security</name>
