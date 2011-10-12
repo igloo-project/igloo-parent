@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.markup.html.pages.security;
+package fr.openwide.core.wicket.more.security.page;
 
 import org.apache.wicket.markup.html.WebPage;
 
