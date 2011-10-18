@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.markup.html.model;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.ComponentModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Give translation for a given enum. Reosurce key is built as in EnumLabel.
@@ -16,6 +17,14 @@ public class EnumLabelModel<E extends Enum<?>> extends ComponentModel<String> {
 	private IModel<E> enumValueModel;
 
 	private IModel<String> nullKeyModel;
+
+	public EnumLabelModel(E enumValue) {
+		this(Model.of(enumValue), null);
+	}
+
+	public EnumLabelModel(E enumValue, String nullKeyValue) {
+		this(Model.of(enumValue), Model.of(nullKeyValue));
+	}
 
 	public EnumLabelModel(IModel<E> enumValueModel) {
 		this(enumValueModel, null);
