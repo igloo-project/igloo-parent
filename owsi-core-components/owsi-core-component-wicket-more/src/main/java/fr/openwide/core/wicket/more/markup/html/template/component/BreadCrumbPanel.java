@@ -14,7 +14,7 @@ public class BreadCrumbPanel extends Panel {
 	public BreadCrumbPanel(String id, IModel<List<BreadCrumbElement>> breadCrumbModel) {
 		super(id, breadCrumbModel);
 		
-		add(new BreadCrumbListView("breadCrumbElement", breadCrumbModel));
+		add(new BreadCrumbListView("breadCrumbElementListView", breadCrumbModel));
 	}
 	
 	@SuppressWarnings("unchecked")

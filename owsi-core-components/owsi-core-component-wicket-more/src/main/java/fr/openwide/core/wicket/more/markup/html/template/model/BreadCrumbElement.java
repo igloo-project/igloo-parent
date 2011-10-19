@@ -15,6 +15,10 @@ public class BreadCrumbElement implements Serializable {
 	
 	private PageParameters pageParameters;
 	
+	public BreadCrumbElement(String labelKey) {
+		this(labelKey, null);
+	}
+	
 	public BreadCrumbElement(String labelKey, Class<? extends Page> pageClass) {
 		this(labelKey, pageClass, null);
 	}
