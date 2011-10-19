@@ -37,8 +37,6 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String NOTIFICATION_MAIL_SUBJECT_PREFIX = "notification.mail.subjectPrefix";
 	private static final String NOTIFICATION_TEST_EMAILS = "notification.test.emails";
 	
-	private static final String ACLS_CACHE_ENABLED = "acls.cacheEnabled";
-	
 	public String getVersion() {
 		return getPropertyAsString(VERSION_PROPERTY);
 	}
@@ -186,8 +184,4 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsStringArray(NOTIFICATION_TEST_EMAILS);
 	}
 
-	public boolean isAclsCacheEnabled() {
-		return getPropertyAsBoolean(ACLS_CACHE_ENABLED);
-	}
-	
 }
