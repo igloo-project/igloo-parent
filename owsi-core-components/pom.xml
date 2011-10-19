@@ -20,7 +20,6 @@
 		<module>owsi-core-component-commons</module>
 		<module>owsi-core-component-spring</module>
 		<module>owsi-core-component-hibernate</module>
-		<module>owsi-core-component-jpa</module>
 		<module>owsi-core-component-export</module>
 		<module>owsi-core-component-wicket</module>
 		<module>owsi-core-component-wicket-more</module>
