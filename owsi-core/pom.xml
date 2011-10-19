@@ -41,6 +41,12 @@
 				<module>owsi-core-packages</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>cli</id>
+			<build>
+				<directory>${project.basedir}/target-cli</directory>
+			</build>
+		</profile>
 	</profiles>
 	
 	<!-- Version du maven-release-plugin / ne pas supprimer -->

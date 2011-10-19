@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.ehcache.CacheManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.AccessControlEntryImpl;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
+import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.AccessControlEntry;
 import org.springframework.security.acls.model.Acl;
@@ -23,11 +28,16 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.acl.domain.CoreAcl;
 import fr.openwide.core.jpa.security.acl.domain.PersonGroupSid;
 import fr.openwide.core.jpa.security.acl.domain.hierarchy.IPermissionHierarchy;
+import fr.openwide.core.jpa.security.acl.util.AclCacheContainer;
+import fr.openwide.core.jpa.security.acl.util.AclCacheRegion;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
+import fr.openwide.core.spring.config.CoreConfigurer;
 
 public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implements AclService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreAclServiceImpl.class);
 	
 	@Autowired
 	private IPermissionHierarchy permissionHierarchy;
@@ -35,7 +45,23 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	@Autowired
 	private IPermissionRegistryService permissionRegistryService;
 	
+	@Autowired(required = false)
+	private CacheManager cacheManager;
+	
+	@Autowired
+	private CoreConfigurer configurer;
+	
+	private final AclCacheContainer<ObjectIdentity, List<AccessControlEntry>> cacheContainer;
+	
+	private final boolean cacheEnabled;
+	
 	public AbstractCoreAclServiceImpl() {
+		cacheEnabled = configurer.isAclsCacheEnabled();
+		if (cacheEnabled) {
+			cacheContainer = new AclCacheContainer<ObjectIdentity, List<AccessControlEntry>>(cacheManager, AclCacheRegion.ACLS);
+		} else {
+			cacheContainer = null;
+		}
 	}
 	
 	@Override
@@ -89,7 +115,17 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		
 		CoreAcl acl = new CoreAcl(permissionHierarchy, objectIdentity, requiredSids);
 		
-		List<AccessControlEntry> aces = getAccessControlEntriesForEntity(acl, objectIdentityEntity);
+		List<AccessControlEntry> aces = null;
+		if (cacheEnabled) {
+			aces = cacheContainer.get(objectIdentity);
+			
+			if (aces == null) {
+				aces = getAccessControlEntriesForEntity(acl, objectIdentityEntity);
+			}
+		} else {
+			aces = getAccessControlEntriesForEntity(acl, objectIdentityEntity);
+		}
+		
 		if (aces != null) {
 			aces.addAll(getAdminAccessControlEntries(acl));
 			
@@ -145,6 +181,19 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		builder.append(permissionRegistryService.getPermissionName(permission));
 		
 		return builder.toString();
+	}
+	
+	protected void removeEntity(GenericEntity<?, ?> entity) {
+		if (entity == null || entity.getId() == null) {
+			LOGGER.warn("Cache remove of null or id null entity is ignored");
+			return;
+		}
+		ObjectIdentity oi = new ObjectIdentityImpl(entity.getClass(), entity.getId());
+		cacheContainer.remove(oi);
+	}
+	
+	protected void removeAllCachedAcls() {
+		cacheContainer.removeAll();
 	}
 
 }
