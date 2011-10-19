@@ -51,18 +51,15 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	
 	private final CacheContainer<ObjectIdentity, List<AccessControlEntry>> cacheContainer;
 	
-	private final boolean cacheEnabled;
-	
-	public AbstractCoreAclServiceImpl(boolean cacheEnabled) {
-		this.cacheEnabled = cacheEnabled;
-		if (cacheEnabled) {
+	public AbstractCoreAclServiceImpl() {
+		if (isCacheEnabled()) {
 			cacheContainer = new CacheContainer<ObjectIdentity, List<AccessControlEntry>>(cacheManager, new AclCacheRegion());
 		} else {
 			cacheContainer = null;
 		}
 	}
 	
-	
+	protected abstract boolean isCacheEnabled();
 	
 	@Override
 	public List<ObjectIdentity> findChildren(ObjectIdentity parentIdentity) {
@@ -116,7 +113,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		CoreAcl acl = new CoreAcl(permissionHierarchy, objectIdentity, requiredSids);
 		
 		List<AccessControlEntry> aces = null;
-		if (cacheEnabled) {
+		if (isCacheEnabled()) {
 			aces = cacheContainer.get(objectIdentity);
 			
 			if (aces == null) {
