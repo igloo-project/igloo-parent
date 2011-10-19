@@ -34,14 +34,14 @@
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
 		
-		<owsi-core.spring-security.version>3.0.5.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>3.0.7.RELEASE</owsi-core.spring-security.version>
 		
 		<owsi-core.spring-ldap.version>1.3.1.RELEASE</owsi-core.spring-ldap.version>
 		
 		<owsi-core.hibernate-search.version>3.4.1.Final</owsi-core.hibernate-search.version>
 		<owsi-core.lucene.version>3.1.0</owsi-core.lucene.version>
 		
-		<owsi-core.quartz.version>1.8.4</owsi-core.quartz.version>
+		<owsi-core.quartz.version>1.8.5</owsi-core.quartz.version>
 
 		<owsi-core.commons-io.version>2.0.1</owsi-core.commons-io.version>
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
@@ -56,7 +56,7 @@
 		<owsi-core.log4j.version>1.2.16</owsi-core.log4j.version>
 		
 		<owsi-core.opencsv.version>2.1</owsi-core.opencsv.version>
-		<owsi-core.freemarker.version>2.3.16</owsi-core.freemarker.version>
+		<owsi-core.freemarker.version>2.3.18</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		<owsi-core.poi.version>3.7</owsi-core.poi.version>
 		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
@@ -82,7 +82,7 @@
 		<owsi-core.maven-compiler-plugin.version>2.3.2</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.8.1</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
-		<owsi-core.maven-release-plugin.version>2.1</owsi-core.maven-release-plugin.version>
+		<owsi-core.maven-release-plugin.version>2.2.1</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.2.1</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-processor-plugin.version>2.0.2</owsi-core.maven-processor-plugin.version>
