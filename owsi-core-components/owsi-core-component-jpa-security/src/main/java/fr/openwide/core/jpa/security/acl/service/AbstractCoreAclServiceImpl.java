@@ -31,7 +31,6 @@ import fr.openwide.core.jpa.security.acl.domain.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.cache.CacheContainer;
 import fr.openwide.core.spring.util.cache.CacheRegion;
 
@@ -50,21 +49,20 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	@Autowired(required = false)
 	private CacheManager cacheManager;
 	
-	@Autowired
-	private CoreConfigurer configurer;
-	
 	private final CacheContainer<ObjectIdentity, List<AccessControlEntry>> cacheContainer;
 	
 	private final boolean cacheEnabled;
 	
-	public AbstractCoreAclServiceImpl() {
-		cacheEnabled = configurer.isAclsCacheEnabled();
+	public AbstractCoreAclServiceImpl(boolean cacheEnabled) {
+		this.cacheEnabled = cacheEnabled;
 		if (cacheEnabled) {
 			cacheContainer = new CacheContainer<ObjectIdentity, List<AccessControlEntry>>(cacheManager, new AclCacheRegion());
 		} else {
 			cacheContainer = null;
 		}
 	}
+	
+	
 	
 	@Override
 	public List<ObjectIdentity> findChildren(ObjectIdentity parentIdentity) {
