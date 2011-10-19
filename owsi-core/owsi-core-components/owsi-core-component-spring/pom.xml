@@ -58,6 +58,12 @@
 			<version>${owsi-core.junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+	
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${owsi-core.ehcache.version}</version>
+		</dependency>
 		
 	</dependencies>
 	

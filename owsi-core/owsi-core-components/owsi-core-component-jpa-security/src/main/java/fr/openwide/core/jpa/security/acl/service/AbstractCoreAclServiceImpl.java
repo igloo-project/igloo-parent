@@ -28,16 +28,18 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.acl.domain.CoreAcl;
 import fr.openwide.core.jpa.security.acl.domain.PersonGroupSid;
 import fr.openwide.core.jpa.security.acl.domain.hierarchy.IPermissionHierarchy;
-import fr.openwide.core.jpa.security.acl.util.AclCacheContainer;
-import fr.openwide.core.jpa.security.acl.util.AclCacheRegion;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.util.cache.CacheContainer;
+import fr.openwide.core.spring.util.cache.CacheRegion;
 
 public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implements AclService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreAclServiceImpl.class);
+	
+	private static final String ACL_CACHE_REGION_NAME = "core.acls";
 	
 	@Autowired
 	private IPermissionHierarchy permissionHierarchy;
@@ -51,14 +53,14 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	@Autowired
 	private CoreConfigurer configurer;
 	
-	private final AclCacheContainer<ObjectIdentity, List<AccessControlEntry>> cacheContainer;
+	private final CacheContainer<ObjectIdentity, List<AccessControlEntry>> cacheContainer;
 	
 	private final boolean cacheEnabled;
 	
 	public AbstractCoreAclServiceImpl() {
 		cacheEnabled = configurer.isAclsCacheEnabled();
 		if (cacheEnabled) {
-			cacheContainer = new AclCacheContainer<ObjectIdentity, List<AccessControlEntry>>(cacheManager, AclCacheRegion.ACLS);
+			cacheContainer = new CacheContainer<ObjectIdentity, List<AccessControlEntry>>(cacheManager, new AclCacheRegion());
 		} else {
 			cacheContainer = null;
 		}
@@ -194,6 +196,14 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	
 	protected void removeAllCachedAcls() {
 		cacheContainer.removeAll();
+	}
+	
+	private static class AclCacheRegion implements CacheRegion {
+		
+		@Override
+		public String getName() {
+			return ACL_CACHE_REGION_NAME;
+		}
 	}
 
 }
