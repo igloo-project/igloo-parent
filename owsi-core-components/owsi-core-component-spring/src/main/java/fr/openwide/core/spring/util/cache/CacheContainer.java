@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.security.acl.util;
+package fr.openwide.core.spring.util.cache;
 
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
@@ -7,19 +7,19 @@ import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class AclCacheContainer<K, V> {
+public class CacheContainer<K, V> {
 
-	private static final Log LOGGER = LogFactory.getLog(AclCacheContainer.class);
+	private static final Log LOGGER = LogFactory.getLog(CacheContainer.class);
 	
-	private final AclCacheRegion cacheRegion;
+	private final CacheRegion cacheRegion;
 
 	private final Ehcache cache;
 	
-	public AclCacheContainer(final CacheManager cacheManager, final AclCacheRegion cacheRegion) {
+	public CacheContainer(final CacheManager cacheManager, final CacheRegion cacheRegion) {
 		this(cacheManager, cacheRegion, true);
 	}
 
-	public AclCacheContainer(final CacheManager cacheManager, final AclCacheRegion cacheRegion, boolean cacheEnabled) {
+	public CacheContainer(final CacheManager cacheManager, final CacheRegion cacheRegion, boolean cacheEnabled) {
 		if (cacheEnabled) {
 			cache = cacheManager.getEhcache(cacheRegion.getName());
 			

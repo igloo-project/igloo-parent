@@ -201,12 +201,6 @@
 			<artifactId>c3p0</artifactId>
 			<version>${owsi-core.c3p0.version}</version>
 		</dependency>
-	
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<version>${owsi-core.ehcache.version}</version>
-		</dependency>
 	</dependencies>
 	
 	<build>
