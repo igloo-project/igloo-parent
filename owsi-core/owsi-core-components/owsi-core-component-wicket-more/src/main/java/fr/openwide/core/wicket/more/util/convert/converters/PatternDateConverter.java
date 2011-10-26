@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.converters.AbstractConverter;
 import org.apache.wicket.util.string.Strings;
 
@@ -12,11 +14,26 @@ public class PatternDateConverter extends AbstractConverter {
 	
 	private static final long serialVersionUID = 5741008524800373419L;
 
-	private String datePattern;
+	private IModel<String> datePatternModel;
 
-	public PatternDateConverter(String datePattern) {
+	/**
+	 * Caller must take care of :
+	 * <ul>
+	 * <li>Model binding to a component</li>
+	 * <li>Model detaching</li>
+	 * </ul>
+	 */
+	public PatternDateConverter(IModel<String> datePatternModel) {
 		super();
-		this.datePattern = datePattern;
+		this.datePatternModel = datePatternModel;
+	}
+
+	/**
+	 * Back compatibility constructor. If pattern is taken from translations, then you should use a ResourceModel
+	 * with the IModel&lt;String> constructor
+	 */
+	public PatternDateConverter(String datePattern) {
+		this(Model.of(datePattern));
 	}
 
 	@Override
@@ -46,7 +63,7 @@ public class PatternDateConverter extends AbstractConverter {
 			locale = Locale.ENGLISH;
 		}
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern, locale);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(datePatternModel.getObject(), locale);
 		return dateFormat;
 	}
 	
