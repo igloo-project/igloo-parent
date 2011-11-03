@@ -72,6 +72,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 	
 	@Override
 	public void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+		FileOutputStream outputStream = null;
 		try {
 			String filePath = getFilePath(fileKey, extension);
 			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
@@ -81,13 +82,23 @@ public class SimpleFileStoreImpl implements IFileStore {
 					FileUtils.forceMkdir(dir);
 				}
 			}
-			IOUtils.copy(inputStream, new FileOutputStream(new File(filePath)));
+			
+			outputStream = new FileOutputStream(new File(filePath));
+			IOUtils.copy(inputStream, outputStream);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
+				} catch (IOException e) {
+					throw new ServiceException(e);
+				}
+			}
+			
+			if (outputStream != null) {
+				try {
+					outputStream.close();
 				} catch (IOException e) {
 					throw new ServiceException(e);
 				}
