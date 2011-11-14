@@ -52,17 +52,20 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public File getTmpDirectory() {
 		String tmpPath = getPropertyAsString(TMP_PATH);
-		File tmpDirectory = new File(tmpPath);
 		
-		if (tmpDirectory.isDirectory() && tmpDirectory.canWrite()) {
-			return tmpDirectory;
-		}
-		if (!tmpDirectory.exists()) {
-			try {
-				FileUtils.forceMkdir(tmpDirectory);
+		if (StringUtils.hasText(tmpPath)) {
+			File tmpDirectory = new File(tmpPath);
+			
+			if (tmpDirectory.isDirectory() && tmpDirectory.canWrite()) {
 				return tmpDirectory;
-			} catch (Exception e) {
-				throw new IllegalStateException("The tmp directory " + tmpPath + " does not exist and it is impossible to create it.");
+			}
+			if (!tmpDirectory.exists()) {
+				try {
+					FileUtils.forceMkdir(tmpDirectory);
+					return tmpDirectory;
+				} catch (Exception e) {
+					throw new IllegalStateException("The tmp directory " + tmpPath + " does not exist and it is impossible to create it.");
+				}
 			}
 		}
 		throw new IllegalStateException("The tmp directory " + tmpPath + " is not writable.");
