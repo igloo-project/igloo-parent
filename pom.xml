@@ -10,13 +10,38 @@
 	<name>OWSI Core</name>
 	<description>Capitalisation pour diverses technologies couramment utilisées sur les projets OWSI</description>
 	
-	<modules>
-		<module>owsi-core-dependencies</module>
-		<module>owsi-core-parents</module>
-		<module>owsi-core-components</module>
-		<module>owsi-core-examples</module>
-		<module>owsi-core-packages</module>
-	</modules>
+	<profiles>
+		<profile>
+			<id>owsi-core-release</id>
+			<activation>
+				<property>
+					<name>distribution</name>
+					<value>owsi-core-release</value>
+				</property>
+			</activation>
+			<modules>
+				<module>owsi-core-dependencies</module>
+				<module>owsi-core-parents</module>
+				<module>owsi-core-components</module>
+				<module>owsi-core-packages</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>all</id>
+			<activation>
+				<property>
+					<name>!distribution</name>
+				</property>
+			</activation>
+			<modules>
+				<module>owsi-core-dependencies</module>
+				<module>owsi-core-parents</module>
+				<module>owsi-core-components</module>
+				<module>owsi-core-examples</module>
+				<module>owsi-core-packages</module>
+			</modules>
+		</profile>
+	</profiles>
 	
 	<build>
 		<pluginManagement>
