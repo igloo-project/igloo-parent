@@ -178,11 +178,11 @@ public class CoreSecurityServiceImpl implements SecurityService {
 		}
 	}
 
-	private Authentication getAuthentication(Person person) {
+	protected Authentication getAuthentication(Person person) {
 		return getAuthentication(person.getUserName());
 	}
 	
-	private Authentication getAuthentication(String userName) {
+	protected Authentication getAuthentication(String userName) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 		
 		Authentication authentication = new RunAsUserToken(

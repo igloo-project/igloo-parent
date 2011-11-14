@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import fr.openwide.core.hibernate.business.generic.model.GenericEntity;
@@ -62,6 +63,10 @@ public class CoreAuthenticationServiceImpl implements AuthenticationService {
 	@Override
 	public void signOut() {
 		AuthenticationUtil.setAuthentication(null);
+	}
+	
+	protected Authentication getAuthentication() {
+		return AuthenticationUtil.getAuthentication();
 	}
 
 }
