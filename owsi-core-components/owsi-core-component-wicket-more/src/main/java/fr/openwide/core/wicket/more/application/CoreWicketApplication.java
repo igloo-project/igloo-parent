@@ -51,10 +51,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationPages();
 	}
 	
-	void mountCommonPages() {
+	protected void mountCommonPages() {
 	}
 	
-	void mountCommonResources() {
+	protected void mountCommonResources() {
 		mountStaticResourceDirectory("/common", AbstractWebPageTemplate.class);
 	}
 	
