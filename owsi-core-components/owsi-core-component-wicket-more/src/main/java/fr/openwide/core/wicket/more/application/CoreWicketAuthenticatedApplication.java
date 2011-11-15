@@ -62,7 +62,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	}
 	
 	@Override
-	void mountCommonPages() {
+	protected void mountCommonPages() {
 		super.mountCommonPages();
 		
 		mountBookmarkablePage("/logout/", LogoutPage.class);
