@@ -70,14 +70,33 @@ public class SimpleFileStoreImpl implements FileStore {
 	}
 	
 	protected void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException {
+		FileOutputStream outputStream = null;
 		try {
-			IOUtils.copy(inputStream, new FileOutputStream(new File(getFilePath(fileKey, extension))));
+			String filePath = getFilePath(fileKey, extension);
+			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
+			if (StringUtils.hasLength(dirPath)) {
+				File dir = new File(dirPath);
+				if (!dir.isDirectory()) {
+					FileUtils.forceMkdir(dir);
+				}
+			}
+			
+			outputStream = new FileOutputStream(new File(filePath));
+			IOUtils.copy(inputStream, outputStream);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
+				} catch (IOException e) {
+					throw new ServiceException(e);
+				}
+			}
+			
+			if (outputStream != null) {
+				try {
+					outputStream.close();
 				} catch (IOException e) {
 					throw new ServiceException(e);
 				}
