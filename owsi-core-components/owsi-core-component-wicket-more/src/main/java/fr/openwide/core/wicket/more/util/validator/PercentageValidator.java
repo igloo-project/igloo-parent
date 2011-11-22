@@ -20,13 +20,15 @@ public class PercentageValidator<N extends Number & Comparable<N>> extends Range
 	@Override
 	public void validate(IValidatable<N> validatable) {
 		N percentage = validatable.getValue();
-		final N min = getMinimum();
-		final N max = getMaximum();
-		if (percentage.compareTo(min) < 0 || percentage.compareTo(max) > 0)
-		{
-			ValidationError error = new ValidationError();
-			error.addMessageKey("percentageValidator.error");
-			validatable.error(error);
+		
+		if (percentage != null) {
+			final N min = getMinimum();
+			final N max = getMaximum();
+			if (percentage.compareTo(min) < 0 || percentage.compareTo(max) > 0) {
+				ValidationError error = new ValidationError();
+				error.addMessageKey("percentageValidator.error");
+				validatable.error(error);
+			}
 		}
 	}
 }
