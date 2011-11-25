@@ -22,7 +22,6 @@ public abstract class StringResourceImpl extends ReloadableResourceBundleMessage
 	public StringResourceImpl(CoreConfigurer configurer) {
 		super();
 		setDefaultEncoding("utf-8");
-		setBasenames(getResourceBundleBaseNames(configurer));
 		DEFAULT_LOCALE = configurer.getDefaultLocale();
 	}
 	
@@ -128,6 +127,4 @@ public abstract class StringResourceImpl extends ReloadableResourceBundleMessage
 			return variable.toString();
 		}
 	}
-	
-	public abstract String[] getResourceBundleBaseNames(CoreConfigurer configurer);
 }
