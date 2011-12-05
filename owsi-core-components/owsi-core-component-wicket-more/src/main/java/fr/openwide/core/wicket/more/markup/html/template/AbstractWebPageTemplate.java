@@ -111,7 +111,7 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 			boolean oneElementBreadcrumb = (breadCrumbElements.size() == 1);
 			
 			for (BreadCrumbElement breadCrumbElement : breadCrumbElements) {
-				if (oneElementBreadcrumb || !breadCrumbElement.getPageClass().equals(getApplication().getHomePage())) {
+				if (oneElementBreadcrumb || !getApplication().getHomePage().equals(breadCrumbElement.getPageClass())) {
 					sb.append(META_TITLE_SEPARATOR);
 					sb.append(getLocalizer().getString(breadCrumbElement.getLabelKey(), this, breadCrumbElement.getLabelKey()));
 				}
