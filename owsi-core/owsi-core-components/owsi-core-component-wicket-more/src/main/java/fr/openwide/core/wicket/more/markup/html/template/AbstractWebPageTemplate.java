@@ -46,20 +46,32 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 	}
 	
 	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass) {
-		addMenuElement(selectedPageClass, name, pageClass, null);
+		addMenuElement(this, selectedPageClass, name, pageClass, null, true);
 	}
 	
-	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass, PageParameters parameters) {
-		addMenuElement(this, selectedPageClass, name, pageClass, parameters);
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
+			boolean isVisible) {
+		addMenuElement(this, selectedPageClass, name, pageClass, null, isVisible);
+	}
+	
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
+			PageParameters parameters) {
+		addMenuElement(this, selectedPageClass, name, pageClass, parameters, true);
+	}
+	
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
+			PageParameters parameters, boolean isVisible) {
+		addMenuElement(this, selectedPageClass, name, pageClass, parameters, isVisible);
 	}
 	
 	protected void addMenuElement(MarkupContainer menuContainer,
 			Class<? extends Page> selectedPageClass,
 			String name,
 			Class<? extends Page> pageClass,
-			PageParameters parameters) {
+			PageParameters parameters,
+			boolean isVisible) {
 		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLinkContainer", pageClass, parameters);
-		link.setVisible(isPageAccessible(pageClass));
+		link.setVisible(isVisible && isPageAccessible(pageClass));
 		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLink");
 		if (pageClass.equals(selectedPageClass)) {
