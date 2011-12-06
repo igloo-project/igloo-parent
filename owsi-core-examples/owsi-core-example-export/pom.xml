@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<version>0.5.5</version>
+		<version>0.5.6-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-export</artifactId>
-	<version>0.5.5</version>
+	<version>0.5.6-SNAPSHOT</version>
 
 	<name>OWSI Core - Example - Export PDF/XLS</name>
 	<description>Capitalisation OWSI des développements d'exports PDF et Excel</description>
