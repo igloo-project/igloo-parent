@@ -42,7 +42,12 @@ public abstract class StringResourceImpl extends ReloadableResourceBundleMessage
 	}
 	
 	public String getString(String key, Map<String, Object> variableMap, Locale locale) {
-		return interpolate(getMessage(key, null, key, locale), variableMap, locale);
+		String value = getMessage(key, null, null, locale);
+		if (value == null) {
+			return null;
+		} else {
+			return interpolate(value, variableMap, locale);
+		}
 	}
 	
 	protected String interpolate(final String string, final Map<String, Object> variableMap, final Locale locale) {
