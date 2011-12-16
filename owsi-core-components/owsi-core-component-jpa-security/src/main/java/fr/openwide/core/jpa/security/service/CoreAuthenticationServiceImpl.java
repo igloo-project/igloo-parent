@@ -26,7 +26,7 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	}
 	
 	@Override
-	public Collection<GrantedAuthority> getAuthorities() {
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthenticationUtil.getAuthorities();
 	}
 

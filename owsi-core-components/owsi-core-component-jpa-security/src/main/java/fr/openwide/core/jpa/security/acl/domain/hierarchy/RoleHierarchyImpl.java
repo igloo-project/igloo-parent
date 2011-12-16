@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.hierarchicalroles.CycleInRoleHierarchyException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * OW: cette classe a été extraite de spring-security pour implémenter Serializable ;
@@ -117,7 +117,7 @@ public class RoleHierarchyImpl implements RoleHierarchy, Serializable {
         buildRolesReachableInOneOrMoreStepsMap();
     }
 
-    public Collection<GrantedAuthority> getReachableGrantedAuthorities(Collection<GrantedAuthority> authorities) {
+    public Collection<? extends GrantedAuthority> getReachableGrantedAuthorities(Collection<? extends GrantedAuthority> authorities) {
         if (authorities == null || authorities.size() == 0) {
             return null;
         }
@@ -152,8 +152,8 @@ public class RoleHierarchyImpl implements RoleHierarchy, Serializable {
         rolesReachableInOneStepMap = new HashMap<GrantedAuthority, Set<GrantedAuthority>>();
 
         while (roleHierarchyMatcher.find()) {
-            GrantedAuthority higherRole = new GrantedAuthorityImpl(roleHierarchyMatcher.group(2));
-            GrantedAuthority lowerRole = new GrantedAuthorityImpl(roleHierarchyMatcher.group(3));
+            GrantedAuthority higherRole = new SimpleGrantedAuthority(roleHierarchyMatcher.group(2));
+            GrantedAuthority lowerRole = new SimpleGrantedAuthority(roleHierarchyMatcher.group(3));
             Set<GrantedAuthority> rolesReachableInOneStepSet = null;
 
             if (!rolesReachableInOneStepMap.containsKey(higherRole)) {

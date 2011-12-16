@@ -16,10 +16,10 @@ import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -39,7 +39,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@GeneratedValue
 	private Integer id;
 
-	@Field(index=Index.TOKENIZED, store=Store.NO)
+	@Field(analyze=Analyze.NO, store=Store.NO)
 	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
 	private String name;
 	

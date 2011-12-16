@@ -92,7 +92,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 			}
 			
 			if (roles.isEmpty()) {
-				Collection<GrantedAuthority> authorities = authenticationService.getAuthorities();
+				Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
 				for (GrantedAuthority authority : authorities) {
 					roles.add(authority.getAuthority());
 				}

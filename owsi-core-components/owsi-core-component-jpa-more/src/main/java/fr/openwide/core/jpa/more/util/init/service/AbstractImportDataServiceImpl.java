@@ -21,7 +21,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.core.convert.support.ConversionServiceFactory;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
@@ -199,10 +199,11 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	private GenericConversionService getConversionService(GenericConverter... converters) {
 		GenericConversionService service = new GenericConversionService();
 		
-		ConversionServiceFactory.addDefaultConverters(service);
 		for (GenericConverter converter : converters) {
 			service.addConverter(converter);
 		}
+		
+		DefaultConversionService.addDefaultConverters(service);
 		
 		return service;
 	}

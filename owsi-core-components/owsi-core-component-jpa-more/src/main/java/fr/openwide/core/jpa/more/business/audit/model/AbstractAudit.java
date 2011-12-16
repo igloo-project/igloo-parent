@@ -25,11 +25,11 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.bridge.builtin.IntegerNumericFieldBridge;
 
 import fr.openwide.core.commons.util.CloneUtils;
@@ -78,7 +78,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant de l'objet contexte.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer contextId;
 
@@ -96,7 +96,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant du sujet ayant effectué l'action.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer subjectId;
 
@@ -114,7 +114,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant de l'objet.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer objectId;
 
@@ -132,7 +132,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant de l'objet secondaire.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), index = Index.UN_TOKENIZED,
+	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer secondaryObjectId;
 
