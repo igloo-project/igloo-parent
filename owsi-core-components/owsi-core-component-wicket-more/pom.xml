@@ -60,7 +60,7 @@
 		-->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${owsi-core.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
