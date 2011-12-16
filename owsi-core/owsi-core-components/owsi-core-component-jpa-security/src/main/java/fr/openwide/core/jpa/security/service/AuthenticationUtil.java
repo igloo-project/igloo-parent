@@ -33,7 +33,7 @@ final class AuthenticationUtil {
 		return userName;
 	}
 	
-	static Collection<GrantedAuthority> getAuthorities() {
+	static Collection<? extends GrantedAuthority> getAuthorities() {
 		return getAuthentication().getAuthorities();
 	}
 	

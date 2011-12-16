@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,7 +49,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	protected void addAuthorities(Set<GrantedAuthority> grantedAuthorities, Set<Authority> authorities) {
 		for (Authority authority : authorities) {
-			grantedAuthorities.add(new GrantedAuthorityImpl(authority.getName()));
+			grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
 		}
 	}
 	

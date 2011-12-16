@@ -7,7 +7,7 @@ import org.springframework.security.access.intercept.RunAsImplAuthenticationProv
 import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 
@@ -24,7 +24,7 @@ public class RunAsSystemToken extends RunAsUserToken {
 	protected static final List<GrantedAuthority> SYSTEM_AUTHORITIES = new ArrayList<GrantedAuthority>();
 	
 	static {
-		SYSTEM_AUTHORITIES.add(new GrantedAuthorityImpl(CoreAuthorityConstants.ROLE_SYSTEM));
+		SYSTEM_AUTHORITIES.add(new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM));
 	}
 	
 	/**

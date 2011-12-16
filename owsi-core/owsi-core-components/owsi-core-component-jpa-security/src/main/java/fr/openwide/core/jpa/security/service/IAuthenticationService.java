@@ -13,7 +13,7 @@ public interface IAuthenticationService {
 	
 	boolean isLoggedIn();
 	
-	Collection<GrantedAuthority> getAuthorities();
+	Collection<? extends GrantedAuthority> getAuthorities();
 
 	boolean hasSystemRole();
 	

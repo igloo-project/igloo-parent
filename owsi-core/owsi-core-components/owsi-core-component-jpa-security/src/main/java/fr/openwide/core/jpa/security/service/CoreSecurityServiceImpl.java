@@ -116,7 +116,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	@Override
 	public boolean hasRole(Authentication authentication, String role) {
 		if(authentication != null && role != null) {
-			Collection<GrantedAuthority> authorities = authentication.getAuthorities();
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 			// Attempt to find a matching granted authority
 			for (GrantedAuthority authority : authorities) {
 				if (role.equals(authority.getAuthority())) {

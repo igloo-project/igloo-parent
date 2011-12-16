@@ -11,7 +11,7 @@ import org.springframework.security.access.intercept.RunAsManagerImpl;
 import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class CoreRunAsManagerImpl extends RunAsManagerImpl {
 
@@ -28,7 +28,7 @@ public class CoreRunAsManagerImpl extends RunAsManagerImpl {
 		for (ConfigAttribute attribute : attributes) {
 			if (this.supports(attribute)) {
 				List<GrantedAuthority> extraAuthorities = new ArrayList<GrantedAuthority>();
-				extraAuthorities.add(new GrantedAuthorityImpl(getRolePrefix()
+				extraAuthorities.add(new SimpleGrantedAuthority(getRolePrefix()
 						+ attribute.getAttribute().replaceFirst(RUN_AS_PREFIX, "")));
 				newAuthorities.addAll(roleHierarchy.getReachableGrantedAuthorities(extraAuthorities));
 			}
