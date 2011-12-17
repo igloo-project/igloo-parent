@@ -17,18 +17,22 @@
 
 package fr.openwide.core.wicket.more.markup.html.image;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 
 public class BooleanImage extends Image {
 	private static final long serialVersionUID = 174241024446763272L;
 	
-	private static final ResourceReference IMAGE_TRUE = new ResourceReference(AbstractWebPageTemplate.class, "images/icons/tick.png");
-	private static final ResourceReference IMAGE_FALSE = new ResourceReference(AbstractWebPageTemplate.class, "images/icons/cross.png");
+	private static final ResourceReference IMAGE_TRUE =
+			new PackageResourceReference(AbstractWebPageTemplate.class, "images/icons/tick.png");
+	
+	private static final ResourceReference IMAGE_FALSE =
+			new PackageResourceReference(AbstractWebPageTemplate.class, "images/icons/cross.png");
 	
 	public BooleanImage(String id, IModel<Boolean> model) {
 		super(id, model);

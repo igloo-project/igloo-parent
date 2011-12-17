@@ -19,13 +19,13 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 
 import java.util.Locale;
 
-import org.apache.wicket.util.convert.converters.AbstractConverter;
+import org.apache.wicket.util.convert.converter.AbstractConverter;
 import org.bindgen.Binding;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
-class GenericListItemConverter extends AbstractConverter {
+class GenericListItemConverter extends AbstractConverter<GenericListItem<?>> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
@@ -36,12 +36,12 @@ class GenericListItemConverter extends AbstractConverter {
 	}
 
 	@Override
-	public Object convertToObject(String value, Locale locale) {
+	public GenericListItem<?> convertToObject(String value, Locale locale) {
 		throw new IllegalAccessError();
 	}
 
 	@Override
-	public String convertToString(Object value, Locale locale) {
+	public String convertToString(GenericListItem<?> value, Locale locale) {
 		if (value == null) {
 			return "";
 		} else {
@@ -49,9 +49,10 @@ class GenericListItemConverter extends AbstractConverter {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected Class<?> getTargetType() {
-		return GenericListItem.class;
+	protected Class<GenericListItem<?>> getTargetType() {
+		return (Class<GenericListItem<?>>) (Object) GenericListItem.class;
 	}
 
 }

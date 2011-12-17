@@ -16,7 +16,7 @@ public class OddEvenListItem<T> extends ListItem<T> {
 	public OddEvenListItem(int index, IModel<T> model) {
 		super(index, model);
 		
-		add(new AttributeAppender(ATTRIBUTE_CLASS, true, new Model<String>((index % 2 == 0) ? CLASS_EVEN : CLASS_ODD), " "));
+		add(new AttributeAppender(ATTRIBUTE_CLASS, new Model<String>((index % 2 == 0) ? CLASS_EVEN : CLASS_ODD), " "));
 	}
 	
 }

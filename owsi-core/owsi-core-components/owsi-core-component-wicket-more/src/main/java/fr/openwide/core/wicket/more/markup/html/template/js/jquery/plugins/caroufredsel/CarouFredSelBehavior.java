@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
-import org.odlabs.wiquery.core.commons.CoreJavaScriptResourceReference;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 
@@ -22,19 +22,12 @@ public class CarouFredSelBehavior extends WiQueryAbstractBehavior {
 	public JsStatement statement() {
 		return new JsStatement().$(getComponent()).chain(carouFredSel);
 	}
-
+	
 	@Override
-	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
-		wiQueryResourceManager.addJavaScriptResource(CoreJavaScriptResourceReference.get());
-		wiQueryResourceManager.addJavaScriptResource(EasingJavaScriptResourceReference.get());
-		wiQueryResourceManager.addJavaScriptResource(CarouFredSelJavaScriptResourceReference.get());
-		super.contribute(wiQueryResourceManager);
-	}
-
-	@Override
-	public void bind(Component component) {
-		component.setOutputMarkupId(true);
-		super.bind(component);
+	public void renderHead(Component component, IHeaderResponse response) {
+		response.renderJavaScriptReference(CoreJavaScriptResourceReference.get());
+		response.renderJavaScriptReference(EasingJavaScriptResourceReference.get());
+		response.renderJavaScriptReference(CarouFredSelJavaScriptResourceReference.get());
 	}
 
 }

@@ -17,14 +17,13 @@
 
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.convert.converters.AbstractConverter;
+import org.apache.wicket.util.convert.converter.AbstractConverter;
 import org.bindgen.Binding;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
@@ -65,12 +64,17 @@ public class GenericListItemListLabel extends Label {
 		this(id, model, GENERIC_LIST_ITEM_BINDING.label(), DEFAULT_SEPARATOR);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IConverter getConverter(Class<?> type) {
-		return new GenericListItemListConverter(separator);
+	public <C> IConverter<C> getConverter(Class<C> type) {
+		if (List.class.isAssignableFrom(type)) {
+			return (IConverter<C>) new GenericListItemListConverter(separator);
+		} else {
+			return super.getConverter(type);
+		}
 	}
 	
-	private class GenericListItemListConverter extends AbstractConverter {
+	private class GenericListItemListConverter extends AbstractConverter<List<GenericListItem<?>>> {
 		private static final long serialVersionUID = 1L;
 		
 		private final String separator;
@@ -80,31 +84,26 @@ public class GenericListItemListLabel extends Label {
 		}
 
 		@Override
-		public Object convertToObject(String value, Locale locale) {
+		public List<GenericListItem<?>> convertToObject(String value, Locale locale) {
 			throw new IllegalAccessError();
 		}
 		
 		@Override
-		public String convertToString(Object value, Locale locale) {
-			if (value instanceof List) {
-				List<?> items = (List<?>) value;
-				StringBuilder sb = new StringBuilder();
-				for (Object item : items) {
-					if (item instanceof GenericListItem) {
-						if (sb.length() > 0) {
-							sb.append(this.separator);
-						}
-						sb.append(SpringBeanUtils.getBeanWrapper(item).getPropertyValue(binding.getPath()));
-					}
+		public String convertToString(List<GenericListItem<?>> value, Locale locale) {
+			StringBuilder sb = new StringBuilder();
+			for (GenericListItem<?> item : value) {
+				if (sb.length() > 0) {
+					sb.append(this.separator);
 				}
-				return sb.toString();
+				sb.append(SpringBeanUtils.getBeanWrapper(item).getPropertyValue(binding.getPath()));
 			}
-			return "";
+			return sb.toString();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
-		protected Class<?> getTargetType() {
-			return BigDecimal.class;
+		protected Class<List<GenericListItem<?>>> getTargetType() {
+			return (Class<List<GenericListItem<?>>>) (Object) List.class;
 		}
 	}
 

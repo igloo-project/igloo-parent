@@ -7,10 +7,10 @@ import java.util.Locale;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.convert.converters.AbstractConverter;
+import org.apache.wicket.util.convert.converter.AbstractConverter;
 import org.apache.wicket.util.string.Strings;
 
-public class PatternDateConverter extends AbstractConverter {
+public class PatternDateConverter extends AbstractConverter<Date> {
 	
 	private static final long serialVersionUID = 5741008524800373419L;
 
@@ -37,7 +37,7 @@ public class PatternDateConverter extends AbstractConverter {
 	}
 
 	@Override
-	public Object convertToObject(String value, Locale locale) {
+	public Date convertToObject(String value, Locale locale) {
 		if (value == null || Strings.isEmpty(value)) {
 			return null;
 		} else {
@@ -46,7 +46,7 @@ public class PatternDateConverter extends AbstractConverter {
 	}
 
 	@Override
-	public String convertToString(final Object value, Locale locale) {
+	public String convertToString(final Date value, Locale locale) {
 		return getDateFormat(locale).format(value);
 	}
 

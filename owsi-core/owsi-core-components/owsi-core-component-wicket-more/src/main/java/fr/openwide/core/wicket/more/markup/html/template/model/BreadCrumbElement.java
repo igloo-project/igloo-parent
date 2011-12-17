@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.model;
 import java.io.Serializable;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class BreadCrumbElement implements Serializable {
 	

@@ -1,9 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
-public class TipsyCloseOnLoadJavascriptResourceReference extends
-		ResourceReference {
+public class TipsyCloseOnLoadJavascriptResourceReference extends PackageResourceReference {
 
 	private static final long serialVersionUID = -1315223031352762415L;
 

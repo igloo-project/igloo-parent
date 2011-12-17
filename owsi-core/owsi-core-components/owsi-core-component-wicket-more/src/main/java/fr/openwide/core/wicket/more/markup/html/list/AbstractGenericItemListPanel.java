@@ -202,7 +202,6 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 				
 				setResponsePage(AbstractGenericItemListPanel.this.getPage().getClass(),
 						AbstractGenericItemListPanel.this.getPage().getPageParameters());
-				setRedirect(true);
 			}
 		};
 	}

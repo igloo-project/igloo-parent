@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class TomcatMonitoringPage extends AbstractMonitoringPage {
 
+	private static final long serialVersionUID = 3818280642304876178L;
+
 	public TomcatMonitoringPage() {
 		super();
 		

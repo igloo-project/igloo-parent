@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.model;
 
 import java.util.List;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -22,7 +22,7 @@ public class GenericListItemListModel<T extends GenericListItem<?>> extends Load
 
 	public GenericListItemListModel(Class<T> clazz, boolean enabled) {
 		super();
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 		
 		this.clazz = clazz;
 		this.enabled = enabled;

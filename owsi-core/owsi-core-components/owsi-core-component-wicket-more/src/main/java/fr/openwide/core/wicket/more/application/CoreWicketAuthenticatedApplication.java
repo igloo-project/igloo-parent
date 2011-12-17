@@ -3,23 +3,22 @@ package fr.openwide.core.wicket.more.application;
 import java.lang.ref.WeakReference;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.Request;
-import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.strategies.CompoundAuthorizationStrategy;
-import org.apache.wicket.authorization.strategies.role.IRoleCheckingStrategy;
-import org.apache.wicket.authorization.strategies.role.Roles;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.authroles.authorization.strategies.role.IRoleCheckingStrategy;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
-import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class CoreWicketAuthenticatedApplication extends
 		CoreWicketApplication implements IRoleCheckingStrategy {
@@ -65,7 +64,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	protected void mountCommonPages() {
 		super.mountCommonPages();
 		
-		mountBookmarkablePage("/logout/", LogoutPage.class);
+		//mountBookmarkablePage("/logout/", LogoutPage.class);
 	}
 	
 	@Override
@@ -75,7 +74,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	}
 	
 	@Override
-	public Session newSession(final Request request, final Response response) {
+	public Session newSession(Request request, Response response) {
 		try {
 			return webSessionClassRef.get().getDeclaredConstructor(Request.class).newInstance(
 				request);

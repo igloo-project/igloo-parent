@@ -47,9 +47,14 @@ public class GenericListItemLabel extends Label {
 		this(id, listItemModel, GENERIC_LIST_ITEM_BINDING.label());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public IConverter getConverter(Class<?> type) {
-		return new GenericListItemConverter(binding);
+	public <C> IConverter<C> getConverter(Class<C> type) {
+		if (GenericListItem.class.isAssignableFrom(type)) {
+			return (IConverter<C>) new GenericListItemConverter(binding);
+		} else {
+			return super.getConverter(type);
+		}
 	}
 	
 }

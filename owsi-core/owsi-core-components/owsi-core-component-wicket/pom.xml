@@ -36,6 +36,7 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
 			<version>${owsi-core.wicket.version}</version>
+			<type>pom</type>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -50,12 +51,12 @@
 			<version>${owsi-core.wicket.version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib-nodep</artifactId>
-				</exclusion>
-				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>

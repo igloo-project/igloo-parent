@@ -19,7 +19,7 @@ package fr.openwide.core.wicket.more.model;
 
 import java.io.Serializable;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
@@ -44,7 +44,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	
 	public GenericEntityModel(E entity) {
 		super(null);
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 		
 		setObject(entity);
 	}
