@@ -21,6 +21,7 @@ import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeadBehavior;
+import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyCloseOnLoadJavascriptResourceReference;
@@ -28,7 +29,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public abstract class AbstractWebPageTemplate extends WebPage implements IWiQueryPlugin {
+public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWiQueryPlugin {
 
 	private static final long serialVersionUID = -5598937641577320345L;
 
