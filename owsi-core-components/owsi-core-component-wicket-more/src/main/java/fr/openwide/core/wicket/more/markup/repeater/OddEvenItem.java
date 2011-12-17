@@ -20,7 +20,7 @@ public class OddEvenItem<T> extends Item<T> {
 	public OddEvenItem(String id, int index, IModel<T> model) {
 		super(id, index, model);
 		
-		add(new AttributeAppender(ATTRIBUTE_CLASS, true, new Model<String>((index % 2 == 0) ? CLASS_EVEN : CLASS_ODD), " "));
+		add(new AttributeAppender(ATTRIBUTE_CLASS, new Model<String>((index % 2 == 0) ? CLASS_EVEN : CLASS_ODD), " "));
 	}
 	
 	

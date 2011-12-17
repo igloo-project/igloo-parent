@@ -38,7 +38,7 @@
 		
 		<dependency>
 			<groupId>org.odlabs.wiquery</groupId>
-			<artifactId>wiquery</artifactId>
+			<artifactId>wiquery-core</artifactId>
 			<version>${owsi-core.wiquery.version}</version>
 			<exclusions>
 				<exclusion>
@@ -46,6 +46,12 @@
 					<artifactId>jackson-mapper-asl</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.odlabs.wiquery</groupId>
+			<artifactId>wiquery-jquery-ui</artifactId>
+			<version>${owsi-core.wiquery.version}</version>
 		</dependency>
 		
 		<dependency>

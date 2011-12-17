@@ -2,10 +2,10 @@ package fr.openwide.core.wicket.more.security.authorization;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.Request;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.Request;
 
 /**
  * Définition du comportement de l'application dans le cas de l'accès à une
@@ -26,8 +26,8 @@ public abstract class AbstractUnauthorizedComponentInstantiationListener impleme
 		Request request = page.getRequest();
 		if (request instanceof ServletWebRequest) {
 			ServletWebRequest servletWebRequest = (ServletWebRequest) request;
-			StringBuffer currentUrl = servletWebRequest.getHttpServletRequest().getRequestURL();
-			String queryString = servletWebRequest.getHttpServletRequest().getQueryString();
+			StringBuffer currentUrl = servletWebRequest.getContainerRequest().getRequestURL();
+			String queryString = servletWebRequest.getContainerRequest().getQueryString();
 			if (queryString != null) {
 				currentUrl.append(QUERY_STRING_SEPARATOR).append(queryString);
 			}

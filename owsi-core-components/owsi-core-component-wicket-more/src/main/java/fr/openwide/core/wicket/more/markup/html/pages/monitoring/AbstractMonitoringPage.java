@@ -5,12 +5,21 @@ import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
+import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 public abstract class AbstractMonitoringPage extends Page {
+	
+	private static final long serialVersionUID = -2327468306332270500L;
+
+	/** Mime string for text plain */
+	public static final String TEXT_MIME = "text/plain";
+
+	/** A HTML markup type for web pages */
+	public final static MarkupType TEXT_PLAIN_MARKUP_TYPE = new MarkupType("txt", TEXT_MIME);
 	
 	private boolean success;
 
@@ -44,8 +53,8 @@ public abstract class AbstractMonitoringPage extends Page {
 	}
 
 	@Override
-	public String getMarkupType() {
-		return "plain";
+	public MarkupType getMarkupType() {
+		return TEXT_PLAIN_MARKUP_TYPE;
 	}
 
 	public void setSuccess(boolean success) {

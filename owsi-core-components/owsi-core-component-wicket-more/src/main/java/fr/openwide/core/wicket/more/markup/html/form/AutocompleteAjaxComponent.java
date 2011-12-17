@@ -3,8 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.form;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
@@ -48,10 +47,6 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 			}
 		};
 		return new JsStatement().$(cleanLink).chain("bind", "'click'", jsScope.render());
-	}
-
-	@Override
-	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
 	}
 
 }

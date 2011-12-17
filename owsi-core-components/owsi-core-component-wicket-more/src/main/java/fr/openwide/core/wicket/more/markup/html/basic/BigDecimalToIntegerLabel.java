@@ -23,33 +23,38 @@ import java.util.Locale;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.convert.converters.AbstractConverter;
+import org.apache.wicket.util.convert.converter.AbstractConverter;
 
 public class BigDecimalToIntegerLabel extends Label {
 
 	private static final long serialVersionUID = -6830982860837635819L;
 	
-	private static final IConverter CONVERTER = new BigDecimalConverter();
+	private static final IConverter<BigDecimal> CONVERTER = new BigDecimalConverter();
 
 	public BigDecimalToIntegerLabel(String id, IModel<BigDecimal> model) {
 		super(id, model);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public IConverter getConverter(Class<?> type) {
-		return CONVERTER;
+	public <C> IConverter<C> getConverter(Class<C> type) {
+		if (BigDecimal.class.isAssignableFrom(type)) {
+			return (IConverter<C>) CONVERTER;
+		} else {
+			return super.getConverter(type);
+		}
 	}
 	
-	private static class BigDecimalConverter extends AbstractConverter {
+	private static class BigDecimalConverter extends AbstractConverter<BigDecimal> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Object convertToObject(String value, Locale locale) {
+		public BigDecimal convertToObject(String value, Locale locale) {
 			throw new IllegalAccessError();
 		}
 		
 		@Override
-		public String convertToString(Object value, Locale locale) {
+		public String convertToString(BigDecimal value, Locale locale) {
 			if (value == null) {
 				return "";
 			} else {
@@ -58,7 +63,7 @@ public class BigDecimalToIntegerLabel extends Label {
 		}
 
 		@Override
-		protected Class<?> getTargetType() {
+		protected Class<BigDecimal> getTargetType() {
 			return BigDecimal.class;
 		}
 	}

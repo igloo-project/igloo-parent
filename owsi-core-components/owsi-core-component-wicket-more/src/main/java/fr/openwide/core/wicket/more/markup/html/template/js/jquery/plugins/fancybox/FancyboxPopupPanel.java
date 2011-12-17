@@ -59,7 +59,7 @@ public abstract class FancyboxPopupPanel extends Panel {
 			((IPopupContentAwareComponent) popupContent).show(target);
 		}
 		if (target != null) {
-			target.addComponent(replaceableContainer);
+			target.add(replaceableContainer);
 		}
 	}
 
@@ -69,7 +69,7 @@ public abstract class FancyboxPopupPanel extends Panel {
 			((IPopupContentAwareComponent) popupContent).hide(target);
 		}
 		if (target != null) {
-			target.addComponent(replaceableContainer);
+			target.add(replaceableContainer);
 		}
 	}
 

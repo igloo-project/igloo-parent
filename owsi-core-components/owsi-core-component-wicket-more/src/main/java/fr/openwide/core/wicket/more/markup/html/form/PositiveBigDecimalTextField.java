@@ -7,7 +7,7 @@ import java.util.Locale;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.convert.converters.BigDecimalConverter;
+import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.validator.MinimumValidator;
 
@@ -18,7 +18,7 @@ public class PositiveBigDecimalTextField extends TextField<BigDecimal> {
 
 	private static final PositiveBigDecimalConverter DEFAULT_CONVERTER = new PositiveBigDecimalConverter();
 
-	private IConverter customConverter;
+	private IConverter<BigDecimal> customConverter;
 
 	private static final IValidator<BigDecimal> MINIMUM_VALIDATOR = new MinimumValidator<BigDecimal>(BigDecimal.ZERO);
 
@@ -26,7 +26,8 @@ public class PositiveBigDecimalTextField extends TextField<BigDecimal> {
 		this(id, model, fieldName, null);
 	}
 
-	public PositiveBigDecimalTextField(String id, IModel<BigDecimal> model, String fieldName, IConverter customConverter) {
+	public PositiveBigDecimalTextField(String id, IModel<BigDecimal> model, String fieldName,
+			IConverter<BigDecimal> customConverter) {
 		super(id, model, BigDecimal.class);
 		add(MINIMUM_VALIDATOR);
 		FormComponentHelper.setLabel(this, fieldName);
@@ -34,34 +35,36 @@ public class PositiveBigDecimalTextField extends TextField<BigDecimal> {
 		this.customConverter = customConverter;
 	}
 
-	public IConverter getConverter(Class<?> clazz) {
-		if (BigDecimal.class.isAssignableFrom(clazz)) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public <C> IConverter<C> getConverter(Class<C> type) {
+		if (BigDecimal.class.isAssignableFrom(type)) {
 			if (customConverter != null) {
-				return customConverter;
+				return (IConverter<C>) customConverter;
 			} else {
-				return DEFAULT_CONVERTER;
+				return (IConverter<C>) DEFAULT_CONVERTER;
 			}
 		} else {
-			return super.getConverter(clazz);
+			return super.getConverter(type);
 		}
 	}
 
 	/**
 	 * custom converter to disable grouping (thousand separator) in text fields
 	 */
-	private static class PositiveBigDecimalConverter implements IConverter {
+	private static class PositiveBigDecimalConverter implements IConverter<BigDecimal> {
 
 		private static final long serialVersionUID = 5045582390770004920L;
 
 		private static final BigDecimalConverter WICKET_CONVERTER = new BigDecimalConverter();
 
 		@Override
-		public Object convertToObject(String value, Locale locale) {
+		public BigDecimal convertToObject(String value, Locale locale) {
 			return WICKET_CONVERTER.convertToObject(value, locale);
 		}
 
 		@Override
-		public String convertToString(Object value, Locale locale) {
+		public String convertToString(BigDecimal value, Locale locale) {
 			NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 			numberFormat.setGroupingUsed(false);
 			return numberFormat.format((BigDecimal) value);

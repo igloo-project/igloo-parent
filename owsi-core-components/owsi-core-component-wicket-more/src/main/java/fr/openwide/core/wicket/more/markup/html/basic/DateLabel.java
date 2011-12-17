@@ -29,26 +29,22 @@ import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter
 public class DateLabel extends Label {
 	private static final long serialVersionUID = 7214422620839758144L;
 
-	private IConverter converter;
-	
-	private IDatePattern datePattern;
+	private IConverter<Date> converter;
 	
 	public DateLabel(String id, IModel<Date> model, IDatePattern datePattern) {
 		super(id, model);
 		
-		this.datePattern = datePattern;
-	}
-	
-	@Override
-	public void onInitialize() {
-		super.onInitialize();
-		
 		this.converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public IConverter getConverter(Class<?> type) {
-		return converter;
+	public <C> IConverter<C> getConverter(Class<C> type) {
+		if (Date.class.isAssignableFrom(type)) {
+			return (IConverter<C>) converter;
+		} else {
+			return super.getConverter(type);
+		}
 	}
 	
 	@Override

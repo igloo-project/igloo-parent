@@ -15,8 +15,8 @@ public abstract class OddEvenPageableListView<T> extends PageableListView<T> {
 	}
 
 	@Override
-	protected ListItem<T> newItem(final int index) {
-		return new OddEvenListItem<T>(index, getListItemModel(getModel(), index));
+	protected ListItem<T> newItem(final int index, IModel<T> itemModel) {
+		return new OddEvenListItem<T>(index, itemModel);
 	}
 
 }

@@ -5,22 +5,22 @@ import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.odlabs.wiquery.core.commons.CoreJavaScriptResourceReference;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
+import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 
-import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeaderContributor;
+import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeadBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyCloseOnLoadJavascriptResourceReference;
@@ -29,6 +29,8 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public abstract class AbstractWebPageTemplate extends WebPage implements IWiQueryPlugin {
+
+	private static final long serialVersionUID = -5598937641577320345L;
 
 	private static final String META_TITLE_SEPARATOR = " › ";
 	
@@ -75,7 +77,7 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLink");
 		if (pageClass.equals(selectedPageClass)) {
-			link.add(new AttributeAppender("class", true, new Model<String>("selected"), " "));
+			link.add(new AttributeAppender("class", new Model<String>("selected"), " "));
 		}
 		link.add(container);
 		
@@ -156,7 +158,7 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 	}
 	
 	protected void enableCss3Pie(String[] styles) {
-		add(Css3PieHeaderContributor.forStyles(styles));
+		add(new Css3PieHeadBehavior(styles));
 	}
 	
 	protected void enableCloseTipsyOnLoad() {
@@ -164,11 +166,10 @@ public abstract class AbstractWebPageTemplate extends WebPage implements IWiQuer
 	}
 	
 	@Override
-	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
+	public void renderHead(IHeaderResponse response) {
 		if (contributeTipsyCloseOnLoad) {
-			// this needs to be imported via wiquery contribute, else isMinified method can fails at application startup
-			wiQueryResourceManager.addJavaScriptResource(CoreJavaScriptResourceReference.get());
-			wiQueryResourceManager.addJavaScriptResource(TipsyCloseOnLoadJavascriptResourceReference.get());
+			response.renderJavaScriptReference(CoreJavaScriptResourceReference.get());
+			response.renderJavaScriptReference(TipsyCloseOnLoadJavascriptResourceReference.get());
 		}
 	}
 

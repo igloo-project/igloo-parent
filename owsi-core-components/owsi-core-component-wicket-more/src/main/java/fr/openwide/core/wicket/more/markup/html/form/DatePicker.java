@@ -17,7 +17,7 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 	
 	private static final String AUTOCOMPLETE_ATTRIBUTE_OFF_VALUE = "off";
 
-	private IConverter converter;
+	private IConverter<Date> converter;
 
 	private DatePattern datePattern;
 	
@@ -38,12 +38,17 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		this.setDateFormat(getString(datePattern.getJavascriptPatternKey()));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public IConverter getConverter(Class<?> type) {
-		if (converter == null) {
-			converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
+	public <C> IConverter<C> getConverter(Class<C> type) {
+		if (Date.class.isAssignableFrom(type)) {
+			if (converter == null) {
+				converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
+			}
+			return (IConverter<C>) converter;
+		} else {
+			return super.getConverter(type);
 		}
-		return converter;
 	}
 	
 	@Override

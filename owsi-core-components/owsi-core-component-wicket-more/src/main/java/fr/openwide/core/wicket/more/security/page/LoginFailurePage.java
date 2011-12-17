@@ -1,15 +1,16 @@
 package fr.openwide.core.wicket.more.security.page;
 
-import org.apache.wicket.markup.html.WebPage;
-
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
+import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 
-public class LoginFailurePage extends WebPage {
+public class LoginFailurePage extends CoreWebPage {
 	
+	private static final long serialVersionUID = 7256074713578695000L;
+
 	public LoginFailurePage() {
 		getSession().error(getLocalizer().getString("login.failed", this));
-		setResponsePage(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
-		setRedirect(true);
+		
+		redirect(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
 	}
 
 }

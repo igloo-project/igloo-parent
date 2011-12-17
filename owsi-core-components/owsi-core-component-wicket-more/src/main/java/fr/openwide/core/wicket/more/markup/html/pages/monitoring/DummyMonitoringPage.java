@@ -5,6 +5,8 @@ import java.util.List;
 
 public class DummyMonitoringPage extends AbstractMonitoringPage {
 
+	private static final long serialVersionUID = -8058000817486549210L;
+
 	public DummyMonitoringPage() {
 		super();
 	}

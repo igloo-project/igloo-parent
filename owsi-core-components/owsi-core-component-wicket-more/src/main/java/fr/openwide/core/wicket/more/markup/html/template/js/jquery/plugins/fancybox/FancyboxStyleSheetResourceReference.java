@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
-import org.odlabs.wiquery.core.commons.WiQueryStyleSheetResourceReference;
+import org.odlabs.wiquery.core.resources.WiQueryStyleSheetResourceReference;
 
 public class FancyboxStyleSheetResourceReference extends
 		WiQueryStyleSheetResourceReference {

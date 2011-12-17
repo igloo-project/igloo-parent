@@ -3,11 +3,11 @@ package fr.openwide.core.wicket.more;
 import java.util.Collection;
 import java.util.Locale;
 
-import org.apache.wicket.Request;
 import org.apache.wicket.Session;
-import org.apache.wicket.authentication.AuthenticatedWebSession;
-import org.apache.wicket.authorization.strategies.role.Roles;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	public AbstractCoreSession(Request request) {
 		super(request);
 		
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 		
 		// Override browser locale with mapped locale
 		// setLocale process locale to map to one available locale

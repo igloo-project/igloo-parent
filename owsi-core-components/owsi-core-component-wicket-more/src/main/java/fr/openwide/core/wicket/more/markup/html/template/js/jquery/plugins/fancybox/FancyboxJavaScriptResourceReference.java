@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
-import org.odlabs.wiquery.core.commons.WiQueryJavaScriptResourceReference;
+import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 public class FancyboxJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;

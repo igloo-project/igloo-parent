@@ -3,8 +3,8 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fanc
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
@@ -23,10 +23,10 @@ public class FancyboxPopupPanelBehavior extends WiQueryAbstractBehavior {
 	}
 	
 	@Override
-	public void bind(Component link) {
-		super.bind(link);
+	protected void onBind() {
+		super.onBind();
 		
-		link.add(new AjaxEventBehavior("onclick") {
+		getComponent().add(new AjaxEventBehavior("onclick") {
 			
 			private static final long serialVersionUID = -1194316821232521566L;
 
@@ -35,11 +35,13 @@ public class FancyboxPopupPanelBehavior extends WiQueryAbstractBehavior {
 				onPopupShow();
 				fancyboxPopupPanel.show(target);
 				DefaultTipsyFancybox fancybox = new FancyboxAnchor(fancyboxPopupPanel.getReplaceableContainer());
-				target.appendJavascript(new JsStatement().$().chain(fancybox).render().toString());
+				
+				target.appendJavaScript(new JsStatement().$().chain(fancybox).render());
+				
 				String markupId = "#" + fancyboxPopupPanel.getReplaceableContainer().getMarkupId();
-				target.appendJavascript(new JsStatement().append("document.lastPopupElement")
+				target.appendJavaScript(new JsStatement().append("document.lastPopupElement")
 						.append(" = ")
-						.append(JsUtils.quotes(markupId)).render().toString());
+						.append(JsUtils.quotes(markupId)).render());
 			}
 		});
 	}
@@ -54,10 +56,9 @@ public class FancyboxPopupPanelBehavior extends WiQueryAbstractBehavior {
 	}
 	
 	@Override
-	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
-		super.contribute(wiQueryResourceManager);
-		wiQueryResourceManager.addJavaScriptResource(FancyboxJavaScriptResourceReference.get());
-		wiQueryResourceManager.addCssResource(FancyboxStyleSheetResourceReference.get());
+	public void renderHead(Component component, IHeaderResponse response) {
+		response.renderJavaScriptReference(FancyboxJavaScriptResourceReference.get());
+		response.renderCSSReference(FancyboxStyleSheetResourceReference.get());
 	}
 
 }

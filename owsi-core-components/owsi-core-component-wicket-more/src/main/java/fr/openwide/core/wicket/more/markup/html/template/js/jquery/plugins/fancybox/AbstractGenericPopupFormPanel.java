@@ -11,6 +11,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryAjaxEventBehavior;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
 import org.odlabs.wiquery.core.javascript.JsScope;
+import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.ContainerFeedbackPanel;
@@ -74,7 +75,11 @@ public abstract class AbstractGenericPopupFormPanel<T> extends GenericPanel<T> i
 				protected void onEvent(AjaxRequestTarget target) {
 					onCancelInternal(target);
 				}
-				
+
+				@Override
+				public JsStatement statement() {
+					return null;
+				}
 			});
 		} else {
 			// simple implementation, no ajax, whuch close popup
@@ -104,8 +109,8 @@ public abstract class AbstractGenericPopupFormPanel<T> extends GenericPanel<T> i
 
 	protected void reloadPanel(AjaxRequestTarget target) {
 		if (target != null) {
-			target.addComponent(this);
-			target.appendJavascript(FancyboxHelper.getResize());
+			target.add(this);
+			target.appendJavaScript(FancyboxHelper.getResize());
 		}
 	}
 	
@@ -128,7 +133,7 @@ public abstract class AbstractGenericPopupFormPanel<T> extends GenericPanel<T> i
 	 */
 	protected void onCancelInternal(AjaxRequestTarget target) {
 		// dummy implementation
-		target.appendJavascript(FancyboxHelper.getClose());
+		target.appendJavaScript(FancyboxHelper.getClose());
 	}
 	
 	protected abstract T getEmptyModelObject();

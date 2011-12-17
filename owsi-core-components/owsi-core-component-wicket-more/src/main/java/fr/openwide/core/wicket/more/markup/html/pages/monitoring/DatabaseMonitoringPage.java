@@ -11,6 +11,8 @@ import fr.openwide.core.jpa.util.IDatabaseConsistencyCheckService;
 
 public class DatabaseMonitoringPage extends AbstractMonitoringPage {
 
+	private static final long serialVersionUID = -2405917274441638671L;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseMonitoringPage.class);
 
 	@SpringBean

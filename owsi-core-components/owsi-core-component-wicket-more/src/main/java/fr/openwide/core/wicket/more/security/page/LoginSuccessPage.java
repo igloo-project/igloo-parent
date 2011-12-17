@@ -1,12 +1,14 @@
 package fr.openwide.core.wicket.more.security.page;
 
-import org.apache.wicket.RedirectToUrlException;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import fr.openwide.core.wicket.more.AbstractCoreSession;
+import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 
-public class LoginSuccessPage extends WebPage {
+public class LoginSuccessPage extends CoreWebPage {
 	
+	private static final long serialVersionUID = -875304387617628398L;
+
 	public LoginSuccessPage() {
 		AbstractCoreSession.get().signIn("", "");
 		
@@ -15,8 +17,7 @@ public class LoginSuccessPage extends WebPage {
 		if (redirect != null) {
 			throw new RedirectToUrlException(redirect);
 		} else {
-			setResponsePage(this.getApplication().getHomePage());
-			setRedirect(true);
+			redirect(this.getApplication().getHomePage());
 		}
 	}
 

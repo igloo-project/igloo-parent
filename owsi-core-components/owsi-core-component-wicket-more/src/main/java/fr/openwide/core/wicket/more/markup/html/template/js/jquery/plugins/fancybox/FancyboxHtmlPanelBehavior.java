@@ -2,9 +2,9 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fanc
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 /**
@@ -20,24 +20,21 @@ public class FancyboxHtmlPanelBehavior extends WiQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 6414097982857106898L;
 	
-	private Component component;
-	
 	public FancyboxHtmlPanelBehavior(Component component) {
 		super();
-		this.component = component;
-		this.component.setOutputMarkupId(true);
 	}
 	
 	@Override
-	public void bind(Component component) {
-		super.bind(component);
-		component.setOutputMarkupId(true);
-		component.add(new AttributeModifier("href", true, new LoadableDetachableModel<String>() {
+	public void onBind() {
+		super.onBind();
+		
+		getComponent().setOutputMarkupId(true);
+		getComponent().add(new AttributeModifier("href", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = -44670100964325215L;
 
 			@Override
 			protected String load() {
-				return "#" + FancyboxHtmlPanelBehavior.this.component.getMarkupId();
+				return "#" + FancyboxHtmlPanelBehavior.this.getComponent().getMarkupId();
 			}
 		}));
 	}
@@ -49,10 +46,9 @@ public class FancyboxHtmlPanelBehavior extends WiQueryAbstractBehavior {
 	}
 	
 	@Override
-	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
-		super.contribute(wiQueryResourceManager);
-		wiQueryResourceManager.addJavaScriptResource(FancyboxJavaScriptResourceReference.get());
-		wiQueryResourceManager.addCssResource(FancyboxStyleSheetResourceReference.get());
+	public void renderHead(Component component, IHeaderResponse response) {
+		response.renderJavaScriptReference(FancyboxJavaScriptResourceReference.get());
+		response.renderCSSReference(FancyboxStyleSheetResourceReference.get());
 	}
 
 }

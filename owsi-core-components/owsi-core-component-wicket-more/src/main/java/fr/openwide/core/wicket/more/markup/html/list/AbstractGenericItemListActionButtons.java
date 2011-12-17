@@ -35,8 +35,8 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		
 		MarkupContainer actionLink = getActionLink("actionLink", itemModel);
 		ContextImage actionIcon = new ContextImage("actionImage", getActionIconPath());
-		actionIcon.add(new AttributeModifier("alt", true, getActionText()));
-		actionIcon.add(new AttributeModifier("data-tooltip", true, getActionText()));
+		actionIcon.add(new AttributeModifier("alt", getActionText()));
+		actionIcon.add(new AttributeModifier("data-tooltip", getActionText()));
 		actionLink.add(actionIcon);
 		add(actionLink);
 		
