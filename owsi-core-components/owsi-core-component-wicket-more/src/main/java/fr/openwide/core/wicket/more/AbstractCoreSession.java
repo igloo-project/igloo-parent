@@ -153,17 +153,18 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 
 	/**
-	 * Signout, invalidates the session. After a signout, you should redirect
+	 * Invalidates the session. After a signout, you should redirect
 	 * the browser to the home page.
 	 */
 	@Override
-	public void signOut() {
+	public void invalidate() {
 		userId = null;
 		roles = new Roles();
 		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		
 		authenticationService.signOut();
-		invalidateNow();
+		
+		super.invalidate();
 	}
 	
 	/**
