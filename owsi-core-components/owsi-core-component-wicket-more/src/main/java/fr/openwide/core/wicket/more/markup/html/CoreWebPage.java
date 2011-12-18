@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public abstract class CoreWebPage extends WebPage {
@@ -21,16 +21,16 @@ public abstract class CoreWebPage extends WebPage {
 		super(parameters);
 	}
 
-	public final <C extends IRequestablePage> void redirect(final Class<C> cls) {
-		setResponsePage(cls);
+	public final void redirect(final Class<? extends Page> clazz) {
+		throw new RestartResponseException(clazz);
 	}
 
-	public final <C extends IRequestablePage> void redirect(final Class<C> cls, PageParameters parameters) {
-		setResponsePage(cls, parameters);
+	public final void redirect(final Class<? extends Page> clazz, PageParameters parameters) {
+		throw new RestartResponseException(clazz, parameters);
 	}
 
 	public final void redirect(final Page page) {
-		setResponsePage(page);
+		throw new RestartResponseException(page);
 	}
 
 }
