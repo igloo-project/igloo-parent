@@ -19,6 +19,7 @@ import org.springframework.security.acls.domain.PermissionFactory;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
+import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class CoreWicketAuthenticatedApplication extends
 		CoreWicketApplication implements IRoleCheckingStrategy {
@@ -64,7 +65,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	protected void mountCommonPages() {
 		super.mountCommonPages();
 		
-		//mountBookmarkablePage("/logout/", LogoutPage.class);
+		mountPage("/logout/", LogoutPage.class);
 	}
 	
 	@Override

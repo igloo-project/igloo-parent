@@ -13,7 +13,7 @@ public class LogoutPage extends CoreWebPage {
 	public LogoutPage() {
 		AuthenticatedWebSession session = AuthenticatedWebSession.get();
 		if(session != null) {
-			session.signOut();
+			session.invalidate();
 		}
 		
 		redirect(CoreWicketAuthenticatedApplication.get().getSignInPageClass());

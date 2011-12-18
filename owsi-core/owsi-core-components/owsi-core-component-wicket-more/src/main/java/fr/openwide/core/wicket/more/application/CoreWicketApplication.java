@@ -19,6 +19,7 @@ import org.springframework.context.ApplicationContext;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
+import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -71,16 +72,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	protected abstract void mountApplicationResources();
 	
 	protected final void mountStaticResourceDirectory(final String path, final Class<?> clazz) {
-		/* TODO
-		mount(new URIRequestTargetUrlCodingStrategy("/static" + path) {
-			@Override
-			public IRequestTarget decode(RequestParameters requestParameters) {
-				final String uri = getURI(requestParameters);
-				
-				return new ResourceStreamRequestTarget(new PackageResourceStream(clazz, uri));
-			}
-		});
-		*/
+		mount(new StaticResourceMapper("/static" + path, clazz));
 	}
 
 	/**
