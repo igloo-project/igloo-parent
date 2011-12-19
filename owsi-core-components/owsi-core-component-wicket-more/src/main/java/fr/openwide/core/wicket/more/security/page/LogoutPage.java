@@ -11,9 +11,8 @@ public class LogoutPage extends CoreWebPage {
 	private static final long serialVersionUID = -1336719504268894384L;
 
 	public LogoutPage() {
-		AuthenticatedWebSession session = AuthenticatedWebSession.get();
-		if(session != null) {
-			session.invalidate();
+		if(AuthenticatedWebSession.exists()) {
+			AuthenticatedWebSession.get().invalidate();
 		}
 		
 		redirect(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
