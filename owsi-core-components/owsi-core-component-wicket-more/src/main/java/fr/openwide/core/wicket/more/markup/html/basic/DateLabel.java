@@ -21,6 +21,7 @@ import java.util.Date;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.convert.IConverter;
 
 import fr.openwide.core.wicket.more.util.IDatePattern;
@@ -28,13 +29,13 @@ import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter
 
 public class DateLabel extends Label {
 	private static final long serialVersionUID = 7214422620839758144L;
-
+	
 	private IConverter<Date> converter;
 	
 	public DateLabel(String id, IModel<Date> model, IDatePattern datePattern) {
 		super(id, model);
 		
-		this.converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
+		this.converter = new PatternDateConverter(new ResourceModel(datePattern.getJavaPatternKey()));
 	}
 	
 	@SuppressWarnings("unchecked")
