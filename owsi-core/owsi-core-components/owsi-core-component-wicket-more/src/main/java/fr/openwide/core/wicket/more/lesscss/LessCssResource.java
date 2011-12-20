@@ -3,23 +3,24 @@ package fr.openwide.core.wicket.more.lesscss;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.resource.PackageResource;
-import org.apache.wicket.util.io.IOUtils;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.IResourceStream;
-import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.resource.StringResourceStream;
-import org.apache.wicket.util.time.Time;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.asual.lesscss.LessEngine;
-import com.asual.lesscss.LessException;
+import fr.openwide.core.wicket.more.lesscss.model.CssStylesheetInformation;
+import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 
 public class LessCssResource extends PackageResource {
 
 	private static final long serialVersionUID = 9067443522105165705L;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LessCssResource.class);
+	
 	private boolean processLess;
 
 	private String name;
@@ -27,6 +28,9 @@ public class LessCssResource extends PackageResource {
 	private Locale locale;
 
 	private String variation;
+	
+	@SpringBean
+	private ILessCssService lessCssService;
 
 	public LessCssResource(Class<?> scope, String name) {
 		this(scope, name, null, null, null);
@@ -38,6 +42,8 @@ public class LessCssResource extends PackageResource {
 
 	public LessCssResource(Class<?> scope, String name, Locale locale, String style, String variation, boolean processLess) {
 		super(scope, name, locale, style, variation);
+		
+		Injector.get().inject(this);
 		
 		this.name = name;
 		this.locale = locale;
@@ -59,63 +65,29 @@ public class LessCssResource extends PackageResource {
 
 	@Override
 	public IResourceStream getResourceStream() {
-		IResourceStream resourceStream = super.getResourceStream();
-		
-		if (resourceStream != null) {
-			String lessSource = null;
-			Time lastModifiedTime = null;
-			try {
-				lessSource = IOUtils.toString(resourceStream.getInputStream(), "UTF-8");
-				lastModifiedTime = resourceStream.lastModifiedTime();
-			} catch (IOException e) {
-				throw new WicketLessCssException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)", getName(), getLocale(), getStyle(), getVariation()), e);
-			} catch (ResourceStreamNotFoundException e) {
-				throw new WicketLessCssException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)", getName(), getLocale(), getStyle(), getVariation()), e);
-			}
+		IResourceStream resourceStream = null;
+		try {
+			resourceStream = super.getResourceStream();
 			
-			Pattern pattern = LessCssUtil.LESSCSS_IMPORT_PATTERN;
-			Matcher matcher = pattern.matcher(lessSource);
-			while (matcher.find()) {
-				String filename = LessCssUtil.getRelativeToScopePath(getName(), matcher.group(1));
-				
-				LessCssResource importedResource = new LessCssResource(getScope(), filename, getLocale(), getStyle(), getVariation(), false);
-				IResourceStream importedResourceStream = importedResource.getResourceStream();
-				String imported;
-				try {
-					imported = IOUtils.toString(importedResourceStream.getInputStream());
-					
-					if (importedResourceStream.lastModifiedTime().after(lastModifiedTime)) {
-						lastModifiedTime = importedResourceStream.lastModifiedTime();
-					}
-					
-					lessSource = lessSource.replaceFirst(Matcher.quoteReplacement(matcher.group()), imported);
-				} catch (IOException e) {
-					throw new WicketLessCssException(
-							String.format("Error reading lesscss source for %1$s in %2$s (%3$s, %4$s, %5$s)", filename, getName(), getLocale(), getStyle(), getVariation()), e);
-				} catch (ResourceStreamNotFoundException e) {
-					throw new WicketLessCssException(
-							String.format("Error reading lesscss source for %1$s in %2$s (%3$s, %4$s, %5$s)", filename, getName(), getLocale(), getStyle(), getVariation()), e);
-				}
-			}
+			CssStylesheetInformation cssInformation =
+					lessCssService.getCss(resourceStream, getScope(), getName(), getLocale(), getStyle(), getVariation(), processLess);
 			
-			String css;
-			if (processLess) {
-				LessEngine less = new LessEngine();
-				try {
-					css = less.compile(lessSource);
-				} catch (LessException e) {
-					throw new WicketLessCssException(String.format("Error compiling %1$s (%2$s, %3$s, %4$s)", getName(), getLocale(), getStyle(), getVariation()), e);
-				}
-			} else {
-				css = lessSource;
-			}
-			StringResourceStream lessCssResourceStream = new StringResourceStream(css, "text/css");
+			StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getCss(), "text/css");
 			lessCssResourceStream.setCharset(Charset.forName("UTF-8"));
-			lessCssResourceStream.setLastModified(lastModifiedTime);
+			lessCssResourceStream.setLastModified(cssInformation.getLastModifiedTime());
 			
 			return lessCssResourceStream;
-		} else {
-			throw new WicketLessCssException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)", getName(), getLocale(), getStyle(), getVariation()));
+		} catch (Exception e) {
+			throw new WicketLessCssException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)",
+					getName(), getLocale(), getStyle(), getVariation()), e);
+		} finally {
+			if (resourceStream != null) {
+				try {
+					resourceStream.close();
+				} catch (IOException e) {
+					LOGGER.error(String.format("Error closing the original resource stream"));
+				}
+			}
 		}
 	}
 
