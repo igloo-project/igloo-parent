@@ -18,7 +18,9 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
+import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
+import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
 import org.hibernate.search.engine.spi.SearchFactoryImplementor;
 import org.hibernate.search.impl.MassIndexerImpl;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -129,12 +131,20 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
 			
 			for (Class<?> clazz : getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), Object.class)) {
-				fullTextEntityManager.createIndexer(clazz)
-						.batchSizeToLoadObjects(batchSize)
+				LOGGER.debug(String.format("Reindexing %1$s.", clazz));
+				ProgressMonitor progressMonitor = new ProgressMonitor();
+				Thread t = new Thread(progressMonitor);
+				t.start();
+				MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
+				indexer.batchSizeToLoadObjects(batchSize)
 						.threadsForSubsequentFetching(fetchingThreads)
 						.threadsToLoadObjects(loadThreads)
 						.cacheMode(CacheMode.NORMAL)
+						.progressMonitor(progressMonitor)
 						.startAndWait();
+				progressMonitor.stop();
+				t.interrupt();
+				LOGGER.debug(String.format("Reindexing %1$s done.", clazz));
 			}
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -200,5 +210,73 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	protected EntityManager getEntityManager() {
 		return entityManager;
+	}
+	
+	private static final class ProgressMonitor implements MassIndexerProgressMonitor, Runnable {
+		
+		private static final Logger LOGGER = LoggerFactory.getLogger(ProgressMonitor.class);
+		
+		private long documentsAdded;
+		private int documentsBuilt;
+		private int entitiesLoaded;
+		private int totalCount;
+		private boolean indexingCompleted;
+		private boolean stopped;
+		
+		@Override
+		public void documentsAdded(long increment) {
+			this.documentsAdded += increment;
+		}
+		
+		@Override
+		public void documentsBuilt(int number) {
+			this.documentsBuilt += number;
+		}
+		
+		@Override
+		public void entitiesLoaded(int size) {
+			this.entitiesLoaded = size;
+		}
+		
+		@Override
+		public void addToTotalCount(long count) {
+			this.totalCount += count;
+		}
+		
+		@Override
+		public void indexingCompleted() {
+			this.indexingCompleted = true;
+		}
+		
+		public void stop() {
+			this.stopped = true;
+			log();
+		}
+		
+		@Override
+		public void run() {
+			if (LOGGER.isDebugEnabled()) {
+				try {
+					while (true) {
+						log();
+						Thread.sleep(15000);
+						if (indexingCompleted) {
+							LOGGER.debug("Indexing done");
+							break;
+						}
+					}
+				} catch (Exception e) {
+					if (!stopped) {
+						LOGGER.error("Error ; massindexer monitor stopped", e);
+					}
+					LOGGER.debug("Massindexer monitor thread interrupted");
+				}
+			}
+		}
+		
+		private void log() {
+			LOGGER.debug(String.format("Indexing %1$d / %2$d (entities loaded: %3$d, documents built: %4$d)",
+					documentsAdded, totalCount, entitiesLoaded, documentsBuilt));
+		}
 	}
 }
