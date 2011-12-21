@@ -77,6 +77,20 @@
 			<version>${owsi-core.lesscss-engine.version}</version>
 		</dependency>
 		
+		<!-- Test -->
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi-core.junit.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${owsi-core.spring.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>

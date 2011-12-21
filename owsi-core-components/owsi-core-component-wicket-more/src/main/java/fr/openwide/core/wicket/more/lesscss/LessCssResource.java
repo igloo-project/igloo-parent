@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
+import org.apache.wicket.util.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +24,6 @@ public class LessCssResource extends PackageResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LessCssResource.class);
 	
-	private boolean processLess;
-
 	private String name;
 
 	private Locale locale;
@@ -37,10 +38,6 @@ public class LessCssResource extends PackageResource {
 	}
 
 	public LessCssResource(Class<?> scope, String name, Locale locale, String style, String variation) {
-		this(scope, name, locale, style, variation, true);
-	}
-
-	public LessCssResource(Class<?> scope, String name, Locale locale, String style, String variation, boolean processLess) {
 		super(scope, name, locale, style, variation);
 		
 		Injector.get().inject(this);
@@ -48,7 +45,6 @@ public class LessCssResource extends PackageResource {
 		this.name = name;
 		this.locale = locale;
 		this.variation = variation;
-		this.processLess = processLess;
 	}
 
 	public String getName() {
@@ -69,12 +65,16 @@ public class LessCssResource extends PackageResource {
 		try {
 			resourceStream = super.getResourceStream();
 			
-			CssStylesheetInformation cssInformation =
-					lessCssService.getCss(resourceStream, getScope(), getName(), getLocale(), getStyle(), getVariation(), processLess);
+			String lessSource = IOUtils.toString(resourceStream.getInputStream(), "UTF-8");
+			long lastModifiedTime = resourceStream.lastModifiedTime().getMilliseconds();
 			
-			StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getCss(), "text/css");
+			CssStylesheetInformation cssInformation = lessCssService.getCompiledStylesheet(getScope(), getName(),
+					new CssStylesheetInformation(lessSource, lastModifiedTime),
+					Application.get().usesDeploymentConfig());
+			
+			StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css");
 			lessCssResourceStream.setCharset(Charset.forName("UTF-8"));
-			lessCssResourceStream.setLastModified(cssInformation.getLastModifiedTime());
+			lessCssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
 			
 			return lessCssResourceStream;
 		} catch (Exception e) {

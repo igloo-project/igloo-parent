@@ -2,26 +2,32 @@ package fr.openwide.core.wicket.more.lesscss.model;
 
 import java.io.Serializable;
 
-import org.apache.wicket.util.time.Time;
-
 public class CssStylesheetInformation implements Serializable {
 	
 	private static final long serialVersionUID = 5751644157529838224L;
 
-	private String css;
+	private String source;
 	
-	private Time lastModifiedTime;
+	private long lastModifiedTime;
 	
-	public CssStylesheetInformation(String css, Time lastModifiedTime) {
-		this.css = css;
+	public CssStylesheetInformation(String source, long lastModifiedTime) {
+		this.source = source;
 		this.lastModifiedTime = lastModifiedTime;
 	}
 
-	public String getCss() {
-		return css;
+	public String getSource() {
+		return source;
 	}
 
-	public Time getLastModifiedTime() {
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public void setLastModifiedTime(long lastModifiedTime) {
+		this.lastModifiedTime = lastModifiedTime;
+	}
+	
+	public long getLastModifiedTime() {
 		return lastModifiedTime;
 	}
 
