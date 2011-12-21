@@ -44,6 +44,8 @@ public abstract class DecoratedPopupPanel extends FancyboxPopupPanel {
 
 	@Override
 	public void show(AjaxRequestTarget target) {
+		super.show(target);
+		
 		if (draggable) {
 			Options options = new Options();
 			options.put("handle", JsUtils.quotes(".popup-title"));
