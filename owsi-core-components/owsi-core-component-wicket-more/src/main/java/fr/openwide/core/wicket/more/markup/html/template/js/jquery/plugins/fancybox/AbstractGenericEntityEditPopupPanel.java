@@ -19,7 +19,7 @@ public abstract class AbstractGenericEntityEditPopupPanel<E extends GenericEntit
 		super.onInitialize();
 		
 		WebMarkupContainer popupLink = new WebMarkupContainer("fancyboxLink");
-		DecoratedPopupPanel fancyboxPopupPanel = new DecoratedPopupPanel("fancyboxPopupPanel", "common.editPopup.title", true) {
+		DecoratedPopupPanel fancyboxPopupPanel = new DecoratedPopupPanel("fancyboxPopupPanel", "common.editPopup.title", true, false) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
