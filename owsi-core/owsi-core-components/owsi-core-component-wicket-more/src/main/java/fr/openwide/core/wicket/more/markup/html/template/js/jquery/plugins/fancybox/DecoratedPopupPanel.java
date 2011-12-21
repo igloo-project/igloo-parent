@@ -1,8 +1,14 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
+import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.odlabs.wiquery.core.javascript.JsUtils;
+import org.odlabs.wiquery.core.options.Options;
+import org.odlabs.wiquery.ui.draggable.DraggableJavaScriptResourceReference;
 
 
 /**
@@ -12,13 +18,12 @@ public abstract class DecoratedPopupPanel extends FancyboxPopupPanel {
 
 	private static final long serialVersionUID = -8004613923770413483L;
 
-	protected DecoratedPopupPanel(String id, boolean hidden) {
-		super(id, hidden);
-	}
+	private boolean draggable;
 
-	public DecoratedPopupPanel(String id, String popupTitle, boolean hidden) {
-		this(id, hidden);
+	public DecoratedPopupPanel(String id, String popupTitle, boolean hidden, boolean draggable) {
+		super(id, hidden);
 		
+		this.draggable = draggable;
 		getReplaceableContainer().add(new Label("popupTitle", new ResourceModel(popupTitle)));
 	}
 
@@ -28,5 +33,25 @@ public abstract class DecoratedPopupPanel extends FancyboxPopupPanel {
 	}
 	
 	protected abstract Panel getNotDecoratedPopupContentPanel(String id);
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		if (draggable) {
+			response.renderJavaScriptReference(DraggableJavaScriptResourceReference.get());
+		}
+	}
+
+	@Override
+	public void show(AjaxRequestTarget target) {
+		if (draggable) {
+			Options options = new Options();
+			options.put("handle", JsUtils.quotes(".popup-title"));
+			JsStatement statement = new JsStatement();
+			statement.append(new JsStatement().$(getReplaceableContainer(), ".popup-title").addClass("draggable-handle").render(true))
+					.append(new JsStatement().$(null, "#fancybox-wrap").chain("draggable", options.getJavaScriptOptions()).render(true));
+			target.appendJavaScript(statement.render());
+		}
+	}
 
 }
