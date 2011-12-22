@@ -20,6 +20,7 @@
 		<module>owsi-core-example-spring-security-web</module>
 		<module>owsi-core-example-springmvc</module>
 		<module>owsi-core-example-export</module>
+		<module>wicket-showcase</module>
 	</modules>
 	
 	<!-- Project information -->
