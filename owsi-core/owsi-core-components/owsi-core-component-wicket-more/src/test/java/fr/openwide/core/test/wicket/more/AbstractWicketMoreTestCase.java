@@ -11,6 +11,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @ContextConfiguration(locations = {
 		"classpath*:application-context.xml"
 })
-public class AbstractWicketMoreTestCase {
+public abstract class AbstractWicketMoreTestCase {
 
 }
