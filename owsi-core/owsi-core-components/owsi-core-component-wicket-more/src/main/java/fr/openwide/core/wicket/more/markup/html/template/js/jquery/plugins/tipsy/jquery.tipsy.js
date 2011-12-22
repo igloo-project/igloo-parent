@@ -178,7 +178,8 @@
         html: false,
         live: false,
         offset: 0,
-        opacity: 0.8,
+        // ow patch : in IE, string value needed for correct handling of animate http://bugs.jquery.com/ticket/9575
+        opacity: '0.8',
         title: 'title',
         trigger: 'hover'
     };
