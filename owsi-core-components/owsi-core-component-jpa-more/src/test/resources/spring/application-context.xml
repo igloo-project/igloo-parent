@@ -25,15 +25,6 @@
 		<property name="ignoreResourceNotFound" value="true" />
 	</bean>
 
-	<bean id="additionalPackagesPersistenceUnitPostProcessor" class="fr.openwide.core.jpa.util.PackagesToScanPersistenceUnitPostProcessor">
-		<property name="packagesToScan">
-			<list>
-				<value>fr.openwide.core.test.jpa.more.business.*.model</value>
-				<value>fr.openwide.core.jpa</value>
-			</list>
-		</property>
-	</bean>
-
 	<!-- DB CONNEXION -->
 	<bean id="owsi-jpa.datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		p:driverClass="${db.driverClass}" p:jdbcUrl="${db.jdbcUrl}" p:user="${db.user}"
@@ -47,7 +38,6 @@
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="owsi-jpa.datasource" />
 		<property name="jpaVendorAdapter" ref="jpaAdapter" />
-		<property name="persistenceUnitName" value="testPU" />
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">${db.dialect}</prop>
@@ -58,7 +48,13 @@
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
 			</props>
 		</property>
-		<property name="persistenceUnitPostProcessors" ref="additionalPackagesPersistenceUnitPostProcessor" />
+		
+		<property name="packagesToScan">
+			<list>
+				<value>fr.openwide.core.test.jpa.more.business.*.model</value>
+				<value>fr.openwide.core.jpa</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
