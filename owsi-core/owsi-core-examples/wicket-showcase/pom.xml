@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>fr.openwide.core.examples</groupId>
+		<artifactId>owsi-core-examples</artifactId>
+		<version>0.7-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>fr.openwide.core.showcase</groupId>
+	<artifactId>wicket-showcase</artifactId>
+	
+	<name>OWSI Core - Wicket Showcase</name>
+	<packaging>pom</packaging>
+	
+	<modules>
+		<module>wicket-showcase-core</module>
+		<module>wicket-showcase-webapp</module>
+	</modules>
+	
+	<properties>
+		<h2database.version>1.3.162</h2database.version>
+		<jetty-server.version>8.0.4.v20111024</jetty-server.version>
+	</properties>
+	
+	<!-- Project information -->
+
+	<organization>
+		<name>Open Wide</name>
+		<url>http://www.openwide.fr/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<id>jgonzalez</id>
+			<name>Julien Gonzalez</name>
+			<email>julien.gonzalez@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+	</developers>
+	
+	<issueManagement>
+		<system>Trac</system>
+		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/report</url>
+	</issueManagement>
+	
+	<ciManagement>
+		<system>Hudson</system>
+		<url>https://projects.openwide.fr/services/ci/hudson/view/owsi-core/</url>
+	</ciManagement>
+	
+</project>
