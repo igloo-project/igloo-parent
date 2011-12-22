@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="portfolio-outer">
+		<table class="list" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<th class="table-header first" style="width: 20%"><wicket:message key="user.portfolio.header.lastName" /></th>
+					<th class="table-header" style="width: 20%"><wicket:message key="user.portfolio.header.firstName" /></th>
+					<th class="table-header" style="width: 20%"><wicket:message key="user.portfolio.header.userName" /></th>
+					<th class="table-header" style="width: 30%"><wicket:message key="user.portfolio.header.email" /></th>
+					<th class="table-header" style="width: 5%"><wicket:message key="user.portfolio.header.active" /></th>
+					<th class="table-header last" style="width: 5%"><wicket:message key="common.portfolio.header.actions" /></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="item">
+					<td class="table-column item-name first" style="text-align:center" wicket:id="lastName"></td>
+					<td class="table-column" style="text-align:center" wicket:id="firstName"></td>
+					<td class="table-column" style="text-align:center" wicket:id="userName"></td>
+					<td class="table-column" style="text-align:center" wicket:id="email"></td>
+					<td class="table-column" style="text-align:center">
+						<img wicket:id="active" style="width: 16px; height: 16px; vertical-align: middle;" class="icon" />
+					</td>
+					<td wicket:id="actionButtons" align="center" class="table-column last"></td>
+				</tr>
+				<tr class="even empty-list" wicket:id="emptyList">
+					<td colspan="6" align="center"><wicket:message key="common.emptyList" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</wicket:extend>
+</html>

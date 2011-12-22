@@ -1,0 +1,48 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Arial, Helvetica, sans;
+}
+
+body {
+	font-size: @normal-font-size;
+}
+
+select, input, textarea, td, th {
+	font-family: inherit;
+	color: inherit;
+	font-size: inherit;
+}
+
+.clear {
+	clear: both;
+}
+
+.clear-left {
+	clear: left;
+}
+.clear-right {
+	clear: right;
+}
+
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+a {
+	text-decoration: none;
+}
+
+a img {
+	border: none;
+}
+
+ul, li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}

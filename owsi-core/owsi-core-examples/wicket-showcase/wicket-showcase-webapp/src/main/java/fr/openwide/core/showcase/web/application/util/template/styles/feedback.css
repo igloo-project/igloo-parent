@@ -1,0 +1,40 @@
+/* feedback */
+.feedback-level-outer {
+	.border-radius (5px);
+	border-style: solid;
+	border-width: 1px;
+	padding: 5px 40px;
+	margin: 0;
+	margin-bottom:15px;
+	
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	
+	&.warning {
+		background-image: url('@{staticRootUrl}/common/images/icons/error.png');
+		background-color: @feedback-warning-background-color;
+		color: @feedback-warning-font-color;
+		border-color: @feedback-warning-border-color;
+	}
+	
+	&.error {
+		background-image: url('@{staticRootUrl}/common/images/icons/cross.png');
+		background-color: @feedback-error-background-color;
+		color: @feedback-error-font-color;
+		border-color: @feedback-error-border-color;
+	}
+	
+	&.info {
+		background-image: url('@{staticRootUrl}/common/images/icons/tick.png');
+		background-color: @feedback-info-background-color;
+		color: @feedback-info-font-color;
+		border-color: @feedback-info-border-color;
+	}
+	
+	&.lock {
+		background-image: url('@{staticRootUrl}/common/images/icons/lock.png');
+		background-color: @feedback-warning-background-color;
+		color: @feedback-warning-font-color;
+		border-color: @feedback-warning-border-color;
+	}
+}

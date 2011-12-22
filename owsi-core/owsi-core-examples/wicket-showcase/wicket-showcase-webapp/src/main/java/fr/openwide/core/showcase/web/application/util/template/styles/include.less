@@ -1,0 +1,184 @@
+@staticRootUrl: "../../../static";
+@staticImageUrl: "@{staticRootUrl}/application/images";
+@staticIconUrl: "@{staticImageUrl}/icons";
+
+// Colors
+
+@color-dark-grey: #666;
+
+@color-light-blue: #D3E6F4;
+@color-dark-blue: #0A79A6;
+
+// Common
+
+@normal-font-size: 12px;
+@default-font-color: @color-dark-grey;
+@body-background-color: #EEE;
+@default-link-color: @color-dark-blue;
+@main-layout-border-color: #CCC;
+
+// Menu 1
+
+@menu-1-background-color: #FFF;
+@menu-1-external-border-color: @main-layout-border-color;
+@menu-1-separator-border-color: #DDD;
+@menu-1-font-color: @color-dark-grey;
+@menu-1-hover-background-color: #F8F8F8;
+@menu-1-selected-background-color: #F4F4F4;
+
+// Breadcrumb
+
+@breadcrumb-background-color:@color-light-blue;
+
+// Menu 2
+
+@menu-item-background-color: @color-light-blue;
+@menu-item-external-border-color: @main-layout-border-color;
+@menu-item-separator-border-color: @main-layout-border-color;
+@menu-item-hover-background-color: #FFF;
+@menu-item-selected-background-color: #FFF;
+@menu-item-selected-font-color: @color-dark-grey;
+
+
+// Feedback
+// levels : info, warning, error
+// colors : border, font, background
+
+@feedback-info-border-color: #a3e1a8;
+@feedback-info-font-color: #888888;
+@feedback-info-background-color: #ccffcc;
+
+@feedback-warning-border-color: #f5d852;
+@feedback-warning-font-color: #888888;
+@feedback-warning-background-color: #feefb3;
+
+@feedback-error-border-color: #e99494;
+@feedback-error-font-color: #888888;
+@feedback-error-background-color: #ffdddd;
+
+
+// Portfolio Search Panel
+@portfolio-search-panel-background-color:#F4F4F4;
+@portfolio-search-panel-border-color:#CCC;
+@portfolio-search-panel-color:@default-font-color;
+
+@portfolio-search-panel-label-color:@default-font-color;
+
+
+// Ticket State Color Criticity
+@ticket-state-low-color: #57BAFD;
+@ticket-state-medium-color: #C9A437;
+@ticket-state-high-color: #CF7480;
+@ticket-state-critical-color: #4E4243;
+
+
+
+/* grey */
+@soft-grey: #D0D0D0;
+
+@light-grey: #EEEEEE;
+
+@dark-grey: #3C4447;
+
+@soft-grey-border: #9C9C9C;
+
+/* red */
+
+@soft-red: #FEA2A2;
+
+@soft-red-border: #FE5858;
+
+@lighter-red: #FEB6BA;
+
+@ultra-light-red: #FEBEBE;
+
+@dark-red: #FD2534;
+
+/* blue */
+
+@light-blue: #BBD9EE;
+
+@lighter-blue: #CBE6F1;
+
+@ultra-light-blue: #EBF6FE;
+
+@greener-blue: #308CBD;
+
+@darker-blue: #0A79A6;
+
+/* green */
+
+@soft-green-border: #3CB661;
+
+@soft-green: #6ADC8C;
+
+@lighter-green: #8BF0AA;
+
+@dark-green: #1AA13A;
+
+/* other */
+
+.border-radius(@radius) {
+	border-radius: @radius;
+	-moz-border-radius: @radius;
+	-webkit-border-radius: @radius;
+}
+
+.border-radius(@top_radius, @bottom_radius) {
+	-webkit-border-top-left-radius: @top_radius;
+	-webkit-border-top-right-radius: @top_radius;
+	-moz-border-radius-topleft: @top_radius;
+	-moz-border-radius-topright: @top_radius;
+	border-top-left-radius: @top_radius;
+	border-top-right-radius: @top_radius;
+	-webkit-border-bottom-right-radius: @bottom_radius;
+	-webkit-border-bottom-left-radius: @bottom_radius;
+	-moz-border-radius-bottomright: @bottom_radius;
+	-moz-border-radius-bottomleft: @bottom_radius;
+	border-bottom-right-radius: @bottom_radius;
+	border-bottom-left-radius: @bottom_radius;
+}
+
+.border-top-left-radius(@radius) {
+	-webkit-border-top-left-radius: @radius;
+	-moz-border-radius-topleft: @radius;
+	border-top-left-radius: @radius;
+}
+
+.border-top-right-radius(@radius) {
+	-webkit-border-top-right-radius: @radius;
+	-moz-border-radius-topright: @radius;
+	border-top-right-radius: @radius;
+}
+
+.border-bottom-right-radius(@radius) {
+	-webkit-border-bottom-right-radius: @radius;
+	-moz-border-radius-bottomright: @radius;
+	border-bottom-right-radius: @radius;
+}
+
+.border-bottom-left-radius(@radius) {
+	-webkit-border-bottom-left-radius: @radius;
+	-moz-border-radius-bottomleft: @radius;
+	border-bottom-left-radius: @radius;
+}
+
+.box-shadow(@right-offset, @bottom-offset, @degraded, @color) {
+	-moz-box-shadow: @right-offset @bottom-offset @degraded @color;
+	-webkit-box-shadow: @right-offset @bottom-offset @degraded @color;
+	box-shadow: @right-offset @bottom-offset @degraded @color;
+}
+
+.opacity(@op:100) {
+	filter:alpha(opacity=@op);
+	-moz-opacity:@op/100;
+	-khtml-opacity:@op/100;
+	opacity:@op/100;
+}
+
+._clear-both-trick () {
+	overflow: hidden;
+	width: 100%;
+}
+
+@messagebox-min-height: 30px;

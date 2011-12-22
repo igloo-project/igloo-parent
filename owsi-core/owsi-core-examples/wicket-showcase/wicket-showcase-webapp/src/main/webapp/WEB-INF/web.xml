@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+		id="showcase-webapp" version="2.5">
+	<display-name>wicket-showcase-webapp</display-name>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:spring/application-context.xml
+			classpath:spring/security-context.xml
+			classpath:spring/application-web-context.xml
+			classpath:spring/security-web-context.xml
+		</param-value>
+	</context-param>
+	
+	<session-config>
+		<session-timeout>240</session-timeout>
+	</session-config>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+	</filter>
+	
+	<filter>
+		<filter-name>ShowcaseApplication</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+			<param-name>applicationFactoryClassName</param-name>
+			<param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applicationBean</param-name>
+			<param-value>showcaseApplication</param-value>
+		</init-param>
+		<init-param>
+			<param-name>filterPath</param-name>
+			<param-value></param-value>
+		</init-param>
+	</filter>
+	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ShowcaseApplication</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<resource-env-ref>
+		<description>Application DataSource</description>
+		<resource-env-ref-name>showcase/helios</resource-env-ref-name>
+		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+		<description>Configuration file configuration (full path and filename)</description>
+		<resource-env-ref-name>resourceName/showcase/filename</resource-env-ref-name>
+		<resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+</web-app>
