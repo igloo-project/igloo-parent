@@ -1,0 +1,220 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>wicket-showcase</artifactId>
+		<groupId>fr.openwide.core.showcase</groupId>
+		<version>0.7-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>wicket-showcase-core</artifactId>
+	
+	<name>OWSI Core - Wicket Showcase Core</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-core-spring-jpa-app</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+			
+			<!-- problème de ré-indexation qui ne finit jamais en lucene 3.4 -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-grouping</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-spellchecker</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-misc</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-smartcn</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-analyzers</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-spatial</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-memory</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-highlighter</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-stempel</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		
+		<!-- problème de ré-indexation qui ne finit jamais en lucene 3.4 -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-grouping</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-spellchecker</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-misc</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-smartcn</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-analyzers</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-spatial</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-memory</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-highlighter</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<artifactId>lucene-stempel</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<version>3.3.0</version>
+		</dependency>
+		
+		<!-- Bindgen -->
+		
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+			<version>${owsi-core.bindgen.version}</version>
+		</dependency>
+		
+		<!-- Test dependencies -->
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi-core.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${owsi-core.spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- H2 database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2database.version}</version>
+		</dependency>
+		
+		<!-- Jetty -->
+<!--		<dependency>-->
+<!--			<groupId>org.eclipse.jetty</groupId>-->
+<!--			<artifactId>jetty-server</artifactId>-->
+<!--			<version>${jetty-server.version}</version>-->
+<!--		</dependency>-->
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile.filter.file>src/main/filters/development.properties</profile.filter.file>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<filters>
+			<filter>${profile.filter.file}</filter>
+		</filters>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/excel</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<!-- <configuration>
+							<compilerArguments>-AaddGeneratedAnnotation=true -AaddSuppressWarningsAnnotation=true</compilerArguments>
+						</configuration> -->
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-jpamodelgen</artifactId>
+						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
+						<!-- <version>1.2.0-SNAPSHOT</version> -->
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
