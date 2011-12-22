@@ -26,7 +26,7 @@ import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.test.jpa.example.business.person.dao.PersonDao;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
-@Service("personService")
+@Service("testPersonService")
 public class PersonServiceImpl extends GenericEntityServiceImpl<Integer, Person>
 		implements PersonService {
 	
