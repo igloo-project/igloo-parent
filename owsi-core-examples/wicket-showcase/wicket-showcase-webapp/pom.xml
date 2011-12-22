@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>wicket-showcase</artifactId>
+		<groupId>fr.openwide.core.showcase</groupId>
+		<version>0.7-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>wicket-showcase-webapp</artifactId>
+	
+	<name>OWSI Core - Wicket Showcase Webapp</name>
+	<packaging>war</packaging>
+	
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.core.showcase</groupId>
+			<artifactId>wicket-showcase-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
+		<!-- OWSI Core -->
+	
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-web-wicket-app</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-web-spring-security</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!-- Misc. -->
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${owsi-core.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

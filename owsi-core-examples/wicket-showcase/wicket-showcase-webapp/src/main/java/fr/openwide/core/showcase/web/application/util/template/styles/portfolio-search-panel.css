@@ -1,0 +1,179 @@
+/* portfolio search panel container hierarchy */
+
+.search-panel-outer {
+	background-color: @portfolio-search-panel-background-color;
+	border: 1px solid @portfolio-search-panel-border-color;
+	color: @portfolio-search-panel-color;
+	margin-bottom: 15px;
+	padding-top:4px;
+	padding-bottom:10px;
+	.border-radius(5px);
+	
+	.direct-search {
+		float: right;
+		border-left: 2px solid @portfolio-search-panel-border-color;
+		padding-right: 10px;
+		
+		&.search-panel {
+			._search-panel;
+		}
+		.ow-autocomplete img {
+			display: none;
+		}
+	}
+	.qualified-search {
+		float: left;
+		padding-right: 10px;
+		&.search-panel {
+			._search-panel;
+		}
+		.end-of-line {
+			padding-bottom: 10px;
+			clear: both;
+		}
+	}
+	
+	.field-inline {
+		float: left;
+		clear: none;
+		padding-top: 0px;
+		padding-right: 10px;
+		margin: 0;
+		.label-outer {
+			width: 70px;
+			float: left;
+			text-align: right;
+			margin-right: 4px;
+			line-height: 20px;
+			&.long {
+				width: 100px;
+			}
+			&.medium {
+				width: 70px;
+			}
+			&.short {
+				width: 55px;
+			}
+			.search-field-label {
+				font-style: italic;
+				color: @portfolio-search-panel-label-color;
+				display: inline;
+				margin-right:4px;
+			}
+		}
+		.input-outer {
+			float: left;
+			width: 160px;
+		}
+		div.ow-autocomplete {
+			display: inline;
+		}
+	}
+}
+
+._search-panel () {
+	padding: 10px;
+	
+	input {
+		width: 150px !important;
+		padding: 2px !important;
+		border: 1px solid #B3B3B3;
+		.border-radius (4px);
+		/* needed otherwise browser use custom form font */
+		font-family: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		color: #888888;
+	}
+	select {
+		/* Nécessaire pour compenser les 5px manquants sur les select */
+		width: 155px !important;
+		padding: 1px !important;
+		margin-right: 5px;
+	}
+	
+	.buttons {
+		&.apply-filter a.button {
+			background-color: #FFF;
+			
+			&:hover {
+				background-color: #FAFAFA;
+				border-color: #AAA;
+			}
+		}
+	}
+}
+
+/*
+*	Necessaire pour centrer correctement le panneau direct-search.
+*/
+.admin-contract-search-panel-outer .direct-search.search-panel,
+.company-search-panel-outer .direct-search.search-panel {
+	margin-top: 5px;
+	height: 19px;
+}
+
+.user-search-panel-outer .direct-search.search-panel,
+.contract-search-panel-outer .direct-search.search-panel {
+	padding-top: 22px;
+	height: 37px;
+	margin-top: 5px;
+}
+
+/* Redefinition pour un affichage vertical */
+.vertical-search-panel-outer {
+	margin-right: 5px;
+	.search-panel-title {
+		font-size:1.3em;
+		color:#AAA;
+		border-bottom:1px solid #BBB;
+		padding-bottom:3px;
+		margin-bottom:15px;
+		margin-right: 10px;
+		padding-left: 25px !important;
+		background-image: url("@{staticRootUrl}/application/images/icons/magnifier.png");
+		background-repeat: no-repeat;
+		background-position: 10px left;
+		background-size: 16px;
+	}
+	.search-panel-outer {
+		margin-top: 10px;
+		margin-right: 10px;
+		padding-bottom: 0px;
+		.field-inline {
+			padding-bottom: 10px;
+			padding-right: 0px;
+			.label-outer {
+				text-align: left;
+				width: 55px;
+			}
+		}
+		.qualified-search.search-panel {
+			padding-right: 0px;
+			padding-left: 5px;
+			&.end-of-line {
+				padding-bottom: 0px;
+			}
+			.apply-filter {
+				float: right;
+				padding-right: 10px;
+			}
+		}
+		.direct-search.search-panel {
+			padding-left: 17px;
+			padding-right: 0px;
+			padding-top: 8px;
+			padding-bottom: 0px;
+			border-bottom: 2px solid @portfolio-search-panel-border-color;
+			border-left: none;
+			.field-inline {
+				padding-right: 0px;
+				padding-top: 0px;
+				padding-bottom: 10px;
+				.label-outer {
+					width: auto;
+				}
+			}
+		}
+	}
+}

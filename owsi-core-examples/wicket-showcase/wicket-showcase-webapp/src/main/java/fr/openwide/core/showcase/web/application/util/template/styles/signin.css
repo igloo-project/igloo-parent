@@ -1,0 +1,168 @@
+@import "include.less";
+@import "base.css";
+@import "feedback.css";
+
+body {
+	background-color: #DDDDDD;
+}
+
+.login-box-outer {
+	width: 500px;
+	margin-top: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFFFFF;
+	border: 2px solid #CCCCCC;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.login-box-header-outer {
+	padding: 6px;
+	padding-right: 10px;
+	border-bottom: 1px solid #CCC;
+}
+
+.login-box-header .logo {
+	padding-right: 6px;
+	float: left;
+}
+
+.login-box-header .application-name {
+	font-size: 24px;
+	padding-left: 10px;
+	padding-top: 15px;
+	color: #999999;
+	float: right;
+}
+
+.login-box-title {
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color: #C60F1B;
+}
+
+.login-box-header-spacer {
+	background-color:#D3E6F4;
+	height:10px;
+	border-bottom:1px solid #CCC;
+}
+
+.form-item {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.field-inline {
+	clear: both;
+	margin: 10px 0;
+}
+
+.field-inline .form-label-outer,.field-inline .field-label-outer {
+	display: block;
+	float: left;
+	line-height: 20px;
+	text-align: right;
+	width: 40%;
+}
+
+.field-inline .field-label,.field-inline .form-label {
+	color: #777777;
+	display: block;
+	margin-left: 30px;
+	margin-right: 15px;
+	padding-right: 5px;
+}
+
+.field-inline .form-value-outer,.field-inline .field-value-outer {
+	float: right;
+	line-height: 25px;
+	width: 60%;
+}
+
+.field-inline .form-value-outer,.field-inline .field-value-outer {
+	line-height: 25px;
+}
+
+.field-inline input[type="text"],.field-inline input[type="password"] {
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	color: #53a5ca;
+	padding: 4px;
+	text-align: left;
+	width: 220px;
+	.border-radius(3px);
+}
+
+.field-inline .form-label-outer,.field-inline .field-label-outer {
+	width: 40%;
+}
+
+.field-inline .form-value-outer,.field-inline .field-value-outer {
+	width: 60%;
+}
+
+.field-inline input[type="text"],.field-inline input[type="password"] {
+	width: 95%;
+	font-weight: bold;
+}
+
+.field-inline .field-label,.field-inline .form-label {
+	margin-left: 0px;
+	font-weight: bold;
+}
+
+.buttons {
+	margin-top: 20px;
+}
+
+.buttons .button-outer {
+	float: right;
+	margin-left: 10px;
+	position: relative;
+}
+
+.buttons a.button {
+	.border-radius (5px);
+	display: block;
+	line-height: 16px;
+	text-decoration: none;
+}
+
+.buttons a.button.button-sign-in {
+	padding: 6px;
+	padding-right:15px;
+	font-weight: bold;
+	color: #53a5ca;
+	border: 1px solid #CCCCCC;
+	background-color: #D3E6F4;
+}
+
+.buttons a.button.button-sign-in:hover {
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFFF;
+}
+
+.buttons a.button.button-sign-in img {
+	margin-right: 5px;
+}
+
+.login-box-footer-outer {
+	background-color: #D3E6F4;
+	padding: 10px;
+	color: #53a5ca;
+	border-top: 1px solid #CCCCCC;
+	.border-radius(0 0 10px 10px);
+}
+
+.login-box-footer .application-copyright {
+	float: right;
+	text-transform: uppercase;
+}

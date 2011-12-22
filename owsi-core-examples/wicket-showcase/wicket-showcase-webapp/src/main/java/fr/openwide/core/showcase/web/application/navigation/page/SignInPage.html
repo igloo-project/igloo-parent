@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<head>
+	<title><wicket:message key="common.rootPageTitle" /> &raquo; <wicket:message key="signIn.pageTitle" /></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" />
+		<link rel="shortcut icon" type="image/ico" href="static/application/images/favicon.ico"/>
+		<wicket:head />
+	</head>
+	<body class="main">
+		<div class="login-box-outer">
+			<div class="login-box">
+				<div class="login-box-header-outer">
+					<div class="login-box-header">
+						<div class="logo"><img src="static/application/images/logo_openwide.png" alt="openwide" /></div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="login-box-header-spacer"></div>
+					
+				<div class="form-item">
+					<div class="form-outer">
+					
+					<div wicket:id="feedback"></div>
+						<form action="j_spring_security_check" id="signInForm" method="post">
+							<div class="field-inline">
+								<div class="form-label-outer">
+									<label class="form-label"><wicket:message key="signIn.login" /></label>
+								</div>
+								<div class="form-value-outer">
+									<div class="form-value">
+										<input name="j_username" type="text" value="" onclick="javascript:this.value='';" />
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="field-inline">
+								<div class="form-label-outer">
+									<label class="form-label"><wicket:message key="signIn.password" /></label>
+								</div>
+								<div class="form-value-outer">
+									<div class="form-value">
+										<input name="j_password" type="password" value="" onclick="javascript:this.value='';" />
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="buttons">
+								<div class="button-outer">
+									<a class="button button-sign-in" href="#" onclick="javascript:$('#signInForm').submit(); return false;">
+										<img src="static/application/images/icons/lock_open.png" width="16" height="16" wicket:message="alt:signIn.signIn" />
+										<wicket:message key="signIn.signIn" />
+									</a>
+								</div>
+								<!-- fake submit button is needed so that enter is binded to form submitting -->
+								<input name="submitButton" type="submit" style="height: 0px; width: 0px; border-width: 0px; color: white;" value="value" />
+								<div class="clear"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<script type="text/javascript">
+				$(document).ready(function() {
+					$("[name=j_username]").focus();
+				});
+				</script>
+				<div class="login-box-footer-outer">
+					<div class="login-box-footer">
+<!--						<div class="application-copyright"><wicket:message key="common.footer.applicationCopyright" /></div>-->
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>	

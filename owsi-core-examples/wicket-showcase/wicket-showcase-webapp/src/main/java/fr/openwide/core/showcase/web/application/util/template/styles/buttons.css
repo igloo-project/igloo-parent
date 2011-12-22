@@ -1,0 +1,132 @@
+/* button styles */
+.buttons, /* multiple buttons container */
+.button-popup, /* vertical button group  */
+.action-buttons {
+	._clear-both-trick;
+	margin-bottom: 10px;
+	
+	.button-outer {
+		._button-outer;
+		
+		/* button-outer inside .buttons are floating */
+		float: right;
+		
+		.button {
+			._button;
+		}
+	}
+	
+	a {
+		/* todo: some buttons are defined just with .buttons a */
+		._button;
+	}
+}
+
+.button-outer {
+	._button-outer;
+}
+
+/* in horizontal button container, margin used as spacer */
+.buttons .button-outer {
+	margin-left: 10px;
+}
+
+/* action buttons are in sidebar and as wide as the parent sidebar */
+.action-buttons .button-outer {
+	float: none;
+	/* vertical spacing */
+	margin-bottom:20px;
+	
+	.button {
+		._button-elastic;
+		font-weight:bold;
+		
+		/* image taken from css, we need to leave for it (asymetric padding) */
+		/* buttons taller width 6px */
+		padding: 6px 10px 6px 28px;
+		background-position: 5px center;
+		background-repeat: no-repeat;
+		
+		&.button-add {
+			background-image: url("@{staticRootUrl}/application/images/icons/add.png");
+		}
+		
+		&.button-write {
+			background-image: url("@{staticRootUrl}/application/images/icons/pencil.png");
+		}
+	}
+}
+
+/* button used right to an existing field */
+.field-button {
+	/* spacing between field and button */
+	margin-left: 5px;
+	
+	.button-outer {
+		a {
+			._button;
+			
+			/* classic-button are elastic, override ._button width */
+			width: auto;
+			max-width: 200px;
+		}
+	}
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/* private styles */
+._button-outer () {
+	position: relative;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+._button () {
+	display: block;
+	color: #0A79A6;
+	background-color: #fff;
+	line-height: 16px;
+	padding: 3px;
+	border: 1px solid #CCCCCC;
+	text-decoration: none;
+	text-align: center;
+	width: 80px;
+	
+	.border-radius(6px);
+	
+	&.button-120 {
+		width: 120px;
+	}
+	&.button-150 {
+		width: 150px;
+	}
+	&.button-160 {
+		width: 160px;
+	}
+	&.button-elastic {
+		._button-elastic;
+	}
+	
+	&.button-write {
+		padding-left: 12px !important;
+		background-image: url("@{staticRootUrl}/application/images/icons/pencil.png");
+		background-repeat: no-repeat;
+		background-position: 4px top;
+		width: 80%;
+	}
+	
+	&:hover {
+		background-color: #EEEEEE;
+	}
+	
+	img {
+		vertical-align: bottom;
+	}
+}
+
+._button-elastic () {
+	width: auto;
+	/* if elastic, we need more room on button side */
+	padding-left: 7px;
+	padding-right: 7px;
+}

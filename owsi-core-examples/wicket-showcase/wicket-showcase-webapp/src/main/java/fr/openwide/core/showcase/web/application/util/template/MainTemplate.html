@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<head>
+		<title wicket:id="headPageTitle"></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" />
+		<link rel="shortcut icon" type="image/ico" href="static/application/images/favicon.ico"/>
+	<wicket:head />
+	</head>
+	<body class="main">
+		<div class="page">
+			<div class="menu-1-outer" id="top">
+				<div class="menu-1">
+					<div class="logo">
+						<a wicket:id="logoBackToHomeLink">
+							<img src="static/application/images/logo_openwide.png" wicket:message="data-tooltip:navigation.home" width="210" height="66" />
+						</a>
+					</div>
+					<div class="menu-entry-outer menu-entry-outer-first" wicket:id="homeMenuLinkContainer">
+						<div class="menu-entry">
+							<div wicket:id="homeMenuLink"><wicket:message key="navigation.home" /></div>
+						</div>
+					</div>
+					<div class="menu-entry-outer" wicket:id="portfolioMenuLinkContainer">
+						<div class="menu-entry">
+							<div wicket:id="portfolioMenuLink"><wicket:message key="navigation.portfolio" /></div>
+						</div>
+					</div>
+					<div class="menu-entry-outer" wicket:id="widgetsMenuLinkContainer">
+						<div class="menu-entry">
+							<div wicket:id="widgetsMenuLink"><wicket:message key="navigation.widgets" /></div>
+						</div>
+					</div>
+					<div class="right-box">
+						<wicket:enclosure child="userFullName">
+							<div class="user-box">
+								<div>
+									<div class="user-information" wicket:id="userFullName">User fullname</div>
+									<div class="logout-button">
+										<a wicket:id="logoutLink">
+											<img src="static/application/images/icons/door_out.png" class="icon" wicket:message="alt:common.top.logout.alt,data-tooltip:common.top.logout.alt"
+												width="16" height="16" style="margin-top:3px;" />
+										</a>
+									</div>
+								</div>
+							</div>
+						</wicket:enclosure>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="breadcrumb-outer">
+				<div wicket:id="breadCrumb"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="main-outer">
+				<div class="container">
+					<div wicket:id="feedbackPanel" class="feedback-panel"></div>
+					<wicket:child />
+					<div class="clear"></div>
+				</div>
+				<div class="footer-outer">
+					<div class="footer">
+						<div class="footer-item-outer last"><wicket:message key="common.rootPageTitle" /></div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
