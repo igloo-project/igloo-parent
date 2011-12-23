@@ -25,7 +25,7 @@ import fr.openwide.test.core.rest.jersey.model.TestBean;
 public class TestRestService {
 
 	public static final String TEST_SERVER_URI = "http://localhost/";
-	public static final int TEST_SERVER_PORT = 9993;
+	public static final int TEST_SERVER_PORT = 9997;
 	public static final String TEST_CONTEXT_PATH = "/sqm-remote-api";
 	public static final String TEST_SERVLET_PATH = "/rest";
 	
