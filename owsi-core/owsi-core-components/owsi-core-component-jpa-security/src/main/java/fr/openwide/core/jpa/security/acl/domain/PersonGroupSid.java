@@ -11,10 +11,6 @@ public class PersonGroupSid extends GrantedAuthoritySid {
 	private static final long serialVersionUID = -1418624664701634350L;
 	
 	private static final String SEPARATOR = "-";
-	
-	public PersonGroupSid(String groupName) {
-		super(CoreAuthorityConstants.PERSON_GROUP_PREFIX + groupName);
-	}
 
 	public PersonGroupSid(IPersonGroup personGroup) {
 		super(CoreAuthorityConstants.PERSON_GROUP_PREFIX + personGroup.getId() + SEPARATOR + personGroup.getName());
