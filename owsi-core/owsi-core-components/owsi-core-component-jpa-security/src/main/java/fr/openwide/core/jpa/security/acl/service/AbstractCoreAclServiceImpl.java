@@ -32,7 +32,7 @@ import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConsta
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 import fr.openwide.core.spring.util.cache.CacheContainer;
-import fr.openwide.core.spring.util.cache.CacheRegion;
+import fr.openwide.core.spring.util.cache.ICacheRegion;
 
 public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implements AclService {
 	
@@ -193,7 +193,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		cacheContainer.removeAll();
 	}
 	
-	private static class AclCacheRegion implements CacheRegion {
+	private static class AclCacheRegion implements ICacheRegion {
 		
 		@Override
 		public String getName() {
