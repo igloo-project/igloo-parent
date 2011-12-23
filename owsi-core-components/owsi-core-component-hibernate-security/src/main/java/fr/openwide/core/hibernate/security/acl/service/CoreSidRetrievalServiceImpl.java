@@ -1,5 +1,6 @@
 package fr.openwide.core.hibernate.security.acl.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,16 +32,21 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		
 		Integer personId = getPersonIdByUserName(authentication.getName());
 		if (personId != null) {
-			Person person = personService.getById(personId);
-			if (person != null) {
-				List<PersonGroup> groups = person.getPersonGroups();
-
-				for (PersonGroup group : groups) {
-					sids.add(new PersonGroupSid(group));
-				}
-			}
+			sids.addAll(getAdditionalSidsFromPerson(personService.getById(personId)));
 		}
 			
+		return sids;
+	}
+
+	protected List<Sid> getAdditionalSidsFromPerson(Person person) {
+		List<Sid> sids = new ArrayList<Sid>();
+		if (person != null) {
+			List<PersonGroup> groups = person.getPersonGroups();
+	
+			for (PersonGroup group : groups) {
+				sids.add(new PersonGroupSid(group));
+			}
+		}
 		return sids;
 	}
 	
