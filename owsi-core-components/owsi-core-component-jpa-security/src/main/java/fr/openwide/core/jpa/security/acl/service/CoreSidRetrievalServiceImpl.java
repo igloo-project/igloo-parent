@@ -60,4 +60,8 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		return personId;
 	}
 	
+	protected void setCacheEnabled(boolean cacheEnabled) {
+		this.cacheEnabled = cacheEnabled;
+	}
+	
 }
