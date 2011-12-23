@@ -11,15 +11,15 @@ public class CacheContainer<K, V> {
 
 	private static final Log LOGGER = LogFactory.getLog(CacheContainer.class);
 	
-	private final CacheRegion cacheRegion;
+	private final ICacheRegion cacheRegion;
 
 	private final Ehcache cache;
 	
-	public CacheContainer(final CacheManager cacheManager, final CacheRegion cacheRegion) {
+	public CacheContainer(final CacheManager cacheManager, final ICacheRegion cacheRegion) {
 		this(cacheManager, cacheRegion, true);
 	}
 
-	public CacheContainer(final CacheManager cacheManager, final CacheRegion cacheRegion, boolean cacheEnabled) {
+	public CacheContainer(final CacheManager cacheManager, final ICacheRegion cacheRegion, boolean cacheEnabled) {
 		if (cacheEnabled) {
 			cache = cacheManager.getEhcache(cacheRegion.getName());
 			
