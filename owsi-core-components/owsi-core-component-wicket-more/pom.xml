@@ -82,18 +82,27 @@
 			<id>org.bindgen</id>
 			<name>Bindgen Repository</name>
 			<url>http://repo.joist.ws</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		
 		<repository>
 			<id>com.asual.maven.public</id>
 			<name>Asual Public Repository</name>
 			<url>http://www.asual.com/maven/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		
 		<repository>
 			<id>wiquery</id>
 			<name>WiQuery repository</name>
 			<url>http://wiquery.googlecode.com/svn/repo</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	
