@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.5.6-SNAPSHOT</version>
+		<version>0.5.6</version>
 	</parent>
 
 	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-hibernate-security</artifactId>
-	<version>0.5.6-SNAPSHOT</version>
+	<version>0.5.6</version>
 	
 	<name>OWSI Core - Component - Hibernate - Spring Security support</name>
 
