@@ -142,13 +142,13 @@
 						<goals>
 							<goal>test-jar</goal>
 						</goals>
+						<configuration>
+							<includes>
+								<include>fr/openwide/core/rest/jersey/test/</include>
+							</includes>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<includes>
-						<include>fr/openwide/core/rest/jersey/test/</include>
-					</includes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
