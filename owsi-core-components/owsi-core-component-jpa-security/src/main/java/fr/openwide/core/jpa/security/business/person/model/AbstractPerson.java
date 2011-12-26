@@ -59,6 +59,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	private String md5Password = "*NO PASSWORD*";
 	
+	@Field
 	private boolean active = true;
 	
 	@Column(nullable = false)
