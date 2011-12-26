@@ -114,11 +114,17 @@
 			<id>nexus-owsi-core</id>
 			<name>OWSI - Core repository</name>
 			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>org.bindgen</id>
 			<name>Bindgen Repository</name>
 			<url>http://repo.joist.ws</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	
