@@ -100,7 +100,27 @@
 					<artifactId>commons-lang</artifactId>
 					<groupId>commons-lang</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>lucene-analyzers</artifactId>
+					<groupId>org.apache.lucene</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>solr-analysis-extras</artifactId>
+					<groupId>org.apache.solr</groupId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+			<version>${owsi-core.lucene.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-analysis-extras</artifactId>
+			<version>${owsi-core.lucene.version}</version>
 		</dependency>
 		
 		<dependency>
