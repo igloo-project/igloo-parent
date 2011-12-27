@@ -6,10 +6,10 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import com.sun.jersey.api.core.PackagesResourceConfig;
 
-public final class RestApplication extends PackagesResourceConfig {
+public abstract class AbstractRestApplication extends PackagesResourceConfig {
 	
-	public RestApplication() {
-		super(RestApplication.class.getPackage().getName());
+	protected AbstractRestApplication() {
+		super(AbstractRestApplication.class.getPackage().getName());
 	}
 	
 	@Override
