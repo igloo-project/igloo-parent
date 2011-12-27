@@ -28,16 +28,12 @@ public abstract class AbstractRestServiceImpl {
 	
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	
-	private static final String DEFAULT_ENCODING = "UTF-8";
-	
-	private String responseEncoding = DEFAULT_ENCODING;
-	
 	protected JResponseBuilder<Object> ok() {
-		return JResponse.ok().encoding(getResponseEncoding());
+		return JResponse.ok();
 	}
 	
 	protected <E> JResponseBuilder<E> ok(E entity) {
-		return JResponse.ok(entity).encoding(getResponseEncoding());
+		return JResponse.ok(entity);
 	}
 	
 	protected RemoteApiException getException(IRemoteApiError error) {
@@ -110,13 +106,4 @@ public abstract class AbstractRestServiceImpl {
 			return null;
 		}
 	}
-
-	protected String getResponseEncoding() {
-		return responseEncoding;
-	}
-
-	protected void setResponseEncoding(String responseEncoding) {
-		this.responseEncoding = responseEncoding;
-	}
-
 }
