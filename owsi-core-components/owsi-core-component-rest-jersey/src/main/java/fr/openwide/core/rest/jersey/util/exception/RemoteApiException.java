@@ -9,18 +9,37 @@ public class RemoteApiException extends RuntimeException {
 	
 	private int code;
 	
+	private String message;
+	
+	public RemoteApiException() {
+	}
+	
 	public RemoteApiException(IRemoteApiError remoteApiError) {
 		this(remoteApiError, null);
 	}
 
 	public RemoteApiException(IRemoteApiError remoteApiError, Throwable cause) {
-		super(remoteApiError.getMessage(), cause);
+		super(cause);
 		
 		this.code = remoteApiError.getCode();
+		this.message = remoteApiError.getMessage();
 	}
 	
 	public int getCode() {
 		return code;
+	}
+	
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }
