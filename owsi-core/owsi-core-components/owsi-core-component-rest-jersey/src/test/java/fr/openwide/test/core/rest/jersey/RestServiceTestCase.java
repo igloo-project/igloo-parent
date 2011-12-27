@@ -14,7 +14,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import com.sun.grizzly.http.SelectorThread;
 
-import fr.openwide.core.rest.jersey.AbstractRestApplication;
 import fr.openwide.core.rest.jersey.test.util.RestTestUtils;
 import fr.openwide.test.core.rest.jersey.client.TestRestClient;
 import fr.openwide.test.core.rest.jersey.model.TestBean;
@@ -22,7 +21,7 @@ import fr.openwide.test.core.rest.jersey.model.TestBean;
 @ContextConfiguration(locations = { "classpath:spring/test-rest-context.xml" }, inheritLocations=false)
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
-public class TestRestService {
+public class RestServiceTestCase {
 
 	public static final String TEST_SERVER_URI = "http://localhost/";
 	public static final int TEST_SERVER_PORT = 9997;
@@ -33,7 +32,8 @@ public class TestRestService {
 	
 	@BeforeClass
 	public static void initClass() throws IllegalArgumentException, IOException {
-		selectorThread = RestTestUtils.getSelectorThread(AbstractRestApplication.class,
+		selectorThread = RestTestUtils.getSelectorThread(
+				RestTestApplication.class,
 				TEST_SERVER_URI, TEST_SERVER_PORT, TEST_CONTEXT_PATH, TEST_SERVLET_PATH,
 				new String[] { "classpath:spring/test-rest-context.xml" },
 				false);
