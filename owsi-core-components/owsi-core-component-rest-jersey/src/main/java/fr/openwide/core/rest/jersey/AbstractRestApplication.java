@@ -8,8 +8,8 @@ import com.sun.jersey.api.core.PackagesResourceConfig;
 
 public abstract class AbstractRestApplication extends PackagesResourceConfig {
 	
-	protected AbstractRestApplication() {
-		super(AbstractRestApplication.class.getPackage().getName());
+	protected AbstractRestApplication(Class<? extends AbstractRestApplication> applicationClass) {
+		super(applicationClass.getPackage().getName());
 	}
 	
 	@Override
