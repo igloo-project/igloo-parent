@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import com.sun.jersey.api.JResponse;
+import com.sun.jersey.api.JResponse.JResponseBuilder;
 import com.sun.jersey.multipart.FormDataBodyPart;
 
 import fr.openwide.core.rest.jersey.util.exception.CoreRemoteApiError;
@@ -26,11 +28,25 @@ public abstract class AbstractRestServiceImpl {
 	
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	
+	private static final String DEFAULT_ENCODING = "UTF-8";
+	
+	private String responseEncoding = DEFAULT_ENCODING;
+	
+	protected JResponseBuilder<Object> ok() {
+		return JResponse.ok().encoding(getResponseEncoding());
+	}
+	
+	protected <E> JResponseBuilder<E> ok(E entity) {
+		return JResponse.ok(entity).encoding(getResponseEncoding());
+	}
+	
 	protected RemoteApiException getException(IRemoteApiError error) {
 		return new RemoteApiException(error);
 	}
 	
 	protected RemoteApiException getException(IRemoteApiError error, Throwable cause) {
+		LOGGER.error(error.getCode() + " - " + error.getMessage(), cause);
+		
 		return new RemoteApiException(error, cause);
 	}
 	
@@ -93,6 +109,14 @@ public abstract class AbstractRestServiceImpl {
 		} else {
 			return null;
 		}
+	}
+
+	protected String getResponseEncoding() {
+		return responseEncoding;
+	}
+
+	protected void setResponseEncoding(String responseEncoding) {
+		this.responseEncoding = responseEncoding;
 	}
 
 }

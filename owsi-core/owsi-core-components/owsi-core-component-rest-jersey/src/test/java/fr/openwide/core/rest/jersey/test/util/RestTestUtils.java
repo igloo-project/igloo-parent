@@ -5,6 +5,7 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
@@ -12,8 +13,12 @@ import org.springframework.web.context.ContextLoaderListener;
 
 import com.sun.grizzly.http.SelectorThread;
 import com.sun.grizzly.http.servlet.ServletAdapter;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.container.filter.LoggingFilter;
 import com.sun.jersey.api.container.grizzly.GrizzlyServerFactory;
+import com.sun.jersey.core.impl.provider.entity.MimeMultipartProvider;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 
@@ -48,6 +53,14 @@ public final class RestTestUtils {
 	
 	public static void closeSelectorThread(SelectorThread selectorThread) {
 		selectorThread.stopEndpoint();
+	}
+	
+	public static Client createJerseyClient() {
+		ClientConfig clientConfig = new DefaultClientConfig();
+		clientConfig.getClasses().add(MimeMultipartProvider.class);
+		clientConfig.getClasses().add(JacksonJsonProvider.class);
+		
+		return Client.create(clientConfig);
 	}
 	
 	private RestTestUtils() {
