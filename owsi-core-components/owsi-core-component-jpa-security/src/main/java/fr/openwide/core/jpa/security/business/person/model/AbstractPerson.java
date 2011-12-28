@@ -14,6 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
@@ -27,6 +28,7 @@ import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
+@JsonIgnoreProperties({"md5Password, lastUpdateDate, locale, lastLoginDate, authorities"})
 public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Integer, P>
 		implements IPerson, INotificationRecipient {
 
