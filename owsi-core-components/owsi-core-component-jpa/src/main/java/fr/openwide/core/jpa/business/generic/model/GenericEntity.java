@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.text.Collator;
 import java.util.Locale;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * <p>Entité racine pour la persistence des objets via JPA.</p>
  *
@@ -58,6 +60,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * 
 	 * @return vrai si l'objet n'a pas encore été persisté
 	 */
+	@JsonIgnore
 	public boolean isNew() {
 		return getId() == null;
 	}
@@ -124,6 +127,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 *  
 	 * @return chaîne à injecter dans le toString()
 	 */
+	@JsonIgnore
 	public abstract String getNameForToString();
 
 	/**
@@ -131,6 +135,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * 
 	 * @return nom à afficher
 	 */
+	@JsonIgnore
 	public abstract String getDisplayName();
 
 }
