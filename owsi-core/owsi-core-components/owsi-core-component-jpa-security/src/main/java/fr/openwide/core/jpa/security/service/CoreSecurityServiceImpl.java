@@ -139,7 +139,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 	
 	@Override
-	public List<? extends GrantedAuthority> getAuthorities(Authentication authentication) {
+	public List<GrantedAuthority> getAuthorities(Authentication authentication) {
 		if (authentication != null) {
 			return new ArrayList<GrantedAuthority>(authentication.getAuthorities());
 		} else {
@@ -148,7 +148,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public List<? extends GrantedAuthority> getAuthorities(IPerson person) {
+	public List<GrantedAuthority> getAuthorities(IPerson person) {
 		return getAuthorities(getAuthentication(person));
 	}
 	
