@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
@@ -37,9 +37,9 @@ public interface ISecurityService {
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 
-	Collection<? extends GrantedAuthority> getAuthorities(Authentication authentication);
+	List<? extends GrantedAuthority> getAuthorities(Authentication authentication);
 	
-	Collection<? extends GrantedAuthority> getAuthorities(IPerson authentication);
+	List<? extends GrantedAuthority> getAuthorities(IPerson person);
 	
 	SecurityContext buildSecureContext(String userName);
 	
