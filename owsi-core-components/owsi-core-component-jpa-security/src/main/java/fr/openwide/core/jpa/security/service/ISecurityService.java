@@ -1,7 +1,10 @@
 package fr.openwide.core.jpa.security.service;
 
+import java.util.Collection;
+
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -34,6 +37,10 @@ public interface ISecurityService {
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 
+	Collection<? extends GrantedAuthority> getAuthorities(Authentication authentication);
+	
+	Collection<? extends GrantedAuthority> getAuthorities(IPerson authentication);
+	
 	SecurityContext buildSecureContext(String userName);
 	
 	<T> T runAsSystem(IRunAsTask<T> task);

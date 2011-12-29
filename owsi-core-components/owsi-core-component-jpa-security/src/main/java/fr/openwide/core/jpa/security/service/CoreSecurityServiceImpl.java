@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.security.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -138,6 +139,20 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 	
 	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities(Authentication authentication) {
+		if (authentication != null) {
+			return authentication.getAuthorities();
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities(IPerson person) {
+		return getAuthorities(getAuthentication(person));
+	}
+	
+	@Override
 	public SecurityContext buildSecureContext(String userName) {
 		SecurityContext secureContext = new SecurityContextImpl();
 		secureContext.setAuthentication(getAuthentication(userName));
@@ -190,5 +205,5 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 
 		return authentication;
 	}
-	
+
 }
