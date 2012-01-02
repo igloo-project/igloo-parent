@@ -62,7 +62,7 @@ public class LessCssServiceImpl implements ILessCssService {
 			
 			try {
 				importedResource = new ClassPathResource(importedResourceFilename, scope);
-				inputStream = importedResource.getInputStream();
+				inputStream = importedResource.getURL().openStream();
 				
 				CssStylesheetInformation importedStylesheet =
 						prepareRawStylesheet(scope, importedResourceFilename,
