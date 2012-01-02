@@ -72,21 +72,12 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		/* Cascade PERSIST :
 		 * 
-		 * La méthode create() ne déclenchent pas la cascade
-		 * PERSIST. Lorsque l'on tente de créer la Company liée à une 
-		 * Person non persisté, on déclenche une exception. Il faut absolument que 
-		 * la Person soit persistée dans la base pour remplir correctement la table 
-		 * Join de cette relation. Il faut créer la Person avant de créer la Company.
+		 * La méthode create() provoque un persist jpa ; on a donc cascade de la création de l'utilisateur
 		 */
 		company2.addEmployee2(person2);
-		try {
-			companyService.create(company2);
-			//TODO: il n'y a plus de distinction MERGE / PERSIST
-			//fail("La création d'une entité liée à un élément non persisté lève une exception");
-		} catch (InvalidDataAccessApiUsageException e) {
-			Assert.assertFalse(companyService.list().contains(company2));
-			Assert.assertFalse(personService.list().contains(person2));
-		}
+		companyService.create(company2);
+		Assert.assertTrue(companyService.list().contains(company2));
+		Assert.assertTrue(personService.list().contains(person2));
 		
 		/* Cascade REMOVE :
 		 * 
