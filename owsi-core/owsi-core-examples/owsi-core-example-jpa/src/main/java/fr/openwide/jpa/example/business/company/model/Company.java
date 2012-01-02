@@ -66,7 +66,6 @@ public class Company extends GenericEntity<Integer, Company> {
 			inverseJoinColumns=@JoinColumn(name="employees5_id"))
 	private List<Person> employees5 = new LinkedList<Person>();
 
-	//TODO: on n'utilise pas merge dans nos développements
 	@OneToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name="company_employees6", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees6_id"))
