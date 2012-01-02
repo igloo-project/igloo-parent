@@ -15,11 +15,6 @@
 			._button;
 		}
 	}
-	
-	a {
-		/* todo: some buttons are defined just with .buttons a */
-		._button;
-	}
 }
 
 .button-outer {
