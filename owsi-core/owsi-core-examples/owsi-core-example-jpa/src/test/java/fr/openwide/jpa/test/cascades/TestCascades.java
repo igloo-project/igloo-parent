@@ -191,20 +191,12 @@ public class TestCascades extends AbstractJpaTestCase {
 		
 		/* Cascade PERSIST : 
 		 * 
-		 * Lorsque l'on update, la cascade PERSIST n'est pas déclanchée. On a une exception
-		 * puisque l'on esssaye d'ajouter à la Company une Person qui n'est pas persistée.
+		 * Lorsque l'on update, la cascade PERSIST est déclenchée à la sortie du scope transactionnel (proxy companyService.*)
 		 */
 		company.addEmployee2(person2);
 
-		try {
-			companyService.update(company);
-			//TODO: on n'a plus de distinction update / persist
-			//fail("Le fait d'updater et d'avoir une cascade PERSIST sur un élément non persisté doit provoquer une exception");
-		} catch (InvalidDataAccessApiUsageException e) {
-			Assert.assertFalse(personService.list().contains(person2));
-			//TODO
-			Assert.fail("erreur");
-		}
+		companyService.update(company);
+		Assert.assertTrue(personService.list().contains(person2));
 
 		personService.create(person2);
 		companyService.update(company);
