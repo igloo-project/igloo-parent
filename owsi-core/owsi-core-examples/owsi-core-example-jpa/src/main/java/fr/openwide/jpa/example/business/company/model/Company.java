@@ -55,8 +55,6 @@ public class Company extends GenericEntity<Integer, Company> {
 	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinTable(name="company_employees4", joinColumns=@JoinColumn(name="company_id"),
 			inverseJoinColumns=@JoinColumn(name="employees4_id"))
-	//TODO: inutile, pas de distinction delete / remove
-	//@Cascade({org.hibernate.annotations.CascadeType.DELETE})
 	private List<Person> employees4 = new LinkedList<Person>();
 	
 	/**
