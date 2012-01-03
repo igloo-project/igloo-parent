@@ -23,6 +23,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Hibernate;
+
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
@@ -59,11 +61,11 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 		
 		cq.where(cb.or(
 				cb.and(
-						cb.equal(root.get(AbstractAudit_.contextClass), entity.getClass().getName()),
+						cb.equal(root.get(AbstractAudit_.contextClass), Hibernate.getClass(entity).getName()),
 						cb.equal(root.get(AbstractAudit_.contextId), entity.getId())
 				),
 				cb.and(
-						cb.equal(root.get(AbstractAudit_.objectClass), entity.getClass().getName()),
+						cb.equal(root.get(AbstractAudit_.objectClass), Hibernate.getClass(entity).getName()),
 						cb.equal(root.get(AbstractAudit_.objectId), entity.getId())
 				)
 		));
@@ -82,7 +84,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 		cq.select(root);
 		
 		cq.where(cb.and(
-				cb.equal(root.get(AbstractAudit_.subjectClass), subject.getClass().getName()),
+				cb.equal(root.get(AbstractAudit_.subjectClass), Hibernate.getClass(subject).getName()),
 				cb.equal(root.get(AbstractAudit_.subjectId), subject.getId())
 		));
 		

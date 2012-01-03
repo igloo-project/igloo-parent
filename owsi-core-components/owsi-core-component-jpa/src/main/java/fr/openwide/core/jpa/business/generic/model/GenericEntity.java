@@ -22,6 +22,7 @@ import java.text.Collator;
 import java.util.Locale;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.Hibernate;
 
 /**
  * <p>Entité racine pour la persistence des objets via JPA.</p>
@@ -75,7 +76,9 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 		if (object == this) {
 			return true;
 		}
-		if (object.getClass() != this.getClass()) {
+		
+		// l'objet peut être proxyfié donc on utilise Hibernate.getClass() pour sortir la vraie classe
+		if (Hibernate.getClass(object) != Hibernate.getClass(this)) {
 			return false;
 		}
 
@@ -111,7 +114,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("entity.");
-		builder.append(getClass().getSimpleName());
+		builder.append(Hibernate.getClass(this).getSimpleName());
 		builder.append("<");
 		builder.append(getId());
 		builder.append("-");
