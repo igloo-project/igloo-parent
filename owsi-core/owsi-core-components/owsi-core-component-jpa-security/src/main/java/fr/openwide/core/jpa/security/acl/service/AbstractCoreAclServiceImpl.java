@@ -7,6 +7,7 @@ import java.util.Map;
 
 import net.sf.ehcache.CacheManager;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,7 +186,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 			LOGGER.warn("Cache remove of null or id null entity is ignored");
 			return;
 		}
-		ObjectIdentity oi = new ObjectIdentityImpl(entity.getClass(), entity.getId());
+		ObjectIdentity oi = new ObjectIdentityImpl(Hibernate.getClass(entity), entity.getId());
 		cacheContainer.remove(oi);
 	}
 	

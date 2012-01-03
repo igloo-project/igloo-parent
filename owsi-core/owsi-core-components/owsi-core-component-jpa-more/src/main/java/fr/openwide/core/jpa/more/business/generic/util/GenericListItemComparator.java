@@ -3,6 +3,8 @@ package fr.openwide.core.jpa.more.business.generic.util;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.hibernate.Hibernate;
+
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
@@ -16,9 +18,9 @@ public class GenericListItemComparator implements Comparator<GenericListItem<?>>
 	public int compare(GenericListItem<?> o1, GenericListItem<?> o2) {
 		int order = 0;
 		
-		if (order == 0 && !o1.getClass().equals(o2.getClass())) {
-			order = GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getClass().getSimpleName(),
-					o2.getClass().getSimpleName());
+		if (order == 0 && !Hibernate.getClass(o1).equals(Hibernate.getClass(o2))) {
+			order = GenericEntity.DEFAULT_STRING_COLLATOR.compare(Hibernate.getClass(o1).getSimpleName(),
+					Hibernate.getClass(o2).getSimpleName());
 		}
 		
 		// on trie en priorité sur la position, puis sur le libellé et enfin par l'identifiant
