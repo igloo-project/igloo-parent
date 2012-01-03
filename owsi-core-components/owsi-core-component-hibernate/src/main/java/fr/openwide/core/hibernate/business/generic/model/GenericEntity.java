@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.text.Collator;
 import java.util.Locale;
 
+import org.hibernate.proxy.HibernateProxyHelper;
+
 /**
  * <p>Entité racine pour la persistence des objets via Hibernate.</p>
  *
@@ -71,7 +73,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 		if (object == this) {
 			return true;
 		}
-		if (object.getClass() != this.getClass()) {
+		if (HibernateProxyHelper.getClassWithoutInitializingProxy(object.getClass()) != this.getClass()) {
 			return false;
 		}
 
