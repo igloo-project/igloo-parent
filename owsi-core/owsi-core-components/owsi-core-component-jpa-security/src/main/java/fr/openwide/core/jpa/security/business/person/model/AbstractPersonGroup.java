@@ -13,6 +13,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderBy;
 
 import org.bindgen.Bindable;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
@@ -43,11 +44,13 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
 	private String name;
 	
+	@JsonIgnore
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("lastName, firstName")
 	private List<P> persons = new LinkedList<P>();
 	
+	@JsonIgnore
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
