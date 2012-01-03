@@ -111,7 +111,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("entity.");
-		builder.append(getClass().getSimpleName());
+		builder.append(Hibernate.getClass(this).getSimpleName());
 		builder.append("<");
 		builder.append(getId());
 		builder.append("-");
