@@ -64,6 +64,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@Field
 	private boolean active = true;
 	
+	@JsonIgnore
 	@Column(nullable = false)
 	private Date creationDate = new Date();
 	
