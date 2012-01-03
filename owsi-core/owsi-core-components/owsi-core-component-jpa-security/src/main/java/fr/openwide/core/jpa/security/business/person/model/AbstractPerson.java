@@ -14,7 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
@@ -28,7 +28,6 @@ import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
-@JsonIgnoreProperties({"md5Password, lastUpdateDate, locale, lastLoginDate, authorities"})
 public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Integer, P>
 		implements IPerson, INotificationRecipient {
 
@@ -59,6 +58,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	private String faxNumber;
 	
+	@JsonIgnore
 	private String md5Password = "*NO PASSWORD*";
 	
 	@Field
@@ -67,16 +67,20 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@Column(nullable = false)
 	private Date creationDate = new Date();
 	
+	@JsonIgnore
 	@Column(nullable = false)
 	private Date lastUpdateDate = new Date();
 	
+	@JsonIgnore
 	private Date lastLoginDate;
 	
 	/**
 	 * preferred locale for user, can be null
 	 */
+	@JsonIgnore
 	private Locale locale;
 	
+	@JsonIgnore
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
@@ -125,6 +129,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.lastName = lastName;
 	}
 	
+	@JsonIgnore
 	@Transient
 	public String getFullName() {
 		StringBuilder builder = new StringBuilder();
