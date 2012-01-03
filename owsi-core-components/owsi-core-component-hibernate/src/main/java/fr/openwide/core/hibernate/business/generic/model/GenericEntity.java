@@ -73,17 +73,24 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 		if (object == this) {
 			return true;
 		}
-		if (HibernateProxyHelper.getClassWithoutInitializingProxy(object) != this.getClass()) {
+		
+		/*
+		 * Il est nécessaire de bien comparer les deux classes en les débarassant des éventuels prefix de proxyfication
+		 * du type '$$_javassist'. Cela permet d'éviter des problèmes incidieux et difficiles à tracer lorsque l'on 
+		 * vérifie l'égalité entre deux GenericEntity.
+		 */
+		if (HibernateProxyHelper.getClassWithoutInitializingProxy(object) != 
+			HibernateProxyHelper.getClassWithoutInitializingProxy(this)) {
 			return false;
 		}
-
+		
 		GenericEntity<K, E> entity = (GenericEntity<K, E>) object;
 		K id = getId();
-
+		
 		if (id == null) {
 			return false;
 		}
-
+		
 		return id.equals(entity.getId());
 	}
 
