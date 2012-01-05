@@ -19,7 +19,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.IndexedEmbedded;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -84,7 +83,6 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	@JsonIgnore
 	@ManyToMany
-	@IndexedEmbedded
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();

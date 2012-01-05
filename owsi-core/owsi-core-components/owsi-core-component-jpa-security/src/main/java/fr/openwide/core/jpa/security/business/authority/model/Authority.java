@@ -5,11 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @Entity
 @Bindable
@@ -21,7 +18,6 @@ public class Authority extends GenericEntity<Integer, Authority> {
 	@GeneratedValue
 	private Integer id;
 
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String name;
 
 	public Authority() {
