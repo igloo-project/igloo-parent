@@ -97,6 +97,13 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 	
 	/**
+	 * @see org.apache.commons.lang.StringUtils#capitalize(String)
+	 */
+	public static String capitalize(String str) {
+		return org.apache.commons.lang.StringUtils.capitalize(str);
+	}
+	
+	/**
 	 * @see org.apache.commons.lang.StringUtils#lowerCase(String)
 	 */
 	public static String lowerCase(String str) {
