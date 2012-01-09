@@ -20,6 +20,8 @@ public class DefaultTipsyFancybox implements ChainableStatement, Serializable {
 	
 	private FancyboxOptionType type;
 	
+	private Boolean showTitle;
+	
 	public DefaultTipsyFancybox() {
 		JsScope scope = JsScope.quickScope(TipsyHelper.closeTipsyStatement().render());
 		options.put("onStart", scope);
@@ -28,7 +30,11 @@ public class DefaultTipsyFancybox implements ChainableStatement, Serializable {
 	public void setType(FancyboxOptionType type) {
 		this.type = type;
 	}
-
+	
+	public void setShowTitle(boolean showTitle) {
+		this.showTitle = showTitle;
+	}
+	
 	@Override
 	public String chainLabel() {
 		return "fancybox";
@@ -38,6 +44,9 @@ public class DefaultTipsyFancybox implements ChainableStatement, Serializable {
 	public CharSequence[] statementArgs() {
 		if (type != null) {
 			options.put("type", type.getValue());
+		}
+		if (showTitle != null) {
+			options.put("showTitle", showTitle.toString());
 		}
 		
 		return new CharSequence[] { options.getJavaScriptOptions() };
