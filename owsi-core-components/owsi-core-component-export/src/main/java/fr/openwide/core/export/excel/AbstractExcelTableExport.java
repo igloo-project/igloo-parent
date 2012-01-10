@@ -298,7 +298,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addDateCell(Row row, int columnIndex, Date date) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_DATE_NAME, row.getRowNum()));
-		cell.setCellValue(date);
+		if (date != null) {
+			cell.setCellValue(date);
+		}
 
 		return cell;
 	}
@@ -314,7 +316,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addDateTimeCell(Row row, int columnIndex, Date date) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_DATE_TIME_NAME, row.getRowNum()));
-		cell.setCellValue(date);
+		if (date != null) {
+			cell.setCellValue(date);
+		}
 
 		return cell;
 	}
@@ -332,7 +336,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_NUMERIC_NAME, row.getRowNum()));
 
-		cell.setCellValue(number.doubleValue());
+		if (number != null) {
+			cell.setCellValue(number.doubleValue());
+		}
 
 		return cell;
 	}
@@ -350,7 +356,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_PERCENT_NAME, row.getRowNum()));
 		
-		cell.setCellValue(number.doubleValue());
+		if (number != null) {
+			cell.setCellValue(number.doubleValue());
+		}
 
 		return cell;
 	}
