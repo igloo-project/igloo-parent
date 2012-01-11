@@ -31,7 +31,7 @@
 	</bean>
 	
 	<bean id="roleHierarchy"
-		class="fr.openwide.core.jpa.security.acl.domain.hierarchy.RoleHierarchyImpl">
+		class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
 		<property name="hierarchy">
 			<value>
 				ROLE_SYSTEM > ROLE_ADMIN
