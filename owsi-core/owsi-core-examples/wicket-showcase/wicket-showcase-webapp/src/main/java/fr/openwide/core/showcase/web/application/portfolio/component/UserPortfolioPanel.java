@@ -2,7 +2,9 @@ package fr.openwide.core.showcase.web.application.portfolio.component;
 
 import java.util.List;
 
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -14,6 +16,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
+import fr.openwide.core.showcase.web.application.util.LinkUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -52,8 +56,14 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	}
 	
 	@Override
+	protected MarkupContainer getActionLink(String id, IModel<? extends User> userModel) {
+		return new BookmarkablePageLink<User>(id, UserDescriptionPage.class, LinkUtils
+				.getUserDescriptionPageParameters(userModel.getObject()));
+	}
+	
+	@Override
 	protected boolean isActionAvailable() {
-		return false;
+		return true;
 	}
 	
 	@Override

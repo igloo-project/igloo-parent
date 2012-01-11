@@ -30,7 +30,7 @@ public class SpringContextWrapper {
 	@Autowired
 	private IImportDataService importDataService;
 	
-	public void importDirectory(File directory) throws FileNotFoundException, ServiceException, SecurityServiceException, IOException {			
+	public void importDirectory(File directory) throws FileNotFoundException, ServiceException, SecurityServiceException, IOException {
 		importDataService.importDirectory(directory);
 	}
 	

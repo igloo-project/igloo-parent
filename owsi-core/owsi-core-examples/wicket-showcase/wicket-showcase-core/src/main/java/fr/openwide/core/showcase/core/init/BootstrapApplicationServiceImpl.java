@@ -16,11 +16,13 @@ public class BootstrapApplicationServiceImpl {
 	
 	private static final String INIT_RESSOURCE_PATH = "src/main/resources/init";
 	
+	private static final String PROJECT_PATH = "/home/jgonzalez/Documents/OWSI-Core/workspace/owsi-core/owsi-core-examples/wicket-showcase/wicket-showcase-core/";
+	
 	@Autowired
 	private IImportDataService initDataService;
 
 	@PostConstruct
 	public void init() throws FileNotFoundException, ServiceException, SecurityServiceException, IOException {
-		initDataService.importDirectory(new File("/home/jgonzalez/Documents/OWSI-Core/workspace/wicket-showcase/wicket-showcase-core/" + INIT_RESSOURCE_PATH));
+		initDataService.importDirectory(new File(PROJECT_PATH + INIT_RESSOURCE_PATH));
 	}
 }
