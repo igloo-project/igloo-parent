@@ -2,5 +2,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
+			<div class="title">
+				<wicket:message key="widgets.calendar.date.title"></wicket:message>
+			</div>
+			<div class="page-main-content">
+				<div class="search-panel-outer">
+					<form wicket:id="form" class="qualified-search search-panel">
+						<div class="field-inline">
+							<div class="label-outer search">
+								<div class="search-field-label">
+									<wicket:message key="widgets.calendar.date.label"></wicket:message>
+								</div>
+							</div>
+							<div class="input-outer">
+								<div wicket:id="dateLabel"></div>
+							</div>
+						</div>
+						<div class="field-inline">
+							<div class="label-outer search">
+								<div class="search-field-label">
+									<wicket:message key="widgets.calendar.date.picker"></wicket:message>
+								</div>
+							</div>
+							<div class="input-outer">
+								<input wicket:id="datePicker" type="text"/>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</form>
+					<div class="clear"></div>
+				</div>
+			</div>
 	</wicket:extend>
 </html>
