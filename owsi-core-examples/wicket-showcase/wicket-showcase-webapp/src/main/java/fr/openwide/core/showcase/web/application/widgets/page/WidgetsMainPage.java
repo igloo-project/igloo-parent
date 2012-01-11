@@ -16,6 +16,10 @@ public class WidgetsMainPage extends MainTemplate {
 		
 		addBreadCrumbElement(new BreadCrumbElement("widgets.pageTitle"));
 		
+		addMenuElement(getSecondMenuPage(), "calendarTabs", CalendarPage.class);
+		addMenuElement(getSecondMenuPage(), "autocompleteTabs", AutocompletePage.class);
+		addMenuElement(getSecondMenuPage(), "fancyboxTabs", FancyboxPage.class);
+		
 		add(new Label("pageTitle", new ResourceModel("widgets.pageTitle")));
 	}
 	
