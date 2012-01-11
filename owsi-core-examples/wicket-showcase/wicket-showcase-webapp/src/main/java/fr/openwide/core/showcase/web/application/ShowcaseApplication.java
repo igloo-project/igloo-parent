@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.WebPage;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
+import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.page.AutocompletePage;
 import fr.openwide.core.showcase.web.application.widgets.page.CalendarPage;
@@ -41,9 +42,14 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
 		
-		// Application
+		// Navigation
 		mountPage("/home/", getHomePage());
+		
+		// Portfolio exemple
 		mountPage("/portfolio/", PortfolioMainPage.class);
+		mountPage("/portfolio/user/${id}", UserDescriptionPage.class);
+		
+		// Widgets exemple
 		mountPage("/widgets/", WidgetsMainPage.class);
 		mountPage("/widgets/calendar", CalendarPage.class);
 		mountPage("/widgets/autocomplete", AutocompletePage.class);
