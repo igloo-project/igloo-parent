@@ -40,7 +40,7 @@ public class CalendarPage extends WidgetsMainPage {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
-				target.addComponent(dateLabel);
+				target.add(dateLabel);
 			}
 
 			@Override

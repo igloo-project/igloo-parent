@@ -30,6 +30,6 @@ public class WidgetsMainPage extends MainTemplate {
 	
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return null;
+		return CalendarPage.class;
 	}
 }
