@@ -24,6 +24,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -212,12 +213,12 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		setService(service);
 		setMethod(method);
 		if (context != null) {
-			setContextClass(context.getClass().getName());
+			setContextClass(Hibernate.getClass(context).getName());
 			setContextId(context.getId());
 			setContextDisplayName(context.getDisplayName());
 		}
 		if (subject != null) {
-			setSubjectClass(subject.getClass().getName());
+			setSubjectClass(Hibernate.getClass(subject).getName());
 			setSubjectId(subject.getId());
 			setSubjectDisplayName(subject.getDisplayName());
 		}
@@ -225,12 +226,12 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		setFeature(feature);
 		setMessage(message);
 		if (object != null) {
-			setObjectClass(object.getClass().getName());
+			setObjectClass(Hibernate.getClass(object).getName());
 			setObjectId(object.getId());
 			setObjectDisplayName(object.getDisplayName());
 		}
 		if (secondaryObject != null) {
-			setSecondaryObjectClass(secondaryObject.getClass().getName());
+			setSecondaryObjectClass(Hibernate.getClass(secondaryObject).getName());
 			setSecondaryObjectId(secondaryObject.getId());
 			setSecondaryObjectDisplayName(secondaryObject.getDisplayName());
 		}
