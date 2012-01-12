@@ -1,16 +1,21 @@
 package fr.openwide.core.showcase.web.application.portfolio.component;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
+import fr.openwide.core.showcase.web.application.portfolio.form.UserEditForm;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox.DecoratedPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox.FancyboxPopupPanelBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
@@ -47,5 +52,21 @@ public class UserIdentityCardPanel extends GenericPanel<User> {
 		activeImage.add(new AttributeModifier("alt", new ResourceModel(tipsyProperty, "")));
 		activeImage.add(new AttributeModifier("data-tooltip", new ResourceModel(tipsyProperty, "")));
 		add(activeImage);
+		
+		// Edit user popup
+		WebMarkupContainer editUserPopupLink = new WebMarkupContainer("editUserPopupLink");
+		add(editUserPopupLink);
+		
+		DecoratedPopupPanel editUserPopupPanel = new DecoratedPopupPanel("editUserPopupPanel",
+				"user.form.editTitle", true , false) {
+			private static final long serialVersionUID = 485449842016592930L;
+			
+			@Override
+			protected Panel getNotDecoratedPopupContentPanel(String id) {
+				return new UserEditForm(id, UserIdentityCardPanel.this.getModel());
+			}
+		};
+		editUserPopupLink.add(new FancyboxPopupPanelBehavior(editUserPopupPanel));
+		add(editUserPopupPanel);
 	}
 }

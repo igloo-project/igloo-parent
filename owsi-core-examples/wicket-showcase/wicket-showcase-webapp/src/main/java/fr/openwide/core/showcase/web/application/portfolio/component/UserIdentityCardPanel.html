@@ -12,6 +12,11 @@
 				<div class="column-40 float-left">
 					<div class="title user">
 						<wicket:container wicket:id="fullName"></wicket:container> (<wicket:container wicket:id="userName"></wicket:container>)
+						<a class="icon float-right" wicket:id="editUserPopupLink" wicket:message="title:common.action.edit,data-tooltip:common.action.edit">
+							<img src="static/application/images/icons/user_edit.png" width="16" height="16" />
+						</a>
+						<wicket:container wicket:id="editUserPopupPanel">
+						</wicket:container>
 					</div>
 					<div class="information">
 						<div class="subtitle"><wicket:message key="user.contact" /></div>

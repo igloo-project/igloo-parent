@@ -31,47 +31,47 @@ public class UserEditForm extends AbstractGenericPopupFormPanel<User> {
 	@SpringBean
 	private IUserService userService;
 	
-	public UserEditForm(String id, IModel<User> userModel, FormPanelMode formPanelMode) {
-		super(id, userModel, formPanelMode);
+	public UserEditForm(String id, IModel<User> userModel) {
+		super(id, userModel, FormPanelMode.EDIT);
 		
 		TextField<String> userNameField = new RequiredTextField<String>("userName",
 				BindingModel.of(userModel, USER_BINDING.userName()));
 		FormComponentHelper.setLabel(userNameField, new ResourceModel("user.username"));
-		add(userNameField);
+		itemForm.add(userNameField);
 		
 		TextField<String> firstNameField = new RequiredTextField<String>("firstName",
 				BindingModel.of(userModel, USER_BINDING.firstName()));
 		FormComponentHelper.setLabel(firstNameField, new ResourceModel("user.firstname"));
-		add(firstNameField);
+		itemForm.add(firstNameField);
 		
 		TextField<String> lastNameField = new RequiredTextField<String>("lastName",
 				BindingModel.of(userModel, USER_BINDING.lastName()));
 		FormComponentHelper.setLabel(lastNameField, new ResourceModel("user.lastname"));
-		add(lastNameField);
+		itemForm.add(lastNameField);
 		
 		TextField<String> emailField = new RequiredTextField<String>("email",
 				BindingModel.of(userModel, USER_BINDING.email()));
 		FormComponentHelper.setLabel(emailField, new ResourceModel("user.email"));
-		add(emailField);
+		itemForm.add(emailField);
 		
 		CheckBox activeCheckBox = new CheckBox("active", BindingModel.of(userModel, USER_BINDING.active()));
 		FormComponentHelper.setLabel(activeCheckBox, new ResourceModel("user.active"));
-		add(activeCheckBox);
+		itemForm.add(activeCheckBox);
 		
 		TextField<String> phoneNumberField = new RequiredTextField<String>("phoneNumber",
 				BindingModel.of(userModel, USER_BINDING.phoneNumber()));
 		FormComponentHelper.setLabel(phoneNumberField, new ResourceModel("user.phone"));
-		add(phoneNumberField);
+		itemForm.add(phoneNumberField);
 		
 		TextField<String> gsmNumberField = new TextField<String>("gsmNumber",
 				BindingModel.of(userModel, USER_BINDING.gsmNumber()));
 		FormComponentHelper.setLabel(gsmNumberField, new ResourceModel("user.phone"));
-		add(gsmNumberField);
+		itemForm.add(gsmNumberField);
 		
 		TextField<String> faxNumberField = new TextField<String>("faxNumber",
 				BindingModel.of(userModel, USER_BINDING.faxNumber()));
 		FormComponentHelper.setLabel(faxNumberField, new ResourceModel("user.phone"));
-		add(faxNumberField);
+		itemForm.add(faxNumberField);
 	}
 	
 	@Override
