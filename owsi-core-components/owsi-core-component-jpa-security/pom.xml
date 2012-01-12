@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.6.1</version>
+		<version>0.6.2-SNAPSHOT</version>
 	</parent>
 
 	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-component-jpa-security</artifactId>
-	<version>0.6.1</version>
+	<version>0.6.2-SNAPSHOT</version>
 	
 	<name>OWSI Core - Component - JPA - Spring Security support</name>
 
