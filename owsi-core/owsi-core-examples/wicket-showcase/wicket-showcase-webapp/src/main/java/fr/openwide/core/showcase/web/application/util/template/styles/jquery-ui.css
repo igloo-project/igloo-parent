@@ -31,8 +31,8 @@ input.hasDatepicker, .ui-autocomplete-input {
 
 /* entête du calendrier */
 .main .ui-widget-header {
-	background: none no-repeat scroll 50% 50% #C60F1B;
-	border-color: #C60F1B;
+	background: none no-repeat scroll 50% 50% #0A79A6;
+	border-color: #0A79A6;
 	color: white;
 }
 
@@ -53,9 +53,9 @@ input.hasDatepicker, .ui-autocomplete-input {
 
 /* jour sélectionné dans le calendrier */
 .main .ui-state-active,.main .ui-widget-content .ui-state-active,.main .ui-widget-header .ui-state-active {
-	border: 1px solid #C60F1B;
+	border: 1px solid #0A79A6;
 	color: #FFF;
-	background-color:#C60F1B;
+	background-color:#0A79A6;
 }
 
 /* today in calendar */
@@ -79,5 +79,5 @@ input.hasDatepicker, .ui-autocomplete-input {
 
 /* flêches du calendrier au survol */
 .main .ui-state-hover .ui-icon,.main .ui-state-focus .ui-icon {
-	background-image: url("../images/jquery/ui-icons_ffd27a_256x240.png");
+	background-image: url("@{staticImageUrl}/jquery/ui-icons_ffd27a_256x240.png");
 }
