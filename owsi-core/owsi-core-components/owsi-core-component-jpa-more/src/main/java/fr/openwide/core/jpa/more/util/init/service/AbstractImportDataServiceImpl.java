@@ -34,7 +34,6 @@ import fr.openwide.core.jpa.more.business.parameter.service.IAbstractParameterSe
 import fr.openwide.core.jpa.more.util.init.dao.IImportDataDao;
 import fr.openwide.core.jpa.more.util.init.util.GenericEntityConverter;
 import fr.openwide.core.jpa.more.util.init.util.WorkbookUtils;
-import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.spring.util.ReflectionUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
@@ -66,9 +65,6 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	private IImportDataDao importDataDao;
 	
 	@Autowired
-	private IHibernateSearchService hibernateSearchService;
-	
-	@Autowired
 	private IAbstractParameterService parameterService;
 	
 	@Override
@@ -82,8 +78,6 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
 		
 		importFiles(directory, idsMapping);
-		
-		hibernateSearchService.reindexAll();
 		
 		parameterService.setDatabaseInitialized(true);
 		
