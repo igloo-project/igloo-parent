@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.code.geocoder.Geocoder;
@@ -21,7 +22,10 @@ import com.google.code.geocoder.model.GeocoderStatus;
 import com.google.code.geocoder.model.LatLng;
 import com.google.code.geocoder.model.LatLngBounds;
 
-
+/**
+ * Cette classe a été créée à des fins de tests / documentation
+ */
+@Ignore
 public class TestGeocoder {
 	
 	private static Geocoder geocoder;
