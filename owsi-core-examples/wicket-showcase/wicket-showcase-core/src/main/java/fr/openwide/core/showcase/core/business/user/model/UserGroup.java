@@ -15,7 +15,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup;
 public class UserGroup extends AbstractPersonGroup<UserGroup, User> {
 	private static final long serialVersionUID = 1218812080652289263L;
 	
-	@ManyToMany
+	@ManyToMany(mappedBy = "userGroups")
 	private List<User> users = new ArrayList<User>();
 	
 	public UserGroup() {
