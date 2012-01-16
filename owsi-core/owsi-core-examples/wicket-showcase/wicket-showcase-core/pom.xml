@@ -154,6 +154,12 @@
 			<version>0.9</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-gmap2</artifactId>
+			<version>1.5.3.1</version>
+		</dependency>
+		
 		<!-- Jetty -->
 <!--		<dependency>-->
 <!--			<groupId>org.eclipse.jetty</groupId>-->
