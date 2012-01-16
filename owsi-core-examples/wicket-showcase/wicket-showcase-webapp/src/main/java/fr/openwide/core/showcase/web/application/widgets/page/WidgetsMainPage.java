@@ -19,6 +19,7 @@ public class WidgetsMainPage extends MainTemplate {
 		addMenuElement(getSecondMenuPage(), "calendarTabs", CalendarPage.class);
 		addMenuElement(getSecondMenuPage(), "autocompleteTabs", AutocompletePage.class);
 		addMenuElement(getSecondMenuPage(), "fancyboxTabs", FancyboxPage.class);
+		addMenuElement(getSecondMenuPage(), "gmapTabs", GMapPage.class);
 		
 		add(new Label("pageTitle", new ResourceModel("widgets.pageTitle")));
 	}

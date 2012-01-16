@@ -18,6 +18,7 @@
 	<modules>
 		<module>wicket-showcase-core</module>
 		<module>wicket-showcase-webapp</module>
+		<module>wicket-showcase-gmap</module>
 	</modules>
 	
 	<properties>
