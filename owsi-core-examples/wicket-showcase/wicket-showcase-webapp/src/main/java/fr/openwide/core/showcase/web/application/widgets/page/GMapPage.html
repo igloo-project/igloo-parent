@@ -2,6 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div wicket:id="map" style="margin-left: auto; margin-right: auto; width: 600px; height: 400px;">Map</div>
+		<div wicket:id="gmap" style="margin-left: auto; margin-right: auto; width: 600px; height: 400px;">Map</div>
+		
+		<input type="button" value="Map map1!" onclick="$('#gmap6').gmap('init', {
+			zoom: 8,
+			center: new google.maps.LatLng(-34.397, 150.644),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		})" />
 	</wicket:extend>
 </html>
