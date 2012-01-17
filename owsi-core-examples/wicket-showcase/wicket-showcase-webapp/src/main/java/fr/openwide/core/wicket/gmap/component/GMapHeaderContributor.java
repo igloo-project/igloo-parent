@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap;
+package fr.openwide.core.wicket.gmap.component;
 
 import java.util.Locale;
 

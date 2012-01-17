@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.gmap.api.version;
 
 /*
  * Google Maps API Versioning
- * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/basics.html#Versioning">
+ * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/basics.html#Versioning"></a>
  */
 
 public enum GMapVersion {

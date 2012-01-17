@@ -5,11 +5,19 @@
 				var $this = $(this);
 				var gmap = $this.data('gmap');
 				if (gmap == null) {
+					// Create Map
 					var gmap = new google.maps.Map(this, options);
-				
+					
+					// Create HashMap of markers
+					var markers = new Object();
+					
 					$this.data('gmap', {
 						target : $this,
 						gmap : gmap
+					});
+					$this.data('markers', {
+						target : $this,
+						markers : markers
 					});
 				}
 			});
@@ -39,6 +47,9 @@
 				var gmap = $this.data('gmap');
 				gmap.fitBounds(bounds);
 			});
+		},
+		addMarker : function() {
+			
 		}
 	};
 
