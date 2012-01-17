@@ -42,6 +42,12 @@ public class GMapOptions implements ChainableStatement, Serializable {
 	private Boolean streetViewControl;
 	
 	private Boolean zoomControl;
+	
+	public GMapOptions(GMapTypeId mapTypeId, GLatLng center, Integer zoom) {
+		this.mapTypeId = mapTypeId;
+		this.center = center;
+		this.zoom = zoom;
+	}
 
 	@Override
 	public String chainLabel() {
@@ -50,6 +56,10 @@ public class GMapOptions implements ChainableStatement, Serializable {
 
 	@Override
 	public CharSequence[] statementArgs() {
+		if (!isValid()) {
+			throw new IllegalArgumentException("A map must be initialized with mapTypeId, center and zoom.");
+		}
+		
 		Options options = new Options();
 		if (zoom != null) {
 			options.put("zoom", zoom);
@@ -95,6 +105,14 @@ public class GMapOptions implements ChainableStatement, Serializable {
 		args[0] = JsUtils.quotes("init");
 		args[1] = options.getJavaScriptOptions();
 		return args;
+	}
+	
+	public boolean isValid() {
+		if (zoom != null && center != null && mapTypeId != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void disableInteraction() {

@@ -23,38 +23,45 @@
 			});
 		},
 		setOptions : function(options) {
-			var $this = $(this);
-			var gmap = $this.data('gmap');
-			gmap.setOptions(options);
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				data.gmap.setOptions(options);
+			});
 		},
 		panTo : function(latLng) {
 			return this.each(function() {
-				var $this = $(this);
-				var gmap = $this.data('gmap');
-				gmap.panTo(latLng);
+				var $this = $(this), data = $this.data('gmap');
+				data.gmap.panTo(latLng);
 			});
 		},
 		setCenter : function(latLng) {
 			return this.each(function() {
-				var $this = $(this);
-				var gmap = $this.data('gmap');
-				gmap.setCenter(latLng);
+				var $this = $(this), data = $this.data('gmap');
+				data.gmap.setCenter(latLng);
 			});
 		},
 		fitBounds : function(bounds) {
 			return this.each(function() {
-				var $this = $(this);
-				var gmap = $this.data('gmap');
-				gmap.fitBounds(bounds);
+				var $this = $(this), data = $this.data('gmap');
+				data.gmap.fitBounds(bounds);
 			});
 		},
 		addMarker : function() {
 			
-		}
+		},
+		destroy : function() {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				// Namespacing FTW
+				$(window).unbind('.gmap');
+				data.gmap.remove();
+				data.markers.remove();
+				$this.removeData();
+			});
+		},
 	};
 
 	$.fn.gmap = function(method) {
-
 		// Method calling logic
 		if (methods[method]) {
 			return methods[method].apply(this, Array.prototype.slice.call(
