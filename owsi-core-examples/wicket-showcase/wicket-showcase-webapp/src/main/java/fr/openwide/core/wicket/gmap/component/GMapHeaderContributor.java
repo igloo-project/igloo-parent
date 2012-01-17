@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.gmap.component;
 import java.util.Locale;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
@@ -45,8 +46,12 @@ public class GMapHeaderContributor extends Behavior {
 	 */
 	private GMapVersion version;
 	
-	public GMapHeaderContributor(){
+	public GMapHeaderContributor() {
 		this(null, null, null);
+	}
+	
+	public GMapHeaderContributor(String region) {
+		this(region, null, null);
 	}
 	
 	public GMapHeaderContributor(String region, Locale locale) {
@@ -55,8 +60,16 @@ public class GMapHeaderContributor extends Behavior {
 	
 	public GMapHeaderContributor(String region, Locale locale, GMapVersion version) {
 		this.region = region;
-		this.locale = locale;
-		this.version = version;
+		
+		if (locale == null && Session.exists()) {
+			this.locale = Session.get().getLocale();
+		} else {
+			this.locale = locale;
+		}
+		
+		if (version == null) {
+			this.version = GMapVersion.FEATURE_STABLE;
+		}
 	}
 	
 	@Override
@@ -64,13 +77,16 @@ public class GMapHeaderContributor extends Behavior {
 		StringBuilder completeGmapApiUrl = new StringBuilder(GMAP_API_URL);
 		
 		if (region != null) {
-			completeGmapApiUrl.append("&region=" + region);
+			completeGmapApiUrl.append("&region=");
+			completeGmapApiUrl.append(region);
 		}
 		if (locale != null) {
-			completeGmapApiUrl.append("&language=" + locale.getLanguage());
+			completeGmapApiUrl.append("&language=");
+			completeGmapApiUrl.append(locale.getLanguage());
 		}
 		if (version != null) {
-			completeGmapApiUrl.append("&v=" + version.getValue());
+			completeGmapApiUrl.append("&v=");
+			completeGmapApiUrl.append(version.getValue());
 		}
 
 		response.renderJavaScriptReference(completeGmapApiUrl.toString());

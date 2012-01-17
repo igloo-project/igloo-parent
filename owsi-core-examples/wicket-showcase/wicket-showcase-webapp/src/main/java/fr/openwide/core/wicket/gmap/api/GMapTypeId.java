@@ -23,10 +23,10 @@ package fr.openwide.core.wicket.gmap.api;
  */
 public enum GMapTypeId implements GValue {
 	
-	G_HYBRID_MAP("HYBRID"),
-	G_SATELLITE_MAP("SATELLITE"),
-	G_ROADMAP_MAP("ROADMAP"),
-	G_TERRAIN_MAP("TERRAIN");
+	HYBRID("HYBRID"),
+	SATELLITE("SATELLITE"),
+	ROADMAP("ROADMAP"),
+	TERRAIN("TERRAIN");
 	
 	private String value;
 	
