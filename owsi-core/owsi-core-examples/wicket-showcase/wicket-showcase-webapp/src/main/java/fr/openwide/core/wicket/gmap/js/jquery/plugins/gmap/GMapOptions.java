@@ -9,6 +9,10 @@ import org.odlabs.wiquery.core.options.Options;
 import fr.openwide.core.wicket.gmap.api.GLatLng;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 
+/*
+ * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/reference.html#MapOptions"></a>
+ */
+
 public class GMapOptions implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = -1661070056021679177L;
 
@@ -18,6 +22,27 @@ public class GMapOptions implements ChainableStatement, Serializable {
 	
 	private GMapTypeId mapTypeId;
 	
+	// Control
+	private Boolean disableDefaultUI;
+
+	private Boolean draggable;
+	
+	private Boolean keyboardShortcuts;
+	
+	private Boolean mapTypeControl;
+	
+	private Boolean overviewMapControl;
+	
+	private Boolean rotateControl;
+	
+	private Boolean scaleControl;
+	
+	private Boolean scrollwheel;
+	
+	private Boolean streetViewControl;
+	
+	private Boolean zoomControl;
+
 	@Override
 	public String chainLabel() {
 		return "gmap";
@@ -35,11 +60,49 @@ public class GMapOptions implements ChainableStatement, Serializable {
 		if (mapTypeId != null) {
 			options.put("mapTypeId", mapTypeId.getJavaScriptStatement());
 		}
+		if (disableDefaultUI != null) {
+			options.put("disableDefaultUI", disableDefaultUI);
+		}
+		if (draggable != null) {
+			options.put("draggable", draggable);
+		}
+		if (keyboardShortcuts != null) {
+			options.put("keyboardShortcuts", keyboardShortcuts);
+		}
+		if (mapTypeControl != null) {
+			options.put("mapTypeControl", mapTypeControl);
+		}
+		if (overviewMapControl != null) {
+			options.put("overviewMapControle", overviewMapControl);
+		}
+		if (rotateControl != null) {
+			options.put("rotateControl", rotateControl);
+		}
+		if (scaleControl != null) {
+			options.put("scaleControl", scaleControl);
+		}
+		if (scrollwheel != null) {
+			options.put("scrollwheel", scrollwheel);
+		}
+		if (streetViewControl != null) {
+			options.put("streetViewControl", streetViewControl);
+		}
+		if (zoomControl != null) {
+			options.put("zoomControl", zoomControl);
+		}
 		
 		CharSequence[] args = new CharSequence[2];
 		args[0] = JsUtils.quotes("init");
 		args[1] = options.getJavaScriptOptions();
 		return args;
+	}
+	
+	public void disableInteraction() {
+		this.disableDefaultUI = true;
+		this.draggable = false;
+		this.keyboardShortcuts = false;
+		this.scrollwheel = false;
+		this.zoomControl = false;
 	}
 	
 	public Integer getZoom() {
@@ -63,5 +126,85 @@ public class GMapOptions implements ChainableStatement, Serializable {
 
 	public void setMapTypeId(GMapTypeId mapTypeId) {
 		this.mapTypeId = mapTypeId;
+	}
+	
+	public Boolean getDisableDefaultUI() {
+		return disableDefaultUI;
+	}
+
+	public void setDisableDefaultUI(Boolean disableDefaultUI) {
+		this.disableDefaultUI = disableDefaultUI;
+	}
+
+	public Boolean getDraggable() {
+		return draggable;
+	}
+
+	public void setDraggable(Boolean draggable) {
+		this.draggable = draggable;
+	}
+
+	public Boolean getKeyboardShortcuts() {
+		return keyboardShortcuts;
+	}
+
+	public void setKeyboardShortcuts(Boolean keyboardShortcuts) {
+		this.keyboardShortcuts = keyboardShortcuts;
+	}
+
+	public Boolean getMapTypeControl() {
+		return mapTypeControl;
+	}
+
+	public void setMapTypeControl(Boolean mapTypeControl) {
+		this.mapTypeControl = mapTypeControl;
+	}
+
+	public Boolean getOverviewMapControl() {
+		return overviewMapControl;
+	}
+
+	public void setOverviewMapControl(Boolean overviewMapControl) {
+		this.overviewMapControl = overviewMapControl;
+	}
+
+	public Boolean getRotateControl() {
+		return rotateControl;
+	}
+
+	public void setRotateControl(Boolean rotateControl) {
+		this.rotateControl = rotateControl;
+	}
+
+	public Boolean getScaleControl() {
+		return scaleControl;
+	}
+
+	public void setScaleControl(Boolean scaleControl) {
+		this.scaleControl = scaleControl;
+	}
+
+	public Boolean getScrollwheel() {
+		return scrollwheel;
+	}
+
+	public void setScrollwheel(Boolean scrollwheel) {
+		this.scrollwheel = scrollwheel;
+	}
+
+	public Boolean getStreetViewControl() {
+		return streetViewControl;
+	}
+
+	public void setStreetViewControl(Boolean streetViewControl) {
+		this.streetViewControl = streetViewControl;
+	}
+
+	public Boolean getZoomControl() {
+		return zoomControl;
+	}
+
+	public void setZoomControl(Boolean zoomControl) {
+		this.zoomControl = zoomControl;
 	}
 }
