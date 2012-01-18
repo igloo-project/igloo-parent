@@ -4,6 +4,6 @@
 	<wicket:extend>
 		<div wicket:id="gmap" class="gmap-test" style="margin-left: auto; margin-right: auto; width: 600px; height: 400px;">Map</div>
 		<div wicket:id="nomLieu"></div>
-		<input type="button" value="ADD MARKER!" onclick="$('.gmap-test').gmap('cleanMarkers')" />
+		<input type="button" value="ADD MARKER!" onclick="$('.gmap-test').gmap('addInfoBubble','nomLieu', 'click', {content: 'Hello world'})" />
 	</wicket:extend>
 </html>

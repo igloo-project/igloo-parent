@@ -43,7 +43,7 @@
 				data.gmap.fitBounds(bounds);
 			});
 		},
-		addMarker : function(options, markupId) {
+		addMarker : function(markupId, options) {
 			var $this = $(this), data = $this.data('gmap');
 			//Ajout du Marker à la carte
 			var marker = new google.maps.Marker(options);
@@ -53,20 +53,29 @@
 			
 			$this.data('gmap', data);
 		},
+		addInfoBubble : function(markupId, event, options){
+			var $this = $(this), data = $this.data('gmap');
+			var marker = data.markers[markupId];
+			var infobubble = new InfoBubble(options);
+			
+			google.maps.event.addListener(marker, event, function (e) {
+				infobubble.open(data.gmap, marker);
+			});
+		},
 		setMarkerAnimation : function (markupId, options) {
 			var $this = $(this), data = $this.data('gmap');
 			data.markers[markupId].setAnimation(options);
 		},
 		hideMarker : function(markupId) {
 			var $this = $(this), data = $this.data('gmap');
+			data.markers[markupId].setMap(null);
+		},
+		hideMarkers : function(markupId) {
+			var $this = $(this), data = $this.data('gmap');
 			for(var i in data.markers) {
 				data.markers[i].setMap(null);
 			}
 			data.markers[markupId].setMap(data.gmap);
-		},
-		hideMarkers : function(markupId) {
-			var $this = $(this), data = $this.data('gmap');
-			data.markers[markupId].setMap(null);
 		},
 		showAllMarkers : function() {
 			var $this = $(this), data = $this.data('gmap');

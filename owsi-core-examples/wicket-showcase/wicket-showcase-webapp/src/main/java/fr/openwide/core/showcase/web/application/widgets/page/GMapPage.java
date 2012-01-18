@@ -11,6 +11,8 @@ import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.GMapOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow.InfoBubbleBehavior;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow.InfoBubbleOptions;
 
 public class GMapPage extends WidgetsMainPage {
 	private static final long serialVersionUID = -3963117430192776716L;
@@ -25,14 +27,30 @@ public class GMapPage extends WidgetsMainPage {
 		gmap = new GMapPanel("gmap", options);
 		
 		// Ajout d'un marker
+		String markerId = "nomLieu";
 		GMarkerOptions markerOptions = new GMarkerOptions("nomLieu", new GLatLng(-34.397, 150.645), gmap);
 		markerOptions.setAnimation(GMarkerAnimation.DROP);
 		
 		Label nomLieuLabel = new Label("nomLieu", "Nom d'un lieu");
-		nomLieuLabel.add(new GMarkerBehavior(markerOptions));
 		add(nomLieuLabel);
 		
-		// La carte doit être ajoutée en dernier afin qu'elle apparaisse en premier côté JS. :-/
+		// InfoBubble
+		InfoBubbleOptions infoOptions = new InfoBubbleOptions(gmap ,markerId, "click", "'1'");
+		infoOptions.setPadding(5);
+		infoOptions.setBackgroundColor("'#FAF3E6'");
+		infoOptions.setBorderRadius(8);
+		infoOptions.setArrowSize(10);
+		infoOptions.setArrowPosition(20);
+		infoOptions.setBorderWidth(1);
+		infoOptions.setBorderColor("'#F6DAB9'");
+		infoOptions.setDisableAutoPan(false);
+		infoOptions.setHideCloseButton(true);
+		
+		//Les behaviors doivent être ajoutés dans le bon ordre (c.a.d inverse à l'ordre logique)
+		nomLieuLabel.add(new InfoBubbleBehavior(infoOptions));
+		nomLieuLabel.add(new GMarkerBehavior(markerOptions));
+		
+		// La carte doit être ajoutée en derniere afin qu'elle apparaisse en premier côté JS. :-/
 		add(gmap);
 	}
 
