@@ -40,6 +40,12 @@
 				data.gmap.setCenter(latLng);
 			});
 		},
+		setZoom : function(zoom) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				data.gmap.setZoom(zoom);
+			});
+		},
 		fitBounds : function(bounds) {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
