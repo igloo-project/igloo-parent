@@ -357,30 +357,12 @@
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-jpamodelgen</artifactId>
 						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
-						<scope>compile</scope>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>maven-apt-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>com.mysema.querydsl</groupId>
-						<artifactId>querydsl-apt</artifactId>
-						<version>${owsi-core.querydsl.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 		
@@ -413,21 +395,6 @@
 			<id>jboss</id>
 			<name>JBoss Maven Repository</name>
 			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>maven-annotation-plugin</id>
-			<url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>nexus-owsi-core-snapshots</id>
-			<name>Nexus OWSI Core Snapshots</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<updatePolicy>interval:240</updatePolicy>
-			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
