@@ -59,7 +59,11 @@ public class GMapHeaderContributor extends Behavior {
 	}
 	
 	public GMapHeaderContributor(String region, Locale locale, GMapVersion version) {
-		this.region = region;
+		if (region == null) {
+			this.region = Locale.FRANCE.getCountry();
+		} else {
+			this.region = region;
+		}
 		
 		if (locale == null && Session.exists()) {
 			this.locale = Session.get().getLocale();
@@ -68,7 +72,9 @@ public class GMapHeaderContributor extends Behavior {
 		}
 		
 		if (version == null) {
-			this.version = GMapVersion.FEATURE_STABLE;
+			this.version = GMapVersion.CURRENT;
+		} else {
+			this.version = version;
 		}
 	}
 	

@@ -7,9 +7,9 @@ package fr.openwide.core.wicket.gmap.api.version;
 
 public enum GMapVersion {
 
-	FROZEN("3.4"),
-	FEATURE_STABLE("3.5"),
-	CURRENT("3.6");
+	FROZEN("3.5"),
+	FEATURE_STABLE("3.6"),
+	CURRENT("3.7");
 	
 	private String value;
 	
