@@ -207,19 +207,22 @@
 		</dependency>
 
 		<!-- Spring dependencies -->
-		<!--
-		TODO: déterminer si l'utilisation du load time weaver est nécessaire
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-agent</artifactId>
-			<scope>test</scope>
-		</dependency> 
-		-->
+			<artifactId>spring-aspects</artifactId>
+			<version>${owsi-core.spring.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${owsi-core.spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<dependency>
