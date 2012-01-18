@@ -13,10 +13,7 @@
 					
 					$this.data('gmap', {
 						target : $this,
-						gmap : gmap
-					});
-					$this.data('markers', {
-						target : $this,
+						gmap : gmap,
 						markers : markers
 					});
 				}
@@ -34,12 +31,6 @@
 				data.gmap.panTo(latLng);
 			});
 		},
-		setCenter : function(latLng) {
-			return this.each(function() {
-				var $this = $(this), data = $this.data('gmap');
-				data.gmap.setCenter(latLng);
-			});
-		},
 		setZoom : function(zoom) {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
@@ -52,8 +43,48 @@
 				data.gmap.fitBounds(bounds);
 			});
 		},
-		addMarker : function() {
+		addMarker : function(options, markupId) {
+			var $this = $(this), data = $this.data('gmap');
+			//Ajout du Marker à la carte
+			var marker = new google.maps.Marker(options);
 			
+			//Ajout du Marker dans la HashMap
+			data.markers[markupId] = marker;
+			
+			$this.data('gmap', data);
+		},
+		setMarkerAnimation : function (markupId, options) {
+			var $this = $(this), data = $this.data('gmap');
+			data.markers[markupId].setAnimation(options);
+		},
+		hideMarker : function(markupId) {
+			var $this = $(this), data = $this.data('gmap');
+			for(var i in data.markers) {
+				data.markers[i].setMap(null);
+			}
+			data.markers[markupId].setMap(data.gmap);
+		},
+		hideMarkers : function(markupId) {
+			var $this = $(this), data = $this.data('gmap');
+			data.markers[markupId].setMap(null);
+		},
+		showAllMarkers : function() {
+			var $this = $(this), data = $this.data('gmap');
+			for(var i in data.markers) {
+				data.markers[i].setMap(data.gmap);
+			}
+		},
+		showMarker : function(markupId) {
+			var $this = $(this), data = $this.data('gmap');
+			data.markers[markupId].setMap(data.gmap);
+		},
+		clearMarkers : function() {
+			var $this = $(this), data = $this.data('gmap');
+			
+			for(var i in data.markers) {
+					data.markers[i].setMap(null);
+			}
+			data.markers = new Object();
 		},
 		destroy : function() {
 			return this.each(function() {

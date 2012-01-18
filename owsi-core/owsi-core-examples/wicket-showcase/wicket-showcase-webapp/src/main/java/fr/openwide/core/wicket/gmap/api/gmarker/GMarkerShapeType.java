@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap.api.gmarker.shape;
+package fr.openwide.core.wicket.gmap.api.gmarker;
 
 import java.io.Serializable;
 
