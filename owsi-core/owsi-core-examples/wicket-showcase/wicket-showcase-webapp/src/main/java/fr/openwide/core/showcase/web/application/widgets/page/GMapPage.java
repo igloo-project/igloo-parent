@@ -7,6 +7,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.wicket.gmap.api.GLatLng;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
+import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.GMapOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
@@ -30,6 +31,7 @@ public class GMapPage extends WidgetsMainPage {
 		String markerId = "nomLieu";
 		GMarkerOptions markerOptions = new GMarkerOptions("nomLieu", new GLatLng(-34.397, 150.645), gmap);
 		markerOptions.setAnimation(GMarkerAnimation.DROP);
+		markerOptions.setIcon(new GMarkerImage("'http://www.runmyprocess.com/images/icon_cloud.png'", null, null, null, null));
 		
 		Label nomLieuLabel = new Label("nomLieu", "Nom d'un lieu");
 		add(nomLieuLabel);
@@ -44,7 +46,7 @@ public class GMapPage extends WidgetsMainPage {
 		infoOptions.setBorderWidth(1);
 		infoOptions.setBorderColor("'#F6DAB9'");
 		infoOptions.setDisableAutoPan(false);
-		infoOptions.setHideCloseButton(true);
+		infoOptions.setHideCloseButton(false);
 		
 		//Les behaviors doivent être ajoutés dans le bon ordre (c.a.d inverse à l'ordre logique)
 		nomLieuLabel.add(new InfoBubbleBehavior(infoOptions));
