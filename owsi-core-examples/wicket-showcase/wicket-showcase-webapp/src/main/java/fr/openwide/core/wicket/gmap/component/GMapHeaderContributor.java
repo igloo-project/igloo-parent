@@ -33,7 +33,7 @@ public class GMapHeaderContributor extends Behavior {
 	 * The region parameter accepts Unicode region subtag identifiers
 	 * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/basics.html#Localization">
 	 */
-	private String region;
+	private Locale region;
 	
 	/*
 	 * Supported Language
@@ -50,17 +50,17 @@ public class GMapHeaderContributor extends Behavior {
 		this(null, null, null);
 	}
 	
-	public GMapHeaderContributor(String region) {
+	public GMapHeaderContributor(Locale region) {
 		this(region, null, null);
 	}
 	
-	public GMapHeaderContributor(String region, Locale locale) {
+	public GMapHeaderContributor(Locale region, Locale locale) {
 		this(region, locale, null);
 	}
 	
-	public GMapHeaderContributor(String region, Locale locale, GMapVersion version) {
+	public GMapHeaderContributor(Locale region, Locale locale, GMapVersion version) {
 		if (region == null) {
-			this.region = Locale.FRANCE.getCountry();
+			this.region = Locale.FRANCE;
 		} else {
 			this.region = region;
 		}
@@ -84,7 +84,7 @@ public class GMapHeaderContributor extends Behavior {
 		
 		if (region != null) {
 			completeGmapApiUrl.append("&region=");
-			completeGmapApiUrl.append(region);
+			completeGmapApiUrl.append(region.getCountry());
 		}
 		if (locale != null) {
 			completeGmapApiUrl.append("&language=");
