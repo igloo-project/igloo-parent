@@ -64,14 +64,11 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 		}
 		
 		Options options = new Options();
+		options.put("position", position.getJavaScriptStatement());
+		options.put("map", new JsStatement().$(map, "").getStatement().toString() + ".data('gmap').gmap");
+		
 		if (animation != null) {
 			options.put("animation", animation.getJavaScriptStatement());
-		}
-		if (position != null) {
-			options.put("position", position.getJavaScriptStatement());
-		}
-		if (map != null) {
-			options.put("map", new JsStatement().$(map, "").getStatement().toString() + ".data('gmap').gmap");
 		}
 		if (shape != null) {
 			options.put("shape", shape.getJavaScriptStatement());
@@ -109,8 +106,8 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 		
 		CharSequence[] args = new CharSequence[3];
 		args[0] = JsUtils.quotes("addMarker");
-		args[1] = options.getJavaScriptOptions();
-		args[2] = JsUtils.quotes(markerId);
+		args[1] = JsUtils.quotes(markerId);
+		args[2] = options.getJavaScriptOptions();
 		return args;
 	}
 	
