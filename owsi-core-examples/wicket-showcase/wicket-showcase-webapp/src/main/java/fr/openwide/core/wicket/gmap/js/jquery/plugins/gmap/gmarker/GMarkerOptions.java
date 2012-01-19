@@ -18,6 +18,8 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 
 	private GMapPanel map;
 	
+	private Boolean autofit;
+	
 	private String markerId;
 	
 	private GMarkerAnimation animation;
@@ -103,11 +105,14 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 		if (zIndex != null) {
 			options.put("zIndex", zIndex);
 		}
-		
-		CharSequence[] args = new CharSequence[3];
+		if (autofit == null) {
+			autofit = true;
+		}
+		CharSequence[] args = new CharSequence[4];
 		args[0] = JsUtils.quotes("addMarker");
 		args[1] = JsUtils.quotes(markerId);
 		args[2] = options.getJavaScriptOptions();
+		args[3] = autofit.toString();
 		return args;
 	}
 	
@@ -125,6 +130,14 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 
 	public void setMap(GMapPanel map) {
 		this.map = map;
+	}
+
+	public Boolean getAutofit() {
+		return autofit;
+	}
+
+	public void setAutofit(Boolean autofit) {
+		this.autofit = autofit;
 	}
 
 	public GMarkerAnimation getAnimation() {

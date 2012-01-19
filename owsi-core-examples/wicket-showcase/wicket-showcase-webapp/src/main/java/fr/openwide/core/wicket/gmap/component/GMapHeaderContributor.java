@@ -12,7 +12,7 @@ import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.gmap.api.version.GMapVersion;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.GMapOptions;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow.InfoBubbleOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow.GInfoBubbleOptions;
 
 public class GMapHeaderContributor extends Behavior {
 	private static final long serialVersionUID = 417580948999506226L;
@@ -25,7 +25,7 @@ public class GMapHeaderContributor extends Behavior {
 	 * see <a href="http://code.google.com/p/google-maps-utility-library-v3/"></a>
 	 */
 	private static final WiQueryJavaScriptResourceReference INFOBUBBLE_JS = new WiQueryJavaScriptResourceReference(
-			InfoBubbleOptions.class, "infobubble.js");
+			GInfoBubbleOptions.class, "infobubble.js");
 	
 	private static final WiQueryJavaScriptResourceReference WICKET_GMAP_JS = new WiQueryJavaScriptResourceReference(GMapOptions.class, "jquery.gmap.js"){
 		private static final long serialVersionUID = -1536497398319819956L;

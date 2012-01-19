@@ -21,6 +21,6 @@ public class Point implements GValue {
 	
 	@Override
 	public String getJavaScriptStatement() {
-		return new Constructor("google.maps.point").add(x).add(y).toJS();
+		return new Constructor("google.maps.Point").add(x).add(y).toJS();
 	}
 }
