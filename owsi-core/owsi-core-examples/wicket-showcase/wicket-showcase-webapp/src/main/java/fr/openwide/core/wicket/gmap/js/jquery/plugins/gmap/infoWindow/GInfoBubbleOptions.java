@@ -15,7 +15,7 @@ import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
  * <a href="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/"></a>
  */
 
-public class InfoBubbleOptions implements ChainableStatement, Serializable {
+public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = -2530841040713652424L;
 
 	private GMapPanel map;
@@ -47,7 +47,7 @@ public class InfoBubbleOptions implements ChainableStatement, Serializable {
 	
 	
 	
-	public InfoBubbleOptions(GMapPanel map, String markerId, String event, String content) {
+	public GInfoBubbleOptions(GMapPanel map, String markerId, String event, String content) {
 		this.map = map;
 		this.markerId = markerId;
 		this.event = event;
@@ -66,7 +66,7 @@ public class InfoBubbleOptions implements ChainableStatement, Serializable {
 		}
 		
 		Options options = new Options();
-		options.put("content", content);
+		options.put("content", JsUtils.quotes(content));
 		if (position != null) {
 			options.put("position", position.getJavaScriptStatement());
 		}
@@ -89,10 +89,10 @@ public class InfoBubbleOptions implements ChainableStatement, Serializable {
 			options.put("hideCloseButton", hideCloseButton);
 		}
 		if (backgroundColor != null) {
-			options.put("backgroundColor", backgroundColor);
+			options.put("backgroundColor", JsUtils.quotes(backgroundColor));
 		}
 		if (borderColor != null) {
-			options.put("borderColor", borderColor);
+			options.put("borderColor", JsUtils.quotes(borderColor));
 		}
 		if (borderRadius != null) {
 			options.put("borderRadius", borderRadius);
@@ -119,10 +119,10 @@ public class InfoBubbleOptions implements ChainableStatement, Serializable {
 			options.put("arrowSize", arrowSize);
 		}
 		if (arrowStyle != null) {
-			options.put("arrowStyle", arrowStyle);
+			options.put("arrowStyle", JsUtils.quotes(arrowStyle));
 		}
 		if (backgroundClassName != null) {
-			options.put("backgroundClassName", backgroundClassName);
+			options.put("backgroundClassName", JsUtils.quotes(backgroundClassName));
 		}
 	
 		CharSequence[] args = new CharSequence[4];
