@@ -10,7 +10,6 @@ import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
-import fr.openwide.core.showcase.web.application.util.application.OverrideWiQueryHeaderResponseApplicationListener;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.page.AutocompletePage;
 import fr.openwide.core.showcase.web.application.widgets.page.CalendarPage;
@@ -35,8 +34,6 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 	@Override
 	public void init() {
 		super.init();
-		
-		getApplicationListeners().add(new OverrideWiQueryHeaderResponseApplicationListener());
 	}
 
 	@Override
