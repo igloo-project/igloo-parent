@@ -1,5 +1,7 @@
 package fr.openwide.core.showcase.web.application.widgets.page;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,27 +13,27 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.SharedResourceReference;
-import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
+import com.google.code.geocoder.model.LatLng;
+
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
-import fr.openwide.core.wicket.gmap.api.GLatLng;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
-import fr.openwide.core.wicket.gmap.api.Point;
-import fr.openwide.core.wicket.gmap.api.Size;
+import fr.openwide.core.wicket.gmap.api.GPoint;
+import fr.openwide.core.wicket.gmap.api.GSize;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.GMapOptions;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.action.GMapChainableStatement;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow.GInfoBubbleBehavior;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow.GInfoBubbleOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleBehavior;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapChainableStatement;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapOptions;
 
 public class GMapPage extends WidgetsMainPage {
 	private static final long serialVersionUID = -3963117430192776716L;
@@ -42,16 +44,18 @@ public class GMapPage extends WidgetsMainPage {
 		super(parameters);
 		
 		// Création de la carte
-		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new GLatLng(-34.397, 150.644), 4);
+		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng( new BigDecimal(-34.397), 
+				new BigDecimal(150.644)), 4);
 		options.setZoom(15);
 		gmap = new GMapPanel("gmap", options);
 		
 		List<Place> places = new ArrayList<Place>();
-		Place place1 = new Place("place1", new GLatLng(-34.390, 150.670), "images/icons/gdu-emblem-raid1.svg");
+		Place place1 = new Place("place1", new LatLng("-34.390", "150.670"),
+				"images/icons/gdu-emblem-raid1.svg");
 		places.add(place1);
-		Place place2 = new Place("place2", new GLatLng(-34.395, 150.645), "images/icons/gdu-emblem-raid3.svg");
+		Place place2 = new Place("place2", new LatLng("-34.395", "150.645"), "images/icons/gdu-emblem-raid3.svg");
 		places.add(place2);
-		Place place3 = new Place("place3", new GLatLng(-25.395, 111.645), "images/icons/gdu-emblem-raid4.svg");
+		Place place3 = new Place("place3", new LatLng("-25.395", "111.645"), "images/icons/gdu-emblem-raid4.svg");
 		places.add(place3);
 		
 		add(new ListView<Place>("list", places) {
@@ -64,11 +68,11 @@ public class GMapPage extends WidgetsMainPage {
 				final String markerId = place.getName();
 				GMarkerOptions markerOptions = new GMarkerOptions(place.getName(), place.getPosition(), gmap);
 				markerOptions.setAnimation(GMarkerAnimation.DROP);
-				markerOptions.setDraggable(true);
+				markerOptions.setDraggable(false);
 				
 				ResourceReference resourceReference = new SharedResourceReference(MainTemplate.class, place.getIcon());
-				GMarkerImage icon = new GMarkerImage(resourceReference, new Point(0, 32), new Point(0,0), new Size(16, 16),
-						new Size(16, 16));
+				GMarkerImage icon = new GMarkerImage(resourceReference, new GPoint(0, 32), new GPoint(0,0), new GSize(16, 16),
+						new GSize(16, 16));
 				markerOptions.setIcon(icon);
 
 				Label placeLabel = new Label("place", place.getName());
@@ -79,10 +83,10 @@ public class GMapPage extends WidgetsMainPage {
 					@Override
 					public JsScope callback() {
 						return JsScope.quickScope(new JsStatement().$(gmap, "")
-//							.chain(new GMapChainableStatement.HideAllMarkersExceptChainableStatement(place.getName()))
-							.chain(new GMapChainableStatement.PanToMarkerChainableStatement(markerId))
-							.chain(new GMapChainableStatement.SetZoomChainableStatement(10))
-							.chain(new GMapChainableStatement.SetMarkerAnimationChainableStatement(place.getName(), GMarkerAnimation.BOUNCE))
+							.chain(new GMapChainableStatement.HideAllMarkersExcept(place.getName()))
+							.chain(new GMapChainableStatement.PanToMarker(markerId))
+							.chain(new GMapChainableStatement.SetZoom(10))
+							.chain(new GMapChainableStatement.SetMarkerAnimation(place.getName(), GMarkerAnimation.BOUNCE))
 						);
 					}
 				}));
@@ -102,15 +106,6 @@ public class GMapPage extends WidgetsMainPage {
 				
 				//Les behaviors doivent être ajoutés dans le bon ordre (c.a.d inverse à l'ordre logique)
 				placeLabel.add(new GInfoBubbleBehavior(infoOptions));
-				placeLabel.add(new WiQueryAbstractBehavior() {
-					private static final long serialVersionUID = -5555894438701693603L;
-
-					@Override
-					public JsStatement statement() {
-						return new JsStatement().$(gmap, "")
-							.chain(new GMapChainableStatement.GetPositionFromDragMoveChainableStatement(markerId));
-					}
-				});
 				placeLabel.add(new GMarkerBehavior(markerOptions));
 				
 				Button clearAnimation = new Button("clearAnimation");
@@ -121,7 +116,7 @@ public class GMapPage extends WidgetsMainPage {
 							@Override
 							public JsScope callback() {
 								return JsScope.quickScope(new JsStatement().$(gmap, "")
-									.chain(new GMapChainableStatement.SetMarkerAnimationChainableStatement(markerId, null)));
+									.chain(new GMapChainableStatement.SetMarkerAnimation(markerId, null)));
 							};
 				}));
 				item.add(clearAnimation);
@@ -134,7 +129,7 @@ public class GMapPage extends WidgetsMainPage {
 							@Override
 							public JsScope callback() {
 								return JsScope.quickScope(new JsStatement().$(gmap, "")
-									.chain(new GMapChainableStatement.HideMarkerChainableStatement(markerId)));
+									.chain(new GMapChainableStatement.HideMarker(markerId)));
 							};
 				}));
 				item.add(hide);
@@ -147,7 +142,7 @@ public class GMapPage extends WidgetsMainPage {
 							@Override
 							public JsScope callback() {
 								return JsScope.quickScope(new JsStatement().$(gmap, "")
-									.chain(new GMapChainableStatement.ShowMarkerChainableStatement(markerId)));
+									.chain(new GMapChainableStatement.ShowMarker(markerId)));
 							};
 				}));
 				item.add(show);
@@ -164,7 +159,7 @@ public class GMapPage extends WidgetsMainPage {
 					@Override
 					public JsScope callback() {
 						return JsScope.quickScope(new JsStatement().$(gmap, "")
-							.chain(new GMapChainableStatement.ClearMarkersChainableStatement()));
+							.chain(new GMapChainableStatement.ClearMarkers()));
 					};
 		}));
 		add(clearMarkersButton);
@@ -178,7 +173,7 @@ public class GMapPage extends WidgetsMainPage {
 					@Override
 					public JsScope callback() {
 						return JsScope.quickScope(new JsStatement().$(gmap, "")
-								.chain(new GMapChainableStatement.AutofitChainableStatement()));
+								.chain(new GMapChainableStatement.Autofit()));
 					};
 		}));
 		add(autofitButton);
@@ -192,7 +187,7 @@ public class GMapPage extends WidgetsMainPage {
 					@Override
 					public JsScope callback() {
 						return JsScope.quickScope(new JsStatement().$(gmap, "")
-								.chain(new GMapChainableStatement.ShowAllMarkersChainableStatement()));
+								.chain(new GMapChainableStatement.ShowAllMarkers()));
 					};
 		}));
 		add(showAllMarkersButton);
@@ -211,12 +206,15 @@ public class GMapPage extends WidgetsMainPage {
 		return GMapPage.class;
 	}
 	
-	private class Place {
+	private class Place implements Serializable {
+		
+		private static final long serialVersionUID = 354186398677112571L;
+		
 		private String name;
-		private GLatLng position;
+		private LatLng position;
 		private String icon;
 		
-		public Place(String name, GLatLng position, String icon){
+		public Place(String name, LatLng position, String icon){
 			this.name = name;
 			this.position = position;
 			this.icon = icon;
@@ -230,7 +228,7 @@ public class GMapPage extends WidgetsMainPage {
 			return icon;
 		}
 
-		public GLatLng getPosition() {
+		public LatLng getPosition() {
 			return position;
 		}
 	}

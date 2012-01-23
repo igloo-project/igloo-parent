@@ -1,11 +1,11 @@
 package fr.openwide.core.wicket.gmap.api;
 
-import fr.openwide.core.wicket.gmap.js.util.Constructor;
+import java.io.Serializable;
 
 /*
  * see a< href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/reference.html#Size"></a>
  */
-public class Size implements GValue {
+public class GSize implements Serializable {
 	private static final long serialVersionUID = 6784611603002043120L;
 
 	// The height along the y-axis, in pixels.
@@ -14,13 +14,24 @@ public class Size implements GValue {
 	// The width along the x-axis, in pixels.
 	private float width;
 	
-	public Size(float height, float width){
+	public GSize(float height, float width){
 		this.height = height;
 		this.width = width;
 	}
-	
-	@Override
-	public String getJavaScriptStatement() {
-		return new Constructor("google.maps.Size").add(width).add(height).toJS();
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
 	}
 }

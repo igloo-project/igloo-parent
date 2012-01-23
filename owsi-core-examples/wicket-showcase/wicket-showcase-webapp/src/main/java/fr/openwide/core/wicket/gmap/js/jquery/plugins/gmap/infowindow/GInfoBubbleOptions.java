@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infoWindow;
+package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow;
 
 import java.io.Serializable;
 
@@ -6,8 +6,10 @@ import org.odlabs.wiquery.core.javascript.ChainableStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.Options;
 
-import fr.openwide.core.wicket.gmap.api.GLatLng;
-import fr.openwide.core.wicket.gmap.api.Size;
+import com.google.code.geocoder.model.LatLng;
+
+import fr.openwide.core.wicket.gmap.api.GSize;
+import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
 import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
 
 /*
@@ -23,11 +25,11 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 	private String event;
 	
 	// InfoWindow
-	private GLatLng position;
+	private LatLng position;
 	private String content;
 	private Float zIndex;
 	private Integer maxWidth;
-	private Size pixelOffset;
+	private GSize pixelOffset;
 	private Boolean disableAutoPan;
 	
 	// InfoBubble
@@ -68,13 +70,13 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 		Options options = new Options();
 		options.put("content", JsUtils.quotes(content));
 		if (position != null) {
-			options.put("position", position.getJavaScriptStatement());
+			options.put("position", GJsStatementUtils.getJavaScriptStatement(position));
 		}
 		if (maxWidth != null) {
 			options.put("maxWidth", maxWidth);
 		}
 		if (pixelOffset != null) {
-			options.put("pixelOffset", pixelOffset.getJavaScriptStatement());
+			options.put("pixelOffset", GJsStatementUtils.getJavaScriptStatement(pixelOffset));
 		}
 		if (zIndex != null) {
 			options.put("zIndex", zIndex);
@@ -165,11 +167,11 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 		this.event = event;
 	}
 
-	public GLatLng getPosition() {
+	public LatLng getPosition() {
 		return position;
 	}
 
-	public void setPosition(GLatLng position) {
+	public void setPosition(LatLng position) {
 		this.position = position;
 	}
 
@@ -197,11 +199,11 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 		this.maxWidth = maxWidth;
 	}
 
-	public Size getPixelOffset() {
+	public GSize getPixelOffset() {
 		return pixelOffset;
 	}
 
-	public void setPixelOffset(Size pixelOffset) {
+	public void setPixelOffset(GSize pixelOffset) {
 		this.pixelOffset = pixelOffset;
 	}
 

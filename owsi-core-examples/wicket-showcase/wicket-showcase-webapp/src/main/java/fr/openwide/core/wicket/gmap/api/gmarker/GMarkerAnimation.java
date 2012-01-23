@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.gmap.api.gmarker;
 
-import fr.openwide.core.wicket.gmap.api.GValue;
+import java.io.Serializable;
 
-public enum GMarkerAnimation implements GValue {
+public enum GMarkerAnimation implements Serializable {
 	
 	BOUNCE("BOUNCE"),
 	DROP("DROP");
@@ -15,10 +15,5 @@ public enum GMarkerAnimation implements GValue {
 	
 	public String getValue() {
 		return value;
-	}
-	
-	@Override
-	public String getJavaScriptStatement() {
-		return "google.maps.Animation." + value;
 	}
 }
