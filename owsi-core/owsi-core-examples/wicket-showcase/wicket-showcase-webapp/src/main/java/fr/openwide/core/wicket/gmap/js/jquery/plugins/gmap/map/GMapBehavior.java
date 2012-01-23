@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap;
+package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map;
 
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
 import org.odlabs.wiquery.core.javascript.JsStatement;

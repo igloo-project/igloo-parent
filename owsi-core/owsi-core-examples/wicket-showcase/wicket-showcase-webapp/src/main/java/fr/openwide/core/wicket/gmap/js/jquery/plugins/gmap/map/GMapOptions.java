@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap;
+package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map;
 
 import java.io.Serializable;
 
@@ -6,8 +6,10 @@ import org.odlabs.wiquery.core.javascript.ChainableStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.Options;
 
-import fr.openwide.core.wicket.gmap.api.GLatLng;
+import com.google.code.geocoder.model.LatLng;
+
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
+import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
 
 /*
  * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/reference.html#MapOptions"></a>
@@ -18,7 +20,7 @@ public class GMapOptions implements ChainableStatement, Serializable {
 
 	private Integer zoom;
 	
-	private GLatLng center;
+	private LatLng center;
 	
 	private GMapTypeId mapTypeId;
 	
@@ -43,7 +45,7 @@ public class GMapOptions implements ChainableStatement, Serializable {
 	
 	private Boolean zoomControl;
 	
-	public GMapOptions(GMapTypeId mapTypeId, GLatLng center, Integer zoom) {
+	public GMapOptions(GMapTypeId mapTypeId, LatLng center, Integer zoom) {
 		this.mapTypeId = mapTypeId;
 		this.center = center;
 		this.zoom = zoom;
@@ -65,10 +67,10 @@ public class GMapOptions implements ChainableStatement, Serializable {
 			options.put("zoom", zoom);
 		}
 		if (center != null) {
-			options.put("center", center.getJavaScriptStatement());
+			options.put("center", GJsStatementUtils.getJavaScriptStatement(center));
 		}
 		if (mapTypeId != null) {
-			options.put("mapTypeId", mapTypeId.getJavaScriptStatement());
+			options.put("mapTypeId", GJsStatementUtils.getJavaScriptStatement(mapTypeId));
 		}
 		if (disableDefaultUI != null) {
 			options.put("disableDefaultUI", disableDefaultUI);
@@ -130,11 +132,11 @@ public class GMapOptions implements ChainableStatement, Serializable {
 	public void setZoom(Integer zoom) {
 		this.zoom = zoom;
 	}
-	public GLatLng getCenter() {
+	public LatLng getCenter() {
 		return center;
 	}
 
-	public void setCenter(GLatLng center) {
+	public void setCenter(LatLng center) {
 		this.center = center;
 	}
 

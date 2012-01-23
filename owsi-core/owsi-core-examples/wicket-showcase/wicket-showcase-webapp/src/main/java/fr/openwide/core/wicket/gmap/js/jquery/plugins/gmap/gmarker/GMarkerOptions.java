@@ -7,10 +7,12 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.Options;
 
-import fr.openwide.core.wicket.gmap.api.GLatLng;
+import com.google.code.geocoder.model.LatLng;
+
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerShape;
+import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
 import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
 
 public class GMarkerOptions  implements ChainableStatement, Serializable {
@@ -24,7 +26,7 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 	
 	private GMarkerAnimation animation;
 	
-	private GLatLng position;
+	private LatLng position;
 	
 	private Integer zIndex;
 	
@@ -48,7 +50,7 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 	
 	private Boolean raiseOnDrag;
 	
-	public GMarkerOptions(String markerId, GLatLng position, GMapPanel map) {
+	public GMarkerOptions(String markerId, LatLng position, GMapPanel map) {
 		this.markerId = markerId;
 		this.position = position;
 		this.map = map;
@@ -66,20 +68,20 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 		}
 		
 		Options options = new Options();
-		options.put("position", position.getJavaScriptStatement());
+		options.put("position", GJsStatementUtils.getJavaScriptStatement(position));
 		options.put("map", new JsStatement().$(map, "").getStatement().toString() + ".data('gmap').gmap");
 		
 		if (animation != null) {
-			options.put("animation", animation.getJavaScriptStatement());
+			options.put("animation", GJsStatementUtils.getJavaScriptStatement(animation));
 		}
 		if (shape != null) {
-			options.put("shape", shape.getJavaScriptStatement());
+			options.put("shape", GJsStatementUtils.getJavaScriptStatement(shape));
 		}
 		if (icon != null) {
-			options.put("icon", icon.getJavaScriptStatement());
+			options.put("icon", GJsStatementUtils.getJavaScriptStatement(icon));
 		}
 		if (shadow != null) {
-			options.put("shadow", shadow.getJavaScriptStatement());
+			options.put("shadow", GJsStatementUtils.getJavaScriptStatement(shadow));
 		}
 		if (title != null) {
 			options.put("title", title);
@@ -148,11 +150,11 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 		this.animation = animation;
 	}
 
-	public GLatLng getPosition() {
+	public LatLng getPosition() {
 		return position;
 	}
 
-	public void setPosition(GLatLng position) {
+	public void setPosition(LatLng position) {
 		this.position = position;
 	}
 

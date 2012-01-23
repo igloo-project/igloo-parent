@@ -15,13 +15,15 @@
  */
 package fr.openwide.core.wicket.gmap.api;
 
+import java.io.Serializable;
+
 
 
 /**
  * Represents an Google Maps API's <a
  * href="http://www.google.com/apis/maps/documentation/reference.html#GMapType">GMapType</a>.
  */
-public enum GMapTypeId implements GValue {
+public enum GMapTypeId implements Serializable {
 	
 	HYBRID("HYBRID"),
 	SATELLITE("SATELLITE"),
@@ -36,10 +38,5 @@ public enum GMapTypeId implements GValue {
 	
 	public String getValue() {
 		return value;
-	}
-	
-	@Override
-	public String getJavaScriptStatement() {
-		return "google.maps.MapTypeId." + value;
 	}
 }
