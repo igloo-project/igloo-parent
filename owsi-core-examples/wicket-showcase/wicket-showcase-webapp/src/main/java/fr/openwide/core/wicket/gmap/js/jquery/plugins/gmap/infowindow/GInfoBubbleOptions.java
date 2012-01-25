@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow;
 
 import java.io.Serializable;
 
+import org.apache.wicket.markup.html.WebComponent;
 import org.odlabs.wiquery.core.javascript.ChainableStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.Options;
@@ -26,7 +27,7 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 	
 	// InfoWindow
 	private LatLng position;
-	private String content;
+	private WebComponent content;
 	private Float zIndex;
 	private Integer maxWidth;
 	private GSize pixelOffset;
@@ -49,11 +50,13 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 	
 	
 	
-	public GInfoBubbleOptions(GMapPanel map, String markerId, String event, String content) {
+	public GInfoBubbleOptions(GMapPanel map, String markerId, String event, WebComponent content) {
 		this.map = map;
 		this.markerId = markerId;
 		this.event = event;
 		this.content = content;
+		
+		content.setOutputMarkupId(true);
 	}
 	
 	@Override
@@ -64,11 +67,10 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 	@Override
 	public CharSequence[] statementArgs() {
 		if (!isValid()) {
-			throw new IllegalArgumentException("A marker must be initialized with a markupId, a position and a map");
+			throw new IllegalArgumentException("An infoBubble must be initialized with a markupId, an event, a content and a map.");
 		}
 		
 		Options options = new Options();
-		options.put("content", JsUtils.quotes(content));
 		if (position != null) {
 			options.put("position", GJsStatementUtils.getJavaScriptStatement(position));
 		}
@@ -127,11 +129,12 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 			options.put("backgroundClassName", JsUtils.quotes(backgroundClassName));
 		}
 	
-		CharSequence[] args = new CharSequence[4];
+		CharSequence[] args = new CharSequence[5];
 		args[0] = JsUtils.quotes("addInfoBubble");
 		args[1] = JsUtils.quotes(markerId);
 		args[2] = JsUtils.quotes(event);
 		args[3] = options.getJavaScriptOptions();
+		args[4] = "document.getElementById('" + content.getMarkupId() + "').innerHTML";
 		return args;
 	}
 	
@@ -175,11 +178,11 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 		this.position = position;
 	}
 
-	public String getContent() {
+	public WebComponent getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(WebComponent content) {
 		this.content = content;
 	}
 

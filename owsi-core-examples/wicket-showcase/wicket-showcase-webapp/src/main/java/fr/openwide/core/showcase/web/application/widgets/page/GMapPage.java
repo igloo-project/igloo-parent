@@ -89,7 +89,7 @@ public class GMapPage extends WidgetsMainPage {
 				item.add(placeLabel);
 				
 				// InfoBubble
-				GInfoBubbleOptions infoOptions = new GInfoBubbleOptions(gmap, markerId, "click", "1");
+				GInfoBubbleOptions infoOptions = new GInfoBubbleOptions(gmap, markerId, "click", placeLabel);
 				infoOptions.setPadding(5);
 				infoOptions.setBackgroundColor("#FAF3E6");
 				infoOptions.setBorderRadius(8);
