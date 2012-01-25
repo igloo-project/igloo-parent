@@ -43,14 +43,20 @@ function getReverseGeocodingResult(result, callbackUrl) {
 					// Create bounds
 					var bounds = new google.maps.LatLngBounds();
 					
+					// Create Direction Service
+					var directionsService = new google.maps.DirectionsService();
+					
+					// Create Direction Renderer
+					var directionsDisplay = new google.maps.DirectionsRenderer();
+					
 					$this.data('gmap', {
 						target : $this,
 						gmap : gmap,
 						markers : markers,
-						bounds : bounds
+						bounds : bounds,
+						directionsService : directionsService,
+						directionsDisplay : directionsDisplay
 					});
-					
-					
 				}
 			});
 		},
@@ -285,11 +291,41 @@ function getReverseGeocodingResult(result, callbackUrl) {
 			});
 		},
 		reverseGeocodingOnMarker : function (markerId, callbackUrl) {
-			var $this = $(this), data = $this.data('gmap');
-			var marker = data.markers[markerId];
-			if (typeof marker != undefined) {
-				$this.gmap('reverseGeocoding', marker.getPosition(), markerId, getReverseGeocodingResult, callbackUrl);
-			}
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				var marker = data.markers[markerId];
+				if (typeof marker != undefined) {
+					$this.gmap('reverseGeocoding', marker.getPosition(), markerId, getReverseGeocodingResult, callbackUrl);
+				}
+			});
+		},
+		route : function(request, callback) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				if (typeof data.directionsService != undefined) {
+					data.directionsService.route(request, function(response, status) {
+						if (status == google.maps.DirectionsStatus.OK) {
+							$this.gmap(callback, response);
+						} else {
+							Wicket.Log.info(status);
+						}
+					});
+				}
+			});
+		},
+		routeDisplay : function(response) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				data.directionsDisplay.setMap(data.gmap);
+				
+				data.directionsDisplay.setDirections(response);
+			});
+		},
+		clearRouteDisplay : function () {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				data.directionsDisplay.setMap(null);
+			});
 		},
 		destroy : function() {
 			return this.each(function() {
