@@ -22,9 +22,11 @@ import com.google.code.geocoder.model.LatLng;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 import fr.openwide.core.wicket.gmap.api.GPoint;
 import fr.openwide.core.wicket.gmap.api.GSize;
+import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.directions.GDirectionRequest;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleBehavior;
@@ -187,6 +189,21 @@ public class GMapPage extends WidgetsMainPage {
 					};
 		}));
 		add(showAllMarkersButton);
+		
+		// Calculate Route Button
+		final GDirectionRequest request = new GDirectionRequest("Paris", "Lyon", GTravelMode.WALKING, "routeDisplay");
+		
+		Button routeButton = new Button("route");
+		routeButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+			
+					private static final long serialVersionUID = -4265950097064531551L;
+		
+					@Override
+					public JsScope callback() {
+						return JsScope.quickScope(new JsStatement().$(gmap, "").chain(request));
+					};
+		}));
+		add(routeButton);
 		
 		// La carte doit être ajoutée en derniere afin qu'elle apparaisse en premier côté JS. :-/
 		add(gmap);

@@ -8,6 +8,7 @@ import com.google.code.geocoder.model.LatLngBounds;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 import fr.openwide.core.wicket.gmap.api.GPoint;
 import fr.openwide.core.wicket.gmap.api.GSize;
+import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerShape;
@@ -24,6 +25,11 @@ public class GJsStatementUtils {
 	public static String getJavaScriptStatement(LatLngBounds bounds) {
 		return new Constructor("google.maps.LatLngBounds").add(getJavaScriptStatement(bounds.getSouthwest()))
 			.add(getJavaScriptStatement(bounds.getNortheast())).toJS();
+	}
+	
+	// GTravelMode
+	public static String getJavaScriptStatement(GTravelMode mode) {
+		return "google.maps.DirectionsTravelMode." + mode.getValue();
 	}
 	
 	// GMarkerAnimation
