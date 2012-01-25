@@ -134,16 +134,18 @@ function getReverseGeocodingResult(result, callbackUrl) {
 				});
 			});
 		},
-		addInfoBubble : function(markerId, event, options){
+		addInfoBubble : function(markerId, event, options, content) {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
 				var marker = data.markers[markerId];
 				if (typeof marker != undefined) {
 					marker.infowindow = new InfoBubble(options);
+					marker.infowindow.setContent(content);
 					
 					google.maps.event.addListener(marker, event, function (e) {
 						marker.infowindow.open(data.gmap, marker);
 					});
+					$this.data('gmap', data);
 				}
 			});
 		},
