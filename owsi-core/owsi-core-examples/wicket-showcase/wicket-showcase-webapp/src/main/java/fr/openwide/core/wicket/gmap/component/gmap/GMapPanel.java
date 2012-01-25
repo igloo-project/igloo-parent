@@ -9,8 +9,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.request.resource.SharedResourceReference;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.PropertyNamingStrategy;
@@ -20,7 +18,6 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import com.google.code.geocoder.model.GeocoderResult;
 import com.google.code.geocoder.model.LatLng;
 
-import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.gmap.api.GPoint;
 import fr.openwide.core.wicket.gmap.api.GSize;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
@@ -38,7 +35,7 @@ public class GMapPanel extends Panel {
 	
 	static {
 		OBJECT_MAPPER.setPropertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
-		OBJECT_MAPPER.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false); 
+		OBJECT_MAPPER.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 	
 	private AbstractDefaultAjaxBehavior updateAjax;
@@ -89,8 +86,7 @@ public class GMapPanel extends Panel {
 		markerOptions.setAnimation(GMarkerAnimation.BOUNCE);
 		markerOptions.setDraggable(true);
 		
-		ResourceReference resourceReference = new SharedResourceReference(MainTemplate.class, "images/icons/apport.svg");
-		GMarkerImage icon = new GMarkerImage(resourceReference, new GPoint(0, 32), new GPoint(0,0), new GSize(16, 16),
+		GMarkerImage icon = new GMarkerImage("apport.svg", new GPoint(0, 32), new GPoint(0,0), new GSize(16, 16),
 				new GSize(16, 16));
 		markerOptions.setIcon(icon);
 		// behavior pour la génération de nouveau marker (ajouter avant le behavior init)

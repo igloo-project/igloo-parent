@@ -1,21 +1,27 @@
 function getReverseGeocodingResult(result, callbackUrl) {
 	var coreGeocoderResult = new Object();
-	
+		
 	coreGeocoderResult['formatted_address'] = result.formatted_address;
 	coreGeocoderResult['address_components'] = result.address_components;
 	coreGeocoderResult['types'] = result.types;
+	
 	coreGeocoderResult['geometry'] = new Object();
 	coreGeocoderResult.geometry['location'] = new Object();
-	coreGeocoderResult.geometry.location['lat'] = result.geometry.location.Pa;
-	coreGeocoderResult.geometry.location['lng'] = result.geometry.location.Qa;
+	var googleLocation = result.geometry.location.valueOf();
+	coreGeocoderResult.geometry.location['lat'] = googleLocation.lat();
+	coreGeocoderResult.geometry.location['lng'] = googleLocation.lng();
 	coreGeocoderResult.geometry['location_type'] = result.geometry.location_type;
-	coreGeocoderResult['viewport'] = new Object();
-	coreGeocoderResult.viewport['southwest'] = new Object();
-	coreGeocoderResult.viewport['northeast'] = new Object();
-	coreGeocoderResult.viewport.southwest['lat'] = result.geometry.viewport['$'].b;
-	coreGeocoderResult.viewport.southwest['lng'] = result.geometry.viewport['$'].d;
-	coreGeocoderResult.viewport.northeast['lat'] = result.geometry.viewport['Y'].b;
-	coreGeocoderResult.viewport.northeast['lng'] = result.geometry.viewport['Y'].d;
+	
+	coreGeocoderResult.geometry['viewport'] = new Object();
+	var googleViewport = result.geometry.viewport.valueOf();
+	var southwest = googleViewport.getSouthWest();
+	var northeast = googleViewport.getNorthEast();
+	coreGeocoderResult.geometry.viewport['southwest'] = new Object();
+	coreGeocoderResult.geometry.viewport['northeast'] = new Object();
+	coreGeocoderResult.geometry.viewport.southwest['lat'] = southwest.lat();
+	coreGeocoderResult.geometry.viewport.southwest['lng'] = southwest.lng();
+	coreGeocoderResult.geometry.viewport.northeast['lat'] = northeast.lat();
+	coreGeocoderResult.geometry.viewport.northeast['lng'] = northeast.lng();
 	
 	callWicket(callbackUrl, coreGeocoderResult);
 }
@@ -107,20 +113,25 @@ function getReverseGeocodingResult(result, callbackUrl) {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
 				var marker = new google.maps.Marker(optionsMarker);
-				marker.infowindow = new InfoBubble();
-				marker.setVisible(false);
 				data.markers[markerId] = marker;
+				data.markers[markerId].infowindow = new InfoBubble();
+				data.markers[markerId].setVisible(false);
 				$this.data('gmap', data);
 				
 				google.maps.event.addListener(data.gmap, event, function(e) {
-					marker.setPosition(e.latLng);
-					marker.setVisible(true);
+					data.markers[markerId].setPosition(e.latLng);
+					data.markers[markerId].setVisible(true);
 					$this.data('gmap', data);
 					
 					$this.gmap(callback, markerId, callbackUrl);
 				});
-				
 				$this.gmap('updatePositionFromDragMove', markerId, callback, callbackUrl);
+				
+				google.maps.event.addListener(data.markers[markerId], event, function(e) {
+					data.markers[markerId].infowindow.close();
+					data.markers[markerId].setVisible(false);
+					$this.data('gmap', data);
+				});
 			});
 		},
 		addInfoBubble : function(markerId, event, options){
