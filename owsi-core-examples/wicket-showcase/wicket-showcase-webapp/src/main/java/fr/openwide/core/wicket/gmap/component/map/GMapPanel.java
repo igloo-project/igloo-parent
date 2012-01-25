@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap.component.gmap;
+package fr.openwide.core.wicket.gmap.component.map;
 
 import java.io.IOException;
 import java.math.BigDecimal;
