@@ -11,8 +11,6 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.request.resource.SharedResourceReference;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
@@ -21,7 +19,6 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import com.google.code.geocoder.model.LatLng;
 
-import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 import fr.openwide.core.wicket.gmap.api.GPoint;
 import fr.openwide.core.wicket.gmap.api.GSize;
@@ -51,11 +48,11 @@ public class GMapPage extends WidgetsMainPage {
 		
 		List<Place> places = new ArrayList<Place>();
 		Place place1 = new Place("place1", new LatLng("-34.390", "150.670"),
-				"images/icons/gdu-emblem-raid1.svg");
+				"gdu-emblem-raid1.svg");
 		places.add(place1);
-		Place place2 = new Place("place2", new LatLng("-34.395", "150.645"), "images/icons/gdu-emblem-raid3.svg");
+		Place place2 = new Place("place2", new LatLng("-34.395", "150.645"), "gdu-emblem-raid3.svg");
 		places.add(place2);
-		Place place3 = new Place("place3", new LatLng("-25.395", "111.645"), "images/icons/gdu-emblem-raid4.svg");
+		Place place3 = new Place("place3", new LatLng("-25.395", "111.645"), "gdu-emblem-raid4.svg");
 		places.add(place3);
 		
 		add(new ListView<Place>("list", places) {
@@ -70,8 +67,7 @@ public class GMapPage extends WidgetsMainPage {
 				markerOptions.setAnimation(GMarkerAnimation.DROP);
 				markerOptions.setDraggable(false);
 				
-				ResourceReference resourceReference = new SharedResourceReference(MainTemplate.class, place.getIcon());
-				GMarkerImage icon = new GMarkerImage(resourceReference, new GPoint(0, 32), new GPoint(0,0), new GSize(16, 16),
+				GMarkerImage icon = new GMarkerImage(place.getIcon(), new GPoint(0, 32), new GPoint(0,0), new GSize(16, 16),
 						new GSize(16, 16));
 				markerOptions.setIcon(icon);
 
