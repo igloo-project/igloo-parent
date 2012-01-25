@@ -24,7 +24,7 @@ import fr.openwide.core.wicket.gmap.api.GPoint;
 import fr.openwide.core.wicket.gmap.api.GSize;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
-import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
+import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleBehavior;

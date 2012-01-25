@@ -13,7 +13,7 @@ import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerShape;
 import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
-import fr.openwide.core.wicket.gmap.component.gmap.GMapPanel;
+import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
 
 /*
  * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/reference.html#MarkerOptions"></>
