@@ -90,7 +90,7 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 			options.put("title", title);
 		}
 		if (cursor != null) {
-			options.put("cursor", cursor);
+			options.put("cursor", JsUtils.quotes(cursor));
 		}
 		if (raiseOnDrag != null) {
 			options.put("raiseOnDrag", raiseOnDrag);

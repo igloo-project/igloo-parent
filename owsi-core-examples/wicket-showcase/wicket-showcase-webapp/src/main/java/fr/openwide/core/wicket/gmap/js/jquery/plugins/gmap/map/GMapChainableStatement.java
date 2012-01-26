@@ -8,6 +8,7 @@ import org.odlabs.wiquery.core.javascript.JsUtils;
 import com.google.code.geocoder.model.LatLng;
 import com.google.code.geocoder.model.LatLngBounds;
 
+import fr.openwide.core.wicket.gmap.api.event.GMapEvent;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
@@ -89,7 +90,7 @@ public class GMapChainableStatement {
 	}
 	
 	/*
-	 * Add Marker on Event
+	 * Add Marker on GMapEvent
 	 */
 	public static class AddMarkerOnEvent implements ChainableStatement, Serializable {
 		private static final long serialVersionUID = 8295854739007448244L;
@@ -97,10 +98,10 @@ public class GMapChainableStatement {
 		private GMarkerOptions options;
 		private String callback;
 		private String callbackUrl;
-		private String event;
+		private GMapEvent event;
 		private String markerId;
 		
-		public AddMarkerOnEvent(String markerId, String event, String callback, String callbackUrl, GMarkerOptions options) {
+		public AddMarkerOnEvent(String markerId, GMapEvent event, String callback, String callbackUrl, GMarkerOptions options) {
 			this.markerId = markerId;
 			this.options = options;
 			this.event = event;
@@ -123,7 +124,7 @@ public class GMapChainableStatement {
 				CharSequence[] args = new CharSequence[6];
 				args[0] = JsUtils.quotes("addMarkerOnMapEvent");
 				args[1] = JsUtils.quotes(markerId);
-				args[2] = JsUtils.quotes(event);
+				args[2] = GJsStatementUtils.getJavaScriptStatement(event);
 				args[3] = JsUtils.quotes(callback);
 				args[4] = JsUtils.quotes(callbackUrl);
 				args[5] = oldArgs[2];

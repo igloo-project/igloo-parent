@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
@@ -19,12 +20,15 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import com.google.code.geocoder.model.LatLng;
 
+import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
-import fr.openwide.core.wicket.gmap.api.GPoint;
-import fr.openwide.core.wicket.gmap.api.GSize;
 import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
+import fr.openwide.core.wicket.gmap.api.directions.GUnitSystem;
+import fr.openwide.core.wicket.gmap.api.event.GMapEvent;
+import fr.openwide.core.wicket.gmap.api.event.GMarkerEvent;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
+import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImageBuilder;
 import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.directions.GDirectionRequest;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
@@ -33,6 +37,7 @@ import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbl
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapChainableStatement;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapOptions;
+import fr.openwide.core.wicket.gmap.resource.GMarkerImageResourceReference;
 
 public class GMapPage extends WidgetsMainPage {
 	private static final long serialVersionUID = -3963117430192776716L;
@@ -43,8 +48,8 @@ public class GMapPage extends WidgetsMainPage {
 		super(parameters);
 		
 		// Création de la carte
-		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng( new BigDecimal(-34.397), 
-				new BigDecimal(150.644)), 4);
+		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng(BigDecimal.valueOf(-34.397), 
+				BigDecimal.valueOf(150.644)), 4);
 		options.setZoom(15);
 		gmap = new GMapPanel("gmap", options);
 		
@@ -69,10 +74,10 @@ public class GMapPage extends WidgetsMainPage {
 				markerOptions.setAnimation(GMarkerAnimation.DROP);
 				markerOptions.setDraggable(false);
 				
-				GMarkerImage icon = new GMarkerImage(place.getIcon(), new GPoint(0, 32), new GPoint(0,0), new GSize(16, 16),
-						new GSize(16, 16));
+				GMarkerImageResourceReference reference = new GMarkerImageResourceReference(MainTemplate.class, "images/icons/" + place.getIcon());
+				GMarkerImage icon = GMarkerImageBuilder.build().resourceReference(reference).anchor(0, 0).scaledSize(16, 16).create();
 				markerOptions.setIcon(icon);
-
+				
 				Label placeLabel = new Label("place", place.getName());
 				placeLabel.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
 			
@@ -91,7 +96,7 @@ public class GMapPage extends WidgetsMainPage {
 				item.add(placeLabel);
 				
 				// InfoBubble
-				GInfoBubbleOptions infoOptions = new GInfoBubbleOptions(gmap, markerId, "click", placeLabel);
+				GInfoBubbleOptions infoOptions = new GInfoBubbleOptions(gmap, markerId, GMarkerEvent.CLICK, placeLabel);
 				infoOptions.setPadding(5);
 				infoOptions.setBackgroundColor("#FAF3E6");
 				infoOptions.setBorderRadius(8);
@@ -190,8 +195,44 @@ public class GMapPage extends WidgetsMainPage {
 		}));
 		add(showAllMarkersButton);
 		
+		// La carte doit être ajoutée en derniere afin qu'elle apparaisse en premier côté JS. :-/
+		add(gmap);
+	}
+	
+	
+
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		
+		// Marker Create On Map Event
+		final GMarkerOptions markerOptions = new GMarkerOptions("createOnEvent", new LatLng(new BigDecimal(-34.397),
+				new BigDecimal(150.644)), gmap);
+		markerOptions.setAnimation(GMarkerAnimation.BOUNCE);
+		markerOptions.setDraggable(true);
+		
+		GMarkerImageResourceReference reference = new GMarkerImageResourceReference(MainTemplate.class, "images/icons/apport.svg");
+		GMarkerImage icon = GMarkerImageBuilder.build().resourceReference(reference).anchor(0, 32).scaledSize(16, 16).create();
+
+		
+		markerOptions.setIcon(icon);
+		// behavior pour la génération de nouveau marker (ajouter avant le behavior init)
+		add(new WiQueryAbstractBehavior() {
+			private static final long serialVersionUID = 3947112387454820398L;
+
+			@Override
+			public JsStatement statement() {
+				return new JsStatement().$(gmap, "")
+					.chain(new GMapChainableStatement.AddMarkerOnEvent("createOnEvent", GMapEvent.RIGHTCLICK, 
+						"reverseGeocodingOnMarker", gmap.getGeocoderResultAjax().getCallbackUrl().toString(), markerOptions));
+			}
+		});
+		
+		
 		// Calculate Route Button
-		final GDirectionRequest request = new GDirectionRequest("Paris", "Lyon", GTravelMode.WALKING, "routeDisplay");
+		final GDirectionRequest request = new GDirectionRequest("Saint Etienne", "Annecy", GTravelMode.DRIVING, "routeDisplay",
+				gmap.getDirectionsResultAjax().getCallbackUrl().toString());
+		request.setUnitSystem(GUnitSystem.METRIC);
 		
 		Button routeButton = new Button("route");
 		routeButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
@@ -204,10 +245,9 @@ public class GMapPage extends WidgetsMainPage {
 					};
 		}));
 		add(routeButton);
-		
-		// La carte doit être ajoutée en derniere afin qu'elle apparaisse en premier côté JS. :-/
-		add(gmap);
 	}
+
+
 
 	@Override
 	protected Class<? extends WebPage> getFirstMenuPage() {
