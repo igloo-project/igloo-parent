@@ -26,6 +26,15 @@ function getReverseGeocodingResult(result, callbackUrl) {
 	callWicket(callbackUrl, coreGeocoderResult);
 }
 
+function getDirectionsResult(result, callbackUrl) {
+	var coreDirectionsResult = new Object();
+	
+	coreDirectionsResult['polyline'] = result.routes[0].overview_polyline.points.valueOf();
+	coreDirectionsResult['status'] = result.status;
+	
+	callWicket(callbackUrl, coreDirectionsResult);
+}
+
 
 (function($) {
 	var methods = {
@@ -146,7 +155,7 @@ function getReverseGeocodingResult(result, callbackUrl) {
 				var marker = data.markers[markerId];
 				if (typeof marker != undefined) {
 					marker.infowindow = new InfoBubble(options);
-					marker.infowindow.setContent(content);
+					marker.infowindow.setContent(content.html());
 					
 					google.maps.event.addListener(marker, event, function (e) {
 						marker.infowindow.open(data.gmap, marker);
@@ -261,7 +270,7 @@ function getReverseGeocodingResult(result, callbackUrl) {
 					if (status == google.maps.GeocoderStatus.OK) {
 						return callback(results[0].geometry.location);
 					} else {
-						Wicket.Log.info(status);
+						$.error('Geocoding: ' + status);
 					}
 				});
 			});
@@ -285,7 +294,7 @@ function getReverseGeocodingResult(result, callbackUrl) {
 							}
 						}
 					} else {
-						Wicket.Log.info(status);
+						$.error('ReverseGeocoding: ' + status);
 					}
 				});
 			});
@@ -299,32 +308,36 @@ function getReverseGeocodingResult(result, callbackUrl) {
 				}
 			});
 		},
-		route : function(request, callback) {
+		route : function(request, callback, callbackUrl) {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
 				if (typeof data.directionsService != undefined) {
 					data.directionsService.route(request, function(response, status) {
 						if (status == google.maps.DirectionsStatus.OK) {
-							$this.gmap(callback, response);
+							$this.gmap(callback, response, callbackUrl);
 						} else {
-							Wicket.Log.info(status);
+							$.error('Route: ' + status);
 						}
 					});
 				}
 			});
 		},
-		routeDisplay : function(response) {
+		routeDisplay : function(response, callbackUrl) {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
 				data.directionsDisplay.setMap(data.gmap);
 				
 				data.directionsDisplay.setDirections(response);
+				$this.data('gmap', data);
+				
+				getDirectionsResult(response, callbackUrl);
 			});
 		},
 		clearRouteDisplay : function () {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('gmap');
 				data.directionsDisplay.setMap(null);
+				$this.data('gmap', data);
 			});
 		},
 		destroy : function() {

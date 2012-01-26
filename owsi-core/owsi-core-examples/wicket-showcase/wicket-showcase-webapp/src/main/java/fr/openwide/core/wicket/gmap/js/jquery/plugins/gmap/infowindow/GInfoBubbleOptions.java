@@ -10,6 +10,7 @@ import org.odlabs.wiquery.core.options.Options;
 import com.google.code.geocoder.model.LatLng;
 
 import fr.openwide.core.wicket.gmap.api.GSize;
+import fr.openwide.core.wicket.gmap.api.event.GMarkerEvent;
 import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
 import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
 
@@ -23,7 +24,7 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 
 	private GMapPanel map;
 	private String markerId;
-	private String event;
+	private GMarkerEvent event;
 	
 	// InfoWindow
 	private LatLng position;
@@ -50,7 +51,7 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 	
 	
 	
-	public GInfoBubbleOptions(GMapPanel map, String markerId, String event, WebComponent content) {
+	public GInfoBubbleOptions(GMapPanel map, String markerId, GMarkerEvent event, WebComponent content) {
 		this.map = map;
 		this.markerId = markerId;
 		this.event = event;
@@ -132,9 +133,9 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 		CharSequence[] args = new CharSequence[5];
 		args[0] = JsUtils.quotes("addInfoBubble");
 		args[1] = JsUtils.quotes(markerId);
-		args[2] = JsUtils.quotes(event);
+		args[2] = GJsStatementUtils.getJavaScriptStatement(event);
 		args[3] = options.getJavaScriptOptions();
-		args[4] = "document.getElementById('" + content.getMarkupId() + "').innerHTML";
+		args[4] = "$('#" + content.getMarkupId() + "')";
 		return args;
 	}
 	
@@ -162,11 +163,11 @@ public class GInfoBubbleOptions implements ChainableStatement, Serializable {
 		this.markerId = markerId;
 	}
 
-	public String getEvent() {
+	public GMarkerEvent getEvent() {
 		return event;
 	}
 
-	public void setEvent(String event) {
+	public void setEvent(GMarkerEvent event) {
 		this.event = event;
 	}
 

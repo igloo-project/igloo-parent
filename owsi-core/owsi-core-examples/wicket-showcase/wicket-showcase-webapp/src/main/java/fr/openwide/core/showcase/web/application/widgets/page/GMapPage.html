@@ -7,7 +7,7 @@
 			<button wicket:id="clearMarkers">CLear Markers</button>
 			<button wicket:id="autofit">Autofit</button>
 			<button wicket:id="showAll">Show All Markers</button>
-			<button wicket:id="route">Paris Lyon à pied?!</button>
+			<button wicket:id="route">Saint Etienne - Annecy</button>
 			<br ></br>
 			<div class="portfolio-outer">
 				<table class="list" cellspacing="0" cellpadding="0">
@@ -21,7 +21,10 @@
 					</thead>
 					<tbody>
 						<tr wicket:id="list">
-							<td class="table-column item-name first" style="text-align:center" wicket:id="place"></td>
+							<td class="table-column item-name first" style="text-align:center">
+								<div wicket:id="place" style="color:blue">
+								</div>
+							</td>
 							<td class="table-column " style="text-align:center">
 								<button wicket:id="hide">Hide</button>
 							</td>

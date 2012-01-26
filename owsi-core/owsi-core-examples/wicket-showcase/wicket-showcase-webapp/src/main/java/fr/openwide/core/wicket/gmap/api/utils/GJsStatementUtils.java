@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.gmap.api.utils;
 
+import java.util.List;
+
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import com.google.code.geocoder.model.LatLng;
@@ -8,7 +10,11 @@ import com.google.code.geocoder.model.LatLngBounds;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 import fr.openwide.core.wicket.gmap.api.GPoint;
 import fr.openwide.core.wicket.gmap.api.GSize;
+import fr.openwide.core.wicket.gmap.api.directions.GDirectionsWayPoint;
 import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
+import fr.openwide.core.wicket.gmap.api.directions.GUnitSystem;
+import fr.openwide.core.wicket.gmap.api.event.GMapEvent;
+import fr.openwide.core.wicket.gmap.api.event.GMarkerEvent;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerShape;
@@ -16,6 +22,9 @@ import fr.openwide.core.wicket.gmap.js.util.Constructor;
 
 public class GJsStatementUtils {
 
+	/*
+	 * Common
+	 */
 	// LatLng
 	public static String getJavaScriptStatement(LatLng latLng) {
 		return new Constructor("google.maps.LatLng").add(latLng.getLat()).add(latLng.getLng()).toJS();
@@ -27,11 +36,19 @@ public class GJsStatementUtils {
 			.add(getJavaScriptStatement(bounds.getNortheast())).toJS();
 	}
 	
-	// GTravelMode
-	public static String getJavaScriptStatement(GTravelMode mode) {
-		return "google.maps.DirectionsTravelMode." + mode.getValue();
+	// GMapEvent
+	public static String getJavaScriptStatement(GMapEvent event) {
+		return JsUtils.quotes(event.getValue());
 	}
 	
+	// GMarkerEvent
+	public static String getJavaScriptStatement(GMarkerEvent event) {
+		return JsUtils.quotes(event.getValue());
+	}
+	
+	/*
+	 * Map
+	 */
 	// GMarkerAnimation
 	public static String getJavaScriptStatement(GMarkerAnimation animation) {
 		return "google.maps.Animation." + animation.getValue();
@@ -71,12 +88,9 @@ public class GJsStatementUtils {
 		StringBuffer array = new StringBuffer();
 		array.append("[");
 	
-		if (coords.length > 0)
-		{
+		if (coords.length > 0) {
 			array.append(coords[0]);
-	
-			for (int i = 1; i < coords.length; i++)
-			{
+			for (int i = 1; i < coords.length; i++) {
 				array.append(", ").append(coords[i]);
 			}
 		}
@@ -97,5 +111,44 @@ public class GJsStatementUtils {
 	// Size
 	public static String getJavaScriptStatement(GSize size) {
 		return new Constructor("google.maps.Size").add(size.getWidth()).add(size.getHeight()).toJS();
+	}
+	
+	/*
+	 * Directions
+	 */
+	// GTravelMode
+	public static String getJavaScriptStatement(GTravelMode mode) {
+		return "google.maps.DirectionsTravelMode." + mode.getValue();
+	}
+	
+	// GUnitSystem
+	public static String getJavaScriptStatement(GUnitSystem unit) {
+		return "google.maps.DirectionsUnitSystem." + unit.getValue();
+	}
+	
+	// GDirectionsWayPoint
+	public static String getJavaScriptStatement(GDirectionsWayPoint point) {
+		StringBuilder sb = new StringBuilder("{");
+		sb.append("location:");
+		sb.append(JsUtils.quotes(point.getLocation()));
+		if (point.getStopover() != null) {
+			sb.append(",stopover:");
+			sb.append(point.getStopover());
+		}
+		sb.append("}");
+		return sb.toString();
+	}
+	
+	// List<GDirectionsWayPoint>
+	public static String getJavaScriptStatement(List<GDirectionsWayPoint> points) {
+		StringBuilder sb = new StringBuilder("[");
+		for(GDirectionsWayPoint point : points) {
+			if (sb.length() > 2) {
+				sb.append(",");
+			}
+			sb.append(getJavaScriptStatement(point));
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 }

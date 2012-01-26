@@ -9,7 +9,7 @@ import org.odlabs.wiquery.core.options.Options;
 
 import com.google.code.geocoder.model.LatLng;
 
-import fr.openwide.core.wicket.gmap.api.directions.GDirectionWayPoint;
+import fr.openwide.core.wicket.gmap.api.directions.GDirectionsWayPoint;
 import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
 import fr.openwide.core.wicket.gmap.api.directions.GUnitSystem;
 import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
@@ -22,6 +22,7 @@ public class GDirectionRequest implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String callback;
+	private String callbackUrl;
 	
 	// origin is required
 	private LatLng originLatLng;
@@ -31,7 +32,7 @@ public class GDirectionRequest implements ChainableStatement, Serializable {
 	private String originString;
 	private String destinationString;
 	
-	List<GDirectionWayPoint> waypoints;
+	List<GDirectionsWayPoint> waypoints; //optional
 	
 	private GTravelMode travelMode; //required
 	
@@ -47,26 +48,50 @@ public class GDirectionRequest implements ChainableStatement, Serializable {
 	
 	private String region; //optional
 	
-	public GDirectionRequest(String origin, String destination, GTravelMode travelMode, String callback) {
+	public GDirectionRequest(String origin, String destination, GTravelMode travelMode, String callback, String callbackUrl) {
 		this.originString = origin;
 		this.destinationString = destination;
 		this.travelMode = travelMode;
 		this.callback = callback;
+		this.callbackUrl = callbackUrl;
 		
 		this.originLatLng = null;
 		this.destinationLatLng = null;
 	}
 	
-	public GDirectionRequest(LatLng origin, LatLng destination, GTravelMode travelMode, String callback) {
+	public GDirectionRequest(LatLng origin, LatLng destination, GTravelMode travelMode, String callback, String callbackUrl) {
 		this.originLatLng = origin;
 		this.destinationLatLng = destination;
 		this.travelMode = travelMode;
 		this.callback = callback;
+		this.callbackUrl = callbackUrl;
 		
 		this.originString = null;
 		this.destinationString = null;
 	}
 
+	public GDirectionRequest(String origin, LatLng destination, GTravelMode travelMode, String callback, String callbackUrl) {
+		this.originString = origin;
+		this.destinationLatLng = destination;
+		this.travelMode = travelMode;
+		this.callback = callback;
+		this.callbackUrl = callbackUrl;
+		
+		this.originLatLng = null;
+		this.destinationString = null;
+	}
+	
+	public GDirectionRequest(LatLng origin, String destination, GTravelMode travelMode, String callback, String callbackUrl) {
+		this.originLatLng = origin;
+		this.destinationString = destination;
+		this.travelMode = travelMode;
+		this.callback = callback;
+		this.callbackUrl = callbackUrl;
+		
+		this.originString = null;
+		this.destinationLatLng = null;
+	}
+	
 	public LatLng getOriginLatLng() {
 		return originLatLng;
 	}
@@ -80,31 +105,57 @@ public class GDirectionRequest implements ChainableStatement, Serializable {
 	public CharSequence[] statementArgs() {
 		if (!isValid()) {
 			throw new IllegalArgumentException("A direction request must be initialized with an origin and a destination" +
-					"a travel mode and a callback function");
+					"a travel mode, a callback function and a callback url");
 		}
 		
 		Options options = new Options();
 		if (originLatLng == null) {
 			options.put("origin", JsUtils.quotes(originString));
-			options.put("destination", JsUtils.quotes(destinationString));
 		} else {
 			options.put("origin", GJsStatementUtils.getJavaScriptStatement(originLatLng));
+			
+		}
+		if (destinationLatLng == null) {
+			options.put("destination", JsUtils.quotes(destinationString));
+		} else {
 			options.put("destination", GJsStatementUtils.getJavaScriptStatement(destinationLatLng));
 		}
 		
 		options.put("travelMode", GJsStatementUtils.getJavaScriptStatement(travelMode));
-		CharSequence[] args = new CharSequence[3];
+		
+		if (waypoints != null) {
+			options.put("waypoints", GJsStatementUtils.getJavaScriptStatement(waypoints));
+		}
+		if (unitSystem != null) {
+			options.put("unitSystem", GJsStatementUtils.getJavaScriptStatement(unitSystem));
+		}
+		if (optimizeWaypoints != null) {
+			options.put("optimizeWaypoints", optimizeWaypoints);
+		}
+		if (provideRouteAlternatives != null) {
+			options.put("provideRouteAlternatives", provideRouteAlternatives);
+		}
+		if (avoidHighways != null) {
+			options.put("avoidHighways", avoidHighways);
+		}
+		if (avoidTolls != null) {
+			options.put("avoidTolls", avoidTolls);
+		}
+		if (region != null) {
+			options.put("region", JsUtils.quotes(region));
+		}
+		
+		CharSequence[] args = new CharSequence[4];
 		args[0] = JsUtils.quotes("route");
 		args[1] = options.getJavaScriptOptions();
 		args[2] = JsUtils.quotes(callback);
+		args[3] = JsUtils.quotes(callbackUrl);
 		return args;
-		
-		//TODO VGA : generer les autres options
 	}
 	
 	private Boolean isValid() {
-		if ( (originLatLng != null && destinationLatLng != null) || (originString != null && destinationString != null)
-				&& travelMode != null && callback != null) {
+		if ( (originLatLng != null || originString != null) && (destinationLatLng != null || destinationString != null)
+				&& travelMode != null && callback != null && callbackUrl != null) {
 			return true;
 		} else {
 			return false;
@@ -131,11 +182,11 @@ public class GDirectionRequest implements ChainableStatement, Serializable {
 		return destinationString;
 	}
 
-	public List<GDirectionWayPoint> getWaypoints() {
+	public List<GDirectionsWayPoint> getWaypoints() {
 		return waypoints;
 	}
 
-	public void setWaypoints(List<GDirectionWayPoint> waypoints) {
+	public void setWaypoints(List<GDirectionsWayPoint> waypoints) {
 		this.waypoints = waypoints;
 	}
 
