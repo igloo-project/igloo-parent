@@ -49,20 +49,32 @@ public class GMapPanel extends Panel {
 	private GMapOptions options;
 	
 	public GMapPanel(String id, GMapOptions options) {
-		this(id, null, null, options);
+		this(id, null, null, false, options);
+	}
+	
+	public GMapPanel(String id, Boolean draw, GMapOptions options) {
+		this(id, null, null, draw, options);
 	}
 	
 	public GMapPanel(String id, Locale region, GMapOptions options) {
-		this(id, region, null, null);
+		this(id, region, null, false, options);
+	}
+	
+	public GMapPanel(String id, Locale region, Boolean draw, GMapOptions options) {
+		this(id, region, null, draw, options);
 	}
 	
 	public GMapPanel(String id, Locale region, Locale locale, GMapOptions options) {
+		this(id, region, locale, false, options);
+	}
+	
+	public GMapPanel(String id, Locale region, Locale locale, Boolean draw, GMapOptions options) {
 		super(id);
 		setOutputMarkupId(true);
 		
 		this.options = options;
 		
-		add(new GMapHeaderContributor(region, locale));
+		add(new GMapHeaderContributor(region, locale, draw));
 		
 		geocoderResultAjax = new AbstractDefaultAjaxBehavior() {
 			private static final long serialVersionUID = -7684282452805422195L;

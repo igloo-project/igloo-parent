@@ -52,7 +52,7 @@ public class GMapPage extends WidgetsMainPage {
 		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng(BigDecimal.valueOf(-34.397), 
 				BigDecimal.valueOf(150.644)), 4);
 		options.setZoom(15);
-		gmap = new GMapPanel("gmap", options);
+		gmap = new GMapPanel("gmap", true, options);
 		
 		List<Place> places = new ArrayList<Place>();
 		Place place1 = new Place("place1", new LatLng("-34.390", "150.670"),

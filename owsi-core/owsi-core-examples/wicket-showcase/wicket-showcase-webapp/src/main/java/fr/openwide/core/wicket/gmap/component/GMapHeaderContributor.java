@@ -17,6 +17,13 @@ public class GMapHeaderContributor extends Behavior {
 	private static final String GMAP_API_URL = "http://maps.googleapis.com/maps/api/js?sensor=false";
 	
 	/*
+	 * Drawing Library
+	 * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/overlays.html#DrawingLibrary"></a>
+	 */
+	private boolean draw;
+	
+	
+	/*
 	 * The region parameter accepts Unicode region subtag identifiers
 	 * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/basics.html#Localization">
 	 */
@@ -34,18 +41,28 @@ public class GMapHeaderContributor extends Behavior {
 	private GMapVersion version;
 	
 	public GMapHeaderContributor() {
-		this(null, null, null);
+		this(null, null, null, false);
 	}
 	
 	public GMapHeaderContributor(Locale region) {
-		this(region, null, null);
+		this(region, null, null, false);
+	}
+	
+	public GMapHeaderContributor(Locale region, Boolean draw) {
+		this(region, null, null, draw);
 	}
 	
 	public GMapHeaderContributor(Locale region, Locale locale) {
-		this(region, locale, null);
+		this(region, locale, null, false);
 	}
 	
-	public GMapHeaderContributor(Locale region, Locale locale, GMapVersion version) {
+	public GMapHeaderContributor(Locale region, Locale locale, Boolean draw) {
+		this(region, locale, null, draw);
+	}
+	
+	public GMapHeaderContributor(Locale region, Locale locale, GMapVersion version, Boolean draw) {
+		this.draw = draw;
+		
 		if (region == null) {
 			this.region = Locale.FRANCE;
 		} else {
@@ -69,6 +86,9 @@ public class GMapHeaderContributor extends Behavior {
 	public void renderHead(Component component, IHeaderResponse response) {
 		StringBuilder completeGmapApiUrl = new StringBuilder(GMAP_API_URL);
 		
+		if (draw) {
+			completeGmapApiUrl.append("&libraries=drawing");
+		}
 		if (region != null) {
 			completeGmapApiUrl.append("&region=");
 			completeGmapApiUrl.append(region.getCountry());

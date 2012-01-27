@@ -58,13 +58,20 @@ function getDirectionsResult(result, callbackUrl) {
 					// Create Direction Renderer
 					var directionsDisplay = new google.maps.DirectionsRenderer();
 					
+					// Create DrawingManager
+					var drawingManager = undefined;
+					if (google.maps.drawing) {
+						drawingManager = new google.maps.drawing.DrawingManager();
+					}
+					
 					$this.data('gmap', {
 						target : $this,
 						gmap : gmap,
 						markers : markers,
 						bounds : bounds,
 						directionsService : directionsService,
-						directionsDisplay : directionsDisplay
+						directionsDisplay : directionsDisplay,
+						drawingManager : drawingManager
 					});
 				}
 			});
