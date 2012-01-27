@@ -46,6 +46,7 @@ public class GMapPage extends WidgetsMainPage {
 	
 	public GMapPage(PageParameters parameters) {
 		super(parameters);
+		setOutputMarkupId(true);
 		
 		// Création de la carte
 		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng(BigDecimal.valueOf(-34.397), 
