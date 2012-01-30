@@ -498,7 +498,7 @@ function cutShapeResult(result, parameters, polygon) {
 				var polygon = new google.maps.Polygon(options);
 				polygon.setMap(data.gmap);
 				
-				data.shapes[polygonId] = polygon;
+				data.polygons[polygonId] = polygon;
 				$this.data('gmap', data);
 			});
 		},
@@ -508,27 +508,7 @@ function cutShapeResult(result, parameters, polygon) {
 				var polyline = new google.maps.Polyline(options);
 				polyline.setMap(data.gmap);
 				
-				data.shapes[polylineId] = polyline;
-				$this.data('gmap', data);
-			});
-		},
-		createCircle : function (circleId, options) {
-			return this.each(function() {
-				var $this = $(this), data = $this.data('gmap');
-				var circle = new google.maps.Circle(options);
-				circle.setMap(data.gmap);
-				
-				data.shapes[circleId] = circle;
-				$this.data('gmap', data);
-			});
-		},
-		createRectangle : function (rectangleId, options) {
-			return this.each(function() {
-				var $this = $(this), data = $this.data('gmap');
-				var rectangle = new google.maps.Rectangle(options);
-				rectangle.setMap(data.gmap);
-				
-				data.shapes[rectangleId] = rectangle;
+				data.polylines[polylineId] = polyline;
 				$this.data('gmap', data);
 			});
 		},

@@ -13,6 +13,9 @@ import fr.openwide.core.wicket.gmap.api.utils.GJsStatementUtils;
 /*
  * see <a href="http://code.google.com/intl/fr-FR/apis/maps/documentation/javascript/reference.html#CircleOptions"></>
  */
+/*
+ * ! Method createCircle doest not exist in JS !
+ */
 public class GCircleOptions implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = 5940551323535642431L;
 
