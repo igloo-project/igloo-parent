@@ -51,37 +51,39 @@ function getShapes(callbackUrl, polygons, polylines) {
 }
 
 function cutShapeResult(result, parameters, polygon) {
-	result = result + "(";
+	if (parameters.length > 1) {
+		result = result + "(";
+	}
 	var first_point;
-	var shape = parameters[0];
-	shape.latLngs.getArray().forEach(function(elem, index) {
-		if (elem.getLength() > 0) {
-			result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
-			first_point = elem.getAt(0);
+	for (var i = 0; i < parameters.length; i++) {
+
+		if (i > 0) {
+			result = result + ",(";
+		} else {
+			result = result + "(";
 		}
-		for(var j = 1; j < elem.getLength(); j++) {
-			result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
-		}
-		if (polygon) {
-			result = result + "," + first_point.lat() + " " + first_point.lng(); 
-		}
-	});
-	result = result + ")";
-	for (var i = 1; i < parameters.length; i++) {
-		result = result + ",(";
 		var shape = parameters[i];
+		if (polygon) {
+			result = result + "(";
+		}
 		shape.latLngs.getArray().forEach(function(elem, index) {
 			if (elem.getLength() > 0) {
 				result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
 				first_point = elem.getAt(0);
-			}
-			for(var j = 1; j < elem.getLength(); j++) {
-				result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
-			}
-			if (polygon) {
-				result = result + "," + first_point.lat() + " " + first_point.lng(); 
+				for(var j = 1; j < elem.getLength(); j++) {
+					result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
+				}
+				if (polygon) {
+					result = result + "," + first_point.lat() + " " + first_point.lng(); 
+				}
 			}
 		});
+		if (polygon) {
+			result = result + ")";
+		}
+		result = result + ")";
+	}
+	if (parameters.length > 1) {
 		result = result + ")";
 	}
 	return result;
@@ -116,8 +118,7 @@ function cutShapeResult(result, parameters, polygon) {
 					var directionsDisplay = new google.maps.DirectionsRenderer();
 					
 					// Create Colors
-					var COLORS = [["red", "#ff0000"], ["orange", "#ff8800"], ["green","#008000"], ["blue", "#000080"], 
-					              ["purple", "#800080"], ["yellow", "#ffff00"]];
+					var COLORS = [["red", "#ff0000"], ["orange", "#ff8800"], ["green","#008000"], ["blue", "#000080"], ["yellow", "#ffff00"]];
 					var colorIndex = 0;
 					
 					$this.data('gmap', {
@@ -457,6 +458,7 @@ function cutShapeResult(result, parameters, polygon) {
 						// Polygon
 						if (event.type == google.maps.drawing.OverlayType.POLYGON) {
 							data.polygons[data.polygons.length] = event.overlay;
+							
 							$this.data('gmap', data);
 						}
 						// Polyline
@@ -490,7 +492,7 @@ function cutShapeResult(result, parameters, polygon) {
 				}
 				
 				data.polygons = new Array();
-				data.polylines = new Array()
+				data.polylines = new Array();
 				
 				$this.data('gmap', data);
 			});
