@@ -39,17 +39,37 @@ function getShapes(callbackUrl, polygons, polylines) {
 	var corePolygonResult = "";
 	var corePolylineResult = "";
 	
-	corePolygonResult = cutShapeResult(corePolygonResult, polygons, true);
-	corePolylineResult = cutShapeResult(corePolylineResult, polylines, false);
-	
-	callWicketFromDrawingShapes(callbackUrl, corePolygonResult, corePolylineResult);
+	if (polygons.length > 0) {
+		corePolygonResult = cutShapeResult(corePolygonResult, polygons, true);
+	}
+	if (polylines.length > 0) {
+		corePolylineResult = cutShapeResult(corePolylineResult, polylines, false);
+	}
+	if (polygons.length > 0 || polylines.length > 0) {
+		callWicketFromDrawingShapes(callbackUrl, corePolygonResult, corePolylineResult);
+	}
 }
 
 function cutShapeResult(result, parameters, polygon) {
-	if (parameters.length > 0 ) {
-		result = result + "(";
-		var first_point;
-		var shape = parameters[0];
+	result = result + "(";
+	var first_point;
+	var shape = parameters[0];
+	shape.latLngs.getArray().forEach(function(elem, index) {
+		if (elem.getLength() > 0) {
+			result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
+			first_point = elem.getAt(0);
+		}
+		for(var j = 1; j < elem.getLength(); j++) {
+			result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
+		}
+		if (polygon) {
+			result = result + "," + first_point.lat() + " " + first_point.lng(); 
+		}
+	});
+	result = result + ")";
+	for (var i = 1; i < parameters.length; i++) {
+		result = result + ",(";
+		var shape = parameters[i];
 		shape.latLngs.getArray().forEach(function(elem, index) {
 			if (elem.getLength() > 0) {
 				result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
@@ -63,23 +83,6 @@ function cutShapeResult(result, parameters, polygon) {
 			}
 		});
 		result = result + ")";
-		for (var i = 1; i < parameters.length; i++) {
-			result = result + ",(";
-			var shape = parameters[i];
-			shape.latLngs.getArray().forEach(function(elem, index) {
-				if (elem.getLength() > 0) {
-					result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
-					first_point = elem.getAt(0);
-				}
-				for(var j = 1; j < elem.getLength(); j++) {
-					result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
-				}
-				if (polygon) {
-					result = result + "," + first_point.lat() + " " + first_point.lng(); 
-				}
-			});
-			result = result + ")";
-		}
 	}
 	return result;
 }
