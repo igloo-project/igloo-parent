@@ -206,37 +206,6 @@ public class GMapPage extends WidgetsMainPage {
 		}));
 		add(showAllMarkersButton);
 		
-		// Draw Circle
-		Button circleButton = new Button("circle");
-		circleButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
-			
-					private static final long serialVersionUID = -4265950097064531551L;
-		
-					@Override
-					public JsScope callback() {
-						return JsScope.quickScope(new JsStatement().$(gmap, "")
-								.chain(new GCircleOptions("circle", new LatLng("-25.395", "111.645"), 150000.0))
-								.chain(new GMapChainableStatement.Autofit()));
-					};
-		}));
-		add(circleButton);
-		
-		// Draw Rectangle
-		Button rectangleButton = new Button("rectangle");
-		rectangleButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
-			
-					private static final long serialVersionUID = -4265950097064531551L;
-		
-					@Override
-					public JsScope callback() {
-						return JsScope.quickScope(new JsStatement().$(gmap, "")
-								.chain(new GRectangleOptions("rectangle", new LatLngBounds(new LatLng("-25.395", "111.645"),
-									new LatLng("-34.390", "150.670"))))
-									.chain(new GMapChainableStatement.Autofit()));
-					};
-		}));
-		add(rectangleButton);
-		
 		Button clearShapeButton = new Button("clearShape");
 		clearShapeButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
 			
