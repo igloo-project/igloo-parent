@@ -21,6 +21,8 @@ import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
 public class GMarkerOptions  implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = 2776022392201208927L;
 
+	private Options options;
+
 	private GMapPanel map;
 	
 	private Boolean autofit;
@@ -70,7 +72,7 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 			throw new IllegalArgumentException("A marker must be initialized with a markupId, a position and a map");
 		}
 		
-		Options options = new Options();
+		options = new Options();
 		options.put("position", GJsStatementUtils.getJavaScriptStatement(position));
 		options.put("map", new JsStatement().$(map, "").getStatement().toString() + ".data('gmap').gmap");
 		
@@ -129,6 +131,15 @@ public class GMarkerOptions  implements ChainableStatement, Serializable {
 		}
 	}
 
+	
+	public Options getOptions() {
+		return options;
+	}
+
+	public void setOptions(Options options) {
+		this.options = options;
+	}
+	
 	public GMapPanel getMap() {
 		return map;
 	}

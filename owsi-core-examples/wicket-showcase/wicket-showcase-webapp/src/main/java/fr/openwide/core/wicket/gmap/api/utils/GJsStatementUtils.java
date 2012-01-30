@@ -13,6 +13,8 @@ import fr.openwide.core.wicket.gmap.api.GSize;
 import fr.openwide.core.wicket.gmap.api.directions.GDirectionsWayPoint;
 import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
 import fr.openwide.core.wicket.gmap.api.directions.GUnitSystem;
+import fr.openwide.core.wicket.gmap.api.drawing.GControlPosition;
+import fr.openwide.core.wicket.gmap.api.drawing.GOverlayType;
 import fr.openwide.core.wicket.gmap.api.event.GMapEvent;
 import fr.openwide.core.wicket.gmap.api.event.GMarkerEvent;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
@@ -34,6 +36,47 @@ public class GJsStatementUtils {
 	public static String getJavaScriptStatement(LatLngBounds bounds) {
 		return new Constructor("google.maps.LatLngBounds").add(getJavaScriptStatement(bounds.getSouthwest()))
 			.add(getJavaScriptStatement(bounds.getNortheast())).toJS();
+	}
+	
+	// List<Object>
+	@SuppressWarnings("unchecked")
+	public static String getJavaScriptStatement(List<?> objects) {
+		if (objects.size() > 1) {
+			Class<?> clazz = objects.get(0).getClass();
+			StringBuilder sb = new StringBuilder("[");
+			if(GDirectionsWayPoint.class.equals(clazz)){
+				for(Object point : objects) {
+					if (sb.length() > 2) {
+						sb.append(",");
+					}
+					sb.append(getJavaScriptStatement((GDirectionsWayPoint) point));
+				}
+			} else if(GOverlayType.class.equals(clazz)) {
+				for(Object type : objects) {
+					if (sb.length() > 2) {
+						sb.append(",");
+					}
+					sb.append(getJavaScriptStatement((GOverlayType) type));
+				}
+			} else if (LatLng.class.equals(clazz)) {
+				for(Object latLng : objects) {
+					if (sb.length() > 2) {
+						sb.append(",");
+					}
+					sb.append(getJavaScriptStatement((LatLng) latLng));
+				}
+			} else {
+				for(Object list : objects) {
+					if (sb.length() > 2) {
+						sb.append(",");
+					}
+					sb.append(getJavaScriptStatement((List<LatLng>) list));
+				}
+			}
+			sb.append("]");
+			return sb.toString();
+		}
+		return "";
 	}
 	
 	// GMapEvent
@@ -139,16 +182,16 @@ public class GJsStatementUtils {
 		return sb.toString();
 	}
 	
-	// List<GDirectionsWayPoint>
-	public static String getJavaScriptStatement(List<GDirectionsWayPoint> points) {
-		StringBuilder sb = new StringBuilder("[");
-		for(GDirectionsWayPoint point : points) {
-			if (sb.length() > 2) {
-				sb.append(",");
-			}
-			sb.append(getJavaScriptStatement(point));
-		}
-		sb.append("]");
-		return sb.toString();
+	/*
+	 * Drawing
+	 */
+	// GOverlayType
+	public static String getJavaScriptStatement(GOverlayType type) {
+		return "google.maps.drawing.OverlayType." + type.getValue();
+	}
+	
+	//GControlPosition
+	public static String getJavaScriptStatement(GControlPosition position) {
+		return "google.maps.ControlPosition." + position.getValue();
 	}
 }

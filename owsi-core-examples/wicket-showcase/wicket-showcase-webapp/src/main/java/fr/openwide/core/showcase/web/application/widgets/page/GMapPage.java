@@ -19,18 +19,28 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import com.google.code.geocoder.model.LatLng;
+import com.google.code.geocoder.model.LatLngBounds;
 
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
 import fr.openwide.core.wicket.gmap.api.directions.GTravelMode;
 import fr.openwide.core.wicket.gmap.api.directions.GUnitSystem;
+import fr.openwide.core.wicket.gmap.api.drawing.GControlPosition;
+import fr.openwide.core.wicket.gmap.api.drawing.GOverlayType;
 import fr.openwide.core.wicket.gmap.api.event.GMapEvent;
 import fr.openwide.core.wicket.gmap.api.event.GMarkerEvent;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerAnimation;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImageBuilder;
 import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.directions.GDirectionRequest;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.directions.GDirectionRequest;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GCircleOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GDrawingControlOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GDrawingManagerBehavior;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GDrawingManagerOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GPolygonOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GPolylineOptions;
+import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GRectangleOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleBehavior;
@@ -196,6 +206,50 @@ public class GMapPage extends WidgetsMainPage {
 		}));
 		add(showAllMarkersButton);
 		
+		// Draw Circle
+		Button circleButton = new Button("circle");
+		circleButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+			
+					private static final long serialVersionUID = -4265950097064531551L;
+		
+					@Override
+					public JsScope callback() {
+						return JsScope.quickScope(new JsStatement().$(gmap, "")
+								.chain(new GCircleOptions("circle", new LatLng("-25.395", "111.645"), 150000.0))
+								.chain(new GMapChainableStatement.Autofit()));
+					};
+		}));
+		add(circleButton);
+		
+		// Draw Rectangle
+		Button rectangleButton = new Button("rectangle");
+		rectangleButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+			
+					private static final long serialVersionUID = -4265950097064531551L;
+		
+					@Override
+					public JsScope callback() {
+						return JsScope.quickScope(new JsStatement().$(gmap, "")
+								.chain(new GRectangleOptions("rectangle", new LatLngBounds(new LatLng("-25.395", "111.645"),
+									new LatLng("-34.390", "150.670"))))
+									.chain(new GMapChainableStatement.Autofit()));
+					};
+		}));
+		add(rectangleButton);
+		
+		Button clearShapeButton = new Button("clearShape");
+		clearShapeButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+			
+					private static final long serialVersionUID = -4265950097064531551L;
+		
+					@Override
+					public JsScope callback() {
+						return JsScope.quickScope(new JsStatement().$(gmap, "")
+							.chain(new GMapChainableStatement.ClearDrawingShapes()));
+					};
+		}));
+		add(clearShapeButton);
+		
 		// La carte doit être ajoutée en derniere afin qu'elle apparaisse en premier côté JS. :-/
 		add(gmap);
 	}
@@ -246,6 +300,45 @@ public class GMapPage extends WidgetsMainPage {
 					};
 		}));
 		add(routeButton);
+		
+		/*
+		 * Drawing Manager
+		 */
+		// Control Options
+		List<GOverlayType> types = new ArrayList<GOverlayType>();
+		types.add(GOverlayType.POLYGON);
+		types.add(GOverlayType.POLYLINE);
+		GDrawingControlOptions drawingControlOptions = new GDrawingControlOptions(GControlPosition.BOTTOM_CENTER, types);
+		
+		// Polygon Options
+		GPolygonOptions polygonOptions = new GPolygonOptions("polygon");
+		polygonOptions.setEditable(true);
+		
+		// Polyline Options
+		GPolylineOptions polylineOptions = new GPolylineOptions("polyline");
+		polylineOptions.setEditable(true);
+		
+		GDrawingManagerOptions drawingManagerOptions = new GDrawingManagerOptions(gmap);
+		drawingManagerOptions.setDrawingControl(true);
+		drawingManagerOptions.setDrawingControlOptions(drawingControlOptions);
+		drawingManagerOptions.setPolygonOptions(polygonOptions);
+		drawingManagerOptions.setPolylineOptions(polylineOptions);
+		
+		add(new GDrawingManagerBehavior(drawingManagerOptions));
+		
+		// Button to get drawing shapes
+		Button shapeButton = new Button("shape");
+		shapeButton.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+				private static final long serialVersionUID = -4265950097064531551L;
+	
+				@Override
+				public JsScope callback() {
+					return JsScope.quickScope(new JsStatement().$(gmap, "")
+							.chain(new GMapChainableStatement.GetDrawingShapes(
+									gmap.getShapeResultAjax().getCallbackUrl().toString())));
+				};
+		}));
+		add(shapeButton);
 	}
 
 
