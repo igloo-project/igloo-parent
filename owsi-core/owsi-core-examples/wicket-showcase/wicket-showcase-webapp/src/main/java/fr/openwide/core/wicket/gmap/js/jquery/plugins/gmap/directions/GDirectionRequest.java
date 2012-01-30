@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.gmap.js.jquery.plugins.directions;
+package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.directions;
 
 import java.io.Serializable;
 import java.util.List;

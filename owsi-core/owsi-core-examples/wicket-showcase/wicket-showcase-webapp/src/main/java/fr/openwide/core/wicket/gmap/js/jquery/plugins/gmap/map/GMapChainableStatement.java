@@ -117,8 +117,8 @@ public class GMapChainableStatement {
 		@Override
 		public CharSequence[] statementArgs() {
 			if (options == null || event == null || callbackUrl == null) {
-				throw new IllegalArgumentException("AddMarkerOnEventChainableStatement must be initialized with an event," +
-						"a callback URL and with GMarkerOptions.");
+				throw new IllegalArgumentException("AddMarkerOnEvent must be initialized with an event," +
+						"a callback URL and GMarkerOptions.");
 			} else {
 				CharSequence[] oldArgs = options.statementArgs();
 				CharSequence[] args = new CharSequence[6];
@@ -320,7 +320,7 @@ public class GMapChainableStatement {
 				args[1] = JsUtils.quotes(markerId);
 				return args;
 			} else {
-				throw new IllegalArgumentException("SetMarkerAnimation must be initialized with markerId and animation");
+				throw new IllegalArgumentException("updatePositionFromDragMove must be initialized with a markerId");
 			}
 		}
 	}
@@ -452,8 +452,7 @@ public class GMapChainableStatement {
 				args[1] = JsUtils.quotes(markerId);
 				return args;
 			} else {
-				throw new IllegalArgumentException("FitBounds must be initialized with bounds.");
-				
+				throw new IllegalArgumentException("Hide all markers except must be initialized with a markerId.");
 			}
 		}
 	}
@@ -492,6 +491,56 @@ public class GMapChainableStatement {
 		public CharSequence[] statementArgs() {
 			CharSequence[] args = new CharSequence[1];
 			args[0] = JsUtils.quotes("clearMarkers");
+			return args;
+		}
+	}
+	
+	/*
+	 * Get Drawing Shapes
+	 */
+	public static class GetDrawingShapes implements ChainableStatement, Serializable {
+		private static final long serialVersionUID = 8295854739007448244L;
+		
+		private String callbackUrl;
+		
+		public GetDrawingShapes(String callbackUrl) {
+			this.callbackUrl = callbackUrl;
+		}
+		
+		@Override
+		public String chainLabel() {
+			return CHAIN_LABEL;
+		}
+
+		@Override
+		public CharSequence[] statementArgs() {
+			if (callbackUrl != null) {
+				CharSequence[] args = new CharSequence[2];
+				args[0] = JsUtils.quotes("submitShapes");
+				args[1] = JsUtils.quotes(callbackUrl);
+				return args;
+			} else {
+				throw new IllegalArgumentException("get drawing shapes must be initialized with a callback url.");
+			}
+			
+		}
+	}
+	
+	/*
+	 * Clear Drawing Shapes
+	 */
+	public static class ClearDrawingShapes implements ChainableStatement, Serializable {
+		private static final long serialVersionUID = 8295854739007448244L;
+		
+		@Override
+		public String chainLabel() {
+			return CHAIN_LABEL;
+		}
+
+		@Override
+		public CharSequence[] statementArgs() {
+			CharSequence[] args = new CharSequence[1];
+			args[0] = JsUtils.quotes("clearShapes");
 			return args;
 		}
 	}

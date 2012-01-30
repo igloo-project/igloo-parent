@@ -13,7 +13,7 @@ public class GPolyline implements Serializable {
 	private String polyline;
 	private List<LatLng> points;
 	
-	public GPolyline(){
+	public GPolyline() {
 	}
 	
 	/*

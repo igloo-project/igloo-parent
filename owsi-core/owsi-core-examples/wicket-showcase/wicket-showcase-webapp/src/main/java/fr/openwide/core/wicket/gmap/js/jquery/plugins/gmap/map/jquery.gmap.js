@@ -35,6 +35,54 @@ function getDirectionsResult(result, callbackUrl) {
 	callWicket(callbackUrl, coreDirectionsResult);
 }
 
+function getShapes(callbackUrl, polygons, polylines) {
+	var corePolygonResult = "";
+	var corePolylineResult = "";
+	
+	corePolygonResult = cutShapeResult(corePolygonResult, polygons, true);
+	corePolylineResult = cutShapeResult(corePolylineResult, polylines, false);
+	
+	callWicketFromDrawingShapes(callbackUrl, corePolygonResult, corePolylineResult);
+}
+
+function cutShapeResult(result, parameters, polygon) {
+	if (parameters.length > 0 ) {
+		result = result + "(";
+		var first_point;
+		var shape = parameters[0];
+		shape.latLngs.getArray().forEach(function(elem, index) {
+			if (elem.getLength() > 0) {
+				result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
+				first_point = elem.getAt(0);
+			}
+			for(var j = 1; j < elem.getLength(); j++) {
+				result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
+			}
+			if (polygon) {
+				result = result + "," + first_point.lat() + " " + first_point.lng(); 
+			}
+		});
+		result = result + ")";
+		for (var i = 1; i < parameters.length; i++) {
+			result = result + ",(";
+			var shape = parameters[i];
+			shape.latLngs.getArray().forEach(function(elem, index) {
+				if (elem.getLength() > 0) {
+					result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
+					first_point = elem.getAt(0);
+				}
+				for(var j = 1; j < elem.getLength(); j++) {
+					result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
+				}
+				if (polygon) {
+					result = result + "," + first_point.lat() + " " + first_point.lng(); 
+				}
+			});
+			result = result + ")";
+		}
+	}
+	return result;
+}
 
 (function($) {
 	var methods = {
@@ -49,6 +97,12 @@ function getDirectionsResult(result, callbackUrl) {
 					// Create HashMap of markers
 					var markers = new Object();
 					
+					// Create Array of polygons
+					var polygons = new Array();
+					
+					// Create Array of polylines
+					var polylines = new Array();
+					
 					// Create bounds
 					var bounds = new google.maps.LatLngBounds();
 					
@@ -58,20 +112,23 @@ function getDirectionsResult(result, callbackUrl) {
 					// Create Direction Renderer
 					var directionsDisplay = new google.maps.DirectionsRenderer();
 					
-					// Create DrawingManager
-					var drawingManager = undefined;
-					if (google.maps.drawing) {
-						drawingManager = new google.maps.drawing.DrawingManager();
-					}
+					// Create Colors
+					var COLORS = [["red", "#ff0000"], ["orange", "#ff8800"], ["green","#008000"], ["blue", "#000080"], 
+					              ["purple", "#800080"], ["yellow", "#ffff00"]];
+					var colorIndex = 0;
 					
 					$this.data('gmap', {
 						target : $this,
 						gmap : gmap,
 						markers : markers,
+						polygons : polygons,
+						polylines : polylines,
 						bounds : bounds,
+						colors : COLORS,
+						colorIndex : colorIndex,
 						directionsService : directionsService,
 						directionsDisplay : directionsDisplay,
-						drawingManager : drawingManager
+						drawingManager : undefined,
 					});
 				}
 			});
@@ -238,10 +295,24 @@ function getDirectionsResult(result, callbackUrl) {
 					bounds = new google.maps.LatLngBounds();
 				}
 				for(var i in data.markers) {
-					if (data.markers[i].getMap() == data.gmap){
+					if (data.markers[i].getMap() == data.gmap) {
 						bounds.extend(data.markers[i].getPosition());
 					}
 				}
+				for (var i in data.polygons) {
+					var polygon = data.polygons[i];
+					var paths = polygon.getPaths();
+					for (var p = 0; p < paths.getLength(); p++) {
+						path = paths.getAt(p);
+						for (var j = 0; j < path.getLength(); j++) {
+							bounds.extend(path.getAt(j));
+						}
+					}
+				}
+				for (var i in data.polylines) {
+					data.polylines[i].getPath().forEach(function(latlng) { bounds.extend(latlng); } ); 
+				}
+				
 				data.gmap.fitBounds(bounds);
 				data.gmap.setCenter(bounds.getCenter());
 				data.bounds = bounds;
@@ -346,6 +417,126 @@ function getDirectionsResult(result, callbackUrl) {
 				data.directionsDisplay.setMap(null);
 				$this.data('gmap', data);
 			});
+		},
+		createDrawingManager : function (options) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				// Create DrawingManager
+				var drawingManager = undefined;
+				if (google.maps.drawing) {
+					drawingManager = new google.maps.drawing.DrawingManager(options);
+					drawingManager.setMap(data.gmap);
+					
+					google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+						// Next Colors
+						var color = $this.gmap('getColor', false);
+						var polygonOptions;
+						var polylineOptions;
+						if (options.polygonOptions != undefined) {
+							polygonOptions = options.polygonOptions;
+						} else {
+							polygonOptions = new Object();
+						}
+						if (options.polylineOptions != undefined) {
+							polylineOptions = options.polylineOptions;
+						} else {
+							polylineOptions = new Object();
+						}
+						
+						polygonOptions['fillColor'] = color;
+						polygonOptions['strokeColor'] = color;
+						polylineOptions['strokeColor'] = color;
+						
+						options['polygonOptions'] = polygonOptions;
+						options['polylineOptions'] = polylineOptions;
+						drawingManager.setOptions(options);
+						
+						// Polygon
+						if (event.type == google.maps.drawing.OverlayType.POLYGON) {
+							data.polygons[data.polygons.length] = event.overlay;
+							$this.data('gmap', data);
+						}
+						// Polyline
+						if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
+							data.polylines[data.polylines.length] = event.overlay;
+							$this.data('gmap', data);
+						}
+					});
+					
+					data.drawingManager = drawingManager;
+					$this.data('gmap', data);
+				} else {
+					$.error('Drawing Library is not loaded, you must load it to be able to create a drawing manager');
+				}
+			});
+		},
+		submitShapes : function (callbackUrl) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				getShapes(callbackUrl, data.polygons, data.polylines);
+			});
+		},
+		clearShapes : function () {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				for(var i in data.polygons) {
+					data.polygons[i].setMap(null);
+				}
+				for(var i in data.polylines) {
+					data.polylines[i].setMap(null);
+				}
+				
+				data.polygons = new Array();
+				data.polylines = new Array()
+				
+				$this.data('gmap', data);
+			});
+		},
+		createPolygon : function (polygonId, options) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				var polygon = new google.maps.Polygon(options);
+				polygon.setMap(data.gmap);
+				
+				data.shapes[polygonId] = polygon;
+				$this.data('gmap', data);
+			});
+		},
+		createPolyline : function (polylineId, options) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				var polyline = new google.maps.Polyline(options);
+				polyline.setMap(data.gmap);
+				
+				data.shapes[polylineId] = polyline;
+				$this.data('gmap', data);
+			});
+		},
+		createCircle : function (circleId, options) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				var circle = new google.maps.Circle(options);
+				circle.setMap(data.gmap);
+				
+				data.shapes[circleId] = circle;
+				$this.data('gmap', data);
+			});
+		},
+		createRectangle : function (rectangleId, options) {
+			return this.each(function() {
+				var $this = $(this), data = $this.data('gmap');
+				var rectangle = new google.maps.Rectangle(options);
+				rectangle.setMap(data.gmap);
+				
+				data.shapes[rectangleId] = rectangle;
+				$this.data('gmap', data);
+			});
+		},
+		getColor : function (named) {
+			var $this = $(this), data = $this.data('gmap');
+			data.colorIndex++;
+			$this.data('gmap', data);
+			return data.colors[(data.colorIndex) % data.colors.length][named ? 0 : 1];
 		},
 		destroy : function() {
 			return this.each(function() {
