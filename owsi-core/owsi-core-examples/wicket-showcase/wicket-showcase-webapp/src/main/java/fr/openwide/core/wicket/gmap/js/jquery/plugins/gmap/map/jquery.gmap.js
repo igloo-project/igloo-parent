@@ -68,13 +68,13 @@ function cutShapeResult(result, parameters, polygon) {
 		}
 		shape.latLngs.getArray().forEach(function(elem, index) {
 			if (elem.getLength() > 0) {
-				result = result + elem.getAt(0).lat() + " "+ elem.getAt(0).lng();
+				result = result + elem.getAt(0).lng() + " "+ elem.getAt(0).lat();
 				first_point = elem.getAt(0);
 				for(var j = 1; j < elem.getLength(); j++) {
-					result = result + "," + elem.getAt(j).lat() + " " + elem.getAt(j).lng();
+					result = result + "," + elem.getAt(j).lng() + " " + elem.getAt(j).lat();
 				}
 				if (polygon) {
-					result = result + "," + first_point.lat() + " " + first_point.lng(); 
+					result = result + "," + first_point.lng() + " " + first_point.lat(); 
 				}
 			}
 		});
