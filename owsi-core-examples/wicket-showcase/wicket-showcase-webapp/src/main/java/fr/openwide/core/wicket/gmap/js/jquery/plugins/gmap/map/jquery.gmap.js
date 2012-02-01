@@ -51,8 +51,14 @@ function getShapes(callbackUrl, polygons, polylines) {
 }
 
 function cutShapeResult(result, parameters, polygon) {
-	if (parameters.length > 1) {
-		result = result + "(";
+	if (polygon) {
+		result = result + "MULTIPOLYGON(";
+	} else {
+		if (parameters.length > 1) {
+			result = result + "MULTILINESTRING(";
+		} else {
+			result = result + "LINESSTRING";
+		}
 	}
 	var first_point;
 	for (var i = 0; i < parameters.length; i++) {
@@ -83,8 +89,12 @@ function cutShapeResult(result, parameters, polygon) {
 		}
 		result = result + ")";
 	}
-	if (parameters.length > 1) {
+	if (polygon) {
 		result = result + ")";
+	} else {
+		if (parameters.length > 1) {
+			result = result + ")";
+		}
 	}
 	return result;
 }
