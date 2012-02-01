@@ -11,6 +11,7 @@ public class OwsiCoreTestConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String PROPERTY1 = "property1";
 	private static final String PROPERTY2 = "property2";
 	private static final String PROPERTY3 = "property3";
+	private static final String PROPERTY4 = "property4";
 	
 	public OwsiCoreTestConfigurer() throws IOException {
 		super();
@@ -28,6 +29,10 @@ public class OwsiCoreTestConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public String getProperty3() {
 		return getPropertyAsString(PROPERTY3);
+	}
+	
+	public String getProperty4() {
+		return getPropertyAsString(PROPERTY4);
 	}
 	
 }

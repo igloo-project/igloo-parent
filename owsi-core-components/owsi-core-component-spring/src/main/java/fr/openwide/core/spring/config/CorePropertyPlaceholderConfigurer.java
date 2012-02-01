@@ -17,15 +17,16 @@
 
 package fr.openwide.core.spring.config;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.ConfigurablePropertyResolver;
+import org.springframework.core.env.PropertyResolver;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -37,7 +38,7 @@ import fr.openwide.core.spring.util.StringUtils;
  * 
  * @author Open Wide
  */
-public class CorePropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
+public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholderConfigurer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CorePropertyPlaceholderConfigurer.class);
 	
@@ -49,17 +50,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertyPlaceholderConfig
 	/**
 	 * Propriétés de configuration.
 	 */
-	private Properties properties;
-	
-	/**
-	 * Charge les propriétés.
-	 * 
-	 * @param properties les propriétés
-	 */
-	protected void loadProperties(Properties properties) throws IOException {
-		super.loadProperties(properties);
-		this.properties = properties;
-	}
+	private PropertyResolver propertyResolver;
 	
 	/**
 	 * Retourne une propriété spécifique à partir de sa clé sous la forme d'un
@@ -167,14 +158,18 @@ public class CorePropertyPlaceholderConfigurer extends PropertyPlaceholderConfig
 	 * @param key la clé
 	 * @return l'objet propriété
 	 */
-	@SuppressWarnings("deprecation")
 	private Object getProperty(String key) {
-		Object value = properties.get(key);
-		// If the value contain a ${, this means it as to be _placeholdered_
-		if (value != null && value.toString().contains(PropertyPlaceholderConfigurer.DEFAULT_PLACEHOLDER_PREFIX))  {
-			value = parseStringValue(value.toString(), properties, new HashSet<String>());
-		}
+		Object value = propertyResolver.resolvePlaceholders(propertyResolver.getProperty(key));
 		return value;
+	}
+
+	@Override
+	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
+			ConfigurablePropertyResolver propertyResolver) throws BeansException {
+		this.propertyResolver = propertyResolver;
+		
+		// on garde les traitements dans la classe parente
+		super.processProperties(beanFactoryToProcess, propertyResolver);
 	}
 
 }
