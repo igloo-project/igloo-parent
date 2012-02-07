@@ -159,8 +159,14 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @return l'objet propriété
 	 */
 	private Object getProperty(String key) {
-		Object value = propertyResolver.resolvePlaceholders(propertyResolver.getProperty(key));
-		return value;
+		String rawValue = propertyResolver.getProperty(key);
+		
+		if (rawValue != null) {
+			Object value = propertyResolver.resolvePlaceholders(rawValue);
+			return value;
+		} else {
+			return null;
+		}
 	}
 
 	@Override

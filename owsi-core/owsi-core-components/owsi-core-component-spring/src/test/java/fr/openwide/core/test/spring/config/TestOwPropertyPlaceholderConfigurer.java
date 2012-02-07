@@ -30,6 +30,7 @@ public class TestOwPropertyPlaceholderConfigurer {
 		assertEquals("value2", configurer.getProperty2());
 		assertEquals("value1-value2", configurer.getProperty3());
 		assertEquals("value3", configurer.getProperty4());
+		
+		assertEquals(OwsiCoreTestConfigurer.PROPERTY6_DEFAULT, configurer.getProperty6());
 	}
-	
 }
