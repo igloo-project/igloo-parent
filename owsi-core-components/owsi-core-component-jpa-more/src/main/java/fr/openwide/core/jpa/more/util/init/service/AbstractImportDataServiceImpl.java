@@ -99,7 +99,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	protected abstract void importMainBusinessItems(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping, Workbook workbook);
 	
-	protected void importFiles(File directory, Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping) {
+	protected void importFiles(File directory, Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping) 
+			throws ServiceException, SecurityServiceException {
 		// nothing, override if necessary
 	}
 	
