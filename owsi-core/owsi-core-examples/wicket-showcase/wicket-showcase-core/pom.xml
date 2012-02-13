@@ -68,52 +68,52 @@
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-grouping</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-spellchecker</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-misc</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-smartcn</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-analyzers</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-spatial</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-memory</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-highlighter</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>lucene-stempel</artifactId>
 			<groupId>org.apache.lucene</groupId>
-			<version>3.3.0</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		
 		<!-- Bindgen -->
@@ -151,8 +151,15 @@
 		<dependency>
 			<groupId>com.google.code.geocoder-java</groupId>
 			<artifactId>geocoder-java</artifactId>
-			<version>0.9</version>
+			<version>${google-geocoder.version}</version>
 		</dependency>
+		
+		<!-- ANTLR -->
+		<dependency> 
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>${antlr.version}</version>
+		</dependency> 
 		
 		<!-- Jetty -->
 <!--		<dependency>-->
