@@ -19,7 +19,6 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import com.google.code.geocoder.model.LatLng;
-import com.google.code.geocoder.model.LatLngBounds;
 
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.gmap.api.GMapTypeId;
@@ -34,13 +33,11 @@ import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImage;
 import fr.openwide.core.wicket.gmap.api.gmarker.GMarkerImageBuilder;
 import fr.openwide.core.wicket.gmap.component.map.GMapPanel;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.directions.GDirectionRequest;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GCircleOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GDrawingControlOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GDrawingManagerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GDrawingManagerOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GPolygonOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GPolylineOptions;
-import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.drawing.GRectangleOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerBehavior;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.gmarker.GMarkerOptions;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbleBehavior;
@@ -308,13 +305,6 @@ public class GMapPage extends WidgetsMainPage {
 				};
 		}));
 		add(shapeButton);
-	}
-
-
-
-	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return WidgetsMainPage.class;
 	}
 
 	@Override

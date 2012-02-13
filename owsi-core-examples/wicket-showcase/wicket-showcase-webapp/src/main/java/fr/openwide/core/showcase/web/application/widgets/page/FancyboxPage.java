@@ -11,11 +11,6 @@ public class FancyboxPage extends WidgetsMainPage {
 	}
 	
 	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return WidgetsMainPage.class;
-	}
-
-	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return FancyboxPage.class;
 	}

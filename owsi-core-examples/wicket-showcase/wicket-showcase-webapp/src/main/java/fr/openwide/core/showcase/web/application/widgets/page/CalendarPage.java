@@ -50,11 +50,6 @@ public class CalendarPage extends WidgetsMainPage {
 	}
 	
 	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return WidgetsMainPage.class;
-	}
-
-	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return CalendarPage.class;
 	}

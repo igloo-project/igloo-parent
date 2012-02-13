@@ -11,11 +11,6 @@ public class AutocompletePage extends WidgetsMainPage {
 	}
 
 	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return WidgetsMainPage.class;
-	}
-
-	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return AutocompletePage.class;
 	}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="title">
+		<wicket:message key="widgets.dateParser.title"></wicket:message>
+	</div>
+	<div class="page-main-content">
+		<div style="margin-bottom: 10px;">
+			<form wicket:id="form">
+				<div class="float-left">
+					<input wicket:id="dateString" type="text" style="width: 300px; padding: 2px;" />
+				</div>
+				
+				<div class="field-button float-left">
+					<div class="button-outer">
+						<a wicket:id="submitLink" class="button button-elastic">
+							<img class="icon" src="static/common/images/icons/magnifier.png" width="16" height="16" />
+							<wicket:message key="widgets.dateParser.search.action" />
+						</a>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</form>
+		</div>
+		
+		<wicket:container wicket:id="resultContainer">
+			<div class="column-40 float-left">
+				<div class="title">
+					<wicket:message key="widgets.dateParser.search.results"></wicket:message>
+				</div>
+				<div class="information">
+					<div class="float-left" style="padding-right: 20px; padding-top: 2px;">
+						<span style="font-weight: bold;"><wicket:message key="widgets.dateParser.beginDate" /></span>: <span wicket:id="beginDate"></span>
+					</div>
+					<wicket:enclosure child="endDate">
+						<div class="float-left" style="padding-right: 20px; padding-top: 2px;">
+							<span style="font-weight: bold;"><wicket:message key="widgets.dateParser.endDate" /></span>: <span wicket:id="endDate"></span>
+						</div>
+						<div class="float-left" style="padding-right: 20px;">
+							<span style="font-weight: bold;"><wicket:message key="widgets.dateParser.isInterval" /></span>: <img class="icon" wicket:id="isInterval" width="16" height="16" />
+						</div>
+					</wicket:enclosure>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</wicket:container>
+	</div>
+</wicket:extend>
+</html>

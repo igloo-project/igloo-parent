@@ -13,6 +13,7 @@ import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionP
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.page.AutocompletePage;
 import fr.openwide.core.showcase.web.application.widgets.page.CalendarPage;
+import fr.openwide.core.showcase.web.application.widgets.page.DateParserPage;
 import fr.openwide.core.showcase.web.application.widgets.page.FancyboxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.GMapPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
@@ -61,6 +62,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/autocomplete", AutocompletePage.class);
 		mountPage("/widgets/fancybox", FancyboxPage.class);
 		mountPage("/widgets/gmap", GMapPage.class);
+		mountPage("/widgets/date-parser", DateParserPage.class);
 	}
 
 	@Override
