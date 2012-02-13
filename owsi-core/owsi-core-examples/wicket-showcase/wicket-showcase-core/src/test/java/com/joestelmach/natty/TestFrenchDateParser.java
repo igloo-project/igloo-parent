@@ -6,6 +6,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestFrenchDateParser extends AbstractDateParserTest {
@@ -50,6 +51,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testRelativeDateTime() throws Exception {
 		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT,
 				DateFormat.SHORT).parse("31/01/2012 17:00");
@@ -132,6 +134,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testIntervals() throws Exception {
 		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT,
 				DateFormat.SHORT).parse("31/01/2012 17:00");
@@ -302,6 +305,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testRelativeMonthIntervals() throws Exception {
 		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT,
 				DateFormat.SHORT).parse("24/05/2012 12:00");
@@ -357,6 +361,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testExplicitMonthIntervals() throws Exception {
 		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT, 
 				DateFormat.SHORT).parse("08/02/2012 12:00");
