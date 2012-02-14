@@ -1,15 +1,17 @@
 package com.joestelmach.natty;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 public class TestFrenchDateParser extends AbstractDateParserTest {
+	
+	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
 	@Test
 	public void testExplicitDateTime() {
@@ -52,8 +54,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	
 	@Test
 	public void testRelativeDateTime() throws Exception {
-		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-				DateFormat.SHORT, Locale.FRENCH).parse("31/01/2012 17:00");
+		Date reference = DATE_FORMAT.parse("31/01/2012 17:00");
 		CalendarSource.setBaseDate(reference);
 		
 		validateDateTime("aujourd'hui à 19:30:20", 1, 31, 2012, 19, 30, 20);
@@ -77,11 +78,13 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 		validateDate("il y a 2 ans", 1, 31, 2010);
 		
 		validateDate("ce jeudi", 2, 2, 2012);
-//		validateDate("début juin 2013", 6, 1, 2013);
-//		validateDate("fin août 1998", 8, 31, 1998);
 		validateDate("le 28 du mois dernier", 12, 28, 2011);
 		validateDate("jeudi de la semaine passée", 1, 26, 2012);
 		validateDate("mercredi passé", 1, 25, 2012);
+		
+		// Années totalement incohérentes
+//		validateDate("début juin 2013", 6, 1, 2013);
+//		validateDate("fin août 1998", 8, 31, 1998);
 		
 		List<Date> dates;
 		DateGroup dateGroup;
@@ -134,8 +137,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	
 	@Test
 	public void testIntervals() throws Exception {
-		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-				DateFormat.SHORT, Locale.FRENCH).parse("31/01/2012 17:00");
+		Date reference = DATE_FORMAT.parse("31/01/2012 17:00");
 		CalendarSource.setBaseDate(reference);
 		
 		List<Date> dates;
@@ -215,12 +217,12 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 		validateDateTime(dates.get(1), 1, 31, 2012, 19, 0, 0);
 		
 		// préfix 'ce', 'cet', 'cette'
-//		dateGroup = _parser.parse("cette semaine").get(0);
-//		Assert.assertTrue(dateGroup.isInterval());
-//		dates = dateGroup.getDates();
-//		Assert.assertEquals(2, dates.size());
-//		validateDateTime(dates.get(0), 1, 30, 2012, 17, 0, 0);
-//		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
+		dateGroup = _parser.parse("cette semaine").get(0);
+		Assert.assertTrue(dateGroup.isInterval());
+		dates = dateGroup.getDates();
+		Assert.assertEquals(2, dates.size());
+		validateDateTime(dates.get(0), 1, 30, 2012, 17, 0, 0);
+		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
 		
 		dateGroup = _parser.parse("ce mois").get(0);
 		Assert.assertTrue(dateGroup.isInterval());
@@ -236,12 +238,12 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 		validateDateTime(dates.get(0), 1, 1, 2012, 17, 0, 0);
 		validateDateTime(dates.get(1), 12, 31, 2012, 17, 0, 0);
 		
-//		dateGroup = _parser.parse("ce weekend").get(0);
-//		Assert.assertTrue(dateGroup.isInterval());
-//		dates = dateGroup.getDates();
-//		Assert.assertEquals(2, dates.size());
-//		validateDateTime(dates.get(0), 2, 4, 2012, 17, 0, 0);
-//		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
+		dateGroup = _parser.parse("ce weekend").get(0);
+		Assert.assertTrue(dateGroup.isInterval());
+		dates = dateGroup.getDates();
+		Assert.assertEquals(2, dates.size());
+		validateDateTime(dates.get(0), 2, 4, 2012, 17, 0, 0);
+		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
 		
 		// suffix 'suivant', 'prochain'
 		dateGroup = _parser.parse("la semaine suivante").get(0);
@@ -304,8 +306,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	
 	@Test
 	public void testRelativeMonthIntervals() throws Exception {
-		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-				DateFormat.SHORT, Locale.FRENCH).parse("24/05/2012 12:00");
+		Date reference = DATE_FORMAT.parse("24/05/2012 12:00");
 		CalendarSource.setBaseDate(reference);
 		
 		List<Date> dates;
@@ -359,8 +360,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	
 	@Test
 	public void testExplicitMonthIntervals() throws Exception {
-		Date reference = DateFormat.getDateTimeInstance(DateFormat.SHORT, 
-				DateFormat.SHORT, Locale.FRENCH).parse("08/02/2012 12:00");
+		Date reference = DATE_FORMAT.parse("08/02/2012 12:00");
 		CalendarSource.setBaseDate(reference);
 		
 		List<Date> dates;
