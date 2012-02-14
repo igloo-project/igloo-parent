@@ -7,7 +7,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestFrenchDateParser extends AbstractDateParserTest {
@@ -137,7 +136,6 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testIntervals() throws Exception {
 		Date reference = DATE_FORMAT.parse("31/01/2012 17:00");
 		CalendarSource.setBaseDate(reference);

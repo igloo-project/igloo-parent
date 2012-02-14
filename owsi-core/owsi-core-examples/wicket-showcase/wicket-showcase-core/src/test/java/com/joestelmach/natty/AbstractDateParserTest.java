@@ -3,6 +3,7 @@ package com.joestelmach.natty;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +22,7 @@ public abstract class AbstractDateParserTest {
 	@Before
 	public void before() {
 		CalendarSource.setBaseDate(null);
+		Locale.setDefault(Locale.FRENCH);
 	}
 
 	/**
