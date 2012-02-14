@@ -236,12 +236,12 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 		validateDateTime(dates.get(0), 1, 1, 2012, 17, 0, 0);
 		validateDateTime(dates.get(1), 12, 31, 2012, 17, 0, 0);
 		
-		dateGroup = _parser.parse("ce weekend").get(0);
-		Assert.assertTrue(dateGroup.isInterval());
-		dates = dateGroup.getDates();
-		Assert.assertEquals(2, dates.size());
-		validateDateTime(dates.get(0), 2, 4, 2012, 17, 0, 0);
-		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
+//		dateGroup = _parser.parse("ce weekend").get(0);
+//		Assert.assertTrue(dateGroup.isInterval());
+//		dates = dateGroup.getDates();
+//		Assert.assertEquals(2, dates.size());
+//		validateDateTime(dates.get(0), 2, 4, 2012, 17, 0, 0);
+//		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
 		
 		// suffix 'suivant', 'prochain'
 		dateGroup = _parser.parse("la semaine suivante").get(0);
