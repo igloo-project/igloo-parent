@@ -123,7 +123,7 @@ public class TestGeocoder {
 	 */
 	@Test
 	public void testTourismName() {
-		String domaine_skiable = "La croix fry"; //Domain skiable
+		String domaine_skiable = "La croix fry"; //Domaine skiable
 		String restaurant = "Mc Donalds";
 		String fete = "Fêtes des lumières";
 		String parc = "Parc de la tête d'or";
@@ -172,5 +172,14 @@ public class TestGeocoder {
 		geocoderRequest = new GeocoderRequestBuilder().setAddress(adress).setRegion("fr").setLanguage("fr").getGeocoderRequest();
 		geocoderResponse = geocoder.geocode(geocoderRequest);
 		assertTrue(geocoderResponse.getResults().size() == 10);
+	}
+	
+	@Test
+	public void testCodePostal() {
+		String codePostal = "69007";
+		
+		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(codePostal).setRegion("fr").setLanguage("fr").getGeocoderRequest();
+		GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+		assertTrue(geocoderResponse.getResults().size() > 0);
 	}
 }
