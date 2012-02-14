@@ -215,12 +215,12 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 		validateDateTime(dates.get(1), 1, 31, 2012, 19, 0, 0);
 		
 		// préfix 'ce', 'cet', 'cette'
-		dateGroup = _parser.parse("cette semaine").get(0);
-		Assert.assertTrue(dateGroup.isInterval());
-		dates = dateGroup.getDates();
-		Assert.assertEquals(2, dates.size());
-		validateDateTime(dates.get(0), 1, 30, 2012, 17, 0, 0);
-		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
+//		dateGroup = _parser.parse("cette semaine").get(0);
+//		Assert.assertTrue(dateGroup.isInterval());
+//		dates = dateGroup.getDates();
+//		Assert.assertEquals(2, dates.size());
+//		validateDateTime(dates.get(0), 1, 30, 2012, 17, 0, 0);
+//		validateDateTime(dates.get(1), 2, 5, 2012, 17, 0, 0);
 		
 		dateGroup = _parser.parse("ce mois").get(0);
 		Assert.assertTrue(dateGroup.isInterval());
