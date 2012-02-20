@@ -17,7 +17,7 @@
 
 package fr.openwide.core.jpa.util;
 
-import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.id.IdentifierGenerator;
 
 /**
@@ -31,7 +31,7 @@ import org.hibernate.id.IdentifierGenerator;
  * 
  * @author Open Wide
  */
-public class PostgreSQLSerialDialect extends PostgreSQLDialect {
+public class PostgreSQLSerialDialect extends PostgreSQL82Dialect {
 
 	@Override
 	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {
