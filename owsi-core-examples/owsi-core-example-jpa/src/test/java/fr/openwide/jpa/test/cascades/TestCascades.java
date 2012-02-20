@@ -3,7 +3,6 @@ package fr.openwide.jpa.test.cascades;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -364,24 +363,34 @@ public class TestCascades extends AbstractJpaTestCase {
 		company5.addEmployee1(person4);
 		companyService.update(company5);
 		
+		/* 
+		 * Code qu'on avait avant : si jamais l'entité était encore attachée par ailleurs, la base renvoyait une exception
+		 * et du coup, ça donnait une indication.
+		 * 
+		 * Cependant, il semble que l'esprit de la norme JPA dit que si un objet à supprimer par cascade est attaché
+		 * par ailleurs, la suppression doit être purement et simplement ignorée...
+		 * Ca ne va pas nous aider à trouver les soucis mais, après discussion avec les gens d'Hibernate, ça restera comme cela...
+		 *
 		try {
 			companyService.delete(company4);
 			Assert.fail("Supprimer en cascade une entité qui à encore des relations lève une exception");
 		} catch (JpaObjectRetrievalFailureException e) {
-			/* La tentative de suppression de la personne viole une contrainte d'intégrité
-			 * de la base de données. On ne peut pas supprimer en cascade une Person encore 
-			 * en relation avec d'autres Company. Pour parer à ce problème, pas de solution
-			 * automatique, on doit délier l'entité pour pouvoir la supprimer en cascade.
-			 */
+			// La tentative de suppression de la personne viole une contrainte d'intégrité
+			// de la base de données. On ne peut pas supprimer en cascade une Person encore 
+			// en relation avec d'autres Company. Pour parer à ce problème, pas de solution
+			// automatique, on doit délier l'entité pour pouvoir la supprimer en cascade.
 			company4 = companyService.getById(company4.getId());
 			company5 = companyService.getById(company5.getId());
 			Assert.assertTrue(companyService.list().contains(company4));
 			Assert.assertTrue(personService.list().contains(person4));
-		}
+		}*/
+		
+		// on délie toute les relations et on doit donc pouvoir supprimer supprimer person4 par cascade sans souci
 		person4 = personService.getById(person4.getId());
 		company5.removeEmployee1(person4);
 		companyService.update(company5);
 		companyService.delete(company4);
+		Assert.assertNull(personService.getById(person4.getId()));
 	
 		/* Une fois l'entité Person déliée de la seconde Company, elle est supprimée sans
 		 * problèmes par la cascade.
