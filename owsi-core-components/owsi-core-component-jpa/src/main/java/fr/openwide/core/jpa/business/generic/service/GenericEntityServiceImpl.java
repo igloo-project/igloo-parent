@@ -92,6 +92,10 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 		return genericDao.getByField(fieldName, fieldValue);
 	}
 	
+	protected E getByNaturalId(String naturalId) {
+		return genericDao.getByNaturalId(naturalId);
+	}
+	
 	@Override
 	public void save(E entity) throws ServiceException,
 			SecurityServiceException {

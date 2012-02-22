@@ -40,7 +40,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public P getByUserName(String userName) {
-		return personDao.getByNaturalId(userName);
+		return getByNaturalId(userName);
 	}
 	
 	@Override
