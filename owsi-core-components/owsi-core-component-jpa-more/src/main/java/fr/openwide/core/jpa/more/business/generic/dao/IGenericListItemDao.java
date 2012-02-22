@@ -43,10 +43,10 @@ public interface IGenericListItemDao {
 
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
-	<E extends GenericListItem<?>,V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
+	<E extends GenericListItem<?>, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 	<E extends GenericListItem<?>> Long count(Class<E> clazz);
 
-	<E extends GenericListItem<?>,V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
+	<E extends GenericListItem<?>, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 }
