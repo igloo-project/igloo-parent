@@ -61,6 +61,13 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	E getById(K id);
 	
 	/**
+	 * Retourne une entité à partir de son id naturelle (si elle a été déclarée avec @NaturalId)
+	 * 
+	 * @param naturalId identifiant naturel (typiquement un login)
+	 */
+	E getByNaturalId(String naturalId);
+	
+	/**
 	 * Crée l'entité dans la base de données.
 	 * 
 	 * @param entity entité
