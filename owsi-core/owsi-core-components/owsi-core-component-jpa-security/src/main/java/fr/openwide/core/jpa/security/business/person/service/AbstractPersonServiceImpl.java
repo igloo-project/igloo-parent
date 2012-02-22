@@ -16,7 +16,6 @@ import fr.openwide.core.jpa.security.business.authority.service.IAuthorityServic
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
-import fr.openwide.core.jpa.security.business.person.model.AbstractPerson_;
 import fr.openwide.core.jpa.security.business.person.model.IPersonBinding;
 
 public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
@@ -41,7 +40,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public P getByUserName(String userName) {
-		return getByField(AbstractPerson_.userName, userName);
+		return personDao.getByNaturalId(userName);
 	}
 	
 	@Override
