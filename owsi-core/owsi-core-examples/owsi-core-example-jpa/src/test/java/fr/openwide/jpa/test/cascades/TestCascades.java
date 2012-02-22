@@ -403,7 +403,7 @@ public class TestCascades extends AbstractJpaTestCase {
 		 * 
 		 * La cascade DELETE_ORPHAN (ou orphanRemoval) va détruire, en plus des entités liées 
 		 * par la relation, les entités qui sont référencés comme anciennement liés. Pour mettre
-		 * se comportement en valeur, on lie une Person une Company puis on détruit le lien. 
+		 * ce comportement en valeur, on lie une Person une Company puis on détruit le lien. 
 		 * Lorsque l'on supprime la Company, on constate que la Person est aussi détruite
 		 */
 		person5 = personService.getById(person5.getId());
