@@ -79,7 +79,7 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 		return super.listEntityByField(clazz, field, fieldValue);
 	}
 	
-	public <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Expression<Boolean> filter, Order order, Integer limit, Integer offset) {
+	protected <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Expression<Boolean> filter, Order order, Integer limit, Integer offset) {
 		List<E> entities = super.listEntity(objectClass, filter, limit, offset, order);
 		if (order == null) {
 			Collections.sort(entities, GenericListItemComparator.INSTANCE);
@@ -87,6 +87,7 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 		return entities;
 	}
 	
+	@Override
 	public <E extends GenericListItem<?>> Long count(Class<E> clazz) {
 		return super.countEntity(clazz);
 	}
