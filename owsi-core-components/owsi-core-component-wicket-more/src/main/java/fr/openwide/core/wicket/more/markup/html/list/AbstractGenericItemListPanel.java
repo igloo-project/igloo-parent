@@ -6,6 +6,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -82,76 +83,83 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 				
 				AbstractGenericItemListPanel.this.addItemColumns(item, itemModel);
 				
-				item.add(new AbstractGenericItemListActionButtons<T>("actionButtons", itemModel) {
-					private static final long serialVersionUID = 1L;
+				Panel actionButtons;
+				if (isAtLeastOneActionAvailable()) {
+					actionButtons = new AbstractGenericItemListActionButtons<T>("actionButtons", itemModel) {
+						private static final long serialVersionUID = 1L;
 
-					@Override
-					protected MarkupContainer getActionLink(String id, IModel<? extends T> itemModel) {
-						MarkupContainer actionLink = AbstractGenericItemListPanel.this.getActionLink(id, itemModel);
-						if (!isActionAvailable()) {
-							getActionLinkHidden().setVisible(false);
-							return new InvisibleLink(id);
-						} else {
-							boolean actionVisible = actionLink.isVisible();
-							actionLink.setVisible(actionVisible);
-							getActionLinkHidden().setVisible(!actionVisible);
+						@Override
+						protected MarkupContainer getActionLink(String id, IModel<? extends T> itemModel) {
+							MarkupContainer actionLink = AbstractGenericItemListPanel.this.getActionLink(id, itemModel);
+							if (!isActionAvailable()) {
+								getActionLinkHidden().setVisible(false);
+								return new InvisibleLink(id);
+							} else {
+								boolean actionVisible = actionLink.isVisible();
+								actionLink.setVisible(actionVisible);
+								getActionLinkHidden().setVisible(!actionVisible);
+							}
+							return actionLink;
 						}
-						return actionLink;
-					}
-					
-					@Override
-					protected Component getEditLink(String id, IModel<? extends T> itemModel) {
-						if (!isEditAvailable()) {
-							getEditLinkHidden().setVisible(false);
-							return new InvisibleLink(id);
-						} else {
-							Component editLink = AbstractGenericItemListPanel.this.getEditLink(id, itemModel);
-							boolean editVisible = editLink.isVisible() &&
-								AbstractGenericItemListPanel.this.hasWritePermissionOn(itemModel);
-							editLink.setVisible(editVisible);
-							getEditLinkHidden().setVisible(!editVisible);
-							
-							return editLink;
+						
+						@Override
+						protected Component getEditLink(String id, IModel<? extends T> itemModel) {
+							if (!isEditAvailable()) {
+								getEditLinkHidden().setVisible(false);
+								return new InvisibleLink(id);
+							} else {
+								Component editLink = AbstractGenericItemListPanel.this.getEditLink(id, itemModel);
+								boolean editVisible = editLink.isVisible() &&
+									AbstractGenericItemListPanel.this.hasWritePermissionOn(itemModel);
+								editLink.setVisible(editVisible);
+								getEditLinkHidden().setVisible(!editVisible);
+								
+								return editLink;
+							}
 						}
-					}
 
-					@Override
-					protected IModel<String> getActionIconPath() {
-						return AbstractGenericItemListPanel.this.getActionIconPath();
-					}
-
-					@Override
-					protected IModel<String> getActionText() {
-						return AbstractGenericItemListPanel.this.getActionText();
-					}
-					
-					@Override
-					protected Component getDeleteLink(String id, IModel<? extends T> itemModel) {
-						if (!isDeleteAvailable()) {
-							getDeleteLinkHidden().setVisible(false);
-							return new InvisibleLink(id);
-						} else {
-							Component deleteLink = AbstractGenericItemListPanel.this.getDeleteLink(id, itemModel);
-							boolean deleteVisible = deleteLink.isVisible() &&
-								AbstractGenericItemListPanel.this.hasWritePermissionOn(itemModel);
-							deleteLink.setVisible(deleteVisible);
-							getDeleteLinkHidden().setVisible(!deleteVisible);
-							
-							return deleteLink;
+						@Override
+						protected IModel<String> getActionIconPath(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getActionIconPath(itemModel);
 						}
-					}
 
-					@Override
-					protected Component getConfirmationDeleteLink(String id, IModel<? extends T> itemModel) {
-						return AbstractGenericItemListPanel.this.getConfirmationDeleteLink(id, itemModel);
-					}
+						@Override
+						protected IModel<String> getActionText(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getActionText(itemModel);
+						}
+						
+						@Override
+						protected Component getDeleteLink(String id, IModel<? extends T> itemModel) {
+							if (!isDeleteAvailable()) {
+								getDeleteLinkHidden().setVisible(false);
+								return new InvisibleLink(id);
+							} else {
+								Component deleteLink = AbstractGenericItemListPanel.this.getDeleteLink(id, itemModel);
+								boolean deleteVisible = deleteLink.isVisible() &&
+									AbstractGenericItemListPanel.this.hasWritePermissionOn(itemModel);
+								deleteLink.setVisible(deleteVisible);
+								getDeleteLinkHidden().setVisible(!deleteVisible);
+								
+								return deleteLink;
+							}
+						}
 
-					@Override
-					protected Component getCancelDeleteLink(String id, IModel<? extends T> itemModel) {
-						return AbstractGenericItemListPanel.this.getCancelDeleteLink(id, itemModel);
-					}
-					
-				});
+						@Override
+						protected Component getConfirmationDeleteLink(String id, IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getConfirmationDeleteLink(id, itemModel);
+						}
+
+						@Override
+						protected Component getCancelDeleteLink(String id, IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getCancelDeleteLink(id, itemModel);
+						}
+						
+					};
+				} else {
+					actionButtons = new EmptyPanel("actionButtons");
+				}
+				
+				item.add(actionButtons);
 			}
 		};
 		add(dataView);
@@ -222,11 +230,11 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 		return new InvisibleLink(id);
 	}
 	
-	protected IModel<String> getActionText() {
+	protected IModel<String> getActionText(final IModel<? extends T> itemModel) {
 		return Model.of("");
 	}
 
-	protected IModel<String> getActionIconPath() {
+	protected IModel<String> getActionIconPath(final IModel<? extends T> itemModel) {
 		return Model.of("static/common/images/icons/magnifier.png");
 	}
 	
@@ -235,6 +243,10 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 	}
 	
 	protected abstract void doDeleteItem(final IModel<? extends T> itemModel) throws ServiceException, SecurityServiceException;
+	
+	protected boolean isAtLeastOneActionAvailable() {
+		return isActionAvailable() || isDeleteAvailable() || isEditAvailable();
+	}
 	
 	protected abstract boolean isActionAvailable();
 	

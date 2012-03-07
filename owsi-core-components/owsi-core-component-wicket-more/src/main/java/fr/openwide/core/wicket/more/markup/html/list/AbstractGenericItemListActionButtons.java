@@ -34,9 +34,9 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		add(editLinkHidden, deleteLinkHidden, actionLinkHidden);
 		
 		MarkupContainer actionLink = getActionLink("actionLink", itemModel);
-		ContextImage actionIcon = new ContextImage("actionImage", getActionIconPath());
-		actionIcon.add(new AttributeModifier("alt", getActionText()));
-		actionIcon.add(new AttributeModifier("data-tooltip", getActionText()));
+		ContextImage actionIcon = new ContextImage("actionImage", getActionIconPath(itemModel));
+		actionIcon.add(new AttributeModifier("alt", getActionText(itemModel)));
+		actionIcon.add(new AttributeModifier("data-tooltip", getActionText(itemModel)));
 		actionLink.add(actionIcon);
 		add(actionLink);
 		
@@ -57,19 +57,19 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		add(deleteLinkConfirmation);
 	}
 	
-	protected abstract IModel<String> getActionIconPath();
+	protected abstract IModel<String> getActionIconPath(final IModel<? extends T> itemModel);
 	
-	protected abstract IModel<String> getActionText();
+	protected abstract IModel<String> getActionText(final IModel<? extends T> itemModel);
 	
 	protected abstract MarkupContainer getActionLink(final String id, final IModel<? extends T> itemModel);
 	
-	protected abstract Component getEditLink(String id, IModel<? extends T> itemModel);
+	protected abstract Component getEditLink(String id, final IModel<? extends T> itemModel);
 	
-	protected abstract Component getDeleteLink(String id, IModel<? extends T> itemModel);
+	protected abstract Component getDeleteLink(String id, final IModel<? extends T> itemModel);
 	
-	protected abstract Component getConfirmationDeleteLink(String id, IModel<? extends T> itemModel);
+	protected abstract Component getConfirmationDeleteLink(String id, final IModel<? extends T> itemModel);
 	
-	protected abstract Component getCancelDeleteLink(String id, IModel<? extends T> itemModel);
+	protected abstract Component getCancelDeleteLink(String id, final IModel<? extends T> itemModel);
 
 	public WebMarkupContainer getEditLinkHidden() {
 		return editLinkHidden;
