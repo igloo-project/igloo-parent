@@ -54,7 +54,7 @@ public abstract class GenericPortfolioPanel<E extends GenericEntity<Integer, ?>>
 
 
 	@Override
-	protected IModel<String> getActionText() {
+	protected IModel<String> getActionText(final IModel<? extends E> itemModel) {
 		return new ResourceModel("common.portfolio.action.viewDetails");
 	}
 	
