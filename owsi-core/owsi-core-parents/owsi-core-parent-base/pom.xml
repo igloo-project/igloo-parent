@@ -64,7 +64,7 @@
 		<owsi-core.poi.version>3.7</owsi-core.poi.version>
 		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
-		<owsi-core.jackson.version>1.9.4</owsi-core.jackson.version>
+		<owsi-core.jackson.version>1.9.5</owsi-core.jackson.version>
 		<owsi-core.truezip.version>7.4.3</owsi-core.truezip.version>
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
