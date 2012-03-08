@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * <p>Utilitaires utilisés pour cloner les objets Java.</p>
@@ -52,9 +52,8 @@ public final class CloneUtils {
 	 * @param array tableau
 	 * @return clône du tableau
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends Object> T[] clone(T[] array) {
-		return (T[]) ArrayUtils.clone(array);
+		return ArrayUtils.clone(array);
 	}
 	
 	/**

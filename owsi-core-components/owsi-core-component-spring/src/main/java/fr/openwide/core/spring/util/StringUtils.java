@@ -69,80 +69,77 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * @see org.apache.commons.lang.StringUtils#replaceEach(String, String[],String[])
+	 * @see org.apache.commons.lang3.StringUtils#replaceEach(String, String[],String[])
 	 */
 	public static String replaceEach(String text, String[] searchList, String[] replacementList) {
-		return org.apache.commons.lang.StringUtils.replaceEach(text, searchList, replacementList);
+		return org.apache.commons.lang3.StringUtils.replaceEach(text, searchList, replacementList);
 	}
 
 	/**
-	 * @see org.apache.commons.lang.StringUtils#join(Object[], String)
+	 * @see org.apache.commons.lang3.StringUtils#join(Object[], String)
 	 */
 	public static String join(String[] array, String separator) {
-		return org.apache.commons.lang.StringUtils.join(array, separator);
+		return org.apache.commons.lang3.StringUtils.join(array, separator);
 	}
 
 	/**
-	 * @see org.apache.commons.lang.StringUtils#join(java.util.Collection,String)
+	 * @see org.apache.commons.lang3.StringUtils#join(java.util.Collection,String)
 	 */
 	public static String join(Collection<String> collection, String separator) {
-			return org.apache.commons.lang.StringUtils.join(collection, separator);
+			return org.apache.commons.lang3.StringUtils.join(collection, separator);
 	}
 	
-	/**
-	 * @see org.apache.commons.lang.StringUtils#split(String, String)
-	 */
 	public static List<String> splitAsList(String str, String separatorChar) {
 		return new ArrayList<String>(Arrays.asList(delimitedListToStringArray(str, separatorChar)));
 	}
 	
 	/**
-	 * @see org.apache.commons.lang.StringUtils#capitalize(String)
+	 * @see org.apache.commons.lang3.StringUtils#capitalize(String)
 	 */
 	public static String capitalize(String str) {
-		return org.apache.commons.lang.StringUtils.capitalize(str);
+		return org.apache.commons.lang3.StringUtils.capitalize(str);
 	}
 	
 	/**
-	 * @see org.apache.commons.lang.StringUtils#lowerCase(String)
+	 * @see org.apache.commons.lang3.StringUtils#lowerCase(String)
 	 */
 	public static String lowerCase(String str) {
-		return org.apache.commons.lang.StringUtils.lowerCase(str);
+		return org.apache.commons.lang3.StringUtils.lowerCase(str);
 	}
 	
 	/**
-	 * @see org.apache.commons.lang.StringUtils#upperCase(String)
+	 * @see org.apache.commons.lang3.StringUtils#upperCase(String)
 	 */
 	public static String upperCase(String str) {
-		return org.apache.commons.lang.StringUtils.upperCase(str);
+		return org.apache.commons.lang3.StringUtils.upperCase(str);
 	}
 
 	/**
-	 * @see org.apache.commons.lang.StringUtils#contains(String, String)
+	 * @see org.apache.commons.lang3.StringUtils#contains(String, String)
 	 */
 	public static boolean contains(String str, String searchStr) {
-		return org.apache.commons.lang.StringUtils.contains(str, searchStr);
+		return org.apache.commons.lang3.StringUtils.contains(str, searchStr);
 	}
 	
 	/**
-	 * @see org.apache.commons.lang.StringUtils#substring(String, int, int)
+	 * @see org.apache.commons.lang3.StringUtils#substring(String, int, int)
 	 */
 	public static String substring(String str, int start, int end) {
-		return org.apache.commons.lang.StringUtils.substring(str, start, end);
+		return org.apache.commons.lang3.StringUtils.substring(str, start, end);
 	}
 	
 	/**
-	 * @see org.apache.commons.lang.StringUtils#isNumeric(String)
+	 * @see org.apache.commons.lang3.StringUtils#isNumeric(String)
 	 */
 	public static boolean isNumeric(String str) {
-		return org.apache.commons.lang.StringUtils.isNumeric(str);
+		return org.apache.commons.lang3.StringUtils.isNumeric(str);
 	}
 	
 	/**
-	 * @see org.apache.commons.lang.StringUtils#rightPad(String, int, char)
+	 * @see org.apache.commons.lang3.StringUtils#rightPad(String, int, char)
 	 */
 	public static String rightPad(String str, int size, char padChar) {
-		return org.apache.commons.lang.StringUtils.rightPad(str, size, padChar);
+		return org.apache.commons.lang3.StringUtils.rightPad(str, size, padChar);
 	}
 	
 	/**
