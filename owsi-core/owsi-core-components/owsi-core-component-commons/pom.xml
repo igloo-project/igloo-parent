@@ -33,6 +33,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${owsi-core.commons-lang3.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${owsi-core.commons-io.version}</version>
