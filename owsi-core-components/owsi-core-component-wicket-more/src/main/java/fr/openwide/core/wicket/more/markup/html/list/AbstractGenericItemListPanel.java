@@ -157,6 +157,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 					};
 				} else {
 					actionButtons = new EmptyPanel("actionButtons");
+					actionButtons.setVisible(false);
 				}
 				
 				item.add(actionButtons);
