@@ -143,6 +143,10 @@
 					<version>${owsi-core.maven-processor-plugin.version}</version>
 					<configuration>
 						<outputDirectory>${generated-sources.directory}</outputDirectory>
+						<options>
+							<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
+							<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
+						</options>
 					</configuration>
 					<executions>
 						<execution>
