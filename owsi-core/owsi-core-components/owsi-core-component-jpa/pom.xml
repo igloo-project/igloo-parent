@@ -359,6 +359,12 @@
 							<goal>process</goal>
 						</goals>
 						<phase>generate-sources</phase>
+						<configuration>
+							<options>
+								<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
+								<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
+							</options>
+						</configuration>
 					</execution>
 					<execution>
 						<id>process-test</id>
@@ -374,6 +380,10 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<outputDirectory>target/generated-test-sources/apt</outputDirectory>
+							<options>
+								<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
+								<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
+							</options>
 						</configuration>
 					</execution>
 				</executions>
