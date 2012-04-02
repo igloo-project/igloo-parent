@@ -28,14 +28,14 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @MappedSuperclass
 @Bindable
-public abstract class GenericListItem<E extends GenericListItem<?>> extends GenericEntity<Integer, E>
+public abstract class GenericListItem<E extends GenericListItem<?>> extends GenericEntity<Long, E>
 		implements IGenericListItemBindingInterface {
 	
 	private static final long serialVersionUID = -6270832991786371463L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 	
 	private String label;
 	
@@ -67,12 +67,12 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	}
 	
 	@Override
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	
 	@Override
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

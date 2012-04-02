@@ -25,7 +25,7 @@ public class ShowcaseSession extends AbstractCoreSession<User> {
 	}
 	
 	public IModel<User> getUserModel() {
-		return new GenericEntityModel<Integer, User>(getUser());
+		return new GenericEntityModel<Long, User>(getUser());
 	}
 	
 	public boolean hasRoleAdmin() {

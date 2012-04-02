@@ -9,7 +9,7 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 @Bindable
 public interface IPersonGroup {
 	
-	Integer getId();
+	Long getId();
 	
 	String getName();
 

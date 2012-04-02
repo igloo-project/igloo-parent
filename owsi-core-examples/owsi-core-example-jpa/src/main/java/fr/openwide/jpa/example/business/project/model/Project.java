@@ -15,13 +15,13 @@ import fr.openwide.jpa.example.business.company.model.Company;
 import fr.openwide.jpa.example.business.person.model.Person;
 
 @Entity
-public class Project extends GenericEntity<Integer, Project> {
+public class Project extends GenericEntity<Long, Project> {
 	
 	private static final long serialVersionUID = -5735420033376178883L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	private String name;
 
@@ -38,11 +38,11 @@ public class Project extends GenericEntity<Integer, Project> {
 		this.name = name;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

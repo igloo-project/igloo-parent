@@ -23,13 +23,13 @@ public class UserDescriptionPage extends MainTemplate {
 		
 		User user = null;
 		try {
-			user = userService.getById(parameters.get(LinkUtils.ITEM_ID_PARAMETER).toInteger());
+			user = userService.getById(parameters.get(LinkUtils.ITEM_ID_PARAMETER).toLong());
 		} catch (Exception e) {
 			getSession().error(getString("common.error.noItem"));
 			redirect(PortfolioMainPage.class);
 			return;
 		}
-		IModel<User> userModel = new GenericEntityModel<Integer, User>(user);
+		IModel<User> userModel = new GenericEntityModel<Long, User>(user);
 		setDefaultModel(userModel);
 		
 		add(new UserIdentityCardPanel("descriptionPanel", userModel));

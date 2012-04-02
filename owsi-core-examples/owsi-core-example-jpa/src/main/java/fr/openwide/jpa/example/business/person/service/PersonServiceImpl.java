@@ -11,7 +11,7 @@ import fr.openwide.jpa.example.business.person.model.Person;
 import fr.openwide.jpa.example.business.project.model.Project;
 
 @Service("personService")
-public class PersonServiceImpl extends GenericEntityServiceImpl<Integer, Person> implements PersonService {
+public class PersonServiceImpl extends GenericEntityServiceImpl<Long, Person> implements PersonService {
 
 	@Autowired
 	public PersonServiceImpl(PersonDao personDao) {

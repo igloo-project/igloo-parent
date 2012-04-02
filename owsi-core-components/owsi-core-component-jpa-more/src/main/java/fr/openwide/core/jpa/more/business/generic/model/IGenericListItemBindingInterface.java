@@ -5,7 +5,7 @@ import org.bindgen.Bindable;
 @Bindable
 public interface IGenericListItemBindingInterface {
 	
-	public Integer getId();
+	public Long getId();
 	
 	public String getLabel();
 	

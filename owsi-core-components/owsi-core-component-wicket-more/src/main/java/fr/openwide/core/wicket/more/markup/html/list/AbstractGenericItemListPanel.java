@@ -28,7 +28,7 @@ import fr.openwide.core.wicket.more.markup.repeater.data.GenericEntityListModelD
 import fr.openwide.core.wicket.more.markup.repeater.data.OddEvenDataView;
 
 
-public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integer, ?>> extends Panel {
+public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long, ?>> extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -41,7 +41,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 	}
 	
 	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel) {
-		this(id, new GenericEntityListModelDataProvider<Integer, T>(listModel));
+		this(id, new GenericEntityListModelDataProvider<Long, T>(listModel));
 	}
 	
 	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider) {
@@ -55,7 +55,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Integ
 	}
 	
 	public void setModel(IModel<? extends List<T>> listModel) {
-		this.dataProvider = new GenericEntityListModelDataProvider<Integer, T>(listModel);
+		this.dataProvider = new GenericEntityListModelDataProvider<Long, T>(listModel);
 	}
 	
 	@Override

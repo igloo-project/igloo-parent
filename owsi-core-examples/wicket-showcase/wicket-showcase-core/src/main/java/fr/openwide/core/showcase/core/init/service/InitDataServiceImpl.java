@@ -22,7 +22,7 @@ public class InitDataServiceImpl extends AbstractImportDataServiceImpl {
 	}
 	
 	@Override
-	protected void importMainBusinessItems(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping,
+	protected void importMainBusinessItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping,
 			Workbook workbook) {
 		doImportItem(idsMapping, workbook, Authority.class);
 		doImportItem(idsMapping, workbook, User.class);

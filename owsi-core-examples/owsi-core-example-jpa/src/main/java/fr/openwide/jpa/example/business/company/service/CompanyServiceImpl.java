@@ -8,7 +8,7 @@ import fr.openwide.jpa.example.business.company.dao.CompanyDao;
 import fr.openwide.jpa.example.business.company.model.Company;
 
 @Service("companyService")
-public class CompanyServiceImpl extends GenericEntityServiceImpl<Integer, Company> implements CompanyService {
+public class CompanyServiceImpl extends GenericEntityServiceImpl<Long, Company> implements CompanyService {
 	
 	@Autowired
 	public CompanyServiceImpl(CompanyDao companyDao) {

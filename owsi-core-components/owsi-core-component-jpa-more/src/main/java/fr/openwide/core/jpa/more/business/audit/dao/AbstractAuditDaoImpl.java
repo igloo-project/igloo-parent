@@ -37,7 +37,7 @@ import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit_;
  * 
  * @author Open Wide
  */
-public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends GenericEntityDaoImpl<Integer, T> 
+public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends GenericEntityDaoImpl<Long, T> 
 	implements IAuditDao<T> {
 
 	/**
@@ -47,7 +47,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	}
 
 	@Override
-	public GenericEntity<?, ?> getGenericEntity(Class<? extends GenericEntity<?, ?>> clazz, Integer id) {
+	public GenericEntity<?, ?> getGenericEntity(Class<? extends GenericEntity<?, ?>> clazz, Long id) {
 		return (GenericEntity<?, ?>) getEntity(clazz, id);
 	}
 

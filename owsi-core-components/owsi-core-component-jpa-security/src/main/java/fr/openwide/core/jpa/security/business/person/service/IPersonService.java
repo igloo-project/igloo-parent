@@ -9,7 +9,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 
-public interface IPersonService<P extends AbstractPerson<P>> extends IGenericEntityService<Integer, P> {
+public interface IPersonService<P extends AbstractPerson<P>> extends IGenericEntityService<Long, P> {
 	
 	P getByUserName(String userName);
 	

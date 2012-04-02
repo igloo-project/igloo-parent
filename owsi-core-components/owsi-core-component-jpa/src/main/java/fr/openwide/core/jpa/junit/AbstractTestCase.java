@@ -53,7 +53,7 @@ public abstract class AbstractTestCase {
 		checkEmptyDatabase();
 	}
 	
-	protected <E extends GenericEntity<Integer, E>> void testEntityStringFields(E entity, IGenericEntityService<Integer, E> service)
+	protected <E extends GenericEntity<Long, E>> void testEntityStringFields(E entity, IGenericEntityService<Long, E> service)
 			throws ServiceException, SecurityServiceException {
 		BeanWrapper source = PropertyAccessorFactory.forBeanPropertyAccess(entity);
 		PropertyDescriptor[] fields = source.getPropertyDescriptors();

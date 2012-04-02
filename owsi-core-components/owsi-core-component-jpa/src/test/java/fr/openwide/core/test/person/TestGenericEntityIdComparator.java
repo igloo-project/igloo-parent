@@ -17,13 +17,13 @@ public class TestGenericEntityIdComparator extends
 	@Test
 	public void testCompare() {
 		Person person1 = new Person("person1", "person1");
-		person1.setId(1);
+		person1.setId(1L);
 		
 		Person person2 = new Person("person2", "person2");
-		person2.setId(2);
+		person2.setId(2L);
 		
 		Person person3 = new Person("person3", "person3");
-		person3.setId(3);
+		person3.setId(3L);
 		
 		Person person4 = new Person("person4", "person4");
 		person4.setId(null);

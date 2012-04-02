@@ -23,7 +23,7 @@ import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
 @Repository("personDao")
-public class PersonDaoImpl extends GenericEntityDaoImpl<Integer, Person> implements PersonDao {
+public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements PersonDao {
 
 	public PersonDaoImpl() {
 		super();

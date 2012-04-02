@@ -24,13 +24,13 @@ import javax.persistence.Id;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
-public class Person extends GenericEntity<Integer, Person> {
+public class Person extends GenericEntity<Long, Person> {
 
 	private static final long serialVersionUID = -2471930493134125282L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	private String firstName;
 
@@ -44,11 +44,11 @@ public class Person extends GenericEntity<Integer, Person> {
 		this.lastName = lastName;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

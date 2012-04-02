@@ -9,7 +9,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup;
 
 public interface IPersonGroupService<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
-		extends IGenericEntityService<Integer, G> {
+		extends IGenericEntityService<Long, G> {
 
 	G getByName(String name);
 

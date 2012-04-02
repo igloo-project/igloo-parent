@@ -57,6 +57,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final String SHA1_PASSWORD_FIELD_NAME = "sha1Password";
 	
+	private static final String SHA256_PASSWORD_FIELD_NAME = "sha256Password";
+	
 	private static final Map<Class<?>, List<Class<?>>> ADDITIONAL_CLASS_MAPPINGS = new HashMap<Class<?>, List<Class<?>>>();
 	
 	private static final Map<Class<?>, String> SHEET_NAME_MAPPING = new HashMap<Class<?>, String>();
@@ -69,7 +71,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
-		Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping = new HashMap<String, Map<Integer, GenericEntity<Integer, ?>>>();
+		Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<Long, GenericEntity<Long, ?>>>();
 		
 		Workbook genericListItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
 		importGenericListItems(idsMapping, genericListItemWorkbook);
@@ -87,7 +89,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	protected abstract List<String> getGenericListItemPackagesToScan();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void importGenericListItems(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping, Workbook workbook) {
+	protected void importGenericListItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 		for (String packageToScan : getGenericListItemPackagesToScan()) {
 			Set<Class<? extends GenericListItem>> classes = ReflectionUtils.findAssignableClasses(packageToScan, GenericListItem.class);
 		
@@ -97,14 +99,14 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		}
 	}
 	
-	protected abstract void importMainBusinessItems(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping, Workbook workbook);
+	protected abstract void importMainBusinessItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook);
 	
-	protected void importFiles(File directory, Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping) 
+	protected void importFiles(File directory, Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping) 
 			throws ServiceException, SecurityServiceException {
 		// nothing, override if necessary
 	}
 	
-	protected <E extends GenericEntity<Integer, ?>> void doImportItem(Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping,
+	protected <E extends GenericEntity<Long, ?>> void doImportItem(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping,
 				Workbook workbook, Class<E> clazz) {
 		Sheet sheet = workbook.getSheet(getSheetName(clazz));
 		if (sheet != null) {
@@ -113,19 +115,19 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			GenericConversionService conversionService = getConversionService(converter);
 			converter.setConversionService(conversionService);
 			
-			Map<Integer, GenericEntity<Integer, ?>> idsMappingForClass = new HashMap<Integer, GenericEntity<Integer, ?>>();
+			Map<Long, GenericEntity<Long, ?>> idsMappingForClass = new HashMap<Long, GenericEntity<Long, ?>>();
 			idsMapping.put(clazz.getName(), idsMappingForClass);
 			
 			for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
 				if (!idsMapping.containsKey(referencedClass.getName())) {
-					idsMapping.put(referencedClass.getName(), new HashMap<Integer, GenericEntity<Integer, ?>>());
+					idsMapping.put(referencedClass.getName(), new HashMap<Long, GenericEntity<Long, ?>>());
 				}
 			}
 			
 			for (Map<String, Object> line : WorkbookUtils.getSheetContent(sheet)) {
 				E item = BeanUtils.instantiateClass(clazz);
 				
-				Integer importId = Integer.parseInt(line.get(ID_FIELD_NAME).toString());
+				Long importId = Long.parseLong(line.get(ID_FIELD_NAME).toString());
 				line.remove(ID_FIELD_NAME);
 				
 				doFilterLine(clazz, line);
@@ -149,7 +151,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		}
 	}
 	
-	protected <E extends GenericEntity<Integer, ?>> void doFilterLine(Class<E> clazz, Map<String, Object> line) {
+	protected <E extends GenericEntity<Long, ?>> void doFilterLine(Class<E> clazz, Map<String, Object> line) {
 		Date creationDate = new Date();
 		if (!line.containsKey(CREATION_DATE_FIELD_NAME)) {
 			line.put(CREATION_DATE_FIELD_NAME, creationDate);
@@ -161,6 +163,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		if (line.containsKey(PASSWORD_FIELD_NAME)) {
 			line.put(MD5_PASSWORD_FIELD_NAME, DigestUtils.md5Hex(line.get(PASSWORD_FIELD_NAME).toString()));
 			line.put(SHA1_PASSWORD_FIELD_NAME, DigestUtils.shaHex(line.get(PASSWORD_FIELD_NAME).toString()));
+			line.put(SHA256_PASSWORD_FIELD_NAME, DigestUtils.sha256Hex(line.get(PASSWORD_FIELD_NAME).toString()));
 		}
 	}
 	

@@ -8,12 +8,12 @@ import javax.persistence.Id;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
-public class TestEntity extends GenericEntity<Integer, TestEntity> {
+public class TestEntity extends GenericEntity<Long, TestEntity> {
 	private static final long serialVersionUID = 3827488123984866455L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 	
 	@Basic(optional = false)
 	private String label;
@@ -25,12 +25,12 @@ public class TestEntity extends GenericEntity<Integer, TestEntity> {
 	}
 
 	@Override
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

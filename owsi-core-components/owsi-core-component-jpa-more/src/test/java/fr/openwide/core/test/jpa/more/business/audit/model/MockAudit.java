@@ -20,15 +20,15 @@ public class MockAudit extends AbstractAudit {
 	@ManyToOne
 	private MockAuditFeature feature;
 
-	public MockAudit(String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object,
-			GenericEntity<Integer, ?> secondaryObject) {
+	public MockAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
+			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			GenericEntity<Long, ?> secondaryObject) {
 		this(new Date(), service, method, context, subject, feature, action, message, object, secondaryObject);
 	}
 
-	public MockAudit(Date date, String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object,
-			GenericEntity<Integer, ?> secondaryObject) {
+	public MockAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
+			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			GenericEntity<Long, ?> secondaryObject) {
 		super(date, service, method, context, subject, feature, action, message, object, secondaryObject);
 	}
 

@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 
-public abstract class AbstractGenericEntityEditPopupPanel<E extends GenericEntity<Integer, ?>> extends GenericPanel<E> {
+public abstract class AbstractGenericEntityEditPopupPanel<E extends GenericEntity<Long, ?>> extends GenericPanel<E> {
 	private static final long serialVersionUID = 7714064062698949195L;
 	
 	public AbstractGenericEntityEditPopupPanel(String id, IModel<? extends E> model) {

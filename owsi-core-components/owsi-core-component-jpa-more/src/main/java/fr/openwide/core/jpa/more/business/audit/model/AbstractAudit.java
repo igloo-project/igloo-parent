@@ -31,7 +31,7 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.bridge.builtin.IntegerNumericFieldBridge;
+import org.hibernate.search.bridge.builtin.LongNumericFieldBridge;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -46,7 +46,7 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
  * </p>
  */
 @MappedSuperclass
-public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit> {
+public abstract class AbstractAudit extends GenericEntity<Long, AbstractAudit> {
 	private static final long serialVersionUID = 8453330231866625186L;
 
 	public static final String DATE_SORT_FIELD_NAME = "date_sort";
@@ -56,7 +56,7 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	 */
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	/**
 	 * Service source de l'Audit.
@@ -79,9 +79,9 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant de l'objet contexte.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
+	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private Integer contextId;
+	private Long contextId;
 
 	/**
 	 * Nom de l'objet contexte.
@@ -97,9 +97,9 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant du sujet ayant effectué l'action.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
+	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private Integer subjectId;
+	private Long subjectId;
 
 	/**
 	 * Nom et prénom du sujet ayant effectué l'action.
@@ -115,9 +115,9 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant de l'objet.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
+	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private Integer objectId;
+	private Long objectId;
 
 	/**
 	 * Nom de l'objet.
@@ -133,9 +133,9 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 	/**
 	 * Identifiant de l'objet secondaire.
 	 */
-	@Field(bridge = @FieldBridge(impl = IntegerNumericFieldBridge.class), analyze = Analyze.NO,
+	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
 			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private Integer secondaryObjectId;
+	private Long secondaryObjectId;
 
 	/**
 	 * Nom de l'objet secondaire.
@@ -163,50 +163,50 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		super();
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Integer, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
 			String message) {
 		this(new Date(), service, method, null, subject, feature, action, message, null, null);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Integer, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
-			String message, GenericEntity<Integer, ?> object) {
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
+			String message, GenericEntity<Long, ?> object) {
 		this(new Date(), service, method, null, subject, feature, action, message, object, null);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Integer, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
-			String message, GenericEntity<Integer, ?> object, GenericEntity<Integer, ?> secondaryObject) {
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
+			String message, GenericEntity<Long, ?> object, GenericEntity<Long, ?> secondaryObject) {
 		this(new Date(), service, method, null, subject, feature, action, message, object, secondaryObject);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
 			AbstractAuditFeature feature, AbstractAuditAction action, String message) {
 		this(new Date(), service, method, context, subject, feature, action, message, null, null);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object) {
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
+			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object) {
 		this(new Date(), service, method, context, subject, feature, action, message, object, null);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object,
-			GenericEntity<Integer, ?> secondaryObject) {
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
+			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			GenericEntity<Long, ?> secondaryObject) {
 		this(new Date(), service, method, context, subject, feature, action, message, object, secondaryObject);
 	}
 
-	public AbstractAudit(Date date, String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
+	public AbstractAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
 			AbstractAuditFeature feature, AbstractAuditAction action, String message) {
 		this(date, service, method, context, subject, feature, action, message, null, null);
 	}
 
-	public AbstractAudit(Date date, String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object) {
+	public AbstractAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
+			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object) {
 		this(date, service, method, context, subject, feature, action, message, object, null);
 	}
 
-	public AbstractAudit(Date date, String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object,
-			GenericEntity<Integer, ?> secondaryObject) {
+	public AbstractAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
+			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			GenericEntity<Long, ?> secondaryObject) {
 		super();
 
 		setDate(date);
@@ -237,11 +237,11 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		}
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -269,11 +269,11 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		return contextClass;
 	}
 
-	public void setContextId(Integer contextId) {
+	public void setContextId(Long contextId) {
 		this.contextId = contextId;
 	}
 
-	public Integer getContextId() {
+	public Long getContextId() {
 		return contextId;
 	}
 
@@ -293,11 +293,11 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		this.subjectClass = subjectClass;
 	}
 
-	public Integer getSubjectId() {
+	public Long getSubjectId() {
 		return subjectId;
 	}
 
-	public void setSubjectId(Integer subjectId) {
+	public void setSubjectId(Long subjectId) {
 		this.subjectId = subjectId;
 	}
 
@@ -317,11 +317,11 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		this.objectClass = objectClass;
 	}
 
-	public Integer getObjectId() {
+	public Long getObjectId() {
 		return objectId;
 	}
 
-	public void setObjectId(Integer objectId) {
+	public void setObjectId(Long objectId) {
 		this.objectId = objectId;
 	}
 
@@ -341,11 +341,11 @@ public abstract class AbstractAudit extends GenericEntity<Integer, AbstractAudit
 		return secondaryObjectClass;
 	}
 
-	public void setSecondaryObjectId(Integer secondaryObjectId) {
+	public void setSecondaryObjectId(Long secondaryObjectId) {
 		this.secondaryObjectId = secondaryObjectId;
 	}
 
-	public Integer getSecondaryObjectId() {
+	public Long getSecondaryObjectId() {
 		return secondaryObjectId;
 	}
 

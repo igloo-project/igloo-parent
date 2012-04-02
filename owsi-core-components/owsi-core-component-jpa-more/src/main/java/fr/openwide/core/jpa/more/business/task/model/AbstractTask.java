@@ -24,7 +24,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	private QueuedTaskHolder queuedTaskHolder;
 
 	@JsonIgnore
-	private Integer queuedTaskHolderId;
+	private Long queuedTaskHolderId;
 
 	private Date triggeringDate;
 
@@ -81,11 +81,11 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	public abstract void doTaskInTransaction();
 
-	public Integer getQueuedTaskHolderId() {
+	public Long getQueuedTaskHolderId() {
 		return queuedTaskHolderId;
 	}
 
-	public void setQueuedTaskHolderId(Integer queuedTaskHolderId) {
+	public void setQueuedTaskHolderId(Long queuedTaskHolderId) {
 		this.queuedTaskHolderId = queuedTaskHolderId;
 	}
 

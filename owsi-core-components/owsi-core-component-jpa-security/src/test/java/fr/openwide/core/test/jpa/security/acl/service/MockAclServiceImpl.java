@@ -17,7 +17,7 @@ public class MockAclServiceImpl extends AbstractCoreAclServiceImpl {
 
 	@Override
 	protected List<AccessControlEntry> getAccessControlEntriesForEntity(
-			CoreAcl acl, GenericEntity<Integer, ?> objectIdentityEntity)
+			CoreAcl acl, GenericEntity<Long, ?> objectIdentityEntity)
 			throws NotFoundException {
 		return new ArrayList<AccessControlEntry>();
 	}

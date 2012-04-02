@@ -12,7 +12,7 @@ import fr.openwide.core.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 
 @Service("queuedTaskHolderService")
-public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Integer, QueuedTaskHolder>
+public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, QueuedTaskHolder>
 		implements IQueuedTaskHolderService {
 
 	private IQueuedTaskHolderDao queuedTaskDao;

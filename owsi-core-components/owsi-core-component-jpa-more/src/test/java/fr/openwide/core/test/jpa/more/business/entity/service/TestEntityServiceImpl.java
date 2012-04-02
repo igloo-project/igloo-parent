@@ -8,7 +8,7 @@ import fr.openwide.core.test.jpa.more.business.entity.dao.ITestEntityDao;
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 
 @Service("testEntityService")
-public class TestEntityServiceImpl extends GenericEntityServiceImpl<Integer, TestEntity> implements ITestEntityService {
+public class TestEntityServiceImpl extends GenericEntityServiceImpl<Long, TestEntity> implements ITestEntityService {
 
 	@Autowired
 	public TestEntityServiceImpl(ITestEntityDao testEntityDao) {

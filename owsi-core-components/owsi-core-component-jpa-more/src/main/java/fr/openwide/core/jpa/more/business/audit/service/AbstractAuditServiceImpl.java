@@ -28,7 +28,7 @@ import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
 /**
  * <p>Implémentation du service {@link IAuditService}.</p>
  */
-public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends GenericEntityServiceImpl<Integer, T> 
+public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends GenericEntityServiceImpl<Long, T> 
 		implements IAuditService<T> {
 
 	/**

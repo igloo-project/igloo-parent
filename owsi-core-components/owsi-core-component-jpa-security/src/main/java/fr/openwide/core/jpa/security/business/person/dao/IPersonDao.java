@@ -4,7 +4,7 @@ import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 
 public interface IPersonDao<P extends AbstractPerson<P>>
-		extends IGenericEntityDao<Integer, P> {
+		extends IGenericEntityDao<Long, P> {
 	
 	Long countActive();
 	

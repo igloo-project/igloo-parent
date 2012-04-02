@@ -36,7 +36,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;
 	
-	private Integer userId;
+	private Long userId;
 	
 	private Roles roles = new Roles();
 
