@@ -184,54 +184,6 @@
 					</dependencies>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>${owsi-core.aspectj-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>compile</id>
-							<configuration>
-								<source>${jdk.version}</source>
-								<target>${jdk.version}</target>
-								<verbose>false</verbose>
-								<aspectLibraries>
-									<aspectLibrary>
-										<groupId>org.springframework</groupId>
-										<artifactId>spring-aspects</artifactId>
-									</aspectLibrary>
-								</aspectLibraries>
-							</configuration>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>test-compile</id>
-							<configuration>
-								<source>${jdk.version}</source>
-								<target>${jdk.version}</target>
-								<verbose>false</verbose>
-								<aspectLibraries>
-									<aspectLibrary>
-										<groupId>org.springframework</groupId>
-										<artifactId>spring-aspects</artifactId>
-									</aspectLibrary>
-								</aspectLibraries>
-							</configuration>
-							<goals>
-								<goal>test-compile</goal>
-							</goals>
-						</execution>
-					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjweaver</artifactId>
-							<version>${owsi-core.aspectj.version}</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
 					<groupId>net.alchim31.maven</groupId>
 					<artifactId>yuicompressor-maven-plugin</artifactId>
 					<version>${owsi-core.maven-yui-compressor-plugin.version}</version>
