@@ -24,13 +24,13 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 	
 	private boolean cacheEnabled = true;
 	
-	private Map<String, Integer> userNamePersonIdMap = new ConcurrentHashMap<String, Integer>(USERNAME_PERSONID_MAP_INITIAL_CAPACITY);
+	private Map<String, Long> userNamePersonIdMap = new ConcurrentHashMap<String, Long>(USERNAME_PERSONID_MAP_INITIAL_CAPACITY);
 	
 	@Override
 	public List<Sid> getSids(Authentication authentication) {
 		List<Sid> sids = super.getSids(authentication);
 		
-		Integer personId = getPersonIdByUserName(authentication.getName());
+		Long personId = getPersonIdByUserName(authentication.getName());
 		if (personId != null) {
 			sids.addAll(getAdditionalSidsFromPerson(personService.getById(personId)));
 		}
@@ -50,8 +50,8 @@ public class CoreSidRetrievalServiceImpl extends SidRetrievalStrategyImpl implem
 		return sids;
 	}
 	
-	private Integer getPersonIdByUserName(String userName) {
-		Integer personId = null;
+	private Long getPersonIdByUserName(String userName) {
+		Long personId = null;
 		
 		if (userNamePersonIdMap.containsKey(userName) && cacheEnabled) {
 			personId = userNamePersonIdMap.get(userName);

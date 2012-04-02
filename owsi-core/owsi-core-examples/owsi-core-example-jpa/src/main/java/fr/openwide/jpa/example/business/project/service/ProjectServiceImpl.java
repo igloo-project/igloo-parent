@@ -8,7 +8,7 @@ import fr.openwide.jpa.example.business.project.dao.ProjectDao;
 import fr.openwide.jpa.example.business.project.model.Project;
 
 @Service("projectService")
-public class ProjectServiceImpl extends GenericEntityServiceImpl<Integer, Project> implements ProjectService {
+public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> implements ProjectService {
 
 	@Autowired
 	public ProjectServiceImpl(ProjectDao projectDao) {

@@ -10,7 +10,7 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 @Bindable
 public interface IPerson {
 	
-	Integer getId();
+	Long getId();
 	
 	String getUserName();
 	

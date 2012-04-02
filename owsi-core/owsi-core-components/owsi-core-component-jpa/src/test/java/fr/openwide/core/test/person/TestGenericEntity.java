@@ -45,9 +45,9 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 
 		Assert.assertFalse(person.isNew());
 		
-		Integer oldId = person.getId();
+		Long oldId = person.getId();
 		
-		person.setId(2);
+		person.setId(2L);
 		Assert.assertEquals(2, person.getId().intValue());
 
 		person.setId(oldId);

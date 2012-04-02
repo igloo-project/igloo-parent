@@ -9,7 +9,7 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.model.Authority_;
 
 @Service("authorityService")
-public class AuthorityServiceImpl extends GenericEntityServiceImpl<Integer, Authority>
+public class AuthorityServiceImpl extends GenericEntityServiceImpl<Long, Authority>
 		implements IAuthorityService {
 
 	@Autowired

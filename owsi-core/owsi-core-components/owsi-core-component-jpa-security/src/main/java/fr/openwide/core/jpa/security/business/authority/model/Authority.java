@@ -10,24 +10,24 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
 @Bindable
-public class Authority extends GenericEntity<Integer, Authority> {
+public class Authority extends GenericEntity<Long, Authority> {
 
 	private static final long serialVersionUID = -7704280784189665811L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	private String name;
 
 	public Authority() {
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

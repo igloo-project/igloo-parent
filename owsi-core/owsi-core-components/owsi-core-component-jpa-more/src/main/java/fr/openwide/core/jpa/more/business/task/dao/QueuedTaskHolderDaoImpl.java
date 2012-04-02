@@ -14,7 +14,7 @@ import fr.openwide.core.jpa.more.business.task.model.QQueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 
 @Repository("queuedTaskHolderDao")
-public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Integer, QueuedTaskHolder>
+public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTaskHolder>
 		implements IQueuedTaskHolderDao {
 
 	@Override

@@ -19,13 +19,13 @@ import fr.openwide.jpa.example.business.project.model.Project;
 
 @Entity
 @Cacheable(true)
-public class Company extends GenericEntity<Integer, Company> {
+public class Company extends GenericEntity<Long, Company> {
 
 	private static final long serialVersionUID = -2003394192412589142L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	private String name;
 
@@ -81,11 +81,11 @@ public class Company extends GenericEntity<Integer, Company> {
 		this.name = name;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

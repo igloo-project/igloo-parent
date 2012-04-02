@@ -5,7 +5,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson_;
 
 public abstract class AbstractPersonDaoImpl<P extends AbstractPerson<P>>
-		extends GenericEntityDaoImpl<Integer, P>
+		extends GenericEntityDaoImpl<Long, P>
 		implements IPersonDao<P> {
 	
 	public AbstractPersonDaoImpl() {

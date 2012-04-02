@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.WebPage;
@@ -31,6 +32,11 @@ public abstract class CoreWebPage extends WebPage {
 
 	public final void redirect(final Page page) {
 		throw new RestartResponseException(page);
+	}
+	
+	protected Component visible(Component component, boolean visible) {
+		component.setVisible(visible);
+		return component;
 	}
 
 }

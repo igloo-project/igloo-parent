@@ -17,13 +17,13 @@ import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
-public class QueuedTaskHolder extends GenericEntity<Integer, QueuedTaskHolder> {
+public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private static final long serialVersionUID = 3926959721176678607L;
 
 	@Id
 	@GeneratedValue
 	@DocumentId
-	private Integer id;
+	private Long id;
 
 	@Column(nullable = false)
 	private String name;
@@ -60,12 +60,12 @@ public class QueuedTaskHolder extends GenericEntity<Integer, QueuedTaskHolder> {
 	}
 
 	@Override
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

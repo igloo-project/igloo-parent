@@ -30,7 +30,7 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 @MappedSuperclass
 @Bindable
 public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
-		extends GenericEntity<Integer, G>
+		extends GenericEntity<Long, G>
 		implements IPersonGroup {
 
 	private static final long serialVersionUID = 2156717229285615454L;
@@ -38,7 +38,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@Id
 	@DocumentId
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	@Field(analyze=Analyze.NO, store=Store.NO)
 	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
@@ -70,11 +70,12 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	}
 
 	@Override
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	@Override
+	public void setId(Long id) {
 		this.id = id;
 	}
 

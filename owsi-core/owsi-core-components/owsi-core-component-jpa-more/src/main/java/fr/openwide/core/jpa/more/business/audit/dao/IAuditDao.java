@@ -25,7 +25,7 @@ import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
 /**
  * <p>DAO concernant les {@link AbstractAudit}.</p>
  */
-public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<Integer, T> {
+public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<Long, T> {
 
 	/**
 	 * Renvoie l'entité correspondant à la classe et l'identifiant demandés.
@@ -35,7 +35,7 @@ public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<In
 	 * @return entité
 	 */
 	GenericEntity<?, ?> getGenericEntity(Class<? extends GenericEntity<?, ?>> clazz,
-			Integer id);
+			Long id);
 
 	/**
 	 * Renvoie la liste des Audits émis par cet utilisateur.

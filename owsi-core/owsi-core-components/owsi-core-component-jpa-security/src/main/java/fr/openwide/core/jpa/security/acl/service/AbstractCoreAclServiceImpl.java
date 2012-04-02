@@ -94,12 +94,12 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	}
 	
 	@SuppressWarnings("unchecked")
-	private GenericEntity<Integer, ?> getGenericEntity(ObjectIdentity objectIdentity) throws NotFoundException {
+	private GenericEntity<Long, ?> getGenericEntity(ObjectIdentity objectIdentity) throws NotFoundException {
 		try {
 			Class<?> clazz = Class.forName(objectIdentity.getType());
 			
 			if (GenericEntity.class.isAssignableFrom(clazz) && objectIdentity.getIdentifier() instanceof Integer) {
-				return (GenericEntity<Integer, ?>) getEntity(clazz, objectIdentity.getIdentifier());
+				return (GenericEntity<Long, ?>) getEntity(clazz, objectIdentity.getIdentifier());
 			}
 		} catch (ClassNotFoundException e) {
 			throw new NotFoundException("objectIdentity " + objectIdentity + " is not a valid GenericEntity", e);
@@ -109,7 +109,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 	}
 	
 	private Acl getAcl(ObjectIdentity objectIdentity, List<Sid> requiredSids) throws NotFoundException {
-		GenericEntity<Integer, ?> objectIdentityEntity = getGenericEntity(objectIdentity);
+		GenericEntity<Long, ?> objectIdentityEntity = getGenericEntity(objectIdentity);
 		
 		CoreAcl acl = new CoreAcl(permissionHierarchy, objectIdentity, requiredSids);
 		
@@ -135,7 +135,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		throw new NotFoundException("objectIdentity " + objectIdentity + " does not support ACL");
 	}
 	
-	protected abstract List<AccessControlEntry> getAccessControlEntriesForEntity(CoreAcl acl, GenericEntity<Integer, ?> objectIdentityEntity)
+	protected abstract List<AccessControlEntry> getAccessControlEntriesForEntity(CoreAcl acl, GenericEntity<Long, ?> objectIdentityEntity)
 			throws NotFoundException;
 	
 	private void addRequiredAccessControlEntriesToAcl(CoreAcl acl, List<AccessControlEntry> aces, List<Sid> requiredSids) {

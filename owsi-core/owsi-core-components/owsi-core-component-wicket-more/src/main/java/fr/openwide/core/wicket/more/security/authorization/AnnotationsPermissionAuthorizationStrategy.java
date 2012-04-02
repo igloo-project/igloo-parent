@@ -32,7 +32,7 @@ public class AnnotationsPermissionAuthorizationStrategy implements
 			
 				if(modelObject != null && (modelObject instanceof GenericEntity<?, ?>)) {
 					@SuppressWarnings("unchecked")
-					GenericEntity<Integer, ?> securedObject = (GenericEntity<Integer, ?>) modelObject;
+					GenericEntity<Long, ?> securedObject = (GenericEntity<Long, ?>) modelObject;
 					
 					String[] permissionNames = renderPermissionAnnotation.value();
 					for (String permissionName : permissionNames) {

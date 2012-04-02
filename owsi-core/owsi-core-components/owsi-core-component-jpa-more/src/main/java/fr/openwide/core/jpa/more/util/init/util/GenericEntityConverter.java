@@ -31,10 +31,10 @@ public class GenericEntityConverter implements GenericConverter {
 	
 	private Map<Class<?>, Class<?>> classMapping;
 	
-	private Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping;
+	private Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping;
 	
 	public GenericEntityConverter(IImportDataDao importDataDao, Workbook workbook,
-			Map<Class<?>, Class<?>> classMapping, Map<String, Map<Integer, GenericEntity<Integer, ?>>> idsMapping) {
+			Map<Class<?>, Class<?>> classMapping, Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping) {
 		super();
 		
 		this.importDataDao = importDataDao;
@@ -71,10 +71,10 @@ public class GenericEntityConverter implements GenericConverter {
 	}
 	
 	private Object convertFromDatabase(Object source, TypeDescriptor targetType) {
-		Class<GenericEntity<Integer, ?>> clazz = getTargetClass(targetType);
+		Class<GenericEntity<Long, ?>> clazz = getTargetClass(targetType);
 		
-		Integer importId = Integer.valueOf((String) source);
-		Integer databaseId = getDatabaseId(clazz, importId);
+		Long importId = Long.parseLong((String) source);
+		Long databaseId = getDatabaseId(clazz, importId);
 		
 		if (databaseId != null) {
 			return importDataDao.getById(clazz, databaseId);
@@ -83,7 +83,7 @@ public class GenericEntityConverter implements GenericConverter {
 	}
 	
 	private Object convertFromWorkbook(Object source, TypeDescriptor targetType) {
-		Class<GenericEntity<Integer, ?>> clazz = getTargetClass(targetType);
+		Class<GenericEntity<Long, ?>> clazz = getTargetClass(targetType);
 		String importId = StringUtils.trimWhitespace((String) source);
 		
 		Sheet sheet = workbook.getSheet(clazz.getSimpleName());
@@ -91,16 +91,16 @@ public class GenericEntityConverter implements GenericConverter {
 			Map<String, Object> itemData = getItemData(sheet, importId);
 			if (itemData != null) {
 				if (!idsMapping.containsKey(clazz.getName())) {
-					idsMapping.put(clazz.getName(), new HashMap<Integer, GenericEntity<Integer, ?>>());
+					idsMapping.put(clazz.getName(), new HashMap<Long, GenericEntity<Long, ?>>());
 				}
 				
-				GenericEntity<Integer, ?> item = BeanUtils.instantiateClass(clazz);
+				GenericEntity<Long, ?> item = BeanUtils.instantiateClass(clazz);
 				
 				BeanWrapper wrapper = SpringBeanUtils.getBeanWrapper(item);
 				wrapper.setConversionService(conversionService);
 				wrapper.setPropertyValues(new MutablePropertyValues(itemData), true);
 				
-				idsMapping.get(clazz.getName()).put(Integer.parseInt(importId), item);
+				idsMapping.get(clazz.getName()).put(Long.parseLong(importId), item);
 				
 				return item;
 			}
@@ -110,17 +110,17 @@ public class GenericEntityConverter implements GenericConverter {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Class<GenericEntity<Integer, ?>> getTargetClass(TypeDescriptor targetType) {
-		Class<GenericEntity<Integer, ?>> clazz = (Class<GenericEntity<Integer, ?>>) targetType.getType();
+	private Class<GenericEntity<Long, ?>> getTargetClass(TypeDescriptor targetType) {
+		Class<GenericEntity<Long, ?>> clazz = (Class<GenericEntity<Long, ?>>) targetType.getType();
 		
 		if (classMapping.containsKey(clazz)) {
-			clazz = (Class<GenericEntity<Integer, ?>>) classMapping.get(clazz);
+			clazz = (Class<GenericEntity<Long, ?>>) classMapping.get(clazz);
 		}
 		
 		return clazz;
 	}
 	
-	private Integer getDatabaseId(Class<GenericEntity<Integer, ?>> clazz, Integer importId) {
+	private Long getDatabaseId(Class<GenericEntity<Long, ?>> clazz, Long importId) {
 		if (idsMapping.containsKey(clazz.getName()) && idsMapping.get(clazz.getName()).containsKey(importId)) {
 			return idsMapping.get(clazz.getName()).get(importId).getId();
 		} else {

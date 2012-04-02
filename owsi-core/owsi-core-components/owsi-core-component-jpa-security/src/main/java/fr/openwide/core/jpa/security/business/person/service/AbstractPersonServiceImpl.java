@@ -19,7 +19,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonBinding;
 
 public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
-		extends GenericEntityServiceImpl<Integer, P>
+		extends GenericEntityServiceImpl<Long, P>
 		implements IPersonService<P> {
 	
 	private static final IPersonBinding BINDING = new IPersonBinding();

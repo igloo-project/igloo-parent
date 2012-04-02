@@ -30,7 +30,7 @@ import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
-public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Integer, P>
+public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Long, P>
 		implements IPerson, INotificationRecipient {
 
 	private static final long serialVersionUID = 1803671157183603979L;
@@ -38,7 +38,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@Id
 	@GeneratedValue
 	@DocumentId
-	private Integer id;
+	private Long id;
 	
 	@Column(nullable = false, unique = true)
 	@NaturalId
@@ -101,11 +101,13 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.md5Password = md5Password;
 	}
 	
-	public Integer getId() {
+	@Override
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	@Override
+	public void setId(Long id) {
 		this.id = id;
 	}
 

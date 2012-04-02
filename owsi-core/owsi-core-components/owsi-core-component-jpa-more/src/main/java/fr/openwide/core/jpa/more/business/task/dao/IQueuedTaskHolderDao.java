@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.more.business.task.dao;
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 
-public interface IQueuedTaskHolderDao extends IGenericEntityDao<Integer, QueuedTaskHolder> {
+public interface IQueuedTaskHolderDao extends IGenericEntityDao<Long, QueuedTaskHolder> {
 
 	/**
 	 * Récupère en base la tâche suivante à exécuter.

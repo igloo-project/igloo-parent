@@ -15,7 +15,7 @@ import fr.openwide.core.jpa.more.business.parameter.dao.IParameterDao;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter_;
 
-public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Integer, Parameter>
+public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long, Parameter>
 		implements ApplicationListener<ContextRefreshedEvent>, IAbstractParameterService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterServiceImpl.class);

@@ -63,13 +63,13 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 			}
 	)
 })
-public class Parameter extends GenericEntity<Integer, Parameter> {
+public class Parameter extends GenericEntity<Long, Parameter> {
 	
 	private static final long serialVersionUID = 4739408616523513971L;
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	@Column(nullable = false, unique = true)
 	private String name;
@@ -212,12 +212,12 @@ public class Parameter extends GenericEntity<Integer, Parameter> {
 	}
 
 	@Override
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 }

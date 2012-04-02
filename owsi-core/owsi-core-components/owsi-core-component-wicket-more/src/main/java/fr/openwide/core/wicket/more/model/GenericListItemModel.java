@@ -18,7 +18,7 @@ package fr.openwide.core.wicket.more.model;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
-public class GenericListItemModel<E extends GenericListItem<E>> extends GenericEntityModel<Integer, E> {
+public class GenericListItemModel<E extends GenericListItem<E>> extends GenericEntityModel<Long, E> {
 	
 	private static final long serialVersionUID = 2483082448801965501L;
 	
