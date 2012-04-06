@@ -30,7 +30,6 @@ import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
-@NaturalIdCache
 public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Long, P>
 		implements IPerson, INotificationRecipient {
 
@@ -43,6 +42,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	@Column(nullable = false, unique = true)
 	@NaturalId
+	@NaturalIdCache
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String userName;
 	
