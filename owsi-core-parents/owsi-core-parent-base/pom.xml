@@ -40,7 +40,7 @@
 		
 		<owsi-core.spring-ldap.version>1.3.1.RELEASE</owsi-core.spring-ldap.version>
 		
-		<owsi-core.hibernate-search.version>3.4.1.Final</owsi-core.hibernate-search.version>
+		<owsi-core.hibernate-search.version>3.4.2.Final</owsi-core.hibernate-search.version>
 		<owsi-core.lucene.version>3.1.0</owsi-core.lucene.version>
 		
 		<owsi-core.quartz.version>1.8.5</owsi-core.quartz.version>
