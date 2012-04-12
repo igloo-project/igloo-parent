@@ -56,6 +56,14 @@
 			<version>${owsi-core.commons-exec.version}</version>
 		</dependency>
 		
+		<!-- Utils -->
+		
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>${owsi-core.javatuples.version}</version>
+		</dependency>
+		
 		<!-- TrueZIP -->
 		
 		<dependency>
@@ -83,6 +91,7 @@
 		</dependency>
 		
 		<!-- Introduced for SLF4JLoggingListener -->
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
