@@ -6,13 +6,11 @@ import java.util.List;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.IWiQueryPlugin;
@@ -20,6 +18,7 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 
+import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeadBehavior;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
@@ -78,7 +77,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLink");
 		if (pageClass.equals(selectedPageClass)) {
-			link.add(new AttributeAppender("class", new Model<String>("selected"), " "));
+			link.add(new ClassAttributeAppender("selected"));
 		}
 		link.add(container);
 		
