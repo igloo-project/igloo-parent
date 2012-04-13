@@ -22,7 +22,7 @@ import java.io.Serializable;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
@@ -64,20 +64,25 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setObject(E entity) {
-		if (entity != null) {
-			clazz = (Class<E>) Hibernate.getClass(entity);
+		E persistentObject = getPersistentObject(entity);
+		
+		if (persistentObject != null) {
+			clazz = (Class<E>) persistentObject.getClass();
+			
+			if (entity.getId() != null) {
+				id = entity.getId();
+				transientEntity = null;
+			} else {
+				id = null;
+				transientEntity = entity;
+			}
 		} else {
 			clazz = null;
-		}
-		if (entity != null && entity.getId() != null) {
-			id = entity.getId();
-			transientEntity = null;
-		} else {
 			id = null;
-			transientEntity = entity;
+			transientEntity = null;
 		}
 		
-		super.setObject(entity);
+		super.setObject(persistentObject);
 		attached = true;
 	}
 	
@@ -92,6 +97,15 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		}
 		super.detach();
 		attached = false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private E getPersistentObject(E potentiallyProxyfiedObject) {
+		if (potentiallyProxyfiedObject instanceof HibernateProxy) {
+			return (E) ((HibernateProxy) potentiallyProxyfiedObject).getHibernateLazyInitializer().getImplementation();
+		} else {
+			return potentiallyProxyfiedObject;
+		}
 	}
 
 }
