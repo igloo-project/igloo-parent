@@ -85,14 +85,6 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public E getByNaturalId(Long naturalId) {
-		Session session = getEntityManager().unwrap(Session.class);
-		
-		return (E) session.bySimpleNaturalId(getObjectClass()).load(naturalId);
-	}
-	
-	@Override
 	public <V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.getByField(getObjectClass(), attribute, fieldValue);
 	}
