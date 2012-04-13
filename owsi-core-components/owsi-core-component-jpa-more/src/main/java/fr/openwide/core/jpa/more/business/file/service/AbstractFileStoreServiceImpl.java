@@ -3,17 +3,24 @@ package fr.openwide.core.jpa.more.business.file.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextException;
 
 import fr.openwide.core.jpa.more.business.file.model.IFileStore;
+import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public class AbstractFileStoreServiceImpl {
+	
+	@Autowired
+	private ApplicationContext applicationContext;
 	
 	private Map<String, IFileStore> fileStores = new HashMap<String, IFileStore>();
 	
 	protected void registerFileStore(IFileStore fileStore) {
 		try {
 			fileStore.check();
+			SpringBeanUtils.autowireBean(applicationContext, fileStore);
 			
 			fileStores.put(fileStore.getKey(), fileStore);
 		} catch (Exception e) {

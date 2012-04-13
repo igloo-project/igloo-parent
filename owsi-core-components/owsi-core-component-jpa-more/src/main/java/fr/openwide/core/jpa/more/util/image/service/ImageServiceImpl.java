@@ -1,0 +1,201 @@
+package fr.openwide.core.jpa.more.util.image.service;
+
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
+
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.util.image.model.ImageThumbnailFormat;
+import fr.openwide.core.spring.config.CoreConfigurer;
+
+@Service("imageService")
+public class ImageServiceImpl implements IImageService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageServiceImpl.class);
+	
+	private static final int IMAGE_MAGICK_CONVERT_TIMEOUT = 5000;
+	
+	private File imageMagickConvertBinary;
+	
+	@Autowired
+	private CoreConfigurer configurer;
+	
+	@SuppressWarnings("unused")
+	@PostConstruct
+	private void init() {
+		imageMagickConvertBinary = getImageMagickConvertBinary(configurer.getImageMagickConvertBinary());
+	}
+	
+	@Override
+	public void generateThumbnail(File source, File destination, ImageThumbnailFormat thumbnailFormat)
+			throws ServiceException, SecurityServiceException {
+		if (isImageMagickConvertAvailable()) {
+			generateThumbnailWithImageMagickConvert(source, destination, thumbnailFormat);
+		} else {
+			generateThumbnailWithJava(source, destination, thumbnailFormat);
+		}
+	}
+	
+	private File getImageMagickConvertBinary(File imageMagickConvertBinaryCandidate) {
+		if (imageMagickConvertBinaryCandidate == null) {
+			LOGGER.warn("ImageMagick's convert binary is not configured. Using Java to scale images.");
+			return null;
+		}
+		
+		if (!imageMagickConvertBinaryCandidate.exists()) {
+			LOGGER.warn("ImageMagick's convert binary {} does not exist. Using Java to scale images.",
+					imageMagickConvertBinaryCandidate.getAbsolutePath());
+			return null;
+		}
+		
+		if (!imageMagickConvertBinaryCandidate.isFile()) {
+			LOGGER.warn("ImageMagick's convert binary {} is not a file. Using Java to scale images.",
+					imageMagickConvertBinaryCandidate.getAbsolutePath());
+			return null;
+		}
+		
+		if (!imageMagickConvertBinaryCandidate.canExecute()) {
+			LOGGER.warn("ImageMagick's convert binary {} is not executable. Using Java to scale images.",
+					imageMagickConvertBinaryCandidate.getAbsolutePath());
+			return null;
+		}
+		
+		return imageMagickConvertBinaryCandidate;
+	}
+	
+	private boolean isImageMagickConvertAvailable() {
+		if (imageMagickConvertBinary != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private void generateThumbnailWithImageMagickConvert(File source, File destination, ImageThumbnailFormat thumbnailFormat)
+			throws ServiceException, SecurityServiceException {
+		try {
+			CommandLine commandLine = new CommandLine(imageMagickConvertBinary);
+			commandLine.addArgument("-strip");
+			commandLine.addArgument("-thumbnail");
+			if (thumbnailFormat.isAllowEnlarge()) {
+				commandLine.addArgument("${width}x${height}");
+			} else {
+				commandLine.addArgument("${width}x${height}>");
+			}
+			commandLine.addArgument("-quality");
+				commandLine.addArgument("${quality}");
+			commandLine.addArgument("${originalFilePath}");
+			commandLine.addArgument("${targetFilePath}");
+			
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("width", String.valueOf(thumbnailFormat.getWidth()));
+			parameters.put("height", String.valueOf(thumbnailFormat.getHeight()));
+			parameters.put("quality", String.valueOf(thumbnailFormat.getQuality()));
+			parameters.put("originalFilePath", source.getAbsolutePath());
+			parameters.put("targetFilePath", destination.getAbsolutePath());
+			
+			commandLine.setSubstitutionMap(parameters);
+			
+			DefaultExecutor executor = new DefaultExecutor();
+			ExecuteWatchdog watchdog = new ExecuteWatchdog(IMAGE_MAGICK_CONVERT_TIMEOUT);
+			executor.setWatchdog(watchdog);
+			executor.execute(commandLine);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+	
+	private void generateThumbnailWithJava(File source, File destination, ImageThumbnailFormat thumbnailFormat)
+			throws ServiceException, SecurityServiceException {
+		try {
+			BufferedImage originalImage = ImageIO.read(source);
+			if (originalImage == null) {
+				throw new ServiceException("Image cannot be read.");
+			}
+			int type = (originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType());
+			
+			int originalImageWidth = originalImage.getWidth();
+			int originalImageHeight = originalImage.getHeight();
+			
+			double widthRatio = (double) thumbnailFormat.getWidth() / (double) originalImageWidth;
+			double heightRatio = (double)  thumbnailFormat.getHeight() /(double) originalImageHeight;
+			
+			if (widthRatio < 1.0d || heightRatio < 1.0d) {
+				double ratio = Math.min(widthRatio, heightRatio);
+				
+				int resizedImageWidth = (int) (ratio * originalImageWidth);
+				int resizedImageHeight = (int) (ratio * originalImageHeight);
+				
+				BufferedImage resizedImage = new BufferedImage(resizedImageWidth, resizedImageHeight, type);
+				Graphics2D g = resizedImage.createGraphics();
+				g.setComposite(AlphaComposite.Src);
+				
+				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				
+				AffineTransform tx = new AffineTransform();
+				tx.scale(ratio, ratio);
+				
+				g.drawImage(originalImage, 0, 0, resizedImageWidth, resizedImageHeight, null);
+				g.dispose();
+				
+				FileImageOutputStream outputStream = null;
+				
+				try {
+					Iterator<ImageWriter> imageWritersIterator = ImageIO.getImageWritersByFormatName(thumbnailFormat.getJavaFormatName());
+					ImageWriter writer = imageWritersIterator.next();
+					
+					ImageWriteParam iwp = writer.getDefaultWriteParam();
+					
+					if (iwp.canWriteCompressed()) {
+						iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+						iwp.setCompressionQuality(thumbnailFormat.getQuality() / 100f);
+					}
+					
+					outputStream = new FileImageOutputStream(destination);
+					writer.setOutput(outputStream);
+					IIOImage image = new IIOImage(resizedImage, null, null);
+					writer.write(null, image, iwp);
+					writer.dispose();
+				} catch (Exception e) {
+					throw new ServiceException(e);
+				} finally {
+					if (outputStream != null) {
+						outputStream.close();
+					}
+				}
+			} else {
+				FileUtils.copyFile(source, destination);
+			}
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+}
