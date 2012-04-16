@@ -5,7 +5,7 @@ import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 public class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private static final JsonJavascriptResourceReference INSTANCE = new JsonJavascriptResourceReference();
 
