@@ -22,12 +22,13 @@ import java.io.Serializable;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.proxy.HibernateProxy;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
+import fr.openwide.core.jpa.util.HibernateUtils;
 
-public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> extends LoadableDetachableModel<E> {
+public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+		extends LoadableDetachableModel<E> {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -40,7 +41,11 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 
 	private K id;
 
-	private E transientEntity;
+	/**
+	 * L'objectif est ici de stocker les entités qui n'ont pas encore été persistées en base (typiquement, quand
+	 * on fait la création).
+	 */
+	private E notYetPersistedEntity;
 	
 	public GenericEntityModel(E entity) {
 		super(null);
@@ -53,9 +58,9 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	protected E load() {
 		E result = null;
 		if (id != null) {
-			result = entityService.getEntity(clazz, id);
+			result = HibernateUtils.unwrap(entityService.getEntity(clazz, id));
 		} else {
-			result = transientEntity;
+			result = notYetPersistedEntity;
 		}
 		attached = true;
 		return result;
@@ -64,22 +69,22 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setObject(E entity) {
-		E persistentObject = getPersistentObject(entity);
+		E persistentObject = HibernateUtils.unwrap(entity);
 		
 		if (persistentObject != null) {
 			clazz = (Class<E>) persistentObject.getClass();
 			
 			if (entity.getId() != null) {
 				id = entity.getId();
-				transientEntity = null;
+				notYetPersistedEntity = null;
 			} else {
 				id = null;
-				transientEntity = entity;
+				notYetPersistedEntity = entity;
 			}
 		} else {
 			clazz = null;
 			id = null;
-			transientEntity = null;
+			notYetPersistedEntity = null;
 		}
 		
 		super.setObject(persistentObject);
@@ -97,15 +102,6 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		}
 		super.detach();
 		attached = false;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private E getPersistentObject(E potentiallyProxyfiedObject) {
-		if (potentiallyProxyfiedObject instanceof HibernateProxy) {
-			return (E) ((HibernateProxy) potentiallyProxyfiedObject).getHibernateLazyInitializer().getImplementation();
-		} else {
-			return potentiallyProxyfiedObject;
-		}
 	}
 
 }
