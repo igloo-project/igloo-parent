@@ -10,9 +10,6 @@ import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.wicket.WicketAjaxGmap
 public class GmapResourceReference extends WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = -6438523251568468748L;
 
-	/**
-	 * Singleton instance of this reference
-	 */
 	public static final WiQueryJavaScriptResourceReference INSTANCE = new GmapResourceReference();
 	
 	private GmapResourceReference() {
@@ -23,8 +20,8 @@ public class GmapResourceReference extends WiQueryJavaScriptResourceReference {
 	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
 		return new AbstractResourceDependentResourceReference[] {
 				CoreJavaScriptResourceReference.get(),
-				InfoBubbleResourceReference.INSTANCE,
-				WicketAjaxGmapResourceReference.INSTANCE
+				InfoBubbleResourceReference.get(),
+				WicketAjaxGmapResourceReference.get()
 		};
 	}
 }

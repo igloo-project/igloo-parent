@@ -11,7 +11,7 @@ public class WicketAjaxGmapResourceReference extends WiQueryJavaScriptResourceRe
 	/**
 	 * Singleton instance of this reference
 	 */
-	public static final WiQueryJavaScriptResourceReference INSTANCE = new WicketAjaxGmapResourceReference();
+	private static final WicketAjaxGmapResourceReference INSTANCE = new WicketAjaxGmapResourceReference();
 	
 	private WicketAjaxGmapResourceReference() {
 		super(WicketAjaxGmapResourceReference.class, "wicket-ajax-gmap.js");
@@ -21,7 +21,11 @@ public class WicketAjaxGmapResourceReference extends WiQueryJavaScriptResourceRe
 	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
 		return new AbstractResourceDependentResourceReference[] {
 			WicketAjaxResourceReference.INSTANCE,
-			JsonJavascriptResourceReference.INSTANCE
+			JsonJavascriptResourceReference.get()
 		};
+	}
+	
+	public static final WicketAjaxGmapResourceReference get() {
+		return INSTANCE;
 	}
 }

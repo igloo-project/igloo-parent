@@ -9,13 +9,13 @@ import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 public class InfoBubbleResourceReference extends WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = -9125098024654674764L;
 	
-	/**
-	 * Singleton instance of this reference
-	 */
-	public static final WiQueryJavaScriptResourceReference INSTANCE = new InfoBubbleResourceReference();
+	private static final InfoBubbleResourceReference INSTANCE = new InfoBubbleResourceReference();
 	
-
 	private InfoBubbleResourceReference() {
 		super(InfoBubbleResourceReference.class, "infobubble.js");
+	}
+	
+	public static final InfoBubbleResourceReference get() {
+		return INSTANCE;
 	}
 }
