@@ -7,10 +7,7 @@ import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 public class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
 		private static final long serialVersionUID = 1L;
 
-	/**
-	 * Singleton instance of this reference
-	 */
-	public static final WiQueryJavaScriptResourceReference INSTANCE = new JsonJavascriptResourceReference();
+	private static final JsonJavascriptResourceReference INSTANCE = new JsonJavascriptResourceReference();
 
 	private JsonJavascriptResourceReference() {
 		super(JsonJavascriptResourceReference.class, "jquery.json-2.3.js");
@@ -21,5 +18,9 @@ public class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceRe
 		return new AbstractResourceDependentResourceReference[] {
 				CoreJavaScriptResourceReference.get()
 		};
+	}
+
+	public static final JsonJavascriptResourceReference get() {
+		return INSTANCE;
 	}
 }
