@@ -13,21 +13,23 @@ public abstract class AbstractFeedbackPanel extends Panel {
 	private static final long serialVersionUID = 8440891357292721078L;
 	
 	private static final int[] ERROR_MESSAGE_LEVELS = {
-		FeedbackMessage.FATAL
-		, FeedbackMessage.ERROR
-		, FeedbackMessage.WARNING
-		, FeedbackMessage.INFO
-		, FeedbackMessage.DEBUG
-		, FeedbackMessage.UNDEFINED
+		FeedbackMessage.FATAL,
+		FeedbackMessage.ERROR,
+		FeedbackMessage.WARNING,
+		FeedbackMessage.SUCCESS,
+		FeedbackMessage.INFO,
+		FeedbackMessage.DEBUG,
+		FeedbackMessage.UNDEFINED
 	};
 	
 	private static final String[] ERROR_MESSAGE_LEVEL_NAMES = {
-		"FATAL"
-		, "ERROR"
-		, "WARNING"
-		, "INFO"
-		, "DEBUG"
-		, "UNDEFINED"
+		"FATAL",
+		"ERROR",
+		"WARNING",
+		"SUCCESS",
+		"INFO",
+		"DEBUG",
+		"UNDEFINED"
 	};
 	
 	private List<FeedbackPanel> feedbackPanels = new ArrayList<FeedbackPanel>();
