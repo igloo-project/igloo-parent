@@ -79,6 +79,10 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	@Override
 	@SuppressWarnings("unchecked")
 	public E getByNaturalId(String naturalId) {
+		if (naturalId == null) {
+			throw new IllegalArgumentException("Natural id may not be null");
+		}
+		
 		Session session = getEntityManager().unwrap(Session.class);
 		
 		return (E) session.bySimpleNaturalId(getObjectClass()).load(naturalId);
