@@ -44,7 +44,16 @@
 			<version>${owsi-core.poi.version}</version>
 		</dependency>
 		
+		<!-- ImageInfo -->
+		
+		<dependency>
+			<groupId>org.devlib.schmidt</groupId>
+			<artifactId>imageinfo</artifactId>
+			<version>${owsi-core.imageinfo.version}</version>
+		</dependency>
+		
 		<!-- Test dependencies -->
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
