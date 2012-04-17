@@ -73,6 +73,7 @@
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.6.2</owsi-core.jsoup.version>
+		<owsi-core.rhino.version>1.7R3</owsi-core.rhino.version>
 		
 		<owsi-core.junit.version>4.10</owsi-core.junit.version>
 		<owsi-core.grizzly.version>1.9.36</owsi-core.grizzly.version>
