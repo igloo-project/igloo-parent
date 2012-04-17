@@ -6,6 +6,10 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,6 +25,7 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.io.FileUtils;
+import org.devlib.schmidt.imageinfo.ImageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 import fr.openwide.core.jpa.more.util.image.model.ImageThumbnailFormat;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
@@ -47,6 +53,41 @@ public class ImageServiceImpl implements IImageService {
 	@PostConstruct
 	private void init() {
 		imageMagickConvertBinary = getImageMagickConvertBinary(configurer.getImageMagickConvertBinary());
+	}
+	
+	@Override
+	public ImageInformation getImageInformation(File source) {
+		InputStream is = null;
+		try {
+			is = new FileInputStream(source);
+			
+			return getImageInformation(is);
+		} catch (FileNotFoundException e) {
+			LOGGER.error(String.format("File %1$s not found while trying to get image information",
+					source.getAbsolutePath()), e);
+			
+			return new ImageInformation();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+	
+	@Override
+	public ImageInformation getImageInformation(InputStream source) {
+		ImageInformation imageInformation = new ImageInformation();
+		
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setInput(source);
+		if (imageInfo.check()) {
+			imageInformation.setWidth(imageInfo.getWidth());
+			imageInformation.setHeight(imageInfo.getHeight());
+		}
+		return imageInformation;
 	}
 	
 	@Override
