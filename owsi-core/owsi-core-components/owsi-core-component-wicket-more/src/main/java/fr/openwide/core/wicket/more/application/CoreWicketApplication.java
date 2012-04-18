@@ -9,6 +9,7 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
+import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
@@ -45,7 +46,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
-
+		
+		// Avec wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
+		// On ajoute globalement l'accès aux ressources less.
+		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
+		
 		getMarkupSettings().setStripWicketTags(true);
 		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
