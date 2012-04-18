@@ -15,7 +15,7 @@ import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 public abstract class AbstractTask implements Runnable, Serializable {
 	private static final long serialVersionUID = 7734300264023051135L;
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
 
 	@Autowired
 	private IQueuedTaskHolderService queuedTaskHolderService;

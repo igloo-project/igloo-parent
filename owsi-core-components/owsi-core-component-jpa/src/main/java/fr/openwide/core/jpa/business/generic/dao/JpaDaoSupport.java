@@ -50,8 +50,7 @@ public class JpaDaoSupport {
 	}
 	
 	protected <T> Root<T> rootCriteriaQuery(CriteriaBuilder builder, CriteriaQuery<?> criteria, Class<T> objectClass) {
-		Root<T> root = criteria.from(objectClass);
-		return root;
+		return criteria.from(objectClass);
 	}
 	
 	public <T, K> T getEntity(Class<T> clazz, K id) {

@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.search.util;
 
-public class HibernateSearchAnalyzer {
+public final class HibernateSearchAnalyzer {
 	
 	public static final String TEXT = "text";
 	

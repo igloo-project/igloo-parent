@@ -94,22 +94,22 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public void update(E entity) {
+	public void update(E entity) { // NOSONAR
 		super.update(entity);
 	}
 	
 	@Override
-	public void save(E entity) {
+	public void save(E entity) { // NOSONAR
 		super.save(entity);
 	}
 	
 	@Override
-	public void delete(E entity) {
+	public void delete(E entity) { // NOSONAR
 		super.delete(entity);
 	}
 	
 	@Override
-	public E refresh(E entity) {
+	public E refresh(E entity) { // NOSONAR
 		return super.refresh(entity);
 	}
 	

@@ -87,7 +87,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 						personService.updateLocale(person, getLocale());
 					}
 				} catch (Exception e) {
-					LOGGER.error(String.format("Unable to update the user information on sign in", person), e);
+					LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
 				}
 			}
 			

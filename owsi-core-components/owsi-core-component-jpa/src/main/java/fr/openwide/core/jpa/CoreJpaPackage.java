@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa;
 
-public class CoreJpaPackage {
+public final class CoreJpaPackage { // NOSONAR
 
 	private CoreJpaPackage() {}
 

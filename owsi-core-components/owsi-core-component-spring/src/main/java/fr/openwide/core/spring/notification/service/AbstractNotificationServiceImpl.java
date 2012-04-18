@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
@@ -42,8 +43,7 @@ public class AbstractNotificationServiceImpl {
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
 	
 	protected void sendMailToEmails(String[] emails, String subject, String body) {
-		MultiValueMap<String, String> headers = null;
-		sendMailToEmails(emails, subject, body, headers);
+		sendMailToEmails(emails, subject, body, new LinkedMultiValueMap<String, String>());
 	}
 
 	protected void sendMailToEmails(String[] emails, String subject, String body, MultiValueMap<String, String> headers) {
@@ -78,11 +78,9 @@ public class AbstractNotificationServiceImpl {
 			helper.setSubject(getSubjectPrefix() + " " + subject);
 			helper.setText(emailContent);
 			
-			if (headers != null) {
-				for (Entry<String, List<String>> entry : headers.entrySet()) {
-					for (String value : entry.getValue()) {
-						message.addHeader(entry.getKey(), value);
-					}
+			for (Entry<String, List<String>> entry : headers.entrySet()) {
+				for (String value : entry.getValue()) {
+					message.addHeader(entry.getKey(), value);
 				}
 			}
 			

@@ -48,8 +48,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 		super();
 		
 		// Get web session class to instantiate
-		webSessionClassRef = new WeakReference<Class<? extends AuthenticatedWebSession>>(
-			getWebSessionClass());
+		webSessionClassRef = new WeakReference<Class<? extends AuthenticatedWebSession>>(getWebSessionClass());
 	}
 	
 	@Override
@@ -77,8 +76,7 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	@Override
 	public Session newSession(Request request, Response response) {
 		try {
-			return webSessionClassRef.get().getDeclaredConstructor(Request.class).newInstance(
-				request);
+			return webSessionClassRef.get().getDeclaredConstructor(Request.class).newInstance(request); // NOSONAR
 		} catch (Exception e) {
 			throw new WicketRuntimeException("Unable to instantiate web session " +
 				webSessionClassRef.get(), e);

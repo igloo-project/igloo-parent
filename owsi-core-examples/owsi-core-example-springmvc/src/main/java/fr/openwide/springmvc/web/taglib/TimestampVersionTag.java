@@ -117,11 +117,6 @@ public class TimestampVersionTag extends TagSupport implements TryCatchFinally {
     }
 
     @Override
-    public void release() {
-        super.release();
-    }
-
-    @Override
     public void doCatch(Throwable arg0) throws Throwable {
         throw arg0;
     }

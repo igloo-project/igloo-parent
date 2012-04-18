@@ -21,7 +21,7 @@ import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecutor {
 	private static final long serialVersionUID = 8795027800414538701L;
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(AbstractPersistentTaskExecutor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPersistentTaskExecutor.class);
 
 	// Permet d'inclure la classe de l'objet dans le Json obtenu, pour faciliter la déserialisation
 	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
@@ -48,7 +48,7 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 			task = AbstractTask.class.cast(runnable);
 		} catch (ClassCastException e) {
 			LOGGER.error("Seuls les objets héritant de AbstractTask peuvent être placés en file d'attente");
-			throw new IllegalArgumentException("Invalid task : " + runnable);
+			throw new IllegalArgumentException("Invalid task : " + runnable, e);
 		}
 		
 		String serializedTask;

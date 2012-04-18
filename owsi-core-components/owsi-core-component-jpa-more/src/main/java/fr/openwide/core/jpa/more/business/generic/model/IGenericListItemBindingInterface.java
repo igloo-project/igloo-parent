@@ -5,14 +5,14 @@ import org.bindgen.Bindable;
 @Bindable
 public interface IGenericListItemBindingInterface {
 	
-	public Long getId();
+	Long getId();
 	
-	public String getLabel();
+	String getLabel();
 	
-	public String getShortLabel();
+	String getShortLabel();
 	
-	public Integer getPosition();
+	Integer getPosition();
 	
-	public boolean isEnabled();
+	boolean isEnabled();
 	
 }
