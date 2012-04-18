@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 import fr.openwide.core.jpa.more.util.image.model.ImageThumbnailFormat;
 import fr.openwide.core.jpa.more.util.image.service.IImageService;
 
@@ -30,15 +31,42 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	}
 	
 	@Override
-	public void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
-		super.addFile(file, fileKey, extension);
-		generateThumbnails(fileKey, extension);
+	public FileInformation addFile(byte[] fileContent, String fileKey, String extension) throws ServiceException,
+			SecurityServiceException {
+		FileInformation information = super.addFile(fileContent, fileKey, extension);
+		
+		addFileToGallery(information, fileKey, extension);
+		
+		return information;
 	}
 	
 	@Override
-	public void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException {
-		super.addFile(inputStream, fileKey, extension);
+	public FileInformation addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+		FileInformation information = super.addFile(file, fileKey, extension);
+		
+		addFileToGallery(information, fileKey, extension);
+		
+		return information;
+	}
+	
+	@Override
+	public FileInformation addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException,
+			SecurityServiceException {
+		FileInformation information = super.addFile(inputStream, fileKey, extension);
+		
+		addFileToGallery(information, fileKey, extension);
+		
+		return information;
+	}
+	
+	protected FileInformation addFileToGallery(FileInformation fileInformation, String fileKey, String extension)
+			throws ServiceException, SecurityServiceException {
+		ImageInformation imageInformation = imageService.getImageInformation(getFile(fileKey, extension));
+		fileInformation.addImageInformation(imageInformation);
+		
 		generateThumbnails(fileKey, extension);
+		
+		return fileInformation;
 	}
 	
 	protected void generateThumbnails(String fileKey, String extension) throws ServiceException, SecurityServiceException {

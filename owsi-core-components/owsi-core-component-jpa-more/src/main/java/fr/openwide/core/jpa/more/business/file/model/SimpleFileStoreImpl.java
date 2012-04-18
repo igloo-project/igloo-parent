@@ -40,19 +40,19 @@ public class SimpleFileStoreImpl implements IFileStore {
 	}
 	
 	@Override
-	public void addFile(byte[] content, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+	public FileInformation addFile(byte[] content, String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(content);
-		addFile(inputStream, fileKey, extension);
+		return addFile(inputStream, fileKey, extension);
 	}
 	
 	@Override
-	public void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+	public FileInformation addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		TFileInputStream fileInputStream = null;
 		try {
 			// Attention le fichier peut être contenu dans un zip d'où cette
 			// manipulation spécifique.
 			fileInputStream = new TFileInputStream(file);
-			addFile(fileInputStream, fileKey, extension);
+			return addFile(fileInputStream, fileKey, extension);
 		} catch (Exception e) {
 			if (!(e instanceof ServiceException)) {
 				throw new ServiceException(e);
@@ -71,8 +71,11 @@ public class SimpleFileStoreImpl implements IFileStore {
 	}
 	
 	@Override
-	public void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException {
+	public FileInformation addFile(InputStream inputStream, String fileKey, String extension)
+			throws ServiceException, SecurityServiceException {
 		FileOutputStream outputStream = null;
+		File outputFile = null;
+		
 		try {
 			String filePath = getFilePath(fileKey, extension);
 			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
@@ -83,7 +86,8 @@ public class SimpleFileStoreImpl implements IFileStore {
 				}
 			}
 			
-			outputStream = new FileOutputStream(new File(filePath));
+			outputFile = new File(filePath);
+			outputStream = new FileOutputStream(outputFile);
 			IOUtils.copy(inputStream, outputStream);
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -104,6 +108,13 @@ public class SimpleFileStoreImpl implements IFileStore {
 				}
 			}
 		}
+		
+		FileInformation fileInformation = new FileInformation();
+		if (outputFile != null) {
+			fileInformation.setSize(outputFile.length());
+		}
+		
+		return fileInformation;
 	}
 	
 	@Override
