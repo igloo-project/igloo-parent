@@ -2,11 +2,11 @@ package fr.openwide.core.jpa.more.util.image.model;
 
 public class ImageInformation {
 	
-	private boolean isFormatSupported;
+	private boolean isFormatSupported = false;
 	
-	private int width;
+	private Integer width;
 	
-	private int height;
+	private Integer height;
 	
 	public ImageInformation() {
 	}
@@ -19,19 +19,19 @@ public class ImageInformation {
 		this.isFormatSupported = isFormatSupported;
 	}
 
-	public int getWidth() {
+	public Integer getWidth() {
 		return width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(Integer width) {
 		this.width = width;
 	}
 
-	public int getHeight() {
+	public Integer getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(Integer height) {
 		this.height = height;
 	}
 

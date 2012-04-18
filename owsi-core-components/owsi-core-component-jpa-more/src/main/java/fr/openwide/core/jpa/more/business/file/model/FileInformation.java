@@ -6,13 +6,13 @@ public class FileInformation {
 	
 	private long size;
 	
-	private boolean isImage;
+	private boolean isImage = false;
 	
-	private boolean isImageFormatSupported;
+	private boolean isImageFormatSupported = false;
 	
-	private int imageWidth;
+	private Integer imageWidth;
 	
-	private int imageHeight;
+	private Integer imageHeight;
 	
 	public FileInformation() {
 	}
@@ -41,19 +41,19 @@ public class FileInformation {
 		this.isImageFormatSupported = isImageFormatSupported;
 	}
 
-	public int getImageWidth() {
+	public Integer getImageWidth() {
 		return imageWidth;
 	}
 
-	public void setImageWidth(int width) {
+	public void setImageWidth(Integer width) {
 		this.imageWidth = width;
 	}
 
-	public int getImageHeight() {
+	public Integer getImageHeight() {
 		return imageHeight;
 	}
 
-	public void setImageHeight(int height) {
+	public void setImageHeight(Integer height) {
 		this.imageHeight = height;
 	}
 	
