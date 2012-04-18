@@ -84,6 +84,7 @@ public class ImageServiceImpl implements IImageService {
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setInput(source);
 		if (imageInfo.check()) {
+			imageInformation.setFormatSupported(true);
 			imageInformation.setWidth(imageInfo.getWidth());
 			imageInformation.setHeight(imageInfo.getHeight());
 		}
