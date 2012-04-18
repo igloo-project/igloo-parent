@@ -12,14 +12,15 @@ public interface IFileStore {
 	
 	void check() throws IllegalStateException;
 
-	void addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException;
+	FileInformation addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException;
+	
+	FileInformation addFile(byte[] content, String fileKey, String extension) throws ServiceException, SecurityServiceException;
+
+	FileInformation addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException;
 
 	File getFile(String fileKey, String extension);
 
 	void removeFile(String fileKey, String extension);
 
-	void addFile(byte[] content, String fileKey, String extension) throws ServiceException, SecurityServiceException;
-
-	void addFile(InputStream inputStream, String fileKey, String extension) throws ServiceException, SecurityServiceException;
 
 }
