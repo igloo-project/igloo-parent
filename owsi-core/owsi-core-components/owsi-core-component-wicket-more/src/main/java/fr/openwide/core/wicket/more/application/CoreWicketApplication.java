@@ -89,7 +89,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		return RuntimeConfigurationType.valueOf(configurer.getConfigurationType().toUpperCase(Locale.ROOT));
 	}
 	
-	public class TipsyRequestTargetListener implements AjaxRequestTarget.IListener {
+	public static class TipsyRequestTargetListener implements AjaxRequestTarget.IListener {
 
 		@Override
 		public void onBeforeRespond(Map<String, Component> map,

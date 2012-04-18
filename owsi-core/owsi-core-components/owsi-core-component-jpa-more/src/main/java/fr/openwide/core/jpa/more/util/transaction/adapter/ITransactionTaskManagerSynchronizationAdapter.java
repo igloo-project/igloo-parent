@@ -6,7 +6,7 @@ import fr.openwide.core.jpa.more.util.transaction.model.IAfterCommitOperation;
 
 public interface ITransactionTaskManagerSynchronizationAdapter {
 
-	public void addAfterCommitOperation(IAfterCommitOperation afterCommitOperation);
+	void addAfterCommitOperation(IAfterCommitOperation afterCommitOperation);
 
 	TransactionSynchronizationAdapter getTransactionSynchronizationAdapter();
 }

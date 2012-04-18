@@ -110,7 +110,7 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected void assertDatesWithinXSeconds(Date date1, Date date2, Integer delayInSeconds) {
-		Assert.assertTrue(Math.abs(date1.getTime() - date2.getTime()) < delayInSeconds * 1000);
+		Assert.assertTrue(Math.abs(date1.getTime() - date2.getTime()) < delayInSeconds * 1000l);
 	}
 
 	protected EntityManager getEntityManager() {

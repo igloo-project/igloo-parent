@@ -15,11 +15,9 @@ public abstract class AbstractMonitoringPage extends Page {
 	
 	private static final long serialVersionUID = -2327468306332270500L;
 
-	/** Mime string for text plain */
 	public static final String TEXT_MIME = "text/plain";
 
-	/** A HTML markup type for web pages */
-	public final static MarkupType TEXT_PLAIN_MARKUP_TYPE = new MarkupType("txt", TEXT_MIME);
+	public static final MarkupType TEXT_PLAIN_MARKUP_TYPE = new MarkupType("txt", TEXT_MIME);
 	
 	private boolean success;
 

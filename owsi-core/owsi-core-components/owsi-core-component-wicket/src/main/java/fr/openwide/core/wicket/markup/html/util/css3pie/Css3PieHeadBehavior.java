@@ -12,6 +12,8 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.springframework.util.StringUtils;
 
+import fr.openwide.core.commons.util.CloneUtils;
+
 public class Css3PieHeadBehavior extends Behavior {
 
 	private static final long serialVersionUID = -4091910399987963790L;
@@ -29,7 +31,7 @@ public class Css3PieHeadBehavior extends Behavior {
 	public Css3PieHeadBehavior(String[] stylesWithCss3Properties) {
 		super();
 		
-		this.stylesWithCss3Properties = stylesWithCss3Properties;
+		this.stylesWithCss3Properties = CloneUtils.clone(stylesWithCss3Properties);
 	}
 	
 	@Override

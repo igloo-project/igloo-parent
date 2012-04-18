@@ -154,11 +154,6 @@ public class UrlTag extends BodyTagSupport implements ParamParent,
 	 */
 	private String timestampVersion;
 
-	@Override
-	public void release() {
-		super.release();
-	}
-
 	/**
 	 * Create and expose the current RequestContext. Delegates to
 	 * {@link #doStartTagInternal()} for actual work.

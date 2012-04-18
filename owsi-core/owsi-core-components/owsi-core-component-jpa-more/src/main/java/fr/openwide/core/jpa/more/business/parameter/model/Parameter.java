@@ -208,7 +208,7 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 
 	@Override
 	public String getNameForToString() {
-		return name.toString();
+		return name;
 	}
 
 	@Override

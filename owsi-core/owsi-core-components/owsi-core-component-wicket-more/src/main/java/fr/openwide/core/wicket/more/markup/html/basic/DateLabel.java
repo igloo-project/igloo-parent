@@ -47,10 +47,5 @@ public class DateLabel extends Label {
 			return super.getConverter(type);
 		}
 	}
-	
-	@Override
-	protected void detachModel() {
-		super.detachModel();
-	}
 
 }

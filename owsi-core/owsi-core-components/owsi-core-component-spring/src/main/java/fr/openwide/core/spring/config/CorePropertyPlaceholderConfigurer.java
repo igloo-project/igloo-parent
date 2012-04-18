@@ -162,8 +162,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 		String rawValue = propertyResolver.getProperty(key);
 		
 		if (rawValue != null) {
-			Object value = propertyResolver.resolvePlaceholders(rawValue);
-			return value;
+			return propertyResolver.resolvePlaceholders(rawValue);
 		} else {
 			return null;
 		}

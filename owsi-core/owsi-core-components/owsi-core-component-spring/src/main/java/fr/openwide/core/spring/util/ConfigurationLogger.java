@@ -61,8 +61,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent refresh) {
 		
-		if (refresh.getSource() != null &&
-				refresh.getSource() instanceof AbstractApplicationContext &&
+		if (refresh.getSource() instanceof AbstractApplicationContext &&
 				((AbstractApplicationContext) refresh.getSource()).getParent() == null) {
 			LOGGER.info("Configuration logging");
 			

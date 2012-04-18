@@ -63,8 +63,7 @@ public class PatternDateConverter extends AbstractConverter<Date> {
 			locale = Locale.ENGLISH;
 		}
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(datePatternModel.getObject(), locale);
-		return dateFormat;
+		return new SimpleDateFormat(datePatternModel.getObject(), locale);
 	}
 	
 }

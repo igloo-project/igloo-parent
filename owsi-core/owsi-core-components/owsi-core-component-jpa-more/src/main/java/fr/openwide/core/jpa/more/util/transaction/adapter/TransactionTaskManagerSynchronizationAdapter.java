@@ -16,7 +16,7 @@ import fr.openwide.core.jpa.more.util.transaction.model.IAfterCommitOperation;
 public class TransactionTaskManagerSynchronizationAdapter extends TransactionSynchronizationAdapter
 		implements ITransactionTaskManagerSynchronizationAdapter {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(TransactionTaskManagerSynchronizationAdapter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionTaskManagerSynchronizationAdapter.class);
 
 	private ThreadLocal<List<IAfterCommitOperation>> afterCommitOperations;
 

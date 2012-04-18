@@ -4,7 +4,7 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 
 public final class TipsyHelper {
 	
-	public static final JsStatement closeTipsyStatement() {
+	public static JsStatement closeTipsyStatement() {
 		return new JsStatement().$(null, ".tipsy").chain("detach");
 	}
 	

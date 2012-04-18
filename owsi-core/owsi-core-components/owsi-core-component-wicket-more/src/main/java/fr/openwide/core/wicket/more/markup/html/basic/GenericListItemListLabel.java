@@ -74,10 +74,10 @@ public class GenericListItemListLabel extends Label {
 		}
 	}
 	
-	private class GenericListItemListConverter extends AbstractConverter<List<GenericListItem<?>>> {
+	private final class GenericListItemListConverter extends AbstractConverter<List<GenericListItem<?>>> {
 		private static final long serialVersionUID = 1L;
 		
-		private final String separator;
+		private String separator;
 		
 		private GenericListItemListConverter(String separator) {
 			this.separator = separator;

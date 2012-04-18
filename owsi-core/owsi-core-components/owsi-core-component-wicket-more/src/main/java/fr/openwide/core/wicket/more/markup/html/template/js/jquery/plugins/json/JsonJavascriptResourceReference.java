@@ -4,7 +4,7 @@ import org.apache.wicket.resource.dependencies.AbstractResourceDependentResource
 import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
-public class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
+public final class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = 1L;
 
 	private static final JsonJavascriptResourceReference INSTANCE = new JsonJavascriptResourceReference();
@@ -20,7 +20,7 @@ public class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceRe
 		};
 	}
 
-	public static final JsonJavascriptResourceReference get() {
+	public static JsonJavascriptResourceReference get() {
 		return INSTANCE;
 	}
 }

@@ -82,7 +82,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 			return false;
 		}
 
-		GenericEntity<K, E> entity = (GenericEntity<K, E>) object;
+		GenericEntity<K, E> entity = (GenericEntity<K, E>) object; // NOSONAR : traité au-dessus mais wrapper Hibernate 
 		K id = getId();
 
 		if (id == null) {

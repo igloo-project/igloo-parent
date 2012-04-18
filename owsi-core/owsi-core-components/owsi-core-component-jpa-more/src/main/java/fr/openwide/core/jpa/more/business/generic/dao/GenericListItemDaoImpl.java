@@ -50,22 +50,22 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> void update(E entity) {
+	public <E extends GenericListItem<?>> void update(E entity) { // NOSONAR
 		super.update(entity);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> void save(E entity) {
+	public <E extends GenericListItem<?>> void save(E entity) { // NOSONAR
 		super.save(entity);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> void delete(E entity) {
+	public <E extends GenericListItem<?>> void delete(E entity) { // NOSONAR
 		super.delete(entity);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> E refresh(E entity) {
+	public <E extends GenericListItem<?>> E refresh(E entity) { // NOSONAR
 		return super.refresh(entity);
 	}
 	
