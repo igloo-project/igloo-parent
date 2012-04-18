@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -114,19 +115,23 @@ public class MyEntityController {
 		 * utilisant un File ne sera pas possible.
 		 */
 		ServletContext servletContext = request.getSession().getServletContext();
+		
 		InputStream inStream = servletContext.getResourceAsStream("/WEB-INF/ressource.properties");
-
 		if (inStream != null) {
 			StringBuilder sb = new StringBuilder();
 			String line;
 
+			BufferedReader reader = null;
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+				reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
 				while ((line = reader.readLine()) != null) {
 					sb.append(line).append("\n");
 				}
 			} finally {
 				inStream.close();
+				if (reader != null) {
+					reader.close();
+				}
 			}
 			model.addAttribute("resource", sb.toString());
 		}

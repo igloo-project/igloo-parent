@@ -41,14 +41,22 @@ public final class XSSFExcelGeneration {
 		PersonXSSFExport export = new PersonXSSFExport();
 		XSSFWorkbook workbook = export.generate(persons, columns);
 
+		FileOutputStream outputStream = null;
 		try {
-			FileOutputStream outputStream = new FileOutputStream(XLS_FILE_NAME);
+			outputStream = new FileOutputStream(XLS_FILE_NAME);
 			workbook.write(outputStream);
 			outputStream.close();
 		} catch (FileNotFoundException e) {
 			LOGGER.error("File not found", e);
 		} catch (IOException e) {
 			LOGGER.error("I/O error", e);
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 	}
 	
