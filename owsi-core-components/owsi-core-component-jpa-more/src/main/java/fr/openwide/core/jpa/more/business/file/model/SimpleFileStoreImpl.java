@@ -109,10 +109,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 			}
 		}
 		
-		FileInformation fileInformation = new FileInformation();
-		if (outputFile != null) {
-			fileInformation.setSize(outputFile.length());
-		}
+		FileInformation fileInformation = new FileInformation(outputFile);
 		
 		return fileInformation;
 	}
