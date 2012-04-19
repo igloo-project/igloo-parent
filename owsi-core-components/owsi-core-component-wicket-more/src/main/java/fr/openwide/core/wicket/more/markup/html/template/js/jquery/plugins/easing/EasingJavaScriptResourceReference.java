@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing;
 
+import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
+import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 
@@ -10,6 +12,13 @@ public final class EasingJavaScriptResourceReference extends WiQueryJavaScriptRe
 
 	private EasingJavaScriptResourceReference() {
 		super(EasingJavaScriptResourceReference.class, "jquery.easing.1.3.js");
+	}
+	
+	@Override
+	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
+		return new AbstractResourceDependentResourceReference[] {
+				CoreJavaScriptResourceReference.get()
+		};
 	}
 	
 	public static EasingJavaScriptResourceReference get() {
