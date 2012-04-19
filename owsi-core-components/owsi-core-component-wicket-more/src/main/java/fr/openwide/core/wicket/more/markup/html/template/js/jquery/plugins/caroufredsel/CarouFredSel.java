@@ -10,26 +10,26 @@ import org.odlabs.wiquery.core.options.Options;
 public class CarouFredSel implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = 5448191289229125305L;
 	
-	private Boolean auto;
-	
-	private Integer width;
-	
-	private Integer height;
-	
-	private Integer padding;
-	
 	private Boolean circular;
-	
-	private Boolean infinite;
-	
-	private Component next;
-	
-	private Component previous;
-	
-	private Component pagination;
-	
-	private Integer items;
 
+	private Boolean infinite;
+
+	private Integer width;
+
+	private Integer height;
+
+	private Integer padding;
+
+	private Integer itemsVisible;
+
+	private Boolean autoPlay;
+
+	private Component nextButton;
+
+	private Component previousButton;
+
+	private Component paginationContainer;
+	
 	@Override
 	public String chainLabel() {
 		return "carouFredSel";
@@ -38,6 +38,12 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 	@Override
 	public CharSequence[] statementArgs() {
 		Options options = new Options();
+		if (circular != null) {
+			options.put("circular", circular);
+		}
+		if (infinite != null) {
+			options.put("infinite", infinite);
+		}
 		if (width != null) {
 			options.put("width", width);
 		}
@@ -47,38 +53,53 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		if (padding != null) {
 			options.put("padding", padding);
 		}
-		if (circular != null) {
-			options.put("circular", circular);
+		
+		// items options
+		Options itemsOptions = new Options();
+		if (itemsVisible != null) {
+			itemsOptions.put("visible", itemsVisible);
 		}
-		if (infinite != null) {
-			options.put("infinite", infinite);
+		options.put("items", itemsOptions.getJavaScriptOptions().toString());
+		
+		// auto options
+		Options autoOptions = new Options();
+		if (autoPlay != null) {
+			autoOptions.put("play", autoPlay);
 		}
-		if (items != null) {
-			options.put("items", items);
+		options.put("auto", autoOptions.getJavaScriptOptions().toString());
+		
+		// prev options
+		Options prevOptions = new Options();
+		if (previousButton != null) {
+			prevOptions.put("button", JsUtils.quotes("#" + previousButton.getMarkupId(), true));
 		}
-		if (previous != null) {
-			options.put("prev", JsUtils.quotes("#" + previous.getMarkupId(), true));
+		options.put("prev", prevOptions.getJavaScriptOptions().toString());
+		
+		// next options
+		Options nextOptions = new Options();
+		if (nextButton != null) {
+			nextOptions.put("button", JsUtils.quotes("#" + nextButton.getMarkupId(), true));
 		}
-		if (next != null) {
-			options.put("next", JsUtils.quotes("#" + next.getMarkupId(), true));
+		options.put("next", nextOptions.getJavaScriptOptions().toString());
+		
+		// pagination options
+		Options paginationOptions = new Options();
+		if (paginationContainer != null) {
+			paginationOptions.put("container", JsUtils.quotes("#" + paginationContainer.getMarkupId(), true));
 		}
-		if (pagination != null) {
-			options.put("pagination", JsUtils.quotes("#" + pagination.getMarkupId(), true));
-		}
-		if (auto != null) {
-			options.put("auto", auto);
-		}
+		options.put("pagination", paginationOptions.getJavaScriptOptions().toString());
+		
 		CharSequence[] args = new CharSequence[1];
 		args[0] = options.getJavaScriptOptions();
 		return args;
 	}
 
-	public Boolean getAuto() {
-		return auto;
+	public Boolean getAutoPlay() {
+		return autoPlay;
 	}
 
-	public void setAuto(Boolean auto) {
-		this.auto = auto;
+	public void setAutoPlay(Boolean autoPlay) {
+		this.autoPlay = autoPlay;
 	}
 
 	public Integer getWidth() {
@@ -121,36 +142,36 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		this.infinite = infinite;
 	}
 
-	public Component getNext() {
-		return next;
+	public Component getNextButton() {
+		return nextButton;
 	}
 
-	public void setNext(Component next) {
-		this.next = next;
+	public void setNext(Component nextButton) {
+		this.nextButton = nextButton;
 	}
 
-	public Component getPrevious() {
-		return previous;
+	public Component getPreviousButton() {
+		return previousButton;
 	}
 
-	public void setPrevious(Component previous) {
-		this.previous = previous;
+	public void setPreviousButton(Component previousButton) {
+		this.previousButton = previousButton;
 	}
 
-	public Component getPagination() {
-		return pagination;
+	public Component getPaginationContainer() {
+		return paginationContainer;
 	}
 
-	public void setPagination(Component pagination) {
-		this.pagination = pagination;
+	public void setPaginationContainer(Component paginationContainer) {
+		this.paginationContainer = paginationContainer;
 	}
 
 	public Integer getItems() {
-		return items;
+		return itemsVisible;
 	}
 
 	public void setItems(Integer items) {
-		this.items = items;
+		this.itemsVisible = items;
 	}
 
 }
