@@ -16,10 +16,9 @@ public final class ElasticJavaScriptResourceReference extends WiQueryJavaScriptR
 
 	@Override
 	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
-		AbstractResourceDependentResourceReference[] dependsOn = new AbstractResourceDependentResourceReference[] {
-				CoreJavaScriptResourceReference.get(),
+		return new AbstractResourceDependentResourceReference[] {
+				CoreJavaScriptResourceReference.get()
 		};
-		return dependsOn;
 	}
 
 	public static ElasticJavaScriptResourceReference get() {

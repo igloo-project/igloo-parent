@@ -4,7 +4,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 
 public class TipsyBehavior extends WiQueryAbstractBehavior {
 	private static final long serialVersionUID = 6319723112229959901L;
@@ -21,7 +20,6 @@ public class TipsyBehavior extends WiQueryAbstractBehavior {
 	
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
-		response.renderJavaScriptReference(CoreJavaScriptResourceReference.get());
 		response.renderJavaScriptReference(TipsyJavascriptResourceReference.get());
 	}
 
