@@ -1,14 +1,17 @@
 package fr.openwide.core.jpa.more.business.file.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextException;
 
 import fr.openwide.core.jpa.more.business.file.model.IFileStore;
 import fr.openwide.core.spring.util.SpringBeanUtils;
+import fr.openwide.core.spring.util.StringUtils;
 
 public class AbstractFileStoreServiceImpl {
 	
@@ -44,5 +47,13 @@ public class AbstractFileStoreServiceImpl {
 		} else {
 			throw new IllegalArgumentException("Unable to find fileStore " + key);
 		}
+	}
+	
+	protected String getFileExtension(File file) {
+		return getFileExtension(file.getName());
+	}
+	
+	protected String getFileExtension(String fileName) {
+		return StringUtils.lowerCase(FilenameUtils.getExtension(fileName));
 	}
 }
