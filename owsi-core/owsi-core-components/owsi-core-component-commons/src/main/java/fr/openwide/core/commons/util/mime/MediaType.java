@@ -16,6 +16,7 @@ public enum MediaType {
 	APPLICATION_ZIP("application/zip", "zip"),
 	APPLICATION_KML("application/vnd.google-earth.kml+xml", "kml"),
 	APPLICATION_KMZ("application/vnd.google-earth.kmz", "kmz"),
+	APPLICATION_PDF("application/pdf", "pdf"),
 	
 	// Applications > MS Office
 	APPLICATION_MS_WORD("application/msword", "doc"),
@@ -36,7 +37,7 @@ public enum MediaType {
 	TEXT_CSS("text/css", "css"),
 	TEXT_CSV("text/csv", "csv"),
 	TEXT_HTML("text/html", "html", list("htm")),
-	TEXT_CALENDAR("text/calendar", ".ics"),
+	TEXT_CALENDAR("text/calendar", "ics"),
 	
 	// Images
 	IMAGE_GIF("image/gif", "gif"),
