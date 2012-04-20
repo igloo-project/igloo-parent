@@ -25,6 +25,14 @@ public class TestMediaType {
 	}
 	
 	@Test
+	public void testSupports() {
+		Assert.assertTrue(MediaType.IMAGE_JPEG.supports("jpg"));
+		Assert.assertTrue(MediaType.IMAGE_JPEG.supports("jpeg"));
+		Assert.assertTrue(MediaType.IMAGE_JPEG.supports("jpe"));
+		Assert.assertFalse(MediaType.IMAGE_JPEG.supports("json"));
+	}
+	
+	@Test
 	public void testGetters() {
 		Assert.assertEquals("jpg", MediaType.IMAGE_JPEG.extension());
 		Assert.assertEquals("image/jpeg", MediaType.IMAGE_JPEG.mime());
