@@ -46,7 +46,7 @@ public enum MediaType {
 	IMAGE_X_ICON("image/xicon", "ico"),
 	IMAGE_SVG("image/svg+xml", "svg"),
 	IMAGE_BMP("image/x-ms-bmp", "bmp"),
-	IMAGE_JP2("image/jp2", "jp2")
+	IMAGE_JPEG2000("image/jp2", "jp2")
 	;
 
 	private String mimeType;
@@ -86,6 +86,13 @@ public enum MediaType {
 	private static List<String> list(String... elements) {
 		return new ArrayList<String>(Arrays.asList(elements));
 	}
+	
+	private static String normalize(String string) {
+		if (string == null) {
+			return null;
+		}
+		return string.toLowerCase(Locale.ROOT);
+	}
 
 	public String mime() {
 		return mimeType;
@@ -111,6 +118,13 @@ public enum MediaType {
 		return supportedExtensions;
 	}
 	
+	public boolean supports(String extension) {
+		if (extension == null) {
+			return false;
+		}
+		return supportedExtensions().contains(normalize(extension));
+	}
+	
 	public static MediaType fromMimeType(String mimeType) {
 		if (mimeType == null) {
 			return null;
@@ -119,14 +133,14 @@ public enum MediaType {
 		String mimeTypeWithoutParameters;
 		int parameterStart = mimeType.indexOf(';');
 		if (parameterStart == -1) {
-			mimeTypeWithoutParameters = mimeType.toLowerCase(Locale.ROOT);
+			mimeTypeWithoutParameters = normalize(mimeType);
 		} else {
-			mimeTypeWithoutParameters = mimeType.substring(0, parameterStart).toLowerCase(Locale.ROOT);
+			mimeTypeWithoutParameters = normalize(mimeType.substring(0, parameterStart));
 		}
 		return MIME_TYPE_MAPPING.get(mimeTypeWithoutParameters);
 	}
 	
 	public static MediaType fromExtension(String extension) {
-		return EXTENSION_MAPPING.get(extension.toLowerCase(Locale.ROOT));
+		return EXTENSION_MAPPING.get(normalize(extension));
 	}
 }
