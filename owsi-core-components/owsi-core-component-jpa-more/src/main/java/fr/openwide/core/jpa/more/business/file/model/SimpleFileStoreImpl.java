@@ -109,7 +109,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 			}
 		}
 		
-		FileInformation fileInformation = new FileInformation(outputFile);
+		FileInformation fileInformation = new FileInformation(outputFile, extension);
 		
 		return fileInformation;
 	}

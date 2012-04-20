@@ -7,6 +7,10 @@ import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 
 public class FileInformation {
 	
+	private String name;
+	
+	private String extension;
+	
 	private long size;
 	
 	private Date lastModifiedDate;
@@ -22,13 +26,31 @@ public class FileInformation {
 	public FileInformation() {
 	}
 	
-	public FileInformation(File file) {
+	public FileInformation(File file, String extension) {
 		if (file != null && file.canRead()) {
+			setName(file.getName());
+			setExtension(extension);
 			setSize(file.length());
 			setLastModifiedDate(new Date(file.lastModified()));
 		}
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
 	public long getSize() {
 		return size;
 	}
