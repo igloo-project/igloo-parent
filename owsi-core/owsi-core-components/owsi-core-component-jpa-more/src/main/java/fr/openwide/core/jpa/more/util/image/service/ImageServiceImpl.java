@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.util.image.exception.ImageThumbnailGenerationException;
 import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 import fr.openwide.core.jpa.more.util.image.model.ImageThumbnailFormat;
 import fr.openwide.core.spring.config.CoreConfigurer;
@@ -84,7 +84,7 @@ public class ImageServiceImpl implements IImageService {
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setInput(source);
 		if (imageInfo.check()) {
-			imageInformation.setFormatSupported(true);
+			imageInformation.setSizeDetected(true);
 			imageInformation.setWidth(imageInfo.getWidth());
 			imageInformation.setHeight(imageInfo.getHeight());
 		}
@@ -93,7 +93,7 @@ public class ImageServiceImpl implements IImageService {
 	
 	@Override
 	public void generateThumbnail(File source, File destination, ImageThumbnailFormat thumbnailFormat)
-			throws ServiceException, SecurityServiceException {
+			throws ImageThumbnailGenerationException {
 		if (isImageMagickConvertAvailable()) {
 			generateThumbnailWithImageMagickConvert(source, destination, thumbnailFormat);
 		} else {
@@ -137,7 +137,7 @@ public class ImageServiceImpl implements IImageService {
 	}
 	
 	private void generateThumbnailWithImageMagickConvert(File source, File destination, ImageThumbnailFormat thumbnailFormat)
-			throws ServiceException, SecurityServiceException {
+			throws ImageThumbnailGenerationException {
 		try {
 			CommandLine commandLine = new CommandLine(imageMagickConvertBinary);
 			commandLine.addArgument("-strip");
@@ -166,12 +166,13 @@ public class ImageServiceImpl implements IImageService {
 			executor.setWatchdog(watchdog);
 			executor.execute(commandLine);
 		} catch (Exception e) {
-			throw new ServiceException(e);
+			throw new ImageThumbnailGenerationException(String.format("Unable to generate a thumbnail for file %1$s",
+					source.getAbsolutePath()), e);
 		}
 	}
 	
 	private void generateThumbnailWithJava(File source, File destination, ImageThumbnailFormat thumbnailFormat)
-			throws ServiceException, SecurityServiceException {
+			throws ImageThumbnailGenerationException {
 		try {
 			BufferedImage originalImage = ImageIO.read(source);
 			if (originalImage == null) {
@@ -236,7 +237,8 @@ public class ImageServiceImpl implements IImageService {
 				FileUtils.copyFile(source, destination);
 			}
 		} catch (Exception e) {
-			throw new ServiceException(e);
+			throw new ImageThumbnailGenerationException(String.format("Unable to generate a thumbnail for file %1$s",
+					source.getAbsolutePath()), e);
 		}
 	}
 

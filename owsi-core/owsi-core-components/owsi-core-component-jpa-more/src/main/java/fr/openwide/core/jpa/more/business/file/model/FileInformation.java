@@ -17,11 +17,13 @@ public class FileInformation {
 	
 	private boolean isImage = false;
 	
-	private boolean isImageFormatSupported = false;
+	private boolean isImageSizeDetected = false;
 	
 	private Integer imageWidth;
 	
 	private Integer imageHeight;
+	
+	private boolean isImageThumbnailAvailable = false;
 	
 	public FileInformation() {
 	}
@@ -75,12 +77,12 @@ public class FileInformation {
 		this.isImage = isImage;
 	}
 
-	public boolean isImageFormatSupported() {
-		return isImageFormatSupported;
+	public boolean isImageSizeDetected() {
+		return isImageSizeDetected;
 	}
 
-	public void setImageFormatSupported(boolean isImageFormatSupported) {
-		this.isImageFormatSupported = isImageFormatSupported;
+	public void setImageSizeDetected(boolean isSizeDetected) {
+		this.isImageSizeDetected = isSizeDetected;
 	}
 
 	public Integer getImageWidth() {
@@ -99,11 +101,20 @@ public class FileInformation {
 		this.imageHeight = height;
 	}
 	
+	public boolean isImageThumbnailAvailable() {
+		return isImageThumbnailAvailable;
+	}
+
+	public void setImageThumbnailAvailable(boolean isImageThumbnailAvailable) {
+		this.isImageThumbnailAvailable = isImageThumbnailAvailable;
+	}
+
 	public void addImageInformation(ImageInformation imageInformation) {
 		this.isImage = true;
-		this.isImageFormatSupported = imageInformation.isFormatSupported();
+		this.isImageSizeDetected = imageInformation.isSizeDetected();
 		this.imageWidth = imageInformation.getWidth();
 		this.imageHeight = imageInformation.getHeight();
+		this.isImageThumbnailAvailable = imageInformation.isThumbnailAvailable();
 	}
 
 }
