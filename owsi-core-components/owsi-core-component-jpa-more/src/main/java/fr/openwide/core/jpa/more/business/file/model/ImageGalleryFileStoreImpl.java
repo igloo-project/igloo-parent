@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.util.image.exception.ImageThumbnailGenerationException;
 import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 import fr.openwide.core.jpa.more.util.image.model.ImageThumbnailFormat;
 import fr.openwide.core.jpa.more.util.image.service.IImageService;
@@ -60,16 +61,17 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	}
 	
 	protected FileInformation addFileToGallery(FileInformation fileInformation, String fileKey, String extension)
-			throws ServiceException, SecurityServiceException {
+			throws ImageThumbnailGenerationException {
 		ImageInformation imageInformation = imageService.getImageInformation(getFile(fileKey, extension));
 		fileInformation.addImageInformation(imageInformation);
 		
 		generateThumbnails(fileKey, extension);
+		fileInformation.setImageThumbnailAvailable(true);
 		
 		return fileInformation;
 	}
 	
-	protected void generateThumbnails(String fileKey, String extension) throws ServiceException, SecurityServiceException {
+	protected void generateThumbnails(String fileKey, String extension) throws ImageThumbnailGenerationException {
 		for (ImageThumbnailFormat thumbnailFormat : thumbnailFormats) {
 			imageService.generateThumbnail(getFile(fileKey, extension),
 					getThumbnailFile(fileKey, extension, thumbnailFormat), thumbnailFormat);

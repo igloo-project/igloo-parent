@@ -2,21 +2,23 @@ package fr.openwide.core.jpa.more.util.image.model;
 
 public class ImageInformation {
 	
-	private boolean isFormatSupported = false;
+	private boolean isSizeDetected = false;
 	
 	private Integer width;
 	
 	private Integer height;
 	
+	private boolean isThumbnailAvailable = false;
+	
 	public ImageInformation() {
 	}
 
-	public boolean isFormatSupported() {
-		return isFormatSupported;
+	public boolean isSizeDetected() {
+		return isSizeDetected;
 	}
 
-	public void setFormatSupported(boolean isFormatSupported) {
-		this.isFormatSupported = isFormatSupported;
+	public void setSizeDetected(boolean isSizeDetected) {
+		this.isSizeDetected = isSizeDetected;
 	}
 
 	public Integer getWidth() {
@@ -33,6 +35,14 @@ public class ImageInformation {
 
 	public void setHeight(Integer height) {
 		this.height = height;
+	}
+
+	public boolean isThumbnailAvailable() {
+		return isThumbnailAvailable;
+	}
+
+	public void setThumbnailAvailable(boolean isThumbnailAvailable) {
+		this.isThumbnailAvailable = isThumbnailAvailable;
 	}
 
 }
