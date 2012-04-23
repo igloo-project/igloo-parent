@@ -40,14 +40,21 @@ public enum MediaType {
 	TEXT_CALENDAR("text/calendar", "ics"),
 	
 	// Images
+	IMAGE_ANY("image/*"),
 	IMAGE_GIF("image/gif", "gif"),
 	IMAGE_JPEG("image/jpeg", "jpg", list("jpe", "jpeg")),
 	IMAGE_PNG("image/png", "png"),
-	IMAGE_TIFF("image/tiff", "tiff", list("tif")),
+	IMAGE_TIFF("image/tiff", "tif", list("tiff")),
 	IMAGE_X_ICON("image/xicon", "ico"),
 	IMAGE_SVG("image/svg+xml", "svg"),
 	IMAGE_BMP("image/x-ms-bmp", "bmp"),
-	IMAGE_JPEG2000("image/jp2", "jp2")
+	IMAGE_JPEG2000("image/jp2", "jp2"),
+	
+	// Video
+	VIDEO_ANY("video/*"),
+	
+	// Audio
+	AUDIO_ANY("audio/*")
 	;
 
 	private String mimeType;
