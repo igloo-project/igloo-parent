@@ -204,6 +204,10 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @see org.apache.lucene.analysis.ISOLatin1AccentFilter(char[], int)
 	 */
 	public static String removeAccents(String text) {
+		if (text == null) {
+			return text;
+		}
+		
 		int length = text.length();
 		char[] input = text.toCharArray();
 		char[] output = new char[256];
