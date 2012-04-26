@@ -59,7 +59,7 @@ public class TestStringUtils {
 
 		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
 		cleanStr = StringUtils.urlize(str_regEx);
-		assertEquals("", cleanStr);
+		assertEquals("23", cleanStr);
 
 		String str_trimDash = " --test-test--";
 		cleanStr = StringUtils.urlize(str_trimDash);
@@ -96,7 +96,7 @@ public class TestStringUtils {
 
 		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
 		cleanStr = StringUtils.clean(str_regEx);
-		assertEquals("", cleanStr);
+		assertEquals("23 ", cleanStr);
 
 		String str_trimDash = " --test-test--";
 		cleanStr = StringUtils.clean(str_trimDash);
