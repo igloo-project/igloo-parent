@@ -27,6 +27,8 @@
 		<owsi-core.querydsl.version>2.3.3</owsi-core.querydsl.version>
 		<owsi-core.querydsl.maven-apt-plugin.version>1.0.2</owsi-core.querydsl.maven-apt-plugin.version>
 		
+		<owsi-core.guava.version>12.0-rc2</owsi-core.guava.version>
+		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>

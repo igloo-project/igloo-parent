@@ -69,6 +69,18 @@
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
 			<version>${owsi-core.ehcache.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<artifactId>slf4j-api</artifactId>
+			<groupId>org.slf4j</groupId>
+			<version>${owsi-core.slf4j.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -129,12 +141,16 @@
 		
 		<dependency>
 			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-analysis-extras</artifactId>
+			<artifactId>solr-core</artifactId>
 			<version>${owsi-core.lucene.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.solr</groupId>
 					<artifactId>solr-noggit</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.solr</groupId>
+					<artifactId>solr-solrj</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>org.apache.geronimo.specs</groupId>
@@ -173,6 +189,10 @@
 					<groupId>org.slf4j</groupId>
 				</exclusion>
 				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
 					<artifactId>lucene-icu</artifactId>
 					<groupId>org.apache.lucene</groupId>
 				</exclusion>
@@ -192,7 +212,35 @@
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>commons-codec</artifactId>
+					<groupId>commons-codec</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcl-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${owsi-core.guava.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${owsi-core.slf4j.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -221,6 +269,10 @@
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-lang3</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -308,6 +360,12 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>${owsi-core.commons-lang.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${owsi-core.commons-codec.version}</version>
 		</dependency>
 
 		<dependency>
