@@ -59,7 +59,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	/**
 	 * Ratio pour redimensionner les colonnes correctement
 	 */
-	private static final float COLUMN_RESIZE_RATIO = 1.25f; 
+	protected static final float COLUMN_RESIZE_RATIO = 1.25f; 
 
 	protected static final String FONT_NORMAL_NAME = "fontNormal";
 	protected static final String FONT_HEADER_NAME = "fontHeader";
