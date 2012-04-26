@@ -18,6 +18,8 @@ package fr.openwide.core.export.excel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -434,14 +436,32 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected void addHeadersToSheet(Sheet sheet, int rowIndex, List<String> headers) {
 		int columnIndex = 0;
-
+		
 		Row rowHeader = sheet.createRow(rowIndex);
 		for (String header : headers) {
 			addHeaderCell(rowHeader, columnIndex, getLocalizedLabel(header));
 			columnIndex++;
 		}
 	}
-	
+
+	/**
+	 * Ajoute les en-têtes dans la feuille de calcul et cache les colonnes qui doivent l'être.
+	 * 
+	 * @param sheet feuille de calcul
+	 * @param rowIndex numéro de la ligne
+	 * @param headers map contenant les en-têtes de colonnes et si celles-ci doivent être cachées ou non
+	 */
+	protected void addHeadersToSheet(Sheet sheet, int rowIndex, Map<String, ColumnInformation> columnInfos) {
+		int columnIndex = 0;
+
+		Row rowHeader = sheet.createRow(rowIndex);
+		for (Entry<String, ColumnInformation> entry : columnInfos.entrySet()) {
+			sheet.setColumnHidden(columnIndex, entry.getValue().isHidden());
+			addHeaderCell(rowHeader, columnIndex, getLocalizedLabel(entry.getKey()));
+			columnIndex++;
+		}
+	}
+
 	/**
 	 * Finalise la création de la feuille de calcul, notamment en demandant le
 	 * redimensionnement automatique des colonnes.
@@ -456,7 +476,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 			sheet.setColumnWidth(i, (int) (sheet.getColumnWidth(i) * COLUMN_RESIZE_RATIO));
 		}
 	}
-	
+
 	/**
 	 * Retourne le message correspondant à la clé en fonction du Locale
 	 * 

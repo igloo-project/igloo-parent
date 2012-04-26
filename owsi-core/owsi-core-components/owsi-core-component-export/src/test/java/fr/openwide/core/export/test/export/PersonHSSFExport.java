@@ -1,12 +1,15 @@
 package fr.openwide.core.export.test.export;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import fr.openwide.core.export.excel.AbstractExcelTableExport;
+import fr.openwide.core.export.excel.ColumnInformation;
 import fr.openwide.core.export.test.person.Person;
 
 public class PersonHSSFExport extends AbstractExcelTableExport {
@@ -24,13 +27,15 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 		init();
 	}
 
-	public HSSFWorkbook generate(List<Person> persons, List<String> columns) {
+	public HSSFWorkbook generate(List<Person> persons, Map<String, ColumnInformation> columnsInfos) {
 		HSSFSheet sheet = (HSSFSheet) createSheet("Document .xls");
 
 		int rowIndex = 0;
 
-		addHeadersToSheet(sheet, rowIndex, columns);
+		addHeadersToSheet(sheet, rowIndex, columnsInfos);
 		rowIndex++;
+
+		List<String> columnNames = new ArrayList<String>(columnsInfos.keySet());
 
 		for (Person person : persons) {
 			HSSFRow currentRow = sheet.createRow(rowIndex);
@@ -38,13 +43,13 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 
 			int columnIndex = 0;
 
-			for (String column : columns) {
+			for (String column : columnNames) {
 				addCell(currentRow, columnIndex, person, column);
 				columnIndex++;
 			}
 		}
 
-		finalizeSheet(sheet, columns);
+		finalizeSheet(sheet, columnNames);
 
 		return (HSSFWorkbook) workbook;
 	}
