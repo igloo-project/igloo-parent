@@ -50,6 +50,12 @@
 			<version>${owsi-core.freemarker.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${owsi-core.lucene.version}</version>
+		</dependency>
+		
 		<!-- Test dependencies -->
 		
 		<dependency>
