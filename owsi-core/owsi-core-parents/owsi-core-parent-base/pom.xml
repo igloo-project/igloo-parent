@@ -66,7 +66,10 @@
 		<owsi-core.opencsv.version>2.3</owsi-core.opencsv.version>
 		<owsi-core.freemarker.version>2.3.18</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
-		<owsi-core.poi.version>3.8</owsi-core.poi.version>
+		
+		<!-- BUG Apache POI en 3.8: https://issues.apache.org/bugzilla/show_bug.cgi?id=53028 -->
+		<owsi-core.poi.version>3.7</owsi-core.poi.version>
+		
 		<owsi-core.itext.version>2.1.5</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.6</owsi-core.jackson.version>
