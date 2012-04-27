@@ -59,7 +59,12 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	/**
 	 * Ratio pour redimensionner les colonnes correctement
 	 */
-	protected static final float COLUMN_RESIZE_RATIO = 1.25f; 
+	protected static final float COLUMN_RESIZE_RATIO = 1.25f;
+
+	/**
+	 * Taille maximale autorisée pour une colonne
+	 */
+	protected static final int ABSOLUTE_MAX_COLUMN_WIDTH = 65000;
 
 	protected static final String FONT_NORMAL_NAME = "fontNormal";
 	protected static final String FONT_HEADER_NAME = "fontHeader";
@@ -449,7 +454,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * 
 	 * @param sheet feuille de calcul
 	 * @param rowIndex numéro de la ligne
-	 * @param headers map contenant les en-têtes de colonnes et si celles-ci doivent être cachées ou non
+	 * @param columnInfos map contenant l'en-tête et les informations d'une colonne
 	 */
 	protected void addHeadersToSheet(Sheet sheet, int rowIndex, Map<String, ColumnInformation> columnInfos) {
 		int columnIndex = 0;
@@ -470,10 +475,46 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * @param headers en-têtes
 	 */
 	protected void finalizeSheet(Sheet sheet, List<String> headers) {
-		int headersSize = headers.size();
-		for (int i = 0; i < headersSize; i++) {
+		int nbColumns = headers.size();
+		for (int i = 0; i < nbColumns; i++) {
 			sheet.autoSizeColumn((short) i);
-			sheet.setColumnWidth(i, (int) (sheet.getColumnWidth(i) * COLUMN_RESIZE_RATIO));
+			int columnWidth = (int) (sheet.getColumnWidth(i) * COLUMN_RESIZE_RATIO);
+			sheet.setColumnWidth(i, columnWidth < ABSOLUTE_MAX_COLUMN_WIDTH ? columnWidth : ABSOLUTE_MAX_COLUMN_WIDTH);
+		}
+	}
+
+	/**
+	 * Finalise la création de la feuille de calcul, notamment en demandant le
+	 * redimensionnement automatique des colonnes.
+	 * 
+	 * @param sheet feuilles de calcul
+	 * @param columnInfos map contenant l'en-tête et les informations d'une colonne
+	 */
+	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos) {
+		int columnIndex = 0;
+		for (Entry<String, ColumnInformation> entry : columnInfos.entrySet()) {
+			sheet.autoSizeColumn((short) columnIndex);
+			
+			// Détermination de la taille maximum de cette colonne
+			int maxColumnWidth;
+			if (entry.getValue().getColumnMaxWidth() != -1) {
+				maxColumnWidth = entry.getValue().getColumnMaxWidth();
+			} else {
+				maxColumnWidth = ABSOLUTE_MAX_COLUMN_WIDTH;
+			}
+			
+			// Détermination de la taille souhaitée pour la colonne
+			int columnWidth;
+			if (entry.getValue().getColumnWidth() != -1) {
+				columnWidth = entry.getValue().getColumnWidth();
+			} else {
+				columnWidth = (int) (sheet.getColumnWidth(columnIndex) * COLUMN_RESIZE_RATIO);
+			}
+			
+			// On redimmensionne la colonne
+			sheet.setColumnWidth(columnIndex, columnWidth < maxColumnWidth ? columnWidth : maxColumnWidth);
+			
+			columnIndex++;
 		}
 	}
 

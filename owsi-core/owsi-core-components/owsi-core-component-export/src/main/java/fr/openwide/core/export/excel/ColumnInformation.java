@@ -7,7 +7,11 @@ public class ColumnInformation {
 
 	String headerKey;
 
-	private boolean hidden;
+	private boolean hidden = false;
+
+	private int columnWidth = -1;
+
+	private int columnMaxWidth = -1;
 
 	public ColumnInformation(String headerKey) {
 		this.headerKey = headerKey;
@@ -16,6 +20,16 @@ public class ColumnInformation {
 	public ColumnInformation(String headerKey, boolean hidden) {
 		this(headerKey);
 		this.hidden = hidden;
+	}
+
+	public ColumnInformation(String headerKey, boolean hidden, int columnMaxWidth) {
+		this(headerKey, hidden);
+		this.columnMaxWidth = columnMaxWidth;
+	}
+
+	public ColumnInformation(String headerKey, boolean hidden, int columnMaxWidth, int columnWidth) {
+		this(headerKey, hidden, columnMaxWidth);
+		this.columnWidth = columnWidth;
 	}
 
 	public String getHeaderKey() {
@@ -32,5 +46,21 @@ public class ColumnInformation {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+	}
+
+	public int getColumnWidth() {
+		return columnWidth;
+	}
+
+	public void setColumnWidth(int columnWidth) {
+		this.columnWidth = columnWidth;
+	}
+
+	public int getColumnMaxWidth() {
+		return columnMaxWidth;
+	}
+
+	public void setColumnMaxWidth(int columnMaxWidth) {
+		this.columnMaxWidth = columnMaxWidth;
 	}
 }
