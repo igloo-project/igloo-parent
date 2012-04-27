@@ -1,11 +1,13 @@
 package fr.openwide.core.export.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,15 +22,17 @@ public class TestExcelGeneration {
 
 	@Test
 	public void testHSSFGeneration() {
-		Map<String, ColumnInformation> columns = new HashMap<String, ColumnInformation>();
-		columns.put("username", new ColumnInformation("username", false));
-		columns.put("firstname", new ColumnInformation("firstname", false));
-		columns.put("lastname", new ColumnInformation("lastname", false));
-		columns.put("birth date", new ColumnInformation("birth date", true));
-		columns.put("birth hour", new ColumnInformation("birth hour", true));
-		columns.put("age", new ColumnInformation("age", false));
-		columns.put("size", new ColumnInformation("size", true));
-		columns.put("percentage", new ColumnInformation("percentage", false));
+		int maxColumnWidth = 2000;
+		
+		LinkedHashMap<String, ColumnInformation> columns = new LinkedHashMap<String, ColumnInformation>();
+		columns.put("username", new ColumnInformation("username", false, maxColumnWidth));
+		columns.put("firstname", new ColumnInformation("firstname", false, maxColumnWidth, 1500));
+		columns.put("lastname", new ColumnInformation("lastname", false, maxColumnWidth));
+		columns.put("birth date", new ColumnInformation("birth date", true, maxColumnWidth, 2500));
+		columns.put("birth hour", new ColumnInformation("birth hour", true, maxColumnWidth));
+		columns.put("age", new ColumnInformation("age", false, maxColumnWidth));
+		columns.put("size", new ColumnInformation("size", true, maxColumnWidth));
+		columns.put("percentage", new ColumnInformation("percentage", false, maxColumnWidth));
 
 		List<Person> persons = new LinkedList<Person>();
 		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 24, 1.80, .88));
@@ -38,8 +42,19 @@ public class TestExcelGeneration {
 		persons.add(new Person("username5", "firstname5", "lastname5", new Date(), 19, 1.88, .23));
 
 		PersonHSSFExport export = new PersonHSSFExport();
-		@SuppressWarnings("unused")
 		HSSFWorkbook workbook = export.generate(persons, columns);
+		
+		// Validation de la taille des colonnes
+		int columnIndex = 0;
+		for (String columnName : columns.keySet()) {
+			if ("firstname".equals(columnName)) {
+				assertEquals(1500, workbook.getSheetAt(0).getColumnWidth(columnIndex));
+			} else {
+				assertTrue(workbook.getSheetAt(0).getColumnWidth(columnIndex) <= 2000);
+			}
+			
+			columnIndex++;
+		}
 		
 		// Génération du fichier 
 //		try {

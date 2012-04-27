@@ -49,7 +49,7 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 			}
 		}
 
-		finalizeSheet(sheet, columnNames);
+		finalizeSheet(sheet, columnsInfos);
 
 		return (HSSFWorkbook) workbook;
 	}
