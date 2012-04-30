@@ -50,51 +50,98 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
-		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
-		classes.add(clazz);
-		
-		return search(classes, fields, searchPattern, analyzerName);
-	}
-	
-	@Override
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
-		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
-		classes.add(clazz);
-		
-		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz), null);
-	}
-	
-	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
-		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName), null);
-	}
-	
-	@Override
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
-			Query additionalLuceneQuery) throws ServiceException {
+			Integer limit, Integer offset) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
 		
-		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery);
+		return search(classes, fields, searchPattern, analyzerName, offset, limit);
+	}
+
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+		return search(clazz, fields, searchPattern, analyzerName, (Integer) null, (Integer) null);
 	}
 	
 	@Override
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Integer limit, Integer offset) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
 		
-		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz), additionalLuceneQuery);
+		return search(classes, fields, searchPattern,
+				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz),
+				null, limit, offset);
+	}
+
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern)
+			throws ServiceException {
+		return search(clazz, fields, searchPattern, (Integer) null, (Integer) null);
 	}
 	
 	@Override
 	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+			Integer limit, Integer offset) throws ServiceException {
+		return search(classes, fields, searchPattern,
+				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
+				null, limit, offset);
+	}
+
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern,
+			String analyzerName) throws ServiceException {
+		return search(classes, fields, searchPattern, analyzerName, (Integer) null, (Integer) null);
+	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
+			Query additionalLuceneQuery, Integer limit, Integer offset) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, limit, offset);
+	}
+
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery) throws ServiceException {
-		return search(classes, fields, searchPattern, Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName), additionalLuceneQuery);
+		return search(clazz, fields, searchPattern, analyzerName, additionalLuceneQuery, (Integer) null, (Integer) null);
+	}
+	
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery,
+			Integer limit, Integer offset) throws ServiceException {
+		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
+		classes.add(clazz);
+		
+		return search(classes, fields, searchPattern,
+				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz),
+				additionalLuceneQuery, limit, offset);
+	}
+
+	@Override
+	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery)
+			throws ServiceException {
+		return search(clazz, fields, searchPattern, additionalLuceneQuery, (Integer) null, (Integer) null);
+	}
+	
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+			Query additionalLuceneQuery, Integer limit, Integer offset) throws ServiceException {
+		return search(classes, fields, searchPattern,
+				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
+				additionalLuceneQuery, limit, offset);
+	}
+
+	@Override
+	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern,
+			String analyzerName, Query additionalLuceneQuery) throws ServiceException {
+		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, (Integer) null, (Integer) null);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer, Query additionalLuceneQuery) throws ServiceException {
+	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
+			Query additionalLuceneQuery, Integer limit, Integer offset) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
 			return Collections.emptyList();
 		}
@@ -112,6 +159,12 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			}
 			
 			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, classes.toArray(new Class<?>[classes.size()]));
+			if (offset != null) {
+				hibernateQuery.setFirstResult(offset);
+			}
+			if (limit != null) {
+				hibernateQuery.setMaxResults(limit);
+			}
 			
 			return (List<T>) hibernateQuery.getResultList();
 		} catch(ParseException e) {
