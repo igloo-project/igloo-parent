@@ -10,6 +10,9 @@
 	<name>OWSI Core - Parent - Base</name>
 	
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
 		<jdk.version>1.6</jdk.version>
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		
@@ -116,7 +119,6 @@
 					<configuration>
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
-						<encoding>UTF-8</encoding>
 						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
