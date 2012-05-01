@@ -15,10 +15,12 @@ public class HideableExternalLink extends ExternalLink {
 	public HideableExternalLink(String id, String label) {
 		super(id, label);
 	}
-
+	
 	@Override
-	public boolean isVisible() {
-		return StringUtils.hasText(getDefaultModelObjectAsString());
+	protected void onConfigure() {
+		super.onConfigure();
+		
+		setVisible(StringUtils.hasText(getDefaultModelObjectAsString()));
 	}
 
 }

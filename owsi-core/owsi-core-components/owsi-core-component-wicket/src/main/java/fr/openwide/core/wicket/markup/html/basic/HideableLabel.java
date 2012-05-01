@@ -17,8 +17,10 @@ public class HideableLabel extends Label {
 	}
 
 	@Override
-	public boolean isVisible() {
-		return StringUtils.hasText(getDefaultModelObjectAsString());
+	protected void onConfigure() {
+		super.onConfigure();
+		
+		setVisible(StringUtils.hasText(getDefaultModelObjectAsString()));
 	}
 
 }
