@@ -267,8 +267,12 @@
 					<artifactId>commons-lang3</artifactId>
 				</exclusion>
 				<exclusion>
-					<artifactId>slf4j-api</artifactId>
 					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -277,6 +281,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${owsi-core.commons-lang3.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${owsi-core.guava.version}</version>
 		</dependency>
 
 		<!-- Spring dependencies -->
