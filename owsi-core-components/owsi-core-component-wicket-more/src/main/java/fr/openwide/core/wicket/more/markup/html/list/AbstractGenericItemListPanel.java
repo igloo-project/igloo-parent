@@ -93,7 +93,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 							MarkupContainer actionLink = AbstractGenericItemListPanel.this.getActionLink(id, itemModel);
 							if (!isActionAvailable()) {
 								getActionLinkHidden().setVisible(false);
-								return new InvisibleLink(id);
+								return new InvisibleLink<Void>(id);
 							} else {
 								boolean actionVisible = actionLink.isVisible();
 								actionLink.setVisible(actionVisible);
@@ -106,7 +106,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						protected Component getEditLink(String id, IModel<? extends T> itemModel) {
 							if (!isEditAvailable()) {
 								getEditLinkHidden().setVisible(false);
-								return new InvisibleLink(id);
+								return new InvisibleLink<Void>(id);
 							} else {
 								Component editLink = AbstractGenericItemListPanel.this.getEditLink(id, itemModel);
 								boolean editVisible = editLink.isVisible() &&
@@ -132,7 +132,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						protected Component getDeleteLink(String id, IModel<? extends T> itemModel) {
 							if (!isDeleteAvailable()) {
 								getDeleteLinkHidden().setVisible(false);
-								return new InvisibleLink(id);
+								return new InvisibleLink<Void>(id);
 							} else {
 								Component deleteLink = AbstractGenericItemListPanel.this.getDeleteLink(id, itemModel);
 								boolean deleteVisible = deleteLink.isVisible() &&
@@ -228,7 +228,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	protected abstract void addItemColumns(final Item<T> item, final IModel<? extends T> itemModel);
 	
 	protected MarkupContainer getActionLink(final String id, final IModel<? extends T> itemModel) {
-		return new InvisibleLink(id);
+		return new InvisibleLink<Void>(id);
 	}
 	
 	protected IModel<String> getActionText(final IModel<? extends T> itemModel) {
@@ -240,7 +240,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 	
 	protected Component getEditLink(final String id, final IModel<? extends T> itemModel) {
-		return new InvisibleLink(id);
+		return new InvisibleLink<Void>(id);
 	}
 	
 	protected abstract void doDeleteItem(final IModel<? extends T> itemModel) throws ServiceException, SecurityServiceException;

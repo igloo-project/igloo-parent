@@ -16,11 +16,13 @@ public class SecuredServiceImpl implements SecuredService {
 	public SecuredServiceImpl() {
 	}
 
+	@Override
 	public String getDate() {
 		LOGGER.info("Secured Service returning date");
 		return (new Date()).toString();
 	}
 	
+	@Override
 	public List<String> getList() {
 		LOGGER.info("Secured Service returning list");
 		List<String> list = new ArrayList<String>();

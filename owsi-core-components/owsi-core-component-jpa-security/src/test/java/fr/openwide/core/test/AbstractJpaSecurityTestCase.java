@@ -61,6 +61,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	protected ProviderManager authenticationManager;
 
 	@Before
+	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 		
@@ -75,6 +76,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	}
 	
 	@After
+	@Override
 	public void close() throws ServiceException, SecurityServiceException {
 		super.close();
 	}

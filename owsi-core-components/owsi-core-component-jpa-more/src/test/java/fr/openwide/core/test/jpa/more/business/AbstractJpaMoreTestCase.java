@@ -66,6 +66,7 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 	}
 
 	@Before
+	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 		initFeaturesAndActions();

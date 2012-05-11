@@ -36,6 +36,7 @@ public class EnumLabelModel<E extends Enum<?>> extends ComponentModel<String> {
 		this.nullKeyModel = nullKeyModel;
 	}
 	
+	@Override
 	protected String getObject(Component component) {
 		if (enumValueModel != null && enumValueModel.getObject() != null) {
 			return component.getString(enumValueModel.getObject().getClass().getSimpleName() + "." + enumValueModel.getObject().name());

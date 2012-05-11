@@ -17,6 +17,7 @@ public class AuthorityServiceImpl extends GenericEntityServiceImpl<Long, Authori
 		super(authorityDao);
 	}
 	
+	@Override
 	public Authority getByName(String name) {
 		return getByField(Authority_.name, name);
 	}

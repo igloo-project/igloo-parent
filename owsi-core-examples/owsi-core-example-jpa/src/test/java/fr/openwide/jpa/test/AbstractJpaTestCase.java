@@ -79,6 +79,7 @@ public abstract class AbstractJpaTestCase extends AbstractTestCase {
 		}
 	}
 
+	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanProjects();
 		cleanCompanies();

@@ -23,10 +23,12 @@ public class Authority extends GenericEntity<Long, Authority> {
 	public Authority() {
 	}
 	
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

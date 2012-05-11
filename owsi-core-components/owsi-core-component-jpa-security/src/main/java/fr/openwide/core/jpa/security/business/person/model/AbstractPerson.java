@@ -120,6 +120,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.userName = userName;
 	}
 
+	@Override
 	public String getFirstName() {
 		return firstName;
 	}
@@ -128,6 +129,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.firstName = firstName;
 	}
 
+	@Override
 	public String getLastName() {
 		return lastName;
 	}
@@ -138,6 +140,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	@JsonIgnore
 	@Transient
+	@Override
 	public String getFullName() {
 		StringBuilder builder = new StringBuilder();
 		if(firstName != null) {
@@ -150,6 +153,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		return builder.toString().trim();
 	}
 
+	@Override
 	public Set<Authority> getAuthorities() {
 		return authorities;
 	}
@@ -204,6 +208,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.faxNumber = faxNumber;
 	}
 
+	@Override
 	public String getMd5Password() {
 		return md5Password;
 	}
@@ -216,6 +221,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.active = active;
 	}
 
+	@Override
 	public boolean isActive() {
 		return active;
 	}

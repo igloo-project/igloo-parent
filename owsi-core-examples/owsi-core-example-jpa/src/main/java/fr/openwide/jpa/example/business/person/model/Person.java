@@ -44,10 +44,12 @@ public class Person extends GenericEntity<Long, Person> {
 		this.lastName = lastName;
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

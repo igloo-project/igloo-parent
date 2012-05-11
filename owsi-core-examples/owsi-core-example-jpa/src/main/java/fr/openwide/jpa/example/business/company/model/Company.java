@@ -81,10 +81,12 @@ public class Company extends GenericEntity<Long, Company> {
 		this.name = name;
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}
