@@ -11,6 +11,7 @@ public class EntityManagerExecutionListener extends AbstractTestExecutionListene
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
 
+	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
 		refreshBean(testContext);
 	}

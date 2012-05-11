@@ -12,6 +12,7 @@ class ErrorLevelFeedbackMessageFilter implements IFeedbackMessageFilter {
 		this.errorLevel = errorLevel;
 	}
 
+	@Override
 	public boolean accept(FeedbackMessage message) {
 		return message.getLevel() == errorLevel;
 	}

@@ -115,6 +115,7 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
         buildPermissionsAcceptableInOneOrMoreStepsMap();
     }
     
+    @Override
     public List<Permission> getAcceptablePermissions(Permission permission) {
     	Collection<Permission> permissions = new ArrayList<Permission>(1);
     	permissions.add(permission);
@@ -122,6 +123,7 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
     	return getAcceptablePermissions(permissions);
     }
 
+    @Override
     public List<Permission> getAcceptablePermissions(Collection<Permission> permissions) {
         if (permissions == null || permissions.size() == 0) {
             return null;

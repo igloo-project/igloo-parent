@@ -33,6 +33,7 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		this.isAutocompleteActive = isAutocompleteActive;
 	}
 	
+	@Override
 	public void onInitialize() {
 		super.onInitialize();
 		this.setDateFormat(getString(datePattern.getJavascriptPatternKey()));

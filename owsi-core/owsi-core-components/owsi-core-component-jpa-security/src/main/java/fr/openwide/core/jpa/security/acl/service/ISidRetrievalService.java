@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 
 public interface ISidRetrievalService extends SidRetrievalStrategy {
 
+	@Override
 	List<Sid> getSids(Authentication authentication);
 	
 }

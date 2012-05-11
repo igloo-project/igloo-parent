@@ -128,6 +128,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 * 
 	 * @return current user roles
 	 */
+	@Override
 	public Roles getRoles() {
 		return roles;
 	}

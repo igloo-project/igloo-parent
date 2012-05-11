@@ -158,11 +158,13 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 	}
 	
 	@Before
+	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 	}
 	
 	@After
+	@Override
 	public void close() throws ServiceException, SecurityServiceException {
 		super.close();
 	}

@@ -25,6 +25,7 @@ class ErrorLevelContainerFeedbackMessageFilter implements IFeedbackMessageFilter
 		this.container = component;
 	}
 	
+	@Override
 	public boolean accept(FeedbackMessage message) {
 		if (message.getReporter() == null) {
 			return false;

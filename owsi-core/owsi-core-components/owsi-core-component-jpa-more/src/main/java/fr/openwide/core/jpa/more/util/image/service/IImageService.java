@@ -2,7 +2,6 @@ package fr.openwide.core.jpa.more.util.image.service;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.List;
 
 import fr.openwide.core.jpa.more.util.image.exception.ImageThumbnailGenerationException;
 import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
