@@ -19,7 +19,7 @@ package fr.openwide.core.wicket.more.markup.html.link;
 
 import org.apache.wicket.markup.html.link.Link;
 
-public class InvisibleLink extends Link<Void> {
+public class InvisibleLink<T> extends Link<T> {
 	private static final long serialVersionUID = -231285069794920337L;
 	
 	public InvisibleLink(String id) {
