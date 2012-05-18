@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.caro
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
+import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 public class CarouFredSelBehavior extends WiQueryAbstractBehavior {
@@ -17,7 +18,8 @@ public class CarouFredSelBehavior extends WiQueryAbstractBehavior {
 
 	@Override
 	public JsStatement statement() {
-		return new JsStatement().$(getComponent()).chain(carouFredSel);
+		JsScope scope = JsScope.quickScope(new JsStatement().$(getComponent()).chain(carouFredSel));
+		return new JsStatement().append("$(window).load(").append(scope.render()).append(")");
 	}
 	
 	@Override
