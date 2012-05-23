@@ -23,6 +23,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private IPersonService<? extends IPerson> personService; 
 	
+	@Autowired
 	private RoleHierarchy roleHierarchy;
 
 	@Override
@@ -41,7 +42,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
 		}
 		
-		User userDetails = new User(userName, person.getMd5Password(), person.isActive(), true, true, true, 
+		User userDetails = new User(userName, person.getPasswordHash(), person.isActive(), true, true, true, 
 				roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities));
 		
 		return userDetails;
@@ -52,12 +53,5 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
 		}
 	}
-	
-	public RoleHierarchy getRoleHierarchy() {
-		return roleHierarchy;
-	}
 
-	public void setRoleHierarchy(RoleHierarchy roleHierarchy) {
-		this.roleHierarchy = roleHierarchy;
-	}
 }

@@ -26,6 +26,6 @@ public interface IPerson {
 
 	boolean isActive();
 
-	String getMd5Password();
+	String getPasswordHash();
 
 }

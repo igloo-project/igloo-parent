@@ -65,6 +65,9 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@JsonIgnore
 	private String md5Password = "*NO PASSWORD*";
 	
+	@JsonIgnore
+	private String sha256Password = "*NO PASSWORD*";
+	
 	@Field
 	private boolean active = true;
 	
@@ -208,13 +211,20 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.faxNumber = faxNumber;
 	}
 
-	@Override
 	public String getMd5Password() {
 		return md5Password;
 	}
 
 	public void setMd5Password(String md5Password) {
 		this.md5Password = md5Password;
+	}
+	
+	public String getSha256Password() {
+		return sha256Password;
+	}
+
+	public void setSha256Password(String sha256Password) {
+		this.sha256Password = sha256Password;
 	}
 	
 	public void setActive(boolean active) {
