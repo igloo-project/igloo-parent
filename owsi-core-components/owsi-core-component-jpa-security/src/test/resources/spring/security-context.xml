@@ -62,8 +62,7 @@
 	</security:global-method-security>
 
 	<bean id="coreJpaUserDetailsService"
-		class="fr.openwide.core.jpa.security.service.CoreJpaUserDetailsServiceImpl"
-		p:roleHierarchy-ref="roleHierarchy" />
+		class="fr.openwide.core.jpa.security.service.CoreJpaUserDetailsServiceImpl" />
 		
 	<bean id="authenticationService"
 		class="fr.openwide.core.jpa.security.service.CoreAuthenticationServiceImpl" />
