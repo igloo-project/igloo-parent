@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -82,10 +81,6 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 		link.add(container);
 		
 		menuContainer.add(link);
-	}
-	
-	protected boolean isPageAccessible(Class<? extends Page> pageClass) {
-		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 	
 	protected abstract Class<? extends WebPage> getFirstMenuPage();
