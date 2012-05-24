@@ -7,6 +7,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
 
@@ -36,7 +38,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;
 	
-	private Long userId;
+	private IModel<P> personModel;
 	
 	private Roles roles = new Roles();
 
@@ -72,9 +74,13 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		if (loggedIn) {
 			P person = personService.getByUserName(authenticationService.getUserName());
 			if (person != null) {
-				userId = person.getId();
+				personModel = new GenericEntityModel<Long, P>(person);
 				
 				try {
+					if (person.getLastLoginDate() == null) {
+						onFirstLogin(person);
+					}
+					
 					personService.updateLastLoginDate(person);
 					
 					Locale locale = person.getLocale();
@@ -101,14 +107,17 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		
 		return loggedIn;
 	}
+	
+	protected void onFirstLogin(P person) {
+	}
 
 	/**
 	 * @return the currently logged in user, or null when no user is logged in
 	 */
 	public String getUserName() {
 		String userName = null;
-		if (isSignedIn()) {
-			userName = authenticationService.getUserName();
+		if (isSignedIn() && personModel != null) {
+			userName = personModel.getObject().getUserName();
 		}
 		return userName;
 	}
@@ -116,8 +125,8 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	protected P getPerson() {
 		P person = null;
 
-		if (isSignedIn() && userId != null) {
-			person = personService.getById(userId);
+		if (isSignedIn() && personModel != null) {
+			person = personModel.getObject();
 		}
 
 		return person;
@@ -159,7 +168,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 */
 	@Override
 	public void invalidate() {
-		userId = null;
+		personModel = null;
 		roles = new Roles();
 		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		
@@ -204,5 +213,14 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@Override
 	public void setLocale(Locale locale) {
 		super.setLocale(configurer.toAvailableLocale(locale));
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		
+		if (personModel != null) {
+			personModel.detach();
+		}
 	}
 }
