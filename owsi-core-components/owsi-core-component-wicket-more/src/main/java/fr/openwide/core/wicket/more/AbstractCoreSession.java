@@ -110,6 +110,10 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	protected void onFirstLogin(P person) {
 	}
+	
+	protected IModel<P> getPersonModel() {
+		return personModel;
+	}
 
 	/**
 	 * @return the currently logged in user, or null when no user is logged in
@@ -218,6 +222,15 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@Override
 	public void detach() {
 		super.detach();
+		
+		if (personModel != null) {
+			personModel.detach();
+		}
+	}
+	
+	@Override
+	public void internalDetach() {
+		super.internalDetach();
 		
 		if (personModel != null) {
 			personModel.detach();
