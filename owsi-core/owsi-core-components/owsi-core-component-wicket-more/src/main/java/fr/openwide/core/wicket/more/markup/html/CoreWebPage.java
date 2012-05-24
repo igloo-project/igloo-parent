@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -37,6 +38,10 @@ public abstract class CoreWebPage extends WebPage {
 	protected Component visible(Component component, boolean visible) {
 		component.setVisible(visible);
 		return component;
+	}
+	
+	protected boolean isPageAccessible(Class<? extends Page> pageClass) {
+		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 
 }
