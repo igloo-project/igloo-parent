@@ -27,7 +27,7 @@
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.4.7</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>2.5.0</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>2.6.0</owsi-core.querydsl.version>
 		<owsi-core.querydsl.maven-apt-plugin.version>1.0.2</owsi-core.querydsl.maven-apt-plugin.version>
 		
 		<owsi-core.guava.version>12.0</owsi-core.guava.version>
@@ -94,7 +94,7 @@
 		<owsi-core.taglibs-standard.version>1.1.2</owsi-core.taglibs-standard.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
 		<owsi-core.wicket.version>1.5.6</owsi-core.wicket.version>
-		<owsi-core.wiquery.version>1.5.4</owsi-core.wiquery.version>
+		<owsi-core.wiquery.version>1.5.6</owsi-core.wiquery.version>
 		<owsi-core.lesscss-engine.version>1.3.0</owsi-core.lesscss-engine.version>
 		
 		<owsi-core.maven-compiler-plugin.version>2.3.2</owsi-core.maven-compiler-plugin.version>
@@ -106,7 +106,7 @@
 		<owsi-core.maven-processor-plugin.version>2.0.5</owsi-core.maven-processor-plugin.version>
 		<owsi-core.maven-jar-plugin.version>2.4</owsi-core.maven-jar-plugin.version>
 		<owsi-core.aspectj-maven-plugin.version>1.4</owsi-core.aspectj-maven-plugin.version>
-		<owsi-core.maven-yui-compressor-plugin.version>1.2</owsi-core.maven-yui-compressor-plugin.version>
+		<owsi-core.maven-yui-compressor-plugin.version>1.3.0</owsi-core.maven-yui-compressor-plugin.version>
 	</properties>
 	
 	<build>
