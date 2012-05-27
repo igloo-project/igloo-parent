@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map;
 
 import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.InfoBubbleResourceReference;
@@ -19,7 +18,6 @@ public class GmapResourceReference extends WiQueryJavaScriptResourceReference {
 	@Override
 	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
 		return new AbstractResourceDependentResourceReference[] {
-				CoreJavaScriptResourceReference.get(),
 				InfoBubbleResourceReference.get(),
 				WicketAjaxGmapResourceReference.get()
 		};
