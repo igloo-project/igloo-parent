@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
 import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
@@ -18,7 +17,6 @@ public class FancyboxJavaScriptResourceReference extends WiQueryJavaScriptResour
 	@Override
 	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
 		return new AbstractResourceDependentResourceReference[] {
-				CoreJavaScriptResourceReference.get(),
 				EasingJavaScriptResourceReference.get()
 		};
 	}
