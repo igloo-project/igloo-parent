@@ -8,7 +8,11 @@ public enum DatePattern implements IDatePattern {
 	REALLY_SHORT_DATE("date.format.reallyShortDate", "javascript.date.format.reallyShortDate"),
 	REALLY_SHORT_DATETIME("date.format.reallyShortDateTime", null),
 
-	YEAR("date.format.year", "javascript.date.format.year");
+	YEAR("date.format.year", "javascript.date.format.year"),
+	
+	MONTH_YEAR("date.format.monthYear", "javascript.date.format.monthYear"),
+	SHORT_MONTH_YEAR("date.format.shortMonthYear", "javascript.date.format.shortMonthYear"),
+	COMPLETE_MONTH_YEAR("date.format.completeMonthYear", "javascript.date.format.completeMonthYear");
 	
 	private String javaPatternKey;
 	
