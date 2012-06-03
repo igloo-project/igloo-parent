@@ -5,16 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
 import org.apache.wicket.util.string.Strings;
 
+import fr.openwide.core.wicket.more.util.IDatePattern;
+
 public class PatternDateConverter extends AbstractConverter<Date> {
 	
 	private static final long serialVersionUID = 5741008524800373419L;
+	
+	private IDatePattern datePattern;
 
-	private IModel<String> datePatternModel;
+	private IModel<String> dateFormatModel;
 
 	/**
 	 * Caller must take care of :
@@ -23,17 +28,18 @@ public class PatternDateConverter extends AbstractConverter<Date> {
 	 * <li>Model detaching</li>
 	 * </ul>
 	 */
-	public PatternDateConverter(IModel<String> datePatternModel) {
+	public PatternDateConverter(IDatePattern datePattern, IModel<String> dateFormatModel) {
 		super();
-		this.datePatternModel = datePatternModel;
+		this.datePattern = datePattern;
+		this.dateFormatModel = dateFormatModel;
 	}
 
 	/**
 	 * Back compatibility constructor. If pattern is taken from translations, then you should use a ResourceModel
 	 * with the IModel&lt;String> constructor
 	 */
-	public PatternDateConverter(String datePattern) {
-		this(Model.of(datePattern));
+	public PatternDateConverter(IDatePattern datePattern, String dateFormat) {
+		this(datePattern, Model.of(dateFormat));
 	}
 
 	@Override
@@ -47,7 +53,13 @@ public class PatternDateConverter extends AbstractConverter<Date> {
 
 	@Override
 	public String convertToString(final Date value, Locale locale) {
-		return getDateFormat(locale).format(value);
+		String date = getDateFormat(locale).format(value);
+		
+		if (datePattern.capitalize()) {
+			return WordUtils.capitalize(date);
+		} else {
+			return date;
+		}
 	}
 
 	@Override
@@ -63,7 +75,7 @@ public class PatternDateConverter extends AbstractConverter<Date> {
 			locale = Locale.ENGLISH;
 		}
 		
-		return new SimpleDateFormat(datePatternModel.getObject(), locale);
+		return new SimpleDateFormat(dateFormatModel.getObject(), locale);
 	}
 	
 }
