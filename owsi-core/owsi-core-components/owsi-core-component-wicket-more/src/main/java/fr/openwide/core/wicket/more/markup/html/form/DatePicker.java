@@ -44,7 +44,7 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 	public <C> IConverter<C> getConverter(Class<C> type) {
 		if (Date.class.isAssignableFrom(type)) {
 			if (converter == null) {
-				converter = new PatternDateConverter(getString(datePattern.getJavaPatternKey()));
+				converter = new PatternDateConverter(datePattern, getString(datePattern.getJavaPatternKey()));
 			}
 			return (IConverter<C>) converter;
 		} else {

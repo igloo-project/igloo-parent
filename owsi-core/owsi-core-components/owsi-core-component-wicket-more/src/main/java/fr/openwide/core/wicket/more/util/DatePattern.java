@@ -12,15 +12,22 @@ public enum DatePattern implements IDatePattern {
 	
 	MONTH_YEAR("date.format.monthYear", "javascript.date.format.monthYear"),
 	SHORT_MONTH_YEAR("date.format.shortMonthYear", "javascript.date.format.shortMonthYear"),
-	COMPLETE_MONTH_YEAR("date.format.completeMonthYear", "javascript.date.format.completeMonthYear");
+	COMPLETE_MONTH_YEAR("date.format.completeMonthYear", "javascript.date.format.completeMonthYear", true);
 	
 	private String javaPatternKey;
 	
 	private String javascriptPatternKey;
 	
+	private boolean capitalize;
+	
 	private DatePattern(String javaPatternKey, String javascriptPatternKey) {
+		this(javaPatternKey, javascriptPatternKey, false);
+	}
+	
+	private DatePattern(String javaPatternKey, String javascriptPatternKey, boolean capitalize) {
 		this.javaPatternKey = javaPatternKey;
 		this.javascriptPatternKey = javascriptPatternKey;
+		this.capitalize = capitalize;
 	}
 	
 	@Override
@@ -39,6 +46,11 @@ public enum DatePattern implements IDatePattern {
 		} else {
 			throw new IllegalStateException("Javascript format not supported for this format");
 		}
+	}
+
+	@Override
+	public boolean capitalize() {
+		return capitalize;
 	}
 	
 }

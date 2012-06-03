@@ -35,7 +35,7 @@ public class DateLabel extends Label {
 	public DateLabel(String id, IModel<Date> model, IDatePattern datePattern) {
 		super(id, model);
 		
-		this.converter = new PatternDateConverter(new ResourceModel(datePattern.getJavaPatternKey()));
+		this.converter = new PatternDateConverter(datePattern, new ResourceModel(datePattern.getJavaPatternKey()));
 	}
 	
 	@SuppressWarnings("unchecked")
