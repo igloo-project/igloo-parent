@@ -7,5 +7,7 @@ public interface IPersonDao<P extends AbstractPerson<P>>
 		extends IGenericEntityDao<Long, P> {
 	
 	Long countActive();
-	
+
+	P getByUserNameCaseInsensitive(String userName);
+
 }

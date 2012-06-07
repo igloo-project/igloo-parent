@@ -44,6 +44,11 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	}
 	
 	@Override
+	public P getByUserNameCaseInsensitive(String userName) {
+		return personDao.getByUserNameCaseInsensitive(userName);
+	}
+	
+	@Override
 	public List<P> search(String searchPattern) throws ServiceException, SecurityServiceException {
 		String[] searchFields = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
 		

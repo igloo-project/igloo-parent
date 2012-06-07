@@ -35,4 +35,6 @@ public interface IPersonService<P extends AbstractPerson<P>> extends IGenericEnt
 
 	void updateProfileInformation(P person) throws ServiceException, SecurityServiceException;
 
+	P getByUserNameCaseInsensitive(String userName);
+
 }

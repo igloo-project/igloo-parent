@@ -12,6 +12,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
@@ -34,6 +35,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	@SpringBean(name="authenticationService")
 	protected IAuthenticationService authenticationService;
+	
+	@SpringBean(name="authenticationManager")
+	protected AuthenticationManager authenticationManager;
 	
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;
