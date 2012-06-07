@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -25,6 +26,7 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.devlib.schmidt.imageinfo.ImageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -211,7 +213,8 @@ public class ImageServiceImpl implements IImageService {
 				FileImageOutputStream outputStream = null;
 				
 				try {
-					Iterator<ImageWriter> imageWritersIterator = ImageIO.getImageWritersByFormatName(thumbnailFormat.getJavaFormatName());
+					Iterator<ImageWriter> imageWritersIterator =ImageIO.getImageWritersByFormatName(
+							thumbnailFormat.getJavaFormatName(FilenameUtils.getExtension(destination.getName()).toLowerCase(Locale.ROOT)));
 					ImageWriter writer = imageWritersIterator.next();
 					
 					ImageWriteParam iwp = writer.getDefaultWriteParam();
