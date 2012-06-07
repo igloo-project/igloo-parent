@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.lesscss.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.asual.lesscss.LessEngine;
 import com.asual.lesscss.LessException;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.util.StringUtils;
@@ -29,6 +31,13 @@ public class LessCssServiceImpl implements ILessCssService {
 	
 	private static final Pattern LESSCSS_IMPORT_PATTERN =
 			Pattern.compile("^\\p{Blank}*@import\\p{Blank}+\"([^\"]+)\"\\p{Blank}*;", Pattern.MULTILINE);
+	
+	private static final Pattern LESSCSS_IMPORT_SCOPE_PATTERN =
+			Pattern.compile("^@\\{scope-([a-zA-Z0-9_-]*)\\}(.*)$");
+	
+	private static final Pattern SCOPE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
+	
+	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
 	
 	@Override
 	@Cacheable(value = "lessCssService.compiledStylesheets",
@@ -50,16 +59,32 @@ public class LessCssServiceImpl implements ILessCssService {
 		}
 	}
 	
-	private CssStylesheetInformation prepareRawStylesheet(Class<?> scope, String name, CssStylesheetInformation lessSource)
+	private CssStylesheetInformation prepareRawStylesheet(Class<?> defaultScope, String name, CssStylesheetInformation lessSource)
 			throws ServiceException {
 		Matcher matcher = LESSCSS_IMPORT_PATTERN.matcher(lessSource.getSource());
 		
 		ClassPathResource importedResource;
 		
 		while (matcher.find()) {
-			String importedResourceFilename = getRelativeToScopePath(name, matcher.group(1));
-			InputStream inputStream = null;
+			Class<?> scope;
+			String importedResourceFilename;
 			
+			String importUrl = matcher.group(1);
+			Matcher scopeMatcher = LESSCSS_IMPORT_SCOPE_PATTERN.matcher(importUrl);
+			if (scopeMatcher.matches()) {
+				Class<?> referencedScope = SCOPES.get(scopeMatcher.group(1));
+				if (referencedScope != null) {
+					scope = referencedScope;
+				} else {
+					throw new IllegalStateException(String.format("Scope %1$s is not supported", scopeMatcher.group(1)));
+				}
+				importedResourceFilename = scopeMatcher.group(2);
+			} else {
+				importedResourceFilename = getRelativeToScopePath(name, matcher.group(1));
+				scope = defaultScope;
+			}
+			
+			InputStream inputStream = null;
 			try {
 				importedResource = new ClassPathResource(importedResourceFilename, scope);
 				inputStream = importedResource.getURL().openStream();
@@ -72,8 +97,7 @@ public class LessCssServiceImpl implements ILessCssService {
 					lessSource.setLastModifiedTime(importedStylesheet.getLastModifiedTime());
 				}
 				
-				lessSource.setSource(lessSource.getSource().replaceFirst(
-						Matcher.quoteReplacement(matcher.group()), importedStylesheet.getSource()));
+				lessSource.setSource(StringUtils.replace(lessSource.getSource(), matcher.group(), importedStylesheet.getSource()));
 			} catch (Exception e) {
 				throw new ServiceException(String.format("Error reading lesscss source for %1$s in %2$s (scope: %3$s)",
 					importedResourceFilename, name, scope), e);
@@ -101,6 +125,21 @@ public class LessCssServiceImpl implements ILessCssService {
 		}
 		
 		return relativeToScopeFilename;
+	}
+	
+	@Override
+	public void registerImportScope(String scopeName, Class<?> scope) {
+		if (SCOPES.containsKey(scopeName)) {
+			LOGGER.error(String.format("Scope %1$s already registered: ignored", scopeName));
+			return;
+		}
+		Matcher matcher = SCOPE_NAME_PATTERN.matcher(scopeName);
+		if (!matcher.matches()) {
+			LOGGER.error(String.format("Scope name %1$s invalid (%2$s): ignored", scopeName, SCOPE_NAME_PATTERN.toString()));
+			return;
+		}
+		
+		SCOPES.put(scopeName, scope);
 	}
 	
 	public static String getCacheKey(Class<?> scope, String name) {
