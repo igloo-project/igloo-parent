@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.util.image.model;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.Lists;
@@ -80,14 +81,16 @@ public class ImageThumbnailFormat {
 	}
 	
 	public String getExtension(String originalFileExtension) {
-		if (extension == null) {
-			if (AUTHORIZED_THUMBNAIL_EXTENSIONS.contains(originalFileExtension)) {
-				return originalFileExtension;
+		String thumbnailExtension = extension;
+		
+		if (thumbnailExtension == null) {
+			if (AUTHORIZED_THUMBNAIL_EXTENSIONS.contains(originalFileExtension.toLowerCase(Locale.ROOT))) {
+				thumbnailExtension = originalFileExtension;
 			} else {
-				return DEFAULT_THUMBNAIL_EXTENSION;
+				thumbnailExtension = DEFAULT_THUMBNAIL_EXTENSION;
 			}
 		}
-		return extension;
+		return thumbnailExtension.toLowerCase(Locale.ROOT);
 	}
 	
 	public String getJavaFormatName(String originalFileExtension) {

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -76,8 +77,10 @@ public class SimpleFileStoreImpl implements IFileStore {
 		FileOutputStream outputStream = null;
 		File outputFile = null;
 		
+		String cleanExtension = extension.toLowerCase(Locale.ROOT);
+		
 		try {
-			String filePath = getFilePath(fileKey, extension);
+			String filePath = getFilePath(fileKey, cleanExtension);
 			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
 			if (StringUtils.hasLength(dirPath)) {
 				File dir = new File(dirPath);
@@ -109,7 +112,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 			}
 		}
 		
-		FileInformation fileInformation = new FileInformation(outputFile, extension);
+		FileInformation fileInformation = new FileInformation(outputFile, cleanExtension);
 		
 		return fileInformation;
 	}
