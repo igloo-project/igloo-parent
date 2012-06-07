@@ -1,10 +1,23 @@
 package fr.openwide.core.jpa.more.util.image.model;
 
+import java.util.List;
 import java.util.regex.Pattern;
+
+import com.google.common.collect.Lists;
+
+import fr.openwide.core.commons.util.mime.MediaType;
 
 public class ImageThumbnailFormat {
 	
 	private static final Pattern NAME_PATTERN = Pattern.compile("[a-z0-9_-]+", Pattern.CASE_INSENSITIVE);
+	
+	private static final List<String> AUTHORIZED_THUMBNAIL_EXTENSIONS = Lists.newArrayList(
+			MediaType.IMAGE_JPEG.extension(),
+			MediaType.IMAGE_GIF.extension(),
+			MediaType.IMAGE_PNG.extension()
+	);
+	
+	private static final String DEFAULT_THUMBNAIL_EXTENSION = MediaType.IMAGE_JPEG.extension();
 	
 	private String name;
 	
@@ -68,7 +81,11 @@ public class ImageThumbnailFormat {
 	
 	public String getExtension(String originalFileExtension) {
 		if (extension == null) {
-			return originalFileExtension;
+			if (AUTHORIZED_THUMBNAIL_EXTENSIONS.contains(originalFileExtension)) {
+				return originalFileExtension;
+			} else {
+				return DEFAULT_THUMBNAIL_EXTENSION;
+			}
 		}
 		return extension;
 	}
