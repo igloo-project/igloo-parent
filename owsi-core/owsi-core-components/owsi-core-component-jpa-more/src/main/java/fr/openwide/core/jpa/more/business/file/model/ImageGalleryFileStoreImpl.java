@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.more.business.file.model;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -34,9 +35,9 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	@Override
 	public FileInformation addFile(byte[] fileContent, String fileKey, String extension) throws ServiceException,
 			SecurityServiceException {
-		FileInformation information = super.addFile(fileContent, fileKey, extension);
+		FileInformation information = super.addFile(fileContent, fileKey, extension.toLowerCase(Locale.ROOT));
 		
-		addFileToGallery(information, fileKey, extension);
+		addFileToGallery(information, fileKey, extension.toLowerCase(Locale.ROOT));
 		
 		return information;
 	}
@@ -45,7 +46,7 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 	public FileInformation addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
 		FileInformation information = super.addFile(file, fileKey, extension);
 		
-		addFileToGallery(information, fileKey, extension);
+		addFileToGallery(information, fileKey, extension.toLowerCase(Locale.ROOT));
 		
 		return information;
 	}
@@ -55,7 +56,7 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 			SecurityServiceException {
 		FileInformation information = super.addFile(inputStream, fileKey, extension);
 		
-		addFileToGallery(information, fileKey, extension);
+		addFileToGallery(information, fileKey, extension.toLowerCase(Locale.ROOT));
 		
 		return information;
 	}
