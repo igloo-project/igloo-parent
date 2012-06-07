@@ -98,7 +98,11 @@ public class ImageGalleryFileStoreImpl extends SimpleFileStoreImpl {
 		fileName.append("-");
 		fileName.append(thumbnailFormat.getName());
 		fileName.append(".");
-		fileName.append(thumbnailFormat.getExtension());
+		if (thumbnailFormat.getExtension() == null) {
+			fileName.append(extension);
+		} else {
+			fileName.append(thumbnailFormat.getExtension());
+		}
 		
 		return FilenameUtils.concat(getRootDirectoryPath(), fileName.toString());
 	}

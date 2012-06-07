@@ -6,12 +6,11 @@ public class ImageThumbnailFormat {
 	
 	private static final Pattern NAME_PATTERN = Pattern.compile("[a-z0-9_-]+", Pattern.CASE_INSENSITIVE);
 	
-	public static final String EXTENSION_JPG = "jpg";
-	
-	public static final String EXTENSION_PNG = "png";
-	
 	private String name;
 	
+	/**
+	 * A n'utiliser que si on veut forcer l'extension, sinon on conserve l'extension du fichier original
+	 */
 	private String extension;
 	
 	private int width;
@@ -23,11 +22,11 @@ public class ImageThumbnailFormat {
 	private boolean allowEnlarge;
 	
 	public ImageThumbnailFormat(String name, int width, int height) {
-		this(name, width, height, false, 80, EXTENSION_JPG);
+		this(name, width, height, false, 80, null);
 	}
 	
 	public ImageThumbnailFormat(String name, int width, int height, boolean allowEnlarge) {
-		this(name, width, height, allowEnlarge, 80, EXTENSION_JPG);
+		this(name, width, height, allowEnlarge, 80, null);
 	}
 	
 	public ImageThumbnailFormat(String name, int width, int height, int quality, String extension) {
@@ -71,7 +70,10 @@ public class ImageThumbnailFormat {
 		return extension;
 	}
 	
-	public String getJavaFormatName() {
+	public String getJavaFormatName(String originalFileExtension) {
+		if (extension == null) {
+			return originalFileExtension;
+		}
 		return extension;
 	}
 
