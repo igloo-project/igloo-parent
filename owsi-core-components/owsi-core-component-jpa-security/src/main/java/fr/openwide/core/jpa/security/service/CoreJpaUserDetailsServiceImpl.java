@@ -42,7 +42,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
 		}
 		
-		User userDetails = new User(userName, person.getPasswordHash(), person.isActive(), true, true, true, 
+		User userDetails = new User(person.getUserName(), person.getPasswordHash(), person.isActive(), true, true, true, 
 				roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities));
 		
 		return userDetails;
