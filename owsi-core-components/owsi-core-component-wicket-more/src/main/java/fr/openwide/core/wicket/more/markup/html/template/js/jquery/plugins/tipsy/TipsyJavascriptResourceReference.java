@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy;
 
+import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
+import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 public final class TipsyJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
@@ -9,6 +11,13 @@ public final class TipsyJavascriptResourceReference extends WiQueryJavaScriptRes
 
 	private TipsyJavascriptResourceReference() {
 		super(TipsyJavascriptResourceReference.class, "jquery.tipsy.js");
+	}
+
+	@Override
+	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
+		return new AbstractResourceDependentResourceReference[] {
+				CoreJavaScriptResourceReference.get()
+		};
 	}
 	
 	public static TipsyJavascriptResourceReference get() {
