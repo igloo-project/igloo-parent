@@ -66,15 +66,15 @@ public class ImageThumbnailFormat {
 		return quality;
 	}
 	
-	public String getExtension() {
-		return extension;
-	}
-	
-	public String getJavaFormatName(String originalFileExtension) {
+	public String getExtension(String originalFileExtension) {
 		if (extension == null) {
 			return originalFileExtension;
 		}
 		return extension;
+	}
+	
+	public String getJavaFormatName(String originalFileExtension) {
+		return getExtension(originalFileExtension);
 	}
 
 }
