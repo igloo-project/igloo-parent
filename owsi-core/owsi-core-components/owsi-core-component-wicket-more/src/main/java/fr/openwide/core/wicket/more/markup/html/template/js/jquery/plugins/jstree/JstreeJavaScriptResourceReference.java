@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.jstree;
 
+import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
+import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
 public class JstreeJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
@@ -9,6 +11,13 @@ public class JstreeJavaScriptResourceReference extends WiQueryJavaScriptResource
 
 	public JstreeJavaScriptResourceReference() {
 		super(JstreeJavaScriptResourceReference.class, "jquery.jstree.js");
+	}
+
+	@Override
+	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
+		return new AbstractResourceDependentResourceReference[] {
+				CoreJavaScriptResourceReference.get()
+		};
 	}
 	
 	public static JstreeJavaScriptResourceReference get() {
