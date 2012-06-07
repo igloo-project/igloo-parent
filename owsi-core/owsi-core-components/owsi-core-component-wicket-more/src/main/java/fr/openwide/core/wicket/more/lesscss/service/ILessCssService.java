@@ -7,5 +7,7 @@ public interface ILessCssService {
 
 	CssStylesheetInformation getCompiledStylesheet(Class<?> scope, String name, CssStylesheetInformation lessSource,
 			boolean enableCache) throws ServiceException;
+
+	void registerImportScope(String scopeName, Class<?> scope);
 	
 }
