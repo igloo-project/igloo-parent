@@ -28,7 +28,7 @@ public class LessCssServiceImpl implements ILessCssService {
 	private static final LessEngine LESS_ENGINE = new LessEngine();
 	
 	private static final Pattern LESSCSS_IMPORT_PATTERN =
-			Pattern.compile("^\\p{Blank}*@import\\p{Blank}+\"([^\"]+)\"\\p{Blank}*;\\p{Blank}*$", Pattern.MULTILINE);
+			Pattern.compile("^\\p{Blank}*@import\\p{Blank}+\"([^\"]+)\"\\p{Blank}*;", Pattern.MULTILINE);
 	
 	@Override
 	@Cacheable(value = "lessCssService.compiledStylesheets",
