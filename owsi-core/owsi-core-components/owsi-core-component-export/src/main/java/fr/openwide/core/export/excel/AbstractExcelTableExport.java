@@ -473,14 +473,22 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * 
 	 * @param sheet feuilles de calcul
 	 * @param headers en-têtes
+	 * @param landscapePrintSetup définit si la feuille est imprimée en paysage ou non
 	 */
-	protected void finalizeSheet(Sheet sheet, List<String> headers) {
+	protected void finalizeSheet(Sheet sheet, List<String> headers, boolean landscapePrintSetup) {
 		int nbColumns = headers.size();
 		for (int i = 0; i < nbColumns; i++) {
 			sheet.autoSizeColumn((short) i);
 			int columnWidth = (int) (sheet.getColumnWidth(i) * COLUMN_RESIZE_RATIO);
 			sheet.setColumnWidth(i, columnWidth < ABSOLUTE_MAX_COLUMN_WIDTH ? columnWidth : ABSOLUTE_MAX_COLUMN_WIDTH);
 		}
+		
+		sheet.getPrintSetup().setLandscape(landscapePrintSetup);
+	}
+
+	protected void finalizeSheet(Sheet sheet, List<String> headers) {
+		// Par défaut, le format d'impression est en paysage pour les tableaux Excel
+		finalizeSheet(sheet, headers, true);
 	}
 
 	/**
@@ -489,8 +497,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * 
 	 * @param sheet feuilles de calcul
 	 * @param columnInfos map contenant l'en-tête et les informations d'une colonne
+	 * @param landscapePrintSetup définit si la feuille est imprimée en paysage ou non
 	 */
-	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos) {
+	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos, boolean landscapePrintSetup) {
 		int columnIndex = 0;
 		for (Entry<String, ColumnInformation> entry : columnInfos.entrySet()) {
 			sheet.autoSizeColumn((short) columnIndex);
@@ -516,6 +525,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 			
 			columnIndex++;
 		}
+		
+		sheet.getPrintSetup().setLandscape(landscapePrintSetup);
+	}
+
+	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos) {
+		// Par défaut, le format d'impression est en paysage pour les tableaux Excel
+		finalizeSheet(sheet, columnInfos, true);
 	}
 
 	/**
