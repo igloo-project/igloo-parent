@@ -8,4 +8,5 @@ public interface INotificationRecipient {
 	
 	String getEmail();
 	
+	String getFullName();
 }
