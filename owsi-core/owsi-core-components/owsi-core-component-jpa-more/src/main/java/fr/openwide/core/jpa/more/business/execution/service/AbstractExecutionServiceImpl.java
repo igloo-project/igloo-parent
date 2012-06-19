@@ -37,7 +37,7 @@ public abstract class AbstractExecutionServiceImpl<E extends AbstractExecution<E
 
 	@Override
 	public void close(E execution, ExecutionStatus executionStatus) throws ServiceException, SecurityServiceException {
-		entityManager.merge(execution);
+		execution = entityManager.merge(execution);
 		execution.setEndDate(new Date());
 		execution.setExecutionStatus(executionStatus);
 		update(execution);
