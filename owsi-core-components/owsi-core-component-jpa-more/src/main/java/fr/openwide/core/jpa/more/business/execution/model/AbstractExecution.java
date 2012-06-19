@@ -53,12 +53,12 @@ public abstract class AbstractExecution<E extends GenericEntity<Integer, E>, ET 
 
 	protected AbstractExecution() {
 		super();
+		setStartDate(new Date());
 	}
 
 	public AbstractExecution(ET executionType) {
-		super();
+		this();
 		setExecutionType(executionType);
-		setStartDate(new Date());
 	}
 
 	public Integer getId() {
