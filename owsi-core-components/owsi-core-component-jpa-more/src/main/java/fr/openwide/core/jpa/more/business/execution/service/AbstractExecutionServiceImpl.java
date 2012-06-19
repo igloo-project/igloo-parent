@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.business.execution.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,8 +23,12 @@ public abstract class AbstractExecutionServiceImpl<E extends AbstractExecution<E
 	private EntityManager entityManager;
 
 	@Autowired
-	public AbstractExecutionServiceImpl(IAbstractExecutionDao<E> executionDao) {
-		super(executionDao);
+	private IAbstractExecutionDao<E> abstractExecutionDao;
+
+	@Autowired
+	public AbstractExecutionServiceImpl(IAbstractExecutionDao<E> abstractExecutionDao) {
+		super(abstractExecutionDao);
+		this.abstractExecutionDao = abstractExecutionDao;
 	}
 
 	@Override
@@ -41,5 +46,16 @@ public abstract class AbstractExecutionServiceImpl<E extends AbstractExecution<E
 		execution.setEndDate(new Date());
 		execution.setExecutionStatus(executionStatus);
 		update(execution);
+	}
+
+	@Override
+	public List<E> listOrdered(Integer limit, Integer offset) {
+		return abstractExecutionDao.listOrderedByTypeStatus(null, null, limit, offset);
+	}
+
+	@Override
+	public List<E> listOrderedByDateTypeStatus(Date dateStart, Date dateEnd, IExecutionType executionType,
+			ExecutionStatus executionStatus, Integer limit, Integer offset) {
+		return abstractExecutionDao.listOrderedByTypeStatus(executionType, executionStatus, limit, offset);
 	}
 }
