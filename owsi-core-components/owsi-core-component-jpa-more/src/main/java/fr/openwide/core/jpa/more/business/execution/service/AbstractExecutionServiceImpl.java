@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.more.business.execution.model.ExecutionStatus;
 import fr.openwide.core.jpa.more.business.execution.model.IExecutionType;
 
 public abstract class AbstractExecutionServiceImpl<E extends AbstractExecution<E, ET>, ET extends IExecutionType>
-	extends GenericEntityServiceImpl<Integer, E> implements IAbstractExecutionService<E, ET> {
+	extends GenericEntityServiceImpl<Long, E> implements IAbstractExecutionService<E, ET> {
 
 	@PersistenceContext
 	private EntityManager entityManager;

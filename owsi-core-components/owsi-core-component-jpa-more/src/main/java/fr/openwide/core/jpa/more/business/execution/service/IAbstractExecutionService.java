@@ -11,7 +11,7 @@ import fr.openwide.core.jpa.more.business.execution.model.ExecutionStatus;
 import fr.openwide.core.jpa.more.business.execution.model.IExecutionType;
 
 public interface IAbstractExecutionService<E extends AbstractExecution<E, ET>, ET extends IExecutionType>
-		extends IGenericEntityService<Integer, E> {
+		extends IGenericEntityService<Long, E> {
 
 	E start(E execution, ET type) throws ServiceException, SecurityServiceException;
 

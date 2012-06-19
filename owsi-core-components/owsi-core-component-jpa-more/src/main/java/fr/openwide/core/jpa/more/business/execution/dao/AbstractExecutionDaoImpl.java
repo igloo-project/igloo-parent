@@ -15,7 +15,7 @@ import fr.openwide.core.jpa.more.business.execution.model.IExecutionType;
 import fr.openwide.core.jpa.more.business.execution.model.QAbstractExecution;
 
 public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>>
-		extends GenericEntityDaoImpl<Integer, E> implements IAbstractExecutionDao<E> {
+		extends GenericEntityDaoImpl<Long, E> implements IAbstractExecutionDao<E> {
 
 	@Override
 	public List<E> list() {

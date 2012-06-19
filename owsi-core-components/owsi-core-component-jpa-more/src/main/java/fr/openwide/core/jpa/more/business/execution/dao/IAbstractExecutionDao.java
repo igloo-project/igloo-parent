@@ -8,9 +8,7 @@ import fr.openwide.core.jpa.more.business.execution.model.AbstractExecution;
 import fr.openwide.core.jpa.more.business.execution.model.ExecutionStatus;
 import fr.openwide.core.jpa.more.business.execution.model.IExecutionType;
 
-public interface IAbstractExecutionDao<E extends AbstractExecution<E, ?>> extends IGenericEntityDao<Integer, E> {
-
-	List<E> listOrderedByTypeStatus(IExecutionType executionType, ExecutionStatus executionStatus, Integer limit, Integer offset);
+public interface IAbstractExecutionDao<E extends AbstractExecution<E, ?>> extends IGenericEntityDao<Long, E> {
 
 	List<E> listOrderedByDateTypeStatus(Date startDate, Date endDate, IExecutionType executionType,
 			ExecutionStatus executionStatus, Integer limit, Integer offset);

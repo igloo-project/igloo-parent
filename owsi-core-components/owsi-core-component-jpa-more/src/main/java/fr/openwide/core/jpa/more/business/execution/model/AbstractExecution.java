@@ -19,12 +19,12 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @MappedSuperclass
 @Bindable
-public abstract class AbstractExecution<E extends GenericEntity<Integer, E>, ET extends IExecutionType> extends GenericEntity<Integer, E> {
+public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET extends IExecutionType> extends GenericEntity<Long, E> {
 	private static final long serialVersionUID = 6026078483841894077L;
 
 	@GeneratedValue
 	@Id
-	private Integer id;
+	private Long id;
 	
 	@Column
 	private String name;
@@ -61,11 +61,11 @@ public abstract class AbstractExecution<E extends GenericEntity<Integer, E>, ET 
 		setExecutionType(executionType);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
