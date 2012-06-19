@@ -50,12 +50,12 @@ public abstract class AbstractExecutionServiceImpl<E extends AbstractExecution<E
 
 	@Override
 	public List<E> listOrdered(Integer limit, Integer offset) {
-		return abstractExecutionDao.listOrderedByTypeStatus(null, null, limit, offset);
+		return abstractExecutionDao.listOrderedByDateTypeStatus(null, null, null, null, limit, offset);
 	}
 
 	@Override
 	public List<E> listOrderedByDateTypeStatus(Date dateStart, Date dateEnd, IExecutionType executionType,
 			ExecutionStatus executionStatus, Integer limit, Integer offset) {
-		return abstractExecutionDao.listOrderedByTypeStatus(executionType, executionStatus, limit, offset);
+		return abstractExecutionDao.listOrderedByDateTypeStatus(dateStart, dateEnd, executionType, executionStatus, limit, offset);
 	}
 }
