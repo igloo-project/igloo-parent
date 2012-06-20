@@ -228,12 +228,6 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${owsi-core.guava.version}</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${owsi-core.slf4j.version}</version>
