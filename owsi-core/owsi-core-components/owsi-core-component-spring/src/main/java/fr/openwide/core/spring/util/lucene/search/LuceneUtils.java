@@ -93,18 +93,28 @@ public final class LuceneUtils {
 		return new RawLuceneQuery(sb.toString());
 	}
 	
-	public static String toString(Query luceneQuery) {
+	public static String queryToString(Query luceneQuery) {
 		StringBuilder sb = new StringBuilder();
 		if (luceneQuery instanceof BooleanQuery) {
 			BooleanQuery booleanQuery = (BooleanQuery) luceneQuery;
 			if (booleanQuery.getClauses().length > 0) {
-				sb.append("(");
+				StringBuilder booleanQuerySb = new StringBuilder();
 				for (BooleanClause clause : booleanQuery.getClauses()) {
-					sb.append(clause.getOccur().toString());
-					sb.append(toString(clause.getQuery()));
-					sb.append(" ");
+					if (clause.getQuery() != null) {
+						String query = queryToString(clause.getQuery());
+						
+						if (StringUtils.hasText(query)) {
+							booleanQuerySb.append(clause.getOccur().toString());
+							booleanQuerySb.append(queryToString(clause.getQuery()));
+							booleanQuerySb.append(" ");
+						}
+					}
 				}
-				sb.append(")");
+				if (booleanQuerySb.length() > 0) {
+					sb.append("(");
+					sb.append(booleanQuerySb);
+					sb.append(")");
+				}
 			}
 		} else if (luceneQuery instanceof TermQuery) {
 			TermQuery termQuery = (TermQuery) luceneQuery;
@@ -114,15 +124,17 @@ public final class LuceneUtils {
 			sb.append(QueryParser.escape(term.text()));
 			sb.append("\"");
 		} else if (luceneQuery instanceof RawLuceneQuery) {
-			sb.append("(");
 			RawLuceneQuery simpleQuery = (RawLuceneQuery) luceneQuery;
-			sb.append(simpleQuery.getQuery());
-			sb.append(")");
+			if (StringUtils.hasText(simpleQuery.getQuery())) {
+				sb.append("(");
+				sb.append(simpleQuery.getQuery());
+				sb.append(")");
+			}
 		} else {
 			throw new IllegalStateException(String.format("Query of type %1$s not supported",
 					luceneQuery.getClass().getName()));
 		}
-		if (Float.compare(1.0f, luceneQuery.getBoost()) != 0) {
+		if (StringUtils.hasText(sb) && Float.compare(1.0f, luceneQuery.getBoost()) != 0) {
 			sb.append(BOOST_PARAMETER_PREFIX);
 			sb.append(luceneQuery.getBoost());
 		}
