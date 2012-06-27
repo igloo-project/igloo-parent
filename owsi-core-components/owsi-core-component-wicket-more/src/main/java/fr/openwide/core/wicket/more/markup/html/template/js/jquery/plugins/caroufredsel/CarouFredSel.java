@@ -21,8 +21,14 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 	private Integer padding;
 
 	private Integer itemsVisible;
+	
+	private Integer scrollDuration;
 
 	private Boolean autoPlay;
+	
+	private Integer autoDuration;
+	
+	private Boolean autoPauseOnHover;
 
 	private Component nextButton;
 	
@@ -65,10 +71,23 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		}
 		options.put("items", itemsOptions.getJavaScriptOptions().toString());
 		
+		// scroll options
+		Options scrollOptions = new Options();
+		if (scrollDuration != null) {
+			scrollOptions.put("duration", scrollDuration);
+		}
+		options.put("scroll", scrollOptions.getJavaScriptOptions().toString());
+		
 		// auto options
 		Options autoOptions = new Options();
 		if (autoPlay != null) {
 			autoOptions.put("play", autoPlay);
+		}
+		if (autoDuration != null) {
+			autoOptions.put("duration", autoDuration);
+		}
+		if (autoPauseOnHover != null) {
+			autoOptions.put("pauseOnHover", autoPauseOnHover);
 		}
 		options.put("auto", autoOptions.getJavaScriptOptions().toString());
 		
@@ -103,6 +122,14 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		args[0] = options.getJavaScriptOptions();
 		return args;
 	}
+	
+	public Integer getScrollDuration() {
+		return scrollDuration;
+	}
+
+	public void setScrollDuration(Integer scrollDuration) {
+		this.scrollDuration = scrollDuration;
+	}
 
 	public Boolean getAutoPlay() {
 		return autoPlay;
@@ -110,6 +137,22 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 
 	public void setAutoPlay(Boolean autoPlay) {
 		this.autoPlay = autoPlay;
+	}
+	
+	public Integer getAutoDuration() {
+		return autoDuration;
+	}
+
+	public void setAutoDuration(Integer autoDuration) {
+		this.autoDuration = autoDuration;
+	}
+
+	public Boolean getAutoPauseOnHover() {
+		return autoPauseOnHover;
+	}
+
+	public void setAutoPauseOnHover(Boolean autoPauseOnHover) {
+		this.autoPauseOnHover = autoPauseOnHover;
 	}
 
 	public Integer getWidth() {
@@ -156,8 +199,16 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		return nextButton;
 	}
 
-	public void setNext(Component nextButton) {
+	public void setNextButton(Component nextButton) {
 		this.nextButton = nextButton;
+	}
+	
+	public String getNextKey() {
+		return nextKey;
+	}
+
+	public void setNextKey(String nextKey) {
+		this.nextKey = nextKey;
 	}
 
 	public Component getPreviousButton() {
@@ -166,6 +217,14 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 
 	public void setPreviousButton(Component previousButton) {
 		this.previousButton = previousButton;
+	}
+	
+	public String getPreviousKey() {
+		return previousKey;
+	}
+
+	public void setPreviousKey(String previousKey) {
+		this.previousKey = previousKey;
 	}
 
 	public Component getPaginationContainer() {
@@ -176,12 +235,12 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		this.paginationContainer = paginationContainer;
 	}
 
-	public Integer getItems() {
+	public Integer getItemsVisible() {
 		return itemsVisible;
 	}
 
-	public void setItems(Integer items) {
-		this.itemsVisible = items;
+	public void setItemsVisible(Integer itemsVisible) {
+		this.itemsVisible = itemsVisible;
 	}
 
 }
