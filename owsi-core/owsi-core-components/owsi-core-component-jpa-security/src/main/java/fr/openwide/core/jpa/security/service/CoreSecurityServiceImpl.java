@@ -57,10 +57,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 			return true;
 		}
 		
-		// Obtain the SIDs applicable to the principal
-		List<Sid> sids = sidRetrievalService.getSids(authentication);
-		
-		List<Permission> permissions = getPermissionsFromSids(sids);
+		List<Permission> permissions = getPermissions(authentication);
 		if (permissions.contains(permission)) {
 			return true;
 		} else {
@@ -73,7 +70,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		return hasPermission(getAuthentication(person), permission);
 	}
 	
-	protected List<Permission> getPermissionsFromSids(List<Sid> sids) {
+	protected List<Permission> getPermissions(Authentication authentication) {
 		return Lists.newArrayListWithCapacity(0);
 	}
 	
