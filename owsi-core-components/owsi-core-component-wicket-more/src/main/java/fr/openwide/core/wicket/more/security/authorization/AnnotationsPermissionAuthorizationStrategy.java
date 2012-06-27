@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.security.authorization;
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
+import org.apache.wicket.request.component.IRequestableComponent;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
@@ -23,18 +24,34 @@ public class AnnotationsPermissionAuthorizationStrategy implements
 	
 	@Override
 	public boolean isActionAuthorized(Component component, Action action) {
+		final Class< ? extends Component> componentClass = component.getClass();
+		
+		final AuthorizeActionIfPermission permissionAnnotation =
+				componentClass.getAnnotation(AuthorizeActionIfPermission.class);
+		if (permissionAnnotation != null) {
+			if (action.getName().equals(permissionAnnotation.action())) {
+				String[] permissionNames = permissionAnnotation.permissions();
+				for (String permissionName : permissionNames) {
+					Permission permission = permissionFactory.buildFromName(permissionName);
+					if(!authenticationService.hasPermission(permission)) {
+						return false;
+					}
+				}
+			}
+		}
+		
 		if(Component.RENDER.equals(action)) {
-			final Class< ? extends Component> componentClass = component.getClass();
-			final ModelObjectPermission renderPermissionAnnotation = componentClass.getAnnotation(ModelObjectPermission.class);
+			final AuthorizeRenderIfPermissionOnModelObject permissionOnModelObjectAnnotation =
+					componentClass.getAnnotation(AuthorizeRenderIfPermissionOnModelObject.class);
 			
-			if(renderPermissionAnnotation != null) {
+			if(permissionOnModelObjectAnnotation != null) {
 				Object modelObject = component.getDefaultModelObject();
 			
 				if(modelObject != null && (modelObject instanceof GenericEntity<?, ?>)) {
 					@SuppressWarnings("unchecked")
 					GenericEntity<Long, ?> securedObject = (GenericEntity<Long, ?>) modelObject;
 					
-					String[] permissionNames = renderPermissionAnnotation.value();
+					String[] permissionNames = permissionOnModelObjectAnnotation.permissions();
 					for (String permissionName : permissionNames) {
 						Permission permission = permissionFactory.buildFromName(permissionName);
 						if(!authenticationService.hasPermission(securedObject, permission)) {
@@ -49,9 +66,20 @@ public class AnnotationsPermissionAuthorizationStrategy implements
 		return true;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean isInstantiationAuthorized(Class componentClass) {
+	public <T extends IRequestableComponent> boolean isInstantiationAuthorized(Class<T> componentClass) {
+		final AuthorizeInstantiationIfPermission authorizeInstantiationAnnotation =
+				componentClass.getAnnotation(AuthorizeInstantiationIfPermission.class);
+		if (authorizeInstantiationAnnotation != null) {
+			String[] permissionNames = authorizeInstantiationAnnotation.permissions();
+			for (String permissionName : permissionNames) {
+				Permission permission = permissionFactory.buildFromName(permissionName);
+				if(!authenticationService.hasPermission(permission)) {
+					return false;
+				}
+			}
+		}
+		
 		return true;
 	}
 

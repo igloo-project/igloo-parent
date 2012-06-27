@@ -56,6 +56,11 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	}
 	
 	@Override
+	public boolean hasPermission(Permission permission) {
+		return securityService.hasPermission(AuthenticationUtil.getAuthentication(), permission);
+	}
+	
+	@Override
 	public boolean isAnonymousAuthority(String grantedAuthoritySid) {
 		return CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthoritySid);
 	}

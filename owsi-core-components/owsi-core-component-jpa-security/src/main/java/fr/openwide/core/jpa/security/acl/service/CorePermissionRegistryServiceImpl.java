@@ -8,7 +8,7 @@ import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
-import fr.openwide.core.jpa.security.acl.domain.PermissionConstants;
+import fr.openwide.core.jpa.security.acl.domain.CorePermissionConstants;
 
 public class CorePermissionRegistryServiceImpl implements IPermissionRegistryService {
 	
@@ -18,9 +18,9 @@ public class CorePermissionRegistryServiceImpl implements IPermissionRegistrySer
 	private Map<Permission, String> permissions = new HashMap<Permission, String>();
 	
 	{
-		registerPermission(BasePermission.READ, PermissionConstants.READ);
-		registerPermission(BasePermission.WRITE, PermissionConstants.WRITE);
-		registerPermission(BasePermission.ADMINISTRATION, PermissionConstants.ADMINISTRATION);
+		registerPermission(BasePermission.READ, CorePermissionConstants.READ);
+		registerPermission(BasePermission.WRITE, CorePermissionConstants.WRITE);
+		registerPermission(BasePermission.ADMINISTRATION, CorePermissionConstants.ADMINISTRATION);
 	}
 
 	protected void registerPermission(Permission permission, String name) {

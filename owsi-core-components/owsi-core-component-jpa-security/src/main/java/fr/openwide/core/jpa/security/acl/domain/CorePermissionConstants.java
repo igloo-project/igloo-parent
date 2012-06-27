@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.acl.domain;
 
-public final class PermissionConstants {
+public class CorePermissionConstants {
 
 	public static final String READ = "READ";
 	
@@ -8,7 +8,7 @@ public final class PermissionConstants {
 	
 	public static final String ADMINISTRATION = "ADMINISTRATION";
 	
-	private PermissionConstants() {
+	protected CorePermissionConstants() {
 	}
 	
 }
