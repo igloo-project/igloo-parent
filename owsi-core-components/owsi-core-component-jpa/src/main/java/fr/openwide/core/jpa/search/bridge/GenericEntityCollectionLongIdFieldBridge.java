@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.apache.lucene.document.Document;
 import org.hibernate.search.bridge.LuceneOptions;
 
-public class GenericEntityCollectionLongIdFieldBridge extends AbstractGenericEntityIdFieldBridge {
+public class GenericEntityCollectionLongIdFieldBridge extends AbstractGenericEntityLongIdFieldBridge {
 	
 	@Override
 	public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {

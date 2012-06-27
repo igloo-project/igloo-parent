@@ -10,7 +10,7 @@ public class GenericEntityIdFieldBridge extends AbstractGenericEntityIdFieldBrid
 		if (value == null) {
 			return;
 		}
-		luceneOptions.addNumericFieldToDocument(name, objectToLong(value), document);
+		luceneOptions.addFieldToDocument(name, objectToString(value), document);
 	}
 	
 }

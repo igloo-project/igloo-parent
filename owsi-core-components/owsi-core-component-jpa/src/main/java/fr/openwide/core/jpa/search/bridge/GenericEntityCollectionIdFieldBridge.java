@@ -18,7 +18,7 @@ public class GenericEntityCollectionIdFieldBridge extends AbstractGenericEntityI
 		Collection<?> objects = (Collection<?>) value;
 		
 		for (Object object : objects) {
-			luceneOptions.addNumericFieldToDocument(name, objectToLong(object), document);
+			luceneOptions.addFieldToDocument(name, objectToString(object), document);
 		}
 	}
 	
