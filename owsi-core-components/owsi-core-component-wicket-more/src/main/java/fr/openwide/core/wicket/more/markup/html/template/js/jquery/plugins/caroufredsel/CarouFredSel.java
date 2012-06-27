@@ -25,8 +25,12 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 	private Boolean autoPlay;
 
 	private Component nextButton;
+	
+	private String nextKey;
 
 	private Component previousButton;
+	
+	private String previousKey;
 
 	private Component paginationContainer;
 	
@@ -73,12 +77,18 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		if (previousButton != null) {
 			prevOptions.put("button", JsUtils.quotes("#" + previousButton.getMarkupId(), true));
 		}
+		if (previousKey != null) {
+			prevOptions.put("key", JsUtils.quotes(previousKey, true));
+		}
 		options.put("prev", prevOptions.getJavaScriptOptions().toString());
 		
 		// next options
 		Options nextOptions = new Options();
 		if (nextButton != null) {
 			nextOptions.put("button", JsUtils.quotes("#" + nextButton.getMarkupId(), true));
+		}
+		if (nextKey != null) {
+			nextOptions.put("key", JsUtils.quotes(nextKey, true));
 		}
 		options.put("next", nextOptions.getJavaScriptOptions().toString());
 		
