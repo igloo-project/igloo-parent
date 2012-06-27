@@ -13,6 +13,10 @@ import fr.openwide.core.jpa.security.runas.IRunAsTask;
 
 public interface ISecurityService {
 	
+	boolean hasPermission(Authentication authentication, Permission requirePermission);
+	
+	boolean hasPermission(IPerson person, Permission requirePermission);
+	
 	boolean hasPermission(Authentication authentication, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	

@@ -12,6 +12,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -168,6 +169,10 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	public boolean hasRoleAnonymous() {
 		return hasRole(CoreAuthorityConstants.ROLE_ANONYMOUS);
+	}
+	
+	protected boolean hasPermission(Permission permission) {
+		return authenticationService.hasPermission(permission);
 	}
 
 	/**

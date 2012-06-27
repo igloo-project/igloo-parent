@@ -25,6 +25,8 @@ public interface IAuthenticationService {
 	
 	boolean hasPermission(GenericEntity<?, ?> entity, Permission permission);
 	
+	boolean hasPermission(Permission permission);
+	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 	
 	void signOut();

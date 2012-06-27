@@ -25,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.acl.domain.UserConstants;
 import fr.openwide.core.jpa.security.acl.service.ISidRetrievalService;
@@ -48,6 +50,32 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	
 	@Autowired
 	private RunAsImplAuthenticationProvider runAsAuthenticationProvider;
+	
+	@Override
+	public boolean hasPermission(Authentication authentication, Permission permission) {
+		if (hasSystemRole(authentication) || hasAdminRole(authentication)) {
+			return true;
+		}
+		
+		// Obtain the SIDs applicable to the principal
+		List<Sid> sids = sidRetrievalService.getSids(authentication);
+		
+		List<Permission> permissions = getPermissionsFromSids(sids);
+		if (permissions.contains(permission)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean hasPermission(IPerson person, Permission permission) {
+		return hasPermission(getAuthentication(person), permission);
+	}
+	
+	protected List<Permission> getPermissionsFromSids(List<Sid> sids) {
+		return Lists.newArrayListWithCapacity(0);
+	}
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, GenericEntity<?, ?> entity,

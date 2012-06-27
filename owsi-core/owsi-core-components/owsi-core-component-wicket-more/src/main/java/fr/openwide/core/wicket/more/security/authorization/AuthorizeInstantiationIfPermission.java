@@ -11,8 +11,10 @@ import java.lang.annotation.Target;
 @Target( { ElementType.TYPE })
 @Documented
 @Inherited
-public @interface ModelObjectPermission {
-
-	String[] value();
+public @interface AuthorizeInstantiationIfPermission {
+	
+	String action();
+	
+	String[] permissions();
 
 }
