@@ -1,11 +1,13 @@
 package fr.openwide.core.jpa.security.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.google.common.collect.Lists;
 
 final class AuthenticationUtil {
 	
@@ -33,8 +35,8 @@ final class AuthenticationUtil {
 		return userName;
 	}
 	
-	static Collection<? extends GrantedAuthority> getAuthorities() {
-		return getAuthentication().getAuthorities();
+	static List<? extends GrantedAuthority> getAuthorities() {
+		return Lists.newArrayList(getAuthentication().getAuthorities());
 	}
 	
 	private AuthenticationUtil() {

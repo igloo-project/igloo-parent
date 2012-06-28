@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.Session;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
@@ -46,6 +49,8 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	private IModel<P> personModel;
 	
 	private Roles roles = new Roles();
+	
+	private List<Permission> permissions = Lists.newArrayList();
 
 	public AbstractCoreSession(Request request) {
 		super(request);
@@ -107,6 +112,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 				for (GrantedAuthority authority : authorities) {
 					roles.add(authority.getAuthority());
 				}
+			}
+			if (permissions.isEmpty()) {
+				permissions = authenticationService.getPermissions();
 			}
 		}
 		
@@ -172,7 +180,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 	
 	public boolean hasPermission(Permission permission) {
-		return authenticationService.hasPermission(permission);
+		return permissions.contains(permission);
 	}
 
 	/**
@@ -183,6 +191,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	public void invalidate() {
 		personModel = null;
 		roles = new Roles();
+		permissions = Lists.newArrayList();
 		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		
 		authenticationService.signOut();
