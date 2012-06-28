@@ -48,5 +48,9 @@ public interface ISecurityService {
 	SecurityContext buildSecureContext(String userName);
 	
 	<T> T runAsSystem(IRunAsTask<T> task);
+
+	List<Permission> getPermissions(Authentication authentication);
+
+	List<Permission> getPermissions(IPerson person);
 	
 }

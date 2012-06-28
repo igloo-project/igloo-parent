@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +13,7 @@ public interface IAuthenticationService {
 	
 	boolean isLoggedIn();
 	
-	Collection<? extends GrantedAuthority> getAuthorities();
+	List<? extends GrantedAuthority> getAuthorities();
 
 	boolean hasSystemRole();
 	
@@ -26,6 +26,8 @@ public interface IAuthenticationService {
 	boolean hasPermission(GenericEntity<?, ?> entity, Permission permission);
 	
 	boolean hasPermission(Permission permission);
+	
+	List<Permission> getPermissions();
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 	

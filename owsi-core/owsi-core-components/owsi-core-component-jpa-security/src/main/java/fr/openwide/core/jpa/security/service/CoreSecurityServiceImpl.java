@@ -70,8 +70,14 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		return hasPermission(getAuthentication(person), permission);
 	}
 	
-	protected List<Permission> getPermissions(Authentication authentication) {
+	@Override
+	public List<Permission> getPermissions(Authentication authentication) {
 		return Lists.newArrayListWithCapacity(0);
+	}
+	
+	@Override
+	public List<Permission> getPermissions(IPerson person) {
+		return getPermissions(getAuthentication(person));
 	}
 	
 	@Override
