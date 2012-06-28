@@ -171,7 +171,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		return hasRole(CoreAuthorityConstants.ROLE_ANONYMOUS);
 	}
 	
-	protected boolean hasPermission(Permission permission) {
+	public boolean hasPermission(Permission permission) {
 		return authenticationService.hasPermission(permission);
 	}
 
