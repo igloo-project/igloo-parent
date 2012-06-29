@@ -98,7 +98,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		try {
 			Class<?> clazz = Class.forName(objectIdentity.getType());
 			
-			if (GenericEntity.class.isAssignableFrom(clazz) && objectIdentity.getIdentifier() instanceof Integer) {
+			if (GenericEntity.class.isAssignableFrom(clazz) && objectIdentity.getIdentifier() instanceof Long) {
 				return (GenericEntity<Long, ?>) getEntity(clazz, objectIdentity.getIdentifier());
 			}
 		} catch (ClassNotFoundException e) {
