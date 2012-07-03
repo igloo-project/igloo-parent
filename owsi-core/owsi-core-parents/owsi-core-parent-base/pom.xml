@@ -168,56 +168,49 @@
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
-					<version>${owsi-core.maven-processor-plugin.version}</version>
-					<configuration>
-						<outputDirectory>${generated-sources.directory}</outputDirectory>
-						<options>
-							<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
-							<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
-						</options>
-					</configuration>
-					<executions>
-						<execution>
-							<id>process</id>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<phase>generate-sources</phase>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>com.mysema.maven</groupId>
-					<artifactId>maven-apt-plugin</artifactId>
-					<version>${owsi-core.querydsl.maven-apt-plugin.version}</version>
-					<configuration>
-						<outputDirectory>${generated-sources.directory}</outputDirectory>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<configuration>
-								<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-							</configuration>
-						</execution>
-					</executions>
 					<dependencies>
+						<dependency>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-jpamodelgen</artifactId>
+							<version>${owsi-core.hibernate-jpamodelgen.version}</version>
+						</dependency>
 						<dependency>
 							<groupId>com.mysema.querydsl</groupId>
 							<artifactId>querydsl-apt</artifactId>
 							<version>${owsi-core.querydsl.version}</version>
 						</dependency>
 					</dependencies>
+					<configuration>
+						<outputDirectory>${generated-sources.directory}</outputDirectory>
+						<options>
+							<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
+							<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
+						</options>
+						<processors>
+							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+							<processor>org.bindgen.processor.Processor</processor>
+						</processors>
+					</configuration>
+					<executions>
+						<execution>
+							<id>default</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>process</goal>
+								<goal>process-test</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>default-cli</id>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>net.alchim31.maven</groupId>
 					<artifactId>yuicompressor-maven-plugin</artifactId>
 					<version>${owsi-core.maven-yui-compressor-plugin.version}</version>
 				</plugin>
-				
-				
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
