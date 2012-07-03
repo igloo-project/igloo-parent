@@ -16,7 +16,7 @@
 							http://www.springframework.org/schema/aop
 							http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 		
-	<security:authentication-manager>
+	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider ref="runAsAuthenticationProvider" />
 		<security:authentication-provider user-service-ref="coreJpaUserDetailsService">
 			<security:password-encoder hash="md5" />
