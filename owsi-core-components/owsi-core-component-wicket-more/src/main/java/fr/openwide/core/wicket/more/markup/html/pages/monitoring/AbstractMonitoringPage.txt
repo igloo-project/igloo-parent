@@ -1,7 +1,1 @@
-<wicket:container wicket:id="status"></wicket:container>
-
-||<wicket:container wicket:id="details">
-<wicket:container wicket:id="detail"></wicket:container><wicket:container wicket:id="separator"></wicket:container>
-</wicket:container>||
-
-<wicket:container wicket:id="message"></wicket:container>
+<wicket:container wicket:id="status"></wicket:container><wicket:enclosure child="details"> ||<wicket:container wicket:id="details"><wicket:container wicket:id="detail"></wicket:container><wicket:container wicket:id="separator"></wicket:container></wicket:container><wicket:enclosure/><wicket:enclosure child="message"> ||<wicket:container wicket:id="message"></wicket:container><wicket:enclosure />

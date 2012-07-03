@@ -11,6 +11,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
+import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+
 public abstract class AbstractMonitoringPage extends Page {
 	
 	private static final long serialVersionUID = -2327468306332270500L;
@@ -35,9 +37,9 @@ public abstract class AbstractMonitoringPage extends Page {
 		add(new Label("status", isSuccess() ? "OK" : "KO").setEscapeModelStrings(false));
 		
 		add(new ListView<String>("details", getDetails()) {
-
+			
 			private static final long serialVersionUID = 1998240269123369862L;
-
+			
 			@Override
 			protected void populateItem(ListItem<String> item) {
 				item.add(new Label("detail", item.getModelObject().replaceAll("\\|", "<pipe>")).setEscapeModelStrings(false));
@@ -45,9 +47,15 @@ public abstract class AbstractMonitoringPage extends Page {
 				separator.setVisible(item.getIndex() == getList().size() - 1);
 				item.add(separator);
 			}
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(!getDetails().isEmpty());
+			}
 		});
 		
-		add(new Label("message", getMessage()).setEscapeModelStrings(false));
+		add(new HideableLabel("message", getMessage()).setEscapeModelStrings(false));
 	}
 
 	@Override
