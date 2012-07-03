@@ -67,10 +67,7 @@
 		<constructor-arg value="CASE_SENSITIVE" />
 	</bean>
 
-	<bean id="coreJpaUserDetailsService"
-		class="fr.openwide.core.jpa.security.service.CoreJpaUserDetailsServiceImpl"
-		p:roleHierarchy-ref="roleHierarchy">
-	</bean>
+	<bean id="coreJpaUserDetailsService" class="fr.openwide.core.jpa.security.service.CoreJpaUserDetailsServiceImpl" />
 		
 	<bean id="authenticationService"
 		class="fr.openwide.core.jpa.security.service.CoreAuthenticationServiceImpl" />
