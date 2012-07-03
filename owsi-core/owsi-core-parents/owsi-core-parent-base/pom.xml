@@ -15,6 +15,7 @@
 		
 		<jdk.version>1.6</jdk.version>
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
+		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
@@ -207,6 +208,9 @@
 							<goals>
 								<goal>process-test</goal>
 							</goals>
+							<configuration>
+								<outputDirectory>${generated-sources-test.directory}</outputDirectory>
+							</configuration>
 						</execution>
 						<execution>
 							<id>default-cli</id>
