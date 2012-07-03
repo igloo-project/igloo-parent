@@ -50,6 +50,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// Avec wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
 		// On ajoute globalement l'accès aux ressources less.
 		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
+		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
 		
 		getMarkupSettings().setStripWicketTags(true);
 		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
