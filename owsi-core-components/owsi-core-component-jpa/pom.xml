@@ -414,55 +414,8 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>process</id>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<options>
-								<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
-								<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
-							</options>
-						</configuration>
-					</execution>
-					<execution>
-						<id>process-test</id>
-						<goals>
-							<goal>process-test</goal>
-						</goals>
-						<!--
-						as eclipse doesn't process generate-test-sources,
-						we need to plug on generate-sources.
-						This is not needed if entities are not declared
-						inside test directory
-						-->
-						<phase>generate-sources</phase>
-						<configuration>
-							<outputDirectory>target/generated-test-sources/apt</outputDirectory>
-							<options>
-								<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
-								<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
-							</options>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-jpamodelgen</artifactId>
-						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>maven-apt-plugin</artifactId>
 			</plugin>
 		</plugins>
-		
 	</build>
 	
 	<repositories>
