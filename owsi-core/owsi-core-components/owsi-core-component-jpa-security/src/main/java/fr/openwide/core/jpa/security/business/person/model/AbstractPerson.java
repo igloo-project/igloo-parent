@@ -42,7 +42,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	private Long id;
 	
 	@Column(nullable = false, unique = true)
-	@NaturalId
+	@NaturalId(mutable = true)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String userName;
 	
