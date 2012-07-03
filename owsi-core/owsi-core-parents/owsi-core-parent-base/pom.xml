@@ -199,6 +199,12 @@
 							<phase>generate-sources</phase>
 							<goals>
 								<goal>process</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>default-test</id>
+							<phase>generate-test-sources</phase>
+							<goals>
 								<goal>process-test</goal>
 							</goals>
 						</execution>
