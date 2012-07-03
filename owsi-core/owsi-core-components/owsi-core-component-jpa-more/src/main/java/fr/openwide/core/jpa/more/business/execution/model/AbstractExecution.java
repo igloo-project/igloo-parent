@@ -12,6 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import fr.openwide.core.commons.util.CloneUtils;
@@ -48,6 +49,7 @@ public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET ext
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
 
+	@Index(name = "idx_Execution_endDate")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
 
