@@ -168,6 +168,7 @@
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
+					<version>${owsi-core.maven-processor-plugin.version}</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.hibernate</groupId>
