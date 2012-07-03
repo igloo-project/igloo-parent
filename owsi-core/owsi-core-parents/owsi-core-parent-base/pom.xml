@@ -98,6 +98,7 @@
 		<owsi-core.lesscss-engine.version>1.3.0</owsi-core.lesscss-engine.version>
 		
 		<owsi-core.maven-compiler-plugin.version>2.5</owsi-core.maven-compiler-plugin.version>
+		<owsi-core.maven-resources-plugin.version>2.5</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.12</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.3.1</owsi-core.maven-release-plugin.version>
@@ -120,6 +121,23 @@
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
 						<compilerArgument>-proc:none</compilerArgument>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${owsi-core.maven-resources-plugin.version}</version>
+					<configuration>
+						<!--
+						Par défaut, @ est utilisé comme délimiteur et ne peut pas être
+						échappé correctement. Historiquement, nous n'avons jamais utilisé
+						ces placeholders ; ont les supprime donc de la configuration
+						Voir MRESOURCES-141
+						-->
+						<delimiters>
+							<delimiter>${*}</delimiter>
+						</delimiters>
+						<useDefaultDelimiters>false</useDefaultDelimiters>
 					</configuration>
 				</plugin>
 				<plugin>
