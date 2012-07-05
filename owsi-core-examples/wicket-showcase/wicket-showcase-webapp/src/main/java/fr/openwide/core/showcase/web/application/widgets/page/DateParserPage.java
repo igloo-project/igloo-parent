@@ -18,6 +18,7 @@ import com.joestelmach.natty.Parser;
 
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
 public class DateParserPage extends WidgetsMainPage {
@@ -27,6 +28,8 @@ public class DateParserPage extends WidgetsMainPage {
 	
 	public DateParserPage(PageParameters parameters) {
 		super(parameters);
+		
+		addBreadCrumbElement(new BreadCrumbElement("widgets.menu.dateParser", DateParserPage.class));
 		
 		final IModel<String> dateStringModel = new Model<String>(null);
 		final IModel<Date> beginDateModel = new Model<Date>(null);

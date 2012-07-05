@@ -45,6 +45,7 @@ import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.infowindow.GInfoBubbl
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapChainableStatement;
 import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapOptions;
 import fr.openwide.core.wicket.gmap.resource.GMarkerImageResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class GMapPage extends WidgetsMainPage {
 	private static final long serialVersionUID = -3963117430192776716L;
@@ -54,6 +55,8 @@ public class GMapPage extends WidgetsMainPage {
 	public GMapPage(PageParameters parameters) {
 		super(parameters);
 		setOutputMarkupId(true);
+		
+		addBreadCrumbElement(new BreadCrumbElement("widgets.menu.gmap", GMapPage.class));
 		
 		// Création de la carte
 		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng(BigDecimal.valueOf(-34.397), 
