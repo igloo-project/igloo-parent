@@ -47,11 +47,17 @@
 				<prop key="hibernate.generate_statistics">false</prop>
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
 				
+				<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>
+
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+				<prop key="net.sf.ehcache.configurationResourceName">/ehcache/ehcache-hibernate.xml</prop>
+				
 				<prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.impl.FSDirectoryProvider</prop>
 				<prop key="hibernate.search.default.indexBase">${lucene.index.path}</prop>
 				<prop key="hibernate.search.default.locking_strategy">native</prop>
-				<!-- TODO : problème de ré-indexation globale qui ne termine jamais en 3.4.0 -->
-				<prop key="hibernate.search.lucene_version">LUCENE_33</prop><!-- LUCENE_CURRENT default is deprecated -->
 			</props>
 		</property>
 		<property name="packagesToScan">

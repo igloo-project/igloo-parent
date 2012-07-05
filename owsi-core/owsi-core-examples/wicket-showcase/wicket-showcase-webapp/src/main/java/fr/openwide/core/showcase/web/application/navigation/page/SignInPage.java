@@ -1,46 +1,81 @@
 package fr.openwide.core.showcase.web.application.navigation.page;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.wicket.Application;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.openwide.core.showcase.web.application.ShowcaseSession;
 import fr.openwide.core.showcase.web.application.util.template.styles.SignInLessCssResourceReference;
-import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeadBehavior;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
-import fr.openwide.core.wicket.more.markup.html.feedback.GlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 
 public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 	private static final long serialVersionUID = 5503959273448832421L;
 
-	private static final String[] ROUNDED_CORNERS_CSS_CLASSES = new String[] {
-			".login-box-outer", ".login-box-footer-outer",
-			".field-inline .field-label", ".field-inline .form-label",
-			".buttons a.button", "input" };
+	private static final Logger LOGGER = LoggerFactory.getLogger(SignInPage.class);
 
-	private RequestCache requestCache = new HttpSessionRequestCache();
-
+	private FormComponent<String> userNameField;
+	
+	private FormComponent<String> passwordField;
+	
 	public SignInPage() {
 		super();
 		
-		add(new Css3PieHeadBehavior(ROUNDED_CORNERS_CSS_CLASSES));
+		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
-		SavedRequest savedRequest = (SavedRequest) requestCache.getRequest(
-				(HttpServletRequest) getRequest().getContainerRequest(),
-				(HttpServletResponse) getResponse().getContainerResponse());
-		if (savedRequest != null) {
-			ShowcaseSession.get().registerRedirectUrl(
-					savedRequest.getRedirectUrl());
-		}
+		Form<Void> signInForm = new Form<Void>("signInForm") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onSubmit() {
+				ShowcaseSession showcaseSession = ShowcaseSession.get();
+				try {
+					showcaseSession.signIn(userNameField.getModelObject(), passwordField.getModelObject());
+					showcaseSession.success(getString("signIn.success"));
+				} catch (BadCredentialsException e) {
+					showcaseSession.error(getString("signIn.error.authentication"));
+				} catch (UsernameNotFoundException e) {
+					showcaseSession.error(getString("signIn.error.authentication"));
+				} catch (DisabledException e) {
+					showcaseSession.error(getString("signIn.error.userDisabled"));
+				} catch (Exception e) {
+					LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
+					showcaseSession.error(getString("signIn.error.unknown"));
+				}
+				
+				if (StringUtils.hasText(showcaseSession.getRedirectUrl())) {
+					throw new RedirectToUrlException(showcaseSession.getRedirectUrl());
+				} else {
+					throw new RestartResponseException(Application.get().getHomePage());
+				}
+			}
+		};
+		add(signInForm);
 		
-		add(new GlobalFeedbackPanel("feedback"));
+		userNameField = new RequiredTextField<String>("userName", Model.of(""));
+		userNameField.setLabel(new ResourceModel("signIn.login"));
+		userNameField.setOutputMarkupId(true);
+		signInForm.add(userNameField);
+		
+		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
+		passwordField.setLabel(new ResourceModel("signIn.password"));
+		signInForm.add(passwordField);
 	}
 	
 	@Override

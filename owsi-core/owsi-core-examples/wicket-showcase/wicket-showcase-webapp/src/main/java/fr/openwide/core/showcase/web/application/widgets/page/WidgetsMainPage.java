@@ -14,13 +14,14 @@ public class WidgetsMainPage extends MainTemplate {
 	public WidgetsMainPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement("widgets.pageTitle"));
+		addBreadCrumbElement(new BreadCrumbElement("widgets.pageTitle", WidgetsMainPage.class));
 		
 		addMenuElement(getSecondMenuPage(), "calendarTabs", CalendarPage.class);
 		addMenuElement(getSecondMenuPage(), "autocompleteTabs", AutocompletePage.class);
 		addMenuElement(getSecondMenuPage(), "fancyboxTabs", FancyboxPage.class);
 		addMenuElement(getSecondMenuPage(), "gmapTabs", GMapPage.class);
 		addMenuElement(getSecondMenuPage(), "dateParserTabs", DateParserPage.class);
+		addMenuElement(getSecondMenuPage(), "listFilterTabs", ListFilterPage.class);
 		
 		add(new Label("pageTitle", new ResourceModel("widgets.pageTitle")));
 	}
@@ -32,6 +33,6 @@ public class WidgetsMainPage extends MainTemplate {
 	
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return CalendarPage.class;
+		return null;
 	}
 }
