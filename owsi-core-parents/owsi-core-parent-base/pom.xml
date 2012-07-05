@@ -277,7 +277,9 @@
 		<profile>
 			<id>eclipse</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>m2e.version</name>
+				</property>
 			</activation>
 			<build>
 				<pluginManagement>
