@@ -13,7 +13,7 @@ import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPag
 import fr.openwide.core.showcase.web.application.util.template.styles.StyleLessCssResourceReference;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
-import fr.openwide.core.wicket.more.markup.html.feedback.GlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
@@ -21,19 +21,17 @@ import fr.openwide.core.wicket.more.security.page.LogoutPage;
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 	private static final long serialVersionUID = -2487769225221281241L;
 	
-	private static final String[] ROUNDED_CORNERS_CSS_CLASSES = new String[] {
-		// TODO
-	};
-	
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		enableDefaultTipsyTooltips();
-		enableCss3Pie(ROUNDED_CORNERS_CSS_CLASSES);
+		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
+		
+//		enableDefaultTipsyTooltips();
+//		enableCss3Pie(ROUNDED_CORNERS_CSS_CLASSES);
 		
 		add(new Label("headPageTitle", getHeadPageTitleModel()));
 		
-		add(new BookmarkablePageLink<Void>("logoBackToHomeLink", getApplication().getHomePage()));
+//		add(new BookmarkablePageLink<Void>("logoBackToHomeLink", getApplication().getHomePage()));
 		
 		// Menu niveau 1
 		addMenuElement(getFirstMenuPage(), "home", HomePage.class);
@@ -56,8 +54,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
 		add(new BreadCrumbPanel("breadCrumb", getBreadCrumbElementsModel()));
-		
-		add(new GlobalFeedbackPanel("feedbackPanel"));
 	}
 	
 	@Override

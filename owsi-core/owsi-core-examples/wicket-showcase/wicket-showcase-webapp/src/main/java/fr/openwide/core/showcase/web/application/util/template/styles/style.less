@@ -1,14 +1,75 @@
-@import "include.less";
-@import "base.css";
-@import "main.css";
-@import "form.css";
-@import "buttons.css";
-@import "popup.css";
-@import "jquery-ui.css";
-@import "messagebox.css";
-@import "tipsy.css";
-@import "feedback.css";
-@import "typography.css";
-@import "portfolio-search-panel.css";
-@import "fancybox-no-border-shadow.css";
+/* @import "include.less"; */
+/* @import "base.css"; */
+/* @import "main.css"; */
+/* @import "form.css"; */
+/* @import "buttons.css"; */
+/* @import "popup.css"; */
+/* @import "jquery-ui.css"; */
+/* @import "messagebox.css"; */
+/* @import "tipsy.css"; */
+/* @import "feedback.css"; */
+/* @import "typography.css"; */
+/* @import "portfolio-search-panel.css"; */
+/* @import "fancybox-no-border-shadow.css"; */
+/* @import "listFilter.less"; */
+
+// éléments communs
+// CSS Reset
+@import "@{scope-core}bootstrap/reset.less";
+@import "@{scope-core}bootstrap/override/reset.less";
+
+// Core variables and mixins
+@import "@{scope-core}bootstrap/variables.less";
+@import "@{scope-core}bootstrap/override/variables.less";
+
+@import "@{scope-core}bootstrap/mixins.less";
+
+// Grid system and page structure
+@import "@{scope-core}bootstrap/scaffolding.less";
+@import "@{scope-core}bootstrap/grid.less";
+@import "@{scope-core}bootstrap/layouts.less";
+
+// Base CSS
+@import "@{scope-core}bootstrap/type.less";
+@import "@{scope-core}bootstrap/forms.less";
+@import "@{scope-core}bootstrap/tables.less";
+
+// Components: common
+@import "@{scope-core}bootstrap/sprites.less";
+@import "@{scope-core}bootstrap/dropdowns.less";
+@import "@{scope-core}bootstrap/component-animations.less";
+@import "@{scope-core}bootstrap/close.less";
+
+// Components: Buttons & Alerts
+@import "@{scope-core}bootstrap/buttons.less";
+@import "@{scope-core}bootstrap/button-groups.less";
+@import "@{scope-core}bootstrap/alerts.less";
+
+// Components: Nav
+@import "@{scope-core}bootstrap/navs.less";
+@import "@{scope-core}bootstrap/navbar.less";
+@import "@{scope-core}bootstrap/breadcrumbs.less";
+
+// Components: Popovers
+@import "@{scope-core}bootstrap/modals.less";
+@import "@{scope-core}bootstrap/tooltip.less";
+@import "@{scope-core}bootstrap/popovers.less";
+
+// Components: Misc
+@import "@{scope-core}bootstrap/progress-bars.less";
+
+// Utility classes
+@import "@{scope-core}bootstrap/utilities.less";
+
+@import "@{scope-core}bootstrap/override/general.less";
+
+// mise en place générale de la page
+@import "@{scope-core}layout.less";
+@import "@{scope-core}nav.less";
+
+// éléments génériques
+@import "@{scope-core}alerts.less";
+@import "@{scope-core}modals.less";
+
+// pages
 @import "listFilter.less";

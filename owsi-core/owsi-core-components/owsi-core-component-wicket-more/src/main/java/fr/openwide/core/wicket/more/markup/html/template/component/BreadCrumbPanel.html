@@ -1,7 +1,7 @@
 <wicket:panel>
-	<div class="breadcrumb">
-		<wicket:container wicket:id="breadCrumbElementListView">
-			<wicket:container wicket:id="breadCrumbElement" />
-		</wicket:container>
-	</div>
+	<ul class="breadcrumb">
+		<li wicket:id="breadCrumbElementListView">
+			<span wicket:id="divider" class="divider">/</span><wicket:container wicket:id="breadCrumbElement" />
+		</li>
+	</ul>
 </wicket:panel>
