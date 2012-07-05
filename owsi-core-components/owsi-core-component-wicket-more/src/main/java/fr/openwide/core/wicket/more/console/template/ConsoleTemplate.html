@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<head>
+		<title>
+			<wicket:container wicket:id="headPageTitle">
+				<wicket:container wicket:id="headPageTitleSeparator"> &laquo; </wicket:container>
+				<wicket:container wicket:id="headPageTitleElement" />
+			</wicket:container>
+		</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		
+		<wicket:head />
+	</head>
+	<body>
+		<!-- Feedback -->
+		<div wicket:id="animatedGlobalFeedbackPanel">
+		</div>
+		
+		<div class="container">
+			<!-- Menu sections -->
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li wicket:id="menuSectionsListView">
+								<a wicket:id="menuSectionLink">
+									<wicket:container wicket:id="menuSectionLabel" />
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- Menu items -->
+			<wicket:enclosure child="menuItemsListView">
+				<div class="subnav">
+					<ul class="nav nav-pills">
+						<li wicket:id="menuItemsListView">
+							<a wicket:id="menuItemLink">
+								<wicket:container wicket:id="menuItemLabel" />
+							</a>
+						</li>
+					</ul>
+				</div>
+			</wicket:enclosure>
+			
+			<!-- Content -->
+			<div class="content">
+				<wicket:child />
+			</div>
+			
+			<!-- Footer -->
+			<div class="footer">
+				<wicket:message key="console.footer" />
+			</div>
+		</div>
+	</body>
+</html>
