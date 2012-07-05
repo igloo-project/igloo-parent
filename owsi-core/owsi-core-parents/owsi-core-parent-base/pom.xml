@@ -181,6 +181,11 @@
 							<artifactId>querydsl-apt</artifactId>
 							<version>${owsi-core.querydsl.version}</version>
 						</dependency>
+						<dependency>
+							<groupId>org.bindgen</groupId>
+							<artifactId>bindgen</artifactId>
+							<version>${owsi-core.bindgen.version}</version>
+						</dependency>
 					</dependencies>
 					<configuration>
 						<outputDirectory>${generated-sources.directory}</outputDirectory>
@@ -196,14 +201,14 @@
 					</configuration>
 					<executions>
 						<execution>
-							<id>default</id>
+							<id>maven-processor-plugin-default</id>
 							<phase>generate-sources</phase>
 							<goals>
 								<goal>process</goal>
 							</goals>
 						</execution>
 						<execution>
-							<id>default-test</id>
+							<id>maven-processor-plugin-default-test</id>
 							<phase>generate-test-sources</phase>
 							<goals>
 								<goal>process-test</goal>
@@ -211,9 +216,6 @@
 							<configuration>
 								<outputDirectory>${generated-sources-test.directory}</outputDirectory>
 							</configuration>
-						</execution>
-						<execution>
-							<id>default-cli</id>
 						</execution>
 					</executions>
 				</plugin>
@@ -271,6 +273,59 @@
 					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
+		</profile>
+		<profile>
+			<id>eclipse</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<!--
+						Eclipse n'aime pas avoir une deuxième fois le même code pour les tests ; il faut
+						donc générer le code des tests en même temps.
+						De plus, pour alléger le build, on exclut les resources de la génération.
+						Il faut appeler le plugin à la main avec la property -Declipse-maven-processor-plugin.
+						-->
+						<plugin>
+							<groupId>org.bsc.maven</groupId>
+							<artifactId>maven-processor-plugin</artifactId>
+							<configuration>
+								<excludes>
+									<exclude>**/*</exclude>
+								</excludes>
+							</configuration>
+							<executions>
+								<execution>
+									<id>maven-processor-plugin-default</id>
+									<phase>generate-sources</phase>
+									<goals>
+										<goal>process</goal>
+										<goal>process-test</goal>
+									</goals>
+								</execution>
+								<execution>
+									<id>maven-processor-plugin-default-test</id>
+									<phase>none</phase>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<!--
+			Profil qui existe juste pour désactiver le profil eclipse actif par défaut.
+			Lancer maven avec -Dclipse-maven-processor-plugin
+			-->
+			<id>eclipse-maven-processor-plugin</id>
+			<activation>
+				<property>
+					<name>eclipse-maven-processor-plugin</name>
+				</property>
+			</activation>
 		</profile>
 	</profiles>
 	

@@ -117,26 +117,6 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>process</id>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<!-- <configuration>
-							<compilerArguments>-AaddGeneratedAnnotation=true -AaddSuppressWarningsAnnotation=true</compilerArguments>
-						</configuration> -->
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-jpamodelgen</artifactId>
-						<version>${owsi-core.hibernate-jpamodelgen.version}</version>
-						<!-- <version>1.2.0-SNAPSHOT</version> -->
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
