@@ -71,16 +71,16 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 			Class<? extends Page> pageClass,
 			PageParameters parameters,
 			boolean isVisible) {
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLinkContainer", pageClass, parameters);
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLink", pageClass, parameters);
 		link.setVisible(isVisible && isPageAccessible(pageClass));
 		
-		MarkupContainer container = new WebMarkupContainer(name + "MenuLink");
+		MarkupContainer container = new WebMarkupContainer(name + "MenuLinkContainer");
 		if (pageClass.equals(selectedPageClass)) {
-			link.add(new ClassAttributeAppender("selected"));
+			container.add(new ClassAttributeAppender("active"));
 		}
-		link.add(container);
+		container.add(link);
 		
-		menuContainer.add(link);
+		menuContainer.add(container);
 	}
 	
 	protected abstract Class<? extends WebPage> getFirstMenuPage();

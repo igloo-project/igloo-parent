@@ -8,19 +8,13 @@
 	<div class="page-main-content">
 		<div style="margin-bottom: 10px;">
 			<form wicket:id="form">
-				<div class="float-left">
-					<input wicket:id="dateString" type="text" style="width: 300px; padding: 2px;" />
+				<div class="input-append">
+					<input wicket:id="dateString" type="text" style="width: 300px;" /><!-- 
+					 --><button wicket:id="submitLink" class="btn">
+						<span class="icon icon-search"></span>
+						<wicket:message key="widgets.dateParser.search.action" />
+					</button>
 				</div>
-				
-				<div class="field-button float-left">
-					<div class="button-outer">
-						<a wicket:id="submitLink" class="button button-elastic">
-							<img class="icon" src="static/common/images/icons/magnifier.png" width="16" height="16" />
-							<wicket:message key="widgets.dateParser.search.action" />
-						</a>
-					</div>
-				</div>
-				<div class="clear"></div>
 			</form>
 		</div>
 		

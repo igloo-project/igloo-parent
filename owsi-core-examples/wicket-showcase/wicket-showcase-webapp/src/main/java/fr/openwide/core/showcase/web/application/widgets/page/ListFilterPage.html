@@ -7,9 +7,9 @@
 				<wicket:message key="widgets.listFilter.title"></wicket:message>
 			</div>
 			<div wicket:id="userList" class="userList">
-				<div class="filter-outer">
-					<label for="filter-input"><wicket:message key="widgets.listFilter.label" /></label>
-					<input id="filter-input" class="filter-input" />
+				<div class="filter-outer input-prepend">
+					<label for="filter-input" class="add-on"><wicket:message key="widgets.listFilter.label" /></label><!-- 
+					 --><input id="filter-input" class="filter-input" type="text" />
 				</div>
 				<div wicket:id="user" class="user">
 					<p class="nom">

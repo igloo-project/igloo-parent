@@ -1,0 +1,34 @@
+body {
+	padding-top: 0;
+}
+
+.container {
+	max-width: @max-page-width;
+	min-width: @min-page-width;
+	width: auto;
+	margin-bottom: 10px;
+	
+	border-width: 1px;
+	border-style: none solid solid solid;
+	border-color: #CCC;
+	.border-radius(0 0 5px 5px);
+}
+
+.content {
+	min-height: 600px;
+	padding: 15px;
+}
+
+.footer {
+	border-top: 1px solid #CCC;
+	padding: 10px 15px;
+	text-align: right;
+	background: #EEE;
+	.border-radius(0 0 5px 5px);
+}
+
+ul, li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
