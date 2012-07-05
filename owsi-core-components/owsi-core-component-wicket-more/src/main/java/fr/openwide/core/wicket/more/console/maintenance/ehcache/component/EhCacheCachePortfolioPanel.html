@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<body>
+		<wicket:panel>
+			<div class="console-section" wicket:id="cacheManagerList">
+				<div class="subtitle">
+					<div class="actions">
+						<button wicket:id="clearStatistics" class="btn btn-mini btn-primary" type="button">
+							<i class="icon-refresh icon-white"></i>
+							<wicket:message key="console.maintenance.ehcache.cacheManager.statistics.clear.title" />
+						</button>
+						<button wicket:id="cacheManagerPurgeLink" class="btn btn-mini btn-danger" type="button">
+							<i class="icon-trash icon-white"></i>
+							<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
+						</button>
+					</div>
+					<div wicket:id="cacheManagerName" class="subtitle-text" />
+				</div>
+				
+				<div class="input-prepend cache-filter">
+					<span class="add-on"><wicket:message key="console.maintenance.ehcache.portfolio.filtre" /></span><input class="filter-input" type="text" autocomplete="off">
+				</div>
+				
+				
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th width="650px"><wicket:message key="console.maintenance.ehcache.portfolio.nom" /></th>
+							<th style="text-align: center;" width="25px"><wicket:message key="console.maintenance.ehcache.portfolio.eviction" /></th>
+							<th style="text-align: center;" width="25px"><wicket:message key="console.maintenance.ehcache.portfolio.hits" /></th>
+							<th style="text-align: center;" width="25px"><wicket:message key="console.maintenance.ehcache.portfolio.misses" /></th>
+							<th style="text-align: center;" width="15px"><wicket:message key="console.maintenance.ehcache.portfolio.hitsRatio" /></th>
+							<th style="text-align: center;" width="25px"><wicket:message key="console.maintenance.ehcache.portfolio.objetCount" /></th>
+							<th style="text-align: center;" width="45px"><wicket:message key="console.maintenance.ehcache.portfolio.max" /></th>
+							<th style="text-align: center;" width="15px"><wicket:message key="console.maintenance.ehcache.portfolio.cacheFillRatio" /></th>
+							
+							<th width="50px"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<wicket:container wicket:id="cacheList">
+							<tr class="cache-line-main filter-element">
+								<td rowspan="2" class="cache-name" style="vertical-align:middle">
+									<span class="icon icon-chevron-down show" wicket:message="title:console.maintenance.ehcache.portfolio.nom.show" />
+									<span class="icon icon-chevron-up hide" wicket:message="title:console.maintenance.ehcache.portfolio.nom.hide" />
+									<span wicket:id="cacheName"></span><br />
+									<input wicket:id="cacheNameInput" class="cache-name-input" type="text" />
+								</td>
+								<td rowspan="2" style="text-align: right;"><span wicket:id="cacheEvictionCount"></span></td>
+								<td style="text-align: right;"><span wicket:id="cacheHits"></span></td>
+								<td style="text-align: right;"><span wicket:id="cacheMisses"></span></td>
+								<td style="text-align: right;"><span wicket:id="cacheHitRatio"></span></td>
+								<td style="text-align: right;"><span wicket:id="cacheStoredElements"></span></td>
+								<td style="text-align: right;"><span wicket:id="cacheMaxElements"></span></td>
+								<td style="text-align: right;"><span wicket:id="cacheCacheFillRatio"></span></td>
+								<td rowspan="2" style="text-align: center; vertical-align:middle;">
+									<div class="actions">
+										<button wicket:id="modifierCache" class="btn btn-mini btn-primary" type="button"
+											style="padding-right: 2px" wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
+											<i class="icon-pencil icon-white"></i>
+										</button>
+										<button wicket:id="viderCache" class="btn btn-mini btn-danger" type="button"
+											style="padding-right: 2px" wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
+											<i class="icon-trash icon-white"></i>
+										</button>
+										<div wicket:id="modificationPanel"></div>
+									</div>
+								</td>
+							</tr>
+							<tr wicket:id="progressBarsContainer" class="cache-line-progress">
+								<td colspan="3">
+									<wicket:container wicket:id="progressBarHit"></wicket:container>
+								</td>
+								<td colspan="3">
+									<wicket:container wicket:id="progressBarObject"></wicket:container>
+								</td>
+							</tr>
+						</wicket:container>
+					</tbody>
+					<tfoot>
+						<tr class="filter-empty-message">
+							<td colspan="9" class="alert">
+								<wicket:message key="console.maintenance.ehcache.portfolio.filtre.empty" />
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				<script type="text/javascript">
+					$('.cache-name .show').on('click', function(event) {
+						$(this).parent().addClass('opened');
+					});
+					$('.cache-name .hide').on('click', function(event) {
+						$(this).parent().removeClass('opened');
+					});
+				</script>
+			</div>
+		</wicket:panel>
+	</body>
+</html>
