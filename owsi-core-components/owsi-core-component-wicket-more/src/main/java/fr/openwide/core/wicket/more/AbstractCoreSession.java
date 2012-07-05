@@ -15,7 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.collect.Lists;
 
@@ -74,51 +80,55 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 *            current username
 	 * @param password
 	 *            current password
-	 * @return <code>true</code> if authentication succeeds,
-	 *         <code>false</code> otherwise
+	 * @return <code>true</code> if authentication succeeds, throws an exception if not
+	 * 
+	 * @throws BadCredentialsException if password doesn't match with username
+	 * @throws UsernameNotFoundException if user name was not found
+	 * @throws DisabledException if user was found but disabled
 	 */
 	@Override
-	public boolean authenticate(String username, String password) {
-		boolean loggedIn = authenticationService.isLoggedIn();
+	public boolean authenticate(String username, String password)
+			throws BadCredentialsException, UsernameNotFoundException, DisabledException {
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
-		if (loggedIn) {
-			P person = personService.getByUserName(authenticationService.getUserName());
-			if (person != null) {
-				personModel = new GenericEntityModel<Long, P>(person);
-				
-				try {
-					if (person.getLastLoginDate() == null) {
-						onFirstLogin(person);
-					}
-					
-					personService.updateLastLoginDate(person);
-					
-					Locale locale = person.getLocale();
-					if (locale != null) {
-						setLocale(person.getLocale());
-					} else {
-						// si la personne ne possède pas de locale
-						// alors on enregistre celle mise en place
-						// automatiquement par le navigateur.
-						personService.updateLocale(person, getLocale());
-					}
-				} catch (Exception e) {
-					LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
-				}
-			}
+		P person = personService.getByUserName(authenticationService.getUserName());
+		if (person != null) {
+			personModel = new GenericEntityModel<Long, P>(person);
 			
-			if (roles.isEmpty()) {
-				Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
-				for (GrantedAuthority authority : authorities) {
-					roles.add(authority.getAuthority());
+			try {
+				if (person.getLastLoginDate() == null) {
+					onFirstLogin(person);
 				}
-			}
-			if (permissions.isEmpty()) {
-				permissions = authenticationService.getPermissions();
+				
+				personService.updateLastLoginDate(person);
+				
+				Locale locale = person.getLocale();
+				if (locale != null) {
+					setLocale(person.getLocale());
+				} else {
+					// si la personne ne possède pas de locale
+					// alors on enregistre celle mise en place
+					// automatiquement par le navigateur.
+					personService.updateLocale(person, getLocale());
+				}
+			} catch (Exception e) {
+				LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
 			}
 		}
 		
-		return loggedIn;
+		if (roles.isEmpty()) {
+			Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
+			for (GrantedAuthority authority : authorities) {
+				roles.add(authority.getAuthority());
+			}
+		}
+		if (permissions.isEmpty()) {
+			permissions = authenticationService.getPermissions();
+		}
+		
+		return true;
 	}
 	
 	protected void onFirstLogin(P person) {
@@ -200,12 +210,8 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 	
 	/**
-	 * Permet d'enregistrer une url de redirection.
-	 * 
-	 * Ce mécanisme de redirection est utilisé lors du trajet
-	 * page privé -> cas -> page /cas
-	 * 
-	 * @param url
+	 * Permet d'enregistrer une url de redirection : l'objectif est de permettre de rediriger après authentification
+	 * sur la page pour laquelle l'utilisateur n'avait pas les droits.
 	 */
 	public void registerRedirectUrl(String url) {
 		// le bind() est obligatoire pour demander à wicket de persister la session

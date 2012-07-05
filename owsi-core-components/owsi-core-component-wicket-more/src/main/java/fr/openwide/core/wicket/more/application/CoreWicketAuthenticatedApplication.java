@@ -11,18 +11,22 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.IRoleCheckingStrategy;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.IExceptionMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.util.IProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.wicket.more.CoreDefaultExceptionMapper;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
-public abstract class CoreWicketAuthenticatedApplication extends
-		CoreWicketApplication implements IRoleCheckingStrategy {
+public abstract class CoreWicketAuthenticatedApplication extends CoreWicketApplication implements IRoleCheckingStrategy {
+	
+	private IProvider<IExceptionMapper> coreExceptionMapperProvider;
 	
 	/**
 	 * Subclass of authenticated web session to instantiate
@@ -58,6 +62,8 @@ public abstract class CoreWicketAuthenticatedApplication extends
 		getSecuritySettings().setAuthorizationStrategy(newAuthorizationStrategy());
 		getSecuritySettings().setUnauthorizedComponentInstantiationListener(
 				newUnauthorizedComponentInstantiationListener());
+		
+		coreExceptionMapperProvider = new CoreDefaultExceptionMapperProvider();
 	}
 	
 	@Override
@@ -94,5 +100,16 @@ public abstract class CoreWicketAuthenticatedApplication extends
 	protected abstract Class<? extends AuthenticatedWebSession> getWebSessionClass();
 	
 	public abstract Class<? extends WebPage> getSignInPageClass();
+	
+	@Override
+	public IProvider<IExceptionMapper> getExceptionMapperProvider() {
+		return coreExceptionMapperProvider;
+	}
+	
+	private static class CoreDefaultExceptionMapperProvider implements IProvider<IExceptionMapper> {
+		public IExceptionMapper get() {
+			return new CoreDefaultExceptionMapper();
+		}
+	}
 
 }
