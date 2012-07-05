@@ -9,16 +9,25 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderResponseDecorator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
+import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.time.Duration;
+import org.odlabs.wiquery.core.WiQuerySettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
+import fr.openwide.core.wicket.more.core.Core172DecoratingHeaderResponse;
+import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
@@ -29,6 +38,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
+	
+	@Autowired
+	protected ILessCssService lessCssService;
+	
+	private static final Duration DEFAULT_TIMEOUT = Duration.minutes(10);
 	
 	public static CoreWicketApplication get() {
 		final Application application = Application.get();
@@ -50,7 +64,14 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// Avec wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
 		// On ajoute globalement l'accès aux ressources less.
 		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
+		
+		// on autorise l'accès aux .htc pour CSS3PIE
 		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
+		
+		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression wicket
+		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
+		
+		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
 		
 		getMarkupSettings().setStripWicketTags(true);
 		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
@@ -64,6 +85,28 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 		mountApplicationResources();
 		mountApplicationPages();
+		
+		registerLessImportScopes();
+	}
+	
+	@Override
+	protected void validateInit() {
+		super.validateInit();
+		// minification que si on est en mode DEPLOYMENT
+		WiQuerySettings.get().setMinifiedJavaScriptResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
+		
+		// on réécrit toutes les références au jQuery de wiQuery par une référence à notre jQuery
+		setHeaderResponseDecorator(new IHeaderResponseDecorator() {
+			@Override
+			public IHeaderResponse decorate(IHeaderResponse response) {
+				return new Core172DecoratingHeaderResponse(response);
+			}
+		});
+	}
+	
+	protected void registerLessImportScopes() {
+		lessCssService.registerImportScope("core", CoreCssScope.class);
+		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
 	}
 	
 	protected void mountCommonPages() {

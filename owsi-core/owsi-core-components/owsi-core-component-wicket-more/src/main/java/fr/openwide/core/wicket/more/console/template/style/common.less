@@ -1,0 +1,88 @@
+body {
+	padding-top : 0;
+}
+
+ul, li {
+	list-style-type : none;
+	margin : 0;
+	padding : 0;
+}
+
+.container {
+	max-width : 1200px;
+	min-width : 990px;
+	width : auto;
+}
+
+.content {
+	padding : 15px;
+	border-width : 1px;
+	border-style : none solid solid solid;
+	border-color : #CCC;
+	min-height : 500px;
+}
+
+.footer {
+	padding : 10px 15px;
+	margin-bottom : 10px;
+	text-align : right;
+	border-width : 1px;
+	border-style : none solid solid solid;
+	border-color : #CCC;
+	border-radius : 0 0 4px 4px;
+	background : #EEE;
+}
+
+.console-section {
+	margin-bottom : 30px;
+	
+	.subtitle {
+		border-bottom : 1px solid #CCC;
+		margin-bottom : 8px;
+		padding : 4px 0;
+		
+		.subtitle-text {
+			font-size : 16px;
+			line-height : 20px;
+			height : 20px;
+		}
+		
+		.actions {
+			float : right;
+		}
+	}
+}
+
+.console-section.reindex {
+	width: 30%;
+	
+	.actions {
+		margin-top : 15px;
+	}
+}
+
+.form-horizontal.ehcache-modification {
+	.control-label {
+		width : 70px;
+		font-weight : bold;
+		font-size : 14px;
+		color : #888;
+		text-align : left;
+	}
+	
+	.controls {
+		margin-left : 80px;
+		
+		input {
+			width : 80px;
+		}
+	}
+}
+
+select {
+	.border-radius(4px);
+}
+
+select[multiple] {
+	.border-radius(0);
+}

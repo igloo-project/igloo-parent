@@ -1,0 +1,76 @@
+.cache-portfolio {
+	.cache-name {
+		&.opened {
+			.cache-name-input {
+				display : block;
+			}
+			
+			.icon {
+				&.show {
+					display : none;
+				}
+				&.hide {
+					display : block;
+				}
+			}
+		}
+		
+		.cache-name-input {
+			display : none;
+			margin : 2px 0 0 0;
+			width : 600px;
+		}
+		
+		.icon {
+			float : right;
+			right : 5px;
+			top : 5px;
+			cursor : pointer;
+			
+			&.show {
+				display : block;
+			}
+			&.hide {
+				display : none;
+			}
+		}
+	}
+	
+	// Filtres
+	.input-prepend.cache-filter {
+		margin : 10px 0;
+		
+		.add-on {
+			color : #888888;
+			font-weight : bold;
+		}
+	}
+	
+	.filter-input {
+		width : 500px;
+	}
+	
+	.cache-line-main.filter-hidden-element + .cache-line-progress {
+		display : none;
+	}
+	
+	// Message liste filtrée vide
+	.filter-list-container.filter-empty-list {
+		.filter-empty-message {
+			display : table-row;
+		}
+	}
+	
+	.filter-empty-message .alert {
+		.border-radius(0 0 4px 4px);
+		padding : 10px;
+	}
+}
+
+.modal-ehcache-modification {
+	min-width: 860px;
+	
+	.modal-body {
+		min-height: 60px;
+	}
+}

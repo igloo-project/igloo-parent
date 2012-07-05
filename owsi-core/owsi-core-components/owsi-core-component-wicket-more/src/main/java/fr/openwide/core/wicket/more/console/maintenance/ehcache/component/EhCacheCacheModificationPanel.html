@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head></head>
+<body>
+	<wicket:panel>
+		<div wicket:id="body">
+			<form wicket:id="cacheForm" class="form-horizontal ehcache-modification">
+				<div class="control-group">
+					<label class="control-label"><wicket:message key="console.maintenance.ehcache.portfolio.max" /></label>
+					<div class="controls">
+						<input wicket:id="maxSize" type="text" autocomplete="off">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div wicket:id="footer">
+			<button wicket:id="annulerModificationCache" class="btn" type="button">
+				<span class="icon-ban-circle"></span>
+				<wicket:message key="console.maintenance.ehcache.cacheManager.cache.cancel" />
+			</button>
+			<button wicket:id="validerModificationCache" class="btn btn-success">
+				<span class="icon-ok icon-white"></span>
+				<wicket:message key="console.maintenance.ehcache.cacheManager.cache.save" />
+			</button>
+		</div>
+	</wicket:panel>
+</body>
+</html>
