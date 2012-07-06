@@ -7,10 +7,12 @@
 		show: function(selector) {
 			var $selector = $(selector);
 			var $panel = $(".alert-global-panel", $selector);
+			$panel.off("click.alert");
 			if ($(".alert-info, .alert-warning, .alert-error, .alert-success" , $panel).size() > 0) {
 				$panel.animate({ top: 0 }, 500);
 				
 				if ($(".alert-info, .alert-warning, .alert-error", $panel).size() == 0) {
+					$panel.on("click.alert", function(event) { $.fn.alert.close(event); });
 					$panel.delay(3000).animate({ top: -$panel.outerHeight() });
 				}
 			}
