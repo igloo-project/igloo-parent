@@ -402,6 +402,14 @@
 			<version>${owsi-core.asm.version}</version>
 		</dependency>
 		
+		<!-- Database pooling -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>${owsi-core.tomcat-jdbc.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
