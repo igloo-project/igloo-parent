@@ -3,28 +3,14 @@ package fr.openwide.core.wicket.more.markup.html.template;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 
-import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
-import fr.openwide.core.wicket.markup.html.util.css3pie.Css3PieHeadBehavior;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.Tipsy;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyCloseOnLoadJavascriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionGravity;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
@@ -34,54 +20,12 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 
 	private static final String META_TITLE_SEPARATOR = " › ";
 	
-	private static final String TIPSY_DATA_TOOLTIP = "data-tooltip";
-	private static final String TIPSY_DATA_FORM_FIELD_HELP = "data-form-field-help";
-	
 	private List<String> pageTitleElements = new ArrayList<String>();
 	
 	private List<BreadCrumbElement> breadCrumbElements = new ArrayList<BreadCrumbElement>();
 	
-	private boolean contributeTipsyCloseOnLoad = false;
-	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
-	}
-	
-	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass) {
-		addMenuElement(this, selectedPageClass, name, pageClass, null, true);
-	}
-	
-	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
-			boolean isVisible) {
-		addMenuElement(this, selectedPageClass, name, pageClass, null, isVisible);
-	}
-	
-	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
-			PageParameters parameters) {
-		addMenuElement(this, selectedPageClass, name, pageClass, parameters, true);
-	}
-	
-	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
-			PageParameters parameters, boolean isVisible) {
-		addMenuElement(this, selectedPageClass, name, pageClass, parameters, isVisible);
-	}
-	
-	protected void addMenuElement(MarkupContainer menuContainer,
-			Class<? extends Page> selectedPageClass,
-			String name,
-			Class<? extends Page> pageClass,
-			PageParameters parameters,
-			boolean isVisible) {
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLink", pageClass, parameters);
-		link.setVisible(isVisible && isPageAccessible(pageClass));
-		
-		MarkupContainer container = new WebMarkupContainer(name + "MenuLinkContainer");
-		if (pageClass.equals(selectedPageClass)) {
-			container.add(new ClassAttributeAppender("active"));
-		}
-		container.add(link);
-		
-		menuContainer.add(container);
 	}
 	
 	protected abstract Class<? extends WebPage> getFirstMenuPage();
@@ -135,44 +79,6 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 		return sb.toString();
 	}
 	
-	protected void enableDefaultTipsyTooltips() {
-		enableTipsyTooltips("[" + TIPSY_DATA_TOOLTIP + "]", TIPSY_DATA_TOOLTIP);
-		enableTipsyTooltips("[" + TIPSY_DATA_FORM_FIELD_HELP + "]", TIPSY_DATA_FORM_FIELD_HELP,
-				TipsyOptionGravity.WEST, TipsyOptionTrigger.FOCUS);
-	}
-	
-	protected void enableTipsyTooltips(String selector, String tooltipAttributeName) {
-		enableCloseTipsyOnLoad();
-		enableTipsyTooltips(selector, tooltipAttributeName, TipsyOptionGravity.NORTH, TipsyOptionTrigger.HOVER);
-	}
-	
-	protected void enableTipsyTooltips(String selector, String tooltipAttributeName, TipsyOptionGravity gravity, TipsyOptionTrigger trigger) {
-		final Tipsy tipsy = new Tipsy();
-		tipsy.setFade(true);
-		tipsy.setLive(true);
-		tipsy.setTitle(JsUtils.quotes(tooltipAttributeName));
-		tipsy.setGravity(gravity);
-		tipsy.setTrigger(trigger);
-			
-		add(new TipsyBehavior(selector, tipsy));
-	}
-	
-	protected void enableCss3Pie(String[] styles) {
-		add(new Css3PieHeadBehavior(styles));
-	}
-	
-	protected void enableCloseTipsyOnLoad() {
-		contributeTipsyCloseOnLoad = true;
-	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		if (contributeTipsyCloseOnLoad) {
-			response.renderJavaScriptReference(CoreJavaScriptResourceReference.get());
-			response.renderJavaScriptReference(TipsyCloseOnLoadJavascriptResourceReference.get());
-		}
-	}
-
 	@Override
 	public JsStatement statement() {
 		return null;
