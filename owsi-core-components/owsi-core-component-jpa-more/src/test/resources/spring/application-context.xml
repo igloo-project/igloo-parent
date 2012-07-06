@@ -10,7 +10,9 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 	
 	<!-- SCAN DES PACKAGES -->
-	<context:component-scan base-package="fr.openwide" />
+	<context:component-scan  base-package="fr.openwide">
+		<context:exclude-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>
+	</context:component-scan>
 
 	<!-- INJECTION PAR ANNOTATION -->
 	<context:annotation-config />
