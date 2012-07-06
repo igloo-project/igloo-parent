@@ -28,7 +28,7 @@ import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
 import fr.openwide.core.test.jpa.security.business.person.model.MockPersonGroup;
 import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonGroupService;
 import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonService;
-import fr.openwide.core.test.jpa.security.spring.config.JpaSecurityTestConfig;
+import fr.openwide.core.test.jpa.security.config.spring.JpaSecurityTestConfig;
 
 @ContextConfiguration(classes = JpaSecurityTestConfig.class)
 public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
