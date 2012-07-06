@@ -1,4 +1,4 @@
-package fr.openwide.core.test.jpa.security.spring.config;
+package fr.openwide.core.test.jpa.security.config.spring;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
