@@ -10,7 +10,7 @@ import fr.openwide.core.jpa.config.spring.DefaultJpaConfig;
 import fr.openwide.core.jpa.config.spring.JpaConfigUtils;
 
 @Import(DefaultJpaConfig.class)
-public abstract class AbstractConfiguredJpaMoreConfig extends AbstractJpaMoreConfig {
+public abstract class AbstractConfiguredJpaMoreJpaConfig extends AbstractJpaMoreJpaConfig {
 
 	@Autowired
 	private DefaultJpaConfig defaultJpaConfig;

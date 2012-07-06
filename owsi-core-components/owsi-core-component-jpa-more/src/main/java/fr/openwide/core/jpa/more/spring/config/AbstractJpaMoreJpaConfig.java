@@ -8,7 +8,7 @@ import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.more.business.JpaMoreBusinessPackage;
 
 @ComponentScan(basePackageClasses = { JpaMoreBusinessPackage.class })
-public abstract class AbstractJpaMoreConfig extends AbstractJpaConfig {
+public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {
 
 	@Bean
 	public JpaPackageScanProvider jpaMorePackageScanProvider() {
