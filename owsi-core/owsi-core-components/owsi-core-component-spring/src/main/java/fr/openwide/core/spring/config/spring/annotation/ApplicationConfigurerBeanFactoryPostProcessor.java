@@ -112,6 +112,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		
 		// ce sont les fichiers qui doivent être pris en compte avant l'environnement
 		configurer.setLocalOverride(true);
+		configurer.setIgnoreResourceNotFound(true);
 		configurer.setLocations(locations.toArray(new Resource[locations.size()]));
 	}
 

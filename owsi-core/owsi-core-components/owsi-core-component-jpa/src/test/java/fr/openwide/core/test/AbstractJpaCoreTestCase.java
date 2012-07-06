@@ -26,15 +26,13 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.test.config.spring.JpaTestConfig;
 import fr.openwide.core.test.jpa.example.business.label.model.Label;
 import fr.openwide.core.test.jpa.example.business.label.service.LabelService;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
-@ContextConfiguration(locations = {
-		"classpath*:database-initialization-context.xml",
-		"classpath*:application-context.xml"
-})
+@ContextConfiguration(classes = JpaTestConfig.class)
 public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 	
 	@Autowired

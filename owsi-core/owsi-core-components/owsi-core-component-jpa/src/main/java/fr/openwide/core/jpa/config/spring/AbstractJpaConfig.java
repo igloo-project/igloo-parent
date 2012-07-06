@@ -5,6 +5,10 @@ import javax.sql.DataSource;
 
 import org.springframework.aop.Advisor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -12,6 +16,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import fr.openwide.core.jpa.CoreJpaPackage;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 
+/**
+ * L'implémentation de cette classe doit être annotée {@link EnableAspectJAutoProxy}
+ */
+@ComponentScan(
+	basePackageClasses = CoreJpaPackage.class,
+	excludeFilters = @Filter(Configuration.class)
+)
 public abstract class AbstractJpaConfig {
 
 	@Bean
