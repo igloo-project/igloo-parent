@@ -1,4 +1,4 @@
-package fr.openwide.core.test.jpa.more.spring.config;
+package fr.openwide.core.test.jpa.more.config.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

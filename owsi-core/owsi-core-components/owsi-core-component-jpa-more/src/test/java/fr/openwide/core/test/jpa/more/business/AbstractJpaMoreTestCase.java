@@ -18,7 +18,7 @@ import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
 import fr.openwide.core.test.jpa.more.business.audit.service.IMockAuditService;
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
-import fr.openwide.core.test.jpa.more.spring.config.JpaMoreTestConfig;
+import fr.openwide.core.test.jpa.more.config.spring.JpaMoreTestConfig;
 
 @ContextConfiguration(classes = JpaMoreTestConfig.class)
 public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
