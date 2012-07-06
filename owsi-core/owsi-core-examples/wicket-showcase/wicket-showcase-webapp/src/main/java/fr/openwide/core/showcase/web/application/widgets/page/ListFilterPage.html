@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<body>
-		<wicket:extend>
-			<div class="title">
-				<wicket:message key="widgets.listFilter.title"></wicket:message>
+	<wicket:extend>
+		<h1><wicket:message key="widgets.listFilter.title" /></h1>
+		
+		<div wicket:id="userList" class="userList">
+			<div class="filter-outer input-prepend">
+				<label for="filter-input" class="add-on"><wicket:message key="widgets.listFilter.label" /></label><!-- 
+				 --><input id="filter-input" class="filter-input" type="text" />
 			</div>
-			<div wicket:id="userList" class="userList">
-				<div class="filter-outer input-prepend">
-					<label for="filter-input" class="add-on"><wicket:message key="widgets.listFilter.label" /></label><!-- 
-					 --><input id="filter-input" class="filter-input" type="text" />
-				</div>
-				<div wicket:id="user" class="user">
-					<p class="nom">
-						<wicket:container wicket:id="firstName" />
-						<wicket:container wicket:id="lastName" />
-						<span class="user-name">(<wicket:container wicket:id="userName" />)</span>
-					</p>
-					<p>
-						<wicket:message key="widgets.listFilter.email" /><wicket:message key="common.punctuation.colon" />
-						<span wicket:id="email" class="email" />
-					</p>
-					<p>
-						<wicket:message key="widgets.listFilter.active" /><wicket:message key="common.punctuation.colon" />
-						<img wicket:id="active" class="active" alt="" />
-					</p>
-				</div>
-				<p class="filter-empty-message">
-					<wicket:message key="widgets.listFilter.filterEmptyMessage" />
+			<div wicket:id="user" class="user">
+				<p class="nom">
+					<wicket:container wicket:id="firstName" />
+					<wicket:container wicket:id="lastName" />
+					<span class="user-name">(<wicket:container wicket:id="userName" />)</span>
+				</p>
+				<p>
+					<wicket:message key="widgets.listFilter.email" /><wicket:message key="common.punctuation.colon" />
+					<span wicket:id="email" class="email" />
+				</p>
+				<p>
+					<wicket:message key="widgets.listFilter.active" /><wicket:message key="common.punctuation.colon" />
+					<img wicket:id="active" class="active" alt="" />
 				</p>
 			</div>
-		</wicket:extend>
-	</body>
+			<p class="filter-empty-message">
+				<wicket:message key="widgets.listFilter.filterEmptyMessage" />
+			</p>
+		</div>
+	</wicket:extend>
 </html>

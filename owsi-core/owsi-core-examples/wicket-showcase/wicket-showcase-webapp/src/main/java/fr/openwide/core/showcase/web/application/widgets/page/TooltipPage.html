@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1><wicket:message key="widgets.tooltip.title" /></h1>
+		
+		<p>
+			<wicket:message key="widgets.tooltip.explanation" />
+		</p>
+		
+		<p style="text-align:center;">
+			<button class="btn" wicket:message="title:widgets.tooltip.default" style="margin: 50px 60px;">
+				<wicket:message key="widgets.tooltip.default" />
+			</button>
+			
+			<button class="btn" wicket:message="title:widgets.tooltip.top" data-placement="top" style="margin: 50px 60px;">
+				<wicket:message key="widgets.tooltip.top" />
+			</button>
+			
+			<button class="btn" wicket:message="title:widgets.tooltip.right" data-placement="right" style="margin: 50px 60px;">
+				<wicket:message key="widgets.tooltip.right" />
+			</button>
+			
+			<button class="btn" wicket:message="title:widgets.tooltip.left" data-placement="left" style="margin: 50px 60px;">
+				<wicket:message key="widgets.tooltip.left" />
+			</button>
+		</p>
+	</wicket:extend>
+</html>

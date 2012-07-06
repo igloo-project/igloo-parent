@@ -2,6 +2,8 @@ package fr.openwide.core.wicket.more.console.template;
 
 import java.util.List;
 
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.string.UrlUtils;
 import org.springframework.util.StringUtils;
@@ -14,6 +16,7 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMain
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
 public final class ConsoleConfiguration {
 	
@@ -60,6 +63,14 @@ public final class ConsoleConfiguration {
 		}
 		
 		return INSTANCE;
+	}
+	
+	public Link<Void> getConsoleLink(String wicketId) {
+		if (!menuSections.isEmpty()) {
+			return new BookmarkablePageLink<Void>(wicketId, menuSections.get(0).getPageClass());
+		} else {
+			return new InvisibleLink<Void>(wicketId);
+		}
 	}
 	
 	public void mountPages(WebApplication webApplication) {

@@ -17,6 +17,7 @@ import fr.openwide.core.showcase.web.application.widgets.page.DateParserPage;
 import fr.openwide.core.showcase.web.application.widgets.page.FancyboxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.GMapPage;
 import fr.openwide.core.showcase.web.application.widgets.page.ListFilterPage;
+import fr.openwide.core.showcase.web.application.widgets.page.TooltipPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
@@ -66,6 +67,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/gmap", GMapPage.class);
 		mountPage("/widgets/date-parser", DateParserPage.class);
 		mountPage("/widgets/list-filter", ListFilterPage.class);
+		mountPage("/widgets/tootlip", TooltipPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");

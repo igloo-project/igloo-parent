@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
 import org.odlabs.wiquery.core.events.Event;
@@ -47,7 +48,7 @@ import fr.openwide.core.wicket.gmap.js.jquery.plugins.gmap.map.GMapOptions;
 import fr.openwide.core.wicket.gmap.resource.GMarkerImageResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class GMapPage extends WidgetsMainPage {
+public class GMapPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -3963117430192776716L;
 	
 	private GMapPanel gmap;
@@ -56,7 +57,7 @@ public class GMapPage extends WidgetsMainPage {
 		super(parameters);
 		setOutputMarkupId(true);
 		
-		addBreadCrumbElement(new BreadCrumbElement("widgets.menu.gmap", GMapPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.gmap"), GMapPage.class));
 		
 		// Création de la carte
 		GMapOptions options = new GMapOptions(GMapTypeId.ROADMAP, new LatLng(BigDecimal.valueOf(-34.397), 

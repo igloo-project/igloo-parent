@@ -12,33 +12,24 @@
 		</div>
 		
 		<div class="container">
-			<!-- Menu sections -->
+			<!-- Main navigation bar -->
 			<div class="navbar">
 				<div class="navbar-inner">
+					<!-- Back to home -->
+<!-- 					<a wicket:id="backToHomeLink" class="brand"> -->
+<!-- 						<wicket:message key="navigation.home" /> -->
+<!-- 					</a> -->
+					
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li wicket:id="homeMenuLinkContainer">
-								<a wicket:id="homeMenuLink">
-									<wicket:message key="navigation.home" />
+							<li wicket:id="mainNav">
+								<a wicket:id="navLink">
+									<wicket:container wicket:id="navLabel" />
 								</a>
 							</li>
-							<li wicket:id="portfolioMenuLinkContainer">
-								<a wicket:id="portfolioMenuLink">
-									<wicket:message key="navigation.portfolio" />
-								</a>
-							</li>
-							<li wicket:id="widgetsMenuLinkContainer">
-								<a wicket:id="widgetsMenuLink">
-									<wicket:message key="navigation.widgets" />
-								</a>
-							</li>
-<!-- 							<li wicket:id="menuSectionsListView"> -->
-<!-- 								<a wicket:id="menuSectionLink"> -->
-<!-- 									<wicket:container wicket:id="menuSectionLabel" /> -->
-<!-- 								</a> -->
-<!-- 							</li> -->
 						</ul>
 						
+						<!-- User menu -->
 						<ul class="nav pull-right" wicket:enclosure="userFullName">
 							<li>
 								<span wicket:id="userFullName" class="nav-item" />
@@ -52,49 +43,19 @@
 					</div>
 				</div>
 			</div>
-			<!-- Menu items -->
-<!-- 			<wicket:enclosure child="menuItemsListView"> -->
-				<div class="subnav">
-					<ul class="nav nav-pills">
-					<li class="active">
-						<a href="#">
-							Calendar
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							Autocomplete
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							Fancybox
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							Google map
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							Date parser
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							List filter
-						</a>
-					</li>
-<!-- 						<li wicket:id="menuItemsListView"> -->
-<!-- 							<a wicket:id="menuItemLink"> -->
-<!-- 								<wicket:container wicket:id="menuItemLabel" /> -->
-<!-- 							</a> -->
-<!-- 						</li> -->
-					</ul>
-				</div>
-<!-- 			</wicket:enclosure> -->
 			
+			<!-- Second level navigation bar -->
+			<div wicket:enclosure="subNav" class="subnav">
+				<ul class="nav nav-pills">
+					<li wicket:id="subNav">
+						<a wicket:id="navLink">
+							<wicket:container wicket:id="navLabel" />
+						</a>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- Bread crumb -->
 			<wicket:container wicket:id="breadCrumb"></wicket:container>
 			
 			<!-- Content -->
@@ -104,69 +65,12 @@
 			
 			<!-- Footer -->
 			<div class="footer">
+				<a wicket:id="consoleLink">
+					<wicket:message key="navigation.console" />
+				</a>
+				&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 				<wicket:message key="common.rootPageTitle" />
 			</div>
 		</div>
-		
-<!-- 		<div class="page"> -->
-<!-- 			<div class="menu-1-outer" id="top"> -->
-<!-- 				<div class="menu-1"> -->
-<!-- 					<div class="logo"> -->
-<!-- 						<a wicket:id="logoBackToHomeLink"> -->
-<!-- 							<img src="static/application/images/logo_openwide.png" wicket:message="data-tooltip:navigation.home" width="210" height="66" /> -->
-<!-- 						</a> -->
-<!-- 					</div> -->
-<!-- 					<div class="menu-entry-outer menu-entry-outer-first" wicket:id="homeMenuLinkContainer"> -->
-<!-- 						<div class="menu-entry"> -->
-<!-- 							<div wicket:id="homeMenuLink"><wicket:message key="navigation.home" /></div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="menu-entry-outer" wicket:id="portfolioMenuLinkContainer"> -->
-<!-- 						<div class="menu-entry"> -->
-<!-- 							<div wicket:id="portfolioMenuLink"><wicket:message key="navigation.portfolio" /></div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="menu-entry-outer" wicket:id="widgetsMenuLinkContainer"> -->
-<!-- 						<div class="menu-entry"> -->
-<!-- 							<div wicket:id="widgetsMenuLink"><wicket:message key="navigation.widgets" /></div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="right-box"> -->
-<!-- 						<wicket:enclosure child="userFullName"> -->
-<!-- 							<div class="user-box"> -->
-<!-- 								<div> -->
-<!-- 									<div class="user-information" wicket:id="userFullName">User fullname</div> -->
-<!-- 									<div class="logout-button"> -->
-<!-- 										<a wicket:id="logoutLink"> -->
-<!-- 											<img src="static/application/images/icons/door_out.png" class="icon" wicket:message="alt:common.top.logout.alt,data-tooltip:common.top.logout.alt" -->
-<!-- 												width="16" height="16" style="margin-top:3px;" /> -->
-<!-- 										</a> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</wicket:enclosure> -->
-<!-- 					</div> -->
-<!-- 					<div class="clear"></div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 			<div class="breadcrumb-outer"> -->
-<!-- 				<div wicket:id="breadCrumb"></div> -->
-<!-- 				<div class="clear"></div> -->
-<!-- 			</div> -->
-<!-- 			<div class="clear"></div> -->
-<!-- 			<div class="main-outer"> -->
-<!-- 				<div class="container"> -->
-<!-- 					<div wicket:id="feedbackPanel" class="feedback-panel"></div> -->
-<!-- 					<wicket:child /> -->
-<!-- 					<div class="clear"></div> -->
-<!-- 				</div> -->
-<!-- 				<div class="footer-outer"> -->
-<!-- 					<div class="footer"> -->
-<!-- 						<div class="footer-item-outer last"><wicket:message key="common.rootPageTitle" /></div> -->
-<!-- 						<div class="clear"></div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
 	</body>
 </html>

@@ -2,5 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
+		<h1><wicket:message key="widgets.fancybox.title" /></h1>
+		
+		<button wicket:id="addUserBtn" class="btn btn-primary" type="button" wicket:message="title:widgets.fancybox.openModal">
+			<span class="icon icon-white icon-resize-full"></span>
+			<wicket:message key="widgets.fancybox.openModal" />
+		</button>
+		
+		<div wicket:id="addUserPopupPanel"></div>
 	</wicket:extend>
 </html>
