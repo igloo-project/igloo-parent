@@ -1,4 +1,4 @@
-package fr.openwide.core.test.config.spring;
+package fr.openwide.core.jpa.config.spring;
 
 import javax.sql.DataSource;
 
