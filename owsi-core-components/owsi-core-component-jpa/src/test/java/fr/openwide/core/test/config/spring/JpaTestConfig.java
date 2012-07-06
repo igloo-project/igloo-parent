@@ -15,7 +15,7 @@ import fr.openwide.core.test.jpa.example.business.JpaTestBusinessPackage;
 @Configuration
 @ApplicationDescription(name = "jpa-test")
 @ConfigurationLocations(locations = {
-		"classpath:configuration-owsi-core-component-jpa.properties",
+		"classpath:owsi-core-component-jpa.properties",
 		"classpath:configuration-private.properties",
 		"classpath:owsi-hibernate.properties"
 })
