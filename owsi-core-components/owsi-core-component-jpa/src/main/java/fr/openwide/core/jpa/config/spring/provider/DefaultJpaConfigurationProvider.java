@@ -19,7 +19,7 @@ public class DefaultJpaConfigurationProvider {
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hbm2Ddl;
 
-	@Value("${hibernate.hbm2ddl.defaultBatchSize}")
+	@Value("${hibernate.defaultBatchSize}")
 	private Integer defaultBatchSize;
 
 	@Value("${lucene.index.path}")
@@ -28,7 +28,7 @@ public class DefaultJpaConfigurationProvider {
 	@Value("#{dataSource}")
 	private DataSource dataSource;
 
-	@Value("#{ehCacheConfiguration}")
+	@Value("${hibernate.ehCache.configurationLocation}")
 	private String ehCacheConfiguration;
 
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
