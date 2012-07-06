@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
@@ -23,8 +22,7 @@ import fr.openwide.core.test.jpa.security.business.JpaSecurityTestBusinessPackag
 		JpaSecurityTestBusinessPackage.class,
 		JpaSecurityTestAclPackage.class
 })
-@Import(JpaSecurityTestJpaConfig.class)
-@ImportResource("classpath:spring/security-context.xml")
+@Import({ JpaSecurityTestJpaConfig.class, JpaSecurityTestSecurityConfig.class })
 public class JpaSecurityTestConfig extends AbstractApplicationConfig {
 
 	@Bean

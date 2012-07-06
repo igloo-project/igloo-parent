@@ -14,4 +14,12 @@ public class MockPersonServiceImpl extends AbstractPersonServiceImpl<MockPerson>
 	public MockPersonServiceImpl(IMockPersonDao testPersonDao) {
 		super(testPersonDao);
 	}
+
+	@Override
+	public void protectedMethodRoleAdmin() {
+	}
+
+	@Override
+	public void protectedMethodRoleAuthenticated() {
+	}
 }

@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -29,6 +30,12 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private SaltSource saltSource;
 	
 	private IPersonDao<P> personDao;
 	
@@ -117,18 +124,8 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException {
-		person.setMd5Password(DigestUtils.md5Hex(clearTextPassword));
+		person.setMd5Password(passwordEncoder.encodePassword(clearTextPassword, saltSource.getSalt(null)));
 		super.update(person);
-	}
-	
-	@Override
-	public boolean comparePasswordToMd5Passwords(P person, String clearTextPassword) {
-		String md5Password = person.getMd5Password();
-		if (md5Password != null) {
-			return md5Password.equals(DigestUtils.md5Hex(clearTextPassword));
-		} else {
-			return false;
-		}
 	}
 
 	@Override
