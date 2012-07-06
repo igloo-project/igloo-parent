@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.Collection;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,5 +85,20 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		assertFalse(hasRoleAdmin);
 		assertTrue(hasRoleAuthenticated);
 		assertTrue(hasRoleAnonymous);
+	}
+
+	@Test
+	public void testSecurityProxy() throws ServiceException, SecurityServiceException {
+		MockPerson user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
+		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+		mockPersonService.update(user);
+		authenticateAs(user);
+		
+		try {
+			mockPersonService.protectedMethodRoleAdmin();
+			Assert.fail("L'accès devrait être interdit.");
+		} catch (AccessDeniedException e) {}
+		
+		mockPersonService.protectedMethodRoleAuthenticated();
 	}
 }

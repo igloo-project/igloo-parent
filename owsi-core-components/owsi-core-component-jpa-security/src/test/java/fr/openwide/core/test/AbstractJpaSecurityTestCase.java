@@ -2,12 +2,13 @@ package fr.openwide.core.test;
 
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,6 +58,12 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 
 	@Autowired
 	protected ProviderManager authenticationManager;
+
+	@Autowired
+	protected PasswordEncoder passwordEncoder;
+
+	@Autowired
+	protected SaltSource saltSource;
 
 	@Before
 	@Override
@@ -117,7 +124,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
 		person.setEmail(email);
-		person.setMd5Password(DigestUtils.md5Hex(DEFAULT_PASSWORD));
+		person.setMd5Password(passwordEncoder.encodePassword(DEFAULT_PASSWORD, saltSource.getSalt(null)));
 		
 		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		

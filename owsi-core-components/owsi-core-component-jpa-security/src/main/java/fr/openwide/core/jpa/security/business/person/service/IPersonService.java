@@ -23,8 +23,6 @@ public interface IPersonService<P extends AbstractPerson<P>> extends IGenericEnt
 
 	void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException;
 
-	boolean comparePasswordToMd5Passwords(P person, String clearTextPassword);
-
 	void addAuthority(P person, Authority authority) throws ServiceException, SecurityServiceException;
 
 	void addAuthority(P person, String authorityName) throws ServiceException, SecurityServiceException;
