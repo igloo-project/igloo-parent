@@ -16,7 +16,7 @@ import fr.openwide.core.test.jpa.security.business.JpaSecurityTestBusinessPackag
 @ApplicationDescription(name = "owsi-core-component-security")
 @ConfigurationLocations(locations = {
 		"classpath:owsi-core-component-jpa.properties",
-		"classpath:jpa-security-test.properties",
+		"classpath:jpa-security-test.properties"
 })
 @ComponentScan(basePackageClasses = {
 		JpaSecurityTestBusinessPackage.class,
