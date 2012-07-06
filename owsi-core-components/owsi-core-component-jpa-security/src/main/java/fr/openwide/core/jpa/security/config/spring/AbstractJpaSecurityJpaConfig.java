@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.security.spring.config;
+package fr.openwide.core.jpa.security.config.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
