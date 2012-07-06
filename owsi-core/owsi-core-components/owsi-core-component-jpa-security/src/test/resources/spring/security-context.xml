@@ -55,7 +55,9 @@
 	<bean id="expressionHandler"
 		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler"
 		p:permissionEvaluator-ref="permissionEvaluator"
-	/>
+	>
+		<aop:scoped-proxy />
+	</bean>
 	
 	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" run-as-manager-ref="runAsManager">
 		<security:expression-handler ref="expressionHandler"/>

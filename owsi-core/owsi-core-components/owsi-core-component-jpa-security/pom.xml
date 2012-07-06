@@ -37,6 +37,14 @@
 			<version>${owsi-core.bindgen.version}</version>
 		</dependency>
 		
+		<!-- Database pooling -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>${owsi-core.tomcat-jdbc.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
