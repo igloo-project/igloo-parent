@@ -9,7 +9,6 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.spring.config.CoreConfigurer;
-import fr.openwide.core.test.config.spring.DatabaseInitializationConfig;
 import fr.openwide.jpa.example.business.company.model.Company;
 import fr.openwide.jpa.example.business.company.service.CompanyService;
 import fr.openwide.jpa.example.business.person.model.Person;
