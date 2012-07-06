@@ -6,11 +6,11 @@ import org.springframework.security.acls.model.AclService;
 import org.springframework.security.acls.model.Permission;
 
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
-import fr.openwide.core.jpa.security.spring.config.AbstractJpaSecurityConfig;
+import fr.openwide.core.jpa.security.spring.config.AbstractJpaSecuritySecuredConfig;
 import fr.openwide.core.test.jpa.security.acl.service.MockAclServiceImpl;
 
 @Configuration
-public class JpaSecurityTestSecurityConfig extends AbstractJpaSecurityConfig {
+public class JpaSecurityTestSecurityConfig extends AbstractJpaSecuritySecuredConfig {
 
 	@Override
 	public Class<? extends Permission> permissionClass() {
