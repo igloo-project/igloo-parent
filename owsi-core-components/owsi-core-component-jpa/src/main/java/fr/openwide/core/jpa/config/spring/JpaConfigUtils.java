@@ -42,8 +42,9 @@ public final class JpaConfigUtils {
 	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(DefaultJpaConfigurationProvider provider) {
 		return entityManagerFactory(
 				provider.getJpaPackageScanProviders(),
-				provider.getDialect(), provider.getHbm2Ddl(), provider.getHibernateSearchIndexBase(),
-				provider.getDataSource(), provider.getEhCacheConfiguration(), provider.getDefaultBatchSize());
+				provider.getDialect(), provider.getHbm2Ddl(), provider.getHbm2DdlImportFiles(),
+				provider.getHibernateSearchIndexBase(), provider.getDataSource(), provider.getEhCacheConfiguration(),
+				provider.getDefaultBatchSize());
 	}
 
 	/**
@@ -53,6 +54,7 @@ public final class JpaConfigUtils {
 			List<JpaPackageScanProvider> jpaPackageScanProviders,
 			Class<Dialect> dialect,
 			String hibernateHbm2Ddl,
+			String hibernateHbm2DdlImportFiles,
 			String hibernateSearchIndexBase,
 			DataSource dataSource,
 			String ehCacheConfiguration,
@@ -60,7 +62,8 @@ public final class JpaConfigUtils {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl, hibernateSearchIndexBase,
+		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl,
+				hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
 				ehCacheConfiguration, defaultBatchSize));
 		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(jpaPackageScanProviders));
@@ -70,6 +73,7 @@ public final class JpaConfigUtils {
 
 	public static Properties getJpaProperties(Class<?> dialect,
 			String hibernateHbm2Ddl,
+			String hibernateHbm2DdlImportFiles,
 			String hibernateSearchIndexBase,
 			String ehCacheConfiguration,
 			Integer defaultBatchSize) {
@@ -82,6 +86,10 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
+		}
+		
+		if (StringUtils.hasText(hibernateHbm2DdlImportFiles)) {
+			properties.setProperty(Environment.HBM2DDL_IMPORT_FILES, hibernateHbm2DdlImportFiles);
 		}
 		
 		if (StringUtils.hasText(ehCacheConfiguration)) {

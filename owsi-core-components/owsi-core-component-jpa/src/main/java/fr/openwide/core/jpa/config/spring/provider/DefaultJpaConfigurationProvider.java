@@ -19,6 +19,9 @@ public class DefaultJpaConfigurationProvider {
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hbm2Ddl;
 
+	@Value("${hibernate.hbm2ddl.import_files}")
+	private String hbm2DdlImportFiles;
+
 	@Value("${hibernate.defaultBatchSize}")
 	private Integer defaultBatchSize;
 
@@ -41,6 +44,10 @@ public class DefaultJpaConfigurationProvider {
 
 	public String getHbm2Ddl() {
 		return hbm2Ddl;
+	}
+
+	public String getHbm2DdlImportFiles() {
+		return hbm2DdlImportFiles;
 	}
 
 	public Integer getDefaultBatchSize() {
