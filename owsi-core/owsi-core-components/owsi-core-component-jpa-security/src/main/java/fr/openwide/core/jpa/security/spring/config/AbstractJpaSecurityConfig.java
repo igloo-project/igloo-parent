@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.PermissionEvaluator;
@@ -56,7 +55,6 @@ import fr.openwide.core.jpa.security.service.ISecurityService;
 @Configuration
 @ComponentScan(basePackageClasses = JpaSecurityAclPackage.class)
 @Import(DefaultJpaSecurityConfig.class)
-@ImportResource("classpath:spring/owsi-core-component-jpa-security-context.xml")		// définition des proxys Secured
 public abstract class AbstractJpaSecurityConfig {
 
 	@Autowired
