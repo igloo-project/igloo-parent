@@ -27,7 +27,7 @@ public class DefaultTomcatPoolConfigurationProvider {
 	@Value("${db.initialPoolSize}")
 	private int initialPoolSize;
 
-	@Value("${db.preferredTestQuery}")
+	@Value("${${db.type}.db.preferredTestQuery}")
 	private String validationQuery;
 
 	public Class<Driver> getDriver() {
