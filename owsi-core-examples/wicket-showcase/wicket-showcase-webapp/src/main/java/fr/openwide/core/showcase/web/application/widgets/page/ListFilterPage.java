@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -21,7 +22,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listf
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
-public class ListFilterPage extends WidgetsMainPage {
+public class ListFilterPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 593301451585725585L;
 	
 	private static final UserBinding USER_BINDING = new UserBinding();
@@ -32,7 +33,7 @@ public class ListFilterPage extends WidgetsMainPage {
 	public ListFilterPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement("widgets.menu.listFilter", ListFilterPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.listFilter"), ListFilterPage.class));
 		
 		WebMarkupContainer userList = new WebMarkupContainer("userList");
 		userList.setOutputMarkupId(true);

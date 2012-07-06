@@ -26,6 +26,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionGravity;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyOptionTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
+import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWiQueryPlugin {
 
@@ -87,6 +88,10 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 	
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
 	
+	protected abstract List<NavigationMenuItem> getMainNav();
+	
+	protected abstract List<NavigationMenuItem> getSubNav();
+	
 	protected void addBreadCrumbElement(BreadCrumbElement breadCrumbElement) {
 		breadCrumbElements.add(breadCrumbElement);
 	}
@@ -122,7 +127,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 			for (BreadCrumbElement breadCrumbElement : breadCrumbElements) {
 				if (oneElementBreadcrumb || !getApplication().getHomePage().equals(breadCrumbElement.getPageClass())) {
 					sb.append(META_TITLE_SEPARATOR);
-					sb.append(getLocalizer().getString(breadCrumbElement.getLabelKey(), this, breadCrumbElement.getLabelKey()));
+					sb.append(breadCrumbElement.getLabel());
 				}
 			}
 		}

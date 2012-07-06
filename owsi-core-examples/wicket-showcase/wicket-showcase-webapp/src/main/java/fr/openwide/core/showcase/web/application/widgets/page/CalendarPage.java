@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
@@ -16,7 +17,7 @@ import fr.openwide.core.wicket.more.markup.html.form.DatePicker;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
-public class CalendarPage extends WidgetsMainPage {
+public class CalendarPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -3963117430192776716L;
 
 	private IModel<Date> dateModel;
@@ -24,7 +25,7 @@ public class CalendarPage extends WidgetsMainPage {
 	public CalendarPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement("widgets.menu.calendar", CalendarPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.calendar"), CalendarPage.class));
 		
 		Form<Void> form = new Form<Void>("form");
 		add(form);
@@ -32,6 +33,7 @@ public class CalendarPage extends WidgetsMainPage {
 		dateModel = new Model<Date>(Calendar.getInstance().getTime());
 		
 		final DatePicker datePicker = new DatePicker("datePicker", dateModel, DatePattern.SHORT_DATE);
+		datePicker.setLabel(new ResourceModel("widgets.calendar.date.picker"));
 		form.add(datePicker);
 		
 		final DateLabel dateLabel = new DateLabel("dateLabel", dateModel, DatePattern.SHORT_DATE);

@@ -1,53 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-<wicket:extend>
-	<div class="main">
-		<div class="title-banner">
-			<div class="page-title" wicket:id="pageTitle"></div>
-			<div class="clear"></div>
-		</div>
-		<div class="menu-item-outer">
-			<div class="menu-item">
-				<a class="menu-entry-outer" wicket:id="calendarTabsMenuLinkContainer">
-					<div class="menu-entry">
-						<div wicket:id="calendarTabsMenuLink"><wicket:message key="widgets.menu.calendar" /></div>
-					</div>
-				</a>
-				<a class="menu-entry-outer" wicket:id="autocompleteTabsMenuLinkContainer">
-					<div class="menu-entry">
-						<div wicket:id="autocompleteTabsMenuLink"><wicket:message key="widgets.menu.autocomplete" /></div>
-					</div>
-				</a>
-				<a class="menu-entry-outer" wicket:id="fancyboxTabsMenuLinkContainer">
-					<div class="menu-entry">
-						<div wicket:id="fancyboxTabsMenuLink"><wicket:message key="widgets.menu.fancybox" /></div>
-					</div>
-				</a>
-				<a class="menu-entry-outer" wicket:id="gmapTabsMenuLinkContainer">
-					<div class="menu-entry">
-						<div wicket:id="gmapTabsMenuLink"><wicket:message key="widgets.menu.gmap" /></div>
-					</div>
-				</a>
-				<a class="menu-entry-outer" wicket:id="dateParserTabsMenuLinkContainer">
-					<div class="menu-entry">
-						<div wicket:id="dateParserTabsMenuLink"><wicket:message key="widgets.menu.dateParser" /></div>
-					</div>
-				</a>
-				<a class="menu-entry-outer" wicket:id="listFilterTabsMenuLinkContainer">
-					<div class="menu-entry">
-						<div wicket:id="listFilterTabsMenuLink"><wicket:message key="widgets.menu.listFilter" /></div>
-					</div>
-				</a>
-				<div class="clear"></div>
-			</div>
-		</div>
-		<div class="content-outer">
-			<div class="content">
-				<wicket:child />
-				<div class="clear"></div>
-			</div>
-		</div>
-	</div>
-</wicket:extend>
+	<wicket:extend>
+		<h1><wicket:message key="widgets.root.title" /></h1>
+		<p>
+			<wicket:message key="widgets.root.text" />
+		</p>
+	</wicket:extend>
 </html>

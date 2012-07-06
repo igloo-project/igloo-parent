@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +22,7 @@ import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
-public class DateParserPage extends WidgetsMainPage {
+public class DateParserPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -5624979031343084477L;
 	
 	private static final Parser DATE_PARSER = new Parser();
@@ -29,7 +30,7 @@ public class DateParserPage extends WidgetsMainPage {
 	public DateParserPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement("widgets.menu.dateParser", DateParserPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.dateParser"), DateParserPage.class));
 		
 		final IModel<String> dateStringModel = new Model<String>(null);
 		final IModel<Date> beginDateModel = new Model<Date>(null);

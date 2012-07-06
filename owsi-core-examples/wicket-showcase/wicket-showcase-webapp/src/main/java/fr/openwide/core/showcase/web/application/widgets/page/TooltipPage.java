@@ -6,22 +6,18 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class WidgetsMainPage extends WidgetsTemplate {
-	private static final long serialVersionUID = 3092941096047935122L;
+public class TooltipPage extends WidgetsTemplate {
 	
-	public WidgetsMainPage(PageParameters parameters) {
+	private static final long serialVersionUID = -187415297020105589L;
+	
+	public TooltipPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.root.title"), WidgetsMainPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.tooltip"), TooltipPage.class));
 	}
 	
 	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return WidgetsMainPage.class;
-	}
-
-	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return null;
+		return TooltipPage.class;
 	}
 }
