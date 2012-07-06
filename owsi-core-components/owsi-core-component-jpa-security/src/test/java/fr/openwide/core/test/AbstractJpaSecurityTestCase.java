@@ -27,11 +27,9 @@ import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
 import fr.openwide.core.test.jpa.security.business.person.model.MockPersonGroup;
 import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonGroupService;
 import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonService;
+import fr.openwide.core.test.jpa.security.spring.config.JpaSecurityTestConfig;
 
-@ContextConfiguration(locations = {
-		"classpath*:spring/application-context.xml",
-		"classpath*:spring/security-context.xml"
-})
+@ContextConfiguration(classes = JpaSecurityTestConfig.class)
 public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 
 	public static final String DEFAULT_PASSWORD = "test";
