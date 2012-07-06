@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
-import fr.openwide.core.jpa.more.spring.config.AbstractConfiguredJpaMoreJpaConfig;
+import fr.openwide.core.jpa.more.config.spring.AbstractConfiguredJpaMoreJpaConfig;
 import fr.openwide.core.test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Configuration
