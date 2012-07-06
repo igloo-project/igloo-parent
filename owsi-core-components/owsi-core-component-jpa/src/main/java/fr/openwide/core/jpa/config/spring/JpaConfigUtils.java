@@ -25,6 +25,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 
@@ -83,19 +84,24 @@ public final class JpaConfigUtils {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
 		}
 		
-		if (ehCacheConfiguration != null) {
+		if (StringUtils.hasText(ehCacheConfiguration)) {
 			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
 			properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
+		} else {
+			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
+			properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.FALSE.toString());
 		}
 		
-		if (hibernateSearchIndexBase != null) {
+		if (StringUtils.hasText(hibernateSearchIndexBase)) {
 			properties.setProperty("hibernate.search.default.directory_provider", FSDirectoryProvider.class.getName());
 			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
 			properties.setProperty("hibernate.search.default.exclusive_index_use", Boolean.TRUE.toString());
 			properties.setProperty("hibernate.search.default.locking_strategy", "native");
 			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION, Version.LUCENE_35.name());
+		} else {
+			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
 		}
 		
 		return properties;
