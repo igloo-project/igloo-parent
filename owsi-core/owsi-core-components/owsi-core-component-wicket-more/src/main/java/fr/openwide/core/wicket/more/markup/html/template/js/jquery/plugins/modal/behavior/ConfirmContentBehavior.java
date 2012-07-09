@@ -16,6 +16,7 @@ public class ConfirmContentBehavior extends Behavior {
 	private static final String ATTRIBUTE_TEXT = "data-modal-confirm-text";
 	private static final String ATTRIBUTE_YES_LABEL = "data-modal-confirm-yes-label";
 	private static final String ATTRIBUTE_NO_LABEL = "data-modal-confirm-no-label";
+	private static final String ATTRIBUTE_TEXT_NO_ESCAPE = "data-modal-confirm-text-noescape";
 
 	private final IModel<String> titleModel;
 
@@ -25,13 +26,21 @@ public class ConfirmContentBehavior extends Behavior {
 
 	private final IModel<String> noLabelModel;
 
-	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
+	private boolean textNoEscape;
+
+	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
+			IModel<String> noLabelModel) {
+		this(titleModel, textModel, yesLabelModel, noLabelModel, false);
+	}
+
+	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
+			IModel<String> noLabelModel, boolean textNoEscape) {
 		super();
 		this.titleModel = titleModel;
 		this.textModel = textModel;
 		this.yesLabelModel = yesLabelModel;
 		this.noLabelModel = noLabelModel;
+		this.textNoEscape = textNoEscape;
 	}
 
 	@Override
@@ -47,6 +56,10 @@ public class ConfirmContentBehavior extends Behavior {
 		addAttribute(component, attributes, ATTRIBUTE_TEXT, textModel);
 		addAttribute(component, attributes, ATTRIBUTE_YES_LABEL, yesLabelModel);
 		addAttribute(component, attributes, ATTRIBUTE_NO_LABEL, noLabelModel);
+		
+		if (textNoEscape) {
+			attributes.put(ATTRIBUTE_TEXT_NO_ESCAPE, textNoEscape);
+		}
 	}
 
 	@Override

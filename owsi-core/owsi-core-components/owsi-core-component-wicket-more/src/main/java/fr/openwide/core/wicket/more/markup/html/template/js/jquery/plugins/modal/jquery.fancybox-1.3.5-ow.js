@@ -1179,6 +1179,7 @@
 			var title = $this.data("modal-confirm-title");
 			var yesLabel = $this.data("modal-confirm-yes-label");
 			var noLabel = $this.data("modal-confirm-no-label");
+			var noEscape = $this.data("modal-confirm-text-noescape");
 			var onConfirm = function(event) {
 				options.onConfirm();
 				$.fancybox.close();
@@ -1194,9 +1195,15 @@
 						$("<div class='modal-header'></div>").
 							append("<a class='close' data-dismiss='modal'>&#x00d7;</a>")
 							.append($("<h3></h3>").text(title))
-				)
-				.append($("<div class='modal-body'></div>").text(text))
-				.append(
+				);
+				
+				if (noEscape) {
+					$content.append($("<div class='modal-body'></div>").html(text))
+				} else {
+					$content.append($("<div class='modal-body'></div>").text(text))
+				}
+				
+				$content.append(
 						$("<div class='modal-footer'></div>")
 							.append(
 								$("<button class='btn' href='#'></a>")
