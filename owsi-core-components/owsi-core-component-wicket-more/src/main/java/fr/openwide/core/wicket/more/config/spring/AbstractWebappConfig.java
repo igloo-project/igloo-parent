@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(LessCssConfig.class)
+@Import(WicketMoreServiceConfig.class)
 public abstract class AbstractWebappConfig {
 
 	@Bean
