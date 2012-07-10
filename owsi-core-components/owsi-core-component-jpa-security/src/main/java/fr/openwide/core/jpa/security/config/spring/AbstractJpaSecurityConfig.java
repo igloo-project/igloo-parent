@@ -185,8 +185,7 @@ public abstract class AbstractJpaSecurityConfig {
 	@Autowired
 	public IPermissionHierarchy permissionHierarchy(PermissionFactory permissionFactory) {
 		PermissionHierarchyImpl hierarchy = new PermissionHierarchyImpl(permissionFactory);
-		hierarchy.setHierarchy(CorePermissionConstants.ADMINISTRATION + " > " + CorePermissionConstants.WRITE + "\n"
-				+ CorePermissionConstants.WRITE + " > " + CorePermissionConstants.READ);
+		hierarchy.setHierarchy(permissionHierarchyAsString());
 		return hierarchy;
 	}
 
