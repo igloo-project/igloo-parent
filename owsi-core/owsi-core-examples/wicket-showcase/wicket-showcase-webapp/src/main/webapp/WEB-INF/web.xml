@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
-		id="showcase-webapp" version="2.5">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+		id="showcase-webapp" version="3.0" metadata-complete="true">
 	<display-name>wicket-showcase-webapp</display-name>
 	
 	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			classpath:spring/application-context.xml
-			classpath:spring/security-context.xml
-			classpath:spring/application-web-context.xml
-			classpath:spring/security-web-context.xml
-		</param-value>
+		<param-value>fr.openwide.core.showcase.web.application.config.spring.ShowcaseWebappConfig</param-value>
 	</context-param>
 	
 	<session-config>

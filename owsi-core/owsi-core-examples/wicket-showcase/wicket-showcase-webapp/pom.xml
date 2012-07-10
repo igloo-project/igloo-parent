@@ -37,6 +37,14 @@
 			<type>pom</type>
 		</dependency>
 		
+		<!-- Pooling -->
+		
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>${tomcat.jdbc-pool.version}</version>
+		</dependency>
+		
 		<!-- Misc. -->
 		
 		<dependency>
