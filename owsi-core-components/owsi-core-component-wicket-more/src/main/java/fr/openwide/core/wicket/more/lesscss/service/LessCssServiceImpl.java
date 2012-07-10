@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
 
 import com.asual.lesscss.LessEngine;
 import com.asual.lesscss.LessException;
@@ -20,9 +19,12 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.more.config.spring.LessCssConfig;
 import fr.openwide.core.wicket.more.lesscss.model.CssStylesheetInformation;
 
-@Service("lessCssService")
+/**
+ * @see LessCssConfig
+ */
 public class LessCssServiceImpl implements ILessCssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LessCssServiceImpl.class);
