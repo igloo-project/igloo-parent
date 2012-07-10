@@ -6,6 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,9 +25,12 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 	ShowcaseCoreJpaConfig.class,			// configuration de la persistence
 	ShowcaseCoreSecurityConfig.class		// configuration de la sécurité
 })
-@ComponentScan(basePackageClasses = {
-		ShowcaseCorePackage.class
-})
+@ComponentScan(
+		basePackageClasses = {
+				ShowcaseCorePackage.class
+		},
+		excludeFilters = @Filter(Configuration.class)
+)
 //fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 public class ShowcaseCoreConfig extends AbstractApplicationConfig {
