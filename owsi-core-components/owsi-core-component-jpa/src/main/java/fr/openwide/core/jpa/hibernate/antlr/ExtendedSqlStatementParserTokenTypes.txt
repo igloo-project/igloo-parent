@@ -1,0 +1,11 @@
+// $ANTLR 2.7.7 (20060906): extended-sql-stmt.g -> ExtendedSqlStatementParserTokenTypes.txt$
+ExtendedSqlStatementParser    // output token vocab name
+NOT_STMT_END=4
+QUOTED_STRING=5
+DOLLAR_QUOTED_STRING=6
+STMT_END=7
+DOLLAR_QUOTED_STRING_CONTENT=8
+DELIMITER=9
+ESCqs=10
+LINE_COMMENT=11
+MULTILINE_COMMENT=12
