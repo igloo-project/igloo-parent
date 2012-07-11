@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.showcase.core.ShowcaseCorePackage;
@@ -27,7 +28,8 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @ComponentScan(
 		basePackageClasses = {
 				ShowcaseCorePackage.class
-		}
+		},
+		excludeFilters = @Filter(Configuration.class)
 )
 //fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
