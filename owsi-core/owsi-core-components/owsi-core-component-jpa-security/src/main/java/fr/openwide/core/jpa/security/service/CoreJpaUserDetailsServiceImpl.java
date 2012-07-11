@@ -3,8 +3,6 @@ package fr.openwide.core.jpa.security.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -28,9 +26,12 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private RoleHierarchy roleHierarchy;
 
-	@Resource(name = "authenticationUserNameComparison")
-	private AuthenticationUserNameComparison authenticationUserNameComparison;
+	private AuthenticationUserNameComparison authenticationUserNameComparison = AuthenticationUserNameComparison.CASE_SENSITIVE;
 
+	public void setAuthenticationUserNameComparison(AuthenticationUserNameComparison authenticationUserNameComparison) {
+		this.authenticationUserNameComparison = authenticationUserNameComparison;
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
 		IPerson person;
