@@ -85,10 +85,10 @@ public abstract class AbstractJpaSecurityConfig {
 	 * N'est pas basculé en configuration car on n'est pas censé basculé d'un mode à un autre au cours de la vie
 	 * de l'application. Doit être décidé au début, avec mise en place des contraintes nécessaires à la création
 	 * d'utilisateur si on choisit le mode CASE INSENSITIVE.
+	 * Cette méthode n'a pas besoin d'être annotée {@link Bean}
 	 * 
 	 * @see AuthenticationUserNameComparison
 	 */
-	@Bean
 	public abstract AuthenticationUserNameComparison authenticationUserNameComparison();
 
 	@Bean
@@ -178,7 +178,9 @@ public abstract class AbstractJpaSecurityConfig {
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return new CoreJpaUserDetailsServiceImpl();
+		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
+		detailsService.setAuthenticationUserNameComparison(authenticationUserNameComparison());
+		return detailsService;
 	}
 
 	@Bean
