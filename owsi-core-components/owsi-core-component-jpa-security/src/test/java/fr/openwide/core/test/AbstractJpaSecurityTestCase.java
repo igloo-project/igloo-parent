@@ -124,7 +124,11 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
 		person.setEmail(email);
-		person.setMd5Password(passwordEncoder.encodePassword(DEFAULT_PASSWORD, saltSource.getSalt(null)));
+		Object salt = null;
+		if (saltSource != null) {
+			salt = saltSource.getSalt(null);
+		}
+		person.setMd5Password(passwordEncoder.encodePassword(DEFAULT_PASSWORD, salt));
 		
 		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
