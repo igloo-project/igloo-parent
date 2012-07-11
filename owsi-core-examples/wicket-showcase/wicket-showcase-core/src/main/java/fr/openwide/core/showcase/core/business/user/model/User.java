@@ -6,10 +6,8 @@ import java.util.List;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.search.annotations.Indexed;
 
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
@@ -55,10 +53,4 @@ public class User extends AbstractPerson<User> {
 		return (List<IPersonGroup>) ((Object) userGroups);
 	}
 
-	@Override
-	@Transient
-	@JsonIgnore
-	public String getPasswordHash() {
-		return getMd5Password();
-	}
 }

@@ -128,7 +128,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		if (saltSource != null) {
 			salt = saltSource.getSalt(null);
 		}
-		person.setMd5Password(passwordEncoder.encodePassword(DEFAULT_PASSWORD, salt));
+		person.setPasswordHash(passwordEncoder.encodePassword(DEFAULT_PASSWORD, salt));
 		
 		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		

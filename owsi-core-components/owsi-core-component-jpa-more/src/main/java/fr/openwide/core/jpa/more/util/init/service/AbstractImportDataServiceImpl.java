@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.commons.util.FileUtils;
@@ -53,11 +54,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final String PASSWORD_FIELD_NAME = "password";
 	
-	private static final String MD5_PASSWORD_FIELD_NAME = "md5Password";
-	
-	private static final String SHA1_PASSWORD_FIELD_NAME = "sha1Password";
-	
-	private static final String SHA256_PASSWORD_FIELD_NAME = "sha256Password";
+	private static final String PASSWORD_HASH_FIELD_NAME = "passwordHash";
 	
 	private static final Map<Class<?>, List<Class<?>>> ADDITIONAL_CLASS_MAPPINGS = new HashMap<Class<?>, List<Class<?>>>();
 	
@@ -68,6 +65,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	@Autowired
 	private IAbstractParameterService parameterService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired(required = false)
+	private SaltSource saltSource;
 	
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
@@ -161,9 +164,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		}
 		
 		if (line.containsKey(PASSWORD_FIELD_NAME)) {
-			line.put(MD5_PASSWORD_FIELD_NAME, DigestUtils.md5Hex(line.get(PASSWORD_FIELD_NAME).toString()));
-			line.put(SHA1_PASSWORD_FIELD_NAME, DigestUtils.shaHex(line.get(PASSWORD_FIELD_NAME).toString()));
-			line.put(SHA256_PASSWORD_FIELD_NAME, DigestUtils.sha256Hex(line.get(PASSWORD_FIELD_NAME).toString()));
+			Object salt = null;
+			if (saltSource != null) {
+				salt = saltSource.getSalt(null);
+			}
+			line.put(PASSWORD_HASH_FIELD_NAME, passwordEncoder.encodePassword(line.get(PASSWORD_FIELD_NAME).toString(),
+					salt));
 		}
 	}
 	

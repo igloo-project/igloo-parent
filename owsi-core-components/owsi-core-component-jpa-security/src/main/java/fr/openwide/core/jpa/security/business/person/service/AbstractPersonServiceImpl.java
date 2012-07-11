@@ -34,7 +34,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@Autowired
+	@Autowired(required = false)
 	private SaltSource saltSource;
 	
 	private IPersonDao<P> personDao;
@@ -124,7 +124,13 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException {
-		person.setMd5Password(passwordEncoder.encodePassword(clearTextPassword, saltSource.getSalt(null)));
+		String passwordHash;
+		if (saltSource == null) {
+			passwordHash = passwordEncoder.encodePassword(clearTextPassword, null);
+		} else {
+			passwordHash = passwordEncoder.encodePassword(clearTextPassword, saltSource.getSalt(null));
+		}
+		person.setPasswordHash(passwordHash);
 		super.update(person);
 	}
 

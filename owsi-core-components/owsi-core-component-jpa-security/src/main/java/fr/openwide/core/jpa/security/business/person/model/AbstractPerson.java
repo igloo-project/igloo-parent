@@ -63,10 +63,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	private String faxNumber;
 	
 	@JsonIgnore
-	private String md5Password = "*NO PASSWORD*";
-	
-	@JsonIgnore
-	private String sha256Password = "*NO PASSWORD*";
+	private String passwordHash = "*NO PASSWORD*";
 	
 	@Field
 	private boolean active = true;
@@ -97,11 +94,11 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	public AbstractPerson() {
 	}
 	
-	public AbstractPerson(String userName, String firstName, String lastName, String md5Password) {
+	public AbstractPerson(String userName, String firstName, String lastName, String passwordHash) {
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.md5Password = md5Password;
+		this.passwordHash = passwordHash;
 	}
 	
 	@Override
@@ -211,20 +208,13 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 		this.faxNumber = faxNumber;
 	}
 
-	public String getMd5Password() {
-		return md5Password;
+	@Override
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 
-	public void setMd5Password(String md5Password) {
-		this.md5Password = md5Password;
-	}
-	
-	public String getSha256Password() {
-		return sha256Password;
-	}
-
-	public void setSha256Password(String sha256Password) {
-		this.sha256Password = sha256Password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 	
 	public void setActive(boolean active) {
