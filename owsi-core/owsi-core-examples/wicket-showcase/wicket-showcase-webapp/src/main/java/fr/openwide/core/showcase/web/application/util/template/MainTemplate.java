@@ -147,7 +147,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return "common.rootPageTitle";
 	}
 	
-	@Override
 	protected List<NavigationMenuItem> getMainNav() {
 		return Lists.newArrayList(
 				new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class),
@@ -155,6 +154,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new NavigationMenuItem(new ResourceModel("navigation.widgets"), WidgetsMainPage.class)
 		);
 	}
+	
+	protected abstract List<NavigationMenuItem> getSubNav();
 	
 	protected boolean isBreadCrumbDisplayed() {
 		return true;
