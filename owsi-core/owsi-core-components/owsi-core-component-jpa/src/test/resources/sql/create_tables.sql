@@ -1,6 +1,6 @@
-create schema owsicore;
+create schema owsicore_test;
 
-set search_path = owsicore;
+set search_path = owsicore_test;
 
 create table person (
 	id integer not null,
