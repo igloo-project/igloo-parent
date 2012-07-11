@@ -3,16 +3,20 @@ package fr.openwide.core.wicket.more.markup.html.template;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Page;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
+import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
-import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWiQueryPlugin {
 
@@ -28,13 +32,46 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 		super(parameters);
 	}
 	
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass) {
+		addMenuElement(this, selectedPageClass, name, pageClass, null, true);
+	}
+	
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
+			boolean isVisible) {
+		addMenuElement(this, selectedPageClass, name, pageClass, null, isVisible);
+	}
+	
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
+			PageParameters parameters) {
+		addMenuElement(this, selectedPageClass, name, pageClass, parameters, true);
+	}
+	
+	protected void addMenuElement(Class<? extends Page> selectedPageClass, String name, Class<? extends Page> pageClass,
+			PageParameters parameters, boolean isVisible) {
+		addMenuElement(this, selectedPageClass, name, pageClass, parameters, isVisible);
+	}
+	
+	protected void addMenuElement(MarkupContainer menuContainer,
+			Class<? extends Page> selectedPageClass,
+			String name,
+			Class<? extends Page> pageClass,
+			PageParameters parameters,
+			boolean isVisible) {
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLink", pageClass, parameters);
+		link.setVisible(isVisible && isPageAccessible(pageClass));
+		
+		MarkupContainer container = new WebMarkupContainer(name + "MenuLinkContainer");
+		if (pageClass.equals(selectedPageClass)) {
+			container.add(new ClassAttributeAppender("active"));
+		}
+		container.add(link);
+		
+		menuContainer.add(container);
+	}
+	
 	protected abstract Class<? extends WebPage> getFirstMenuPage();
 	
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
-	
-	protected abstract List<NavigationMenuItem> getMainNav();
-	
-	protected abstract List<NavigationMenuItem> getSubNav();
 	
 	protected void addBreadCrumbElement(BreadCrumbElement breadCrumbElement) {
 		breadCrumbElements.add(breadCrumbElement);
