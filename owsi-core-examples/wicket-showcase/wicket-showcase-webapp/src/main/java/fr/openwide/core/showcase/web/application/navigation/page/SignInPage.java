@@ -19,9 +19,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import fr.openwide.core.showcase.web.application.ShowcaseSession;
 import fr.openwide.core.showcase.web.application.util.template.styles.SignInLessCssResourceReference;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.more.AbstractCoreSession;
+import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 
@@ -44,25 +45,31 @@ public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 			
 			@Override
 			protected void onSubmit() {
-				ShowcaseSession showcaseSession = ShowcaseSession.get();
+				AbstractCoreSession<?> session = AbstractCoreSession.get();
+				boolean success = false;
 				try {
-					showcaseSession.signIn(userNameField.getModelObject(), passwordField.getModelObject());
-					showcaseSession.success(getString("signIn.success"));
+					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
+					session.success(getString("signIn.success"));
+					success = true;
 				} catch (BadCredentialsException e) {
-					showcaseSession.error(getString("signIn.error.authentication"));
+					session.error(getString("signIn.error.authentication"));
 				} catch (UsernameNotFoundException e) {
-					showcaseSession.error(getString("signIn.error.authentication"));
+					session.error(getString("signIn.error.authentication"));
 				} catch (DisabledException e) {
-					showcaseSession.error(getString("signIn.error.userDisabled"));
+					session.error(getString("signIn.error.userDisabled"));
 				} catch (Exception e) {
 					LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
-					showcaseSession.error(getString("signIn.error.unknown"));
+					session.error(getString("signIn.error.unknown"));
 				}
 				
-				if (StringUtils.hasText(showcaseSession.getRedirectUrl())) {
-					throw new RedirectToUrlException(showcaseSession.getRedirectUrl());
+				if (success) {
+					if (StringUtils.hasText(session.getRedirectUrl())) {
+						throw new RedirectToUrlException(session.getRedirectUrl());
+					} else {
+						throw new RestartResponseException(Application.get().getHomePage());
+					}
 				} else {
-					throw new RestartResponseException(Application.get().getHomePage());
+					throw new RestartResponseException(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
 				}
 			}
 		};
