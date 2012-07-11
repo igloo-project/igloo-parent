@@ -178,7 +178,7 @@ public final class JpaConfigUtils {
 		dataSource.setInitialSize(initialPoolSize);
 		dataSource.setValidationQuery(validationQuery);
 		dataSource.setTestOnBorrow(true);
-		dataSource.setLogValidationErrors(true);
+		dataSource.setLogValidationErrors(false);
 		dataSource.setValidationInterval(30000);
 		
 		return dataSource;
