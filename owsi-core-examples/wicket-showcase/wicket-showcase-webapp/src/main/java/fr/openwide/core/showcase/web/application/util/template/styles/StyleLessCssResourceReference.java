@@ -8,7 +8,7 @@ public class StyleLessCssResourceReference extends LessCssResourceReference {
 
 	private static final StyleLessCssResourceReference INSTANCE = new StyleLessCssResourceReference();
 
-	public StyleLessCssResourceReference() {
+	private StyleLessCssResourceReference() {
 		super(StyleLessCssResourceReference.class, "style.less");
 	}
 	

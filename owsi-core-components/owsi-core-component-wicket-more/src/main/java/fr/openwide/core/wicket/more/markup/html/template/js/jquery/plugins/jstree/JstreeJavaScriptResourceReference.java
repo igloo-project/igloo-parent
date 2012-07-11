@@ -9,7 +9,7 @@ public class JstreeJavaScriptResourceReference extends WiQueryJavaScriptResource
 	
 	private static final JstreeJavaScriptResourceReference INSTANCE = new JstreeJavaScriptResourceReference();
 
-	public JstreeJavaScriptResourceReference() {
+	private JstreeJavaScriptResourceReference() {
 		super(JstreeJavaScriptResourceReference.class, "jquery.jstree.js");
 	}
 

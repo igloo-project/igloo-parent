@@ -7,7 +7,7 @@ public class JstreeStyleSheetResourceReference extends WiQueryStyleSheetResource
 	
 	private static final JstreeStyleSheetResourceReference INSTANCE = new JstreeStyleSheetResourceReference();
 
-	public JstreeStyleSheetResourceReference() {
+	private JstreeStyleSheetResourceReference() {
 		super(JstreeStyleSheetResourceReference.class, "themes/default/style.css");
 	}
 	

@@ -11,7 +11,7 @@ public final class ModalJavaScriptResourceReference extends WiQueryJavaScriptRes
 	
 	private static final ModalJavaScriptResourceReference INSTANCE = new ModalJavaScriptResourceReference();
 
-	public ModalJavaScriptResourceReference() {
+	private ModalJavaScriptResourceReference() {
 		super(ModalJavaScriptResourceReference.class, "jquery.fancybox-1.3.5-ow.js");
 	}
 	

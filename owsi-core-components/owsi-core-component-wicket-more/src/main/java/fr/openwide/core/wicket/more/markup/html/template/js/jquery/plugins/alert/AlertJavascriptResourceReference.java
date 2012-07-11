@@ -10,7 +10,7 @@ public final class AlertJavascriptResourceReference extends WiQueryJavaScriptRes
 
 	private static final AlertJavascriptResourceReference INSTANCE = new AlertJavascriptResourceReference();
 
-	public AlertJavascriptResourceReference() {
+	private AlertJavascriptResourceReference() {
 		super(AlertJavascriptResourceReference.class, "jquery.alert.js");
 	}
 

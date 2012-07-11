@@ -10,7 +10,7 @@ public class FancyboxJavaScriptResourceReference extends WiQueryJavaScriptResour
 	
 	private static final FancyboxJavaScriptResourceReference INSTANCE = new FancyboxJavaScriptResourceReference();
 
-	public FancyboxJavaScriptResourceReference() {
+	private FancyboxJavaScriptResourceReference() {
 		super(FancyboxJavaScriptResourceReference.class, "jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.js");
 	}
 	
