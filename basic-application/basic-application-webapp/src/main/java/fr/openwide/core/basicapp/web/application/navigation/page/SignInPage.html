@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<head>
+		<title><wicket:message key="common.rootPageTitle" /> &raquo; <wicket:message key="signIn.pageTitle" /></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge; IE=9; IE=8" />
+		<wicket:head />
+	</head>
+	
+	<body id="login-page">
+		<div wicket:id="feedback"></div>
+		<div class="container">
+			<div class="content">
+				<div class="login-header">
+					<span class="header-text"><wicket:message key="signIn.signIn" /></span>
+				</div>
+				<div class="login-form-outer">
+					<form wicket:id="signInForm" id="signInForm" class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label" for="username"><wicket:message key="signIn.login" /></label>
+								<div class="controls">
+									<input wicket:id="userName" type="text" id="username" />
+								</div>
+							</div>
+							<div class="control-group password-group">
+								<label class="control-label" for="password"><wicket:message key="signIn.password" /></label>
+								<div class="controls">
+									<input wicket:id="password" type="password" id="password" />
+								</div>
+							</div>
+							<div class="form-actions">
+								<button class="btn btn-success btn-large" type="submit">
+									<span class="icon icon-lock icon-white" />
+									<wicket:message key="signIn.signIn" />
+								</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>	

@@ -6,13 +6,24 @@ import org.apache.wicket.markup.html.WebPage;
 
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
+import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
+import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
+import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 
 	@Override
 	protected void mountApplicationPages() {
+		
+		// Sign in
+		mountPage("/login/", getSignInPageClass());
+		mountPage("/login/failure/", LoginFailurePage.class);
+		mountPage("/login/success/", LoginSuccessPage.class);
+		
+		// Navigation
+		mountPage("/home/", getHomePage());
 		
 		// Sondes de monitoring
 		mountPage("/monitoring/db-access/", DatabaseMonitoringPage.class);
@@ -20,7 +31,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 
 	@Override
 	protected void mountApplicationResources() {
-		mountStaticResourceDirectory("/application/common", MainTemplate.class);
+		mountStaticResourceDirectory("/application", MainTemplate.class);
 	}
 
 	@Override
@@ -30,7 +41,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 
 	@Override
 	public Class<? extends WebPage> getSignInPageClass() {
-		return HomePage.class;
+		return SignInPage.class;
 	}
 
 	@Override

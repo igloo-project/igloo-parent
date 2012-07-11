@@ -1,0 +1,85 @@
+ul, li {
+	list-style-type : none;
+	margin : 0;
+	padding : 0;
+}
+
+#login-page {
+	background: #EEE;
+	padding-top: 200px; 
+	
+	.container {
+		width: 500px;
+		
+		> .content {
+			background-color: #FFF;
+			.border-radius(10px);
+			.box-shadow(0 0 5px #CCC);
+			border: 1px solid #CCC;
+			
+			.login-header {
+				border-bottom: 1px solid #E5E5E5;
+				background: #FAFAFA;
+				.border-radius(10px 10px 0 0);
+				padding: 10px;
+				
+				.header-text {
+					font-size: 14px;
+					font-weight: bold;
+				}
+				
+				img.logo {
+					max-width: 150px;
+					max-height: 50px;
+				}
+			}
+			
+			.login-form-outer {
+				padding: 40px 30px 20px 30px;
+			}
+		}
+	}
+}
+
+#signInForm {
+	margin-bottom: 0;
+	
+	.control-group {
+		margin-bottom: 25px;
+		
+		.control-label {
+			width: 110px;
+			color: #666666;
+			font-weight: bold;
+			font-size: 1.5em;
+			height: 25px;
+			line-height: 25px;
+			padding-right: 30px;
+		}
+		
+		.controls {
+			margin-left: 120px;
+			
+			input {
+				font-size: 1.5em;
+				height: 25px;
+			}
+		}
+	}
+	
+	.form-actions {
+		padding: 15px 0 0 0;
+		margin: 30px 0 0 0;
+		background: none;
+		text-align: right;
+		
+		.btn-success {
+			font-size: 1.4em;
+			font-weight: bold;
+			
+			.icon {
+				margin-top: 3px;
+			}
+		}
+	}
+}

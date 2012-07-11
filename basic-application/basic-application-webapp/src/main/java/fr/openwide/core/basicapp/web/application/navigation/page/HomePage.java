@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.web.application.navigation.page;
 
-import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -16,6 +17,11 @@ public class HomePage extends MainTemplate {
 		
 		addHeadPageTitleElement(new BreadCrumbElement(new ResourceModel("home.pageTitle")));
 		
-		Session.get().success("Bienvenu sur la Home page !");
+		add(new Label("pageTitle", new ResourceModel("home.pageTitle")));
+	}
+
+	@Override
+	protected Class<? extends WebPage> getFirstMenuPage() {
+		return HomePage.class;
 	}
 }

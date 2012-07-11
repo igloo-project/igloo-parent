@@ -1,20 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlRootElement">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<head>
 		<title wicket:id="headPageTitle"></title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" />
 		
 		<wicket:head />
 	</head>
 	<body>
+		<!-- Feedback panel -->
 		<div wicket:id="animatedGlobalFeedbackPanel">
 		</div>
-		<div class="main-width">
-			<wicket:child />
+		
+		<div class="container">
+			<!-- Main navigation bar -->
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li wicket:id="mainNav">
+								<a wicket:id="navLink">
+									<wicket:container wicket:id="navLabel" />
+								</a>
+							</li>
+						</ul>
+						
+						<!-- User menu -->
+						<ul class="nav pull-right" wicket:enclosure="userFullName">
+							<li>
+								<span wicket:id="userFullName" class="nav-item" />
+							</li>
+							<li>
+								<a wicket:id="logoutLink">
+									<span class="icon icon-white icon-off"></span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Bread crumb -->
+			<wicket:container wicket:id="breadCrumb"></wicket:container>
+			
+			<div class="content">
+				<wicket:child />
+			</div>
 		</div>
 	</body>
 </html>
