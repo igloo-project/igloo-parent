@@ -10,7 +10,7 @@
 	
 	<artifactId>basic-application-core</artifactId>
 	
-	<name>BasicApplication - Core</name>
+	<name>Application name - Core</name>
 	
 	<dependencies>
 		

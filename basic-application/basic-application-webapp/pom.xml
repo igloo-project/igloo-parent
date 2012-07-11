@@ -12,7 +12,7 @@
 	
 	<artifactId>basic-application-webapp</artifactId>
 	
-	<name>BasicApplication - Web Application</name>
+	<name>Application name - Web Application</name>
 	
 	<dependencies>
 		

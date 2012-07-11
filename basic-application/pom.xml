@@ -13,8 +13,7 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<name>BasicApplication</name>
-	<description>Squelette d'application reposant sur OWSI-Core</description>
+	<name>Application name</name>
 	
 	<modules>
 		<module>basic-application-core</module>
