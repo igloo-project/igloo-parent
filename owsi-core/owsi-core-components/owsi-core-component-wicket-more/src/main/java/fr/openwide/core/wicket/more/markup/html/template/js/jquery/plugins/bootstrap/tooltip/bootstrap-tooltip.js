@@ -144,7 +144,15 @@
         $tip
           .css(tp)
           .addClass(placement)
-          .addClass('in')
+          .addClass('in');
+        
+        var that = this;
+        var hideTipsy = function() {
+          if (!that.$element.is(":visible")) {
+            that.hide();
+          }
+        };
+        this.intervalId = setInterval(hideTipsy, 1000);
       }
     }
 
@@ -179,6 +187,10 @@
         $tip.one($.support.transition.end, function () {
           clearTimeout(timeout)
           $tip.remove()
+          
+          if (that.intervalId) {
+            clearInterval(that.intervalId);
+          }
         })
       }
 

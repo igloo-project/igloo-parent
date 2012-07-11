@@ -1,0 +1,60 @@
+Index: src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery/plugins/bootstrap/tooltip/bootstrap-tooltip.js
+===================================================================
+--- src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery/plugins/bootstrap/tooltip/bootstrap-tooltip.js	(révision 1286)
++++ src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery/plugins/bootstrap/tooltip/bootstrap-tooltip.js	(copie de travail)
+@@ -144,7 +144,15 @@
+         $tip
+           .css(tp)
+           .addClass(placement)
+-          .addClass('in')
++          .addClass('in');
++        
++        var that = this;
++        var hideTipsy = function() {
++          if (!that.$element.is(":visible")) {
++            that.hide();
++          }
++        };
++        this.intervalId = setInterval(hideTipsy, 1000);
+       }
+     }
+ 
+@@ -179,6 +187,10 @@
+         $tip.one($.support.transition.end, function () {
+           clearTimeout(timeout)
+           $tip.remove()
++          
++          if (that.intervalId) {
++            clearInterval(that.intervalId);
++          }
+         })
+       }
+ 
+Index: src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery/plugins/bootstrap/tab/bootstrap-tab.js
+===================================================================
+--- src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery/plugins/bootstrap/tab/bootstrap-tab.js	(révision 1286)
++++ src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery/plugins/bootstrap/tab/bootstrap-tab.js	(copie de travail)
+@@ -128,8 +128,20 @@
+   $(function () {
+     $('body').on('click.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
+       e.preventDefault()
++      if (history.pushState) {
++         var link = $(e.target).closest("a");
++         if (link) {
++           history.pushState(null, null, link.prop("href"));
++         }
++      }
+       $(this).tab('show')
+     })
+   })
+ 
+-}(window.jQuery);
+\ No newline at end of file
++}(window.jQuery);
++
++$(document).ready(function() {
++	if (window.location.hash) {
++		$('ul a[href=' + window.location.hash.replace('/', '') + ']').tab('show');
++	}
++});
+\ No newline at end of file
