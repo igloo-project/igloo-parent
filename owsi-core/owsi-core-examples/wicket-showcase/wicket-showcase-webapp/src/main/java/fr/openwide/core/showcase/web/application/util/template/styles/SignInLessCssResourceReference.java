@@ -8,7 +8,7 @@ public class SignInLessCssResourceReference extends LessCssResourceReference {
 
 	private static final SignInLessCssResourceReference INSTANCE = new SignInLessCssResourceReference();
 
-	public SignInLessCssResourceReference() {
+	private SignInLessCssResourceReference() {
 		super(SignInLessCssResourceReference.class, "signin.less");
 	}
 

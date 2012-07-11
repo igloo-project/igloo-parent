@@ -8,7 +8,7 @@ public final class ModalStyleSheetResourceReference extends
 	
 	private static final ModalStyleSheetResourceReference INSTANCE = new ModalStyleSheetResourceReference();
 
-	public ModalStyleSheetResourceReference() {
+	private ModalStyleSheetResourceReference() {
 		super(ModalStyleSheetResourceReference.class, "jquery.fancybox-1.3.5-ow.css");
 	}
 	

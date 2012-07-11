@@ -8,7 +8,7 @@ public class TipsyCloseOnLoadJavascriptResourceReference extends PackageResource
 
 	private static final TipsyCloseOnLoadJavascriptResourceReference INSTANCE = new TipsyCloseOnLoadJavascriptResourceReference();
 
-	public TipsyCloseOnLoadJavascriptResourceReference() {
+	private TipsyCloseOnLoadJavascriptResourceReference() {
 		super(TipsyCloseOnLoadJavascriptResourceReference.class, "tipsy-close.js");
 	}
 
