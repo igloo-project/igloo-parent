@@ -27,7 +27,6 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancy
 import fr.openwide.core.wicket.more.markup.repeater.data.GenericEntityListModelDataProvider;
 import fr.openwide.core.wicket.more.markup.repeater.data.OddEvenDataView;
 
-
 public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long, ?>> extends Panel {
 
 	private static final long serialVersionUID = 1L;
