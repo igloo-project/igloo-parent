@@ -128,8 +128,20 @@
   $(function () {
     $('body').on('click.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
       e.preventDefault()
+      if (history.pushState) {
+         var link = $(e.target).closest("a");
+         if (link) {
+           history.pushState(null, null, link.prop("href"));
+         }
+      }
       $(this).tab('show')
     })
   })
 
 }(window.jQuery);
+
+$(document).ready(function() {
+	if (window.location.hash) {
+		$('ul a[href=' + window.location.hash.replace('/', '') + ']').tab('show');
+	}
+});
