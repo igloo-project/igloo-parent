@@ -63,10 +63,12 @@ public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET ext
 		setExecutionType(executionType);
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}
