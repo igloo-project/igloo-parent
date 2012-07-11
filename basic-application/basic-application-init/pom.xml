@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>basic-application</artifactId>
+		<groupId>fr.openwide.core.archetype</groupId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>basic-application-init</artifactId>
+	
+	<name>BasicApplication - Initialisation</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.core.archetype</groupId>
+			<artifactId>basic-application-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${owsi-core.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${owsi-core.spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
