@@ -423,6 +423,17 @@
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>antlr-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<grammars>
+						extended-sql-stmt.g
+					</grammars>
+					<outputDirectory>${basedir}/src/main/java</outputDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	
