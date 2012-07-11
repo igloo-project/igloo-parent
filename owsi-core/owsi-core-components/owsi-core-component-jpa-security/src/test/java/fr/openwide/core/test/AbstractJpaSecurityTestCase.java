@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -61,9 +60,6 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 
 	@Autowired
 	protected PasswordEncoder passwordEncoder;
-
-	@Autowired
-	protected SaltSource saltSource;
 
 	@Before
 	@Override
@@ -124,15 +120,11 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
 		person.setEmail(email);
-		Object salt = null;
-		if (saltSource != null) {
-			salt = saltSource.getSalt(null);
-		}
-		person.setPasswordHash(passwordEncoder.encodePassword(DEFAULT_PASSWORD, salt));
 		
 		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
 		mockPersonService.save(person);
+		mockPersonService.setPasswords(person, DEFAULT_PASSWORD);
 		
 		return person;
 	}
