@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.search.annotations.Indexed;
 
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
@@ -35,10 +33,4 @@ public class MockPerson extends AbstractPerson<MockPerson> {
 		return (List<IPersonGroup>) ((Object) groups);
 	}
 
-	@Override
-	@Transient
-	@JsonIgnore
-	public String getPasswordHash() {
-		return getMd5Password();
-	}
 }
