@@ -6,15 +6,15 @@
 			<ul>
 				<wicket:enclosure child="first">
 					<li>
-						<a class="navigation-item" wicket:id="first">&laquo;</a>
+						<a wicket:id="first">&laquo;</a>
 					</li>
 				</wicket:enclosure>
 				<li wicket:id="navigation">
-					<a class="navigation-item" wicket:id="pageLink"><span wicket:id="pageNumber">1</span></a>
+					<a wicket:id="pageLink"><wicket:container wicket:id="pageNumber">1</wicket:container></a>
 				</li>
 				<wicket:enclosure child="last">
 					<li>
-						<a class="navigation-item" wicket:id="last">&raquo;</a>
+						<a wicket:id="last">&raquo;</a>
 					</li>
 				</wicket:enclosure>
 			</ul>

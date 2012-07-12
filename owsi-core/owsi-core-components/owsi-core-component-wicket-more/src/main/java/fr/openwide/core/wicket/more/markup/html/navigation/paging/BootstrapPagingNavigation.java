@@ -1,9 +1,11 @@
 package fr.openwide.core.wicket.more.markup.html.navigation.paging;
 
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.LoopItem;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigation;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigationLink;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 
@@ -34,5 +36,10 @@ public class BootstrapPagingNavigation extends PagingNavigation {
 	
 	public boolean lessThanViewSize() {
 		return pageable.getPageCount() < getViewSize();
+	}
+	
+	@Override
+	protected AbstractLink newPagingNavigationLink(String id, IPageable pageable, int pageIndex) {
+		return new PagingNavigationLink<Void>(id, pageable, pageIndex).setAutoEnable(false);
 	}
 }

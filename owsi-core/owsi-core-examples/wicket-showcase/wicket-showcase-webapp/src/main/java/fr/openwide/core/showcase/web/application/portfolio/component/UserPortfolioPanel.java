@@ -34,6 +34,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	
 	public UserPortfolioPanel(String id, IModel<? extends List<User>> userListModel, int itemsPerPage) {
 		super(id, userListModel, itemsPerPage);
+		setOutputMarkupId(true);
 	}
 	
 	@Override
