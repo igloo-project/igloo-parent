@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
@@ -84,6 +85,34 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			}
 		});
 		
+		// Second level navigation bar
+		add(new ListView<NavigationMenuItem>("subNav", getSubNav()) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void populateItem(ListItem<NavigationMenuItem> item) {
+				NavigationMenuItem navItem = item.getModelObject();
+				Class<? extends Page> navItemPageClass = navItem.getPageClass();
+				
+				BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("navLink", navItemPageClass, navItem.getPageParameters());
+				navLink.add(new Label("navLabel", navItem.getLabelModel()));
+				
+				item.setVisible(isPageAccessible(navItemPageClass));
+				if (navItemPageClass.equals(MainTemplate.this.getSecondMenuPage())) {
+					item.add(new ClassAttributeAppender("active"));
+				}
+				
+				item.add(navLink);
+			}
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				List<NavigationMenuItem> navigationMenuItems = getModelObject();
+				setVisible(navigationMenuItems != null && !navigationMenuItems.isEmpty());
+			}
+		});
+		
 		// User menu
 		add(new HideableLabel("userFullName", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
@@ -108,7 +137,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
-		return Lists.newArrayList(new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class));
+		return Lists.newArrayList(new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class),
+				new NavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationUserPortfolioPage.class));
 	}
 
 	protected List<NavigationMenuItem> getSubNav() {
