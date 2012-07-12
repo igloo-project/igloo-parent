@@ -43,11 +43,6 @@ public class User extends AbstractPerson<User> {
 	}
 	
 	@Override
-	public String getPasswordHash() {
-		return getSha256Password();
-	}
-	
-	@Override
 	public String getFullName() {
 		String fullName = super.getFullName();
 		if (StringUtils.hasText(fullName)) {

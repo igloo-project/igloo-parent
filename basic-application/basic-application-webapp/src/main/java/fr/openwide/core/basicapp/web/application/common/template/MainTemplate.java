@@ -107,12 +107,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 	}
 
-	@Override
 	protected List<NavigationMenuItem> getMainNav() {
 		return Lists.newArrayList(new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class));
 	}
 
-	@Override
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList();
 	}
