@@ -1,18 +1,25 @@
 package fr.openwide.core.basicapp.core.business.user.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.openwide.core.basicapp.core.business.user.dao.IUserGroupDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
+import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 
 @Service("personGroupService")
 public class UserGroupServiceImpl extends GenericEntityServiceImpl<Long, UserGroup>
 		implements IUserGroupService {
+
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
 
 	@Autowired
 	private IUserService userService;
@@ -27,5 +34,12 @@ public class UserGroupServiceImpl extends GenericEntityServiceImpl<Long, UserGro
 			throws ServiceException, SecurityServiceException {
 		user.getUserGroups().add(group);
 		userService.update(user);
+	}
+
+	@Override
+	public List<UserGroup> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
+		String[] searchFields = new String[] { Binding.userGroup().name().getPath() };
+		
+		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern);
 	}
 }
