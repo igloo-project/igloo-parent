@@ -8,6 +8,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.search.annotations.Indexed;
+
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
@@ -15,6 +17,7 @@ import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 import fr.openwide.core.spring.util.StringUtils;
 
 @Cacheable
+@Indexed
 @Entity(name = "user_")
 public class User extends AbstractPerson<User> {
 	
