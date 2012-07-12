@@ -25,5 +25,37 @@
 				<wicket:message key="widgets.tooltip.left" />
 			</button>
 		</p>
+		
+		
+		
+		<h1><wicket:message key="widgets.popover.title" /></h1>
+		
+		<p>
+			<wicket:message key="widgets.popover.explanation" />
+		</p>
+		
+		<div class="clearfix" style="text-align:center">
+			<div style="float:left; width: 50%;">
+				<p>
+					<span wicket:id="someLabelDefault" style="margin: 100px 100px;" />
+				</p>
+				<p>
+					<span wicket:id="someLabelLeft" data-placement="left" style="margin: 100px 100px;" />
+				</p>
+			</div>
+			<div style="float:left; width: 50%;">
+				<p>
+					<span wicket:id="someLabelTop" data-placement="top" style="margin: 100px 100px;" />
+				</p>
+				<p>
+					<span wicket:id="someLabelBottom" data-placement="bottom" style="margin: 100px 100px;" />
+				</p>
+			</div>
+		</div>
+		<div style="display:none;">
+			<div wicket:id="someInfomration">
+				<wicket:message key="widgets.popover.someInformation.text" />
+			</div>
+		</div>
 	</wicket:extend>
 </html>
