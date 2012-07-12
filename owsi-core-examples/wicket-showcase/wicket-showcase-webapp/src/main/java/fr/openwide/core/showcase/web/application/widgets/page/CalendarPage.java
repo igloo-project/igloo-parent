@@ -20,7 +20,7 @@ import fr.openwide.core.wicket.more.util.DatePattern;
 public class CalendarPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -3963117430192776716L;
 
-	private IModel<Date> dateModel;
+	private IModel<Date> dateModel, endDateModel;
 	
 	public CalendarPage(PageParameters parameters) {
 		super(parameters);
@@ -31,16 +31,17 @@ public class CalendarPage extends WidgetsTemplate {
 		add(form);
 		
 		dateModel = new Model<Date>(Calendar.getInstance().getTime());
+		endDateModel = new Model<Date>(null);
 		
-		final DatePicker datePicker = new DatePicker("datePicker", dateModel, DatePattern.SHORT_DATE);
-		datePicker.setLabel(new ResourceModel("widgets.calendar.date.picker"));
-		form.add(datePicker);
+		final DatePicker beginDatePicker = new DatePicker("beginDatePicker", dateModel, DatePattern.SHORT_DATE);
+		beginDatePicker.setLabel(new ResourceModel("widgets.calendar.date.beginDate"));
+		form.add(beginDatePicker);
 		
 		final DateLabel dateLabel = new DateLabel("dateLabel", dateModel, DatePattern.SHORT_DATE);
 		dateLabel.setOutputMarkupId(true);
 		form.add(dateLabel);
 		
-		datePicker.add(new AjaxFormSubmitBehavior(form, "onchange") {
+		beginDatePicker.add(new AjaxFormSubmitBehavior(form, "onchange") {
 			private static final long serialVersionUID = -5972628703079302821L;
 
 			@Override
@@ -48,6 +49,27 @@ public class CalendarPage extends WidgetsTemplate {
 				target.add(dateLabel);
 			}
 
+			@Override
+			protected void onError(AjaxRequestTarget target) {
+			}
+		});
+		
+		final DatePicker endDatePicker = new DatePicker("endDatePicker", endDateModel, DatePattern.SHORT_DATE);
+		endDatePicker.setLabel(new ResourceModel("widgets.calendar.date.endDate"));
+		form.add(endDatePicker);
+		
+		final DateLabel endDateLabel = new DateLabel("endDateLabel", endDateModel, DatePattern.SHORT_DATE);
+		endDateLabel.setOutputMarkupId(true);
+		form.add(endDateLabel);
+		
+		endDatePicker.add(new AjaxFormSubmitBehavior(form, "onchange") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onSubmit(AjaxRequestTarget target) {
+				target.add(endDateLabel);
+			}
+			
 			@Override
 			protected void onError(AjaxRequestTarget target) {
 			}
