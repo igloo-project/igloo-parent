@@ -8,15 +8,41 @@
 			<div class="control-group">
 				<label class="control-label"><wicket:message key="widgets.calendar.date.label" /></label>
 				<div class="controls">
-					<span wicket:id="dateLabel" style="display: inline-block; margin-top: 5px;" />
+					<div style="margin-top: 5px;">
+						<span wicket:id="dateLabel" />
+						-
+						<span wicket:id="endDateLabel" />
+					</div>
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" wicket:for="datePicker"><wicket:label /></label>
+				<label class="control-label" wicket:for="beginDatePicker"><wicket:label /></label>
 				<div class="controls">
-					<input wicket:id="datePicker" type="text" class="input-small" />
+					<input wicket:id="beginDatePicker" id="begin-date-picker" type="text" class="input-small" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" wicket:for="endDatePicker"><wicket:label /></label>
+				<div class="controls">
+					<input wicket:id="endDatePicker" id="end-date-picker" type="text" class="input-small" />
 				</div>
 			</div>
 		</form>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#begin-date-picker').on('change', function(event) {
+					var dateDebut = $(this).datepicker('getDate');
+					var dateFin = $('#end-date-picker').datepicker('getDate');
+					if (dateFin < dateDebut) {
+						$('#end-date-picker').datepicker('setDate', null);
+					}
+				});
+				
+				$("#end-date-picker").datepicker('option', 'beforeShow', function(input, inst) {
+					$(this).datepicker('option', 'minDate', $('#begin-date-picker').datepicker('getDate'));
+				});
+			});
+		</script>
 	</wicket:extend>
 </html>

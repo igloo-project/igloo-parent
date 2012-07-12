@@ -1,18 +1,13 @@
 package fr.openwide.core.showcase.web.application.widgets.page;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class WidgetsMainPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 3092941096047935122L;
 	
 	public WidgetsMainPage(PageParameters parameters) {
 		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.root.title"), WidgetsMainPage.class));
 	}
 	
 	@Override

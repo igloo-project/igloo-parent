@@ -3,5 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<h1><wicket:message key="widgets.autocomplete.title" /></h1>
+		
+		<form class="form-horizontal form-autocomplete">
+			<div class="control-group">
+				<label class="control-label"><wicket:message key="widgets.autocomplete.userItemIt" /></label>
+				<div class="controls">
+					<div wicket:id="userItemItField" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"><wicket:message key="widgets.autocomplete.userAutocomplete" /></label>
+				<div class="controls">
+					<div wicket:id="userAutocompleteAjaxComponent" />
+				</div>
+			</div>
+		</form>
 	</wicket:extend>
 </html>
