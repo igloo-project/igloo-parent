@@ -8,6 +8,7 @@ import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
+import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
@@ -27,6 +28,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		// Sondes de monitoring
 		mountPage("/monitoring/db-access/", DatabaseMonitoringPage.class);
+		
+		// Console
+		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");
+		consoleConfiguration.mountPages(this);
 	}
 
 	@Override
