@@ -61,6 +61,8 @@ public class ExtendedApplicationContextInitializer<C extends ConfigurableApplica
 				
 				if (hasSource) {
 					PropertySourcesPropertyResolver resolver = new PropertySourcesPropertyResolver(sources);
+					resolver.setPlaceholderPrefix("#{");
+					resolver.setPlaceholderSuffix("}");
 					Properties properties = new Properties();
 					for (String propertyName : propertyNames) {
 						if (resolver.containsProperty(propertyName)) {
