@@ -2,31 +2,31 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<span class="table-actions">
-			<wicket:enclosure child="actionLink">
-				<a wicket:id="actionLink">
-					<span wicket:id="actionIcon"></span>
-				</a>
-			</wicket:enclosure>
-			<wicket:container wicket:id="actionLinkHidden">
-				<span class="placeholder-button"></span>
-			</wicket:container>
-			<wicket:enclosure child="editLink">
-				<a wicket:id="editLink" wicket:message="alt:common.itemList.action.edit,title:common.itemList.action.edit">
-					<span class="icon icon-pencil"></span>
-				</a>
-			</wicket:enclosure>
-			<wicket:container wicket:id="editLinkHidden">
-				<span class="placeholder-button"></span>
-			</wicket:container>
-			<wicket:enclosure child="deleteLink">
-				<a wicket:id="deleteLink" wicket:message="alt:common.itemList.action.delete,title:common.itemList.action.delete">
-					<span class="icon icon-trash"></span>
-				</a>
-			</wicket:enclosure>
-			<wicket:container wicket:id="deleteLinkHidden">
-				<span class="placeholder-button"></span>
-			</wicket:container>
-		</span>
+		<wicket:enclosure child="actionLink">
+			<a class="btn btn-mini btn-icon-only" wicket:id="actionLink">
+				<i wicket:id="actionIcon"></i>
+			</a>
+		</wicket:enclosure>
+		<wicket:container wicket:id="actionLinkHidden">
+			<span class="placeholder-button"></span>
+		</wicket:container>
+		<wicket:enclosure child="editLink">
+			<a class="btn btn-mini btn-primary btn-icon-only" wicket:id="editLink" 
+				wicket:message="alt:common.itemList.action.edit,title:common.itemList.action.edit">
+				<i class="icon-white icon-pencil"></i>
+			</a>
+		</wicket:enclosure>
+		<wicket:container wicket:id="editLinkHidden">
+			<span class="placeholder-button"></span>
+		</wicket:container>
+		<wicket:enclosure child="deleteLink">
+			<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink" 
+				wicket:message="alt:common.itemList.action.delete,title:common.itemList.action.delete">
+				<i class="icon-white icon-trash"></i>
+			</a>
+		</wicket:enclosure>
+		<wicket:container wicket:id="deleteLinkHidden">
+			<span class="placeholder-button"></span>
+		</wicket:container>
 	</wicket:panel>
 </html>

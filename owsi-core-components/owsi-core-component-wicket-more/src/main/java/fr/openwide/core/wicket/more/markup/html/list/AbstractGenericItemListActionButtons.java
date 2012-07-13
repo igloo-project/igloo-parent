@@ -31,21 +31,26 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		actionLinkHidden = new WebMarkupContainer("actionLinkHidden");
 		add(editLinkHidden, deleteLinkHidden, actionLinkHidden);
 		
-		MarkupContainer actionLink = getActionLink("actionLink", itemModel);
-		actionLink.add(new AttributeModifier("alt", getActionText(itemModel)));
-		actionLink.add(new AttributeModifier("title", getActionText(itemModel)));
-		WebMarkupContainer actionIcon = new WebMarkupContainer("actionIcon");
-		actionIcon.add(new AttributeAppender("class", Model.of("icon"), " "));
-		actionIcon.add(new AttributeAppender("class", getActionBootstrapIconClass(itemModel), " "));
-		actionLink.add(actionIcon);
-		add(actionLink);
-		
 		add(getEditLink("editLink", itemModel));
 		
 		add(getDeleteLink("deleteLink", itemModel));
+		
+		// Custom action
+		MarkupContainer actionLink = getActionLink("actionLink", itemModel);
+		actionLink.add(new AttributeModifier("alt", getActionText(itemModel)));
+		actionLink.add(new AttributeModifier("title", getActionText(itemModel)));
+		actionLink.add(new AttributeAppender("class", getActionBootstrapColorClass(itemModel), " "));
+		
+		WebMarkupContainer actionIcon = new WebMarkupContainer("actionIcon");
+		actionIcon.add(new AttributeAppender("class", Model.of("icon-white"), " "));
+		actionIcon.add(new AttributeAppender("class", getActionBootstrapIconClass(itemModel), " "));
+		actionLink.add(actionIcon);
+		add(actionLink);
 	}
 
 	protected abstract IModel<String> getActionBootstrapIconClass(final IModel<? extends T> itemModel);
+	
+	protected abstract IModel<String> getActionBootstrapColorClass(final IModel<? extends T> itemModel);
 
 	protected abstract IModel<String> getActionText(final IModel<? extends T> itemModel);
 
