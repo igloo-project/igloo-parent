@@ -1,12 +1,15 @@
 // Titles
 h1 {
-	font-size: 22px;
+	font-size: 24px;
+	line-height: 28px;
 }
 h2 {
 	font-size: 20px;
+	line-height: 24px;
 }
 h3 {
 	font-size: 18px;
+	line-height: 22px;
 }
 
 // Tabs
@@ -224,9 +227,15 @@ span.popover-btn {
 
 // Tables
 .table {
+	&.table-condensed {
+		th {
+			padding: 8px 5px;
+		}
+	}
+	
 	th {
 		background: #DDEEFF;
 		color: #666666;
-		padding: 8px 5px;
+		padding: 12px 8px;
 	}
 }
