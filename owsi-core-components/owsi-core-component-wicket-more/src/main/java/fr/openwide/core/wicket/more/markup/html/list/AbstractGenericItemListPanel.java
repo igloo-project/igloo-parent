@@ -160,9 +160,9 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 
 	@SuppressWarnings("unchecked")
 	protected Component getDeleteLink(String id, final IModel<? extends T> itemModel) {
-		return new AjaxConfirmLink<T>(id, (IModel<T>) itemModel, getDeleteConfirmationTitleModel(),
-				getDeleteConfirmationTextModel(), getDeleteConfirmationYesLabelModel(),
-				getDeleteConfirmationNoLabelModel()) {
+		return new AjaxConfirmLink<T>(id, (IModel<T>) itemModel, getDeleteConfirmationTitleModel(itemModel),
+				getDeleteConfirmationTextModel(itemModel), getDeleteConfirmationYesLabelModel(itemModel),
+				getDeleteConfirmationNoLabelModel(itemModel)) {
 
 			private static final long serialVersionUID = -5179621361619239269L;
 
@@ -181,19 +181,19 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		};
 	}
 
-	protected IModel<String> getDeleteConfirmationTitleModel() {
+	protected IModel<String> getDeleteConfirmationTitleModel(IModel<? extends T> itemModel) {
 		return new ResourceModel("common.confirmTitle");
 	}
 
-	protected IModel<String> getDeleteConfirmationTextModel() {
+	protected IModel<String> getDeleteConfirmationTextModel(IModel<? extends T> itemModel) {
 		return new ResourceModel("common.deleteConfirmation");
 	}
 
-	protected IModel<String> getDeleteConfirmationYesLabelModel() {
+	protected IModel<String> getDeleteConfirmationYesLabelModel(IModel<? extends T> itemModel) {
 		return new ResourceModel("common.confirm");
 	}
 
-	protected IModel<String> getDeleteConfirmationNoLabelModel() {
+	protected IModel<String> getDeleteConfirmationNoLabelModel(IModel<? extends T> itemModel) {
 		return new ResourceModel("common.cancel");
 	}
 
