@@ -24,19 +24,19 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	private static final long serialVersionUID = 6906542421342609922L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserPortfolioPanel.class);
-	
+
 	private static final UserBinding USER_BINDING = new UserBinding();
-	
+
 	@SpringBean
 	private IUserService userService;
-	
+
 	public UserPortfolioPanel(String id, IModel<? extends List<User>> userListModel, int itemsPerPage) {
 		super(id, userListModel, itemsPerPage);
 		setOutputMarkupId(true);
 	}
-	
+
 	@Override
 	protected void addItemColumns(Item<User> item, IModel<? extends User> userModel) {
 		item.add(new Label("firstName", BindingModel.of(userModel, USER_BINDING.firstName())));
@@ -45,7 +45,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 		item.add(new Label("email", BindingModel.of(userModel, USER_BINDING.email())));
 		item.add(new BooleanImage("active", BindingModel.of(userModel, USER_BINDING.active())));
 	}
-	
+
 	@Override
 	protected void doDeleteItem(IModel<? extends User> itemModel) throws ServiceException, SecurityServiceException {
 		try {
@@ -55,28 +55,28 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 			getSession().error(getString("common.error"));
 		}
 	}
-	
+
 	@Override
 	protected MarkupContainer getActionLink(String id, IModel<? extends User> userModel) {
 		return new BookmarkablePageLink<User>(id, UserDescriptionPage.class, LinkUtils
 				.getUserDescriptionPageParameters(userModel.getObject()));
 	}
-	
+
 	@Override
 	protected boolean isActionAvailable() {
 		return true;
 	}
-	
+
 	@Override
 	protected boolean isDeleteAvailable() {
 		return true;
 	}
-	
+
 	@Override
 	protected boolean isEditAvailable() {
 		return false;
 	}
-	
+
 	@Override
 	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
 		return true;
