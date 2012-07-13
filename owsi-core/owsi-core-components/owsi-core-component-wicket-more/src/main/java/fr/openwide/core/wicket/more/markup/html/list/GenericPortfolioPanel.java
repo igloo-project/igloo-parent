@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
@@ -38,10 +37,4 @@ public abstract class GenericPortfolioPanel<E extends GenericEntity<Long, ?>> ex
 	public int getItemsPerPage() {
 		return itemsPerPage;
 	}
-	
-	@Override
-	protected IModel<String> getActionText(final IModel<? extends E> itemModel) {
-		return new ResourceModel("common.portfolio.action.viewDetails");
-	}
-	
 }
