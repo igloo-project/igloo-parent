@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.page;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -9,8 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class AdministrationUserDescriptionPage extends AdministrationTemplate {
@@ -37,6 +40,8 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 			
 			redirect(AdministrationUserPortfolioPage.class);
 		}
+		
+		add(new Label("pageTitle", BindingModel.of(userModel, Binding.user().fullName())));
 	}
 
 	@Override

@@ -17,10 +17,12 @@ import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
@@ -40,6 +42,9 @@ import fr.openwide.core.wicket.more.security.page.LogoutPage;
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	private static final long serialVersionUID = -1312989780696228848L;
+
+	@SpringBean
+	private BasicApplicationConfigurer configurer;
 
 	private List<BreadCrumbElement> pageTitleElements = Lists.newArrayList();
 
@@ -128,9 +133,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			}
 		}));
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
-		
+
 		// Console
 		add(ConsoleConfiguration.get().getConsoleLink("consoleLink"));
+		
+		// Footer
+		add(new Label("version", configurer.getVersion()));
 		
 		// Tooltip
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));

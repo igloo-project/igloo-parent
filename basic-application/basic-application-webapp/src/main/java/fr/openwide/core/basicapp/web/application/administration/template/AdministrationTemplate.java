@@ -40,8 +40,4 @@ public abstract class AdministrationTemplate extends MainTemplate {
 
 	@Override
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
-
-	protected boolean isBreadCrumbDisplayed() {
-		return true;
-	}
 }
