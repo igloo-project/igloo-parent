@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.administration.component.UserGroupDescriptionPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -42,6 +43,8 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		}
 		
 		add(new Label("pageTitle", BindingModel.of(userGroupModel, Binding.userGroup().name())));
+		
+		add(new UserGroupDescriptionPanel("description", userGroupModel));
 	}
 
 	@Override
