@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.ShowcaseSession;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
+import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.util.template.styles.StyleLessCssResourceReference;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
@@ -151,7 +152,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return Lists.newArrayList(
 				new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.portfolio"), PortfolioMainPage.class),
-				new NavigationMenuItem(new ResourceModel("navigation.widgets"), WidgetsMainPage.class)
+				new NavigationMenuItem(new ResourceModel("navigation.widgets"), WidgetsMainPage.class),
+				new NavigationMenuItem(new ResourceModel("navigation.titles"), TitlesPage.class)
 		);
 	}
 	
