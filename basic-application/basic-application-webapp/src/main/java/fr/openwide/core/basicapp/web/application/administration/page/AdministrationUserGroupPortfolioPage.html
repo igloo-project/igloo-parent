@@ -2,7 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="main-title" wicket:id="pageTitle"></div>
-		<div wicket:id="portfolio"></div>
+		<div class="administration usergroup-portfolio">
+			<div class="main-title">
+				<wicket:message key="administration.usergroup.title" />
+				
+				<button wicket:id="createUserGroup" class="btn btn-success float-right" type="button">
+					<span class="icon icon-white icon-plus"></span>
+					<wicket:message key="common.action.create" />
+				</button>
+				
+				<!-- Update user group popup -->
+				<div wicket:id="userGroupCreatePopupPanel"></div>
+			</div>
+			<div wicket:id="portfolio"></div>
+		</div>
 	</wicket:extend>
 </html>

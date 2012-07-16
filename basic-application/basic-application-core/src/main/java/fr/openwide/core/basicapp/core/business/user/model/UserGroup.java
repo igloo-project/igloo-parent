@@ -25,33 +25,32 @@ import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 @Bindable
 public class UserGroup extends GenericEntity<Long, UserGroup> implements IPersonGroup {
 	private static final long serialVersionUID = 2156717229285615454L;
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String name;
-	
-	@SuppressWarnings("unused")
+
 	@JsonIgnore
 	@ManyToMany(mappedBy = "userGroups")
 	@OrderBy("lastName, firstName")
 	private List<User> persons = Lists.newLinkedList();
-	
+
 	@JsonIgnore
 	@ManyToMany
 	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
-	
+
 	@Type(type = "org.hibernate.type.StringClobType")
 	private String description;
-	
+
 	@Column(nullable = false)
 	private Boolean locked = false;
-	
+
 	public UserGroup() {
 	}
-	
+
 	public UserGroup(String name) {
 		super();
 		
@@ -72,16 +71,24 @@ public class UserGroup extends GenericEntity<Long, UserGroup> implements IPerson
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public List<User> getPersons() {
+		return persons;
+	}
+
+	public void setPersons(List<User> persons) {
+		this.persons = persons;
+	}
+
 	@Override
 	public String getDisplayName() {
 		return this.getName();
 	}
-	
+
 	@Override
 	public Set<Authority> getAuthorities() {
 		return authorities;
@@ -90,15 +97,15 @@ public class UserGroup extends GenericEntity<Long, UserGroup> implements IPerson
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
 	}
-	
+
 	public void addAuthority(Authority authority) {
 		this.authorities.add(authority);
 	}
-	
+
 	public void removeAuthority(Authority authority) {
 		this.authorities.remove(authority);
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}

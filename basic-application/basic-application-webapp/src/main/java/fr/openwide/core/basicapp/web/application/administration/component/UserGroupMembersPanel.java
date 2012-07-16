@@ -1,15 +1,155 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
-import org.apache.wicket.model.IModel;
+import java.util.List;
 
+import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
+import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
+import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 
 	private static final long serialVersionUID = 1955579250974258074L;
 
-	public UserGroupMembersPanel(String id, IModel<? extends UserGroup> model) {
-		super(id, model);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupMembersPanel.class);
+
+	@SpringBean
+	private IUserGroupService userGroupService;
+
+	private ListView<User> memberListView;
+
+	private IModel<List<User>> membersModel;
+
+	public UserGroupMembersPanel(String id, IModel<UserGroup> userGroupModel) {
+		super(id, userGroupModel);
+		
+		IModel<List<User>> membersModel = BindingModel.of(getModel(), Binding.userGroup().persons());
+		
+		// Members list
+		memberListView = new ListView<User>("members", membersModel) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void populateItem(final ListItem<User> item) {
+				BookmarkablePageLink<User> userLink = new BookmarkablePageLink<User>(
+						"userLink", 
+						AdministrationUserDescriptionPage.class, 
+						LinkUtils.getUserPageParameters(item.getModelObject())
+				);
+				userLink.add(new Label("fullName", BindingModel.of(item.getModel(), Binding.user().fullName())));
+				item.add(userLink);
+				
+				item.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));
+				
+				IModel<String> confirmationTextModel = new StringResourceModel(
+						"administration.usergroup.members.delete.confirmation.text",
+						null, new Object[] {
+								item.getModelObject().getFullName(),
+								UserGroupMembersPanel.this.getModelObject().getName()
+						}
+				);
+				
+				item.add(new AjaxConfirmLink<User>("deleteLink", item.getModel(),
+						new ResourceModel("administration.usergroup.members.delete.confirmation.title"),
+						confirmationTextModel,
+						new ResourceModel("common.confirm"),
+						new ResourceModel("common.cancel")) {
+					
+					private static final long serialVersionUID = -5179621361619239269L;
+					
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						try {
+							UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
+							User user = item.getModelObject();
+							
+							userGroupService.removePerson(userGroup, user);
+							Session.get().success(getString("administration.usergroup.members.delete.success"));
+						} catch (Exception e) {
+							LOGGER.error("Error occured while removing user from user group");
+							Session.get().error(getString("administration.usergroup.members.delete.error"));
+						}
+						target.add(getPage());
+						FeedbackUtils.refreshFeedback(target, getPage());
+					}
+				});
+			}
+		};
+		add(memberListView);
+		
+		add(new WebMarkupContainer("emptyList") {
+			private static final long serialVersionUID = 6700720373087584498L;
+
+			@Override
+			public void onConfigure() {
+				super.onConfigure();
+				setVisible(memberListView.size() <= 0);
+			}
+		});
+		
+		// Add member form
+//		IModel<User> emptyUserModel = new GenericEntityModel<Long, User>(null);
+//		
+//		final UserAutocompleteAjaxComponent userAutocomplete = new UserAutocompleteAjaxComponent("userAutocomplete",
+//				emptyUserModel);
+//		
+//		Form<User> addMemberForm = new Form<User>("addMemberForm", emptyUserModel) {
+//			private static final long serialVersionUID = 1L;
+//			
+//			@Override
+//			protected void onSubmit() {
+//				super.onSubmit();
+//				UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
+//				User selectedUser = getModelObject();
+//				
+//				if (selectedUser != null) {
+//					if (!userGroup.getPersons().contains(selectedUser)) {
+//						try {
+//							userGroupService.addPerson(userGroup, selectedUser);
+//							getSession().error(getString("administration.usergroup.members.add.success"));
+//						} catch (Exception e) {
+//							LOGGER.error("Unknown error occured while adding a user to a usergroup", e);
+//							getSession().error(getString("administration.usergroup.members.add.error"));
+//						}
+//					} else {
+//						LOGGER.error("User already added to this group");
+//						getSession().error(getString("administration.usergroup.members.add.alreadyMember"));
+//					}
+//				}
+//				userAutocomplete.setModelObject(null);
+//			}
+//		};
+//		addMemberForm.add(userAutocomplete);
+//		addMemberForm.add(new SubmitLink("addMemberLink", addMemberForm));
+//		add(addMemberForm);
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		
+		if (membersModel != null) {
+			membersModel.detach();
+		}
 	}
 }

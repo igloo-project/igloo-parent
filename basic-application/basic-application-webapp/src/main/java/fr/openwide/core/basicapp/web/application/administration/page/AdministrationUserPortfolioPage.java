@@ -3,7 +3,6 @@ package fr.openwide.core.basicapp.web.application.administration.page;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
@@ -32,8 +31,6 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
 				AdministrationUserPortfolioPage.class));
-		
-		add(new Label("pageTitle", new ResourceModel("administration.user.title")));
 		
 		IModel<List<User>> userListModel = new LoadableDetachableModel<List<User>>() {
 			private static final long serialVersionUID = -4518288683578265677L;

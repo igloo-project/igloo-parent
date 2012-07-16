@@ -12,5 +12,7 @@ public interface IUserGroupService extends IGenericEntityService<Long, UserGroup
 
 	void addPerson(UserGroup group, User user) throws ServiceException, SecurityServiceException;
 
+	void removePerson(UserGroup group, User user) throws ServiceException, SecurityServiceException;
+
 	List<UserGroup> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException;
 }

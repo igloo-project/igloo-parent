@@ -37,6 +37,13 @@ public class UserGroupServiceImpl extends GenericEntityServiceImpl<Long, UserGro
 	}
 
 	@Override
+	public void removePerson(UserGroup group, User user)
+			throws ServiceException, SecurityServiceException {
+		user.getUserGroups().remove(group);
+		userService.update(user);
+	}
+
+	@Override
 	public List<UserGroup> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
 		String[] searchFields = new String[] { Binding.userGroup().name().getPath() };
 		

@@ -65,7 +65,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 		UserGroupFormPopupPanel userGroupUpdatePanel = new UserGroupFormPopupPanel("userGroupUpdatePopupPanel", getModel());
 		add(userGroupUpdatePanel);
 		
-		Button updateUserGroup = new Button("updateUserGroupBtn") {
+		Button updateUserGroup = new Button("updateUserGroup") {
 			private static final long serialVersionUID = 993019796184673872L;
 			
 			@Override
