@@ -5,11 +5,37 @@
 		<div class="content-bloc">
 			<div class="second-title">
 				<wicket:message key="administration.usergroup.information" />
+				<button wicket:id="updateUserGroupBtn" class="btn btn-primary btn-mini float-right" type="button">
+					<span class="icon icon-white icon-pencil"></span>
+					<wicket:message key="common.action.update" />
+				</button>
+				
+				<!-- Update user group popup -->
+				<div wicket:id="userGroupUpdatePopupPanel"></div>
 			</div>
 			
 			<div wicket:id="lockedWarningContainer" class="alert alert-warning">
 				<span class="icon icon-lock" style="padding-left: 10px"></span>
 				<wicket:message key="administration.usergroup.warning.locked" />
+			</div>
+			
+			<div class="view-form form-horizontal">
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.usergroup.field.description" /></span>
+					<div class="controls">
+						<div class="view-field" wicket:id="description"></div>
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.usergroup.field.authorities" /></span>
+					<div class="controls check-list">
+						<div wicket:id="authorities" class="check-item">
+							<span wicket:id="authorityName" class="check-label" ></span>
+							<i wicket:id="authorityCheck" class="check-icon" />
+							<div class="clear-both"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:panel>
