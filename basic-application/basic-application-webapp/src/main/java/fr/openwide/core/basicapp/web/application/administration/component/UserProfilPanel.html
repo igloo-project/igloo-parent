@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div class="content-bloc description">
+			<div class="second-title">
+				<wicket:message key="administration.user.profile" />
+				<button wicket:id="updateUser" class="btn btn-primary btn-mini float-right" type="button">
+					<span class="icon icon-white icon-pencil"></span>
+					<wicket:message key="common.action.update" />
+				</button>
+				
+				<!-- Update user popup -->
+				<div wicket:id="userUpdatePopupPanel"></div>
+			</div>
+			
+			<div class="view-form form-horizontal">
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.user.field.userName" /></span>
+					<div class="controls">
+						<div class="view-field" wicket:id="userName"></div>
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.user.field.active" /></span>
+					<div class="controls">
+						<i wicket:id="active" class="view-field" style="margin-top: 3px;" />
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.user.field.email" /></span>
+					<div class="controls">
+						<div class="view-field">
+							<a wicket:id="email"></a>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.user.field.creationDate" /></span>
+					<div class="controls">
+						<div class="view-field" wicket:id="creationDate"></div>
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.user.field.lastLoginDate" /></span>
+					<div class="controls">
+						<div class="view-field" wicket:id="lastLoginDate"></div>
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.user.field.lastUpdateDate" /></span>
+					<div class="controls">
+						<div class="view-field" wicket:id="lastUpdateDate"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:panel>
+</html>

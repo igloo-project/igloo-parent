@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.administration.component.UserProfilPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -42,6 +43,8 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 		}
 		
 		add(new Label("pageTitle", BindingModel.of(userModel, Binding.user().fullName())));
+		
+		add(new UserProfilPanel("profile", userModel));
 	}
 
 	@Override

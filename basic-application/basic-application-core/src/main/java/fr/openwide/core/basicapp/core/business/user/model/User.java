@@ -25,6 +25,9 @@ public class User extends AbstractPerson<User> {
 	
 	private static final long serialVersionUID = 1508647513049577617L;
 	
+	public static final int MIN_PASSWORD_LENGTH = 6;
+	public static final int MAX_PASSWORD_LENGTH = 15;
+	
 	@ManyToMany
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "usergroups_id" }) })
 	private List<UserGroup> userGroups = Lists.newArrayList();

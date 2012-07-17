@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -21,11 +23,13 @@ import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 
@@ -108,40 +112,47 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		});
 		
 		// Add member form
-//		IModel<User> emptyUserModel = new GenericEntityModel<Long, User>(null);
-//		
-//		final UserAutocompleteAjaxComponent userAutocomplete = new UserAutocompleteAjaxComponent("userAutocomplete",
-//				emptyUserModel);
-//		
-//		Form<User> addMemberForm = new Form<User>("addMemberForm", emptyUserModel) {
-//			private static final long serialVersionUID = 1L;
-//			
-//			@Override
-//			protected void onSubmit() {
-//				super.onSubmit();
-//				UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
-//				User selectedUser = getModelObject();
-//				
-//				if (selectedUser != null) {
-//					if (!userGroup.getPersons().contains(selectedUser)) {
-//						try {
-//							userGroupService.addPerson(userGroup, selectedUser);
-//							getSession().error(getString("administration.usergroup.members.add.success"));
-//						} catch (Exception e) {
-//							LOGGER.error("Unknown error occured while adding a user to a usergroup", e);
-//							getSession().error(getString("administration.usergroup.members.add.error"));
-//						}
-//					} else {
-//						LOGGER.error("User already added to this group");
-//						getSession().error(getString("administration.usergroup.members.add.alreadyMember"));
-//					}
-//				}
-//				userAutocomplete.setModelObject(null);
-//			}
-//		};
-//		addMemberForm.add(userAutocomplete);
-//		addMemberForm.add(new SubmitLink("addMemberLink", addMemberForm));
-//		add(addMemberForm);
+		IModel<User> emptyUserModel = new GenericEntityModel<Long, User>(null);
+		
+		final UserAutocompleteAjaxComponent userAutocomplete = new UserAutocompleteAjaxComponent("userAutocomplete",
+				emptyUserModel);
+		userAutocomplete.setAutoUpdate(true);
+		
+		final Form<User> addMemberForm = new Form<User>("addMemberForm", emptyUserModel);
+		addMemberForm.add(userAutocomplete);
+		addMemberForm.add(new AjaxSubmitLink("addMemberLink", addMemberForm) {
+			private static final long serialVersionUID = 6935376642872117563L;
+			
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
+				User selectedUser = userAutocomplete.getModelObject();
+				
+				if (selectedUser != null) {
+					if (!userGroup.getPersons().contains(selectedUser)) {
+						try {
+							userGroupService.addPerson(userGroup, selectedUser);
+							getSession().success(getString("administration.usergroup.members.add.success"));
+						} catch (Exception e) {
+							LOGGER.error("Unknown error occured while adding a user to a usergroup", e);
+							getSession().error(getString("administration.usergroup.members.add.error"));
+						}
+					} else {
+						LOGGER.error("User already added to this group");
+						getSession().warn(getString("administration.usergroup.members.add.alreadyMember"));
+					}
+				}
+				userAutocomplete.setModelObject(null);
+				target.add(getPage());
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		});
+		add(addMemberForm);
 	}
 
 	@Override

@@ -2,18 +2,23 @@ package fr.openwide.core.basicapp.web.application.administration.page;
 
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AdministrationUserPortfolioPage extends AdministrationTemplate {
@@ -42,6 +47,20 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 		};
 		
 		add(new UserPortfolioPanel("portfolio", userListModel, basicApplicationConfigurer.getPortfolioItemsPerPage()));
+		
+		// User create popup
+		UserFormPopupPanel userCreatePanel = new UserFormPopupPanel("userCreatePopupPanel");
+		add(userCreatePanel);
+		
+		Button createUser = new Button("createUser");
+		createUser.add(new AjaxOpenModalBehavior(userCreatePanel, MouseEvent.CLICK) {
+			private static final long serialVersionUID = 5414159291353181776L;
+			
+			@Override
+			protected void onShow(AjaxRequestTarget target) {
+			}
+		});
+		add(createUser);
 	}
 
 	@Override

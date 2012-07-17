@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.web.application.administration.component;
+package fr.openwide.core.basicapp.web.application.administration.form;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -142,10 +142,10 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 					target.add(getPage());
 				} catch (Exception e) {
 					if (isAddMode()) {
-						LOGGER.error("Error occured while creating user group");
+						LOGGER.error("Error occured while creating user group", e);
 						Session.get().error(getString("administration.usergroup.form.add.error"));
 					} else {
-						LOGGER.error("Error occured while updating user group");
+						LOGGER.error("Error occured while updating user group", e);
 						Session.get().error(getString("administration.usergroup.form.edit.error"));
 					}
 				}
@@ -167,7 +167,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		footer.add(valider);
 		
 		// Bouton annuler
-		AbstractLink annuler = new AbstractLink("cancel"){
+		AbstractLink annuler = new AbstractLink("cancel") {
 			private static final long serialVersionUID = 1L;
 		};
 		addCancelBehavior(annuler);
