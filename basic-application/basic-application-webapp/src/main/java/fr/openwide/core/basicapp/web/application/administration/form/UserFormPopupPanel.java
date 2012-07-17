@@ -19,9 +19,9 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
@@ -84,8 +84,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		if (isAddMode()) {
 			return new Label(wicketId, new ResourceModel("administration.user.form.addTitle"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.user.form.editTitle", null,
-					new Object[] { getModelObject().getFullName() }));
+			return new Label(wicketId, new StringResourceModel("administration.user.form.editTitle", getModel()));
 		}
 	}
 
@@ -117,10 +116,6 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		emailField.setLabel(new ResourceModel("administration.user.field.email"));
 		userForm.add(emailField);
 		
-		CheckBox activeField = new CheckBox("active", BindingModel.of(userForm.getModel(), Binding.user().active()));
-		activeField.setLabel(new ResourceModel("administration.user.field.active"));
-		userForm.add(activeField);
-		
 		WebMarkupContainer passwordContainer = new WebMarkupContainer("passwordContainer") {
 			private static final long serialVersionUID = 2727669661139358058L;
 			
@@ -132,8 +127,12 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		};
 		userForm.add(passwordContainer);
 		
+		CheckBox activeField = new CheckBox("active", BindingModel.of(userForm.getModel(), Binding.user().active()));
+		activeField.setLabel(new ResourceModel("administration.user.field.active"));
+		passwordContainer.add(activeField);
+		
 		newPasswordField = new PasswordTextField("newPassword", Model.of(""));
-		newPasswordField.setLabel(new ResourceModel("administration.user.field.newPassword"));
+		newPasswordField.setLabel(new ResourceModel("administration.user.field.password"));
 		newPasswordField.setRequired(true);
 		passwordContainer.add(newPasswordField);
 		
@@ -149,8 +148,8 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserFormPopupPanel.class);
 		
-		// Bouton valider
-		AjaxButton valider = new AjaxButton("save", userForm) {
+		// Validate button
+		AjaxButton validate = new AjaxButton("save", userForm) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -186,7 +185,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					
 					closePopup(target);
 					target.add(getPage());
-				} catch (ConstraintViolationException e) {
+				} catch (DataIntegrityViolationException e) {
 					LOGGER.warn("Username must be unique");
 					Session.get().error(getString("administration.user.form.userName.notUnique"));
 				} catch (Exception e) {
@@ -206,21 +205,21 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		};
-		Label validerLabel;
+		Label validateLabel;
 		if (isAddMode()) {
-			validerLabel = new Label("validerLabel", new ResourceModel("common.action.create"));
+			validateLabel = new Label("validateLabel", new ResourceModel("common.action.create"));
 		} else {
-			validerLabel = new Label("validerLabel", new ResourceModel("common.action.update"));
+			validateLabel = new Label("validateLabel", new ResourceModel("common.action.update"));
 		}
-		valider.add(validerLabel);
-		footer.add(valider);
+		validate.add(validateLabel);
+		footer.add(validate);
 		
-		// Bouton annuler
-		AbstractLink annuler = new AbstractLink("cancel") {
+		// Cancel button
+		AbstractLink cancel = new AbstractLink("cancel") {
 			private static final long serialVersionUID = 1L;
 		};
-		addCancelBehavior(annuler);
-		footer.add(annuler);
+		addCancelBehavior(cancel);
+		footer.add(cancel);
 		
 		return footer;
 	}

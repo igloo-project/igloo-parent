@@ -5,6 +5,22 @@
 		<div class="content-bloc description">
 			<div class="second-title">
 				<wicket:message key="administration.user.profile" />
+				
+				<button wicket:id="disableUser" class="btn btn-danger btn-mini float-right" type="button">
+					<span class="icon icon-white icon-remove"></span>
+					<wicket:message key="administration.user.disable" />
+				</button>
+				
+				<button wicket:id="enableUser" class="btn btn-success btn-mini float-right" type="button">
+					<span class="icon icon-white icon-ok"></span>
+					<wicket:message key="administration.user.enable" />
+				</button>
+				
+				<button wicket:id="changeUserPassword" class="btn btn-warning btn-mini float-right" type="button">
+					<span class="icon icon-white icon-lock"></span>
+					<wicket:message key="administration.user.changePassword" />
+				</button>
+				
 				<button wicket:id="updateUser" class="btn btn-primary btn-mini float-right" type="button">
 					<span class="icon icon-white icon-pencil"></span>
 					<wicket:message key="common.action.update" />
@@ -12,6 +28,9 @@
 				
 				<!-- Update user popup -->
 				<div wicket:id="userUpdatePopupPanel"></div>
+				
+				<!-- Change password popup -->
+				<div wicket:id="changePasswordPopupPanel"></div>
 			</div>
 			
 			<div class="view-form form-horizontal">

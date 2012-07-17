@@ -69,8 +69,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		if (isAddMode()) {
 			return new Label(wicketId, new ResourceModel("administration.usergroup.form.addTitle"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.usergroup.form.editTitle", null,
-					new Object[] { getModelObject().getName() }));
+			return new Label(wicketId, new StringResourceModel("administration.usergroup.form.editTitle", getModel()));
 		}
 	}
 
@@ -122,8 +121,8 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupFormPopupPanel.class);
 		
-		// Bouton valider
-		AjaxButton valider = new AjaxButton("save", userGroupForm) {
+		// Validate button
+		AjaxButton validate = new AjaxButton("save", userGroupForm) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -157,21 +156,21 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		};
-		Label validerLabel;
+		Label validateLabel;
 		if (isAddMode()) {
-			validerLabel = new Label("validerLabel", new ResourceModel("common.action.create"));
+			validateLabel = new Label("validateLabel", new ResourceModel("common.action.create"));
 		} else {
-			validerLabel = new Label("validerLabel", new ResourceModel("common.action.update"));
+			validateLabel = new Label("validateLabel", new ResourceModel("common.action.update"));
 		}
-		valider.add(validerLabel);
-		footer.add(valider);
+		validate.add(validateLabel);
+		footer.add(validate);
 		
-		// Bouton annuler
-		AbstractLink annuler = new AbstractLink("cancel") {
+		// Cancer button
+		AbstractLink cancel = new AbstractLink("cancel") {
 			private static final long serialVersionUID = 1L;
 		};
-		addCancelBehavior(annuler);
-		footer.add(annuler);
+		addCancelBehavior(cancel);
+		footer.add(cancel);
 		
 		return footer;
 	}

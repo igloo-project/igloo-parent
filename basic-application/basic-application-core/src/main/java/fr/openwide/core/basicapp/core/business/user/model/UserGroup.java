@@ -14,22 +14,30 @@ import javax.persistence.OrderBy;
 import org.bindgen.Bindable;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 
 @Entity
+@Indexed
 @Bindable
 public class UserGroup extends GenericEntity<Long, UserGroup> implements IPersonGroup {
 	private static final long serialVersionUID = 2156717229285615454L;
 
 	@Id
 	@GeneratedValue
+	@DocumentId
 	private Long id;
 
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String name;
 
 	@JsonIgnore

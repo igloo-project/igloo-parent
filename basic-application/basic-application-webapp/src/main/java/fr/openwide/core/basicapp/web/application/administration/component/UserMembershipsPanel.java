@@ -20,8 +20,8 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
-import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
-import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
+import fr.openwide.core.basicapp.web.application.common.component.UserGroupAutocompleteAjaxComponent;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -29,45 +29,43 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
+public class UserMembershipsPanel extends GenericPanel<User> {
 
-	private static final long serialVersionUID = 1955579250974258074L;
+	private static final long serialVersionUID = -517286662347263793L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupMembersPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserMembershipsPanel.class);
 
 	@SpringBean
 	private IUserGroupService userGroupService;
+	
+	private ListView<UserGroup> userGroupListView;
 
-	private ListView<User> memberListView;
-
-	public UserGroupMembersPanel(String id, IModel<UserGroup> userGroupModel) {
-		super(id, userGroupModel);
+	public UserMembershipsPanel(String id, IModel<User> userModel) {
+		super(id, userModel);
 		
-		// Members list
-		memberListView = new ListView<User>("members", BindingModel.of(getModel(), Binding.userGroup().persons())) {
-			private static final long serialVersionUID = 1L;
+		// Groups list
+		userGroupListView = new ListView<UserGroup>("groups", BindingModel.of(getModel(), Binding.user().userGroups())) {
+			private static final long serialVersionUID = -6489746843440088695L;
 			
 			@Override
-			protected void populateItem(final ListItem<User> item) {
-				BookmarkablePageLink<User> userLink = new BookmarkablePageLink<User>(
-						"userLink", 
-						AdministrationUserDescriptionPage.class, 
-						LinkUtils.getUserPageParameters(item.getModelObject())
+			protected void populateItem(final ListItem<UserGroup> item) {
+				BookmarkablePageLink<UserGroup> groupLink = new BookmarkablePageLink<UserGroup>(
+						"groupLink", 
+						AdministrationUserGroupDescriptionPage.class, 
+						LinkUtils.getUserGroupPageParameters(item.getModelObject())
 				);
-				userLink.add(new Label("fullName", BindingModel.of(item.getModel(), Binding.user().fullName())));
-				item.add(userLink);
-				
-				item.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));
+				groupLink.add(new Label("name", BindingModel.of(item.getModel(), Binding.userGroup().name())));
+				item.add(groupLink);
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
 						"administration.usergroup.members.delete.confirmation.text",
 						null, new Object[] {
-								item.getModelObject().getFullName(),
-								UserGroupMembersPanel.this.getModelObject().getName()
+								UserMembershipsPanel.this.getModelObject().getFullName(),
+								item.getModelObject().getName()
 						}
 				);
 				
-				item.add(new AjaxConfirmLink<User>("deleteLink", item.getModel(),
+				item.add(new AjaxConfirmLink<UserGroup>("deleteLink", item.getModel(),
 						new ResourceModel("administration.usergroup.members.delete.confirmation.title"),
 						confirmationTextModel,
 						new ResourceModel("common.confirm"),
@@ -77,8 +75,8 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
 						try {
-							UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
-							User user = getModelObject();
+							UserGroup userGroup = getModelObject();
+							User user = UserMembershipsPanel.this.getModelObject();
 							
 							userGroupService.removePerson(userGroup, user);
 							Session.get().success(getString("administration.usergroup.members.delete.success"));
@@ -92,39 +90,39 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 				});
 			}
 		};
-		add(memberListView);
+		add(userGroupListView);
 		
 		add(new WebMarkupContainer("emptyList") {
-			private static final long serialVersionUID = 6700720373087584498L;
-
+			private static final long serialVersionUID = -784607577583169098L;
+			
 			@Override
 			public void onConfigure() {
 				super.onConfigure();
-				setVisible(memberListView.size() <= 0);
+				setVisible(userGroupListView.size() <= 0);
 			}
 		});
 		
-		// Add member form
-		IModel<User> emptyUserModel = new GenericEntityModel<Long, User>(null);
+		// Add group form
+		IModel<UserGroup> emptyUserGroupModel = new GenericEntityModel<Long, UserGroup>(null);
 		
-		final UserAutocompleteAjaxComponent userAutocomplete = new UserAutocompleteAjaxComponent("userAutocomplete",
-				emptyUserModel);
-		userAutocomplete.setAutoUpdate(true);
+		final UserGroupAutocompleteAjaxComponent userGroupAutocomplete = new UserGroupAutocompleteAjaxComponent(
+				"userGroupAutocomplete", emptyUserGroupModel);
+		userGroupAutocomplete.setAutoUpdate(true);
 		
-		final Form<User> addMemberForm = new Form<User>("addMemberForm", emptyUserModel);
-		addMemberForm.add(userAutocomplete);
-		addMemberForm.add(new AjaxSubmitLink("addMemberLink", addMemberForm) {
+		final Form<UserGroup> addGroupForm = new Form<UserGroup>("addGroupForm", emptyUserGroupModel);
+		addGroupForm.add(userGroupAutocomplete);
+		addGroupForm.add(new AjaxSubmitLink("addGroupLink", addGroupForm) {
 			private static final long serialVersionUID = 6935376642872117563L;
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
-				User selectedUser = userAutocomplete.getModelObject();
+				User user = UserMembershipsPanel.this.getModelObject();
+				UserGroup selectedUserGroup = userGroupAutocomplete.getModelObject();
 				
-				if (selectedUser != null) {
-					if (!userGroup.getPersons().contains(selectedUser)) {
+				if (selectedUserGroup != null) {
+					if (!selectedUserGroup.getPersons().contains(user)) {
 						try {
-							userGroupService.addPerson(userGroup, selectedUser);
+							userGroupService.addPerson(selectedUserGroup, user);
 							getSession().success(getString("administration.usergroup.members.add.success"));
 						} catch (Exception e) {
 							LOGGER.error("Unknown error occured while adding a user to a usergroup", e);
@@ -135,7 +133,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 						getSession().warn(getString("administration.usergroup.members.add.alreadyMember"));
 					}
 				}
-				userAutocomplete.setModelObject(null);
+				userGroupAutocomplete.setModelObject(null);
 				target.add(getPage());
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
@@ -145,6 +143,6 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		});
-		add(addMemberForm);
+		add(addGroupForm);
 	}
 }
