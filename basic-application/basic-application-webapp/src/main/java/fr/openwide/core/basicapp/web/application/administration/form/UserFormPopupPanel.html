@@ -19,20 +19,26 @@
 				<div class="control-group">
 					<label class="control-label" wicket:for="userName"><wicket:label /></label>
 					<div class="controls">
-						<input wicket:id="userName" type="text" />
+						<input wicket:id="userName" type="text"
+							data-trigger="focus" data-placement="right"
+							wicket:message="title:administration.user.form.userName.tooltip" />
 					</div>
 				</div>
 				<wicket:container wicket:id="passwordContainer">
 					<div class="control-group">
 						<label class="control-label" wicket:for="newPassword"><wicket:label /></label>
 						<div class="controls">
-							<input wicket:id="newPassword" type="password" />
+							<input wicket:id="newPassword" type="password"
+								data-trigger="focus" data-placement="right"
+								wicket:message="title:administration.user.form.password.tooltip" />
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" wicket:for="confirmPassword"><wicket:label /></label>
 						<div class="controls">
-							<input wicket:id="confirmPassword" type="password" />
+							<input wicket:id="confirmPassword" type="password"
+								data-trigger="focus" data-placement="right"
+								wicket:message="title:administration.user.form.confirmPassword.tooltip" />
 						</div>
 					</div>
 					<div class="control-group">
