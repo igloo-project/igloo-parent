@@ -55,7 +55,7 @@
 		
 		<owsi-core.javatuples.version>1.2</owsi-core.javatuples.version>
 		
-		<owsi-core.commons-io.version>2.3</owsi-core.commons-io.version>
+		<owsi-core.commons-io.version>2.4</owsi-core.commons-io.version>
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
 		<owsi-core.commons-lang3.version>3.1</owsi-core.commons-lang3.version>
 		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
