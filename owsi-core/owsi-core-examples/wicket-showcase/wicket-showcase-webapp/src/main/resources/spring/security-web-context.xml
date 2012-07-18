@@ -16,16 +16,16 @@
 							http://www.springframework.org/schema/aop
 							http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 	
-	<security:http pattern="/login/" security="none" />
 	<security:http pattern="/wicket/resource/**" security="none" />
-	<security:http pattern="/login/failure/" security="none" />
 	<security:http pattern="/static/**" security="none" />
-	<security:http pattern="/" security="none" />
 	
 	<security:http authentication-manager-ref="authenticationManager" auto-config="false">
 		<security:form-login login-page="/login/" default-target-url="/login/success/" always-use-default-target="true"
 				authentication-failure-url="/login/failure/" />
-		<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS" />
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/login/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/login/failure/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS" />
 	</security:http>
 </beans>
