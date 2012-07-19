@@ -22,9 +22,14 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
+		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, false);
+	}
+
+	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, boolean textNoEscape) {
 		super(id, model);
 		setOutputMarkupId(true);
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, textNoEscape));
 	}
 
 	@Override
