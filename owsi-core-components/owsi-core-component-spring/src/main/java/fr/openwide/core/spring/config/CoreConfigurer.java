@@ -25,6 +25,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	private static final String TMP_PATH = "tmp.path";
 	private static final String IMAGE_MAGICK_CONVERT_BINARY_PATH = "imageMagick.convertBinary.path";
+	private static final String IMAGE_MAGICK_CONVERT_BINARY_PATH_DEFAULT_VALUE = "/usr/bin/convert";
 	
 	private static final String LOCALE_AVAILABLE_LOCALES = "locale.availableLocales";
 	private static final String LOCALE_DEFAULT = "locale.default";
@@ -76,7 +77,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public File getImageMagickConvertBinary() {
-		String imageMagickConvertBinary = getPropertyAsString(IMAGE_MAGICK_CONVERT_BINARY_PATH);
+		String imageMagickConvertBinary = getPropertyAsString(IMAGE_MAGICK_CONVERT_BINARY_PATH, IMAGE_MAGICK_CONVERT_BINARY_PATH_DEFAULT_VALUE);
 		
 		if (StringUtils.hasText(imageMagickConvertBinary)) {
 			return new File(imageMagickConvertBinary);
