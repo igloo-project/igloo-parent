@@ -8,7 +8,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 
@@ -42,14 +41,16 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		actionLink.add(new AttributeAppender("class", getActionBootstrapColorClass(itemModel), " "));
 		
 		WebMarkupContainer actionIcon = new WebMarkupContainer("actionIcon");
-		actionIcon.add(new AttributeAppender("class", Model.of("icon-white"), " "));
+		actionIcon.add(new AttributeAppender("class", getActionBootstrapIconColorClass(itemModel), " "));
 		actionIcon.add(new AttributeAppender("class", getActionBootstrapIconClass(itemModel), " "));
 		actionLink.add(actionIcon);
 		add(actionLink);
 	}
 
 	protected abstract IModel<String> getActionBootstrapIconClass(final IModel<? extends T> itemModel);
-	
+
+	protected abstract IModel<String> getActionBootstrapIconColorClass(final IModel<? extends T> itemModel);
+
 	protected abstract IModel<String> getActionBootstrapColorClass(final IModel<? extends T> itemModel);
 
 	protected abstract IModel<String> getActionText(final IModel<? extends T> itemModel);
