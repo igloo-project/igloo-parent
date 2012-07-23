@@ -137,7 +137,12 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						protected IModel<String> getActionBootstrapIconClass(final IModel<? extends T> itemModel) {
 							return AbstractGenericItemListPanel.this.getActionBootstrapIconClass(itemModel);
 						}
-
+						
+						@Override
+						protected IModel<String> getActionBootstrapIconColorClass(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getActionBootstrapIconColorClass(itemModel);
+						}
+						
 						@Override
 						protected IModel<String> getActionBootstrapColorClass(IModel<? extends T> itemModel) {
 							return AbstractGenericItemListPanel.this.getActionBootstrapColorClass(itemModel);
@@ -226,8 +231,24 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		return Model.of("icon-zoom-in");
 	}
 
+	/**
+	 * <code>icon</code> or <code>icon-white</code>
+	 * 
+	 * @param itemModel
+	 * @return
+	 */
+	protected IModel<String> getActionBootstrapIconColorClass(IModel<? extends T> itemModel) {
+		return Model.of("");
+	}
+
+	/**
+	 * <code>btn-primary</code>, <code>btn-danger</code>, <code>btn-success</code>, etc.
+	 * 
+	 * @param itemModel
+	 * @return
+	 */
 	protected IModel<String> getActionBootstrapColorClass(IModel<? extends T> itemModel) {
-		return Model.of("btn-primary");
+		return Model.of("");
 	}
 
 	protected Component getEditLink(final String id, final IModel<? extends T> itemModel) {
