@@ -10,6 +10,9 @@
 	<name>OWSI Core - Parent - Base</name>
 	
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
 		<jdk.version>1.6</jdk.version>
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
@@ -79,14 +82,15 @@
 		<owsi-core.wiquery.version>1.2.3</owsi-core.wiquery.version>
 		<owsi-core.lesscss-engine.version>1.0.41</owsi-core.lesscss-engine.version>
 		
-		<owsi-core.maven-compiler-plugin.version>2.3.2</owsi-core.maven-compiler-plugin.version>
-		<owsi-core.maven-surefire-plugin.version>2.8.1</owsi-core.maven-surefire-plugin.version>
+		<owsi-core.maven-compiler-plugin.version>2.5.1</owsi-core.maven-compiler-plugin.version>
+		<owsi-core.maven-resources-plugin.version>2.5</owsi-core.maven-resources-plugin.version>
+		<owsi-core.maven-surefire-plugin.version>2.12</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
-		<owsi-core.maven-release-plugin.version>2.2.1</owsi-core.maven-release-plugin.version>
-		<owsi-core.maven-war-plugin.version>2.1.1</owsi-core.maven-war-plugin.version>
-		<owsi-core.maven-assembly-plugin.version>2.2.1</owsi-core.maven-assembly-plugin.version>
-		<owsi-core.maven-processor-plugin.version>2.0.2</owsi-core.maven-processor-plugin.version>
-		<owsi-core.maven-jar-plugin.version>2.3.1</owsi-core.maven-jar-plugin.version>
+		<owsi-core.maven-release-plugin.version>2.3.1</owsi-core.maven-release-plugin.version>
+		<owsi-core.maven-war-plugin.version>2.2</owsi-core.maven-war-plugin.version>
+		<owsi-core.maven-assembly-plugin.version>2.3</owsi-core.maven-assembly-plugin.version>
+		<owsi-core.maven-processor-plugin.version>2.0.5</owsi-core.maven-processor-plugin.version>
+		<owsi-core.maven-jar-plugin.version>2.4</owsi-core.maven-jar-plugin.version>
 	</properties>
 	
 	<build>
@@ -99,7 +103,6 @@
 					<configuration>
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
-						<encoding>UTF-8</encoding>
 						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
