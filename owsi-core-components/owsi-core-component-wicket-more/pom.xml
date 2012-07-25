@@ -42,6 +42,12 @@
 			<groupId>org.odlabs.wiquery</groupId>
 			<artifactId>wiquery</artifactId>
 			<version>${owsi-core.wiquery.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>wicket</artifactId>
+					<groupId>org.apache.wicket</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!--
@@ -59,6 +65,16 @@
 			<groupId>com.asual.lesscss</groupId>
 			<artifactId>lesscss-engine</artifactId>
 			<version>${owsi-core.lesscss-engine.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>rhino</groupId>
+					<artifactId>js</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 	</dependencies>
