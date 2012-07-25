@@ -50,7 +50,7 @@ public class TimestampVersion implements InitializingBean {
 		if (defaultTimestampVersion == null) {
 			timestampVersion = DateFormatUtils.format(Calendar.getInstance().getTime(), "yyyyMMddHHmmss");
 		} else {
-			defaultTimestampVersion = timestampVersion;
+			timestampVersion = defaultTimestampVersion;
 		}
 	}
 
