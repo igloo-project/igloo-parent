@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<version>0.5.8-SNAPSHOT</version>
+		<version>0.5.8</version>
 	</parent>
 
 	<groupId>fr.openwide.core.examples</groupId>
 	<artifactId>owsi-core-example-hibernate</artifactId>
-	<version>0.5.8-SNAPSHOT</version>
+	<version>0.5.8</version>
 
 	<name>OWSI Core - Example - Hibernate</name>
 	<description>Capitalisation OWSI pour la technologie Hibernate</description>
