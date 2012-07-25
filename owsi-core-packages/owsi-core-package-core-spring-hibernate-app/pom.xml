@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>owsi-core-packages</artifactId>
 		<groupId>fr.openwide.core.packages</groupId>
-		<version>0.5.7</version>
+		<version>0.5.8-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.packages</groupId>
 	<artifactId>owsi-core-package-core-spring-hibernate-app</artifactId>
-	<version>0.5.7</version>
+	<version>0.5.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Package - Core - Spring / Hibernate Application</name>

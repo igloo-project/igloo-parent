@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.5.7</version>
+		<version>0.5.8-SNAPSHOT</version>
 		<relativePath>../owsi-core-parents/owsi-core-parent-base/pom.xml</relativePath>
 	</parent>
 	
 	<groupId>fr.openwide.core.components</groupId>
 	<artifactId>owsi-core-components</artifactId>
-	<version>0.5.7</version>
+	<version>0.5.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>OWSI Core - Components</name>
