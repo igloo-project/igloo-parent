@@ -75,7 +75,7 @@
 		<owsi-core.sitemesh.version>2.4.2</owsi-core.sitemesh.version>
 		<owsi-core.taglibs-standard.version>1.1.2</owsi-core.taglibs-standard.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
-		<owsi-core.wicket.version>1.4.19</owsi-core.wicket.version>
+		<owsi-core.wicket.version>1.4.20</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>1.2.3</owsi-core.wiquery.version>
 		<owsi-core.lesscss-engine.version>1.0.41</owsi-core.lesscss-engine.version>
 		
