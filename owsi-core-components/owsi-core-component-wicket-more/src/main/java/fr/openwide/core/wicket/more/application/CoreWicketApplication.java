@@ -5,6 +5,7 @@ import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.basic.URIRequestTargetUrlCodingStrategy;
@@ -38,6 +39,13 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
+		
+		// Avec wicket 1.4.20, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
+		// On ajoute globalement l'accès aux ressources less.
+		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
+		
+		// on autorise l'accès aux .htc pour CSS3PIE
+		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
 
 		getMarkupSettings().setStripWicketTags(true);
 		getResourceSettings().setAddLastModifiedTimeToResourceReferenceUrl(true);
