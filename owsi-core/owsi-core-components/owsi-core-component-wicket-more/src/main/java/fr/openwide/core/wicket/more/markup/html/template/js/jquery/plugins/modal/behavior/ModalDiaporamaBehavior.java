@@ -9,14 +9,14 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 
-public class DiaporamaBehavior extends WiQueryAbstractBehavior{
+public class ModalDiaporamaBehavior extends WiQueryAbstractBehavior{
 	private static final long serialVersionUID = 7556130610172681270L;
 	
 	private final ChainableStatement fancybox;
 	
 	private final String selector;
 	
-	public DiaporamaBehavior(String selector, ChainableStatement fancybox) {
+	public ModalDiaporamaBehavior(String selector, ChainableStatement fancybox) {
 		super();
 		this.fancybox = fancybox;
 		this.selector = selector;
