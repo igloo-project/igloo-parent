@@ -140,4 +140,17 @@ public class TestStringUtils {
 		assertTrue(StringUtils.compare(null, "") < 0 );
 		assertTrue(StringUtils.compare(null, null) == 0);
 	}
+	
+	@Test
+	public void testCleanNewLines() {
+		String cleanStr;
+		
+		String str1 = "Ceci \r\n est un test d'uniformisation \r des retours \n à la ligne.";
+		cleanStr = StringUtils.cleanNewLines(str1);
+		assertEquals("Ceci \n est un test d'uniformisation \n des retours \n à la ligne.", cleanStr);
+		
+		String str2 = "\r\n \n\r \n\n \r\n\r \r\r\r\n";
+		cleanStr = StringUtils.cleanNewLines(str2);
+		assertEquals("\n \n\n \n\n \n\n \n\n\n", cleanStr);
+	}
 }
