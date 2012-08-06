@@ -52,6 +52,10 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	public static final String CLEAN_DUPLICATE_SPACES_REGEXP = "  *";
 	public static final String COLLECTION_DEFAULT_DELIMITER = ", ";
 	
+	public static final String NEW_LINE_ANTISLASH_N = "\n";
+	public static final String NEW_LINE_ANTISLASH_R = "\r";
+	public static final String NEW_LINE_ANTISLASH_R_ANTISLASH_N = NEW_LINE_ANTISLASH_R + NEW_LINE_ANTISLASH_N;
+	
 	static {
 		StringBuilder regExp = new StringBuilder();
 		regExp.append('[');
@@ -246,6 +250,23 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 			return 1;
 		}
 		return string1.compareTo(string2);
+	}
+	
+	/**
+	 * Uniformise les retours à la ligne en transformant les <code>\r\n</code> et les <code>\r</code> en <code>\n</code>.
+	 * 
+	 * @param string chaîne à nettoyer
+	 * @return chaîne nettoyée
+	 */
+	public static String cleanNewLines(String string) {
+		if (string == null) {
+			return null;
+		}
+		
+		String cleanString = string.replaceAll(NEW_LINE_ANTISLASH_R_ANTISLASH_N, NEW_LINE_ANTISLASH_N);
+		cleanString = cleanString.replaceAll(NEW_LINE_ANTISLASH_R, NEW_LINE_ANTISLASH_N);
+		
+		return cleanString;
 	}
 	
 	private StringUtils() {
