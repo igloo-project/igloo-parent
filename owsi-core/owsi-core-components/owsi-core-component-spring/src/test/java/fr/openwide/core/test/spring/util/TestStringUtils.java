@@ -146,11 +146,11 @@ public class TestStringUtils {
 		String cleanStr;
 		
 		String str1 = "Ceci \r\n est un test d'uniformisation \r des retours \n à la ligne.";
-		cleanStr = StringUtils.cleanNewLines(str1);
+		cleanStr = StringUtils.normalizeNewLines(str1);
 		assertEquals("Ceci \n est un test d'uniformisation \n des retours \n à la ligne.", cleanStr);
 		
 		String str2 = "\r\n \n\r \n\n \r\n\r \r\r\r\n";
-		cleanStr = StringUtils.cleanNewLines(str2);
+		cleanStr = StringUtils.normalizeNewLines(str2);
 		assertEquals("\n \n\n \n\n \n\n \n\n\n", cleanStr);
 	}
 }
