@@ -150,7 +150,7 @@ public final class JpaConfigUtils {
 		transactionAttributes.setProperty("get*", readOnlyTransactionAttributesDefinition);
 		transactionAttributes.setProperty("list*", readOnlyTransactionAttributesDefinition);
 		transactionAttributes.setProperty("search*", readOnlyTransactionAttributesDefinition);
-		transactionAttributes.setProperty("search*", readOnlyTransactionAttributesDefinition);
+		transactionAttributes.setProperty("find*", readOnlyTransactionAttributesDefinition);
 		// write et rollback-rule
 		transactionAttributes.setProperty("*", writeTransactionAttributesDefinition);
 		
