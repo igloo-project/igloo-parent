@@ -258,7 +258,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @param string chaîne à nettoyer
 	 * @return chaîne nettoyée
 	 */
-	public static String cleanNewLines(String string) {
+	public static String normalizeNewLines(String string) {
 		if (string == null) {
 			return null;
 		}
