@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.persistence.SharedCacheMode;
+import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.util.Version;
@@ -44,7 +45,7 @@ public final class JpaConfigUtils {
 				provider.getJpaPackageScanProviders(),
 				provider.getDialect(), provider.getHbm2Ddl(), provider.getHbm2DdlImportFiles(),
 				provider.getHibernateSearchIndexBase(), provider.getDataSource(), provider.getEhCacheConfiguration(),
-				provider.getDefaultBatchSize());
+				provider.getDefaultBatchSize(), provider.getPersistenceProvider(), provider.getValidationMode());
 	}
 
 	/**
@@ -58,15 +59,21 @@ public final class JpaConfigUtils {
 			String hibernateSearchIndexBase,
 			DataSource dataSource,
 			String ehCacheConfiguration,
-			Integer defaultBatchSize) {
+			Integer defaultBatchSize,
+			PersistenceProvider persistenceProvider,
+			String validationMode) {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl,
 				hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
-				ehCacheConfiguration, defaultBatchSize));
+				ehCacheConfiguration, defaultBatchSize, validationMode));
 		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(jpaPackageScanProviders));
+		
+		if (persistenceProvider != null) {
+			entityManagerFactoryBean.setPersistenceProvider(persistenceProvider);
+		}
 		
 		return entityManagerFactoryBean;
 	}
@@ -76,7 +83,8 @@ public final class JpaConfigUtils {
 			String hibernateHbm2DdlImportFiles,
 			String hibernateSearchIndexBase,
 			String ehCacheConfiguration,
-			Integer defaultBatchSize) {
+			Integer defaultBatchSize,
+			String validationMode) {
 		Properties properties = new Properties();
 		properties.setProperty(Environment.DIALECT, dialect.getName());
 		properties.setProperty(Environment.HBM2DDL_AUTO, hibernateHbm2Ddl);
@@ -110,6 +118,10 @@ public final class JpaConfigUtils {
 			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION, Version.LUCENE_35.name());
 		} else {
 			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
+		}
+		
+		if (StringUtils.hasText(validationMode)) {
+			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
 		}
 		
 		return properties;
