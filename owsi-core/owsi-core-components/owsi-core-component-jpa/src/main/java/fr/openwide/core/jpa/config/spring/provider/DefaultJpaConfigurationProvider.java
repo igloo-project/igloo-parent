@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.config.spring.provider;
 
 import java.util.List;
 
+import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.hibernate.dialect.Dialect;
@@ -34,6 +35,12 @@ public class DefaultJpaConfigurationProvider {
 	@Value("${hibernate.ehCache.configurationLocation}")
 	private String ehCacheConfiguration;
 
+	@Autowired(required=false)
+	private PersistenceProvider persistenceProvider;
+
+	@Value("${javax.persistence.validation.mode}")
+	private String validationMode;
+
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
 		return jpaPackageScanProviders;
 	}
@@ -64,6 +71,14 @@ public class DefaultJpaConfigurationProvider {
 
 	public String getEhCacheConfiguration() {
 		return ehCacheConfiguration;
+	}
+
+	public PersistenceProvider getPersistenceProvider() {
+		return persistenceProvider;
+	}
+
+	public String getValidationMode() {
+		return validationMode;
 	}
 
 }
