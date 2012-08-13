@@ -97,24 +97,6 @@
 			<version>${owsi-core.commons-cli.version}</version>
 		</dependency>
 		
-		<!-- Java API for Google geocoder v3 -->
-		
-		<dependency>
-			<groupId>com.google.code.geocoder-java</groupId>
-			<artifactId>geocoder-java</artifactId>
-			<version>${owsi-core.google-geocoder.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
 		<!-- Test -->
 		
 		<dependency>
