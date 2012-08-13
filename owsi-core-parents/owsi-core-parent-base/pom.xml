@@ -78,7 +78,7 @@
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.9</owsi-core.jackson.version>
 		<owsi-core.truezip.version>7.5.5</owsi-core.truezip.version>
-		<owsi-core.xhtmlrenderer.version>9.0.1</owsi-core.xhtmlrenderer.version>
+		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.6.3</owsi-core.jsoup.version>
