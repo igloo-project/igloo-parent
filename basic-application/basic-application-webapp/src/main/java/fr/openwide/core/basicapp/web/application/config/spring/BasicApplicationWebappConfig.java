@@ -16,6 +16,7 @@ import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 })
 public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 
+	@Override
 	@Bean(name= { "basic-applicationApplication", "application" })
 	public BasicApplicationApplication application() {
 		return new BasicApplicationApplication();
