@@ -96,11 +96,9 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		List<Permission> permissions = new ArrayList<Permission>();
 		permissions.add(permission);
 
-		Acl acl = null;
-
 		try {
 			// Lookup only ACLs for SIDs we're interested in
-			acl = aclService.readAclById(objectIdentity, sids);
+			Acl acl = aclService.readAclById(objectIdentity, sids);
 
 			return acl.isGranted(permissions, sids, false);
 		} catch (NotFoundException e) {

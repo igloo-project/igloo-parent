@@ -107,6 +107,7 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 	}
 	
 	private static class CoreDefaultExceptionMapperProvider implements IProvider<IExceptionMapper> {
+		@Override
 		public IExceptionMapper get() {
 			return new CoreDefaultExceptionMapper();
 		}
