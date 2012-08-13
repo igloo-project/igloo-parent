@@ -12,6 +12,7 @@ public class AjaxBootstrapPagingNavigationLink extends AjaxPagingNavigationLink 
 		super(id, pageable, pageNumber);
 	}
 	
+	@Override
 	protected AjaxPagingNavigationBehavior newAjaxPagingNavigationBehavior(IPageable pageable, String event) {
 		return new AjaxBootstrapPagingNavigationBehavior(this, pageable, event);
 	}
