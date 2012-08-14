@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${tomcat.jdbc-pool.version}</version>
+			<version>${owsi-core.tomcat-jdbc.version}</version>
 		</dependency>
 		
 		<!-- Misc. -->
@@ -54,15 +54,4 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
-	<repositories>
-		<repository>
-			<id>wiquery</id>
-			<name>WiQuery repository</name>
-			<url>http://wiquery.googlecode.com/svn/repo</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 </project>
