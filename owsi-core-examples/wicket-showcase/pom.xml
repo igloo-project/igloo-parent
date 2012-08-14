@@ -25,7 +25,6 @@
 		<jetty-server.version>8.0.4.v20111024</jetty-server.version>
 		<antlr.version>3.2</antlr.version>
 		<google-geocoder.version>0.9</google-geocoder.version>
-		<tomcat.jdbc-pool.version>7.0.27</tomcat.jdbc-pool.version>
 	</properties>
 	
 	<!-- Project information -->
