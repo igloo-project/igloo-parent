@@ -23,8 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.wicket.more.WicketMorePackage;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
-import fr.openwide.core.wicket.more.core.Core172DecoratingHeaderResponse;
+import fr.openwide.core.wicket.more.core.CoreWiQueryDecoratingHeaderResponse;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
@@ -95,11 +96,15 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// minification que si on est en mode DEPLOYMENT
 		WiQuerySettings.get().setMinifiedJavaScriptResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
 		
-		// on réécrit toutes les références au jQuery de wiQuery par une référence à notre jQuery
+		// on ajoute fr.openwide.core.wicket.more aux packages ayant une groupingKey définie, de manière à les charger avant
+		// les potentiels javascripts de l'application
+		WiQuerySettings.get().getResourceGroupingKeys().add(WicketMorePackage.class.getPackage().getName());
+		
+		// on substitue notre decorator qui est un peu plus fin sur la gestion de l'ordre de chargement des ressources
 		setHeaderResponseDecorator(new IHeaderResponseDecorator() {
 			@Override
 			public IHeaderResponse decorate(IHeaderResponse response) {
-				return new Core172DecoratingHeaderResponse(response);
+				return new CoreWiQueryDecoratingHeaderResponse(response);
 			}
 		});
 	}
