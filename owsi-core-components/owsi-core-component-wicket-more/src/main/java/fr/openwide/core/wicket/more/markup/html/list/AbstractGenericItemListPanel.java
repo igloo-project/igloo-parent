@@ -228,7 +228,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	protected IModel<String> getActionBootstrapIconClass(final IModel<? extends T> itemModel) {
-		return Model.of("icon-zoom-in");
+		return Model.of("icon-search");
 	}
 
 	/**
