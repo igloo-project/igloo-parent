@@ -155,7 +155,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					User user = userForm.getModelObject();
+					User user = UserFormPopupPanel.this.getModelObject();
 					
 					if (isAddMode()) {
 						String newPasswordValue = newPasswordField.getModelObject();
@@ -169,6 +169,8 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 									userService.setPasswords(user, newPasswordValue);
 									
 									getSession().success(getString("administration.user.form.add.success"));
+									closePopup(target);
+									target.add(getPage());
 								} else {
 									LOGGER.warn("Password does not fit criteria.");
 									form.error(getString("administration.user.form.password.malformed"));
@@ -181,10 +183,9 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					} else {
 						userService.update(user);
 						getSession().success(getString("administration.user.form.edit.success"));
+						closePopup(target);
+						target.add(getPage());
 					}
-					
-					closePopup(target);
-					target.add(getPage());
 				} catch (DataIntegrityViolationException e) {
 					LOGGER.warn("Username must be unique");
 					Session.get().error(getString("administration.user.form.userName.notUnique"));
@@ -235,5 +236,13 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	@Override
 	public IModel<String> classNamesModel() {
 		return Model.of("modal-user-form");
+	}
+
+	@Override
+	protected void onShow(AjaxRequestTarget target) {
+		super.onShow(target);
+		if (isAddMode()) {
+			getModel().setObject(new User());
+		}
 	}
 }

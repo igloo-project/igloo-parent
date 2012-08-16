@@ -128,7 +128,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					UserGroup userGroup = userGroupForm.getModelObject();
+					UserGroup userGroup = UserGroupFormPopupPanel.this.getModelObject();
 					
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
@@ -186,5 +186,13 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 	@Override
 	public IModel<String> classNamesModel() {
 		return Model.of("modal-usergroup");
+	}
+
+	@Override
+	protected void onShow(AjaxRequestTarget target) {
+		super.onShow(target);
+		if (isAddMode()) {
+			getModel().setObject(new UserGroup());
+		}
 	}
 }
