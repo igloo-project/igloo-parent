@@ -8,7 +8,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
-import fr.openwide.core.wicket.more.util.RequestUtils;
+import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
 
 /**
  * Dans le cas d'un accès non identifié non autorisé, on envoie sur la
@@ -21,7 +21,7 @@ public class StandardUnauthorizedComponentInstantiationListener implements IUnau
 	public void onUnauthorizedInstantiation(Component component) {
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
 			AuthenticatedWebSession.get().error(component.getString("access.denied"));
-			String currentUrl = RequestUtils.getCurrentRequestUrl();
+			String currentUrl = RequestCycleUtils.getCurrentRequestUrl();
 			if (currentUrl != null) {
 				AbstractCoreSession.get().registerRedirectUrl(currentUrl);
 			}
