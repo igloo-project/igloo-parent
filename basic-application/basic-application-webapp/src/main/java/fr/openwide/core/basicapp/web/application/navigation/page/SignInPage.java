@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 import fr.openwide.core.basicapp.web.application.common.template.styles.SignInLessCssResourceReference;
 import fr.openwide.core.spring.util.StringUtils;
@@ -25,11 +26,14 @@ import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
 
 public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 	private static final long serialVersionUID = 5503959273448832421L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SignInPage.class);
+	
+	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 
 	private FormComponent<String> userNameField;
 	
@@ -63,8 +67,17 @@ public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 				}
 				
 				if (success) {
+					String redirectUrl = null;
 					if (StringUtils.hasText(session.getRedirectUrl())) {
-						throw new RedirectToUrlException(session.getRedirectUrl());
+						redirectUrl = session.getRedirectUrl();
+					} else {
+						Object savedRequest = RequestCycleUtils.getCurrentContainerRequest().getSession().getAttribute(SPRING_SECURITY_SAVED_REQUEST);
+						if (savedRequest instanceof SavedRequest) {
+							redirectUrl = ((SavedRequest) savedRequest).getRedirectUrl();
+						}
+					}
+					if (StringUtils.hasText(redirectUrl)) {
+						throw new RedirectToUrlException(redirectUrl);
 					} else {
 						throw new RestartResponseException(Application.get().getHomePage());
 					}
