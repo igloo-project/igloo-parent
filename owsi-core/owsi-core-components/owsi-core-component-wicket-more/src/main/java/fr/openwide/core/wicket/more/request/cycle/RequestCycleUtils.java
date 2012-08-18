@@ -4,9 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.protocol.http.servlet.ServletWebResponse;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
 
 public final class RequestCycleUtils {
@@ -39,12 +37,15 @@ public final class RequestCycleUtils {
 	}
 	
 	public static HttpServletResponse getCurrentContainerResponse() {
-		Response response = RequestCycle.get().getResponse();
-		if (!(response instanceof ServletWebResponse)) {
+		// ici, on ne peut pas utiliser le même mécanisme qu'au dessus car la response peut aussi être
+		// une HeaderBufferingWebResponse et comme la classe est package protected, on est coincé...
+		Object containerResponse = RequestCycle.get().getResponse().getContainerResponse();
+		
+		if (!(containerResponse instanceof HttpServletResponse)) {
 			throw new IllegalStateException("Cannot be used in a non servlet environment");
 		}
 		
-		return ((ServletWebResponse) response).getContainerResponse();
+		return ((HttpServletResponse) containerResponse);
 	}
 
 	private RequestCycleUtils() {
