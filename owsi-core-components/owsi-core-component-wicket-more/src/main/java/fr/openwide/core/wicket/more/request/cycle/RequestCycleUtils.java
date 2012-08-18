@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.util;
+package fr.openwide.core.wicket.more.request.cycle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +9,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
 
-public final class RequestUtils {
+public final class RequestCycleUtils {
 	
 	private static final String QUERY_STRING_SEPARATOR = "?";
 	
@@ -47,7 +47,7 @@ public final class RequestUtils {
 		return ((ServletWebResponse) response).getContainerResponse();
 	}
 
-	private RequestUtils() {
+	private RequestCycleUtils() {
 	}
 
 }

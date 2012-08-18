@@ -9,7 +9,7 @@ import org.apache.wicket.request.http.handler.ErrorCodeRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.wicket.more.util.RequestUtils;
+import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
 
 public class CoreDefaultExceptionMapper implements IExceptionMapper {
 	
@@ -24,7 +24,7 @@ public class CoreDefaultExceptionMapper implements IExceptionMapper {
 				// récupérer l'url + enregistrer dans la session
 				
 				if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
-					String currentUrl = RequestUtils.getCurrentRequestUrl();
+					String currentUrl = RequestCycleUtils.getCurrentRequestUrl();
 					if (currentUrl != null) {
 						AbstractCoreSession.get().registerRedirectUrl(currentUrl);
 					}
