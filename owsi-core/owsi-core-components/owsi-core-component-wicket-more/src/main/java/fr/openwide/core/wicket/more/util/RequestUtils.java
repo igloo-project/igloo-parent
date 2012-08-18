@@ -1,7 +1,12 @@
 package fr.openwide.core.wicket.more.util;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.protocol.http.servlet.ServletWebResponse;
 import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
 
 public final class RequestUtils {
@@ -11,7 +16,7 @@ public final class RequestUtils {
 	public static String getCurrentRequestUrl() {
 		Request request = RequestCycle.get().getRequest();
 		if (!(request instanceof ServletWebRequest)) {
-			return null;
+			throw new IllegalStateException("Cannot be used in a non servlet environment");
 		}
 		
 		ServletWebRequest servletWebRequest = (ServletWebRequest) request;
@@ -22,6 +27,24 @@ public final class RequestUtils {
 		}
 		
 		return currentUrl.toString();
+	}
+	
+	public static HttpServletRequest getCurrentContainerRequest() {
+		Request request = RequestCycle.get().getRequest();
+		if (!(request instanceof ServletWebRequest)) {
+			throw new IllegalStateException("Cannot be used in a non servlet environment");
+		}
+		
+		return ((ServletWebRequest) request).getContainerRequest();
+	}
+	
+	public static HttpServletResponse getCurrentContainerResponse() {
+		Response response = RequestCycle.get().getResponse();
+		if (!(response instanceof ServletWebResponse)) {
+			throw new IllegalStateException("Cannot be used in a non servlet environment");
+		}
+		
+		return ((ServletWebResponse) response).getContainerResponse();
 	}
 
 	private RequestUtils() {
