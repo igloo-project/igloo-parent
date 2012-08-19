@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.security.page;
 
-import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
 import fr.openwide.core.spring.util.StringUtils;
@@ -13,8 +12,11 @@ public class LoginSuccessPage extends CoreWebPage {
 	private static final long serialVersionUID = -875304387617628398L;
 	
 	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
-
-	public LoginSuccessPage() {
+	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		
 		AbstractCoreSession<?> session = AbstractCoreSession.get();
 		
 		String redirectUrl = null;
@@ -27,7 +29,7 @@ public class LoginSuccessPage extends CoreWebPage {
 			}
 		}
 		if (StringUtils.hasText(redirectUrl)) {
-			throw new RedirectToUrlException(redirectUrl);
+			redirect(redirectUrl);
 		} else {
 			redirect(this.getApplication().getHomePage());
 		}

@@ -6,6 +6,7 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public abstract class CoreWebPage extends WebPage {
@@ -22,7 +23,7 @@ public abstract class CoreWebPage extends WebPage {
 	public CoreWebPage(PageParameters parameters) {
 		super(parameters);
 	}
-
+	
 	public final void redirect(final Class<? extends Page> clazz) {
 		throw new RestartResponseException(clazz);
 	}
@@ -33,6 +34,10 @@ public abstract class CoreWebPage extends WebPage {
 
 	public final void redirect(final Page page) {
 		throw new RestartResponseException(page);
+	}
+	
+	public final void redirect(String url) {
+		throw new RedirectToUrlException(url);
 	}
 	
 	protected Component visible(Component component, boolean visible) {
