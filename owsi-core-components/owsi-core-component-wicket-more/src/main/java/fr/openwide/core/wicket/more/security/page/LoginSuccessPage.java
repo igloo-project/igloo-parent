@@ -14,6 +14,12 @@ public class LoginSuccessPage extends CoreWebPage {
 	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
 	public LoginSuccessPage() {
+	}
+	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		
 		redirectToSavedPage();
 	}
 	
