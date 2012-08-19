@@ -13,10 +13,11 @@ public class LoginSuccessPage extends CoreWebPage {
 	
 	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-		
+	public LoginSuccessPage() {
+		redirectToSavedPage();
+	}
+	
+	protected void redirectToSavedPage() {
 		AbstractCoreSession<?> session = AbstractCoreSession.get();
 		
 		String redirectUrl = null;
