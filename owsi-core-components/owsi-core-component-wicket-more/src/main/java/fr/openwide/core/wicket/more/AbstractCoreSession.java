@@ -89,33 +89,48 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@Override
 	public boolean authenticate(String username, String password)
 			throws BadCredentialsException, UsernameNotFoundException, DisabledException {
+		doAuthenticate(username, password);
+		
+		doInitializeSession();
+		
+		return true;
+	}
+	
+	protected Authentication doAuthenticate(String username, String password) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
+		return authentication;
+	}
+	
+	protected void doInitializeSession() {
 		P person = personService.getByUserName(authenticationService.getUserName());
-		if (person != null) {
-			personModel = new GenericEntityModel<Long, P>(person);
-			
-			try {
-				if (person.getLastLoginDate() == null) {
-					onFirstLogin(person);
-				}
-				
-				personService.updateLastLoginDate(person);
-				
-				Locale locale = person.getLocale();
-				if (locale != null) {
-					setLocale(person.getLocale());
-				} else {
-					// si la personne ne possède pas de locale
-					// alors on enregistre celle mise en place
-					// automatiquement par le navigateur.
-					personService.updateLocale(person, getLocale());
-				}
-			} catch (Exception e) {
-				LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
+		
+		if (person == null) {
+			throw new IllegalStateException("Unable to find the signed in user.");
+		}
+		
+		personModel = new GenericEntityModel<Long, P>(person);
+		
+		try {
+			if (person.getLastLoginDate() == null) {
+				onFirstLogin(person);
 			}
+			
+			personService.updateLastLoginDate(person);
+			
+			Locale locale = person.getLocale();
+			if (locale != null) {
+				setLocale(person.getLocale());
+			} else {
+				// si la personne ne possède pas de locale
+				// alors on enregistre celle mise en place
+				// automatiquement par le navigateur.
+				personService.updateLocale(person, getLocale());
+			}
+		} catch (Exception e) {
+			LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
 		}
 		
 		if (roles.isEmpty()) {
@@ -127,8 +142,6 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		if (permissions.isEmpty()) {
 			permissions = authenticationService.getPermissions();
 		}
-		
-		return true;
 	}
 	
 	protected void onFirstLogin(P person) {
