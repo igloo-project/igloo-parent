@@ -224,6 +224,23 @@
 					<groupId>net.alchim31.maven</groupId>
 					<artifactId>yuicompressor-maven-plugin</artifactId>
 					<version>${owsi-core.maven-yui-compressor-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>default</id>
+							<goals>
+								<goal>compress</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<includes>
+							<include>**/*.css</include>
+							<include>**/*.js</include>
+						</includes>
+						<suffix>.min</suffix>
+						<linebreakpos>10000</linebreakpos>
+						<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+					</configuration>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
