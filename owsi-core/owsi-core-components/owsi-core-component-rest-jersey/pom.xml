@@ -13,6 +13,13 @@
 	<name>OWSI Core - Component - Rest with Jersey</name>
 	
 	<dependencies>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa</artifactId>
+			<version>${owsi-core.version}</version>
+		</dependency>
+		
 		<!-- Rest/Jersey -->
 		
 		<dependency>
