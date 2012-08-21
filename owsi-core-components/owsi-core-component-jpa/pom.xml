@@ -242,8 +242,21 @@
 		
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>${owsi-core.jackson.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${owsi-core.jackson2.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${owsi-core.jackson.version}</version>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
