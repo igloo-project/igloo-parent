@@ -37,6 +37,8 @@
 			removeConfirmation	: false,
 			placeholderText		: null,
 			allowCreate			: false,
+			/* permet la création quand on quitte le champ en ayant saisi un texte */
+			allowCreateOnBlur	: false,
 			allowRemove			: true,
 			disableInput		: false,
 			autocompleteClass	: "",
@@ -160,15 +162,27 @@
 							}
 						}
 					} else if (event.which == $.ui.keyCode.ENTER) {
-						event.preventDefault();
-						if (that.options.allowCreate && that._itemInput.val() != '') {
-							that.createItem(that.options.newItem(that._itemInput.val()));
+						if (that._itemInput.val() == '') {
+							// if there is no current input, cascade enter to the form (no preventDefault)
+						} else {
+							event.preventDefault();
+							if (that.options.allowCreate && that._itemInput.val() != '') {
+								that.createItem(that.options.newItem(that._itemInput.val()));
+							}
 						}
 					} else if (that.options.removeConfirmation) {
 						that._lastItem().removeClass('remove ui-state-highlight');
 					}
 				});
-
+			
+			if (this.options.allowCreate && this.options.allowCreateOnBlur) {
+				this._itemInput.blur(function(event) {
+					if (that.options.allowCreate && that.options.allowCreateOnBlur && that._itemInput.val() != '') {
+						that.createItem(that.options.newItem(that._itemInput.val()));
+					}
+				});
+			}
+			
 			// Autocomplete.
 			if (this.options.availableObjects || this.options.jsonSources) {
 				this._itemInput.itemautocomplete({

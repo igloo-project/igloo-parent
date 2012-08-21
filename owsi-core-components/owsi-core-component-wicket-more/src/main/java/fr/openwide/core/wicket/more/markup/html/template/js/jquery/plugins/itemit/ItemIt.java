@@ -100,6 +100,11 @@ public class ItemIt implements ChainableStatement, Serializable {
 	private Boolean allowCreate;
 
 	/**
+	 * Autorise ou non de nouveaux éléments sur l'événement blur. Nécessite {@link ItemIt#allowCreate}
+	 */
+	private Boolean allowCreateOnBlur;
+
+	/**
 	 * Autorise ou non la suppression d'éléments.
 	 */
 	private Boolean allowRemove;
@@ -190,6 +195,9 @@ public class ItemIt implements ChainableStatement, Serializable {
 		}
 		if (allowCreate != null) {
 			options.put("allowCreate", allowCreate);
+		}
+		if (allowCreateOnBlur != null) {
+			options.put("allowCreateOnBlur", allowCreateOnBlur);
 		}
 		if (allowRemove != null) {
 			options.put("allowRemove", allowRemove);
@@ -334,6 +342,14 @@ public class ItemIt implements ChainableStatement, Serializable {
 
 	public void setAllowCreate(Boolean allowCreate) {
 		this.allowCreate = allowCreate;
+	}
+
+	public Boolean getAllowCreateOnBlur() {
+		return allowCreateOnBlur;
+	}
+
+	public void setAllowCreateOnBlur(Boolean allowCreateOnBlur) {
+		this.allowCreateOnBlur = allowCreateOnBlur;
 	}
 
 	public Boolean getAllowRemove() {
