@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import fr.openwide.core.rest.jersey.util.jackson.module.HibernateModule;
+import fr.openwide.core.rest.jersey.util.jackson.serializer.HibernateBeanSerializerFactory;
+
 @Provider
 @Component("objectMapperProvider")
 public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
@@ -16,6 +19,9 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 	
 	public ObjectMapperProvider() {
 		this.objectMapper = new ObjectMapper();
+		// la modification de la factory doit être la première opération
+		this.objectMapper.setSerializerFactory(new HibernateBeanSerializerFactory());
+		this.objectMapper.registerModule(new HibernateModule());
 		this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 	}
 
