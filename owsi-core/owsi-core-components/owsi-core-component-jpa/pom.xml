@@ -256,7 +256,6 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${owsi-core.jackson.version}</version>
-			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
