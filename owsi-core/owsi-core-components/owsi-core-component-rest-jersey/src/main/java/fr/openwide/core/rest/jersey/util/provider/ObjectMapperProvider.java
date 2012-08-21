@@ -23,6 +23,7 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 		this.objectMapper.setSerializerFactory(new HibernateBeanSerializerFactory());
 		this.objectMapper.registerModule(new HibernateModule());
 		this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		this.objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 	}
 
 	@Override
