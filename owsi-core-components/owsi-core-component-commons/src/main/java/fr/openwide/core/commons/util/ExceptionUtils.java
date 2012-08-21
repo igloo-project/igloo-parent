@@ -33,7 +33,7 @@ public final class ExceptionUtils {
 	 * @param e l'exception concernée
 	 * @return la StackTrace
 	 */
-	public static String getStackTraceAsString(Exception e) {
+	public static String getStackTraceAsString(Throwable e) {
 		if (e != null) {
 			Writer result = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(result);
