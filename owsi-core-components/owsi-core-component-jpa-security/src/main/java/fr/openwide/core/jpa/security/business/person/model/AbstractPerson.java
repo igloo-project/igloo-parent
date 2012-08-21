@@ -14,7 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
@@ -63,29 +63,35 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	private String faxNumber;
 	
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	private String passwordHash = "*NO PASSWORD*";
 	
 	@Field
 	private boolean active = true;
 	
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	@Column(nullable = false)
 	private Date creationDate = new Date();
 	
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	@Column(nullable = false)
 	private Date lastUpdateDate = new Date();
 	
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	private Date lastLoginDate;
 	
 	/**
 	 * preferred locale for user, can be null
 	 */
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	private Locale locale;
 	
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
@@ -139,6 +145,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	}
 	
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	@Transient
 	@Override
 	public String getFullName() {

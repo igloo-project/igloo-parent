@@ -3,9 +3,10 @@ package fr.openwide.core.rest.jersey.util.provider;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Provider
 @Component("objectMapperProvider")
@@ -15,7 +16,7 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 	
 	public ObjectMapperProvider() {
 		this.objectMapper = new ObjectMapper();
-		this.objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+		this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 	}
 
 	@Override

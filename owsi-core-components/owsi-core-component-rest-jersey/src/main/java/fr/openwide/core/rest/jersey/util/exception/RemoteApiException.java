@@ -1,6 +1,6 @@
 package fr.openwide.core.rest.jersey.util.exception;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(value = { "cause", "stackTrace", "localizedMessage" })
 public class RemoteApiException extends RuntimeException {
