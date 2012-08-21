@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.WebPage;
 
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
+import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
@@ -61,13 +62,15 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		
 		// Widgets exemple
 		mountPage("/widgets/", WidgetsMainPage.class);
-		mountPage("/widgets/calendar", CalendarPage.class);
-		mountPage("/widgets/autocomplete", AutocompletePage.class);
-		mountPage("/widgets/fancybox", FancyboxPage.class);
-		mountPage("/widgets/gmap", GMapPage.class);
-		mountPage("/widgets/date-parser", DateParserPage.class);
-		mountPage("/widgets/list-filter", ListFilterPage.class);
-		mountPage("/widgets/tootlip", TooltipPage.class);
+		mountPage("/widgets/calendar/", CalendarPage.class);
+		mountPage("/widgets/autocomplete/", AutocompletePage.class);
+		mountPage("/widgets/fancybox/", FancyboxPage.class);
+		mountPage("/widgets/gmap/", GMapPage.class);
+		mountPage("/widgets/date-parser/", DateParserPage.class);
+		mountPage("/widgets/list-filter/", ListFilterPage.class);
+		mountPage("/widgets/tooltip/", TooltipPage.class);
+		
+		mountPage("/titles/", TitlesPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");
