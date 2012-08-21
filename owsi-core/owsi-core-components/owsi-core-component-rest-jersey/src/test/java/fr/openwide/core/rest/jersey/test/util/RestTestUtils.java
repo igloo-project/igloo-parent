@@ -5,12 +5,12 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.grizzly.http.SelectorThread;
 import com.sun.grizzly.http.servlet.ServletAdapter;
 import com.sun.jersey.api.client.Client;

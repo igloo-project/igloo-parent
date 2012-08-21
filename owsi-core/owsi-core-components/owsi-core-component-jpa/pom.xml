@@ -238,12 +238,18 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${owsi-core.servlet-api.version}</version>
 			<scope>provided</scope>
-		</dependency>	
+		</dependency>
 		
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${owsi-core.jackson.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${owsi-core.jackson2.version}</version>
 		</dependency>
 		
 		<!-- QueryDSL dependencies -->

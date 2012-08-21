@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.more.business.task.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,11 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	private QueuedTaskHolder queuedTaskHolder;
 
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	private Long queuedTaskHolderId;
 
 	private Date triggeringDate;

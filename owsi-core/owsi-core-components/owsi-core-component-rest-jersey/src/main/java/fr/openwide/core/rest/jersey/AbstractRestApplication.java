@@ -2,8 +2,7 @@ package fr.openwide.core.rest.jersey;
 
 import java.util.Set;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 
 public abstract class AbstractRestApplication extends PackagesResourceConfig {
