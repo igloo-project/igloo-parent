@@ -201,7 +201,7 @@ $.widget( "ui.itemautocomplete", {
 				var singleMenuTitle = $("<div></div>").addClass("title").appendTo(singleMenu).text(group.title);
 			}
 			var menu = $("<ul></ul>")
-				.menu({
+				.itemitautocompletemenu({
 					focus: function( event, ui ) {
 						var item = ui.item.data( "item.itemautocomplete" );
 						if ( false !== self._trigger( "focus", event, { item: item } ) ) {
@@ -252,11 +252,11 @@ $.widget( "ui.itemautocomplete", {
 				.css({ top: 0, left: 0 })
 				.hide()
 				.appendTo(singleMenu)
-				.data( "menu" );
+				.data( "itemitautocompletemenu" );
 			
 			this.menugroups[group.name] = menu;
 			if (this.options.groups.length == 1) {
-				this.typeToMenugroup["default"] = this.menugroups[group.name]
+				this.typeToMenugroup[group.name] = this.menugroups[group.name];
 			} else {
 				for (var index in group.types) {
 					this.typeToMenugroup[group.types[index]] = this.menugroups[group.name];
@@ -680,7 +680,7 @@ $.extend( $.ui.itemautocomplete, {
  */
 (function($) {
 
-$.widget("ui.menu", {
+$.widget("ui.itemitautocompletemenu", {
 	_create: function() {
 		var self = this;
 		this.element
