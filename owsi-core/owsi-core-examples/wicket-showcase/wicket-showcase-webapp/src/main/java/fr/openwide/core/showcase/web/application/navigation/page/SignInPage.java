@@ -1,6 +1,5 @@
 package fr.openwide.core.showcase.web.application.navigation.page;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
@@ -9,7 +8,6 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
@@ -20,11 +18,11 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.openwide.core.showcase.web.application.util.template.styles.SignInLessCssResourceReference;
-import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 	private static final long serialVersionUID = 5503959273448832421L;
@@ -63,11 +61,7 @@ public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 				}
 				
 				if (success) {
-					if (StringUtils.hasText(session.getRedirectUrl())) {
-						throw new RedirectToUrlException(session.getRedirectUrl());
-					} else {
-						throw new RestartResponseException(Application.get().getHomePage());
-					}
+					throw new RestartResponseException(LoginSuccessPage.class);
 				} else {
 					throw new RestartResponseException(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
 				}
