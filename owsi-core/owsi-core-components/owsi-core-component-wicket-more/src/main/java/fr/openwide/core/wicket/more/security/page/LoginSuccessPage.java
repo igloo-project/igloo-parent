@@ -13,6 +13,8 @@ public class LoginSuccessPage extends CoreWebPage {
 	
 	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
+	private static final String WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT = "IBehaviorListener";
+	
 	public LoginSuccessPage() {
 	}
 	
@@ -35,11 +37,15 @@ public class LoginSuccessPage extends CoreWebPage {
 				redirectUrl = ((SavedRequest) savedRequest).getRedirectUrl();
 			}
 		}
-		if (StringUtils.hasText(redirectUrl)) {
+		if (isUrlValid(redirectUrl)) {
 			redirect(redirectUrl);
 		} else {
 			redirect(this.getApplication().getHomePage());
 		}
+	}
+	
+	protected boolean isUrlValid(String url) {
+		return StringUtils.hasText(url) && !StringUtils.contains(url, WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT);
 	}
 
 }
