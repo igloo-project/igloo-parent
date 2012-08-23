@@ -15,6 +15,8 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 	
 	private boolean generateLabel;
 
+	private final IModel<String> ccModel;
+
 	private final IModel<String> subjectModel;
 
 	private final IModel<String> bodyModel;
@@ -33,7 +35,13 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 
 	public ObfuscatedEmailLink(String id, IModel<String> emailModel, IModel<String> subjectModel,
 			IModel<String> bodyModel, boolean generateLabel) {
+		this(id, emailModel, null, subjectModel, bodyModel, generateLabel);
+	}
+
+	public ObfuscatedEmailLink(String id, IModel<String> emailModel, IModel<String> ccModel, IModel<String> subjectModel,
+			IModel<String> bodyModel, boolean generateLabel) {
 		super(id, emailModel);
+		this.ccModel = ccModel;
 		this.generateLabel = generateLabel;
 		this.subjectModel = wrap(subjectModel);
 		this.bodyModel = wrap(bodyModel);
@@ -42,7 +50,9 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		
+		if (ccModel != null) {
+			ccModel.detach();
+		}
 		if (subjectModel != null) {
 			subjectModel.detach();
 		}
@@ -61,9 +71,15 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 	@Override
  	public JsStatement statement() {
 		String[] emailParts = StringUtils.split(getDefaultModelObjectAsString(), "@");
+		String cc;
 		String subject;
 		String body;
 		
+		if (ccModel != null && ccModel.getObject() != null) {
+			cc = ccModel.getObject().replaceAll("@","µ");
+		} else {
+			cc = "";
+		}
 		if (subjectModel != null && subjectModel.getObject() != null) {
 			subject = subjectModel.getObject();
 		} else {
@@ -78,6 +94,7 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 			return new JsStatement().$(this).chain("obfuscateEmail",
 					JsUtils.quotes(emailParts[0], true),
 					JsUtils.quotes(emailParts[1], true),
+					JsUtils.quotes(cc, true),
 					JsUtils.quotes(subject, true),
 					JsUtils.quotes(body, true),
 					Boolean.valueOf(generateLabel).toString() // generateLabel with email ?
