@@ -69,7 +69,7 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 	}
 
 	@Override
- 	public JsStatement statement() {
+	public JsStatement statement() {
 		String[] emailParts = StringUtils.split(getDefaultModelObjectAsString(), "@");
 		String cc;
 		String subject;
