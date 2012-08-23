@@ -4,7 +4,7 @@
 		var href = "mailto:" + emailAddress;
 		
 		if (cc) {
-			href = href + "?cc=" + encodeURIComponent(cc.replace('/µ/g','@'));
+			href = href + "?cc=" + encodeURIComponent(cc.replace(/µ/g,'@'));
 		}
 		if (subject) {
 			if (cc) {
