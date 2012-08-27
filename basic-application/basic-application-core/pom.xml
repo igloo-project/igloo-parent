@@ -27,7 +27,6 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>${tomcat.jdbc-pool.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Logging -->
