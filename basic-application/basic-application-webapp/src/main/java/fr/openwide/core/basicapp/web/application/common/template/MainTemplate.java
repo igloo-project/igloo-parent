@@ -29,7 +29,6 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLe
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
-import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
