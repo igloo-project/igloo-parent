@@ -1,6 +1,9 @@
 package fr.openwide.core.basicapp.web.application.administration.form;
 
+import java.util.List;
+
 import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -21,11 +24,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
@@ -154,8 +158,10 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				User user = UserFormPopupPanel.this.getModelObject();
+				
 				try {
-					User user = UserFormPopupPanel.this.getModelObject();
+					List<User> usersWithSameName = userService.listByUserName(user.getUserName());
 					
 					if (isAddMode()) {
 						String newPasswordValue = newPasswordField.getModelObject();
@@ -163,14 +169,18 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 						
 						if (newPasswordValue != null && confirmPasswordValue != null) {
 							if (confirmPasswordValue.equals(newPasswordValue)) {
-								if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH && 
+								if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH &&
 										newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
-									userService.create(user);
-									userService.setPasswords(user, newPasswordValue);
-									
-									getSession().success(getString("administration.user.form.add.success"));
-									closePopup(target);
-									target.add(getPage());
+									if (usersWithSameName.isEmpty()) {
+										userService.create(user);
+										userService.setPasswords(user, newPasswordValue);
+										
+										getSession().success(getString("administration.user.form.add.success"));
+										throw new RestartResponseAtInterceptPageException(AdministrationUserDescriptionPage.class);
+									} else {
+										LOGGER.warn("Username '" + user.getUserName() + "' already used");
+										form.error(getString("administration.user.form.userName.notUnique"));
+									}
 								} else {
 									LOGGER.warn("Password does not fit criteria.");
 									form.error(getString("administration.user.form.password.malformed"));
@@ -181,14 +191,20 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 							}
 						}
 					} else {
-						userService.update(user);
-						getSession().success(getString("administration.user.form.edit.success"));
-						closePopup(target);
-						target.add(getPage());
+						if (usersWithSameName.isEmpty() || (usersWithSameName.size() == 1 &&
+								user.getId().equals(usersWithSameName.get(0).getId()))) {
+							userService.update(user);
+							getSession().success(getString("administration.user.form.edit.success"));
+							closePopup(target);
+							target.add(getPage());
+						} else {
+							LOGGER.warn("Username '" + user.getUserName() + "' already used");
+							form.error(getString("administration.user.form.userName.notUnique"));
+						}
 					}
-				} catch (DataIntegrityViolationException e) {
-					LOGGER.warn("Username must be unique");
-					Session.get().error(getString("administration.user.form.userName.notUnique"));
+				} catch (RestartResponseAtInterceptPageException e) {
+					throw new RestartResponseAtInterceptPageException(new AdministrationUserDescriptionPage(
+							LinkUtils.getUserPageParameters(user)));
 				} catch (Exception e) {
 					if (isAddMode()) {
 						LOGGER.error("Error occured while creating user", e);

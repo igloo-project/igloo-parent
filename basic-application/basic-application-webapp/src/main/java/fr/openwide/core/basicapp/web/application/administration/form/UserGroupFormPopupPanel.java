@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.form;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -26,6 +27,8 @@ import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthori
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
+import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox.FormPanelMode;
@@ -126,18 +129,23 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				UserGroup userGroup = UserGroupFormPopupPanel.this.getModelObject();
+				
 				try {
-					UserGroup userGroup = UserGroupFormPopupPanel.this.getModelObject();
 					
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
 						Session.get().success(getString("administration.usergroup.form.add.success"));
+						throw new RestartResponseAtInterceptPageException(AdministrationUserGroupDescriptionPage.class);
 					} else {
 						userGroupService.update(userGroup);
 						Session.get().success(getString("administration.usergroup.form.edit.success"));
 					}
 					closePopup(target);
 					target.add(getPage());
+				} catch (RestartResponseAtInterceptPageException e) {
+					throw new RestartResponseAtInterceptPageException(new AdministrationUserGroupDescriptionPage(
+								LinkUtils.getUserGroupPageParameters(userGroup)));
 				} catch (Exception e) {
 					if (isAddMode()) {
 						LOGGER.error("Error occured while creating user group", e);
