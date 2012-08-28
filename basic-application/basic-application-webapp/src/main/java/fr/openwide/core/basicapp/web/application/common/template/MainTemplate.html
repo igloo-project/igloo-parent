@@ -28,12 +28,12 @@
 						</ul>
 						
 						<!-- User menu -->
-						<ul class="nav pull-right" wicket:enclosure="userFullName">
+						<ul class="nav pull-right user-info" wicket:enclosure="userFullName">
 							<li>
 								<span wicket:id="userFullName" class="nav-item" />
 							</li>
 							<li>
-								<a wicket:id="logoutLink">
+								<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-inverse btn-icon-only">
 									<span class="icon-white icon-off"></span>
 								</a>
 							</li>
