@@ -17,7 +17,7 @@
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/login/" access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/login/failure/" access="ROLE_ANONYMOUS" />
-		<security:intercept-url pattern="/" access="ROLE_AUTHENTICATED" />
+		<security:intercept-url pattern="/" access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/**" access="ROLE_AUTHENTICATED" />
 	</security:http>
 
