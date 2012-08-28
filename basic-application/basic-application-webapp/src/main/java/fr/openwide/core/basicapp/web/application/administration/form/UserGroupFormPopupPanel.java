@@ -22,11 +22,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
@@ -42,9 +42,9 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 
 	@SpringBean
 	private IUserGroupService userGroupService;
-
+	
 	@SpringBean
-	private IAuthorityService authorityService;
+	private BasicApplicationAuthorityUtils authorityUtils;
 
 	private Form<UserGroup> userGroupForm;
 
@@ -95,7 +95,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		userGroupForm.add(authorityCheckGroup);
 		
 		ListView<Authority> authoritiesListView = new ListView<Authority>("authorities",
-				Model.ofList(authorityService.list())) {
+				Model.ofList(authorityUtils.getPublicAuthorities())) {
 			private static final long serialVersionUID = -7557232825932251026L;
 			
 			@Override
@@ -105,8 +105,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 				Check<Authority> authorityCheck = new Check<Authority>("authorityCheck",
 						new GenericEntityModel<Long, Authority>(authority));
 				
-				authorityCheck.setLabel(new ResourceModel("administration.usergroup.authority."
-						+ authority.getName()));
+				authorityCheck.setLabel(new ResourceModel("administration.usergroup.authority." + authority.getName()));
 				
 				authorityCheckGroup.add(authorityCheck);
 				item.add(authorityCheck);

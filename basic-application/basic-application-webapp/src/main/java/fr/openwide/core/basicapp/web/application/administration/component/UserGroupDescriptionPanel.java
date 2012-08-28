@@ -13,13 +13,11 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
-import com.google.common.collect.Lists;
-
+import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.form.UserGroupFormPopupPanel;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
@@ -28,9 +26,9 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 
 	private static final long serialVersionUID = 4372823586880908316L;
-
+	
 	@SpringBean
-	private IAuthorityService authorityService;
+	private BasicApplicationAuthorityUtils authorityUtils;
 
 	public UserGroupDescriptionPanel(String id, final IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
@@ -47,18 +45,16 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 		
 		add(new MultiLineLabel("description", BindingModel.of(userGroupModel, Binding.userGroup().description())));
 		
-		add(new ListView<Authority>("authorities", Model.ofList(Lists.newArrayList(authorityService.list()))) {
+		add(new ListView<Authority>("authorities", Model.ofList(authorityUtils.getPublicAuthorities())) {
 			private static final long serialVersionUID = -4307272691513553800L;
 			
 			@Override
 			protected void populateItem(ListItem<Authority> item) {
 				Authority authority = item.getModelObject();
 				item.add(new Label("authorityName", new ResourceModel(
-						"administration.usergroup.authority."
-								+ authority.getName())));
-				item.add(new BooleanGlyphicon("authorityCheck", Model
-						.of(userGroupModel.getObject().getAuthorities()
-								.contains(authority))));
+						"administration.usergroup.authority." + authority.getName())));
+				item.add(new BooleanGlyphicon("authorityCheck", Model.of(
+						userGroupModel.getObject().getAuthorities().contains(authority))));
 			}
 		});
 		
