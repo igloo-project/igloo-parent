@@ -9,12 +9,23 @@
 	* mkdir export
 	* svn export basic-application export/basic-application
 
-3) Lancer la création de l'archetype : 
+3) Lancer la création de l'archetype depuis le projet exporté :
+	* cd export/basic-application
 	* mvn archetype:create-from-project -Darchetype.properties=../../configuration/archetype.properties
 
 4) Déplacer l'archetype ainsi généré dans un dossier à part : 
 	* mv target/generated-sources/archetype ../..
 
 5) Se placer dans le nouveau dossier de l'archetype et lancer script de renommage des classes :
-	* cd ../..
+	* cd ../../archetype
 	* sh ../configuration/rename_archetype_classes.sh
+
+6) Installé l'archetype créé :
+	* mvn clean install
+
+*************************************
+* Exemple de génération de projet
+*************************************
+
+mvn archetype:generate -DarchetypeCatalog=local -DartifactId=hermes -DgroupId=fr.openwide -Dversion=0.1-SNAPSHOT -Dpackage=com.lvmh -DappName=Hermes -DdbName=hermes
+
