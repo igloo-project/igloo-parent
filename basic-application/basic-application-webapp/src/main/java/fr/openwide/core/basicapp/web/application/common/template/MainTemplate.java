@@ -134,9 +134,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		}));
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 
-		// Console
-		add(ConsoleConfiguration.get().getConsoleLink("consoleLink"));
-		
 		// Footer
 		add(new Label("version", configurer.getVersion()));
 		
