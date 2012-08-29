@@ -1,5 +1,6 @@
 // CSS Reset
 @import "@{scope-core}bootstrap/reset.less";
+@import "@{scope-core}bootstrap/override/reset.less";
 
 // Core variables and mixins
 @import "@{scope-core}bootstrap/variables.less";
@@ -33,4 +34,103 @@
 @import "@{scope-core}alerts.less";
 
 // Page
-@import "signinPage.less";
+#login-page {
+	background: none repeat scroll 0 0 #EEEEEE;
+	padding-top: 150px;
+	.container {
+		width: 500px;
+		
+		> .content {
+			background-color: #FFFFFF;
+			border: 1px solid #CCCCCC;
+			.border-radius(10px);
+			.box-shadow(0 0 5px #CCCCCC);
+			
+			.login-header {
+				.border-radius(10px 10px 0 0);
+				padding: 10px;
+				font-size: 1.5em;
+				
+				img.logo {
+					max-height: 50px;
+					max-width: 150px;
+				}
+			}
+			
+			.login-content {
+				padding: 30px;
+			}
+			
+			.alert {
+				padding: 8px 30px;
+				margin: 0;
+				border-radius: 0;
+				border-top: none;
+				border-right: none;
+				border-left: none;
+			}
+		}
+	}
+}
+.login-title {
+	border-bottom: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+	color: #888888;
+	background: #F1F1F1;
+	margin: 0;
+	padding: 10px 30px;
+}
+.login-content p:first-child {
+	margin-top: 0;
+}
+#sign-in-form {
+	margin: 0;
+	
+	.control-group {
+		margin-bottom: 25px;
+		
+		.control-label {
+			color: #666666;
+			font-size: 1.5em;
+			font-weight: bold;
+			height: 25px;
+			line-height: 25px;
+			padding-right: 30px;
+			width: 150px;
+		}
+		
+		.controls {
+			margin-left: 120px;
+			
+			input {
+				font-size: 1.5em;
+				height: 25px;
+			}
+		}
+	}
+}
+#sign-in-form .form-actions {
+	background: none repeat scroll 0 0 transparent;
+	margin: 30px 0 0;
+	padding: 15px 0 0;
+	text-align: right;
+	
+	.btn-success {
+		font-size: 1.4em;
+		font-weight: bold;
+		
+		.icon {
+			margin-top: 3px;
+		}
+	}
+}
+#login-footer {
+	text-align:right;
+	width: 480px;
+	margin: 3px auto 20px;
+	color: #888;
+	
+	.separator {
+		margin: 0 2px;
+	}
+}
