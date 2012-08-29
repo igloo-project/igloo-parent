@@ -20,12 +20,12 @@
 	* cd ../../archetype
 	* sh ../configuration/rename_archetype_classes.sh
 
-6) Installé l'archetype créé :
+6) Installer l'archetype créé :
 	* mvn clean install
 
 *************************************
 * Exemple de génération de projet
 *************************************
 
-mvn archetype:generate -DarchetypeCatalog=local -DartifactId=hermes -DgroupId=fr.openwide -Dversion=0.1-SNAPSHOT -Dpackage=com.lvmh -DappName=Hermes -DdbName=hermes
+mvn archetype:generate -DarchetypeCatalog=local -DartifactId=hermes-referentiel-images -DgroupId=com.hermes -Dversion=0.1-SNAPSHOT -Dpackage=com.hermes.referentielimages -DappName="Hermès - Référentiel Images" -DdbName=h_referentiel_images
 
