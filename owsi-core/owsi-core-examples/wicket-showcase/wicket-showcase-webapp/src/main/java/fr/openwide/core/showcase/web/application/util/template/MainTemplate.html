@@ -30,16 +30,12 @@
 						</ul>
 						
 						<!-- User menu -->
-						<ul class="nav pull-right" wicket:enclosure="userFullName">
-							<li>
-								<span wicket:id="userFullName" class="nav-item" />
-							</li>
-							<li>
-								<a wicket:id="logoutLink">
-									<span class="icon icon-white icon-off"></span>
-								</a>
-							</li>
-						</ul>
+						<div wicket:enclosure="userFullName" class="pull-right btn-group">
+							<span wicket:id="userFullName" class="btn btn-mini btn-inverse user-link-disabled">Julien Gonzalez</span>
+							<a wicket:id="logoutLink" class="btn btn-mini btn-icon-only btn-inverse" wicket:message="title:common.top.logout.alt">
+								<span class="icon-off icon-white"></span>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
