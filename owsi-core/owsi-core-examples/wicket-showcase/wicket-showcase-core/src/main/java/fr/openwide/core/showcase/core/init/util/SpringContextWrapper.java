@@ -1,7 +1,6 @@
 package fr.openwide.core.showcase.core.init.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.persistence.EntityManagerFactory;
@@ -30,7 +29,7 @@ public class SpringContextWrapper {
 	@Autowired
 	private IImportDataService importDataService;
 	
-	public void importDirectory(File directory) throws FileNotFoundException, ServiceException, SecurityServiceException, IOException {
+	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, IOException {
 		importDataService.importDirectory(directory);
 		// la re-indexation doit être effectuée hors scope transaction
 		reindexAll();
