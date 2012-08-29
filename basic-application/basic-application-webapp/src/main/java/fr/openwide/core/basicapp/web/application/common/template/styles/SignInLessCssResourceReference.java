@@ -2,7 +2,7 @@ package fr.openwide.core.basicapp.web.application.common.template.styles;
 
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 
-public class SignInLessCssResourceReference extends LessCssResourceReference {
+public final class SignInLessCssResourceReference extends LessCssResourceReference {
 
 	private static final long serialVersionUID = 4656765761895221782L;
 

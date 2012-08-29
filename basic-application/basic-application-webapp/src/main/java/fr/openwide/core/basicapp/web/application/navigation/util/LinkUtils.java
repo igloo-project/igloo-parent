@@ -12,7 +12,7 @@ import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
  * - tous les noms de paramètres qui vont être utilisés
  * - toutes les méthodes permettant de construire des liens qui ont un sens métier et sont réutilisables dans l'application
  */
-public class LinkUtils {
+public final class LinkUtils {
 
 	public static final String ID_PARAMETER = "id";
 
@@ -26,5 +26,8 @@ public class LinkUtils {
 		PageParameters parameters = new PageParameters();
 		parameters.add(ID_PARAMETER, userGroup.getId());
 		return parameters;
+	}
+	
+	private LinkUtils() {
 	}
 }

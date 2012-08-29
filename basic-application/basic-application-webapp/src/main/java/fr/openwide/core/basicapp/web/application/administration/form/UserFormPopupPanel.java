@@ -3,7 +3,7 @@ package fr.openwide.core.basicapp.web.application.administration.form;
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -176,7 +176,8 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 										userService.setPasswords(user, newPasswordValue);
 										
 										getSession().success(getString("administration.user.form.add.success"));
-										throw new RestartResponseAtInterceptPageException(AdministrationUserDescriptionPage.class);
+										throw new RestartResponseException(AdministrationUserDescriptionPage.class,
+												LinkUtils.getUserPageParameters(user));
 									} else {
 										LOGGER.warn("Username '" + user.getUserName() + "' already used");
 										form.error(getString("administration.user.form.userName.notUnique"));
@@ -202,9 +203,8 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 							form.error(getString("administration.user.form.userName.notUnique"));
 						}
 					}
-				} catch (RestartResponseAtInterceptPageException e) {
-					throw new RestartResponseAtInterceptPageException(new AdministrationUserDescriptionPage(
-							LinkUtils.getUserPageParameters(user)));
+				} catch (RestartResponseException e) {
+					throw e;
 				} catch (Exception e) {
 					if (isAddMode()) {
 						LOGGER.error("Error occured while creating user", e);

@@ -13,7 +13,7 @@ import fr.openwide.core.basicapp.init.util.SpringContextWrapper;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
-public class BasicApplicationInitFromExcelMain {
+public final class BasicApplicationInitFromExcelMain {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasicApplicationInitFromExcelMain.class);
 

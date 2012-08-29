@@ -1,7 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.form;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -132,20 +132,19 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 				UserGroup userGroup = UserGroupFormPopupPanel.this.getModelObject();
 				
 				try {
-					
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
 						Session.get().success(getString("administration.usergroup.form.add.success"));
-						throw new RestartResponseAtInterceptPageException(AdministrationUserGroupDescriptionPage.class);
+						throw new RestartResponseException(AdministrationUserGroupDescriptionPage.class,
+								LinkUtils.getUserGroupPageParameters(userGroup));
 					} else {
 						userGroupService.update(userGroup);
 						Session.get().success(getString("administration.usergroup.form.edit.success"));
 					}
 					closePopup(target);
 					target.add(getPage());
-				} catch (RestartResponseAtInterceptPageException e) {
-					throw new RestartResponseAtInterceptPageException(new AdministrationUserGroupDescriptionPage(
-								LinkUtils.getUserGroupPageParameters(userGroup)));
+				} catch (RestartResponseException e) {
+					throw e;
 				} catch (Exception e) {
 					if (isAddMode()) {
 						LOGGER.error("Error occured while creating user group", e);
