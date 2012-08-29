@@ -28,16 +28,12 @@
 						</ul>
 						
 						<!-- User menu -->
-						<ul class="nav pull-right user-info" wicket:enclosure="userFullName">
-							<li>
-								<span wicket:id="userFullName" class="nav-item" />
-							</li>
-							<li>
-								<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-inverse btn-icon-only">
-									<span class="icon-white icon-off"></span>
-								</a>
-							</li>
-						</ul>
+						<div wicket:enclosure="userFullName" class="pull-right btn-group">
+							<span wicket:id="userFullName" class="btn btn-mini btn-inverse user-link-disabled"></span>
+							<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-mini btn-icon-only btn-inverse">
+								<span class="icon-off icon-white"></span>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
