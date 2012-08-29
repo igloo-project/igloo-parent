@@ -561,3 +561,42 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  */
 .ui-progressbar { height:2em; text-align: left; overflow: hidden; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
+
+/* OWSI custom style */
+/* Élément survolé (autocomplete, calendrier) */
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+	cursor: pointer;
+}
+
+/* Jour courant sélectionné dans le calendrier */
+.ui-datepicker-today .ui-state-active {
+	border: 1px solid #1188CC;
+	background: #22AAEE;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.ui-datepicker-next.ui-state-hover,
+.ui-datepicker-prev.ui-state-hover {
+	border-color: transparent;
+	background: transparent;
+}
+
+/* Autocomplete */
+.ui-menu {
+	padding: 4px 0;
+}
+.ui-menu .ui-menu-item a {
+	border: none;
+	margin: 0;
+	border-radius: 0;
+	padding: 2px 5px;
+}
+.ui-menu .ui-menu-item a.ui-state-hover {
+	margin: 0;
+}
