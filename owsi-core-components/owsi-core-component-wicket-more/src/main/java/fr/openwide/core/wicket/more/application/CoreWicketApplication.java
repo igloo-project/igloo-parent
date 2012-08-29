@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
@@ -13,12 +14,14 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderResponseDecorator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
 import org.odlabs.wiquery.core.WiQuerySettings;
+import org.odlabs.wiquery.ui.themes.IThemableApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -29,10 +32,11 @@ import fr.openwide.core.wicket.more.core.CoreWiQueryDecoratingHeaderResponse;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
+import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
-public abstract class CoreWicketApplication extends WebApplication {
+public abstract class CoreWicketApplication extends WebApplication implements IThemableApplication {
 	
 	@Autowired
 	private CoreConfigurer configurer;
@@ -151,6 +155,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 			response.addJavaScript(TipsyHelper.closeTipsyStatement().render().toString());
 		}
 		
+	}
+	
+	@Override
+	public ResourceReference getTheme(Session session) {
+		return JQueryUiCssResourceReference.get();
 	}
 
 }
