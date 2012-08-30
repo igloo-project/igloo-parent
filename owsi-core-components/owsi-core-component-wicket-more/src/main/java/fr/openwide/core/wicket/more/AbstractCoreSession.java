@@ -56,7 +56,11 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	private Roles roles = new Roles();
 	
+	private boolean rolesInitialized = false;
+	
 	private List<Permission> permissions = Lists.newArrayList();
+	
+	private boolean permissionsInitialized = false;
 
 	public AbstractCoreSession(Request request) {
 		super(request);
@@ -133,15 +137,14 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 			LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
 		}
 		
-		if (roles.isEmpty()) {
-			Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
-			for (GrantedAuthority authority : authorities) {
-				roles.add(authority.getAuthority());
-			}
+		Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
+		for (GrantedAuthority authority : authorities) {
+			roles.add(authority.getAuthority());
 		}
-		if (permissions.isEmpty()) {
-			permissions = authenticationService.getPermissions();
-		}
+		rolesInitialized = true;
+		
+		permissions = authenticationService.getPermissions();
+		permissionsInitialized = true;
 	}
 	
 	protected void onFirstLogin(P person) {
@@ -179,11 +182,18 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 */
 	@Override
 	public Roles getRoles() {
+		if (!rolesInitialized) {
+			Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
+			for (GrantedAuthority authority : authorities) {
+				roles.add(authority.getAuthority());
+			}
+			rolesInitialized = true;
+		}
 		return roles;
 	}
 	
 	protected boolean hasRole(String authority) {
-		return roles.contains(authority);
+		return getRoles().contains(authority);
 	}
 
 	public boolean hasRoleAdmin() {
@@ -202,8 +212,16 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		return hasRole(CoreAuthorityConstants.ROLE_ANONYMOUS);
 	}
 	
+	protected List<Permission> getPermissions() {
+		if (!permissionsInitialized) {
+			permissions = authenticationService.getPermissions();
+			permissionsInitialized = true;
+		}
+		return permissions;
+	}
+	
 	public boolean hasPermission(Permission permission) {
-		return permissions.contains(permission);
+		return getPermissions().contains(permission);
 	}
 
 	/**
@@ -214,7 +232,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	public void invalidate() {
 		personModel = null;
 		roles = new Roles();
+		rolesInitialized = false;
 		permissions = Lists.newArrayList();
+		permissionsInitialized = false;
 		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		
 		authenticationService.signOut();
