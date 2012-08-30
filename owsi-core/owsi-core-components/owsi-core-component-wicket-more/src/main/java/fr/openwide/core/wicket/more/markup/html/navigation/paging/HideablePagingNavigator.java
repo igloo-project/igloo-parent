@@ -12,7 +12,7 @@ public class HideablePagingNavigator extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int DEFAULT_VIEW_SIZE = 5;
+	private static final int DEFAULT_VIEW_SIZE = 11;
 	
 	private BootstrapPagingNavigation pagingNavigation;
 	private final IPageable pageable;
