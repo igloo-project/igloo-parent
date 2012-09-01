@@ -105,10 +105,10 @@
 		<owsi-core.grizzly.version>1.9.36</owsi-core.grizzly.version>
 		
 		<owsi-core.maven-compiler-plugin.version>2.5.1</owsi-core.maven-compiler-plugin.version>
-		<owsi-core.maven-resources-plugin.version>2.5</owsi-core.maven-resources-plugin.version>
-		<owsi-core.maven-surefire-plugin.version>2.12</owsi-core.maven-surefire-plugin.version>
+		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
+		<owsi-core.maven-surefire-plugin.version>2.12.3</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.3.1</owsi-core.maven-install-plugin.version>
-		<owsi-core.maven-release-plugin.version>2.3.1</owsi-core.maven-release-plugin.version>
+		<owsi-core.maven-release-plugin.version>2.3.2</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.2</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.3</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-processor-plugin.version>2.0.6</owsi-core.maven-processor-plugin.version>
