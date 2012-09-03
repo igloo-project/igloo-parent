@@ -7,7 +7,6 @@ import fr.openwide.core.basicapp.core.config.spring.BasicApplicationCoreCommonCo
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 
 @Configuration
-//@Profile(value = { "test" })
 @ConfigurationLocations(locations = { "classpath:configuration-test.properties" }, order = 1000)
 @Import({
 	BasicApplicationCoreCommonConfig.class,
