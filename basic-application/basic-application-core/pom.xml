@@ -71,6 +71,12 @@
 				<profile.filter.file>src/main/filters/development.properties</profile.filter.file>
 			</properties>
 		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<profile.filter.file>src/main/filters/test.properties</profile.filter.file>
+			</properties>
+		</profile>
 	</profiles>
 	
 	<build>
