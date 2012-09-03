@@ -31,7 +31,8 @@ public abstract class WidgetsTemplate extends MainTemplate {
 				new NavigationMenuItem(new ResourceModel("widgets.menu.gmap"), GMapPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.dateParser"), DateParserPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.listFilter"), ListFilterPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.tooltip"), TooltipPage.class)
+				new NavigationMenuItem(new ResourceModel("widgets.menu.tooltip"), TooltipPage.class),
+				new NavigationMenuItem(new ResourceModel("widgets.menu.statistics"), StatisticsPage.class)
 		);
 	}
 	
