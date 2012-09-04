@@ -40,20 +40,20 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreSecurityServiceImpl.class);
 
 	@Autowired
-	private AclService aclService;
+	protected AclService aclService;
 	
 	@Autowired
-	private ISidRetrievalService sidRetrievalService;
+	protected ISidRetrievalService sidRetrievalService;
 	
 	@Autowired
-	private UserDetailsService userDetailsService;
+	protected UserDetailsService userDetailsService;
 	
 	@Autowired
-	private RunAsImplAuthenticationProvider runAsAuthenticationProvider;
+	protected RunAsImplAuthenticationProvider runAsAuthenticationProvider;
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Permission permission) {
-		if (hasSystemRole(authentication) || hasAdminRole(authentication)) {
+		if (hasAllPermissions(authentication)) {
 			return true;
 		}
 		
@@ -63,6 +63,13 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Permet d'indiquer qu'un utilisateur doit avoir toutes les permissions
+	 */
+	protected boolean hasAllPermissions(Authentication authentication) {
+		return hasSystemRole(authentication) || hasAdminRole(authentication);
 	}
 	
 	@Override
@@ -83,7 +90,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	@Override
 	public boolean hasPermission(Authentication authentication, GenericEntity<?, ?> entity,
 			Permission permission) {
-		if (hasSystemRole(authentication) || hasAdminRole(authentication)) {
+		if (hasAllPermissions(authentication, entity)) {
 			return true;
 		}
 		
@@ -105,6 +112,13 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 			LOGGER.debug("ACL not found for object identity: " + objectIdentity, e);
 			return false;
 		}
+	}
+	
+	/**
+	 * Permet d'indiquer qu'un utilisateur doit avoir toutes les permissions sur un objet
+	 */
+	protected boolean hasAllPermissions(Authentication authentication, GenericEntity<?, ?> entity) {
+		return hasAllPermissions(authentication);
 	}
 
 	@Override
