@@ -10,7 +10,7 @@
 	
 	<artifactId>basic-application-init</artifactId>
 	
-	<name>Application name - Initialisation</name>
+	<name>${archetypeFullApplicationName} - Init</name>
 	
 	<dependencies>
 		<dependency>

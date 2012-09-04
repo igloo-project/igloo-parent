@@ -10,7 +10,7 @@
 	
 	<artifactId>basic-application-core</artifactId>
 	
-	<name>Application name - Core</name>
+	<name>${archetypeFullApplicationName} - Core</name>
 	
 	<dependencies>
 		
@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${tomcat.jdbc-pool.version}</version>
+			<version>${owsi-core.tomcat-jdbc.version}</version>
 		</dependency>
 		
 		<!-- Logging -->

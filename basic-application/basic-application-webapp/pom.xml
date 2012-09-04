@@ -12,7 +12,7 @@
 	
 	<artifactId>basic-application-webapp</artifactId>
 	
-	<name>Application name - Web Application</name>
+	<name>${archetypeFullApplicationName} - Web Application</name>
 	
 	<dependencies>
 		
@@ -41,13 +41,6 @@
 			<artifactId>owsi-core-package-web-spring-security</artifactId>
 			<version>${owsi-core.version}</version>
 			<type>pom</type>
-		</dependency>
-		
-		<!-- Pooling -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<version>${tomcat.jdbc-pool.version}</version>
 		</dependency>
 		
 		<!-- Misc. -->

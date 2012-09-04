@@ -13,7 +13,7 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<name>Application name</name>
+	<name>${archetypeFullApplicationName}</name>
 	
 	<modules>
 		<module>basic-application-core</module>
@@ -23,7 +23,6 @@
 	
 	<properties>
 		<owsi-core.version>0.7-SNAPSHOT</owsi-core.version>
-		<tomcat.jdbc-pool.version>7.0.27</tomcat.jdbc-pool.version>
 	</properties>
 	
 	<build>
