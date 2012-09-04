@@ -124,8 +124,6 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		}
 		
 		if (aces != null) {
-			aces.addAll(getAdminAccessControlEntries(acl));
-			
 			addRequiredAccessControlEntriesToAcl(acl, aces, requiredSids);
 			
 			return acl;
@@ -145,7 +143,7 @@ public abstract class AbstractCoreAclServiceImpl extends JpaDaoSupport implement
 		}
 	}
 	
-	protected List<AccessControlEntry> getAdminAccessControlEntries(CoreAcl acl) {
+	protected List<AccessControlEntry> getDefaultAdminAccessControlEntries(CoreAcl acl) {
 		List<AccessControlEntry> aces = new ArrayList<AccessControlEntry>();
 		
 		aces.add(getAccessControlEntry(acl, new GrantedAuthoritySid(CoreAuthorityConstants.ROLE_SYSTEM), BasePermission.ADMINISTRATION));
