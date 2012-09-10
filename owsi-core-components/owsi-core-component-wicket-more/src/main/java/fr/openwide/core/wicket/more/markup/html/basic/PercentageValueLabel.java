@@ -17,6 +17,10 @@ public class PercentageValueLabel extends Label {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <C> IConverter<C> getConverter(Class<C> type) {
-		return (IConverter<C>) PERCENTAGE_CONVERTER;
+		if (Float.class.isAssignableFrom(type)) {
+			return (IConverter<C>) PERCENTAGE_CONVERTER;
+		} else {
+			return super.getConverter(type);
+		}
 	}
 }
