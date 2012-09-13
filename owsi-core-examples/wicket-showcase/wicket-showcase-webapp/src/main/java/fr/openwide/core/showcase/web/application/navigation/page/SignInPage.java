@@ -47,7 +47,6 @@ public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 				boolean success = false;
 				try {
 					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
-					session.success(getString("signIn.success"));
 					success = true;
 				} catch (BadCredentialsException e) {
 					session.error(getString("signIn.error.authentication"));
