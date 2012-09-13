@@ -60,7 +60,19 @@
 			<groupId>nl.topicus</groupId>
 			<artifactId>wqplot</artifactId>
 			<version>${wqplot.version}</version>
-			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+			<version>${owsi-core.wicket.version}</version>
+		</dependency>
+		
 	</dependencies>
 </project>
