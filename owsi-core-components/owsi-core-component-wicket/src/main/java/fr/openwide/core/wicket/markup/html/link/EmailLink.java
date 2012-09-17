@@ -1,32 +1,43 @@
 package fr.openwide.core.wicket.markup.html.link;
 
-import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
-public class EmailLink extends ExternalLink {
-	
+public class EmailLink extends AbstractLink {
+
 	private static final long serialVersionUID = 6275214385143438381L;
 
 	private static final String MAILTO_PREFIX = "mailto:";
 
-	public EmailLink(String id, String emailAddress) {
-		this(id, Model.of(emailAddress), null);
-	}
-
 	public EmailLink(String id, IModel<String> emailAddressModel) {
-		this(id, emailAddressModel, null);
+		this(id, emailAddressModel, emailAddressModel);
 	}
 
-	public EmailLink(String id, String emailAddress, String label) {
-		this(id, Model.of(emailAddress), Model.of(label));
+	public EmailLink(String id, IModel<String> emailAddressModel, IModel<String> bodyModel) {
+		super(id, emailAddressModel);
+		setBody(bodyModel);
 	}
 
-	public EmailLink(String id, IModel<String> emailAddressModel, IModel<String> labelModel) {
-		super(id,
-				(emailAddressModel != null && emailAddressModel.getObject() != null ?
-						Model.of(MAILTO_PREFIX + emailAddressModel.getObject()) : null),
-				labelModel);
+	@Override
+	protected void onComponentTag(ComponentTag tag) {
+		super.onComponentTag(tag);
+		
+		if (isLinkEnabled() == false) {
+			disableLink(tag);
+		} else if (getDefaultModel() != null) {
+			Object hrefValue = getDefaultModelObject();
+			if (hrefValue != null) {
+				String url = MAILTO_PREFIX + hrefValue.toString();
+				
+				// if the tag is an anchor proper
+				if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link")
+						|| tag.getName().equalsIgnoreCase("area")) {
+					// generate the href attribute
+					tag.put("href", url);
+				}
+			}
+		}
 	}
 
 }

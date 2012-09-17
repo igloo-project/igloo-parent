@@ -32,8 +32,7 @@ public class UserIdentityCardPanel extends GenericPanel<User> {
 		add(new Label("fullName", BindingModel.of(userModel, USER_BINDING.fullName())));
 		add(new Label("userName", BindingModel.of(userModel, USER_BINDING.userName())));
 		
-		add(new EmailLink("emailLink", BindingModel.of(userModel, USER_BINDING.email()),
-				BindingModel.of(userModel, USER_BINDING.email())));
+		add(new EmailLink("emailLink", BindingModel.of(userModel, USER_BINDING.email())));
 		
 		add(new Label("phoneNumber", BindingModel.of(userModel, USER_BINDING.phoneNumber())));
 		add(new Label("gsmNumber", BindingModel.of(userModel, USER_BINDING.gsmNumber())));
