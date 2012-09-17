@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import org.apache.lucene.util.Version;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
+import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.AvailableSettings;
@@ -44,7 +45,8 @@ public final class JpaConfigUtils {
 		return entityManagerFactory(
 				provider.getJpaPackageScanProviders(),
 				provider.getDialect(), provider.getHbm2Ddl(), provider.getHbm2DdlImportFiles(),
-				provider.getHibernateSearchIndexBase(), provider.getDataSource(), provider.getEhCacheConfiguration(),
+				provider.getHibernateSearchIndexBase(), provider.getDataSource(), 
+				provider.getEhCacheConfiguration(), provider.isEhCacheSingleton(), provider.isQueryCacheEnabled(),
 				provider.getDefaultBatchSize(), provider.getPersistenceProvider(), provider.getValidationMode());
 	}
 
@@ -59,6 +61,8 @@ public final class JpaConfigUtils {
 			String hibernateSearchIndexBase,
 			DataSource dataSource,
 			String ehCacheConfiguration,
+			boolean singletonCache,
+			boolean queryCacheEnabled,
 			Integer defaultBatchSize,
 			PersistenceProvider persistenceProvider,
 			String validationMode) {
@@ -67,7 +71,7 @@ public final class JpaConfigUtils {
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl,
 				hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
-				ehCacheConfiguration, defaultBatchSize, validationMode));
+				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode));
 		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(jpaPackageScanProviders));
 		
@@ -83,6 +87,8 @@ public final class JpaConfigUtils {
 			String hibernateHbm2DdlImportFiles,
 			String hibernateSearchIndexBase,
 			String ehCacheConfiguration,
+			boolean singletonCache,
+			boolean queryCacheEnabled,
 			Integer defaultBatchSize,
 			String validationMode) {
 		Properties properties = new Properties();
@@ -101,11 +107,23 @@ public final class JpaConfigUtils {
 		}
 		
 		if (StringUtils.hasText(ehCacheConfiguration)) {
+			if (singletonCache) {
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
+			} else {
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
+			}
 			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
-			properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
+			if (queryCacheEnabled) {
+				properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.TRUE.toString());
+			} else {
+				properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.FALSE.toString());
+			}
 		} else {
+			if (queryCacheEnabled) {
+				throw new IllegalArgumentException("Could not enable query cache without EhCache configuration");
+			}
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
 			properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.FALSE.toString());
 		}
