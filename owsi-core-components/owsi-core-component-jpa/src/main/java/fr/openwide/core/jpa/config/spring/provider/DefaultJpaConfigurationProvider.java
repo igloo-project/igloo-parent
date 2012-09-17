@@ -35,6 +35,12 @@ public class DefaultJpaConfigurationProvider {
 	@Value("${hibernate.ehCache.configurationLocation}")
 	private String ehCacheConfiguration;
 
+	@Value("${hibernate.ehCache.singleton}")
+	private boolean ehCacheSingleton;
+
+	@Value("${hibernate.queryCache.enabled}")
+	private boolean queryCacheEnabled;
+
 	@Autowired(required=false)
 	private PersistenceProvider persistenceProvider;
 
@@ -71,6 +77,14 @@ public class DefaultJpaConfigurationProvider {
 
 	public String getEhCacheConfiguration() {
 		return ehCacheConfiguration;
+	}
+
+	public boolean isEhCacheSingleton() {
+		return ehCacheSingleton;
+	}
+
+	public boolean isQueryCacheEnabled() {
+		return queryCacheEnabled;
 	}
 
 	public PersistenceProvider getPersistenceProvider() {
