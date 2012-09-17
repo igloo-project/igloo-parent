@@ -37,8 +37,7 @@ public class UserProfilPanel extends GenericPanel<User> {
 		
 		add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
 		add(new BooleanGlyphicon("active", BindingModel.of(userModel, Binding.user().active())));
-		add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email()),
-				BindingModel.of(userModel, Binding.user().email())));
+		add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
 		add(new DateLabel("creationDate", BindingModel.of(userModel, Binding.user().creationDate()),
 				DatePattern.SHORT_DATETIME));
 		add(new DateLabel("lastLoginDate", BindingModel.of(userModel, Binding.user().lastLoginDate()),

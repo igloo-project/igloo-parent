@@ -40,8 +40,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 		item.add(new Label("lastName", BindingModel.of(userModel, Binding.user().lastName())));
 		item.add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
 		item.add(new BooleanGlyphicon("active", BindingModel.of(userModel, Binding.user().active())));
-		item.add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email()),
-				BindingModel.of(userModel, Binding.user().email())));
+		item.add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
 	}
 
 	@Override
