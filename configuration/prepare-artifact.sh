@@ -11,3 +11,5 @@ for path in `find . -name '*BasicApplication*'`; do
 	newPath=`echo ${path} | sed 's/BasicApplication/__archetypeApplicationNamePrefix__/'`;
 	mv ${path} ${newPath}
 done
+
+find . -name *.launch -exec sed -i 's/${archetypeDataDirectory}/${artifactId}/' {} \;
