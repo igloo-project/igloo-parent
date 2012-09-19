@@ -27,6 +27,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	@Autowired
 	protected IAuthorityService authorityService;
 
+	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 		initAuthorities();
