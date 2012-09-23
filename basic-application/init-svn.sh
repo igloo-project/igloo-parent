@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export LANG=C
+set -e
 
 script_directory=$(dirname $(readlink -f $0))
 artifact=$(basename ${script_directory})
