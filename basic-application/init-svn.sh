@@ -33,8 +33,9 @@ fi
 pushd ${script_directory} > /dev/null
 
 sed -i 's/${wombatProjectName}/'${wombat_project_name}'/g' pom.xml
-sed -i "s/    <module/\t\t<module/g" pom.xml
-sed -i "s/  <module/\t<module/g" pom.xml
+sed -i "s@    <module@\t\t<module@g" pom.xml
+sed -i "s@  <module@\t<module@g" pom.xml
+sed -i "s@  </module@\t</module@g" pom.xml
 
 svn co -q ${svn_trunk_url}/${artifact} .
 svn propset -q svn:ignore "target
