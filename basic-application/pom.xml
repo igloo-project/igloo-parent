@@ -72,4 +72,20 @@
 			</releases>
 		</repository>
 	</repositories>
+	
+	<issueManagement>
+		<system>Trac</system>
+		<url>https://projects.openwide.fr/services/svn/trac/${wombatProjectName}/report</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://projects.openwide.fr/services/ci/java/jenkins/</url>
+	</ciManagement>
+
+	<scm>
+		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/${wombatProjectName}/trunk/${artifactId}</developerConnection>
+		<url>https://projects.openwide.fr/services/svn/trac/${wombatProjectName}/browser/trunk/${artifactId}</url>
+	</scm>
+	
 </project>
