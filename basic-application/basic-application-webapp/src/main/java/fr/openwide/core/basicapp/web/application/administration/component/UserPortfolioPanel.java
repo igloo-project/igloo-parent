@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -36,9 +37,12 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected void addItemColumns(Item<User> item, IModel<? extends User> userModel) {
+		Link<User> userNameLink = new BookmarkablePageLink<User>("userNameLink", AdministrationUserDescriptionPage.class, 
+				LinkUtils.getUserPageParameters(userModel.getObject()));
+		userNameLink.add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
+		item.add(userNameLink);
 		item.add(new Label("firstName", BindingModel.of(userModel, Binding.user().firstName())));
 		item.add(new Label("lastName", BindingModel.of(userModel, Binding.user().lastName())));
-		item.add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
 		item.add(new BooleanGlyphicon("active", BindingModel.of(userModel, Binding.user().active())));
 		item.add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
 	}

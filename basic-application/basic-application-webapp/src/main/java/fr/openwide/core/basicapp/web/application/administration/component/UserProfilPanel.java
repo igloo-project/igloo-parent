@@ -5,6 +5,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
@@ -13,13 +15,16 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.ChangePasswordPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
@@ -96,11 +101,20 @@ public class UserProfilPanel extends GenericPanel<User> {
 		});
 		
 		// Disable user link
-		add(new Link<User>("disableUser", userModel) {
+		IModel<String> confirmationTextModel = new StringResourceModel(
+				"administration.user.disable.confirmation.text", null, 
+				new Object[] { userModel.getObject().getFullName() }
+		);
+		
+		add(new AjaxConfirmLink<User>("disableUser", userModel,
+				new ResourceModel("administration.user.disable.confirmation.title"),
+				confirmationTextModel,
+				new ResourceModel("common.confirm"),
+				new ResourceModel("common.cancel")) {
 			private static final long serialVersionUID = 6157423807032594861L;
 			
 			@Override
-			public void onClick() {
+			public void onClick(AjaxRequestTarget target) {
 				try {
 					userService.setActive(getModelObject(), false);
 					getSession().success(getString("administration.user.disable.success"));
@@ -108,12 +122,16 @@ public class UserProfilPanel extends GenericPanel<User> {
 					LOGGER.error("Error occured while disabling user", e);
 					getSession().error(getString("common.error"));
 				}
+				target.add(getPage());
+				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 			
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				setVisible(getModelObject().isActive());
+				User displayedUser = getModelObject();
+				User currentUser = BasicApplicationSession.get().getUser();
+				setVisible(!displayedUser.equals(currentUser) && displayedUser.isActive());
 			}
 		});
 	}

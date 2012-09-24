@@ -166,7 +166,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		if (isAddMode()) {
 			validateLabel = new Label("validateLabel", new ResourceModel("common.action.create"));
 		} else {
-			validateLabel = new Label("validateLabel", new ResourceModel("common.action.update"));
+			validateLabel = new Label("validateLabel", new ResourceModel("common.action.save"));
 		}
 		validate.add(validateLabel);
 		footer.add(validate);

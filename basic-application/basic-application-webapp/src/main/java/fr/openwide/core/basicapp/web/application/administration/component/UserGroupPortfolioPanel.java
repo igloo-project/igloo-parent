@@ -5,13 +5,13 @@ import java.util.List;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
@@ -35,7 +35,10 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected void addItemColumns(Item<UserGroup> item, IModel<? extends UserGroup> userGroupModel) {
-		item.add(new Label("name", BindingModel.of(userGroupModel, Binding.userGroup().name())));
+		Link<UserGroup> nameLink = new BookmarkablePageLink<UserGroup>("nameLink", AdministrationUserGroupDescriptionPage.class, 
+				LinkUtils.getUserGroupPageParameters(userGroupModel.getObject()));
+		nameLink.add(new Label("name", BindingModel.of(userGroupModel, Binding.userGroup().name())));
+		item.add(nameLink);
 		item.add(new Label("description", BindingModel.of(userGroupModel, Binding.userGroup().description())));
 	}
 
@@ -58,7 +61,7 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected MarkupContainer getActionLink(String id, final IModel<? extends UserGroup> userGroupModel) {
-		return new BookmarkablePageLink<User>(id, AdministrationUserGroupDescriptionPage.class, 
+		return new BookmarkablePageLink<UserGroup>(id, AdministrationUserGroupDescriptionPage.class, 
 				LinkUtils.getUserGroupPageParameters(userGroupModel.getObject()));
 	}
 
