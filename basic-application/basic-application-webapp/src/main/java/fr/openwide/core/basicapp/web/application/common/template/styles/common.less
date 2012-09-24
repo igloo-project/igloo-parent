@@ -8,30 +8,6 @@ body {
 	.navbar .user-info .btn-icon-only {
 		padding: 4px 10px;
 	}
-
-	.content {
-		.main-title {
-			border-bottom: 1px solid #CCCCCC;
-			font-size: 22px;
-			font-weight: bold;
-			line-height: 32px;
-			margin-bottom: 15px;
-		}
-		
-		.second-title {
-			color: #666666;
-			border-bottom: 1px solid #CCCCCC;
-			font-size: 16px;
-			font-weight: bold;
-			line-height: 20px;
-			margin-bottom: 10px;
-			padding-bottom: 3px;
-		}
-		
-		.content-bloc {
-			padding: 5px;
-		}
-	}
 }
 
 .empty-list {
@@ -45,4 +21,31 @@ body {
 // User menu
 .user-link-disabled {
 	.buttonBackground(lighten(@btnInverseBackground, 10%), lighten(@btnInverseBackgroundHighlight, 10%));
+}
+
+// Key-value list
+.key-value-list {
+	.line {
+		border-bottom: 1px solid #EEE;
+		
+		&:hover {
+			background-color: #DDEEFF;
+		}
+		
+		&:last-child {
+			border-bottom: none;
+		}
+		
+		.line-label {
+			color: #888;
+			font-weight: bold;
+			min-height: 0;
+			padding: 8px 4px 8px 8px;
+		}
+		
+		.line-value {
+			min-height: 0;
+			padding: 8px 8px 8px 4px;
+		}
+	}
 }

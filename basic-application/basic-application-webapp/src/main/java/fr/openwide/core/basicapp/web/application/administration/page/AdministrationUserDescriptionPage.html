@@ -3,14 +3,14 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="administration user-description">
-			<div class="main-title" wicket:id="pageTitle"></div>
+			<h1 wicket:id="pageTitle"></h1>
 			
 			<div class="row-fluid">
 				<div class="span6">
-					<div wicket:id="profile"></div>
+					<wicket:container wicket:id="profile"></wicket:container>
 				</div>
 				<div class="span6">
-					<div wicket:id="groups"></div>
+					<wicket:container wicket:id="groups"></wicket:container>
 				</div>
 			</div>
 		</div>

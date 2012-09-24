@@ -3,17 +3,18 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="administration user-portfolio">
-			<div class="main-title">
+			<h1>
 				<wicket:message key="administration.user.title"/>
 				
 				<button wicket:id="createUser" class="btn float-right" type="button">
 					<span class="icon-plus"></span>
 					<wicket:message key="common.action.create" />
 				</button>
-				
-				<!-- Create user popup -->
-				<div wicket:id="userCreatePopupPanel"></div>
-			</div>
+			</h1>
+			
+			<!-- Create user popup -->
+			<div wicket:id="userCreatePopupPanel"></div>
+			
 			<div wicket:id="portfolio"></div>
 		</div>
 	</wicket:extend>
