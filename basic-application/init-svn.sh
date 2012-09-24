@@ -45,7 +45,7 @@ svn propset -q svn:ignore "target
 .settings
 init-*.sh" .
 
-find . -maxdepth 1 ! -name init-*.sh ! -name .svn -exec svn add -q {} \;
+find . -maxdepth 1 ! -name init-\*.sh ! -name .svn -exec svn add -q {} \;
 svn propset -q svn:ignore "target
 .classpath
 .project
