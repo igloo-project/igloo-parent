@@ -54,7 +54,7 @@
 		</init-param>
 		<init-param>
 			<param-name>applicationBean</param-name>
-			<param-value>basic-applicationApplication</param-value>
+			<param-value>BasicApplicationApplication</param-value>
 		</init-param>
 		<init-param>
 			<param-name>filterPath</param-name>
