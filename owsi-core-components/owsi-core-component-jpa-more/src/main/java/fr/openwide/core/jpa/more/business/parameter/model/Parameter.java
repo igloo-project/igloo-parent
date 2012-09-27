@@ -23,6 +23,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.more.util.search.analysis.fr.CoreMinimalFrenchStemFilterFactory;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @Entity
@@ -48,6 +49,25 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 					),
 					@TokenFilterDef(factory = LowerCaseFilterFactory.class)
 			}
+	),
+	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT_STEMMING,
+		tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+		filters = {
+				@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+				@TokenFilterDef(factory = WordDelimiterFilterFactory.class, params = {
+								@org.hibernate.search.annotations.Parameter(name = "generateWordParts", value = "1"),
+								@org.hibernate.search.annotations.Parameter(name = "generateNumberParts", value = "1"),
+								@org.hibernate.search.annotations.Parameter(name = "catenateWords", value = "0"),
+								@org.hibernate.search.annotations.Parameter(name = "catenateNumbers", value = "0"),
+								@org.hibernate.search.annotations.Parameter(name = "catenateAll", value = "0"),
+								@org.hibernate.search.annotations.Parameter(name = "splitOnCaseChange", value = "0"),
+								@org.hibernate.search.annotations.Parameter(name = "splitOnNumerics", value = "0"),
+								@org.hibernate.search.annotations.Parameter(name = "preserveOriginal", value = "1")
+						}
+				),
+				@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+				@TokenFilterDef(factory = CoreMinimalFrenchStemFilterFactory.class)
+		}
 	),
 	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT_SORT,
 			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class),
