@@ -7,12 +7,12 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
 
-public final class CoreMinimalFrenchStemFilter extends TokenFilter {
-	private static final CoreMinimalFrenchStemmer STEMMER = new CoreMinimalFrenchStemmer();
+public final class CoreFrenchMinimalStemFilter extends TokenFilter {
+	private static final CoreFrenchMinimalStemmer STEMMER = new CoreFrenchMinimalStemmer();
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final KeywordAttribute keywordAttr = addAttribute(KeywordAttribute.class);
 
-	public CoreMinimalFrenchStemFilter(TokenStream input) {
+	public CoreFrenchMinimalStemFilter(TokenStream input) {
 		super(input);
 	}
 

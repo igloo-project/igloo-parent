@@ -9,12 +9,12 @@ package fr.openwide.core.jpa.more.util.search.analysis.fr;
  * - on arrête le stemming si le mot devient trop court de manière à éviter le phénomène stage/stages sur des mots
  * très courts
  */
-public class CoreMinimalFrenchStemmer {
+public class CoreFrenchMinimalStemmer {
 
 	/**
 	 * on analyse les mots dès qu'ils font plus de tant de caractères
 	 */
-	private static final int MIN_LENGTH = 4;
+	private static final int MIN_LENGTH = 5;
 
 	public int stem(char s[], int len) {
 		if (len < MIN_LENGTH) {
@@ -27,9 +27,14 @@ public class CoreMinimalFrenchStemmer {
 			}
 			return len - 1;
 		}
-
+		
+		int refLen = len;
+		
 		len = stemLetter(s, len, 's');
-		len = stemLetter(s, len, 'r');
+		if (len == refLen) {
+			// on ne s'attaque au r que s'il n'y a pas eu remplacement avant
+			len = stemLetterIfPreviousLetterIs(s, len, 'r', 'e');
+		}
 		len = stemLetter(s, len, 'e');
 		len = stemLetter(s, len, 'é');
 
@@ -37,6 +42,13 @@ public class CoreMinimalFrenchStemmer {
 	}
 
 	private int stemLetter(char s[], int len, char letter) {
+		if (len >= MIN_LENGTH && s[len - 1] == letter) {
+			return len - 1;
+		}
+		return len;
+	}
+	
+	private int stemLetterIfPreviousLetterIs(char s[], int len, char letter, char previousLetter) {
 		if (len >= MIN_LENGTH && s[len - 1] == letter) {
 			return len - 1;
 		}
