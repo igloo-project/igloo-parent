@@ -12,7 +12,7 @@ import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 @Import({
 	BasicApplicationCoreCommonConfig.class,
 	BasicApplicationWebappSecurityConfig.class,
-	BasicApplicationWebappCacheConfig.class,
+	BasicApplicationWebappCacheConfig.class
 })
 public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 
