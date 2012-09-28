@@ -43,6 +43,10 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 		return genericListItemDao.getById(clazz, id);
 	}
 	
+	protected <E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, String naturalId) {
+		return genericListItemDao.getByNaturalId(clazz, naturalId);
+	}
+	
 	@Override
 	public <E extends GenericListItem<?>> void create(E entity) {
 		genericListItemDao.save(entity);
