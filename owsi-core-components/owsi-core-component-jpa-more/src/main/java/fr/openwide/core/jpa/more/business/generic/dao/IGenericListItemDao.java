@@ -32,6 +32,8 @@ public interface IGenericListItemDao {
 	<E extends GenericListItem<?>> E getEntity(Class<E> clazz, Integer id);
 
 	<E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id);
+	
+	<E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, String naturalId);
 
 	<E extends GenericListItem<?>> void update(E entity);
 

@@ -16,6 +16,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.hibernate.Session;
+
 public class JpaDaoSupport {
 
 	@PersistenceContext
@@ -55,6 +57,17 @@ public class JpaDaoSupport {
 	
 	public <T, K> T getEntity(Class<T> clazz, K id) {
 		return getEntityManager().find(clazz, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getEntityByNaturalId(Class<T> clazz, String naturalId) {
+		if (naturalId == null) {
+			throw new IllegalArgumentException("Natural id may not be null");
+		}
+		
+		Session session = getEntityManager().unwrap(Session.class);
+		
+		return (T) session.bySimpleNaturalId(clazz).load(naturalId);
 	}
 	
 	public <T, V> T getByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {

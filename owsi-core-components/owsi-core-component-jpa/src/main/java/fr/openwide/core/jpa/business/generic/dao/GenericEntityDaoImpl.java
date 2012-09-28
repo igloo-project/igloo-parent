@@ -24,8 +24,6 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.hibernate.Session;
-
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 
@@ -77,15 +75,8 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public E getByNaturalId(String naturalId) {
-		if (naturalId == null) {
-			throw new IllegalArgumentException("Natural id may not be null");
-		}
-		
-		Session session = getEntityManager().unwrap(Session.class);
-		
-		return (E) session.bySimpleNaturalId(getObjectClass()).load(naturalId);
+		return super.getEntityByNaturalId(getObjectClass(), naturalId);
 	}
 	
 	@Override
