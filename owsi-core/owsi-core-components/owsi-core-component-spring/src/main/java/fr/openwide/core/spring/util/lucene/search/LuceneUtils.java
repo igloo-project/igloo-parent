@@ -17,12 +17,15 @@ public final class LuceneUtils {
 	
 	public static final String BOOST_PARAMETER_PREFIX = "^";
 	
+	public static final String WILDCARD_SUFFIX = "*";
+	
 	public static String getAutocompleteQuery(String searchPattern) {
 		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
-		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= ENABLE_WILDCARD_MIN_CHARS) {
+		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= ENABLE_WILDCARD_MIN_CHARS
+				&& !cleanSearchPattern.endsWith(WILDCARD_SUFFIX)) {
 			StringBuilder autocompleteQuery = new StringBuilder(cleanSearchPattern);
-			autocompleteQuery.append("*");
+			autocompleteQuery.append(WILDCARD_SUFFIX);
 			
 			cleanSearchPattern = autocompleteQuery.toString();
 		}
