@@ -32,6 +32,13 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 	@AnalyzerDef(name = HibernateSearchAnalyzer.KEYWORD,
 			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class)
 	),
+	@AnalyzerDef(name = HibernateSearchAnalyzer.KEYWORD_CLEAN,
+		tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class),
+		filters = {
+			@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+			@TokenFilterDef(factory = LowerCaseFilterFactory.class)
+		}
+	),
 	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT,
 			tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
 			filters = {
