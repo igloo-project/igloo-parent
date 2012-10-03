@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.Options;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
@@ -23,9 +24,8 @@ public abstract class ConfirmLink<O> extends Link<O> {
 
 	@Override
 	protected CharSequence getOnClickScript(CharSequence url) {
-		CharSequence script = super.getOnClickScript(url);
 		Options options = new Options();
-		options.put("onConfirm", JsScope.quickScope(script));
+		options.put("onConfirm", JsScope.quickScope(new JsStatement().append("window.location = ").append(JsUtils.quotes(url, true))));
 		JsStatement confirmStatement = new JsStatement().$(this).chain("confirm", options.getJavaScriptOptions());
 		return confirmStatement.render();
 	}
