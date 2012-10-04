@@ -15,7 +15,6 @@ public class BooleanGlyphicon extends WebMarkupContainer {
 	private static final String CLASS_ATTRIBUTE = "class";
 	private static final String CLASS_SEPARATOR = " ";
 
-	private static final String BOOTSTRAP_ICON_CLASS = "icon";
 	private static final String BOOTSTRAP_TRUE_ICON_CLASS = "icon-ok";
 	private static final String BOOTSTRAP_FALSE_ICON_CLASS = "icon-remove";
 
@@ -27,7 +26,6 @@ public class BooleanGlyphicon extends WebMarkupContainer {
 	public void onComponentTag(final ComponentTag tag) {
 		Boolean value = getValue();
 		
-		tag.append(CLASS_ATTRIBUTE, BOOTSTRAP_ICON_CLASS, CLASS_SEPARATOR);
 		if (value != null && value) {
 			tag.append(CLASS_ATTRIBUTE, BOOTSTRAP_TRUE_ICON_CLASS, CLASS_SEPARATOR);
 		} else {
