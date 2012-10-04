@@ -3,6 +3,7 @@ package fr.openwide.core.basicapp.web.application.administration.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import fr.openwide.core.basicapp.web.application.administration.component.UserMe
 import fr.openwide.core.basicapp.web.application.administration.component.UserProfilPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -42,6 +44,12 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 			
 			redirect(AdministrationUserPortfolioPage.class);
 		}
+		
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
+				AdministrationUserPortfolioPage.class));
+		
+		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Binding.user().fullName()),
+				AdministrationUserDescriptionPage.class, parameters));
 		
 		add(new Label("pageTitle", BindingModel.of(userModel, Binding.user().fullName())));
 		
