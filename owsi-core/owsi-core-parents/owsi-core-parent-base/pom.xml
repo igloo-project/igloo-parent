@@ -65,7 +65,7 @@
 		<owsi-core.javax-mail.version>1.4.5</owsi-core.javax-mail.version>
 		
 		<owsi-core.slf4j.version>1.6.6</owsi-core.slf4j.version>
-		<owsi-core.log4j.version>1.2.16</owsi-core.log4j.version>
+		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
 		<owsi-core.opencsv.version>2.3</owsi-core.opencsv.version>
 		<owsi-core.freemarker.version>2.3.19</owsi-core.freemarker.version>
