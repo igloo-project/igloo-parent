@@ -63,6 +63,7 @@
 			</exclusions>
 		</dependency>
 		
+		<!-- Utilisé par wiQuery et LessCSS -->
 		<dependency>
 			<groupId>org.mozilla</groupId>
 			<artifactId>rhino</artifactId>
@@ -96,6 +97,12 @@
 			<groupId>com.asual.lesscss</groupId>
 			<artifactId>lesscss-engine</artifactId>
 			<version>${owsi-core.lesscss-engine.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mozilla</groupId>
+					<artifactId>rhino</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<dependency>
