@@ -136,6 +136,8 @@
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>
+										<exclude>commons-logging:commons-logging</exclude>
+										<exclude>cglib:cglib</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
