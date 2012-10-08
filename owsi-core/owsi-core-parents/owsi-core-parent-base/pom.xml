@@ -133,6 +133,11 @@
 						<configuration>
 							<rules>
 								<DependencyConvergence/>
+								<bannedDependencies>
+									<excludes>
+										<exclude>org.springframework:spring</exclude>
+									</excludes>
+								</bannedDependencies>
 								<requireMavenVersion>
 									<version>[3.0.3,)</version>
 								</requireMavenVersion>
