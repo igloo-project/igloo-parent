@@ -7,6 +7,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -209,6 +210,10 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	protected DataView<T> getDataView() {
+		return dataView;
+	}
+	
+	public IPageable getPageable() {
 		return dataView;
 	}
 
