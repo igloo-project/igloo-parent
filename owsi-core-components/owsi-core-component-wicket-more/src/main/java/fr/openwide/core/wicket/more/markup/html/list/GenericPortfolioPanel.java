@@ -12,18 +12,12 @@ public abstract class GenericPortfolioPanel<E extends GenericEntity<Long, ?>> ex
 
 	private static final long serialVersionUID = 3343071412882576215L;
 	
-	private int itemsPerPage;
-	
 	public GenericPortfolioPanel(String id, IModel<? extends List<E>> listModel, int itemsPerPage) {
-		super(id, listModel);
-		
-		this.itemsPerPage = itemsPerPage;
+		super(id, listModel, itemsPerPage);
 	}
 	
 	public GenericPortfolioPanel(String id, IDataProvider<E> dataProvider, int itemsPerPage) {
-		super(id, dataProvider);
-		
-		this.itemsPerPage = itemsPerPage;
+		super(id, dataProvider, itemsPerPage);
 	}
 	
 	@Override
@@ -32,9 +26,5 @@ public abstract class GenericPortfolioPanel<E extends GenericEntity<Long, ?>> ex
 		
 		add(new HideablePagingNavigator("pager", getDataView()));
 	}
-	
-	@Override
-	public int getItemsPerPage() {
-		return itemsPerPage;
-	}
+
 }

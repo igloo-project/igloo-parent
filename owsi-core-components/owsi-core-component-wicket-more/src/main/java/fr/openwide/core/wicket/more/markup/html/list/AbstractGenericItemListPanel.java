@@ -34,21 +34,21 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 
 	private DataView<T> dataView;
 
-	public AbstractGenericItemListPanel(String id) {
-		this(id, (IDataProvider<T>) null);
+	public AbstractGenericItemListPanel(String id, int itemsPerPage) {
+		this(id, (IDataProvider<T>) null, itemsPerPage);
 	}
 
-	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel) {
-		this(id, new GenericEntityListModelDataProvider<Long, T>(listModel));
+	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel, int itemsPerPage) {
+		this(id, new GenericEntityListModelDataProvider<Long, T>(listModel), itemsPerPage);
 	}
 
-	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider) {
+	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider, int itemsPerPage) {
 		super(id);
 		this.setOutputMarkupId(true);
 		
 		this.dataProvider = dataProvider;
 		
-		dataView = new OddEvenDataView<T>("item", dataProvider, getItemsPerPage()) {
+		dataView = new OddEvenDataView<T>("item", dataProvider, itemsPerPage) {
 			private static final long serialVersionUID = 8487422965167269031L;
 
 			@Override
@@ -204,10 +204,6 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	protected abstract boolean hasWritePermissionOn(IModel<?> itemModel);
-
-	protected int getItemsPerPage() {
-		return Integer.MAX_VALUE;
-	}
 
 	protected DataView<T> getDataView() {
 		return dataView;
