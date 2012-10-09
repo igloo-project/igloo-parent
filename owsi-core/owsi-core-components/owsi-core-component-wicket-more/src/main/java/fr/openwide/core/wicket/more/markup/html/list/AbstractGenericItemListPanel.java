@@ -46,28 +46,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		this.setOutputMarkupId(true);
 		
 		this.dataProvider = dataProvider;
-	}
-
-	public void setModel(IModel<? extends List<T>> listModel) {
-		this.dataProvider = new GenericEntityListModelDataProvider<Long, T>(listModel);
-	}
-
-	@Override
-	public void detachModels() {
-		super.detachModels();
-
-		if (dataProvider != null) {
-			dataProvider.detach();
-		}
-		if (dataView != null) {
-			dataView.detach();
-		}
-	}
-
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-
+		
 		dataView = new OddEvenDataView<T>("item", dataProvider, getItemsPerPage()) {
 			private static final long serialVersionUID = 8487422965167269031L;
 
@@ -166,6 +145,22 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 				return dataView.getDataProvider().size() == 0;
 			}
 		});
+	}
+
+	public void setModel(IModel<? extends List<T>> listModel) {
+		this.dataProvider = new GenericEntityListModelDataProvider<Long, T>(listModel);
+	}
+
+	@Override
+	public void detachModels() {
+		super.detachModels();
+
+		if (dataProvider != null) {
+			dataProvider.detach();
+		}
+		if (dataView != null) {
+			dataView.detach();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
