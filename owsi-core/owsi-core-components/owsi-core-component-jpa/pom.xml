@@ -50,6 +50,11 @@
 					<artifactId>javassist</artifactId>
 					<groupId>javassist</groupId>
 				</exclusion>
+				<!-- on exclut jboss-logging ici car il y a une version CR2 qui débarque de hibernate-commons-annotations -->
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		

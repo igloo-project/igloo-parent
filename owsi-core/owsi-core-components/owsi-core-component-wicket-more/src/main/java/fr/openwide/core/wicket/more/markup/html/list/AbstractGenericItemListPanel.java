@@ -7,6 +7,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -33,42 +34,21 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 
 	private DataView<T> dataView;
 
-	public AbstractGenericItemListPanel(String id) {
-		this(id, (IDataProvider<T>) null);
+	public AbstractGenericItemListPanel(String id, int itemsPerPage) {
+		this(id, (IDataProvider<T>) null, itemsPerPage);
 	}
 
-	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel) {
-		this(id, new GenericEntityListModelDataProvider<Long, T>(listModel));
+	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel, int itemsPerPage) {
+		this(id, new GenericEntityListModelDataProvider<Long, T>(listModel), itemsPerPage);
 	}
 
-	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider) {
+	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider, int itemsPerPage) {
 		super(id);
 		this.setOutputMarkupId(true);
 		
 		this.dataProvider = dataProvider;
-	}
-
-	public void setModel(IModel<? extends List<T>> listModel) {
-		this.dataProvider = new GenericEntityListModelDataProvider<Long, T>(listModel);
-	}
-
-	@Override
-	public void detachModels() {
-		super.detachModels();
-
-		if (dataProvider != null) {
-			dataProvider.detach();
-		}
-		if (dataView != null) {
-			dataView.detach();
-		}
-	}
-
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-
-		dataView = new OddEvenDataView<T>("item", dataProvider, getItemsPerPage()) {
+		
+		dataView = new OddEvenDataView<T>("item", dataProvider, itemsPerPage) {
 			private static final long serialVersionUID = 8487422965167269031L;
 
 			@Override
@@ -168,6 +148,22 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		});
 	}
 
+	public void setModel(IModel<? extends List<T>> listModel) {
+		this.dataProvider = new GenericEntityListModelDataProvider<Long, T>(listModel);
+	}
+
+	@Override
+	public void detachModels() {
+		super.detachModels();
+
+		if (dataProvider != null) {
+			dataProvider.detach();
+		}
+		if (dataView != null) {
+			dataView.detach();
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	protected Component getDeleteLink(String id, final IModel<? extends T> itemModel) {
 		return new AjaxConfirmLink<T>(id, (IModel<T>) itemModel, getDeleteConfirmationTitleModel(itemModel),
@@ -209,11 +205,11 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 
 	protected abstract boolean hasWritePermissionOn(IModel<?> itemModel);
 
-	protected int getItemsPerPage() {
-		return Integer.MAX_VALUE;
-	}
-
 	protected DataView<T> getDataView() {
+		return dataView;
+	}
+	
+	public IPageable getPageable() {
 		return dataView;
 	}
 
