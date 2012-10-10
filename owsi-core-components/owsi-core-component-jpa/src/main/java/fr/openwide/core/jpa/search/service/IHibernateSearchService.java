@@ -5,9 +5,10 @@ import java.util.List;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 
+import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.ServiceException;
 
-public interface IHibernateSearchService {
+public interface IHibernateSearchService extends ITransactionalAspectAwareService {
 
 	<T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException;
 
