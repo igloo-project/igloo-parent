@@ -9,17 +9,17 @@ public abstract class LoadableDetachableDataProvider<T> implements IDataProvider
 
 	private static final long serialVersionUID = -1126491236540289799L;
 
-	private Integer lastFirst;
+	private Long lastFirst;
 
-	private Integer lastCount;
+	private Long lastCount;
 
-	private Integer lastSize;
+	private Long lastSize;
 
 	private List<T> lastList;
 
-	protected abstract List<T> loadList(int first, int count);
+	protected abstract List<T> loadList(long first, long count);
 
-	protected abstract int loadSize();
+	protected abstract long loadSize();
 
 	@Override
 	public void detach() {
@@ -30,7 +30,7 @@ public abstract class LoadableDetachableDataProvider<T> implements IDataProvider
 	}
 
 	@Override
-	public final int size() {
+	public final long size() {
 		if (lastSize == null) {
 			lastSize = loadSize();
 		}
@@ -38,9 +38,9 @@ public abstract class LoadableDetachableDataProvider<T> implements IDataProvider
 	}
 
 	@Override
-	public final Iterator<? extends T> iterator(int first, int count) {
-		int realCount = Math.min(count, size() - first);
-		if (lastList != null && Integer.valueOf(first).equals(lastFirst) && Integer.valueOf(realCount).equals(lastCount)) {
+	public final Iterator<? extends T> iterator(long first, long count) {
+		long realCount = Math.min(count, size() - first);
+		if (lastList != null && Long.valueOf(first).equals(lastFirst) && Long.valueOf(realCount).equals(lastCount)) {
 			return lastList.iterator();
 		} else {
 			lastFirst = first;

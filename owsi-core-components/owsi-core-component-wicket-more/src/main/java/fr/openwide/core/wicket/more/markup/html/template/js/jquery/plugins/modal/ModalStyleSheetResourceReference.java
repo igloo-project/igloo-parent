@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal;
 
-import org.odlabs.wiquery.core.resources.WiQueryStyleSheetResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 public final class ModalStyleSheetResourceReference extends
-		WiQueryStyleSheetResourceReference {
+		JavaScriptResourceReference {
 	private static final long serialVersionUID = -9209473494619975852L;
 	
 	private static final ModalStyleSheetResourceReference INSTANCE = new ModalStyleSheetResourceReference();

@@ -1,9 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.emailobfuscator;
 
 import org.apache.wicket.request.resource.ResourceReference;
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
 
-public final class EmailObfuscatorJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
+
+public final class EmailObfuscatorJavascriptResourceReference extends JQueryJavaScriptResourceReference {
 
 	private static final long serialVersionUID = 1381244952264979392L;
 

@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip;
 
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
-public final class BootstrapTooltipJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
+public final class BootstrapTooltipJavascriptResourceReference extends JavaScriptResourceReference {
 
 	private static final long serialVersionUID = 1302122786281225341L;
 

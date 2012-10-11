@@ -2,10 +2,7 @@ package fr.openwide.core.wicket.more.core;
 
 import java.util.Comparator;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.resource.aggregation.ResourceReferenceAndStringData;
-import org.odlabs.wiquery.core.WiQueryDecoratingHeaderResponse;
-import org.odlabs.wiquery.core.WiQuerySettings;
+import org.apache.wicket.markup.head.IHeaderResponse;
 
 public class CoreWiQueryDecoratingHeaderResponse extends WiQueryDecoratingHeaderResponse {
 

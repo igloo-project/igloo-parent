@@ -13,7 +13,7 @@ public class AjaxBootstrapPagingNavigation extends BootstrapPagingNavigation {
 	}
 	
 	@Override
-	protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageIndex) {
+	protected Link<?> newPagingNavigationLink(String id, IPageable pageable, long pageIndex) {
 		return new AjaxBootstrapPagingNavigationLink(id, pageable, pageIndex).setAutoEnable(false);
 	}
 

@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter;
 
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
 
-public final class ListFilterJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
+public final class ListFilterJavaScriptResourceReference extends JQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = 5822555821488465667L;
 
 	private static final ListFilterJavaScriptResourceReference INSTANCE = new ListFilterJavaScriptResourceReference();

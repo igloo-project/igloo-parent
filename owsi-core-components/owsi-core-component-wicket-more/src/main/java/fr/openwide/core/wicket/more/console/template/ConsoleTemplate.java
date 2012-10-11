@@ -3,7 +3,8 @@ package fr.openwide.core.wicket.more.console.template;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -142,6 +143,6 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		if (lessCssResourceReference == null) {
 			lessCssResourceReference = ConsoleConfiguration.get().getLessCssResourceReference();
 		}
-		response.renderCSSReference(lessCssResourceReference);
+		response.render(CssHeaderItem.forReference(lessCssResourceReference));
 	}
 }

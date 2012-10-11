@@ -8,7 +8,7 @@ public class AjaxBootstrapPagingNavigationLink extends AjaxPagingNavigationLink 
 
 	private static final long serialVersionUID = 7335503096497367205L;
 	
-	public AjaxBootstrapPagingNavigationLink(String id, IPageable pageable, int pageNumber) {
+	public AjaxBootstrapPagingNavigationLink(String id, IPageable pageable, long pageNumber) {
 		super(id, pageable, pageNumber);
 	}
 	

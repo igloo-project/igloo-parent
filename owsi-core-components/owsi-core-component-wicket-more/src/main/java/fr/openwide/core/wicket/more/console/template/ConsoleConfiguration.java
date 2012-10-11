@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.util.string.UrlUtils;
+import org.apache.wicket.request.UrlUtils;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;

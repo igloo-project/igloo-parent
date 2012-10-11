@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.apache.wicket.validation.IValidator;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import fr.openwide.core.wicket.markup.html.form.FormComponentHelper;
 
@@ -20,7 +20,7 @@ public class PositiveBigDecimalTextField extends TextField<BigDecimal> {
 
 	private IConverter<BigDecimal> customConverter;
 
-	private static final IValidator<BigDecimal> MINIMUM_VALIDATOR = new MinimumValidator<BigDecimal>(BigDecimal.ZERO);
+	private static final IValidator<BigDecimal> MINIMUM_VALIDATOR = RangeValidator.minimum(BigDecimal.ZERO);
 
 	public PositiveBigDecimalTextField(String id, IModel<BigDecimal> model, String fieldName) {
 		this(id, model, fieldName, null);

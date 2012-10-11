@@ -18,6 +18,8 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
+import org.apache.wicket.settings.IResourceSettings;
+import org.apache.wicket.settings.def.ResourceSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
 import org.odlabs.wiquery.core.WiQuerySettings;
@@ -97,20 +99,24 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 	@Override
 	protected void validateInit() {
 		super.validateInit();
-		// minification que si on est en mode DEPLOYMENT
-		WiQuerySettings.get().setMinifiedJavaScriptResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
 		
+		// minification que si on est en mode DEPLOYMENT
+//		WiQuerySettings.get().setMinifiedJavaScriptResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
+		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
+		
+		
+		// TODO migration Wicket 6 : encore besoin de ça ? c.f. chargement des dependances par le fils en remontant au père
 		// on ajoute fr.openwide.core.wicket.more aux packages ayant une groupingKey définie, de manière à les charger avant
 		// les potentiels javascripts de l'application
-		WiQuerySettings.get().getResourceGroupingKeys().add(WicketMorePackage.class.getPackage().getName());
+//		WiQuerySettings.get().getResourceGroupingKeys().add(WicketMorePackage.class.getPackage().getName());
 		
 		// on substitue notre decorator qui est un peu plus fin sur la gestion de l'ordre de chargement des ressources
-		setHeaderResponseDecorator(new IHeaderResponseDecorator() {
-			@Override
-			public IHeaderResponse decorate(IHeaderResponse response) {
-				return new CoreWiQueryDecoratingHeaderResponse(response);
-			}
-		});
+//		setHeaderResponseDecorator(new IHeaderResponseDecorator() {
+//			@Override
+//			public IHeaderResponse decorate(IHeaderResponse response) {
+//				return new CoreWiQueryDecoratingHeaderResponse(response);
+//			}
+//		});
 	}
 	
 	protected void registerLessImportScopes() {

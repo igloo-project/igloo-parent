@@ -1,10 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.json;
 
-import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
 
-public final class JsonJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
+
+public final class JsonJavascriptResourceReference extends JQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = 1L;
 
 	private static final JsonJavascriptResourceReference INSTANCE = new JsonJavascriptResourceReference();
@@ -13,14 +12,8 @@ public final class JsonJavascriptResourceReference extends WiQueryJavaScriptReso
 		super(JsonJavascriptResourceReference.class, "jquery.json-2.3.js");
 	}
 
-	@Override
-	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
-		return new AbstractResourceDependentResourceReference[] {
-				CoreJavaScriptResourceReference.get()
-		};
-	}
-
 	public static JsonJavascriptResourceReference get() {
 		return INSTANCE;
 	}
+
 }

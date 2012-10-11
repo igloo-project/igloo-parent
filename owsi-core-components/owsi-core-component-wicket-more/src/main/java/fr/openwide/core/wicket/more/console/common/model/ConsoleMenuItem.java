@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.console.common.model;
 import java.io.Serializable;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.util.string.UrlUtils;
+import org.apache.wicket.request.UrlUtils;
 
 public class ConsoleMenuItem implements Serializable {
 	

@@ -1,15 +1,17 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.elastic;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
-public class ElasticBehavior extends WiQueryAbstractBehavior {
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
+
+public class ElasticBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = -8169552850152371154L;
 
-	@Override
 	public JsStatement statement() {
 		if (getComponent() != null) {
 			return new JsStatement().$(getComponent()).chain("elastic");
@@ -20,7 +22,8 @@ public class ElasticBehavior extends WiQueryAbstractBehavior {
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
-		response.renderJavaScriptReference(ElasticJavaScriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(ElasticJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
 	}
 
 }

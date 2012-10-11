@@ -1,11 +1,12 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemcomplete;
 
-import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.odlabs.wiquery.ui.position.PositionJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
-public final class ItemAutocompleteJavascriptResourceReference extends WiQueryJavaScriptResourceReference {
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
+
+public final class ItemAutocompleteJavascriptResourceReference extends JQueryJavaScriptResourceReference {
 
 	private static final long serialVersionUID = -771231799419848939L;
 
@@ -16,8 +17,8 @@ public final class ItemAutocompleteJavascriptResourceReference extends WiQueryJa
 	}
 
 	@Override
-	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
-		return new AbstractResourceDependentResourceReference[] {
+	public ResourceReference[] getInternalDependencies() {
+		return new ResourceReference[] {
 				WidgetJavaScriptResourceReference.get(),
 				PositionJavaScriptResourceReference.get()
 		};

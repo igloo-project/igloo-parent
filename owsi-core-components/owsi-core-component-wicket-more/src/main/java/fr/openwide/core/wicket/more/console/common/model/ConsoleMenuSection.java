@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.util.string.UrlUtils;
+import org.apache.wicket.request.UrlUtils;
 
 public class ConsoleMenuSection implements Serializable {
 	
