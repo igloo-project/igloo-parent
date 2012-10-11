@@ -94,7 +94,7 @@ public abstract class AbstractFileStoreWebResource extends AbstractResource {
 				final InputStream s = inputStream;
 				data.setWriteCallback(new WriteCallback() {
 					@Override
-					public void writeData(Attributes attributes) {
+					public void writeData(Attributes attributes) throws IOException {
 						try {
 							writeStream(attributes, s);
 						} finally {
