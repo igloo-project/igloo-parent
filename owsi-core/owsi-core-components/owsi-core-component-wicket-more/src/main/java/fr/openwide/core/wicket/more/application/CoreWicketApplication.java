@@ -10,27 +10,20 @@ import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.IHeaderResponseDecorator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
-import org.apache.wicket.settings.IResourceSettings;
-import org.apache.wicket.settings.def.ResourceSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
-import org.odlabs.wiquery.core.WiQuerySettings;
 import org.odlabs.wiquery.ui.themes.IThemableApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
-import fr.openwide.core.wicket.more.WicketMorePackage;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
-import fr.openwide.core.wicket.more.core.CoreWiQueryDecoratingHeaderResponse;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
@@ -102,6 +95,7 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 		
 		// minification que si on est en mode DEPLOYMENT
 //		WiQuerySettings.get().setMinifiedJavaScriptResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
+		// TODO migration Wicket 6 : à valider avec Laurent car le minifieur de Wicket n'était pas terrible a priori
 		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
 		
 		
