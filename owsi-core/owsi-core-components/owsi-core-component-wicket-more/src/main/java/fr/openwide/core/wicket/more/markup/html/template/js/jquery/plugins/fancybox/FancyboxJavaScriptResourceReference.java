@@ -3,9 +3,9 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fanc
 import org.apache.wicket.request.resource.ResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
 
-public class FancyboxJavaScriptResourceReference extends JQueryJavaScriptResourceReference {
+public class FancyboxJavaScriptResourceReference extends AbstractJQueryPluginResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;
 
 	private static final FancyboxJavaScriptResourceReference INSTANCE = new FancyboxJavaScriptResourceReference();

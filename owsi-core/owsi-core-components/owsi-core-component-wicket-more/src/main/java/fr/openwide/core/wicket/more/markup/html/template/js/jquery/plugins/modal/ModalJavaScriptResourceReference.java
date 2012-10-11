@@ -4,9 +4,9 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.odlabs.wiquery.ui.mouse.MouseJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
 
-public final class ModalJavaScriptResourceReference extends JQueryJavaScriptResourceReference {
+public final class ModalJavaScriptResourceReference extends AbstractJQueryPluginResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;
 	
 	private static final ModalJavaScriptResourceReference INSTANCE = new ModalJavaScriptResourceReference();

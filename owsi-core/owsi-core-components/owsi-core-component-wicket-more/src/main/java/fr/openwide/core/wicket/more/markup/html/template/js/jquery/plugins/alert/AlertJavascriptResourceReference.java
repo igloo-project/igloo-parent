@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.alert;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
 
-public final class AlertJavascriptResourceReference extends JQueryJavaScriptResourceReference {
+public final class AlertJavascriptResourceReference extends AbstractJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -1811004494719333505L;
 
