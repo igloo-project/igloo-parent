@@ -7,11 +7,11 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
-public abstract class JQueryJavaScriptResourceReference extends JavaScriptResourceReference {
+public abstract class AbstractJQueryPluginResourceReference extends JavaScriptResourceReference {
 
 	private static final long serialVersionUID = -1602756285653913404L;
 
-	public JQueryJavaScriptResourceReference(Class<?> scope, String name) {
+	public AbstractJQueryPluginResourceReference(Class<?> scope, String name) {
 		super(scope, name);
 	}
 
