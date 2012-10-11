@@ -70,6 +70,8 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 		
 		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression wicket
 		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
+		// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
+		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
 		
 		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
 		
@@ -92,12 +94,6 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 	@Override
 	protected void validateInit() {
 		super.validateInit();
-		
-		// minification que si on est en mode DEPLOYMENT
-//		WiQuerySettings.get().setMinifiedJavaScriptResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
-		// TODO migration Wicket 6 : à valider avec Laurent car le minifieur de Wicket n'était pas terrible a priori
-		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
-		
 		
 		// TODO migration Wicket 6 : encore besoin de ça ? c.f. chargement des dependances par le fils en remontant au père
 		// on ajoute fr.openwide.core.wicket.more aux packages ayant une groupingKey définie, de manière à les charger avant
@@ -159,6 +155,7 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 	
 	@Override
 	public ResourceReference getTheme(Session session) {
+		// TODO migration Wicket 6 : cette méthode n'est plus appelée nulle part : il faut faire un remplacement de ressource à la place.
 		return JQueryUiCssResourceReference.get();
 	}
 
