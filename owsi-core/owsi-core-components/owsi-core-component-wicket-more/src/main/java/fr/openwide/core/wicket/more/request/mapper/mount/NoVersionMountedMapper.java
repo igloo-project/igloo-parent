@@ -14,11 +14,11 @@
 
 package fr.openwide.core.wicket.more.request.mapper.mount;
 
-import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
-import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.handler.ListenerInterfaceRequestHandler;
+import org.apache.wicket.request.mapper.MountedMapper;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 
