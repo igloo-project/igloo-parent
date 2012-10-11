@@ -20,7 +20,7 @@ public class BootstrapPagingNavigation extends PagingNavigation {
 	@Override
 	protected void populateItem(LoopItem loopItem) {
 		super.populateItem(loopItem);
-		int pageIndex = getStartIndex() + loopItem.getIndex();
+		long pageIndex = getStartIndex() + loopItem.getIndex();
 		if (pageable.getCurrentPage() == pageIndex) {
 			loopItem.add(new ClassAttributeAppender("active"));
 		}
@@ -39,7 +39,7 @@ public class BootstrapPagingNavigation extends PagingNavigation {
 	}
 	
 	@Override
-	protected AbstractLink newPagingNavigationLink(String id, IPageable pageable, int pageIndex) {
+	protected AbstractLink newPagingNavigationLink(String id, IPageable pageable, long pageIndex) {
 		return new PagingNavigationLink<Void>(id, pageable, pageIndex).setAutoEnable(false);
 	}
 }

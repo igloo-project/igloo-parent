@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.javascript.JsScope;
@@ -33,7 +34,7 @@ public abstract class ConfirmLink<O> extends Link<O> {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.renderJavaScriptReference(ModalJavaScriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
 	}
 
 }

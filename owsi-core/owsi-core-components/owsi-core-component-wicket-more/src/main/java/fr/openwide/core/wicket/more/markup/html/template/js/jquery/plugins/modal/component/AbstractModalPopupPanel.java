@@ -4,7 +4,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.Markup;
 import org.apache.wicket.markup.MarkupFactory;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
@@ -80,7 +81,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.renderJavaScriptReference(ModalJavaScriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
 	}
 
 	public abstract IModel<String> classNamesModel();

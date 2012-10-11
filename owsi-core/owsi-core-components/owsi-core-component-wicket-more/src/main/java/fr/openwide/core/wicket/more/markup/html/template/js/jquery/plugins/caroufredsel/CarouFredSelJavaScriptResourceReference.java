@@ -1,12 +1,11 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel;
 
-import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
 
-public final class CarouFredSelJavaScriptResourceReference extends
-		WiQueryJavaScriptResourceReference {
+public final class CarouFredSelJavaScriptResourceReference extends JQueryJavaScriptResourceReference {
 	private static final long serialVersionUID = 4911695054626514694L;
 
 	private static final CarouFredSelJavaScriptResourceReference INSTANCE = new CarouFredSelJavaScriptResourceReference();
@@ -14,14 +13,12 @@ public final class CarouFredSelJavaScriptResourceReference extends
 	private CarouFredSelJavaScriptResourceReference() {
 		super(CarouFredSelJavaScriptResourceReference.class, "carouFredSel-5.5.3/jquery.carouFredSel-5.5.3.js");
 	}
-	
+
 	@Override
-	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
-		return new AbstractResourceDependentResourceReference[] {
-				EasingJavaScriptResourceReference.get()
-		};
+	public ResourceReference[] getInternalDependencies() {
+		return new ResourceReference[] { EasingJavaScriptResourceReference.get() };
 	}
-	
+
 	public static CarouFredSelJavaScriptResourceReference get() {
 		return INSTANCE;
 	}

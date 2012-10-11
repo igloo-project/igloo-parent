@@ -1,10 +1,11 @@
 package fr.openwide.core.wicket.more.markup.html.feedback;
 
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
@@ -14,7 +15,7 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.alert.AlertJavascriptResourceReference;
 
-public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel implements IWiQueryPlugin {
+public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
 
@@ -29,12 +30,12 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel implements 
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.renderJavaScriptReference(AlertJavascriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(AlertJavascriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
 		
 		super.renderHead(response);
 	}
 
-	@Override
 	public JsStatement statement() {
 		return new JsStatement().append("$.fn.alert.reset('#").append(getMarkupId()).append("')");
 	}
@@ -75,5 +76,4 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel implements 
 			}
 		};
 	}
-
 }

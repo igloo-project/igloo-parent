@@ -2,15 +2,16 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.emai
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import fr.openwide.core.spring.util.StringUtils;
 
-public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlugin {
+public class ObfuscatedEmailLink extends MarkupContainer {
 	private static final long serialVersionUID = 3120329766081035111L;
 	
 	private boolean generateLabel;
@@ -68,7 +69,6 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 		checkComponentTag(tag, "a");
 	}
 
-	@Override
 	public JsStatement statement() {
 		String[] emailParts = StringUtils.split(getDefaultModelObjectAsString(), "@");
 		String cc;
@@ -105,6 +105,7 @@ public class ObfuscatedEmailLink extends MarkupContainer implements IWiQueryPlug
 	
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.renderJavaScriptReference(EmailObfuscatorJavascriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(EmailObfuscatorJavascriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
 	}
 }

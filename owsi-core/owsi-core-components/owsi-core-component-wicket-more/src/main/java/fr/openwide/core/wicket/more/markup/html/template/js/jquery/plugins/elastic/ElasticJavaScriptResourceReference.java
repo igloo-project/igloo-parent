@@ -1,10 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.elastic;
 
-import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryJavaScriptResourceReference;
 
-public final class ElasticJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
+public final class ElasticJavaScriptResourceReference extends JQueryJavaScriptResourceReference {
 
 	private static final long serialVersionUID = -467593019533386890L;
 
@@ -12,13 +10,6 @@ public final class ElasticJavaScriptResourceReference extends WiQueryJavaScriptR
 
 	private ElasticJavaScriptResourceReference() {
 		super(ElasticJavaScriptResourceReference.class, "jquery.elastic.source.js");
-	}
-
-	@Override
-	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
-		return new AbstractResourceDependentResourceReference[] {
-				CoreJavaScriptResourceReference.get()
-		};
 	}
 
 	public static ElasticJavaScriptResourceReference get() {

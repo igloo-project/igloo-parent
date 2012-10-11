@@ -1,12 +1,12 @@
 package fr.openwide.core.wicket.request.mapper;
 
+import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.request.mapper.AbstractMapper;
 import org.apache.wicket.util.lang.Args;
-import org.apache.wicket.util.resource.PackageResourceStream;
 
 public class StaticResourceMapper extends AbstractMapper {
 
