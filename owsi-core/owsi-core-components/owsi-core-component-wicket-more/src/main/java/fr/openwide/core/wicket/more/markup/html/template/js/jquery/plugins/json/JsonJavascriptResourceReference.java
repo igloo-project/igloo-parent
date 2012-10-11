@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.json;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 
-public final class JsonJavascriptResourceReference extends AbstractJQueryPluginResourceReference {
+public final class JsonJavascriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	private static final long serialVersionUID = 1L;
 
 	private static final JsonJavascriptResourceReference INSTANCE = new JsonJavascriptResourceReference();

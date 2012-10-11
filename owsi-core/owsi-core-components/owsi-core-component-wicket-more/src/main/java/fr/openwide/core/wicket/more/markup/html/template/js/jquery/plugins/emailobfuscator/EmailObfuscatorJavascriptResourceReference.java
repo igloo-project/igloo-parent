@@ -2,9 +2,9 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.emai
 
 import org.apache.wicket.request.resource.ResourceReference;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class EmailObfuscatorJavascriptResourceReference extends AbstractJQueryPluginResourceReference {
+public final class EmailObfuscatorJavascriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = 1381244952264979392L;
 
