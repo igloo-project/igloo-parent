@@ -16,7 +16,7 @@ public class FancyboxJavaScriptResourceReference extends AbstractCoreJQueryPlugi
 	}
 	
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getInternalDependencies() {
+	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(EasingJavaScriptResourceReference.get());
 	}
 
