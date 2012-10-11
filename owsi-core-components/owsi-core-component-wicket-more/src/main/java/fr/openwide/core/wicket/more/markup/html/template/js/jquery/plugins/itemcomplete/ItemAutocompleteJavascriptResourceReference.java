@@ -1,12 +1,13 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemcomplete;
 
-import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 import org.odlabs.wiquery.ui.position.PositionJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class ItemAutocompleteJavascriptResourceReference extends AbstractJQueryPluginResourceReference {
+public final class ItemAutocompleteJavascriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -771231799419848939L;
 
@@ -17,11 +18,11 @@ public final class ItemAutocompleteJavascriptResourceReference extends AbstractJ
 	}
 
 	@Override
-	public ResourceReference[] getInternalDependencies() {
-		return new ResourceReference[] {
+	public Iterable<? extends JavaScriptReferenceHeaderItem> getInternalDependencies() {
+		return JavaScriptHeaderItems.forReferences(
 				WidgetJavaScriptResourceReference.get(),
 				PositionJavaScriptResourceReference.get()
-		};
+		);
 	}
 
 	public static ItemAutocompleteJavascriptResourceReference get() {

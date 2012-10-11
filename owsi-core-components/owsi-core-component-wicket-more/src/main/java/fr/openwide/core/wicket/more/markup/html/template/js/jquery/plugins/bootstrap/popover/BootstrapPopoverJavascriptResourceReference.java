@@ -1,11 +1,12 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover;
 
-import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipJavascriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class BootstrapPopoverJavascriptResourceReference extends AbstractJQueryPluginResourceReference {
+public final class BootstrapPopoverJavascriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = 7455873661174214964L;
 
@@ -16,8 +17,8 @@ public final class BootstrapPopoverJavascriptResourceReference extends AbstractJ
 	}
 
 	@Override
-	public ResourceReference[] getInternalDependencies() {
-		return new ResourceReference[] { BootstrapTooltipJavascriptResourceReference.get() };
+	public Iterable<? extends JavaScriptReferenceHeaderItem> getInternalDependencies() {
+		return JavaScriptHeaderItems.forReferences(BootstrapTooltipJavascriptResourceReference.get());
 	}
 
 	public static BootstrapPopoverJavascriptResourceReference get() {

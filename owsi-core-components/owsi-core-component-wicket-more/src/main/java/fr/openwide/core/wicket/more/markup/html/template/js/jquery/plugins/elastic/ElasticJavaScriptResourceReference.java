@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.elastic;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractJQueryPluginResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class ElasticJavaScriptResourceReference extends AbstractJQueryPluginResourceReference {
+public final class ElasticJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -467593019533386890L;
 
