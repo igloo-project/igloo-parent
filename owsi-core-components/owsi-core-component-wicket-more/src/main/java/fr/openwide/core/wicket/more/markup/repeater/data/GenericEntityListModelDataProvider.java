@@ -31,18 +31,18 @@ public class GenericEntityListModelDataProvider<K extends Serializable & Compara
 	}
 	
 	@Override
-	public Iterator<? extends E> iterator(final int first, final int count) {
+	public Iterator<? extends E> iterator(final long first, final long count) {
 		List<? extends E> list = listModel.getObject();
 		
-		int toIndex = first + count;
+		long toIndex = first + count;
 		if (toIndex > list.size()) {
 			toIndex = list.size();
 		}
-		return list.subList(first, toIndex).listIterator();
+		return list.subList(safeLongToInt(first), safeLongToInt(toIndex)).listIterator();
 	}
 
 	@Override
-	public int size() {
+	public long size() {
 		return listModel.getObject().size();
 	}
 
@@ -50,5 +50,13 @@ public class GenericEntityListModelDataProvider<K extends Serializable & Compara
 	public IModel<E> model(E object) {
 		return new GenericEntityModel<K, E>(object);
 	}
+	
+	private static int safeLongToInt(long l) {
+		if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+		}
+		return (int) l;
+	}
+
 
 }
