@@ -17,10 +17,10 @@ public abstract class AbstractCoreJQueryPluginResourceReference extends JQueryPl
 
 	@Override
 	public Iterable<? extends HeaderItem> getDependencies() {
-		return Iterables.concat(super.getDependencies(), getInternalDependencies());
+		return Iterables.concat(super.getDependencies(), getPluginDependencies());
 	}
 
-	protected Iterable<? extends HeaderItem> getInternalDependencies() {
+	protected Iterable<? extends HeaderItem> getPluginDependencies() {
 		return Collections.emptyList();
 	}
 	

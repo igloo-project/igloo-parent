@@ -16,7 +16,7 @@ public final class CarouFredSelJavaScriptResourceReference extends AbstractCoreJ
 	}
 
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getInternalDependencies() {
+	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(EasingJavaScriptResourceReference.get());
 	}
 

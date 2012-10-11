@@ -18,7 +18,7 @@ public final class ItemAutocompleteJavascriptResourceReference extends AbstractC
 	}
 
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getInternalDependencies() {
+	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(
 				WidgetJavaScriptResourceReference.get(),
 				PositionJavaScriptResourceReference.get()

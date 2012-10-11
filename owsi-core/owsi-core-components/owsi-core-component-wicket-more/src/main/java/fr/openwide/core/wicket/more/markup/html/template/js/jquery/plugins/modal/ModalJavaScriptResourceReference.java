@@ -17,7 +17,7 @@ public final class ModalJavaScriptResourceReference extends AbstractCoreJQueryPl
 	}
 	
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getInternalDependencies() {
+	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(
 				ModalStyleSheetResourceReference.get(),
 				EasingJavaScriptResourceReference.get(),
