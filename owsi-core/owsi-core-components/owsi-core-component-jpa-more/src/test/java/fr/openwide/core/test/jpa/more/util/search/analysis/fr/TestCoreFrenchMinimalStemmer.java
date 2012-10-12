@@ -22,8 +22,6 @@ public class TestCoreFrenchMinimalStemmer {
 		Assert.assertEquals("noir", stem("noires"));
 		Assert.assertEquals("noir", stem("noirs"));
 		
-		Assert.assertEquals("noir", stem("noir"));
-		
 		Assert.assertEquals("cheval", stem("cheval"));
 		Assert.assertEquals("cheval", stem("chevaux"));
 		
