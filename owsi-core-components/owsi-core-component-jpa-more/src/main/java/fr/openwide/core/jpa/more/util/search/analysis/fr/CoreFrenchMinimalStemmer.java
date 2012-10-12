@@ -13,6 +13,9 @@ public class CoreFrenchMinimalStemmer {
 
 	/**
 	 * on analyse les mots dès qu'ils font plus de tant de caractères
+	 * 
+	 * /!\ certaines règles dépendent de ce choix de longueur : il faut donc faire attention à ne pas le descendre
+	 * ou alors il faut intégrer des checks en plus ci-dessous quand on remonte dans les index
 	 */
 	private static final int MIN_LENGTH = 5;
 
@@ -22,7 +25,7 @@ public class CoreFrenchMinimalStemmer {
 		}
 
 		if (s[len - 1] == 'x') {
-			if (s[len - 3] == 'a' && s[len - 2] == 'u') {
+			if (s[len - 3] == 'a' && s[len - 2] == 'u' && s[len -4] != 'e') {
 				s[len - 2] = 'l';
 			}
 			return len - 1;
