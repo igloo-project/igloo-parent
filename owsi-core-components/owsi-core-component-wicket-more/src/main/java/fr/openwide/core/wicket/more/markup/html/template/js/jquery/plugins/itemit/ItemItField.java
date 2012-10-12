@@ -4,23 +4,21 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
-//TODO LAL : #35 migrer complètement vers jackson2
 import org.codehaus.jackson.map.ObjectMapper;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
 
 import com.google.common.collect.Lists;
 
-@WiQueryUIPlugin
-public abstract class ItemItField<F, J> extends FormComponentPanel<List<F>> implements IWiQueryPlugin {
+public abstract class ItemItField<F, J> extends FormComponentPanel<List<F>> {
 
 	private static final long serialVersionUID = -9155020419420538737L;
 
@@ -108,13 +106,9 @@ public abstract class ItemItField<F, J> extends FormComponentPanel<List<F>> impl
 	}
 
 	@Override
-	public JsStatement statement() {
-		return new JsStatement().$(this).chain(itemIt);
-	}
-
-	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.renderJavaScriptReference(ItemItJavascriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(ItemItJavascriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(this).chain(itemIt).render()));
 		super.renderHead(response);
 	}
 

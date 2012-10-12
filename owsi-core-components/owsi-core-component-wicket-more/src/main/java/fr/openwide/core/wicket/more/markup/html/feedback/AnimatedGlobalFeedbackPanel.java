@@ -31,13 +31,10 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(AlertJavascriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.alert.reset('#")
+				.append(getMarkupId()).append("')").render()));
 		
 		super.renderHead(response);
-	}
-
-	public JsStatement statement() {
-		return new JsStatement().append("$.fn.alert.reset('#").append(getMarkupId()).append("')");
 	}
 
 	private static class CloseAlertBehavior extends WiQueryEventBehavior {

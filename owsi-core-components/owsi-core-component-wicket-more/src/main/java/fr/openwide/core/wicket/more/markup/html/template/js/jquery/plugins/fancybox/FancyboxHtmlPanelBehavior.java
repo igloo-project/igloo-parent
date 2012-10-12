@@ -2,14 +2,13 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fanc
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 
 /**
  * Behavior associant un élément de type lien et un composant à afficher dans une
@@ -20,7 +19,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.
  * pour éviter d'apparaître sur la page avant la sollicitation de fancybox.
  *
  */
-public class FancyboxHtmlPanelBehavior extends JQueryAbstractBehavior {
+public class FancyboxHtmlPanelBehavior extends AbstractAjaxBehavior {
 
 	private static final long serialVersionUID = 6414097982857106898L;
 	
@@ -54,5 +53,10 @@ public class FancyboxHtmlPanelBehavior extends JQueryAbstractBehavior {
 		response.render(CssHeaderItem.forReference(FancyboxStyleSheetResourceReference.get()));
 		
 		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
+	}
+
+	@Override
+	public void onRequest() {
+		// TODO Auto-generated method stub
 	}
 }

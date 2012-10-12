@@ -1,19 +1,19 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
-public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent<T>
-		implements IWiQueryPlugin {
-	
+public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent<T> {
+
 	private static final long serialVersionUID = 2543997784221712556L;
-	
+
 	private WebMarkupContainer cleanLink;
 
 	public AutocompleteAjaxComponent(String id, IModel<T> model, IChoiceRenderer<? super T> choiceRenderer) {
@@ -28,9 +28,13 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 	public AutocompleteAjaxComponent(String id, IModel<T> model) {
 		this(id, model, null);
 	}
-	
+
 	@Override
-	public JsStatement statement() {
+	public void renderHead(IHeaderResponse response) {
+		response.render(OnDomReadyHeaderItem.forScript(getAutocompleteStatement()));
+	}
+
+	public CharSequence getAutocompleteStatement() {
 		JsScope jsScope = new JsScope() {
 			
 			private static final long serialVersionUID = 1L;
@@ -51,14 +55,14 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 		// Sur les modifications du champ autocomplete, on vérifie si le champ est vide de manière à vider aussi
 		// le champ caché
 		JsScope clearHiddenField = JsScope.quickScope(new JsStatement()
-		.append("if (")
-		.append(new JsStatement().$(getAutocompleteField()).chain("val").render(false))
-		.append(" == '') { ") // si le champ autocomplete est vide
-		.append(new JsStatement().$(getAutocompleteHidden()).chain("val", "''").render(true)) // alors on vide le champ identifiant
-		.append(" }"));
+				.append("if (")
+				.append(new JsStatement().$(getAutocompleteField()).chain("val").render(false))
+				.append(" == '') { ") // si le champ autocomplete est vide
+				.append(new JsStatement().$(getAutocompleteHidden()).chain("val", "''").render(true)) // alors on vide le champ identifiant
+				.append(" }"));
 		
 		jsStatement.append(";").$(getAutocompleteField()).chain("bind", "'change'", clearHiddenField.render());
-		return jsStatement;
+		return jsStatement.render();
 	}
 
 }

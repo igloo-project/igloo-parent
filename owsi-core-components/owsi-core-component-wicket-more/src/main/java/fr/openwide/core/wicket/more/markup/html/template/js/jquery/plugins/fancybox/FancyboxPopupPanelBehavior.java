@@ -3,25 +3,27 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fanc
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 /**
  * Behavior associant un élément de type lien et un composant {@link FancyboxPopupPanel}
  */
-public class FancyboxPopupPanelBehavior extends WiQueryAbstractBehavior {
+public class FancyboxPopupPanelBehavior extends AbstractAjaxBehavior {
 
 	private static final long serialVersionUID = 6414097982857106898L;
-	
+
 	private FancyboxPopupPanel fancyboxPopupPanel;
-	
+
 	public FancyboxPopupPanelBehavior(FancyboxPopupPanel fancyboxPopupPanel) {
 		super();
 		this.fancyboxPopupPanel = fancyboxPopupPanel;
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -45,20 +47,19 @@ public class FancyboxPopupPanelBehavior extends WiQueryAbstractBehavior {
 			}
 		});
 	}
-	
+
 	protected void onPopupShow() {
 		// override this to do things on popup show
 	}
 
 	@Override
-	public JsStatement statement() {
-		return null;
-	}
-	
-	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
-		response.renderJavaScriptReference(FancyboxJavaScriptResourceReference.get());
-		response.renderCSSReference(FancyboxStyleSheetResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(FancyboxJavaScriptResourceReference.get()));
+		response.render(CssHeaderItem.forReference(FancyboxStyleSheetResourceReference.get()));
 	}
 
+	@Override
+	public void onRequest() {
+		// TODO Auto-generated method stub
+	}
 }

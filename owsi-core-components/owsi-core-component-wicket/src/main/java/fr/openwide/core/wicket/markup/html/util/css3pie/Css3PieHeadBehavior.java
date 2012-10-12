@@ -4,7 +4,8 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.StringHeaderItem;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
@@ -36,7 +37,7 @@ public class Css3PieHeadBehavior extends Behavior {
 	
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
-		response.renderString(getTemplate().asString(getVariables(stylesWithCss3Properties)));
+		response.render(StringHeaderItem.forString(getTemplate().asString(getVariables(stylesWithCss3Properties))));
 	}
 	
 	private static TextTemplate getTemplate() {

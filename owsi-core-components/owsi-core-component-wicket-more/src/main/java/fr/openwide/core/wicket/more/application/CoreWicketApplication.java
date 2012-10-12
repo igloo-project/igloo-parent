@@ -6,19 +6,17 @@ import java.util.Map;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.RuntimeConfigurationType;
-import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
-import org.odlabs.wiquery.ui.themes.IThemableApplication;
+import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -31,7 +29,7 @@ import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCs
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
-public abstract class CoreWicketApplication extends WebApplication implements IThemableApplication {
+public abstract class CoreWicketApplication extends WebApplication {
 	
 	@Autowired
 	private CoreConfigurer configurer;
@@ -81,6 +79,8 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
 		
 		getAjaxRequestTargetListeners().add(new TipsyRequestTargetListener());
+		
+		addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 		
 		mountCommonResources();
 		mountCommonPages();
@@ -151,12 +151,6 @@ public abstract class CoreWicketApplication extends WebApplication implements IT
 			response.addJavaScript(TipsyHelper.closeTipsyStatement().render().toString());
 		}
 		
-	}
-	
-	@Override
-	public ResourceReference getTheme(Session session) {
-		// TODO migration Wicket 6 : cette méthode n'est plus appelée nulle part : il faut faire un remplacement de ressource à la place.
-		return JQueryUiCssResourceReference.get();
 	}
 
 }
