@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
@@ -38,7 +39,7 @@ public abstract class DecoratedPopupPanel extends FancyboxPopupPanel {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		if (draggable) {
-			response.renderJavaScriptReference(DraggableJavaScriptResourceReference.get());
+			response.render(JavaScriptHeaderItem.forReference(DraggableJavaScriptResourceReference.get()));
 		}
 	}
 

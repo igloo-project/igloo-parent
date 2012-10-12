@@ -2,20 +2,18 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.moda
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.Options;
 
 public class ConfirmAjaxCallListener implements IAjaxCallListener {
 	
-	@Override
-	public CharSequence decorateScript(Component component, CharSequence script) {
-		Options options = new Options();
-		options.put("onConfirm", JsScope.quickScope(script));
-		return new JsStatement().$(component).chain("confirm", options.getJavaScriptOptions()).append(";")
-				.append("return false;") // annulation de l'événément originel
-				.render();
-	}
+	// TODO migration Wicket 6 : trouver un moyen de gérer le 'onConfirm'
+//	@Override
+//	public CharSequence decorateScript(Component component, CharSequence script) {
+//		Options options = new Options();
+//		options.put("onConfirm", JsScope.quickScope(script));
+//		return new JsStatement().$(component).chain("confirm", options.getJavaScriptOptions()).append(";")
+//				.append("return false;") // annulation de l'événément originel
+//				.render();
+//	}
 
 	@Override
 	public CharSequence getAfterHandler(Component arg0) {

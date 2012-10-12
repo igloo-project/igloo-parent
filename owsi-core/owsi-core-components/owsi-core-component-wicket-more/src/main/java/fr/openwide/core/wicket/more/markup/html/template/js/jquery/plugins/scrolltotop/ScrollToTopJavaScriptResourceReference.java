@@ -1,11 +1,12 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop;
 
-import org.apache.wicket.resource.dependencies.AbstractResourceDependentResourceReference;
-import org.odlabs.wiquery.core.resources.WiQueryJavaScriptResourceReference;
+import org.apache.wicket.markup.head.HeaderItem;
+import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class ScrollToTopJavaScriptResourceReference extends WiQueryJavaScriptResourceReference {
+public final class ScrollToTopJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = 4300908585408220863L;
 
@@ -16,10 +17,9 @@ public final class ScrollToTopJavaScriptResourceReference extends WiQueryJavaScr
 	}
 
 	@Override
-	public AbstractResourceDependentResourceReference[] getDependentResourceReferences() {
-		return new AbstractResourceDependentResourceReference[] {
-				EasingJavaScriptResourceReference.get()
-		};
+	protected Iterable<? extends HeaderItem> getPluginDependencies() {
+		// TODO Auto-generated method stub
+		return JavaScriptHeaderItems.forReferences(EasingJavaScriptResourceReference.get());
 	}
 
 	public static ScrollToTopJavaScriptResourceReference get() {

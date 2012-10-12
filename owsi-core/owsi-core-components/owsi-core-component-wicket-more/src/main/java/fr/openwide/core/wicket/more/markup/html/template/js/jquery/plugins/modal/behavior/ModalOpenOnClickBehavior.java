@@ -1,8 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.odlabs.wiquery.core.behavior.WiQueryAbstractBehavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.javascript.JsScope;
@@ -10,8 +11,9 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 
-public class ModalOpenOnClickBehavior extends WiQueryAbstractBehavior {
+public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 8188257386595829052L;
 
@@ -22,7 +24,6 @@ public class ModalOpenOnClickBehavior extends WiQueryAbstractBehavior {
 		this.fancybox = fancyboxPanel;
 	}
 
-	@Override
 	public JsStatement statement() {
 		Event event = new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1410592312776274815L;
@@ -39,7 +40,8 @@ public class ModalOpenOnClickBehavior extends WiQueryAbstractBehavior {
 	public void renderHead(Component component, IHeaderResponse response) {
 		super.renderHead(component, response);
 		
-		response.renderJavaScriptReference(ModalJavaScriptResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
 	}
 
 	public JsStatement show(Component component) {

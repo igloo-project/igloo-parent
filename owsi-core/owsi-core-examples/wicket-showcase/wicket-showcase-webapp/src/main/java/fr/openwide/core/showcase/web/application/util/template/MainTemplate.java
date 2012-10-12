@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -167,6 +168,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.renderCSSReference(StyleLessCssResourceReference.get());
+		response.render(CssHeaderItem.forReference(StyleLessCssResourceReference.get()));
 	}
 }

@@ -1,12 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
-import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.string.AppendingStringBuffer;
-import org.apache.wicket.util.string.Strings;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxConfirmSubmitBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ConfirmContentBehavior;
@@ -28,6 +25,7 @@ public abstract class AjaxConfirmButton extends Button {
 		super(id, null);
 		this.form = form;
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel));
+		
 		add(new AjaxConfirmSubmitBehavior(form, "onclick") {
 			private static final long serialVersionUID = 1L;
 
@@ -41,35 +39,27 @@ public abstract class AjaxConfirmButton extends Button {
 				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
 			}
 
-			@Override
-			protected CharSequence getEventHandler() {
-				final String script = AjaxConfirmButton.this.getOnClickScript();
-				
-				AppendingStringBuffer handler = new AppendingStringBuffer();
-				
-				if (!Strings.isEmpty(script)) {
-					handler.append(script).append(";");
-				}
-				
-				handler.append(super.getEventHandler());
-				handler.append("; return false;");
-				return handler;
-			}
-
-			@Override
-			protected AjaxChannel getChannel() {
-				return AjaxConfirmButton.this.getChannel();
-			}
+			// TODO migration Wicket 6 : Où est ce qu'on met tout ça ?
+//			@Override
+//			protected CharSequence getEventHandler() {
+//				final String script = AjaxConfirmButton.this.getOnClickScript();
+//				
+//				AppendingStringBuffer handler = new AppendingStringBuffer();
+//				
+//				if (!Strings.isEmpty(script)) {
+//					handler.append(script).append(";");
+//				}
+//				
+//				handler.append(super.getEventHandler());
+//				handler.append("; return false;");
+//				return handler;
+//			}
 
 			@Override
 			public boolean getDefaultProcessing() {
 				return AjaxConfirmButton.this.getDefaultFormProcessing();
 			}
 		});
-	}
-	
-	protected AjaxChannel getChannel() {
-		return null;
 	}
 	
 	protected abstract void onSubmit(AjaxRequestTarget target, Form<?> form);
