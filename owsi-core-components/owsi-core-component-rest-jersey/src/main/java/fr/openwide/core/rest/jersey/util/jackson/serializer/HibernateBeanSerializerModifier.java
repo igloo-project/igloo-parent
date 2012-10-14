@@ -52,7 +52,7 @@ public class HibernateBeanSerializerModifier extends BeanSerializerModifier {
 		}
 
 		@Override
-		protected BeanSerializerWrapper withObjectIdWriter(ObjectIdWriter objectIdWriter) {
+		public BeanSerializerWrapper withObjectIdWriter(ObjectIdWriter objectIdWriter) {
 			return new BeanSerializerWrapper(this, objectIdWriter);
 		}
 
