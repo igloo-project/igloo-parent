@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox;
 
-import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.head.HeaderItem;
 import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
@@ -16,7 +16,7 @@ public class FancyboxJavaScriptResourceReference extends AbstractCoreJQueryPlugi
 	}
 	
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
+	public Iterable<? extends HeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(EasingJavaScriptResourceReference.get());
 	}
 

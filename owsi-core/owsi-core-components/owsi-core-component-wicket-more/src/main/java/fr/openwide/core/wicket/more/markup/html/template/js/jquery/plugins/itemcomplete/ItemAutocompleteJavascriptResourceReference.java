@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemcomplete;
 
-import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.head.HeaderItem;
 import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 import org.odlabs.wiquery.ui.position.PositionJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
@@ -18,7 +18,7 @@ public final class ItemAutocompleteJavascriptResourceReference extends AbstractC
 	}
 
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
+	public Iterable<? extends HeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(
 				WidgetJavaScriptResourceReference.get(),
 				PositionJavaScriptResourceReference.get()

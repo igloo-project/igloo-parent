@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover;
 
-import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.head.HeaderItem;
 import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipJavascriptResourceReference;
@@ -17,7 +17,7 @@ public final class BootstrapPopoverJavascriptResourceReference extends AbstractC
 	}
 
 	@Override
-	public Iterable<? extends JavaScriptReferenceHeaderItem> getPluginDependencies() {
+	public Iterable<? extends HeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(BootstrapTooltipJavascriptResourceReference.get());
 	}
 
