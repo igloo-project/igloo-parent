@@ -18,8 +18,15 @@ public class BooleanGlyphicon extends WebMarkupContainer {
 	private static final String BOOTSTRAP_TRUE_ICON_CLASS = "icon-ok";
 	private static final String BOOTSTRAP_FALSE_ICON_CLASS = "icon-remove";
 
+	private boolean showFalseIcon;
+	
 	public BooleanGlyphicon(String id, IModel<Boolean> booleanModel) {
+		this(id, booleanModel, true);
+	}
+	
+	public BooleanGlyphicon(String id, IModel<Boolean> booleanModel, boolean showFalseIcon) {
 		super(id, booleanModel);
+		this.showFalseIcon = showFalseIcon;
 	}
 
 	@Override
@@ -28,7 +35,7 @@ public class BooleanGlyphicon extends WebMarkupContainer {
 		
 		if (value != null && value) {
 			tag.append(CLASS_ATTRIBUTE, BOOTSTRAP_TRUE_ICON_CLASS, CLASS_SEPARATOR);
-		} else {
+		} else if (showFalseIcon) {
 			tag.append(CLASS_ATTRIBUTE, BOOTSTRAP_FALSE_ICON_CLASS, CLASS_SEPARATOR);
 		}
 		super.onComponentTag(tag);
