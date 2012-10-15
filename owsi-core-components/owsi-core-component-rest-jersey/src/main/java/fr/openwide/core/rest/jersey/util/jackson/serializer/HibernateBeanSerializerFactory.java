@@ -2,7 +2,6 @@ package fr.openwide.core.rest.jersey.util.jackson.serializer;
 
 import org.hibernate.proxy.HibernateProxy;
 
-import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -13,6 +12,8 @@ import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import com.fasterxml.jackson.databind.type.SimpleType;
 
 public class HibernateBeanSerializerFactory extends BeanSerializerFactory {
+
+	private static final long serialVersionUID = -7256206834065593118L;
 
 	public HibernateBeanSerializerFactory() {
 		super(null);
@@ -28,7 +29,7 @@ public class HibernateBeanSerializerFactory extends BeanSerializerFactory {
 	}
 
 	@Override
-	public JsonSerializer<Object> createSerializer(SerializerProvider prov, JavaType origType, BeanProperty property)
+	public JsonSerializer<Object> createSerializer(SerializerProvider prov, JavaType origType)
 			throws JsonMappingException {
 		Class<?> clazz = origType.getRawClass();
 		
@@ -38,7 +39,7 @@ public class HibernateBeanSerializerFactory extends BeanSerializerFactory {
 		}
 		
 		// Well, then it is not a Hibernate proxy
-		return super.createSerializer(prov, origType, property);
+		return super.createSerializer(prov, origType);
 	}
 
 }
