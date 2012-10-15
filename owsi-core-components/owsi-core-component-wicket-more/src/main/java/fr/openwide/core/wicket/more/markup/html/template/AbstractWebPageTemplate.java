@@ -11,14 +11,12 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
-import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWiQueryPlugin {
+public abstract class AbstractWebPageTemplate extends CoreWebPage {
 
 	private static final long serialVersionUID = -5598937641577320345L;
 
@@ -115,9 +113,5 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage implements IWi
 		
 		return sb.toString();
 	}
-	
-	@Override
-	public JsStatement statement() {
-		return null;
-	}
+
 }
