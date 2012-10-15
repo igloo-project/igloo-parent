@@ -262,7 +262,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextEntityManager fullTextEntityManager, String[] fields, Operator defaultOperator, Analyzer analyzer) {
-		MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_30, fields, analyzer);
+		MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_35, fields, analyzer);
 		parser.setDefaultOperator(defaultOperator);
 		
 		return parser;
