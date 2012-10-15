@@ -6,11 +6,11 @@ import java.util.List;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.wicket.more.markup.html.form.AutocompleteAjaxComponent;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<User> {
