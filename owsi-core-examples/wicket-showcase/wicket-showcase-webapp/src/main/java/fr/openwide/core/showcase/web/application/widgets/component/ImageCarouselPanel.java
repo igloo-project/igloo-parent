@@ -16,10 +16,11 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel.CarouFredSel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel.CarouFredSelBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.Modal;
@@ -29,6 +30,8 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal
 public class ImageCarouselPanel extends Panel {
 
 	private static final long serialVersionUID = 4562012379117930236L;
+
+	private static final String CONTEXT_RELATIVE_IMAGES_PATH = "static/application/images/";
 
 	private static final int CAROUSEL_WIDTH = 212;
 	private static final int CAROUSEL_HEIGHT = 212;
@@ -66,10 +69,10 @@ public class ImageCarouselPanel extends Panel {
 				footer.setOutputMarkupId(true);
 				item.add(footer);
 				
-				WebComponent image = new ContextImage("image", "static/application/images/" + imageBean.getImagePath());
+				WebComponent image = new ContextImage("image", CONTEXT_RELATIVE_IMAGES_PATH + imageBean.getImagePath());
 				
 				AbstractLink imageLink = new ResourceLink<Void>("imageLink",
-						new ContextRelativeResource("static/application/util/template/images/" + imageBean.getImagePath()));
+						new PackageResourceReference(MainTemplate.class, "images/" + imageBean.getImagePath()));
 				imageLink.add(new AttributeModifier("rel", ImageCarouselPanel.this.diaporamaId));
 				imageLink.add(new ModalHeaderFooterBehavior(header, footer));
 				imageLink.add(image);
