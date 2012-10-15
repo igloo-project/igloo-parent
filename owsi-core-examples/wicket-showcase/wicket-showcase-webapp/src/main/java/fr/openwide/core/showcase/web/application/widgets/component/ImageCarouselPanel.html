@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div class="diaporama-center">
+			<div class="diaporama-outer">
+				<div class="diaporama" wicket:id="container">
+					<wicket:container wicket:id="imageItem">
+						<div style="display: inline-block">
+							<a href="#" rel="" wicket:id="imageLink">
+								<img wicket:id="image" />
+							</a>
+							<div style="display: none;">
+								<h3 wicket:id="header"></h3>
+								<div wicket:id="footer">
+									<div class="legende">
+										<span wicket:id="footerLabel">footer label</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</wicket:container>
+				</div>
+				<a class="previous" wicket:id="prevButton"></a>
+				<a class="next" wicket:id="nextButton"></a>
+			</div>
+		</div>
+	</wicket:panel>
+</html>	
