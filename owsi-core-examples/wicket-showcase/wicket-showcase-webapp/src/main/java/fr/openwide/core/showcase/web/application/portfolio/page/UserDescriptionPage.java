@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -15,7 +14,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
-import fr.openwide.core.showcase.web.application.portfolio.component.UserIdentityCardPanel;
+import fr.openwide.core.showcase.web.application.portfolio.component.UserProfilePanel;
 import fr.openwide.core.showcase.web.application.util.LinkUtils;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -48,9 +47,9 @@ public class UserDescriptionPage extends MainTemplate {
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.class));
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, USER.displayName()), UserDescriptionPage.class, parameters));
 		
-		add(new Label("pageTitle", new StringResourceModel("user.portfolio.pageTitle", userModel, BindingModel.of(userModel, USER.displayName()))));
+		add(new Label("pageTitle", BindingModel.of(userModel, USER.displayName())));
 		
-		add(new UserIdentityCardPanel("descriptionPanel", userModel));
+		add(new UserProfilePanel("profilePanel", userModel));
 	}
 	
 	@Override

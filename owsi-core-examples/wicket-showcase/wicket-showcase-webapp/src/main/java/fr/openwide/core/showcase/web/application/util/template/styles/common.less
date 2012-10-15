@@ -10,3 +10,28 @@ body {
 .user-link-disabled {
 	.buttonBackground(lighten(@btnInverseBackground, 10%), lighten(@btnInverseBackgroundHighlight, 10%));
 }
+
+// User description
+.application-users {
+	.key-value-list {
+		.line {
+			border-bottom: 1px solid #EEE;
+			
+			&:last-child {
+				border-bottom: none;
+			}
+			
+			.line-label {
+				color: #888;
+				font-weight: bold;
+				min-height: 0;
+				padding: 8px 0px;
+			}
+			
+			.line-value {
+				min-height: 0;
+				padding: 8px 0px;
+			}
+		}
+	}
+}
