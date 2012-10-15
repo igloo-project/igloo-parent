@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<h2>
+		<wicket:message key="user.portfolio.profile" />
+		
+		<span class="pull-right">
+			<button wicket:id="editUserPopupLink" class="btn btn-mini" type="button">
+				<span class="icon-pencil"></span>
+				<wicket:message key="common.action.edit" />
+			</button>
+		</span>
+	</h2>
+	
+	<!-- Popup d'édition de l'utilisateur -->
+	<wicket:container wicket:id="userEditPopupPanel"></wicket:container>
+	
+	<div class="key-value-list">
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.username" /></div>
+			<div class="line-value span8" wicket:id="userName"></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.email" /></div>
+			<div class="line-value span8"><a wicket:id="emailLink"></a></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.phone" /></div>
+			<div class="line-value span8" wicket:id="phoneNumber"></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.gsm" /></div>
+			<div class="line-value span8" wicket:id="gsmNumber"></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.fax" /></div>
+			<div class="line-value span8" wicket:id="faxNumber"></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.active" /></div>
+			<div class="line-value span8"><span wicket:id="active"></span></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.creationDate" /></div>
+			<div class="line-value span8" wicket:id="creationDate"></div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="user.lastLoginDate" /></div>
+			<div class="line-value span8" wicket:id="lastLoginDate"></div>
+		</div>
+	</div>
+</wicket:panel>
+</html>
