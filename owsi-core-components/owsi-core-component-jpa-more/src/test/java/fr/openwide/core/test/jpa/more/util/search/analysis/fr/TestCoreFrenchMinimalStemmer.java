@@ -12,22 +12,30 @@ public class TestCoreFrenchMinimalStemmer {
 	
 	@Test
 	public void testStem() {
-		Assert.assertEquals(4, stem("stage"));
-		Assert.assertEquals(4, stem("stages"));
+		Assert.assertEquals("stag", stem("stage"));
+		Assert.assertEquals("stag", stem("stages"));
 		
-		Assert.assertEquals(4, stem("creer"));
+		Assert.assertEquals("cree", stem("creer"));
 		
-		Assert.assertEquals(4, stem("noir"));
-		Assert.assertEquals(4, stem("noire"));
-		Assert.assertEquals(4, stem("noires"));
-		Assert.assertEquals(4, stem("noirs"));
+		Assert.assertEquals("noir", stem("noir"));
+		Assert.assertEquals("noir", stem("noire"));
+		Assert.assertEquals("noir", stem("noires"));
+		Assert.assertEquals("noir", stem("noirs"));
+		
+		Assert.assertEquals("cheval", stem("cheval"));
+		Assert.assertEquals("cheval", stem("chevaux"));
+		
+		Assert.assertEquals("chapeau", stem("chapeau"));
+		Assert.assertEquals("chapeau", stem("chapeaux"));
 	}
 	
-	public int stem(String word) {
+	public String stem(String word) {
 		if (word == null) {
 			throw new IllegalArgumentException("word cannot be null");
 		}
-		return STEMMER.stem(word.toCharArray(), word.length());
+		char[] charArray = word.toCharArray();
+		int len = STEMMER.stem(charArray, word.length());
+		return String.valueOf(charArray).substring(0, len);
 	}
 
 }
