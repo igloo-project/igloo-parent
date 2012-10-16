@@ -1,12 +1,20 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+import org.odlabs.wiquery.core.events.Event;
+import org.odlabs.wiquery.core.events.MouseEvent;
+import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
+import org.odlabs.wiquery.core.javascript.JsScope;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxConfirmSubmitBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ConfirmContentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.util.AjaxConfirmUtil;
 
 public abstract class AjaxConfirmButton extends Button {
 
@@ -26,7 +34,19 @@ public abstract class AjaxConfirmButton extends Button {
 		this.form = form;
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel));
 		
-		add(new AjaxConfirmSubmitBehavior(form, "onclick") {
+		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
+		// on délenche un évènement 'confirm'.
+		add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public JsScope callback() {
+				return JsScope.quickScope(AjaxConfirmUtil.getTriggerEventOnConfirmStatement(
+						AjaxConfirmButton.this, "confirm"));
+			}
+		}));
+		
+		// Lorsque l'évènement 'confirm' est détecté, on déclenche le submit à proprement parler.
+		add(new AjaxFormSubmitBehavior(form, "confirm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -39,29 +59,19 @@ public abstract class AjaxConfirmButton extends Button {
 				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
 			}
 
-			// TODO migration Wicket 6 : Où est ce qu'on met tout ça ?
-//			@Override
-//			protected CharSequence getEventHandler() {
-//				final String script = AjaxConfirmButton.this.getOnClickScript();
-//				
-//				AppendingStringBuffer handler = new AppendingStringBuffer();
-//				
-//				if (!Strings.isEmpty(script)) {
-//					handler.append(script).append(";");
-//				}
-//				
-//				handler.append(super.getEventHandler());
-//				handler.append("; return false;");
-//				return handler;
-//			}
-
 			@Override
 			public boolean getDefaultProcessing() {
 				return AjaxConfirmButton.this.getDefaultFormProcessing();
 			}
 		});
 	}
-	
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
+	}
+
 	protected abstract void onSubmit(AjaxRequestTarget target, Form<?> form);
 	
 	protected abstract void onError(AjaxRequestTarget target, Form<?> form);

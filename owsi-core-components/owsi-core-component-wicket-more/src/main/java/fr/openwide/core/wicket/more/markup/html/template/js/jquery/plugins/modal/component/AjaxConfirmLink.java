@@ -1,21 +1,24 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.ajax.attributes.IAjaxCallListener;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
+import org.odlabs.wiquery.core.events.Event;
+import org.odlabs.wiquery.core.events.MouseEvent;
+import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
+import org.odlabs.wiquery.core.javascript.JsScope;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ConfirmContentBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.misc.ConfirmAjaxCallListener;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.util.AjaxConfirmUtil;
 
 public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
 	private static final long serialVersionUID = -645345859108195615L;
-
-	private static final IAjaxCallListener CONFIRM_LISTENER = new ConfirmAjaxCallListener();
 
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
@@ -27,12 +30,17 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 		super(id, model);
 		setOutputMarkupId(true);
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, textNoEscape));
-	}
-
-	@Override
-	protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-		super.updateAjaxAttributes(attributes);
-		attributes.getAjaxCallListeners().add(CONFIRM_LISTENER);
+		
+		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
+		// on délenche un évènement 'confirm'.
+		add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public JsScope callback() {
+				return JsScope.quickScope(AjaxConfirmUtil.getTriggerEventOnConfirmStatement(
+						AjaxConfirmLink.this, "confirm"));
+			}
+		}));
 	}
 
 	@Override
@@ -41,41 +49,25 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
 	}
 
-	/**
-	 * Surchargé pour supprimer le {@link CancelEventIfNoAjaxDecorator} (car dans notre cas, wcall n'est pas défini).
-	 * (comme de toute façon, l'action ajax n'est pas déclenchée au moment du clic, il est inutile de conditionner
-	 * l'annulation de l'événément originel).
-	 */
-	// TODO migration Wicket 6 : voir avec LAL ce qu'on fait de ça
-//	@Override
-//	protected AjaxEventBehavior newAjaxEventBehavior(String event) {
-//		return new AjaxEventBehavior(event) {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			protected void onEvent(AjaxRequestTarget target) {
-//				onClick(target);
-//			}
-//
-//			@Override
-//			protected IAjaxCallDecorator getAjaxCallDecorator() {
-//				return AjaxConfirmLink.this.getAjaxCallDecorator();
-//			}
-//
-//			@Override
-//			protected void onComponentTag(ComponentTag tag) {
-//				// add the onclick handler only if link is enabled
-//				if (isLinkEnabled())
-//				{
-//					super.onComponentTag(tag);
-//				}
-//			}
-//
-//			@Override
-//			protected AjaxChannel getChannel() {
-//				return AjaxConfirmLink.this.getChannel();
-//			}
-//		};
-//	}
-
+	@Override
+	protected AjaxEventBehavior newAjaxEventBehavior(String event) {
+		
+		// Lorsque l'évènement 'confirm' est détecté, on déclenche l'action à proprement parler.
+		return new AjaxEventBehavior("confirm") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onEvent(AjaxRequestTarget target) {
+				onClick(target);
+			}
+			
+			@Override
+			protected void onComponentTag(ComponentTag tag) {
+				// On ajoute le handler seulement si le lien est activé.
+				if (isLinkEnabled()) {
+					super.onComponentTag(tag);
+				}
+			}
+		};
+	}
 }

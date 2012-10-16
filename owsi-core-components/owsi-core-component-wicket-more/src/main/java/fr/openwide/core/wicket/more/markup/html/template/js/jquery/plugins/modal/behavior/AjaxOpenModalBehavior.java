@@ -59,33 +59,6 @@ public abstract class AjaxOpenModalBehavior extends WiQueryAjaxEventBehavior {
 		openModalListener.onFailure(new JsStatement().$().chain("fancybox.close").append(";").render());
 		
 		return openModalListener;
-		
-		// TODO migration Wicket 6 : tester l'ouverture des modals avant de supprimer l'ancien code.
-//		return new IAjaxCallListener() {
-//			
-//			private static final long serialVersionUID = 8595086274005315530L;
-//
-//			@Override
-//			public CharSequence decorateScript(Component component, CharSequence script) {
-//				// on montre le fancybox en état d'attente
-//				Options options = new Options();
-//				options.putLiteral("href", selector(modal));
-//				options.put("displayWait", Boolean.TRUE.toString());
-//				options.put("showCloseButton", false);
-//				return new JsStatement().$().chain("fancybox", "''", options.getJavaScriptOptions()).append(";")
-//						.append(script).render();
-//			}
-//			
-//			@Override
-//			public CharSequence decorateOnSuccessScript(Component component, CharSequence script) {
-//				return new JsStatement().$().chain("fancybox.resize").append(";").append(script).render();
-//			}
-//			
-//			@Override
-//			public CharSequence decorateOnFailureScript(Component component, CharSequence script) {
-//				return new JsStatement().$().chain("fancybox.close").append(";").append(script).render();
-//			}
-//		};
 	}
 
 	protected String selector(IAjaxModalPopupPanel modal) {
