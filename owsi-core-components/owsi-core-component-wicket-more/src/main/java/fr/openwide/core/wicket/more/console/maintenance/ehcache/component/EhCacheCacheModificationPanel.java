@@ -102,7 +102,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 	}
 
 	@Override
-	public IModel<String> classNamesModel() {
+	public IModel<String> getCssClassNamesModel() {
 		return Model.of("modal-ehcache-modification");
 	}
 

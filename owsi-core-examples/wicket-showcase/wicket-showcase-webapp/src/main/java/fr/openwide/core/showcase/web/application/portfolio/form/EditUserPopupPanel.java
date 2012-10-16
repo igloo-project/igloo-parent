@@ -137,7 +137,7 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	}
 
 	@Override
-	public IModel<String> classNamesModel() {
+	public IModel<String> getCssClassNamesModel() {
 		return Model.of("user-form");
 	}
 }
