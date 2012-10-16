@@ -43,7 +43,7 @@
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
 		
-		<owsi-core.spring-security.version>3.1.2.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>3.1.3.RELEASE</owsi-core.spring-security.version>
 		
 		<owsi-core.spring-ldap.version>1.3.1.RELEASE</owsi-core.spring-ldap.version>
 		
@@ -76,7 +76,7 @@
 		
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
-		<owsi-core.jackson.version>1.9.9</owsi-core.jackson.version>
+		<owsi-core.jackson.version>1.9.10</owsi-core.jackson.version>
 		<owsi-core.jackson2.version>2.0.4</owsi-core.jackson2.version>
 		<owsi-core.truezip.version>7.5.5</owsi-core.truezip.version>
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
@@ -85,7 +85,7 @@
 		<owsi-core.jsoup.version>1.6.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		
-		<owsi-core.jersey.version>1.12</owsi-core.jersey.version>
+		<owsi-core.jersey.version>1.14</owsi-core.jersey.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
@@ -102,7 +102,7 @@
 		<owsi-core.lesscss-engine.version>1.3.0</owsi-core.lesscss-engine.version>
 		
 		<owsi-core.junit.version>4.10</owsi-core.junit.version>
-		<owsi-core.grizzly.version>1.9.36</owsi-core.grizzly.version>
+		<owsi-core.grizzly.version>1.9.53</owsi-core.grizzly.version>
 		
 		<owsi-core.maven-compiler-plugin.version>2.5.1</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
