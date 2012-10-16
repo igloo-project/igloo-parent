@@ -24,7 +24,7 @@
 		<jetty-server.version>8.0.4.v20111024</jetty-server.version>
 		<antlr.version>3.2</antlr.version>
 		<google-geocoder.version>0.9</google-geocoder.version>
-		<wqplot.version>0.2.1</wqplot.version>
+		<wqplot.version>6.1.1.owsi1-SNAPSHOT</wqplot.version>
 	</properties>
 	
 	<!-- Project information -->
