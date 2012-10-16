@@ -31,7 +31,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		// doit être présent dès le début pour le bon fonctionnement de prepareLink
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
-		container.add(new AttributeAppender("class", classNamesModel(), " "));
+		container.add(new AttributeAppender("class", getCssClassNamesModel(), " "));
 		add(container);
 	}
 
@@ -84,6 +84,6 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
 	}
 
-	public abstract IModel<String> classNamesModel();
+	public abstract IModel<String> getCssClassNamesModel();
 
 }
