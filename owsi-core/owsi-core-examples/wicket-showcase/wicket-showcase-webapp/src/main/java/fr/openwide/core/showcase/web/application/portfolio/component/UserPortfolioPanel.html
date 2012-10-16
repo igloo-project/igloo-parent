@@ -10,8 +10,8 @@
 						<th><wicket:message key="user.portfolio.header.firstName" /></th>
 						<th><wicket:message key="user.portfolio.header.userName" /></th>
 						<th><wicket:message key="user.portfolio.header.email" /></th>
-						<th><wicket:message key="user.portfolio.header.active" /></th>
-						<th><wicket:message key="common.portfolio.header.actions" /></th>
+						<th style="width: 5%; text-align: center;"><wicket:message key="user.portfolio.header.active" /></th>
+						<th style="width: 10%; text-align: center;"><wicket:message key="common.portfolio.header.actions" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -20,10 +20,10 @@
 						<td wicket:id="firstName"></td>
 						<td wicket:id="userName"></td>
 						<td wicket:id="email"></td>
-						<td>
+						<td style="text-align: center;">
 							<img wicket:id="active" style="width: 16px; height: 16px; vertical-align: middle;" class="icon" />
 						</td>
-						<td wicket:id="actionButtons" class="table-column"></td>
+						<td wicket:id="actionButtons" style="text-align: center;" class="table-column"></td>
 					</tr>
 				</tbody>
 				<tfoot>
