@@ -25,6 +25,8 @@ import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 
+import com.google.common.collect.Maps;
+
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.commons.util.FileUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -95,8 +97,17 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	protected void importGenericListItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 		for (String packageToScan : getGenericListItemPackagesToScan()) {
 			Set<Class<? extends GenericListItem>> classes = ReflectionUtils.findAssignableClasses(packageToScan, GenericListItem.class);
-		
+			Map<Integer, Class<? extends GenericListItem>> orderedClasses = Maps.newTreeMap();
+			
 			for (Class<? extends GenericListItem> genericListItemClass : classes) {
+				Sheet sheet = workbook.getSheet(getSheetName(genericListItemClass));
+				
+				if (sheet != null) {
+					orderedClasses.put(sheet.getWorkbook().getSheetIndex(sheet), genericListItemClass);
+				}
+			}
+			
+			for (Class<? extends GenericListItem> genericListItemClass : orderedClasses.values()) {
 				doImportItem(idsMapping, workbook, genericListItemClass);
 			}
 		}
