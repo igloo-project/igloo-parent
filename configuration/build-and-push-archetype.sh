@@ -21,7 +21,7 @@ if [ "${deploy_environment}" != "local" ] && [ "${deploy_environment}" != "snaps
 	usage
 fi
 
-temp_directory=$(mktemp -d)
+temp_directory=$(mktemp --suffix=-archetype -d)
 
 pushd ${temp_directory} &> /dev/null
 
