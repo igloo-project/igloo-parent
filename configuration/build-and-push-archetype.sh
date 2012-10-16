@@ -64,3 +64,10 @@ pushd ${temp_directory}/archetype &> /dev/null
 popd &> /dev/null
 
 popd &> /dev/null
+
+echo
+echo
+echo "##################################################################"
+echo "# Archetype published to ${deploy_environment}"
+echo "#           built in ${temp_directory}"
+echo "##################################################################"

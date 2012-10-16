@@ -3,33 +3,12 @@
 * projet 'basic-application'.
 * 
 *****************************************************************************
-1) Ouvrir une console et se placer dans le workspace contenant le projet parent 'basic-application'
 
-2) Créer un export propre et non versionné du projet :
-mkdir export
-svn export basic-application export/basic-application
+- pour installer l'archetype en local :
+./build-and-push-archetype.sh ../basic-application/ local
 
-3) Lancer la création de l'archetype depuis le projet exporté :
-cd export/basic-application
-mvn archetype:create-from-project -Darchetype.properties=../../configuration/archetype.properties
-
-4) Déplacer l'archetype ainsi généré dans un dossier à part : 
-mv target/generated-sources/archetype ../..
-
-5) Se placer dans le nouveau dossier de l'archetype et lancer script de renommage des classes :
-cd ../../archetype
-/bin/bash ../configuration/prepare-artifact.sh
-
-6) Installer l'archetype créé :
-
-pour déployer en local :
-	* mvn clean install
-	
-pour déployer en snapshot :
-	* mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core-snapshots::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots/
-
-pour déployer en release :
-	* mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/
+- pour installer l'archetype sur le repository OWSI :
+./build-and-push-archetype.sh ../basic-application/ snapshot
 
 *************************************
 * Exemple de génération de projet
