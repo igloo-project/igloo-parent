@@ -190,7 +190,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 	}
 
 	@Override
-	public IModel<String> classNamesModel() {
+	public IModel<String> getCssClassNamesModel() {
 		return Model.of("modal-usergroup");
 	}
 
