@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.web.application.administration.form;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.Component;
@@ -21,6 +22,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +34,7 @@ import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fancybox.FormPanelMode;
+import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -63,8 +66,9 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 			private static final long serialVersionUID = -6755079891321764827L;
 			
 			@Override
-			protected String resourceKey() {
-				return "administration.user.form.userName.malformed";
+			protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
+				error.setKeys(Collections.singletonList("administration.user.form.userName.malformed"));
+				return error;
 			}
 		};
 	}

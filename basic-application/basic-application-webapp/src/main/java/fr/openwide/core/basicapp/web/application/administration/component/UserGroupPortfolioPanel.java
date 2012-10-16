@@ -15,6 +15,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -49,13 +50,11 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected boolean isDeleteAvailable() {
-		// TODO : delete UserGroup permission
-		return true;
+		return BasicApplicationSession.get().hasRoleAdmin();
 	}
 
 	@Override
 	protected boolean isEditAvailable() {
-		// TODO : edit UserGroup permission
 		return false;
 	}
 

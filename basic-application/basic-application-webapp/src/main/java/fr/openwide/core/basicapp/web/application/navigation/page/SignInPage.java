@@ -1,16 +1,16 @@
 package fr.openwide.core.basicapp.web.application.navigation.page;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseException;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.resources.CoreJavaScriptResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,7 +24,7 @@ import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
-public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
+public class SignInPage extends CoreWebPage {
 	private static final long serialVersionUID = 5503959273448832421L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SignInPage.class);
@@ -82,12 +82,8 @@ public class SignInPage extends CoreWebPage implements IWiQueryPlugin {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.renderJavaScriptReference(CoreJavaScriptResourceReference.get());
-		response.renderCSSReference(SignInLessCssResourceReference.get());
+		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
+		response.render(CssHeaderItem.forReference(SignInLessCssResourceReference.get()));
 	}
-	
-	@Override
-	public JsStatement statement() {
-		return null;
-	}
+
 }

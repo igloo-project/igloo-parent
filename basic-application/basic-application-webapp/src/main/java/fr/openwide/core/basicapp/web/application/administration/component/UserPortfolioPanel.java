@@ -15,6 +15,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -54,13 +55,11 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected boolean isDeleteAvailable() {
-		// TODO : delete User permission
-		return true;
+		return BasicApplicationSession.get().hasRoleAdmin();
 	}
 
 	@Override
 	protected boolean isEditAvailable() {
-		// TODO : edit User permission
 		return false;
 	}
 
@@ -77,8 +76,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected boolean hasWritePermissionOn(IModel<?> userModel) {
-		// TODO : write on User object permission
-		return true;
+		return BasicApplicationSession.get().hasRoleAdmin();
 	}
 
 	@Override
