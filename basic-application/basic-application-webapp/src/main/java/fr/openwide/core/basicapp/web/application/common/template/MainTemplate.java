@@ -2,10 +2,12 @@ package fr.openwide.core.basicapp.web.application.common.template;
 
 import java.util.List;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
@@ -30,6 +32,7 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLe
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
@@ -54,6 +57,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		MarkupContainer htmlRootElement = new TransparentWebMarkupContainer("htmlRootElement");
 		htmlRootElement.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage()));
 		add(htmlRootElement);
+		
+		if (Application.get().getDebugSettings().isDevelopmentUtilitiesEnabled()) {
+			add(new DebugBar("debugBar"));
+		} else {
+			add(new InvisiblePanel("debugBar"));
+		}
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
