@@ -66,7 +66,8 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 			
 			@Override
 			protected void onConfigure() {
-				// TODO trac #240 : à enlever avec Wicket 1.5.7 cf WICKET-4536
+				// cf WICKET-4536 : ceci dit, même après mise à jour, on a encore eu des cas avec le problème
+				// du coup, on laisse comme ça
 				super.onConfigure();
 				
 				visible = anyMessage(level);
