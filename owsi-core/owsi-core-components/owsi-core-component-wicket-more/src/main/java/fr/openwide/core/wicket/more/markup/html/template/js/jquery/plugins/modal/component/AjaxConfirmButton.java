@@ -14,7 +14,7 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ConfirmContentBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.util.AjaxConfirmUtil;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.util.AjaxConfirmUtils;
 
 public abstract class AjaxConfirmButton extends Button {
 
@@ -40,7 +40,7 @@ public abstract class AjaxConfirmButton extends Button {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public JsScope callback() {
-				return JsScope.quickScope(AjaxConfirmUtil.getTriggerEventOnConfirmStatement(
+				return JsScope.quickScope(AjaxConfirmUtils.getTriggerEventOnConfirmStatement(
 						AjaxConfirmButton.this, "confirm"));
 			}
 		}));

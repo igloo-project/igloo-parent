@@ -6,7 +6,7 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.Options;
 
-public final class AjaxConfirmUtil {
+public final class AjaxConfirmUtils {
 
 	public static JsStatement getTriggerEventOnConfirmStatement(Component component, String event) {
 		Options options = new Options();
@@ -17,6 +17,6 @@ public final class AjaxConfirmUtil {
 				.append("return false;");
 	}
 
-	private AjaxConfirmUtil() {
+	private AjaxConfirmUtils() {
 	}
 }
