@@ -1,14 +1,10 @@
 package fr.openwide.core.wicket.more.application;
 
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.Component;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
@@ -27,7 +23,6 @@ import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.UpdatedJQueryResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.tipsy.TipsyHelper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
 public abstract class CoreWicketApplication extends WebApplication {
@@ -60,30 +55,34 @@ public abstract class CoreWicketApplication extends WebApplication {
 	public void init() {
 		super.init();
 		
-		// Avec wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
-		// On ajoute globalement l'accès aux ressources less.
-		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
-		
-		// on autorise l'accès aux .htc pour CSS3PIE
-		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
-		
-		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression wicket
-		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
-		// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
-		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
-		
-		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
-		
-		getMarkupSettings().setStripWicketTags(true);
-		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
-		
+		// injection Spring
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
 		
-		getAjaxRequestTargetListeners().add(new TipsyRequestTargetListener());
+		// nettoyage des tags Wicket
+		getMarkupSettings().setStripWicketTags(true);
 		
-		getJavaScriptLibrarySettings().setJQueryReference(UpdatedJQueryResourceReference.get());
+		// mise en place d'un timeout plus élevé histoire d'éviter les timeouts lors des téléchargements
+		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
 		
-		addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
+		// configuration des ressources
+			// depuis Wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
+			// on ajoute globalement l'accès aux ressources less.
+			((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
+			
+			// on autorise l'accès aux .htc pour CSS3PIE
+			((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
+			
+			// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
+			getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
+			// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
+			getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
+			
+			// gestion du cache sur les ressources
+			getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
+		
+			// surcharge des ressources jQuery et jQuery UI
+			getJavaScriptLibrarySettings().setJQueryReference(UpdatedJQueryResourceReference.get());
+			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 		
 		mountCommonResources();
 		mountCommonPages();
@@ -92,24 +91,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationPages();
 		
 		registerLessImportScopes();
-	}
-	
-	@Override
-	protected void validateInit() {
-		super.validateInit();
-		
-		// TODO migration Wicket 6 : encore besoin de ça ? c.f. chargement des dependances par le fils en remontant au père
-		// on ajoute fr.openwide.core.wicket.more aux packages ayant une groupingKey définie, de manière à les charger avant
-		// les potentiels javascripts de l'application
-//		WiQuerySettings.get().getResourceGroupingKeys().add(WicketMorePackage.class.getPackage().getName());
-		
-		// on substitue notre decorator qui est un peu plus fin sur la gestion de l'ordre de chargement des ressources
-//		setHeaderResponseDecorator(new IHeaderResponseDecorator() {
-//			@Override
-//			public IHeaderResponse decorate(IHeaderResponse response) {
-//				return new CoreWiQueryDecoratingHeaderResponse(response);
-//			}
-//		});
 	}
 	
 	protected void registerLessImportScopes() {
@@ -139,21 +120,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public RuntimeConfigurationType getConfigurationType() {
 		return RuntimeConfigurationType.valueOf(configurer.getConfigurationType().toUpperCase(Locale.ROOT));
-	}
-	
-	public static class TipsyRequestTargetListener implements AjaxRequestTarget.IListener {
-
-		@Override
-		public void onBeforeRespond(Map<String, Component> map,
-				AjaxRequestTarget target) {
-		}
-
-		@Override
-		public void onAfterRespond(Map<String, Component> map,
-				IJavaScriptResponse response) {
-			response.addJavaScript(TipsyHelper.closeTipsyStatement().render().toString());
-		}
-		
 	}
 
 }
