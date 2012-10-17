@@ -138,6 +138,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		}
 		
 		Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
+		roles = new Roles();
 		for (GrantedAuthority authority : authorities) {
 			roles.add(authority.getAuthority());
 		}
