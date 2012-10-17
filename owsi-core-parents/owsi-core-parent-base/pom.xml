@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-base</artifactId>
-	<version>0.7.1-SNAPSHOT</version>
+	<version>0.7.1</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Base</name>
@@ -132,7 +132,7 @@
 						</goals>
 						<configuration>
 							<rules>
-								<DependencyConvergence/>
+								<DependencyConvergence />
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>

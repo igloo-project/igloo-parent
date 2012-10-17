@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.7.1-SNAPSHOT</version>
+		<version>0.7.1</version>
 		<relativePath>../owsi-core-parents/owsi-core-parent-base/pom.xml</relativePath>
 	</parent>
 
