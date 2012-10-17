@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>fr.openwide.core.examples</groupId>
 		<artifactId>owsi-core-examples</artifactId>
-		<version>0.7.2-SNAPSHOT</version>
+		<version>0.7.2</version>
 	</parent>
 
 	<artifactId>owsi-core-example-spring-security-web</artifactId>

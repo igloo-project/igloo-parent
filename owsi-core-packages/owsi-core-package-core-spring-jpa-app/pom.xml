@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>owsi-core-packages</artifactId>
 		<groupId>fr.openwide.core.packages</groupId>
-		<version>0.7.2-SNAPSHOT</version>
+		<version>0.7.2</version>
 	</parent>
 	
 	<artifactId>owsi-core-package-core-spring-jpa-app</artifactId>
