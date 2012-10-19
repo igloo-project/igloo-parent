@@ -133,7 +133,7 @@ public final class JpaConfigUtils {
 			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
 			properties.setProperty("hibernate.search.default.exclusive_index_use", Boolean.TRUE.toString());
 			properties.setProperty("hibernate.search.default.locking_strategy", "native");
-			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION, Version.LUCENE_35.name());
+			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION, Version.LUCENE_36.name());
 		} else {
 			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
 		}
