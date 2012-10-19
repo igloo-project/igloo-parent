@@ -12,7 +12,7 @@ public final class CarouFredSelJavaScriptResourceReference extends AbstractCoreJ
 	private static final CarouFredSelJavaScriptResourceReference INSTANCE = new CarouFredSelJavaScriptResourceReference();
 
 	private CarouFredSelJavaScriptResourceReference() {
-		super(CarouFredSelJavaScriptResourceReference.class, "carouFredSel-5.5.3/jquery.carouFredSel-5.5.3.js");
+		super(CarouFredSelJavaScriptResourceReference.class, "carouFredSel-6.1.0/jquery.carouFredSel-6.1.0.js");
 	}
 
 	@Override
