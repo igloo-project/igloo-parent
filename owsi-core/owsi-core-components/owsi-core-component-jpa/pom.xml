@@ -129,6 +129,10 @@
 					<artifactId>solr-analysis-extras</artifactId>
 					<groupId>org.apache.solr</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jackson-core-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		
