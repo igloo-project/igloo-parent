@@ -1,11 +1,10 @@
 package fr.openwide.core.showcase.web.application.portfolio.component;
 
-import java.util.List;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -32,8 +31,8 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserPortfolioPanel(String id, IModel<? extends List<User>> userListModel, int itemsPerPage) {
-		super(id, userListModel, itemsPerPage);
+	public UserPortfolioPanel(String id, IDataProvider<User> dataProvider, int itemsPerPage) {
+		super(id, dataProvider, itemsPerPage);
 		setOutputMarkupId(true);
 	}
 

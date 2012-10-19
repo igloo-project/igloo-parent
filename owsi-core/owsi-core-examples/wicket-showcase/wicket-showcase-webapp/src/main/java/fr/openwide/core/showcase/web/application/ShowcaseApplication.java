@@ -13,11 +13,13 @@ import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPag
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.page.AutocompletePage;
+import fr.openwide.core.showcase.web.application.widgets.page.AutosizePage;
 import fr.openwide.core.showcase.web.application.widgets.page.CalendarPage;
 import fr.openwide.core.showcase.web.application.widgets.page.CarouselPage;
 import fr.openwide.core.showcase.web.application.widgets.page.DateParserPage;
 import fr.openwide.core.showcase.web.application.widgets.page.FancyboxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.ListFilterPage;
+import fr.openwide.core.showcase.web.application.widgets.page.SortableListPage;
 import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.TooltipPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
@@ -71,6 +73,8 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/tooltip/", TooltipPage.class);
 		mountPage("/widgets/statistics/", StatisticsPage.class);
 		mountPage("/widgets/carousel/", CarouselPage.class);
+		mountPage("/widgets/autosize/", AutosizePage.class);
+		mountPage("/widgets/sortable-list/", SortableListPage.class);
 		
 		mountPage("/titles/", TitlesPage.class);
 		
