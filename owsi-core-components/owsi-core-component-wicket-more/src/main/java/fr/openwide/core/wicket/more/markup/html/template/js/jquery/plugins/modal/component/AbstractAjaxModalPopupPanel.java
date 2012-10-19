@@ -43,7 +43,7 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 	 */
 	public AbstractAjaxModalPopupPanel(String id, IModel<? extends O> model, boolean resetInputOnShow) {
 		super(id, model);
-		this.resetInputOnShow = true;
+		this.resetInputOnShow = resetInputOnShow;
 	}
 
 	@Override
