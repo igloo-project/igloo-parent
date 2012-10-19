@@ -3,6 +3,15 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<h1><wicket:message key="portfolio.pageTitle" /></h1>
-		<div class="column-80" wicket:id="userPortfolio"></div>
+		<div class="float-left column-80">
+			<div class="page-main-content" style="margin-right: 15px;">
+				<div class="user-search-panel-outer search-panel-outer">
+					<div wicket:id="userSearchPanel"></div>
+				</div>
+				<div class="clear"></div>
+				<div wicket:id="userPortfolio"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
 	</wicket:extend>
 </html>

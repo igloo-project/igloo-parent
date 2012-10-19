@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div class="direct-search search-panel">
+		<div class="field-inline">
+			<div class="label-outer long">
+				<label class="search-field-label"><wicket:message key="user.portfolio.search.quickSearch" /></label>
+			</div>
+			<div class="input-outer">
+				<div wicket:id="userQuickSearch"></div>
+			</div>
+		</div>
+	</div>
+	<div class="qualified-search search-panel">
+		<form wicket:id="form">
+			<div class="field-inline">
+				<div class="label-outer short">
+					<label class="search-field-label" wicket:for="searchInput"><wicket:label /></label>
+				</div>
+				<div class="input-outer">
+					<input type="text" wicket:id="searchInput"/>
+				</div>
+			</div>
+			<div class="field-inline">
+				<div class="label-outer short">
+					<label class="search-field-label" wicket:for="active"><wicket:label /></label>
+				</div>
+				<div class="input-outer">
+					<input type="checkbox" wicket:id="active"/>
+				</div>
+			</div>
+			<div class="field-inline apply-filter buttons" style="width: auto">
+				<button wicket:id="submit" class="btn btn-mini" type="submit">
+					<i class="icon-filter"></i>
+					<wicket:message key="common.apply-filters" />
+				</button>
+			</div>
+			<div class="clear"></div>
+		</form>
+	</div>
+	<div class="clear"></div>
+</wicket:panel>
+</html>

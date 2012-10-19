@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -15,9 +16,12 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfolioPanel;
+import fr.openwide.core.showcase.web.application.portfolio.component.UserSearchPanel;
+import fr.openwide.core.showcase.web.application.portfolio.model.UserDataProvider;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class PortfolioMainPage extends MainTemplate {
 	private static final long serialVersionUID = 6572019030268485555L;
@@ -33,17 +37,15 @@ public class PortfolioMainPage extends MainTemplate {
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.class));
 		
-		// TODO JGO - implémenter la recherche quand y'aura le temps
-		IModel<List<User>> userListModel = new LoadableDetachableModel<List<User>>() {
-			private static final long serialVersionUID = -5757718865027562782L;
-			
-			@Override
-			protected List<User> load() {
-				return userService.list();
-			}
-		};
+		IModel<String> searchTermModel = Model.of("");
+		IModel<User> userModel = new GenericEntityModel<Long, User>(null);
+		IModel<Boolean> activeModel = Model.of(true);
 		
-		add(new UserPortfolioPanel("userPortfolio", userListModel, showcaseConfigurer.getPortfolioItemsPerPage()));
+		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", new UserDataProvider(
+				searchTermModel, activeModel), showcaseConfigurer.getPortfolioItemsPerPage());
+		add(portfolioPanel);
+		
+		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getPageable(), searchTermModel, userModel, activeModel));
 	}
 	
 	@Override

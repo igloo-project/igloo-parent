@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.util.init.service.IImportDataService;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 
 public class BootstrapApplicationServiceImpl {
 	
@@ -19,8 +20,12 @@ public class BootstrapApplicationServiceImpl {
 	@Autowired
 	private IImportDataService initDataService;
 	
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
+	
 	@PostConstruct
 	public void init() throws FileNotFoundException, ServiceException, SecurityServiceException, IOException {
 		initDataService.importDirectory(new ClassPathResource(INIT_RESOURCE_PATH).getFile());
+		hibernateSearchService.reindexAll();
 	}
 }

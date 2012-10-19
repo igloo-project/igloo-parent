@@ -26,7 +26,7 @@ public class UserItemItField extends ItemItField<User, UserJson> {
 	@Override
 	public List<User> getValues(String term) {
 		try {
-			return userService.searchAutocomplete(term, 10);
+			return userService.searchAutocomplete(term);
 		} catch (ServiceException e) {
 			return Collections.emptyList();
 		}

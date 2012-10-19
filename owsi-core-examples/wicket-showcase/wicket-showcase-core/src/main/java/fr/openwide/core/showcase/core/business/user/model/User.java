@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
 import org.bindgen.Bindable;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 
@@ -22,6 +26,9 @@ public class User extends AbstractPerson<User> {
 	
 	@ManyToMany
 	private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+	
+	@Column(nullable = false)
+	private Integer position;
 	
 	public List<UserGroup> getUserGroups() {
 		return userGroups;
@@ -52,5 +59,25 @@ public class User extends AbstractPerson<User> {
 	public List<IPersonGroup> getPersonGroups() {
 		return (List<IPersonGroup>) ((Object) userGroups);
 	}
-
+	
+	public Integer getPosition() {
+		return position;
+	}
+	
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+	
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	public String getSortName() {
+		StringBuilder builder = new StringBuilder();
+		if(getLastName() != null) {
+			builder.append(getLastName());
+			builder.append(" ");
+		}
+		if(getFirstName() != null) {
+			builder.append(getFirstName());
+		}
+		return builder.toString().trim();
+	}
 }

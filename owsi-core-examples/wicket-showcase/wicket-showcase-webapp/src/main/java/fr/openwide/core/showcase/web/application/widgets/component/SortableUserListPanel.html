@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<form wicket:id="userListForm" style="margin-left: 10px;">
+			<div class="subtitle">
+				<!-- Actions sur la liste des users -->
+				<div wicket:id="actions" class="actions" style="margin-top: 15px;">
+					<button wicket:id="modifierOrdre" type="button" class="btn btn-primary">
+						<span class="icon-random icon-white" />
+						<wicket:message key="widgets.sortable.ordre.edit" />
+					</button>
+					<button wicket:id="annulerOrdre" type="reset" class="btn">
+						<span class="icon-ban-circle" />
+						<wicket:message key="widgets.sortable.ordre.cancel" />
+					</button>
+					<button wicket:id="enregistrerOrdre" type="submit" class="btn btn-success">
+						<span class="icon-ok icon-white" />
+						<wicket:message key="widgets.sortable.ordre.save" />
+					</button>
+				</div>
+			</div>
+			
+			<div wicket:id="listeUserContainer" class="liste-elements sortable">
+				<div wicket:id="userListView" class="element filter-element">
+					<div class="title-outer">
+						<input wicket:id="positionField" class="position" />
+						
+						<div wicket:id="positionLabel" class="position-label"></div>
+						<span wicket:id="fullname" class="title"></span>
+						<span wicket:id="username" class="complement"></span>
+					</div>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</html>
