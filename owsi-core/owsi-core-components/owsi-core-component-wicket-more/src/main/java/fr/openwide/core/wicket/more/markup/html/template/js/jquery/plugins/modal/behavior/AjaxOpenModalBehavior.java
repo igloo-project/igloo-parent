@@ -1,14 +1,18 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.odlabs.wiquery.core.events.EventLabel;
 import org.odlabs.wiquery.core.events.WiQueryAjaxEventBehavior;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.IAjaxModalPopupPanel;
 
 /**
@@ -63,6 +67,13 @@ public abstract class AjaxOpenModalBehavior extends WiQueryAjaxEventBehavior {
 
 	protected String selector(IAjaxModalPopupPanel modal) {
 		return "#" + modal.getContainerMarkupId();
+	}
+
+	@Override
+	public void renderHead(Component component, IHeaderResponse response) {
+		super.renderHead(component, response);
+		
+		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
 	}
 
 }

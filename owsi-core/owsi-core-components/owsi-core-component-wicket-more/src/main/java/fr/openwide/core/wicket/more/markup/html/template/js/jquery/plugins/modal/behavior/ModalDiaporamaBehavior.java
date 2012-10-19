@@ -8,7 +8,6 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.odlabs.wiquery.core.javascript.ChainableStatement;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 
 public class ModalDiaporamaBehavior extends Behavior {
@@ -27,7 +26,8 @@ public class ModalDiaporamaBehavior extends Behavior {
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(EasingJavaScriptResourceReference.get()));
+		super.renderHead(component, response);
+		
 		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
 		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component, selector).chain(fancybox).render()));
 	}
