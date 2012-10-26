@@ -1,6 +1,19 @@
 (function($) {
 	var methods = {
 		init : function(options) {
+			var cleanInput = function(input) {
+				var accentMap = {
+					'à':'a','á':'a','â':'a','é':'e','è':'e','ê':'e','ë':'e','í':'i','ï':'i','ô':'o','ó':'o','ú':'u','û':'u','ù':'u','ç':'c'
+				};
+				var s = input.toLowerCase();
+				if (!s) { return ''; }
+				var ret = '';
+				for (var i = 0; i < s.length; i++) {
+					ret += accentMap[s.charAt(i)] || s.charAt(i);
+				}
+				return ret;
+			};
+			
 			return this.each(function() {
 				var $this = $(this);
 				
@@ -44,7 +57,7 @@
 					}
 					
 					inputField.on('keyup', function () {
-						var filter = $.trim($(this).val().replace(/\s+/g, ' '));
+						var filter = cleanInput($.trim($(this).val().replace(/\s+/g, ' ')));
 						var $listeContainer = $this;
 						
 						if (filter.length == 0) {
@@ -72,8 +85,8 @@
 									
 									$elementsToScan.each(function() {
 										var text = $(this).text();
-										text = $.trim(text.replace(/\s+/g, ' '));
-										if (text.search(filterPart, 'i') >= 0) {
+										text = cleanInput($.trim(text.replace(/\s+/g, ' ')));
+										if (text.indexOf(filterPart) >= 0) {
 											filterPartFound = true;
 										}
 									});
@@ -130,7 +143,7 @@
 				}
 				inputField.attr('disabled', !enabled);
 			});
-		}
+		},
 	};
 	
 	$.fn.listFilter = function(method) {
