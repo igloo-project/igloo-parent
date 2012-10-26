@@ -42,9 +42,6 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CorePropertyPlaceholderConfigurer.class);
 	
-	private static final String UTF8 = "UTF-8";
-	
-	
 	/**
 	 * Espace séparant deux valeurs dans une liste.
 	 */
@@ -55,11 +52,6 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 */
 	private PropertyResolver propertyResolver;
 	
-	public CorePropertyPlaceholderConfigurer() {
-		super();
-		setFileEncoding(UTF8);
-	}
-
 	/**
 	 * Retourne une propriété spécifique à partir de sa clé sous la forme d'un
 	 * booléen.
