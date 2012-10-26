@@ -33,12 +33,17 @@
 					
 					$this.addClass(options.containerClass);
 					
-					$(options.inputSelector, $this).attr('disabled', !options.enabled);
+					var inputField = $(options.inputSelector, $this);
+					if (inputField.length == 0) {
+						inputField = $(options.inputSelector);
+					}
+					
+					inputField.attr('disabled', !options.enabled);
 					if (!options.enabled) {
 						$this.addClass(data.options.disabledClass);
 					}
 					
-					$(options.inputSelector, $this).on('keyup', function () {
+					inputField.on('keyup', function () {
 						var filter = $.trim($(this).val().replace(/\s+/g, ' '));
 						var $listeContainer = $this;
 						
@@ -101,7 +106,13 @@
 		clear : function() {
 			return this.each(function() {
 				var $this = $(this), data = $this.data('listFilter');
-				$(data.options.inputSelector, $this).val('');
+				
+				var inputField = $(data.options.inputSelector, $this);
+				if (inputField.length == 0) {
+					inputField = $(data.options.inputSelector);
+				}
+				
+				inputField.val('');
 				$(data.options.inputSelector, $this).trigger('keyup');
 			});
 		},
@@ -113,7 +124,11 @@
 				} else {
 					$this.addClass(data.options.disabledClass);
 				}
-				$(data.options.inputSelector, $this).attr('disabled', !enabled);
+				var inputField = $(data.options.inputSelector, $this);
+				if (inputField.length == 0) {
+					inputField = $(data.options.inputSelector);
+				}
+				inputField.attr('disabled', !enabled);
 			});
 		}
 	};
