@@ -28,7 +28,9 @@ public abstract class ConfirmLink<O> extends Link<O> {
 		Options options = new Options();
 		options.put("onConfirm", JsScope.quickScope(new JsStatement().append("window.location = ").append(JsUtils.quotes(url, true))));
 		JsStatement confirmStatement = new JsStatement().$(this).chain("confirm", options.getJavaScriptOptions());
-		return confirmStatement.render();
+		StringBuilder onClickScript = new StringBuilder(confirmStatement.render());
+		onClickScript.append("return false;");
+		return onClickScript.toString();
 	}
 
 	@Override
