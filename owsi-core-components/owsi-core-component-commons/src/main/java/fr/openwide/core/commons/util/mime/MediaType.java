@@ -16,6 +16,7 @@ public enum MediaType {
 	APPLICATION_ZIP("application/zip", "zip"),
 	APPLICATION_KML("application/vnd.google-earth.kml+xml", "kml"),
 	APPLICATION_KMZ("application/vnd.google-earth.kmz", "kmz"),
+	APPLICATION_GPX("application/gpx+xml", "gpx"),
 	APPLICATION_PDF("application/pdf", "pdf"),
 	
 	// Applications > MS Office
