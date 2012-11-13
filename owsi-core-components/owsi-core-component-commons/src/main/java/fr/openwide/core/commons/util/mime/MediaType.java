@@ -50,6 +50,7 @@ public enum MediaType {
 	IMAGE_SVG("image/svg+xml", "svg"),
 	IMAGE_BMP("image/x-ms-bmp", "bmp"),
 	IMAGE_JPEG2000("image/jp2", "jp2"),
+	IMAGE_PSD("image/x-photoshop", "psd"),
 	
 	// Video
 	VIDEO_ANY("video/*"),
