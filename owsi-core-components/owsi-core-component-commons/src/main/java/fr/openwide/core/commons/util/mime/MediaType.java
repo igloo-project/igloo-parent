@@ -46,7 +46,7 @@ public enum MediaType {
 	IMAGE_JPEG("image/jpeg", "jpg", list("jpe", "jpeg")),
 	IMAGE_PNG("image/png", "png"),
 	IMAGE_TIFF("image/tiff", "tif", list("tiff")),
-	IMAGE_X_ICON("image/xicon", "ico"),
+	IMAGE_X_ICON("image/x-icon", "ico"),
 	IMAGE_SVG("image/svg+xml", "svg"),
 	IMAGE_BMP("image/x-ms-bmp", "bmp"),
 	IMAGE_JPEG2000("image/jp2", "jp2"),
