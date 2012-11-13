@@ -19,17 +19,17 @@
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>3.1.2.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>3.1.3.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.6.12</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>4.1.6.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-core.version>4.1.8.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.0-api.version>1.0.1.Final</owsi-core.hibernate-jpa-2.0-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.2.0.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.c3p0.version>0.9.1.2</owsi-core.c3p0.version>
 		<owsi-core.tomcat-jdbc.version>7.0.27</owsi-core.tomcat-jdbc.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.4.7</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>2.7.2</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>2.8.2</owsi-core.querydsl.version>
 		
 		<owsi-core.guava.version>13.0.1</owsi-core.guava.version>
 		
@@ -76,7 +76,7 @@
 		
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
-		<owsi-core.jackson.version>1.9.10</owsi-core.jackson.version>
+		<owsi-core.jackson.version>1.9.11</owsi-core.jackson.version>
 		<owsi-core.jackson2.version>2.0.4</owsi-core.jackson2.version>
 		<owsi-core.truezip.version>7.5.5</owsi-core.truezip.version>
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
@@ -85,7 +85,7 @@
 		<owsi-core.jsoup.version>1.6.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		
-		<owsi-core.jersey.version>1.14</owsi-core.jersey.version>
+		<owsi-core.jersey.version>1.15</owsi-core.jersey.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
