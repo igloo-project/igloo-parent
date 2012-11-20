@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +47,9 @@ public class DefaultJpaConfigurationProvider {
 
 	@Value("${javax.persistence.validation.mode}")
 	private String validationMode;
+	
+	@Value("${hibernate.ejb.naming_strategy}")
+	private Class<NamingStrategy> namingStrategy;
 
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
 		return jpaPackageScanProviders;
@@ -93,6 +97,10 @@ public class DefaultJpaConfigurationProvider {
 
 	public String getValidationMode() {
 		return validationMode;
+	}
+	
+	public Class<NamingStrategy> getNamingStrategy() {
+		return namingStrategy;
 	}
 
 }
