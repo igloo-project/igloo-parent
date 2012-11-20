@@ -14,6 +14,7 @@ import org.apache.lucene.util.Version;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.DefaultComponentSafeNamingStrategy;
+import org.hibernate.cfg.EJB3NamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
@@ -147,11 +148,12 @@ public final class JpaConfigUtils {
 		if (StringUtils.hasText(validationMode)) {
 			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
 		}
-		if (namingStrategy == null) {
-			// par défaut, on impose une naming strategy qui permet d'avoir plusieurs @Embedded de la même classe
-			properties.setProperty(AvailableSettings.NAMING_STRATEGY, DefaultComponentSafeNamingStrategy.class.getName());
-		} else {
+		if (namingStrategy != null) {
 			properties.setProperty(AvailableSettings.NAMING_STRATEGY, namingStrategy.getName());
+		} else {
+			throw new IllegalStateException(AvailableSettings.NAMING_STRATEGY + " may not be null: sensible values are "
+					+ EJB3NamingStrategy.class.getName() + " for OWSI-Core <= 0.7 or "
+					+ DefaultComponentSafeNamingStrategy.class.getName() + " for OWSI-Core >= 0.8");
 		}
 		
 		return properties;
