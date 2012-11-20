@@ -13,7 +13,9 @@ import javax.sql.DataSource;
 import org.apache.lucene.util.Version;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
+import org.hibernate.cfg.DefaultComponentSafeNamingStrategy;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.AvailableSettings;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
@@ -47,7 +49,8 @@ public final class JpaConfigUtils {
 				provider.getDialect(), provider.getHbm2Ddl(), provider.getHbm2DdlImportFiles(),
 				provider.getHibernateSearchIndexBase(), provider.getDataSource(), 
 				provider.getEhCacheConfiguration(), provider.isEhCacheSingleton(), provider.isQueryCacheEnabled(),
-				provider.getDefaultBatchSize(), provider.getPersistenceProvider(), provider.getValidationMode());
+				provider.getDefaultBatchSize(), provider.getPersistenceProvider(), provider.getValidationMode(),
+				provider.getNamingStrategy());
 	}
 
 	/**
@@ -65,13 +68,15 @@ public final class JpaConfigUtils {
 			boolean queryCacheEnabled,
 			Integer defaultBatchSize,
 			PersistenceProvider persistenceProvider,
-			String validationMode) {
+			String validationMode,
+			Class<NamingStrategy> namingStrategy) {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl,
 				hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
-				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode));
+				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode,
+				namingStrategy));
 		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(jpaPackageScanProviders));
 		
@@ -90,7 +95,8 @@ public final class JpaConfigUtils {
 			boolean singletonCache,
 			boolean queryCacheEnabled,
 			Integer defaultBatchSize,
-			String validationMode) {
+			String validationMode,
+			Class<NamingStrategy> namingStrategy) {
 		Properties properties = new Properties();
 		properties.setProperty(Environment.DIALECT, dialect.getName());
 		properties.setProperty(Environment.HBM2DDL_AUTO, hibernateHbm2Ddl);
@@ -140,6 +146,12 @@ public final class JpaConfigUtils {
 		
 		if (StringUtils.hasText(validationMode)) {
 			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
+		}
+		if (namingStrategy == null) {
+			// par défaut, on impose une naming strategy qui permet d'avoir plusieurs @Embedded de la même classe
+			properties.setProperty(AvailableSettings.NAMING_STRATEGY, DefaultComponentSafeNamingStrategy.class.getName());
+		} else {
+			properties.setProperty(AvailableSettings.NAMING_STRATEGY, namingStrategy.getName());
 		}
 		
 		return properties;
