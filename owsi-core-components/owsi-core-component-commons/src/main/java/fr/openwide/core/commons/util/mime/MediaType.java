@@ -12,12 +12,14 @@ public enum MediaType {
 	// Applications
 	APPLICATION_OCTET_STREAM("application/octet-stream"),
 	APPLICATION_JAVASCRIPT("application/javascript", "js"),
+	APPLICATION_XML("application/xml", "xml"),
 	APPLICATION_JSON("application/json", "json"),
 	APPLICATION_ZIP("application/zip", "zip"),
 	APPLICATION_KML("application/vnd.google-earth.kml+xml", "kml"),
 	APPLICATION_KMZ("application/vnd.google-earth.kmz", "kmz"),
 	APPLICATION_GPX("application/gpx+xml", "gpx"),
 	APPLICATION_PDF("application/pdf", "pdf"),
+	APPLICATION_SWF("application/x-shockwave-flash", "swf"),
 	
 	// Applications > MS Office
 	APPLICATION_MS_WORD("application/msword", "doc"),
