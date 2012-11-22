@@ -17,7 +17,7 @@ public final class BootstrapPopoverJavascriptResourceReference extends AbstractC
 	}
 
 	@Override
-	public Iterable<? extends HeaderItem> getPluginDependencies() {
+	protected Iterable<? extends HeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(BootstrapTooltipJavascriptResourceReference.get());
 	}
 

@@ -23,7 +23,7 @@ public final class ModalJavaScriptResourceReference extends AbstractCoreJQueryPl
 	}
 	
 	@Override
-	public Iterable<? extends HeaderItem> getPluginDependencies() {
+	protected Iterable<? extends HeaderItem> getPluginDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayList();
 		Iterables.addAll(dependencies, JavaScriptHeaderItems.forReferences(
 				EasingJavaScriptResourceReference.get(),

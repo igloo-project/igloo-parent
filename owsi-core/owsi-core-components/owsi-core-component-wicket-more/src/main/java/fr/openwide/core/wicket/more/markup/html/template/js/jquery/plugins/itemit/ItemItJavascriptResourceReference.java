@@ -20,7 +20,7 @@ public final class ItemItJavascriptResourceReference extends AbstractCoreJQueryP
 	}
 
 	@Override
-	public Iterable<? extends HeaderItem> getPluginDependencies() {
+	protected Iterable<? extends HeaderItem> getPluginDependencies() {
 		return JavaScriptHeaderItems.forReferences(
 				ItemAutocompleteJavascriptResourceReference.get(),
 				JsonJavascriptResourceReference.get(),
