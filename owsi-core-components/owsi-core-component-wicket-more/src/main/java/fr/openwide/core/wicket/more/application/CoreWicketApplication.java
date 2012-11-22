@@ -22,7 +22,6 @@ import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.UpdatedJQueryResourceReference;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
 public abstract class CoreWicketApplication extends WebApplication {
@@ -81,7 +80,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 			getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
 			// surcharge des ressources jQuery et jQuery UI
-			getJavaScriptLibrarySettings().setJQueryReference(UpdatedJQueryResourceReference.get());
 			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 		
 		mountCommonResources();
