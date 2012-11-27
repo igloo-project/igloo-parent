@@ -27,6 +27,9 @@ public class TestCoreFrenchMinimalStemmer {
 		
 		Assert.assertEquals("chapeau", stem("chapeau"));
 		Assert.assertEquals("chapeau", stem("chapeaux"));
+		
+		Assert.assertEquals("kit", stem("kits"));
+		Assert.assertEquals("kit", stem("kit"));
 	}
 	
 	public String stem(String word) {
