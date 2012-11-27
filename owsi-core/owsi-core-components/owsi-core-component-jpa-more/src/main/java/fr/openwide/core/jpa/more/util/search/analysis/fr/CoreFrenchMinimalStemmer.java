@@ -17,10 +17,15 @@ public class CoreFrenchMinimalStemmer {
 	 * /!\ certaines règles dépendent de ce choix de longueur : il faut donc faire attention à ne pas le descendre
 	 * ou alors il faut intégrer des checks en plus ci-dessous quand on remonte dans les index
 	 */
-	private static final int MIN_LENGTH = 5;
+	private static final int MIN_LENGTH_HARD_LIMIT = 5;
+	
+	private static final int MIN_LENGTH_PLURAL_LIMIT = 4;
 
 	public int stem(char s[], int len) {
-		if (len < MIN_LENGTH) {
+		if (len < MIN_LENGTH_HARD_LIMIT) {
+			if (len >= MIN_LENGTH_PLURAL_LIMIT) {
+				return stemLetter(s, len, 's', MIN_LENGTH_PLURAL_LIMIT);
+			}
 			return len;
 		}
 
@@ -45,14 +50,18 @@ public class CoreFrenchMinimalStemmer {
 	}
 
 	private int stemLetter(char s[], int len, char letter) {
-		if (len >= MIN_LENGTH && s[len - 1] == letter) {
+		return stemLetter(s, len, letter, MIN_LENGTH_HARD_LIMIT);
+	}
+	
+	private int stemLetter(char s[], int len, char letter, int limit) {
+		if (len >= limit && s[len - 1] == letter) {
 			return len - 1;
 		}
 		return len;
 	}
 	
 	private int stemLetterIfPreviousLetterIs(char s[], int len, char letter, char previousLetter) {
-		if (len >= MIN_LENGTH && s[len - 1] == letter) {
+		if (len >= MIN_LENGTH_HARD_LIMIT && s[len - 1] == letter) {
 			return len - 1;
 		}
 		return len;
