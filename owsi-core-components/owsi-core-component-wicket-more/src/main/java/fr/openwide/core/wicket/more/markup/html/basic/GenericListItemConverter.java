@@ -45,7 +45,12 @@ class GenericListItemConverter extends AbstractConverter<GenericListItem<?>> {
 		if (value == null) {
 			return "";
 		} else {
-			return SpringBeanUtils.getBeanWrapper(value).getPropertyValue(binding.getPath()).toString();
+			Object propertyValue = SpringBeanUtils.getBeanWrapper(value).getPropertyValue(binding.getPath());
+			if (propertyValue == null) {
+				return "";
+			} else {
+				return propertyValue.toString();
+			}
 		}
 	}
 
