@@ -90,6 +90,7 @@ public class CountMessageModel extends AbstractReadOnlyModel<String>
             {
                 private static final long serialVersionUID = 1L;
 
+                @Override
                 public CountMessageModel getObject()
                 {
                     return CountMessageModel.this;
@@ -113,6 +114,7 @@ public class CountMessageModel extends AbstractReadOnlyModel<String>
     /**
      * Returns the message after all interpolation has been performed.
      */
+    @Override
     public String getObject()
     {
         return this.stringModel.getObject();
