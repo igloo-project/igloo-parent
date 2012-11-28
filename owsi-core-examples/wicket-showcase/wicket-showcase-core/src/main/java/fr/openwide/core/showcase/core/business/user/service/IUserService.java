@@ -11,6 +11,7 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 
 public interface IUserService extends IPersonService<User> {
 
+	@Override
 	List<User> searchAutocomplete(String searchPattern) throws ServiceException;
 
 	List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset) throws ParseException;

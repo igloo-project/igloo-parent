@@ -1,7 +1,6 @@
 package fr.openwide.core.test.jpa.more.util.search.analysis.fr;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import fr.openwide.core.jpa.more.util.search.analysis.fr.CoreFrenchMinimalStemmer;
