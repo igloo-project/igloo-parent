@@ -39,7 +39,7 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id) {
+	public <E extends GenericListItem<?>> E getById(Class<E> clazz, Long id) {
 		return genericListItemDao.getById(clazz, id);
 	}
 	
