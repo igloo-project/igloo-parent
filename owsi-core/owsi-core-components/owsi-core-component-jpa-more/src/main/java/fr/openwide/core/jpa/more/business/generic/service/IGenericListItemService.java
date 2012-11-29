@@ -24,7 +24,7 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 public interface IGenericListItemService extends ITransactionalAspectAwareService {
 	
-	<E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id);
+	<E extends GenericListItem<?>> E getById(Class<E> clazz, Long id);
 
 	<E extends GenericListItem<?>> void create(E entity);
 

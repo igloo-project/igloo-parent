@@ -29,9 +29,9 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
  */
 public interface IGenericListItemDao {
 
-	<E extends GenericListItem<?>> E getEntity(Class<E> clazz, Integer id);
+	<E extends GenericListItem<?>> E getEntity(Class<E> clazz, Long id);
 
-	<E extends GenericListItem<?>> E getById(Class<E> clazz, Integer id);
+	<E extends GenericListItem<?>> E getById(Class<E> clazz, Long id);
 	
 	<E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, String naturalId);
 
