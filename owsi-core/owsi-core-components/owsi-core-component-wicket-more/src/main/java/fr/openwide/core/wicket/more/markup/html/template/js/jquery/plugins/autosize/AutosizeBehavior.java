@@ -11,6 +11,8 @@ public class AutosizeBehavior extends Behavior {
 
 	private static final long serialVersionUID = 6155882407495564466L;
 	
+	private static final String NEW_LINE = "\\n";
+	
 	public AutosizeBehavior() {
 		super();
 	}
@@ -18,7 +20,7 @@ public class AutosizeBehavior extends Behavior {
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(AutosizeJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain(new Autosize()).render()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain(new Autosize().append(NEW_LINE)).render()));
 	}
 
 }
