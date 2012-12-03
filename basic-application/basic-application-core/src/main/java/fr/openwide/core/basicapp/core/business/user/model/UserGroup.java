@@ -126,7 +126,7 @@ public class UserGroup extends GenericEntity<Long, UserGroup> implements IPerson
 		return locked;
 	}
 
-	public void setLocked(boolean locked) {
+	public void setLocked(Boolean locked) {
 		this.locked = locked;
 	}
 
