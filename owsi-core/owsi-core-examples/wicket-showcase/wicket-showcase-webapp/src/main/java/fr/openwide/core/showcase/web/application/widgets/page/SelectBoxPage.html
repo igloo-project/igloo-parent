@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1><wicket:message key="widgets.selectbox.title" /></h1>
+		
+		<section>
+			<h3><wicket:message key="widgets.selectbox.single" /></h3>
+			<div style="margin-left: 20px;">
+				<p>
+					<wicket:message key="widgets.selectbox.selected" />
+					<strong><span wicket:id="dropDownSelectedUser"></span></strong>
+				</p>
+				<form wicket:id="single">
+					<select wicket:id="dropDownChoice" style="width: 300px;" />
+					<div class="form-actions">
+						<button type="submit" class="btn">Submit</button>
+					</div>
+				</form>
+			</div>
+		</section>
+		
+		<section>
+			<h3><wicket:message key="widgets.selectbox.multi" /></h3>
+			<div style="margin-left: 20px;">
+				<p>
+					<wicket:message key="widgets.selectbox.selected" />
+					<strong><wicket:container wicket:id="listSelectedUser"> <span wicket:id="userName"></span> </wicket:container></strong>
+				</p>
+				<form wicket:id="multi">
+					<select wicket:id="listMultipleChoice" style="width: 300px;" />
+					<div class="form-actions">
+						<button type="submit" class="btn">Submit</button>
+					</div>
+				</form>
+			</div>
+		</section>
+	</wicket:extend>
+</html>

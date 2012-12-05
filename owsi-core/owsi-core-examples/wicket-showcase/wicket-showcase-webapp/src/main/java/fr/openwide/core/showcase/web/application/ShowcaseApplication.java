@@ -19,6 +19,7 @@ import fr.openwide.core.showcase.web.application.widgets.page.CarouselPage;
 import fr.openwide.core.showcase.web.application.widgets.page.DateParserPage;
 import fr.openwide.core.showcase.web.application.widgets.page.FancyboxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.ListFilterPage;
+import fr.openwide.core.showcase.web.application.widgets.page.SelectBoxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.SortableListPage;
 import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.TooltipPage;
@@ -75,6 +76,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/carousel/", CarouselPage.class);
 		mountPage("/widgets/autosize/", AutosizePage.class);
 		mountPage("/widgets/sortable-list/", SortableListPage.class);
+		mountPage("/widgets/selectbox/", SelectBoxPage.class);
 		
 		mountPage("/titles/", TitlesPage.class);
 		

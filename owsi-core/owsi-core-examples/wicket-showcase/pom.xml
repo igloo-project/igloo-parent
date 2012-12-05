@@ -25,6 +25,7 @@
 		<antlr.version>3.2</antlr.version>
 		<google-geocoder.version>0.9</google-geocoder.version>
 		<wqplot.version>6.1.1.owsi1-SNAPSHOT</wqplot.version>
+		<wicket-select2.version>1.1.0-SNAPSHOT</wicket-select2.version>
 	</properties>
 	
 	<!-- Project information -->
