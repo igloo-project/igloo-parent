@@ -53,6 +53,18 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.retzlaff</groupId>
+			<artifactId>wicket-select2</artifactId>
+			<version>${wicket-select2.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
 		<!-- WQplot -->
 		
 		<dependency>

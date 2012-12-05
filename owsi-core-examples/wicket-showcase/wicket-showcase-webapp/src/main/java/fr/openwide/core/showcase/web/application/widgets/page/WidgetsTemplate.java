@@ -34,7 +34,8 @@ public abstract class WidgetsTemplate extends MainTemplate {
 				new NavigationMenuItem(new ResourceModel("widgets.menu.carousel"), CarouselPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.statistics"), StatisticsPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.autosize"), AutosizePage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.sortable"), SortableListPage.class)
+				new NavigationMenuItem(new ResourceModel("widgets.menu.sortable"), SortableListPage.class),
+				new NavigationMenuItem(new ResourceModel("widgets.menu.selectbox"), SelectBoxPage.class)
 		);
 	}
 	
