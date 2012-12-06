@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
-import org.h2.constant.SysProperties;
 import org.retzlaff.select2.Select2Behavior;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
