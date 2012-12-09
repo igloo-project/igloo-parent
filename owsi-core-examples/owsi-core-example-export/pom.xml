@@ -52,20 +52,6 @@
 			</exclusions>
 		</dependency>
 		
-		<!-- Export Excel -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>${owsi-core.poi.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${owsi-core.servlet-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
 		<!-- Logging -->
 		<dependency>
 			<groupId>log4j</groupId>
