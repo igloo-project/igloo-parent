@@ -44,12 +44,6 @@ public class HideablePagingNavigator extends Panel {
 		}
 	}
 
-	@Override
-	public boolean isVisible() {
-		IPageable pageable = getPageable();
-		return (pageable.getPageCount() > 1);
-	}
-
 	public final IPageable getPageable() {
 		return pageable;
 	}
@@ -70,6 +64,13 @@ public class HideablePagingNavigator extends Panel {
 		last = newPagingNavigationLink("last", pageable, -1);
 		last.add(new AttributeModifier("title", new ResourceModel("PagingNavigator.last")));
 		add(last);
+	}
+	
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+		IPageable pageable = getPageable();
+		setVisible(pageable.getPageCount() > 1);
 	}
 	
 	@Override

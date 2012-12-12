@@ -21,12 +21,6 @@ public class HideableAjaxPagingNavigator extends HideablePagingNavigator {
 	}
 	
 	@Override
-	public boolean isVisible() {
-		IPageable pageable = getPageable();
-		return (pageable.getPageCount() > 1);
-	}
-	
-	@Override
 	protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageNumber) {
 		return new AjaxBootstrapPagingNavigationLink(id, pageable, pageNumber);
 	}
