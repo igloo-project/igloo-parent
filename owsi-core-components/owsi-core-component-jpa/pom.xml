@@ -125,6 +125,10 @@
 					<artifactId>lucene-analyzers</artifactId>
 					<groupId>org.apache.lucene</groupId>
 				</exclusion>
+				<!--
+				on utilise des classes de solr-core pour des analyzers mais on n'a vraiment pas besoin d'aller chercher
+				dans des analyzers aussi tordus que ceux qui sont dans ce package...
+				-->
 				<exclusion>
 					<artifactId>solr-analysis-extras</artifactId>
 					<groupId>org.apache.solr</groupId>
@@ -150,7 +154,7 @@
 		
 		<dependency>
 			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-analysis-extras</artifactId>
+			<artifactId>solr-core</artifactId>
 			<version>${owsi-core.lucene.version}</version>
 			<exclusions>
 				<exclusion>
@@ -232,6 +236,10 @@
 				<exclusion>
 					<artifactId>guava</artifactId>
 					<groupId>com.google.guava</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>lucene-kuromoji</artifactId>
+					<groupId>org.apache.lucene</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
