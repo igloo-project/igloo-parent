@@ -172,13 +172,29 @@
 						<!--
 						Par défaut, @ est utilisé comme délimiteur et ne peut pas être
 						échappé correctement. Historiquement, nous n'avons jamais utilisé
-						ces placeholders ; ont les supprime donc de la configuration
+						ces placeholders ; on les supprime donc de la configuration
 						Voir MRESOURCES-141
 						-->
 						<delimiters>
 							<delimiter>${*}</delimiter>
 						</delimiters>
 						<useDefaultDelimiters>false</useDefaultDelimiters>
+						<nonFilteredFileExtensions>
+							<nonFilteredFileExtension>zip</nonFilteredFileExtension>
+							<nonFilteredFileExtension>gz</nonFilteredFileExtension>
+							<nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+							<nonFilteredFileExtension>xls</nonFilteredFileExtension>
+							<nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+							<nonFilteredFileExtension>doc</nonFilteredFileExtension>
+							<nonFilteredFileExtension>docx</nonFilteredFileExtension>
+							<nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+							<nonFilteredFileExtension>jpeg</nonFilteredFileExtension>
+							<nonFilteredFileExtension>gif</nonFilteredFileExtension>
+							<nonFilteredFileExtension>png</nonFilteredFileExtension>
+							<nonFilteredFileExtension>svg</nonFilteredFileExtension>
+							<nonFilteredFileExtension>psd</nonFilteredFileExtension>
+							<nonFilteredFileExtension>ftl</nonFilteredFileExtension>
+						</nonFilteredFileExtensions>
 					</configuration>
 				</plugin>
 				<plugin>
