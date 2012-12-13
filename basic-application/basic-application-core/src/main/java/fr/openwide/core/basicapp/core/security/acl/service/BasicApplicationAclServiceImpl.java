@@ -24,8 +24,7 @@ public class BasicApplicationAclServiceImpl extends AbstractCoreAclServiceImpl {
 	protected List<AccessControlEntry> getAccessControlEntriesForEntity(
 			CoreAcl acl, GenericEntity<?, ?> objectIdentityEntity)
 			throws NotFoundException {
-		List<AccessControlEntry> acls = Lists.newArrayList();
-		acls.add(getAccessControlEntry(acl, CoreAuthorityConstants.ROLE_ANONYMOUS, BasePermission.READ));
+		List<AccessControlEntry> acls = Lists.newArrayListWithExpectedSize(2);
 		acls.add(getAccessControlEntry(acl, CoreAuthorityConstants.ROLE_AUTHENTICATED, BasePermission.WRITE));
 		acls.add(getAccessControlEntry(acl, CoreAuthorityConstants.ROLE_ADMIN, BasePermission.ADMINISTRATION));
 		return acls;
