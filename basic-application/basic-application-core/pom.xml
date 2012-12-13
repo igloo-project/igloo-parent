@@ -55,6 +55,12 @@
 			<artifactId>spring-test</artifactId>
 			<version>${owsi-core.spring.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	
