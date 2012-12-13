@@ -198,6 +198,7 @@
 							<nonFilteredFileExtension>png</nonFilteredFileExtension>
 							<nonFilteredFileExtension>svg</nonFilteredFileExtension>
 							<nonFilteredFileExtension>psd</nonFilteredFileExtension>
+							<nonFilteredFileExtension>ftl</nonFilteredFileExtension>
 						</nonFilteredFileExtensions>
 					</configuration>
 				</plugin>
