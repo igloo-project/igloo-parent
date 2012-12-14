@@ -71,6 +71,43 @@ public class TestStringUtils {
 	}
 	
 	@Test
+	public void testTagify() {
+		String cleanStr;
+
+		String str_maj = "ABCDEFG";
+		cleanStr = StringUtils.tagify(str_maj);
+		assertEquals("abcdefg", cleanStr);
+
+		String str_accent = "éèàçù";
+		cleanStr = StringUtils.tagify(str_accent);
+		assertEquals("eeacu", cleanStr);
+
+		String str_dashes = "---------";
+		cleanStr = StringUtils.tagify(str_dashes);
+		assertEquals("", cleanStr);
+
+		String str_spaces = "         ";
+		cleanStr = StringUtils.tagify(str_spaces);
+		assertEquals("", cleanStr);
+
+		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
+		cleanStr = StringUtils.tagify(str_regEx);
+		assertEquals(".-23", cleanStr);
+
+		String str_trimDash = " --test-test--";
+		cleanStr = StringUtils.tagify(str_trimDash);
+		assertEquals("test-test", cleanStr);
+
+		String str_null = null;
+		cleanStr = StringUtils.tagify(str_null);
+		assertNull(cleanStr);
+		
+		String str_versionTag = "v 2.3.4";
+		cleanStr = StringUtils.tagify(str_versionTag);
+		assertEquals("v-2.3.4", cleanStr);
+	}
+	
+	@Test
 	public void testClean() {
 		String cleanStr;
 
