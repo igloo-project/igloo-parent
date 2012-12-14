@@ -50,6 +50,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	public static final String CLEAN_SPECIAL_CHARS_REGEXP;
 	public static final String CLEAN_DUPLICATE_DASHES_REGEXP = "--*";
 	public static final String CLEAN_DUPLICATE_SPACES_REGEXP = "  *";
+	public static final String TAGIFY_REGEXP;
 	public static final String COLLECTION_DEFAULT_DELIMITER = ", ";
 	
 	public static final String NEW_LINE_ANTISLASH_N = "\n";
@@ -57,23 +58,41 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	public static final String NEW_LINE_ANTISLASH_R_ANTISLASH_N = NEW_LINE_ANTISLASH_R + NEW_LINE_ANTISLASH_N;
 	
 	static {
-		StringBuilder regExp = new StringBuilder();
-		regExp.append('[');
-		regExp.append("’'`«»");
-		regExp.append("\n\r\t");
-		regExp.append('\"');
-		regExp.append(":;,\\.");
-		regExp.append("!¡\\?¿&|");
-		regExp.append("°_%");
-		regExp.append("\\\\");
-		regExp.append("©®€²³");
-		regExp.append("\\+\\*÷×/%");
-		regExp.append("<>()^\\[\\]");
-		regExp.append('…');
-		regExp.append('–');
-		regExp.append(']');
+		StringBuilder cleanSpecialCharsRegexp = new StringBuilder();
+		cleanSpecialCharsRegexp.append('[');
+		cleanSpecialCharsRegexp.append("’'`«»");
+		cleanSpecialCharsRegexp.append("\n\r\t");
+		cleanSpecialCharsRegexp.append('\"');
+		cleanSpecialCharsRegexp.append(":;,\\.");
+		cleanSpecialCharsRegexp.append("!¡\\?¿&|");
+		cleanSpecialCharsRegexp.append("°_%");
+		cleanSpecialCharsRegexp.append("\\\\");
+		cleanSpecialCharsRegexp.append("©®€²³");
+		cleanSpecialCharsRegexp.append("\\+\\*÷×/%");
+		cleanSpecialCharsRegexp.append("<>()^\\[\\]");
+		cleanSpecialCharsRegexp.append('…');
+		cleanSpecialCharsRegexp.append('–');
+		cleanSpecialCharsRegexp.append(']');
 		
-		CLEAN_SPECIAL_CHARS_REGEXP = regExp.toString();
+		CLEAN_SPECIAL_CHARS_REGEXP = cleanSpecialCharsRegexp.toString();
+		
+		StringBuilder tagifyRegexp = new StringBuilder();
+		tagifyRegexp.append('[');
+		tagifyRegexp.append("’'`«»");
+		tagifyRegexp.append("\n\r\t");
+		tagifyRegexp.append('\"');
+		tagifyRegexp.append(":;,");
+		tagifyRegexp.append("!¡\\?¿&|");
+		tagifyRegexp.append("°_%");
+		tagifyRegexp.append("\\\\");
+		tagifyRegexp.append("©®€²³");
+		tagifyRegexp.append("\\+\\*÷×/%");
+		tagifyRegexp.append("<>()^\\[\\]");
+		tagifyRegexp.append('…');
+		tagifyRegexp.append('–');
+		tagifyRegexp.append(']');
+		
+		TAGIFY_REGEXP = tagifyRegexp.toString();
 	}
 
 	/**
@@ -157,6 +176,22 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @return chaîne nettoyée
 	 */
 	public static String urlize(String strToClean) {
+		return sanitizeString(strToClean, CLEAN_SPECIAL_CHARS_REGEXP);
+	}
+	
+	/**
+	 * Supprime les caractères spéciaux d'une chaîne de caractères et retourne une chaîne utilisable pour un tag.
+	 * 
+	 * La grande différence par rapport à une URL est qu'on autorise les ".", notamment pour pouvoir définir des numéros de version.
+	 * 
+	 * @param strToClean chaîne à nettoyer
+	 * @return chaîne nettoyée
+	 */
+	public static String tagify(String strToClean) {
+		return sanitizeString(strToClean, TAGIFY_REGEXP);
+	}
+	
+	private static String sanitizeString(String strToClean, String cleanRegexp) {
 		if (strToClean == null) {
 			return null;
 		}
@@ -166,7 +201,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		str = StringUtils.lowerCase(str);
 		str = StringUtils.removeAccents(str);
 		
-		str = str.replaceAll(CLEAN_SPECIAL_CHARS_REGEXP, DASH);
+		str = str.replaceAll(cleanRegexp, DASH);
 		str = str.replace(SPACE_CHAR, DASH_CHAR);
 		str = str.replaceAll(CLEAN_DUPLICATE_DASHES_REGEXP, DASH);
 		
@@ -177,7 +212,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 	
 	/**
-	 * Nettoie une chaîne de caractères
+	 * Nettoie une chaîne de caractères en conservant les espaces
 	 * 
 	 * @param strToClean chaîne à nettoyer
 	 * @return chaîne nettoyée
