@@ -8,6 +8,9 @@ import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.util.string.Strings;
 
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 
@@ -60,6 +63,22 @@ public abstract class AbstractMonitoringPage extends Page {
 	@Override
 	public MarkupType getMarkupType() {
 		return TEXT_PLAIN_MARKUP_TYPE;
+	}
+	
+	@Override
+	protected void onRender() {
+		final String encoding = getApplication().getRequestCycleSettings().getResponseRequestEncoding();
+		final boolean validEncoding = (Strings.isEmpty(encoding) == false);
+		final String contentType;
+		if (validEncoding) {
+			contentType = getMarkupType().getMimeType() + "; charset=" + encoding;
+		} else {
+			contentType = getMarkupType().getMimeType();
+		}
+
+		((WebResponse) RequestCycle.get().getResponse()).setContentType(contentType);
+
+		super.onRender();
 	}
 
 	public void setSuccess(boolean success) {
