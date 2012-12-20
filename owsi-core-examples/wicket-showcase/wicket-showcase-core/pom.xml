@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>wicket-showcase</artifactId>
 		<groupId>fr.openwide.core.showcase</groupId>
-		<version>0.7.3</version>
+		<version>0.7.4-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>wicket-showcase-core</artifactId>
