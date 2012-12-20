@@ -109,7 +109,7 @@
 		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.12.4</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.4</owsi-core.maven-install-plugin.version>
-		<owsi-core.maven-release-plugin.version>2.3.2</owsi-core.maven-release-plugin.version>
+		<owsi-core.maven-release-plugin.version>2.4</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.3</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.4</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-jar-plugin.version>2.4</owsi-core.maven-jar-plugin.version>
