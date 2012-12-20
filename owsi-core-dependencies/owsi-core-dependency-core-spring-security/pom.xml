@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>owsi-core-dependencies</artifactId>
 		<groupId>fr.openwide.core.dependencies</groupId>
-		<version>0.7.3-SNAPSHOT</version>
+		<version>0.7.3</version>
 	</parent>
 	
 	<artifactId>owsi-core-dependency-core-spring-security</artifactId>

@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core</artifactId>
-	<version>0.7.3-SNAPSHOT</version>
+	<version>0.7.3</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core</name>
@@ -122,8 +122,8 @@
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/branches/owsi-core-0.7-MAINTENANCE</developerConnection>
-		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/branches/owsi-core-0.7-MAINTENANCE</url>
+		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/tags/owsi-core-0.7.3</developerConnection>
+		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/tags/owsi-core-0.7.3</url>
 	</scm>
 	
 </project>
