@@ -35,5 +35,29 @@
 				</form>
 			</div>
 		</section>
+		
+		<section>
+			<h3><wicket:message key="widgets.selectbox.tagify" /></h3>
+			<div style="margin-left: 20px;">
+				<form onsubmit="alert(OWSI.StringUtils.tagify($('#testtag').val())); return false;">
+					<input type="text" id="testtag" />
+					<div class="form-actions">
+						<button type="submit" class="btn"><wicket:message key="widgets.selectbox.tagify" /></button>
+					</div>
+				</form>
+			</div>
+		</section>
+		
+		<section>
+			<h3><wicket:message key="widgets.selectbox.urlize" /></h3>
+			<div style="margin-left: 20px;">
+				<form onsubmit="alert(OWSI.StringUtils.urlize($('#testurl').val())); return false;">
+					<input type="text" id="testurl" />
+					<div class="form-actions">
+						<button type="submit" class="btn"><wicket:message key="widgets.selectbox.urlize" /></button>
+					</div>
+				</form>
+			</div>
+		</section>
 	</wicket:extend>
 </html>
