@@ -42,59 +42,20 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	public static final String CHARSET_ISO_8859_1 = "ISO-8859-1";
 	public static final String CHARSET_UTF_8 = "UTF-8";
 	
-	public static final char NON_BREAKABLE_SPACE_CHAR = (char) 160;
 	public static final char SPACE_CHAR = ' ';
 	public static final String SPACE = " ";
 	public static final char DASH_CHAR = '-';
 	public static final String DASH = "-";
-	public static final String CLEAN_SPECIAL_CHARS_REGEXP;
+	public static final String CLEAN_SPECIAL_CHARS_REGEXP = "[^a-z0-9-]";
 	public static final String CLEAN_DUPLICATE_DASHES_REGEXP = "--*";
 	public static final String CLEAN_DUPLICATE_SPACES_REGEXP = "  *";
-	public static final String TAGIFY_REGEXP;
+	public static final String TAGIFY_REGEXP = "[^a-z0-9.]";
 	public static final String COLLECTION_DEFAULT_DELIMITER = ", ";
 	
 	public static final String NEW_LINE_ANTISLASH_N = "\n";
 	public static final String NEW_LINE_ANTISLASH_R = "\r";
 	public static final String NEW_LINE_ANTISLASH_R_ANTISLASH_N = NEW_LINE_ANTISLASH_R + NEW_LINE_ANTISLASH_N;
 	
-	static {
-		StringBuilder cleanSpecialCharsRegexp = new StringBuilder();
-		cleanSpecialCharsRegexp.append('[');
-		cleanSpecialCharsRegexp.append("’'`«»");
-		cleanSpecialCharsRegexp.append("\n\r\t");
-		cleanSpecialCharsRegexp.append('\"');
-		cleanSpecialCharsRegexp.append(":;,\\.");
-		cleanSpecialCharsRegexp.append("!¡\\?¿&|");
-		cleanSpecialCharsRegexp.append("°_%");
-		cleanSpecialCharsRegexp.append("\\\\");
-		cleanSpecialCharsRegexp.append("©®€²³");
-		cleanSpecialCharsRegexp.append("\\+\\*÷×/%");
-		cleanSpecialCharsRegexp.append("<>()^\\[\\]");
-		cleanSpecialCharsRegexp.append('…');
-		cleanSpecialCharsRegexp.append('–');
-		cleanSpecialCharsRegexp.append(']');
-		
-		CLEAN_SPECIAL_CHARS_REGEXP = cleanSpecialCharsRegexp.toString();
-		
-		StringBuilder tagifyRegexp = new StringBuilder();
-		tagifyRegexp.append('[');
-		tagifyRegexp.append("’'`«»");
-		tagifyRegexp.append("\n\r\t");
-		tagifyRegexp.append('\"');
-		tagifyRegexp.append(":;,");
-		tagifyRegexp.append("!¡\\?¿&|");
-		tagifyRegexp.append("°_%");
-		tagifyRegexp.append("\\\\");
-		tagifyRegexp.append("©®€²³");
-		tagifyRegexp.append("\\+\\*÷×/%");
-		tagifyRegexp.append("<>()^\\[\\]");
-		tagifyRegexp.append('…');
-		tagifyRegexp.append('–');
-		tagifyRegexp.append(']');
-		
-		TAGIFY_REGEXP = tagifyRegexp.toString();
-	}
-
 	/**
 	 * @see org.apache.commons.lang3.StringUtils#replaceEach(String, String[],String[])
 	 */
@@ -197,12 +158,10 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		}
 		
 		String str = strToClean.trim();
-		str = str.replace(NON_BREAKABLE_SPACE_CHAR, SPACE_CHAR);
-		str = StringUtils.lowerCase(str);
 		str = StringUtils.removeAccents(str);
+		str = StringUtils.lowerCase(str);
 		
 		str = str.replaceAll(cleanRegexp, DASH);
-		str = str.replace(SPACE_CHAR, DASH_CHAR);
 		str = str.replaceAll(CLEAN_DUPLICATE_DASHES_REGEXP, DASH);
 		
 		str = StringUtils.trimLeadingCharacter(str, DASH_CHAR);
@@ -223,9 +182,8 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		}
 		
 		String str = strToClean.trim();
-		str = str.replace(NON_BREAKABLE_SPACE_CHAR, SPACE_CHAR);
-		str = StringUtils.lowerCase(str);
 		str = StringUtils.removeAccents(str);
+		str = StringUtils.lowerCase(str);
 		
 		str = str.replaceAll(CLEAN_SPECIAL_CHARS_REGEXP, SPACE);
 		str = str.replaceAll(CLEAN_DUPLICATE_SPACES_REGEXP, SPACE);
