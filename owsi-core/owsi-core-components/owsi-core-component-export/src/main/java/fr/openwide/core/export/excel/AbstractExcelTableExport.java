@@ -25,6 +25,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -55,6 +56,11 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * Index de la couleur des lignes paires
 	 */
 	protected static final short EVEN_ROW_BACKGROUND_COLOR_INDEX = (short) 38;
+	
+	/**
+	 * Index de la couleur de la police des liens
+	 */
+	protected static final short LINK_FONT_COLOR_INDEX = (short) 39;
 
 	/**
 	 * Ratio pour redimensionner les colonnes correctement
@@ -67,6 +73,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected static final int ABSOLUTE_MAX_COLUMN_WIDTH = 65000;
 
 	protected static final String FONT_NORMAL_NAME = "fontNormal";
+	protected static final String FONT_LINK_NAME = "fontLink";
 	protected static final String FONT_HEADER_NAME = "fontHeader";
 	protected static final String ROW_ODD_NAME = "Odd";
 	protected static final String ROW_EVEN_NAME = "Even";
@@ -78,6 +85,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected static final String STYLE_DATE_NAME = "date";
 	protected static final String STYLE_DATE_TIME_NAME = "datetime";
 	protected static final String STYLE_PERCENT_NAME = "percent";
+	protected static final String STYLE_LINK_NAME = "link";
 
 	/**
 	 * Police utilisée dans le document
@@ -108,7 +116,12 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * Couleur du texte du header
 	 */
 	private String headerFontColor = "#000000";
-
+	
+	/**
+	 * Couleur des liens
+	 */
+	private String linkFontColor = "#0077CC";
+	
 	/**
 	 * Couleur des lignes paires
 	 */
@@ -163,6 +176,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		registerColor(HEADER_BACKGROUND_COLOR_INDEX, headerBackgroundColor);
 		registerColor(HEADER_FONT_COLOR_INDEX, headerFontColor);
 		registerColor(EVEN_ROW_BACKGROUND_COLOR_INDEX, evenRowBackgroundColor);
+		registerColor(LINK_FONT_COLOR_INDEX, linkFontColor);
 	}
 
 	/**
@@ -180,6 +194,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		fontNormal.setFontHeightInPoints(getNormalFontHeight());
 		fontNormal.setFontName(getFontName());
 		registerFont(FONT_NORMAL_NAME, fontNormal);
+		
+		Font fontLink = workbook.createFont();
+		fontLink.setFontHeightInPoints(getNormalFontHeight());
+		fontLink.setFontName(getFontName());
+		fontLink.setUnderline(Font.U_SINGLE);
+		setFontColor(fontLink, colorRegistry, LINK_FONT_COLOR_INDEX);
+		registerFont(FONT_LINK_NAME, fontLink);
 	}
 	
 	/**
@@ -282,6 +303,15 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		CellStyle styleEvenPercent = cloneStyle(styleEven);
 		styleEvenPercent.setDataFormat(percentFormatIndex);
 		registerStyle(STYLE_PERCENT_NAME + ROW_EVEN_NAME, styleEvenPercent);
+		
+		// styles pour les liens
+		CellStyle styleOddLink = cloneStyle(styleOdd);
+		styleOddLink.setFont(getFont(FONT_LINK_NAME));
+		registerStyle(STYLE_LINK_NAME + ROW_ODD_NAME, styleOddLink);
+		
+		CellStyle styleEvenLink = cloneStyle(styleEven);
+		styleOddLink.setFont(getFont(FONT_LINK_NAME));
+		registerStyle(STYLE_LINK_NAME + ROW_EVEN_NAME, styleEvenLink);
 	}
 	
 	/**
@@ -410,6 +440,21 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		if (number != null) {
 			cell.setCellValue(number.doubleValue());
 		}
+
+		return cell;
+	}
+	
+	/**
+	 * Ajoute un lien hypertexte sur la cellule.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param text texte à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addLinkToCell(Cell cell, Hyperlink hyperlink) {
+		cell.setHyperlink(hyperlink);
+		cell.setCellStyle(getRowStyle(STYLE_LINK_NAME, cell.getRowIndex()));
 
 		return cell;
 	}
@@ -588,6 +633,14 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 
 	public void setHeaderFontColor(String headerFontColor) {
 		this.headerFontColor = headerFontColor;
+	}
+	
+	public String getLinkFontColor() {
+		return linkFontColor;
+	}
+
+	public void setLinkFontColor(String linkFontColor) {
+		this.linkFontColor = linkFontColor;
 	}
 
 	public String getEvenRowBackgroundColor() {
