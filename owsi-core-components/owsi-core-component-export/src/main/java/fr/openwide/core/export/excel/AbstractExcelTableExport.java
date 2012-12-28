@@ -310,7 +310,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		registerStyle(STYLE_LINK_NAME + ROW_ODD_NAME, styleOddLink);
 		
 		CellStyle styleEvenLink = cloneStyle(styleEven);
-		styleOddLink.setFont(getFont(FONT_LINK_NAME));
+		styleEvenLink.setFont(getFont(FONT_LINK_NAME));
 		registerStyle(STYLE_LINK_NAME + ROW_EVEN_NAME, styleEvenLink);
 	}
 	
