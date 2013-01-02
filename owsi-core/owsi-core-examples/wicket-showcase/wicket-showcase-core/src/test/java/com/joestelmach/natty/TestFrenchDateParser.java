@@ -2,7 +2,9 @@ package com.joestelmach.natty;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Assert;
@@ -24,7 +26,8 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 //		validateDate("le dernier mardi de janvier", 1, 17, 2012);
 		
 		validateDateTime("le 8 octobre 1987 à 15:31", 10, 8, 1987, 15, 31, 0);
-		validateDateTime("le 15 avril à 15 heures 30 minutes 45 secondes", 4, 15, 2012, 15, 30, 45);
+		validateDateTime("le 15 avril à 15 heures 30 minutes 45 secondes", 4, 15,
+				GregorianCalendar.getInstance().get(Calendar.YEAR), 15, 30, 45);
 		
 		List<Date> dates;
 		DateGroup dateGroup;
