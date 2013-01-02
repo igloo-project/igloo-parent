@@ -1,10 +1,9 @@
 package com.joestelmach.natty;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Assert;
@@ -15,7 +14,10 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
 	@Test
-	public void testExplicitDateTime() {
+	public void testExplicitDateTime() throws ParseException {
+		Date reference = DATE_FORMAT.parse("31/01/2012 17:00");
+		CalendarSource.setBaseDate(reference);
+		
 		validateDate("12/02/2010", 2, 12, 2010);
 		validateDate("22-8-1988", 8, 22, 1988);
 		validateDate("21 mai 2001", 5, 21, 2001);
@@ -26,8 +28,7 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 //		validateDate("le dernier mardi de janvier", 1, 17, 2012);
 		
 		validateDateTime("le 8 octobre 1987 à 15:31", 10, 8, 1987, 15, 31, 0);
-		validateDateTime("le 15 avril à 15 heures 30 minutes 45 secondes", 4, 15,
-				GregorianCalendar.getInstance().get(Calendar.YEAR), 15, 30, 45);
+		validateDateTime("le 15 avril à 15 heures 30 minutes 45 secondes", 4, 15, 2012, 15, 30, 45);
 		
 		List<Date> dates;
 		DateGroup dateGroup;
