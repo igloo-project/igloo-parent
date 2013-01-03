@@ -107,9 +107,17 @@ public abstract class ItemItField<F, J> extends FormComponentPanel<List<F>> {
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(ItemItJavascriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(this).chain(itemIt).render()));
 		super.renderHead(response);
+		response.render(JavaScriptHeaderItem.forReference(ItemItJavascriptResourceReference.get()));
+		
+		JsStatement statement = statement();
+		if (statement != null) {
+			response.render(OnDomReadyHeaderItem.forScript(statement().render()));
+		}
+	}
+	
+	protected JsStatement statement() {
+		return new JsStatement().$(this).chain(itemIt);
 	}
 
 	public class InputNameModel implements IModel<String> {
