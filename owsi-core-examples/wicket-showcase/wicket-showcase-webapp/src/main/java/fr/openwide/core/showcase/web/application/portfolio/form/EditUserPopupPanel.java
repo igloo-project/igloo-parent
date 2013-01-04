@@ -110,7 +110,7 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 				
 				try {
 					userService.update(user);
-					getSession().info(getString("common.success"));
+					getSession().success(getString("common.success"));
 					
 					setResponsePage(UserDescriptionPage.class, LinkUtils.getUserDescriptionPageParameters(user));
 				} catch (Exception e) {

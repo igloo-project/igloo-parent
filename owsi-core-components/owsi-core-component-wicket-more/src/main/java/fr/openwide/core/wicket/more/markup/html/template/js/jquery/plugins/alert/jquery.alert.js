@@ -4,7 +4,7 @@
 	"use strict"
 	
 	$.fn.alert = {
-		show: function(selector) {
+		show: function(selector, autohideDelay) {
 			var $selector = $(selector);
 			var $panel = $(".alert-global-panel", $selector);
 			$panel.off("click.alert");
@@ -13,7 +13,12 @@
 				
 				if ($(".alert-info, .alert-warning, .alert-error", $panel).size() == 0) {
 					$panel.on("click.alert", function(event) { $.fn.alert.close(event); });
-					$panel.delay(3000).animate({ top: -$panel.outerHeight() });
+					if (autohideDelay == null) {
+						autohideDelay = 5000;
+					}
+					if (autohideDelay >= 0) {
+						$panel.delay(autohideDelay).animate({ top: -$panel.outerHeight() });
+					}
 				}
 			}
 		},
@@ -24,9 +29,9 @@
 				$panel.css({ top: -$panel.outerHeight() });
 			}
 		},
-		reset: function(selector) {
+		reset: function(selector, autohideDelay) {
 			$.fn.alert.hide(selector);
-			$.fn.alert.show(selector);
+			$.fn.alert.show(selector, autohideDelay);
 		},
 		close: function(event) {
 			var $panel = $(event.target).closest(".alert-global-panel");
