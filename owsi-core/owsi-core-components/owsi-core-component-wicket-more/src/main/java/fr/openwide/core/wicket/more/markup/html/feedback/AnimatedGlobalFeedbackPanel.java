@@ -20,19 +20,21 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.alert
 public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
+	
+	private static final int DEFAULT_AUTOHIDE_DELAY = 5;
 
-	private Integer autohideDelay;
+	private int autohideDelay;
 	
 	public AnimatedGlobalFeedbackPanel(String id) {
-		this(id, null);
+		this(id, DEFAULT_AUTOHIDE_DELAY);
 	}
 	
 	/**
 	 * @param id Id wicket.
-	 * @param autohideDelay Délai de fermeture automatique, en ms.
+	 * @param autohideDelay Délai de fermeture automatique, en secondes.
 	 * 						Si < 0 : le feedback ne se cache pas automatiquement
 	 */
-	public AnimatedGlobalFeedbackPanel(String id, Integer autohideDelay) {
+	public AnimatedGlobalFeedbackPanel(String id, int autohideDelay) {
 		super(id);
 		setOutputMarkupId(true);
 		
@@ -49,7 +51,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.alert.reset('#")
 				.append(getMarkupId())
 				.append("', ")
-				.append(autohideDelay != null ? autohideDelay.toString() : "null")
+				.append(String.valueOf(autohideDelay * 1000))
 				.append(")").render()));
 		
 		super.renderHead(response);
