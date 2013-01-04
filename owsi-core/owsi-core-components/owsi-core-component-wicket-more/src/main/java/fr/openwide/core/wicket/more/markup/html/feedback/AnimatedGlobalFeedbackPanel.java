@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.feedback;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.Behavior;
@@ -21,12 +23,16 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
 	
-	private static final int DEFAULT_AUTOHIDE_DELAY = 5;
+	private static final int DEFAULT_AUTOHIDE_DELAY_VALUE = 5;
+	
+	private static final TimeUnit DEFAULT_AUTOHIDE_DELAY_UNIT = TimeUnit.SECONDS;
 
-	private int autohideDelay;
+	private int autohideDelayValue;
+	
+	private TimeUnit autohideDelayUnit;
 	
 	public AnimatedGlobalFeedbackPanel(String id) {
-		this(id, DEFAULT_AUTOHIDE_DELAY);
+		this(id, DEFAULT_AUTOHIDE_DELAY_VALUE, DEFAULT_AUTOHIDE_DELAY_UNIT);
 	}
 	
 	/**
@@ -34,11 +40,12 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	 * @param autohideDelay Délai de fermeture automatique, en secondes.
 	 * 						Si < 0 : le feedback ne se cache pas automatiquement
 	 */
-	public AnimatedGlobalFeedbackPanel(String id, int autohideDelay) {
+	public AnimatedGlobalFeedbackPanel(String id, int autohideDelayValue, TimeUnit autohideDelayUnit) {
 		super(id);
 		setOutputMarkupId(true);
 		
-		this.autohideDelay = autohideDelay;
+		this.autohideDelayValue = autohideDelayValue;
+		this.autohideDelayUnit = autohideDelayUnit;
 		
 		WebMarkupContainer closeTrigger = new WebMarkupContainer("closeTrigger");
 		add(closeTrigger);
@@ -51,7 +58,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.alert.reset('#")
 				.append(getMarkupId())
 				.append("', ")
-				.append(String.valueOf(autohideDelay * 1000))
+				.append(String.valueOf(autohideDelayUnit.toMicros(autohideDelayValue)))
 				.append(")").render()));
 		
 		super.renderHead(response);
