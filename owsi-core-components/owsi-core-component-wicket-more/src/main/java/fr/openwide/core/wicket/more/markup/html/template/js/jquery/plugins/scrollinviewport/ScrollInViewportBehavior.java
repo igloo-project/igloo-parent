@@ -16,11 +16,11 @@ public class ScrollInViewportBehavior extends Behavior {
 	private ScrollInViewport scrollInViewport;
 	
 	public ScrollInViewportBehavior() {
-		this(null, null);
+		this(null, new ScrollInViewport());
 	}
 	
 	public ScrollInViewportBehavior(String selector) {
-		this(selector, null);
+		this(selector, new ScrollInViewport());
 	}
 	
 	public ScrollInViewportBehavior(ScrollInViewport scrollInViewport) {
