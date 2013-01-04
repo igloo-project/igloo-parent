@@ -58,7 +58,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.alert.reset('#")
 				.append(getMarkupId())
 				.append("', ")
-				.append(String.valueOf(autohideDelayUnit.toMicros(autohideDelayValue)))
+				.append(String.valueOf(autohideDelayUnit.toMillis(autohideDelayValue)))
 				.append(")").render()));
 		
 		super.renderHead(response);
