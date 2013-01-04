@@ -31,6 +31,7 @@
 		},
 		reset: function(selector, autohideDelay) {
 			$.fn.alert.hide(selector);
+			$(".alert-global-panel", $(selector)).show();
 			$.fn.alert.show(selector, autohideDelay);
 		},
 		close: function(event) {
