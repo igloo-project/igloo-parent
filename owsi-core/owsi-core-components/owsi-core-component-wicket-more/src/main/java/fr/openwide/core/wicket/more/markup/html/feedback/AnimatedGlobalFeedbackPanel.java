@@ -1,6 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.feedback;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -8,7 +10,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
-import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
+import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
@@ -37,18 +39,23 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 		super.renderHead(response);
 	}
 
-	private static class CloseAlertBehavior extends WiQueryEventBehavior {
+	private static class CloseAlertBehavior extends Behavior {
 		private static final long serialVersionUID = -5585291224997829649L;
-		
-		public CloseAlertBehavior() {
-			super(new Event(MouseEvent.CLICK) {
+
+		@Override
+		public void renderHead(Component component, IHeaderResponse response) {
+			super.renderHead(component, response);
+			
+			Event event = new Event(MouseEvent.CLICK) {
 				private static final long serialVersionUID = 2160875652552472051L;
 				
 				@Override
 				public JsScope callback() {
 					return JsScopeEvent.quickScope("$.fn.alert.close(event);");
 				}
-			});
+			};
+			
+			response.render(OnDomReadyHeaderItem.forScript(new JsQuery(component).$().chain(event).render()));
 		}
 	}
 
