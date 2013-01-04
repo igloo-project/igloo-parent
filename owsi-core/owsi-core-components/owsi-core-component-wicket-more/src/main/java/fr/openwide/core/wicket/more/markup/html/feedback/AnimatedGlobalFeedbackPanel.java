@@ -21,9 +21,22 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
 
+	private Integer autohideDelay;
+	
 	public AnimatedGlobalFeedbackPanel(String id) {
+		this(id, null);
+	}
+	
+	/**
+	 * @param id Id wicket.
+	 * @param autohideDelay Délai de fermeture automatique, en ms.
+	 * 						Si < 0 : le feedback ne se cache pas automatiquement
+	 */
+	public AnimatedGlobalFeedbackPanel(String id, Integer autohideDelay) {
 		super(id);
 		setOutputMarkupId(true);
+		
+		this.autohideDelay = autohideDelay;
 		
 		WebMarkupContainer closeTrigger = new WebMarkupContainer("closeTrigger");
 		add(closeTrigger);
@@ -34,7 +47,10 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	public void renderHead(IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(AlertJavascriptResourceReference.get()));
 		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.alert.reset('#")
-				.append(getMarkupId()).append("')").render()));
+				.append(getMarkupId())
+				.append("', ")
+				.append(autohideDelay != null ? autohideDelay.toString() : "null")
+				.append(")").render()));
 		
 		super.renderHead(response);
 	}
