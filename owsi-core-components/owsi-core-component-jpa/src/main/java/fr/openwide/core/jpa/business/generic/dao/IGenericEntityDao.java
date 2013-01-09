@@ -27,7 +27,7 @@ package fr.openwide.core.jpa.business.generic.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
@@ -146,8 +146,7 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @param attribute
 	 * @param fieldValue
 	 * @return
-	 * @throws NoResultException
-	 * @throws {@link NonUniqueResultException}
+	 * @throws NonUniqueResultException
 	 */
 	<V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 

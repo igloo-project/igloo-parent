@@ -19,6 +19,7 @@ package fr.openwide.core.jpa.more.business.generic.dao;
 
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
@@ -50,5 +51,17 @@ public interface IGenericListItemDao {
 	<E extends GenericListItem<?>> Long count(Class<E> clazz);
 
 	<E extends GenericListItem<?>, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
+
+	/**
+	 * Obtient un objet par la condition attribut = valeur
+	 * 
+	 * @param <V>
+	 * @param clazz
+	 * @param attribute
+	 * @param fieldValue
+	 * @return
+	 * @throws NonUniqueResultException
+	 */
+	<E extends GenericListItem<?>, V>  E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue);
 
 }

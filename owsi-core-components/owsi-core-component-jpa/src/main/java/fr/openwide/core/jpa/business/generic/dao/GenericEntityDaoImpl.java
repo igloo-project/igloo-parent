@@ -81,7 +81,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	
 	@Override
 	public <V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
-		return super.getByField(getObjectClass(), attribute, fieldValue);
+		return super.getEntityByField(getObjectClass(), attribute, fieldValue);
 	}
 	
 	@Override

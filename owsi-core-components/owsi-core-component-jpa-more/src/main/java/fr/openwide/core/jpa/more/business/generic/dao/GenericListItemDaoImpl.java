@@ -53,6 +53,12 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 	public <E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, String naturalId) {
 		return super.getEntityByNaturalId(clazz, naturalId);
 	}
+
+	@Override
+	public <E extends GenericListItem<?>, V> E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute,
+			V fieldValue) {
+		return super.getEntityByField(clazz, attribute, fieldValue);
+	}
 	
 	@Override
 	public <E extends GenericListItem<?>> void update(E entity) { // NOSONAR
