@@ -70,7 +70,7 @@ public class JpaDaoSupport {
 		return (T) session.bySimpleNaturalId(clazz).load(naturalId);
 	}
 	
-	public <T, V> T getByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
+	public <T, V> T getEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(clazz);
 		Root<T> root = criteria.from(clazz);

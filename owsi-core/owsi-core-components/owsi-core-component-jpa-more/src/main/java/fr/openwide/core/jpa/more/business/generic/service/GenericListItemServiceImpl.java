@@ -19,6 +19,8 @@ package fr.openwide.core.jpa.more.business.generic.service;
 
 import java.util.List;
 
+import javax.persistence.metamodel.SingularAttribute;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,10 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	
 	protected <E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, String naturalId) {
 		return genericListItemDao.getByNaturalId(clazz, naturalId);
+	}
+	
+	protected <E extends GenericListItem<?>, V>  E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
+		return genericListItemDao.getByField(clazz, attribute, fieldValue);
 	}
 	
 	@Override
