@@ -71,7 +71,8 @@
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
 
-			resize = $ta.css('resize') === 'none' ? 'none' : 'horizontal';
+			var taResize = $ta.css('resize');
+			resize = (taResize === 'horizontal' || taResize === 'both') ? 'horizontal' : 'none';
 
 			$ta.css({
 				overflow: hidden,
