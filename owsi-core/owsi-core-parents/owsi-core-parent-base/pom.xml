@@ -123,6 +123,31 @@
 		<owsi-core.aspectj-maven-plugin.version>1.4</owsi-core.aspectj-maven-plugin.version>
 	</properties>
 	
+	<dependencyManagement>
+		<dependencies>
+			<!-- Test dependencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${owsi-core.junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${owsi-core.spring.version}</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<build>
 		<plugins>
 			<plugin>

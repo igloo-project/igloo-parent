@@ -104,7 +104,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${owsi-core.junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		
