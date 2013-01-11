@@ -1,12 +1,12 @@
-// Autosize 1.15.2 - jQuery plugin for textareas
-// (c) 2012 Jack Moore - jacklmoore.com
+// Autosize 1.15.3 - jQuery plugin for textareas
+// (c) 2013 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
 (function ($) {
 	var
 	defaults = {
 		className: 'autosizejs',
-		append: "",
+		append: '',
 		callback: false
 	},
 	hidden = 'hidden',
@@ -15,7 +15,7 @@
 
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX (http://www.jacklmoore.com/autosize#comment-851)
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden;"/>',
-	
+
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
 	copyStyle = [
 		'fontFamily',
@@ -29,7 +29,7 @@
 	],
 	oninput = 'oninput',
 	onpropertychange = 'onpropertychange',
-	
+
 	// to keep track which textarea is being mirrored when adjust() is called.
 	mirrored,
 
@@ -55,11 +55,9 @@
 			ta = this,
 			$ta = $(ta),
 			minHeight = $ta.height(),
-			maxHeight = parseInt($ta.css('maxHeight'), 10),
 			active,
 			resize,
 			boxOffset = 0,
-			value = ta.value,
 			callback = $.isFunction(options.callback);
 
 			if ($ta.data('autosize')) {
@@ -71,8 +69,7 @@
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
 
-			var taResize = $ta.css('resize');
-			resize = (taResize === 'horizontal' || taResize === 'both') ? 'horizontal' : 'none';
+			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
 
 			$ta.css({
 				overflow: hidden,
@@ -80,9 +77,6 @@
 				wordWrap: 'break-word',
 				resize: resize
 			}).data('autosize', true);
-
-			// Opera returns '-1px' when max-height is set to 'none'.
-			maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
 			function initMirror() {
 				mirrored = ta;
@@ -118,14 +112,14 @@
 					// Update the width in case the original textarea width has changed
 					mirror.style.width = $ta.width() + 'px';
 
-					// Needed for IE7 to reliably return the correct scrollHeight
+					// The following three lines can be replaced with `height = mirror.scrollHeight` when dropping IE7 support.
 					mirror.scrollTop = 0;
-
-					// Set a very high value for scrollTop to be sure the
-					// mirror is scrolled all the way to the bottom.
 					mirror.scrollTop = 9e4;
-
 					height = mirror.scrollTop;
+
+					var maxHeight = parseInt($ta.css('maxHeight'), 10);
+					// Opera returns '-1px' when max-height is set to 'none'.
+					maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 					if (height > maxHeight) {
 						height = maxHeight;
 						overflow = 'scroll';
@@ -141,7 +135,7 @@
 							options.callback.call(ta);
 						}
 					}
-					
+
 					// This small timeout gives IE a chance to draw it's scrollbar
 					// before adjust can be run again (prevents an infinite loop).
 					setTimeout(function () {
@@ -163,11 +157,6 @@
 			} else {
 				// Modern Browsers
 				ta[oninput] = adjust;
-
-				// The textarea overflow is now hidden, but Chrome doesn't reflow the text to account for the
-				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
-				ta.value = '';
-				ta.value = value;
 			}
 
 			$(window).resize(adjust);
