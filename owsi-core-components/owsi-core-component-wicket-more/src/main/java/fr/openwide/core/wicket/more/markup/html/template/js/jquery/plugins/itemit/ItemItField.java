@@ -15,12 +15,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
 public abstract class ItemItField<F, J> extends FormComponentPanel<List<F>> {
 
 	private static final long serialVersionUID = -9155020419420538737L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ItemItField.class);
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -166,6 +170,7 @@ public abstract class ItemItField<F, J> extends FormComponentPanel<List<F>> {
 				try {
 					return OBJECT_MAPPER.writeValueAsString(newAutocompleteJson(null, objectModel.getObject(), getLocale()));
 				} catch (Exception e) {
+					LOGGER.error("Unable to serialize the model object", e);
 					throw new IllegalStateException("Unable to serialize the model object", e);
 				}
 			} else {
