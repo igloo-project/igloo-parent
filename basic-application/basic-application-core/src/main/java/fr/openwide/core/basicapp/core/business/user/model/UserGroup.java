@@ -12,13 +12,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 
 import org.bindgen.Bindable;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -41,11 +41,13 @@ public class UserGroup extends GenericEntity<Long, UserGroup> implements IPerson
 	private String name;
 
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany(mappedBy = "userGroups")
 	@OrderBy("lastName, firstName")
 	private List<User> persons = Lists.newLinkedList();
 
 	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany
 	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
