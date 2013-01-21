@@ -4,6 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.ComponentModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.lang.Classes;
 
 /**
  * Give translation for a given enum. Reosurce key is built as in EnumLabel.
@@ -39,7 +40,7 @@ public class EnumLabelModel<E extends Enum<?>> extends ComponentModel<String> {
 	@Override
 	protected String getObject(Component component) {
 		if (enumValueModel != null && enumValueModel.getObject() != null) {
-			return component.getString(enumValueModel.getObject().getClass().getSimpleName() + "." + enumValueModel.getObject().name());
+			return component.getString(Classes.simpleName(enumValueModel.getObject().getClass()) + "." + enumValueModel.getObject().name());
 		} else if (nullKeyModel != null && nullKeyModel.getObject() != null) {
 			return component.getString(nullKeyModel.getObject());
 		} else {
