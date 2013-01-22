@@ -452,12 +452,6 @@
 			<version>${owsi-core.tomcat-jdbc.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>${owsi-core.c3p0.version}</version>
-		</dependency>
 	</dependencies>
 	
 	<build>
