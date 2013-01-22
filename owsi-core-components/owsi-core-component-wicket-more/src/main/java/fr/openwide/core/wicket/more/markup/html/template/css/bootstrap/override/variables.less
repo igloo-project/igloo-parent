@@ -1,10 +1,8 @@
 @common-root-url:				"../../../static/common";
 @application-root-url:			"../../../static/application";
 
-
 // Bootstrap
-
-@baseFontSize:					11px;
+@baseFontSize:					12px;
 @baseLineHeight:				16px;
 
 @iconSpritePath:				"@{common-root-url}/images/icons/bootstrap/glyphicons-halflings.png";
@@ -17,13 +15,40 @@
 @dropdownLinkColorHover:		@black;
 @dropdownLinkBackgroundHover:	#A1CEF7;
 
+@zindexPopover:					110;
 @zindexModalBackdrop:			140;
 @zindexModal:					150;
 
 @navbarLinkColor:				#BBB;
 
-// Additionnals
+@popoverArrowWidth:				5px;
+@popoverArrowOuterWidth:		@popoverArrowWidth + 1;
 
-@inputAddOnColor:				#888;
-@min-page-width:				990px;
-@max-page-width:				1200px;
+// OWSI-Core
+@mainColor:						#0A79A6;
+@mainColorHighlight:			#298edb;
+
+@minPageWidth:					990px;
+@maxPageWidth:					1200px;
+@footerBackground:				@grayLighter;
+@footerText:					@textColor;
+@tableHeaderBackground:			#FFFFFF;
+@tableHeaderText:				#555555;
+@breadcrumbBackground:			#FBFBFB;
+@breadcrumbBorder:				#DDDDDD;
+
+@subnavBackground:				#EEEEEE;
+@subnavBackgroundHighlight:		#DDDDDD;
+@subnavBorder:					#CCCCCC;
+@subnavLinkActive:				#777777;
+@subnavLinkBackgroundHover:		#F1F1F1;
+@subnavLinkBorder:				#DDDDDD;
+
+@inputFocusBorder:				rgba(82,168,236,.8);
+@inputFocusBoxShadow:			~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6)";
+@inputAddOnColor:				#888888;
+
+@userFullNameBackground:			darken(@btnBackground, 5%);
+@userFullNameBackgroundHighlight:	darken(@btnBackgroundHighlight, 5%);
+@userFullNameText:					@grayDark;
+@userFullNameTextShadow:			none;

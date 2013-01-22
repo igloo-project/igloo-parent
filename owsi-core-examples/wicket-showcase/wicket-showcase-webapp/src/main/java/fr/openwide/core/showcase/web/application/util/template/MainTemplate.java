@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.ShowcaseSession;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
+import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.util.template.styles.StyleLessCssResourceReference;
@@ -31,6 +32,7 @@ import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -130,6 +132,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// Tooltip
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
+		
+		// Dropdown
+		add(new BootstrapDropdownBehavior());
 	}
 	
 	protected BootstrapTooltip getBootstrapTooltip() {
@@ -137,6 +142,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		bootstrapTooltip.setSelector("[title],[data-original-title]");
 		bootstrapTooltip.setAnimation(true);
 		bootstrapTooltip.setPlacement(BootstrapTooltip.Placement.BOTTOM);
+		bootstrapTooltip.setContainer("body");
 		return bootstrapTooltip;
 	}
 	
@@ -154,7 +160,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.portfolio"), PortfolioMainPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.widgets"), WidgetsMainPage.class),
-				new NavigationMenuItem(new ResourceModel("navigation.titles"), TitlesPage.class)
+				new NavigationMenuItem(new ResourceModel("navigation.titles"), TitlesPage.class),
+				new NavigationMenuItem(new ResourceModel("navigation.buttons"), ButtonsPage.class)
 		);
 	}
 	

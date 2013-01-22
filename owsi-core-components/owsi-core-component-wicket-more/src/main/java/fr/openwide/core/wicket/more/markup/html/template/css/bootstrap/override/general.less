@@ -1,32 +1,35 @@
 // Titles
 h1 {
-	font-size: 24px;
-	line-height: 28px;
+	font-size: @baseFontSize * 1.75;
+	line-height: @baseLineHeight * 1.5;
 }
 h2 {
-	font-size: 20px;
-	line-height: 24px;
+	font-size: @baseFontSize * 1.40;
+	line-height: @baseLineHeight * 1.30;
 }
 h3 {
-	font-size: 18px;
-	line-height: 22px;
+	font-size: @baseFontSize * 1.25;
+	line-height: @baseLineHeight * 1.15;
+}
+h4 {
+	font-size: @baseFontSize * 1.15;
+	line-height: @baseLineHeight * 1.05;
 }
 
-// Lists
-ul, li {
-	list-style-type: none;
+// Listes
+.unstyled() {
 	margin: 0;
-	padding: 0;
+	list-style: none;
+}
+ul.unstyled,
+ol.unstyled {
+	.unstyled();
 }
 
 // Tabs
-.tab-content > .tab-pane,
-.pill-content > .pill-pane {
-	display: none;
-}
-.tab-content > .active,
-.pill-content > .active {
-	display: block;
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover {
+	background-color: #FFFFFF;
 }
 
 // Boutons
@@ -36,8 +39,23 @@ ul, li {
 	font-size: @baseFontSize - 1px;
 	
 	.caret {
-		margin-top: 5px;
+		margin-top: 8px;
 	}
+}
+
+// Alignement vertical des icônes
+.btn [class^="icon-"],
+.btn [class*=" icon-"] {
+	margin-top: 0;
+}
+.btn-large [class^="icon-"],
+.btn-large [class*=" icon-"] {
+	margin-top: 2px;
+	vertical-align: top;
+}
+.btn-small [class^="icon-"],
+.btn-small [class*=" icon-"] {
+	margin-top: -1px;
 }
 
 // Décalage des icones par rapport au texte
@@ -50,11 +68,13 @@ ul, li {
 // Boutons sans texte (annulation du décalage)
 .btn.sans-texte [class^="icon-"],
 .btn.sans-texte [class*=" icon-"] {
-	margin: 0;
+	margin-right: 0;
+	margin-left: 0;
 }
 .btn.btn-icon-only [class^="icon-"],
 .btn.btn-icon-only [class*=" icon-"] {
-	margin: 0;
+	margin-right: 0;
+	margin-left: 0;
 }
 
 // Placeholders pour les boutons
@@ -82,10 +102,16 @@ ul, li {
 	color: @white;
 }
 
+// Disabled
+.btn.disabled,
+.btn[disabled] {
+	.opacity(100);
+}
+
 // Couleurs de fond hover
 .btn:hover {
 	background-position: 0 0;
-	.buttonBackground(darken(@btnBackground, 5%), darken(@btnBackgroundHighlight, 5%));
+	.buttonBackground(darken(@btnBackground, 5%), darken(@btnBackgroundHighlight, 5%), @grayDark, none);
 }
 .btn-primary:hover {
 	.buttonBackground(lighten(@btnPrimaryBackground, 5%), lighten(@btnPrimaryBackgroundHighlight, 5%));
@@ -96,7 +122,7 @@ ul, li {
 .btn-danger:hover {
 	.buttonBackground(lighten(@btnDangerBackground, 5%), lighten(@btnDangerBackgroundHighlight, 5%));
 }
-.btn.btn-success:hover {
+.btn-success:hover {
 	.buttonBackground(lighten(@btnSuccessBackground, 5%), lighten(@btnSuccessBackgroundHighlight, 5%));
 }
 .btn-info:hover {
@@ -107,29 +133,40 @@ ul, li {
 }
 
 // Hover sur bouton "disabled"
+.btn.disabled, .btn.disabled:hover,
+.btn[disabled], .btn[disabled]:hover {
+	background: lighten(@btnBackgroundHighlight, 20%);
+	color: #888;
+}
 .btn-primary.disabled, .btn-primary.disabled:hover,
 .btn-primary[disabled], .btn-primary[disabled]:hover {
-	background: lighten(@btnPrimaryBackgroundHighlight, 5%)
+	background: lighten(@btnPrimaryBackgroundHighlight, 20%);
+	color: #FFF;
 }
 .btn-warning.disabled, .btn-warning.disabled:hover,
 .btn-warning[disabled], .btn-warning[disabled]:hover {
-	background: lighten(@btnWarningBackgroundHighlight, 5%)
+	background: lighten(@btnWarningBackgroundHighlight, 20%);
+	color: #FFF;
 }
 .btn-danger.disabled, .btn-danger.disabled:hover,
 .btn-danger[disabled], .btn-danger[disabled]:hover {
-	background: lighten(@btnDangerBackgroundHighlight, 5%)
+	background: lighten(@btnDangerBackgroundHighlight, 20%);
+	color: #FFF;
 }
 .btn-success.disabled, .btn-success.disabled:hover,
 .btn-success[disabled], .btn-success[disabled]:hover {
-	background: lighten(@btnSuccessBackgroundHighlight, 5%)
+	background: lighten(@btnSuccessBackgroundHighlight, 20%);
+	color: #FFF;
 }
 .btn-info.disabled, .btn-info.disabled:hover,
 .btn-info[disabled], .btn-info[disabled]:hover {
-	background: lighten(@btnInfoBackgroundHighlight, 5%)
+	background: lighten(@btnInfoBackgroundHighlight, 20%);
+	color: #FFF;
 }
 .btn-inverse.disabled, .btn-inverse.disabled:hover,
 .btn-inverse[disabled], .btn-inverse[disabled]:hover {
-	background: lighten(@btnInverseBackgroundHighlight, 5%)
+	background: lighten(@btnInverseBackgroundHighlight, 20%);
+	color: #FFF;
 }
 
 // Liste déroulante de boutons
@@ -151,7 +188,7 @@ ul, li {
 }
 
 // Modal
-.modal-backdrop {
+.modal-backdrop {	// Modal n'est pas exactement celle de Bootstrap
 	z-index: 40;
 }
 
@@ -167,28 +204,6 @@ ul, li {
 }
 
 // Popover
-.popover {
-	.arrow {
-		border-color: #DDD;
-	}
-	
-	.popover-inner {
-		padding: 0;
-		border: 1px solid #DDD;
-		background: none;
-		
-		.popover-title {
-			padding: 8px 10px;
-			color: #666666;
-			border-bottom: 1px solid #DDD;
-		}
-		
-		.popover-content {
-			padding: 5px 10px;
-		}
-	}
-}
-
 span.popover-btn {
 	cursor: pointer;
 	color: @linkColor;
@@ -196,26 +211,12 @@ span.popover-btn {
 	display: inline-block;
 }
 
-// Popover arrow
-.popover.top .arrow {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-top: 5px solid #DDDDDD;
-}
-.popover.right .arrow {
-	border-bottom: 5px solid transparent;
-	border-right: 5px solid #DDDDDD;
-	border-top: 5px solid transparent;
-}
-.popover.bottom .arrow {
-	border-bottom: 5px solid #DDDDDD;
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-}
-.popover.left .arrow {
-	border-bottom: 5px solid transparent;
-	border-left: 5px solid #DDDDDD;
-	border-top: 5px solid transparent;
+.popover {
+	z-index: 30;	// Pour être sous la modal
+	
+	.popover-title {
+		margin-bottom: 0;
+	}
 }
 
 // Dégradé vertical transparent (transparence désactivée pour IE)
@@ -238,19 +239,7 @@ span.popover-btn {
 
 // Pagination
 .pagination {
-
-	ul {
-		float: right;
-	}
-
-	a {
-		padding: 0 10px;
-		line-height: (@baseLineHeight * 2) - 8;
-	}
-	
-	.active a {
-		text-decoration: none;
-	}
+	text-align: right;
 }
 
 // Tables
@@ -262,8 +251,8 @@ span.popover-btn {
 	}
 	
 	th {
-		background: #DDEEFF;
-		color: #666666;
+		background: @tableHeaderBackground;
+		color: @tableHeaderText;
 		padding: 10px 8px;
 	}
 	

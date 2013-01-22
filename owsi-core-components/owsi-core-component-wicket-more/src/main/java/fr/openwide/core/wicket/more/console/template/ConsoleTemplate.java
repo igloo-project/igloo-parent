@@ -117,6 +117,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		bootstrapTooltip.setSelector("[title],[data-original-title]");
 		bootstrapTooltip.setAnimation(true);
 		bootstrapTooltip.setPlacement(BootstrapTooltip.Placement.BOTTOM);
+		bootstrapTooltip.setContainer("body");
 		return bootstrapTooltip;
 	}
 	

@@ -5,8 +5,6 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 public class BootstrapPopoverBehavior extends Behavior {
@@ -23,20 +21,7 @@ public class BootstrapPopoverBehavior extends Behavior {
 	}
 
 	public JsStatement statement(Component component) {
-		JsStatement popoverStatement = new JsStatement().$(component).chain(BOOTSTRAP_POPOVER, options.getJavaScriptOptions());
-		if (PopoverTrigger.MANUAL.equals(options.getTrigger())) {
-			JsScope clickFunction = new JsScope("e") {
-				private static final long serialVersionUID = 1L;
-				@Override
-				protected void execute(JsScopeContext scopeContext) {
-					scopeContext.append("$(this).popover('toggle')");
-					scopeContext.append("e.preventDefault()");
-				}
-			};
-			return popoverStatement.chain("click", clickFunction.render());
-		} else {
-			return popoverStatement;
-		}
+		return new JsStatement().$(component).chain(BOOTSTRAP_POPOVER, options.getJavaScriptOptions());
 	}
 
 	@Override

@@ -3,7 +3,8 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import java.util.Locale;
 
 public enum PopoverTrigger {
-	
+
+	CLICK("click"),
 	HOVER("hover"),
 	FOCUS("focus"),
 	MANUAL("manual");

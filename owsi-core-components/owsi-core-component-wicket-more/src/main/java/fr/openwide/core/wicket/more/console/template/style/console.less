@@ -7,6 +7,7 @@
 @import "@{scope-core}bootstrap/override/variables.less";
 
 @import "@{scope-core}bootstrap/mixins.less";
+@import "@{scope-core}bootstrap/override/mixins.less";
 
 // Grid system and page structure
 @import "@{scope-core}bootstrap/scaffolding.less";
@@ -46,12 +47,15 @@
 
 @import "@{scope-core}bootstrap/override/general.less";
 
-// Console styles
-@import "common.less";
-
+// Éléments génériques
+@import "@{scope-core}common.less";
 @import "@{scope-core}alerts.less";
 @import "@{scope-core}modals.less";
-@import "nav.less";
+@import "@{scope-core}nav.less";
+@import "@{scope-core}itemit.less";
+@import "@{scope-core}autocomplete.less";
+@import "@{scope-core}select2.less";
 
 // Pages
+@import "common.less";
 @import "ehcache.less";

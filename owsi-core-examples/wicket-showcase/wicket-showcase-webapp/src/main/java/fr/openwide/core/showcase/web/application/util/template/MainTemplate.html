@@ -20,23 +20,21 @@
 <!-- 						<wicket:message key="navigation.home" /> -->
 <!-- 					</a> -->
 					
-					<div class="nav-collapse collapse">
-						<ul class="nav">
-							<li wicket:id="mainNav">
-								<a wicket:id="navLink">
-									<wicket:container wicket:id="navLabel" />
-								</a>
-							</li>
-						</ul>
-						
-						<!-- User menu -->
-						<div wicket:enclosure="userFullName" class="pull-right btn-group">
-							<span wicket:id="userFullName" class="btn btn-mini btn-inverse user-link-disabled">Julien Gonzalez</span>
-							<a wicket:id="logoutLink" class="btn btn-mini btn-icon-only btn-inverse" wicket:message="title:common.top.logout.alt">
-								<span class="icon-off icon-white"></span>
-							</a>
-						</div>
+					<!-- User menu -->
+					<div wicket:enclosure="userFullName" class="btn-group user-menu pull-right">
+						<span wicket:id="userFullName" class="user-full-name">Julien Gonzalez</span>
+						<a wicket:id="logoutLink" class="btn btn-icon-only" wicket:message="title:common.top.logout.alt">
+							<span class="icon-off"></span>
+						</a>
 					</div>
+					
+					<ul class="nav">
+						<li wicket:id="mainNav">
+							<a wicket:id="navLink">
+								<wicket:container wicket:id="navLabel" />
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 			

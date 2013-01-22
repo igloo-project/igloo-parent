@@ -2,7 +2,46 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.tooltip.title" /></h1>
+		<!-- Dropdown -->
+		<h1 id="dropdown"><wicket:message key="widgets.dropdown.title" /></h1>
+		
+		<p>
+			<wicket:message key="widgets.dropdown.explanation" />
+		</p>
+		
+		<div class="row-fluid" style="margin-bottom: 50px;">
+			<div class="span3">
+				<div class="btn-group dropdown">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						Show menu
+						<span class="caret" />
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#dropdown">Dropdown</a></li>
+						<li class="divider"></li>
+						<li><a href="#tooltip">Tooltip</a></li>
+						<li><a href="#popover">Popover</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="span3">
+				<div class="btn-group dropup">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						Show menu above
+						<span class="caret" />
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#dropdown">Dropdown</a></li>
+						<li class="divider"></li>
+						<li><a href="#tooltip">Tooltip</a></li>
+						<li><a href="#popover">Popover</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Tooltip -->
+		<h1 id="tooltip"><wicket:message key="widgets.tooltip.title" /></h1>
 		
 		<p>
 			<wicket:message key="widgets.tooltip.explanation" />
@@ -26,9 +65,8 @@
 			</button>
 		</p>
 		
-		
-		
-		<h1><wicket:message key="widgets.popover.title" /></h1>
+		<!-- Popover -->
+		<h1 id="popover"><wicket:message key="widgets.popover.title" /></h1>
 		
 		<p>
 			<wicket:message key="widgets.popover.explanation" />
