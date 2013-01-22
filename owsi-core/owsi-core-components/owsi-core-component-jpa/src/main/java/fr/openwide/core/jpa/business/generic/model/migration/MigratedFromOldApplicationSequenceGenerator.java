@@ -13,13 +13,15 @@ import fr.openwide.core.jpa.util.PostgreSQLSequenceGenerator;
  * {@code
  * @Id
  * @GeneratedValue(generator = "Ticket_id")
- * @GenericGenerator(name = "Ticket_id", strategy = "fr.openwide.core.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator")
+ * @GenericGenerator(name = "Ticket_id", strategy = MigratedFromOldApplicationSequenceGenerator.CLASS_NAME)
  * @DocumentId
  * private Long id;
  * }
  * </pre>
  */
 public class MigratedFromOldApplicationSequenceGenerator extends PostgreSQLSequenceGenerator {
+	
+	public static final String CLASS_NAME = "fr.openwide.core.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator";
 	
 	@Override
 	public Serializable generate(SessionImplementor session, Object obj) {
