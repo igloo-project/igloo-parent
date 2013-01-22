@@ -20,23 +20,22 @@
 			<!-- Main navigation bar -->
 			<div class="navbar">
 				<div class="navbar-inner">
-					<div class="nav-collapse collapse">
-						<ul class="nav">
-							<li wicket:id="mainNav">
-								<a wicket:id="navLink">
-									<wicket:container wicket:id="navLabel" />
-								</a>
-							</li>
-						</ul>
-						
-						<!-- User menu -->
-						<div wicket:enclosure="userFullName" class="pull-right btn-group">
-							<span wicket:id="userFullName" class="btn btn-mini btn-inverse user-link-disabled"></span>
-							<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-mini btn-icon-only btn-inverse">
-								<span class="icon-off icon-white"></span>
-							</a>
-						</div>
+					<!-- User menu -->
+					<div wicket:enclosure="userFullName" class="btn-group user-menu pull-right">
+						<span wicket:id="userFullName" class="user-full-name"></span>
+						<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-icon-only">
+							<span class="icon-off"></span>
+						</a>
 					</div>
+					
+					<!-- Main navigation -->
+					<ul class="nav">
+						<li wicket:id="mainNav">
+							<a wicket:id="navLink">
+								<wicket:container wicket:id="navLabel" />
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 			

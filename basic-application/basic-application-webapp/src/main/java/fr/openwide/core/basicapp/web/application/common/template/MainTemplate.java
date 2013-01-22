@@ -36,6 +36,7 @@ import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -148,6 +149,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// Tooltip
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
+		
+		// Dropdown
+		add(new BootstrapDropdownBehavior());
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
@@ -173,6 +177,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		bootstrapTooltip.setSelector("[title],[data-original-title]");
 		bootstrapTooltip.setAnimation(true);
 		bootstrapTooltip.setPlacement(BootstrapTooltip.Placement.BOTTOM);
+		bootstrapTooltip.setContainer("body");
 		return bootstrapTooltip;
 	}
 
