@@ -8,12 +8,14 @@ import org.apache.wicket.markup.html.WebPage;
 
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
+import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.page.AutocompletePage;
 import fr.openwide.core.showcase.web.application.widgets.page.AutosizePage;
+import fr.openwide.core.showcase.web.application.widgets.page.BootstrapJsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.CalendarPage;
 import fr.openwide.core.showcase.web.application.widgets.page.CarouselPage;
 import fr.openwide.core.showcase.web.application.widgets.page.DateParserPage;
@@ -22,7 +24,6 @@ import fr.openwide.core.showcase.web.application.widgets.page.ListFilterPage;
 import fr.openwide.core.showcase.web.application.widgets.page.SelectBoxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.SortableListPage;
 import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
-import fr.openwide.core.showcase.web.application.widgets.page.TooltipPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
@@ -71,7 +72,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/fancybox/", FancyboxPage.class);
 		mountPage("/widgets/date-parser/", DateParserPage.class);
 		mountPage("/widgets/list-filter/", ListFilterPage.class);
-		mountPage("/widgets/tooltip/", TooltipPage.class);
+		mountPage("/widgets/bootstrap-js/", BootstrapJsPage.class);
 		mountPage("/widgets/statistics/", StatisticsPage.class);
 		mountPage("/widgets/carousel/", CarouselPage.class);
 		mountPage("/widgets/autosize/", AutosizePage.class);
@@ -79,6 +80,8 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/selectbox/", SelectBoxPage.class);
 		
 		mountPage("/titles/", TitlesPage.class);
+		
+		mountPage("/buttons/", ButtonsPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");

@@ -16,6 +16,8 @@ public class BootstrapPopoverOptions extends Options {
 
 	private Boolean animation;
 
+	private Boolean html;
+
 	private PopoverPlacement placement;
 
 	private String selector;
@@ -32,6 +34,8 @@ public class BootstrapPopoverOptions extends Options {
 
 	private Integer delay;
 
+	private String container;
+
 	public BootstrapPopoverOptions() {
 		super();
 	}
@@ -40,6 +44,9 @@ public class BootstrapPopoverOptions extends Options {
 	public CharSequence getJavaScriptOptions() {
 		if (animation != null) {
 			put("animation", animation);
+		}
+		if (html != null) {
+			put("html", html);
 		}
 		if (placement != null) {
 			put("placement", JsUtils.quotes(placement.getValue()));
@@ -63,6 +70,9 @@ public class BootstrapPopoverOptions extends Options {
 		if (delay != null) {
 			put("delay", delay);
 		}
+		if (container != null) {
+			put("container", JsUtils.quotes(container));
+		}
 		
 		return super.getJavaScriptOptions();
 	}
@@ -73,6 +83,14 @@ public class BootstrapPopoverOptions extends Options {
 
 	public void setAnimation(Boolean animation) {
 		this.animation = animation;
+	}
+
+	public Boolean getHtml() {
+		return html;
+	}
+
+	public void setHtml(Boolean html) {
+		this.html = html;
 	}
 
 	public PopoverPlacement getPlacement() {
@@ -159,6 +177,14 @@ public class BootstrapPopoverOptions extends Options {
 
 	public void setDelay(Integer delay) {
 		this.delay = delay;
+	}
+
+	public String getContainer() {
+		return container;
+	}
+
+	public void setContainer(String container) {
+		this.container = container;
 	}
 
 }

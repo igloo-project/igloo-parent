@@ -10,17 +10,16 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.PopoverTrigger;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class TooltipPage extends WidgetsTemplate {
+public class BootstrapJsPage extends WidgetsTemplate {
 	
 	private static final long serialVersionUID = -187415297020105589L;
 	
-	public TooltipPage(PageParameters parameters) {
+	public BootstrapJsPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.tooltip"), TooltipPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.class));
 		
 		// Popover
 		WebMarkupContainer someInformation = new WebMarkupContainer("someInfomration");
@@ -29,9 +28,10 @@ public class TooltipPage extends WidgetsTemplate {
 		
 		Label someLabelDefault = new Label("someLabelDefault", new ResourceModel("widgets.popover.someLabel.default"));
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
-		popoverOptions.setTrigger(PopoverTrigger.MANUAL);
 		popoverOptions.setTitleText(new ResourceModel("widgets.popover.someInformation.title").getObject());
 		popoverOptions.setContentComponent(someInformation);
+		popoverOptions.setHtml(true);
+		popoverOptions.setContainer("body");
 		someLabelDefault.add(new BootstrapPopoverBehavior(popoverOptions));
 		someLabelDefault.add(new ClassAttributeAppender(Model.of("popover-btn")));
 		add(someLabelDefault);
@@ -54,6 +54,6 @@ public class TooltipPage extends WidgetsTemplate {
 	
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return TooltipPage.class;
+		return BootstrapJsPage.class;
 	}
 }

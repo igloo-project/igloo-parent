@@ -1,0 +1,154 @@
+// Select2 styles override
+body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par défaut.
+	.select2-container {	// Le champ correspondant au "select"
+		vertical-align: middle;
+		margin: 0 20px 0 0;
+		
+		.select2-choice, .select2-choices {
+			background: #FFFFFF;
+			border-color: @inputBorder;
+			.box-shadow(0 1px 1px rgba(0, 0, 0, 0.075) inset);
+		}
+		
+		.select2-choice {
+			.select2-search-choice-close {
+				top: 6px;
+				padding: 1px;
+				background-color: inherit;
+			}
+			div {
+				background: #EEEEEE;
+				border-left-color: @inputBorder;
+			}
+		}
+		
+		&.select2-dropdown-open {
+			.select2-choice {
+				.box-shadow(none);
+				background: #F6F6F6;
+				
+				div {
+					background: transparent;
+					border-left: none;
+				}
+			}
+			
+			&.select2-drop-above {
+				.select2-choice {
+					background: #F6F6F6;
+					border-bottom-color: @inputBorder;
+				}
+			}
+		}
+		
+		&.select2-container-multi {
+			&.select2-container-active {
+				.select2-choices {
+					.input-focus();
+				}
+			}
+			
+			.select2-choices {
+				max-height: 26px;
+				.border-radius(3px);
+				border-color: @inputBorder;
+				
+				.select2-search-choice {
+					padding: 2px 3px 2px 15px;
+					background: #F4F4F4;
+					border-color: #CCCCCC;
+					
+					.select2-search-choice-close {
+						top: 2px;
+						right: 2px;
+					}
+				}
+			}
+		}
+	}
+	.select2-drop {		// Le champ de recherche et la liste des choix
+		border: 1px solid @inputBorder;
+		margin-top: -2px;
+		
+		&.select2-drop-above {	// Liste ouverte au dessus
+			border-bottom: 1px solid @inputBorder;
+			margin-top: 2px;
+			
+			.select2-search {
+				.select2-input {
+					margin: 0;
+				}
+			}
+		}
+		
+		.select2-search {
+			padding-top: 4px;
+			
+			.select2-input {
+				margin: 0;
+				
+				&:focus {
+					.input-focus();
+/* 					.box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 4px rgba(255,100,0,.6)"); */
+				}
+			}
+		}
+		
+		.select2-results {
+			.select2-highlighted {
+				background: @mainColorHighlight;
+			}
+			
+			.select2-result-label {
+				cursor: default;
+			}
+			
+			.select2-result-selectable {
+				.select2-result-label {
+					cursor: pointer;
+				}
+			}
+			
+			.select2-no-results {
+				background: transparent;
+				font-style: italic;
+				padding: 2px 4px;
+			}
+		}
+		
+		&.select2-drop-mini {
+			min-width: 60px;
+			max-width: 60px;
+		}
+		
+		&.select2-drop-small {
+			min-width: 90px;
+			max-width: 90px;
+		}
+		
+		&.select2-drop-medium {
+			min-width: 130px;
+			max-width: 130px;
+		}
+		
+		&.select2-drop-large {
+			min-width: 190px;
+			max-width: 190px;
+		}
+		
+		&.select2-drop-xlarge {
+			min-width: 310px;
+			max-width: 310px;
+		}
+		
+		&.select2-drop-xxlarge {
+			min-width: 530px;
+			max-width: 530px;
+		}
+		
+		&.select2-drop-xxxlarge {
+			min-width: 800px;
+			max-width: 800px;
+		}
+	}
+}

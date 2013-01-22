@@ -7,8 +7,10 @@
 // Core variables and mixins
 @import "@{scope-core}bootstrap/variables.less";
 @import "@{scope-core}bootstrap/override/variables.less";
+@import "variables.less";
 
 @import "@{scope-core}bootstrap/mixins.less";
+@import "@{scope-core}bootstrap/override/mixins.less";
 
 // Grid system and page structure
 @import "@{scope-core}bootstrap/scaffolding.less";
@@ -50,18 +52,20 @@
 
 @import "@{scope-core}bootstrap/override/general.less";
 
-// éléments génériques
+// Éléments génériques
+@import "@{scope-core}common.less";
+@import "@{scope-core}nav.less";
 @import "@{scope-core}alerts.less";
 @import "@{scope-core}modals.less";
 @import "@{scope-core}itemit.less";
 @import "@{scope-core}autocomplete.less";
+@import "@{scope-core}select2.less";
 
-// pages
+// Pages
 @import "common.less";
 @import "listfilter.less";
 @import "autocomplete.less";
 @import "diaporama.less";
 @import "modals.less";
-@import "nav.less";
 @import "searchpanel.less";
 @import "sortable-elements.less";

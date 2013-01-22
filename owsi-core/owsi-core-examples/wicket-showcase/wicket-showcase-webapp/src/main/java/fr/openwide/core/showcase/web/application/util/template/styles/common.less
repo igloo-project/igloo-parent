@@ -1,11 +1,6 @@
-body {
-	background: none repeat scroll 0 0 #EEEEEE;
-	padding-top: 0; 
-}
-
 .container {
-	max-width: @max-page-width;
-	min-width: @min-page-width;
+	max-width: @maxPageWidth;
+	min-width: @minPageWidth;
 	width: auto;
 	margin-bottom: 40px;
 	
@@ -14,26 +9,46 @@ body {
 	border-color: #CCC;
 	.border-radius(0 0 5px 5px);
 	background-color: #FFFFFF;
-
-	.navbar .user-info .btn-icon-only {
-		padding: 4px 10px;
-	}
 }
 
 .content {
 	min-height: 450px;
 	padding: 15px;
 	
+	.clearfix();
+}
+
+.content, .modal {
 	h1 {
 		border-bottom: 1px #CCC solid;
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 		padding-bottom: 2px;
+		
+		.btn:not(.btn-mini):not(.btn-small):not(.btn-large) {
+			padding-top: 3px;
+			padding-bottom: 3px;
+		}
+		
+		select {
+			height: 24px;
+			padding: 3px;
+		}
 	}
 	
 	h2 {
 		border-bottom: 1px #CCC solid;
 		margin-bottom: 15px;
 		padding-bottom: 2px;
+		
+		.btn:not(.btn-mini):not(.btn-small):not(.btn-large) {
+			padding-top: 2px;
+			padding-bottom: 2px;
+		}
+		
+		select {
+			height: 22px;
+			padding: 2px 3px;
+		}
 	}
 	
 	h3 {
@@ -55,11 +70,16 @@ body {
 		margin-bottom: 10px;
 		padding-bottom: 1px;
 	}
-}
-
-// User menu
-.user-link-disabled {
-	.buttonBackground(lighten(@btnInverseBackground, 10%), lighten(@btnInverseBackgroundHighlight, 10%));
+	
+	h1, h2, h3, h4, h5, h6 {
+		margin-top: 0;
+		select {
+			margin: 0;
+		}
+		.btn {
+			font-weight: normal;
+		}
+	}
 }
 
 // User description
@@ -94,10 +114,24 @@ body {
 	resize: none;
 }
 
-.footer {
-	border-top: 1px solid #CCC;
-	padding: 10px 15px;
-	text-align: right;
-	background: #EEE;
-	.border-radius(0 0 5px 5px);
+// jQuery UI
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	color: @mainColor;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+	background: @mainColor;
+	border-color: @mainColorHighlight;
+	color: #FFFFFF;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-datepicker-today .ui-state-active {
+	background: @mainColorHighlight;
+	border-color: @mainColor;
+	color: #FFFFFF;
+}
+
+.ui-datepicker-next.ui-state-hover, .ui-datepicker-prev.ui-state-hover {
+	background: transparent;
+	border-color: transparent;
 }

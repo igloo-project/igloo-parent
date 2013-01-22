@@ -29,6 +29,10 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 
 	private Integer delayHide;
 
+	private Boolean html;
+
+	private String container;
+
 	public Boolean getAnimation() {
 		return animation;
 	}
@@ -108,6 +112,22 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 		this.delayHide = delayHide;
 	}
 
+	public Boolean getHtml() {
+		return html;
+	}
+
+	public void setHtml(Boolean html) {
+		this.html = html;
+	}
+
+	public String getContainer() {
+		return container;
+	}
+
+	public void setContainer(String container) {
+		this.container = container;
+	}
+
 	@Override
 	public String chainLabel() {
 		return "tooltip";
@@ -156,6 +176,14 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 			options.put("delay", delayOptions.getJavaScriptOptions().toString());
 		}
 		
+		if (html != null) {
+			options.put("html", html);
+		}
+		
+		if (container != null) {
+			options.put("container", JsUtils.quotes(container));
+		}
+		
 		return new CharSequence[] { options.getJavaScriptOptions() };
 	}
 
@@ -177,6 +205,7 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 	}
 
 	public enum Trigger {
+		CLICK("click"),
 		HOVER("hover"),
 		FOCUS("focus"),
 		MANUAL("manual");
