@@ -96,7 +96,7 @@
 		
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
 		
-		<owsi-core.wicket.version>6.4.0</owsi-core.wicket.version>
+		<owsi-core.wicket.version>6.5.0</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>6.2.0</owsi-core.wiquery.version>
 		
 		<owsi-core.lesscss-engine.version>1.3.0</owsi-core.lesscss-engine.version>
