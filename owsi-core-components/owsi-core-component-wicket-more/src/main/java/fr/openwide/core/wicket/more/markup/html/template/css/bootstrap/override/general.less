@@ -34,16 +34,7 @@ ol.unstyled {
 
 // Boutons
 
-// Mini
-.btn-mini {
-	font-size: @baseFontSize - 1px;
-	
-	.caret {
-		margin-top: 8px;
-	}
-}
-
-// Alignement vertical des icônes
+// Alignement vertical des icônes (à cause de la réduction de @baseFontSize)
 .btn [class^="icon-"],
 .btn [class*=" icon-"] {
 	margin-top: 0;
@@ -53,9 +44,11 @@ ol.unstyled {
 	margin-top: 2px;
 	vertical-align: top;
 }
-.btn-small [class^="icon-"],
-.btn-small [class*=" icon-"] {
-	margin-top: -1px;
+.btn .caret {
+	margin-top: 7px;
+}
+.btn-small .caret {
+	margin-top: 6px;
 }
 
 // Décalage des icones par rapport au texte
