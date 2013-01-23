@@ -5,8 +5,10 @@
 // Core variables and mixins
 @import "@{scope-core}bootstrap/variables.less";
 @import "@{scope-core}bootstrap/override/variables.less";
+@import "variables.less";
 
 @import "@{scope-core}bootstrap/mixins.less";
+@import "@{scope-core}bootstrap/override/mixins.less";
 
 // Grid system and page structure
 @import "@{scope-core}bootstrap/scaffolding.less";
@@ -29,6 +31,8 @@
 @import "@{scope-core}bootstrap/utilities.less";
 
 @import "@{scope-core}bootstrap/override/general.less";
+
+@import "@{scope-core}common.less";
 
 // Alerts complements
 @import "@{scope-core}alerts.less";
@@ -75,8 +79,8 @@
 .login-title {
 	border-bottom: 1px solid #DDDDDD;
 	border-top: 1px solid #DDDDDD;
-	color: #888888;
-	background: #F1F1F1;
+	color: #FFFFFF;
+	background: @mainColor;
 	margin: 0;
 	padding: 10px 30px;
 }
