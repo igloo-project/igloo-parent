@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 import org.apache.lucene.util.Version;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
-import org.hibernate.cfg.DefaultComponentSafeNamingStrategy;
 import org.hibernate.cfg.EJB3NamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
@@ -39,6 +38,7 @@ import fr.openwide.core.jpa.config.spring.provider.DefaultJpaConfigurationProvid
 import fr.openwide.core.jpa.config.spring.provider.DefaultTomcatPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.util.FixedDefaultComponentSafeNamingStrategy;
 
 public final class JpaConfigUtils {
 
@@ -153,7 +153,7 @@ public final class JpaConfigUtils {
 		} else {
 			throw new IllegalStateException(AvailableSettings.NAMING_STRATEGY + " may not be null: sensible values are "
 					+ EJB3NamingStrategy.class.getName() + " for OWSI-Core <= 0.7 or "
-					+ DefaultComponentSafeNamingStrategy.class.getName() + " for OWSI-Core >= 0.8");
+					+ FixedDefaultComponentSafeNamingStrategy.class.getName() + " for OWSI-Core >= 0.8");
 		}
 		
 		return properties;
