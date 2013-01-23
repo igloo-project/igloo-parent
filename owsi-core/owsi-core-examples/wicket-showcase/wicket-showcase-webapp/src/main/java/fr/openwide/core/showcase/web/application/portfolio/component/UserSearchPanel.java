@@ -49,7 +49,6 @@ public class UserSearchPanel extends Panel {
 			
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				// TODO : à vérifier quand le bug wiQuery sur l'autocomplete aura été corrigé.
 				if (getModelObject() != null) {
 					PageParameters pageParameters = LinkUtils.getUserDescriptionPageParameters(getModel().getObject());
 					setResponsePage(UserDescriptionPage.class, pageParameters);
