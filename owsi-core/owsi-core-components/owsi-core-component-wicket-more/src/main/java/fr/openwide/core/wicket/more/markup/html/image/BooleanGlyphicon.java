@@ -4,6 +4,8 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+
 /**
  * Container utilisant les glyphicons de Bootstrap et affichant
  * un tick ou une croix selon que le model soit true ou false.
@@ -17,6 +19,8 @@ public class BooleanGlyphicon extends WebMarkupContainer {
 
 	private static final String BOOTSTRAP_TRUE_ICON_CLASS = "icon-ok";
 	private static final String BOOTSTRAP_FALSE_ICON_CLASS = "icon-remove";
+	
+	private static final String BOOLEAN_GLYPHICON_CLASS = "boolean-glyphicon";
 
 	private boolean showFalseIcon;
 	
@@ -27,6 +31,8 @@ public class BooleanGlyphicon extends WebMarkupContainer {
 	public BooleanGlyphicon(String id, IModel<Boolean> booleanModel, boolean showFalseIcon) {
 		super(id, booleanModel);
 		this.showFalseIcon = showFalseIcon;
+		
+		add(new ClassAttributeAppender(BOOLEAN_GLYPHICON_CLASS));
 	}
 
 	@Override
