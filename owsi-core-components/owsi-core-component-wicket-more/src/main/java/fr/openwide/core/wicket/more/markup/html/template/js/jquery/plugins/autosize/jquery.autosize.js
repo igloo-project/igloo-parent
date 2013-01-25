@@ -1,7 +1,9 @@
-// Autosize 1.15.3 - jQuery plugin for textareas
-// (c) 2013 Jack Moore - jacklmoore.com
-// license: www.opensource.org/licenses/mit-license.php
-
+/*
+	jQuery Autosize v1.16.3
+	(c) 2013 Jack Moore - jacklmoore.com
+	updated: 2013-01-23
+	license: http://www.opensource.org/licenses/mit-license.php
+*/
 (function ($) {
 	var
 	defaults = {
@@ -54,7 +56,7 @@
 			var
 			ta = this,
 			$ta = $(ta),
-			minHeight = $ta.height(),
+			minHeight,
 			active,
 			resize,
 			boxOffset = 0,
@@ -68,6 +70,8 @@
 			if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
+
+			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset, $ta.height());
 
 			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
 
@@ -110,7 +114,8 @@
 					original = parseInt(ta.style.height,10);
 
 					// Update the width in case the original textarea width has changed
-					mirror.style.width = $ta.width() + 'px';
+					// A floor of 0 is needed because IE8 returns a negative value for hidden textareas, raising an error.
+					mirror.style.width = Math.max($ta.width(), 0) + 'px';
 
 					// The following three lines can be replaced with `height = mirror.scrollHeight` when dropping IE7 support.
 					mirror.scrollTop = 0;
