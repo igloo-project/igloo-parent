@@ -83,7 +83,7 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 					@TokenFilterDef(factory = TrimFilterFactory.class),
 					@TokenFilterDef(factory = LowerCaseFilterFactory.class),
 					@TokenFilterDef(factory = PatternReplaceFilterFactory.class, params = {
-						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "([^0-9a-z ])"),
+						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "([^0-9\\p{L} ])"),
 						@org.hibernate.search.annotations.Parameter(name = "replacement", value = ""),
 						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
 					})
