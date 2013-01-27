@@ -19,20 +19,11 @@
 			<type>pom</type>
 		</dependency>
 		
-		<!-- Bindgen -->
-		
-		<dependency>
-			<groupId>org.bindgen</groupId>
-			<artifactId>bindgen</artifactId>
-			<version>${owsi-core.bindgen.version}</version>
-		</dependency>
-		
 		<!-- Pooling -->
 		
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${owsi-core.tomcat-jdbc.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
@@ -63,10 +54,6 @@
 			<artifactId>geocoder-java</artifactId>
 			<version>${google-geocoder.version}</version>
 			<exclusions>
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
 				<exclusion>
 					<artifactId>commons-logging</artifactId>
 					<groupId>commons-logging</groupId>
