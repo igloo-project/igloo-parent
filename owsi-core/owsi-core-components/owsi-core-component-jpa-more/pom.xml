@@ -29,12 +29,18 @@
 			<type>pom</type>
 		</dependency>
 		
+		<!-- Jackson est utilisé pour sérialiser les tâches avant persistence -->
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		
 		<!-- Bindgen -->
 		
 		<dependency>
 			<groupId>org.bindgen</groupId>
 			<artifactId>bindgen</artifactId>
-			<version>${owsi-core.bindgen.version}</version>
 		</dependency>
 		
 		<!-- Excel Import -->
@@ -42,25 +48,11 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>${owsi-core.poi.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${owsi-core.commons-codec.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>${owsi-core.poi.version}</version>
 		</dependency>
 		
 		<!-- ImageInfo -->
@@ -68,14 +60,13 @@
 		<dependency>
 			<groupId>org.devlib.schmidt</groupId>
 			<artifactId>imageinfo</artifactId>
-			<version>${owsi-core.imageinfo.version}</version>
 		</dependency>
 		
 		<!-- Database pooling -->
+		
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${owsi-core.tomcat-jdbc.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
