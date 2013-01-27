@@ -894,6 +894,7 @@
 										<exclude>javassist:javassist</exclude>
 										<exclude>xml-apis:xml-apis</exclude>
 										<exclude>apache-xerces:xml-apis</exclude>
+										<exclude>javax.servlet:servlet-api</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
