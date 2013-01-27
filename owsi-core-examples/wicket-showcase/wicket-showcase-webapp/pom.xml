@@ -41,7 +41,6 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${owsi-core.tomcat-jdbc.version}</version>
 		</dependency>
 		
 		<!-- Misc. -->
@@ -49,7 +48,6 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${owsi-core.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
@@ -57,12 +55,6 @@
 			<groupId>org.retzlaff</groupId>
 			<artifactId>wicket-select2</artifactId>
 			<version>${wicket-select2.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.wicket</groupId>
-					<artifactId>wicket-core</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<!-- WQplot -->
@@ -71,20 +63,6 @@
 			<groupId>nl.topicus</groupId>
 			<artifactId>wqplot</artifactId>
 			<version>${wqplot.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.wicket</groupId>
-					<artifactId>wicket-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.odlabs.wiquery</groupId>
-					<artifactId>wiquery-jquery-ui</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 	</dependencies>
