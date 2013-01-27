@@ -29,31 +29,33 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>${owsi-core.commons-lang.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${owsi-core.commons-lang3.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>${owsi-core.commons-io.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>${owsi-core.commons-codec.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-exec</artifactId>
-			<version>${owsi-core.commons-exec.version}</version>
+		</dependency>
+		
+		<!-- Guava -->
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		
 		<!-- Utils -->
@@ -61,7 +63,6 @@
 		<dependency>
 			<groupId>org.javatuples</groupId>
 			<artifactId>javatuples</artifactId>
-			<version>${owsi-core.javatuples.version}</version>
 		</dependency>
 		
 		<!-- TrueZIP -->
@@ -69,25 +70,21 @@
 		<dependency>
 			<groupId>de.schlichtherle.truezip</groupId>
 			<artifactId>truezip-file</artifactId>
-			<version>${owsi-core.truezip.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>de.schlichtherle.truezip</groupId>
 			<artifactId>truezip-driver-file</artifactId>
-			<version>${owsi-core.truezip.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>de.schlichtherle.truezip</groupId>
 			<artifactId>truezip-driver-tar</artifactId>
-			<version>${owsi-core.truezip.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>de.schlichtherle.truezip</groupId>
 			<artifactId>truezip-driver-zip</artifactId>
-			<version>${owsi-core.truezip.version}</version>
 		</dependency>
 		
 		<!-- Introduced for SLF4JLoggingListener -->
@@ -95,7 +92,6 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${owsi-core.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		

@@ -33,53 +33,16 @@
 			<type>pom</type>
 		</dependency>
 		
-		<!-- Bindgen -->
-		
-		<dependency>
-			<groupId>org.bindgen</groupId>
-			<artifactId>bindgen</artifactId>
-			<version>${owsi-core.bindgen.version}</version>
-		</dependency>
-		
 		<!-- WiQuery -->
 		
 		<dependency>
 			<groupId>org.odlabs.wiquery</groupId>
 			<artifactId>wiquery-core</artifactId>
-			<version>${owsi-core.wiquery.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.jackson</groupId>
-					<artifactId>jackson-mapper-asl</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.wicket</groupId>
-					<artifactId>wicket-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>rhino</groupId>
-					<artifactId>js</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<!-- Utilisé par wiQuery et LessCSS -->
-		<dependency>
-			<groupId>org.mozilla</groupId>
-			<artifactId>rhino</artifactId>
-			<version>${owsi-core.rhino.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.odlabs.wiquery</groupId>
 			<artifactId>wiquery-jquery-ui</artifactId>
-			<version>${owsi-core.wiquery.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${owsi-core.jackson.version}</version>
 		</dependency>
 		
 		<!--
@@ -89,30 +52,12 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${owsi-core.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.asual.lesscss</groupId>
 			<artifactId>lesscss-engine</artifactId>
-			<version>${owsi-core.lesscss-engine.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mozilla</groupId>
-					<artifactId>rhino</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-cli</groupId>
-			<artifactId>commons-cli</artifactId>
-			<version>${owsi-core.commons-cli.version}</version>
 		</dependency>
 		
 		<!-- Test -->

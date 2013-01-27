@@ -14,6 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<jdk.version>1.6</jdk.version>
+		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
 		
@@ -25,6 +26,7 @@
 		<owsi-core.hibernate-core.version>4.1.6.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.0-api.version>1.0.1.Final</owsi-core.hibernate-jpa-2.0-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.2.0.Final</owsi-core.hibernate-jpamodelgen.version>
+		<owsi-core.jboss-logging.version>3.1.0.GA</owsi-core.jboss-logging.version>
 		<owsi-core.tomcat-jdbc.version>7.0.34</owsi-core.tomcat-jdbc.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.4.8</owsi-core.ehcache.version>
@@ -81,6 +83,7 @@
 		<owsi-core.jackson2-annotations.version>2.1.2</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>2.1.3</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs-json-provider.version>2.1.2</owsi-core.jackson2-jaxrs-json-provider.version>
+		<owsi-core.jackson2-jaxrs-xml-provider.version>2.1.2</owsi-core.jackson2-jaxrs-xml-provider.version>
 		<owsi-core.truezip.version>7.7.1</owsi-core.truezip.version>
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
@@ -97,6 +100,7 @@
 		<owsi-core.javax-el-api.version>2.2.4</owsi-core.javax-el-api.version>
 		<owsi-core.sitemesh.version>2.4.2</owsi-core.sitemesh.version>
 		
+		<owsi-core.javax-activation.version>1.1.1</owsi-core.javax-activation.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
 		
 		<owsi-core.wicket.version>6.5.0</owsi-core.wicket.version>
@@ -127,26 +131,740 @@
 	
 	<dependencyManagement>
 		<dependencies>
-			<!-- Test dependencies -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${owsi-core.junit.version}</version>
-				<scope>test</scope>
-			</dependency>
+			<!-- Logging -->
+				
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+					<version>${owsi-core.slf4j.version}</version>
+				</dependency>
+		
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+					<version>${owsi-core.slf4j.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+					<version>${owsi-core.slf4j.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+					<version>${owsi-core.log4j.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jul-to-slf4j</artifactId>
+					<version>${owsi-core.slf4j.version}</version>
+				</dependency>
 			
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${owsi-core.spring.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
+			<!-- Apache Commons -->
+			
+				<dependency>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+					<version>${owsi-core.commons-lang.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-lang3</artifactId>
+					<version>${owsi-core.commons-lang3.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>commons-io</groupId>
+					<artifactId>commons-io</artifactId>
+					<version>${owsi-core.commons-io.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+					<version>${owsi-core.commons-codec.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-exec</artifactId>
+					<version>${owsi-core.commons-exec.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-cli</artifactId>
+					<version>${owsi-core.commons-cli.version}</version>
+				</dependency>
+			
+			<!-- Spring -->
+			
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+					<version>${owsi-core.spring.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aspects</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+					<version>${owsi-core.spring.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context-support</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-expression</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-jdbc</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-orm</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-webmvc</artifactId>
+					<version>${owsi-core.spring.version}</version>
+				</dependency>
+				
+			<!-- Reflection, proxying, instrumentation... -->
+				
+				<dependency>
+					<groupId>cglib</groupId>
+					<artifactId>cglib-nodep</artifactId>
+					<version>${owsi-core.cglib.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.aspectj</groupId>
+					<artifactId>aspectjrt</artifactId>
+					<version>${owsi-core.aspectj.version}</version>
+				</dependency>
+		
+				<dependency>
+					<groupId>org.aspectj</groupId>
+					<artifactId>aspectjweaver</artifactId>
+					<version>${owsi-core.aspectj.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.javassist</groupId>
+					<artifactId>javassist</artifactId>
+					<version>${owsi-core.javassist.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>asm</groupId>
+					<artifactId>asm</artifactId>
+					<version>${owsi-core.asm.version}</version>
+				</dependency>
+			
+			<!-- Spring Security -->
+			
+				<dependency>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-core</artifactId>
+					<version>${owsi-core.spring-security.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-acl</artifactId>
+					<version>${owsi-core.spring-security.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-config</artifactId>
+					<version>${owsi-core.spring-security.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-web</artifactId>
+					<version>${owsi-core.spring-security.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-ldap</artifactId>
+					<version>${owsi-core.spring-security.version}</version>
+					<exclusions>
+						<exclusion>
+							<artifactId>commons-logging</artifactId>
+							<groupId>commons-logging</groupId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-taglibs</artifactId>
+					<version>${owsi-core.spring-security.version}</version>
+				</dependency>
+				
+			<!-- Spring LDAP -->
+				
+				<dependency>
+					<groupId>org.springframework.ldap</groupId>
+					<artifactId>spring-ldap-core</artifactId>
+					<version>${owsi-core.spring-ldap.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework.ldap</groupId>
+					<artifactId>spring-ldap-core-tiger</artifactId>
+					<version>${owsi-core.spring-ldap.version}</version>
+				</dependency>
+				
+			<!-- Persistence -->
+			
+				<!-- JDBC drivers -->
+				
+					<dependency>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>${owsi-core.postgresql.version}</version>
+					</dependency>
+				
+				<!-- Pooling -->
+				
+					<dependency>
+						<groupId>org.apache.tomcat</groupId>
+						<artifactId>tomcat-jdbc</artifactId>
+						<version>${owsi-core.tomcat-jdbc.version}</version>
+					</dependency>
+				
+				<!-- Hibernate -->
+				
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-entitymanager</artifactId>
+						<version>${owsi-core.hibernate-core.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-core</artifactId>
+						<version>${owsi-core.hibernate-core.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-ehcache</artifactId>
+						<version>${owsi-core.hibernate-core.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.hibernate.javax.persistence</groupId>
+						<artifactId>hibernate-jpa-2.0-api</artifactId>
+						<version>${owsi-core.hibernate-jpa-2.0-api.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.jboss.logging</groupId>
+						<artifactId>jboss-logging</artifactId>
+						<version>${owsi-core.jboss-logging.version}</version>
+						<exclusions>
+							<exclusion>
+								<artifactId>xml-apis</artifactId>
+								<groupId>xml-apis</groupId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					
+				<!-- QueryDSL -->
+				
+					<dependency>
+						<groupId>com.mysema.querydsl</groupId>
+						<artifactId>querydsl-jpa</artifactId>
+						<version>${owsi-core.querydsl.version}</version>
+						<exclusions>
+							<exclusion>
+								<groupId>cglib</groupId>
+								<artifactId>cglib</artifactId>
+							</exclusion>
+							
+							<exclusion>
+								<groupId>org.hibernate.javax.persistence</groupId>
+								<artifactId>hibernate-jpa-2.0-api</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+			
+			<!-- Cache (also used for Hibernate second level cache) -->
+			
+				<dependency>
+					<groupId>net.sf.ehcache</groupId>
+					<artifactId>ehcache-core</artifactId>
+					<version>${owsi-core.ehcache.version}</version>
+				</dependency>
+			
+			<!-- Lucene -->
+			
+				<dependency>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-core</artifactId>
+					<version>${owsi-core.lucene.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-analyzers</artifactId>
+					<version>${owsi-core.lucene.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.solr</groupId>
+					<artifactId>solr-core</artifactId>
+					<version>${owsi-core.lucene.version}</version>
+				</dependency>
+			
+			<!-- Jackson -->
+			
+				<!-- Jackson 1 -->
+				
+					<dependency>
+						<groupId>org.codehaus.jackson</groupId>
+						<artifactId>jackson-core-asl</artifactId>
+						<version>${owsi-core.jackson.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.codehaus.jackson</groupId>
+						<artifactId>jackson-mapper-asl</artifactId>
+						<version>${owsi-core.jackson.version}</version>
+					</dependency>
+				
+				<!-- Jackson 2 -->
+				
+					<dependency>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-core</artifactId>
+						<version>${owsi-core.jackson2-core.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-annotations</artifactId>
+						<version>${owsi-core.jackson2-annotations.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-databind</artifactId>
+						<version>${owsi-core.jackson2-databind.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>com.fasterxml.jackson.jaxrs</groupId>
+						<artifactId>jackson-jaxrs-json-provider</artifactId>
+						<version>${owsi-core.jackson2-jaxrs-json-provider.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>com.fasterxml.jackson.jaxrs</groupId>
+						<artifactId>jackson-jaxrs-xml-provider</artifactId>
+						<version>${owsi-core.jackson2-jaxrs-xml-provider.version}</version>
+					</dependency>
+				
+			<!--  Guava -->
+			
+				<dependency>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+					<version>${owsi-core.guava.version}</version>
+				</dependency>
+			
+			<!-- Utils -->
+		
+				<dependency>
+					<groupId>org.javatuples</groupId>
+					<artifactId>javatuples</artifactId>
+					<version>${owsi-core.javatuples.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.bindgen</groupId>
+					<artifactId>bindgen</artifactId>
+					<version>${owsi-core.bindgen.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.devlib.schmidt</groupId>
+					<artifactId>imageinfo</artifactId>
+					<version>${owsi-core.imageinfo.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+					<version>${owsi-core.javax-mail.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.activation</groupId>
+					<artifactId>activation</artifactId>
+					<version>${owsi-core.javax-activation.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.freemarker</groupId>
+					<artifactId>freemarker</artifactId>
+					<version>${owsi-core.freemarker.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.asual.lesscss</groupId>
+					<artifactId>lesscss-engine</artifactId>
+					<version>${owsi-core.lesscss-engine.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.mozilla</groupId>
+					<artifactId>rhino</artifactId>
+					<version>${owsi-core.rhino.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jsoup</groupId>
+					<artifactId>jsoup</artifactId>
+					<version>${owsi-core.jsoup.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.jfree</groupId>
+					<artifactId>jfreechart</artifactId>
+					<version>${owsi-core.jfreechart.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>xml-apis</groupId>
+							<artifactId>xml-apis</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			
+			<!-- Exports divers -->
+			
+				<dependency>
+					<groupId>org.xhtmlrenderer</groupId>
+					<artifactId>core-renderer</artifactId>
+					<version>${owsi-core.xhtmlrenderer.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.lowagie</groupId>
+					<artifactId>itext</artifactId>
+					<version>${owsi-core.itext.version}</version>
+					<!-- il peut du coup être nécessaire de les ajouter en version jdk16 si on utilise des fichiers pdf protégés -->
+					<exclusions>
+						<exclusion>
+							<groupId>bouncycastle</groupId>
+							<artifactId>bcmail-jdk14</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.bouncycastle</groupId>
+							<artifactId>bctsp-jdk14</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>bouncycastle</groupId>
+							<artifactId>bcprov-jdk14</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			
+			<!-- Scheduling -->
+			
+				<dependency>
+					<groupId>org.quartz-scheduler</groupId>
+					<artifactId>quartz</artifactId>
+					<version>${owsi-core.quartz.version}</version>
+					<exclusions>
+						<exclusion>
+							<artifactId>c3p0</artifactId>
+							<groupId>c3p0</groupId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			
+			<!-- Apache POI -->
+			
+				<dependency>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>
+					<version>${owsi-core.poi.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi-ooxml</artifactId>
+					<version>${owsi-core.poi.version}</version>
+					<exclusions>
+						<!-- xml-apis may result in class loading issues and is provided by modern JREs -->
+						<exclusion>
+							<groupId>xml-apis</groupId>
+							<artifactId>xml-apis</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			
+			<!-- TrueZip -->
+			
+				<dependency>
+					<groupId>de.schlichtherle.truezip</groupId>
+					<artifactId>truezip-file</artifactId>
+					<version>${owsi-core.truezip.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>de.schlichtherle.truezip</groupId>
+					<artifactId>truezip-driver-file</artifactId>
+					<version>${owsi-core.truezip.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>de.schlichtherle.truezip</groupId>
+					<artifactId>truezip-driver-tar</artifactId>
+					<version>${owsi-core.truezip.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>de.schlichtherle.truezip</groupId>
+					<artifactId>truezip-driver-zip</artifactId>
+					<version>${owsi-core.truezip.version}</version>
+				</dependency>
+			
+			<!-- Wicket -->
+			
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+					<type>pom</type>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-core</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-ioc</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+					<exclusions>
+						<exclusion>
+							<artifactId>cglib</artifactId>
+							<groupId>cglib</groupId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-spring</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.springframework</groupId>
+							<artifactId>spring</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-auth-roles</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-extensions</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-devutils</artifactId>
+					<version>${owsi-core.wicket.version}</version>
+				</dependency>
+				
+				<!-- WiQuery -->
+				
+					<dependency>
+						<groupId>org.odlabs.wiquery</groupId>
+						<artifactId>wiquery-core</artifactId>
+						<version>${owsi-core.wiquery.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>org.odlabs.wiquery</groupId>
+						<artifactId>wiquery-jquery-ui</artifactId>
+						<version>${owsi-core.wiquery.version}</version>
+					</dependency>
+			
+			<!-- Jersey -->
+			
+				<dependency>
+					<groupId>com.sun.jersey</groupId>
+					<artifactId>jersey-server</artifactId>
+					<version>${owsi-core.jersey.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.sun.jersey</groupId>
+					<artifactId>jersey-client</artifactId>
+					<version>${owsi-core.jersey.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.sun.jersey.contribs</groupId>
+					<artifactId>jersey-multipart</artifactId>
+					<version>${owsi-core.jersey.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.sun.jersey.contribs</groupId>
+					<artifactId>jersey-spring</artifactId>
+					<version>${owsi-core.jersey.version}</version>
+				</dependency>
+			
+			<!-- Servlet / JSP -->
+			
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>jstl</artifactId>
+					<version>${owsi-core.jstl.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>javax.servlet-api</artifactId>
+					<version>${owsi-core.servlet-api.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>opensymphony</groupId>
+					<artifactId>sitemesh</artifactId>
+					<version>${owsi-core.sitemesh.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.validation</groupId>
+					<artifactId>validation-api</artifactId>
+					<version>${owsi-core.javax-validation-api.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>javax.servlet.jsp</groupId>
+					<artifactId>jsp-api</artifactId>
+					<version>${owsi-core.jsp-api.version}</version>
+				</dependency>
+			
+			<!-- Test dependencies -->
+			
+				<dependency>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+					<version>${owsi-core.junit.version}</version>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-test</artifactId>
+					<version>${owsi-core.spring.version}</version>
+					<scope>test</scope>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.sun.grizzly</groupId>
+					<artifactId>grizzly-webserver</artifactId>
+					<version>${owsi-core.grizzly.version}</version>
+					<scope>test</scope>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.sun.jersey</groupId>
+					<artifactId>jersey-grizzly</artifactId>
+					<version>${owsi-core.jersey.version}</version>
+					<scope>test</scope>
+				</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 	
@@ -168,8 +886,14 @@
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>
+										<exclude>org.springframework:spring-ldap</exclude>
 										<exclude>commons-logging:commons-logging</exclude>
 										<exclude>cglib:cglib</exclude>
+										<exclude>rhino:rhino</exclude>
+										<exclude>rhino:js</exclude>
+										<exclude>javassist:javassist</exclude>
+										<exclude>xml-apis:xml-apis</exclude>
+										<exclude>apache-xerces:xml-apis</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
@@ -194,6 +918,7 @@
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
 						<compilerArgument>-proc:none</compilerArgument>
+						<testCompilerArgument>-proc:none</testCompilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>

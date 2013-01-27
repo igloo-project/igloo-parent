@@ -25,61 +25,17 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>${owsi-core.postgresql.version}</version>
 		</dependency>
 	
 		<!-- Hibernate dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${owsi-core.hibernate-core.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm-attrs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>javassist</artifactId>
-					<groupId>javassist</groupId>
-				</exclusion>
-				<!-- on exclut jboss-logging ici car il y a une version CR2 qui débarque de hibernate-commons-annotations -->
-				<exclusion>
-					<artifactId>jboss-logging</artifactId>
-					<groupId>org.jboss.logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>${owsi-core.hibernate-core.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>ehcache-core</artifactId>
-					<groupId>net.sf.ehcache</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<version>${owsi-core.ehcache.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<dependency>
@@ -88,36 +44,8 @@
 			<version>${owsi-core.hibernate-search.version}</version>
 			<exclusions>
 				<exclusion>
-					<artifactId>hibernate-core</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
 					<artifactId>hibernate-commons-annotations</artifactId>
 					<groupId>org.hibernate</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-jpa-2.0-api</artifactId>
-					<groupId>org.hibernate.javax.persistence</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-mapper-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-lang</artifactId>
-					<groupId>commons-lang</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>lucene-core</artifactId>
-					<groupId>org.apache.lucene</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>lucene-analyzers</artifactId>
-					<groupId>org.apache.lucene</groupId>
 				</exclusion>
 				<!--
 				on utilise des classes de solr-core pour des analyzers mais on n'a vraiment pas besoin d'aller chercher
@@ -127,29 +55,16 @@
 					<artifactId>solr-analysis-extras</artifactId>
 					<groupId>org.apache.solr</groupId>
 				</exclusion>
-				<exclusion>
-					<artifactId>jackson-core-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
 			</exclusions>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>${owsi-core.lucene.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers</artifactId>
-			<version>${owsi-core.lucene.version}</version>
-		</dependency>
-		
+		<!--
+		on laisse la définition très spécifique de cette dépendance ici car elle est profondément liée à l'usage qui
+		en est fait dans Hibernate Search.
+		 -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-core</artifactId>
-			<version>${owsi-core.lucene.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.solr</groupId>
@@ -192,10 +107,6 @@
 					<groupId>org.slf4j</groupId>
 				</exclusion>
 				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
 					<artifactId>lucene-icu</artifactId>
 					<groupId>org.apache.lucene</groupId>
 				</exclusion>
@@ -212,26 +123,6 @@
 					<groupId>org.codehaus.woodstox</groupId>
 				</exclusion>
 				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-codec</artifactId>
-					<groupId>commons-codec</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jcl-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-lang</artifactId>
-					<groupId>commons-lang</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>guava</artifactId>
-					<groupId>com.google.guava</groupId>
-				</exclusion>
-				<exclusion>
 					<artifactId>lucene-kuromoji</artifactId>
 					<groupId>org.apache.lucene</groupId>
 				</exclusion>
@@ -239,128 +130,46 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${owsi-core.slf4j.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${owsi-core.servlet-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
-			<version>${owsi-core.jackson.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${owsi-core.jackson.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${owsi-core.jackson2-core.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>${owsi-core.jackson2-annotations.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${owsi-core.jackson2-databind.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-annotations</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<!-- QueryDSL dependencies -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<version>${owsi-core.querydsl.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>cglib</groupId>
 					<artifactId>cglib</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-lang3</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hibernate.javax.persistence</groupId>
-					<artifactId>hibernate-jpa-2.0-api</artifactId>
-				</exclusion>
 			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${owsi-core.commons-lang3.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${owsi-core.guava.version}</version>
 		</dependency>
 
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${owsi-core.spring.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${owsi-core.spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${owsi-core.spring.version}</version>
 		</dependency>
 		
 		<!-- Test dependencies -->
@@ -382,74 +191,38 @@
 			<artifactId>spring-test</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!-- Logging dependencies -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${owsi-core.slf4j.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${owsi-core.slf4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${owsi-core.log4j.version}</version>
-		</dependency>
 
 		<!-- Misc dependencies -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${owsi-core.commons-lang.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${owsi-core.commons-codec.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${owsi-core.aspectj.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${owsi-core.aspectj.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>${owsi-core.javassist.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-			<version>${owsi-core.cglib.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>asm</groupId>
 			<artifactId>asm</artifactId>
-			<version>${owsi-core.asm.version}</version>
 		</dependency>
 		
 		<!-- Database pooling -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${owsi-core.tomcat-jdbc.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

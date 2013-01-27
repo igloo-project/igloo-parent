@@ -29,23 +29,16 @@
 			<type>pom</type>
 		</dependency>
 		
-		<!-- Bindgen -->
-		
-		<dependency>
-			<groupId>org.bindgen</groupId>
-			<artifactId>bindgen</artifactId>
-			<version>${owsi-core.bindgen.version}</version>
-		</dependency>
-		
 		<!-- Database pooling -->
+		
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${owsi-core.tomcat-jdbc.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Test dependencies -->
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -68,16 +61,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	<repositories>
-		<repository>
-			<id>org.bindgen</id>
-			<name>Bindgen Repository</name>
-			<url>http://repo.joist.ws</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	
 </project>
