@@ -82,8 +82,8 @@
 		<owsi-core.jackson2-core.version>2.1.3</owsi-core.jackson2-core.version>
 		<owsi-core.jackson2-annotations.version>2.1.2</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>2.1.3</owsi-core.jackson2-databind.version>
-		<owsi-core.jackson2-jaxrs-json-provider.version>2.1.2</owsi-core.jackson2-jaxrs-json-provider.version>
-		<owsi-core.jackson2-jaxrs-xml-provider.version>2.1.2</owsi-core.jackson2-jaxrs-xml-provider.version>
+		<owsi-core.jackson2-jaxrs.version>2.1.2</owsi-core.jackson2-jaxrs.version>
+		<owsi-core.jackson2-dataformat.version>2.1.3</owsi-core.jackson2-dataformat.version>
 		<owsi-core.truezip.version>7.7.1</owsi-core.truezip.version>
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
@@ -519,13 +519,19 @@
 					<dependency>
 						<groupId>com.fasterxml.jackson.jaxrs</groupId>
 						<artifactId>jackson-jaxrs-json-provider</artifactId>
-						<version>${owsi-core.jackson2-jaxrs-json-provider.version}</version>
+						<version>${owsi-core.jackson2-jaxrs.version}</version>
 					</dependency>
 					
 					<dependency>
 						<groupId>com.fasterxml.jackson.jaxrs</groupId>
 						<artifactId>jackson-jaxrs-xml-provider</artifactId>
-						<version>${owsi-core.jackson2-jaxrs-xml-provider.version}</version>
+						<version>${owsi-core.jackson2-jaxrs.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>com.fasterxml.jackson.dataformat</groupId>
+						<artifactId>jackson-dataformat-xml</artifactId>
+						<version>${owsi-core.jackson2-dataformat.version}</version>
 					</dependency>
 				
 			<!--  Guava -->
