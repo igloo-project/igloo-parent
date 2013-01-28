@@ -88,6 +88,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected static final String STYLE_DATE_TIME_NAME = "datetime";
 	protected static final String STYLE_PERCENT_NAME = "percent";
 	protected static final String STYLE_LINK_NAME = "link";
+	protected static final String STYLE_FILE_SIZE_NAME = "fileSize";
 
 	/**
 	 * Police utilisée dans le document
@@ -153,6 +154,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * Format des pourcentages
 	 */
 	private String percentDataFormat = "0.00%";
+	
+	/**
+	 * Format de taille de fichier
+	 *
+	 * J'aurai bien mis en octets aussi, malheureusement Excel n'accepte visiblement que deux conditions... pas trois.
+	 */
+	private String fileSizeDataFormat = "[<1000000]0.0,\" Ko\";[<1000000000]0.0,,\" Mo\";0.0,,,\" Go\"";
 	
 	/**
 	 * Constructeur
@@ -314,6 +322,17 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		CellStyle styleEvenLink = cloneStyle(styleEven);
 		styleEvenLink.setFont(getFont(FONT_LINK_NAME));
 		registerStyle(STYLE_LINK_NAME + ROW_EVEN_NAME, styleEvenLink);
+		
+		// styles pour les tailles de fichiers
+		short fileSizeFormatIndex = dataFormat.getFormat(fileSizeDataFormat);
+		
+		CellStyle styleOddFileSize = cloneStyle(styleOdd);
+		styleOddFileSize.setDataFormat(fileSizeFormatIndex);
+		registerStyle(STYLE_FILE_SIZE_NAME + ROW_ODD_NAME, styleOddFileSize);
+		
+		CellStyle styleEvenFileSize = cloneStyle(styleEven);
+		styleEvenFileSize.setDataFormat(fileSizeFormatIndex);
+		registerStyle(STYLE_FILE_SIZE_NAME + ROW_EVEN_NAME, styleEvenFileSize);
 	}
 	
 	/**
@@ -445,19 +464,38 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 
 		return cell;
 	}
-	
+
 	/**
 	 * Ajoute un lien hypertexte sur la cellule.
 	 * 
-	 * @param row ligne
-	 * @param columnIndex numéro de la colonne
-	 * @param text texte à insérer dans la cellule
+	 * @param cell cellule
+	 * @param hyperlink lien à ajouter
 	 * @return cellule
 	 */
 	protected Cell addLinkToCell(Cell cell, Hyperlink hyperlink) {
 		cell.setHyperlink(hyperlink);
 		cell.setCellStyle(getRowStyle(STYLE_LINK_NAME, cell.getRowIndex()));
 
+		return cell;
+	}
+
+	/**
+	 * Ajoute une cellule contenant une taille de fichier
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param fileSizeInBytes taille de fichier en octets
+	 * @return cellule
+	 */
+	protected Cell addFileSizeCell(Row row, int columnIndex, Long fileSizeInBytes) {
+		Cell cell = row.createCell(columnIndex);
+		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellStyle(getRowStyle(STYLE_FILE_SIZE_NAME, row.getRowNum()));
+		
+		if (fileSizeInBytes != null) {
+			cell.setCellValue(fileSizeInBytes);
+		}
+		
 		return cell;
 	}
 	
