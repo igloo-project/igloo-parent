@@ -10,7 +10,7 @@ public class FixedDefaultComponentSafeNamingStrategy extends DefaultComponentSaf
 	private static final long serialVersionUID = -2382165043375385406L;
 	
 	protected static String fixPropertyName(String propertyName) {
-		return propertyName.replace(".collection&&element.", ".");
+		return propertyName == null ? null : propertyName.replace(".collection&&element.", ".");
 	}
 
 	@Override
