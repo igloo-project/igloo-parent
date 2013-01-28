@@ -16,6 +16,7 @@
  */
 package fr.openwide.core.export.excel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * <p>Classe abstraite permettant de construire des tableaux Excel.</p>
@@ -577,6 +579,36 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos) {
 		// Par défaut, le format d'impression est en paysage pour les tableaux Excel
 		finalizeSheet(sheet, columnInfos, true);
+	}
+
+	/**
+	 * Redimensionne les colonnes qui contiennent des régions fusionnées.
+	 * 
+	 * Dans POI, les régions fusionnées ne sont pas prises en compte dans le autoSizeColumn.
+	 * Quand on fusionne des cellules sur une même colonne, on corrige la taille de cette colonne si nécessaire.
+	 * 
+	 * @param sheet feuille de calcul
+	 * @param columns map contenant l'en-tête et les informations d'une colonne
+	 */
+	protected void resizeMergedColumns(Sheet sheet, Map<String, ColumnInformation> columns) {
+		if (sheet.getNumMergedRegions() > 0) {
+			List<ColumnInformation> columnsInfo = new ArrayList<ColumnInformation>(columns.values());
+			
+			for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
+				CellRangeAddress mergedRegion = sheet.getMergedRegion(i);
+				
+				if (mergedRegion.getFirstColumn() == mergedRegion.getLastColumn()) {
+					int columnIndex = mergedRegion.getFirstColumn();
+					
+					String headerText = getLocalizedLabel(columnsInfo.get(columnIndex).getHeaderKey());
+					
+					int headerSize = (int) (headerText.length() * 300 * COLUMN_RESIZE_RATIO);
+					if (sheet.getColumnWidth(columnIndex) < headerSize) {
+						sheet.setColumnWidth(columnIndex, headerSize);
+					}
+				}
+			}
+		}
 	}
 
 	/**
