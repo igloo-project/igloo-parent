@@ -30,6 +30,9 @@ public class AbstractNotificationServiceImpl {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNotificationServiceImpl.class);
 
+	private static final String NEW_LINE_TEXT_PLAIN= StringUtils.NEW_LINE_ANTISLASH_N;
+	private static final String NEW_LINE_HTML = "<br />";
+
 	@Autowired
 	protected JavaMailSender mailSender;
 	
@@ -46,7 +49,16 @@ public class AbstractNotificationServiceImpl {
 		sendMailToEmails(emails, subject, body, new LinkedMultiValueMap<String, String>());
 	}
 
+	protected void sendMailToEmails(String[] emails, String subject, String body, boolean isHtml) {
+		sendMailToEmails(emails, subject, body, new LinkedMultiValueMap<String, String>(), isHtml);
+	}
+
 	protected void sendMailToEmails(String[] emails, String subject, String body, MultiValueMap<String, String> headers) {
+		sendMailToEmails(emails, subject, body, headers, false);
+	}
+	
+	protected void sendMailToEmails(String[] emails, String subject, String body, MultiValueMap<String, String> headers,
+			boolean isHtml) {
 		try {
 			String[] filteredEmails = filterEmails(emails);
 			if (filteredEmails.length == 0) {
@@ -56,12 +68,14 @@ public class AbstractNotificationServiceImpl {
 			String emailContent;
 			
 			if(configurer.isConfigurationTypeDevelopment()) {
+				String newLine = isHtml ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
+				
 				StringBuffer newBody = new StringBuffer();
-				newBody.append("#############\n");
-				newBody.append("#\n");
-				newBody.append("# To: ").append(StringUtils.join(emails, ", ")).append("\n");
-				newBody.append("#\n");
-				newBody.append("#############\n\n\n");
+				newBody.append("#############").append(newLine);
+				newBody.append("#").append(newLine);
+				newBody.append("# To: ").append(StringUtils.join(emails, ", ")).append(newLine);
+				newBody.append("#").append(newLine);
+				newBody.append("#############").append(newLine).append(newLine).append(newLine);
 				newBody.append(body);
 				
 				emailContent = newBody.toString();
@@ -71,12 +85,12 @@ public class AbstractNotificationServiceImpl {
 			
 			MimeMessage message = mailSender.createMimeMessage();
 			
-			MimeMessageHelper helper = new MimeMessageHelper(message);
+			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 			helper.setSentDate(new Date());
 			helper.setFrom(getFrom());
 			helper.setTo(filteredEmails);
 			helper.setSubject(getSubjectPrefix() + " " + subject);
-			helper.setText(emailContent);
+			helper.setText(emailContent, isHtml);
 			
 			for (Entry<String, List<String>> entry : headers.entrySet()) {
 				for (String value : entry.getValue()) {
