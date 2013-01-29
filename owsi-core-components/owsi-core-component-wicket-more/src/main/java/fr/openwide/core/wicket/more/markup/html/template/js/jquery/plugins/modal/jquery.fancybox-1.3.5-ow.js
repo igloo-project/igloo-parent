@@ -1057,7 +1057,7 @@
 			tmp	= $('<div id="fancybox-tmp"></div>'),
 			loading	= $('<div id="fancybox-loading"><div></div></div>'),
 			overlay	= $('<div id="fancybox-overlay"></div>'),
-			wrap = $('<div id="fancybox-wrap"></div>')
+			wrap = $('<div id="fancybox-wrap"><div class="loadinfo"><div class="progress progress-striped active"><div class="bar"></div></div></div></div>')
 		);
 
 		outer = $('<div id="fancybox-outer"></div>')

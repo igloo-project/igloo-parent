@@ -8,7 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.showcase.web.application.widgets.component.AddUserPopupPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.EnhancedAjaxOpenModalBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class FancyboxPage extends WidgetsTemplate {
@@ -23,7 +23,7 @@ public class FancyboxPage extends WidgetsTemplate {
 		add(addUserPopupPanel);
 		
 		Button addUserBtn = new Button("addUserBtn");
-		addUserBtn.add(new AjaxOpenModalBehavior(addUserPopupPanel, MouseEvent.CLICK) {
+		addUserBtn.add(new EnhancedAjaxOpenModalBehavior(addUserPopupPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onShow(AjaxRequestTarget target) {
