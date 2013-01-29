@@ -71,18 +71,18 @@ public class TruncatingNamingStrategyWrapper implements NamingStrategy {
 
 	@Override
 	public String logicalColumnName(String columnName, String propertyName) {
-		return truncateName(delegate.logicalColumnName(columnName, propertyName));
+		return delegate.logicalColumnName(columnName, propertyName);
 	}
 
 	@Override
 	public String logicalCollectionTableName(String tableName, String ownerEntityTable, String associatedEntityTable,
 			String propertyName) {
-		return truncateName(delegate.logicalCollectionTableName(tableName, ownerEntityTable, associatedEntityTable, propertyName));
+		return delegate.logicalCollectionTableName(tableName, ownerEntityTable, associatedEntityTable, propertyName);
 	}
 
 	@Override
 	public String logicalCollectionColumnName(String columnName, String propertyName, String referencedColumn) {
-		return truncateName(delegate.logicalCollectionColumnName(columnName, propertyName, referencedColumn));
+		return delegate.logicalCollectionColumnName(columnName, propertyName, referencedColumn);
 	}
 
 }
