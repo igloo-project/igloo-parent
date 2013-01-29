@@ -9,7 +9,7 @@ public class PostgreSQLComponentSafeNamingStrategy extends TruncatingNamingStrat
 	public static final NamingStrategy INSTANCE = new PostgreSQLComponentSafeNamingStrategy();
 
 	public PostgreSQLComponentSafeNamingStrategy() {
-		super(FixedDefaultComponentSafeNamingStrategy.INSTANCE, 64);
+		super(FixedDefaultComponentSafeNamingStrategy.INSTANCE, 63);
 	}
 
 }

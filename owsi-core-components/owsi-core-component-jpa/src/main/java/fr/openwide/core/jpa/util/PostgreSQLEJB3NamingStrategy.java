@@ -10,7 +10,7 @@ public class PostgreSQLEJB3NamingStrategy extends TruncatingNamingStrategyWrappe
 	public static final NamingStrategy INSTANCE = new PostgreSQLEJB3NamingStrategy();
 
 	public PostgreSQLEJB3NamingStrategy() {
-		super(EJB3NamingStrategy.INSTANCE, 64);
+		super(EJB3NamingStrategy.INSTANCE, 63);
 	}
 
 }
