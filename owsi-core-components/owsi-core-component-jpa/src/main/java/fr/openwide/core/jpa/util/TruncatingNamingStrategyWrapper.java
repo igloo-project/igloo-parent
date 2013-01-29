@@ -25,7 +25,11 @@ public class TruncatingNamingStrategyWrapper implements NamingStrategy {
 	}
 	
 	protected String truncateName(String propertyName) {
-		return propertyName == null ? null : propertyName.substring(0, maxNameLength);
+		if (propertyName == null || propertyName.length() <= maxNameLength) {
+			return propertyName;
+		} else {
+			return propertyName.substring(0, maxNameLength);
+		}
 	}
 
 	@Override
