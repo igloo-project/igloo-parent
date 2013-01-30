@@ -91,6 +91,7 @@ public abstract class EnhancedAjaxOpenModalBehavior extends AjaxOpenModalBehavio
 		AjaxCallListener openModalListener = new AjaxCallListener();
 		
 		openModalListener.onBefore(new JsStatement().$().chain("fancybox", "''", options.getJavaScriptOptions()).append(";").render());
+		openModalListener.onSuccess(new JsStatement().$().chain("fancybox.resize").append(";").render());
 		openModalListener.onFailure(new JsStatement().$().chain("fancybox.close").append(";").render());
 		
 		return openModalListener;
