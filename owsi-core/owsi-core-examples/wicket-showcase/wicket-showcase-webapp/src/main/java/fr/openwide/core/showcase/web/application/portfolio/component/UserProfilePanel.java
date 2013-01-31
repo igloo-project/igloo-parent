@@ -12,8 +12,8 @@ import fr.openwide.core.showcase.web.application.portfolio.form.EditUserPopupPan
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxBootstrapModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.emailobfuscator.ObfuscatedEmailLink;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
@@ -45,7 +45,7 @@ public class UserProfilePanel extends GenericPanel<User> {
 		add(userEditPopupPanel);
 		
 		WebMarkupContainer editUserPopupLink = new WebMarkupContainer("editUserPopupLink");
-		editUserPopupLink.add(new AjaxOpenModalBehavior(userEditPopupPanel, MouseEvent.CLICK) {
+		editUserPopupLink.add(new AjaxBootstrapModalOpenBehavior(userEditPopupPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onShow(AjaxRequestTarget target) {

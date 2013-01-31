@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
+package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
@@ -11,12 +11,12 @@ import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
 import org.odlabs.wiquery.core.javascript.JsScope;
+import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ConfirmContentBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.util.AjaxConfirmUtils;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.behavior.ConfirmContentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.statement.BootstrapConfirmStatement;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 
-@Deprecated
 public abstract class AjaxConfirmButton extends Button {
 
 	private static final long serialVersionUID = -132330109149500197L;
@@ -41,8 +41,7 @@ public abstract class AjaxConfirmButton extends Button {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public JsScope callback() {
-				return JsScope.quickScope(AjaxConfirmUtils.getTriggerEventOnConfirmStatement(
-						AjaxConfirmButton.this, "confirm"));
+				return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmButton.this).append("event.preventDefault();"));
 			}
 		}));
 		
@@ -70,7 +69,7 @@ public abstract class AjaxConfirmButton extends Button {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
 	}
 
 	protected abstract void onSubmit(AjaxRequestTarget target, Form<?> form);

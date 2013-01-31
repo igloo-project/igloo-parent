@@ -22,11 +22,11 @@ import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.util.LinkUtils;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.DelegatedMarkupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxBootstrapModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
-public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
+public class EditUserPopupPanel extends AbstractAjaxBootstrapModalPopupPanel<User> {
 	private static final long serialVersionUID = 3066059572097078436L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditUserPopupPanel.class);

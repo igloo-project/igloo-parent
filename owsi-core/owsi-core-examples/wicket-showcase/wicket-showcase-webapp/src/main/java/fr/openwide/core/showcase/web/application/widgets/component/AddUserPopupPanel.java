@@ -21,12 +21,12 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.DelegatedMarkupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxBootstrapModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class AddUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
+public class AddUserPopupPanel extends AbstractAjaxBootstrapModalPopupPanel<User> {
 
 	private static final long serialVersionUID = 8434113733267773945L;
 	
@@ -43,7 +43,7 @@ public class AddUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, new ResourceModel("widgets.fancybox.user.new"));
+		return new Label(wicketId, new ResourceModel("widgets.modal.user.new"));
 	}
 	
 	@Override
@@ -54,20 +54,20 @@ public class AddUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		body.add(addUserForm);
 		
 		TextField<String> userName = new RequiredTextField<String>("userName", BindingModel.of(addUserForm.getModel(), USER.userName()));
-		userName.setLabel(new ResourceModel("widgets.fancybox.user.userName"));
+		userName.setLabel(new ResourceModel("widgets.modal.user.userName"));
 		addUserForm.add(userName);
 		
 		TextField<String> firstName = new RequiredTextField<String>("firstName", BindingModel.of(addUserForm.getModel(), USER.firstName()));
-		firstName.setLabel(new ResourceModel("widgets.fancybox.user.firstName"));
+		firstName.setLabel(new ResourceModel("widgets.modal.user.firstName"));
 		addUserForm.add(firstName);
 		
 		TextField<String> lastName = new RequiredTextField<String>("lastName", BindingModel.of(addUserForm.getModel(), USER.lastName()));
-		lastName.setLabel(new ResourceModel("widgets.fancybox.user.lastName"));
+		lastName.setLabel(new ResourceModel("widgets.modal.user.lastName"));
 		addUserForm.add(lastName);
 		
 		EmailTextField email = new EmailTextField("email", BindingModel.of(addUserForm.getModel(), USER.email()));
 		email.setRequired(true);
-		email.setLabel(new ResourceModel("widgets.fancybox.user.email"));
+		email.setLabel(new ResourceModel("widgets.modal.user.email"));
 		addUserForm.add(email);
 		
 		return body;
@@ -85,12 +85,12 @@ public class AddUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
 					userService.create(addUserForm.getModelObject());
-					Session.get().success(getString("widgets.fancybox.user.success"));
+					Session.get().success(getString("widgets.modal.user.success"));
 					closePopup(target);
 				} catch (PersistenceException e) {
-					Session.get().error(getString("widgets.fancybox.user.error.dataIntegrity"));
+					Session.get().error(getString("widgets.modal.user.error.dataIntegrity"));
 				} catch (Exception e) {
-					Session.get().error(getString("widgets.fancybox.user.error.unexpected"));
+					Session.get().error(getString("widgets.modal.user.error.unexpected"));
 				}
 				
 				FeedbackUtils.refreshFeedback(target, getPage());

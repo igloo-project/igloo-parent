@@ -25,8 +25,21 @@
 }
 
 .modal {
-	margin: 0;
+	.modal-header {
+		h3 {
+			margin: 0;
+		}
+	}
+}
+
+// pour les anciennes modal basées sur fancybox
+.modal.fancybox-compatibility {
+	// surcharge de bootstrap-modal.less
 	position: relative;
+	margin: 0;
+	top: auto;
+	overflow: auto;
+	
 	left: auto;
 	width: auto;
 	min-width: 560px;
@@ -93,7 +106,6 @@
 		position: static;
 		
 		min-width: 0;
-		border-width: 0;
 		
 		.modal-error {
 			min-height: 150px;
