@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
+package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -10,10 +10,10 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.BootstrapModalOpenOnClickBehavior;
 
-@Deprecated
-abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
+public abstract class AbstractBootstrapModalPopupPanel<O> extends GenericPanel<O> implements IBootstrapModalPopupPanel {
 
 	private static final long serialVersionUID = -6919950872346297617L;
 
@@ -25,7 +25,7 @@ abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IMo
 
 	private WebMarkupContainer container;
 
-	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
+	public AbstractBootstrapModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
 		setOutputMarkupId(true);
 		
@@ -34,6 +34,10 @@ abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IMo
 		container.setOutputMarkupId(true);
 		container.add(new AttributeAppender("class", getCssClassNamesModel(), " "));
 		add(container);
+	}
+
+	public void prepareLink(final Component link) {
+		link.add(new BootstrapModalOpenOnClickBehavior(getContainer()));
 	}
 
 	@Override
@@ -65,7 +69,7 @@ abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IMo
 
 	@Override
 	public Markup getAssociatedMarkup() {
-		return MarkupFactory.get().getMarkup(this, AbstractModalPopupPanel.class, false);
+		return MarkupFactory.get().getMarkup(this, AbstractBootstrapModalPopupPanel.class, false);
 	}
 	
 	@Override
@@ -82,7 +86,7 @@ abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IMo
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
 	}
 
 	public abstract IModel<String> getCssClassNamesModel();

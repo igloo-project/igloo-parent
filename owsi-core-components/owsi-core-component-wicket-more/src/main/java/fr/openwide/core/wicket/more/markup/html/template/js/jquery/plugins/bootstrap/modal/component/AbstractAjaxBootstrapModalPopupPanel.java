@@ -1,21 +1,17 @@
-package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
+package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.iterator.ComponentHierarchyIterator;
-import org.odlabs.wiquery.core.events.Event;
-import org.odlabs.wiquery.core.events.MouseEvent;
-import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
-@Deprecated
-public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupPanel<O> implements IAjaxModalPopupPanel {
+public abstract class AbstractAjaxBootstrapModalPopupPanel<O> extends AbstractBootstrapModalPopupPanel<O> implements IAjaxBootstrapModalPopupPanel {
 
 	private static final long serialVersionUID = 2483564542384270295L;
 
@@ -25,10 +21,10 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 
 	/**
 	 * Le fonctionnement par défaut provoque le vidage des saisies utilisateur lors du show. Utiliser le constructeur
-	 * avec le paramètre {@link AbstractAjaxModalPopupPanel#resetInputOnShow} si vous désirez conserver les saisies
+	 * avec le paramètre {@link AbstractAjaxBootstrapModalPopupPanel#resetInputOnShow} si vous désirez conserver les saisies
 	 * utilisateur après ouverture / fermeture du popup.
 	 */
-	public AbstractAjaxModalPopupPanel(String id, IModel<? extends O> model) {
+	public AbstractAjaxBootstrapModalPopupPanel(String id, IModel<? extends O> model) {
 		this(id, model, true);
 	}
 
@@ -42,7 +38,7 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 	 *                         et à se baser intégralement sur le modèle. Ce fonctionnement implique un parcours du
 	 *                         composant pour chercher les éléments de type {@link Form}
 	 */
-	public AbstractAjaxModalPopupPanel(String id, IModel<? extends O> model, boolean resetInputOnShow) {
+	public AbstractAjaxBootstrapModalPopupPanel(String id, IModel<? extends O> model, boolean resetInputOnShow) {
 		super(id, model);
 		this.resetInputOnShow = resetInputOnShow;
 	}
@@ -75,19 +71,11 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 	}
 
 	protected void addCancelBehavior(AbstractLink link) {
-		// On garde cette méthode pour ne pas avoir à utiliser d'Ajax sur le bouton 'cancel'
-		link.add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public JsScope callback() {
-				return JsScope.quickScope("$.fancybox.close();");
-			}
-		}));
+		link.add(new AttributeModifier("data-dismiss", "modal"));
 	}
 
 	protected final void closePopup(AjaxRequestTarget target) {
-		target.appendJavaScript(new JsStatement().$().chain("fancybox.close").render());
+		target.appendJavaScript(BootstrapModalManagerStatement.hide(this.getContainer()).render());
 	}
 
 	protected void onShow(AjaxRequestTarget target) {

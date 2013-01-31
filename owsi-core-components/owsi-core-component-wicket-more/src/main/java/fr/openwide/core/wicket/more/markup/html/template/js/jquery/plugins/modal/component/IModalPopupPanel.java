@@ -1,11 +1,11 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IBootstrapModalPopupPanel;
 
-public interface IModalPopupPanel {
-
-	String getContainerMarkupId();
-
-	WebMarkupContainer getContainer();
+/**
+ * Il faut utiliser {@link IBootstrapModalPopupPanel}
+ */
+@Deprecated
+public interface IModalPopupPanel extends IBootstrapModalPopupPanel {
 
 }

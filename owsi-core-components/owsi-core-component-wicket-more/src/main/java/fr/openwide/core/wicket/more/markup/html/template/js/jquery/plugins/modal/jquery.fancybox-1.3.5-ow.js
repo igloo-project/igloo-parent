@@ -57,7 +57,7 @@
 			selectedOpts.height = 'auto';
 
 			//tmp.html( '<p id="fancybox-error">The requested content cannot be loaded.<br />Please try again later.</p>' );
-			$("<div class='modal image'></div>")
+			$("<div class='modal image fancybox-compatibility'></div>")
 				.append($("<div class='modal-header'></div>"))
 				.append($("<div class='modal-body'></div>")
 						.append($("<div class='modal-error'><div class='alert'>Le contenu n'a pas pu être chargé.</div></div>")))
@@ -319,7 +319,7 @@
 				'alt' : selectedOpts.title
 			});
 			
-			$("<div class='modal image'></div>")
+			$("<div class='modal image fancybox-compatibility'></div>")
 				.append($("<div class='modal-header'></div>"))
 				.append($("<div class='modal-body'></div>").append(img))
 				.append($("<div class='modal-footer'></div>"))
@@ -496,7 +496,7 @@
 
 		_process_title = function() {
 			/* élément non utilisé, permet de faire les mesures */
-			var $container = $("<div class='modal image'></div>").css({ visibility : "hidden", position: "absolute" });
+			var $container = $("<div class='modal image fancybox-compatibility'></div>").css({ visibility : "hidden", position: "absolute" });
 			
 			var $element = $(currentArray[currentIndex]);
 			var $headerContainer = $(".modal-header", tmp);
@@ -1190,7 +1190,7 @@
 				$.fancybox.close();
 				event.preventDefault();
 			};
-			var $content = $("<div class='modal confirm'></div>")
+			var $content = $("<div class='modal confirm fancybox-compatibility'></div>")
 				.append(
 						$("<div class='modal-header'></div>").
 							append("<a class='close' data-dismiss='modal'>&#x00d7;</a>")

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1><wicket:message key="widgets.modal.title" /></h1>
+		
+		<h2><wicket:message key="widgets.modal.fancybox.title" /></h2>
+		
+		<h2><wicket:message key="widgets.modal.bootstrapModal.title" /></h2>
+		
+		<div>
+			<button wicket:id="addUserBtn" class="btn btn-primary" type="button">
+				<span class="icon icon-white icon-resize-full"></span>
+				<wicket:message key="widgets.modal.openModal" />
+			</button>
+			
+			<div wicket:id="addUserPopupPanel"></div>
+		</div>
+		
+		<br/>
+		
+		<div>
+			<button wicket:id="staticBootstrapModalOpen" class="btn btn-primary">
+				<span class="icon icon-white icon-resize-full"></span>
+				<wicket:message key="widgets.modal.bootstrapModal.open" />
+			</button>
+			<div wicket:id="staticBootstrapModal">
+			</div>
+		</div>
+		
+		<br/>
+		
+		<div>
+			<button wicket:id="confirmLink" class="btn btn-primary">
+				<span class="icon icon-white icon-question-sign"></span>
+				<wicket:message key="widgets.modal.confirmLink.open" />
+			</button>
+		</div>
+		
+		<br/>
+		
+		<div>
+			<button wicket:id="ajaxConfirmLink" class="btn btn-primary">
+				<span class="icon icon-white icon-question-sign"></span>
+				<wicket:message key="widgets.modal.ajaxConfirmLink.open" />
+			</button>
+		</div>
+		
+		<br/>
+		
+		<div>
+			<form wicket:id="form">
+				<button wicket:id="ajaxConfirmButton" class="btn btn-primary">
+					<span class="icon icon-white icon-question-sign"></span>
+					<wicket:message key="widgets.modal.ajaxConfirmButton.open" />
+				</button>
+			</form>
+		</div>
+		
+		<div>
+			<button wicket:id="popoverTooltipModalOpen" class="btn btn-primary">
+				<span class="icon icon-white icon-resize-full"></span>
+				<wicket:message key="widgets.modal.popoverTooltip.open" />
+			</button>
+			<div wicket:id="popoverTooltipModalPopupPanel"></div>
+		</div>
+	</wicket:extend>
+</html>

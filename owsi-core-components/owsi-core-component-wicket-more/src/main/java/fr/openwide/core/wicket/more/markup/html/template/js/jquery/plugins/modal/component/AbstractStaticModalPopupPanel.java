@@ -6,6 +6,7 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ModalOpenOnClickBehavior;
 
+@Deprecated
 public abstract class AbstractStaticModalPopupPanel<O> extends AbstractModalPopupPanel<O> {
 
 	private static final long serialVersionUID = 2561629860588700049L;
