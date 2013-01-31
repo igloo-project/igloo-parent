@@ -11,7 +11,7 @@
 			var yesLabel = $this.data("modal-confirm-yes-label");
 			var noLabel = $this.data("modal-confirm-no-label");
 			var noEscape = $this.data("modal-confirm-text-noescape");
-			var $content = $("<div class='modal confirm'></div>");
+			var $content = $("<div class='modal confirm animated short fadeInDown'></div>");
 			$content.appendTo($('body'));
 			
 			var onConfirm = function(event) {
