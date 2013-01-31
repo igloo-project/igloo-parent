@@ -1,12 +1,12 @@
 package com.joestelmach.natty;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestFrenchDateParser extends AbstractDateParserTest {
@@ -14,7 +14,10 @@ public class TestFrenchDateParser extends AbstractDateParserTest {
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
 	@Test
-	public void testExplicitDateTime() {
+	public void testExplicitDateTime() throws ParseException {
+		Date reference = DATE_FORMAT.parse("31/01/2012 17:00");
+		CalendarSource.setBaseDate(reference);
+		
 		validateDate("12/02/2010", 2, 12, 2010);
 		validateDate("22-8-1988", 8, 22, 1988);
 		validateDate("21 mai 2001", 5, 21, 2001);
