@@ -35,6 +35,7 @@ public class CalendarPage extends WidgetsTemplate {
 		
 		final DatePicker beginDatePicker = new DatePicker("beginDatePicker", dateModel, DatePattern.SHORT_DATE);
 		beginDatePicker.setLabel(new ResourceModel("widgets.calendar.date.beginDate"));
+		beginDatePicker.setShowButtonPanel(true);
 		form.add(beginDatePicker);
 		
 		final DateLabel dateLabel = new DateLabel("dateLabel", dateModel, DatePattern.SHORT_DATE);
