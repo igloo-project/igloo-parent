@@ -90,7 +90,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
 	}
 
-	public IModel<String> getCssClassNamesModel() {
+	protected IModel<String> getCssClassNamesModel() {
 		return Model.of();
 	}
 
