@@ -3,6 +3,8 @@ package fr.openwide.core.wicket.more.markup.html.form;
 import java.util.Date;
 
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
@@ -31,6 +33,9 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		super(id, model, Date.class);
 		this.datePattern = datePattern;
 		this.isAutocompleteActive = isAutocompleteActive;
+		
+		// Options par défaut
+		setShowButtonPanel(true);
 	}
 	
 	@Override
@@ -68,4 +73,9 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		}
 	}
 	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		response.render(JavaScriptHeaderItem.forReference(DatePickerOverrideJavaScriptResourceReference.get()));
+	}
 }

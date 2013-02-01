@@ -14,6 +14,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.form.DatePicker;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync.DatePickerSync;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync.DatePickerSyncBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
@@ -35,7 +37,6 @@ public class CalendarPage extends WidgetsTemplate {
 		
 		final DatePicker beginDatePicker = new DatePicker("beginDatePicker", dateModel, DatePattern.SHORT_DATE);
 		beginDatePicker.setLabel(new ResourceModel("widgets.calendar.date.beginDate"));
-		beginDatePicker.setShowButtonPanel(true);
 		form.add(beginDatePicker);
 		
 		final DateLabel dateLabel = new DateLabel("dateLabel", dateModel, DatePattern.SHORT_DATE);
@@ -75,6 +76,10 @@ public class CalendarPage extends WidgetsTemplate {
 			protected void onError(AjaxRequestTarget target) {
 			}
 		});
+		
+		// Synchronisation entre les deux calendrier pour éviter au maximum les erreurs
+		beginDatePicker.add(new DatePickerSyncBehavior(new DatePickerSync(beginDatePicker, null, endDatePicker)));
+		endDatePicker.add(new DatePickerSyncBehavior(new DatePickerSync(endDatePicker, beginDatePicker, null)));
 	}
 	
 	@Override
