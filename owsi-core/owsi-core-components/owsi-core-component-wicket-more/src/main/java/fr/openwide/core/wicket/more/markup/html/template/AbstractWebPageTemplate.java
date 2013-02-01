@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.markup.html.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
@@ -12,6 +11,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -22,9 +23,9 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 
 	private static final String META_TITLE_SEPARATOR = " › ";
 	
-	private List<String> pageTitleElements = new ArrayList<String>();
+	private List<BreadCrumbElement> headPageTitleElements = Lists.newArrayList();
 	
-	private List<BreadCrumbElement> breadCrumbElements = new ArrayList<BreadCrumbElement>();
+	private List<BreadCrumbElement> breadCrumbElements = Lists.newArrayList();
 	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
@@ -89,16 +90,16 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 		return new PropertyModel<String>(this, "headPageTitle");
 	}
 	
-	protected void addPageTitleElement(String key) {
-		this.pageTitleElements.add(key);
+	protected void addHeadPageTitleElement(BreadCrumbElement breadCrumbElement) {
+		this.headPageTitleElements.add(breadCrumbElement);
 	}
 	
 	public String getHeadPageTitle() {
 		StringBuilder sb = new StringBuilder(getLocalizer().getString(getRootPageTitleLabelKey(), this));
-		if (pageTitleElements.size() > 0) {
-			for (String pageTitleElement : pageTitleElements) {
+		if (headPageTitleElements.size() > 0) {
+			for (BreadCrumbElement pageTitleElement : headPageTitleElements) {
 				sb.append(META_TITLE_SEPARATOR);
-				sb.append(getLocalizer().getString(pageTitleElement, this, pageTitleElement));
+				sb.append(pageTitleElement.getLabel());
 			}
 		} else {
 			boolean oneElementBreadcrumb = (breadCrumbElements.size() == 1);
