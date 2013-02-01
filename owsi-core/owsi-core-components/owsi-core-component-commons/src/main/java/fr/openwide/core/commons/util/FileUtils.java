@@ -1,6 +1,7 @@
 package fr.openwide.core.commons.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,28 @@ public final class FileUtils {
 		return files;
 	}
 	
+	public static List<File> listFiles(File directory, FileFilter filter) {
+		List<File> files = new ArrayList<File>();
+		
+		if (directory != null) {
+			File[] filesArray = directory.listFiles(filter);
+			if (filesArray != null) {
+				Arrays.sort(filesArray);
+				for (int i = 0; i < filesArray.length; i++) {
+					File file = filesArray[i];
+					if (file.canRead()) {
+						files.add(file);
+					}
+				}
+			} else {
+				// le résultat filesPaths est null si et seulement si il y a un problème avec la lecture du répertoire
+				throw new IllegalStateException("Error reading directory: " + directory.getPath());
+			}
+		}
+		
+		return files;
+	}
+	
 	/**
 	 * On contrary to
 	 * {@link org.apache.commons.io.FileUtils#listFiles(File, IOFileFilter, IOFileFilter)} and
@@ -73,10 +96,10 @@ public final class FileUtils {
 	}
 	
 	private static void innerListRecursively(Collection<File> results, File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
-		List<File> found = list(directory, resultsFilter);
+		List<File> found = listFiles(directory, resultsFilter);
 		results.addAll(found);
 
-		List<File> recursedSubdirectories = list(directory, recurseFilter);
+		List<File> recursedSubdirectories = listFiles(directory, recurseFilter);
 		for (File recursedSubdirectory : recursedSubdirectories) {
 			innerListRecursively(results, recursedSubdirectory, resultsFilter, recurseFilter);
 		}
