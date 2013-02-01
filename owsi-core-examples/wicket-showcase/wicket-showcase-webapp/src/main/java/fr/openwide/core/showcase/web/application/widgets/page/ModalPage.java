@@ -19,8 +19,8 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxBootstrapModalOpenBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractBootstrapModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class ModalPage extends WidgetsTemplate {
@@ -35,7 +35,7 @@ public class ModalPage extends WidgetsTemplate {
 		add(addUserPopupPanel);
 		
 		Button addUserBtn = new Button("addUserBtn");
-		addUserBtn.add(new AjaxBootstrapModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK) {
+		addUserBtn.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onShow(AjaxRequestTarget target) {
@@ -45,7 +45,7 @@ public class ModalPage extends WidgetsTemplate {
 		add(addUserBtn);
 		
 		// static modal
-		AbstractBootstrapModalPopupPanel<Void>staticBootstrapModal = new AbstractBootstrapModalPopupPanel<Void>("staticBootstrapModal", null) {
+		AbstractModalPopupPanel<Void>staticBootstrapModal = new AbstractModalPopupPanel<Void>("staticBootstrapModal", null) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

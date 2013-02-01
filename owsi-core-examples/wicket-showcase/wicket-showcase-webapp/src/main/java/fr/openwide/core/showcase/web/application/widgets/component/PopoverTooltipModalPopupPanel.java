@@ -7,12 +7,12 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractBootstrapModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
 
-public class PopoverTooltipModalPopupPanel extends AbstractBootstrapModalPopupPanel<Void> {
+public class PopoverTooltipModalPopupPanel extends AbstractModalPopupPanel<Void> {
 	private static final long serialVersionUID = -607521826320376767L;
 
 	public PopoverTooltipModalPopupPanel(String id, IModel<? extends Void> model) {
