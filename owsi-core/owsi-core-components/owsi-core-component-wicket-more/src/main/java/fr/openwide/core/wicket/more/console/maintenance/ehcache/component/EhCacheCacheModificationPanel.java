@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.DelegatedMarkupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
 

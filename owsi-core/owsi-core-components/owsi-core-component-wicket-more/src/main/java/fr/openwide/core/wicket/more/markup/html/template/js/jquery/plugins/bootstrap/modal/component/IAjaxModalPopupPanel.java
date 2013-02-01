@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public interface IAjaxBootstrapModalPopupPanel extends IBootstrapModalPopupPanel {
+public interface IAjaxModalPopupPanel extends IModalPopupPanel {
 
 	void show(AjaxRequestTarget target);
 

@@ -22,7 +22,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.repeater.data.GenericEntityListModelDataProvider;
 import fr.openwide.core.wicket.more.markup.repeater.data.OddEvenDataView;
 

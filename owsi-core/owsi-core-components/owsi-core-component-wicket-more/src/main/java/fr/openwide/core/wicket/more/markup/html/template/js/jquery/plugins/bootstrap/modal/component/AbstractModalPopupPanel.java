@@ -11,9 +11,9 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.BootstrapModalOpenOnClickBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
 
-public abstract class AbstractBootstrapModalPopupPanel<O> extends GenericPanel<O> implements IBootstrapModalPopupPanel {
+public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
 
 	private static final long serialVersionUID = -6919950872346297617L;
 
@@ -25,7 +25,7 @@ public abstract class AbstractBootstrapModalPopupPanel<O> extends GenericPanel<O
 
 	private WebMarkupContainer container;
 
-	public AbstractBootstrapModalPopupPanel(String id, IModel<? extends O> model) {
+	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
 		setOutputMarkupId(true);
 		
@@ -37,7 +37,7 @@ public abstract class AbstractBootstrapModalPopupPanel<O> extends GenericPanel<O
 	}
 
 	public void prepareLink(final Component link) {
-		link.add(new BootstrapModalOpenOnClickBehavior(getContainer()));
+		link.add(new ModalOpenOnClickBehavior(getContainer()));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public abstract class AbstractBootstrapModalPopupPanel<O> extends GenericPanel<O
 
 	@Override
 	public Markup getAssociatedMarkup() {
-		return MarkupFactory.get().getMarkup(this, AbstractBootstrapModalPopupPanel.class, false);
+		return MarkupFactory.get().getMarkup(this, AbstractModalPopupPanel.class, false);
 	}
 	
 	@Override

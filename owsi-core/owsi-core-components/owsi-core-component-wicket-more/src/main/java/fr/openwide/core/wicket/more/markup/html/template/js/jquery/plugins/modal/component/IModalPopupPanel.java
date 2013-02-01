@@ -1,11 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IBootstrapModalPopupPanel;
 
 /**
- * Il faut utiliser {@link IBootstrapModalPopupPanel}
+ * Il faut utiliser {@link IModalPopupPanel}
  */
 @Deprecated
-public interface IModalPopupPanel extends IBootstrapModalPopupPanel {
+public interface IModalPopupPanel extends fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IModalPopupPanel {
 
 }

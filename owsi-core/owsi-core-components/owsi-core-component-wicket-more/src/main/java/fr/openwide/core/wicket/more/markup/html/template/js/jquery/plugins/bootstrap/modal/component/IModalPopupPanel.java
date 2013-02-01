@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
-public interface IBootstrapModalPopupPanel {
+public interface IModalPopupPanel {
 
 	String getContainerMarkupId();
 
