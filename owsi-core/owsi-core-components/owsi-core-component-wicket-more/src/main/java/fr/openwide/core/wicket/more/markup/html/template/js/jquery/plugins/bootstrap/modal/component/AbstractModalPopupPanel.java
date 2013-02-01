@@ -8,6 +8,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
@@ -89,6 +90,8 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
 	}
 
-	public abstract IModel<String> getCssClassNamesModel();
+	public IModel<String> getCssClassNamesModel() {
+		return Model.of();
+	}
 
 }

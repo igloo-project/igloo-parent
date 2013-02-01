@@ -7,8 +7,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.events.MouseEvent;
@@ -21,6 +19,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractStaticModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class ModalPage extends WidgetsTemplate {
@@ -45,7 +44,7 @@ public class ModalPage extends WidgetsTemplate {
 		add(addUserBtn);
 		
 		// static modal
-		AbstractModalPopupPanel<Void>staticBootstrapModal = new AbstractModalPopupPanel<Void>("staticBootstrapModal", null) {
+		AbstractModalPopupPanel<Void>staticBootstrapModal = new AbstractStaticModalPopupPanel<Void>("staticBootstrapModal", null) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -61,11 +60,6 @@ public class ModalPage extends WidgetsTemplate {
 			@Override
 			protected Component createFooter(String wicketId) {
 				return new Label(wicketId, new ResourceModel("widgets.modal.staticBootstrapModal.footer"));
-			}
-			
-			@Override
-			public IModel<String> getCssClassNamesModel() {
-				return Model.of("bootstrap-modal");
 			}
 		};
 		WebMarkupContainer staticBootstrapModalOpen = new WebMarkupContainer("staticBootstrapModalOpen");
