@@ -39,7 +39,6 @@ import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPan
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
@@ -49,8 +48,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
-
-	private List<BreadCrumbElement> pageTitleElements = Lists.newArrayList();
 
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
@@ -161,10 +158,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList();
-	}
-
-	protected void addHeadPageTitleElement(BreadCrumbElement pageTitleElement) {
-		pageTitleElements.add(0, pageTitleElement);
 	}
 
 	@Override
