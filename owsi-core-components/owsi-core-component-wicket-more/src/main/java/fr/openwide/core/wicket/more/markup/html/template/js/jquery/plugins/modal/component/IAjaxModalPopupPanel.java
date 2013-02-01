@@ -1,11 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component;
 
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxBootstrapModalPopupPanel;
 
 /**
- * Il faut utiliser {@link IAjaxBootstrapModalPopupPanel}
+ * Il faut utiliser {@link IAjaxModalPopupPanel}
  */
 @Deprecated
-public interface IAjaxModalPopupPanel extends IAjaxBootstrapModalPopupPanel, IModalPopupPanel {
+public interface IAjaxModalPopupPanel extends fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel, IModalPopupPanel {
 
 }

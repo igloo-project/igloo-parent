@@ -24,6 +24,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal
  * 
  * 3. arrêt du mode attente et affichage du popup avec la réponse
  */
+@Deprecated
 public abstract class AjaxOpenModalBehavior extends WiQueryAjaxEventBehavior {
 
 	private static final long serialVersionUID = 3299212684157849227L;

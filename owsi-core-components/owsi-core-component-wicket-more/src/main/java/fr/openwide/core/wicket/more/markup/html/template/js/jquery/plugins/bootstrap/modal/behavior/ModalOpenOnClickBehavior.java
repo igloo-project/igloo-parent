@@ -13,13 +13,13 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 
-public class BootstrapModalOpenOnClickBehavior extends JQueryAbstractBehavior {
+public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 8188257386595829052L;
 
 	private Component modal;
 
-	public BootstrapModalOpenOnClickBehavior(Component modal) {
+	public ModalOpenOnClickBehavior(Component modal) {
 		super();
 		this.modal = modal;
 	}

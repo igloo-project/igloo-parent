@@ -11,7 +11,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.odlabs.wiquery.core.events.EventLabel;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxBootstrapModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 /**
@@ -21,13 +21,13 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
  * 2. requête ajax
  * 3. arrêt du mode attente et affichage du popup avec la réponse
  */
-public abstract class AjaxBootstrapModalOpenBehavior extends AjaxEventBehavior {
+public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 
 	private static final long serialVersionUID = 3299212684157849227L;
 
-	private IAjaxBootstrapModalPopupPanel modal;
+	private IAjaxModalPopupPanel modal;
 
-	public AjaxBootstrapModalOpenBehavior(IAjaxBootstrapModalPopupPanel modalPopupPanel, EventLabel event) {
+	public AjaxModalOpenBehavior(IAjaxModalPopupPanel modalPopupPanel, EventLabel event) {
 		super(event.getEventLabel());
 		this.modal = modalPopupPanel;
 	}

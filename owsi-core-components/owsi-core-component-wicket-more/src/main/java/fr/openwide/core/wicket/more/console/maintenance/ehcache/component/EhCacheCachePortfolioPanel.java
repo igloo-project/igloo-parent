@@ -33,10 +33,10 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCac
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import fr.openwide.core.wicket.more.markup.html.basic.PercentageValueLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
 
@@ -201,7 +201,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						AbstractLink modifierCache = new AbstractLink("modifierCache") {
 							private static final long serialVersionUID = 1L;
 						};
-						modifierCache.add(new AjaxOpenModalBehavior(modificationPanel, MouseEvent.CLICK) {
+						modifierCache.add(new AjaxModalOpenBehavior(modificationPanel, MouseEvent.CLICK) {
 							private static final long serialVersionUID = 1L;
 							
 							@Override

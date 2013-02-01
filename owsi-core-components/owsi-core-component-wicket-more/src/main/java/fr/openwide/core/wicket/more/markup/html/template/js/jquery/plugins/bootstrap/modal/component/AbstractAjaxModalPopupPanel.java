@@ -11,7 +11,7 @@ import org.apache.wicket.util.iterator.ComponentHierarchyIterator;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
-public abstract class AbstractAjaxBootstrapModalPopupPanel<O> extends AbstractBootstrapModalPopupPanel<O> implements IAjaxBootstrapModalPopupPanel {
+public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupPanel<O> implements IAjaxModalPopupPanel {
 
 	private static final long serialVersionUID = 2483564542384270295L;
 
@@ -21,10 +21,10 @@ public abstract class AbstractAjaxBootstrapModalPopupPanel<O> extends AbstractBo
 
 	/**
 	 * Le fonctionnement par défaut provoque le vidage des saisies utilisateur lors du show. Utiliser le constructeur
-	 * avec le paramètre {@link AbstractAjaxBootstrapModalPopupPanel#resetInputOnShow} si vous désirez conserver les saisies
+	 * avec le paramètre {@link AbstractAjaxModalPopupPanel#resetInputOnShow} si vous désirez conserver les saisies
 	 * utilisateur après ouverture / fermeture du popup.
 	 */
-	public AbstractAjaxBootstrapModalPopupPanel(String id, IModel<? extends O> model) {
+	public AbstractAjaxModalPopupPanel(String id, IModel<? extends O> model) {
 		this(id, model, true);
 	}
 
@@ -38,7 +38,7 @@ public abstract class AbstractAjaxBootstrapModalPopupPanel<O> extends AbstractBo
 	 *                         et à se baser intégralement sur le modèle. Ce fonctionnement implique un parcours du
 	 *                         composant pour chercher les éléments de type {@link Form}
 	 */
-	public AbstractAjaxBootstrapModalPopupPanel(String id, IModel<? extends O> model, boolean resetInputOnShow) {
+	public AbstractAjaxModalPopupPanel(String id, IModel<? extends O> model, boolean resetInputOnShow) {
 		super(id, model);
 		this.resetInputOnShow = resetInputOnShow;
 	}
