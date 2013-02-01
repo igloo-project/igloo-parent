@@ -23,8 +23,8 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
@@ -55,7 +55,7 @@ public class UserProfilPanel extends GenericPanel<User> {
 		add(userUpdatePanel);
 		
 		Button updateUser = new Button("updateUser");
-		updateUser.add(new AjaxOpenModalBehavior(userUpdatePanel, MouseEvent.CLICK) {
+		updateUser.add(new AjaxModalOpenBehavior(userUpdatePanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 5414159291353181776L;
 			
 			@Override
@@ -69,7 +69,7 @@ public class UserProfilPanel extends GenericPanel<User> {
 		add(changePasswordPanel);
 		
 		Button changeUserPassword = new Button("changeUserPassword");
-		changeUserPassword.add(new AjaxOpenModalBehavior(changePasswordPanel, MouseEvent.CLICK) {
+		changeUserPassword.add(new AjaxModalOpenBehavior(changePasswordPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = -7179264122322968921L;
 			
 			@Override

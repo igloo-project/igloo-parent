@@ -25,7 +25,7 @@ import fr.openwide.core.basicapp.web.application.common.component.UserAutocomple
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 

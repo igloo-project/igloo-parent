@@ -20,7 +20,7 @@ import fr.openwide.core.basicapp.web.application.administration.form.UserGroupFo
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
@@ -71,7 +71,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 				setVisible(!UserGroupDescriptionPanel.this.getModelObject().getLocked());
 			}
 		};
-		updateUserGroup.add(new AjaxOpenModalBehavior(userGroupUpdatePanel, MouseEvent.CLICK) {
+		updateUserGroup.add(new AjaxModalOpenBehavior(userGroupUpdatePanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 5414159291353181776L;
 			
 			@Override
