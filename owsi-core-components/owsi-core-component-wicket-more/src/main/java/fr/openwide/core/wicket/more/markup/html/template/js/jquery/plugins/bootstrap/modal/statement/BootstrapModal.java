@@ -4,7 +4,7 @@ import org.odlabs.wiquery.core.javascript.ChainableStatement;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.core.options.Options;
 
-public class Bootstrap implements ChainableStatement {
+public class BootstrapModal implements ChainableStatement {
 
 	public static final String BOOTSTRAP_MODAL_CHAIN_LABEL = "modal";
 
@@ -16,7 +16,7 @@ public class Bootstrap implements ChainableStatement {
 
 	private Options[] options;
 
-	private Bootstrap(CharSequence method, Options... options) {
+	private BootstrapModal(CharSequence method, Options... options) {
 		super();
 		this.method = method;
 		this.options = options;
@@ -45,12 +45,12 @@ public class Bootstrap implements ChainableStatement {
 	/**
 	 * TODO LAL : ajouter les options ?
 	 */
-	public static final Bootstrap show() {
-		return new Bootstrap(BOOTSTRAP_MODAL_SHOW_METHOD);
+	public static final BootstrapModal show() {
+		return new BootstrapModal(BOOTSTRAP_MODAL_SHOW_METHOD);
 	}
 
-	public static final Bootstrap hide() {
-		return new Bootstrap(BOOTSTRAP_MODAL_HIDE_METHOD);
+	public static final BootstrapModal hide() {
+		return new BootstrapModal(BOOTSTRAP_MODAL_HIDE_METHOD);
 	}
 
 }
