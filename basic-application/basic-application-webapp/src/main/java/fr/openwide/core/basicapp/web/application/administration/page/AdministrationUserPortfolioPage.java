@@ -18,7 +18,7 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AdministrationUserPortfolioPage extends AdministrationTemplate {
@@ -53,7 +53,7 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 		add(userCreatePanel);
 		
 		Button createUser = new Button("createUser");
-		createUser.add(new AjaxOpenModalBehavior(userCreatePanel, MouseEvent.CLICK) {
+		createUser.add(new AjaxModalOpenBehavior(userCreatePanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 5414159291353181776L;
 			
 			@Override

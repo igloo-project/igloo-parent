@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.AbstractAjaxModalPopupPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.component.DelegatedMarkupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 
 public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 

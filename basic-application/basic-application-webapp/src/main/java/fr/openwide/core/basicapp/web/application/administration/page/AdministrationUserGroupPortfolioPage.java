@@ -18,7 +18,7 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserGroupFormPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.AjaxOpenModalBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate {
@@ -53,7 +53,7 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 		add(userGroupCreatePanel);
 		
 		Button createUserGroup = new Button("createUserGroup");
-		createUserGroup.add(new AjaxOpenModalBehavior(userGroupCreatePanel, MouseEvent.CLICK) {
+		createUserGroup.add(new AjaxModalOpenBehavior(userGroupCreatePanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 5414159291353181776L;
 			
 			@Override
