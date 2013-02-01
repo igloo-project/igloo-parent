@@ -4,10 +4,15 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
+
+import com.google.common.collect.Lists;
 
 import de.schlichtherle.truezip.file.TFile;
 
@@ -43,6 +48,38 @@ public final class FileUtils {
 		}
 		
 		return files;
+	}
+	
+	/**
+	 * On contrary to
+	 * {@link org.apache.commons.io.FileUtils#listFiles(File, IOFileFilter, IOFileFilter)} and
+	 * {@link org.apache.commons.io.FileUtils#listFilesAndDirs(File, IOFileFilter, IOFileFilter)}
+	 * , this method returns sub-directories if and only if {@code resultsFilter} allows it.
+	 * 
+	 * @param resultsFilter
+	 *            Filter for returned files.
+	 * @param recurseFilter
+	 *            Filter for recursion into sub-directories. Will be made
+	 *            {@link FileFilterUtils#makeDirectoryOnly(IOFileFilter)
+	 *            directory only} before use.
+	 */
+	public static Collection<File> listRecursively(File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
+		Collection<File> results = Lists.newLinkedList();
+		
+		IOFileFilter effectiveRecurseFilter = FileFilterUtils.makeDirectoryOnly(recurseFilter);
+		innerListRecursively(results, directory, resultsFilter, effectiveRecurseFilter);
+		
+		return results;
+	}
+	
+	private static void innerListRecursively(Collection<File> results, File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
+		List<File> found = list(directory, resultsFilter);
+		results.addAll(found);
+
+		List<File> recursedSubdirectories = list(directory, recurseFilter);
+		for (File recursedSubdirectory : recursedSubdirectories) {
+			innerListRecursively(results, recursedSubdirectory, resultsFilter, recurseFilter);
+		}
 	}
 	
 	private FileUtils() {
