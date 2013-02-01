@@ -20,11 +20,11 @@ public class BootstrapModalManagerStatement {
 	}
 
 	public final static JsStatement show(Component modal) {
-		return new JsStatement().$(modal).chain(Bootstrap.show()).append(";");
+		return new JsStatement().$(modal).chain(BootstrapModal.show()).append(";");
 	}
 
 	public final static JsStatement hide(Component modal) {
-		return new JsStatement().$(modal).chain(Bootstrap.hide()).append(";");
+		return new JsStatement().$(modal).chain(BootstrapModal.hide()).append(";");
 	}
 
 }
