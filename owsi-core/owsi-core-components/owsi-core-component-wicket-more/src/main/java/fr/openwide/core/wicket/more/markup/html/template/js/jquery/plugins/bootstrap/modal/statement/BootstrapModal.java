@@ -24,6 +24,7 @@ public class BootstrapModal implements ChainableStatement, Serializable {
 	private static final String OPTION_ATTENTION_ANIMATION = "attentionAnimation";
 	private static final String OPTION_REPLACE = "replace";
 	private static final String OPTION_SPINNER = "spinner";
+	private static final String OPTION_KEYBOARD = "keyboard";
 
 	private final CharSequence method;
 
@@ -67,6 +68,11 @@ public class BootstrapModal implements ChainableStatement, Serializable {
 	 */
 	private String spinner;
 
+	/**
+	 * Si true, active la sortie de la popup par la touche escape (défaut)
+	 */
+	private Boolean keyboard;
+
 	private BootstrapModal() {
 		this(null);
 	}
@@ -107,6 +113,9 @@ public class BootstrapModal implements ChainableStatement, Serializable {
 		}
 		if (spinner != null) {
 			options.put(OPTION_SPINNER,  JsUtils.quotes(spinner, true));
+		}
+		if (keyboard != null) {
+			options.put(OPTION_KEYBOARD, keyboard);
 		}
 		
 		CharSequence[] args;
@@ -189,6 +198,14 @@ public class BootstrapModal implements ChainableStatement, Serializable {
 
 	public void setSpinner(String spinner) {
 		this.spinner = spinner;
+	}
+
+	public Boolean getKeyboard() {
+		return keyboard;
+	}
+
+	public void setKeyboard(Boolean keyboard) {
+		this.keyboard = keyboard;
 	}
 
 	public static final BootstrapModal modal() {
