@@ -31,9 +31,9 @@ public class ModalPage extends WidgetsTemplate {
 	public ModalPage(PageParameters parameters) {
 		super(parameters);
 		BootstrapModal options = BootstrapModal.modal();
-		options.setBackdrop(BootstrapModalBackdrop.STATIC);
+		options.setBackdrop(BootstrapModalBackdrop.NORMAL);
 		options.setModalOverflow(false);
-		options.setFocusOn("input[type!='hidden']:first");
+		options.setFocusOnFirstNotHiddenInput();
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.modal"), ModalPage.class));
 		
