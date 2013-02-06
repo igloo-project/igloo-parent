@@ -1,15 +1,12 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.iterator.ComponentHierarchyIterator;
 
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupPanel<O> implements IAjaxModalPopupPanel {
 
@@ -70,12 +67,8 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 		FeedbackUtils.refreshFeedback(target, getPage());
 	}
 
-	protected void addCancelBehavior(AbstractLink link) {
-		link.add(new AttributeModifier("data-dismiss", "modal"));
-	}
-
 	protected final void closePopup(AjaxRequestTarget target) {
-		target.appendJavaScript(BootstrapModalManagerStatement.hide(this.getContainer()).render());
+		target.appendJavaScript(closeStatement().render(true));
 	}
 
 	protected void onShow(AjaxRequestTarget target) {
