@@ -43,6 +43,7 @@ public class ModalPage extends WidgetsTemplate {
 		Button addUserBtn = new Button("addUserBtn");
 		addUserBtn.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK, options) {
 			private static final long serialVersionUID = 1L;
+			
 			@Override
 			protected void onShow(AjaxRequestTarget target) {
 				

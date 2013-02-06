@@ -8,12 +8,17 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.EventLabel;
+import org.odlabs.wiquery.core.javascript.JsScope;
+import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalEvent;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 /**
@@ -54,6 +59,12 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	protected final void onEvent(AjaxRequestTarget target) {
 		onShow(target);
 		modal.show(target);
+		
+		// si on renvoit le container, il faut renvoyer ses événements
+		if (target.getComponents().contains(modal.getContainer())) {
+			target.appendJavaScript(onModalHideBindStatement().render());
+			target.appendJavaScript(onModalShowBindStatement().render());
+		}
 	}
 
 	protected abstract void onShow(AjaxRequestTarget target);
@@ -95,6 +106,34 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	public void renderHead(Component component, IHeaderResponse response) {
 		super.renderHead(component, response);
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
+		
+		// enregistrement des événements onShow et onHide
+		response.render(OnDomReadyHeaderItem.forScript(onModalShowBindStatement().render()));
+		response.render(OnDomReadyHeaderItem.forScript(onModalHideBindStatement().render()));
+	}
+
+	protected final JsStatement onModalShowBindStatement() {
+		Event onShow = new Event(BootstrapModalEvent.SHOW) {
+			private static final long serialVersionUID = -5947286377954553132L;
+			
+			@Override
+			public JsScope callback() {
+				return JsScopeEvent.quickScope(onModalShow());
+			}
+		};
+		return new JsStatement().$(modal.getContainer()).chain(onShow);
+	}
+
+	protected final JsStatement onModalHideBindStatement() {
+		Event onHide = new Event(BootstrapModalEvent.HIDE) {
+			private static final long serialVersionUID = -5947286377954553132L;
+			
+			@Override
+			public JsScope callback() {
+				return JsScopeEvent.quickScope(onModalHide());
+			}
+		};
+		return new JsStatement().$(modal.getContainer()).chain(onHide);
 	}
 
 	/**
@@ -110,6 +149,20 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	 * mimétisme de {@link ModalOpenOnClickBehavior}
 	 */
 	protected JsStatement onModalComplete() {
+		return null;
+	}
+
+	/**
+	 * Code appelé au moment de l'affichage du popup.
+	 */
+	public JsStatement onModalShow() {
+		return null;
+	}
+
+	/**
+	 * Code appelé quand le popup est caché.
+	 */
+	public JsStatement onModalHide() {
 		return null;
 	}
 
