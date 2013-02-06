@@ -21,11 +21,13 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
 	private static final long serialVersionUID = -645345859108195615L;
 
+	@Deprecated
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
 		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, false);
 	}
 
+	@Deprecated
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, boolean textNoEscape) {
 		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, false);
