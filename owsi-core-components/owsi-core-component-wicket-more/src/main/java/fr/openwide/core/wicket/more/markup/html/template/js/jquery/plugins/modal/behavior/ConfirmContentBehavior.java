@@ -8,6 +8,7 @@ import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.value.IValueMap;
 
+@Deprecated
 public class ConfirmContentBehavior extends Behavior {
 
 	private static final long serialVersionUID = -5357415707217228299L;

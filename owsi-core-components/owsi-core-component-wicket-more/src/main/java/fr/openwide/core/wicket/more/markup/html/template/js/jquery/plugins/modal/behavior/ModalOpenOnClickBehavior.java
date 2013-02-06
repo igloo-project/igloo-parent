@@ -13,6 +13,7 @@ import org.odlabs.wiquery.core.options.Options;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 
+@Deprecated
 public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 8188257386595829052L;
