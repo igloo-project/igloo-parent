@@ -9,11 +9,13 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
 
@@ -47,7 +49,19 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 * @param options - peut être null
 	 */
 	public void prepareLink(final Component link, BootstrapModal options) {
-		link.add(new ModalOpenOnClickBehavior(getContainer(), options));
+		link.add(new ModalOpenOnClickBehavior(getContainer(), options) {
+			private static final long serialVersionUID = 7578810529771850911L;
+			
+			@Override
+			public JsStatement onModalStart() {
+				return AbstractModalPopupPanel.this.onModalStart();
+			}
+			
+			@Override
+			public JsStatement onModalComplete() {
+				return AbstractModalPopupPanel.this.onModalComplete();
+			}
+		});
 	}
 
 	@Override
@@ -99,8 +113,32 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
 	}
 
+	/**
+	 * A surcharger pour personnaliser la classe CSS de la popup.
+	 */
 	protected IModel<String> getCssClassNamesModel() {
 		return Model.of();
+	}
+
+	/**
+	 * Code appelé avant tout traitement
+	 */
+	protected JsStatement onModalStart() {
+		return null;
+	}
+
+	/**
+	 * Code appelé à l'affichage de la popup
+	 */
+	protected JsStatement onModalComplete() {
+		return null;
+	}
+
+	/**
+	 * Permet de récupérer le code de fermeture de la popup.
+	 */
+	protected JsStatement closeStatement() {
+		return BootstrapModalManagerStatement.hide(getContainer());
 	}
 
 }
