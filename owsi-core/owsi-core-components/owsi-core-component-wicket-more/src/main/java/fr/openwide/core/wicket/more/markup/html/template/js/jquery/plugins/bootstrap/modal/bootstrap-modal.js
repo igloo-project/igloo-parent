@@ -179,12 +179,20 @@
 			var that = this;
 			if (this.isShown && this.options.keyboard) {
 				if (!this.$element.attr('tabindex')) this.$element.attr('tabindex', -1);
-
+				
 				this.$element.on('keyup.dismiss.modal', function (e) {
 					e.which == 27 && that.hide();
 				});
+				if (this.$backdrop) {
+					$(window.document).on('keyup.dismiss.modal', function (e) {
+						e.which == 27 && that.hide();
+					});
+				}
 			} else if (!this.isShown) {
-				this.$element.off('keyup.dismiss.modal')
+				this.$element.off('keyup.dismiss.modal');
+				if (this.$backdrop) {
+					$(window.document).off('keyup.dismiss.modal');
+				}
 			}
 		},
 
