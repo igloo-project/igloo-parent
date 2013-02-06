@@ -42,6 +42,10 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 	}
 
 	public JsStatement statement() {
+		if (!getComponent().isEnabledInHierarchy()) {
+			return null;
+		}
+		
 		Event event = new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1410592312776274815L;
 			
