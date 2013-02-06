@@ -11,7 +11,12 @@
 			var yesLabel = $this.data("modal-confirm-yes-label");
 			var noLabel = $this.data("modal-confirm-no-label");
 			var noEscape = $this.data("modal-confirm-text-noescape");
+			var cssClassNames = $this.data("modal-confirm-css-class-names");
 			var $content = $("<div class='modal confirm fade'></div>");
+			if (cssClassNames) {
+				$content.addClass(cssClassNames);
+			}
+			
 			$content.appendTo($('body'));
 			
 			var onConfirm = function(event) {
@@ -53,7 +58,7 @@
 									.click(onConfirm)
 							)
 				);
-			$content.modal('show');
+			$content.modal({ show: true, backdrop: 'static' });
 		});
 	};
 }(window.jQuery, window, document);

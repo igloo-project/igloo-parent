@@ -10,6 +10,7 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 
@@ -17,11 +18,25 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 8188257386595829052L;
 
-	private Component modal;
+	private final Component modal;
 
+	private final BootstrapModal options;
+
+	/**
+	 * @param modal - le composant qui contient la popup
+	 */
 	public ModalOpenOnClickBehavior(Component modal) {
+		this(modal, null);
+	}
+
+	/**
+	 * @param modal - le composant qui contient la popup
+	 * @param options - peut être null (options par défaut)
+	 */
+	public ModalOpenOnClickBehavior(Component modal, BootstrapModal options) {
 		super();
 		this.modal = modal;
+		this.options = options;
 	}
 
 	public JsStatement statement() {
@@ -30,7 +45,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 			
 			@Override
 			public JsScope callback() {
-				return JsScope.quickScope(BootstrapModalManagerStatement.show(modal));
+				return JsScope.quickScope(BootstrapModalManagerStatement.show(modal, options));
 			}
 		};
 		return new JsStatement().$(getComponent()).chain(event);

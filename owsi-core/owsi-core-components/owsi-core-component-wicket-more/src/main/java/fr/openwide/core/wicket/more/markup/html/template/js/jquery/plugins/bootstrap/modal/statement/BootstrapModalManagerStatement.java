@@ -20,7 +20,15 @@ public class BootstrapModalManagerStatement {
 	}
 
 	public final static JsStatement show(Component modal) {
-		return new JsStatement().$(modal).chain(BootstrapModal.show()).append(";");
+		return show(modal, null);
+	}
+
+	/**
+	 * @param modal
+	 * @param options - peut être null (utilise les options par défaut)
+	 */
+	public final static JsStatement show(Component modal, BootstrapModal options) {
+		return new JsStatement().$(modal).chain(options).append(";");
 	}
 
 	public final static JsStatement hide(Component modal) {

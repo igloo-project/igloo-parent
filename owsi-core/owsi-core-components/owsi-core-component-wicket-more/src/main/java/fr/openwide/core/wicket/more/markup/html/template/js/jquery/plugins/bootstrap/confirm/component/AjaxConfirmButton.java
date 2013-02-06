@@ -31,9 +31,16 @@ public abstract class AjaxConfirmButton extends Button {
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel,
 			Form<?> form) {
+		this(id, titleModel, textModel, yesLabelModel, noLabelModel, null, false, form);
+	}
+
+	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
+			boolean textNoEscape,
+			Form<?> form) {
 		super(id, null);
 		this.form = form;
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
 		
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.

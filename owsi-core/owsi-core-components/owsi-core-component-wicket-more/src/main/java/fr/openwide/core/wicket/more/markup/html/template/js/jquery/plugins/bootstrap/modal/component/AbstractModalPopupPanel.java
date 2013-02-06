@@ -13,6 +13,7 @@ import org.apache.wicket.model.Model;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
 
 public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
 
@@ -24,7 +25,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	private static final String FOOTER_WICKET_ID = "footer";
 
-	private WebMarkupContainer container;
+	private final WebMarkupContainer container;
 
 	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
@@ -38,7 +39,15 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	}
 
 	public void prepareLink(final Component link) {
-		link.add(new ModalOpenOnClickBehavior(getContainer()));
+		prepareLink(link, null);
+	}
+
+	/**
+	 * @param link
+	 * @param options - peut être null
+	 */
+	public void prepareLink(final Component link, BootstrapModal options) {
+		link.add(new ModalOpenOnClickBehavior(getContainer(), options));
 	}
 
 	@Override
