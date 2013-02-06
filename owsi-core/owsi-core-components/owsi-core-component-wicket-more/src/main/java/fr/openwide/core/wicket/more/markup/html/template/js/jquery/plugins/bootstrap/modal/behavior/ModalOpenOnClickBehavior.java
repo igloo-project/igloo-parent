@@ -41,7 +41,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 		this.options = options;
 	}
 
-	protected JsStatement bindClickStatement() {
+	protected JsStatement getBindClickStatement() {
 		if (!getComponent().isEnabledInHierarchy()) {
 			return new JsStatement();
 		}
@@ -100,7 +100,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 		super.renderHead(component, response);
 		
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(bindClickStatement().render()));
+		response.render(OnDomReadyHeaderItem.forScript(getBindClickStatement().render()));
 		
 		Event onShow = new Event(BootstrapModalEvent.SHOW) {
 			private static final long serialVersionUID = -5947286377954553132L;
