@@ -25,9 +25,15 @@ public abstract class ConfirmLink<O> extends Link<O> {
 
 	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
+		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, false);
+	}
+
+	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
+			boolean textNoEscape) {
 		super(id, model);
 		setOutputMarkupId(true);
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
 	}
 
 	@Override

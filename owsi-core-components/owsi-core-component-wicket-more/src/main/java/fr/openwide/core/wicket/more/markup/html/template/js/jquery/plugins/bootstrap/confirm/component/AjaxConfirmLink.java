@@ -28,9 +28,15 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, boolean textNoEscape) {
+		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, false);
+	}
+
+	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
+			boolean textNoEscape) {
 		super(id, model);
 		setOutputMarkupId(true);
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, textNoEscape));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
 		
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.

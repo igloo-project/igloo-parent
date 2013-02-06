@@ -20,6 +20,7 @@ public class ConfirmContentBehavior extends Behavior {
 	private static final String ATTRIBUTE_YES_LABEL = "data-modal-confirm-yes-label";
 	private static final String ATTRIBUTE_NO_LABEL = "data-modal-confirm-no-label";
 	private static final String ATTRIBUTE_TEXT_NO_ESCAPE = "data-modal-confirm-text-noescape";
+	private static final String ATTRIBUTE_CSS_CLASS_NAMES = "data-modal-confirm-css-class-names";
 
 	private final IModel<String> titleModel;
 
@@ -29,21 +30,27 @@ public class ConfirmContentBehavior extends Behavior {
 
 	private final IModel<String> noLabelModel;
 
+	private final IModel<String> cssClassNamesModel;
+
 	private boolean textNoEscape;
 
+	/**
+	 * @param titleModel
+	 * @param textModel
+	 * @param yesLabelModel
+	 * @param noLabelModel
+	 * @param cssClassNamesModel - ignoré si null
+	 * @param textNoEscape - utiliser true si votre texte est du HTML
+	 */
 	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
-			IModel<String> noLabelModel) {
-		this(titleModel, textModel, yesLabelModel, noLabelModel, false);
-	}
-
-	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
-			IModel<String> noLabelModel, boolean textNoEscape) {
+			IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		super();
 		this.titleModel = titleModel;
 		this.textModel = textModel;
 		this.yesLabelModel = yesLabelModel;
 		this.noLabelModel = noLabelModel;
 		this.textNoEscape = textNoEscape;
+		this.cssClassNamesModel = cssClassNamesModel;
 	}
 
 	@Override
@@ -60,6 +67,7 @@ public class ConfirmContentBehavior extends Behavior {
 		addAttribute(component, attributes, ATTRIBUTE_TEXT, textModel);
 		addAttribute(component, attributes, ATTRIBUTE_YES_LABEL, yesLabelModel);
 		addAttribute(component, attributes, ATTRIBUTE_NO_LABEL, noLabelModel);
+		addAttribute(component, attributes, ATTRIBUTE_CSS_CLASS_NAMES, cssClassNamesModel);
 		
 		if (textNoEscape) {
 			attributes.put(ATTRIBUTE_TEXT_NO_ESCAPE, textNoEscape);
@@ -81,6 +89,9 @@ public class ConfirmContentBehavior extends Behavior {
 		}
 		if (noLabelModel != null) {
 			noLabelModel.detach();
+		}
+		if (cssClassNamesModel != null) {
+			cssClassNamesModel.detach();
 		}
 	}
 

@@ -12,6 +12,7 @@ import org.odlabs.wiquery.core.events.EventLabel;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 /**
@@ -25,11 +26,27 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 
 	private static final long serialVersionUID = 3299212684157849227L;
 
-	private IAjaxModalPopupPanel modal;
+	private final IAjaxModalPopupPanel modal;
 
+	private final BootstrapModal options;
+
+	/**
+	 * @param modalPopupPanel
+	 * @param event
+	 */
 	public AjaxModalOpenBehavior(IAjaxModalPopupPanel modalPopupPanel, EventLabel event) {
+		this(modalPopupPanel, event, null);
+	}
+
+	/**
+	 * @param modalPopupPanel
+	 * @param event
+	 * @param options - peut être null (options par défaut)
+	 */
+	public AjaxModalOpenBehavior(IAjaxModalPopupPanel modalPopupPanel, EventLabel event, BootstrapModal options) {
 		super(event.getEventLabel());
 		this.modal = modalPopupPanel;
+		this.options = options;
 	}
 
 	@Override
@@ -48,10 +65,9 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	}
 
 	protected IAjaxCallListener getOpenModalCallListener() {
-		// TODO LAL : options ?
 		AjaxCallListener openModalListener = new AjaxCallListener();
 		openModalListener.onBefore(BootstrapModalManagerStatement.loading().render());
-		openModalListener.onSuccess(BootstrapModalManagerStatement.show(modal.getContainer()).render());
+		openModalListener.onSuccess(BootstrapModalManagerStatement.show(modal.getContainer(), options).render());
 		openModalListener.onFailure(BootstrapModalManagerStatement.removeLoading().render());
 		
 		return openModalListener;
