@@ -121,14 +121,14 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	}
 
 	/**
-	 * Code appelé avant tout traitement
+	 * A surcharger au besoin ; code appelé avant tout traitement
 	 */
 	protected JsStatement onModalStart() {
 		return null;
 	}
 
 	/**
-	 * Code appelé à l'affichage de la popup
+	 * A surcharger au besoin ; code appelé à l'affichage de la popup
 	 */
 	protected JsStatement onModalComplete() {
 		return null;
@@ -137,7 +137,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	/**
 	 * Permet de récupérer le code de fermeture de la popup.
 	 */
-	protected JsStatement closeStatement() {
+	public JsStatement closeStatement() {
 		return BootstrapModalManagerStatement.hide(getContainer());
 	}
 
