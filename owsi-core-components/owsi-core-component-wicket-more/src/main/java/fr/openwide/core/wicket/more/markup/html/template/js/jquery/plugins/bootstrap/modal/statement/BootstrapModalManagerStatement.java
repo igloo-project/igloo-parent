@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import org.apache.wicket.Component;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.javascript.JsUtils;
 
 public class BootstrapModalManagerStatement {
 
@@ -30,7 +29,7 @@ public class BootstrapModalManagerStatement {
 	 */
 	public final static JsStatement show(Component modal, BootstrapModal options) {
 		if (options == null) {
-			return new JsStatement().$(modal).chain(JsUtils.quotes("show")).append(";");
+			return new JsStatement().$(modal).chain(BootstrapModal.modal()).append(";");
 		} else {
 			return new JsStatement().$(modal).chain(options).append(";");
 		}
