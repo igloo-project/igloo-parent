@@ -45,10 +45,34 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 			
 			@Override
 			public JsScope callback() {
-				return JsScope.quickScope(BootstrapModalManagerStatement.show(modal, options));
+				JsStatement jsStatement = new JsStatement();
+				JsStatement onModalStart = onModalStart();
+				JsStatement onModalComplete = onModalComplete();
+				if (onModalStart != null) {
+					jsStatement.append(onModalStart.render(true));
+				}
+				jsStatement.append(BootstrapModalManagerStatement.show(modal, options).render(true));
+				if (onModalComplete != null) {
+					jsStatement.append(onModalComplete.render(true));
+				}
+				return JsScope.quickScope(jsStatement);
 			}
 		};
 		return new JsStatement().$(getComponent()).chain(event);
+	}
+
+	/**
+	 * Code appelé avant tout traitement de l'événement.
+	 */
+	public JsStatement onModalStart() {
+		return null;
+	}
+
+	/**
+	 * Code appelé au momoent de l'affichage du popup.
+	 */
+	public JsStatement onModalComplete() {
+		return null;
 	}
 
 	@Override
