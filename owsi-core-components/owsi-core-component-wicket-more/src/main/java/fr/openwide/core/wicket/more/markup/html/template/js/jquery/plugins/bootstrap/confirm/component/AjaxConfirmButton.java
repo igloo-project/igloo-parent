@@ -23,11 +23,13 @@ public abstract class AjaxConfirmButton extends Button {
 
 	private final Form<?> form;
 
+	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
 		this(id, titleModel, textModel, yesLabelModel, noLabelModel, null);
 	}
 
+	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel,
 			Form<?> form) {

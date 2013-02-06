@@ -23,6 +23,7 @@ public abstract class ConfirmLink<O> extends Link<O> {
 
 	private static final long serialVersionUID = -4124927130129944090L;
 
+	@Deprecated
 	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
 		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, false);
