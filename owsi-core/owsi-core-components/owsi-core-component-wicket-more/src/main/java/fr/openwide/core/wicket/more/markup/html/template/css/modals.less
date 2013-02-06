@@ -26,8 +26,16 @@
 
 .modal {
 	.modal-header {
+		min-height: 23px;
+		
 		h3 {
 			margin: 0;
+			font-weight: bold;
+			font-size: 16px;
+			line-height: 23px;
+			color: #666;
+			text-rendering: optimizelegibility; // Fix the character spacing for headings
+			margin-right: 20px;
 		}
 	}
 }
@@ -57,14 +65,6 @@
 	
 	.modal-header {
 		h3 {
-			margin: 0;
-			font-weight: bold;
-			font-size: 16px;
-			line-height: 23px;
-			color: #666;
-			text-rendering: optimizelegibility; // Fix the character spacing for headings
-			margin-right: 20px;
-			
 			.scroll-to {
 				display: inline-block;
 				line-height: 14px;
@@ -75,8 +75,6 @@
 				border-radius: 3px;
 			}
 		}
-		
-		min-height: 23px;
 	}
 	
 	.modal-body {
