@@ -100,7 +100,7 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	/**
 	 * Code appelé avant tout traitement de l'événement.
 	 */
-	public JsStatement onModalStart() {
+	protected JsStatement onModalStart() {
 		return null;
 	}
 
@@ -109,7 +109,7 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	 * {@link AjaxRequestTarget} du {@link AjaxModalOpenBehavior#onShow(AjaxRequestTarget)}. Cette méthode est là par
 	 * mimétisme de {@link ModalOpenOnClickBehavior}
 	 */
-	public JsStatement onModalComplete() {
+	protected JsStatement onModalComplete() {
 		return null;
 	}
 

@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.Markup;
@@ -7,6 +8,7 @@ import org.apache.wicket.markup.MarkupFactory;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.odlabs.wiquery.core.javascript.JsStatement;
@@ -139,6 +141,10 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 */
 	public JsStatement closeStatement() {
 		return BootstrapModalManagerStatement.hide(getContainer());
+	}
+
+	protected void addCancelBehavior(AbstractLink link) {
+		link.add(new AttributeModifier("data-dismiss", "modal"));
 	}
 
 }
