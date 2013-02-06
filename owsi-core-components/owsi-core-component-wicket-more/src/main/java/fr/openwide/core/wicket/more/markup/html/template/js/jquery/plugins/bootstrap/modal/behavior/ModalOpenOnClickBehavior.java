@@ -43,7 +43,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	protected JsStatement getBindClickStatement() {
 		if (!getComponent().isEnabledInHierarchy()) {
-			return new JsStatement();
+			return null;
 		}
 		
 		Event event = new Event(MouseEvent.CLICK) {
@@ -100,28 +100,31 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 		super.renderHead(component, response);
 		
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(getBindClickStatement().render()));
-		
-		Event onShow = new Event(BootstrapModalEvent.SHOW) {
-			private static final long serialVersionUID = -5947286377954553132L;
+		JsStatement bindClickStatement = getBindClickStatement();
+		if (bindClickStatement != null) {
+			response.render(OnDomReadyHeaderItem.forScript(getBindClickStatement().render()));
 			
-			@Override
-			public JsScope callback() {
-				return JsScopeEvent.quickScope(onModalShow());
-			}
-		};
-		Event onHide = new Event(BootstrapModalEvent.HIDE) {
-			private static final long serialVersionUID = -5947286377954553132L;
+			Event onShow = new Event(BootstrapModalEvent.SHOW) {
+				private static final long serialVersionUID = -5947286377954553132L;
+				
+				@Override
+				public JsScope callback() {
+					return JsScopeEvent.quickScope(onModalShow());
+				}
+			};
+			Event onHide = new Event(BootstrapModalEvent.HIDE) {
+				private static final long serialVersionUID = -5947286377954553132L;
+				
+				@Override
+				public JsScope callback() {
+					return JsScopeEvent.quickScope(onModalHide());
+				}
+			};
 			
-			@Override
-			public JsScope callback() {
-				return JsScopeEvent.quickScope(onModalHide());
-			}
-		};
-		
-		// enregistrement des événements onShow et onHide
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal).chain(onShow).render()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal).chain(onHide).render()));
+			// enregistrement des événements onShow et onHide
+			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal).chain(onShow).render()));
+			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal).chain(onHide).render()));
+		}
 	}
 
 }
