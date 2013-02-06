@@ -61,6 +61,16 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 			public JsStatement onModalComplete() {
 				return AbstractModalPopupPanel.this.onModalComplete();
 			}
+			
+			@Override
+			public JsStatement onModalShow() {
+				return AbstractModalPopupPanel.this.onModalShow();
+			}
+			
+			@Override
+			public JsStatement onModalHide() {
+				return AbstractModalPopupPanel.this.onModalHide();
+			}
 		});
 	}
 
@@ -131,6 +141,20 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 * A surcharger au besoin ; code appelé à l'affichage de la popup
 	 */
 	protected JsStatement onModalComplete() {
+		return null;
+	}
+
+	/**
+	 * Code appelé au moment de l'affichage du popup.
+	 */
+	public JsStatement onModalShow() {
+		return null;
+	}
+
+	/**
+	 * Code appelé quand le popup est caché.
+	 */
+	public JsStatement onModalHide() {
 		return null;
 	}
 
