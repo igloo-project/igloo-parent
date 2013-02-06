@@ -21,7 +21,6 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractStaticModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalBackdrop;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -52,7 +51,7 @@ public class ModalPage extends WidgetsTemplate {
 		add(addUserBtn);
 		
 		// static modal
-		AbstractModalPopupPanel<Void>staticBootstrapModal = new AbstractStaticModalPopupPanel<Void>("staticBootstrapModal", null) {
+		AbstractModalPopupPanel<Void> staticBootstrapModal = new AbstractModalPopupPanel<Void>("staticBootstrapModal", null) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -75,8 +74,9 @@ public class ModalPage extends WidgetsTemplate {
 				return Model.of("static");
 			}
 		};
+		staticBootstrapModal.setBootstrapModal(options);
 		WebMarkupContainer staticBootstrapModalOpen = new WebMarkupContainer("staticBootstrapModalOpen");
-		staticBootstrapModal.prepareLink(staticBootstrapModalOpen, options);
+		staticBootstrapModal.prepareLink(staticBootstrapModalOpen);
 		add(staticBootstrapModal);
 		add(staticBootstrapModalOpen);
 		
@@ -84,7 +84,8 @@ public class ModalPage extends WidgetsTemplate {
 				new ResourceModel("widgets.modal.confirmLink.header"),
 				new ResourceModel("widgets.modal.confirmLink.body"),
 				new ResourceModel("widgets.modal.confirmLink.yes"),
-				new ResourceModel("widgets.modal.confirmLink.no")) {
+				new ResourceModel("widgets.modal.confirmLink.no"),
+				null, false) {
 			private static final long serialVersionUID = 3980878234185635872L;
 
 			@Override
@@ -99,7 +100,7 @@ public class ModalPage extends WidgetsTemplate {
 				new ResourceModel("widgets.modal.ajaxConfirmLink.body"),
 				new ResourceModel("widgets.modal.ajaxConfirmLink.yes"),
 				new ResourceModel("widgets.modal.ajaxConfirmLink.no"),
-				Model.of("toto"), false) {
+				null, false) {
 			private static final long serialVersionUID = 3980878234185635872L;
 
 			@Override
@@ -115,7 +116,8 @@ public class ModalPage extends WidgetsTemplate {
 				new ResourceModel("widgets.modal.ajaxConfirmButton.header"),
 				new ResourceModel("widgets.modal.ajaxConfirmButton.body"),
 				new ResourceModel("widgets.modal.ajaxConfirmButton.yes"),
-				new ResourceModel("widgets.modal.ajaxConfirmButton.no")) {
+				new ResourceModel("widgets.modal.ajaxConfirmButton.no"),
+				null, false, null) {
 			private static final long serialVersionUID = -914995462538909927L;
 
 			@Override
@@ -133,7 +135,8 @@ public class ModalPage extends WidgetsTemplate {
 		
 		PopoverTooltipModalPopupPanel popoverTooltipModalPopupPanel = new PopoverTooltipModalPopupPanel("popoverTooltipModalPopupPanel", null);
 		WebMarkupContainer popoverTooltipModalOpen = new WebMarkupContainer("popoverTooltipModalOpen");
-		popoverTooltipModalPopupPanel.prepareLink(popoverTooltipModalOpen, options);
+		popoverTooltipModalPopupPanel.setBootstrapModal(options);
+		popoverTooltipModalPopupPanel.prepareLink(popoverTooltipModalOpen);
 		add(popoverTooltipModalOpen);
 		add(popoverTooltipModalPopupPanel);
 	}

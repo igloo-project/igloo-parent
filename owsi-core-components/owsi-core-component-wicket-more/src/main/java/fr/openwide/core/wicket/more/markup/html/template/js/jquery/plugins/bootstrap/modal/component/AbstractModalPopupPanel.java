@@ -31,6 +31,8 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	private final WebMarkupContainer container;
 
+	private BootstrapModal bootstrapModal;
+
 	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
 		setOutputMarkupId(true);
@@ -42,16 +44,12 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		add(container);
 	}
 
-	public void prepareLink(final Component link) {
-		prepareLink(link, null);
-	}
-
 	/**
 	 * @param link
 	 * @param options - peut être null
 	 */
-	public void prepareLink(final Component link, BootstrapModal options) {
-		link.add(new ModalOpenOnClickBehavior(getContainer(), options) {
+	public void prepareLink(final Component link) {
+		link.add(new ModalOpenOnClickBehavior(getContainer(), bootstrapModal) {
 			private static final long serialVersionUID = 7578810529771850911L;
 			
 			@Override
@@ -145,6 +143,14 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	protected void addCancelBehavior(AbstractLink link) {
 		link.add(new AttributeModifier("data-dismiss", "modal"));
+	}
+
+	public void setBootstrapModal(BootstrapModal bootstrapModal) {
+		this.bootstrapModal = bootstrapModal;
+	}
+
+	public BootstrapModal getBootstrapModal() {
+		return this.bootstrapModal;
 	}
 
 }
