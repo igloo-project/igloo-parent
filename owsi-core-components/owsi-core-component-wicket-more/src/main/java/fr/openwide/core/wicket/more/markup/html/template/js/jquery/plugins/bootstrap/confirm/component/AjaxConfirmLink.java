@@ -46,7 +46,11 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public JsScope callback() {
-				return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmLink.this).append("event.preventDefault();"));
+				if (AjaxConfirmLink.this.isLinkEnabled()) {
+					return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmLink.this).append("event.preventDefault();"));
+				} else {
+					return null;
+				}
 			}
 		}));
 	}
