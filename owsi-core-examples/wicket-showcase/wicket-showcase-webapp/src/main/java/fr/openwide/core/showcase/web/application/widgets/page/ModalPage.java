@@ -51,6 +51,18 @@ public class ModalPage extends WidgetsTemplate {
 		});
 		add(addUserBtn);
 		
+		Button addUserBtnDisabled = new Button("addUserBtnDisabled");
+		addUserBtnDisabled.setEnabled(false);
+		addUserBtnDisabled.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK, options) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onShow(AjaxRequestTarget target) {
+				
+			}
+		});
+		add(addUserBtnDisabled);
+		
 		// static modal
 		AbstractModalPopupPanel<Void> staticBootstrapModal = new AbstractModalPopupPanel<Void>("staticBootstrapModal", null) {
 			private static final long serialVersionUID = 1L;
