@@ -68,7 +68,7 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 	}
 
 	protected final void closePopup(AjaxRequestTarget target) {
-		target.appendJavaScript(closeStatement().render(true));
+		target.prependJavaScript(closeStatement().render(true));
 	}
 
 	protected void onShow(AjaxRequestTarget target) {
