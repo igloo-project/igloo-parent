@@ -30,7 +30,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	@Deprecated
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, boolean textNoEscape) {
-		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, false);
+		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, textNoEscape);
 	}
 
 	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
