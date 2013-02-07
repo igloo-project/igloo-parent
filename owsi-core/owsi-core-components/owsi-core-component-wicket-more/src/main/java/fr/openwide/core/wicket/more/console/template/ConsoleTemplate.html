@@ -15,46 +15,48 @@
 		<wicket:head />
 	</head>
 	<body>
-		<!-- Feedback -->
-		<div wicket:id="animatedGlobalFeedbackPanel">
-		</div>
-		
-		<div class="container">
-			<!-- Menu sections -->
-			<div class="navbar navbar-inverse">
-				<div class="navbar-inner">
-					<div class="nav-collapse collapse">
-						<ul class="nav">
-							<li wicket:id="menuSectionsListView">
-								<a wicket:id="menuSectionLink">
-									<wicket:container wicket:id="menuSectionLabel" />
+		<div class="page-container">
+			<!-- Feedback -->
+			<div wicket:id="animatedGlobalFeedbackPanel">
+			</div>
+			
+			<div class="container">
+				<!-- Menu sections -->
+				<div class="navbar navbar-inverse">
+					<div class="navbar-inner">
+						<div class="nav-collapse collapse">
+							<ul class="nav">
+								<li wicket:id="menuSectionsListView">
+									<a wicket:id="menuSectionLink">
+										<wicket:container wicket:id="menuSectionLabel" />
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- Menu items -->
+				<wicket:enclosure child="menuItemsListView">
+					<div class="subnav">
+						<ul class="nav nav-pills">
+							<li wicket:id="menuItemsListView">
+								<a wicket:id="menuItemLink">
+									<wicket:container wicket:id="menuItemLabel" />
 								</a>
 							</li>
 						</ul>
 					</div>
+				</wicket:enclosure>
+				
+				<!-- Content -->
+				<div class="content">
+					<wicket:child />
 				</div>
-			</div>
-			<!-- Menu items -->
-			<wicket:enclosure child="menuItemsListView">
-				<div class="subnav">
-					<ul class="nav nav-pills">
-						<li wicket:id="menuItemsListView">
-							<a wicket:id="menuItemLink">
-								<wicket:container wicket:id="menuItemLabel" />
-							</a>
-						</li>
-					</ul>
+				
+				<!-- Footer -->
+				<div class="footer">
+					<wicket:message key="console.footer" />
 				</div>
-			</wicket:enclosure>
-			
-			<!-- Content -->
-			<div class="content">
-				<wicket:child />
-			</div>
-			
-			<!-- Footer -->
-			<div class="footer">
-				<wicket:message key="console.footer" />
 			</div>
 		</div>
 	</body>
