@@ -41,7 +41,7 @@ public class ModalPage extends WidgetsTemplate {
 		add(addUserPopupPanel);
 		
 		Button addUserBtn = new Button("addUserBtn");
-		addUserBtn.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK, options) {
+		addUserBtn.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -53,7 +53,7 @@ public class ModalPage extends WidgetsTemplate {
 		
 		Button addUserBtnDisabled = new Button("addUserBtnDisabled");
 		addUserBtnDisabled.setEnabled(false);
-		addUserBtnDisabled.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK, options) {
+		addUserBtnDisabled.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
