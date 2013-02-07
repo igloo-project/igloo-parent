@@ -23,11 +23,11 @@ public class ConfirmButton extends Button {
 	private static final long serialVersionUID = -4124927130129944090L;
 	
 	public ConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModal,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
 			boolean textNoEscape) {
 		super(id);
 		setOutputMarkupId(true);
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModal, textNoEscape));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
 	}
 	
 	@Override
