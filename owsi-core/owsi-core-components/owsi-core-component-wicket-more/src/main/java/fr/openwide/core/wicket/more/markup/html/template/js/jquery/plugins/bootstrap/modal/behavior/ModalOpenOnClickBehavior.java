@@ -11,7 +11,7 @@ import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalEvent;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
@@ -20,25 +20,14 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 8188257386595829052L;
 
-	private final Component modal;
-
-	private final BootstrapModal options;
+	private final IModalPopupPanel modal;
 
 	/**
 	 * @param modal - le composant qui contient la popup
 	 */
-	public ModalOpenOnClickBehavior(Component modal) {
-		this(modal, null);
-	}
-
-	/**
-	 * @param modal - le composant qui contient la popup
-	 * @param options - peut être null (options par défaut)
-	 */
-	public ModalOpenOnClickBehavior(Component modal, BootstrapModal options) {
+	public ModalOpenOnClickBehavior(IModalPopupPanel modal) {
 		super();
 		this.modal = modal;
-		this.options = options;
 	}
 
 	protected JsStatement getBindClickStatement() {
@@ -57,7 +46,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 				if (onModalStart != null) {
 					jsStatement.append(onModalStart.render(true));
 				}
-				jsStatement.append(BootstrapModalManagerStatement.show(modal, options).render(true));
+				jsStatement.append(BootstrapModalManagerStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
 				if (onModalComplete != null) {
 					jsStatement.append(onModalComplete.render(true));
 				}
@@ -122,8 +111,8 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 			};
 			
 			// enregistrement des événements onShow et onHide
-			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal).chain(onShow).render()));
-			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal).chain(onHide).render()));
+			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal.getContainer()).chain(onShow).render()));
+			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal.getContainer()).chain(onHide).render()));
 		}
 	}
 

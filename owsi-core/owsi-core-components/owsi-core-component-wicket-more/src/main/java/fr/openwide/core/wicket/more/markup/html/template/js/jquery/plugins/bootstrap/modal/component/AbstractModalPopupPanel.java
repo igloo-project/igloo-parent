@@ -49,7 +49,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 * @param options - peut être null
 	 */
 	public void prepareLink(final Component link) {
-		link.add(new ModalOpenOnClickBehavior(getContainer(), bootstrapModal) {
+		link.add(new ModalOpenOnClickBehavior(this) {
 			private static final long serialVersionUID = 7578810529771850911L;
 			
 			@Override
@@ -173,6 +173,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		this.bootstrapModal = bootstrapModal;
 	}
 
+	@Override
 	public BootstrapModal getBootstrapModal() {
 		return this.bootstrapModal;
 	}
