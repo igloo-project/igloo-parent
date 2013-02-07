@@ -42,6 +42,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 		
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.
+		// l'événement click habituel est supprimé par surcharge de newAjaxEventBehavior ci-dessous
 		add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override

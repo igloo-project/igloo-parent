@@ -2,9 +2,9 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.events.Event;
@@ -17,11 +17,9 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.statement.BootstrapConfirmStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 
-public abstract class AjaxConfirmButton extends Button {
+public abstract class AjaxConfirmButton extends AjaxButton {
 
 	private static final long serialVersionUID = -132330109149500197L;
-
-	private final Form<?> form;
 
 	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
@@ -40,12 +38,12 @@ public abstract class AjaxConfirmButton extends Button {
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
 			boolean textNoEscape,
 			Form<?> form) {
-		super(id, null);
-		this.form = form;
+		super(id, null, form);
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
 		
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.
+		// l'événement click habituel est supprimé par surcharge de newAjaxFormSubmitBehavior ci-dessous
 		add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -53,45 +51,38 @@ public abstract class AjaxConfirmButton extends Button {
 				return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmButton.this).append("event.preventDefault();"));
 			}
 		}));
-		
-		// Lorsque l'évènement 'confirm' est détecté, on déclenche le submit à proprement parler.
-		add(new AjaxFormSubmitBehavior(form, "confirm") {
-			private static final long serialVersionUID = 1L;
+	}
 
+	/**
+	 * Cette méthode fournit normalement le handler pour l'événement onclick. On le remplace par l'événement de
+	 * confirmation (le onclick est géré sans ajax au-dessus).
+	 */
+	@Override
+	protected AjaxFormSubmitBehavior newAjaxFormSubmitBehavior(String event) {
+		return new AjaxFormSubmitBehavior(getForm(), "confirm") {
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onSubmit(target, AjaxConfirmButton.this.getForm());
 			}
-
+			
 			@Override
 			protected void onError(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
 			}
-
+			
 			@Override
 			public boolean getDefaultProcessing() {
 				return AjaxConfirmButton.this.getDefaultFormProcessing();
 			}
-		});
+		};
 	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
-	}
-
-	protected abstract void onSubmit(AjaxRequestTarget target, Form<?> form);
-	
-	protected abstract void onError(AjaxRequestTarget target, Form<?> form);
-	
-	@Override
-	public Form<?> getForm() {
-		if (form != null) {
-			return form;
-		} else {
-			return super.getForm();
-		}
 	}
 
 }
