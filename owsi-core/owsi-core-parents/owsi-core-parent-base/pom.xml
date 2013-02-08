@@ -88,7 +88,7 @@
 		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
-		<owsi-core.jsoup.version>1.7.1</owsi-core.jsoup.version>
+		<owsi-core.jsoup.version>1.7.2</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		
 		<owsi-core.jersey.version>1.17</owsi-core.jersey.version>
