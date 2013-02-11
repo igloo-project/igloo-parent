@@ -61,6 +61,24 @@
 				<profile.filter.file>src/main/filters/test.properties</profile.filter.file>
 			</properties>
 		</profile>
+		<profile>
+			<id>recette</id>
+			<properties>
+				<profile.filter.file>src/main/filters/recette.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>preproduction</id>
+			<properties>
+				<profile.filter.file>src/main/filters/preproduction.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<profile.filter.file>src/main/filters/production.properties</profile.filter.file>
+			</properties>
+		</profile>
 	</profiles>
 	
 	<build>
