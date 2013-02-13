@@ -25,8 +25,8 @@ public class MigratedFromOldApplicationSequenceGenerator extends PostgreSQLSeque
 	
 	@Override
 	public Serializable generate(SessionImplementor session, Object obj) {
-		if (obj instanceof MigratedFromOldApplicationGenericEntity) {
-			Serializable oldApplicationId = ((MigratedFromOldApplicationGenericEntity<?, ?>) obj).getOldApplicationId();
+		if (obj instanceof IMigratedFromOldApplicationEntity) {
+			Serializable oldApplicationId = ((IMigratedFromOldApplicationEntity<?>) obj).getOldApplicationId();
 			if (oldApplicationId != null) {
 				return oldApplicationId;
 			}

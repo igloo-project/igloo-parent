@@ -15,13 +15,17 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  * @see MigratedFromOldApplicationSequenceGenerator
  */
 public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
-		extends GenericEntity<K, E> {
+		extends GenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
 
 	private static final long serialVersionUID = 2034570162020079499L;
 	
 	@Transient
 	private K oldApplicationId;
 
+	/* (non-Javadoc)
+	 * @see fr.openwide.core.jpa.business.generic.model.migration.IMigratedFromOldApplicationEntity#getOldApplicationId()
+	 */
+	@Override
 	public K getOldApplicationId() {
 		return oldApplicationId;
 	}
