@@ -12,53 +12,53 @@
 		<!-- Feedback panel -->
 		<div wicket:id="animatedGlobalFeedbackPanel">
 		</div>
-		
 		<div wicket:id="debugBar"></div>
-		
-		<div class="container">
-			<!-- Main navigation bar -->
-			<div class="navbar">
-				<div class="navbar-inner">
-					<!-- User menu -->
-					<div wicket:enclosure="userFullName" class="btn-group user-menu pull-right">
-						<span wicket:id="userFullName" class="user-full-name"></span>
-						<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-icon-only">
-							<span class="icon-off"></span>
-						</a>
+		<div class="page-container">
+			<div class="container">
+				<!-- Main navigation bar -->
+				<div class="navbar">
+					<div class="navbar-inner">
+						<!-- User menu -->
+						<div wicket:enclosure="userFullName" class="btn-group user-menu pull-right">
+							<span wicket:id="userFullName" class="user-full-name"></span>
+							<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-icon-only">
+								<span class="icon-off"></span>
+							</a>
+						</div>
+						
+						<!-- Main navigation -->
+						<ul class="nav">
+							<li wicket:id="mainNav">
+								<a wicket:id="navLink">
+									<wicket:container wicket:id="navLabel" />
+								</a>
+							</li>
+						</ul>
 					</div>
-					
-					<!-- Main navigation -->
-					<ul class="nav">
-						<li wicket:id="mainNav">
+				</div>
+				
+				<!-- Second level navigation bar -->
+				<div wicket:enclosure="subNav" class="subnav">
+					<ul class="nav nav-pills">
+						<li wicket:id="subNav">
 							<a wicket:id="navLink">
 								<wicket:container wicket:id="navLabel" />
 							</a>
 						</li>
 					</ul>
 				</div>
-			</div>
-			
-			<!-- Second level navigation bar -->
-			<div wicket:enclosure="subNav" class="subnav">
-				<ul class="nav nav-pills">
-					<li wicket:id="subNav">
-						<a wicket:id="navLink">
-							<wicket:container wicket:id="navLabel" />
-						</a>
-					</li>
-				</ul>
-			</div>
-			
-			<!-- Bread crumb -->
-			<wicket:container wicket:id="breadCrumb"></wicket:container>
-			
-			<div class="content">
-				<wicket:child />
-			</div>
-			
-			<!-- Footer -->
-			<div class="footer">
-				<span><wicket:message key="common.rootPageTitle" />&nbsp;-&nbsp;<span wicket:id="version"></span></span>
+				
+				<!-- Bread crumb -->
+				<wicket:container wicket:id="breadCrumb"></wicket:container>
+				
+				<div class="content">
+					<wicket:child />
+				</div>
+				
+				<!-- Footer -->
+				<div class="footer">
+					<span><wicket:message key="common.rootPageTitle" />&nbsp;-&nbsp;<span wicket:id="version"></span></span>
+				</div>
 			</div>
 		</div>
 	</body>
