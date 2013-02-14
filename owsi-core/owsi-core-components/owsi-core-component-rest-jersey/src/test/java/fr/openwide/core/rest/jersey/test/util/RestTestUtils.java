@@ -9,6 +9,7 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.grizzly.http.SelectorThread;
@@ -22,6 +23,8 @@ import com.sun.jersey.core.impl.provider.entity.MimeMultipartProvider;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 
+import fr.openwide.core.spring.config.ExtendedApplicationContextInitializer;
+
 public final class RestTestUtils {
 	
 	public static SelectorThread getSelectorThread(Class<?> applicationConfigClass,
@@ -29,15 +32,39 @@ public final class RestTestUtils {
 			String testContextPath, String testServletPath, String[] springContextFiles, boolean enableJPA)
 					throws IllegalArgumentException, IOException {
 		final URI baseUri = UriBuilder.fromUri(testServerUri).port(testServerPort).build();
+		
+		final ServletAdapter adapter = initRestTestServletAdapter(applicationConfigClass, testServerPort,
+				testContextPath, testServletPath, enableJPA);
+		
+		adapter.addContextParameter(ContextLoader.CONFIG_LOCATION_PARAM,
+				StringUtils.arrayToCommaDelimitedString(springContextFiles));
+		
+		return GrizzlyServerFactory.create(baseUri, adapter);
+	}
+	
+	public static SelectorThread getSelectorThread(Class<?> applicationConfigClass, String testServerUri, int testServerPort,
+			String testContextPath, String testServletPath, Class<?> javaConfigClass, boolean enableJPA)
+			throws IllegalArgumentException, IOException {
+		final URI baseUri = UriBuilder.fromUri(testServerUri).port(testServerPort).build();
+		
+		final ServletAdapter adapter = initRestTestServletAdapter(applicationConfigClass, testServerPort,
+				testContextPath, testServletPath, enableJPA);
+		
+		adapter.addContextParameter(ContextLoader.CONTEXT_CLASS_PARAM, AnnotationConfigWebApplicationContext.class.getName());
+		adapter.addContextParameter(ContextLoader.CONTEXT_INITIALIZER_CLASSES_PARAM, ExtendedApplicationContextInitializer.class.getName());
+		adapter.addContextParameter(ContextLoader.CONFIG_LOCATION_PARAM, javaConfigClass.getName());
+		
+		return GrizzlyServerFactory.create(baseUri, adapter);
+	}
+	
+	public static ServletAdapter initRestTestServletAdapter(Class<?> applicationConfigClass, int testServerPort,
+			String testContextPath, String testServletPath, boolean enableJPA) {
 		final ServletAdapter adapter = new ServletAdapter();
-
+		
 		adapter.addInitParameter(ServletContainer.APPLICATION_CONFIG_CLASS, applicationConfigClass.getName());
 		adapter.addInitParameter("com.sun.jersey.spi.container.ContainerRequestFilters", LoggingFilter.class.getName());
 		adapter.addInitParameter("com.sun.jersey.spi.container.ContainerResponseFilters", LoggingFilter.class.getName());
 		
-		adapter.addContextParameter(ContextLoader.CONFIG_LOCATION_PARAM,
-				StringUtils.arrayToCommaDelimitedString(springContextFiles));
-
 		adapter.addServletListener(ContextLoaderListener.class.getName());
 		
 		if (enableJPA) {
@@ -47,8 +74,8 @@ public final class RestTestUtils {
 		adapter.setServletInstance(new SpringServlet());
 		adapter.setContextPath(testContextPath);
 		adapter.setServletPath(testServletPath);
-	
-		return GrizzlyServerFactory.create(baseUri, adapter);
+		
+		return adapter;
 	}
 	
 	public static void closeSelectorThread(SelectorThread selectorThread) {
