@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>owsi-core-packages</artifactId>
 		<groupId>fr.openwide.core.packages</groupId>
-		<version>0.7.4-SNAPSHOT</version>
+		<version>0.7.4</version>
 	</parent>
 	
 	<artifactId>owsi-core-package-web-jersey</artifactId>
