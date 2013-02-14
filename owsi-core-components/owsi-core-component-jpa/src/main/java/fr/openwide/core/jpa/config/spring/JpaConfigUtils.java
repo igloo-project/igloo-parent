@@ -35,6 +35,7 @@ import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareSe
 import fr.openwide.core.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.DefaultTomcatPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
 public final class JpaConfigUtils {
@@ -146,10 +147,14 @@ public final class JpaConfigUtils {
 	}
 
 	public static Advisor defaultTransactionAdvisor(PlatformTransactionManager transactionManager) {
+		return defaultTransactionAdvisor(transactionManager, Lists.<Class<? extends Exception>>newArrayList());
+	}
+
+	public static Advisor defaultTransactionAdvisor(PlatformTransactionManager transactionManager, List<Class<? extends Exception>> exceptions) {
 		AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
 		
 		advisor.setExpression("this(" + ITransactionalAspectAwareService.class.getName() + ")");
-		advisor.setAdvice(defaultTransactionInterceptor(transactionManager));
+		advisor.setAdvice(defaultTransactionInterceptor(transactionManager, exceptions));
 		
 		return advisor;
 		
@@ -158,12 +163,16 @@ public final class JpaConfigUtils {
 	/**
 	 * Construit un transactionInterceptor avec une configuration par défaut.
 	 */
-	public static TransactionInterceptor defaultTransactionInterceptor(PlatformTransactionManager transactionManager) {
+	public static TransactionInterceptor defaultTransactionInterceptor(PlatformTransactionManager transactionManager, List<Class<? extends Exception>> exceptions) {
 		TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
 		Properties transactionAttributes = new Properties();
 		
 		List<RollbackRuleAttribute> rollbackRules = Lists.newArrayList();
 		rollbackRules.add(new RollbackRuleAttribute(ServiceException.class));
+		rollbackRules.add(new RollbackRuleAttribute(SecurityServiceException.class));
+		for (Class<? extends Exception> clazz : exceptions) {
+			rollbackRules.add(new RollbackRuleAttribute(clazz));
+		}
 		
 		DefaultTransactionAttribute readOnlyTransactionAttributes =
 				new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED);
