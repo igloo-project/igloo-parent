@@ -28,7 +28,6 @@ public abstract class WidgetsTemplate extends MainTemplate {
 				new NavigationMenuItem(new ResourceModel("widgets.menu.calendar"), CalendarPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.autocomplete"), AutocompletePage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.modal"), ModalPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.dateParser"), DateParserPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.listFilter"), ListFilterPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.class),
 				new NavigationMenuItem(new ResourceModel("widgets.menu.carousel"), CarouselPage.class),
