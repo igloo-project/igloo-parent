@@ -1082,6 +1082,27 @@
 						<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<!-- on laisse maven choisir la version -->
+					<configuration>
+						<!-- 
+						     Mécanisme pour exclure les classes générées de l'instrumentation cobertura ; permet
+						     de réduire la charge pour l'estimation de charge des tests unitaires.
+						     
+						     Pour éviter matcher trop tard pour les classes QueryDSL, on ajoute comme contrainte la
+						     présence dans un package model.
+						 -->
+						<instrumentation>
+							<excludes>
+								<exclude>**/*Binding.class</exclude>
+								<exclude>**/model/Q*.class</exclude>
+								<exclude>**/*_.class</exclude>
+							</excludes>
+						</instrumentation>
+					</configuration>
+				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
