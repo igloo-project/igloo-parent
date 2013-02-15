@@ -910,7 +910,7 @@
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
-									<version>[3.0.3,)</version>
+									<version>[3.0.4,)</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>1.6</version>
