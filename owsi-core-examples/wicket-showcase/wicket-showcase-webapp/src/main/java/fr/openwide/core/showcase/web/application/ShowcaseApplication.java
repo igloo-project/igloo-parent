@@ -18,9 +18,8 @@ import fr.openwide.core.showcase.web.application.widgets.page.AutosizePage;
 import fr.openwide.core.showcase.web.application.widgets.page.BootstrapJsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.CalendarPage;
 import fr.openwide.core.showcase.web.application.widgets.page.CarouselPage;
-import fr.openwide.core.showcase.web.application.widgets.page.DateParserPage;
-import fr.openwide.core.showcase.web.application.widgets.page.ModalPage;
 import fr.openwide.core.showcase.web.application.widgets.page.ListFilterPage;
+import fr.openwide.core.showcase.web.application.widgets.page.ModalPage;
 import fr.openwide.core.showcase.web.application.widgets.page.SelectBoxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.SortableListPage;
 import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
@@ -70,7 +69,6 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/widgets/calendar/", CalendarPage.class);
 		mountPage("/widgets/autocomplete/", AutocompletePage.class);
 		mountPage("/widgets/modal/", ModalPage.class);
-		mountPage("/widgets/date-parser/", DateParserPage.class);
 		mountPage("/widgets/list-filter/", ListFilterPage.class);
 		mountPage("/widgets/bootstrap-js/", BootstrapJsPage.class);
 		mountPage("/widgets/statistics/", StatisticsPage.class);
