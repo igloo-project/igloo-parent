@@ -17,6 +17,8 @@ public abstract class AbstractOptGroupDropDownChoice<E> extends DropDownChoice<E
 
 	private E last;
 
+	private boolean grouped = true;
+
 	protected AbstractOptGroupDropDownChoice(String id, IModel<E> model) {
 		super(id);
 		setModel(model);
@@ -64,18 +66,30 @@ public abstract class AbstractOptGroupDropDownChoice<E> extends DropDownChoice<E
 
 	@Override
 	protected void appendOptionHtml(AppendingStringBuffer buffer, E choice, int index, String selected) {
-		if (last == null || isNewGroup(choice, last)) {
-			if (!isFirst(index)) {
+		if (grouped) {
+			if (last == null || isNewGroup(choice, last)) {
+				if (!isFirst(index)) {
+					buffer.append("</optgroup>");
+				}
+				buffer.append("<optgroup label='");
+				buffer.append(Strings.escapeMarkup(getGroupLabel(choice)));
+				buffer.append("'>");
+			}
+			super.appendOptionHtml(buffer, choice, index, selected);
+			if (isLast(index)) {
 				buffer.append("</optgroup>");
 			}
-			buffer.append("<optgroup label='");
-			buffer.append(Strings.escapeMarkup(getGroupLabel(choice)));
-			buffer.append("'>");
+			last = choice;
+		} else {
+			super.appendOptionHtml(buffer, choice, index, selected);
 		}
-		super.appendOptionHtml(buffer, choice, index, selected);
-		if (isLast(index)) {
-			buffer.append("</optgroup>");
-		}
-		last = choice;
+	}
+	
+	public boolean isGrouped() {
+		return grouped;
+	}
+	
+	public void setGrouped(boolean grouped) {
+		this.grouped = grouped;
 	}
 }
