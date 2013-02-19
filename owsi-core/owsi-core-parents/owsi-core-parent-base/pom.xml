@@ -1089,15 +1089,14 @@
 					<configuration>
 						<!-- 
 						     Mécanisme pour exclure les classes générées de l'instrumentation cobertura ; permet
-						     de réduire la charge pour l'estimation de charge des tests unitaires.
+						     de réduire la charge pour l'estimation de couverture des tests unitaires.
 						     
-						     Pour éviter matcher trop tard pour les classes QueryDSL, on ajoute comme contrainte la
-						     présence dans un package model.
+						     Pour l'instant, on laisse les classes QueryDSL, car il est difficile d'envisager de filtrer
+						     toutes les classes en Q* ou model/Q*.
 						 -->
 						<instrumentation>
 							<excludes>
 								<exclude>**/*Binding.class</exclude>
-								<exclude>**/model/Q*.class</exclude>
 								<exclude>**/*_.class</exclude>
 							</excludes>
 						</instrumentation>
