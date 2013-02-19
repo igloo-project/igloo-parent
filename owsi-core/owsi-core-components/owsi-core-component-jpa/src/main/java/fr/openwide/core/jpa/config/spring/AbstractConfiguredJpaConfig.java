@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.config.spring;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
@@ -21,7 +22,12 @@ public abstract class AbstractConfiguredJpaConfig extends AbstractJpaConfig {
 		return JpaConfigUtils.entityManagerFactory(defaultJpaConfig.defaultJpaCoreConfigurationProvider());
 	}
 
+	/**
+	 * Déclaration explicite de close comme destroyMethod (Spring doit la prendre en compte auto-magiquement même
+	 * si non configurée).
+	 */
 	@Override
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		return JpaConfigUtils.dataSource(defaultJpaConfig.defaultTomcatPoolConfigurationProvider());
 	}
