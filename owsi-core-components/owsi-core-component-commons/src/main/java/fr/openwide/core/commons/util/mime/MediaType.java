@@ -1,11 +1,11 @@
 package fr.openwide.core.commons.util.mime;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import com.google.common.collect.Lists;
 
 public enum MediaType {
 	
@@ -39,15 +39,15 @@ public enum MediaType {
 	TEXT_PLAIN("text/plain", "plain"),
 	TEXT_CSS("text/css", "css"),
 	TEXT_CSV("text/csv", "csv"),
-	TEXT_HTML("text/html", "html", list("htm")),
+	TEXT_HTML("text/html", "html", Lists.newArrayList("htm")),
 	TEXT_CALENDAR("text/calendar", "ics"),
 	
 	// Images
 	IMAGE_ANY("image/*"),
 	IMAGE_GIF("image/gif", "gif"),
-	IMAGE_JPEG("image/jpeg", "jpg", list("jpe", "jpeg")),
-	IMAGE_PNG("image/png", "png"),
-	IMAGE_TIFF("image/tiff", "tif", list("tiff")),
+	IMAGE_JPEG("image/jpeg", Lists.newArrayList("image/pjpeg"), "jpg", Lists.newArrayList("jpe", "jpeg")),
+	IMAGE_PNG("image/png", Lists.newArrayList("image/x-png"), "png"),
+	IMAGE_TIFF("image/tiff", "tif", Lists.newArrayList("tiff")),
 	IMAGE_X_ICON("image/x-icon", "ico"),
 	IMAGE_SVG("image/svg+xml", "svg"),
 	IMAGE_BMP("image/x-ms-bmp", "bmp"),
@@ -61,11 +61,13 @@ public enum MediaType {
 	AUDIO_ANY("audio/*")
 	;
 
-	private String mimeType;
+	private String primaryMimeType;
+	
+	private List<String> additionalMimeTypes = Lists.newArrayListWithExpectedSize(2);
 	
 	private String primaryExtension;
 	
-	private List<String> additionalExtensions = new ArrayList<String>();
+	private List<String> additionalExtensions = Lists.newArrayListWithExpectedSize(2);
 	
 	private static final Map<String, MediaType> MIME_TYPE_MAPPING = new HashMap<String, MediaType>();
 	
@@ -73,7 +75,9 @@ public enum MediaType {
 	
 	static {
 		for (MediaType mimeType : values()) {
-			MIME_TYPE_MAPPING.put(mimeType.mime(), mimeType);
+			for (String mimeTypeString : mimeType.supportedMimeTypes()) {
+				MIME_TYPE_MAPPING.put(mimeTypeString, mimeType);
+			}
 			for (String extension : mimeType.supportedExtensions()) {
 				EXTENSION_MAPPING.put(extension, mimeType);
 			}
@@ -81,22 +85,31 @@ public enum MediaType {
 	}
 	
 	private MediaType(String mimeType) {
-		this.mimeType = mimeType;
+		this.primaryMimeType = mimeType;
 	}
 	
 	private MediaType(String mimeType, String primaryExtension) {
-		this.mimeType = mimeType;
+		this.primaryMimeType = mimeType;
+		this.primaryExtension = primaryExtension;
+	}
+	
+	private MediaType(String mimeType, List<String> additionalMimeTypes, String primaryExtension) {
+		this.primaryMimeType = mimeType;
+		this.additionalMimeTypes = additionalMimeTypes;
 		this.primaryExtension = primaryExtension;
 	}
 	
 	private MediaType(String mimeType, String primaryExtension, List<String> additionalExtensions) {
-		this.mimeType = mimeType;
+		this.primaryMimeType = mimeType;
 		this.primaryExtension = primaryExtension;
 		this.additionalExtensions = additionalExtensions;
 	}
 	
-	private static List<String> list(String... elements) {
-		return new ArrayList<String>(Arrays.asList(elements));
+	private MediaType(String mimeType, List<String> additionalMimeTypes, String primaryExtension, List<String> additionalExtensions) {
+		this.primaryMimeType = mimeType;
+		this.additionalMimeTypes = additionalMimeTypes;
+		this.primaryExtension = primaryExtension;
+		this.additionalExtensions = additionalExtensions;
 	}
 	
 	private static String normalize(String string) {
@@ -107,11 +120,11 @@ public enum MediaType {
 	}
 
 	public String mime() {
-		return mimeType;
+		return primaryMimeType;
 	}
 	
 	public String mimeUtf8() {
-		StringBuilder sb = new StringBuilder(mimeType);
+		StringBuilder sb = new StringBuilder(primaryMimeType);
 		sb.append(";charset=UTF-8");
 		return sb.toString();
 	}
@@ -121,13 +134,23 @@ public enum MediaType {
 	}
 
 	public List<String> supportedExtensions() {
-		List<String> supportedExtensions = new ArrayList<String>(additionalExtensions);
+		List<String> supportedExtensions = Lists.newArrayList(additionalExtensions);
 		
 		if (primaryExtension != null) {
 			supportedExtensions.add(0, primaryExtension);
 		}
 		
 		return supportedExtensions;
+	}
+	
+	public List<String> supportedMimeTypes() {
+		List<String> supportedMimeTypes = Lists.newArrayList(additionalMimeTypes);
+		
+		if (primaryMimeType != null) {
+			supportedMimeTypes.add(0, primaryMimeType);
+		}
+		
+		return supportedMimeTypes;
 	}
 	
 	public boolean supports(String extension) {
@@ -153,6 +176,9 @@ public enum MediaType {
 	}
 	
 	public static MediaType fromExtension(String extension) {
+		if (extension == null) {
+			return null;
+		}
 		return EXTENSION_MAPPING.get(normalize(extension));
 	}
 }
