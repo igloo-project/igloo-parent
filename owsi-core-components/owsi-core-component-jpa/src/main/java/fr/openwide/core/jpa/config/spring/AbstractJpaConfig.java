@@ -28,6 +28,10 @@ public abstract class AbstractJpaConfig {
 	@Bean
 	public abstract LocalContainerEntityManagerFactoryBean entityManagerFactory();
 
+	/**
+	 * Il est important de déterminer la destroyMethod sur l'annotation {@link Bean}. Spring prend en compte
+	 * auto-magiquement la méthode close() si présente si pas de configuration.
+	 */
 	@Bean
 	public abstract DataSource dataSource();
 
