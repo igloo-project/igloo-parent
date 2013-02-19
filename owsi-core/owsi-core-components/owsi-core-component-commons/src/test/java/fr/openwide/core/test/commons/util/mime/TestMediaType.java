@@ -22,6 +22,13 @@ public class TestMediaType {
 	public void testFromMimeType() {
 		Assert.assertSame(MediaType.APPLICATION_JSON, MediaType.fromMimeType("application/json"));
 		Assert.assertSame(MediaType.APPLICATION_JSON, MediaType.fromMimeType("application/json;charset=UTF-8"));
+		
+		Assert.assertSame(MediaType.IMAGE_JPEG, MediaType.fromMimeType("image/jpeg"));
+		Assert.assertSame(MediaType.IMAGE_PNG, MediaType.fromMimeType("image/png"));
+		
+		// envoyés par IE7 et 8 lors des uploads de jpg et png
+		Assert.assertSame(MediaType.IMAGE_JPEG, MediaType.fromMimeType("image/pjpeg"));
+		Assert.assertSame(MediaType.IMAGE_PNG, MediaType.fromMimeType("image/x-png"));
 	}
 	
 	@Test
