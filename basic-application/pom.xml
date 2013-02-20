@@ -25,34 +25,6 @@
 		<owsi-core.version>0.8-SNAPSHOT</owsi-core.version>
 	</properties>
 	
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>yuicompressor-maven-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>default</id>
-							<goals>
-								<goal>compress</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<includes>
-							<include>**/*.css</include>
-							<include>**/*.js</include>
-						</includes>
-						<suffix>.min</suffix>
-						<linebreakpos>10000</linebreakpos>
-						<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	
 	<repositories>
 		<repository>
 			<id>nexus-owsi-core</id>
