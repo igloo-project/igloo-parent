@@ -59,6 +59,8 @@
 			if (this.isShown) return;
 
 			this.$element.triggerHandler(e);
+			
+			$(document.activeElement).blur();
 
 			if (e.isDefaultPrevented()) return;
 
