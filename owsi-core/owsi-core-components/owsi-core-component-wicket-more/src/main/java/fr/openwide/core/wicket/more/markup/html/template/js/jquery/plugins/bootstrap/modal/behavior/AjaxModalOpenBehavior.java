@@ -47,7 +47,7 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		onShow(target);
 		modal.show(target);
 		
-		// si on renvoit le container, il faut renvoyer ses événements
+		// si on renvoie le container, il faut renvoyer ses événements
 		if (target.getComponents().contains(modal.getContainer())) {
 			target.appendJavaScript(onModalHideBindStatement().render());
 			target.appendJavaScript(onModalShowBindStatement().render());
