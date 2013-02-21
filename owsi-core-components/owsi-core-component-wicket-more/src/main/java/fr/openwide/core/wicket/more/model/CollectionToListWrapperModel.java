@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.model;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 
 import org.apache.wicket.markup.html.list.ListView;
@@ -30,7 +29,7 @@ public class CollectionToListWrapperModel<T> extends AbstractReadOnlyModel<List<
 	
 	private final IModel<? extends Collection<? extends T>> wrappedModel;
 	
-	public static <T> CollectionToListWrapperModel<T> of(IModel<? extends Set<? extends T>> model) {
+	public static <T> CollectionToListWrapperModel<T> of(IModel<? extends Collection<? extends T>> model) {
 		return new CollectionToListWrapperModel<T>(model);
 	}
 
@@ -45,11 +44,11 @@ public class CollectionToListWrapperModel<T> extends AbstractReadOnlyModel<List<
 
 	@Override
 	public List<T> getObject() {
-		Collection<? extends T> set = wrappedModel.getObject();
-		if (set == null) {
+		Collection<? extends T> collection = wrappedModel.getObject();
+		if (collection == null) {
 			return null;
 		}
-		return ImmutableList.copyOf(set);
+		return ImmutableList.copyOf(collection);
 	}
 	
 	@Override
