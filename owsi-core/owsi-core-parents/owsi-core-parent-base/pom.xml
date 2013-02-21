@@ -903,7 +903,7 @@
 						</goals>
 						<configuration>
 							<rules>
-								<DependencyConvergence/>
+								<DependencyConvergence />
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>
