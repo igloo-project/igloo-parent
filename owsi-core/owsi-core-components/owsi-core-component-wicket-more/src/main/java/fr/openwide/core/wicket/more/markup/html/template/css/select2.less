@@ -1,5 +1,10 @@
 // Select2 styles override
 body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par défaut.
+
+	.select2-default {
+		color: @placeholderText !important;
+	}
+
 	.select2-container {	// Le champ correspondant au "select"
 		vertical-align: middle;
 		margin: 0 20px 0 0;
@@ -11,6 +16,8 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 		}
 		
 		.select2-choice {
+			color: @gray;
+			
 			.select2-search-choice-close {
 				top: 6px;
 				padding: 1px;
