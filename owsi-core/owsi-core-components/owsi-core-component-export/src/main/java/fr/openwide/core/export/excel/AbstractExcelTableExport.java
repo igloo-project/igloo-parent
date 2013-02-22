@@ -563,7 +563,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected void finalizeSheet(Sheet sheet, List<String> headers, boolean landscapePrintSetup) {
 		int nbColumns = headers.size();
 		for (int i = 0; i < nbColumns; i++) {
-			sheet.autoSizeColumn((short) i);
+			sheet.autoSizeColumn(i);
 			int columnWidth = (int) (sheet.getColumnWidth(i) * COLUMN_RESIZE_RATIO);
 			sheet.setColumnWidth(i, columnWidth < ABSOLUTE_MAX_COLUMN_WIDTH ? columnWidth : ABSOLUTE_MAX_COLUMN_WIDTH);
 		}
@@ -587,7 +587,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos, boolean landscapePrintSetup) {
 		int columnIndex = 0;
 		for (Entry<String, ColumnInformation> entry : columnInfos.entrySet()) {
-			sheet.autoSizeColumn((short) columnIndex);
+			sheet.autoSizeColumn(columnIndex);
 			
 			// Détermination de la taille maximum de cette colonne
 			int maxColumnWidth;
