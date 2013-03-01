@@ -1,6 +1,8 @@
 package fr.openwide.core.basicapp.web.application;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 
@@ -19,6 +21,15 @@ import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
+	
+	public static BasicApplicationApplication get() {
+		final Application application = Application.get();
+		if (application instanceof BasicApplicationApplication) {
+			return (BasicApplicationApplication) application;
+		}
+		throw new WicketRuntimeException("There is no BasicApplicationApplication attached to current thread " +
+				Thread.currentThread().getName());
+	}
 
 	@Override
 	protected void mountApplicationPages() {
