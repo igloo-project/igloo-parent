@@ -27,6 +27,16 @@
 		<wqplot.version>6.1.1.owsi1</wqplot.version>
 	</properties>
 	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.retzlaff</groupId>
+				<artifactId>wicket-select2</artifactId>
+				<version>1.1.4-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<!-- Project information -->
 
 	<organization>
