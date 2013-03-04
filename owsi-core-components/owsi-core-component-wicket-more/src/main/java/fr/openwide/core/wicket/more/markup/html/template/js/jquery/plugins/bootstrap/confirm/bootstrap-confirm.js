@@ -1,3 +1,6 @@
+/**
+ * Wrapper simple autour de la fenêtre modale pour gérer des fenêtres de confirmation.
+ */
 !function( $, window, document, undefined ) {
 	
 	"use strict";
