@@ -69,6 +69,13 @@
 			<artifactId>lesscss-engine</artifactId>
 		</dependency>
 		
+		<!-- WiQuery-jqPlot -->
+		<dependency>
+			<groupId>nl.topicus</groupId>
+			<artifactId>wqplot</artifactId>
+			<version>${owsi-core.wqplot.version}</version>
+		</dependency>
+		
 		<!-- Test -->
 		
 		<dependency>
