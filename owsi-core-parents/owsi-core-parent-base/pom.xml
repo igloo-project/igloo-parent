@@ -32,7 +32,7 @@
 		<owsi-core.ehcache.version>2.4.8</owsi-core.ehcache.version>
 		<owsi-core.querydsl.version>2.9.0</owsi-core.querydsl.version>
 		
-		<owsi-core.guava.version>13.0.1</owsi-core.guava.version>
+		<owsi-core.guava.version>14.0</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
@@ -114,7 +114,7 @@
 		
 		<owsi-core.maven-compiler-plugin.version>3.0</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
-		<owsi-core.maven-surefire-plugin.version>2.13</owsi-core.maven-surefire-plugin.version>
+		<owsi-core.maven-surefire-plugin.version>2.14</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.4</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.4</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.3</owsi-core.maven-war-plugin.version>
