@@ -23,7 +23,20 @@
 	
 	<properties>
 		<owsi-core.version>0.8.1-SNAPSHOT</owsi-core.version>
+		
+		<!-- il est préférable de bien surcharger la version du pool jdbc Tomcat au niveau du projet en fonction de la version de Tomcat -->
+		<tomcat-jdbc.version>${owsi-core.tomcat-jdbc.version}</tomcat-jdbc.version>
 	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>tomcat-jdbc</artifactId>
+				<version>${tomcat-jdbc.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
 	<repositories>
 		<repository>
