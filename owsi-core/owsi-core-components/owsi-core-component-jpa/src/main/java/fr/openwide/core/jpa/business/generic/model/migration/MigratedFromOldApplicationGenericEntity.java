@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.business.generic.model.migration;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Transient;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -21,10 +22,10 @@ public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializ
 	
 	@Transient
 	private K oldApplicationId;
+	
+	@Column(nullable = false)
+	private boolean migrated = false;
 
-	/* (non-Javadoc)
-	 * @see fr.openwide.core.jpa.business.generic.model.migration.IMigratedFromOldApplicationEntity#getOldApplicationId()
-	 */
 	@Override
 	public K getOldApplicationId() {
 		return oldApplicationId;
@@ -32,6 +33,16 @@ public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializ
 
 	public void setOldApplicationId(K oldApplicationId) {
 		this.oldApplicationId = oldApplicationId;
+	}
+
+	@Override
+	public boolean isMigrated() {
+		return migrated;
+	}
+
+	@Override
+	public void setMigrated(boolean migrated) {
+		this.migrated = migrated;
 	}
 
 }
