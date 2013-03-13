@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.business.generic.model.migration;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -15,6 +16,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  *
  * @see MigratedFromOldApplicationSequenceGenerator
  */
+@MappedSuperclass
 public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends GenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
 
