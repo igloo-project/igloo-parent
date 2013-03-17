@@ -31,8 +31,6 @@ public class SpringContextWrapper {
 	
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, IOException {
 		importDataService.importDirectory(directory);
-		// la re-indexation doit être effectuée hors scope transaction
-		reindexAll();
 	}
 	
 	public void reindexAll() throws ServiceException {
