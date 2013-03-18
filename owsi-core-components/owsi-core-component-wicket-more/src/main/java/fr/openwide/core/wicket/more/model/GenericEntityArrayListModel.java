@@ -17,7 +17,7 @@ public class GenericEntityArrayListModel<K extends Serializable & Comparable<K>,
 		return new GenericEntityArrayListModel<K, E>(clazz);
 	}
 
-	protected GenericEntityArrayListModel(Class<E> clazz) {
+	public GenericEntityArrayListModel(Class<E> clazz) {
 		super(clazz, Lists.<E>newArrayList());
 	}
 
