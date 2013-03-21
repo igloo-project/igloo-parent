@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.head.PriorityFirstComparator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
@@ -81,6 +82,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 			// surcharge des ressources jQuery et jQuery UI
 			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
+			
+			// on place les éléments présents dans le wicket:head en premier
+			getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
 		
 		mountCommonResources();
 		mountCommonPages();
