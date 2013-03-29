@@ -12,7 +12,7 @@ import org.hibernate.type.StringClobType;
 import org.hibernate.usertype.UserType;
 
 @SuppressWarnings("deprecation")
-public abstract class AbstractImmutableStringClobUserType<T> implements UserType {
+public abstract class AbstractImmutableMaterializedStringValueUserType<T> implements UserType {
 	
 	private UserType delegateType = new StringClobType();
 
