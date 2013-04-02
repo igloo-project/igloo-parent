@@ -14,13 +14,15 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Fields;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -36,6 +38,9 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
+	public static final String FIRST_NAME_SORT_FIELD_NAME = "firstNameSort";
+	public static final String LAST_NAME_SORT_FIELD_NAME = "lastNameSort";
+	
 	@Id
 	@GeneratedValue
 	@DocumentId
@@ -47,11 +52,17 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	private String userName;
 	
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+			@Field(name = FIRST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String firstName;
 	
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+			@Field(name = LAST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String lastName;
 	
 	private String email;
