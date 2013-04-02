@@ -24,7 +24,7 @@ import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
-import fr.openwide.core.showcase.web.application.util.template.styles.StyleLessCssResourceReference;
+import fr.openwide.core.showcase.web.application.util.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
@@ -175,6 +175,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.render(CssHeaderItem.forReference(StyleLessCssResourceReference.get()));
+		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
 	}
 }
