@@ -23,7 +23,7 @@
 		<owsi-core.spring.version>3.2.2.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.7.2</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>4.1.11.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-core.version>4.1.6.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.0-api.version>1.0.1.Final</owsi-core.hibernate-jpa-2.0-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.2.0.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.jboss-logging.version>3.1.0.GA</owsi-core.jboss-logging.version>
@@ -116,7 +116,7 @@
 		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.14</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.4</owsi-core.maven-install-plugin.version>
-		<owsi-core.maven-release-plugin.version>2.4</owsi-core.maven-release-plugin.version>
+		<owsi-core.maven-release-plugin.version>2.4.1</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.3</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.4</owsi-core.maven-assembly-plugin.version>
 		<owsi-core.maven-jar-plugin.version>2.4</owsi-core.maven-jar-plugin.version>
