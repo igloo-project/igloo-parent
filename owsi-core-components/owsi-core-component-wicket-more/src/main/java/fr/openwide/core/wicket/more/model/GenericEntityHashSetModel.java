@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public class GenericEntityHashSetModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
-		extends GenericEntityCollectionModel<K, E, Set<E>> {
+		extends AbstractGenericEntityCollectionModel<K, E, Set<E>> {
 	
 	private static final long serialVersionUID = 7391021833949792344L;
 
@@ -18,7 +18,7 @@ public class GenericEntityHashSetModel<K extends Serializable & Comparable<K>, E
 	}
 
 	public GenericEntityHashSetModel(Class<E> clazz) {
-		super(clazz, Sets.<E>newHashSet());
+		super(clazz);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public class GenericEntityArrayListModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
-		extends GenericEntityCollectionModel<K, E, List<E>> {
+		extends AbstractGenericEntityCollectionModel<K, E, List<E>> {
 	
 	private static final long serialVersionUID = 7130088291928970625L;
 	
@@ -18,7 +18,7 @@ public class GenericEntityArrayListModel<K extends Serializable & Comparable<K>,
 	}
 
 	public GenericEntityArrayListModel(Class<E> clazz) {
-		super(clazz, Lists.<E>newArrayList());
+		super(clazz);
 	}
 
 	@Override
