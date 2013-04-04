@@ -32,7 +32,7 @@
 		<owsi-core.ehcache.version>2.4.8</owsi-core.ehcache.version>
 		<owsi-core.querydsl.version>3.1.0</owsi-core.querydsl.version>
 		
-		<owsi-core.guava.version>14.0</owsi-core.guava.version>
+		<owsi-core.guava.version>14.0.1</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
