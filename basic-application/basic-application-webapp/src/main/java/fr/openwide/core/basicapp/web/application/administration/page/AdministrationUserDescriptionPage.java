@@ -34,16 +34,17 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 	public AdministrationUserDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		try {
-			User user = userService.getById(parameters.get(LinkUtils.ID_PARAMETER).toLongObject());
-			
-			userModel = new GenericEntityModel<Long, User>(user);
-		} catch (Exception e) {
-			LOGGER.error("Error on user group loading", e);
-			getSession().error(getString("administration.usergroup.error"));
+		Long userId = parameters.get(LinkUtils.ID_PARAMETER).toLong();
+		User user = userService.getById(userId);
+		
+		if (user == null) {
+			LOGGER.error("Error on user loading");
+			getSession().error(getString("administration.user.error"));
 			
 			redirect(AdministrationUserPortfolioPage.class);
+			return;
 		}
+		userModel = new GenericEntityModel<Long, User>(user);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
 				AdministrationUserPortfolioPage.class));
