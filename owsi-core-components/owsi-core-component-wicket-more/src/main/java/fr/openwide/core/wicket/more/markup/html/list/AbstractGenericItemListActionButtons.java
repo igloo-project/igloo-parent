@@ -3,7 +3,6 @@ package fr.openwide.core.wicket.more.markup.html.list;
 import java.io.Serializable;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -25,16 +24,11 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 	public AbstractGenericItemListActionButtons(final String id, final IModel<? extends T> itemModel) {
 		super(id, itemModel);
 		
+		actionLinkHidden = new WebMarkupContainer("actionLinkHidden");
 		editLinkHidden = new WebMarkupContainer("editLinkHidden");
 		deleteLinkHidden = new WebMarkupContainer("deleteLinkHidden");
-		actionLinkHidden = new WebMarkupContainer("actionLinkHidden");
-		add(editLinkHidden, deleteLinkHidden, actionLinkHidden);
+		add(actionLinkHidden, editLinkHidden, deleteLinkHidden);
 		
-		add(getEditLink("editLink", itemModel));
-		
-		add(getDeleteLink("deleteLink", itemModel));
-		
-		// Custom action
 		MarkupContainer actionLink = getActionLink("actionLink", itemModel);
 		actionLink.add(new AttributeModifier("alt", getActionText(itemModel)));
 		actionLink.add(new AttributeModifier("title", getActionText(itemModel)));
@@ -45,7 +39,22 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		actionIcon.add(new AttributeAppender("class", getActionBootstrapIconClass(itemModel), " "));
 		actionLink.add(actionIcon);
 		add(actionLink);
+		
+		MarkupContainer editLink = getEditLink("editLink", itemModel);
+		editLink.add(new AttributeModifier("alt", getEditText(itemModel)));
+		editLink.add(new AttributeModifier("title", getEditText(itemModel)));
+		editLink.add(new AttributeAppender("class", getEditBootstrapColorClass(itemModel), " "));
+		
+		WebMarkupContainer editIcon = new WebMarkupContainer("editIcon");
+		editIcon.add(new AttributeAppender("class", getEditBootstrapIconColorClass(itemModel), " "));
+		editIcon.add(new AttributeAppender("class", getEditBootstrapIconClass(itemModel), " "));
+		editLink.add(editIcon);
+		add(editLink);
+		
+		add(getDeleteLink("deleteLink", itemModel));
 	}
+	
+	// Action link methods
 
 	protected abstract IModel<String> getActionBootstrapIconClass(final IModel<? extends T> itemModel);
 
@@ -57,9 +66,19 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 
 	protected abstract MarkupContainer getActionLink(final String id, final IModel<? extends T> itemModel);
 
-	protected abstract Component getEditLink(String id, final IModel<? extends T> itemModel);
+	// Edit link methods
+	
+	protected abstract IModel<String> getEditBootstrapIconClass(final IModel<? extends T> itemModel);
 
-	protected abstract Component getDeleteLink(String id, final IModel<? extends T> itemModel);
+	protected abstract IModel<String> getEditBootstrapIconColorClass(final IModel<? extends T> itemModel);
+
+	protected abstract IModel<String> getEditBootstrapColorClass(final IModel<? extends T> itemModel);
+
+	protected abstract IModel<String> getEditText(final IModel<? extends T> itemModel);
+	
+	protected abstract MarkupContainer getEditLink(String id, final IModel<? extends T> itemModel);
+
+	protected abstract MarkupContainer getDeleteLink(String id, final IModel<? extends T> itemModel);
 
 	public WebMarkupContainer getEditLinkHidden() {
 		return editLinkHidden;
