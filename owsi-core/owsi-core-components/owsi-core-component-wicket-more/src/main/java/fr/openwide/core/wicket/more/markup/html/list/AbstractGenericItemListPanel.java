@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.markup.html.list;
 
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -77,12 +76,12 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						}
 
 						@Override
-						protected Component getEditLink(String id, IModel<? extends T> itemModel) {
+						protected MarkupContainer getEditLink(String id, IModel<? extends T> itemModel) {
 							if (!isEditAvailable()) {
 								getEditLinkHidden().setVisible(false);
 								return new InvisibleLink<Void>(id);
 							} else {
-								Component editLink = AbstractGenericItemListPanel.this.getEditLink(id, itemModel);
+								MarkupContainer editLink = AbstractGenericItemListPanel.this.getEditLink(id, itemModel);
 								boolean editVisible = editLink.isVisible()
 										&& AbstractGenericItemListPanel.this.hasWritePermissionOn(itemModel);
 								editLink.setVisible(editVisible);
@@ -93,12 +92,12 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						}
 
 						@Override
-						protected Component getDeleteLink(String id, IModel<? extends T> itemModel) {
+						protected MarkupContainer getDeleteLink(String id, IModel<? extends T> itemModel) {
 							if (!isDeleteAvailable()) {
 								getDeleteLinkHidden().setVisible(false);
 								return new InvisibleLink<Void>(id);
 							} else {
-								Component deleteLink = AbstractGenericItemListPanel.this.getDeleteLink(id, itemModel);
+								MarkupContainer deleteLink = AbstractGenericItemListPanel.this.getDeleteLink(id, itemModel);
 								boolean deleteVisible = deleteLink.isVisible()
 										&& AbstractGenericItemListPanel.this.hasWritePermissionOn(itemModel);
 								deleteLink.setVisible(deleteVisible);
@@ -126,6 +125,26 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						@Override
 						protected IModel<String> getActionBootstrapColorClass(IModel<? extends T> itemModel) {
 							return AbstractGenericItemListPanel.this.getActionBootstrapColorClass(itemModel);
+						}
+						
+						@Override
+						protected IModel<String> getEditText(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getEditText(itemModel);
+						}
+
+						@Override
+						protected IModel<String> getEditBootstrapIconClass(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getEditBootstrapIconClass(itemModel);
+						}
+						
+						@Override
+						protected IModel<String> getEditBootstrapIconColorClass(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getEditBootstrapIconColorClass(itemModel);
+						}
+						
+						@Override
+						protected IModel<String> getEditBootstrapColorClass(IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getEditBootstrapColorClass(itemModel);
 						}
 					};
 				} else {
@@ -165,7 +184,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Component getDeleteLink(String id, final IModel<? extends T> itemModel) {
+	protected MarkupContainer getDeleteLink(String id, final IModel<? extends T> itemModel) {
 		return new AjaxConfirmLink<T>(id, (IModel<T>) itemModel, getDeleteConfirmationTitleModel(itemModel),
 				getDeleteConfirmationTextModel(itemModel), getDeleteConfirmationYesLabelModel(itemModel),
 				getDeleteConfirmationNoLabelModel(itemModel)) {
@@ -247,8 +266,36 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		return Model.of("btn-primary");
 	}
 
-	protected Component getEditLink(final String id, final IModel<? extends T> itemModel) {
+	protected MarkupContainer getEditLink(final String id, final IModel<? extends T> itemModel) {
 		return new InvisibleLink<Void>(id);
+	}
+	
+	protected IModel<String> getEditText(final IModel<? extends T> itemModel) {
+		return new ResourceModel("common.itemList.action.edit");
+	}
+
+	protected IModel<String> getEditBootstrapIconClass(final IModel<? extends T> itemModel) {
+		return Model.of("icon-pencil");
+	}
+
+	/**
+	 * <code>icon-white</code> ou rien
+	 * 
+	 * @param itemModel
+	 * @return
+	 */
+	protected IModel<String> getEditBootstrapIconColorClass(IModel<? extends T> itemModel) {
+		return Model.of("icon-white");
+	}
+
+	/**
+	 * <code>btn-primary</code>, <code>btn-danger</code>, <code>btn-success</code>, etc.
+	 * 
+	 * @param itemModel
+	 * @return
+	 */
+	protected IModel<String> getEditBootstrapColorClass(IModel<? extends T> itemModel) {
+		return Model.of("btn-primary");
 	}
 
 	protected abstract void doDeleteItem(final IModel<? extends T> itemModel) throws ServiceException,
