@@ -1,10 +1,13 @@
 package fr.openwide.core.jpa.search.service;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.ServiceException;
 
@@ -52,4 +55,13 @@ public interface IHibernateSearchService extends ITransactionalAspectAwareServic
 
 	void reindexAll() throws ServiceException;
 
+	void reindexClasses(List<Class<?>> classes) throws ServiceException;
+
+	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity);
+
+	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(Class<E> clazz, K id);
+
+	Set<Class<?>> getIndexedRootEntities() throws ServiceException;
+
+	Set<Class<?>> getIndexedRootEntities(List<Class<?>> classes) throws ServiceException;
 }
