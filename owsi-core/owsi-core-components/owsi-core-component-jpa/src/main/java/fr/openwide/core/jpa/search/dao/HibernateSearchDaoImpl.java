@@ -1,10 +1,13 @@
 package fr.openwide.core.jpa.search.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,12 +30,14 @@ import org.hibernate.search.impl.MassIndexerImpl;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
+import org.hibernate.search.util.impl.HibernateHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
@@ -183,31 +188,65 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 
 	@Override
 	public void reindexAll() throws ServiceException {
+		reindexClasses(Object.class);
+	}
+	
+	@Override
+	public void reindexClasses(Class<?>... classes) throws ServiceException {
 		try {
 			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 			
-			int batchSize = configurer.getHibernateSearchReindexBatchSize();
-			int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
-			int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
-			
-			for (Class<?> clazz : getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), Object.class)) {
-				LOGGER.debug(String.format("Reindexing %1$s.", clazz));
-				ProgressMonitor progressMonitor = new ProgressMonitor();
-				Thread t = new Thread(progressMonitor);
-				t.start();
-				MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
-				indexer.batchSizeToLoadObjects(batchSize)
-						.threadsForSubsequentFetching(fetchingThreads)
-						.threadsToLoadObjects(loadThreads)
-						.cacheMode(CacheMode.NORMAL)
-						.progressMonitor(progressMonitor)
-						.startAndWait();
-				progressMonitor.stop();
-				t.interrupt();
-				LOGGER.debug(String.format("Reindexing %1$s done.", clazz));
-			}
+			reindexClasses(fullTextEntityManager, getIndexedRootEntities(fullTextEntityManager.getSearchFactory(),
+					classes.length > 0 ? classes : new Class<?>[] { Object.class }));
 		} catch (Exception e) {
 			throw new ServiceException(e);
+		}
+	}
+	
+	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
+			throws Exception {
+		int batchSize = configurer.getHibernateSearchReindexBatchSize();
+		int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
+		int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
+		
+		for (Class<?> clazz : entityClasses) {
+			LOGGER.debug(String.format("Reindexing %1$s.", clazz));
+			ProgressMonitor progressMonitor = new ProgressMonitor();
+			Thread t = new Thread(progressMonitor);
+			t.start();
+			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
+			indexer.batchSizeToLoadObjects(batchSize)
+					.threadsForSubsequentFetching(fetchingThreads)
+					.threadsToLoadObjects(loadThreads)
+					.cacheMode(CacheMode.NORMAL)
+					.progressMonitor(progressMonitor)
+					.startAndWait();
+			progressMonitor.stop();
+			t.interrupt();
+			LOGGER.debug(String.format("Reindexing %1$s done.", clazz));
+		}
+	}
+	
+	@Override
+	public Set<Class<?>> getIndexedRootEntities(Class<?>... selection) {
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		
+		Set<Class<?>> indexedEntityClasses = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
+			@Override
+			public int compare(Class<?> o1, Class<?> o2) {
+				return GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getSimpleName(), o2.getSimpleName());
+			}
+		});
+		indexedEntityClasses.addAll(getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), selection));
+		
+		return indexedEntityClasses;
+	}
+	
+	@Override
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity) {
+		if (entity != null) {
+			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+			fullTextEntityManager.index(HibernateHelper.unproxy(entity));
 		}
 	}
 	
