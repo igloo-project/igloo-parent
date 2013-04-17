@@ -14,6 +14,7 @@ import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
+import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
@@ -29,10 +30,6 @@ public final class ConsoleConfiguration {
 	private String consolePageTitleKey;
 	
 	private LessCssResourceReference lessCssResourceReference;
-	
-	private ConsoleConfiguration() {
-		
-	}
 	
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
@@ -50,14 +47,18 @@ public final class ConsoleConfiguration {
 		INSTANCE.setConsolePageTitleKey(consolePageTitleKey);
 		
 		if (buildDefault) {
-			ConsoleMenuSection maintenanceMenuSection = new ConsoleMenuSection("maintenanceMenuSection", 
+			ConsoleMenuSection maintenanceMenuSection = new ConsoleMenuSection("maintenanceMenuSection",
 					"console.maintenance", "maintenance", ConsoleMaintenanceSearchPage.class);
-			ConsoleMenuItem maintenanceSearchMenuItem = new ConsoleMenuItem("maintenanceSearchMenuItem", 
+			ConsoleMenuItem maintenanceSearchMenuItem = new ConsoleMenuItem("maintenanceSearchMenuItem",
 					"console.maintenance.search", "search", ConsoleMaintenanceSearchPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceSearchMenuItem);
-			ConsoleMenuItem maintenanceEhcacheMenuItem = new ConsoleMenuItem("maintenanceEhcacheMenuItem", 
+			ConsoleMenuItem maintenanceEhcacheMenuItem = new ConsoleMenuItem("maintenanceEhcacheMenuItem",
 					"console.maintenance.ehcache", "ehcache", ConsoleMaintenanceEhCachePage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceEhcacheMenuItem);
+			ConsoleMenuItem maintenanceDonneesMenuItem = new ConsoleMenuItem("maintenanceDonneesMenuItem",
+					"console.maintenance.donnees", "donnees", ConsoleMaintenanceDonneesPage.class);
+			maintenanceMenuSection.addMenuItem(maintenanceDonneesMenuItem);
+			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 			INSTANCE.setLessCssResourceReference(ConsoleLessCssResourceReference.get());
 		}
@@ -122,5 +123,8 @@ public final class ConsoleConfiguration {
 
 	public void setLessCssResourceReference(LessCssResourceReference lessCssResourceReference) {
 		this.lessCssResourceReference = lessCssResourceReference;
+	}
+
+	private ConsoleConfiguration() {
 	}
 }
