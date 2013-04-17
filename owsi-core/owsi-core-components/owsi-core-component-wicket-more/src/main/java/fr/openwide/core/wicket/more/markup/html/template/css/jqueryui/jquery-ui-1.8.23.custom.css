@@ -600,3 +600,14 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-menu .ui-menu-item a.ui-state-hover {
 	margin: 0;
 }
+
+/* Month picker */
+.ui-monthpicker select.ui-datepicker-year {
+	margin: 0;
+	height: 24px;
+	line-height: 24px;
+}
+.ui-monthpicker .ui-datepicker-prev,
+.ui-monthpicker .ui-datepicker-next {
+	top: 4px;
+}
