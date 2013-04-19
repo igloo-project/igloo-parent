@@ -1,0 +1,25 @@
+.more {
+	position: relative;
+	overflow: hidden;
+	max-height: 100px;
+	
+	.more-label {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		text-align: right;
+		padding-top: 16px;
+		
+		.transparent-vertical-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+		background-color: rgba(255, 255, 255, .0);
+		
+		&.visible {
+			background: transparent !important;
+		}
+		
+		a {
+			background-color: rgba(255, 255, 255, 1);
+		}
+	}
+}
