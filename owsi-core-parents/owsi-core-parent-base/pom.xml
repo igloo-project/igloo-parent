@@ -104,7 +104,7 @@
 		<owsi-core.javax-activation.version>1.1.1</owsi-core.javax-activation.version>
 		<owsi-core.javax-validation-api.version>1.0.0.GA</owsi-core.javax-validation-api.version>
 		
-		<owsi-core.wicket.version>6.6.0</owsi-core.wicket.version>
+		<owsi-core.wicket.version>6.7.0</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>6.2.0</owsi-core.wiquery.version>
 		<owsi-core.wicket-select2.version>1.1.4</owsi-core.wicket-select2.version>
 		
@@ -113,7 +113,7 @@
 		<owsi-core.junit.version>4.11</owsi-core.junit.version>
 		<owsi-core.grizzly.version>1.9.55</owsi-core.grizzly.version>
 		
-		<owsi-core.maven-compiler-plugin.version>3.0</owsi-core.maven-compiler-plugin.version>
+		<owsi-core.maven-compiler-plugin.version>3.1</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.14</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.4</owsi-core.maven-install-plugin.version>
