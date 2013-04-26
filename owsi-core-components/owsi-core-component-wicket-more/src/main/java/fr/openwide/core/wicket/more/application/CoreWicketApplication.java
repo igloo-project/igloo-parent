@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.application;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.head.PriorityFirstComparator;
@@ -23,6 +24,8 @@ import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
+import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
+import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
 public abstract class CoreWicketApplication extends WebApplication {
@@ -113,6 +116,14 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	protected final void mountStaticResourceDirectory(final String path, final Class<?> clazz) {
 		mount(new StaticResourceMapper("/static" + path, clazz));
+	}
+	
+	public final <T extends Page> void mountUnversionedPage(final String path, final Class<T> pageClass) {
+		mount(new NoVersionMountedMapper(path, pageClass));
+	}
+	
+	public final <T extends Page> void mountParameterizedPage(final String path, final Class<T> pageClass) {
+		mount(new PageParameterAwareMountedMapper(path, pageClass));
 	}
 
 	/**
