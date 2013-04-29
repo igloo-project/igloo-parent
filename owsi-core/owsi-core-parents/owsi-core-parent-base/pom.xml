@@ -24,7 +24,7 @@
 		<owsi-core.spring.version>3.2.2.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.7.2</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>4.1.6.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-core.version>4.1.12.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.0-api.version>1.0.1.Final</owsi-core.hibernate-jpa-2.0-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>1.2.0.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.jboss-logging.version>3.1.0.GA</owsi-core.jboss-logging.version>
@@ -60,7 +60,7 @@
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
 		<owsi-core.commons-lang3.version>3.1</owsi-core.commons-lang3.version>
 		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
-		<owsi-core.commons-codec.version>1.7</owsi-core.commons-codec.version>
+		<owsi-core.commons-codec.version>1.8</owsi-core.commons-codec.version>
 		<owsi-core.commons-exec.version>1.1</owsi-core.commons-exec.version>
 		
 		<owsi-core.jta.version>1.1</owsi-core.jta.version>
@@ -77,7 +77,7 @@
 		normalement corrigé en 3.9 : on verra -->
 		<owsi-core.poi.version>3.9</owsi-core.poi.version>
 		
-		<owsi-core.itext.version>2.0.8</owsi-core.itext.version> <!-- c'est xhtmlrenderer qui pose la contrainte -->
+		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.11</owsi-core.jackson.version>
 		<owsi-core.jackson2-core.version>2.1.4</owsi-core.jackson2-core.version>
@@ -86,7 +86,7 @@
 		<owsi-core.jackson2-jaxrs.version>2.1.4</owsi-core.jackson2-jaxrs.version>
 		<owsi-core.jackson2-dataformat-xml.version>2.1.4</owsi-core.jackson2-dataformat-xml.version>
 		<owsi-core.truezip.version>7.7.1</owsi-core.truezip.version>
-		<owsi-core.xhtmlrenderer.version>R8</owsi-core.xhtmlrenderer.version>
+		<owsi-core.flying-saucer.version>9.0.2</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.7.2</owsi-core.jsoup.version>
@@ -627,8 +627,8 @@
 			
 				<dependency>
 					<groupId>org.xhtmlrenderer</groupId>
-					<artifactId>core-renderer</artifactId>
-					<version>${owsi-core.xhtmlrenderer.version}</version>
+					<artifactId>flying-saucer-pdf</artifactId>
+					<version>${owsi-core.flying-saucer.version}</version>
 				</dependency>
 				
 				<dependency>
