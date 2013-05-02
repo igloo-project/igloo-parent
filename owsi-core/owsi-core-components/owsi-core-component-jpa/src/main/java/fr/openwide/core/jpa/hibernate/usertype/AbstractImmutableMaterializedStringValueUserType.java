@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -14,11 +13,11 @@ import org.hibernate.usertype.UserType;
 @SuppressWarnings("deprecation")
 public abstract class AbstractImmutableMaterializedStringValueUserType<T extends AbstractMaterializedStringValue<T>> implements UserType {
 	
-	private UserType delegateType = new StringClobType();
+	private final UserType delegateType = new StringClobType();
 
 	@Override
 	public int[] sqlTypes() {
-		return new int[] { Types.CLOB };
+		return delegateType.sqlTypes();
 	}
 	
 	@Override
@@ -53,7 +52,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 		if (value == null) {
 			delegateType.nullSafeSet(st, null, index, session);
 		} else {
-			delegateType.nullSafeSet(st, value.toString(), index, session);
+			delegateType.nullSafeSet(st, ((AbstractMaterializedStringValue<?>)value).getValue(), index, session);
 		}
 	}
 

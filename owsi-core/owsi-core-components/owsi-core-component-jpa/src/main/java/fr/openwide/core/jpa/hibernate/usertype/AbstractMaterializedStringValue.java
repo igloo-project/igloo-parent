@@ -32,7 +32,7 @@ public abstract class AbstractMaterializedStringValue<T extends AbstractMaterial
 		return value.equals(other.getValue());
 	}
 	
-	public String getValue() {
+	public final String getValue() {
 		return value;
 	}
 	
