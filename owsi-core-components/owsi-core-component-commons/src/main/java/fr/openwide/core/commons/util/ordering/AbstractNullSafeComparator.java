@@ -23,7 +23,7 @@ public abstract class AbstractNullSafeComparator<T> extends Ordering<T>
 	}
 	
 	@Override
-	public int compare(T left, T right) {
+	public final int compare(T left, T right) {
 		if (left == null && right == null) {
 			return 0;
 		} else if (left == null) {
