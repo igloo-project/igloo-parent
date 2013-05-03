@@ -109,7 +109,7 @@ public class AbstractNotificationServiceImpl {
 	}
 
 	protected void sendMailToEmail(String email, String subject, String body, MultiValueMap<String, String> headers) {
-		sendMailToEmails(new String[] { email }, subject, body);
+		sendMailToEmails(new String[] { email }, subject, body, headers);
 	}
 	
 	protected Locale getLocale(INotificationRecipient recipient) {
@@ -145,6 +145,11 @@ public class AbstractNotificationServiceImpl {
 		return getMailElement(key, MailElement.BODY_TEXT, map, locale);
 	}
 	
+	protected String getBodyHtml(String key, HashMap<String, Object> map, Locale locale)
+			throws IOException, TemplateException {
+		return getMailElement(key, MailElement.BODY_HTML, map, locale);
+	}
+	
 	protected String getSubject(String key, HashMap<String, Object> map, Locale locale)
 			throws IOException, TemplateException {
 		return getMailElement(key, MailElement.SUBJECT, map, locale);
@@ -176,7 +181,7 @@ public class AbstractNotificationServiceImpl {
 	
 	private enum MailElement {
 		BODY_TEXT,
-		BODY_HTML, // not used at the moment
+		BODY_HTML,
 		SUBJECT
 	}
 	
