@@ -94,3 +94,29 @@ ul.itemit {
 	margin-top: 1px;
 	vertical-align: text-top;
 }
+
+// Scroll to top
+.scroll-to-top {
+	opacity: 0;
+	display: none;
+	position: fixed;
+	left: 10px;
+	bottom: 10px;
+	height: 80px;
+	width: 80px;
+	background-image: url("@{common-root-url}/images/scrollToTop.png");
+	background-color: @scrollToTopBackground;
+	.border-radius (5px);
+	z-index: 1500;
+	cursor: pointer;
+	
+	&.small {
+		height: 60px;
+		width: 60px;
+		background-position: -10px -10px;
+	}
+}
+
+.modal-open .scroll-to-top {
+	display: none !important;
+}
