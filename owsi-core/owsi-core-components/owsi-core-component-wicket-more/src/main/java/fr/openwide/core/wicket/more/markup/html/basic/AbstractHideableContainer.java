@@ -7,7 +7,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
-public abstract class AbstractHideableContainer extends WebMarkupContainer {
+public abstract class AbstractHideableContainer<T extends AbstractHideableContainer<T>> extends WebMarkupContainer {
 	
 	private static final long serialVersionUID = -4570949966472824133L;
 	
@@ -19,38 +19,45 @@ public abstract class AbstractHideableContainer extends WebMarkupContainer {
 		add(hideableBehavior);
 	}
 	
-	public AbstractHideableContainer collectionModel(IModel<? extends Collection<?>> model) {
-		hideableBehavior.collectionModel(model);
-		return this;
-	}
+	/**
+	 * @return this as an object of type T
+	 * @see PlaceholderContainer
+	 * @see EnclosureContainer
+	 */
+	protected abstract T thisAsT();
 	
+	public T collectionModel(IModel<? extends Collection<?>> model) {
+		hideableBehavior.collectionModel(model);
+		return thisAsT();
+	}
+
 	/**
 	 * @deprecated Use {@link #collectionModel(IModel)}
 	 */
 	@Deprecated
-	public AbstractHideableContainer listModel(IModel<? extends List<?>> model) {
+	public T listModel(IModel<? extends List<?>> model) {
 		hideableBehavior.collectionModel(model);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableContainer model(IModel<?> model) {
+	public T model(IModel<?> model) {
 		hideableBehavior.model(model);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableContainer models(IModel<?>... model) {
+	public T models(IModel<?>... model) {
 		hideableBehavior.models(model);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableContainer component(Component component) {
+	public T component(Component component) {
 		hideableBehavior.component(component);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableContainer components(Component... component) {
+	public T components(Component... component) {
 		hideableBehavior.components(component);
-		return this;
+		return thisAsT();
 	}
 
 }
