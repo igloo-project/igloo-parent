@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -26,6 +27,7 @@ import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 
 public abstract class ConsoleTemplate extends CoreWebPage {
 	
@@ -127,6 +129,11 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		add(menuItemsListView);
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
+		
+		// Scroll to top
+		WebMarkupContainer scrollToTop = new WebMarkupContainer("scrollToTop");
+		scrollToTop.add(new ScrollToTopBehavior());
+		add(scrollToTop);
 	}
 	
 	private BootstrapTooltip getBootstrapTooltip() {
