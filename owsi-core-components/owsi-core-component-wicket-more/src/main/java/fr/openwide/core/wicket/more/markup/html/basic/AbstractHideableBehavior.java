@@ -34,8 +34,8 @@ public abstract class AbstractHideableBehavior<T extends AbstractHideableBehavio
 	
 	/**
 	 * @return this as an object of type T
-	 * @see PlaceholderContainer
-	 * @see EnclosureContainer
+	 * @see PlaceholderBehavior
+	 * @see EnclosureBehavior
 	 */
 	protected abstract T thisAsT();
 	
