@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.Lists;
 
-public abstract class AbstractHideableBehavior extends Behavior {
+public abstract class AbstractHideableBehavior<T extends AbstractHideableBehavior<T>> extends Behavior {
 
 	private static final long serialVersionUID = 5054905572454226562L;
 	
@@ -32,29 +32,36 @@ public abstract class AbstractHideableBehavior extends Behavior {
 		this.visibility = visibility;
 	}
 	
-	public AbstractHideableBehavior collectionModel(IModel<? extends Collection<?>> model) {
+	/**
+	 * @return this as an object of type T
+	 * @see PlaceholderContainer
+	 * @see EnclosureContainer
+	 */
+	protected abstract T thisAsT();
+	
+	public T collectionModel(IModel<? extends Collection<?>> model) {
 		collectionModels.add(model);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableBehavior model(IModel<?> model) {
+	public T model(IModel<?> model) {
 		models.add(model);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableBehavior models(IModel<?>... model) {
+	public T models(IModel<?>... model) {
 		models.addAll(Arrays.asList(model));
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableBehavior component(Component component) {
+	public T component(Component component) {
 		components.add(component);
-		return this;
+		return thisAsT();
 	}
 	
-	public AbstractHideableBehavior components(Component... component) {
+	public T components(Component... component) {
 		components.addAll(Arrays.asList(component));
-		return this;
+		return thisAsT();
 	}
 	
 	@Override
