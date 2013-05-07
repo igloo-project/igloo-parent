@@ -11,6 +11,7 @@ import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -39,6 +40,7 @@ import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPan
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
@@ -149,6 +151,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// Dropdown
 		add(new BootstrapDropdownBehavior());
+		
+		// Scroll to top
+		WebMarkupContainer scrollToTop = new WebMarkupContainer("scrollToTop");
+		scrollToTop.add(new ScrollToTopBehavior());
+		add(scrollToTop);
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
