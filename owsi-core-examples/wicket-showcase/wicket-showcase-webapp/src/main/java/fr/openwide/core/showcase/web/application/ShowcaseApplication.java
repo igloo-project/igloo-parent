@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.WebPage;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
 import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
+import fr.openwide.core.showcase.web.application.others.page.HideableComponentsPage;
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
@@ -80,6 +81,8 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/titles/", TitlesPage.class);
 		
 		mountPage("/buttons/", ButtonsPage.class);
+		
+		mountPage("/hideable-components/", HideableComponentsPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");

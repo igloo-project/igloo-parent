@@ -22,6 +22,7 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.ShowcaseSession;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
+import fr.openwide.core.showcase.web.application.others.page.HideableComponentsPage;
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.util.template.styles.StylesLessCssResourceReference;
@@ -161,7 +162,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new NavigationMenuItem(new ResourceModel("navigation.portfolio"), PortfolioMainPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.widgets"), WidgetsMainPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.titles"), TitlesPage.class),
-				new NavigationMenuItem(new ResourceModel("navigation.buttons"), ButtonsPage.class)
+				new NavigationMenuItem(new ResourceModel("navigation.buttons"), ButtonsPage.class),
+				new NavigationMenuItem(new ResourceModel("navigation.hideableComponents"), HideableComponentsPage.class)
 		);
 	}
 	
