@@ -29,7 +29,6 @@ public final class BasicApplicationInitFromExcelMain {
 			contextWrapper.importDirectory(new File("src/main/resources/init"));
 			
 			contextWrapper.reindexAll();
-			contextWrapper.closeEntityManager();
 			
 			LOGGER.info("Initialization complete");
 		} finally {
