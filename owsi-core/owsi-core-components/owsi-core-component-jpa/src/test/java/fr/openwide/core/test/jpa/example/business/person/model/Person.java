@@ -17,6 +17,8 @@
 
 package fr.openwide.core.test.jpa.example.business.person.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -35,6 +37,8 @@ public class Person extends GenericEntity<Long, Person> {
 	private String firstName;
 
 	private String lastName;
+	
+	private Date creationDate;
 
 	public Person() {
 	}
@@ -69,6 +73,14 @@ public class Person extends GenericEntity<Long, Person> {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public Date getCreationDate() {
+		return creationDate;
+	}
+	
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	@Override
 	public String getNameForToString() {
@@ -79,4 +91,5 @@ public class Person extends GenericEntity<Long, Person> {
 	public String getDisplayName() {
 		return getLastName() + " " + getFirstName();
 	}
+	
 }
