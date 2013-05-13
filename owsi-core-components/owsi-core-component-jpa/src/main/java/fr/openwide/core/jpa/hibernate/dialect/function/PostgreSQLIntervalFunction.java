@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.util;
+package fr.openwide.core.jpa.hibernate.dialect.function;
 
 import java.util.List;
 
@@ -8,6 +8,14 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.type.Type;
 
+/**
+ * Est utilisée pour permettre d'utiliser des intervals dans les requêtes QueryDSL.
+ * 
+ * Typiquement via :
+ * <pre>
+ * query.from(QUser.user).where(BooleanTemplate.create("{0} - {2} * interval({1}) < now()", QUser.user.creationDate, "1 day", 4)); 
+ * </pre>
+ */
 public class PostgreSQLIntervalFunction implements SQLFunction {
 
 	@Override

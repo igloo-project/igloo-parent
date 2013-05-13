@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.jpa.util;
+package fr.openwide.core.jpa.hibernate.dialect;
 
 import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.id.IdentifierGenerator;
+
+import fr.openwide.core.jpa.hibernate.dialect.function.PostgreSQLIntervalFunction;
+import fr.openwide.core.jpa.util.PostgreSQLSequenceGenerator;
 
 /**
  * <p>Surcharge du dialecte PostgreSQL qui permet de gérer les séquences par table plutôt que d'avoir une seule séquence
@@ -28,6 +31,8 @@ import org.hibernate.id.IdentifierGenerator;
  * PostgreSQL.</p>
  * 
  * <p>Hibernate est assez peu finaud sur la gestion des séquences PostgreSQL.</p>
+ * 
+ * <p>Par ailleurs, il pose maintenant l'architecture pour nous permettre d'utiliser des choses plus proches du SQL via QueryDSL.</p>
  * 
  * @author Open Wide
  */
