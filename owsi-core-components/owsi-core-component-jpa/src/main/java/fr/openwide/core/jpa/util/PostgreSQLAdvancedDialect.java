@@ -31,8 +31,11 @@ import org.hibernate.id.IdentifierGenerator;
  * 
  * @author Open Wide
  */
-@Deprecated
-public class PostgreSQLSerialDialect extends PostgreSQL82Dialect {
+public class PostgreSQLAdvancedDialect extends PostgreSQL82Dialect {
+	
+	public PostgreSQLAdvancedDialect() {
+		registerFunction("interval", new PostgreSQLIntervalFunction());
+	}
 
 	@Override
 	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {
