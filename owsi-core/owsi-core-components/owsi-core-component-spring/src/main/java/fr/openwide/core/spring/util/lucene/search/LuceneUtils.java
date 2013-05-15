@@ -111,7 +111,7 @@ public final class LuceneUtils {
 							if (Occur.SHOULD.equals(clause.getOccur())) {
 								// dans Solr, on peut définir l'opérateur implicite en AND et il faut donc qu'on soit précis
 								if (booleanQuerySb.length() > 0) {
-									booleanQuerySb.append(" OR ");
+									booleanQuerySb.append("OR ");
 								}
 							} else {
 								booleanQuerySb.append(clause.getOccur().toString());
