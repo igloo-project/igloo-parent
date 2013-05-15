@@ -3,6 +3,7 @@ package fr.openwide.core.spring.util.lucene.search;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
@@ -107,8 +108,15 @@ public final class LuceneUtils {
 						String query = queryToString(clause.getQuery());
 						
 						if (StringUtils.hasText(query)) {
-							booleanQuerySb.append(clause.getOccur().toString());
-							booleanQuerySb.append(queryToString(clause.getQuery()));
+							if (Occur.SHOULD.equals(clause.getOccur())) {
+								// dans Solr, on peut définir l'opérateur implicite en AND et il faut donc qu'on soit précis
+								if (booleanQuerySb.length() > 0) {
+									booleanQuerySb.append(" OR ");
+								}
+							} else {
+								booleanQuerySb.append(clause.getOccur().toString());
+							}
+							booleanQuerySb.append(query);
 							booleanQuerySb.append(" ");
 						}
 					}
@@ -122,8 +130,11 @@ public final class LuceneUtils {
 		} else if (luceneQuery instanceof TermQuery) {
 			TermQuery termQuery = (TermQuery) luceneQuery;
 			Term term = termQuery.getTerm();
-			sb.append(term.field());
-			sb.append(":\"");
+			if (StringUtils.hasText(term.field())) {
+				sb.append(term.field());
+				sb.append(":");
+			}
+			sb.append("\"");
 			sb.append(QueryParser.escape(term.text()));
 			sb.append("\"");
 		} else if (luceneQuery instanceof RawLuceneQuery) {
