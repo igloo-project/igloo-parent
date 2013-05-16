@@ -154,7 +154,7 @@ public final class LuceneUtils {
 						|| booleanQuerySb.charAt(0) == '-' || booleanQuerySb.charAt(0) == '+'
 						|| (booleanQuery.getClauses().length == 1 && (booleanQuery.getClauses()[0].getQuery() instanceof RawLuceneQuery))) {
 					sb.append("(")
-						.append(booleanQuerySb.substring(0, booleanQuerySb.length() - 1))
+						.append(booleanQuerySb.toString().trim())
 						.append(")");
 				} else {
 					sb.append(booleanQuerySb);
