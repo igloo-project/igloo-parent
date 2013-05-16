@@ -149,12 +149,14 @@ public final class LuceneUtils {
 					}
 				}
 			}
-			if (booleanQuery.getClauses().length > 1) {
-				sb.append("(")
-					.append(booleanQuerySb)
-					.append(")");
-			} else {
-				sb.append(booleanQuerySb);
+			if (booleanQuerySb.length() > 0) {
+				if (booleanQuery.getClauses().length > 1) {
+					sb.append("(")
+						.append(booleanQuerySb)
+						.append(")");
+				} else {
+					sb.append(booleanQuerySb);
+				}
 			}
 		}
 		return sb.toString();
