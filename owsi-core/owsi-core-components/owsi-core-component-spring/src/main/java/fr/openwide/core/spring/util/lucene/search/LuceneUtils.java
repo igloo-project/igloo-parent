@@ -153,6 +153,8 @@ public final class LuceneUtils {
 				sb.append("(")
 					.append(booleanQuerySb)
 					.append(")");
+			} else {
+				sb.append(booleanQuerySb);
 			}
 		}
 		return sb.toString();
