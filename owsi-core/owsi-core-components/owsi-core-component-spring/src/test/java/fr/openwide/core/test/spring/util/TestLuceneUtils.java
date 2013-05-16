@@ -66,6 +66,8 @@ public class TestLuceneUtils {
 		BooleanQuery bq2 = new BooleanQuery();
 		bq2.add(new FuzzyQuery(new Term("field3", "text3"), 0.8f), Occur.MUST);
 		bq2.add(new FuzzyQuery(new Term("field4", "text4"), 0.7f), Occur.SHOULD);
+		bq2.add(new TermQuery(new Term("field4", "text4")), Occur.SHOULD);
+		bq2.add(new WildcardQuery(new Term("field8", "t*t?")), Occur.MUST);
 		
 		BooleanQuery bq3 = new BooleanQuery();
 		bq3.add(new PrefixQuery(new Term("field5", "text5")), Occur.SHOULD);
@@ -96,7 +98,23 @@ public class TestLuceneUtils {
 		
 		QueryParser parser = new QueryParser(Version.LUCENE_36, "", new StandardAnalyzer(Version.LUCENE_36));
 		Query parsedQuery = parser.parse(stringQuery);
-		assertEquals(parsedQuery, finalQuery);
+		assertEquals(finalQuery, parsedQuery);
+	}
+	
+	@Test
+	public void testBooleanQueryWithOneClause() throws ParseException {
+		BooleanQuery bq1 = new BooleanQuery();
+		bq1.add(new TermQuery(new Term("", "text9")), Occur.MUST_NOT);
+		
+		BooleanQuery finalQuery = new BooleanQuery();
+		finalQuery.add(bq1, Occur.MUST);
+		
+		String stringQuery = LuceneUtils.queryToString(finalQuery);
+		
+		QueryParser parser = new QueryParser(Version.LUCENE_36, "", new StandardAnalyzer(Version.LUCENE_36));
+		Query parsedQuery = parser.parse(stringQuery);
+		
+		assertEquals(stringQuery, LuceneUtils.queryToString(parsedQuery));
 	}
 	
 	@Test
