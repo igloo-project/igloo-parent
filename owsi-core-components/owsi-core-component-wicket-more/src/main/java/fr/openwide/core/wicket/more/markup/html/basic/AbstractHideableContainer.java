@@ -11,8 +11,10 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	
 	private static final long serialVersionUID = -4570949966472824133L;
 	
+	@SuppressWarnings("rawtypes")
 	private final AbstractHideableBehavior hideableBehavior;
 	
+	@SuppressWarnings("rawtypes")
 	protected AbstractHideableContainer(String id, AbstractHideableBehavior hideableBehavior) {
 		super(id);
 		this.hideableBehavior = hideableBehavior;
@@ -26,6 +28,7 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	 */
 	protected abstract T thisAsT();
 	
+	@SuppressWarnings("unchecked")
 	public T collectionModel(IModel<? extends Collection<?>> model) {
 		hideableBehavior.collectionModel(model);
 		return thisAsT();
@@ -34,17 +37,20 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	/**
 	 * @deprecated Use {@link #collectionModel(IModel)}
 	 */
+	@SuppressWarnings("unchecked")
 	@Deprecated
 	public T listModel(IModel<? extends List<?>> model) {
 		hideableBehavior.collectionModel(model);
 		return thisAsT();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T model(IModel<?> model) {
 		hideableBehavior.model(model);
 		return thisAsT();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T models(IModel<?>... model) {
 		hideableBehavior.models(model);
 		return thisAsT();
