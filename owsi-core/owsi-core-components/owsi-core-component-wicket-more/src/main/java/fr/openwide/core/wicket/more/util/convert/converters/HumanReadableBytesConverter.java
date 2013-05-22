@@ -30,13 +30,6 @@ public class HumanReadableBytesConverter implements IConverter<Bytes> {
 	private static final List<String> UNIT_KEYS = Lists.newArrayList(BYTE_UNIT_KEY, KB_UNIT_KEY, MB_UNIT_KEY,
 			GB_UNIT_KEY, TB_UNIT_KEY);
 
-	private boolean returnZero;
-
-	public HumanReadableBytesConverter(boolean returnZero) {
-		super();
-		this.returnZero = returnZero;
-	}
-
 	@Override
 	public Bytes convertToObject(String value, Locale locale) {
 		throw new UnsupportedOperationException();
@@ -57,11 +50,9 @@ public class HumanReadableBytesConverter implements IConverter<Bytes> {
 			
 			DecimalFormat twoDecimalsFormat = new DecimalFormat(OUTPUT_DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(locale));
 			
-			if (returnZero || humanReadableSize != 0) {
-				return new StringBuilder(twoDecimalsFormat.format(humanReadableSize)).append(" ")
-						.append(getString(UNIT_KEYS.get(unitKeyIndex), locale))
-						.toString();
-			}
+			return new StringBuilder(twoDecimalsFormat.format(humanReadableSize)).append(" ")
+					.append(getString(UNIT_KEYS.get(unitKeyIndex), locale))
+					.toString();
 		}
 		
 		return null;

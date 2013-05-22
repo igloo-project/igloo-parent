@@ -12,7 +12,7 @@ public class BytesModel extends AbstractReadOnlyModel<Bytes> {
 	
 	private final BytesUnit unit;
 	
-	public BytesModel ofLong(IModel<Long> wrappedModel, BytesUnit unit) {
+	public static BytesModel ofLong(IModel<Long> wrappedModel, BytesUnit unit) {
 		return new BytesModel(wrappedModel, unit);
 	}
 	
