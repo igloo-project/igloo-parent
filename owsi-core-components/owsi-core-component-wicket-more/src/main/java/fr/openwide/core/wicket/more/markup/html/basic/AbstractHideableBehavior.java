@@ -24,8 +24,6 @@ public abstract class AbstractHideableBehavior<T extends AbstractHideableBehavio
 	private final List<IModel<?>> models = Lists.newArrayList();
 
 	private final List<IModel<? extends Collection<?>>> collectionModels = Lists.newArrayList();
-
-	private final List<IModel<? extends Number>> numberModels = Lists.newArrayList();
 	
 	private final List<Component> components = Lists.newArrayList();
 	
@@ -40,11 +38,6 @@ public abstract class AbstractHideableBehavior<T extends AbstractHideableBehavio
 	 * @see EnclosureBehavior
 	 */
 	protected abstract T thisAsT();
-	
-	public T numberModel(IModel<? extends Number> model) {
-		numberModels.add(model);
-		return thisAsT();
-	}
 	
 	public T collectionModel(IModel<? extends Collection<?>> model) {
 		collectionModels.add(model);
