@@ -4,11 +4,18 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableBytesConverter;
+
+/**
+ * @deprecated Use {@link HumanReadableBytesConverter} combined with {@link BytesModel} on a {@link Label}.
+ */
+@Deprecated
 public class HumanReadableFileSizeLabelModel extends LoadableDetachableModel<String> {
 
 	private static final long serialVersionUID = 2983505085932967800L;
