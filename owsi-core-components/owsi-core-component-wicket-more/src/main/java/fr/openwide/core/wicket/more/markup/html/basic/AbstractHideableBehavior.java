@@ -83,13 +83,6 @@ public abstract class AbstractHideableBehavior<T extends AbstractHideableBehavio
 			}
 		}
 		
-		for (IModel<? extends Number> numberModel : numberModels) {
-			if (numberModel != null && numberModel.getObject() != null && !numberModel.getObject().equals(0)) {
-				boundComponent.setVisible(Visibility.HIDE_IF_EMPTY.equals(visibility));
-				return;
-			}
-		}
-		
 		for (IModel<?> model : models) {
 			if (model != null && model.getObject() != null) {
 				boundComponent.setVisible(Visibility.HIDE_IF_EMPTY.equals(visibility));
