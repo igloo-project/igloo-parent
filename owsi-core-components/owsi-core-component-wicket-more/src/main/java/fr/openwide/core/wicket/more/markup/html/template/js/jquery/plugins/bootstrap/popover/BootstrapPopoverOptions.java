@@ -149,7 +149,7 @@ public class BootstrapPopoverOptions extends Options {
 	}
 
 	public void setContentText(String contentText) {
-		this.titleText = contentText;
+		this.contentText = contentText;
 	}
 
 	public JsScope getContentFunction() {
