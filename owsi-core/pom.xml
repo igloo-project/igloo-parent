@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core</artifactId>
-	<version>0.8.3-SNAPSHOT</version>
+	<version>0.8.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core</name>
