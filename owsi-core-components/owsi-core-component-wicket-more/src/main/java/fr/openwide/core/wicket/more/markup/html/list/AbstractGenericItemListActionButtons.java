@@ -51,7 +51,16 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 		editLink.add(editIcon);
 		add(editLink);
 		
-		add(getDeleteLink("deleteLink", itemModel));
+		MarkupContainer deleteLink = getDeleteLink("deleteLink", itemModel);
+		deleteLink.add(new AttributeModifier("alt", getDeleteText(itemModel)));
+		deleteLink.add(new AttributeModifier("title", getDeleteText(itemModel)));
+		deleteLink.add(new AttributeAppender("class", getDeleteBootstrapColorClass(itemModel), " "));
+		
+		WebMarkupContainer deleteIcon = new WebMarkupContainer("deleteIcon");
+		deleteIcon.add(new AttributeAppender("class", getDeleteBootstrapIconColorClass(itemModel), " "));
+		deleteIcon.add(new AttributeAppender("class", getDeleteBootstrapIconClass(itemModel), " "));
+		deleteLink.add(deleteIcon);
+		add(deleteLink);
 	}
 	
 	// Action link methods
@@ -78,6 +87,16 @@ public abstract class AbstractGenericItemListActionButtons<T extends Serializabl
 	
 	protected abstract MarkupContainer getEditLink(String id, final IModel<? extends T> itemModel);
 
+	// Delete link methods
+	
+	protected abstract IModel<String> getDeleteBootstrapIconClass(final IModel<? extends T> itemModel);
+
+	protected abstract IModel<String> getDeleteBootstrapIconColorClass(final IModel<? extends T> itemModel);
+
+	protected abstract IModel<String> getDeleteBootstrapColorClass(final IModel<? extends T> itemModel);
+
+	protected abstract IModel<String> getDeleteText(final IModel<? extends T> itemModel);
+	
 	protected abstract MarkupContainer getDeleteLink(String id, final IModel<? extends T> itemModel);
 
 	public WebMarkupContainer getEditLinkHidden() {

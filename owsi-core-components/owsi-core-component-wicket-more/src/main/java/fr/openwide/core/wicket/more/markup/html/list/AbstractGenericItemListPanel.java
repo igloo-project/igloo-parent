@@ -146,6 +146,26 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 						protected IModel<String> getEditBootstrapColorClass(IModel<? extends T> itemModel) {
 							return AbstractGenericItemListPanel.this.getEditBootstrapColorClass(itemModel);
 						}
+						
+						@Override
+						protected IModel<String> getDeleteText(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getDeleteText(itemModel);
+						}
+
+						@Override
+						protected IModel<String> getDeleteBootstrapIconClass(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getDeleteBootstrapIconClass(itemModel);
+						}
+						
+						@Override
+						protected IModel<String> getDeleteBootstrapIconColorClass(final IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getDeleteBootstrapIconColorClass(itemModel);
+						}
+						
+						@Override
+						protected IModel<String> getDeleteBootstrapColorClass(IModel<? extends T> itemModel) {
+							return AbstractGenericItemListPanel.this.getDeleteBootstrapColorClass(itemModel);
+						}
 					};
 				} else {
 					actionButtons = new EmptyPanel("actionButtons");
@@ -277,7 +297,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	protected IModel<String> getEditBootstrapIconClass(final IModel<? extends T> itemModel) {
 		return Model.of("icon-pencil");
 	}
-
+	
 	/**
 	 * <code>icon-white</code> ou rien
 	 * 
@@ -296,6 +316,34 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	 */
 	protected IModel<String> getEditBootstrapColorClass(IModel<? extends T> itemModel) {
 		return Model.of("btn-primary");
+	}
+	
+	protected IModel<String> getDeleteText(final IModel<? extends T> itemModel) {
+		return new ResourceModel("common.itemList.action.delete");
+	}
+
+	protected IModel<String> getDeleteBootstrapIconClass(final IModel<? extends T> itemModel) {
+		return Model.of("icon-trash");
+	}
+	
+	/**
+	 * <code>icon-white</code> ou rien
+	 * 
+	 * @param itemModel
+	 * @return
+	 */
+	protected IModel<String> getDeleteBootstrapIconColorClass(IModel<? extends T> itemModel) {
+		return Model.of("icon-white");
+	}
+
+	/**
+	 * <code>btn-primary</code>, <code>btn-danger</code>, <code>btn-success</code>, etc.
+	 * 
+	 * @param itemModel
+	 * @return
+	 */
+	protected IModel<String> getDeleteBootstrapColorClass(IModel<? extends T> itemModel) {
+		return Model.of("btn-danger");
 	}
 
 	protected abstract void doDeleteItem(final IModel<? extends T> itemModel) throws ServiceException,

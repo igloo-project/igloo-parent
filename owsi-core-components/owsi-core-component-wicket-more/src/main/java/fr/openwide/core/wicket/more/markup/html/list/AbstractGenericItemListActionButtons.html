@@ -19,9 +19,8 @@
 			<div class="btn-icon-only btn-placeholder"></div>
 		</wicket:container>
 		<wicket:enclosure child="deleteLink">
-			<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink" 
-				wicket:message="alt:common.itemList.action.delete,title:common.itemList.action.delete">
-				<i class="icon-white icon-trash"></i>
+			<a class="btn btn-danger btn-mini btn-icon-only" wicket:id="deleteLink">
+				<i wicket:id="deleteIcon"></i>
 			</a>
 		</wicket:enclosure>
 		<wicket:container wicket:id="deleteLinkHidden">
