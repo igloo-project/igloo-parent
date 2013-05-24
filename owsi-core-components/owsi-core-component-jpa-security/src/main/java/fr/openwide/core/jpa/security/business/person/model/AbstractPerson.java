@@ -46,7 +46,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@DocumentId
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	@NaturalId(mutable = true)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String userName;
