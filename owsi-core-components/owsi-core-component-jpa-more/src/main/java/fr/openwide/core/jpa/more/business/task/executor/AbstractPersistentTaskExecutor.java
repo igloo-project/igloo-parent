@@ -6,6 +6,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +19,7 @@ import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.ITaskTypeProvider;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
+import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecutor {
 	private static final long serialVersionUID = 8795027800414538701L;
@@ -29,6 +31,9 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 
 	@Autowired
 	private IQueuedTaskHolderService queuedTaskHolderService;
+	
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	private String taskType;
 
@@ -82,6 +87,7 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 			try {
 				AbstractTask runnableTask = OBJECT_MAPPER.readValue(lockedTask.getSerializedTask(), AbstractTask.class);
 				runnableTask.setQueuedTaskHolderId(lockedTask.getId());
+				SpringBeanUtils.autowireBean(applicationContext, runnableTask);
 				runnableTask.run();
 			} catch (IOException e) {
 				LOGGER.error("Erreur lors de la désérialisation de la tâche " + lockedTask, e);
