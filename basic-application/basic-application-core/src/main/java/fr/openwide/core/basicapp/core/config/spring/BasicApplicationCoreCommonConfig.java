@@ -3,7 +3,6 @@ package fr.openwide.core.basicapp.core.config.spring;
 import java.net.MalformedURLException;
 
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -37,7 +36,7 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 	excludeFilters = @Filter(Configuration.class)
 )
 // fonctionnement de l'annotation @Transactional
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+@EnableTransactionManagement
 public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig {
 
 	public static final String APPLICATION_NAME = "basic-application";
