@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
@@ -30,8 +33,11 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
 
 	@Autowired
+	private TransactionTemplate transactionTemplate;
+
+	@Autowired
 	private IQueuedTaskHolderService queuedTaskHolderService;
-	
+
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -43,43 +49,48 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 	}
 
 	/**
-	 * Pousse une tâche dans la queue afin qu'elle soit exécutée par le scheduler.
-	 * Pré-requis : cette méthode doit obligatoirement être appelée à l'intérieur d'une transaction.
+	 * Pousse une tâche dans la queue afin qu'elle soit exécutée par le
+	 * scheduler. Pré-requis : cette méthode doit obligatoirement être appelée à
+	 * l'intérieur d'une transaction.
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void execute(Runnable runnable) {
-		AbstractTask task;
-		try {
-			task = AbstractTask.class.cast(runnable);
-		} catch (ClassCastException e) {
-			LOGGER.error("Seuls les objets héritant de AbstractTask peuvent être placés en file d'attente");
-			throw new IllegalArgumentException("Invalid task : " + runnable, e);
-		}
-		
-		String serializedTask;
-		try {
-			serializedTask = OBJECT_MAPPER.writeValueAsString(task);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Serialized task: " + OBJECT_MAPPER.writeValueAsString(task));
+	public void execute(final Runnable runnable) {
+		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				AbstractTask task;
+				try {
+					task = AbstractTask.class.cast(runnable);
+				} catch (ClassCastException e) {
+					LOGGER.error("Seuls les objets héritant de AbstractTask peuvent être placés en file d'attente");
+					throw new IllegalArgumentException("Invalid task : " + runnable, e);
+				}
+
+				String serializedTask;
+				try {
+					serializedTask = OBJECT_MAPPER.writeValueAsString(task);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Serialized task: " + OBJECT_MAPPER.writeValueAsString(task));
+					}
+
+					QueuedTaskHolder newQueuedTaskHolder = new QueuedTaskHolder(task.getTaskName(), task.getTaskType(),
+							serializedTask);
+					newQueuedTaskHolder.setTriggeringDate(task.getTriggeringDate());
+
+					queuedTaskHolderService.create(newQueuedTaskHolder);
+				} catch (IOException e) {
+					LOGGER.error("Erreur durant la sérialisation de la tâche " + task, e);
+				} catch (Exception e) {
+					LOGGER.error("Erreur durant la sauvegarde en base de la tâche " + task, e);
+				}
 			}
-			
-			QueuedTaskHolder newQueuedTaskHolder = new QueuedTaskHolder(
-					task.getTaskName(),
-					task.getTaskType(),
-					serializedTask);
-			newQueuedTaskHolder.setTriggeringDate(task.getTriggeringDate());
-			
-			queuedTaskHolderService.create(newQueuedTaskHolder);
-		} catch (IOException e) {
-			LOGGER.error("Erreur durant la sérialisation de la tâche " + task, e);
-		} catch (Exception e) {
-			LOGGER.error("Erreur durant la sauvegarde en base de la tâche " + task, e);
-		}
+		});
 	}
 
 	/**
-	 * Exécute les tâches présentes dans la queue les unes après les autres jusqu'à ce qu'il n'en reste plus.
+	 * Exécute les tâches présentes dans la queue les unes après les autres
+	 * jusqu'à ce qu'il n'en reste plus.
 	 */
 	public void runTasks() {
 		QueuedTaskHolder lockedTask = null;
@@ -97,7 +108,7 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 
 	protected QueuedTaskHolder tryLockTask() {
 		int tries = getLockTriesBeforeGivingUp();
-		
+
 		while (tries > 0) {
 			try {
 				return obtainLockedTask();
@@ -111,20 +122,26 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 		return null;
 	}
 
-	@Transactional
 	protected QueuedTaskHolder obtainLockedTask() {
-		QueuedTaskHolder queuedTask = queuedTaskHolderService.getNextTaskForExecution(taskType);
-		if (queuedTask != null) {
-			queuedTask.setStartDate(new Date());
-		}
-		return queuedTask;
+		return transactionTemplate.execute(new TransactionCallback<QueuedTaskHolder>() {
+			@Override
+			public QueuedTaskHolder doInTransaction(TransactionStatus status) {
+				QueuedTaskHolder queuedTask = queuedTaskHolderService.getNextTaskForExecution(taskType);
+				if (queuedTask != null) {
+					queuedTask.setStartDate(new Date());
+				}
+				return queuedTask;
+			}
+		});
 	}
 
 	/**
-	 * Réinitialise les tâches bloquées, i.e. les tâches ayant dépassé leur timeout d'exécution.
+	 * Réinitialise les tâches bloquées, i.e. les tâches ayant dépassé leur
+	 * timeout d'exécution.
 	 */
 	public void hypervisor() {
-		while (tryResetStalledTask());
+		while (tryResetStalledTask())
+			;
 	}
 
 	protected boolean tryResetStalledTask() {
@@ -143,13 +160,17 @@ public abstract class AbstractPersistentTaskExecutor extends ThreadPoolTaskExecu
 		return false;
 	}
 
-	@Transactional
 	protected QueuedTaskHolder resetStalledTask() {
-		QueuedTaskHolder stalledTask = queuedTaskHolderService.getRandomStalledTask(taskType, getExecutionTimeLimitInSeconds());
-		if (stalledTask != null) {
-			stalledTask.setStartDate(null);
-		}
-		return stalledTask;
+		return transactionTemplate.execute(new TransactionCallback<QueuedTaskHolder>() {
+			@Override
+			public QueuedTaskHolder doInTransaction(TransactionStatus status) {
+				QueuedTaskHolder stalledTask = queuedTaskHolderService.getRandomStalledTask(taskType, getExecutionTimeLimitInSeconds());
+				if (stalledTask != null) {
+					stalledTask.setStartDate(null);
+				}
+				return stalledTask;
+			}
+		});
 	}
 
 	protected abstract int getExecutionTimeLimitInSeconds();

@@ -3,14 +3,20 @@ package fr.openwide.core.jpa.more.business.task.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.commons.util.CloneUtils;
+import fr.openwide.core.commons.util.ExceptionUtils;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
+import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 
 public abstract class AbstractTask implements Runnable, Serializable {
 	private static final long serialVersionUID = 7734300264023051135L;
@@ -18,23 +24,27 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
 
 	@Autowired
-	private IQueuedTaskHolderService queuedTaskHolderService;
+	private TransactionTemplate transactionTemplate;
+
+	@Autowired
+	protected IQueuedTaskHolderService queuedTaskHolderService;
 
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
-	private QueuedTaskHolder queuedTaskHolder;
+	protected QueuedTaskHolder queuedTaskHolder;
 
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
-	private Long queuedTaskHolderId;
+	protected Long queuedTaskHolderId;
 
-	private Date triggeringDate;
+	protected Date triggeringDate;
 
-	private String taskName;
+	protected String taskName;
 
-	private String taskType;
+	protected String taskType;
 
 	protected AbstractTask() {
+
 	}
 
 	public AbstractTask(String taskName, ITaskTypeProvider taskTypeProvider, Date triggeringDate) {
@@ -45,43 +55,41 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	@Override
 	public void run() {
-		try {
-			transactionalOperations();
-		} catch (RuntimeException e) {
-			LOGGER.warn("Rollback durant le traitement d'une tâche", e);
-			freeTask();
-		}
+		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+					beforeTask();
+					doTask();
+					afterTask();
+				} catch (Exception e) {
+					LOGGER.error("An unexpected error has occured while executing task " + queuedTaskHolder, e);
+					queuedTaskHolder.setStatus(TaskStatus.FAILED);
+					queuedTaskHolder.setEndDate(new Date());
+					queuedTaskHolder.setResult(ExceptionUtils.getStackTraceAsString(e));
+				}
+			}
+		});
 	}
 
-	@Transactional
-	private void transactionalOperations() {
-		beforeTask();
-		doTaskInTransaction();
-		afterTask();
-	}
-
+	protected abstract void doTask();
+	
 	private void beforeTask() {
 		queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+
 		if (queuedTaskHolder == null) {
-			throw new IllegalArgumentException("Aucune tâche existante avec l'id " + getQueuedTaskHolderId());
+			throw new IllegalArgumentException("No task found with id " + getQueuedTaskHolderId());
 		}
-		if (queuedTaskHolder.getStartDate() == null || queuedTaskHolder.getCompletionDate() != null) {
-			throw new IllegalArgumentException("Données incohérentes pour la tâche " + queuedTaskHolder);
-		}
+
+		queuedTaskHolder.setStartDate(new Date());
+		queuedTaskHolder.setStatus(TaskStatus.RUNNING);
 	}
 
 	private void afterTask() {
-		// Une fois l'opération exécutée, on marque la tâche comme complétée
-		queuedTaskHolder.setCompletionDate(new Date());
+		queuedTaskHolder.setEndDate(new Date());
+		queuedTaskHolder.setStatus(TaskStatus.COMPLETED);
 	}
-
-	@Transactional
-	private void freeTask() {
-		QueuedTaskHolder queuedTaskHolder = this.queuedTaskHolderService.getById(this.getQueuedTaskHolderId());
-		queuedTaskHolder.setStartDate(null);
-	}
-
-	public abstract void doTaskInTransaction();
 
 	public Long getQueuedTaskHolderId() {
 		return queuedTaskHolderId;
