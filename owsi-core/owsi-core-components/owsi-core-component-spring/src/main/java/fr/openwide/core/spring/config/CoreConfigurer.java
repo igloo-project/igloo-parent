@@ -38,6 +38,9 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String NOTIFICATION_MAIL_SUBJECT_PREFIX = "notification.mail.subjectPrefix";
 	private static final String NOTIFICATION_TEST_EMAILS = "notification.test.emails";
 	
+	private static final String TASK_STOP_TIMEOUT = "task.stop.timeout";
+	private static final int TASK_STOP_TIMEOUT_DEFAULT = 70000;
+	
 	public String getVersion() {
 		return getPropertyAsString(VERSION_PROPERTY);
 	}
@@ -185,4 +188,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsStringArray(NOTIFICATION_TEST_EMAILS);
 	}
 
+	public int getTaskStopTimeout() {
+		return getPropertyAsInteger(TASK_STOP_TIMEOUT, TASK_STOP_TIMEOUT_DEFAULT);
+	}
 }
