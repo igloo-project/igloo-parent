@@ -42,8 +42,13 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 	}
 
 	@Override
-	public Long count(TaskStatus status, Date since) {
-		return queuedTaskHolderDao.count(status, since);
+	public Long count(Date since, TaskStatus... statuses) {
+		return queuedTaskHolderDao.count(since, statuses);
+	}
+	
+	@Override
+	public Long count(TaskStatus... statuses) {
+		return queuedTaskHolderDao.count(statuses);
 	}
 
 	@Override

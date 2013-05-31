@@ -16,7 +16,9 @@ public interface IQueuedTaskHolderDao extends IGenericEntityDao<Long, QueuedTask
 
 	int count(QueuedTaskHolderSearchQueryParameters searchParams) throws ServiceException;
 
-	Long count(TaskStatus status, Date since);
+	Long count(Date since, TaskStatus... statuses);
+	
+	Long count(TaskStatus... statuses);
 	
 	/**
 	 * Récupère en base la tâche suivante à exécuter.

@@ -33,6 +33,9 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	private static final QQueuedTaskHolder qQueuedTaskHolder = QQueuedTaskHolder.queuedTaskHolder; // NOSONAR
 	
 	private static final QueuedTaskHolderBinding QUEUED_TASK_HOLDER_BINDING = new QueuedTaskHolderBinding();
+
+	private static final List<TaskStatus> CONSUMABLE_TASK_STATUS = Lists.newArrayList(TaskStatus.TO_RUN,
+			TaskStatus.RUNNING, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -125,11 +128,20 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	}
 
 	@Override
-	public Long count(TaskStatus status, Date since) {
+	public Long count(Date since, TaskStatus... statuses) {
 		JPQLQuery query = new JPAQuery(getEntityManager());
 
 		query.from(qQueuedTaskHolder).where(
-				qQueuedTaskHolder.status.eq(status).and(qQueuedTaskHolder.creationDate.after(since)));
+				qQueuedTaskHolder.status.in(statuses).and(qQueuedTaskHolder.creationDate.after(since)));
+
+		return query.count();
+	}
+	
+	@Override
+	public Long count(TaskStatus... statuses) {
+		JPQLQuery query = new JPAQuery(getEntityManager());
+
+		query.from(qQueuedTaskHolder).where(qQueuedTaskHolder.status.in(statuses));
 
 		return query.count();
 	}
@@ -186,10 +198,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 		JPQLQuery query = new JPAQuery(getEntityManager());
 
 		query.from(qQueuedTaskHolder)
-				.where(qQueuedTaskHolder.status.eq(TaskStatus.TO_RUN)
-					.or(qQueuedTaskHolder.status.eq(TaskStatus.RUNNING))
-					.or(qQueuedTaskHolder.status.eq(TaskStatus.FAILED))
-					.or(qQueuedTaskHolder.status.eq(TaskStatus.INTERRUPTED)))
+				.where(qQueuedTaskHolder.status.in(CONSUMABLE_TASK_STATUS))
 				.orderBy(qQueuedTaskHolder.id.asc());
 
 		return query.list(qQueuedTaskHolder);
