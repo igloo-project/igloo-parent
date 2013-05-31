@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
@@ -96,13 +98,16 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		try {
 			List<QueuedTaskHolder> queuedTaskHolderList = queuedTaskHolderService.listConsumable();
 			for (QueuedTaskHolder queuedTaskHolder : queuedTaskHolderList) {
+				queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
+				queuedTaskHolderService.update(queuedTaskHolder);
+				
 				boolean status = queue.offer(queuedTaskHolder.getId());
 				if (!status) {
-					LOGGER.error("Unable to offer the process " + queuedTaskHolder.getId() + " to the queue");
+					LOGGER.error("Unable to offer the task " + queuedTaskHolder.getId() + " to the queue");
 				}
 			}
 		} catch (Exception e) {
-			LOGGER.error("system.error", e);
+			LOGGER.error("Error while trying to init queue from database", e);
 		}
 	}
 
@@ -118,27 +123,41 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	@Override
 	public void submit(AbstractTask task) {
+		QueuedTaskHolder newQueuedTaskHolder = null;
+		String serializedTask;
+		try {
+			serializedTask = OBJECT_MAPPER.writeValueAsString(task);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Serialized task: " + OBJECT_MAPPER.writeValueAsString(task));
+			}
+
+			newQueuedTaskHolder = new QueuedTaskHolder(task.getTaskName(), task.getTaskType(), serializedTask);
+
+			queuedTaskHolderService.create(newQueuedTaskHolder);
+		} catch (IOException e) {
+			LOGGER.error("Error while trying to serialize task " + task, e);
+		} catch (Exception e) {
+			LOGGER.error("Error while creating and saving task " + task, e);
+		}
+
 		if (active) {
-			String serializedTask;
-			try {
-				serializedTask = OBJECT_MAPPER.writeValueAsString(task);
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Serialized task: " + OBJECT_MAPPER.writeValueAsString(task));
-				}
-
-				QueuedTaskHolder newQueuedTaskHolder = new QueuedTaskHolder(task.getTaskName(), task.getTaskType(),
-						serializedTask);
-
-				queuedTaskHolderService.create(newQueuedTaskHolder);
-
-				boolean status = queue.offer(newQueuedTaskHolder.getId());
-				if (!status) {
-					LOGGER.error("Unable to offer the process " + newQueuedTaskHolder.getId() + " to the queue");
-				}
-			} catch (IOException e) {
-				LOGGER.error("Error while trying to serialize task " + task, e);
-			} catch (Exception e) {
-				LOGGER.error("Erro while creating and saving task " + task, e);
+			boolean status = queue.offer(newQueuedTaskHolder.getId());
+			if (!status) {
+				LOGGER.error("Unable to offer the task " + newQueuedTaskHolder.getId() + " to the queue");
+			}
+		}
+	}
+	
+	@Override
+	public void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
+		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+		if (queuedTaskHolder != null) {
+			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
+			queuedTaskHolderService.update(queuedTaskHolder);
+			
+			boolean status = queue.offer(queuedTaskHolder.getId());
+			if (!status) {
+				LOGGER.error("Unable to offer the task " + queuedTaskHolder.getId() + " to the queue");
 			}
 		}
 	}

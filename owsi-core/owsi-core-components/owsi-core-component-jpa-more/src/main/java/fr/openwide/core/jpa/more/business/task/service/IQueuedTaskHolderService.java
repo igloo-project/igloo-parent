@@ -16,8 +16,10 @@ public interface IQueuedTaskHolderService extends IGenericEntityService<Long, Qu
 
 	int count(QueuedTaskHolderSearchQueryParameters searchParams) throws ServiceException;
 
-	Long count(TaskStatus status, Date since);
+	Long count(Date since, TaskStatus... statuses);
 
+	Long count(TaskStatus... statuses);
+	
 	QueuedTaskHolder getNextTaskForExecution(String taskType);
 
 	QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds);
