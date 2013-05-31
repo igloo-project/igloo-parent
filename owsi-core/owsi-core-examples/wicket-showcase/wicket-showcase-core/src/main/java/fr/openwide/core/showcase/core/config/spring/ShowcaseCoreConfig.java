@@ -31,8 +31,8 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 		},
 		excludeFilters = @Filter(Configuration.class)
 )
-//fonctionnement de l'annotation @Transactional
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+// fonctionnement de l'annotation @Transactional
+@EnableTransactionManagement
 public class ShowcaseCoreConfig extends AbstractApplicationConfig {
 
 	public static final String APPLICATION_NAME = "showcase";
