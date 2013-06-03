@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.8.2-SNAPSHOT</version>
+		<version>0.8.3-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.archetype</groupId>
@@ -22,7 +22,7 @@
 	</modules>
 	
 	<properties>
-		<owsi-core.version>0.8.2-SNAPSHOT</owsi-core.version>
+		<owsi-core.version>0.8.3-SNAPSHOT</owsi-core.version>
 		
 		<!-- il est préférable de bien surcharger la version du pool jdbc Tomcat au niveau du projet en fonction de la version de Tomcat -->
 		<tomcat-jdbc.version>${owsi-core.tomcat-jdbc.version}</tomcat-jdbc.version>
