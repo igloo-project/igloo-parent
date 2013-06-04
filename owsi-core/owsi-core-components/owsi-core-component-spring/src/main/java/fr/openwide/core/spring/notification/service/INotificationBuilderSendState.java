@@ -1,15 +1,12 @@
 package fr.openwide.core.spring.notification.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-
 import org.springframework.util.MultiValueMap;
 
-import freemarker.template.TemplateException;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 public interface INotificationBuilderSendState {
 	
@@ -29,7 +26,7 @@ public interface INotificationBuilderSendState {
 	
 	INotificationBuilderSendState priority(int priority);
 	
-	void send() throws MessagingException, IOException, TemplateException;
+	void send() throws ServiceException;
 	
-	void send(String encoding) throws MessagingException, IOException, TemplateException;
+	void send(String encoding) throws ServiceException;
 }
