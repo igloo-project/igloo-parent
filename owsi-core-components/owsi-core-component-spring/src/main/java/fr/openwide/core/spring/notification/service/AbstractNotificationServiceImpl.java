@@ -1,7 +1,5 @@
 package fr.openwide.core.spring.notification.service;
 
-import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -12,7 +10,7 @@ public class AbstractNotificationServiceImpl {
 	@Autowired
 	protected ApplicationContext applicationContext;
 
-	protected final INotificationBuilderBaseState builder() throws MessagingException {
+	protected final INotificationBuilderBaseState builder() {
 		INotificationBuilderBaseState notificationBuilder = new NotificationBuilder();
 		SpringBeanUtils.autowireBean(applicationContext, notificationBuilder);
 		return notificationBuilder;
