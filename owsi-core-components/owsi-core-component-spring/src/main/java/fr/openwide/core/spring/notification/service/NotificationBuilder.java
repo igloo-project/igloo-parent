@@ -331,7 +331,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 				
 					mailSender.send(message);
 				} catch (MessagingException e) {
-					throw new ServiceException("Error build the MIME message for: " + ArrayUtils.toString(to), e);
+					throw new ServiceException("Error building the MIME message for: " + ArrayUtils.toString(to), e);
 				} catch (MailException e) {
 					throw new ServiceException("Error sending email to: " + ArrayUtils.toString(to), e);
 				}
