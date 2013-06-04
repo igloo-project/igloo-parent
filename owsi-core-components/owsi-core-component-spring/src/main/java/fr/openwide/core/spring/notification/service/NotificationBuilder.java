@@ -12,10 +12,12 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -27,6 +29,7 @@ import org.springframework.util.ObjectUtils;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
 import fr.openwide.core.spring.util.StringUtils;
@@ -309,20 +312,34 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public void send() throws MessagingException, IOException, TemplateException {
+	public void send() throws ServiceException {
 		send(DEFAULT_MAIL_ENCODING);
 	}
 
 	@Override
-	public void send(String encoding) throws MessagingException, IOException, TemplateException {
-		for (Entry<Locale, List<String>> entry : emailsByLocale.entrySet()) {
-			String[] to = entry.getValue().toArray(new String[entry.getValue().size()]);
-			MimeMessage message = buildMessage(to, encoding, entry.getKey());
-			
-			if (message == null) {
-				continue;
+	public void send(String encoding) throws ServiceException {
+		try {
+			for (Entry<Locale, List<String>> entry : emailsByLocale.entrySet()) {
+				String[] to = entry.getValue().toArray(new String[entry.getValue().size()]);
+				
+				try {
+					MimeMessage message = buildMessage(to, encoding, entry.getKey());
+				
+					if (message == null) {
+						continue;
+					}
+				
+					mailSender.send(message);
+				} catch (MessagingException e) {
+					throw new ServiceException("Error build the MIME message for: " + ArrayUtils.toString(to), e);
+				} catch (MailException e) {
+					throw new ServiceException("Error sending email to: " + ArrayUtils.toString(to), e);
+				}
 			}
-			mailSender.send(message);
+		} catch (IOException e) {
+			throw new ServiceException("Error while generating email from template", e);
+		} catch (TemplateException e) {
+			throw new ServiceException("Error while generating email from template", e);
 		}
 	}
 	
