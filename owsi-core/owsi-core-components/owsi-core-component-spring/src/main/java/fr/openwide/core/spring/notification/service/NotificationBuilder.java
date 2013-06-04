@@ -12,7 +12,8 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.exec.util.MapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,14 +34,18 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 public class NotificationBuilder implements INotificationBuilderBaseState, INotificationBuilderBuildState,
-		INotificationBuilderBodyState, INotificationBuilderSendState {
-
+		INotificationBuilderBodyState, INotificationBuilderTemplateState, INotificationBuilderSendState {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationBuilder.class);
+	
 	private static final String DEFAULT_MAIL_ENCODING = "utf-8";
 	
 	private static final String NEW_LINE_TEXT_PLAIN = StringUtils.NEW_LINE_ANTISLASH_N;
 	private static final String NEW_LINE_HTML = "<br />";
 	
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
+	
+	private static final String ATTACHMENT_NAMES_VARIABLE_NAME = "attachments";
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -179,13 +184,20 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderBuildState variable(String name, Object value) {
+	public INotificationBuilderTemplateState template(String templateKey) {
+		Assert.hasText(templateKey, "Template key must contain text");
+		this.templateKey = templateKey;
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderTemplateState variable(String name, Object value) {
 		return variable(name, value, null);
 	}
 	
 	// If locale == null, the variable will be considered as not locale-sensitive and will be available for all locales
 	@Override
-	public INotificationBuilderBuildState variable(String name, Object value, Locale locale) {
+	public INotificationBuilderTemplateState variable(String name, Object value, Locale locale) {
 		Assert.hasText(name, "Variable name must contain text");
 		if (!templateVariablesByLocale.containsKey(locale)) {
 			templateVariablesByLocale.put(locale, new HashMap<String, Object>());
@@ -195,9 +207,17 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderSendState template(String templateKey) {
-		Assert.hasText(templateKey, "Template key must contain text");
-		this.templateKey = templateKey;
+	public INotificationBuilderTemplateState variables(Map<String, Object> variables) {
+		return variables(variables, null);
+	}
+
+	@Override
+	public INotificationBuilderTemplateState variables(Map<String, Object> variables, Locale locale) {
+		if (!templateVariablesByLocale.containsKey(locale)) {
+			templateVariablesByLocale.put(locale, new HashMap<String, Object>());
+		}
+		templateVariablesByLocale.get(locale).putAll(variables);
+		
 		return this;
 	}
 	
@@ -308,9 +328,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private MimeMessage buildMessage(String[] to, String encoding, Locale locale) throws IOException, TemplateException, MessagingException {
 		if (templateKey != null) {
-			HashMap<String, Object> templateVariables = getTemplateVariables(locale);
-			subject(getSubject(templateKey, templateVariables, locale));
-			textBody = getBodyText(templateKey, templateVariables, locale);
+			subject(getSubject(templateKey, locale));
+			textBody = getBodyText(templateKey, locale);
 		}
 		String htmlBody = getHtmlBody(locale);
 		
@@ -318,7 +337,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(htmlBody), encoding);
 		
 		if (from == null) {
-			from = getFrom();
+			from = getDefaultFrom();
 		}
 		String[] filteredTo = filterEmails(to);
 		if (filteredTo.length == 0) {
@@ -331,8 +350,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		helper.setBcc(bcc.toArray(new String[bcc.size()]));
 		helper.setSubject(subject);
 
-		String textBodyPrefix = getBodyPrefix(to, false);
-		String htmlBodyPrefix = getBodyPrefix(to, true);
+		String textBodyPrefix = getBodyPrefix(to, MailFormat.TEXT);
+		String htmlBodyPrefix = getBodyPrefix(to, MailFormat.HTML);
 		if (StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody)) {
 			helper.setText(textBodyPrefix + textBody, htmlBodyPrefix + htmlBody);
 		} else if (StringUtils.hasText(htmlBody)) {
@@ -371,14 +390,23 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return htmlBody;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private HashMap<String, Object> getTemplateVariables(Locale locale) {
-		HashMap<String, Object> sharedVariables = templateVariablesByLocale.get(null);
-		HashMap<String, Object> localeSpecificVariables = templateVariablesByLocale.get(locale);
-		return (HashMap<String, Object>) MapUtils.merge(sharedVariables, localeSpecificVariables);
+	private Map<String, Object> getTemplateVariables(Locale locale) {
+		Map<String, Object> templateVariables = Maps.newHashMap();
+		templateVariables.putAll(templateVariablesByLocale.get(null));
+		templateVariables.putAll(templateVariablesByLocale.get(locale));
+		
+		if (attachments != null && !attachments.isEmpty()) {
+			if (!templateVariables.containsKey(ATTACHMENT_NAMES_VARIABLE_NAME)) {
+				templateVariables.put(ATTACHMENT_NAMES_VARIABLE_NAME, attachments.keySet());
+			} else {
+				LOGGER.warn(ATTACHMENT_NAMES_VARIABLE_NAME + " already present in the map. We don't override it.");
+			}
+		}
+		
+		return templateVariables;
 	}
 	
-	private String getFrom() {
+	private String getDefaultFrom() {
 		return configurer.getNotificationMailFrom();
 	}
 	
@@ -406,10 +434,10 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return subjectPrefix.toString();
 	}
 	
-	private String getBodyPrefix(String[] to, boolean isHtml) {
+	private String getBodyPrefix(String[] to, MailFormat mailFormat) {
 		if (configurer.isConfigurationTypeDevelopment()) {
 			
-			String newLine = isHtml ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
+			String newLine = MailFormat.HTML.equals(mailFormat) ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
 			
 			StringBuffer newBody = new StringBuffer();
 			newBody.append("#############").append(newLine);
@@ -423,29 +451,32 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return "";
 	}
 	
-	private String getBodyText(String key, HashMap<String, Object> map, Locale locale)
-			throws IOException, TemplateException {
-		return getMailElement(key, MailElement.BODY_TEXT, map, locale);
+	private String getBodyText(String key, Locale locale) throws IOException, TemplateException {
+		return getMailElement(key, MailElement.BODY_TEXT, locale);
 	}
 	
-	private String getSubject(String key, HashMap<String, Object> map, Locale locale)
-			throws IOException, TemplateException {
-		return getMailElement(key, MailElement.SUBJECT, map, locale);
+	private String getSubject(String key, Locale locale) throws IOException, TemplateException {
+		return getMailElement(key, MailElement.SUBJECT, locale);
 	}
 	
-	@SuppressWarnings("unchecked")
-	private String getMailElement(String key, MailElement element, HashMap<String, Object> map, Locale locale)
+	private String getMailElement(String key, MailElement element, Locale locale)
 			throws IOException, TemplateException {
-		if (map.containsKey(element.toString())) {
+		Map<String, Object> freemarkerModelMap = getTemplateVariables(locale);
+		if (freemarkerModelMap.containsKey(element.toString())) {
 			throw new IllegalStateException(String.format("Provided map must not contain %1$s key", element));
 		}
-		Map<String, Object> fMap = (Map<String, Object>) map.clone();
-		fMap.put(element.toString(), true);
-		return FreeMarkerTemplateUtils.processTemplateIntoString(templateConfiguration.getTemplate(key, locale), fMap);
+		freemarkerModelMap.put(element.toString(), true);
+		return FreeMarkerTemplateUtils.processTemplateIntoString(templateConfiguration.getTemplate(key, locale), freemarkerModelMap);
 	}
 	
 	private enum MailElement {
 		BODY_TEXT,
 		SUBJECT
 	}
+	
+	private enum MailFormat {
+		HTML,
+		TEXT
+	}
+	
 }

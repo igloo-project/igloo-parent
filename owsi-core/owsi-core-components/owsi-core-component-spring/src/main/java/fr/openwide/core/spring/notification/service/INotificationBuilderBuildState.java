@@ -1,7 +1,6 @@
 package fr.openwide.core.spring.notification.service;
 
 import java.util.List;
-import java.util.Locale;
 
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
@@ -24,9 +23,5 @@ public interface INotificationBuilderBuildState {
 	
 	INotificationBuilderBodyState subject(String prefix, String subject);
 	
-	INotificationBuilderBuildState variable(String name, Object value);
-	
-	INotificationBuilderBuildState variable(String name, Object value, Locale locale);
-	
-	INotificationBuilderSendState template(String templateKey);
+	INotificationBuilderTemplateState template(String templateKey);
 }
