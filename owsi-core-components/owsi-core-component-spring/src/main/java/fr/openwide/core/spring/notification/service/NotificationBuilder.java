@@ -409,8 +409,16 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private Map<String, Object> getTemplateVariables(Locale locale) {
 		Map<String, Object> templateVariables = Maps.newHashMap();
-		templateVariables.putAll(templateVariablesByLocale.get(null));
-		templateVariables.putAll(templateVariablesByLocale.get(locale));
+		
+		Map<String, Object> sharedVariables = templateVariablesByLocale.get(null);
+		if (sharedVariables != null) {
+			templateVariables.putAll(sharedVariables);
+		}
+		
+		Map<String, Object> localeDependentVariables = templateVariablesByLocale.get(locale);
+		if (localeDependentVariables != null) {
+			templateVariables.putAll(localeDependentVariables);
+		}
 		
 		if (attachments != null && !attachments.isEmpty()) {
 			if (!templateVariables.containsKey(ATTACHMENT_NAMES_VARIABLE_NAME)) {
