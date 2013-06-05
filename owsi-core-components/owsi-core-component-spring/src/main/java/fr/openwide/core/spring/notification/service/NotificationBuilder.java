@@ -210,12 +210,12 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderTemplateState variables(Map<String, Object> variables) {
+	public INotificationBuilderTemplateState variables(Map<String, ?> variables) {
 		return variables(variables, null);
 	}
 
 	@Override
-	public INotificationBuilderTemplateState variables(Map<String, Object> variables, Locale locale) {
+	public INotificationBuilderTemplateState variables(Map<String, ?> variables, Locale locale) {
 		if (!templateVariablesByLocale.containsKey(locale)) {
 			templateVariablesByLocale.put(locale, new HashMap<String, Object>());
 		}

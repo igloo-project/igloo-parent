@@ -9,8 +9,8 @@ public interface INotificationBuilderTemplateState extends INotificationBuilderS
 	
 	INotificationBuilderTemplateState variable(String name, Object value, Locale locale);
 	
-	INotificationBuilderTemplateState variables(Map<String, Object> variables);
+	INotificationBuilderTemplateState variables(Map<String, ?> variables);
 	
-	INotificationBuilderTemplateState variables(Map<String, Object> variables, Locale locale);
+	INotificationBuilderTemplateState variables(Map<String, ?> variables, Locale locale);
 	
 }
