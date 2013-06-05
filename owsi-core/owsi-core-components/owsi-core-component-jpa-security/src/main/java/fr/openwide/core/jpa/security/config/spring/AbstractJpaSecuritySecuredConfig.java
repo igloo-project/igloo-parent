@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.access.annotation.Secured;
 
 /**
- * Par rappot à son parent, cette classe active la protection via les annotations de sécurité spring.
+ * Par rapport à son parent, cette classe active la protection via les annotations de sécurité spring.
  * 
  * @see Secured
  */
