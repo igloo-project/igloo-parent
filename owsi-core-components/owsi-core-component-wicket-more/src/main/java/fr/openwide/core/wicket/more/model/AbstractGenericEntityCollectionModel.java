@@ -23,6 +23,8 @@ public abstract class AbstractGenericEntityCollectionModel
 	private IEntityService entityService;
 
 	private final List<K> idList = Lists.newArrayList();
+
+	private final List<E> unsavedEntityList = Lists.newArrayList();
 	
 	private final Class<E> clazz;
 	
@@ -50,21 +52,26 @@ public abstract class AbstractGenericEntityCollectionModel
 	protected C load() {
 		entityCollection = createEntityCollection();
 		
-		for (K id : idList) {
-			entityCollection.add(toEntity(id));
+		for (int i = 0 ; i < idList.size() ; ++i) {
+			K id = idList.get(i);
+			E unsavedEntity = unsavedEntityList.get(i);
+			
+			assert id != null || unsavedEntity != null;
+			
+			if (unsavedEntity != null) {
+				entityCollection.add(unsavedEntity);
+			} else {
+				entityCollection.add(toEntity(id));
+			}
 		}
 		
 		return entityCollection;
 	}
-
-	private void extractIds() {
-		idList.clear();
-		
-		for (E entity : entityCollection) {
-			idList.add(toId(entity));
-		}
-	}
 	
+	/**
+	 * ATTENTION : si l'utilisateur appelle <code>setObject(null)</code>, un appel à <code>getObjet()</code>
+	 * ne renverra pas <code>null</code>, mais <em>une collection vide</em>.
+	 */
 	@Override
 	public void setObject(C object) {
 		entityCollection = createEntityCollection();
@@ -77,7 +84,20 @@ public abstract class AbstractGenericEntityCollectionModel
 	@Override
 	protected void onDetach() {
 		if (entityCollection != null) {
-			extractIds(); // On sauvegarde les éventuelles modifications apportées à entityCollection
+			// On sauvegarde les éventuelles modifications apportées à entityCollection
+			idList.clear();
+			unsavedEntityList.clear();
+			
+			for (E entity : entityCollection) {
+				if (entity.isNew()) {
+					unsavedEntityList.add(entity);
+					idList.add(null);
+				} else {
+					unsavedEntityList.add(null);
+					idList.add(toId(entity));
+				}
+			}
+			
 			entityCollection.clear();
 		}
 	}
