@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.injection.Injector;
@@ -100,6 +101,10 @@ public abstract class AbstractGenericEntityCollectionModel
 			
 			entityCollection.clear();
 		}
+	}
+
+	public List<K> getIdList() {
+		return Collections.unmodifiableList(idList);
 	}
 
 }
