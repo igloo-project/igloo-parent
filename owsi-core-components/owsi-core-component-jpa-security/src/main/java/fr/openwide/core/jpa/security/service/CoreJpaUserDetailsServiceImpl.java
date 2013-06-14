@@ -1,6 +1,5 @@
 package fr.openwide.core.jpa.security.service;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
@@ -45,7 +46,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("CoreHibernateUserDetailsServiceImpl: User not found: " + userName);
 		}
 		
-		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+		Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
 		
 		addAuthorities(grantedAuthorities, person.getAuthorities());
 		
