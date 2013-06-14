@@ -58,7 +58,7 @@ public class HumanReadableBytesConverter implements IConverter<Bytes> {
 		return null;
 	}
 
-	private Object getString(String key, Locale locale) {
+	private String getString(String key, Locale locale) {
 		return Localizer.get().getString(key, null, null, locale, null, null);
 	}
 
