@@ -16,7 +16,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 	@Bean
 	@Override
 	public AuthenticationUserNameComparison authenticationUserNameComparison() {
-		return AuthenticationUserNameComparison.CASE_INSENSITIVE;
+		return AuthenticationUserNameComparison.CASE_SENSITIVE;
 	}
 
 	@Bean
