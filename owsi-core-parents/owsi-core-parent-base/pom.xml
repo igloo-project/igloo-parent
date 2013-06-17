@@ -130,7 +130,7 @@
 		<owsi-core.wagon-maven-plugin.version>1.0-beta-4</owsi-core.wagon-maven-plugin.version>
 		<owsi-core.wagon-ssh-external-plugin.version>2.4</owsi-core.wagon-ssh-external-plugin.version>
 		
-		<owsi-core.maven-processor-plugin.version>2.2.3</owsi-core.maven-processor-plugin.version>
+		<owsi-core.maven-processor-plugin.version>2.2.4</owsi-core.maven-processor-plugin.version>
 		<owsi-core.maven-yui-compressor-plugin.version>1.3.2</owsi-core.maven-yui-compressor-plugin.version>
 		<owsi-core.aspectj-maven-plugin.version>1.4</owsi-core.aspectj-maven-plugin.version>
 		
