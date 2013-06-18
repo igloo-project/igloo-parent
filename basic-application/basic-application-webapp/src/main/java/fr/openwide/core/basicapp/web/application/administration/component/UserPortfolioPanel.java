@@ -1,12 +1,11 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
-import java.util.List;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -32,8 +31,8 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserPortfolioPanel(String id, IModel<List<User>> userListModel, int itemsPerPage) {
-		super(id, userListModel, itemsPerPage);
+	public UserPortfolioPanel(String id, IDataProvider<User> dataProvider, int itemsPerPage) {
+		super(id, dataProvider, itemsPerPage);
 	}
 
 	@Override
