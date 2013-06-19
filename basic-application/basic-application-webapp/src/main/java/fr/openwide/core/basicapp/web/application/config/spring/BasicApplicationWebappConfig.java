@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Import;
 import fr.openwide.core.basicapp.core.config.spring.BasicApplicationCoreCommonConfig;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
-import fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl;
 
 @Configuration
 @Import({
@@ -18,10 +17,10 @@ import fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl;
 	BasicApplicationWebappCacheConfig.class
 })
 @ComponentScan(
-	basePackageClasses = {
-		LessCssServiceImpl.class
-	},
-	excludeFilters = @Filter(Configuration.class)
+		basePackageClasses = {
+				BasicApplicationApplication.class
+		},
+		excludeFilters = @Filter(Configuration.class)
 )
 public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 
