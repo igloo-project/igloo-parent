@@ -51,13 +51,5 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- WQplot -->
-		
-		<dependency>
-			<groupId>nl.topicus</groupId>
-			<artifactId>wqplot</artifactId>
-			<version>${wqplot.version}</version>
-		</dependency>
-		
 	</dependencies>
 </project>
