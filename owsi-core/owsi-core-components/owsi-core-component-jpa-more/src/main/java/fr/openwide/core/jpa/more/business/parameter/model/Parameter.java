@@ -23,7 +23,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.more.util.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
+import fr.openwide.core.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @Entity
