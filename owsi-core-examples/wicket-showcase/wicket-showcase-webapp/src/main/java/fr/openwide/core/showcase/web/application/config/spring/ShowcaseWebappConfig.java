@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
 import fr.openwide.core.showcase.core.config.spring.ShowcaseCoreConfig;
 import fr.openwide.core.showcase.web.ShowcaseWebPackage;
 import fr.openwide.core.showcase.web.application.ShowcaseApplication;
@@ -15,7 +16,8 @@ import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 @Configuration
 @Import({
 	ShowcaseCoreConfig.class,
-	ShowcaseWebappSecurityConfig.class
+	ShowcaseWebappSecurityConfig.class,
+	JpaMoreTaskManagementConfig.class
 })
 @ComponentScan(
 		basePackageClasses = {
