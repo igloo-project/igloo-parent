@@ -8,7 +8,6 @@ public enum DropDownChoiceWidth {
 	
 	SMALL(104),
 	NORMAL(220),
-	DOUBLE(443),
 	XLARGE(284),
 	XXLARGE(534);
 	
