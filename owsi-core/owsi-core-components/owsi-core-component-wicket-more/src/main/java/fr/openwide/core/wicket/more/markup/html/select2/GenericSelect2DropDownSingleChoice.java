@@ -11,6 +11,7 @@ import org.retzlaff.select2.Select2Behavior;
 import org.retzlaff.select2.Select2Settings;
 
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
+import fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 
 public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
@@ -18,9 +19,9 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	
 	/**
 	 * Hack.
-	 * @see DropDownChoiceWidth
+	 * @see IDropDownChoiceWidth
 	 */
-	private DropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
+	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
 	
 	protected GenericSelect2DropDownSingleChoice(String id, IModel<T> model, IModel<? extends List<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
@@ -53,7 +54,7 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 		Select2Utils.setDefaultSettings(settings);
 	}
 	
-	public GenericSelect2DropDownSingleChoice<T> setWidth(DropDownChoiceWidth width) {
+	public GenericSelect2DropDownSingleChoice<T> setWidth(IDropDownChoiceWidth width) {
 		this.width = width;
 		return this;
 	}

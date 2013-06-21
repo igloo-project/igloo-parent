@@ -18,6 +18,7 @@ import org.retzlaff.select2.Select2SingleChoice;
 import org.springframework.util.StringUtils;
 
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
+import fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -27,9 +28,9 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 	
 	/**
 	 * Hack.
-	 * @see DropDownChoiceWidth
+	 * @see IDropDownChoiceWidth
 	 */
-	private DropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
+	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
 
 	protected GenericSelect2AjaxDropDownSingleChoice(String id, IModel<T> model, ISelect2AjaxAdapter<T> adapter) {
 		super(id, model, adapter);
@@ -55,7 +56,7 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 		Select2Utils.setDefaultAjaxSettings(settings);
 	}
 	
-	public GenericSelect2AjaxDropDownSingleChoice<T> setWidth(DropDownChoiceWidth width) {
+	public GenericSelect2AjaxDropDownSingleChoice<T> setWidth(IDropDownChoiceWidth width) {
 		Args.notNull(width, "width");
 		this.width = width;
 		return this;

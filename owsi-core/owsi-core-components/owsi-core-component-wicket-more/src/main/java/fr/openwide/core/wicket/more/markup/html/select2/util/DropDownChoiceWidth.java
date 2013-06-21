@@ -1,10 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.select2.util;
 
 /**
- * DropDownChoice size, defined in px.<br>
- * Awful hack to work around an issue of Firefox computing incorrect width in some specific cases.
+ * @see IDropDownChoiceWidth
  */
-public enum DropDownChoiceWidth {
+public enum DropDownChoiceWidth implements IDropDownChoiceWidth {
 	
 	SMALL(104),
 	NORMAL(220),
@@ -17,6 +16,10 @@ public enum DropDownChoiceWidth {
 		this.width = width;
 	}
 	
+	/* (non-Javadoc)
+	 * @see fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth#getWidth()
+	 */
+	@Override
 	public int getWidth() {
 		return width;
 	}
