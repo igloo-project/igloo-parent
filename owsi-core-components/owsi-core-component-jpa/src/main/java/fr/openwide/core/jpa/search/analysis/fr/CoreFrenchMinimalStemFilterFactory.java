@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.util.search.analysis.fr;
+package fr.openwide.core.jpa.search.analysis.fr;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.solr.analysis.BaseTokenFilterFactory;

@@ -1,9 +1,9 @@
-package fr.openwide.core.test.jpa.more.util.search.analysis.fr;
+package fr.openwide.core.test.jpa.util.search.analysis.fr;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.openwide.core.jpa.more.util.search.analysis.fr.CoreFrenchMinimalStemmer;
+import fr.openwide.core.jpa.search.analysis.fr.CoreFrenchMinimalStemmer;
 
 public class TestCoreFrenchMinimalStemmer {
 	

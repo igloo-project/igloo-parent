@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.util.search.analysis.fr;
+package fr.openwide.core.jpa.search.analysis.fr;
 
 import java.io.IOException;
 
