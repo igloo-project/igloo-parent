@@ -13,6 +13,7 @@ import fr.openwide.core.showcase.web.application.others.page.HideableComponentsP
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
+import fr.openwide.core.showcase.web.application.task.page.TaskMainPage;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.page.AutocompletePage;
 import fr.openwide.core.showcase.web.application.widgets.page.AutosizePage;
@@ -83,6 +84,9 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/buttons/", ButtonsPage.class);
 		
 		mountPage("/hideable-components/", HideableComponentsPage.class);
+		
+		// Task
+		mountPage("/task/", TaskMainPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");

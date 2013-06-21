@@ -25,6 +25,7 @@ import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
 import fr.openwide.core.showcase.web.application.others.page.HideableComponentsPage;
 import fr.openwide.core.showcase.web.application.others.page.TitlesPage;
 import fr.openwide.core.showcase.web.application.portfolio.page.PortfolioMainPage;
+import fr.openwide.core.showcase.web.application.task.page.TaskMainPage;
 import fr.openwide.core.showcase.web.application.util.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
@@ -163,7 +164,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new NavigationMenuItem(new ResourceModel("navigation.widgets"), WidgetsMainPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.titles"), TitlesPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.buttons"), ButtonsPage.class),
-				new NavigationMenuItem(new ResourceModel("navigation.hideableComponents"), HideableComponentsPage.class)
+				new NavigationMenuItem(new ResourceModel("navigation.hideableComponents"), HideableComponentsPage.class),
+				new NavigationMenuItem(new ResourceModel("navigation.tasks"), TaskMainPage.class)
 		);
 	}
 	
