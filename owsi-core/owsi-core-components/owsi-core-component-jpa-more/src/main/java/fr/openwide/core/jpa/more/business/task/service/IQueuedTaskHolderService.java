@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSearchQueryParameters;
@@ -24,5 +25,5 @@ public interface IQueuedTaskHolderService extends IGenericEntityService<Long, Qu
 
 	QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds);
 
-	List<QueuedTaskHolder> listConsumable();
+	List<Long> initializeTasksAndListConsumable() throws ServiceException, SecurityServiceException;
 }

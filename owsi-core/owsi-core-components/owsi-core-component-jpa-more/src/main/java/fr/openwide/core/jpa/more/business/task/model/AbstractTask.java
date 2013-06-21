@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -31,10 +32,6 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
-	protected QueuedTaskHolder queuedTaskHolder;
-
-	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	protected Long queuedTaskHolderId;
 
 	protected Date triggeringDate;
@@ -44,7 +41,6 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	protected String taskType;
 
 	protected AbstractTask() {
-
 	}
 
 	public AbstractTask(String taskName, ITaskTypeProvider taskTypeProvider, Date triggeringDate) {
@@ -56,40 +52,90 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	@Override
 	public void run() {
 		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		final Exception beforeTaskResult = transactionTemplate.execute(new TransactionCallback<Exception>() {
 			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
+			public Exception doInTransaction(TransactionStatus status) {
 				try {
-					beforeTask();
-					doTask();
-					afterTask();
+					QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+
+					if (queuedTaskHolder == null) {
+						throw new IllegalArgumentException("No task found with id " + getQueuedTaskHolderId());
+					}
+
+					queuedTaskHolder.setStartDate(new Date());
+					queuedTaskHolder.setStatus(TaskStatus.RUNNING);
+					queuedTaskHolderService.update(queuedTaskHolder);
+
+					return null;
 				} catch (Exception e) {
-					LOGGER.error("An unexpected error has occured while executing task " + queuedTaskHolder, e);
-					queuedTaskHolder.setStatus(TaskStatus.FAILED);
-					queuedTaskHolder.setEndDate(new Date());
-					queuedTaskHolder.setResult(ExceptionUtils.getStackTraceAsString(e));
+					status.setRollbackOnly();
+					return e;
 				}
 			}
 		});
-	}
 
-	protected abstract void doTask();
-	
-	private void beforeTask() {
-		queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+		if (beforeTaskResult != null) {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					try {
+						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 
-		if (queuedTaskHolder == null) {
-			throw new IllegalArgumentException("No task found with id " + getQueuedTaskHolderId());
+						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, beforeTaskResult);
+
+						queuedTaskHolder.setStatus(TaskStatus.FAILED);
+						queuedTaskHolder.setEndDate(new Date());
+						queuedTaskHolder.setResult(ExceptionUtils.getStackTraceAsString(beforeTaskResult));
+						queuedTaskHolderService.update(queuedTaskHolder);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
 		}
 
-		queuedTaskHolder.setStartDate(new Date());
-		queuedTaskHolder.setStatus(TaskStatus.RUNNING);
+		final Exception taskResult = transactionTemplate.execute(new TransactionCallback<Exception>() {
+			@Override
+			public Exception doInTransaction(TransactionStatus status) {
+				try {
+					QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+
+					doTask(queuedTaskHolder);
+
+					queuedTaskHolder.setEndDate(new Date());
+					queuedTaskHolder.setStatus(TaskStatus.COMPLETED);
+					queuedTaskHolderService.update(queuedTaskHolder);
+
+					return null;
+				} catch (Exception e) {
+					status.setRollbackOnly();
+					return e;
+				}
+			}
+		});
+
+		if (taskResult != null) {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					try {
+						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+
+						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskResult);
+
+						queuedTaskHolder.setStatus(TaskStatus.FAILED);
+						queuedTaskHolder.setEndDate(new Date());
+						queuedTaskHolder.setResult(ExceptionUtils.getStackTraceAsString(taskResult));
+						queuedTaskHolderService.update(queuedTaskHolder);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+		}
 	}
 
-	private void afterTask() {
-		queuedTaskHolder.setEndDate(new Date());
-		queuedTaskHolder.setStatus(TaskStatus.COMPLETED);
-	}
+	protected abstract void doTask(QueuedTaskHolder queuedTaskHolder) throws Exception;
 
 	public Long getQueuedTaskHolderId() {
 		return queuedTaskHolderId;

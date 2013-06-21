@@ -96,14 +96,11 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	private void initQueueFromDatabase() {
 		try {
-			List<QueuedTaskHolder> queuedTaskHolderList = queuedTaskHolderService.listConsumable();
-			for (QueuedTaskHolder queuedTaskHolder : queuedTaskHolderList) {
-				queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
-				queuedTaskHolderService.update(queuedTaskHolder);
-				
-				boolean status = queue.offer(queuedTaskHolder.getId());
+			List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable();
+			for (Long taskId : taskIds) {
+				boolean status = queue.offer(taskId);
 				if (!status) {
-					LOGGER.error("Unable to offer the task " + queuedTaskHolder.getId() + " to the queue");
+					LOGGER.error("Unable to offer the task " + taskId + " to the queue");
 				}
 			}
 		} catch (Exception e) {
@@ -153,11 +150,14 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 		if (queuedTaskHolder != null) {
 			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
+			queuedTaskHolder.setResult(null);
 			queuedTaskHolderService.update(queuedTaskHolder);
 			
-			boolean status = queue.offer(queuedTaskHolder.getId());
-			if (!status) {
-				LOGGER.error("Unable to offer the task " + queuedTaskHolder.getId() + " to the queue");
+			if (active) {
+				boolean status = queue.offer(queuedTaskHolder.getId());
+				if (!status) {
+					LOGGER.error("Unable to offer the task " + queuedTaskHolder.getId() + " to the queue");
+				}
 			}
 		}
 	}
@@ -224,9 +224,14 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		for (Long queuedTaskHolderId : queuedTaskHolderIds) {
 			QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 			if (queuedTaskHolder != null) {
-				queuedTaskHolder.setStatus(TaskStatus.INTERRUPTED);
-				queuedTaskHolder.setEndDate(new Date());
-				queuedTaskHolder.setResult(null);
+				try {
+					queuedTaskHolder.setStatus(TaskStatus.INTERRUPTED);
+					queuedTaskHolder.setEndDate(new Date());
+					queuedTaskHolder.setResult(null);
+					queuedTaskHolderService.update(queuedTaskHolder);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}
