@@ -4,8 +4,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.apache.lucene.util.Version;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -13,6 +18,8 @@ import org.hibernate.search.query.DatabaseRetrievalMethod;
 import org.hibernate.search.query.ObjectLookupMethod;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.jpa.JPQLQuery;
@@ -30,6 +37,8 @@ import fr.openwide.core.spring.util.StringUtils;
 public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTaskHolder>
 		implements IQueuedTaskHolderDao {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderDaoImpl.class);
+	
 	private static final QQueuedTaskHolder qQueuedTaskHolder = QQueuedTaskHolder.queuedTaskHolder; // NOSONAR
 	
 	private static final QueuedTaskHolderBinding QUEUED_TASK_HOLDER_BINDING = new QueuedTaskHolderBinding();
@@ -83,6 +92,8 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 			throws ServiceException {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 
+		Analyzer analyzer = fullTextEntityManager.getSearchFactory().getAnalyzer(QueuedTaskHolder.class);
+		
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 				.forEntity(QueuedTaskHolder.class).get();
 
@@ -90,8 +101,16 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 
 		String name = searchParams.getName();
 		if (StringUtils.hasText(name)) {
-			booleanJunction.must(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.name().getPath())
-					.matching(name).createQuery());
+			QueryParser parser = new QueryParser(Version.LUCENE_36,
+					QUEUED_TASK_HOLDER_BINDING.name().getPath(),
+					analyzer
+					);
+			parser.setDefaultOperator(Operator.AND);
+			try {
+				booleanJunction.must(parser.parse(QueryParser.escape(name)));
+			} catch (ParseException e) {
+				LOGGER.error("Error while parsing", e);
+			}
 		}
 
 		List<TaskStatus> statuses = searchParams.getStatuses();
@@ -104,6 +123,12 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 			}
 
 			booleanJunction.must(subJunction.createQuery());
+		}
+		
+		String taskType = searchParams.getTaskType();
+		if (StringUtils.hasText(taskType)) {
+			booleanJunction.must(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.taskType().getPath())
+					.matching(taskType).createQuery());
 		}
 
 		Date creationDate = searchParams.getCreationDate();
