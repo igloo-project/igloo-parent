@@ -1,10 +1,11 @@
 package fr.openwide.core.jpa.more.business.task.search;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
@@ -16,6 +17,8 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	private String name;
 
 	private List<TaskStatus> statuses;
+	
+	private String taskType;
 
 	private Date creationDate;
 
@@ -26,9 +29,10 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	public QueuedTaskHolderSearchQueryParameters() {
 	}
 
-	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, Date creationDate,
-			Date startDate, Date endDate) {
+	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, String taskType,
+			Date creationDate, Date startDate, Date endDate) {
 		setName(name);
+		setTaskType(taskType);
 		setStatuses(statuses);
 		setCreationDate(creationDate);
 		setStartDate(startDate);
@@ -49,8 +53,16 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 
 	public void setStatuses(Collection<TaskStatus> statuses) {
 		if (statuses != null) {
-			this.statuses = new ArrayList<TaskStatus>(statuses);
+			this.statuses = Lists.newArrayList(statuses);
 		}
+	}
+	
+	public String getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
 	}
 
 	public Date getCreationDate() {
