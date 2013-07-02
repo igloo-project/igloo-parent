@@ -1,23 +1,39 @@
 package fr.openwide.core.spring.notification.service;
 
-import java.util.List;
+import java.util.Collection;
 
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 
-public interface INotificationBuilderBuildState {
+public interface INotificationBuilderBuildState extends INotificationBuilderToState {
 
+	/**
+	 * @deprecated Use {@link #ccAddress(String, String...)} instead.
+	 */
+	@Deprecated
 	INotificationBuilderBuildState cc(String... cc);
 	
-	INotificationBuilderBuildState cc(INotificationRecipient cc);
+	INotificationBuilderBuildState ccAddress(String toFirst, String... toOthers);
 	
-	INotificationBuilderBuildState cc(List<? extends INotificationRecipient> cc);
+	INotificationBuilderBuildState ccAddress(Collection<String> to);
+	
+	INotificationBuilderBuildState cc(INotificationRecipient toFirst, INotificationRecipient ... toOthers);
+	
+	INotificationBuilderBuildState cc(Collection<? extends INotificationRecipient> cc);
 
-	INotificationBuilderBuildState bcc(String... bcc);
+	/**
+	 * @deprecated Use {@link #bccAddress(String, String...)} instead.
+	 */
+	@Deprecated
+	INotificationBuilderBuildState bcc(String... cc);
 	
-	INotificationBuilderBuildState bcc(INotificationRecipient bcc);
+	INotificationBuilderBuildState bccAddress(String toFirst, String... toOthers);
 	
-	INotificationBuilderBuildState bcc(List<? extends INotificationRecipient> bcc);
+	INotificationBuilderBuildState bccAddress(Collection<String> to);
+	
+	INotificationBuilderBuildState bcc(INotificationRecipient toFirst, INotificationRecipient ... toOthers);
+	
+	INotificationBuilderBuildState bcc(Collection<? extends INotificationRecipient> bcc);
 	
 	INotificationBuilderBodyState subject(String subject);
 	
