@@ -2,6 +2,7 @@ package fr.openwide.core.spring.notification.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +27,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -97,8 +99,22 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
+	@Deprecated
 	public INotificationBuilderBuildState to(String... to) {
 		if (!ObjectUtils.isEmpty(to)) {
+			toAddress(Lists.newArrayList(to));
+		}
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState toAddress(String toFirst, String... toOthers) {
+		return toAddress(Lists.asList(toFirst, toOthers));
+	}
+	
+	@Override
+	public INotificationBuilderBuildState toAddress(Collection<String> to) {
+		if (to != null) {
 			for (String email : to) {
 				if (StringUtils.hasText(email)) {
 					emailsByLocale.add(getDefaultLocale(), email);
@@ -109,26 +125,39 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderBuildState to(INotificationRecipient to) {
-		if (to != null && StringUtils.hasText(to.getEmail())) {
-			emailsByLocale.add(getLocale(to), to.getEmail());
-		}
-		return this;
+	public INotificationBuilderBuildState to(INotificationRecipient toFirst, INotificationRecipient ... toOthers) {
+		return to(Lists.asList(toFirst, toOthers));
 	}
 	
 	@Override
-	public INotificationBuilderBuildState to(List<? extends INotificationRecipient> to) {
+	public INotificationBuilderBuildState to(Collection<? extends INotificationRecipient> to) {
 		if (to != null) {
 			for (INotificationRecipient receiver : to) {
-				to(receiver);
+				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
+					emailsByLocale.add(getLocale(receiver), receiver.getEmail());
+				}
 			}
 		}
 		return this;
 	}
 	
 	@Override
+	@Deprecated
 	public INotificationBuilderBuildState cc(String... cc) {
 		if (!ObjectUtils.isEmpty(cc)) {
+			toAddress(Lists.newArrayList(cc));
+		}
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState ccAddress(String ccFirst, String... ccOthers) {
+		return toAddress(Lists.asList(ccFirst, ccOthers));
+	}
+	
+	@Override
+	public INotificationBuilderBuildState ccAddress(Collection<String> cc) {
+		if (cc != null) {
 			for (String email : cc) {
 				if (StringUtils.hasText(email)) {
 					this.cc.add(email);
@@ -139,26 +168,40 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderBuildState cc(INotificationRecipient cc) {
-		if (cc != null && StringUtils.hasText(cc.getEmail())) {
-			this.cc.add(cc.getEmail());
-		}
-		return this;
+	public INotificationBuilderBuildState cc(INotificationRecipient ccFirst, INotificationRecipient ... ccOthers) {
+		return to(Lists.asList(ccFirst, ccOthers));
 	}
 	
 	@Override
-	public INotificationBuilderBuildState cc(List<? extends INotificationRecipient> cc) {
+	public INotificationBuilderBuildState cc(Collection<? extends INotificationRecipient> cc) {
 		if (cc != null) {
 			for (INotificationRecipient receiver : cc) {
-				cc(receiver);
+				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
+					this.cc.add(receiver.getEmail());
+				}
 			}
 		}
 		return this;
 	}
+
 	
 	@Override
+	@Deprecated
 	public INotificationBuilderBuildState bcc(String... bcc) {
 		if (!ObjectUtils.isEmpty(bcc)) {
+			toAddress(Lists.newArrayList(bcc));
+		}
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState bccAddress(String bccFirst, String... bccOthers) {
+		return toAddress(Lists.asList(bccFirst, bccOthers));
+	}
+	
+	@Override
+	public INotificationBuilderBuildState bccAddress(Collection<String> bcc) {
+		if (bcc != null) {
 			for (String email : bcc) {
 				if (StringUtils.hasText(email)) {
 					this.bcc.add(email);
@@ -169,18 +212,17 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderBuildState bcc(INotificationRecipient bcc) {
-		if (bcc != null && StringUtils.hasText(bcc.getEmail())) {
-			this.bcc.add(bcc.getEmail());
-		}
-		return this;
+	public INotificationBuilderBuildState bcc(INotificationRecipient bccFirst, INotificationRecipient ... bccOthers) {
+		return to(Lists.asList(bccFirst, bccOthers));
 	}
 	
 	@Override
-	public INotificationBuilderBuildState bcc(List<? extends INotificationRecipient> bcc) {
+	public INotificationBuilderBuildState bcc(Collection<? extends INotificationRecipient> bcc) {
 		if (bcc != null) {
 			for (INotificationRecipient receiver : bcc) {
-				bcc(receiver);
+				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
+					this.bcc.add(receiver.getEmail());
+				}
 			}
 		}
 		return this;
