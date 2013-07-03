@@ -180,7 +180,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				prerequisiteField.clearInput();
 			} else {
 				// The prerequisiteField input has NOT changed : the rendering of the attached component was triggered by something else.
-				// We will decide whether the attached component should be set up ou taken down based on the prerequisiteField's model.
+				// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's model.
 				prerequisiteField.validate();
 				
 				if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
@@ -221,7 +221,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 
 	protected void cleanDefaultModelObject(Component attachedComponent) {
 		IModel<?> model = attachedComponent.getDefaultModel();
-		if (model != null) {
+		// It is not necessary to set the model object to null if it already is.
+		// Furthermore, in case of a PropertyModel it can cause a WicketRuntimeException if its innermost object is null.
+		if (model != null && model.getObject() != null) {
 			model.setObject(null);
 		}
 	}
