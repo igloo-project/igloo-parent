@@ -14,7 +14,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.support.ResourcePropertySource;
-import org.springframework.test.context.ContextConfiguration;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -25,7 +24,7 @@ import fr.openwide.core.spring.util.StringUtils;
  *  - initialisation log4j à l'aide de la propriété log4j.configurationLocations de l'environnement
  * 
  * Note mise à jour le 5 juillet 2013 : avant, on avait un type générique, mais ce n'était pas compatible avec la mise
- * en place du {@link ContextConfiguration#initializers()}. Transformation en type non générique.
+ * en place du ContextConfiguration#initializers(). Transformation en type non générique.
  */
 public class ExtendedApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
