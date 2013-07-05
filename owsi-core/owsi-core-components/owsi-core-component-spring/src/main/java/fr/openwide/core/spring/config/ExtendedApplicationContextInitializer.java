@@ -14,6 +14,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.support.ResourcePropertySource;
+import org.springframework.test.context.ContextConfiguration;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -22,15 +23,18 @@ import fr.openwide.core.spring.util.StringUtils;
  *  - prise en compte des fichiers classpath:configuration.properties et classpath:configuration-${user.name}.properties
  *  pour l'initialisation de l'environnement (permet entre autres de prendre en compte les profils spring à la volée)
  *  - initialisation log4j à l'aide de la propriété log4j.configurationLocations de l'environnement
+ * 
+ * Note mise à jour le 5 juillet 2013 : avant, on avait un type générique, mais ce n'était pas compatible avec la mise
+ * en place du {@link ContextConfiguration#initializers()}. Transformation en type non générique.
  */
-public class ExtendedApplicationContextInitializer<C extends ConfigurableApplicationContext> implements ApplicationContextInitializer<C> {
+public class ExtendedApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExtendedApplicationContextInitializer.class);
 
 	private static final String SPRING_LOG4J_CONFIGURATION = "log4j.configurationLocations";
 
 	@Override
-	public void initialize(C applicationContext) {
+	public void initialize(ConfigurableApplicationContext applicationContext) {
 		try {
 			// définition d'un environnement par défaut (permet de configurer l'application avant le chargement
 			// des beans) ; sert entre autres pour la définiton des profils spring à charger.
