@@ -986,6 +986,8 @@
 							<nonFilteredFileExtension>svg</nonFilteredFileExtension>
 							<nonFilteredFileExtension>psd</nonFilteredFileExtension>
 							<nonFilteredFileExtension>ftl</nonFilteredFileExtension>
+							<!-- Fichier de licence Alfresco -->
+							<nonFilteredFileExtension>lic</nonFilteredFileExtension>
 						</nonFilteredFileExtensions>
 					</configuration>
 				</plugin>
