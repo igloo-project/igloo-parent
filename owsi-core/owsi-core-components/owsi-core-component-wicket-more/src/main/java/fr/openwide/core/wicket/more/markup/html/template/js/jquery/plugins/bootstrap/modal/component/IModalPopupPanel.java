@@ -12,6 +12,8 @@ public interface IModalPopupPanel {
 
 	BootstrapModal getBootstrapModal();
 	
+	void configure();
+	
 	boolean determineVisibility();
 
 }
