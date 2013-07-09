@@ -95,6 +95,7 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	@Override
 	public void onConfigure(Component component) {
 		super.onConfigure(component);
+		modal.configure();
 		component.setVisibilityAllowed(modal.determineVisibility());
 	}
 

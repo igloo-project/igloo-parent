@@ -90,6 +90,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 	@Override
 	public void onConfigure(Component component) {
 		super.onConfigure(component);
+		modal.configure();
 		component.setVisibilityAllowed(modal.determineVisibility());
 	}
 
