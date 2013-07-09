@@ -88,6 +88,15 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		
 		return openModalListener;
 	}
+	
+	/**
+	 * Rend le composant attaché invisible si la popup est invisible
+	 */
+	@Override
+	public void onConfigure(Component component) {
+		super.onConfigure(component);
+		component.setVisibilityAllowed(modal.determineVisibility());
+	}
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {

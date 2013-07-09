@@ -11,5 +11,7 @@ public interface IModalPopupPanel {
 	WebMarkupContainer getContainer();
 
 	BootstrapModal getBootstrapModal();
+	
+	boolean determineVisibility();
 
 }
