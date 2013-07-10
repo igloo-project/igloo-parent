@@ -226,13 +226,13 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	 * @throws ServiceException 
 	 */
 	@Override
-	public <T> T runAsSystem(Callable<T> task) throws ServiceException {
+	public <T> T runAsSystem(Callable<T> task) {
 		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
 		authenticateAsSystem();
 		try {
 			return task.call();
 		} catch (Exception e) {
-			throw new ServiceException(e);
+			throw new RuntimeException(e);
 		} finally {
 			AuthenticationUtil.setAuthentication(originalAuthentication);
 		}
