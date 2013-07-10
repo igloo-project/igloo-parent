@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
@@ -43,17 +43,20 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.
 		// l'événement click habituel est supprimé par surcharge de newAjaxEventBehavior ci-dessous
-		add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+		Event clickEvent = new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public JsScope callback() {
-				if (AjaxConfirmLink.this.isLinkEnabled()) {
-					return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmLink.this).append("event.preventDefault();"));
-				} else {
-					return null;
-				}
+				return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmLink.this).append("event.preventDefault();"));
 			}
-		}));
+		};
+		add(new WiQueryEventBehavior(clickEvent) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isEnabled(Component component) {
+				return AjaxConfirmLink.this.isLinkEnabled();
+			}
+		});
 	}
 
 	@Override
@@ -73,16 +76,14 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
-				onClick(target);
+			public boolean isEnabled(Component component) {
+				// On ajoute le handler seulement si le lien est activé
+				return AjaxConfirmLink.this.isLinkEnabled();
 			}
 			
 			@Override
-			protected void onComponentTag(ComponentTag tag) {
-				// On ajoute le handler seulement si le lien est activé.
-				if (isLinkEnabled()) {
-					super.onComponentTag(tag);
-				}
+			protected void onEvent(AjaxRequestTarget target) {
+				onClick(target);
 			}
 		};
 	}
