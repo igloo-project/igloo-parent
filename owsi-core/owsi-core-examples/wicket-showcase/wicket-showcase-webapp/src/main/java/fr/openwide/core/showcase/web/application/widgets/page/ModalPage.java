@@ -124,6 +124,23 @@ public class ModalPage extends WidgetsTemplate {
 		};
 		add(ajaxConfirmLink);
 		
+		AjaxConfirmLink<Void> ajaxConfirmLinkDisabled = new AjaxConfirmLink<Void>("ajaxConfirmLinkDisabled", null,
+				new ResourceModel("widgets.modal.ajaxConfirmLink.header"),
+				new ResourceModel("widgets.modal.ajaxConfirmLink.body"),
+				new ResourceModel("widgets.modal.ajaxConfirmLink.yes"),
+				new ResourceModel("widgets.modal.ajaxConfirmLink.no"),
+				null, false) {
+			private static final long serialVersionUID = 3980878234185635872L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		};
+		ajaxConfirmLinkDisabled.setEnabled(false);
+		add(ajaxConfirmLinkDisabled);
+		
 		Form<?> form = new Form<Void>("form");
 		AjaxConfirmButton ajaxConfirmButton = new AjaxConfirmButton("ajaxConfirmButton",
 				new ResourceModel("widgets.modal.ajaxConfirmButton.header"),
@@ -135,7 +152,7 @@ public class ModalPage extends WidgetsTemplate {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
+				getSession().success(getString("widgets.modal.ajaxConfirmButton.success"));
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 			
@@ -145,6 +162,30 @@ public class ModalPage extends WidgetsTemplate {
 		};
 		form.add(ajaxConfirmButton);
 		add(form);
+
+		
+		Form<?> formDisabled = new Form<Void>("formDisabled");
+		formDisabled.setEnabled(false);
+		AjaxConfirmButton ajaxConfirmButtonDisabled = new AjaxConfirmButton("ajaxConfirmButtonDisabled",
+				new ResourceModel("widgets.modal.ajaxConfirmButton.header"),
+				new ResourceModel("widgets.modal.ajaxConfirmButton.body"),
+				new ResourceModel("widgets.modal.ajaxConfirmButton.yes"),
+				new ResourceModel("widgets.modal.ajaxConfirmButton.no"),
+				null, false, null) {
+			private static final long serialVersionUID = -914995462538909927L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				getSession().success(getString("widgets.modal.ajaxConfirmButton.success"));
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+			}
+		};
+		formDisabled.add(ajaxConfirmButtonDisabled);
+		add(formDisabled);
 		
 		PopoverTooltipModalPopupPanel popoverTooltipModalPopupPanel = new PopoverTooltipModalPopupPanel("popoverTooltipModalPopupPanel", null);
 		WebMarkupContainer popoverTooltipModalOpen = new WebMarkupContainer("popoverTooltipModalOpen");

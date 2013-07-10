@@ -46,15 +46,25 @@
 				<span class="icon-white icon-question-sign"></span>
 				<wicket:message key="widgets.modal.ajaxConfirmLink.open" />
 			</button>
+			<button wicket:id="ajaxConfirmLinkDisabled" class="btn btn-primary">
+				<span class="icon-white icon-question-sign"></span>
+				<wicket:message key="widgets.modal.ajaxConfirmLink.disabled.open" />
+			</button>
 		</div>
 		
 		<br/>
 		
 		<div>
-			<form wicket:id="form">
+			<form wicket:id="form" style="display: inline-block;">
 				<button wicket:id="ajaxConfirmButton" class="btn btn-primary">
 					<span class="icon-white icon-question-sign"></span>
 					<wicket:message key="widgets.modal.ajaxConfirmButton.open" />
+				</button>
+			</form>
+			<form wicket:id="formDisabled" style="display: inline-block;">
+				<button wicket:id="ajaxConfirmButtonDisabled" class="btn btn-primary">
+					<span class="icon-white icon-question-sign"></span>
+					<wicket:message key="widgets.modal.ajaxConfirmButton.disabled.open" />
 				</button>
 			</form>
 		</div>
