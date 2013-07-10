@@ -11,10 +11,10 @@ import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
+import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
-import org.odlabs.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,10 +25,10 @@ import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepicker.DatePickerResourceReference;
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
 import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
+import fr.openwide.core.wicket.resource.JQuery183ResourceReference;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -86,10 +86,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 			getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
 			// surcharge des ressources jQuery et jQuery UI
+			addResourceReplacement(JQueryResourceReference.get(), JQuery183ResourceReference.get());
 			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
-			
-			// surcharge du datepicker pour la compatibilité avec jQuery 1.9+
-			addResourceReplacement(DatePickerJavaScriptResourceReference.get(), DatePickerResourceReference.get());
 			
 			// on place les éléments présents dans le wicket:head en premier
 			getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
