@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 
 public interface ISecurityService {
@@ -48,7 +47,7 @@ public interface ISecurityService {
 	
 	SecurityContext buildSecureContext(String userName);
 	
-	<T> T runAsSystem(Callable<T> task) throws ServiceException;
+	<T> T runAsSystem(Callable<T> task);
 
 	List<Permission> getPermissions(Authentication authentication);
 

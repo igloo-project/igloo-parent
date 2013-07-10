@@ -38,7 +38,7 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 	}
 	
 	@Test
-	public void testRunAsSystem() throws ServiceException {
+	public void testRunAsSystem() {
 		assertTrue(securityService.runAsSystem(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
