@@ -86,7 +86,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 			getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
 			// surcharge des ressources jQuery et jQuery UI
-			addResourceReplacement(JQueryResourceReference.get(), JQuery183ResourceReference.get());
+			getJavaScriptLibrarySettings().setJQueryReference(JQuery183ResourceReference.get());
 			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 			
 			// on place les éléments présents dans le wicket:head en premier
