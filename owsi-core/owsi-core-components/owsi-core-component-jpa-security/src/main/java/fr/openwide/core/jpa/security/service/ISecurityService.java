@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.security.service;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
@@ -8,8 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
-import fr.openwide.core.jpa.security.runas.IRunAsTask;
 
 public interface ISecurityService {
 	
@@ -47,7 +48,7 @@ public interface ISecurityService {
 	
 	SecurityContext buildSecureContext(String userName);
 	
-	<T> T runAsSystem(IRunAsTask<T> task);
+	<T> T runAsSystem(Callable<T> task) throws ServiceException;
 
 	List<Permission> getPermissions(Authentication authentication);
 

@@ -3,13 +3,14 @@ package fr.openwide.core.test.jpa.security;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.concurrent.Callable;
+
 import org.junit.Test;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.runas.IRunAsTask;
 import fr.openwide.core.test.AbstractJpaSecurityTestCase;
 import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
 
@@ -37,11 +38,10 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 	}
 	
 	@Test
-	public void testRunAsSystem() {
-		assertTrue(securityService.runAsSystem(new IRunAsTask<Boolean>() {
-			
+	public void testRunAsSystem() throws ServiceException {
+		assertTrue(securityService.runAsSystem(new Callable<Boolean>() {
 			@Override
-			public Boolean execute() {
+			public Boolean call() {
 				return securityService.hasSystemRole(SecurityContextHolder.getContext().getAuthentication());
 			}
 		}));

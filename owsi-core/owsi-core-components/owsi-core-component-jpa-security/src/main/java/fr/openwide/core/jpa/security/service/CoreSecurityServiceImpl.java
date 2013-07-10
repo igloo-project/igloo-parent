@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +29,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.acl.domain.UserConstants;
 import fr.openwide.core.jpa.security.acl.service.ISidRetrievalService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
-import fr.openwide.core.jpa.security.runas.IRunAsTask;
 import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
 
 public class CoreSecurityServiceImpl implements ISecurityService {
@@ -222,13 +223,16 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	 * @param task un objet de type {@link IRunAsTask}
 	 * 
 	 * @return l'objet retourné par la méthode {@link IRunAsTask#execute()}
+	 * @throws ServiceException 
 	 */
 	@Override
-	public <T> T runAsSystem(IRunAsTask<T> task) {
+	public <T> T runAsSystem(Callable<T> task) throws ServiceException {
 		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
 		authenticateAsSystem();
 		try {
-			return task.execute();
+			return task.call();
+		} catch (Exception e) {
+			throw new ServiceException(e);
 		} finally {
 			AuthenticationUtil.setAuthentication(originalAuthentication);
 		}
