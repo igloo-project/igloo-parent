@@ -65,6 +65,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	})
 	private String lastName;
 	
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String email;
 	
 	private String phoneNumber;
