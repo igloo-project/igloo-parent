@@ -25,8 +25,13 @@ public class NamedPermissionFactory implements PermissionFactory {
 		registerPublicPermissions(NamedPermission.class);
 	}
 
-	public NamedPermissionFactory(Class<? extends NamedPermission> permissionClass) {
-		registerPublicPermissions(permissionClass);
+	@SuppressWarnings("unchecked")
+	public NamedPermissionFactory(Class<? extends Permission> permissionClass) {
+		if (!NamedPermission.class.isAssignableFrom(permissionClass)) {
+			throw new IllegalStateException("NamedPermissionFactory only supports children of NamedPermission");
+		}
+		
+		registerPublicPermissions((Class<? extends NamedPermission>) permissionClass);
 	}
 
 	public NamedPermissionFactory(Collection<? extends NamedPermission> permissions) {

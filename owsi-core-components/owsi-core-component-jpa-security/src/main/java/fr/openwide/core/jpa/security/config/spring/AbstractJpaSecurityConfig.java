@@ -16,6 +16,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
 import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.acls.domain.PermissionFactory;
+import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -50,7 +51,7 @@ public abstract class AbstractJpaSecurityConfig {
 	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
 
 	/**
-	 * N'est pas basculé en configuration car on n'est pas censé basculé d'un
+	 * N'est pas basculé en configuration car on n'est pas censé basculer d'un
 	 * mode à un autre au cours de la vie de l'application. Doit être décidé au
 	 * début, avec mise en place des contraintes nécessaires à la création
 	 * d'utilisateur si on choisit le mode CASE INSENSITIVE. Cette méthode n'a
@@ -61,22 +62,34 @@ public abstract class AbstractJpaSecurityConfig {
 	public AuthenticationUserNameComparison authenticationUserNameComparison() {
 		return AuthenticationUserNameComparison.CASE_SENSITIVE;
 	}
-
-	public Class<? extends NamedPermission> permissionClass() {
-		return NamedPermission.class;
+	
+	@Bean
+	public MessageDigestPasswordEncoder passwordEncoder() {
+		return new ShaPasswordEncoder(256);
 	}
 
-	public String roleHierarchyAsString() {
-		return defaultRoleHierarchyAsString();
-	}
-
-	public String permissionHierarchyAsString() {
-		return defaultPermissionHierarchyAsString();
+	@Bean
+	public SaltSource saltSource() {
+		SystemWideSaltSource saltSource = new SystemWideSaltSource();
+		saltSource.setSystemWideSalt(defaultJpaSecurityConfig.getPasswordSalt());
+		return saltSource;
 	}
 
 	@Bean
 	public ISecurityService securityService() {
 		return new CoreSecurityServiceImpl();
+	}
+	
+	@Bean(name = "authenticationService")
+	public IAuthenticationService authenticationService() {
+		return new CoreAuthenticationServiceImpl();
+	}
+	
+	@Bean
+	public UserDetailsService userDetailsService() {
+		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
+		detailsService.setAuthenticationUserNameComparison(authenticationUserNameComparison());
+		return detailsService;
 	}
 
 	@Bean
@@ -91,6 +104,15 @@ public abstract class AbstractJpaSecurityConfig {
 		authenticationProvider.setSaltSource(saltSource);
 		providers.add(authenticationProvider);
 		return new ProviderManager(providers);
+	}
+	
+	public Class<? extends Permission> permissionClass() {
+		return NamedPermission.class;
+	}
+	
+	@Bean
+	public PermissionFactory permissionFactory() {
+		return new NamedPermissionFactory(permissionClass());
 	}
 
 	/**
@@ -113,12 +135,11 @@ public abstract class AbstractJpaSecurityConfig {
 		methodSecurityExpressionHandler.setPermissionEvaluator(permissionEvaluator);
 		return methodSecurityExpressionHandler;
 	}
-
-	@Bean
-	public PermissionFactory permissionFactory() {
-		return new NamedPermissionFactory(permissionClass());
+	
+	protected String roleHierarchyAsString() {
+		return defaultRoleHierarchyAsString();
 	}
-
+	
 	@Bean
 	public RoleHierarchy roleHierarchy() {
 		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -126,28 +147,8 @@ public abstract class AbstractJpaSecurityConfig {
 		return roleHierarchy;
 	}
 
-	@Bean
-	public MessageDigestPasswordEncoder passwordEncoder() {
-		return new ShaPasswordEncoder(256);
-	}
-
-	@Bean
-	public SaltSource saltSource() {
-		SystemWideSaltSource saltSource = new SystemWideSaltSource();
-		saltSource.setSystemWideSalt(defaultJpaSecurityConfig.getPasswordSalt());
-		return saltSource;
-	}
-
-	@Bean(name = "authenticationService")
-	public IAuthenticationService authenticationService() {
-		return new CoreAuthenticationServiceImpl();
-	}
-
-	@Bean
-	public UserDetailsService userDetailsService() {
-		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
-		detailsService.setAuthenticationUserNameComparison(authenticationUserNameComparison());
-		return detailsService;
+	protected String permissionHierarchyAsString() {
+		return defaultPermissionHierarchyAsString();
 	}
 
 	@Bean
@@ -170,10 +171,6 @@ public abstract class AbstractJpaSecurityConfig {
 		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
 		runAsAuthenticationProvider.setKey(defaultJpaSecurityConfig.getRunAsKey());
 		return runAsAuthenticationProvider;
-	}
-
-	protected Class<? extends NamedPermission> defaultPermissionClass() {
-		return NamedPermission.class;
 	}
 
 	protected String defaultPermissionHierarchyAsString() {
