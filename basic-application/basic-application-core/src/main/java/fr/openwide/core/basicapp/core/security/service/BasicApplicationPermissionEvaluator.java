@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.jpa.security.service.CorePermissionEvaluator;
+import fr.openwide.core.jpa.security.service.AbstractCorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 
-public class BasicApplicationPermissionEvaluator extends CorePermissionEvaluator<User> {
+public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionEvaluator<User> {
 
 	@Autowired
 	private ISecurityService securityService;
