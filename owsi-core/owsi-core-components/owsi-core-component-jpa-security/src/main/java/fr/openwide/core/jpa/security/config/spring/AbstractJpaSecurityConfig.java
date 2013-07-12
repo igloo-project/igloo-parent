@@ -32,7 +32,7 @@ import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConsta
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.hierarchy.PermissionHierarchyImpl;
 import fr.openwide.core.jpa.security.model.CorePermissionConstants;
-import fr.openwide.core.jpa.security.model.CoreNamedPermission;
+import fr.openwide.core.jpa.security.model.NamedPermission;
 import fr.openwide.core.jpa.security.runas.CoreRunAsManagerImpl;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
 import fr.openwide.core.jpa.security.service.CoreAuthenticationServiceImpl;
@@ -62,8 +62,8 @@ public abstract class AbstractJpaSecurityConfig {
 		return AuthenticationUserNameComparison.CASE_SENSITIVE;
 	}
 
-	public Class<? extends CoreNamedPermission> permissionClass() {
-		return CoreNamedPermission.class;
+	public Class<? extends NamedPermission> permissionClass() {
+		return NamedPermission.class;
 	}
 
 	public String roleHierarchyAsString() {
@@ -172,8 +172,8 @@ public abstract class AbstractJpaSecurityConfig {
 		return runAsAuthenticationProvider;
 	}
 
-	protected Class<? extends CoreNamedPermission> defaultPermissionClass() {
-		return CoreNamedPermission.class;
+	protected Class<? extends NamedPermission> defaultPermissionClass() {
+		return NamedPermission.class;
 	}
 
 	protected String defaultPermissionHierarchyAsString() {

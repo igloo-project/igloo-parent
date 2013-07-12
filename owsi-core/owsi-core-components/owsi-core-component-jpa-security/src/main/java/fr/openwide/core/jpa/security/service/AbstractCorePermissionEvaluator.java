@@ -15,9 +15,9 @@ import org.springframework.security.core.Authentication;
 
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
-import fr.openwide.core.jpa.security.model.CoreNamedPermission;
+import fr.openwide.core.jpa.security.model.NamedPermission;
 
-public abstract class CorePermissionEvaluator<T extends AbstractPerson<?>> implements PermissionEvaluator {
+public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<?>> implements PermissionEvaluator {
 
 	@Autowired
 	private PermissionFactory permissionFactory;
@@ -39,9 +39,9 @@ public abstract class CorePermissionEvaluator<T extends AbstractPerson<?>> imple
 		
 		List<Permission> permissions = resolvePermission(permission);
 		for (Permission perm : permissions) {
-			if (CoreNamedPermission.ALLOWED.equals(perm)) {
+			if (NamedPermission.ALLOWED.equals(perm)) {
 				return true;
-			} else if (CoreNamedPermission.DENIED.equals(perm)) {
+			} else if (NamedPermission.DENIED.equals(perm)) {
 				return false;
 			}
 		}

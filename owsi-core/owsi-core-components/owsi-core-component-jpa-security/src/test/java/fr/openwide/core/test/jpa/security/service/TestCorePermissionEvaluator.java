@@ -5,11 +5,11 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import fr.openwide.core.jpa.security.service.CorePermissionEvaluator;
+import fr.openwide.core.jpa.security.service.AbstractCorePermissionEvaluator;
 import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
 import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonService;
 
-public class TestCorePermissionEvaluator extends CorePermissionEvaluator<MockPerson> {
+public class TestCorePermissionEvaluator extends AbstractCorePermissionEvaluator<MockPerson> {
 	
 	@Autowired
 	private IMockPersonService personService;
