@@ -1,21 +1,17 @@
 package fr.openwide.core.test.jpa.security.config.spring;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.model.AclService;
-import org.springframework.security.acls.model.Permission;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.access.PermissionEvaluator;
 
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
-import fr.openwide.core.test.jpa.security.acl.service.MockAclServiceImpl;
+import fr.openwide.core.test.jpa.security.service.TestCorePermissionEvaluator;
 
 @Configuration
 public class JpaSecurityTestSecurityConfig extends AbstractJpaSecuritySecuredConfig {
-
-	@Override
-	public Class<? extends Permission> permissionClass() {
-		return BasePermission.class;
-	}
 
 	@Override
 	public String roleHierarchyAsString() {
@@ -36,8 +32,10 @@ public class JpaSecurityTestSecurityConfig extends AbstractJpaSecuritySecuredCon
 	}
 
 	@Override
-	public AclService aclService() {
-		return new MockAclServiceImpl();
+	@Bean
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+	public PermissionEvaluator permissionEvaluator() {
+		return new TestCorePermissionEvaluator();
 	}
 
 }
