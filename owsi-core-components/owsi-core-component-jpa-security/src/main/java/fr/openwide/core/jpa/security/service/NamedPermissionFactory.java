@@ -12,39 +12,39 @@ import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.util.Assert;
 
-import fr.openwide.core.jpa.security.model.CoreNamedPermission;
+import fr.openwide.core.jpa.security.model.NamedPermission;
 
 /**
  * {@see org.springframework.security.acls.domain.DefaultPermissionFactory}
  */
 public class NamedPermissionFactory implements PermissionFactory {
 
-	private final Map<String, CoreNamedPermission> registeredPermissionsByName = new HashMap<String, CoreNamedPermission>();
+	private final Map<String, NamedPermission> registeredPermissionsByName = new HashMap<String, NamedPermission>();
 
 	public NamedPermissionFactory() {
-		registerPublicPermissions(CoreNamedPermission.class);
+		registerPublicPermissions(NamedPermission.class);
 	}
 
-	public NamedPermissionFactory(Class<? extends CoreNamedPermission> permissionClass) {
+	public NamedPermissionFactory(Class<? extends NamedPermission> permissionClass) {
 		registerPublicPermissions(permissionClass);
 	}
 
-	public NamedPermissionFactory(Collection<? extends CoreNamedPermission> permissions) {
-		for (CoreNamedPermission permission : permissions) {
+	public NamedPermissionFactory(Collection<? extends NamedPermission> permissions) {
+		for (NamedPermission permission : permissions) {
 			registerPermission(permission, permission.getName());
 		}
 	}
 
-	protected void registerPublicPermissions(Class<? extends CoreNamedPermission> clazz) {
+	protected void registerPublicPermissions(Class<? extends NamedPermission> clazz) {
 		Assert.notNull(clazz, "Class required");
 		Field[] fields = clazz.getFields();
 		for (Field field : fields) {
 			try {
 				Object fieldValue = field.get(null);
 				
-				if (CoreNamedPermission.class.isAssignableFrom(fieldValue.getClass())) {
+				if (NamedPermission.class.isAssignableFrom(fieldValue.getClass())) {
 					// Found a NamedPermission static field
-					CoreNamedPermission permission = (CoreNamedPermission) fieldValue;
+					NamedPermission permission = (NamedPermission) fieldValue;
 					registerPermission(permission, permission.getName());
 				}
 			} catch (IllegalArgumentException e) {
@@ -55,7 +55,7 @@ public class NamedPermissionFactory implements PermissionFactory {
 		}
 	}
 
-	protected void registerPermission(CoreNamedPermission perm, String permissionName) {
+	protected void registerPermission(NamedPermission perm, String permissionName) {
 		Assert.notNull(perm, "Permission required");
 		Assert.hasText(permissionName, "Permission name required");
 		// Ensure no existing Permission uses this code
