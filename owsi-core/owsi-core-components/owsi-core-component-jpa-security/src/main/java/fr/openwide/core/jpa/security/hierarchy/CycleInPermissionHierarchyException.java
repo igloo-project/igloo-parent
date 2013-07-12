@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.jpa.security.acl.domain.hierarchy;
+package fr.openwide.core.jpa.security.hierarchy;
 
 public class CycleInPermissionHierarchyException extends RuntimeException {
 

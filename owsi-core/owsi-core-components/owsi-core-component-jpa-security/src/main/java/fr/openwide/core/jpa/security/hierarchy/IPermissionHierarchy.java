@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.security.acl.domain.hierarchy;
+package fr.openwide.core.jpa.security.hierarchy;
 
 import java.util.Collection;
 import java.util.List;
