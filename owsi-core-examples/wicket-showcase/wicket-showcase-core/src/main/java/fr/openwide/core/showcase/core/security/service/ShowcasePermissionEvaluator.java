@@ -6,15 +6,11 @@ import org.springframework.security.acls.model.Permission;
 import fr.openwide.core.jpa.security.service.AbstractCorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
 
 public class ShowcasePermissionEvaluator extends AbstractCorePermissionEvaluator<User> {
 
 	@Autowired
 	private ISecurityService securityService;
-
-	@Autowired
-	private IUserService userService;
 
 	public ShowcasePermissionEvaluator() {
 	}
