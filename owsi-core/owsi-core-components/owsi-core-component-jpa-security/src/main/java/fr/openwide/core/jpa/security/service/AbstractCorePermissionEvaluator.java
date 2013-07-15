@@ -12,12 +12,14 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
+import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.model.NamedPermission;
 
-public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<?>> implements PermissionEvaluator {
+public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T>> implements PermissionEvaluator {
 
 	@Autowired
 	private PermissionFactory permissionFactory;
@@ -25,13 +27,26 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<?
 	@Autowired
 	private IPermissionHierarchy permissionHierarchy;
 	
+	@Autowired
+	private IPersonService<T> personService;
+	
 	/**
 	 * Vérifie qu'un utilisateur possède la permission souhaitée
 	 * @param user peut être <code>null</code> dans le cas d'une authentification anonyme
 	 */
 	protected abstract boolean hasPermission(T user, Object targetDomainObject, Permission permission);
 	
-	protected abstract T getUser(Authentication authentication);
+	protected final T getUser(Authentication authentication) {
+		if (authentication == null) {
+			return null;
+		}
+
+		if (authentication.getPrincipal() instanceof UserDetails) {
+			return personService.getByUserName(((UserDetails) authentication.getPrincipal()).getUsername());
+		}
+
+		return null;
+	}
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {

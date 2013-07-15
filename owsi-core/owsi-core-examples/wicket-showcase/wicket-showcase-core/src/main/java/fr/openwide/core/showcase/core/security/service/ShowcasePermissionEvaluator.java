@@ -2,8 +2,6 @@ package fr.openwide.core.showcase.core.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.openwide.core.jpa.security.service.AbstractCorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
@@ -28,21 +26,6 @@ public class ShowcasePermissionEvaluator extends AbstractCorePermissionEvaluator
 		}
 
 		return false;
-	}
-
-	@Override
-	protected User getUser(Authentication authentication) {
-		if (authentication == null) {
-			return null;
-		}
-
-		if (authentication.getPrincipal() instanceof UserDetails) {
-			UserDetails details = (UserDetails) authentication.getPrincipal();
-			String userName = details.getUsername();
-			return userService.getByUserName(userName);
-		}
-
-		return null;
 	}
 
 }
