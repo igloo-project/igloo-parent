@@ -38,7 +38,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 	 */
 	protected abstract boolean hasPermission(T user, Object targetDomainObject, Permission permission);
 	
-	protected final T getUser(Authentication authentication) {
+	protected T getUser(Authentication authentication) {
 		if (authentication == null) {
 			return null;
 		}
