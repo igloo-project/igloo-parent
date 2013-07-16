@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div class="console-section">
+		<div class="pagination" wicket:id="topPager" />
+		
+		<table class="table table-striped table-bordered tasks">
+			<thead>
+				<tr>
+					<th class="status"></th>
+					<th><wicket:message key="console.maintenance.task.common.name" /></th>
+					<th><wicket:message key="console.maintenance.task.common.creationDate" /></th>
+					<th><wicket:message key="console.maintenance.task.common.startDate" /></th>
+					<th><wicket:message key="console.maintenance.task.common.endDate" /></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="item">
+					<td class="status"><wicket:container wicket:id="status" /></td>
+					<td class="name">
+						<a wicket:id="nameLink"><wicket:container wicket:id="name" /></a>
+					</td>
+					<td class="date"><span wicket:id="creationDate" /></td>
+					<td class="date"><span wicket:id="startDate" /></td>
+					<td class="date"><span wicket:id="endDate" /></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td wicket:id="emptyList" colspan="5">
+						<wicket:message key="console.maintenance.task.list.empty" />
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		
+		<div wicket:id="bottomPager" class="pagination" />
+	</div>
+</wicket:panel>
+</html>

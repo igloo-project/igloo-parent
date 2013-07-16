@@ -5,8 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
+
 @Configuration
-@Import(WicketMoreServiceConfig.class)
+@Import({
+	WicketMoreServiceConfig.class, 
+	JpaMoreTaskManagementConfig.class 
+})
 public abstract class AbstractWebappConfig {
 
 	@Bean
