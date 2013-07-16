@@ -12,7 +12,6 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
@@ -52,7 +51,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-		if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM))) {
+		if (isSuperUser(authentication)) {
 			return true;
 		}
 		
