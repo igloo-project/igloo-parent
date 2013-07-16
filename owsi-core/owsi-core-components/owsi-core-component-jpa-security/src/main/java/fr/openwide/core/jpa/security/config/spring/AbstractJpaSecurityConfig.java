@@ -35,6 +35,7 @@ import fr.openwide.core.jpa.security.hierarchy.PermissionHierarchyImpl;
 import fr.openwide.core.jpa.security.model.CorePermissionConstants;
 import fr.openwide.core.jpa.security.model.NamedPermission;
 import fr.openwide.core.jpa.security.runas.CoreRunAsManagerImpl;
+import fr.openwide.core.jpa.security.service.AbstractCorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
 import fr.openwide.core.jpa.security.service.CoreAuthenticationServiceImpl;
 import fr.openwide.core.jpa.security.service.CoreJpaUserDetailsServiceImpl;
@@ -127,7 +128,7 @@ public abstract class AbstractJpaSecurityConfig {
 	 */
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public abstract PermissionEvaluator permissionEvaluator();
+	public abstract AbstractCorePermissionEvaluator<?> permissionEvaluator();
 
 	@Bean
 	public MethodSecurityExpressionHandler expressionHandler(PermissionEvaluator permissionEvaluator) {
