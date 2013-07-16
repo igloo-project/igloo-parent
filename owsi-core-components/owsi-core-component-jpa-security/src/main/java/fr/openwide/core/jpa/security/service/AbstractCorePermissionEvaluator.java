@@ -78,6 +78,17 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
 		throw new UnsupportedOperationException();
 	}
+	
+	/**
+	 * Permet d'indiquer qu'un utilisateur doit avoir toutes les permissions et bypasser tous les checks de permissions.
+	 */
+	public boolean isSuperUser(Authentication authentication) {
+		if (authentication != null) {
+			return authentication.getAuthorities().contains(CoreAuthorityConstants.AUTHORITY_SYSTEM)
+					|| authentication.getAuthorities().contains(CoreAuthorityConstants.AUTHORITY_ADMIN);
+		}
+		return false;
+	}
 
 	protected boolean checkObjectsPermissions(T user, Collection<?> targetDomainObject, List<Permission> permissions) {
 		for (Object object : targetDomainObject) {

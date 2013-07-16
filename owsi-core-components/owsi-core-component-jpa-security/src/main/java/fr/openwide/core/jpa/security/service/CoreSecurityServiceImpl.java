@@ -1,14 +1,12 @@
 package fr.openwide.core.jpa.security.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
 import org.springframework.security.access.intercept.RunAsUserToken;
@@ -43,7 +41,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	protected RunAsImplAuthenticationProvider runAsAuthenticationProvider;
 
 	@Autowired
-	protected PermissionEvaluator permissionEvaluator;
+	protected AbstractCorePermissionEvaluator<?> permissionEvaluator;
 	
 	@Autowired
 	protected RoleHierarchy roleHierarchy;
@@ -51,13 +49,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	@Override
 	public boolean hasRole(Authentication authentication, String role) {
 		if (authentication != null && role != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			// Attempt to find a matching granted authority
-			for (GrantedAuthority authority : authorities) {
-				if (role.equals(authority.getAuthority())) {
-					return true;
-				}
-			}
+			return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
 		}
 		return false;
 	}
@@ -213,7 +205,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Permission permission) {
-		if (hasAllPermissions(authentication)) {
+		if (permissionEvaluator.isSuperUser(authentication)) {
 			return true;
 		}
 		
@@ -240,11 +232,4 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		return getPermissions(getAuthentication(person));
 	}
 	
-	/**
-	 * Permet d'indiquer qu'un utilisateur doit avoir toutes les permissions
-	 */
-	protected boolean hasAllPermissions(Authentication authentication) {
-		return hasSystemRole(authentication) || hasAdminRole(authentication);
-	}
-
 }
