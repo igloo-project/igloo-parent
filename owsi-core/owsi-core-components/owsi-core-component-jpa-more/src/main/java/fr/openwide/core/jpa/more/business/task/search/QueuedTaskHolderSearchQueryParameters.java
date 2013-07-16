@@ -17,8 +17,8 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	private String name;
 
 	private List<TaskStatus> statuses;
-	
-	private String taskType;
+
+	private List<String> taskTypes;
 
 	private Date creationDate;
 
@@ -29,10 +29,10 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	public QueuedTaskHolderSearchQueryParameters() {
 	}
 
-	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, String taskType,
+	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, Collection<String> taskTypes,
 			Date creationDate, Date startDate, Date endDate) {
 		setName(name);
-		setTaskType(taskType);
+		setTaskTypes(taskTypes);
 		setStatuses(statuses);
 		setCreationDate(creationDate);
 		setStartDate(startDate);
@@ -56,13 +56,15 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 			this.statuses = Lists.newArrayList(statuses);
 		}
 	}
-	
-	public String getTaskType() {
-		return taskType;
+
+	public List<String> getTaskTypes() {
+		return taskTypes;
 	}
 
-	public void setTaskType(String taskType) {
-		this.taskType = taskType;
+	public void setTaskTypes(Collection<String> taskTypes) {
+		if (taskTypes != null) {
+			this.taskTypes = Lists.newArrayList(taskTypes);
+		}
 	}
 
 	public Date getCreationDate() {

@@ -78,4 +78,9 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 		return taskIds;
 	}
 
+	@Override
+	public List<String> listTypes() {
+		return queuedTaskHolderDao.listTypes();
+	}
+
 }
