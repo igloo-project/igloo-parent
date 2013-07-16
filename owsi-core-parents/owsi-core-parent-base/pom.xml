@@ -81,11 +81,11 @@
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.11</owsi-core.jackson.version>
-		<owsi-core.jackson2-core.version>2.1.5</owsi-core.jackson2-core.version>
-		<owsi-core.jackson2-annotations.version>2.1.5</owsi-core.jackson2-annotations.version>
-		<owsi-core.jackson2-databind.version>2.1.5</owsi-core.jackson2-databind.version>
-		<owsi-core.jackson2-jaxrs.version>2.1.5</owsi-core.jackson2-jaxrs.version>
-		<owsi-core.jackson2-dataformat-xml.version>2.1.5</owsi-core.jackson2-dataformat-xml.version>
+		<owsi-core.jackson2-core.version>2.2.2</owsi-core.jackson2-core.version>
+		<owsi-core.jackson2-annotations.version>2.2.2</owsi-core.jackson2-annotations.version>
+		<owsi-core.jackson2-databind.version>2.2.2</owsi-core.jackson2-databind.version>
+		<owsi-core.jackson2-jaxrs.version>2.2.2</owsi-core.jackson2-jaxrs.version>
+		<owsi-core.jackson2-dataformat-xml.version>2.2.2</owsi-core.jackson2-dataformat-xml.version>
 		<owsi-core.truezip.version>7.7.2</owsi-core.truezip.version>
 		<owsi-core.flying-saucer.version>9.0.3-owsi1-SNAPSHOT</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
