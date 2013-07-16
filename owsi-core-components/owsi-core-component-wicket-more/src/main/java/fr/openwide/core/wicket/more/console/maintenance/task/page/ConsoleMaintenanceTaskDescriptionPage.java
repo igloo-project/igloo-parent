@@ -20,12 +20,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
+import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
@@ -45,6 +45,9 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	private static final long serialVersionUID = 7622945973237519021L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceTaskDescriptionPage.class);
+	
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL)
+			.enable(SerializationFeature.INDENT_OUTPUT);
 
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
@@ -159,10 +162,13 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 
 			@Override
 			protected String load() {
-				Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-				JsonParser jp = new JsonParser();
-				JsonElement je = jp.parse(queuedTaskHolderModel.getObject().getSerializedTask());
-				return gson.toJson(je);
+				try {
+					AbstractTask runnableTask = OBJECT_MAPPER.readValue(queuedTaskHolderModel.getObject().getSerializedTask(), AbstractTask.class);
+					return OBJECT_MAPPER.writeValueAsString(runnableTask);
+				} catch (Exception e) {
+					LOGGER.error("Error parsing the task: " + queuedTaskHolderModel.getObject());
+					return "Error parsing the task";
+				}
 			}
 		}));
 	}
