@@ -41,7 +41,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	protected RunAsImplAuthenticationProvider runAsAuthenticationProvider;
 
 	@Autowired
-	protected AbstractCorePermissionEvaluator<?> permissionEvaluator;
+	protected ICorePermissionEvaluator permissionEvaluator;
 	
 	@Autowired
 	protected RoleHierarchy roleHierarchy;

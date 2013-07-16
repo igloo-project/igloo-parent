@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
+import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.core.security.service.ShowcasePermissionEvaluator;
@@ -40,7 +41,7 @@ public class ShowcaseCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig
 	@Override
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public ShowcasePermissionEvaluator permissionEvaluator() {
+	public ICorePermissionEvaluator permissionEvaluator() {
 		return new ShowcasePermissionEvaluator();
 	}
 	
