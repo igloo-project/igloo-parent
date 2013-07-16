@@ -109,15 +109,13 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 	}
 
 	protected void consume(QueuedTaskHolder queuedTaskHolder) throws InterruptedException {
-		AbstractTask runnableTask = null;
-
 		try {
-			runnableTask = OBJECT_MAPPER.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
+			AbstractTask runnableTask = OBJECT_MAPPER.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
 			runnableTask.setQueuedTaskHolderId(queuedTaskHolder.getId());
 			SpringBeanUtils.autowireBean(applicationContext, runnableTask);
 			runnableTask.run();
 		} catch (IOException e) {
-			LOGGER.error("Error while trying to deserialize task " + runnableTask, e);
+			LOGGER.error("Error while trying to deserialize task " + queuedTaskHolder, e);
 		}
 	}
 
