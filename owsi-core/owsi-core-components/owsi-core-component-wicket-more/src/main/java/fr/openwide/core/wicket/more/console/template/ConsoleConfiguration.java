@@ -11,9 +11,13 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
+import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
+import fr.openwide.core.wicket.more.console.common.util.LinkUtils;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
+import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
+import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
@@ -59,6 +63,14 @@ public final class ConsoleConfiguration {
 					"console.maintenance.donnees", "donnees", ConsoleMaintenanceDonneesPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceDonneesMenuItem);
 			
+			ConsoleMenuItem maintenanceTasksMenuItem = new ConsoleMenuItem("maintenanceTasksMenuItem",
+					"console.maintenance.tasks", "tasks", ConsoleMaintenanceTaskListPage.class);
+			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage("${"
+					+ LinkUtils.ID_PARAMETER + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
+			maintenanceTasksMenuItem.addRelatedPage(maintenanceTaskDetailsPage);
+
+			maintenanceMenuSection.addMenuItem(maintenanceTasksMenuItem);
+
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 			INSTANCE.setLessCssResourceReference(ConsoleLessCssResourceReference.get());
 		}
@@ -90,6 +102,11 @@ public final class ConsoleConfiguration {
 		webApplication.mountPage(menuSectionBaseUrl + "/", menuSection.getPageClass());
 		for (ConsoleMenuItem menuItem : menuSection.getMenuItems()) {
 			webApplication.mountPage(menuSectionBaseUrl + menuItem.getUrlFragment() + "/", menuItem.getPageClass());
+
+			for (ConsoleMenuItemRelatedPage relatedPage : menuItem.getRelatedPages()) {
+				webApplication.mountPage(menuSectionBaseUrl + menuItem.getUrlFragment() + relatedPage.getUrlFragment()
+						+ "/", relatedPage.getPageClass());
+			}
 		}
 	}
 	
