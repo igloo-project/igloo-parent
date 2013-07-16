@@ -124,11 +124,17 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 
 			booleanJunction.must(subJunction.createQuery());
 		}
-		
-		String taskType = searchParams.getTaskType();
-		if (StringUtils.hasText(taskType)) {
-			booleanJunction.must(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.taskType().getPath())
-					.matching(taskType).createQuery());
+
+		List<String> Tasktypes = searchParams.getTaskTypes();
+		if (Tasktypes != null && !Tasktypes.isEmpty()) {
+			BooleanJunction<?> subJunction = queryBuilder.bool();
+
+			for (String taskType : Tasktypes) {
+				subJunction.should(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.taskType().getPath())
+						.matching(taskType).createQuery());
+			}
+
+			booleanJunction.must(subJunction.createQuery());
 		}
 
 		Date creationDate = searchParams.getCreationDate();
@@ -227,5 +233,14 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 				.orderBy(qQueuedTaskHolder.id.asc());
 
 		return query.list(qQueuedTaskHolder);
+	}
+
+	@Override
+	public List<String> listTypes() {
+		JPQLQuery query = new JPAQuery(getEntityManager());
+
+		query.from(qQueuedTaskHolder).orderBy(qQueuedTaskHolder.taskType.asc()).distinct();
+
+		return query.list(qQueuedTaskHolder.taskType);
 	}
 }

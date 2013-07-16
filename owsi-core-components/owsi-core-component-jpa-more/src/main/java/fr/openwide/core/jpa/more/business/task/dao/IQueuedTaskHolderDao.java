@@ -42,4 +42,6 @@ public interface IQueuedTaskHolderDao extends IGenericEntityDao<Long, QueuedTask
 	QueuedTaskHolder getStalledTask(String taskType, int executionTimeLimitInSeconds);
 	
 	List<QueuedTaskHolder> listConsumable();
+
+	List<String> listTypes();
 }
