@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import fr.openwide.core.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecurityConfig;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
+import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 
 @Configuration
 public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfig {
@@ -15,7 +16,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 	@Override
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public BasicApplicationPermissionEvaluator permissionEvaluator() {
+	public ICorePermissionEvaluator permissionEvaluator() {
 		return new BasicApplicationPermissionEvaluator();
 	}
 
