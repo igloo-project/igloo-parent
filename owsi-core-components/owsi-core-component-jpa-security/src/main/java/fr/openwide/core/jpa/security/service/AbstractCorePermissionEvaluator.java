@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
@@ -20,7 +19,7 @@ import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.model.NamedPermission;
 
-public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T>> implements PermissionEvaluator {
+public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T>> implements ICorePermissionEvaluator {
 
 	@Autowired
 	private PermissionFactory permissionFactory;
@@ -78,9 +77,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		throw new UnsupportedOperationException();
 	}
 	
-	/**
-	 * Permet d'indiquer qu'un utilisateur doit avoir toutes les permissions et bypasser tous les checks de permissions.
-	 */
+	@Override
 	public boolean isSuperUser(Authentication authentication) {
 		if (authentication != null) {
 			return authentication.getAuthorities().contains(CoreAuthorityConstants.AUTHORITY_SYSTEM)
