@@ -19,6 +19,10 @@ public class GenericPanel<T> extends Panel {
 		super.setDefaultModel(model);
 	}
 	
+	public void setModelObject(T object) {
+		super.setDefaultModelObject(object);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public final IModel<T> getModel() {
 		return (IModel<T>) getDefaultModel();
