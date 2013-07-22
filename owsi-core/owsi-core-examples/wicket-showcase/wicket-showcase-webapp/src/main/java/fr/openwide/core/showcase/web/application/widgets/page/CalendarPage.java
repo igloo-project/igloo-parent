@@ -2,6 +2,7 @@ package fr.openwide.core.showcase.web.application.widgets.page;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
@@ -23,7 +24,8 @@ public class CalendarPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -3963117430192776716L;
 
 	private IModel<Date> dateModel, endDateModel;
-	
+
+	@SuppressWarnings("unchecked")
 	public CalendarPage(PageParameters parameters) {
 		super(parameters);
 		
@@ -78,8 +80,18 @@ public class CalendarPage extends WidgetsTemplate {
 		});
 		
 		// Synchronisation entre les deux calendrier pour éviter au maximum les erreurs
-		beginDatePicker.add(new DatePickerSyncBehavior(new DatePickerSync(beginDatePicker, null, endDatePicker)));
-		endDatePicker.add(new DatePickerSyncBehavior(new DatePickerSync(endDatePicker, beginDatePicker, null)));
+		Calendar absoluteMaxDate = GregorianCalendar.getInstance();
+		absoluteMaxDate.add(Calendar.MONTH, 3);
+		Calendar absoluteMinDate = GregorianCalendar.getInstance();
+		absoluteMinDate.add(Calendar.MONTH, -3);
+		beginDatePicker.add(new DatePickerSyncBehavior(
+				new DatePickerSync(beginDatePicker, null, endDatePicker)
+						.addPrecedentsModels(Model.of(absoluteMinDate.getTime()))
+		));
+		endDatePicker.add(
+				new DatePickerSyncBehavior(new DatePickerSync(endDatePicker, beginDatePicker, null)
+						.addSuivantsModels(Model.of(absoluteMaxDate.getTime()))
+		));
 	}
 	
 	@Override

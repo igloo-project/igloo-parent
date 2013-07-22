@@ -28,21 +28,5 @@
 				</div>
 			</div>
 		</form>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#begin-date-picker').on('change', function(event) {
-					var dateDebut = $(this).datepicker('getDate');
-					var dateFin = $('#end-date-picker').datepicker('getDate');
-					if (dateFin < dateDebut) {
-						$('#end-date-picker').datepicker('setDate', null);
-					}
-				});
-				
-				$("#end-date-picker").datepicker('option', 'beforeShow', function(input, inst) {
-					$(this).datepicker('option', 'minDate', $('#begin-date-picker').datepicker('getDate'));
-				});
-			});
-		</script>
 	</wicket:extend>
 </html>
