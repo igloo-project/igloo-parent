@@ -27,7 +27,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
  * 2. requête ajax
  * 3. arrêt du mode attente et affichage du popup avec la réponse
  */
-public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
+public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 
 	private static final long serialVersionUID = 3299212684157849227L;
 
@@ -54,7 +54,12 @@ public abstract class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		}
 	}
 
-	protected abstract void onShow(AjaxRequestTarget target);
+	/**
+	 * Exécuté juste avant l'appel de modal.show()
+	 */
+	protected void onShow(AjaxRequestTarget target) {
+		// Ne fait rien par défaut.
+	}
 
 	@Override
 	protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {

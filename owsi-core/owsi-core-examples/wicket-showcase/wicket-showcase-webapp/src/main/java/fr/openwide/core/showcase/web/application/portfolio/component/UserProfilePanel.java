@@ -45,13 +45,7 @@ public class UserProfilePanel extends GenericPanel<User> {
 		add(userEditPopupPanel);
 		
 		WebMarkupContainer editUserPopupLink = new WebMarkupContainer("editUserPopupLink");
-		editUserPopupLink.add(new AjaxModalOpenBehavior(userEditPopupPanel, MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onShow(AjaxRequestTarget target) {
-				
-			}
-		});
+		editUserPopupLink.add(new AjaxModalOpenBehavior(userEditPopupPanel, MouseEvent.CLICK));
 		add(editUserPopupLink);
 	}
 }
