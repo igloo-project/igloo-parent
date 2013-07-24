@@ -29,19 +29,26 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.jpa.example.business.person.dao.PersonDao;
+import fr.openwide.core.test.jpa.example.business.person.dao.PersonReferenceDao;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.jpa.example.business.person.model.PersonReference;
 import fr.openwide.core.test.jpa.example.business.person.model.PersonSubTypeA;
 import fr.openwide.core.test.jpa.example.business.person.model.PersonSubTypeB;
 import fr.openwide.core.test.jpa.example.business.person.model.Person_;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
 public class TestGenericDao extends AbstractJpaCoreTestCase {
 
 	@Autowired
-	PersonService personService;
+	private PersonDao personDao;
 
 	@Autowired
-	PersonDao personDao;
+	private PersonReferenceDao personReferenceDao;
+	
+	@Override
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		// TODO Auto-generated method stub
+		super.cleanAll();
+	}
 
 	@Test
 	public void testGet() throws ServiceException, SecurityServiceException {
@@ -90,6 +97,27 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		
 		cleanAll();
 		Assert.assertEquals(new Long(0), personService.count());
+	}
+
+	@Test
+	public void testPolymorphicSubTypeGet() throws ServiceException, SecurityServiceException {
+		Person person = new PersonSubTypeA("Firstname", "A", "DATA");
+		PersonReference personReference = new PersonReference(person);
+		personService.save(person);
+		personReferenceService.save(personReference);
+		
+		// Vidage de la session
+		personService.flush();
+		personService.clear();
+		
+		PersonReference personReference1 = personReferenceDao.getById(personReference.getId());
+		Person person1 = personReference1.getPerson();
+		Assert.assertEquals(person, person1);
+		Assert.assertFalse(person1 instanceof PersonSubTypeA); // person1 devrait être chargé en session en tant que proxy de Person
+		
+		Person person2 = personDao.getById(PersonSubTypeA.class, person.getId());
+		Assert.assertEquals(person, person2);
+		Assert.assertTrue(person2 instanceof PersonSubTypeA); // Chargement en session SANS proxy
 	}
 
 	@Test
