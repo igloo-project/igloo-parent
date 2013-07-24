@@ -22,10 +22,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person extends GenericEntity<Long, Person> {
 
 	private static final long serialVersionUID = -2471930493134125282L;

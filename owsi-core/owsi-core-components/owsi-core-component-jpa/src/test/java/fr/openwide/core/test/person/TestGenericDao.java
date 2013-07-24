@@ -30,6 +30,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.jpa.example.business.person.dao.PersonDao;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.jpa.example.business.person.model.PersonSubTypeA;
+import fr.openwide.core.test.jpa.example.business.person.model.PersonSubTypeB;
 import fr.openwide.core.test.jpa.example.business.person.model.Person_;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
@@ -46,13 +48,48 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 
-		Person person1 = (Person) personDao.getEntity(Person.class, person.getId());
+		Person person1 = (Person) personDao.getById(Person.class, person.getId());
 		Person person2 = personDao.getByField(Person_.lastName, "Lastname");
 		Person person3 = personDao.getById(person.getId());
 
 		Assert.assertTrue(person.equals(person1));
 		Assert.assertTrue(person.equals(person2));
 		Assert.assertTrue(person.equals(person3));
+	}
+
+	@Test
+	public void testSubTypeGet() throws ServiceException, SecurityServiceException {
+		Person personA = new PersonSubTypeA("Firstname", "A", "DATA");
+		Person personB = new PersonSubTypeB("Firstname", "B", 3);
+		personService.create(personA);
+		personService.create(personB);
+
+		Person personA1 = personDao.getById(personA.getId());
+		Person personA2 = personDao.getById(Person.class, personA.getId());
+		PersonSubTypeA personA3 = personDao.getById(PersonSubTypeA.class, personA.getId());
+		PersonSubTypeB personA4 = personDao.getById(PersonSubTypeB.class, personA.getId());
+		Person personA5 = personDao.getByField(Person_.lastName, "A");
+
+		Person personB1 = personDao.getById(personB.getId());
+		Person personB2 = personDao.getById(Person.class, personB.getId());
+		PersonSubTypeB personB3 = personDao.getById(PersonSubTypeB.class, personB.getId());
+		PersonSubTypeA personB4 = personDao.getById(PersonSubTypeA.class, personB.getId());
+		Person personB5 = personDao.getByField(Person_.lastName, "B");
+
+		Assert.assertTrue(personA.equals(personA1));
+		Assert.assertTrue(personA.equals(personA2));
+		Assert.assertTrue(personA.equals(personA3));
+		Assert.assertNull(personA4);
+		Assert.assertTrue(personA.equals(personA5));
+		
+		Assert.assertTrue(personB.equals(personB1));
+		Assert.assertTrue(personB.equals(personB2));
+		Assert.assertTrue(personB.equals(personB3));
+		Assert.assertNull(personB4);
+		Assert.assertTrue(personB.equals(personB5));
+		
+		cleanAll();
+		Assert.assertEquals(new Long(0), personService.count());
 	}
 
 	@Test
