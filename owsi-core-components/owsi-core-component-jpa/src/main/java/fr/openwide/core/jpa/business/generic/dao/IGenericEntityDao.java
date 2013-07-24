@@ -46,10 +46,13 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	/**
 	 * Retourne une entité à partir de sa classe et son id.
 	 * 
+	 * @deprecated Privilégier {@link #getById(Class, Serializable)}, qui renvoie le type demandé.
+	 * 
 	 * @param clazz classe
 	 * @param id identifiant
 	 * @return entité
 	 */
+	@Deprecated
 	E getEntity(Class<? extends E> clazz, K id);
 	
 	/**
@@ -59,6 +62,14 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @return entité
 	 */
 	E getById(K id);
+	
+	/**
+	 * Retourne une entité à partir de sa classe (dérivée de {@link E}) et de son id.
+	 * 
+	 * @param id identifiant
+	 * @return entité
+	 */
+	<T extends E> T getById(Class<T> clazz, K id);
 	
 	/**
 	 * Retourne une entité à partir de son id naturelle (si elle a été déclarée avec @NaturalId)
