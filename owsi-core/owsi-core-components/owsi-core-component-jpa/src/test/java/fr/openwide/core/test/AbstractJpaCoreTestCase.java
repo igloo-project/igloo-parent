@@ -30,6 +30,8 @@ import fr.openwide.core.test.config.spring.JpaTestConfig;
 import fr.openwide.core.test.jpa.example.business.label.model.Label;
 import fr.openwide.core.test.jpa.example.business.label.service.LabelService;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.jpa.example.business.person.model.PersonReference;
+import fr.openwide.core.test.jpa.example.business.person.service.PersonReferenceService;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
 @ContextConfiguration(classes = JpaTestConfig.class)
@@ -40,9 +42,19 @@ public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 	
 	@Autowired
 	protected PersonService personService;
+
+	@Autowired
+	protected PersonReferenceService personReferenceService;
 	
 	@Autowired
 	protected LabelService labelService;
+	
+	protected void cleanPersonReferences() throws ServiceException, SecurityServiceException {
+		List<PersonReference> persons = personReferenceService.list();
+		for (PersonReference person : persons) {
+			personReferenceService.delete(person);
+		}
+	}
 	
 	protected void cleanPersons() throws ServiceException, SecurityServiceException {
 		List<Person> persons = personService.list();
@@ -60,6 +72,7 @@ public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanPersonReferences();
 		cleanPersons();
 		cleanLabels();
 	}
