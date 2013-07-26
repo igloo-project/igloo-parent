@@ -39,9 +39,6 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
 		
-		// Navigation
-		mountPage("/home/", HomePage.class);
-		
 		// Administration
 		mountPage("/administration/user/", AdministrationUserPortfolioPage.class);
 		mountPage("/administration/user/${" + LinkUtils.ID_PARAMETER + "}/", AdministrationUserDescriptionPage.class);
