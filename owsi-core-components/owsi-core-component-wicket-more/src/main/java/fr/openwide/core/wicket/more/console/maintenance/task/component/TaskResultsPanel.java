@@ -60,7 +60,7 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends QueuedTaskHolder> itemModel) {
 		return false;
 	}
 
