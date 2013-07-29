@@ -74,7 +74,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> userModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends User> userModel) {
 		return BasicApplicationSession.get().hasRoleAdmin();
 	}
 
