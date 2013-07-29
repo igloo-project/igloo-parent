@@ -242,7 +242,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		return new ResourceModel("common.cancel");
 	}
 
-	protected abstract boolean hasWritePermissionOn(IModel<?> itemModel);
+	protected abstract boolean hasWritePermissionOn(IModel<? extends T> itemModel);
 
 	protected DataView<T> getDataView() {
 		return dataView;
