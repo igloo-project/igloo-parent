@@ -4,33 +4,24 @@
 	<wicket:extend>
 		<h1><wicket:message key="hideableComponents.pageTitle" /></h1>
 		
-		<div wicket:id="mainContainer">
+		<h2><wicket:message key="hideableComponents.model" /></h2>
+		<form wicket:id="form" class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" wicket:for="modelField"><wicket:label /></label>
+				<div class="controls">
+					<input type="text" wicket:id="modelField" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" wicket:for="collectionModelField"><wicket:label /></label>
+				<div class="controls">
+					<select wicket:id="collectionModelField" style="width: 300px;" />
+				</div>
+			</div>
+		</form>
+		
+		<div wicket:id="updatedContainer">
 			<!-- Model-based -->
-			<h2><wicket:message key="hideableComponents.model" /></h2>
-			<form wicket:id="form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" wicket:for="modelField"><wicket:label /></label>
-					<div class="controls">
-						<input type="text" wicket:id="modelField" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="collectionModelField"><wicket:label /></label>
-					<div class="controls">
-						<select wicket:id="collectionModelField" style="width: 300px;" />
-					</div>
-				</div>
-				
-				
-				<div class="form-actions">
-					<button wicket:id="ajaxSubmitButton" class="btn btn-primary">
-						<span class="icon icon-white icon-refresh" />
-						<wicket:message key="hideableComponents.model.form.update" />
-					</button>
-				</div>
-			</form>
-			
-			
 			<div class="row-fluid">
 				<div class="span6 text-center">
 					<div class="alert alert-block alert-success" wicket:id="enclosureContainer">

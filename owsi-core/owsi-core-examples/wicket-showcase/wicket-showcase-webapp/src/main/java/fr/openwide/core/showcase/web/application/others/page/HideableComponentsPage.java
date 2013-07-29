@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -45,35 +45,42 @@ public class HideableComponentsPage extends MainTemplate {
 		List<User> choicesList = userService.list();
 		IModel<List<User>> collectionModel = GenericEntityArrayListModel.of(User.class);
 		
-		final MarkupContainer mainContainer = new WebMarkupContainer("mainContainer");
-		mainContainer.setOutputMarkupId(true);
-		add(mainContainer);
+		final MarkupContainer updatedContainer = new WebMarkupContainer("updatedContainer");
+		updatedContainer.setOutputMarkupId(true);
+		add(updatedContainer);
 		
-		
-		// Model-based hideable components
-		
-		mainContainer.add(new Form<Void>("form")
+		add(new Form<Void>("form")
 				.add(new TextField<String>("modelField", model)
 						.setLabel(new ResourceModel("hideableComponents.model.form.modelField"))
+						.add(new OnChangeAjaxBehavior() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onUpdate(AjaxRequestTarget target) {
+								target.add(updatedContainer);
+							}
+						})
 				)
 				.add(new UserSelect2ListMultipleChoice("collectionModelField", collectionModel, choicesList)
 						.setLabel(new ResourceModel("hideableComponents.model.form.collectionModelField"))
+						.add(new OnChangeAjaxBehavior() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onUpdate(AjaxRequestTarget target) {
+								target.add(updatedContainer);
+							}
+						})
 				)
-				.add(new AjaxSubmitLink("ajaxSubmitButton") {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
-						target.add(mainContainer);
-					}
-				})
 		);
+		
+		
+		// Model-based hideable components
 		
 		Component enclosureContainer = new EnclosureContainer("enclosureContainer")
 				.model(model).collectionModel(collectionModel);
 		Component enclosureBehaviorComponent = new Label("enclosureBehaviorComponent", new ResourceModel("hideableComponents.model.enclosureBehavior"))
 				.add(new EnclosureBehavior().model(model).collectionModel(collectionModel));
 		
-		mainContainer.add(
+		updatedContainer.add(
 				new PlaceholderContainer("placeholderContainer")
 						.model(model).collectionModel(collectionModel),
 				new Label("placeholderBehaviorComponent", new ResourceModel("hideableComponents.model.placeholderBehavior"))
@@ -85,7 +92,7 @@ public class HideableComponentsPage extends MainTemplate {
 		
 		// Component-based hideable components
 		
-		mainContainer.add(
+		updatedContainer.add(
 				new EnclosureContainer("enclosuresVisibleContainer").components(enclosureContainer, enclosureBehaviorComponent),
 				new PlaceholderContainer("enclosuresInvisibleContainer").components(enclosureContainer, enclosureBehaviorComponent)
 		);

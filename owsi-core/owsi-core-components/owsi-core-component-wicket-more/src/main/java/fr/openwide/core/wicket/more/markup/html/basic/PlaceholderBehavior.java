@@ -1,6 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-public class PlaceholderBehavior extends AbstractHideableBehavior<PlaceholderBehavior> {
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractPlaceholderEnclosureBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder.Visibility;
+
+public class PlaceholderBehavior extends AbstractPlaceholderEnclosureBehavior<PlaceholderBehavior> {
 
 	private static final long serialVersionUID = -4321921413728629980L;
 

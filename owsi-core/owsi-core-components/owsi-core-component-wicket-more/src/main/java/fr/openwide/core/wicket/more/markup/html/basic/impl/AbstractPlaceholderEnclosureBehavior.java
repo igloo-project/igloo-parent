@@ -1,36 +1,37 @@
-package fr.openwide.core.wicket.more.markup.html.basic;
+package fr.openwide.core.wicket.more.markup.html.basic.impl;
 
 import java.util.Collection;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder;
+import fr.openwide.core.wicket.more.markup.html.basic.AbstractHidingBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.IPlaceholderEnclosureBuilder;
+import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder.Visibility;
 
-/**
- * NE PAS RÉFÉRENCER CETTE CLASSE. Elle devrait être déplacée dans le sous-package 'impl' et être renommée
- * en AbstractPlaceholderEnclosureBehavior afin de créer un véritable AbstractHideableContainer, dont la seule fonction
- * implémentée est le fait de définir sa visibilité à chaque onConfigure() (cf. AbstractHidingBehavior).
- */
-public abstract class AbstractHideableContainer<T extends AbstractHideableContainer<T>>
-		extends WebMarkupContainer
+public abstract class AbstractPlaceholderEnclosureBehavior<T extends AbstractPlaceholderEnclosureBehavior<T>>
+		extends AbstractHidingBehavior
 		implements IPlaceholderEnclosureBuilder<T> {
-	
-	private static final long serialVersionUID = -4570949966472824133L;
 
+	private static final long serialVersionUID = 5054905572454226562L;
+	
 	private final PlaceholderEnclosureVisibilityBuilder visibilityBuilder;
 	
-	protected AbstractHideableContainer(String wicketId, Visibility visibility) {
-		super(wicketId);
+	protected AbstractPlaceholderEnclosureBehavior(Visibility visibility) {
+		super();
 		this.visibilityBuilder = new PlaceholderEnclosureVisibilityBuilder(visibility);
 	}
 	
 	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-		setVisible(visibilityBuilder.isVisible());
+	protected boolean isVisible(Component boundComponent) {
+		return visibilityBuilder.isVisible();
+	}
+	
+	@Override
+	protected void setVisibility(Component component, boolean visible) {
+		component.setVisibilityAllowed(visible);
 	}
 	
 	/**
@@ -71,8 +72,8 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	}
 	
 	@Override
-	public void onDetach() {
-		super.onDetach();
+	public void detach(Component component) {
+		super.detach(component);
 		
 		visibilityBuilder.detach();
 	}
