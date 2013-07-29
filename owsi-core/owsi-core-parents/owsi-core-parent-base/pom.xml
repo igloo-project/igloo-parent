@@ -634,7 +634,7 @@
 				<dependency>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpclient</artifactId>
-					<version>$owsi-core.httpclient.version</version>
+					<version>${owsi-core.httpclient.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>commons-logging</groupId>
