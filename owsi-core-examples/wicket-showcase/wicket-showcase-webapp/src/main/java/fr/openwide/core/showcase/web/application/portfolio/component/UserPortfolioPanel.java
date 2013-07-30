@@ -77,7 +77,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends User> itemModel) {
 		return true;
 	}
 }
