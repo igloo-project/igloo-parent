@@ -17,20 +17,20 @@ public class MockPerson extends AbstractPerson<MockPerson> {
 	private static final long serialVersionUID = 4396833928821998996L;
 
 	@ManyToMany
-	private List<MockPersonGroup> groups = new LinkedList<MockPersonGroup>();
+	private List<MockPersonGroup> userGroups = new LinkedList<MockPersonGroup>();
 
-	public List<MockPersonGroup> getGroups() {
-		return groups;
+	public List<MockPersonGroup> getUserGroups() {
+		return userGroups;
 	}
 
-	public void setGroups(List<MockPersonGroup> groups) {
-		this.groups = groups;
+	public void setUserGroups(List<MockPersonGroup> userGroups) {
+		this.userGroups = userGroups;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<IPersonGroup> getPersonGroups() {
-		return (List<IPersonGroup>) ((Object) groups);
+		return (List<IPersonGroup>) ((Object) userGroups);
 	}
 
 }
