@@ -159,8 +159,20 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
         permissionsAcceptableInOneStepMap = new HashMap<Permission, Set<Permission>>();
 
         while (permissionHierarchyMatcher.find()) {
-            Permission higherPermission = permissionFactory.buildFromName(permissionHierarchyMatcher.group(2));
-            Permission lowerPermission = permissionFactory.buildFromName(permissionHierarchyMatcher.group(3));
+            String higherPermissionString = permissionHierarchyMatcher.group(2);
+            Permission higherPermission = permissionFactory.buildFromName(higherPermissionString);
+            if (higherPermission == null) {
+                LOGGER.error(String.format("Unable to build permission %1$s: risk of inconsistent hierarchy", higherPermissionString));
+                continue;
+            }
+            
+            String lowerPermissionString = permissionHierarchyMatcher.group(3);
+            Permission lowerPermission = permissionFactory.buildFromName(lowerPermissionString);
+            if (lowerPermission == null) {
+                LOGGER.error(String.format("Unable to build permission %1$s: risk of inconsistent hierarchy", lowerPermissionString));
+                continue;
+            }
+            
             Set<Permission> permissionsAcceptableInOneStepSet = null;
 
             if (!permissionsAcceptableInOneStepMap.containsKey(lowerPermission)) {
