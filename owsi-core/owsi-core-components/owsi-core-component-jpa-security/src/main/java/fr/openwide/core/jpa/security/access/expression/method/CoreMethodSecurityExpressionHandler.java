@@ -33,7 +33,7 @@ public class CoreMethodSecurityExpressionHandler extends DefaultMethodSecurityEx
 	
 	@Override
 	public void setReturnObject(Object returnObject, EvaluationContext ctx) {
-		((CoreMethodSecurityExpressionRoot) ctx.getRootObject().getValue()).setReturnObject(returnObject);
+		((MethodSecurityExpressionOperations) ctx.getRootObject().getValue()).setReturnObject(returnObject);
 	}
 
 }
