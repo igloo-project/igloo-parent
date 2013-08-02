@@ -9,7 +9,7 @@ import fr.openwide.core.web.security.access.expression.method.CoreWebSecurityExp
 @Configuration
 public abstract class AbstractWebappSecurityConfig {
 	
-	@Bean(name = "coreWebSecurityExpressionHandler")
+	@Bean(name = { "webSecurityExpressionHandler", "coreWebSecurityExpressionHandler" })
 	public CoreWebSecurityExpressionHandler webSecurityExpressionHandler(ICorePermissionEvaluator corePermissionEvaluator) {
 		CoreWebSecurityExpressionHandler webSecurityExpressionHandler = new CoreWebSecurityExpressionHandler();
 		webSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
