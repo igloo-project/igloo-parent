@@ -16,7 +16,7 @@ import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 public class MockPerson extends AbstractPerson<MockPerson> {
 	private static final long serialVersionUID = 4396833928821998996L;
 
-	@ManyToMany(mappedBy="persons")
+	@ManyToMany
 	private List<MockPersonGroup> groups = new LinkedList<MockPersonGroup>();
 
 	public List<MockPersonGroup> getGroups() {
