@@ -17,6 +17,7 @@ import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConsta
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
+import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
 public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T>> implements ICorePermissionEvaluator {
 
@@ -74,10 +75,14 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		if (isSuperUser(authentication)) {
 			return true;
 		}
+		Object userDetailsCandidate = authentication.getPrincipal();
+		if (!(userDetailsCandidate instanceof CoreUserDetails)) {
+			throw new IllegalStateException("UserDetails should be a CoreUserDetails");
+		}
+		CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
+		Collection<? extends Permission> userPermissions = userDetails.getPermissions();
 		
 		List<Permission> requiredPermissions = resolvePermission(requiredPermission);
-		
-		Collection<? extends Permission> userPermissions = AuthenticationUtil.getPermissions();
 		
 		for (Permission permission : requiredPermissions) {
 			// Il faut posséder au moins une des permissions acceptées

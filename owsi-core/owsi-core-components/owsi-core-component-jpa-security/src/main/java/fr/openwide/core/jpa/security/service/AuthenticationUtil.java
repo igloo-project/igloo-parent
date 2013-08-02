@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
-public final class AuthenticationUtil {
+final class AuthenticationUtil {
 
 	static Authentication getAuthentication() {
 		return SecurityContextHolder.getContext().getAuthentication();
@@ -40,7 +40,7 @@ public final class AuthenticationUtil {
 		return getAuthentication().getAuthorities();
 	}
 	
-	public static Collection<? extends Permission> getPermissions() {
+	static Collection<? extends Permission> getPermissions() {
 		Authentication authentication = getAuthentication();
 		
 		Object userDetailsCandidate = authentication.getPrincipal();
