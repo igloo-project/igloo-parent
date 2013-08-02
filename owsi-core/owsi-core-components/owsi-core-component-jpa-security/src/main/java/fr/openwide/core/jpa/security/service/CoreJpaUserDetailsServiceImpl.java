@@ -5,9 +5,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +18,8 @@ import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
+import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
 public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 
@@ -26,6 +28,9 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
 	private RoleHierarchy roleHierarchy;
+	
+	@Autowired
+	private IPermissionHierarchy permissionHierarchy;
 
 	private AuthenticationUserNameComparison authenticationUserNameComparison = AuthenticationUserNameComparison.CASE_SENSITIVE;
 
@@ -47,15 +52,19 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		}
 		
 		Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
+		Set<Permission> permissions = Sets.newHashSet();
 		
 		addAuthorities(grantedAuthorities, person.getAuthorities());
+		permissions.addAll(person.getPermissions());
 		
 		for (IPersonGroup personGroup : person.getPersonGroups()) {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
+			permissions.addAll(personGroup.getPermissions());
 		}
 		
-		User userDetails = new User(person.getUserName(), person.getPasswordHash(), person.isActive(), true, true, true, 
-				roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities));
+		CoreUserDetails userDetails = new CoreUserDetails(person.getUserName(), person.getPasswordHash(), person.isActive(), true, true, true, 
+				roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities),
+				permissionHierarchy.getAcceptablePermissions(permissions));
 		
 		return userDetails;
 	}

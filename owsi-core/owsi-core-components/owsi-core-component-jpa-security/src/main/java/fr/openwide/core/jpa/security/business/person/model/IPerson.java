@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
+import org.springframework.security.acls.model.Permission;
 
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
@@ -23,6 +24,8 @@ public interface IPerson {
 	List<IPersonGroup> getPersonGroups();
 
 	Set<Authority> getAuthorities();
+	
+	Set<Permission> getPermissions();
 
 	boolean isActive();
 

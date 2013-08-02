@@ -29,6 +29,7 @@
 		<module>owsi-core-component-wicket-more</module>
 		
 		<module>owsi-core-component-rest-jersey</module>
+		<module>owsi-core-component-web-security</module>
 	</modules>
 	
 	<!-- Project information -->

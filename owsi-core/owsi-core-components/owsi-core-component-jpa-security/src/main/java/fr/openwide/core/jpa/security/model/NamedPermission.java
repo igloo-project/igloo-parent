@@ -12,8 +12,6 @@ public class NamedPermission implements Permission {
 	public static final NamedPermission CREATE = new NamedPermission(CorePermissionConstants.CREATE);
 	public static final NamedPermission DELETE = new NamedPermission(CorePermissionConstants.DELETE);
 	public static final NamedPermission ADMINISTRATION = new NamedPermission(CorePermissionConstants.ADMINISTRATION);
-	public static final NamedPermission ALLOWED = new NamedPermission(CorePermissionConstants.ALLOWED);
-	public static final NamedPermission DENIED = new NamedPermission(CorePermissionConstants.DENIED);
 
 	protected String name;
 

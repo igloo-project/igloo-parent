@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.service;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
@@ -26,8 +26,13 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	}
 	
 	@Override
-	public List<? extends GrantedAuthority> getAuthorities() {
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthenticationUtil.getAuthorities();
+	}
+	
+	@Override
+	public Collection<? extends Permission> getPermissions() {
+		return AuthenticationUtil.getPermissions();
 	}
 
 	@Override
@@ -58,11 +63,6 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	@Override
 	public boolean hasPermission(Permission permission) {
 		return securityService.hasPermission(AuthenticationUtil.getAuthentication(), permission);
-	}
-	
-	@Override
-	public List<Permission> getPermissions() {
-		return securityService.getPermissions(AuthenticationUtil.getAuthentication());
 	}
 	
 	@Override
