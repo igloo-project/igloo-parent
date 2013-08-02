@@ -12,7 +12,7 @@
 	<security:http pattern="/monitoring/**" security="none" />
 	
 	<security:http authentication-manager-ref="authenticationManager" auto-config="false" use-expressions="true">
-		<security:expression-handler ref="coreWebSecurityExpressionHandler" />
+		<security:expression-handler ref="webSecurityExpressionHandler" />
 		<security:form-login login-page="/login/" default-target-url="/login/success/" always-use-default-target="true"
 				authentication-failure-url="/login/failure/" />
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
