@@ -13,19 +13,18 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderBy;
 
 import org.bindgen.Bindable;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Sets;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Store;
 import org.springframework.security.acls.model.Permission;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Sets;
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
@@ -44,8 +43,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@GeneratedValue
 	private Long id;
 
-	@Field(analyze=Analyze.NO, store=Store.NO)
-	@Analyzer(definition = HibernateSearchAnalyzer.TEXT)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String name;
 	
 	@JsonIgnore
@@ -151,6 +149,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	}
 	
 	@Override
+	@QueryType(PropertyType.NONE)
 	public Set<Permission> getPermissions() {
 		return Sets.newHashSetWithExpectedSize(0);
 	}

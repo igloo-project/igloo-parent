@@ -25,6 +25,8 @@ import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -290,6 +292,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	}
 	
 	@Override
+	@QueryType(PropertyType.NONE)
 	public Set<Permission> getPermissions() {
 		return Sets.newHashSetWithExpectedSize(0);
 	}
