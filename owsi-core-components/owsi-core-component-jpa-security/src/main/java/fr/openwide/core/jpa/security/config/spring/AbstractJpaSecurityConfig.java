@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -29,6 +27,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.hierarchy.PermissionHierarchyImpl;
@@ -131,9 +130,9 @@ public abstract class AbstractJpaSecurityConfig {
 	public abstract ICorePermissionEvaluator permissionEvaluator();
 
 	@Bean
-	public MethodSecurityExpressionHandler expressionHandler(PermissionEvaluator permissionEvaluator) {
-		DefaultMethodSecurityExpressionHandler methodSecurityExpressionHandler = new DefaultMethodSecurityExpressionHandler();
-		methodSecurityExpressionHandler.setPermissionEvaluator(permissionEvaluator);
+	public MethodSecurityExpressionHandler expressionHandler(ICorePermissionEvaluator corePermissionEvaluator) {
+		CoreMethodSecurityExpressionHandler methodSecurityExpressionHandler = new CoreMethodSecurityExpressionHandler();
+		methodSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
 		return methodSecurityExpressionHandler;
 	}
 	

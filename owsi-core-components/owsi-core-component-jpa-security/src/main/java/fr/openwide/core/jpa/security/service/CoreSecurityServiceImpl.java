@@ -205,31 +205,12 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Permission permission) {
-		if (permissionEvaluator.isSuperUser(authentication)) {
-			return true;
-		}
-		
-		List<Permission> permissions = getPermissions(authentication);
-		if (permissions.contains(permission)) {
-			return true;
-		} else {
-			return false;
-		}
+		return permissionEvaluator.hasPermission(authentication, permission);
 	}
 	
 	@Override
 	public boolean hasPermission(IPerson person, Permission permission) {
 		return hasPermission(getAuthentication(person), permission);
 	}
-	
-	@Override
-	public List<Permission> getPermissions(Authentication authentication) {
-		return Lists.newArrayListWithCapacity(0);
-	}
-	
-	@Override
-	public List<Permission> getPermissions(IPerson person) {
-		return getPermissions(getAuthentication(person));
-	}
-	
+		
 }

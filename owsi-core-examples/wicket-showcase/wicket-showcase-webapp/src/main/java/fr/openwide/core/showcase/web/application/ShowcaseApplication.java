@@ -59,9 +59,6 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
 		
-		// Navigation
-		mountPage("/home/", getHomePage());
-		
 		// Portfolio exemple
 		mountPage("/portfolio/", PortfolioMainPage.class);
 		mountPage("/portfolio/user/${id}", UserDescriptionPage.class);

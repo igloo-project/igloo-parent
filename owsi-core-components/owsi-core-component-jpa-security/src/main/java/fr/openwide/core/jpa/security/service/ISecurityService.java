@@ -50,9 +50,5 @@ public interface ISecurityService {
 	void clearAuthentication();
 	
 	<T> T runAsSystem(Callable<T> task);
-	
-	List<Permission> getPermissions(Authentication authentication);
-
-	List<Permission> getPermissions(IPerson person);
 
 }

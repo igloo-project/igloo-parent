@@ -126,7 +126,7 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
     @Override
     public List<Permission> getAcceptablePermissions(Collection<Permission> permissions) {
         if (permissions == null || permissions.size() == 0) {
-            return null;
+            return new ArrayList<Permission>(0);
         }
 
         Set<Permission> acceptablePermissions = new HashSet<Permission>();

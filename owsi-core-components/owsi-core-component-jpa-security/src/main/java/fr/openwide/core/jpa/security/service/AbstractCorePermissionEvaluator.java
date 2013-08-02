@@ -17,7 +17,6 @@ import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConsta
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
-import fr.openwide.core.jpa.security.model.NamedPermission;
 
 public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T>> implements ICorePermissionEvaluator {
 
@@ -57,13 +56,6 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		T user = getUser(authentication);
 		
 		List<Permission> permissions = resolvePermission(permission);
-		for (Permission perm : permissions) {
-			if (NamedPermission.ALLOWED.equals(perm)) {
-				return true;
-			} else if (NamedPermission.DENIED.equals(perm)) {
-				return false;
-			}
-		}
 		
 		if (targetDomainObject instanceof Collection<?>) {
 			return checkObjectsPermissions(user, (Collection<?>) targetDomainObject, permissions);
@@ -75,6 +67,25 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 	@Override
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public boolean hasPermission(Authentication authentication, Object requiredPermission) {
+		if (isSuperUser(authentication)) {
+			return true;
+		}
+		
+		List<Permission> requiredPermissions = resolvePermission(requiredPermission);
+		
+		Collection<? extends Permission> userPermissions = AuthenticationUtil.getPermissions();
+		
+		for (Permission permission : requiredPermissions) {
+			// Il faut posséder au moins une des permissions acceptées
+			if (userPermissions.contains(permission)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override

@@ -13,7 +13,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderBy;
 
 import org.bindgen.Bindable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Sets;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
@@ -22,6 +25,7 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
+import org.springframework.security.acls.model.Permission;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
@@ -144,6 +148,11 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+	
+	@Override
+	public Set<Permission> getPermissions() {
+		return Sets.newHashSetWithExpectedSize(0);
 	}
 
 	@Override

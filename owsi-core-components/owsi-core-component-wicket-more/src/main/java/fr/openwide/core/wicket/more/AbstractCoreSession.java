@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.Session;
@@ -58,7 +57,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	private boolean rolesInitialized = false;
 	
-	private List<Permission> permissions = Lists.newArrayList();
+	private Collection<? extends Permission> permissions = Lists.newArrayList();
 	
 	private boolean permissionsInitialized = false;
 
@@ -213,7 +212,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		return hasRole(CoreAuthorityConstants.ROLE_ANONYMOUS);
 	}
 	
-	protected List<Permission> getPermissions() {
+	protected Collection<? extends Permission> getPermissions() {
 		if (!permissionsInitialized) {
 			permissions = authenticationService.getPermissions();
 			permissionsInitialized = true;

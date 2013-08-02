@@ -10,4 +10,6 @@ public interface ICorePermissionEvaluator extends PermissionEvaluator {
 	 */
 	public abstract boolean isSuperUser(Authentication authentication);
 
+	boolean hasPermission(Authentication authentication, Object requirePermission);
+
 }
