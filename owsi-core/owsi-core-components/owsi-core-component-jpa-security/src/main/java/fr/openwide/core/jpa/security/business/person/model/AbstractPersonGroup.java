@@ -150,7 +150,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	
 	@Override
 	@QueryType(PropertyType.NONE)
-	public Set<Permission> getPermissions() {
+	public Set<? extends Permission> getPermissions() {
 		return Sets.newHashSetWithExpectedSize(0);
 	}
 

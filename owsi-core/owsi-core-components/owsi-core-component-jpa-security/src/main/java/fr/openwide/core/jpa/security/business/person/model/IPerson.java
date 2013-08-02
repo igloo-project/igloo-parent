@@ -25,7 +25,7 @@ public interface IPerson {
 
 	Set<Authority> getAuthorities();
 	
-	Set<Permission> getPermissions();
+	Set<? extends Permission> getPermissions();
 
 	boolean isActive();
 

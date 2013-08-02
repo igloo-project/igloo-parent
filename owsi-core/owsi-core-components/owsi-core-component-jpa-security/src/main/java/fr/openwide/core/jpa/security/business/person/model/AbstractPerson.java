@@ -293,7 +293,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	@Override
 	@QueryType(PropertyType.NONE)
-	public Set<Permission> getPermissions() {
+	public Set<? extends Permission> getPermissions() {
 		return Sets.newHashSetWithExpectedSize(0);
 	}
 
