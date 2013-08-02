@@ -16,6 +16,6 @@ public interface IPersonGroup {
 
 	Set<Authority> getAuthorities();
 	
-	Set<Permission> getPermissions();
+	Set<? extends Permission> getPermissions();
 
 }
