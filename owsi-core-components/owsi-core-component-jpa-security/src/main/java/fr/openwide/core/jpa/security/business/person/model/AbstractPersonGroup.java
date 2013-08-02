@@ -48,7 +48,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
-	@ManyToMany
+	@ManyToMany(mappedBy = "userGroups")
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("lastName, firstName")
 	private List<P> persons = new LinkedList<P>();
