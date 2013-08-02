@@ -71,7 +71,7 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected boolean hasWritePermissionOn(IModel<? extends UserGroup> userGroupModel) {
-		return !userGroupModel.getObject().getLocked();
+		return !userGroupModel.getObject().isLocked();
 	}
 
 	@Override
