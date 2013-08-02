@@ -105,8 +105,8 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanMockPersonGroups();
 		cleanMockPersons();
+		cleanMockPersonGroups();
 		cleanAuthorities();
 	}
 
