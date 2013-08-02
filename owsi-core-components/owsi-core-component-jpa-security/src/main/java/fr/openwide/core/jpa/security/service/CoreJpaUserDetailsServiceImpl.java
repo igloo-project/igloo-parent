@@ -2,6 +2,8 @@ package fr.openwide.core.jpa.security.service;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -51,6 +53,16 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("CoreHibernateUserDetailsServiceImpl: User not found: " + userName);
 		}
 		
+		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(person);
+		
+		CoreUserDetails userDetails = new CoreUserDetails(person.getUserName(), person.getPasswordHash(), person.isActive(), true, true, true, 
+				roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft()),
+				permissionHierarchy.getAcceptablePermissions(authoritiesAndPermissions.getRight()));
+		
+		return userDetails;
+	}
+	
+	protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(IPerson person) {
 		Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
 		Set<Permission> permissions = Sets.newHashSet();
 		
@@ -62,11 +74,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			permissions.addAll(personGroup.getPermissions());
 		}
 		
-		CoreUserDetails userDetails = new CoreUserDetails(person.getUserName(), person.getPasswordHash(), person.isActive(), true, true, true, 
-				roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities),
-				permissionHierarchy.getAcceptablePermissions(permissions));
-		
-		return userDetails;
+		return new ImmutablePair<Set<GrantedAuthority>, Set<Permission>>(grantedAuthorities, permissions);
 	}
 	
 	protected void addAuthorities(Set<GrantedAuthority> grantedAuthorities, Set<Authority> authorities) {
