@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.security.service;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
@@ -45,7 +46,7 @@ final class AuthenticationUtil {
 		
 		Object userDetailsCandidate = authentication.getPrincipal();
 		if (!(userDetailsCandidate instanceof CoreUserDetails)) {
-			throw new IllegalStateException("UserDetails should be a CoreUserDetails");
+			return Collections.emptyList();
 		}
 		CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
 		

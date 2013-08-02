@@ -77,7 +77,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		}
 		Object userDetailsCandidate = authentication.getPrincipal();
 		if (!(userDetailsCandidate instanceof CoreUserDetails)) {
-			throw new IllegalStateException("UserDetails should be a CoreUserDetails");
+			return false;
 		}
 		CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
 		Collection<? extends Permission> userPermissions = userDetails.getPermissions();
