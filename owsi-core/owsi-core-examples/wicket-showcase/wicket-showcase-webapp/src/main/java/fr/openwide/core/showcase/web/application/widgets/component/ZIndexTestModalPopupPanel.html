@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="header">
+			<wicket:message key="widgets.modal.zIndexTest.title" />
+		</div>
+		
+		<div wicket:id="body">
+			
+			<div wicket:id="popoverInformation"><wicket:message key="widgets.modal.zIndexTest.popover.label" /></div>
+			
+			<a wicket:id="popoverLabel" wicket:message="title:widgets.modal.zIndexTest.popover.label" class="btn" type="button">
+				<span class="icon-ok"></span>
+				<wicket:message key="widgets.modal.zIndexTest.popover.label" />
+			</a>
+			
+			<br/>
+			
+			<a wicket:message="title:widgets.modal.zIndexTest.save" class="btn" type="button">
+				<span class="icon-ok"></span>
+				<wicket:message key="widgets.modal.zIndexTest.save" />
+			</a>
+			
+			<br />
+			
+			<wicket:container wicket:id="autocomplete" />
+		</div>
+		
+		<div wicket:id="footer">
+			<a wicket:message="title:widgets.modal.zIndexTest.cancel" class="btn" type="button" data-dismiss="modal">
+				<span class="icon-ban-circle"></span>
+				<wicket:message key="widgets.modal.zIndexTest.cancel" />
+			</a>
+		</div>
+	</wicket:panel>
+</html>
