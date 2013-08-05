@@ -27,7 +27,6 @@ import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCs
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
 import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
-import fr.openwide.core.wicket.resource.JQuery183ResourceReference;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -85,7 +84,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 			getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
 			// surcharge des ressources jQuery et jQuery UI
-			getJavaScriptLibrarySettings().setJQueryReference(JQuery183ResourceReference.get());
 			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 			
 			// on place les éléments présents dans le wicket:head en premier
