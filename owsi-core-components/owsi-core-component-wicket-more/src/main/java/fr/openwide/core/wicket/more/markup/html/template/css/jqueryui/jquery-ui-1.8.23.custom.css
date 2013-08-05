@@ -600,7 +600,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-menu .ui-menu-item a.ui-state-hover {
 	margin: 0;
 }
-
+.ui-widget.ui-autocomplete {
+	font-size: 1em;
+	z-index: 151; /* Pour modales Bootstrap */
+}
 /* Month picker */
 .ui-monthpicker select.ui-datepicker-year {
 	margin: 0;

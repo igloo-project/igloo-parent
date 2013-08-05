@@ -14,7 +14,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.showcase.web.application.widgets.component.AddUserPopupPanel;
-import fr.openwide.core.showcase.web.application.widgets.component.PopoverTooltipModalPopupPanel;
+import fr.openwide.core.showcase.web.application.widgets.component.ZIndexTestModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -173,8 +173,8 @@ public class ModalPage extends WidgetsTemplate {
 		formDisabled.add(ajaxConfirmButtonDisabled);
 		add(formDisabled);
 		
-		PopoverTooltipModalPopupPanel popoverTooltipModalPopupPanel = new PopoverTooltipModalPopupPanel("popoverTooltipModalPopupPanel", null);
-		WebMarkupContainer popoverTooltipModalOpen = new WebMarkupContainer("popoverTooltipModalOpen");
+		ZIndexTestModalPopupPanel popoverTooltipModalPopupPanel = new ZIndexTestModalPopupPanel("zIndexTestModalPopupPanel", null);
+		WebMarkupContainer popoverTooltipModalOpen = new WebMarkupContainer("zIndexTestModalOpen");
 		popoverTooltipModalPopupPanel.setBootstrapModal(options);
 		popoverTooltipModalPopupPanel.prepareLink(popoverTooltipModalOpen);
 		add(popoverTooltipModalOpen);
