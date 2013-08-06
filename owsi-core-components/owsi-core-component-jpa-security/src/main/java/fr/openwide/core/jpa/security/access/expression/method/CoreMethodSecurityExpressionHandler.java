@@ -33,6 +33,7 @@ public class CoreMethodSecurityExpressionHandler extends DefaultMethodSecurityEx
 	
 	@Override
 	public void setReturnObject(Object returnObject, EvaluationContext ctx) {
+		// TODO GSM : méthode à supprimer dès qu'on passe à Spring Security 3.1.5 ou 3.2
 		((MethodSecurityExpressionOperations) ctx.getRootObject().getValue()).setReturnObject(returnObject);
 	}
 
