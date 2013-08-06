@@ -165,15 +165,15 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getHibernateSearchReindexBatchSize() {
-		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 10);
+		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 25);
 	}
 	
 	public int getHibernateSearchReindexFetchingThreads() {
-		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS, 2);
+		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS, 8);
 	}
 	
 	public int getHibernateSearchReindexLoadThreads() {
-		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 2);
+		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 8);
 	}
 	
 	public String getNotificationMailFrom() {
