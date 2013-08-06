@@ -334,7 +334,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		
 		@Override
 		public void entitiesLoaded(int size) {
-			this.entitiesLoaded = size;
+			this.entitiesLoaded += size;
 		}
 		
 		@Override
