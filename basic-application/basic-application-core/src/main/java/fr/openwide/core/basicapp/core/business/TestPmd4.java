@@ -29,7 +29,7 @@ public class TestPmd4 extends GenericEntity<Long, TestPmd4> {
 	}
 
 	@Override
-	public String getNameForToString() {
+	public final String getNameForToString() {
 		return null;
 	}
 
