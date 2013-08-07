@@ -4,9 +4,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.LockModeType;
 
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-
-public class TestPmd5 extends TestPmd4 {
+public enum TestPmd5 {
+	;
 	
 	private LockModeType test1;
 	
@@ -19,23 +18,5 @@ public class TestPmd5 extends TestPmd4 {
 	@Enumerated(value = EnumType.STRING)
 	private LockModeType test4;
 
-	@Override
-	public Long getId() {
-		return null;
-	}
-
-	@Override
-	public void setId(Long id) {
-	}
-
-	@Override
-	public String getNameForToString() {
-		return null;
-	}
-
-	@Override
-	public String getDisplayName() {
-		return null;
-	}
 	
 }
