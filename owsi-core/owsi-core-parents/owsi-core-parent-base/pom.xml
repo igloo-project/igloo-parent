@@ -21,7 +21,7 @@
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>3.2.3.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>3.2.4.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.7.2</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>4.2.3.Final</owsi-core.hibernate-core.version>
