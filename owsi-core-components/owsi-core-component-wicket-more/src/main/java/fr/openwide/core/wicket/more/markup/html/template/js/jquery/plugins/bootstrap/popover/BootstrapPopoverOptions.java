@@ -58,12 +58,12 @@ public class BootstrapPopoverOptions extends Options {
 			put("trigger", JsUtils.quotes(trigger.getValue()));
 		}
 		if (titleText != null) {
-			put("title", JsUtils.quotes(titleText));
+			put("title", JsUtils.quotes(titleText, true));
 		} else if (titleFunction != null) {
 			put("title", titleFunction.render().toString());
 		}
 		if (contentText != null) {
-			put("content", JsUtils.quotes(contentText));
+			put("content", JsUtils.quotes(contentText, true));
 		} else if (contentFunction != null) {
 			put("content", contentFunction.render().toString());
 		}
