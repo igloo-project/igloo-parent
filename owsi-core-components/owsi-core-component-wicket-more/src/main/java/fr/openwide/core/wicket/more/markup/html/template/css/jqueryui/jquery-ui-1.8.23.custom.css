@@ -602,7 +602,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 }
 .ui-widget.ui-autocomplete {
 	font-size: 1em;
-	z-index: 151; /* Pour modales Bootstrap */
+}
+/* Bugfix Autocomplete/Popover dans modales Bootstrap */
+.ui-widget.ui-autocomplete, .popover {
+	z-index: 151;
 }
 /* Month picker */
 .ui-monthpicker select.ui-datepicker-year {
