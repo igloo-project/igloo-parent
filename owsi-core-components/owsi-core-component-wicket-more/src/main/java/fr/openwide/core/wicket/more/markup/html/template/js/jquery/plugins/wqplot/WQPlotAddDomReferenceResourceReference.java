@@ -15,7 +15,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.
  * Charge le script activant la possibilité de faire référence aux diagrammes JQPlot en javascript,
  * pour les re-dessiner par exemple ('replot').
  */
-public class WQPlotAddDomReferenceResourceReference extends AbstractCoreJQueryPluginResourceReference {
+public final class WQPlotAddDomReferenceResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;
 	
 	private static final WQPlotAddDomReferenceResourceReference INSTANCE = new WQPlotAddDomReferenceResourceReference();

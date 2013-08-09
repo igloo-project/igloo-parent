@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.odlabs.wiquery.ui.datepicker.DatePickerLanguageResourceReference.DatePickerLanguages;
 
-public class MonthPickerLanguageResourceReference extends JavaScriptResourceReference {
+public final class MonthPickerLanguageResourceReference extends JavaScriptResourceReference {
 
 	private static final long serialVersionUID = 163876806827272480L;
 

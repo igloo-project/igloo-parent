@@ -125,11 +125,11 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 			booleanJunction.must(subJunction.createQuery());
 		}
 
-		List<String> Tasktypes = searchParams.getTaskTypes();
-		if (Tasktypes != null && !Tasktypes.isEmpty()) {
+		List<String> tasktypes = searchParams.getTaskTypes();
+		if (tasktypes != null && !tasktypes.isEmpty()) {
 			BooleanJunction<?> subJunction = queryBuilder.bool();
 
-			for (String taskType : Tasktypes) {
+			for (String taskType : tasktypes) {
 				subJunction.should(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.taskType().getPath())
 						.matching(taskType).createQuery());
 			}

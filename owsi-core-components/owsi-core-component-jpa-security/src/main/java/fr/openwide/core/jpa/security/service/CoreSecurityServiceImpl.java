@@ -120,12 +120,11 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		return secureContext;
 	}
 	
-	@SuppressWarnings("unused")
-	private void authenticateAs(IPerson user) {
+	protected void authenticateAs(IPerson user) {
 		authenticateAs(user.getUserName());
 	}
 
-	private void authenticateAs(String userName, String... additionalAuthorities) {
+	protected void authenticateAs(String userName, String... additionalAuthorities) {
 		clearAuthentication();
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
@@ -143,7 +142,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
-	private void authenticateAsSystem() {
+	protected void authenticateAsSystem() {
 		RunAsSystemToken runAsSystem = new RunAsSystemToken(runAsAuthenticationProvider.getKey(),
 				UserConstants.SYSTEM_USER_NAME,
 				roleHierarchy.getReachableGrantedAuthorities(Lists.newArrayList(new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM))));
