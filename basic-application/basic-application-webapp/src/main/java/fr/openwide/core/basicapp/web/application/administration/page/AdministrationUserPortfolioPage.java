@@ -10,7 +10,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.component.AdministrationUserSearchPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
@@ -26,9 +25,6 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 
 	@SpringBean
 	private BasicApplicationConfigurer basicApplicationConfigurer;
-
-	@SpringBean
-	private IUserService userService;
 
 	public AdministrationUserPortfolioPage(PageParameters parameters) {
 		super(parameters);

@@ -143,7 +143,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 					}
 					closePopup(target);
 					target.add(getPage());
-				} catch (RestartResponseException e) {
+				} catch (RestartResponseException e) { // NOSONAR
 					throw e;
 				} catch (Exception e) {
 					if (isAddMode()) {

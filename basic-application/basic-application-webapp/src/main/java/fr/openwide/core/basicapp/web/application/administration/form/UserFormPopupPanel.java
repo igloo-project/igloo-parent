@@ -207,7 +207,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 							form.error(getString("administration.user.form.userName.notUnique"));
 						}
 					}
-				} catch (RestartResponseException e) {
+				} catch (RestartResponseException e) { // NOSONAR
 					throw e;
 				} catch (Exception e) {
 					if (isAddMode()) {
