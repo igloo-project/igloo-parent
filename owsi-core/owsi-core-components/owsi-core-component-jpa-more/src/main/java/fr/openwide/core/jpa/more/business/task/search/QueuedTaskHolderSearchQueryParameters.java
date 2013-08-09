@@ -68,7 +68,7 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	}
 
 	public Date getCreationDate() {
-		return creationDate;
+		return CloneUtils.clone(creationDate);
 	}
 
 	public void setCreationDate(Date creationDate) {
@@ -76,7 +76,7 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	}
 
 	public Date getStartDate() {
-		return startDate;
+		return CloneUtils.clone(startDate);
 	}
 
 	public void setStartDate(Date startDate) {

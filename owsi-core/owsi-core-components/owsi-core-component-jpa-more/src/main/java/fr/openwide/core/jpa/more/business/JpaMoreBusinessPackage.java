@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.more.business;
 
-public class JpaMoreBusinessPackage {
+public final class JpaMoreBusinessPackage { // NOSONAR
 
 	private JpaMoreBusinessPackage() {};
 

@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public class MonthPickerJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
+public final class MonthPickerJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	
 	private static final long serialVersionUID = -1451228678288396852L;
 	

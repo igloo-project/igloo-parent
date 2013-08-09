@@ -7,14 +7,14 @@ import org.apache.wicket.model.IModel;
 
 public interface IPlaceholderEnclosureBuilder<T> {
 
-	public abstract T components(Component firstComponent, Component... otherComponents);
+	T components(Component firstComponent, Component... otherComponents);
 
-	public abstract T component(Component component);
+	T component(Component component);
 
-	public abstract T models(IModel<?> firstModel, IModel<?>... otherModels);
+	T models(IModel<?> firstModel, IModel<?>... otherModels);
 
-	public abstract T model(IModel<?> model);
+	T model(IModel<?> model);
 
-	public abstract T collectionModel(IModel<? extends Collection<?>> model);
+	T collectionModel(IModel<? extends Collection<?>> model);
 
 }

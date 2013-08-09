@@ -7,7 +7,7 @@ import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.core.options.Options;
 
-public class BootstrapModal implements ChainableStatement, Serializable {
+public final class BootstrapModal implements ChainableStatement, Serializable {
 
 	private static final long serialVersionUID = 7943137804361253044L;
 

@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.odlabs.wiquery.core.javascript.ChainableStatement;
 import org.odlabs.wiquery.core.options.LiteralOption;
 
-public class BootstrapModalManager implements ChainableStatement {
+public final class BootstrapModalManager implements ChainableStatement {
 
 	public static final String BOOTSTRAP_MODAL_MANAGER_CHAIN_LABEL = "modalmanager";
 
