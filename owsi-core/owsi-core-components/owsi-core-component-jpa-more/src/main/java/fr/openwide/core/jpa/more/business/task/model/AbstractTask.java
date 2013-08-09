@@ -13,9 +13,9 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Throwables;
 
 import fr.openwide.core.commons.util.CloneUtils;
-import fr.openwide.core.commons.util.ExceptionUtils;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 
@@ -85,7 +85,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 						queuedTaskHolder.setStatus(TaskStatus.FAILED);
 						queuedTaskHolder.setEndDate(new Date());
-						queuedTaskHolder.setResult(ExceptionUtils.getStackTraceAsString(beforeTaskResult));
+						queuedTaskHolder.setResult(Throwables.getStackTraceAsString(beforeTaskResult));
 						queuedTaskHolderService.update(queuedTaskHolder);
 					} catch (Exception e) {
 						throw new RuntimeException(e);
@@ -125,7 +125,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 						queuedTaskHolder.setStatus(TaskStatus.FAILED);
 						queuedTaskHolder.setEndDate(new Date());
-						queuedTaskHolder.setResult(ExceptionUtils.getStackTraceAsString(taskResult));
+						queuedTaskHolder.setResult(Throwables.getStackTraceAsString(taskResult));
 						queuedTaskHolderService.update(queuedTaskHolder);
 					} catch (Exception e) {
 						throw new RuntimeException(e);
