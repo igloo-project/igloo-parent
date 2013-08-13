@@ -1,9 +1,12 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
+import java.util.Locale;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -37,7 +40,7 @@ public class UserProfilPanel extends GenericPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserProfilPanel(String id, IModel<User> userModel) {
+	public UserProfilPanel(String id, final IModel<User> userModel) {
 		super(id, userModel);
 		
 		add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
@@ -49,6 +52,15 @@ public class UserProfilPanel extends GenericPanel<User> {
 				DatePattern.SHORT_DATETIME));
 		add(new DateLabel("lastUpdateDate", BindingModel.of(userModel, Binding.user().lastUpdateDate()),
 				DatePattern.SHORT_DATETIME));
+		add(new Label("locale", new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				Locale locale = BindingModel.of(userModel, Binding.user().locale()).getObject();
+				return locale != null ? locale.getDisplayName(BasicApplicationSession.get().getLocale()) : null;
+			}
+		}));
 		
 		// User update popup
 		UserFormPopupPanel userUpdatePanel = new UserFormPopupPanel("userUpdatePopupPanel", getModel());
@@ -110,7 +122,8 @@ public class UserProfilPanel extends GenericPanel<User> {
 				new ResourceModel("administration.user.disable.confirmation.title"),
 				confirmationTextModel,
 				new ResourceModel("common.confirm"),
-				new ResourceModel("common.cancel")) {
+				new ResourceModel("common.cancel"),
+				null, false) {
 			private static final long serialVersionUID = 6157423807032594861L;
 			
 			@Override

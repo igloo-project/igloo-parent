@@ -31,7 +31,9 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.common.component.LocaleDropDownChoice;
 import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
@@ -149,6 +151,10 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		confirmPasswordField.setRequired(true);
 		passwordContainer.add(confirmPasswordField);
 		
+		LocaleDropDownChoice localeField = new LocaleDropDownChoice("locale", BindingModel.of(userForm.getModel(), Binding.user().locale()));
+		localeField.setLabel(new ResourceModel("administration.user.field.locale"));
+		userForm.add(localeField);
+		
 		return body;
 	}
 
@@ -198,6 +204,9 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					} else {
 						if (usersWithSameName.isEmpty() || (usersWithSameName.size() == 1 &&
 								user.getId().equals(usersWithSameName.get(0).getId()))) {
+							if (user.getLocale() != null) {
+								BasicApplicationSession.get().setLocale(user.getLocale());
+							}
 							userService.update(user);
 							getSession().success(getString("administration.user.form.edit.success"));
 							closePopup(target);
