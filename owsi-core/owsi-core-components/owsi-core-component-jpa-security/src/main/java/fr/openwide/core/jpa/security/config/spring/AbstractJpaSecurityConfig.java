@@ -48,6 +48,9 @@ public abstract class AbstractJpaSecurityConfig {
 
 	@Autowired
 	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
+	
+	@Autowired
+	protected CoreConfigurer configurer;
 
 	/**
 	 * N'est pas basculé en configuration car on n'est pas censé basculer d'un
@@ -63,7 +66,7 @@ public abstract class AbstractJpaSecurityConfig {
 	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder(CoreConfigurer configurer) {
+	public PasswordEncoder passwordEncoder() {
 		CoreShaPasswordEncoder passwordEncoder = new CoreShaPasswordEncoder(256);
 		passwordEncoder.setSalt(configurer.getSecurityPasswordSalt());
 		
