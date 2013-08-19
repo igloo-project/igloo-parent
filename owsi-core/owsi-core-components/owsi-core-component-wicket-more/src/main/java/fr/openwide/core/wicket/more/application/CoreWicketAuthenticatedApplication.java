@@ -20,6 +20,8 @@ import org.springframework.security.acls.domain.PermissionFactory;
 
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.CoreDefaultExceptionMapper;
+import fr.openwide.core.wicket.more.link.factory.CoreWicketAuthenticatedApplicationLinkFactory;
+import fr.openwide.core.wicket.more.link.factory.LegacyCoreWicketAuthenticatedApplicationLinkFactory;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
@@ -88,6 +90,12 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 				webSessionClassRef.get(), e);
 		}
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public CoreWicketAuthenticatedApplicationLinkFactory getLinkFactory() {
+		return LegacyCoreWicketAuthenticatedApplicationLinkFactory.get();
+	}
 
 	protected CompoundAuthorizationStrategy newAuthorizationStrategy() {
 		return new CoreAuthorizationStrategy(this, authenticationService, permissionFactory);
@@ -99,7 +107,13 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 	
 	protected abstract Class<? extends AuthenticatedWebSession> getWebSessionClass();
 	
-	public abstract Class<? extends WebPage> getSignInPageClass();
+	/**
+	 * @deprecated Use {@link #getLinkFactory()}.signIn() instead.
+	 */
+	@Deprecated
+	public Class<? extends WebPage> getSignInPageClass() {
+		throw new IllegalStateException("This method should be either overriden (in older applications) or never called (in newer applications)");
+	}
 	
 	@Override
 	public IProvider<IExceptionMapper> getExceptionMapperProvider() {

@@ -13,7 +13,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
-import fr.openwide.core.wicket.more.console.common.util.LinkUtils;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
@@ -21,6 +20,7 @@ import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMainten
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.link.utils.CoreLinkParameterUtils;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
 public final class ConsoleConfiguration {
@@ -65,8 +65,8 @@ public final class ConsoleConfiguration {
 			
 			ConsoleMenuItem maintenanceTasksMenuItem = new ConsoleMenuItem("maintenanceTasksMenuItem",
 					"console.maintenance.tasks", "tasks", ConsoleMaintenanceTaskListPage.class);
-			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage("${"
-					+ LinkUtils.ID_PARAMETER + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
+			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage(
+					"${" + CoreLinkParameterUtils.ID_PARAMETER + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
 			maintenanceTasksMenuItem.addRelatedPage(maintenanceTaskDetailsPage);
 
 			maintenanceMenuSection.addMenuItem(maintenanceTasksMenuItem);

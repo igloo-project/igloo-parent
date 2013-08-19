@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.console.maintenance.task.component;
 import java.util.Date;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -12,8 +12,8 @@ import org.apache.wicket.model.PropertyModel;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
-import fr.openwide.core.wicket.more.console.common.util.LinkUtils;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
+import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
@@ -33,7 +33,7 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 
 		item.add(new TaskStatusPanel("status", Model.of(item.getModelObject().getStatus())));
 
-		Link<QueuedTaskHolder> nameLink = LinkUtils.getQueuedTaskHolderLink("nameLink", itemModel);
+		AbstractLink nameLink = ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(itemModel).link("nameLink");
 		nameLink.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
 		item.add(nameLink);
 

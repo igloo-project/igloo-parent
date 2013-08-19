@@ -9,13 +9,11 @@ import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
-import fr.openwide.core.showcase.web.application.util.LinkUtils;
+import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 
 public class UserSearchPanel extends Panel {
@@ -50,8 +48,7 @@ public class UserSearchPanel extends Panel {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				if (getModelObject() != null) {
-					PageParameters pageParameters = LinkUtils.getUserDescriptionPageParameters(getModel().getObject());
-					setResponsePage(UserDescriptionPage.class, pageParameters);
+					LinkFactory.get().userDescription(getModel()).setResponsePage();
 					return;
 				}
 			}

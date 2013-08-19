@@ -27,17 +27,21 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
+import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
-import fr.openwide.core.wicket.more.console.common.util.LinkUtils;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.CoreLinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.utils.CoreLinkParameterUtils;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
 public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTemplate {
@@ -59,13 +63,20 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 
 	private static final List<TaskStatus> RELOADBLE_TASK_STATUS = Lists.newArrayList(TaskStatus.CANCELLED,
 			TaskStatus.FAILED, TaskStatus.INTERRUPTED);
+	
+	public static IPageLinkDescriptor linkDescriptor(IModel<? extends QueuedTaskHolder> queuedTaskHolderModel) {
+		QueuedTaskHolderBinding binding = new QueuedTaskHolderBinding();
+		return new CoreLinkDescriptorBuilder()
+				.page(ConsoleMaintenanceTaskDescriptionPage.class)
+				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(queuedTaskHolderModel, binding.id()))
+				.build();
+	}
 
 	public ConsoleMaintenanceTaskDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		setOutputMarkupId(true);
 
-		this.queuedTaskHolderModel = LinkUtils.extractGenericEntityModelParameter(queuedTaskHolderService, parameters,
-				Long.class);
+		this.queuedTaskHolderModel = CoreLinkParameterUtils.extractGenericEntityParameterModel(queuedTaskHolderService, parameters, Long.class);
 
 		if (this.queuedTaskHolderModel == null || this.queuedTaskHolderModel.getObject() == null) {
 			Session.get().error(getString("common.notExists"));
@@ -128,8 +139,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 					queuedTaskHolderManager.reload(getModelObject().getId());
 					Session.get().success(
 							getString("console.maintenance.task.description.mainInformation.reload.success"));
-					throw new RestartResponseException(ConsoleMaintenanceTaskDescriptionPage.class, LinkUtils
-							.getGenericEntityIdPageParameters(getModel()));
+					throw linkDescriptor(getModel()).restartResponseException();
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<strong><wicket:message key="links.lastUser" /></strong>
+		<span wicket:id="lastUser" /><span wicket:id="lastUserPlaceholder">-</span>
+		
+		<hr />
+		
+		<form wicket:id="form" class="form-horizontal">
+			<div class="control-group">
+				<label wicket:for="page" class="control-label"><wicket:label /></label>
+				<div wicket:id="page" class="controls" />
+			</div>
+			<div class="control-group">
+				<label wicket:for="user" class="control-label"><wicket:label /></label>
+				<div wicket:id="user" class="controls" />
+			</div>
+		</form>
+		
+		<div wicket:id="testContainer" class="form-actions">
+			<p>
+				<strong><wicket:message key="links.nextUrl" /></strong>
+				<span wicket:id="url" />
+			</p>
+			<p>
+				<form wicket:id="linkForm" style="display: inline-block;">
+					<button type="submit" class="btn btn-primary">
+						<wicket:message key="links.setResponse" />
+					</button>
+				</form>
+				<a wicket:id="bookmarkableLink" class="btn btn-primary">
+					<wicket:message key="links.bookmarkable" />
+				</a>
+				<a wicket:id="linkWithRedirect" class="btn btn-primary">
+					<wicket:message key="links.redirect" />
+				</a>
+			</p>
+		</div>
+	</wicket:panel>
+</html>
