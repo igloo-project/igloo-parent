@@ -21,14 +21,14 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.dao.SystemWideSaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.crypto.password.CoreShaPasswordEncoder;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.hierarchy.PermissionHierarchyImpl;
 import fr.openwide.core.jpa.security.model.CorePermissionConstants;
@@ -42,8 +42,8 @@ import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 import fr.openwide.core.jpa.security.service.NamedPermissionFactory;
+import fr.openwide.core.spring.config.CoreConfigurer;
 
-@SuppressWarnings("deprecation")
 @Configuration
 @Import(DefaultJpaSecurityConfig.class)
 public abstract class AbstractJpaSecurityConfig {
@@ -65,8 +65,11 @@ public abstract class AbstractJpaSecurityConfig {
 	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new ShaPasswordEncoder(256);
+	public PasswordEncoder passwordEncoder(CoreConfigurer configurer) {
+		CoreShaPasswordEncoder passwordEncoder = new CoreShaPasswordEncoder(256);
+		passwordEncoder.setSalt(configurer.getSecurityPasswordSalt());
+		
+		return passwordEncoder;
 	}
 
 	@Bean

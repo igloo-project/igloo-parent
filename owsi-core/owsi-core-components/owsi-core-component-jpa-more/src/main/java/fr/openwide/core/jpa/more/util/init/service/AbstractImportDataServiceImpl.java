@@ -23,7 +23,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Maps;
 
@@ -175,12 +175,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		}
 		
 		if (line.containsKey(PASSWORD_FIELD_NAME)) {
-			Object salt = null;
-			if (saltSource != null) {
-				salt = saltSource.getSalt(null);
-			}
-			line.put(PASSWORD_HASH_FIELD_NAME, passwordEncoder.encodePassword(line.get(PASSWORD_FIELD_NAME).toString(),
-					salt));
+			line.put(PASSWORD_HASH_FIELD_NAME, passwordEncoder.encode(line.get(PASSWORD_FIELD_NAME).toString()));
 		}
 	}
 	

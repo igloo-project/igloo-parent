@@ -172,4 +172,8 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public int getTaskStopTimeout() {
 		return getPropertyAsInteger("task.stop.timeout", TASK_STOP_TIMEOUT_DEFAULT);
 	}
+	
+	public String getSecurityPasswordSalt() {
+		return getPropertyAsString("security.passwordSalt");
+	}
 }
