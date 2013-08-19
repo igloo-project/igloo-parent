@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.ShowcaseSession;
+import fr.openwide.core.showcase.web.application.links.page.LinksPage1;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
 import fr.openwide.core.showcase.web.application.others.page.HideableComponentsPage;
@@ -165,6 +166,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new NavigationMenuItem(new ResourceModel("navigation.titles"), TitlesPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.buttons"), ButtonsPage.class),
 				new NavigationMenuItem(new ResourceModel("navigation.hideableComponents"), HideableComponentsPage.class),
+				new NavigationMenuItem(new ResourceModel("navigation.links"), LinksPage1.class),
 				new NavigationMenuItem(new ResourceModel("navigation.tasks"), TaskMainPage.class)
 		);
 	}

@@ -21,6 +21,8 @@ import org.springframework.context.ApplicationContext;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
+import fr.openwide.core.wicket.more.link.factory.CoreWicketApplicationLinkFactory;
+import fr.openwide.core.wicket.more.link.factory.LegacyCoreWicketApplicationLinkFactory;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
@@ -133,6 +135,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public RuntimeConfigurationType getConfigurationType() {
 		return RuntimeConfigurationType.valueOf(configurer.getConfigurationType().toUpperCase(Locale.ROOT));
+	}
+	
+	@SuppressWarnings("deprecation")
+	public CoreWicketApplicationLinkFactory getLinkFactory() {
+		return LegacyCoreWicketApplicationLinkFactory.get();
 	}
 
 }
