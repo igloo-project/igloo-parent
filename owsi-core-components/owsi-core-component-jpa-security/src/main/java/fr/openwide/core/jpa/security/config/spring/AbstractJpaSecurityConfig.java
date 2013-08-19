@@ -21,7 +21,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.dao.SystemWideSaltSource;
-import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -43,6 +43,7 @@ import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 import fr.openwide.core.jpa.security.service.NamedPermissionFactory;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @Import(DefaultJpaSecurityConfig.class)
 public abstract class AbstractJpaSecurityConfig {
@@ -64,7 +65,7 @@ public abstract class AbstractJpaSecurityConfig {
 	}
 	
 	@Bean
-	public MessageDigestPasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new ShaPasswordEncoder(256);
 	}
 
@@ -94,7 +95,7 @@ public abstract class AbstractJpaSecurityConfig {
 
 	@Bean
 	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
-			RunAsImplAuthenticationProvider runAsProvider, MessageDigestPasswordEncoder passwordEncoder,
+			RunAsImplAuthenticationProvider runAsProvider, PasswordEncoder passwordEncoder,
 			SaltSource saltSource) {
 		List<AuthenticationProvider> providers = Lists.newArrayList();
 		providers.add(runAsProvider);
