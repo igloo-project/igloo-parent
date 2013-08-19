@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
-import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Maps;
@@ -70,9 +69,6 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	@Autowired(required = false)
-	private SaltSource saltSource;
 	
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
