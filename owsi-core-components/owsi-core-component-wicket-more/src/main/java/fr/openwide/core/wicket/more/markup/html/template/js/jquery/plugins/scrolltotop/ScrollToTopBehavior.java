@@ -5,22 +5,28 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.util.lang.Args;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
 public class ScrollToTopBehavior extends Behavior {
 
 	private static final long serialVersionUID = -4834541827215125178L;
 
-	private static final String SCROLL_TO_TOP = "scrollToTop";
-
+	private ScrollToTop scrollToTop;
+	
 	public ScrollToTopBehavior() {
-		super();
+		this(new ScrollToTop());
+	}
+	
+	public ScrollToTopBehavior(ScrollToTop scrollToTop) {
+		Args.notNull(scrollToTop, "scrollToTop");
+		this.scrollToTop = scrollToTop;
 	}
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(ScrollToTopJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain(SCROLL_TO_TOP).render()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain(scrollToTop).render()));
 		super.renderHead(component, response);
 	}
 
