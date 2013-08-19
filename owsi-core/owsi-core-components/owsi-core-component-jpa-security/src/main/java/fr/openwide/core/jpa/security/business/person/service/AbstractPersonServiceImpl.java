@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
@@ -33,9 +32,6 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	@Autowired(required = false)
-	private SaltSource saltSource;
 	
 	private IPersonDao<P> personDao;
 	

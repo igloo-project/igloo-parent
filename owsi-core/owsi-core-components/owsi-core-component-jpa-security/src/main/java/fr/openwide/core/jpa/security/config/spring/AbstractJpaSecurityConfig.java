@@ -19,8 +19,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.dao.SystemWideSaltSource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -73,13 +71,6 @@ public abstract class AbstractJpaSecurityConfig {
 	}
 
 	@Bean
-	public SaltSource saltSource() {
-		SystemWideSaltSource saltSource = new SystemWideSaltSource();
-		saltSource.setSystemWideSalt(defaultJpaSecurityConfig.getPasswordSalt());
-		return saltSource;
-	}
-
-	@Bean
 	public ISecurityService securityService() {
 		return new CoreSecurityServiceImpl();
 	}
@@ -98,14 +89,12 @@ public abstract class AbstractJpaSecurityConfig {
 
 	@Bean
 	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
-			RunAsImplAuthenticationProvider runAsProvider, PasswordEncoder passwordEncoder,
-			SaltSource saltSource) {
+			RunAsImplAuthenticationProvider runAsProvider, PasswordEncoder passwordEncoder) {
 		List<AuthenticationProvider> providers = Lists.newArrayList();
 		providers.add(runAsProvider);
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setUserDetailsService(userDetailsService);
 		authenticationProvider.setPasswordEncoder(passwordEncoder);
-		authenticationProvider.setSaltSource(saltSource);
 		providers.add(authenticationProvider);
 		return new ProviderManager(providers);
 	}
