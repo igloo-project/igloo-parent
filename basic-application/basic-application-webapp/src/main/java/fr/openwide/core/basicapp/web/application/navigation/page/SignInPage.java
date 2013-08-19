@@ -62,7 +62,8 @@ public class SignInPage extends CoreWebPage {
 				if (success) {
 					throw new RestartResponseException(LoginSuccessPage.class);
 				} else {
-					throw new RestartResponseException(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
+					throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
+							.signIn().restartResponseException();
 				}
 			}
 		};

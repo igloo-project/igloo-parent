@@ -19,6 +19,8 @@ public class AccessDeniedPage extends CoreWebPage {
 		super.onInitialize();
 		
 		BasicApplicationSession.get().error(getString("access.denied"));
-		redirect(CoreWicketAuthenticatedApplication.get().getSignInPageClass());
+		
+		throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
+				.signIn().restartResponseException();
 	}
 }
