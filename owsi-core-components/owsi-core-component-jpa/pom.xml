@@ -43,10 +43,6 @@
 			<artifactId>hibernate-search-orm</artifactId>
 			<version>${owsi-core.hibernate-search.version}</version>
 			<exclusions>
-				<exclusion>
-					<artifactId>hibernate-commons-annotations</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
 				<!--
 				on utilise des classes de solr-core pour des analyzers mais on n'a vraiment pas besoin d'aller chercher
 				dans des analyzers aussi tordus que ceux qui sont dans ce package...
@@ -131,11 +127,6 @@
 					<groupId>org.apache.lucene</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-core-asl</artifactId>
 		</dependency>
 		
 		<dependency>
