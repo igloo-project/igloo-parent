@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -124,13 +124,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException {
-		String passwordHash;
-		if (saltSource == null) {
-			passwordHash = passwordEncoder.encodePassword(clearTextPassword, null);
-		} else {
-			passwordHash = passwordEncoder.encodePassword(clearTextPassword, saltSource.getSalt(null));
-		}
-		person.setPasswordHash(passwordHash);
+		person.setPasswordHash(passwordEncoder.encode(clearTextPassword));
 		super.update(person);
 	}
 
