@@ -27,6 +27,7 @@ import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
 import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidationException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -73,7 +74,11 @@ public class LinksTestPanel extends GenericPanel<User> {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public String getObject() {
-						return LinkFactory.get().linksTest(pageClassModel, userModel).fullUrl();
+						try {
+							return LinkFactory.get().linksTest(pageClassModel, userModel).fullUrl();
+						} catch(ParameterValidationException e) {
+							return e.getMessage();
+						}
 					}
 					@Override
 					public void detach() {
@@ -90,11 +95,12 @@ public class LinksTestPanel extends GenericPanel<User> {
 					}
 				}
 				, LinkFactory.get().linksTest(pageClassModel, userModel).link("bookmarkableLink")
+						.setAutoHideIfInvalid(true)
 				, new Link<Void>("linkWithRedirect") {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public void onClick() {
-						throw LinkFactory.get().linksTest(pageClassModel, userModel).restartResponseException();
+						throw LinkFactory.get().linksTest(pageClassModel, userModel).newRestartResponseException();
 					}
 				}
 		);

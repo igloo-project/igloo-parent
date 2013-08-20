@@ -68,7 +68,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		QueuedTaskHolderBinding binding = new QueuedTaskHolderBinding();
 		return new CoreLinkDescriptorBuilder()
 				.page(ConsoleMaintenanceTaskDescriptionPage.class)
-				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(queuedTaskHolderModel, binding.id()))
+				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(queuedTaskHolderModel, binding.id())).mandatory()
 				.build();
 	}
 
@@ -139,7 +139,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 					queuedTaskHolderManager.reload(getModelObject().getId());
 					Session.get().success(
 							getString("console.maintenance.task.description.mainInformation.reload.success"));
-					throw linkDescriptor(getModel()).restartResponseException();
+					throw linkDescriptor(getModel()).newRestartResponseException();
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {

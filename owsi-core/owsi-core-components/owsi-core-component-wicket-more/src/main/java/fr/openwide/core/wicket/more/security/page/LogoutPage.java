@@ -16,7 +16,7 @@ public class LogoutPage extends CoreWebPage {
 		}
 		
 		throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
-				.signIn().restartResponseException();
+				.signIn().newRestartResponseException();
 	}
 
 }
