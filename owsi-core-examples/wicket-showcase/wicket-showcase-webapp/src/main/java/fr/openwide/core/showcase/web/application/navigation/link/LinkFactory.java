@@ -39,14 +39,14 @@ public final class LinkFactory extends CoreWicketAuthenticatedApplicationLinkFac
 	public IPageLinkDescriptor userDescription(IModel<? extends User> userModel) {
 		return builder()
 				.page(UserDescriptionPage.class)
-				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(userModel, Binding.user().id()))
+				.parameter(CoreLinkParameterUtils.ID_PARAMETER, userModel).mandatory()
 				.build();
 	}
 	
 	public IPageLinkDescriptor linksTest(IModel<? extends Class<? extends Page>> pageModel, IModel<? extends User> userModel) {
 		return builder()
 				.page(pageModel)
-				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(userModel, Binding.user().id()))
+				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(userModel, Binding.user().id())).mandatory()
 				.build();
 	}
 }

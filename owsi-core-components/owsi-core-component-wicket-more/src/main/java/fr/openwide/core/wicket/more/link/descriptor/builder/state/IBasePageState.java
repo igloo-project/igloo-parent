@@ -3,10 +3,12 @@ package fr.openwide.core.wicket.more.link.descriptor.builder.state;
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+
 public interface IBasePageState {
 	
-	<P extends Page> IPageParametersState page(Class<P> pageClass);
+	<P extends Page> IParametersState<IPageLinkDescriptor> page(Class<P> pageClass);
 	
-	IPageParametersState page(IModel<? extends Class<? extends Page>> pageClassModel);
+	IParametersState<IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel);
 
 }

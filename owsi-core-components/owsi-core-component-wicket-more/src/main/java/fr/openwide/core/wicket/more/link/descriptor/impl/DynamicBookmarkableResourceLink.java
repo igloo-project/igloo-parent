@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.link.descriptor.impl;
 
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.handler.resource.ResourceReferenceRequestHandler;
@@ -8,25 +7,28 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
 
+import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
+import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
+
 /**
- * A {@link ResourceLink} whose target resource and parameters may change during the page life cycle.
- * <p>Uses {@link PageParametersModel}.
- * <p>Cannot derive from {@link ResourceLink}, whose target Resource is inherently static.
+ * An {@link AbstractDynamicBookmarkableLink} targeting a {@link ResourceReference} that may change during the page life cycle.
+ * <p>This implementation could not derive from {@link ResourceLink}, whose target Resource is inherently static.
  * @see ResourceLink
  */
-public class DynamicResourceLink extends Link<Void> {
+public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkableLink {
 	
 	private static final long serialVersionUID = 7217475839311474526L;
 
 	private final IModel<? extends ResourceReference> resourceReferenceModel;
-	private final IModel<PageParameters> parametersModel;
 
-	public DynamicResourceLink(String wicketId, IModel<? extends ResourceReference> resourceReferenceModel, IModel<PageParameters> parametersModel) {
-		super(wicketId);
+	public DynamicBookmarkableResourceLink(
+			String wicketId,
+			IModel<? extends ResourceReference> resourceReferenceModel,
+			IModel<PageParameters> parametersModel,
+			IParameterValidator parametersValidator) {
+		super(wicketId, parametersModel, parametersValidator);
 		Args.notNull(resourceReferenceModel, "resourceReferenceModel");
-		Args.notNull(parametersModel, "dynamicParameters");
 		this.resourceReferenceModel = wrap(resourceReferenceModel); 
-		this.parametersModel = wrap(parametersModel);
 	}
 
 	protected final ResourceReference getResourceReference() {
@@ -36,33 +38,14 @@ public class DynamicResourceLink extends Link<Void> {
 		}
 		return resourceReference;
 	}
-	
-	protected final PageParameters getResourceParameters() {
-		return parametersModel.getObject();
-	}
-
-	@Override
-	protected boolean getStatelessHint() {
-		return false; // This component might be stateful (due to resourceModel and dynamicParameters)
-	}
 
 	/**
 	 * @see ResourceLink
 	 */
 	@Override
-	public final void onClick() {
-		// Unused
-	}
-
-
-	/**
-	 * @see ResourceLink
-	 */
-	@Override
-	protected final CharSequence getURL() {
+	protected final CharSequence getURL(PageParameters resourceParameters) {
 		ResourceReference resourceReference = getResourceReference();
-		PageParameters resourceParameters = getResourceParameters();
-
+		
 		//---------------------------------------------------------------------------------------------------------
 		// CODE AND COMMENTS FROM org.apache.wicket.markup.html.link.ResourceLink IN Wicket 6.9.1 (OWSI-Core 0.8.5-SNAPSHOT)
 		//---------------------------------------------------------------------------------------------------------
@@ -77,7 +60,7 @@ public class DynamicResourceLink extends Link<Void> {
 		if (resourceReference.canBeRegistered()) {
 			getApplication().getResourceReferenceRegistry().registerResourceReference(resourceReference);
 		}
-
+		
 		return getRequestCycle().urlFor(
 			new ResourceReferenceRequestHandler(resourceReference, resourceParameters)
 		);
@@ -87,7 +70,6 @@ public class DynamicResourceLink extends Link<Void> {
 	protected void onDetach() {
 		super.onDetach();
 		resourceReferenceModel.detach();
-		parametersModel.detach();
 	}
 
 }

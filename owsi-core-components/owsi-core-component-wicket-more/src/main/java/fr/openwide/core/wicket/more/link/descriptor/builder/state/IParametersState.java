@@ -6,10 +6,10 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 
-public interface IParametersState<T extends ILinkDescriptor> extends IBuildState<T> {
+public interface IParametersState<T extends ILinkDescriptor> extends IValidatorState<T> {
 
-	IParametersState<T> parameter(String name, IModel<?> valueModel);
+	IAddedParameterState<T> parameter(String name, IModel<?> valueModel);
 
-	IParametersState<T> parameter(String name, Serializable value);
+	IAddedParameterState<T> parameter(String name, Serializable value);
 
 }

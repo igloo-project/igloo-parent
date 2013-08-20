@@ -50,10 +50,10 @@ public final class CoreLinkParameterUtils {
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E extractGenericEntityParameter(
 			IGenericEntityService<K, E> entityService, PageParameters parameters, String keyParameterName, Class<K> keyClass) {
-		Args.notNull(entityService, "entityService must not be null");
-		Args.notNull(parameters, "parameters must not be null");
-		Args.notNull(keyParameterName, "keyParameterName must not be null");
-		Args.notNull(keyClass, "keyClass must not be null");
+		Args.notNull(entityService, "entityService");
+		Args.notNull(parameters, "parameters");
+		Args.notNull(keyParameterName, "keyParameterName");
+		Args.notNull(keyClass, "keyClass");
 		
 		E entity;
 		

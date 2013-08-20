@@ -36,7 +36,7 @@ public class UserDescriptionPage extends MainTemplate {
 		IModel<User> userModel = CoreLinkParameterUtils.extractGenericEntityParameterModel(userService, parameters, Long.class);
 		if (userModel.getObject() == null) {
 			getSession().error(getString("common.error.noItem"));
-			throw LinkFactory.get().userList().restartResponseException();
+			throw LinkFactory.get().userList().newRestartResponseException();
 		}
 		setDefaultModel(userModel);
 		
