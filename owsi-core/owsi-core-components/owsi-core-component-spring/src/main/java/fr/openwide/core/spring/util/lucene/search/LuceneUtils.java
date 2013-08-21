@@ -1,7 +1,10 @@
 package fr.openwide.core.spring.util.lucene.search;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -11,12 +14,16 @@ import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
+import org.apache.lucene.util.Version;
 
 import fr.openwide.core.spring.util.StringUtils;
 
 public final class LuceneUtils {
 	
-	private static final int ENABLE_WILDCARD_MIN_CHARS = 2;
+	@SuppressWarnings("deprecation")
+	public static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
+	
+	private static final int DEFAULT_ENABLE_WILDCARD_MIN_CHARS = 2;
 	
 	public static final String LOWERCASE_OPERATORS_PARAM = "lowercaseOperators";
 	
@@ -24,10 +31,26 @@ public final class LuceneUtils {
 	
 	public static final String WILDCARD_SUFFIX = "*";
 	
+	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
+			String searchPattern, int enableWildcardMinChars) throws ParseException {
+		QueryParser queryParser = new QueryParser(LUCENE_VERSION, fieldName, analyzer);
+		queryParser.setDefaultOperator(Operator.AND);
+		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
+	}
+	
+	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
+			String searchPattern) throws ParseException {
+		return getAutocompleteQuery(fieldName, analyzer, searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
+	}
+	
 	public static String getAutocompleteQuery(String searchPattern) {
+		return getAutocompleteQuery(searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
+	}
+	
+	public static String getAutocompleteQuery(String searchPattern, int enableWildcardMinChars) {
 		String cleanSearchPattern = cleanSearchPattern(searchPattern);
 		
-		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= ENABLE_WILDCARD_MIN_CHARS
+		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= enableWildcardMinChars
 				&& !cleanSearchPattern.endsWith(WILDCARD_SUFFIX)) {
 			StringBuilder autocompleteQuery = new StringBuilder(cleanSearchPattern);
 			autocompleteQuery.append(WILDCARD_SUFFIX);
@@ -38,25 +61,40 @@ public final class LuceneUtils {
 		return cleanSearchPattern;
 	}
 	
-	public static String getSimilarityQuery(String searchPattern, Float minSimilarity) {
-		String cleanSearchPattern = cleanSearchPattern(searchPattern);
-		
-		if(StringUtils.hasText(cleanSearchPattern)) {
-			StringBuilder similarityQuery = new StringBuilder();
-			
-			String[] searchPatternElements = StringUtils.delimitedListToStringArray(cleanSearchPattern, StringUtils.SPACE);
-			
-			for (int i = 0; i < searchPatternElements.length; i++) {
-				similarityQuery.append(searchPatternElements[i]).append("~").append(minSimilarity.toString()).append(" ");
-			}
-			
-			cleanSearchPattern = similarityQuery.toString().trim();
+	public static Query getSimilarityQuery(String fieldName, Analyzer analyzer,
+			String searchPattern, Float minSimilarity) throws ParseException {
+		if (minSimilarity == null) {
+			throw new IllegalArgumentException("minSimilarity may not be null");
 		}
 		
-		return cleanSearchPattern;
+		QueryParser queryParser = new QueryParser(LUCENE_VERSION, fieldName, analyzer);
+		queryParser.setDefaultOperator(Operator.AND);
+		return queryParser.parse(getSimilarityQuery(searchPattern, minSimilarity));
 	}
 	
-	private static String cleanSearchPattern(String searchPattern) {
+	public static String getSimilarityQuery(String searchPattern, Float minSimilarity) {
+		if (minSimilarity == null) {
+			throw new IllegalArgumentException("minSimilarity may not be null");
+		}
+		
+		String cleanSearchPattern = cleanSearchPattern(searchPattern);
+		
+		if (!StringUtils.hasText(cleanSearchPattern)) {
+			throw new IllegalArgumentException("cleanSearchPattern may not be empty");
+		}
+		
+		StringBuilder similarityQuery = new StringBuilder();
+		
+		String[] searchPatternElements = StringUtils.delimitedListToStringArray(cleanSearchPattern, StringUtils.SPACE);
+		
+		for (int i = 0; i < searchPatternElements.length; i++) {
+			similarityQuery.append(searchPatternElements[i]).append("~").append(minSimilarity.toString()).append(" ");
+		}
+		
+		return similarityQuery.toString().trim();
+	}
+	
+	public static String cleanSearchPattern(String searchPattern) {
 		String cleanSearchPattern = StringUtils.clean(searchPattern);
 		
 		if(StringUtils.hasText(cleanSearchPattern)) {
