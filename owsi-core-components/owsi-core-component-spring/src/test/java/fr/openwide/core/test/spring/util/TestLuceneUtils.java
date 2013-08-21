@@ -34,8 +34,6 @@ public class TestLuceneUtils {
 	
 	@Test
 	public void testGetSimilarityQuery() {
-		assertNull(LuceneUtils.getSimilarityQuery(null, 0.7f));
-		assertEquals("", LuceneUtils.getSimilarityQuery("", 0.7f));
 		assertEquals("alfresc~0.7", LuceneUtils.getSimilarityQuery("alfresc", 0.7f));
 		assertEquals("alfresco-sha~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha", 0.7f));
 		assertEquals("alfresco-sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha1", 0.7f));
