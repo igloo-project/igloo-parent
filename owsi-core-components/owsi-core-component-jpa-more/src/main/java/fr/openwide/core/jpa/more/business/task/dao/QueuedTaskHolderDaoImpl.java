@@ -11,6 +11,7 @@ import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
+import org.hibernate.search.Environment;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -101,7 +102,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 
 		String name = searchParams.getName();
 		if (StringUtils.hasText(name)) {
-			QueryParser parser = new QueryParser(Version.LUCENE_36,
+			QueryParser parser = new QueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
 					QUEUED_TASK_HOLDER_BINDING.name().getPath(),
 					analyzer
 					);

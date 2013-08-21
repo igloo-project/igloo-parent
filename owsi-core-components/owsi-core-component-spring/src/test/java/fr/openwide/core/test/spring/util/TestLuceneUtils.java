@@ -14,7 +14,6 @@ import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
-import org.apache.lucene.util.Version;
 import org.junit.Test;
 
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
@@ -96,7 +95,7 @@ public class TestLuceneUtils {
 		
 		String stringQuery = LuceneUtils.queryToString(finalQuery);
 		
-		QueryParser parser = new QueryParser(Version.LUCENE_36, "", new StandardAnalyzer(Version.LUCENE_36));
+		QueryParser parser = new QueryParser(LuceneUtils.LUCENE_VERSION, "", new StandardAnalyzer(LuceneUtils.LUCENE_VERSION));
 		Query parsedQuery = parser.parse(stringQuery);
 		assertEquals(finalQuery, parsedQuery);
 	}
@@ -111,7 +110,7 @@ public class TestLuceneUtils {
 		
 		String stringQuery = LuceneUtils.queryToString(finalQuery);
 		
-		QueryParser parser = new QueryParser(Version.LUCENE_36, "", new StandardAnalyzer(Version.LUCENE_36));
+		QueryParser parser = new QueryParser(LuceneUtils.LUCENE_VERSION, "", new StandardAnalyzer(LuceneUtils.LUCENE_VERSION));
 		Query parsedQuery = parser.parse(stringQuery);
 		
 		assertEquals(stringQuery, LuceneUtils.queryToString(parsedQuery));
