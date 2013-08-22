@@ -15,7 +15,8 @@ import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupDescriptionPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupMembersPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
-import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -23,6 +24,8 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public class AdministrationUserGroupDescriptionPage extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -5780326896837623229L;
+	
+	public static final String ID_PARAMETER = "id";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationUserGroupDescriptionPage.class);
 
@@ -30,21 +33,27 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 	private IUserGroupService userGroupService;
 
 	private IModel<UserGroup> userGroupModel;
+	
+	public static IPageLinkDescriptor linkDescriptor(IModel<UserGroup> userGroupModel) {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserGroupDescriptionPage.class)
+				.map(ID_PARAMETER, userGroupModel, UserGroup.class).mandatory()
+				.build();
+	}
 
 	public AdministrationUserGroupDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		Long userGroupId = parameters.get(LinkUtils.ID_PARAMETER).toLong();
-		UserGroup userGroup = userGroupService.getById(userGroupId);
+		userGroupModel = new GenericEntityModel<Long, UserGroup>(null);
 		
-		if (userGroup == null) {
-			LOGGER.error("Error on user group loading");
+		try {
+			linkDescriptor(userGroupModel).extract(parameters);
+		} catch (Exception e) {
+			LOGGER.error("Error on user group loading", e);
 			getSession().error(getString("administration.usergroup.error"));
 			
-			redirect(AdministrationUserGroupPortfolioPage.class);
-			return;
+			throw AdministrationUserGroupPortfolioPage.linkDescriptor().newRestartResponseException();
 		}
-		userGroupModel = new GenericEntityModel<Long, UserGroup>(userGroup);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.usergroup"),
 				AdministrationUserGroupPortfolioPage.class));

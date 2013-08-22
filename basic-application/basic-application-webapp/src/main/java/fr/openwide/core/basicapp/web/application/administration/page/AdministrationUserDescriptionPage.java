@@ -15,7 +15,8 @@ import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.component.UserMembershipsPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserProfilPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
-import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -23,6 +24,8 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -550100874222819991L;
+	
+	public static final String ID_PARAMETER = "id";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationUserDescriptionPage.class);
 
@@ -30,21 +33,27 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 	private IUserService userService;
 
 	private IModel<User> userModel;
+	
+	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel) {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserDescriptionPage.class)
+				.map(ID_PARAMETER, userModel, User.class).mandatory()
+				.build();
+	}
 
 	public AdministrationUserDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		Long userId = parameters.get(LinkUtils.ID_PARAMETER).toLong();
-		User user = userService.getById(userId);
+		userModel = new GenericEntityModel<Long, User>(null);
 		
-		if (user == null) {
-			LOGGER.error("Error on user loading");
+		try {
+			linkDescriptor(userModel).extract(parameters);
+		} catch (Exception e) {
+			LOGGER.error("Error on user loading", e);
 			getSession().error(getString("administration.user.error"));
 			
-			redirect(AdministrationUserPortfolioPage.class);
-			return;
+			throw AdministrationUserPortfolioPage.linkDescriptor().newRestartResponseException();
 		}
-		userModel = new GenericEntityModel<Long, User>(user);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
 				AdministrationUserPortfolioPage.class));

@@ -18,6 +18,8 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserGroupFormPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
@@ -30,6 +32,12 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 
 	@SpringBean
 	private IUserGroupService userGroupService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserGroupPortfolioPage.class)
+				.build();
+	}
 
 	public AdministrationUserGroupPortfolioPage(PageParameters parameters) {
 		super(parameters);

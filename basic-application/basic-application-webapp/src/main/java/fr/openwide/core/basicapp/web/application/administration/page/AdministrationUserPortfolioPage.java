@@ -16,6 +16,8 @@ import fr.openwide.core.basicapp.web.application.administration.component.UserPo
 import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
@@ -25,6 +27,12 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 
 	@SpringBean
 	private BasicApplicationConfigurer basicApplicationConfigurer;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserPortfolioPage.class)
+				.build();
+	}
 
 	public AdministrationUserPortfolioPage(PageParameters parameters) {
 		super(parameters);

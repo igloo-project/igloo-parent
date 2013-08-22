@@ -4,9 +4,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -22,7 +20,6 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.UserGroupAutocompleteAjaxComponent;
-import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -49,13 +46,8 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 			
 			@Override
 			protected void populateItem(final ListItem<UserGroup> item) {
-				BookmarkablePageLink<UserGroup> groupLink = new BookmarkablePageLink<UserGroup>(
-						"groupLink", 
-						AdministrationUserGroupDescriptionPage.class, 
-						LinkUtils.getUserGroupPageParameters(item.getModelObject())
-				);
-				groupLink.add(new Label("name", BindingModel.of(item.getModel(), Binding.userGroup().name())));
-				item.add(groupLink);
+				item.add(AdministrationUserGroupDescriptionPage.linkDescriptor(item.getModel()).link("groupLink")
+						.setBody(BindingModel.of(item.getModel(), Binding.userGroup().name())));
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
 						"administration.usergroup.members.delete.confirmation.text",

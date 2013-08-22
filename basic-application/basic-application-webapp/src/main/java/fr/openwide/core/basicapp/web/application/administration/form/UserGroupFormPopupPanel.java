@@ -28,7 +28,6 @@ import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
-import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
@@ -135,8 +134,8 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
 						Session.get().success(getString("administration.usergroup.form.add.success"));
-						throw new RestartResponseException(AdministrationUserGroupDescriptionPage.class,
-								LinkUtils.getUserGroupPageParameters(userGroup));
+						throw AdministrationUserGroupDescriptionPage.linkDescriptor(UserGroupFormPopupPanel.this.getModel())
+								.newRestartResponseException();
 					} else {
 						userGroupService.update(userGroup);
 						Session.get().success(getString("administration.usergroup.form.edit.success"));

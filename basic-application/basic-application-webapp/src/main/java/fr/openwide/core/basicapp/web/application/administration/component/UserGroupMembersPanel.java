@@ -6,7 +6,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -22,7 +21,6 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
-import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -49,13 +47,8 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 			
 			@Override
 			protected void populateItem(final ListItem<User> item) {
-				BookmarkablePageLink<User> userLink = new BookmarkablePageLink<User>(
-						"userLink", 
-						AdministrationUserDescriptionPage.class, 
-						LinkUtils.getUserPageParameters(item.getModelObject())
-				);
-				userLink.add(new Label("fullName", BindingModel.of(item.getModel(), Binding.user().fullName())));
-				item.add(userLink);
+				item.add(AdministrationUserDescriptionPage.linkDescriptor(item.getModel()).link("userLink")
+						.setBody(BindingModel.of(item.getModel(), Binding.user().fullName())));
 				
 				item.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));
 				

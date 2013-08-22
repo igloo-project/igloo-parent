@@ -34,7 +34,6 @@ import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.LocaleDropDownChoice;
-import fr.openwide.core.basicapp.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
@@ -186,8 +185,8 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 										userService.setPasswords(user, newPasswordValue);
 										
 										getSession().success(getString("administration.user.form.add.success"));
-										throw new RestartResponseException(AdministrationUserDescriptionPage.class,
-												LinkUtils.getUserPageParameters(user));
+										throw AdministrationUserDescriptionPage.linkDescriptor(UserFormPopupPanel.this.getModel())
+												.newRestartResponseException();
 									} else {
 										LOGGER.warn("Username '" + user.getUserName() + "' already used");
 										form.error(getString("administration.user.form.userName.notUnique"));
