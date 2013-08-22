@@ -30,7 +30,7 @@ public class GenericEntityToStringSpringConverter implements ConditionalGenericC
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (!sourceType.isAssignableTo(GENERIC_ENTITY_TYPE_DESCRIPTOR)) {
 			return false;
@@ -38,7 +38,12 @@ public class GenericEntityToStringSpringConverter implements ConditionalGenericC
 		if (!targetType.isAssignableTo(STRING_TYPE_DESCRIPTOR)) {
 			return false;
 		}
-		return canConvertKey((Class<? extends GenericEntity<?, ?>>)sourceType.getType(), targetType.getType());
+		
+		/*
+		 * NOTE: for the official javac to infer types properly, the GenericEntity below must be left as a raw type.
+		 * Eclipse JDT works fine without this hack.
+		 */
+		return canConvertKey((Class<? extends GenericEntity>)sourceType.getType(), targetType.getType());
 	}
 	
 	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
@@ -58,6 +63,7 @@ public class GenericEntityToStringSpringConverter implements ConditionalGenericC
 		if (source == null) {
 			return null;
 		}
+		
 		return convertKey((GenericEntity<?, ?>) source, (Class<? extends String>) targetType.getType());
 	}
 
