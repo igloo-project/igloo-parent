@@ -11,48 +11,37 @@ import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidationException;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidators;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 
-public class CorePageLinkDescriptorImpl implements IPageLinkDescriptor {
+public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IPageLinkDescriptor {
 	
 	private static final long serialVersionUID = -9139677593653180236L;
 
-	private final IModel<Class<? extends Page>> pageClassModel;
-	private final PageParametersModel parametersModel;
-	private final IParameterValidator validator;
-
+	final IModel<Class<? extends Page>> pageClassModel;
+	
 	public CorePageLinkDescriptorImpl(
 			IModel<Class<? extends Page>> pageClassModel,
-			PageParametersModel parametersModel,
-			IParameterValidator validator) {
-		super();
+			LinkParametersMapping parametersMapping,
+			ILinkParameterValidator validator) {
+		super(parametersMapping, validator);
 		Args.notNull(pageClassModel, "pageClassModel");
-		Args.notNull(parametersModel, "parametersModel");
-		Args.notNull(validator, "validator");
 		this.pageClassModel = pageClassModel;
-		this.parametersModel = parametersModel;
-		this.validator = validator;
 	}
 
 	protected Class<? extends Page> getPageClass() {
 		return pageClassModel.getObject();
 	}
 
-	protected PageParameters getValidatedParameters() throws ParameterValidationException {
-		PageParameters parameters = parametersModel.getObject();
-		ParameterValidators.check(parameters, validator);
-		return parameters;
-	}
-
 	@Override
 	public AbstractDynamicBookmarkableLink link(String wicketId) {
-		return new DynamicBookmarkablePageLink(wicketId, pageClassModel, parametersModel, validator);
+		return new DynamicBookmarkablePageLink(wicketId, pageClassModel, parametersMapping, parametersValidator);
 	}
 
 	@Override
-	public String fullUrl() throws ParameterValidationException {
+	public String fullUrl() throws LinkParameterValidationException {
 		PageParameters parameters = getValidatedParameters();
 		
 		RequestCycle requestCycle = RequestCycle.get();
@@ -65,30 +54,45 @@ public class CorePageLinkDescriptorImpl implements IPageLinkDescriptor {
 	}
 	
 	@Override
-	public void setResponsePage() throws ParameterValidationException {
-		PageParameters parameters = getValidatedParameters();
+	public void setResponsePage() throws LinkParameterValidationRuntimeException {
+		PageParameters parameters;
+		try {
+			parameters = getValidatedParameters();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 		
 		RequestCycle.get().setResponsePage(getPageClass(), parameters);
 	}
 
 	@Override
-	public RestartResponseException newRestartResponseException() throws ParameterValidationException {
-		PageParameters parameters = getValidatedParameters();
+	public RestartResponseException newRestartResponseException() throws LinkParameterValidationRuntimeException {
+		PageParameters parameters;
+		try {
+			parameters = getValidatedParameters();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 		
 		return new RestartResponseException(getPageClass(), parameters);
 	}
 	
 	@Override
-	public RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws ParameterValidationException {
-		PageParameters parameters = getValidatedParameters();
+	public RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws LinkParameterValidationRuntimeException {
+		PageParameters parameters;
+		try {
+			parameters = getValidatedParameters();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 		
 		return new RestartResponseAtInterceptPageException(getPageClass(), parameters);
 	}
-
+	
 	@Override
 	public void detach() {
+		super.detach();
 		pageClassModel.detach();
-		parametersModel.detach();
 	}
 
 }

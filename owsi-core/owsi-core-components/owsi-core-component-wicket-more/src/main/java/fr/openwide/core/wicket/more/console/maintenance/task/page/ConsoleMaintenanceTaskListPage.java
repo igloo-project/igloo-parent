@@ -8,10 +8,18 @@ import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskResul
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
 public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
 	private static final long serialVersionUID = -4085517848301335018L;
+
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ConsoleMaintenanceTaskListPage.class)
+				.build();
+	}
 
 	public ConsoleMaintenanceTaskListPage(PageParameters parameters) {
 		super(parameters);

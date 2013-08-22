@@ -1,78 +1,72 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
-import java.util.Map;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Args;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParametersState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.ITerminalState;
-import fr.openwide.core.wicket.more.link.descriptor.impl.PageParametersModel;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidators;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParameterMappingEntry;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
-public class CoreLinkDescriptorBuilderParametersStateImpl<T extends ILinkDescriptor>
-		implements IParametersState<T>, IAddedParameterState<T> {
+public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescriptor>
+		implements IParameterMappingState<L>, IAddedParameterMappingState<L> {
 	
-	private final CoreLinkDescriptorBuilderFactory<T> factory;
-	private final Map<String, IModel<?>> parameterModelMap;
-	private final Collection<IParameterValidator> parameterValidators;
+	private final CoreLinkDescriptorBuilderFactory<L> factory;
+	private final Collection<LinkParameterMappingEntry<?>> parameterMappingEntries;
+	private final Collection<ILinkParameterValidator> parameterValidators;
 	
 	private String lastAddedParameterName;
 	
-	public CoreLinkDescriptorBuilderParametersStateImpl(CoreLinkDescriptorBuilderFactory<T> factory) {
+	public CoreLinkDescriptorBuilderParametersStateImpl(CoreLinkDescriptorBuilderFactory<L> factory) {
 		this.factory = factory;
-		this.parameterModelMap = Maps.newLinkedHashMap();
+		this.parameterMappingEntries = Lists.newArrayList();
 		this.parameterValidators = Lists.newArrayList();
 	}
 
 	@Override
-	public IAddedParameterState<T> parameter(String name, IModel<?> valueModel) {
+	public <T> IAddedParameterMappingState<L> map(String name, IModel<T> valueModel, Class<T> valueType) {
 		Args.notNull(name, "name");
 		Args.notNull(valueModel, "valueModel");
-		
-		parameterModelMap.put(name, valueModel);
+		Args.notNull(valueType, "valueType");
+
+		LinkParameterMappingEntry<T> entry = new LinkParameterMappingEntry<T>(name, valueModel, valueType);
+		parameterMappingEntries.add(entry);
 		lastAddedParameterName = name;
 		
 		return this;
 	}
-
-	@Override
-	public IAddedParameterState<T> parameter(String name, Serializable value) {
-		return parameter(name, Model.of(value));
-	}
 	
 	@Override
-	public IParametersState<T> optional() {
+	public IParameterMappingState<L> optional() {
 		return this;
 	}
 	
 	@Override
-	public IParametersState<T> mandatory() {
+	public IParameterMappingState<L> mandatory() {
 		parameterValidators.add(new CoreLinkDescriptorBuilderMandatoryParameterValidator(lastAddedParameterName));
 		return this;
 	}
 
 	@Override
-	public ITerminalState<T> validator(IParameterValidator validator) {
+	public ITerminalState<L> validator(ILinkParameterValidator validator) {
 		Args.notNull(validator, "validator");
 		parameterValidators.add(validator);
 		return this;
 	}
 	
 	@Override
-	public final T build() {
-		PageParametersModel parameters = new PageParametersModel(parameterModelMap);
-		IParameterValidator validator = ParameterValidators.chain(parameterValidators);
-		return factory.create(parameters, validator);
+	public final L build() {
+		LinkParametersMapping parametersMapping = new LinkParametersMapping(parameterMappingEntries);
+		ILinkParameterValidator validator = LinkParameterValidators.chain(parameterValidators);
+		return factory.create(parametersMapping, validator);
 	}
 
 }

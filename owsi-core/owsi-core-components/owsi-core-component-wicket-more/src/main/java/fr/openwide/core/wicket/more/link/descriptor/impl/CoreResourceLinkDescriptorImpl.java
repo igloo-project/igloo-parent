@@ -9,48 +9,36 @@ import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidationException;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidators;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 
-public class CoreResourceLinkDescriptorImpl implements IResourceLinkDescriptor {
+public class CoreResourceLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IResourceLinkDescriptor {
 
 	private static final long serialVersionUID = -2046898427977725120L;
 	
 	private final IModel<? extends ResourceReference> resourceReferenceModel;
-	private final PageParametersModel parametersModel;
-	private final IParameterValidator validator;
-
+	
 	public CoreResourceLinkDescriptorImpl(
 			IModel<? extends ResourceReference> resourceReferenceModel,
-			PageParametersModel parametersModel,
-			IParameterValidator validator) {
-		super();
+			LinkParametersMapping parametersMapping,
+			ILinkParameterValidator validator) {
+		super(parametersMapping, validator);
 		Args.notNull(resourceReferenceModel, "resourceReferenceModel");
-		Args.notNull(parametersModel, "parametersModel");
-		Args.notNull(validator, "validator");
 		this.resourceReferenceModel = resourceReferenceModel;
-		this.parametersModel = parametersModel;
-		this.validator = validator;
 	}
-
+	
 	protected ResourceReference getResourceReference() {
 		return resourceReferenceModel.getObject();
 	}
-
-	protected PageParameters getValidatedParameters() throws ParameterValidationException {
-		PageParameters parameters = parametersModel.getObject();
-		ParameterValidators.check(parameters, validator);
-		return parameters;
-	}
-
+	
 	@Override
 	public AbstractDynamicBookmarkableLink link(String wicketId) {
-		return new DynamicBookmarkableResourceLink(wicketId, resourceReferenceModel, parametersModel, validator);
+		return new DynamicBookmarkableResourceLink(wicketId, resourceReferenceModel, parametersMapping, parametersValidator);
 	}
-
+	
 	@Override
-	public String fullUrl() throws ParameterValidationException {
+	public String fullUrl() throws LinkParameterValidationException {
 		PageParameters parameters = getValidatedParameters();
 		
 		RequestCycle requestCycle = RequestCycle.get();
@@ -61,11 +49,11 @@ public class CoreResourceLinkDescriptorImpl implements IResourceLinkDescriptor {
 						)
 				);
 	}
-
+	
 	@Override
 	public void detach() {
+		super.detach();
 		resourceReferenceModel.detach();
-		parametersModel.detach();
 	}
 
 }

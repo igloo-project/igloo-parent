@@ -8,7 +8,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 /**
  * An {@link AbstractDynamicBookmarkableLink} targeting a {@link ResourceReference} that may change during the page life cycle.
@@ -24,9 +24,9 @@ public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkable
 	public DynamicBookmarkableResourceLink(
 			String wicketId,
 			IModel<? extends ResourceReference> resourceReferenceModel,
-			IModel<PageParameters> parametersModel,
-			IParameterValidator parametersValidator) {
-		super(wicketId, parametersModel, parametersValidator);
+			IModel<PageParameters> parametersMapping,
+			ILinkParameterValidator parametersValidator) {
+		super(wicketId, parametersMapping, parametersValidator);
 		Args.notNull(resourceReferenceModel, "resourceReferenceModel");
 		this.resourceReferenceModel = wrap(resourceReferenceModel); 
 	}

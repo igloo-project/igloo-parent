@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
-import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
+import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -111,7 +111,7 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					userService.update(user);
 					getSession().success(getString("common.success"));
 					
-					LinkFactory.get().userDescription(EditUserPopupPanel.this.getModel()).setResponsePage();
+					UserDescriptionPage.linkDescriptor(EditUserPopupPanel.this.getModel()).setResponsePage();
 				} catch (Exception e) {
 					LOGGER.error("Error during user update", e);
 					getSession().error(getString("common.error"));

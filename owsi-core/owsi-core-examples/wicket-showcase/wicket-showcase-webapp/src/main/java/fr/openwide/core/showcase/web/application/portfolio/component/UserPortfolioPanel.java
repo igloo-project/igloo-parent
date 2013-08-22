@@ -14,10 +14,11 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
-import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
+import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	private static final long serialVersionUID = 6906542421342609922L;
@@ -55,7 +56,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected MarkupContainer getActionLink(String id, IModel<? extends User> userModel) {
-		return LinkFactory.get().userDescription(userModel).link(id);
+		return UserDescriptionPage.linkDescriptor(ReadOnlyModel.of(userModel)).link(id);
 	}
 
 	@Override

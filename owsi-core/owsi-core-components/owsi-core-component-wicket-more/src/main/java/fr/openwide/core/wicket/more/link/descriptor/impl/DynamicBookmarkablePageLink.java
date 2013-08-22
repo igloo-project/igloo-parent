@@ -7,7 +7,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 
 /**
@@ -24,9 +24,9 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 	public DynamicBookmarkablePageLink(
 			String wicketId,
 			IModel<Class<? extends Page>> pageClassModel,
-			IModel<PageParameters> parametersModel,
-			IParameterValidator parametersValidator) {
-		super(wicketId, parametersModel, parametersValidator);
+			IModel<PageParameters> parametersMapping,
+			ILinkParameterValidator parametersValidator) {
+		super(wicketId, parametersMapping, parametersValidator);
 		Args.notNull(pageClassModel, "pageClassModel");
 		this.pageClassModel = wrap(pageClassModel); 
 	}

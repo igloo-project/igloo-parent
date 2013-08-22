@@ -17,6 +17,7 @@ import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMainten
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
 public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHolder> {
@@ -33,7 +34,7 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 
 		item.add(new TaskStatusPanel("status", Model.of(item.getModelObject().getStatus())));
 
-		AbstractLink nameLink = ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(itemModel).link("nameLink");
+		AbstractLink nameLink = ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(ReadOnlyModel.of(itemModel)).link("nameLink");
 		nameLink.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
 		item.add(nameLink);
 

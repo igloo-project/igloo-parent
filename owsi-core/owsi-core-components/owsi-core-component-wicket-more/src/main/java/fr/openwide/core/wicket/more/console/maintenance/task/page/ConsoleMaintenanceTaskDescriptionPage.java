@@ -27,26 +27,25 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
-import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
-import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.builder.CoreLinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.utils.CoreLinkParameterUtils;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
 public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTemplate {
 
 	private static final long serialVersionUID = 7622945973237519021L;
+	
+	public static final String ID_PARAMETER = "id";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceTaskDescriptionPage.class);
 	
@@ -54,37 +53,32 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 			.enable(SerializationFeature.INDENT_OUTPUT);
 
 	@SpringBean
-	private IQueuedTaskHolderService queuedTaskHolderService;
-
-	@SpringBean
 	private IQueuedTaskHolderManager queuedTaskHolderManager;
-
-	protected IModel<QueuedTaskHolder> queuedTaskHolderModel;
 
 	private static final List<TaskStatus> RELOADBLE_TASK_STATUS = Lists.newArrayList(TaskStatus.CANCELLED,
 			TaskStatus.FAILED, TaskStatus.INTERRUPTED);
 	
-	public static IPageLinkDescriptor linkDescriptor(IModel<? extends QueuedTaskHolder> queuedTaskHolderModel) {
-		QueuedTaskHolderBinding binding = new QueuedTaskHolderBinding();
-		return new CoreLinkDescriptorBuilder()
+	public static IPageLinkDescriptor linkDescriptor(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
+		return new LinkDescriptorBuilder()
 				.page(ConsoleMaintenanceTaskDescriptionPage.class)
-				.parameter(CoreLinkParameterUtils.ID_PARAMETER, BindingModel.of(queuedTaskHolderModel, binding.id())).mandatory()
+				.map(ID_PARAMETER, queuedTaskHolderModel, QueuedTaskHolder.class).mandatory()
 				.build();
 	}
 
 	public ConsoleMaintenanceTaskDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		setOutputMarkupId(true);
-
-		this.queuedTaskHolderModel = CoreLinkParameterUtils.extractGenericEntityParameterModel(queuedTaskHolderService, parameters, Long.class);
-
-		if (this.queuedTaskHolderModel == null || this.queuedTaskHolderModel.getObject() == null) {
+		
+		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<Long, QueuedTaskHolder>(null);
+		try {
+			linkDescriptor(queuedTaskHolderModel).extract(parameters);
+		} catch(Exception e) {
 			Session.get().error(getString("common.notExists"));
-			throw new RestartResponseException(ConsoleMaintenanceTaskListPage.class);
+			throw ConsoleMaintenanceTaskListPage.linkDescriptor().newRestartResponseException();
 		}
-
+		
 		addHeadPageTitleKey("console.maintenance.tasks");
-
+		
 		WebMarkupContainer statusContainer = new WebMarkupContainer("statusContainer");
 		statusContainer.add(new ClassAttributeAppender(new Model<String>() {
 			private static final long serialVersionUID = 1L;

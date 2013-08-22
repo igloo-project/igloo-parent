@@ -15,18 +15,16 @@ import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
-import fr.openwide.core.wicket.more.link.factory.AbstractLinkFactory;
-import fr.openwide.core.wicket.more.link.utils.CoreLinkParameterUtils;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 /**
- * @deprecated Use {@link ConsoleMaintenanceTaskDescriptionPage#linkDescriptor(IModel)} or {@link CoreLinkParameterUtils} or a {@link AbstractLinkFactory LinkFactory} (depends on the method you need).
+ * @deprecated Use the {@link ILinkDescriptor link} subsystem instead.
  */
 @Deprecated
 public final class LinkUtils {
 
 	/**
-	 * @deprecated Use {@link CoreLinkParameterUtils#ID_PARAMETER} instead.
+	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead.
 	 */
 	@Deprecated
 	public static final String ID_PARAMETER = "id";
@@ -44,7 +42,7 @@ public final class LinkUtils {
 	}
 
 	/**
-	 * @deprecated Use a {@link AbstractLinkFactory LinkFactory} and {@link ILinkDescriptor link descriptors} instead.
+	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead.
 	 */
 	@Deprecated
 	public static PageParameters getGenericEntityIdPageParameters(
@@ -59,7 +57,7 @@ public final class LinkUtils {
 	}
 
 	/**
-	 * @deprecated Use a {@link AbstractLinkFactory LinkFactory} and {@link ILinkDescriptor link descriptors} instead.
+	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead.
 	 */
 	@Deprecated
 	public static PageParameters getGenericEntityIdPageParameters(GenericEntity<?, ?> genericEntity) {
@@ -71,7 +69,7 @@ public final class LinkUtils {
 	}
 
 	/**
-	 * @deprecated Use {@link CoreLinkParameterUtils#extractGenericEntityParameterModel(IGenericEntityService, PageParameters, Class)} instead.
+	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead, in particular the {@link ILinkDescriptor#extract(PageParameters)} method.
 	 */
 	@Deprecated
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> IModel<E> extractGenericEntityModelParameter(
@@ -81,7 +79,7 @@ public final class LinkUtils {
 	}
 
 	/**
-	 * @deprecated Use {@link CoreLinkParameterUtils#extractGenericEntityParameter(IGenericEntityService, PageParameters, String, Class)} instead.
+	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead, in particular the {@link ILinkDescriptor#extract(PageParameters)} method.
 	 */
 	@Deprecated
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E extractGenericEntitySpecifiedParameter(
@@ -99,7 +97,7 @@ public final class LinkUtils {
 	}
 
 	/**
-	 * @deprecated Use a {@link AbstractLinkFactory LinkFactory} and {@link ILinkDescriptor#fullUrl()} instead.
+	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead, in particular the {@link ILinkDescriptor#fullUrl()} method.
 	 */
 	@Deprecated
 	public static String getUrl(Class<? extends Page> clazz, PageParameters parameters) {

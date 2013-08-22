@@ -6,50 +6,51 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.CoreLinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidationException;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidators;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 
 /**
  * A {@link Link} whose parameters may change during the page life cycle (for instance on an Ajax refresh).
- * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a {@link ParameterValidationException}
+ * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
  * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}.
  * This is an expected behavior: you should either ensure that your parameters are always valid, or that this link is hidden when they are not.
  * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
  * using the {@link #setVisibilityAllowed(boolean)} method.
- * @see ParameterValidationException
- * @see CoreLinkDescriptorBuilder
- * @see IAddedParameterState#mandatory()
- * @see IAddedParameterState#optional()
- * @see IValidatorState#validator(fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator)
+ * @see LinkParameterValidationException
+ * @see LinkDescriptorBuilder
+ * @see IAddedParameterMappingState#mandatory()
+ * @see IAddedParameterMappingState#optional()
+ * @see IValidatorState#validator(fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator)
  */
 public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final IModel<PageParameters> parametersModel;
-	private final IParameterValidator parametersValidator;
+	private final IModel<PageParameters> parametersMapping;
+	private final ILinkParameterValidator parametersValidator;
 	
 	private boolean autoHideIfInvalid = false;
 
 	public AbstractDynamicBookmarkableLink(
 			String wicketId,
-			IModel<PageParameters> parametersModel,
-			IParameterValidator parametersValidator) {
+			IModel<PageParameters> parametersMapping,
+			ILinkParameterValidator parametersValidator) {
 		super(wicketId);
-		Args.notNull(parametersModel, "parametersModel");
+		Args.notNull(parametersMapping, "parametersModel");
 		Args.notNull(parametersValidator, "parametersValidator");
-		this.parametersModel = wrap(parametersModel);
+		this.parametersMapping = wrap(parametersMapping);
 		this.parametersValidator = parametersValidator;
 	}
 	
 	/**
 	 * Gets whether this link will hide when its parameters are invalid.
 	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link ParameterValidationException} may be thrown if the parameters
+	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationException} may be thrown if the parameters
 	 * are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
 	 * @return True if this link is hidden when its parameters are invalid, false otherwise.
 	 */
@@ -60,7 +61,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	/**
 	 * Sets whether this link will hide when its parameters are invalid.
 	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link ParameterValidationException} may be thrown if the parameters
+	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationException} may be thrown if the parameters
 	 * are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
 	 * @param autoHideIfInvalid True to enable auto hiding, false to disable it.
 	 */
@@ -70,7 +71,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	}
 	
 	private PageParameters getParameters() {
-		return parametersModel.getObject();
+		return parametersMapping.getObject();
 	}
 	
 	@Override
@@ -79,17 +80,21 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		
 		PageParameters parameters = getParameters();
 		if (autoHideIfInvalid) {
-			setVisible(ParameterValidators.isValid(parameters, parametersValidator));
+			setVisible(LinkParameterValidators.isValid(parameters, parametersValidator));
 		} else {
 			setVisible(true);
 		}
 	}
 	
 	@Override
-	protected final CharSequence getURL() throws ParameterValidationException {
+	protected final CharSequence getURL() throws LinkParameterValidationRuntimeException {
 		PageParameters parameters = getParameters();
 		
-		ParameterValidators.check(parameters, parametersValidator);
+		try {
+			LinkParameterValidators.check(parameters, parametersValidator);
+		} catch(LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 		
 		return getURL(parameters);
 	}
@@ -112,7 +117,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		parametersModel.detach();
+		parametersMapping.detach();
 	}
 
 }

@@ -14,8 +14,8 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CorePageLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CoreResourceLinkDescriptorImpl;
-import fr.openwide.core.wicket.more.link.descriptor.impl.PageParametersModel;
-import fr.openwide.core.wicket.more.link.descriptor.validator.IParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor> implements IDetachable {
@@ -24,7 +24,7 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 	
 	private CoreLinkDescriptorBuilderFactory() { }
 
-	public abstract T create(PageParametersModel parametersModel, IParameterValidator validator);
+	public abstract T create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator);
 
 	public static <P extends Page> CoreLinkDescriptorBuilderFactory<IPageLinkDescriptor> page(Class<P> pageClass) {
 		final String className = pageClass.getName();
@@ -58,8 +58,8 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 		}
 
 		@Override
-		public IPageLinkDescriptor create(PageParametersModel parametersModel, IParameterValidator validator) {
-			return new CorePageLinkDescriptorImpl(readOnlyPageClassModel, parametersModel, validator);
+		public IPageLinkDescriptor create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator) {
+			return new CorePageLinkDescriptorImpl(readOnlyPageClassModel, parametersMapping, validator);
 		}
 		
 		@Override
@@ -88,8 +88,8 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 		}
 		
 		@Override
-		public IResourceLinkDescriptor create(PageParametersModel parametersModel, IParameterValidator validator) {
-			return new CoreResourceLinkDescriptorImpl(resourceReferenceModel, parametersModel, validator);
+		public IResourceLinkDescriptor create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator) {
+			return new CoreResourceLinkDescriptorImpl(resourceReferenceModel, parametersMapping, validator);
 		}
 
 		@Override

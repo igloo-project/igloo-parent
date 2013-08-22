@@ -18,6 +18,8 @@ import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfol
 import fr.openwide.core.showcase.web.application.portfolio.component.UserSearchPanel;
 import fr.openwide.core.showcase.web.application.portfolio.model.UserDataProvider;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -30,6 +32,12 @@ public class PortfolioMainPage extends MainTemplate {
 	
 	@SpringBean
 	private IUserService userService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(PortfolioMainPage.class)
+				.build();
+	}
 	
 	public PortfolioMainPage(PageParameters parameters) {
 		super(parameters);
