@@ -9,6 +9,7 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
+import fr.openwide.core.jpa.config.spring.convert.converter.GenericEntityTypeResolver;
 
 /**
  * Converts a String to a GenericEntity.
@@ -32,8 +33,8 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 		return null;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (!sourceType.isAssignableTo(STRING_TYPE_DESCRIPTOR)) {
 			return false;
@@ -42,7 +43,11 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 			return false;
 		}
 		
-		return canConvertKey(sourceType.getType(), (Class<? extends GenericEntity<?,?>>) targetType.getType());
+		/*
+		 * NOTE: for the official javac to infer types properly, the GenericEntity below must be left as a raw type.
+		 * Eclipse JDT works fine without this hack.
+		 */
+		return canConvertKey(sourceType.getType(), (Class<? extends GenericEntity>) targetType.getType());
 	}
 	
 	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
@@ -57,15 +62,20 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;
 		}
 		String string = (String) source;
+		
+		/*
+		 * NOTE: for the official javac to infer types properly, the GenericEntity below must be left as a raw type.
+		 * Eclipse JDT works fine without this hack.
+		 */
 		return convert(
 				string,
-				(Class<? extends GenericEntity<?,?>>) targetType.getType()
+				(Class<? extends GenericEntity>) targetType.getType()
 		);
 	}
 
