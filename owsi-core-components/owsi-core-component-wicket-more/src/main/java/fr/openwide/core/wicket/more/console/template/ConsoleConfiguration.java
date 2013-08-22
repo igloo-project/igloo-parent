@@ -20,7 +20,6 @@ import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMainten
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
-import fr.openwide.core.wicket.more.link.utils.CoreLinkParameterUtils;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
 public final class ConsoleConfiguration {
@@ -66,7 +65,7 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceTasksMenuItem = new ConsoleMenuItem("maintenanceTasksMenuItem",
 					"console.maintenance.tasks", "tasks", ConsoleMaintenanceTaskListPage.class);
 			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage(
-					"${" + CoreLinkParameterUtils.ID_PARAMETER + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
+					"${" + ConsoleMaintenanceTaskDescriptionPage.ID_PARAMETER + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
 			maintenanceTasksMenuItem.addRelatedPage(maintenanceTaskDetailsPage);
 
 			maintenanceMenuSection.addMenuItem(maintenanceTasksMenuItem);

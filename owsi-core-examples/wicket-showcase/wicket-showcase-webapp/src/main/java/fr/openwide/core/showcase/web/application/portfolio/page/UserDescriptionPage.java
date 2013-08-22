@@ -7,37 +7,45 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
-import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserProfilePanel;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
-import fr.openwide.core.wicket.more.link.utils.CoreLinkParameterUtils;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserDescriptionPage extends MainTemplate {
 	private static final long serialVersionUID = -3229942018297644108L;
 	
+	public static final String ID_PARAMETER = "id";
+	
 	private static final UserBinding USER = new UserBinding();
 	
-	@SpringBean
-	private IUserService userService;
+	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel) {
+		return new LinkDescriptorBuilder()
+				.page(UserDescriptionPage.class)
+				.map(ID_PARAMETER, userModel, User.class).mandatory()
+				.build();
+	}
 	
 	public UserDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		IModel<User> userModel = CoreLinkParameterUtils.extractGenericEntityParameterModel(userService, parameters, Long.class);
-		if (userModel.getObject() == null) {
+		IModel<User> userModel = new GenericEntityModel<Long, User>(null);
+		try {
+			linkDescriptor(userModel).extract(parameters);
+		} catch (Exception e) {
 			getSession().error(getString("common.error.noItem"));
-			throw LinkFactory.get().userList().newRestartResponseException();
+			throw PortfolioMainPage.linkDescriptor().newRestartResponseException();
 		}
+		
 		setDefaultModel(userModel);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.class));

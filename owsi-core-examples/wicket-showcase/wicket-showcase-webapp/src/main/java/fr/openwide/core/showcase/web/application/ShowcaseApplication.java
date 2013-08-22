@@ -65,7 +65,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		
 		// Portfolio exemple
 		mountPage("/portfolio/", PortfolioMainPage.class);
-		mountPage("/portfolio/user/${id}", UserDescriptionPage.class);
+		mountPage("/portfolio/user/${" + UserDescriptionPage.ID_PARAMETER + "}", UserDescriptionPage.class);
 		
 		// Widgets exemple
 		mountPage("/widgets/", WidgetsMainPage.class);

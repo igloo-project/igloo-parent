@@ -7,8 +7,8 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 
 public interface IBasePageState {
 	
-	<P extends Page> IParametersState<IPageLinkDescriptor> page(Class<P> pageClass);
+	<P extends Page> IParameterMappingState<IPageLinkDescriptor> page(Class<P> pageClass);
 	
-	IParametersState<IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel);
+	IParameterMappingState<IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel);
 
 }

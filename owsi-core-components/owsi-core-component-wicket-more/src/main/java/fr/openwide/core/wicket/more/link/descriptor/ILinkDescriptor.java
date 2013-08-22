@@ -1,10 +1,23 @@
 package fr.openwide.core.wicket.more.link.descriptor;
 
 import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 
-public interface ILinkDescriptor extends IDetachable {
+/**
+ * An utility object mapped to {@link IModel models}, that allows for simple manipulation around the concept of linking.
+ * <p>Object implementing this interface, and its sub-interfaces ({@link IResourceLinkDescriptor}, {@link IPageLinkDescriptor}),
+ * can be instantiated using the {@link LinkDescriptorBuilder}.
+ * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior notice.
+ * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before serialization.
+ */
+public interface ILinkDescriptor extends ILinkParametersExtractor, IDetachable {
 
 	/**
 	 * Creates an {@link AbstractDynamicBookmarkableLink} that points to the same page/resource than this descriptor, with the same parameters.
@@ -16,9 +29,18 @@ public interface ILinkDescriptor extends IDetachable {
 	AbstractDynamicBookmarkableLink link(String wicketId);
 	
 	/**
-	 * @return The full URL for this link descriptor, including protocol ("http://") and query parameters ("?arg0=true")
-	 * @throws ParameterValidationException if the parameters validation returned an error
+	 * {@inheritDoc}
 	 */
-	String fullUrl() throws ParameterValidationException;
+	@Override
+	public void extract(PageParameters parameters) throws LinkParameterValidationException, LinkParameterExtractionRuntimeException;
+	
+	/**
+	 * Renders the full URL for this link descriptor.
+	 * <p>The resulting string includes protocol ("http://"), host, port, and path, as well as query parameters ("?arg0=true"), if any.
+	 * @return The full URL for this link descriptor.
+	 * @throws LinkParameterValidationException if the parameters validation returned an error
+	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
+	 */
+	String fullUrl() throws LinkParameterValidationException, LinkParameterInjectionRuntimeException;
 
 }

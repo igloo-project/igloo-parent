@@ -13,7 +13,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
+import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 
 public class UserSearchPanel extends Panel {
@@ -48,7 +48,7 @@ public class UserSearchPanel extends Panel {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				if (getModelObject() != null) {
-					LinkFactory.get().userDescription(getModel()).setResponsePage();
+					UserDescriptionPage.linkDescriptor(getModel()).setResponsePage();
 					return;
 				}
 			}

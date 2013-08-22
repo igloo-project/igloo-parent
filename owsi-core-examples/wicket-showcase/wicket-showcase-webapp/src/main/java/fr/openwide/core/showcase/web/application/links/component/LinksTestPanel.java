@@ -24,10 +24,10 @@ import fr.openwide.core.showcase.core.util.binding.Binding;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage1;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage2;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
-import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
+import fr.openwide.core.showcase.web.application.links.page.LinksTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
-import fr.openwide.core.wicket.more.link.descriptor.validator.ParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -75,8 +75,8 @@ public class LinksTestPanel extends GenericPanel<User> {
 					@Override
 					public String getObject() {
 						try {
-							return LinkFactory.get().linksTest(pageClassModel, userModel).fullUrl();
-						} catch(ParameterValidationException e) {
+							return LinksTemplate.linkDescriptor(pageClassModel, userModel).fullUrl();
+						} catch(LinkParameterValidationException e) {
 							return e.getMessage();
 						}
 					}
@@ -91,16 +91,16 @@ public class LinksTestPanel extends GenericPanel<User> {
 					private static final long serialVersionUID = 1L;
 					@Override
 					protected void onSubmit() {
-						LinkFactory.get().linksTest(pageClassModel, userModel).setResponsePage();
+						LinksTemplate.linkDescriptor(pageClassModel, userModel).setResponsePage();
 					}
 				}
-				, LinkFactory.get().linksTest(pageClassModel, userModel).link("bookmarkableLink")
+				, LinksTemplate.linkDescriptor(pageClassModel, userModel).link("bookmarkableLink")
 						.setAutoHideIfInvalid(true)
 				, new Link<Void>("linkWithRedirect") {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public void onClick() {
-						throw LinkFactory.get().linksTest(pageClassModel, userModel).newRestartResponseException();
+						throw LinksTemplate.linkDescriptor(pageClassModel, userModel).newRestartResponseException();
 					}
 				}
 		);
