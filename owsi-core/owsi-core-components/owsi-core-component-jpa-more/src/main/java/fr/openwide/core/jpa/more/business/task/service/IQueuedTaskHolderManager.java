@@ -13,7 +13,7 @@ public interface IQueuedTaskHolderManager {
 
 	boolean isActive();
 
-	Integer getNumberOfWaitingTaks();
+	Integer getNumberOfWaitingTasks();
 	
 	void start();
 	

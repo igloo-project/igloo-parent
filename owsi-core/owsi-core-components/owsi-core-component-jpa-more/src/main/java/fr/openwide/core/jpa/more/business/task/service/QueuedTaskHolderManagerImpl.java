@@ -10,8 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
-	private static final Log LOGGER = LogFactory.getLog(QueuedTaskHolderManagerImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
 
 	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
 
@@ -74,7 +74,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	}
 
 	@Override
-	public Integer getNumberOfWaitingTaks() {
+	public Integer getNumberOfWaitingTasks() {
 		return queue.size();
 	}
 

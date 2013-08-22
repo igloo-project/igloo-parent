@@ -68,7 +68,7 @@ public class TaskQueueInformationPanel extends Panel {
 
 			@Override
 			public Integer getObject() {
-				return queuedTaskHolderManager.getNumberOfWaitingTaks();
+				return queuedTaskHolderManager.getNumberOfWaitingTasks();
 			}
 		}));
 

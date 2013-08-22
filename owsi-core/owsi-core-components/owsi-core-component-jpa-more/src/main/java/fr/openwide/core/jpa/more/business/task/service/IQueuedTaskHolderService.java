@@ -28,4 +28,6 @@ public interface IQueuedTaskHolderService extends IGenericEntityService<Long, Qu
 	List<Long> initializeTasksAndListConsumable() throws ServiceException, SecurityServiceException;
 
 	List<String> listTypes();
+
+	boolean isReloadable(QueuedTaskHolder task);
 }
