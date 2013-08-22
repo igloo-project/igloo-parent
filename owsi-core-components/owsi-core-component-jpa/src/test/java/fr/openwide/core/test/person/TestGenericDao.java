@@ -43,12 +43,6 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 
 	@Autowired
 	private PersonReferenceDao personReferenceDao;
-	
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		// TODO Auto-generated method stub
-		super.cleanAll();
-	}
 
 	@Test
 	public void testGet() throws ServiceException, SecurityServiceException {

@@ -18,7 +18,6 @@ public final class ScrollToTopJavaScriptResourceReference extends AbstractCoreJQ
 
 	@Override
 	protected Iterable<? extends HeaderItem> getPluginDependencies() {
-		// TODO Auto-generated method stub
 		return JavaScriptHeaderItems.forReferences(EasingJavaScriptResourceReference.get());
 	}
 
