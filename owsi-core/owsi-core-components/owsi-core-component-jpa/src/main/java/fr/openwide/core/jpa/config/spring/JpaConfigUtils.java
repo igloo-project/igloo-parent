@@ -10,7 +10,6 @@ import javax.persistence.SharedCacheMode;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
-import org.apache.lucene.util.Version;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.EJB3NamingStrategy;
