@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.config.spring.convert.converter;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import org.springframework.core.convert.ConversionService;
@@ -29,6 +30,7 @@ public class GenericEntityToStringSpringConverter implements ConditionalGenericC
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (!sourceType.isAssignableTo(GENERIC_ENTITY_TYPE_DESCRIPTOR)) {
 			return false;
@@ -36,27 +38,36 @@ public class GenericEntityToStringSpringConverter implements ConditionalGenericC
 		if (!targetType.isAssignableTo(STRING_TYPE_DESCRIPTOR)) {
 			return false;
 		}
-		@SuppressWarnings("unchecked")
-		Class<?> keyType = GenericEntityTypeResolver.resolveTypeParameters((Class<? extends GenericEntity<?,?>>) sourceType.getType()).getLeft();
+		return canConvertKey((Class<? extends GenericEntity<?, ?>>)sourceType.getType(), targetType.getType());
+	}
+	
+	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+			boolean canConvertKey(Class<E> sourceType, Class<?> targetType) {
+		Class<K> keyType = GenericEntityTypeResolver.resolveKeyTypeParameter(sourceType);
 		
 		if (keyType != null) {
-			return this.conversionService.canConvert(keyType, STRING_TYPE_DESCRIPTOR.getType());
+			return this.conversionService.canConvert(keyType, targetType);
 		} else {
 			return false;
 		}
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;
 		}
-		GenericEntity<?, ?> entity = (GenericEntity<?,?>) source;
-		Object id = entity.getId();
+		return convertKey((GenericEntity<?, ?>) source, (Class<? extends String>) targetType.getType());
+	}
+
+	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+			String convertKey(E source, Class<? extends String> targetType) {
+		K id = source.getId();
 		if (id == null) {
 			throw new RuntimeException("The entity id was null");
 		} else {
-			return conversionService.convert(id, String.class);
+			return conversionService.convert(id, targetType);
 		}
 	}
 }
