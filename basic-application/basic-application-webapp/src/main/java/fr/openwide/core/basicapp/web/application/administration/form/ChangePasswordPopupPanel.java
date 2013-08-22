@@ -119,10 +119,4 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 		return footer;
 	}
 
-	@Override
-	public IModel<String> getCssClassNamesModel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
