@@ -1,13 +1,7 @@
 package fr.openwide.core.wicket.more.console.maintenance.task.component;
 
-import java.util.Date;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -17,8 +11,10 @@ import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMainten
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
+import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
 
 public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHolder> {
 
@@ -31,18 +27,18 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 	@Override
 	protected void addItemColumns(final Item<QueuedTaskHolder> item, IModel<? extends QueuedTaskHolder> itemModel) {
 		item.setOutputMarkupId(true);
+		
+		item.add(new TaskStatusPanel("status", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().status())));
 
-		item.add(new TaskStatusPanel("status", Model.of(item.getModelObject().getStatus())));
+		item.add(ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(ReadOnlyModel.of(itemModel))
+				.link("nameLink")
+				.setBody(BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
 
-		AbstractLink nameLink = ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(ReadOnlyModel.of(itemModel)).link("nameLink");
-		nameLink.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
-		item.add(nameLink);
-
-		item.add(new DateLabel("creationDate", new PropertyModel<Date>(item.getModel(), "creationDate"),
+		item.add(new DateLabel("creationDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
 				DatePattern.SHORT_DATETIME));
-		item.add(new DateLabel("startDate", new PropertyModel<Date>(item.getModel(), "startDate"),
+		item.add(new DateLabel("startDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().startDate()),
 				DatePattern.SHORT_DATETIME));
-		item.add(new DateLabel("endDate", new PropertyModel<Date>(item.getModel(), "endDate"),
+		item.add(new DateLabel("endDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().endDate()),
 				DatePattern.SHORT_DATETIME));
 	}
 
