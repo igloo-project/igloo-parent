@@ -3,7 +3,6 @@ package fr.openwide.core.jpa.config.spring.convert.converter;
 import java.io.Serializable;
 import java.util.Set;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
@@ -34,6 +33,7 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (!sourceType.isAssignableTo(STRING_TYPE_DESCRIPTOR)) {
 			return false;
@@ -41,10 +41,16 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 		if (!targetType.isAssignableTo(GENERIC_ENTITY_TYPE_DESCRIPTOR)) {
 			return false;
 		}
-		@SuppressWarnings("unchecked")
-		Class<?> keyType = GenericEntityTypeResolver.resolveTypeParameters((Class<? extends GenericEntity<?,?>>) targetType.getType()).getLeft();
+		
+		return canConvertKey(sourceType.getType(), (Class<? extends GenericEntity<?,?>>) targetType.getType());
+	}
+	
+	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+			boolean canConvertKey(Class<?> sourceType, Class<E> targetType) {
+		Class<K> keyType = GenericEntityTypeResolver.resolveKeyTypeParameter(targetType);
+		
 		if (keyType != null) {
-			return this.conversionService.canConvert(STRING_TYPE_DESCRIPTOR.getType(), keyType);
+			return this.conversionService.canConvert(sourceType, keyType);
 		} else {
 			return false;
 		}
@@ -59,22 +65,29 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 		String string = (String) source;
 		return convert(
 				string,
-				GenericEntityTypeResolver.resolveTypeParameters((Class<? extends GenericEntity<?,?>>) targetType.getType())
+				(Class<? extends GenericEntity<?,?>>) targetType.getType()
 		);
 	}
-	
+
 	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
-			E convert(String source, Pair<Class<K>, Class<E>> targetTypeParameters) {
-		K id = conversionService.convert(source, targetTypeParameters.getLeft());
+			E convert(String source, Class<E> targetType) {
+		Class<K> keyType = GenericEntityTypeResolver.resolveKeyTypeParameter(targetType);
+		K id = convertKey(source, keyType);
+		E entity = entityService.getEntity(targetType, id);
+		if (entity == null) {
+			throw new RuntimeException("The entity for key " + id + " was not found");
+		} else {
+			return entity;
+		}
+	}
+	
+	private <K extends Serializable & Comparable<K>>
+			K convertKey(String source, Class<K> targetKeyType) {
+		K id = conversionService.convert(source, targetKeyType);
 		if (id == null) {
 			throw new RuntimeException("The converted entity id was null");
 		} else {
-			E entity = entityService.getEntity(targetTypeParameters.getRight(), id);
-			if (entity == null) {
-				throw new RuntimeException("The entity for key " + id + " was not found");
-			} else {
-				return entity;
-			}
+			return id;
 		}
 	}
 }
