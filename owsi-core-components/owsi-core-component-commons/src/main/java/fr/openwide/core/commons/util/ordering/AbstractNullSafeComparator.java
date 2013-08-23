@@ -30,9 +30,20 @@ public abstract class AbstractNullSafeComparator<T> extends Ordering<T>
 			return orderIfLeftNull;
 		} else if (right == null) {
 			return orderIfRightNull;
+		} else if (equalsNotNullObjects(left, right)) {
+			return 0;
 		} else {
 			return compareNotNullObjects(left, right);
 		}
+	}
+	
+	/**
+	 * Method called just before trying to compare the objects, in order to avoid potentially expensive comparison operations.
+	 * <p>If your comparator is <em>consistent with equals</em> (see {@link Comparator}), you may safely override this
+	 * and return <code>left.equals(right)</code>.
+	 */
+	protected boolean equalsNotNullObjects(T left, T right) {
+		return left == right;
 	}
 	
 	protected abstract int compareNotNullObjects(T left, T right);
