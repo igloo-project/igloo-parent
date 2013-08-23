@@ -5,6 +5,10 @@ import java.util.Comparator;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
+/**
+ * @deprecated Use {@link GenericEntityComparator#get()} or inherit from {@link GenericEntityComparator}, which is null-safe.
+ */
+@Deprecated
 public class GenericEntityIdComparator implements Comparator<GenericEntity<Long, ?>>, Serializable {
 	
 	private static final long serialVersionUID = -9178542049081510289L;
