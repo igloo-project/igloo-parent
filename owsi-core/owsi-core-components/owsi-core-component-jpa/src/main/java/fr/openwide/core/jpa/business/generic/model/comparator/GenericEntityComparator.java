@@ -12,10 +12,15 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 /**
  * A {@link GenericEntity} comparator that compares IDs.
- * <p>The {@link GenericEntityComparator default implementation} mimics the behavior of {@link GenericEntity#compareTo(GenericEntity)}, except that it is
- * null-safe, both when comparing entities and when comparing their IDs. It assumes a null entity is less than a non-null one, and that an entity with a null ID
- * is less than an entity with a non-null ID.
+ * <p>The {@link #GenericEntityComparator() default implementation} mimics the behavior of {@link GenericEntity#compareTo(GenericEntity)},
+ * except that it is null-safe, both when comparing entities and when comparing their IDs. It assumes a null entity is <em>more</em>
+ * than a non-null one, and that an entity with a null ID is <em>more</em> than an entity with a non-null ID. This behavior is consistent with
+ * {@link GenericEntity#isNew()}: an entity without an id is new, hence more recent than an entity with an id, which is not new.
  * <p>This comparator is consistent with equals.
+ * <p><strong>WARNING:</strong> trying to compare two not-null entities with null IDs which are different according to
+ * {@link #equalsNotNullObjects(GenericEntity, GenericEntity)} will result in an {@link IllegalArgumentException}
+ * being thrown, since such objects are inherently incomparable. This behavior may be overridden in subclasses by
+ * comparing other attributes of the entity.
  */
 public class GenericEntityComparator<K extends Comparable<K> & Serializable, E extends GenericEntity<K,?>> extends AbstractNullSafeComparator<E> {
 
@@ -27,7 +32,7 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 	 *  
 	 */
 	public GenericEntityComparator() {
-		this(true, Ordering.natural().nullsFirst());
+		this(false, Ordering.natural().nullsLast());
 	}
 
 	/**
@@ -49,7 +54,12 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 
 	@Override
 	protected int compareNotNullObjects(E left, E right) {
-		return KEY_COMPARATOR.compare(left.getId(), right.getId());
+		K leftId = left.getId();
+		K rightId = right.getId();
+		if (leftId == null && rightId == null) {
+			throw new IllegalArgumentException("Cannot compare two different entities will non-null IDs");
+		}
+		return KEY_COMPARATOR.compare(leftId, rightId);
 	}
 
 }
