@@ -24,7 +24,7 @@ public class TestGenericEntityIdComparator extends
 	
 	@Test
 	public void testCompareNewComparator() {
-		testCompare(GenericEntityComparator.<Long, Person>get());
+		testCompare(GenericEntityComparator.<Long, Person>getGeneric());
 	}
 	
 	public void testCompare(Comparator<? super Person> comparator) {

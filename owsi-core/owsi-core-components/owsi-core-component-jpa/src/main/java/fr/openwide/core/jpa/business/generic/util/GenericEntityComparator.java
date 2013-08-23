@@ -29,8 +29,11 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 	@SuppressWarnings("rawtypes")
 	private static final GenericEntityComparator DEFAULT_INSTANCE = new GenericEntityComparator();
 	
+	/**
+	 * Named getGeneric() because naming it get() would mess with the get() static methods of potential subclasses, which would probably not be generic.
+	 */
 	@SuppressWarnings("unchecked")
-	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> Comparator<E> get() {
+	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> Comparator<E> getGeneric() {
 		return DEFAULT_INSTANCE;
 	}
 	

@@ -6,13 +6,16 @@ import java.util.Comparator;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 /**
- * @deprecated Use {@link GenericEntityComparator#get()} or inherit from {@link GenericEntityComparator}, which is null-safe.
+ * @deprecated Inherit from {@link GenericEntityComparator}, which is null-safe, instead.
  */
 @Deprecated
 public class GenericEntityIdComparator implements Comparator<GenericEntity<Long, ?>>, Serializable {
 	
 	private static final long serialVersionUID = -9178542049081510289L;
 
+	/**
+	 * @deprecated Use {@link GenericEntityComparator#getGeneric()} instead.
+	 */
 	public static final Comparator<GenericEntity<Long, ?>> INSTANCE = new GenericEntityIdComparator();
 
 	@Override
