@@ -52,6 +52,9 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 		return left.equals(right);
 	}
 
+	/**
+	 * @throws IllegalArgumentException if these entities may not be compared, i.e. they are different, but their respective IDs are null and there is no other way to compare them.
+	 */
 	@Override
 	protected int compareNotNullObjects(E left, E right) {
 		K leftId = left.getId();
