@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  * is less than an entity with a non-null ID.
  * <p>This comparator is consistent with equals.
  */
-public class GenericEntityComparator<K extends Comparable<K> & Serializable, E extends GenericEntity<K,E>> extends AbstractNullSafeComparator<E> {
+public class GenericEntityComparator<K extends Comparable<K> & Serializable, E extends GenericEntity<K,?>> extends AbstractNullSafeComparator<E> {
 
 	private static final long serialVersionUID = -5933751018161012653L;
 	
