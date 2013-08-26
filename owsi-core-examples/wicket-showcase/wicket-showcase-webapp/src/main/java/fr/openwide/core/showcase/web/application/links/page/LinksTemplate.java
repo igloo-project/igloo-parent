@@ -40,7 +40,7 @@ public abstract class LinksTemplate extends MainTemplate {
 		try {
 			linkDescriptor(new Model<Class<Page>>(null), userModel).extract(parameters);
 		} catch (LinkParameterValidationException ignored) {
-			// Get around the parameter validation for the pupose of this test
+			// Get around the parameter validation for the purpose of this test
 		}
 		
 		add(new Label("title", getTitleModel()));
