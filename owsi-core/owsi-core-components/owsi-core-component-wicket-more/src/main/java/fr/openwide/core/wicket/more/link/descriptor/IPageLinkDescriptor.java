@@ -5,6 +5,7 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
@@ -15,6 +16,16 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
  * @see ILinkDescriptor
  */
 public interface IPageLinkDescriptor extends ILinkDescriptor {
+	
+	/**
+	 * Creates an {@link AbstractDynamicBookmarkableLink} that points to the same page than this descriptor, with the same parameters,
+	 * using the given anchor.
+	 * <p><strong>Note:</strong> special conditions apply to the rendering of this link if the parameters are invalid.
+	 * See {@link AbstractDynamicBookmarkableLink} for more information.
+	 * @return An {@link AbstractDynamicBookmarkableLink} matching this link descriptor.
+	 * @see AbstractDynamicBookmarkableLink
+	 */
+	AbstractDynamicBookmarkableLink link(String wicketId, String anchor);
 	
 	/**
 	 * Sets the response page and parameters for the current {@link RequestCycle} to the value of this link descriptor.
@@ -39,6 +50,22 @@ public interface IPageLinkDescriptor extends ILinkDescriptor {
 	 * @see RestartResponseAtInterceptPageException
 	 */
 	RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	
+	/**
+	 * Creates a {@link RedirectToUrlException} with the same page and parameters than this link descriptor.
+	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
+	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
+	 * @see RedirectToUrlException
+	 */
+	RedirectToUrlException newRedirectToUrlException() throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	
+	/**
+	 * Creates a {@link RedirectToUrlException} with the same page and parameters than this link descriptor.
+	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
+	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
+	 * @see RedirectToUrlException
+	 */
+	RedirectToUrlException newRedirectToUrlException(String anchor) throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
 	
 	/**
 	 * Returns a NavigationMenyItem with the same page and parameters than this link descriptor.
