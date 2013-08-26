@@ -19,7 +19,7 @@ public class DefaultLinkParameterConversionService extends DefaultConversionServ
 	}
 	
 	@PostConstruct
-	private void initConverters() {
+	protected void initConverters() {
 		addConverter(new GenericEntityToStringSpringConverter(this));
 		addConverter(new StringToGenericEntitySpringConverter(this, entityService));
 	}
