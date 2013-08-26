@@ -15,6 +15,7 @@ import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
@@ -40,10 +41,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		// Administration
 		mountPage("/administration/user/", AdministrationUserPortfolioPage.class);
-		mountPage("/administration/user/${" + AdministrationUserDescriptionPage.ID_PARAMETER + "}/",
+		mountPage("/administration/user/${" + CommonParameters.ID + "}/",
 				AdministrationUserDescriptionPage.class);
 		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
-		mountPage("/administration/user-group/${" + AdministrationUserGroupDescriptionPage.ID_PARAMETER + "}/",
+		mountPage("/administration/user-group/${" + CommonParameters.ID + "}/",
 				AdministrationUserGroupDescriptionPage.class);
 		
 		// Console
