@@ -4,14 +4,17 @@ import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
@@ -21,8 +24,10 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
 public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IPageLinkDescriptor {
 	
 	private static final long serialVersionUID = -9139677593653180236L;
+	
+	private static final String ANCHOR_ROOT = "#";
 
-	final IModel<Class<? extends Page>> pageClassModel;
+	private final IModel<Class<? extends Page>> pageClassModel;
 	
 	public CorePageLinkDescriptorImpl(
 			IModel<Class<? extends Page>> pageClassModel,
@@ -41,6 +46,14 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	public AbstractDynamicBookmarkableLink link(String wicketId) {
 		return new DynamicBookmarkablePageLink(wicketId, pageClassModel, parametersMapping, parametersValidator);
 	}
+	
+	@Override
+	public AbstractDynamicBookmarkableLink link(String wicketId, String anchor) {
+		AbstractDynamicBookmarkableLink link = link(wicketId);
+		link.add(new AttributeAppender("href", ANCHOR_ROOT + anchor));
+		
+		return link;
+	}
 
 	@Override
 	public String fullUrl() throws LinkParameterValidationException {
@@ -49,9 +62,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 		RequestCycle requestCycle = RequestCycle.get();
 		return requestCycle.getUrlRenderer()
 				.renderFullUrl(
-						Url.parse(
-								requestCycle.urlFor(getPageClass(), parameters)
-						)
+						Url.parse(requestCycle.urlFor(getPageClass(), parameters))
 				);
 	}
 	
@@ -92,7 +103,31 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	}
 	
 	@Override
-	@Deprecated
+	public RedirectToUrlException newRedirectToUrlException() throws LinkParameterValidationRuntimeException {
+		String fullUrl;
+		try {
+			fullUrl = fullUrl();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
+		
+		return new RedirectToUrlException(fullUrl);
+	}
+
+	@Override
+	public RedirectToUrlException newRedirectToUrlException(String anchor)
+			throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException {
+		String fullUrl;
+		try {
+			fullUrl = fullUrl();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
+		
+		return new RedirectToUrlException(fullUrl + ANCHOR_ROOT + anchor);
+	}
+	
+	@Override
 	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel) throws LinkParameterValidationRuntimeException {
 		PageParameters parameters;
 		try {
@@ -101,7 +136,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 			throw new LinkParameterValidationRuntimeException(e);
 		}
 		
-		return new NavigationMenuItem(labelModel, getPageClass(), parameters);
+		return new NavigationMenuItem(labelModel, getPageClass(), parameters, this);
 	}
 	
 	@Override

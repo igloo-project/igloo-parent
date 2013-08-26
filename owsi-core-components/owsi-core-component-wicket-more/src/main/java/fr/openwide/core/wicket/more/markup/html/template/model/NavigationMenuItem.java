@@ -26,8 +26,12 @@ public class NavigationMenuItem implements IDetachable {
 		this.labelModel = labelModel;
 	}
 	
-	public NavigationMenuItem(IModel<String> labelModel, IPageLinkDescriptor pageLinkDescriptor) {
+	public NavigationMenuItem(IModel<String> labelModel,
+			Class<? extends Page> pageClass, PageParameters pageParameters,
+			IPageLinkDescriptor pageLinkDescriptor) {
 		this.labelModel = labelModel;
+		this.pageClass = pageClass;
+		this.pageParameters = pageParameters;
 		this.pageLinkDescriptor = pageLinkDescriptor;
 	}
 	
