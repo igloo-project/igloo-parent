@@ -3,8 +3,6 @@ package fr.openwide.core.wicket.more.console.common.util;
 import java.io.Serializable;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -12,8 +10,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
-import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
-import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -24,21 +20,12 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public final class LinkUtils {
 
 	/**
-	 * @deprecated Use the {@link ILinkDescriptor link} subsystem instead.
+	 * @deprecated Use the {@link fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters#ID} subsystem instead.
 	 */
 	@Deprecated
 	public static final String ID_PARAMETER = "id";
 
 	private LinkUtils() {
-	}
-	
-	/**
-	 * @deprecated Use {@link ConsoleMaintenanceTaskDescriptionPage#linkDescriptor(IModel)} instead.
-	 */
-	@Deprecated
-	public static Link<QueuedTaskHolder> getQueuedTaskHolderLink(String id, IModel<? extends QueuedTaskHolder> queuedTaskHolderModel) {
-		return new BookmarkablePageLink<QueuedTaskHolder>(id, ConsoleMaintenanceTaskDescriptionPage.class,
-				getGenericEntityIdPageParameters(queuedTaskHolderModel));
 	}
 
 	/**

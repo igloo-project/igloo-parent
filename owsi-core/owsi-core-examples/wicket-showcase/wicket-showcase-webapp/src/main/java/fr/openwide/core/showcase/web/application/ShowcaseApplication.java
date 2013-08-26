@@ -31,6 +31,7 @@ import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
@@ -64,7 +65,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		
 		// Portfolio exemple
 		mountPage("/portfolio/", PortfolioMainPage.class);
-		mountPage("/portfolio/user/${" + UserDescriptionPage.ID_PARAMETER + "}", UserDescriptionPage.class);
+		mountPage("/portfolio/user/${" + CommonParameters.ID + "}", UserDescriptionPage.class);
 		
 		// Widgets exemple
 		mountPage("/widgets/", WidgetsMainPage.class);

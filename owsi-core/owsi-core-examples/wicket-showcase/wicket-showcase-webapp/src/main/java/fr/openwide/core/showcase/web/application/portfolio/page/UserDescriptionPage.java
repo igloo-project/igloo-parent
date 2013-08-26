@@ -16,6 +16,7 @@ import fr.openwide.core.showcase.web.application.portfolio.component.UserProfile
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -24,14 +25,12 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public class UserDescriptionPage extends MainTemplate {
 	private static final long serialVersionUID = -3229942018297644108L;
 	
-	public static final String ID_PARAMETER = "id";
-	
 	private static final UserBinding USER = new UserBinding();
 	
 	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel) {
 		return new LinkDescriptorBuilder()
 				.page(UserDescriptionPage.class)
-				.map(ID_PARAMETER, userModel, User.class).mandatory()
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
 				.build();
 	}
 	
