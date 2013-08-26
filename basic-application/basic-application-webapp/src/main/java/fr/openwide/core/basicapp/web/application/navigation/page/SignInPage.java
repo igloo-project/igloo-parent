@@ -1,7 +1,6 @@
 package fr.openwide.core.basicapp.web.application.navigation.page;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -60,10 +59,10 @@ public class SignInPage extends CoreWebPage {
 				}
 				
 				if (success) {
-					throw new RestartResponseException(LoginSuccessPage.class);
+					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
 				} else {
-					throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
-							.signIn().newRestartResponseException();
+					throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
+							.newRestartResponseException();
 				}
 			}
 		};

@@ -20,7 +20,7 @@ public class AccessDeniedPage extends CoreWebPage {
 		
 		BasicApplicationSession.get().error(getString("access.denied"));
 		
-		throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
-				.signIn().newRestartResponseException();
+		throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
+				.newRestartResponseException();
 	}
 }

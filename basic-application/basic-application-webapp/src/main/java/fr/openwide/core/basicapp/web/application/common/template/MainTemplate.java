@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -15,6 +14,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
@@ -27,10 +27,10 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
+import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
-import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
@@ -84,14 +84,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			@Override
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
-				Class<? extends Page> navItemPageClass = navItem.getPageClass();
 				
-				BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("navLink", navItemPageClass,
-						navItem.getPageParameters());
+				Link<Void> navLink = navItem.link("navLink");
 				navLink.add(new Label("navLabel", navItem.getLabelModel()));
 				
-				item.setVisible(isPageAccessible(navItemPageClass));
-				if (navItemPageClass.equals(MainTemplate.this.getFirstMenuPage())) {
+				item.setVisible(navItem.isAccessible());
+				if (navItem.isActive(MainTemplate.this.getFirstMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
 				
@@ -106,13 +104,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			@Override
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
-				Class<? extends Page> navItemPageClass = navItem.getPageClass();
 				
-				BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("navLink", navItemPageClass, navItem.getPageParameters());
+				Link<Void> navLink = navItem.link("navLink");
 				navLink.add(new Label("navLabel", navItem.getLabelModel()));
 				
-				item.setVisible(isPageAccessible(navItemPageClass));
-				if (navItemPageClass.equals(MainTemplate.this.getSecondMenuPage())) {
+				item.setVisible(navItem.isAccessible());
+				if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
 				
@@ -159,8 +156,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
-		return Lists.newArrayList(new NavigationMenuItem(new ResourceModel("navigation.home"), HomePage.class),
-				new NavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationUserPortfolioPage.class));
+		return Lists.newArrayList(
+				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home")),
+				AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration"))
+		);
 	}
 
 	protected List<NavigationMenuItem> getSubNav() {

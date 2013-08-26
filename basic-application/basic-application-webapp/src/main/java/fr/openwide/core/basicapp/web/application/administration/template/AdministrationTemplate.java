@@ -30,10 +30,9 @@ public abstract class AdministrationTemplate extends MainTemplate {
 	@Override
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList(
-				new NavigationMenuItem(new ResourceModel("navigation.administration.user"),
-				AdministrationUserPortfolioPage.class),
-				new NavigationMenuItem(new ResourceModel("navigation.administration.usergroup"),
-				AdministrationUserGroupPortfolioPage.class));
+				AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.user")),
+				AdministrationUserGroupPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.usergroup"))
+		);
 	}
 
 	@Override

@@ -4,18 +4,17 @@ import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.markup.html.WebPage;
 
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
-import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
-import fr.openwide.core.wicket.more.link.factory.CoreWicketAuthenticatedApplicationLinkFactory;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
@@ -35,7 +34,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	protected void mountApplicationPages() {
 		
 		// Sign in
-		mountPage("/login/", SignInPage.class);
+		mountPage("/login/", getSignInPageClass());
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
 		
@@ -69,9 +68,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	public Class<? extends Page> getHomePage() {
 		return HomePage.class;
 	}
-	
+
 	@Override
-	public CoreWicketAuthenticatedApplicationLinkFactory getLinkFactory() {
-		return LinkFactory.get();
+	public Class<? extends WebPage> getSignInPageClass() {
+		return SignInPage.class;
 	}
+	
 }
