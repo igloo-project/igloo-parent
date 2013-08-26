@@ -52,9 +52,9 @@ public abstract class LinksTemplate extends MainTemplate {
 	@Override
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList(
-				new NavigationMenuItem(new ResourceModel("links.menu.page1"), LinksPage1.class),
-				new NavigationMenuItem(new ResourceModel("links.menu.page2"), LinksPage2.class),
-				new NavigationMenuItem(new ResourceModel("links.menu.page3"), LinksPage3.class)
+				LinksPage1.linkDescriptor().navigationMenuItem(new ResourceModel("links.menu.page1")),
+				LinksPage2.linkDescriptor().navigationMenuItem(new ResourceModel("links.menu.page2")),
+				LinksPage3.linkDescriptor().navigationMenuItem(new ResourceModel("links.menu.page3"))
 		);
 	}
 

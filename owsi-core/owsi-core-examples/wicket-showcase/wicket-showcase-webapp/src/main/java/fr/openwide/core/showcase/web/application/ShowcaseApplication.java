@@ -4,11 +4,11 @@ import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.markup.html.WebPage;
 
 import fr.openwide.core.showcase.web.application.links.page.LinksPage1;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage2;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
-import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.showcase.web.application.navigation.page.HomePage;
 import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
 import fr.openwide.core.showcase.web.application.others.page.ButtonsPage;
@@ -31,7 +31,6 @@ import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
-import fr.openwide.core.wicket.more.link.factory.CoreWicketAuthenticatedApplicationLinkFactory;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
@@ -109,8 +108,8 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 	}
 	
 	@Override
-	public CoreWicketAuthenticatedApplicationLinkFactory getLinkFactory() {
-		return LinkFactory.get();
+	public Class<? extends WebPage> getSignInPageClass() {
+		return SignInPage.class;
 	}
 
 }

@@ -32,7 +32,7 @@ public interface ILinkDescriptor extends ILinkParametersExtractor, IDetachable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void extract(PageParameters parameters) throws LinkParameterValidationException, LinkParameterExtractionRuntimeException;
+	void extract(PageParameters parameters) throws LinkParameterValidationException, LinkParameterExtractionRuntimeException;
 	
 	/**
 	 * Renders the full URL for this link descriptor.

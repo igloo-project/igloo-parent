@@ -7,6 +7,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
 public class LinksPage2 extends LinksTemplate {
 	
@@ -14,6 +16,12 @@ public class LinksPage2 extends LinksTemplate {
 	
 	@SpringBean
 	private IUserService userService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(LinksPage2.class)
+				.build();
+	}
 
 	public LinksPage2(PageParameters parameters) {
 		super(parameters);

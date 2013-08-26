@@ -10,8 +10,8 @@ public class LoginFailurePage extends CoreWebPage {
 	public LoginFailurePage() {
 		getSession().error(getLocalizer().getString("login.failed", this));
 
-		throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
-				.signIn().newRestartResponseException();
+		throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
+				.newRestartResponseException();
 	}
 
 }

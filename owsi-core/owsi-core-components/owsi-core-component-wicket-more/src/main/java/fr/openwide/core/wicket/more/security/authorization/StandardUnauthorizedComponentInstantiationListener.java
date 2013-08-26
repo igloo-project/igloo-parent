@@ -24,8 +24,8 @@ public class StandardUnauthorizedComponentInstantiationListener implements IUnau
 			if (currentUrl != null) {
 				AbstractCoreSession.get().registerRedirectUrl(currentUrl);
 			}
-			throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
-					.signIn().newRestartResponseAtInterceptPageException();
+			throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
+					.newRestartResponseAtInterceptPageException();
 		} else {
 			throw new UnauthorizedInstantiationException(component.getClass());
 		}

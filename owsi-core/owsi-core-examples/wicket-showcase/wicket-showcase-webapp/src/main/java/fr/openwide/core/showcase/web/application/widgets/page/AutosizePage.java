@@ -6,12 +6,20 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.more.MoreBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AutosizePage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AutosizePage.class)
+				.build();
+	}
 
 	public AutosizePage(PageParameters parameters) {
 		super(parameters);

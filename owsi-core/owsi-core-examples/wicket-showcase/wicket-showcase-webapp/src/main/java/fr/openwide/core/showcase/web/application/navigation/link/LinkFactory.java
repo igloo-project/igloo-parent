@@ -1,10 +1,8 @@
 package fr.openwide.core.showcase.web.application.navigation.link;
 
-import fr.openwide.core.showcase.web.application.navigation.page.SignInPage;
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.link.factory.CoreWicketAuthenticatedApplicationLinkFactory;
+import fr.openwide.core.wicket.more.link.factory.AbstractLinkFactory;
 
-public final class LinkFactory extends CoreWicketAuthenticatedApplicationLinkFactory {
+public final class LinkFactory extends AbstractLinkFactory {
 	
 	private static final LinkFactory INSTANCE = new LinkFactory();
 	
@@ -14,10 +12,4 @@ public final class LinkFactory extends CoreWicketAuthenticatedApplicationLinkFac
 		return INSTANCE;
 	}
 
-	@Override
-	public IPageLinkDescriptor signIn() {
-		return builder()
-				.page(SignInPage.class)
-				.build();
-	}
 }

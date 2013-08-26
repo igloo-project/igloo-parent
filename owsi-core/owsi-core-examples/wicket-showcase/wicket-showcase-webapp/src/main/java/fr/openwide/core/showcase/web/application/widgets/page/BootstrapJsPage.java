@@ -8,6 +8,8 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -15,6 +17,12 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 public class BootstrapJsPage extends WidgetsTemplate {
 	
 	private static final long serialVersionUID = -187415297020105589L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(BootstrapJsPage.class)
+				.build();
+	}
 	
 	public BootstrapJsPage(PageParameters parameters) {
 		super(parameters);

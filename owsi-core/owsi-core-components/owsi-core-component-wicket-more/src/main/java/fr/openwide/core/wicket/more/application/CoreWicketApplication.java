@@ -21,8 +21,8 @@ import org.springframework.context.ApplicationContext;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
-import fr.openwide.core.wicket.more.link.factory.CoreWicketApplicationLinkFactory;
-import fr.openwide.core.wicket.more.link.factory.LegacyCoreWicketApplicationLinkFactory;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
@@ -137,9 +137,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 		return RuntimeConfigurationType.valueOf(configurer.getConfigurationType().toUpperCase(Locale.ROOT));
 	}
 	
-	@SuppressWarnings("deprecation")
-	public CoreWicketApplicationLinkFactory getLinkFactory() {
-		return LegacyCoreWicketApplicationLinkFactory.get();
+	public final IPageLinkDescriptor getHomePageLinkDescriptor() {
+		return new LinkDescriptorBuilder().page(getHomePage()).build();
 	}
 
 }

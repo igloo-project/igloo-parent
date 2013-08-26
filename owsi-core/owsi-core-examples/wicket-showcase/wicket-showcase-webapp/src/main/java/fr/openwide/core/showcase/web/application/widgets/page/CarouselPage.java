@@ -5,11 +5,19 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.showcase.web.application.widgets.component.ImageCarouselPanel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class CarouselPage extends WidgetsTemplate {
 
 	private static final long serialVersionUID = -1589558461083310335L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(CarouselPage.class)
+				.build();
+	}
 
 	public CarouselPage(PageParameters parameters) {
 		super(parameters);

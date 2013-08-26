@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.link.descriptor.impl;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -15,6 +16,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParame
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
+import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IPageLinkDescriptor {
 	
@@ -87,6 +89,24 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 		}
 		
 		return new RestartResponseAtInterceptPageException(getPageClass(), parameters);
+	}
+	
+	@Override
+	@Deprecated
+	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel) throws LinkParameterValidationRuntimeException {
+		PageParameters parameters;
+		try {
+			parameters = getValidatedParameters();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
+		
+		return new NavigationMenuItem(labelModel, getPageClass(), parameters);
+	}
+	
+	@Override
+	public boolean isAccessible() {
+		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(getPageClass());
 	}
 	
 	@Override

@@ -13,6 +13,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.form.DatePicker;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync.DatePickerSync;
@@ -23,7 +25,15 @@ import fr.openwide.core.wicket.more.util.DatePattern;
 public class CalendarPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -3963117430192776716L;
 
-	private IModel<Date> dateModel, endDateModel;
+	private IModel<Date> dateModel;
+	
+	private IModel<Date> endDateModel;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(CalendarPage.class)
+				.build();
+	}
 
 	@SuppressWarnings("unchecked")
 	public CalendarPage(PageParameters parameters) {
