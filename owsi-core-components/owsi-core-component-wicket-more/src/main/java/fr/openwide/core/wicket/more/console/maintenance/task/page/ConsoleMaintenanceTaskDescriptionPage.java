@@ -28,6 +28,7 @@ import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintena
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -40,8 +41,6 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 
 	private static final long serialVersionUID = 7622945973237519021L;
 	
-	public static final String ID_PARAMETER = "id";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceTaskDescriptionPage.class);
 	
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL)
@@ -56,7 +55,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	public static IPageLinkDescriptor linkDescriptor(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
 		return new LinkDescriptorBuilder()
 				.page(ConsoleMaintenanceTaskDescriptionPage.class)
-				.map(ID_PARAMETER, queuedTaskHolderModel, QueuedTaskHolder.class).mandatory()
+				.map(CommonParameters.ID, queuedTaskHolderModel, QueuedTaskHolder.class).mandatory()
 				.build();
 	}
 

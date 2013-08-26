@@ -17,6 +17,7 @@ import fr.openwide.core.showcase.web.application.links.component.LinksTestPanel;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -25,12 +26,10 @@ public abstract class LinksTemplate extends MainTemplate {
 	
 	private static final long serialVersionUID = -2979443021509594346L;
 	
-	public static final String ID_PARAMETER = "id";
-	
 	public static IPageLinkDescriptor linkDescriptor(IModel<? extends Class<? extends Page>> pageModel, IModel<User> userModel) {
 		return new LinkDescriptorBuilder()
 				.page(pageModel)
-				.map(ID_PARAMETER, userModel, User.class).mandatory()
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
 				.build();
 	}
 
