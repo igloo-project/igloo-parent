@@ -23,6 +23,8 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2ListMultipleChoice;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
@@ -36,6 +38,12 @@ public class HideableComponentsPage extends MainTemplate {
 	
 	@SpringBean
 	private IUserService userService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(HideableComponentsPage.class)
+				.build();
+	}
 
 	public HideableComponentsPage(PageParameters parameters) {
 		super(parameters);

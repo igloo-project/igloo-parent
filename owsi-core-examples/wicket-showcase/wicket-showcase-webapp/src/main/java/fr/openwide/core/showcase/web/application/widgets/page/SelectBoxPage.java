@@ -22,6 +22,8 @@ import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2DropDownChoice;
 import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2ListMultipleChoice;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -36,6 +38,12 @@ public class SelectBoxPage extends WidgetsTemplate {
 	private IModel<User> userModel = Model.of();
 	
 	private List<User> selectedUsers = Lists.newArrayList();
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(SelectBoxPage.class)
+				.build();
+	}
 
 	public SelectBoxPage(PageParameters parameters) {
 		super(parameters);

@@ -15,6 +15,8 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.showcase.web.application.widgets.component.AddUserPopupPanel;
 import fr.openwide.core.showcase.web.application.widgets.component.ZIndexTestModalPopupPanel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -27,6 +29,12 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 
 public class ModalPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ModalPage.class)
+				.build();
+	}
 
 	public ModalPage(PageParameters parameters) {
 		super(parameters);

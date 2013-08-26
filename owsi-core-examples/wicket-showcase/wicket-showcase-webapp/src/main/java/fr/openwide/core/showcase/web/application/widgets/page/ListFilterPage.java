@@ -16,6 +16,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
@@ -26,6 +28,12 @@ public class ListFilterPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 593301451585725585L;
 	
 	private static final UserBinding USER_BINDING = new UserBinding();
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ListFilterPage.class)
+				.build();
+	}
 	
 	@SpringBean
 	private IUserService userService;

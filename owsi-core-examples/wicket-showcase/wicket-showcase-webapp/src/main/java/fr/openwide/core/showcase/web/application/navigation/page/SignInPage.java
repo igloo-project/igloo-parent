@@ -1,6 +1,5 @@
 package fr.openwide.core.showcase.web.application.navigation.page;
 
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
@@ -59,10 +58,10 @@ public class SignInPage extends CoreWebPage {
 				}
 				
 				if (success) {
-					throw new RestartResponseException(LoginSuccessPage.class);
+					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
 				} else {
-					throw CoreWicketAuthenticatedApplication.get().getLinkFactory()
-							.signIn().newRestartResponseException();
+					throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
+							.newRestartResponseException();
 				}
 			}
 		};

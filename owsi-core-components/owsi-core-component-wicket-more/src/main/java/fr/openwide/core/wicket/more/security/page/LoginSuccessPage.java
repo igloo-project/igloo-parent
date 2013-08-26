@@ -4,6 +4,8 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
 
@@ -14,6 +16,10 @@ public class LoginSuccessPage extends CoreWebPage {
 	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
 	private static final String WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT = "IBehaviorListener";
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder().page(LoginSuccessPage.class).build();
+	}
 	
 	public LoginSuccessPage() {
 	}

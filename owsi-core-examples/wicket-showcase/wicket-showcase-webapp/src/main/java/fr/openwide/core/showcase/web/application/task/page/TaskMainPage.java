@@ -27,6 +27,8 @@ import fr.openwide.core.showcase.web.application.task.model.FailedTask;
 import fr.openwide.core.showcase.web.application.task.model.SuccessTask;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -43,6 +45,12 @@ public class TaskMainPage extends MainTemplate {
 
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(TaskMainPage.class)
+				.build();
+	}
 
 	public TaskMainPage(PageParameters parameters) {
 		super(parameters);
