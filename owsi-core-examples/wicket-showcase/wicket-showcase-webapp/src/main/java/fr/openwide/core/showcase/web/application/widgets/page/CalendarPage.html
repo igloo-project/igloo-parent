@@ -2,31 +2,18 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.calendar.title" /></h1>
+		<h1>
+			<span class="btn-group pull-right">
+				<button wicket:id="calendarPopupButton" class="btn" type="button">
+					<span class="icon-resize-full" />
+					<wicket:message key="widgets.calendar.popup" />
+				</button>
+			</span>
+			<wicket:message key="widgets.calendar.title" />
+		</h1>
 		
-		<form wicket:id="form" class="form-horizontal">
-			<div class="control-group">
-				<label class="control-label"><wicket:message key="widgets.calendar.date.label" /></label>
-				<div class="controls">
-					<div style="margin-top: 5px;">
-						<span wicket:id="dateLabel" />
-						-
-						<span wicket:id="endDateLabel" />
-					</div>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" wicket:for="beginDatePicker"><wicket:label /></label>
-				<div class="controls">
-					<input wicket:id="beginDatePicker" id="begin-date-picker" type="text" class="input-small" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" wicket:for="endDatePicker"><wicket:label /></label>
-				<div class="controls">
-					<input wicket:id="endDatePicker" id="end-date-picker" type="text" class="input-small" />
-				</div>
-			</div>
-		</form>
+		<wicket:container wicket:id="calendarPanel" />
+		
+		<wicket:container wicket:id="calendarPopupPanel" />
 	</wicket:extend>
 </html>
