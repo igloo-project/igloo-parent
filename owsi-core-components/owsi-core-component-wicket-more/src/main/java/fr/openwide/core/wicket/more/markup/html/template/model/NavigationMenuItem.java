@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.model;
 
+import java.util.List;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -7,6 +9,8 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 
@@ -21,6 +25,8 @@ public class NavigationMenuItem implements IDetachable {
 	private Class<? extends Page> pageClass;
 	
 	private PageParameters pageParameters;
+	
+	private List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
 	
 	public NavigationMenuItem(IModel<String> labelModel) {
 		this.labelModel = labelModel;
@@ -55,6 +61,10 @@ public class NavigationMenuItem implements IDetachable {
 		if (pageLinkDescriptor != null) {
 			pageLinkDescriptor.detach();
 		}
+		
+		for (NavigationMenuItem subMenuItem : subMenuItems) {
+			subMenuItem.detach();
+		}
 	}
 	
 	public IModel<String> getLabelModel() {
@@ -79,6 +89,18 @@ public class NavigationMenuItem implements IDetachable {
 	
 	public boolean isAccessible() {
 		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+	}
+	
+	public List<NavigationMenuItem> getSubMenuItems() {
+		return subMenuItems;
+	}
+	
+	public void addSubMenuItem(NavigationMenuItem subMenuItem) {
+		this.subMenuItems.add(subMenuItem);
+	}
+	
+	public void setSubMenuItems(List<NavigationMenuItem> subMenuItems) {
+		this.subMenuItems = subMenuItems;
 	}
 
 }
