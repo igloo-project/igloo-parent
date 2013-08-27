@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor;
 
+import java.util.Collection;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -73,6 +75,14 @@ public interface IPageLinkDescriptor extends ILinkDescriptor {
 	 * @see NavigationMenuItem
 	 */
 	NavigationMenuItem navigationMenuItem(IModel<String> labelModel) throws LinkParameterValidationRuntimeException;
+	
+	/**
+	 * Returns a NavigationMenyItem with the same page and parameters than this link descriptor.
+	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
+	 * @see NavigationMenuItem
+	 */
+	NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
+			throws LinkParameterValidationRuntimeException;
 	
 	/**
 	 * Returns true if the page is accessible by checking it against the authorization strategy defined in Wicket.
