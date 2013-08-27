@@ -22,24 +22,13 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  * being thrown, since such objects are inherently incomparable. This behavior may be overridden in subclasses by
  * comparing other attributes of the entity.
  */
-public class GenericEntityComparator<K extends Comparable<K> & Serializable, E extends GenericEntity<K,?>> extends AbstractNullSafeComparator<E> {
+public abstract class AbstractGenericEntityComparator<K extends Comparable<K> & Serializable, E extends GenericEntity<K,?>> extends AbstractNullSafeComparator<E> {
 
 	private static final long serialVersionUID = -5933751018161012653L;
 	
-	@SuppressWarnings("rawtypes")
-	private static final GenericEntityComparator DEFAULT_INSTANCE = new GenericEntityComparator();
-	
-	/**
-	 * Named getGeneric() because naming it get() would mess with the get() static methods of potential subclasses, which would probably not be generic.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> Comparator<E> getGeneric() {
-		return DEFAULT_INSTANCE;
-	}
-	
 	private final Comparator<? super K> KEY_COMPARATOR;
 
-	public GenericEntityComparator() {
+	public AbstractGenericEntityComparator() {
 		this(false, Ordering.natural().nullsLast());
 	}
 
@@ -49,7 +38,7 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 	 * 		Must be null-safe in order for this comparator to be null-safe.
 	 * 		Must be serializable in order for this comparator to be serializable.
 	 */
-	public GenericEntityComparator(boolean nullIsLow, Comparator<? super K> keyComparator) {
+	public AbstractGenericEntityComparator(boolean nullIsLow, Comparator<? super K> keyComparator) {
 		super(nullIsLow);
 		Assert.notNull(keyComparator);
 		this.KEY_COMPARATOR = keyComparator;
@@ -68,7 +57,7 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 		K leftId = left.getId();
 		K rightId = right.getId();
 		if (leftId == null && rightId == null) {
-			throw new IllegalArgumentException("Cannot compare two different entities will null IDs");
+			throw new IllegalArgumentException("Cannot compare two different entities with null IDs");
 		}
 		return KEY_COMPARATOR.compare(leftId, rightId);
 	}
