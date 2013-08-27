@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.model;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
@@ -26,31 +26,48 @@ public class NavigationMenuItem implements IDetachable {
 	
 	private PageParameters pageParameters;
 	
-	private List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
+	private Collection<NavigationMenuItem> subMenuItems = Lists.newArrayList();
 	
 	public NavigationMenuItem(IModel<String> labelModel) {
 		this.labelModel = labelModel;
 	}
 	
-	public NavigationMenuItem(IModel<String> labelModel,
-			Class<? extends Page> pageClass, PageParameters pageParameters,
-			IPageLinkDescriptor pageLinkDescriptor) {
+	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters,
+			IPageLinkDescriptor pageLinkDescriptor, Collection<NavigationMenuItem> subMenuItems) {
 		this.labelModel = labelModel;
 		this.pageClass = pageClass;
 		this.pageParameters = pageParameters;
 		this.pageLinkDescriptor = pageLinkDescriptor;
+		this.subMenuItems = subMenuItems;
+	}
+	
+	public NavigationMenuItem(IModel<String> labelModel,
+			Class<? extends Page> pageClass, PageParameters pageParameters,
+			IPageLinkDescriptor pageLinkDescriptor) {
+		this(labelModel, pageClass, pageParameters, pageLinkDescriptor,
+				Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
 	}
 	
 	@Deprecated
 	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass) {
-		this(labelModel, pageClass, null);
+		this(labelModel, pageClass, null, null, Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
 	}
 	
 	@Deprecated
 	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters) {
-		this.labelModel = labelModel;
-		this.pageClass = pageClass;
-		this.pageParameters = pageParameters;
+		this(labelModel, pageClass, pageParameters, null, Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
+	}
+	
+	@Deprecated
+	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass,
+			Collection<NavigationMenuItem> subMenuItems) {
+		this(labelModel, pageClass, null, null, subMenuItems);
+	}
+	
+	@Deprecated
+	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters,
+			Collection<NavigationMenuItem> subMenuItems) {
+		this(labelModel, pageClass, pageParameters, null, subMenuItems);
 	}
 	
 	@Override
@@ -91,7 +108,7 @@ public class NavigationMenuItem implements IDetachable {
 		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 	
-	public List<NavigationMenuItem> getSubMenuItems() {
+	public Collection<NavigationMenuItem> getSubMenuItems() {
 		return subMenuItems;
 	}
 	
@@ -99,7 +116,7 @@ public class NavigationMenuItem implements IDetachable {
 		this.subMenuItems.add(subMenuItem);
 	}
 	
-	public void setSubMenuItems(List<NavigationMenuItem> subMenuItems) {
+	public void setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
 		this.subMenuItems = subMenuItems;
 	}
 

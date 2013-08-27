@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor.impl;
 
+import java.util.Collection;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -11,6 +13,8 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -129,6 +133,12 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	
 	@Override
 	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel) throws LinkParameterValidationRuntimeException {
+		return navigationMenuItem(labelModel, Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
+	}
+	
+	@Override
+	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
+			throws LinkParameterValidationRuntimeException {
 		PageParameters parameters;
 		try {
 			parameters = getValidatedParameters();
@@ -136,7 +146,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 			throw new LinkParameterValidationRuntimeException(e);
 		}
 		
-		return new NavigationMenuItem(labelModel, getPageClass(), parameters, this);
+		return new NavigationMenuItem(labelModel, getPageClass(), parameters, this, subMenuItems);
 	}
 	
 	@Override
