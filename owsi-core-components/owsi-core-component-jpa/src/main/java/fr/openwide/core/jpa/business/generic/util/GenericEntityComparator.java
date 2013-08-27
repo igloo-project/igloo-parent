@@ -68,7 +68,7 @@ public class GenericEntityComparator<K extends Comparable<K> & Serializable, E e
 		K leftId = left.getId();
 		K rightId = right.getId();
 		if (leftId == null && rightId == null) {
-			throw new IllegalArgumentException("Cannot compare two different entities will non-null IDs");
+			throw new IllegalArgumentException("Cannot compare two different entities will null IDs");
 		}
 		return KEY_COMPARATOR.compare(leftId, rightId);
 	}
