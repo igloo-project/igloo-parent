@@ -13,6 +13,8 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
@@ -28,6 +30,8 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
 public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IPageLinkDescriptor {
 	
 	private static final long serialVersionUID = -9139677593653180236L;
+	
+	private static final Logger INTERFACE_LOGGER = LoggerFactory.getLogger(IPageLinkDescriptor.class);
 	
 	private static final String ANCHOR_ROOT = "#";
 
@@ -57,6 +61,16 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 		link.add(new AttributeAppender("href", ANCHOR_ROOT + anchor));
 		
 		return link;
+	}
+	
+	@Override
+	public void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink) throws RestartResponseException {
+		try {
+			extract(parameters);
+		} catch (Exception e) {
+			INTERFACE_LOGGER.error("Error while extracting page parameters", e);
+			throw fallbackLink.newRestartResponseException();
+		}
 	}
 
 	@Override
