@@ -12,7 +12,7 @@ import fr.openwide.core.jpa.config.spring.convert.converter.StringToGenericEntit
 public class DefaultLinkParameterConversionService extends DefaultConversionService implements ILinkParameterConversionService {
 	
 	@Autowired
-	private IEntityService entityService;
+	protected IEntityService entityService;
 
 	public DefaultLinkParameterConversionService() {
 		super();
