@@ -11,8 +11,8 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParamete
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
 /**
  * A {@link Link} whose parameters may change during the page life cycle (for instance on an Ajax refresh).
@@ -100,11 +100,6 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	}
 	
 	protected abstract CharSequence getURL(PageParameters parameters);
-
-	@Override
-	protected final boolean getStatelessHint() {
-		return false; // This component might be stateful (due to parametersModel)
-	}
 	
 	/**
 	 * No click event is allowed.
