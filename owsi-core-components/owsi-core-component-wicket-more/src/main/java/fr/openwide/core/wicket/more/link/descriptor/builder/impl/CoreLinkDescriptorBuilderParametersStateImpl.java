@@ -11,8 +11,9 @@ import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.ITerminalState;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParameterMappingEntry;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
@@ -20,10 +21,10 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 		implements IParameterMappingState<L>, IAddedParameterMappingState<L> {
 	
 	private final CoreLinkDescriptorBuilderFactory<L> factory;
-	private final Collection<LinkParameterMappingEntry<?>> parameterMappingEntries;
+	private final Collection<ILinkParameterMappingEntry<?>> parameterMappingEntries;
 	private final Collection<ILinkParameterValidator> parameterValidators;
 	
-	private String lastAddedParameterName;
+	private ILinkParameterMappingEntry<?> lastAddedParameterMappingEntry;
 	
 	public CoreLinkDescriptorBuilderParametersStateImpl(CoreLinkDescriptorBuilderFactory<L> factory) {
 		this.factory = factory;
@@ -37,9 +38,15 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 		Args.notNull(valueModel, "valueModel");
 		Args.notNull(valueType, "valueType");
 
-		LinkParameterMappingEntry<T> entry = new LinkParameterMappingEntry<T>(name, valueModel, valueType);
-		parameterMappingEntries.add(entry);
-		lastAddedParameterName = name;
+		return map(new SimpleLinkParameterMappingEntry<T>(name, valueModel, valueType));
+	}
+	
+	@Override
+	public <T> IAddedParameterMappingState<L> map(ILinkParameterMappingEntry<T> parameterMappingEntry) {
+		Args.notNull(parameterMappingEntry, "parameterMappingEntry");
+		
+		parameterMappingEntries.add(parameterMappingEntry);
+		lastAddedParameterMappingEntry = parameterMappingEntry;
 		
 		return this;
 	}
@@ -51,7 +58,7 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 	
 	@Override
 	public IParameterMappingState<L> mandatory() {
-		parameterValidators.add(new CoreLinkDescriptorBuilderMandatoryParameterValidator(lastAddedParameterName));
+		parameterValidators.add(lastAddedParameterMappingEntry.mandatoryValidator());
 		return this;
 	}
 
