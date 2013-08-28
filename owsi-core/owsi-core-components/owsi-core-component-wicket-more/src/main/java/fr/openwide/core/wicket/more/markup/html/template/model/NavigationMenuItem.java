@@ -1,6 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.model;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
@@ -10,6 +12,7 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -26,7 +29,7 @@ public class NavigationMenuItem implements IDetachable {
 	
 	private PageParameters pageParameters;
 	
-	private Collection<NavigationMenuItem> subMenuItems = Lists.newArrayList();
+	private final List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
 	
 	public NavigationMenuItem(IModel<String> labelModel) {
 		this.labelModel = labelModel;
@@ -38,7 +41,7 @@ public class NavigationMenuItem implements IDetachable {
 		this.pageClass = pageClass;
 		this.pageParameters = pageParameters;
 		this.pageLinkDescriptor = pageLinkDescriptor;
-		this.subMenuItems = subMenuItems;
+		this.subMenuItems.addAll(subMenuItems);
 	}
 	
 	public NavigationMenuItem(IModel<String> labelModel,
@@ -108,8 +111,8 @@ public class NavigationMenuItem implements IDetachable {
 		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 	
-	public Collection<NavigationMenuItem> getSubMenuItems() {
-		return subMenuItems;
+	public List<NavigationMenuItem> getSubMenuItems() {
+		return Collections.unmodifiableList(subMenuItems);
 	}
 	
 	public void addSubMenuItem(NavigationMenuItem subMenuItem) {
@@ -117,7 +120,9 @@ public class NavigationMenuItem implements IDetachable {
 	}
 	
 	public void setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
-		this.subMenuItems = subMenuItems;
+		Collection<NavigationMenuItem> menuItems = ImmutableList.copyOf(subMenuItems); // Handle collection views
+		this.subMenuItems.clear();
+		this.subMenuItems.addAll(menuItems);
 	}
 
 }
