@@ -71,7 +71,7 @@ public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMapping
 	public ILinkParameterMappingEntry<T> wrap(Component component) {
 		IModel<T> newModel;
 		if (mappedModel instanceof IComponentAssignedModel) {
-			newModel = ((IComponentAssignedModel<T>)mappedModel).wrapOnAssignment(component);
+			newModel = ((IComponentAssignedModel<T>) mappedModel).wrapOnAssignment(component);
 		} else {
 			newModel = mappedModel;
 		}
