@@ -99,6 +99,11 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		return getURL(parameters);
 	}
 	
+	@Override
+	protected boolean getStatelessHint() {
+		return true;
+	}
+	
 	protected abstract CharSequence getURL(PageParameters parameters);
 	
 	/**
