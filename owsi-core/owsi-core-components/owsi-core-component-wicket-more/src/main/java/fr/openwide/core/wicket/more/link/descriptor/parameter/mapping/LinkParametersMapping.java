@@ -36,12 +36,12 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 	
 	private static final long serialVersionUID = -9066291686294702275L;
 	
-	private final Collection<LinkParameterMappingEntry<?>> parameterMappingEntries;
+	private final Collection<ILinkParameterMappingEntry<?>> parameterMappingEntries;
 	
 	@SpringBean
 	private ILinkParameterConversionService conversionService;
 
-	public LinkParametersMapping(Collection<LinkParameterMappingEntry<?>> parameterMappingEntries) {
+	public LinkParametersMapping(Collection<ILinkParameterMappingEntry<?>> parameterMappingEntries) {
 		super();
 		Injector.get().inject(this);
 		this.parameterMappingEntries = ImmutableList.copyOf(parameterMappingEntries);
@@ -51,7 +51,7 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 	public PageParameters getObject() throws LinkParameterInjectionRuntimeException {
 		PageParameters result = new PageParameters();
 
-		for (LinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
+		for (ILinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
 			try {
 				parameterMappingEntry.inject(result, conversionService);
 			} catch (LinkParameterInjectionException e) {
@@ -66,7 +66,7 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 	public void setObject(PageParameters object) throws LinkParameterExtractionRuntimeException {
 		Args.notNull(object, "object");
 		
-		for (LinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
+		for (ILinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
 			try {
 				parameterMappingEntry.extract(object, conversionService);
 			} catch (LinkParameterExtractionException e) {
@@ -82,7 +82,7 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 
 	@Override
 	public void detach() {
-		for (LinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
+		for (ILinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
 			parameterMappingEntry.detach();
 		}
 	}
@@ -100,9 +100,9 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 		}
 	}
 	
-	private static Collection<LinkParameterMappingEntry<?>> wrapParameterModelMap(Collection<LinkParameterMappingEntry<?>> parameterMappingEntries, Component component) {
-		ImmutableList.Builder<LinkParameterMappingEntry<?>> builder = ImmutableList.builder();
-		for (LinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
+	private static Collection<ILinkParameterMappingEntry<?>> wrapParameterModelMap(Collection<ILinkParameterMappingEntry<?>> parameterMappingEntries, Component component) {
+		ImmutableList.Builder<ILinkParameterMappingEntry<?>> builder = ImmutableList.builder();
+		for (ILinkParameterMappingEntry<?> parameterMappingEntry : parameterMappingEntries) {
 			builder.add(parameterMappingEntry.wrap(component));
 		}
 		return builder.build();
