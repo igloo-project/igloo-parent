@@ -41,7 +41,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 			IModel<PageParameters> parametersMapping,
 			ILinkParameterValidator parametersValidator) {
 		super(wicketId);
-		Args.notNull(parametersMapping, "parametersModel");
+		Args.notNull(parametersMapping, "parametersMapping");
 		Args.notNull(parametersValidator, "parametersValidator");
 		this.parametersMapping = wrap(parametersMapping);
 		this.parametersValidator = parametersValidator;
