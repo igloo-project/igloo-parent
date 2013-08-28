@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.config.spring.convert.converter;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.core.convert.ConversionService;
@@ -15,9 +16,6 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  */
 public class GenericEntityToStringSpringConverter implements ConditionalGenericConverter {
 	
-	private final static TypeDescriptor STRING_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(String.class);
-	private final static TypeDescriptor GENERIC_ENTITY_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(GenericEntity.class);
-
 	private final ConversionService conversionService;
 	
 	public GenericEntityToStringSpringConverter(ConversionService conversionService) {
@@ -26,24 +24,17 @@ public class GenericEntityToStringSpringConverter implements ConditionalGenericC
 
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
-		return null;
+		return Collections.singleton(new ConvertiblePair(GenericEntity.class, String.class));
 	}
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-		if (!sourceType.isAssignableTo(GENERIC_ENTITY_TYPE_DESCRIPTOR)) {
-			return false;
-		}
-		if (!targetType.isAssignableTo(STRING_TYPE_DESCRIPTOR)) {
-			return false;
-		}
-		
 		/*
 		 * NOTE: for the official javac to infer types properly, the GenericEntity below must be left as a raw type.
 		 * Eclipse JDT works fine without this hack.
 		 */
-		return canConvertKey((Class<? extends GenericEntity>)sourceType.getType(), targetType.getType());
+		return canConvertKey((Class<? extends GenericEntity>) sourceType.getType(), targetType.getType());
 	}
 	
 	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
