@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
-import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
@@ -14,7 +13,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 
-public class SimpleLinkParameterMappingEntry<T> implements IDetachable, ILinkParameterMappingEntry<T> {
+public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMappingEntry<T> {
 	
 	private static final long serialVersionUID = -8490340879965229874L;
 	
