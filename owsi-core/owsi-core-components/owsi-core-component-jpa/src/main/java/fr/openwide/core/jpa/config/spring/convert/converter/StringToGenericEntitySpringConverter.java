@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.config.spring.convert.converter;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.core.convert.ConversionService;
@@ -9,7 +10,6 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
-import fr.openwide.core.jpa.config.spring.convert.converter.GenericEntityTypeResolver;
 
 /**
  * Converts a String to a GenericEntity.
@@ -17,9 +17,6 @@ import fr.openwide.core.jpa.config.spring.convert.converter.GenericEntityTypeRes
  */
 public class StringToGenericEntitySpringConverter implements ConditionalGenericConverter {
 	
-	private final static TypeDescriptor STRING_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(String.class);
-	private final static TypeDescriptor GENERIC_ENTITY_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(GenericEntity.class);
-
 	private final ConversionService conversionService;
 	private final IEntityService entityService;
 	
@@ -30,19 +27,12 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
-		return null;
+		return Collections.singleton(new ConvertiblePair(String.class, GenericEntity.class));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-		if (!sourceType.isAssignableTo(STRING_TYPE_DESCRIPTOR)) {
-			return false;
-		}
-		if (!targetType.isAssignableTo(GENERIC_ENTITY_TYPE_DESCRIPTOR)) {
-			return false;
-		}
-		
 		/*
 		 * NOTE: for the official javac to infer types properly, the GenericEntity below must be left as a raw type.
 		 * Eclipse JDT works fine without this hack.
@@ -73,10 +63,7 @@ public class StringToGenericEntitySpringConverter implements ConditionalGenericC
 		 * NOTE: for the official javac to infer types properly, the GenericEntity below must be left as a raw type.
 		 * Eclipse JDT works fine without this hack.
 		 */
-		return convert(
-				string,
-				(Class<? extends GenericEntity>) targetType.getType()
-		);
+		return convert(string, (Class<? extends GenericEntity>) targetType.getType());
 	}
 
 	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
