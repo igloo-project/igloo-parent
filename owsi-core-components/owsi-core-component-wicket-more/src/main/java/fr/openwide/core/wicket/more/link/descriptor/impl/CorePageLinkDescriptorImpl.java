@@ -61,9 +61,13 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 
 	@Override
 	public String fullUrl() throws LinkParameterValidationException {
+		return fullUrl(RequestCycle.get());
+	}
+	
+	@Override
+	public String fullUrl(RequestCycle requestCycle) throws LinkParameterValidationException {
 		PageParameters parameters = getValidatedParameters();
 		
-		RequestCycle requestCycle = RequestCycle.get();
 		return requestCycle.getUrlRenderer()
 				.renderFullUrl(
 						Url.parse(requestCycle.urlFor(getPageClass(), parameters))

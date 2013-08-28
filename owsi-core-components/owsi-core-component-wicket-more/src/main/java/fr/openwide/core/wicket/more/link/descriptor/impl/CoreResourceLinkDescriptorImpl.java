@@ -39,14 +39,16 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreLinkDescriptor i
 	
 	@Override
 	public String fullUrl() throws LinkParameterValidationException {
+		return fullUrl(RequestCycle.get());
+	}
+	
+	@Override
+	public String fullUrl(RequestCycle requestCycle) throws LinkParameterValidationException {
 		PageParameters parameters = getValidatedParameters();
 		
-		RequestCycle requestCycle = RequestCycle.get();
 		return requestCycle.getUrlRenderer()
 				.renderFullUrl(
-						Url.parse(
-								requestCycle.urlFor(getResourceReference(), parameters)
-						)
+						Url.parse(requestCycle.urlFor(getResourceReference(), parameters))
 				);
 	}
 	
