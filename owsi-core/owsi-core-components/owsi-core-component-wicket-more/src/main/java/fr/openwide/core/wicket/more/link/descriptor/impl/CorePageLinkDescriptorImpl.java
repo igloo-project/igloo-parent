@@ -60,13 +60,18 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	}
 
 	@Override
-	public String fullUrl() throws LinkParameterValidationException {
+	public String fullUrl() {
 		return fullUrl(RequestCycle.get());
 	}
 	
 	@Override
-	public String fullUrl(RequestCycle requestCycle) throws LinkParameterValidationException {
-		PageParameters parameters = getValidatedParameters();
+	public String fullUrl(RequestCycle requestCycle) {
+		PageParameters parameters;
+		try {
+			parameters = getValidatedParameters();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 		
 		return requestCycle.getUrlRenderer()
 				.renderFullUrl(
@@ -112,27 +117,13 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	
 	@Override
 	public RedirectToUrlException newRedirectToUrlException() throws LinkParameterValidationRuntimeException {
-		String fullUrl;
-		try {
-			fullUrl = fullUrl();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
-		
-		return new RedirectToUrlException(fullUrl);
+		return new RedirectToUrlException(fullUrl());
 	}
 
 	@Override
 	public RedirectToUrlException newRedirectToUrlException(String anchor)
 			throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException {
-		String fullUrl;
-		try {
-			fullUrl = fullUrl();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
-		
-		return new RedirectToUrlException(fullUrl + ANCHOR_ROOT + anchor);
+		return new RedirectToUrlException(fullUrl() + ANCHOR_ROOT + anchor);
 	}
 	
 	@Override

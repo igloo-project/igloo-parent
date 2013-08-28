@@ -8,7 +8,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionRuntimeException;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 
 /**
@@ -39,18 +38,14 @@ public interface ILinkDescriptor extends ILinkParametersExtractor, IDetachable {
 	 * Renders the full URL for this link descriptor.
 	 * <p>The resulting string includes protocol ("http://"), host, port, and path, as well as query parameters ("?arg0=true"), if any.
 	 * @return The full URL for this link descriptor.
-	 * @throws LinkParameterValidationException if the parameters validation returned an error
-	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 */
-	String fullUrl() throws LinkParameterValidationException, LinkParameterInjectionRuntimeException;
+	String fullUrl();
 	
 	/**
 	 * Renders the full URL for this link descriptor.
 	 * <p>The resulting string includes protocol ("http://"), host, port, and path, as well as query parameters ("?arg0=true"), if any.
 	 * @return The full URL for this link descriptor.
-	 * @throws LinkParameterValidationException if the parameters validation returned an error
-	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 */
-	String fullUrl(RequestCycle requestCycle) throws LinkParameterValidationException, LinkParameterInjectionRuntimeException;
+	String fullUrl(RequestCycle requestCycle);
 
 }
