@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
+import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
@@ -9,7 +10,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 
-public interface ILinkParameterMappingEntry<T> {
+public interface ILinkParameterMappingEntry<T> extends IDetachable {
 
 	/**
 	 * Inject the mapped model value into {@link PageParameters}, converting the value to a String if necessary.
@@ -18,7 +19,7 @@ public interface ILinkParameterMappingEntry<T> {
 	 * @param conversionService The spring {@link ILinkParameterConversionService} to use for conversion (non-null).
 	 * @throws LinkParameterInjectionException if a problem occurred during conversion
 	 */
-	public abstract void inject(PageParameters targetParameters, ILinkParameterConversionService conversionService)
+	void inject(PageParameters targetParameters, ILinkParameterConversionService conversionService)
 			throws LinkParameterInjectionException;
 
 	/**
@@ -28,7 +29,7 @@ public interface ILinkParameterMappingEntry<T> {
 	 * @param conversionService The spring {@link ILinkParameterConversionService} to use for conversion (non-null).
 	 * @throws LinkParameterExtractionException if a problem occurred during conversion
 	 */
-	public abstract void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService)
+	void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService)
 			throws LinkParameterExtractionException;
 
 	/**
@@ -37,10 +38,14 @@ public interface ILinkParameterMappingEntry<T> {
 	 * <p>If the mapped model does not implement {@link IComponentAssignedModel}, a copy of this {@link ILinkParameterMappingEntry} is returned anyway.
 	 * @param component The component to wrap
 	 */
-	public abstract ILinkParameterMappingEntry<T> wrap(Component component);
+	ILinkParameterMappingEntry<T> wrap(Component component);
 
-	public abstract ILinkParameterValidator mandatoryValidator();
+	/**
+	 * Returns the mandatory validator for this paramter mapping entry.
+	 */
+	ILinkParameterValidator mandatoryValidator();
 
+	@Override
 	public abstract void detach();
 
 }
