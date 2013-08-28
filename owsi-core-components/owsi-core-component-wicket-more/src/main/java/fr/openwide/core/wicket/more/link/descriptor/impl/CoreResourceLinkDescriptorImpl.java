@@ -12,6 +12,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 
 public class CoreResourceLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IResourceLinkDescriptor {
 
@@ -38,13 +39,18 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreLinkDescriptor i
 	}
 	
 	@Override
-	public String fullUrl() throws LinkParameterValidationException {
+	public String fullUrl() {
 		return fullUrl(RequestCycle.get());
 	}
 	
 	@Override
-	public String fullUrl(RequestCycle requestCycle) throws LinkParameterValidationException {
-		PageParameters parameters = getValidatedParameters();
+	public String fullUrl(RequestCycle requestCycle) {
+		PageParameters parameters;
+		try {
+			parameters = getValidatedParameters();
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 		
 		return requestCycle.getUrlRenderer()
 				.renderFullUrl(

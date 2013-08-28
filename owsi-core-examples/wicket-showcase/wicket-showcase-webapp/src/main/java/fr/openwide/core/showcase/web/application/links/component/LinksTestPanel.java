@@ -27,7 +27,6 @@ import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
 import fr.openwide.core.showcase.web.application.links.page.LinksTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -74,11 +73,7 @@ public class LinksTestPanel extends GenericPanel<User> {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public String getObject() {
-						try {
-							return LinksTemplate.linkDescriptor(pageClassModel, userModel).fullUrl();
-						} catch(LinkParameterValidationException e) {
-							return e.getMessage();
-						}
+						return LinksTemplate.linkDescriptor(pageClassModel, userModel).fullUrl();
 					}
 					@Override
 					public void detach() {
