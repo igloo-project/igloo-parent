@@ -29,6 +29,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
@@ -37,7 +38,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
 	
-	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirect";
+	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirectUrl";
+	
+	private static final String REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME = "redirectPageLinkDescriptor";
 	
 	@SpringBean(name="personService")
 	protected IPersonService<P> personService;
@@ -266,6 +269,32 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		String redirectUrl = (String) getAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		return redirectUrl;
+	}
+	
+	/**
+	 * Permet d'enregistrer une url de redirection : l'objectif est de permettre de rediriger après authentification
+	 * sur la page pour laquelle l'utilisateur n'avait pas les droits.
+	 */
+	public void registerRedirectPageLinkDescriptor(IPageLinkDescriptor pageLinkDescriptor) {
+		// le bind() est obligatoire pour demander à wicket de persister la session
+		// si on ne le fait pas, la session possède comme durée de vie le temps de
+		// la requête.
+		if (isTemporary()) {
+			bind();
+		}
+		
+		setAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME, pageLinkDescriptor);
+	}
+	
+	/**
+	 * Permet de récupérer la dernière url de redirection enregistrée
+	 * 
+	 * @return null si aucune url enregistrée
+	 */
+	public IPageLinkDescriptor getRedirectPageLinkDescriptor() {
+		IPageLinkDescriptor pageLinkDescriptor = (IPageLinkDescriptor) getAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
+		removeAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
+		return pageLinkDescriptor;
 	}
 	
 	/**
