@@ -35,7 +35,7 @@ public abstract class AbstractGenericListItemComparator<E extends GenericListIte
 	 * 		Must be serializable in order for this comparator to be serializable.
 	 */
 	public AbstractGenericListItemComparator(Collator labelCollator) {
-		this(makeNullSafe(labelCollator));
+		this(makeNullSafe((Collator)labelCollator.clone()));
 	}
 
 	/**
@@ -61,7 +61,7 @@ public abstract class AbstractGenericListItemComparator<E extends GenericListIte
 	 */
 	public AbstractGenericListItemComparator(boolean nullIsLow, Comparator<? super Long> keyComparator,
 			Comparator<? super Integer> positionComparator, Collator labelCollator) {
-		this(nullIsLow, keyComparator, positionComparator, makeNullSafe(labelCollator));
+		this(nullIsLow, keyComparator, positionComparator, makeNullSafe((Collator)labelCollator.clone()));
 	}
 
 	/**
