@@ -34,6 +34,11 @@ public class LoginSuccessPage extends CoreWebPage {
 	protected void redirectToSavedPage() {
 		AbstractCoreSession<?> session = AbstractCoreSession.get();
 		
+		IPageLinkDescriptor pageLinkDescriptor = session.getRedirectPageLinkDescriptor();
+		if (pageLinkDescriptor != null) {
+			throw pageLinkDescriptor.newRestartResponseException();
+		}
+		
 		String redirectUrl = null;
 		if (StringUtils.hasText(session.getRedirectUrl())) {
 			redirectUrl = session.getRedirectUrl();
