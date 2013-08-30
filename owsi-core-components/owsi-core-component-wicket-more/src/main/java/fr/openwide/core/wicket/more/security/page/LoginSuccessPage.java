@@ -47,6 +47,7 @@ public class LoginSuccessPage extends CoreWebPage {
 			if (savedRequest instanceof SavedRequest) {
 				redirectUrl = ((SavedRequest) savedRequest).getRedirectUrl();
 			}
+			RequestCycleUtils.getCurrentContainerRequest().getSession().removeAttribute(SPRING_SECURITY_SAVED_REQUEST);
 		}
 		if (isUrlValid(redirectUrl)) {
 			redirect(redirectUrl);
