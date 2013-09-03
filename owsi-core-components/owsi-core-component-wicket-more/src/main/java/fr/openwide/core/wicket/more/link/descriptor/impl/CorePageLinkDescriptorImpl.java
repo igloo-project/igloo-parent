@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
@@ -65,10 +66,19 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	
 	@Override
 	public void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink) throws RestartResponseException {
+		extractSafely(parameters, fallbackLink, null);
+	}
+	
+	@Override
+	public void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink, String errorMessage)
+			throws RestartResponseException {
 		try {
 			extract(parameters);
 		} catch (Exception e) {
 			INTERFACE_LOGGER.error("Error while extracting page parameters", e);
+			if (StringUtils.hasText(errorMessage)) {
+				Session.get().error(errorMessage);
+			}
 			throw fallbackLink.newRestartResponseException();
 		}
 	}
