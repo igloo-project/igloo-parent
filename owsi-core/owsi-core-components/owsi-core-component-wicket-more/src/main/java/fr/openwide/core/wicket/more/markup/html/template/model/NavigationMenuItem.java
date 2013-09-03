@@ -86,14 +86,6 @@ public class NavigationMenuItem implements IDetachable {
 			subMenuItem.detach();
 		}
 	}
-	
-	public IModel<String> getLabelModel() {
-		return labelModel;
-	}
-	
-	public void setLabelModel(IModel<String> labelModel) {
-		this.labelModel = labelModel;
-	}
 
 	public Link<Void> link(String wicketId) {
 		if (pageLinkDescriptor != null) {
@@ -109,6 +101,38 @@ public class NavigationMenuItem implements IDetachable {
 	
 	public boolean isAccessible() {
 		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+	}
+	
+	public IModel<String> getLabelModel() {
+		return labelModel;
+	}
+	
+	public void setLabelModel(IModel<String> labelModel) {
+		this.labelModel = labelModel;
+	}
+	
+	protected IPageLinkDescriptor getPageLinkDescriptor() {
+		return pageLinkDescriptor;
+	}
+
+	protected void setPageLinkDescriptor(IPageLinkDescriptor pageLinkDescriptor) {
+		this.pageLinkDescriptor = pageLinkDescriptor;
+	}
+
+	protected Class<? extends Page> getPageClass() {
+		return pageClass;
+	}
+
+	protected void setPageClass(Class<? extends Page> pageClass) {
+		this.pageClass = pageClass;
+	}
+
+	protected PageParameters getPageParameters() {
+		return pageParameters;
+	}
+
+	protected void setPageParameters(PageParameters pageParameters) {
+		this.pageParameters = pageParameters;
 	}
 	
 	public List<NavigationMenuItem> getSubMenuItems() {
