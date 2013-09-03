@@ -5,12 +5,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
-import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupDescriptionPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupMembersPanel;
@@ -25,11 +21,6 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public class AdministrationUserGroupDescriptionPage extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -5780326896837623229L;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationUserGroupDescriptionPage.class);
-
-	@SpringBean
-	private IUserGroupService userGroupService;
 
 	private IModel<UserGroup> userGroupModel;
 	
@@ -45,14 +36,8 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		
 		userGroupModel = new GenericEntityModel<Long, UserGroup>(null);
 		
-		try {
-			linkDescriptor(userGroupModel).extract(parameters);
-		} catch (Exception e) {
-			LOGGER.error("Error on user group loading", e);
-			getSession().error(getString("administration.usergroup.error"));
-			
-			throw AdministrationUserGroupPortfolioPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(userGroupModel).extractSafely(parameters, AdministrationUserGroupPortfolioPage.linkDescriptor(),
+				getString("administration.usergroup.error"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.usergroup"),
 				AdministrationUserGroupPortfolioPage.class));
