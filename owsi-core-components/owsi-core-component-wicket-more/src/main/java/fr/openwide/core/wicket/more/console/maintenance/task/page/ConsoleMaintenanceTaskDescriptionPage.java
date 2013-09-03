@@ -64,12 +64,8 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		setOutputMarkupId(true);
 		
 		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<Long, QueuedTaskHolder>(null);
-		try {
-			linkDescriptor(queuedTaskHolderModel).extract(parameters);
-		} catch(Exception e) {
-			Session.get().error(getString("common.notExists"));
-			throw ConsoleMaintenanceTaskListPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
+				getString("common.notExists"));
 		
 		addHeadPageTitleKey("console.maintenance.tasks");
 		

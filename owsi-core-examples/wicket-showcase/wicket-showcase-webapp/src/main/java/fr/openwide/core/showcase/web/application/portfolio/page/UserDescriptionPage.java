@@ -38,12 +38,7 @@ public class UserDescriptionPage extends MainTemplate {
 		super(parameters);
 		
 		IModel<User> userModel = new GenericEntityModel<Long, User>(null);
-		try {
-			linkDescriptor(userModel).extract(parameters);
-		} catch (Exception e) {
-			getSession().error(getString("common.error.noItem"));
-			throw PortfolioMainPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(userModel).extractSafely(parameters, PortfolioMainPage.linkDescriptor(), getString("common.error.noItem"));
 		
 		setDefaultModel(userModel);
 		
