@@ -31,6 +31,14 @@ public class NavigationMenuItem implements IDetachable {
 	
 	private final List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
 	
+	protected NavigationMenuItem(NavigationMenuItem wrapped) {
+		setLabelModel(wrapped.getLabelModel());
+		setPageLinkDescriptor(wrapped.getPageLinkDescriptor());
+		setPageClass(wrapped.getPageClass());
+		setPageParameters(wrapped.getPageParameters());
+		setSubMenuItems(wrapped.getSubMenuItems());
+	}
+	
 	public NavigationMenuItem(IModel<String> labelModel) {
 		this.labelModel = labelModel;
 	}
