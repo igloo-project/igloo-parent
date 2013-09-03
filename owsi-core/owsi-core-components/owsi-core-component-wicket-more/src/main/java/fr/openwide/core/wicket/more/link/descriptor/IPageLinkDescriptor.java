@@ -30,6 +30,15 @@ public interface IPageLinkDescriptor extends ILinkDescriptor {
 	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink) throws RestartResponseException;
 	
 	/**
+	 * Attempts to extract the page parameters, {@link #newRestartResponseException() throwing a RestartResponseException}
+	 * with the provided fallback link if any {@link Exception} is caught. The provided error message is added to the session.
+	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkDescriptor} class logger.
+	 * @see #extract(PageParameters)
+	 */
+	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink, String errorMessage)
+			throws RestartResponseException;
+	
+	/**
 	 * Creates an {@link AbstractDynamicBookmarkableLink} that points to the same page than this descriptor, with the same parameters,
 	 * using the given anchor.
 	 * <p><strong>Note:</strong> special conditions apply to the rendering of this link if the parameters are invalid.
