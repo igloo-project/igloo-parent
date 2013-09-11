@@ -14,12 +14,14 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 
 	private Boolean infinite;
 
+	private CarouFredSelDirection direction;
+	
 	private Integer width;
 
 	private Integer height;
 
 	private Integer padding;
-
+	
 	private Integer itemsVisible;
 	
 	private Integer scrollDuration;
@@ -53,6 +55,9 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 		}
 		if (infinite != null) {
 			options.put("infinite", infinite);
+		}
+		if (direction != null) {
+			options.put("direction", direction.getValue());
 		}
 		if (width != null) {
 			options.put("width", width);
@@ -241,6 +246,14 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 
 	public void setItemsVisible(Integer itemsVisible) {
 		this.itemsVisible = itemsVisible;
+	}
+
+	public CarouFredSelDirection getDirection() {
+		return direction;
+	}
+
+	public void setDirection(CarouFredSelDirection direction) {
+		this.direction = direction;
 	}
 
 }
