@@ -34,8 +34,7 @@ public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<Lo
 	 * @param id identifiant de l'entité
 	 * @return entité
 	 */
-	GenericEntity<?, ?> getGenericEntity(Class<? extends GenericEntity<?, ?>> clazz,
-			Long id);
+	<E extends GenericEntity<?, ?>> E getGenericEntity(Class<E> clazz, Long id);
 
 	/**
 	 * Renvoie la liste des Audits émis par cet utilisateur.
