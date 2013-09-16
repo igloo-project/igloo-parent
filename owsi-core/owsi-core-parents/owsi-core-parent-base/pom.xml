@@ -36,7 +36,7 @@
 		<owsi-core.ehcache.version>2.6.6</owsi-core.ehcache.version>
 		<owsi-core.querydsl.version>3.2.3</owsi-core.querydsl.version>
 		
-		<owsi-core.guava.version>14.0.1</owsi-core.guava.version>
+		<owsi-core.guava.version>15.0</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
@@ -89,12 +89,12 @@
 		<owsi-core.jackson2-jaxrs.version>2.2.3</owsi-core.jackson2-jaxrs.version>
 		<owsi-core.jackson2-dataformat-xml.version>2.2.3</owsi-core.jackson2-dataformat-xml.version>
 		<owsi-core.truezip.version>7.7.3</owsi-core.truezip.version>
-		<owsi-core.flying-saucer.version>9.0.3-owsi1-SNAPSHOT</owsi-core.flying-saucer.version>
+		<owsi-core.flying-saucer.version>9.0.3</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.7.2</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.2.5</owsi-core.httpclient.version>
+		<owsi-core.httpclient.version>4.3</owsi-core.httpclient.version>
 		
 		<owsi-core.jersey.version>1.17</owsi-core.jersey.version>
 		
@@ -122,7 +122,7 @@
 		<owsi-core.maven-compiler-plugin.version>3.1</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>2.6</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.16</owsi-core.maven-surefire-plugin.version>
-		<owsi-core.maven-install-plugin.version>2.4</owsi-core.maven-install-plugin.version>
+		<owsi-core.maven-install-plugin.version>2.5</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.4.1</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.4</owsi-core.maven-war-plugin.version>
 		<owsi-core.maven-assembly-plugin.version>2.4</owsi-core.maven-assembly-plugin.version>
