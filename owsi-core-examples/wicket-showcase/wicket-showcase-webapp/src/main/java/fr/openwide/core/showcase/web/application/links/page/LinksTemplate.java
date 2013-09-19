@@ -13,7 +13,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.web.application.links.component.LinksTestPanel;
+import fr.openwide.core.showcase.web.application.links.component.DynamicImageTestPanel;
+import fr.openwide.core.showcase.web.application.links.component.DynamicLinkTestPanel;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -45,7 +46,9 @@ public abstract class LinksTemplate extends MainTemplate {
 		
 		add(new Label("title", getTitleModel()));
 		
-		add(new LinksTestPanel("testPanel", userModel));
+		add(new DynamicLinkTestPanel("linkTestPanel", userModel));
+		
+		add(new DynamicImageTestPanel("imageTestPanel"));
 	}
 
 	@Override

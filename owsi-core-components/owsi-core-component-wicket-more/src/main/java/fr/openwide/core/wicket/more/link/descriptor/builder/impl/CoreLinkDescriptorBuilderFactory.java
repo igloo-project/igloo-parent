@@ -9,9 +9,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.springframework.util.Assert;
 
+import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.impl.CoreImageResourceLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CorePageLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CoreResourceLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
@@ -97,5 +99,34 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 			resourceReferenceModel.detach();
 		}
 	}
+	
+	public static CoreLinkDescriptorBuilderFactory<IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference) {
+		return new CoreImageResourceLinkDescriptorBuilderFactory(new Model<ResourceReference>(resourceReference));
+	}
+	
+	public static CoreLinkDescriptorBuilderFactory<IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
+		return new CoreImageResourceLinkDescriptorBuilderFactory(resourceReferenceModel);
+	}
+	
+	private static class CoreImageResourceLinkDescriptorBuilderFactory extends CoreLinkDescriptorBuilderFactory<IImageResourceLinkDescriptor> {
+		private static final long serialVersionUID = 1L;
+		
+		private IModel<ResourceReference> resourceReferenceModel = null;
+		
+		public CoreImageResourceLinkDescriptorBuilderFactory(IModel<? extends ResourceReference> resourceReferenceModel) {
+			super();
+			Assert.notNull(resourceReferenceModel, "resourceReferenceModel cannot be null");
+			this.resourceReferenceModel = ReadOnlyModel.of(resourceReferenceModel);
+		}
+		
+		@Override
+		public IImageResourceLinkDescriptor create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator) {
+			return new CoreImageResourceLinkDescriptorImpl(resourceReferenceModel, parametersMapping, validator);
+		}
 
+		@Override
+		public void detach() {
+			resourceReferenceModel.detach();
+		}
+	}
 }
