@@ -27,14 +27,15 @@ import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
 import fr.openwide.core.showcase.web.application.links.page.LinksTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
-public class LinksTestPanel extends GenericPanel<User> {
+public class DynamicLinkTestPanel extends GenericPanel<User> {
 
 	private static final long serialVersionUID = -3224809110343020920L;
 
-	public LinksTestPanel(String id, final IModel<User> userModel) {
+	public DynamicLinkTestPanel(String id, final IModel<User> userModel) {
 		super(id, userModel);
 		
 		Component lastUser = new HideableLabel("lastUser", BindingModel.of(userModel, Binding.user().fullName()));
@@ -73,7 +74,11 @@ public class LinksTestPanel extends GenericPanel<User> {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public String getObject() {
-						return LinksTemplate.linkDescriptor(pageClassModel, userModel).fullUrl();
+						try {
+							return LinksTemplate.linkDescriptor(pageClassModel, userModel).fullUrl();
+						} catch(LinkParameterValidationRuntimeException e) {
+							return e.getMessage();
+						}
 					}
 					@Override
 					public void detach() {

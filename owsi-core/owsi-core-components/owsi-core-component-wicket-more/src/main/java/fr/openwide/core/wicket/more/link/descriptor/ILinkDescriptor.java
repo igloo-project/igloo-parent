@@ -11,7 +11,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkPara
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 
 /**
- * An utility object mapped to {@link IModel models}, that allows for simple manipulation around the concept of linking.
+ * A utility object mapped to {@link IModel models}, that allows for simple manipulation around the concept of linking.
  * <p>Object implementing this interface, and its sub-interfaces ({@link IResourceLinkDescriptor}, {@link IPageLinkDescriptor}),
  * can be instantiated using the {@link LinkDescriptorBuilder}.
  * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior notice.

@@ -11,7 +11,7 @@ import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 /**
- * An {@link AbstractDynamicBookmarkableLink} targeting a {@link ResourceReference} that may change during the page life cycle.
+ * An {@link AbstractDynamicBookmarkableLink} whose targeted {@link ResourceReference} and {@link PageParameters} may change during the page life cycle.
  * <p>This implementation could not derive from {@link ResourceLink}, whose target Resource is inherently static.
  * @see ResourceLink
  */

@@ -18,7 +18,7 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreLinkDescriptor i
 
 	private static final long serialVersionUID = -2046898427977725120L;
 	
-	private final IModel<? extends ResourceReference> resourceReferenceModel;
+	protected final IModel<? extends ResourceReference> resourceReferenceModel;
 	
 	public CoreResourceLinkDescriptorImpl(
 			IModel<? extends ResourceReference> resourceReferenceModel,

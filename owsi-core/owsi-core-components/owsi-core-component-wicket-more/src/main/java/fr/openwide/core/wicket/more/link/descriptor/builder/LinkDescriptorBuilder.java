@@ -4,6 +4,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 
+import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderFactory;
@@ -40,6 +41,20 @@ public class LinkDescriptorBuilder implements IBaseState {
 	public IParameterMappingState<IResourceLinkDescriptor> resource(IModel<? extends ResourceReference> resourceReferenceModel) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IResourceLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.resource(resourceReferenceModel)
+		);
+	}
+
+	@Override
+	public IParameterMappingState<IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference) {
+		return new CoreLinkDescriptorBuilderParametersStateImpl<IImageResourceLinkDescriptor>(
+				CoreLinkDescriptorBuilderFactory.imageResource(resourceReference)
+		);
+	}
+
+	@Override
+	public IParameterMappingState<IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
+		return new CoreLinkDescriptorBuilderParametersStateImpl<IImageResourceLinkDescriptor>(
+				CoreLinkDescriptorBuilderFactory.imageResource(resourceReferenceModel)
 		);
 	}
 
