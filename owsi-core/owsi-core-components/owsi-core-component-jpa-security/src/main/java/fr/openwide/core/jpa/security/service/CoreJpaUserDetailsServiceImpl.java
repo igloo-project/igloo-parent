@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Sets;
 
@@ -24,6 +25,8 @@ import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
 public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
+	
+	private static final String EMPTY_PASSWORD_HASH = "* NO PASSWORD *";
 
 	@Autowired
 	private IPersonService<? extends IPerson> personService; 
@@ -55,7 +58,11 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		
 		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(person);
 		
-		CoreUserDetails userDetails = new CoreUserDetails(person.getUserName(), person.getPasswordHash(), person.isActive(), true, true, true, 
+		// In any case, we can't pass an empty password hash to the CoreUserDetails
+		
+		CoreUserDetails userDetails = new CoreUserDetails(person.getUserName(),
+				StringUtils.hasText(person.getPasswordHash()) ? person.getPasswordHash() : EMPTY_PASSWORD_HASH,
+				person.isActive(), true, true, true, 
 				roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft()),
 				permissionHierarchy.getAcceptablePermissions(authoritiesAndPermissions.getRight()));
 		
