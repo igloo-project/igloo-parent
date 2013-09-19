@@ -1,8 +1,10 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.extractor;
 
-public class LinkParameterExtractionRuntimeException extends RuntimeException {
+import org.springframework.core.NestedRuntimeException;
 
-	private static final long serialVersionUID = -8266412526724031907L;
+public class LinkParameterExtractionRuntimeException extends NestedRuntimeException {
+
+	private static final long serialVersionUID = -456914851659661424L;
 
 	public LinkParameterExtractionRuntimeException(LinkParameterExtractionException cause) {
 		super("An error occurred during parameter extraction", cause);

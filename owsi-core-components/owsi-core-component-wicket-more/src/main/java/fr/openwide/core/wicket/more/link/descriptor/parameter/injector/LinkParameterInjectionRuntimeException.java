@@ -1,8 +1,10 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.injector;
 
-public class LinkParameterInjectionRuntimeException extends RuntimeException {
+import org.springframework.core.NestedRuntimeException;
 
-	private static final long serialVersionUID = -8266412526724031907L;
+public class LinkParameterInjectionRuntimeException extends NestedRuntimeException {
+
+	private static final long serialVersionUID = 7659297942305885540L;
 
 	public LinkParameterInjectionRuntimeException(LinkParameterInjectionException cause) {
 		super("An error occurred during parameter injection", cause);
