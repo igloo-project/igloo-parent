@@ -10,7 +10,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 
-public interface ILinkParameterMappingEntry<T> extends IDetachable {
+public interface ILinkParameterMappingEntry extends IDetachable {
 
 	/**
 	 * Inject the mapped model value into {@link PageParameters}, converting the value to a String if necessary.
@@ -38,7 +38,7 @@ public interface ILinkParameterMappingEntry<T> extends IDetachable {
 	 * <p>If the mapped model does not implement {@link IComponentAssignedModel}, a copy of this {@link ILinkParameterMappingEntry} is returned anyway.
 	 * @param component The component to wrap
 	 */
-	ILinkParameterMappingEntry<T> wrap(Component component);
+	ILinkParameterMappingEntry wrap(Component component);
 
 	/**
 	 * Returns the mandatory validator for this paramter mapping entry.

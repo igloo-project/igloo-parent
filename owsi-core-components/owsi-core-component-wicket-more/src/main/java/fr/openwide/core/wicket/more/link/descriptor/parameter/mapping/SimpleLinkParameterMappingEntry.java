@@ -1,11 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.lang.Args;
-import org.springframework.core.convert.ConversionException;
 
 import com.google.common.collect.ImmutableList;
 
@@ -15,7 +12,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 
-public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMappingEntry<T> {
+public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMappingEntry {
 	
 	private static final long serialVersionUID = -8490340879965229874L;
 	
@@ -31,53 +28,18 @@ public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMapping
 	
 	@Override
 	public void inject(PageParameters targetParameters, ILinkParameterConversionService conversionService) throws LinkParameterInjectionException {
-		Args.notNull(targetParameters, "targetParameters");
-		Args.notNull(conversionService, "conversionService");
-		
-		T mappedValue = mappedModel.getObject();
-		
-		String parameterValue = null;
-		if (mappedValue != null) {
-			try {
-				parameterValue = conversionService.convert(mappedValue, String.class);
-			} catch (ConversionException e) {
-				throw new LinkParameterInjectionException(e);
-			}
-		}
-		
-		if (parameterValue != null) {
-			targetParameters.add(parameterName, parameterValue);
-		}
-	}
-
-	@Override
-	public void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService) throws LinkParameterExtractionException {
-		Args.notNull(sourceParameters, "sourceParameters");
-		Args.notNull(conversionService, "conversionService");
-		
-		String parameterValue = sourceParameters.get(parameterName).toString();
-		
-		T mappedValue = null;
-		if (parameterValue != null) {
-			try {
-				mappedValue = conversionService.convert(parameterValue, mappedType);
-			} catch (ConversionException e) {
-				throw new LinkParameterExtractionException(e);
-			}
-		}
-		
-		mappedModel.setObject(mappedValue);
+		inject(targetParameters, conversionService, parameterName, mappedModel.getObject());
 	}
 	
 	@Override
-	public ILinkParameterMappingEntry<T> wrap(Component component) {
-		IModel<T> newModel;
-		if (mappedModel instanceof IComponentAssignedModel) {
-			newModel = ((IComponentAssignedModel<T>) mappedModel).wrapOnAssignment(component);
-		} else {
-			newModel = mappedModel;
-		}
-		return new SimpleLinkParameterMappingEntry<T>(parameterName, newModel, mappedType);
+	public void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService) throws LinkParameterExtractionException {
+		mappedModel.setObject(extract(sourceParameters, conversionService, parameterName, mappedType));
+	}
+	
+	@Override
+	public ILinkParameterMappingEntry wrap(Component component) {
+		IModel<T> wrappedModel = wrap(mappedModel, component);
+		return new SimpleLinkParameterMappingEntry<T>(parameterName, wrappedModel, mappedType);
 	}
 	
 	@Override

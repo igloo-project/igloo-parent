@@ -9,6 +9,6 @@ public interface IParameterMappingState<L extends ILinkDescriptor> extends IVali
 
 	<T> IAddedParameterMappingState<L> map(String parameterName, IModel<T> valueModel, Class<T> valueType);
 	
-	<T> IAddedParameterMappingState<L> map(ILinkParameterMappingEntry<T> parameterMappingEntry);
+	IAddedParameterMappingState<L> map(ILinkParameterMappingEntry parameterMappingEntry);
 
 }

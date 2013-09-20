@@ -21,10 +21,10 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 		implements IParameterMappingState<L>, IAddedParameterMappingState<L> {
 	
 	private final CoreLinkDescriptorBuilderFactory<L> factory;
-	private final Collection<ILinkParameterMappingEntry<?>> parameterMappingEntries;
+	private final Collection<ILinkParameterMappingEntry> parameterMappingEntries;
 	private final Collection<ILinkParameterValidator> parameterValidators;
 	
-	private ILinkParameterMappingEntry<?> lastAddedParameterMappingEntry;
+	private ILinkParameterMappingEntry lastAddedParameterMappingEntry;
 	
 	public CoreLinkDescriptorBuilderParametersStateImpl(CoreLinkDescriptorBuilderFactory<L> factory) {
 		this.factory = factory;
@@ -42,7 +42,7 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 	}
 	
 	@Override
-	public <T> IAddedParameterMappingState<L> map(ILinkParameterMappingEntry<T> parameterMappingEntry) {
+	public IAddedParameterMappingState<L> map(ILinkParameterMappingEntry parameterMappingEntry) {
 		Args.notNull(parameterMappingEntry, "parameterMappingEntry");
 		
 		parameterMappingEntries.add(parameterMappingEntry);
