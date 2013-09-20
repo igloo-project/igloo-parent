@@ -19,9 +19,9 @@ public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMapping
 	
 	private static final long serialVersionUID = -8490340879965229874L;
 	
-	private final String parameterName;
-	private final IModel<T> mappedModel;
-	private final Class<T> mappedType;
+	protected final String parameterName;
+	protected final IModel<T> mappedModel;
+	protected final Class<T> mappedType;
 	
 	public SimpleLinkParameterMappingEntry(String parameterName, IModel<T> mappedModel, Class<T> mappedType) {
 		this.parameterName = parameterName;
