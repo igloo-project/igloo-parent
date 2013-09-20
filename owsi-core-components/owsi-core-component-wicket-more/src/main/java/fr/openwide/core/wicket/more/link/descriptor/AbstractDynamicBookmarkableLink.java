@@ -10,6 +10,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
@@ -21,7 +22,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
  * This is an expected behavior: you should either ensure that your parameters are always valid, or that this link is hidden when they are not.
  * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
  * using the {@link #setVisibilityAllowed(boolean)} method.
- * @see LinkParameterValidationException
+ * @see LinkParameterSerializedFormValidationException
  * @see LinkDescriptorBuilder
  * @see IAddedParameterMappingState#mandatory()
  * @see IAddedParameterMappingState#optional()
@@ -50,7 +51,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	/**
 	 * Gets whether this link will hide when its parameters are invalid.
 	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationException} may be thrown if the parameters
+	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationRuntimeException} may be thrown if the parameters
 	 * are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
 	 * @return True if this link is hidden when its parameters are invalid, false otherwise.
 	 */
@@ -61,7 +62,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	/**
 	 * Sets whether this link will hide when its parameters are invalid.
 	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationException} may be thrown if the parameters
+	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationRuntimeException} may be thrown if the parameters
 	 * are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
 	 * @param autoHideIfInvalid True to enable auto hiding, false to disable it.
 	 */
@@ -78,9 +79,14 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	protected void onConfigure() {
 		super.onConfigure();
 		
-		PageParameters parameters = getParameters();
 		if (autoHideIfInvalid) {
-			setVisible(LinkParameterValidators.isValid(parameters, parametersValidator));
+			setVisible(false);
+			if (LinkParameterValidators.isModelValid(parametersValidator)) {
+				PageParameters parameters = getParameters();
+				if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
+					setVisible(true);
+				}
+			}
 		} else {
 			setVisible(true);
 		}
@@ -88,10 +94,12 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	
 	@Override
 	protected final CharSequence getURL() throws LinkParameterValidationRuntimeException {
-		PageParameters parameters = getParameters();
+		PageParameters parameters;
 		
 		try {
-			LinkParameterValidators.check(parameters, parametersValidator);
+			LinkParameterValidators.checkModel(parametersValidator);
+			parameters = getParameters();
+			LinkParameterValidators.checkSerialized(parameters, parametersValidator);
 		} catch(LinkParameterValidationException e) {
 			throw new LinkParameterValidationRuntimeException(e);
 		}
@@ -118,6 +126,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	protected void onDetach() {
 		super.onDetach();
 		parametersMapping.detach();
+		parametersValidator.detach();
 	}
 
 }

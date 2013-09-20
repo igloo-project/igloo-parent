@@ -23,7 +23,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
  * This is an expected behavior: you should either ensure that your parameters are always valid, or that this image is hidden when they are not.
  * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
  * using the {@link #setVisibilityAllowed(boolean)} method.
- * @see LinkParameterValidationException
+ * @see LinkParameterValidationRuntimeException
  * @see LinkDescriptorBuilder
  * @see IAddedParameterMappingState#mandatory()
  * @see IAddedParameterMappingState#optional()
@@ -74,10 +74,15 @@ public class DynamicImage extends Image {
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
-		
-		PageParameters parameters = getParameters();
+
 		if (autoHideIfInvalid) {
-			setVisible(LinkParameterValidators.isValid(parameters, parametersValidator));
+			setVisible(false);
+			if (LinkParameterValidators.isModelValid(parametersValidator)) {
+				PageParameters parameters = getParameters();
+				if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
+					setVisible(true);
+				}
+			}
 		} else {
 			setVisible(true);
 		}
@@ -94,10 +99,12 @@ public class DynamicImage extends Image {
 	
 	@Override
 	protected void onComponentTag(ComponentTag tag) {
-		PageParameters parameters = getParameters();
-		
+		PageParameters parameters;
+
 		try {
-			LinkParameterValidators.check(parameters, parametersValidator);
+			LinkParameterValidators.checkModel(parametersValidator);
+			parameters = getParameters();
+			LinkParameterValidators.checkSerialized(parameters, parametersValidator);
 		} catch(LinkParameterValidationException e) {
 			throw new LinkParameterValidationRuntimeException(e);
 		}

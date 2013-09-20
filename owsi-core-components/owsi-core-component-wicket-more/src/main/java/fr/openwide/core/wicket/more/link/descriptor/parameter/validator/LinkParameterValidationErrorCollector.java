@@ -7,25 +7,27 @@ import com.google.common.collect.Lists;
 
 public class LinkParameterValidationErrorCollector {
 	
-	private final Collection<ILinkParameterValidationError> errors = Lists.newArrayList();
+	private final Collection<ILinkParameterValidationErrorDescription> errors = Lists.newArrayList();
 	
 	public void addError(String message) {
-		errors.add(new SimpleParameterValidationErrorImpl(message));
+		errors.add(new SimpleParameterValidationErrorDescriptionImpl(message));
 	}
 	
-	public void addError(ILinkParameterValidationError error) {
+	public void addError(ILinkParameterValidationErrorDescription error) {
 		errors.add(error);
 	}
 	
-	public Collection<ILinkParameterValidationError> getErrors() {
+	public Collection<ILinkParameterValidationErrorDescription> getErrors() {
 		return Collections.unmodifiableCollection(errors);
 	}
 	
-	private static class SimpleParameterValidationErrorImpl implements ILinkParameterValidationError {
+	private static class SimpleParameterValidationErrorDescriptionImpl implements ILinkParameterValidationErrorDescription {
+		
+		private static final long serialVersionUID = 1L;
 		
 		private final String message;
 		
-		public SimpleParameterValidationErrorImpl(String message) {
+		public SimpleParameterValidationErrorDescriptionImpl(String message) {
 			super();
 			this.message = message;
 		}
@@ -38,6 +40,11 @@ public class LinkParameterValidationErrorCollector {
 		@Override
 		public String toString() {
 			return getMessage();
+		}
+
+		@Override
+		public void detach() {
+			// Nothing to do
 		}
 	}
 
