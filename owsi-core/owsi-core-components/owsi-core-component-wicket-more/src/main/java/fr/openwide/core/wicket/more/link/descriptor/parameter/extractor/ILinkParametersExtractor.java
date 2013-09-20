@@ -5,7 +5,8 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 
 /**
  * An utility object mapped to {@link IModel models}, that allows for simple link parameters extraction to this models.
@@ -17,9 +18,10 @@ public interface ILinkParametersExtractor extends IDetachable {
 	 * Extracts the given parameters to the underlying models.
 	 * <p>The underlying model must handle the {@link IModel#setObject(Object)} operation, even if they are non-wrapped-yet {@link IComponentAssignedModel}.
 	 * Otherwise, the behavior is undefined.
-	 * @throws LinkParameterValidationException if the parameters validation returned an error
+	 * @throws LinkParameterSerializedFormValidationException if the validation of the parameters serialized form returned an error
 	 * @throws LinkParameterExtractionRuntimeException if an error occurred during parameters extraction (most probably during the conversion)
+	 * @throws LinkParameterModelValidationException if the validation of the parameters model returned an error
 	 */
-	void extract(PageParameters parameters) throws LinkParameterValidationException, LinkParameterExtractionRuntimeException;
+	void extract(PageParameters parameters) throws LinkParameterSerializedFormValidationException, LinkParameterExtractionRuntimeException, LinkParameterModelValidationException;
 
 }

@@ -12,35 +12,66 @@ public final class LinkParameterValidators {
 	private LinkParameterValidators() { }
 
 	/**
-	 * @return True if the parameters are valid according to the validator, false otherwise.
-	 * @throws NullPointerException if <code>parameters</code> or <code>validator</code> is null.
+	 * @return True if the parameters model is valid according to the validator, false otherwise.
+	 * @throws NullPointerException if <code>validator</code> is null.
 	 */
-	public static boolean isValid(PageParameters parameters, ILinkParameterValidator validator) {
-		Args.notNull(parameters, "parameters");
+	public static boolean isModelValid(ILinkParameterValidator validator) {
 		Args.notNull(validator, "validator");
 		
 		LinkParameterValidationErrorCollector collector = new LinkParameterValidationErrorCollector();
-		validator.validate(parameters, collector);
+		validator.validateModel(collector);
 
-		Collection<ILinkParameterValidationError> errors = collector.getErrors();
+		Collection<ILinkParameterValidationErrorDescription> errors = collector.getErrors();
 		return errors.isEmpty();
 	}
 	
 	/**
-	 * Checks that parameters are valid according to a validator, throwing a {@link LinkParameterValidationException} if they are not.
-	 * @throws LinkParameterValidationException if the parameters are not valid according to the validator.
+	 * Checks that parameters model is valid according to a validator, throwing a {@link LinkParameterModelValidationException} if it is not.
+	 * @throws LinkParameterModelValidationException if the parameters model is invalid according to the validator.
+	 * @throws NullPointerException if <code>validator</code> is null.
+	 */
+	public static void checkModel(ILinkParameterValidator validator) throws LinkParameterModelValidationException {
+		Args.notNull(validator, "validator");
+		
+		LinkParameterValidationErrorCollector collector = new LinkParameterValidationErrorCollector();
+		validator.validateModel(collector);
+		
+		Collection<ILinkParameterValidationErrorDescription> errors = collector.getErrors();
+		if ( ! errors.isEmpty() ) {
+			throw new LinkParameterModelValidationException(errors);
+		}
+	}
+
+	/**
+	 * @return True if the serialized form of the parameters is valid according to the validator, false otherwise.
 	 * @throws NullPointerException if <code>parameters</code> or <code>validator</code> is null.
 	 */
-	public static void check(PageParameters parameters, ILinkParameterValidator validator) throws LinkParameterValidationException {
+	public static boolean isSerializedValid(PageParameters parameters, ILinkParameterValidator validator) {
 		Args.notNull(parameters, "parameters");
 		Args.notNull(validator, "validator");
 		
 		LinkParameterValidationErrorCollector collector = new LinkParameterValidationErrorCollector();
-		validator.validate(parameters, collector);
+		validator.validateSerialized(parameters, collector);
+
+		Collection<ILinkParameterValidationErrorDescription> errors = collector.getErrors();
+		return errors.isEmpty();
+	}
+	
+	/**
+	 * Checks that the serialized form of the parameters is valid according to a validator, throwing a {@link LinkParameterSerializedFormValidationException} if it is not.
+	 * @throws LinkParameterSerializedFormValidationException if the serialized form of the parameters is invalid according to the validator.
+	 * @throws NullPointerException if <code>parameters</code> or <code>validator</code> is null.
+	 */
+	public static void checkSerialized(PageParameters parameters, ILinkParameterValidator validator) throws LinkParameterSerializedFormValidationException {
+		Args.notNull(parameters, "parameters");
+		Args.notNull(validator, "validator");
 		
-		Collection<ILinkParameterValidationError> errors = collector.getErrors();
+		LinkParameterValidationErrorCollector collector = new LinkParameterValidationErrorCollector();
+		validator.validateSerialized(parameters, collector);
+		
+		Collection<ILinkParameterValidationErrorDescription> errors = collector.getErrors();
 		if ( ! errors.isEmpty() ) {
-			throw new LinkParameterValidationException(parameters, errors);
+			throw new LinkParameterSerializedFormValidationException(parameters, errors);
 		}
 	}
 	
@@ -48,7 +79,7 @@ public final class LinkParameterValidators {
 	 * Creates a validator that performs the validation sequentially with each validator in the given order.
 	 * <p>The resulting validator is {@link Serializable} if <code>validators</code> is Serializable.
 	 * @param validators The validators to be chained
-	 * @return A validator chaining the given validators. If empty, no validation will be performed and no {@link ILinkParameterValidationError error} will ever occur.
+	 * @return A validator chaining the given validators. If empty, no validation will be performed and no {@link ILinkParameterValidationErrorDescription error} will ever be reported.
 	 * @throws NullPointerException if <code>validators</code> is null.
 	 */
 	public static ILinkParameterValidator chain(Iterable<ILinkParameterValidator> validators) {
@@ -57,7 +88,7 @@ public final class LinkParameterValidators {
 	}
 	
 	private static class ChainedParameterValidator implements ILinkParameterValidator {
-		private static final long serialVersionUID = 7397495696437744067L;
+		private static final long serialVersionUID = 1L;
 		
 		private final Iterable<ILinkParameterValidator> validators;
 		
@@ -67,9 +98,23 @@ public final class LinkParameterValidators {
 		}
 		
 		@Override
-		public void validate(PageParameters parameters, LinkParameterValidationErrorCollector collector) {
+		public void validateSerialized(PageParameters parameters, LinkParameterValidationErrorCollector collector) {
 			for (ILinkParameterValidator validator : validators) {
-				validator.validate(parameters, collector);
+				validator.validateSerialized(parameters, collector);
+			}
+		}
+
+		@Override
+		public void validateModel(LinkParameterValidationErrorCollector collector) {
+			for (ILinkParameterValidator validator : validators) {
+				validator.validateModel(collector);
+			}
+		}
+
+		@Override
+		public void detach() {
+			for (ILinkParameterValidator validator : validators) {
+				validator.detach();
 			}
 		}
 	}

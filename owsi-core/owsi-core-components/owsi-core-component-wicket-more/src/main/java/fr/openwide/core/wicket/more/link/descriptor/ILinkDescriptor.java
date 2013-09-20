@@ -8,7 +8,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionRuntimeException;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 
 /**
  * A utility object mapped to {@link IModel models}, that allows for simple manipulation around the concept of linking.
@@ -32,7 +33,7 @@ public interface ILinkDescriptor extends ILinkParametersExtractor, IDetachable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void extract(PageParameters parameters) throws LinkParameterValidationException, LinkParameterExtractionRuntimeException;
+	void extract(PageParameters parameters) throws LinkParameterSerializedFormValidationException, LinkParameterExtractionRuntimeException, LinkParameterModelValidationException;
 	
 	/**
 	 * Renders the full URL for this link descriptor.

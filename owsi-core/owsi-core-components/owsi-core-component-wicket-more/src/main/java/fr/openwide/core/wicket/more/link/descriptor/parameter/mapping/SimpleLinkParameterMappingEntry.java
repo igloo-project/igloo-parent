@@ -7,10 +7,12 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.springframework.core.convert.ConversionException;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderMandatoryParameterValidator;
+import com.google.common.collect.ImmutableList;
+
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 
 public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMappingEntry<T> {
@@ -80,7 +82,7 @@ public class SimpleLinkParameterMappingEntry<T> implements ILinkParameterMapping
 	
 	@Override
 	public ILinkParameterValidator mandatoryValidator() {
-		return new CoreLinkDescriptorBuilderMandatoryParameterValidator(parameterName);
+		return new SimpleMandatoryLinkParameterValidator(ImmutableList.of(parameterName), ImmutableList.of(mappedModel));
 	}
 
 	@Override
