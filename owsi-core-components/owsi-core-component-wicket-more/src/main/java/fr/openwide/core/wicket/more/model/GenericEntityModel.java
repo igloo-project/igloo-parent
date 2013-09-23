@@ -47,6 +47,10 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	 */
 	private E notYetPersistedEntity;
 	
+	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityModel<K, E> of() {
+		return new GenericEntityModel<K, E>();
+	}
+	
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityModel<K, E> of(E entity) {
 		return new GenericEntityModel<K, E>(entity);
 	}
