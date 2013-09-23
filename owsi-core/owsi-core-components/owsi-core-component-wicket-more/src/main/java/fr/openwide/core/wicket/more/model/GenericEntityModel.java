@@ -47,9 +47,19 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	 */
 	private E notYetPersistedEntity;
 	
-	public GenericEntityModel(E entity) {
-		super(null);
+	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityModel<K, E> of(E entity) {
+		return new GenericEntityModel<K, E>(entity);
+	}
+	
+	/**
+	 * Construit un GenericEntityModel dont l'objet est <code>null</code> et qui n'est pas attaché.
+	 */
+	public GenericEntityModel() {
 		Injector.get().inject(this);
+	}
+	
+	public GenericEntityModel(E entity) {
+		this();
 		
 		setObject(entity);
 	}
