@@ -1,12 +1,14 @@
 package fr.openwide.core.wicket.more.link.descriptor.impl;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
+import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 
@@ -32,11 +34,13 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 	}
 
 	protected final Class<? extends Page> getPageClass() {
-		Class<? extends Page> pageClass = pageClassModel.getObject();
-		if (pageClass == null) {
-			throw new IllegalStateException("The page class of a link of type " + getClass() + " was found to be null.");
-		}
-		return pageClass;
+		return pageClassModel.getObject();
+	}
+	
+	@Override
+	protected final boolean isTargetValid() {
+		Class<? extends Page> pageClass = getPageClass();
+		return pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 	}
 	
 	/**
@@ -52,6 +56,13 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 	 */
 	@Override
 	protected CharSequence getURL(PageParameters pageParameters) {
+		Class<? extends Page> pageClass = getPageClass();
+		if (pageClass == null) {
+			throw new LinkInvalidTargetRuntimeException("The target page class of a link of type " + getClass() + " was null when trying to render the URL.");
+		}
+		if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
+			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class of a link of type " + getClass() + " was not authorized when trying to render the URL.");
+		}
 		return urlFor(getPageClass(), pageParameters);
 	}
 	

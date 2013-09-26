@@ -8,6 +8,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
+import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 /**
@@ -38,6 +39,11 @@ public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkable
 		}
 		return resourceReference;
 	}
+	
+	@Override
+	protected final boolean isTargetValid() {
+		return getResourceReference() != null;
+	}
 
 	/**
 	 * @see ResourceLink
@@ -45,6 +51,9 @@ public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkable
 	@Override
 	protected final CharSequence getURL(PageParameters resourceParameters) {
 		ResourceReference resourceReference = getResourceReference();
+		if (resourceReference == null) {
+			throw new LinkInvalidTargetRuntimeException("The target ResourceReference of a link of type " + getClass() + " was null when trying to render the URL.");
+		}
 		
 		//---------------------------------------------------------------------------------------------------------
 		// CODE AND COMMENTS FROM org.apache.wicket.markup.html.link.ResourceLink IN Wicket 6.9.1 (OWSI-Core 0.8.5-SNAPSHOT)

@@ -19,10 +19,12 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 /**
  * A {@link Image} whose targeted {@link ResourceReference} and {@link PageParameters} may change during the page life cycle (for instance on an Ajax refresh).
  * <p><strong>WARNING:</strong> if this image is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
- * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}.
- * This is an expected behavior: you should either ensure that your parameters are always valid, or that this image is hidden when they are not.
+ * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target ResourceReference is invalid,
+ * then a {@link LinkInvalidTargetRuntimeException} will be thrown.
+ * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden when they are not.
  * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
  * using the {@link #setVisibilityAllowed(boolean)} method.
+ * @see LinkInvalidTargetRuntimeException
  * @see LinkParameterValidationRuntimeException
  * @see LinkDescriptorBuilder
  * @see IAddedParameterMappingState#mandatory()
@@ -77,10 +79,12 @@ public class DynamicImage extends Image {
 
 		if (autoHideIfInvalid) {
 			setVisible(false);
-			if (LinkParameterValidators.isModelValid(parametersValidator)) {
-				PageParameters parameters = getParameters();
-				if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
-					setVisible(true);
+			if (isTargetValid()) {
+				if (LinkParameterValidators.isModelValid(parametersValidator)) {
+					PageParameters parameters = getParameters();
+					if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
+						setVisible(true);
+					}
 				}
 			}
 		} else {
@@ -88,17 +92,23 @@ public class DynamicImage extends Image {
 		}
 	}
 	
+	private boolean isTargetValid() {
+		return getImageResourceReference() != null;
+	}
+	
 	@Override
 	protected final ResourceReference getImageResourceReference() {
 		ResourceReference resourceReference = resourceReferenceModel.getObject();
-		if (resourceReference == null) {
-			throw new IllegalStateException("The resourceReference of a link of type " + getClass() + " was found to be null.");
-		}
 		return resourceReference;
 	}
 	
 	@Override
 	protected void onComponentTag(ComponentTag tag) {
+		ResourceReference resourceReference = getImageResourceReference();
+		if (resourceReference == null) {
+			throw new IllegalStateException("The target ResourceReference of an image of type " + getClass() + " was null when trying to render the url.");
+		}
+		
 		PageParameters parameters;
 
 		try {
@@ -109,7 +119,7 @@ public class DynamicImage extends Image {
 			throw new LinkParameterValidationRuntimeException(e);
 		}
 		
-		setImageResourceReference(getImageResourceReference(), getParameters());
+		setImageResourceReference(resourceReference, parameters);
 		
 		super.onComponentTag(tag);
 	}

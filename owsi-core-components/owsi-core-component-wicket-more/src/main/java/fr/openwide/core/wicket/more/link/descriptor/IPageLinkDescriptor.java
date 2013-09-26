@@ -50,58 +50,65 @@ public interface IPageLinkDescriptor extends ILinkDescriptor {
 	
 	/**
 	 * Sets the response page and parameters for the current {@link RequestCycle} to the value of this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 * @see RequestCycle#setResponsePage(Class, org.apache.wicket.request.mapper.parameter.PageParameters)
 	 */
-	void setResponsePage() throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	void setResponsePage() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
 
 	/**
 	 * Creates a {@link RestartResponseException} with the same page and parameters than this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 * @see RestartResponseException
 	 */
-	RestartResponseException newRestartResponseException() throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	RestartResponseException newRestartResponseException() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
 
 	/**
 	 * Creates a {@link RestartResponseAtInterceptPageException} with the same page and parameters than this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 * @see RestartResponseAtInterceptPageException
 	 */
-	RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
 	
 	/**
 	 * Creates a {@link RedirectToUrlException} with the same page and parameters than this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 * @see RedirectToUrlException
 	 */
-	RedirectToUrlException newRedirectToUrlException() throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	RedirectToUrlException newRedirectToUrlException() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
 	
 	/**
 	 * Creates a {@link RedirectToUrlException} with the same page and parameters than this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @throws LinkParameterInjectionRuntimeException if an error occurred during parameters injection (most probably during the conversion)
 	 * @see RedirectToUrlException
 	 */
-	RedirectToUrlException newRedirectToUrlException(String anchor) throws LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
+	RedirectToUrlException newRedirectToUrlException(String anchor) throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException, LinkParameterInjectionRuntimeException;
 	
 	/**
 	 * Returns a NavigationMenyItem with the same page and parameters than this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @see NavigationMenuItem
 	 */
-	NavigationMenuItem navigationMenuItem(IModel<String> labelModel) throws LinkParameterValidationRuntimeException;
+	NavigationMenuItem navigationMenuItem(IModel<String> labelModel) throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
 	
 	/**
 	 * Returns a NavigationMenyItem with the same page and parameters than this link descriptor.
+	 * @throws LinkInvalidTargetRuntimeException if the target page was invalid (null, for example)
 	 * @throws LinkParameterValidationRuntimeException if the parameters validation returned an error
 	 * @see NavigationMenuItem
 	 */
 	NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
-			throws LinkParameterValidationRuntimeException;
+			throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
 	
 	/**
 	 * Returns true if the page is accessible by checking it against the authorization strategy defined in Wicket.

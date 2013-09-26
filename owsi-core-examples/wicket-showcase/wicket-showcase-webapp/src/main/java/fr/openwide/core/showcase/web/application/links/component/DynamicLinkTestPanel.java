@@ -27,6 +27,7 @@ import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
 import fr.openwide.core.showcase.web.application.links.page.LinksTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -47,7 +48,7 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 		Form<?> form = new Form<Void>("form");
 		add(form);
 		
-		final IModel<Class<? extends WebPage>> pageClassModel = new Model<Class<? extends WebPage>>(LinksPage1.class);
+		final IModel<Class<? extends WebPage>> pageClassModel = new Model<Class<? extends WebPage>>();
 		form.add(
 				new RadioChoice<Class<? extends WebPage>>("page", pageClassModel,
 						ImmutableList.<Class<? extends WebPage>>of(LinksPage1.class, LinksPage2.class, LinksPage3.class)
@@ -76,6 +77,8 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 					public String getObject() {
 						try {
 							return LinksTemplate.linkDescriptor(pageClassModel, userModel).fullUrl();
+						} catch(LinkInvalidTargetRuntimeException e) {
+							return e.getMessage();
 						} catch(LinkParameterValidationRuntimeException e) {
 							return e.getMessage();
 						}
