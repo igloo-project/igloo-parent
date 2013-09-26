@@ -58,10 +58,10 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 	protected CharSequence getURL(PageParameters pageParameters) {
 		Class<? extends Page> pageClass = getPageClass();
 		if (pageClass == null) {
-			throw new LinkInvalidTargetRuntimeException("The target page class of a link of type " + getClass() + " was null when trying to render the URL.");
+			throw new LinkInvalidTargetRuntimeException("The target page class of a link of type '" + getClass() + "' was null when trying to render the URL.");
 		}
 		if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
-			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class of a link of type " + getClass() + " was not authorized when trying to render the URL.");
+			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + getClass() + "' was not authorized when trying to render the URL.");
 		}
 		return urlFor(getPageClass(), pageParameters);
 	}
