@@ -9,6 +9,8 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParame
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
 public abstract class AbstractCoreLinkDescriptor implements ILinkDescriptor {
@@ -28,11 +30,15 @@ public abstract class AbstractCoreLinkDescriptor implements ILinkDescriptor {
 		this.parametersValidator = parametersValidator;
 	}
 
-	protected final PageParameters getValidatedParameters() throws LinkParameterModelValidationException, LinkParameterSerializedFormValidationException {
-		LinkParameterValidators.checkModel(parametersValidator);
-		PageParameters parameters = parametersMapping.getObject();
-		LinkParameterValidators.checkSerialized(parameters, parametersValidator);
-		return parameters;
+	protected final PageParameters getValidatedParameters() {
+		try {
+			LinkParameterValidators.checkModel(parametersValidator);
+			PageParameters parameters = parametersMapping.getObject();
+			LinkParameterValidators.checkSerialized(parameters, parametersValidator);
+			return parameters;
+		} catch (LinkParameterValidationException e) {
+			throw new LinkParameterValidationRuntimeException(e);
+		}
 	}
 	
 	@Override

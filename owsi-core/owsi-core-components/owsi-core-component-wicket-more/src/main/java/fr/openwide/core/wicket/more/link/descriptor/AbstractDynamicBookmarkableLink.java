@@ -18,10 +18,12 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 /**
  * A {@link Link} whose parameters may change during the page life cycle (for instance on an Ajax refresh).
  * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
- * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}.
- * This is an expected behavior: you should either ensure that your parameters are always valid, or that this link is hidden when they are not.
+ * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target is invalid, then a
+ * {@link LinkInvalidTargetRuntimeException} will be thrown.
+ * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden when they are not.
  * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
  * using the {@link #setVisibilityAllowed(boolean)} method.
+ * @see LinkInvalidTargetRuntimeException
  * @see LinkParameterSerializedFormValidationException
  * @see LinkDescriptorBuilder
  * @see IAddedParameterMappingState#mandatory()
@@ -49,21 +51,21 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	}
 	
 	/**
-	 * Gets whether this link will hide when its parameters are invalid.
+	 * Gets whether this link will hide when its target or parameters are invalid.
 	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationRuntimeException} may be thrown if the parameters
-	 * are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
-	 * @return True if this link is hidden when its parameters are invalid, false otherwise.
+	 * <p>Note: if autohide is disabled, then a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
+	 * may be thrown if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 * @return True if this link is hidden when its target or parameters are invalid, false otherwise.
 	 */
 	public boolean isAutoHideIfInvalid() {
 		return autoHideIfInvalid;
 	}
 	
 	/**
-	 * Sets whether this link will hide when its parameters are invalid.
+	 * Sets whether this link will hide when its target or parameters are invalid.
 	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link LinkParameterValidationRuntimeException} may be thrown if the parameters
-	 * are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 * <p>Note: if autohide is disabled, then a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
+	 * may be thrown if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
 	 * @param autoHideIfInvalid True to enable auto hiding, false to disable it.
 	 */
 	public AbstractDynamicBookmarkableLink setAutoHideIfInvalid(boolean autoHideIfInvalid) {
@@ -75,16 +77,20 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		return parametersMapping.getObject();
 	}
 	
+	protected abstract boolean isTargetValid();
+	
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
 		
 		if (autoHideIfInvalid) {
 			setVisible(false);
-			if (LinkParameterValidators.isModelValid(parametersValidator)) {
-				PageParameters parameters = getParameters();
-				if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
-					setVisible(true);
+			if (isTargetValid()) {
+				if (LinkParameterValidators.isModelValid(parametersValidator)) {
+					PageParameters parameters = getParameters();
+					if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
+						setVisible(true);
+					}
 				}
 			}
 		} else {
@@ -93,7 +99,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	}
 	
 	@Override
-	protected final CharSequence getURL() throws LinkParameterValidationRuntimeException {
+	protected final CharSequence getURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException {
 		PageParameters parameters;
 		
 		try {
@@ -112,7 +118,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		return true;
 	}
 	
-	protected abstract CharSequence getURL(PageParameters parameters);
+	protected abstract CharSequence getURL(PageParameters parameters) throws LinkInvalidTargetRuntimeException;
 	
 	/**
 	 * No click event is allowed.

@@ -21,10 +21,10 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
@@ -47,8 +47,12 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 		this.pageClassModel = pageClassModel;
 	}
 
-	protected Class<? extends Page> getPageClass() {
-		return pageClassModel.getObject();
+	protected Class<? extends Page> getNonNullPageClass() throws LinkInvalidTargetRuntimeException {
+		Class<? extends Page> pageClass = pageClassModel.getObject();
+		if (pageClass == null) {
+			throw new LinkInvalidTargetRuntimeException("The target page of this ILinkDescriptor was null");
+		}
+		return pageClass;
 	}
 
 	@Override
@@ -90,53 +94,37 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	
 	@Override
 	public String fullUrl(RequestCycle requestCycle) {
-		PageParameters parameters;
-		try {
-			parameters = getValidatedParameters();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
+		Class<? extends Page> pageClass = getNonNullPageClass();
+		PageParameters parameters = getValidatedParameters();
 		
 		return requestCycle.getUrlRenderer()
 				.renderFullUrl(
-						Url.parse(requestCycle.urlFor(getPageClass(), parameters))
+						Url.parse(requestCycle.urlFor(pageClass, parameters))
 				);
 	}
 	
 	@Override
 	public void setResponsePage() throws LinkParameterValidationRuntimeException {
-		PageParameters parameters;
-		try {
-			parameters = getValidatedParameters();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
+		Class<? extends Page> pageClass = getNonNullPageClass();
+		PageParameters parameters = getValidatedParameters();
 		
-		RequestCycle.get().setResponsePage(getPageClass(), parameters);
+		RequestCycle.get().setResponsePage(pageClass, parameters);
 	}
 
 	@Override
 	public RestartResponseException newRestartResponseException() throws LinkParameterValidationRuntimeException {
-		PageParameters parameters;
-		try {
-			parameters = getValidatedParameters();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
+		Class<? extends Page> pageClass = getNonNullPageClass();
+		PageParameters parameters = getValidatedParameters();
 		
-		return new RestartResponseException(getPageClass(), parameters);
+		return new RestartResponseException(pageClass, parameters);
 	}
 	
 	@Override
 	public RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws LinkParameterValidationRuntimeException {
-		PageParameters parameters;
-		try {
-			parameters = getValidatedParameters();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
+		Class<? extends Page> pageClass = getNonNullPageClass();
+		PageParameters parameters = getValidatedParameters();
 		
-		return new RestartResponseAtInterceptPageException(getPageClass(), parameters);
+		return new RestartResponseAtInterceptPageException(pageClass, parameters);
 	}
 	
 	@Override
@@ -158,19 +146,19 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	@Override
 	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
 			throws LinkParameterValidationRuntimeException {
-		PageParameters parameters;
-		try {
-			parameters = getValidatedParameters();
-		} catch (LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
-		}
+		PageParameters parameters = getValidatedParameters();
 		
-		return new NavigationMenuItem(labelModel, getPageClass(), parameters, this, subMenuItems);
+		return new NavigationMenuItem(labelModel, getNonNullPageClass(), parameters, this, subMenuItems);
 	}
 	
 	@Override
 	public boolean isAccessible() {
-		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(getPageClass());
+		Class<? extends Page> pageClass = pageClassModel.getObject();
+		if (pageClass == null) {
+			return false;
+		} else {
+			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+		}
 	}
 	
 	@Override
