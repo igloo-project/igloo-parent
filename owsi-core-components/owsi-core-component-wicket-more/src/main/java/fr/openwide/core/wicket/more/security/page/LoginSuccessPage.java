@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.security.page;
 
+import org.apache.wicket.Page;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
 import fr.openwide.core.spring.util.StringUtils;
@@ -13,9 +14,9 @@ public class LoginSuccessPage extends CoreWebPage {
 	
 	private static final long serialVersionUID = -875304387617628398L;
 	
-	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
+	public static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
-	private static final String WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT = "IBehaviorListener";
+	public static final String WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT = "IBehaviorListener";
 	
 	public static IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder().page(LoginSuccessPage.class).build();
@@ -52,8 +53,12 @@ public class LoginSuccessPage extends CoreWebPage {
 		if (isUrlValid(redirectUrl)) {
 			redirect(redirectUrl);
 		} else {
-			redirect(this.getApplication().getHomePage());
+			redirect(getDefaultRedirectPage());
 		}
+	}
+	
+	protected Class<? extends Page> getDefaultRedirectPage() {
+		return getApplication().getHomePage();
 	}
 	
 	protected boolean isUrlValid(String url) {
