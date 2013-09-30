@@ -53,6 +53,9 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		if (isSuperUser(authentication)) {
 			return true;
 		}
+		if (authentication == null) {
+			return false;
+		}
 		
 		T user = getUser(authentication);
 		
@@ -75,6 +78,10 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		if (isSuperUser(authentication)) {
 			return true;
 		}
+		if (authentication == null) {
+			return false;
+		}
+		
 		Object userDetailsCandidate = authentication.getPrincipal();
 		if (!(userDetailsCandidate instanceof CoreUserDetails)) {
 			return false;
