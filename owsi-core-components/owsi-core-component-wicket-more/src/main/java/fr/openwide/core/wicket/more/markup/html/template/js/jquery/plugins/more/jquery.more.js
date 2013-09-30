@@ -1,47 +1,44 @@
 (function($) {
 	var methods = {
 		init : function(options) {
-			options = $.extend({}, $.fn.more.defaults.options, options);
+			options = $.extend({}, $.fn.more.defaults, options);
 			return this.each(function() {
 				var $this = $(this);
-				$this.wrapInner("<div />");
+				$this.wrapInner('<div class="contained" />');
 				$this.addClass("more");
 				
 				var more = $this.data('more');
 				if (more == null) {
 					var containerHeight = $this.height();
-					var containedHeight = $("div", $this).outerHeight();
+					var containedHeight = $('.contained', $this).outerHeight();
 					
 					if (containedHeight > containerHeight) {
 						$this.data("more", {visible: false});
-						var linkContainer = $("<div></div>").addClass("more-label");
-						var label = $this.data("more-label") || options.label;
-						var link = $("<a></a>")
-							.attr("href", "#")
-							.text(label + " »")
+						
+						var linkContainer = $('<div class="more-label">');
+						var link = options.createMoreLink()
 							.appendTo(linkContainer)
 							.click(function (event) {
 								var data = $this.data("more");
 								if (!data.visible) {
-									$this.css({ maxHeight: "none", height: containerHeight });
-									$this.animate({ height: containedHeight }, "slow");
-									linkContainer.find("a").text("^");
-									linkContainer.addClass("visible");
+									$this.css({ maxHeight: "none" });
+									$this.animate({ height: $('.contained', $this).outerHeight() + linkContainer.height() }, "slow");
 									event.preventDefault();
-									$this.data("more", {visible: true, maxHeight: containerHeight});
+									$this.data("more", {visible: true, maxHeight: $this.height()});
+									
+									$this.addClass("open");
 								} else {
 									$this.animate({ height: data.maxHeight }, "slow");
-									linkContainer.find("a").text(label + " »");
-									linkContainer.removeClass("visible");
 									event.preventDefault();
 									$this.data("more", {visible: false});
+									
+									$this.removeClass("open");
 								}
 								event.target.blur();
-						});
+							});
 						
 						linkContainer.appendTo($this);
 					}
-					
 				}
 			});
 		}
@@ -60,7 +57,12 @@
 	};
 
 	$.fn.more.defaults = {
-		label: "", // utilisé si pas d'attribut data-more-label
+		createMoreLink: function() {
+			return link = $("<a></a>")
+				.attr("href", "#")
+				.append($("<span class='icon-plus more-icon-open'></span>"))
+				.append($("<span class='icon-minus more-icon-close'></span>"));
+		}
 	};
 
 }) (jQuery);
