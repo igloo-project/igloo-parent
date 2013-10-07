@@ -57,7 +57,7 @@ public class CarouFredSel implements ChainableStatement, Serializable {
 			options.put("infinite", infinite);
 		}
 		if (direction != null) {
-			options.put("direction", direction.getValue());
+			options.put("direction", JsUtils.quotes(direction.getValue()));
 		}
 		if (width != null) {
 			options.put("width", width);
