@@ -23,9 +23,9 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 
 	private static final String META_TITLE_SEPARATOR = " › ";
 	
-	private List<BreadCrumbElement> headPageTitleElements = Lists.newArrayList();
+	protected List<BreadCrumbElement> headPageTitleElements = Lists.newArrayList();
 	
-	private List<BreadCrumbElement> breadCrumbElements = Lists.newArrayList();
+	protected List<BreadCrumbElement> breadCrumbElements = Lists.newArrayList();
 	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
