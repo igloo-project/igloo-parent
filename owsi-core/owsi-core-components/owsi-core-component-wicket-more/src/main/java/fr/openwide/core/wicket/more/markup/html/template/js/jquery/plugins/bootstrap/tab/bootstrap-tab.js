@@ -141,7 +141,7 @@
       if (history.pushState) {
          var link = $(e.target).closest("a");
          if (link) {
-           history.pushState(null, null, link.prop("href"));
+           history.replaceState(null, null, link.prop("href"));
          }
       }
     $(this).tab('show')
