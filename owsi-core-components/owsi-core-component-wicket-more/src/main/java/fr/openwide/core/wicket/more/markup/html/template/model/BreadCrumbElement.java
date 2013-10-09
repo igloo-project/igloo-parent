@@ -29,14 +29,6 @@ public class BreadCrumbElement implements Serializable {
 		this.pageClass = pageClass;
 		this.pageParameters = pageParameters;
 	}
-	
-	public String getLabel() {
-		if (labelModel != null) {
-			return labelModel.getObject();
-		} else {
-			return null;
-		}
-	}
 
 	public IModel<String> getLabelModel() {
 		return labelModel;
