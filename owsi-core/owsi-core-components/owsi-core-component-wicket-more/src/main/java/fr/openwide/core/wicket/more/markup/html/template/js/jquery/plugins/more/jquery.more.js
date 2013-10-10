@@ -21,10 +21,12 @@
 							.click(function (event) {
 								var data = $this.data("more");
 								if (!data.visible) {
-									$this.css({ maxHeight: "none" });
+									var actualHeight = $this.height();
+									// Spécifier height: actualHeight permet de dérouler ensuite avec animate
+									$this.css({ maxHeight: "none", height: actualHeight});
 									$this.animate({ height: $('.contained', $this).outerHeight() + linkContainer.height() }, "slow");
 									event.preventDefault();
-									$this.data("more", {visible: true, maxHeight: $this.height()});
+									$this.data("more", {visible: true, maxHeight: actualHeight});
 									
 									$this.addClass("open");
 								} else {
