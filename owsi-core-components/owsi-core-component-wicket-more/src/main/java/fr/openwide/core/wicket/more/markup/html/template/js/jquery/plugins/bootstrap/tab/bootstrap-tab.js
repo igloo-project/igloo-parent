@@ -138,7 +138,7 @@
 
   $(document).on('click.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
     e.preventDefault()
-      if (history.pushState) {
+      if (history.replaceState) {
          var link = $(e.target).closest("a");
          if (link) {
            history.replaceState(null, null, link.prop("href"));
