@@ -13,6 +13,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderBy;
 
 import org.bindgen.Bindable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
@@ -58,6 +60,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
 	
 	@Type(type = "org.hibernate.type.StringClobType")
