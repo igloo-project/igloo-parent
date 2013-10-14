@@ -10,6 +10,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.retzlaff.select2.Select2Behavior;
 import org.retzlaff.select2.Select2Settings;
 
+import fr.openwide.core.wicket.more.markup.html.model.ChoicesWrapperModel;
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
@@ -23,11 +24,14 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	 */
 	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
 	
+	private ChoicesWrapperModel<T> choicesWrapperModel;
+	
 	protected GenericSelect2DropDownSingleChoice(String id, IModel<T> model, IModel<? extends List<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		
 		setModel(model);
-		setChoices(choicesModel);
+		choicesWrapperModel = new ChoicesWrapperModel<T>(model, choicesModel);
+		setChoices(choicesWrapperModel);
 		setChoiceRenderer(renderer);
 		setNullValid(true);
 		
@@ -71,5 +75,21 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	@Override
 	protected String getNullValidKey() {
 		return getRootKey() + ".nullValid";
+	}
+	
+	public boolean isSelectedObjectForcedInChoices() {
+		return choicesWrapperModel.isSelectedObjectForcedInChoices();
+	}
+	
+	public void setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
+		choicesWrapperModel.setSelectedObjectForcedInChoices(selectedObjectForcedInChoices);
+	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		if (choicesWrapperModel != null) {
+			choicesWrapperModel.detach();
+		}
 	}
 }
