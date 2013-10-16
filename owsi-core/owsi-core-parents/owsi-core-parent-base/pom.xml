@@ -65,6 +65,7 @@
 		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
 		<owsi-core.commons-codec.version>1.8</owsi-core.commons-codec.version>
 		<owsi-core.commons-exec.version>1.1</owsi-core.commons-exec.version>
+		<owsi-core.commons-compress.version>1.5</owsi-core.commons-compress.version>
 		
 		<owsi-core.jta.version>1.1</owsi-core.jta.version>
 		<owsi-core.javax-mail.version>1.4.5</owsi-core.javax-mail.version>
@@ -210,6 +211,12 @@
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-exec</artifactId>
 					<version>${owsi-core.commons-exec.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-compress</artifactId>
+					<version>${owsi-core.commons-compress.version}</version>
 				</dependency>
 				
 				<dependency>
