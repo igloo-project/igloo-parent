@@ -23,6 +23,7 @@ import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
@@ -59,7 +60,11 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 		if (true) {
 			queuedTaskHolderConsumer.setQueue(queue);
-			start();
+			if (TaskQueueStartMode.auto.equals(configurer.getTaskQueueStartMode())) {
+				start();
+			} else {
+				LOGGER.warn("Task queue start configured in mode \"manual\".");
+			}
 		}
 	}
 
