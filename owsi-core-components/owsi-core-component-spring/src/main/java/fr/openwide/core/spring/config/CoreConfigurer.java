@@ -11,6 +11,7 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.util.StringUtils;
 
 public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
@@ -171,6 +172,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 
 	public int getTaskStopTimeout() {
 		return getPropertyAsInteger("task.stop.timeout", TASK_STOP_TIMEOUT_DEFAULT);
+	}
+	
+	public TaskQueueStartMode getTaskQueueStartMode() {
+		return getPropertyAsEnum("task.startMode", TaskQueueStartMode.class, TaskQueueStartMode.manual);
 	}
 	
 	public String getSecurityPasswordSalt() {
