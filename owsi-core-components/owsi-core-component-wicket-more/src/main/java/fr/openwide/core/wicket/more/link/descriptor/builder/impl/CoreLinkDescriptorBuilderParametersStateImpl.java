@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.ITerminalState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
@@ -63,7 +62,7 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 	}
 
 	@Override
-	public ITerminalState<L> validator(ILinkParameterValidator validator) {
+	public IParameterMappingState<L> validator(ILinkParameterValidator validator) {
 		Args.notNull(validator, "validator");
 		parameterValidators.add(validator);
 		return this;
