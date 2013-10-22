@@ -5,6 +5,6 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 
 public interface IValidatorState<T extends ILinkDescriptor> extends ITerminalState<T> {
 	
-	ITerminalState<T> validator(ILinkParameterValidator validator);
+	IValidatorState<T> validator(ILinkParameterValidator validator);
 
 }
