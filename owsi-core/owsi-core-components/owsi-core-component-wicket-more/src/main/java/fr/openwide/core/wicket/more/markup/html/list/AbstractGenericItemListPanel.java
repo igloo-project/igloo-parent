@@ -6,7 +6,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
+import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -33,15 +33,15 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 
 	private DataView<T> dataView;
 
-	public AbstractGenericItemListPanel(String id, int itemsPerPage) {
+	public AbstractGenericItemListPanel(String id, long itemsPerPage) {
 		this(id, (IDataProvider<T>) null, itemsPerPage);
 	}
 
-	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel, int itemsPerPage) {
+	public AbstractGenericItemListPanel(String id, IModel<? extends List<T>> listModel, long itemsPerPage) {
 		this(id, new GenericEntityListModelDataProvider<Long, T>(listModel), itemsPerPage);
 	}
 
-	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider, int itemsPerPage) {
+	public AbstractGenericItemListPanel(String id, IDataProvider<T> dataProvider, long itemsPerPage) {
 		super(id);
 		this.setOutputMarkupId(true);
 		
@@ -248,7 +248,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		return dataView;
 	}
 	
-	public IPageable getPageable() {
+	public IPageableItems getPageable() {
 		return dataView;
 	}
 
