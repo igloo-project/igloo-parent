@@ -17,42 +17,42 @@ public class LinkDescriptorBuilder implements IBaseState {
 	public LinkDescriptorBuilder() { }
 
 	@Override
-	public <P extends Page> IParameterMappingState<IPageLinkDescriptor> page(Class<P> pageClass) {
+	public <P extends Page> IParameterMappingState<? extends IPageLinkDescriptor> page(Class<P> pageClass) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IPageLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.page(pageClass)
 		);
 	}
 
 	@Override
-	public IParameterMappingState<IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel) {
+	public IParameterMappingState<? extends IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IPageLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.page(pageClassModel)
 		);
 	}
 
 	@Override
-	public IParameterMappingState<IResourceLinkDescriptor> resource(ResourceReference resourceReference) {
+	public IParameterMappingState<? extends IResourceLinkDescriptor> resource(ResourceReference resourceReference) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IResourceLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.resource(resourceReference)
 		);
 	}
 
 	@Override
-	public IParameterMappingState<IResourceLinkDescriptor> resource(IModel<? extends ResourceReference> resourceReferenceModel) {
+	public IParameterMappingState<? extends IResourceLinkDescriptor> resource(IModel<? extends ResourceReference> resourceReferenceModel) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IResourceLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.resource(resourceReferenceModel)
 		);
 	}
 
 	@Override
-	public IParameterMappingState<IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference) {
+	public IParameterMappingState<? extends IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IImageResourceLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.imageResource(resourceReference)
 		);
 	}
 
 	@Override
-	public IParameterMappingState<IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
+	public IParameterMappingState<? extends IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IImageResourceLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.imageResource(resourceReferenceModel)
 		);

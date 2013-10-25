@@ -7,8 +7,8 @@ import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor
 
 public interface IBaseImageResourceState {
 	
-	IParameterMappingState<IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference);
+	IParameterMappingState<? extends IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference);
 	
-	IParameterMappingState<IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel);
+	IParameterMappingState<? extends IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel);
 
 }

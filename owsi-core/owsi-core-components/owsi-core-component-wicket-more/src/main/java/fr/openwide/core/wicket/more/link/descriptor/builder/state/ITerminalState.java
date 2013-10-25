@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state;
 
-import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 
-public interface ITerminalState<T extends ILinkDescriptor> {
+public interface ITerminalState<L extends ILinkParametersExtractor> {
 
-	T build();
+	L build();
 
 }
