@@ -9,8 +9,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.slf4j.Logger;
 
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -19,24 +19,19 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
  * An {@link ILinkDescriptor} pointing to a {@link Page}.
  * @see ILinkDescriptor
  */
-public interface IPageLinkDescriptor extends ILinkDescriptor {
+public interface IPageLinkDescriptor extends ILinkDescriptor, IPageLinkParametersExtractor {
 	
 	/**
-	 * Attempts to extract the page parameters, {@link #newRestartResponseException() throwing a RestartResponseException}
-	 * with the provided fallback link if any {@link Exception} is caught.
-	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkDescriptor} class logger.
-	 * @see #extract(PageParameters)
+	 * {@inheritDoc}
 	 */
+	@Override
 	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink) throws RestartResponseException;
-	
+
 	/**
-	 * Attempts to extract the page parameters, {@link #newRestartResponseException() throwing a RestartResponseException}
-	 * with the provided fallback link if any {@link Exception} is caught. The provided error message is added to the session.
-	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkDescriptor} class logger.
-	 * @see #extract(PageParameters)
+	 * {@inheritDoc}
 	 */
-	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink, String errorMessage)
-			throws RestartResponseException;
+	@Override
+	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink, String errorMessage) throws RestartResponseException;
 	
 	/**
 	 * Creates an {@link AbstractDynamicBookmarkableLink} that points to the same page than this descriptor, with the same parameters,
