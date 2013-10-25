@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state;
 
-import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
-public interface IValidatorState<T extends ILinkDescriptor> extends ITerminalState<T> {
+public interface IValidatorState<L extends ILinkParametersExtractor> extends ITerminalState<L> {
 	
-	IValidatorState<T> validator(ILinkParameterValidator validator);
+	IValidatorState<L> validator(ILinkParameterValidator validator);
 
 }

@@ -2,8 +2,9 @@ package fr.openwide.core.wicket.more.link.descriptor.builder.state;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 
-public interface IAddedParameterMappingState<T extends ILinkDescriptor> {
+public interface IAddedParameterMappingState<T extends ILinkParametersExtractor> {
 	
 	/**
 	 * Makes this parameters mandatory, which means it will be impossible to use the resulting {@link ILinkDescriptor} unless the parameter is present.
