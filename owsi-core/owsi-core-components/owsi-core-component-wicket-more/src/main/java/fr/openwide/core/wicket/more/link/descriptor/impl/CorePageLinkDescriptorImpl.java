@@ -22,6 +22,7 @@ import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -32,7 +33,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 	
 	private static final long serialVersionUID = -9139677593653180236L;
 	
-	private static final Logger INTERFACE_LOGGER = LoggerFactory.getLogger(IPageLinkDescriptor.class);
+	private static final Logger EXTRACTOR_INTERFACE_LOGGER = LoggerFactory.getLogger(IPageLinkParametersExtractor.class);
 	
 	private static final String ANCHOR_ROOT = "#";
 
@@ -79,7 +80,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor imple
 		try {
 			extract(parameters);
 		} catch (Exception e) {
-			INTERFACE_LOGGER.error("Error while extracting page parameters", e);
+			EXTRACTOR_INTERFACE_LOGGER.error("Error while extracting page parameters", e);
 			if (StringUtils.hasText(errorMessage)) {
 				Session.get().error(errorMessage);
 			}
