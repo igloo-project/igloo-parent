@@ -5,7 +5,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IBaseState;
 
 public abstract class AbstractLinkFactory {
 
-	protected static IBaseState builder() {
+	protected IBaseState builder() {
 		return new LinkDescriptorBuilder();
 	}
 
