@@ -42,8 +42,8 @@ public class UserDescriptionPage extends MainTemplate {
 		
 		setDefaultModel(userModel);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.class));
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, USER.displayName()), UserDescriptionPage.class, parameters));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.linkDescriptor()));
+		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, USER.displayName()), UserDescriptionPage.linkDescriptor(userModel)));
 		
 		add(new Label("pageTitle", BindingModel.of(userModel, USER.displayName())));
 		

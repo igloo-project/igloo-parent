@@ -42,7 +42,7 @@ public class PortfolioMainPage extends MainTemplate {
 	public PortfolioMainPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.linkDescriptor()));
 		
 		IModel<String> searchTermModel = Model.of("");
 		IModel<User> userModel = new GenericEntityModel<Long, User>(null);

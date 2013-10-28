@@ -22,7 +22,7 @@ public class CarouselPage extends WidgetsTemplate {
 	public CarouselPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.carousel"), CarouselPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.carousel"), CarouselPage.linkDescriptor()));
 		
 		add(new ImageCarouselPanel("carouselPanel", "dummy-diapo"));
 	}

@@ -24,7 +24,7 @@ public class AutocompletePage extends WidgetsTemplate {
 	public AutocompletePage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.autocomplete"), AutocompletePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.autocomplete"), AutocompletePage.linkDescriptor()));
 		
 		UserItemItField userItemItField = new UserItemItField("userItemItField", new ListModel<User>());
 		userItemItField.setLabel(new ResourceModel("widgets.autocomplete.userItemIt"));

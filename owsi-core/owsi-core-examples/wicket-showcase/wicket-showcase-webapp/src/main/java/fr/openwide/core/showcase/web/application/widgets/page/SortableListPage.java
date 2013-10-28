@@ -33,7 +33,7 @@ public class SortableListPage extends WidgetsTemplate {
 	public SortableListPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.sortable"), SortableListPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.sortable"), SortableListPage.linkDescriptor()));
 		
 		IModel<List<User>> userListModel = new LoadableDetachableModel<List<User>>() {
 			private static final long serialVersionUID = 9076101423574115944L;

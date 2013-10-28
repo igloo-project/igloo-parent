@@ -19,7 +19,7 @@ public abstract class WidgetsTemplate extends MainTemplate {
 	public WidgetsTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.root"), WidgetsMainPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.root"), WidgetsMainPage.linkDescriptor()));
 	}
 	
 	@Override

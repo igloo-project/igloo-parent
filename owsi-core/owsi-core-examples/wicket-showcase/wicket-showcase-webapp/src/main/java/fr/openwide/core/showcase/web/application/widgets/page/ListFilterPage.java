@@ -41,7 +41,7 @@ public class ListFilterPage extends WidgetsTemplate {
 	public ListFilterPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.listFilter"), ListFilterPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.listFilter"), ListFilterPage.linkDescriptor()));
 		
 		WebMarkupContainer userList = new WebMarkupContainer("userList");
 		userList.setOutputMarkupId(true);
