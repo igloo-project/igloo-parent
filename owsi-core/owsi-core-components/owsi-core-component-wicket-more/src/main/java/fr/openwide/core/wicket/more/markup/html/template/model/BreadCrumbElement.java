@@ -10,6 +10,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.component.LinkBreadCrumbElementPanel;
+import fr.openwide.core.wicket.more.markup.html.template.component.LinkDescriptorBreadCrumbElementPanel;
 import fr.openwide.core.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 
 public class BreadCrumbElement implements Serializable {
@@ -55,9 +56,13 @@ public class BreadCrumbElement implements Serializable {
 		return pageParameters;
 	}
 	
+	public ILinkDescriptor getLinkDescriptor() {
+		return linkDescriptor;
+	}
+	
 	public Component component(String wicketId) {
 		if (linkDescriptor != null) {
-			return linkDescriptor.link(wicketId).setAutoHideIfInvalid(true);
+			return new LinkDescriptorBreadCrumbElementPanel(wicketId, this);
 		} else {
 			if (pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
 				return new LinkBreadCrumbElementPanel(wicketId, this);
