@@ -48,7 +48,7 @@ public class SelectBoxPage extends WidgetsTemplate {
 	public SelectBoxPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.selectbox"), SelectBoxPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.selectbox"), SelectBoxPage.linkDescriptor()));
 
 		List<User> userList = userService.list();
 		

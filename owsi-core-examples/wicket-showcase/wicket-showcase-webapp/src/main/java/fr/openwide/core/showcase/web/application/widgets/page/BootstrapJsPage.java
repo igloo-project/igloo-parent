@@ -27,7 +27,7 @@ public class BootstrapJsPage extends WidgetsTemplate {
 	public BootstrapJsPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.linkDescriptor()));
 		
 		// Popover
 		WebMarkupContainer someInformation = new WebMarkupContainer("someInfomration");

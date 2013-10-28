@@ -24,7 +24,7 @@ public class AutosizePage extends WidgetsTemplate {
 	public AutosizePage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.autosize"), AutosizePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.autosize"), AutosizePage.linkDescriptor()));
 		
 		TextArea<String> defaultBehavior = new TextArea<String>("defaultBehavior");
 		defaultBehavior.add(new AutosizeBehavior());

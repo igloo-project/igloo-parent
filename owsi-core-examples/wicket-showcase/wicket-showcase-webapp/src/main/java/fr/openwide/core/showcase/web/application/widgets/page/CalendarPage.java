@@ -25,7 +25,7 @@ public class CalendarPage extends WidgetsTemplate {
 	public CalendarPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.calendar"), CalendarPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.calendar"), CalendarPage.linkDescriptor()));
 		
 		add(new CalendarPanel("calendarPanel"));
 		
