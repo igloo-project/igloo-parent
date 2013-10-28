@@ -567,7 +567,7 @@ $.widget( "ui.itemautocomplete", {
 		var ul = this._getMenuGroup(item);
 		var li = $( "<li></li>" )
 			.data( "item.itemautocomplete", item )
-			.append( $( "<a></a>" ).append( $("<span class='label'></span>").append(this.options.renderItem(item)) ) )
+			.append( $( "<a></a>" ).append( $("<span class='itemautocomplete-label'></span>").append(this.options.renderItem(item)) ) )
 			.appendTo( ul );
 		if (item[this.options.cssClassNameAttribute]) {
 			li.addClass(item[this.options.cssClassNameAttribute]);
