@@ -49,7 +49,7 @@
 				$content.append(
 						$("<div class='modal-footer'></div>")
 							.append(
-								$("<button class='btn' href='#' data-dismiss='modal'></a>")
+								$("<button class='btn btn-default' href='#' data-dismiss='modal'></a>")
 									.append($("<span class='icon-ban-circle'></span>"))
 									.append(document.createTextNode(" " + noLabel))
 									.click(onCancel)
