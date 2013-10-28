@@ -43,7 +43,7 @@ public class ModalPage extends WidgetsTemplate {
 		options.setModalOverflow(false);
 		options.setFocusOnFirstNotHiddenInput();
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.modal"), ModalPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.modal"), ModalPage.linkDescriptor()));
 		
 		AddUserPopupPanel addUserPopupPanel = new AddUserPopupPanel("addUserPopupPanel");
 		add(addUserPopupPanel);
