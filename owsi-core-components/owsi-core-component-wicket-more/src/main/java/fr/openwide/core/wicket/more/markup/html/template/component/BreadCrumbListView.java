@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.markup.html.template.component;
 
 import java.util.List;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -24,12 +23,7 @@ public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 		separator.setVisible(item.getIndex() > 0);
 		item.add(separator);
 		
-		if (item.getModelObject().getPageClass() != null &&
-				Session.get().getAuthorizationStrategy().isInstantiationAuthorized(item.getModelObject().getPageClass())) {
-			item.add(new LinkBreadCrumbElementPanel("breadCrumbElement", item.getModel()));
-		} else {
-			item.add(new SimpleBreadCrumbElementPanel("breadCrumbElement", item.getModel()));
-		}
+		item.add(item.getModelObject().component("breadCrumbElement"));
 	}
 	
 }
