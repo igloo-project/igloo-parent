@@ -108,7 +108,11 @@ public class NavigationMenuItem implements IDetachable {
 	}
 	
 	public boolean isAccessible() {
-		return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+		if (pageLinkDescriptor != null) {
+			return pageLinkDescriptor.isAccessible();
+		} else {
+			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+		}
 	}
 	
 	public IModel<String> getLabelModel() {
