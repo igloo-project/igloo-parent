@@ -31,16 +31,16 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
-public class UserProfilPanel extends GenericPanel<User> {
+public class UserProfilePanel extends GenericPanel<User> {
 
 	private static final long serialVersionUID = 8651898170121443991L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserProfilPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserProfilePanel.class);
 
 	@SpringBean
 	private IUserService userService;
 
-	public UserProfilPanel(String id, final IModel<User> userModel) {
+	public UserProfilePanel(String id, final IModel<User> userModel) {
 		super(id, userModel);
 		
 		add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
