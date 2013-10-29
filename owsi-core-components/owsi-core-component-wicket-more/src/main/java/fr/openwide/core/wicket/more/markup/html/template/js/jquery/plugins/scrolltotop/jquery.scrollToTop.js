@@ -44,11 +44,12 @@
 		var options = $.extend({}, $.fn.scrollTo.defaults, scrollToOptions, this.data());
 		
 		if (itemTop) {
-			$(options.scrollableItemSelector).stop().animate({scrollTop: itemTop}, 'normal');
+			$(options.scrollableItemSelector).stop().animate({scrollTop: itemTop + options.offsetTop}, 'normal');
 		}
 	};
 	
 	$.fn.scrollTo.defaults = {
-		scrollableItemSelector : 'html, body'
+		scrollableItemSelector : 'html, body',
+		offsetTop: 0
 	};
 })(jQuery);
