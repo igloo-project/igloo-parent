@@ -30,6 +30,7 @@
 		
 		<module>owsi-core-component-rest-jersey</module>
 		<module>owsi-core-component-web-security</module>
+		<module>owsi-core-component-rest-jersey2</module>
 	</modules>
 	
 	<!-- Project information -->
