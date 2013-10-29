@@ -9,7 +9,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Binding;
 import fr.openwide.core.basicapp.web.application.administration.component.UserMembershipsPanel;
-import fr.openwide.core.basicapp.web.application.administration.component.UserProfilPanel;
+import fr.openwide.core.basicapp.web.application.administration.component.UserProfilePanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -47,7 +47,7 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 		
 		add(new Label("pageTitle", BindingModel.of(userModel, Binding.user().fullName())));
 		
-		add(new UserProfilPanel("profile", userModel));
+		add(new UserProfilePanel("profile", userModel));
 		add(new UserMembershipsPanel("groups", userModel));
 	}
 
