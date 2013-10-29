@@ -40,10 +40,10 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 				getString("administration.usergroup.error"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.usergroup"),
-				AdministrationUserGroupPortfolioPage.class));
+				AdministrationUserGroupPortfolioPage.linkDescriptor()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userGroupModel, Binding.userGroup().name()),
-				AdministrationUserGroupDescriptionPage.class, parameters));
+				AdministrationUserGroupDescriptionPage.linkDescriptor(userGroupModel)));
 		
 		add(new Label("pageTitle", BindingModel.of(userGroupModel, Binding.userGroup().name())));
 		

@@ -38,7 +38,7 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
-				AdministrationUserPortfolioPage.class));
+				AdministrationUserPortfolioPage.linkDescriptor()));
 		
 		IModel<String> searchTermModel = Model.of("");
 		
