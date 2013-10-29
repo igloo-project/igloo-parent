@@ -30,7 +30,7 @@ public class LinkBreadCrumbElementPanel extends GenericPanel<String> {
 		breadCrumbLink.setBody(getModel());
 		add(breadCrumbLink);
 		
-		breadCrumbLink.add(new EnclosureBehavior().component(breadCrumbLink));
+		add(new EnclosureBehavior().component(breadCrumbLink));
 	}
 
 }
