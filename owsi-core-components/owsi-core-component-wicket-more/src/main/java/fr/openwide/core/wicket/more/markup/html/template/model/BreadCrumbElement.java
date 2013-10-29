@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -13,6 +12,7 @@ import fr.openwide.core.wicket.more.markup.html.template.component.LinkBreadCrum
 import fr.openwide.core.wicket.more.markup.html.template.component.LinkDescriptorBreadCrumbElementPanel;
 import fr.openwide.core.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 
+@SuppressWarnings("deprecation")
 public class BreadCrumbElement implements Serializable {
 	
 	private static final long serialVersionUID = -44367801976105581L;
@@ -29,10 +29,12 @@ public class BreadCrumbElement implements Serializable {
 		this.labelModel = labelModel;
 	}
 	
+	@Deprecated
 	public BreadCrumbElement(IModel<String> labelModel, Class<? extends Page> pageClass) {
 		this(labelModel, pageClass, null);
 	}
 	
+	@Deprecated
 	public BreadCrumbElement(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters) {
 		this.labelModel = labelModel;
 		this.pageClass = pageClass;
@@ -48,10 +50,12 @@ public class BreadCrumbElement implements Serializable {
 		return labelModel;
 	}
 
+	@Deprecated
 	public Class<? extends Page> getPageClass() {
 		return pageClass;
 	}
 
+	@Deprecated
 	public PageParameters getPageParameters() {
 		return pageParameters;
 	}
@@ -64,7 +68,7 @@ public class BreadCrumbElement implements Serializable {
 		if (linkDescriptor != null) {
 			return new LinkDescriptorBreadCrumbElementPanel(wicketId, this);
 		} else {
-			if (pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
+			if (pageClass != null) {
 				return new LinkBreadCrumbElementPanel(wicketId, this);
 			} else {
 				return new SimpleBreadCrumbElementPanel(wicketId, this);
