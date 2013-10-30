@@ -39,7 +39,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	private final IModel<String> headPageTitleSeparatorModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR);
 	private final IModel<String> headPageTitleSeparatorReverseModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE);
 	
-	private final IModel<List<BreadCrumbElement>> bodyPrependedBreadCrumbElementsModel = newBreadCrumbListModel();
+	private final IModel<List<BreadCrumbElement>> bodyBreadCrumbPrependedElementsModel = newBreadCrumbListModel();
 	
 	private final IModel<List<BreadCrumbElement>> breadCrumbElementsModel = newBreadCrumbListModel();
 	
@@ -96,8 +96,8 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	
 	/** Add a breadcrumb element to be preprended to HTML body breadcrumb only (not to HTML head title)
 	 */
-	protected final void addBodyPrependedBreadCrumbElement(BreadCrumbElement breadCrumbElement) {
-		bodyPrependedBreadCrumbElementsModel.getObject().add(breadCrumbElement);
+	protected final void addBodyBreadCrumbPrependedElement(BreadCrumbElement breadCrumbElement) {
+		bodyBreadCrumbPrependedElementsModel.getObject().add(breadCrumbElement);
 	}
 
 	/** Add a breadcrumb element that will be shown in the page title. If none is added, the {@link #breadCrumbElementsModel} will be used.
@@ -126,7 +126,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	}
 	
 	protected Component createBodyBreadCrumb(String wicketId) {
-		return new BodyBreadCrumbPanel(wicketId, bodyPrependedBreadCrumbElementsModel, breadCrumbElementsModel);
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel);
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 		headPageTitleSeparatorModel.detach();
 		headPageTitleSeparatorReverseModel.detach();
 		
-		bodyPrependedBreadCrumbElementsModel.detach();
+		bodyBreadCrumbPrependedElementsModel.detach();
 		
 		breadCrumbElementsModel.detach();
 	}
