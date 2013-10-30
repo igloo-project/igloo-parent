@@ -36,11 +36,11 @@ import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
@@ -66,12 +66,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
-		add(new Label("headPageTitle", getHeadPageTitleModel()));
+		// Page title
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+		add(createHeadPageTitle("headPageTitle"));
 		
 		// Bread crumb
 		Component breadCrumb;
 		if (isBreadCrumbDisplayed()) {
-			breadCrumb = new BreadCrumbPanel("breadCrumb", getBreadCrumbElementsModel());
+			breadCrumb = createBodyBreadCrumb("breadCrumb");
 		} else {
 			breadCrumb = new EmptyPanel("breadCrumb");
 		}
@@ -164,11 +166,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList();
-	}
-
-	@Override
-	protected String getRootPageTitleLabelKey() {
-		return "common.rootPageTitle";
 	}
 
 	public static BootstrapTooltip getBootstrapTooltip() {
