@@ -34,10 +34,10 @@ import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
@@ -51,7 +51,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
 		// Page title
-		add(new Label("headPageTitle", getHeadPageTitleModel()));
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+		add(createHeadPageTitle("headPageTitle"));
 		
 		// Back to home
 //		add(new BookmarkablePageLink<Void>("backToHomeLink", getApplication().getHomePage()));
@@ -122,7 +123,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		// Bread crumb
 		Component breadCrumb;
 		if (isBreadCrumbDisplayed()) {
-			breadCrumb = new BreadCrumbPanel("breadCrumb", getBreadCrumbElementsModel());
+			breadCrumb = createBodyBreadCrumb("breadCrumb");
 		} else {
 			breadCrumb = new EmptyPanel("breadCrumb");
 		}
@@ -149,11 +150,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	
 	protected IModel<String> getApplicationNameModel() {
 		return new ResourceModel("common.rootPageTitle");
-	}
-	
-	@Override
-	protected String getRootPageTitleLabelKey() {
-		return "common.rootPageTitle";
 	}
 	
 	protected List<NavigationMenuItem> getMainNav() {
