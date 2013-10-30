@@ -1,22 +1,23 @@
 package fr.openwide.core.wicket.more.markup.html.template;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
+import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
+import fr.openwide.core.wicket.more.markup.html.template.component.HeadPageTitleBreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public abstract class AbstractWebPageTemplate extends CoreWebPage {
@@ -27,15 +28,20 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	
 	private static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE = " ‹ ";
 	
-	protected List<BreadCrumbElement> headPageTitleElements = Lists.newArrayList();
+	private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
+		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
+	}
 	
-	protected List<BreadCrumbElement> breadCrumbElements = Lists.newArrayList();
+	private final IModel<List<BreadCrumbElement>> headPageTitlePrependedElementsModel = newBreadCrumbListModel();
+	private final IModel<List<BreadCrumbElement>> headPageTitleElementsModel = newBreadCrumbListModel();
 	
-	protected boolean headPageTitleReversed = false;
+	private final IModel<Boolean> headPageTitleReversedModel = Model.of(false);
+	private final IModel<String> headPageTitleSeparatorModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR);
+	private final IModel<String> headPageTitleSeparatorReverseModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE);
 	
-	protected String headPageTitleSeparator = DEFAULT_HEAD_PAGE_TITLE_SEPARATOR;
+	private final IModel<List<BreadCrumbElement>> bodyPrependedBreadCrumbElementsModel = newBreadCrumbListModel();
 	
-	protected String headPageTitleSeparatorReverse = DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE;
+	private final IModel<List<BreadCrumbElement>> breadCrumbElementsModel = newBreadCrumbListModel();
 	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
@@ -82,107 +88,58 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
 	
-	protected void addBreadCrumbElement(BreadCrumbElement breadCrumbElement) {
-		breadCrumbElements.add(breadCrumbElement);
-	}
-	
-	protected IModel<List<BreadCrumbElement>> getBreadCrumbElementsModel() {
-		return new PropertyModel<List<BreadCrumbElement>>(this, "breadCrumbElements");
-	}
-	
-	public List<BreadCrumbElement> getBreadCrumbElements() {
-		return this.breadCrumbElements;
-	}
-	
-	protected abstract String getRootPageTitleLabelKey();
-	
-	protected IModel<String> getHeadPageTitleModel() {
-		return new PropertyModel<String>(this, "headPageTitle");
-	}
-	
-	protected void addHeadPageTitleElement(BreadCrumbElement breadCrumbElement) {
-		this.headPageTitleElements.add(breadCrumbElement);
-	}
-	
-	protected void setHeadPageTitleReversed(boolean headPageTitleReversed) {
-		this.headPageTitleReversed = headPageTitleReversed;
-	}
-	
-	protected void setHeadPageTitleSeparator(String headPageTitleSeparator) {
-		this.headPageTitleSeparator = headPageTitleSeparator;
-	}
-	
-	protected void setHeadPageTitleSeparatorReverse(String headPageTitleSeparatorReverse) {
-		this.headPageTitleSeparatorReverse = headPageTitleSeparatorReverse;
-	}
-	
-	/**
-	 * This method is public so that Wicket's PropertyModel can find it.
+	/** Add a breadcrumb element to be preprended to HTML head title only (not to HTML body breadcrumb)
 	 */
-	public String getHeadPageTitle() {
-		StringBuilder sb = new StringBuilder();
-		
-		if (!headPageTitleReversed) {
-			sb.append(getLocalizer().getString(getRootPageTitleLabelKey(), this));
-		}
-		
-		if (headPageTitleElements.size() > 0) {
-			List<BreadCrumbElement> orderedHeadPageTitleElements;
-			String separator;
-			
-			if (headPageTitleReversed) {
-				orderedHeadPageTitleElements = ImmutableList.copyOf(headPageTitleElements).reverse();
-				separator = headPageTitleSeparatorReverse;
-			} else {
-				orderedHeadPageTitleElements = ImmutableList.copyOf(headPageTitleElements);
-				separator = headPageTitleSeparator;
-			}
-			for (BreadCrumbElement pageTitleElement : orderedHeadPageTitleElements) {
-				IModel<String> titleElementModel = pageTitleElement.getLabelModel();
-				if (titleElementModel instanceof IComponentAssignedModel) {
-					titleElementModel = wrap(titleElementModel);
-				}
-				if (sb.length() > 0) {
-					sb.append(separator);
-				}
-				sb.append(titleElementModel.getObject());
-			}
-		} else {
-			boolean oneElementBreadcrumb = (breadCrumbElements.size() == 1);
-			
-			List<BreadCrumbElement> orderedBreadCrumbElements;
-			String separator;
-			
-			if (headPageTitleReversed) {
-				orderedBreadCrumbElements = ImmutableList.copyOf(breadCrumbElements).reverse();
-				separator = headPageTitleSeparatorReverse;
-			} else {
-				orderedBreadCrumbElements = ImmutableList.copyOf(breadCrumbElements);
-				separator = headPageTitleSeparator;
-			}
-			
-			for (BreadCrumbElement breadCrumbElement : orderedBreadCrumbElements) {
-				if (oneElementBreadcrumb || !getApplication().getHomePage().equals(breadCrumbElement.getPageClass())) {
-					IModel<String> breadcrumbElementModel = breadCrumbElement.getLabelModel();
-					if (breadcrumbElementModel instanceof IComponentAssignedModel) {
-						breadcrumbElementModel = wrap(breadcrumbElementModel);
-					}
-					if (sb.length() > 0) {
-						sb.append(separator);
-					}
-					sb.append(breadcrumbElementModel.getObject());
-				}
-			}
-		}
-		
-		if (headPageTitleReversed) {
-			if (sb.length() > 0) {
-				sb.append(headPageTitleSeparatorReverse);
-			}
-			sb.append(getLocalizer().getString(getRootPageTitleLabelKey(), this));
-		}
-		
-		return sb.toString();
+	protected final void addHeadPageTitlePrependedElement(BreadCrumbElement breadCrumbElement) {
+		headPageTitlePrependedElementsModel.getObject().add(breadCrumbElement);
+	}
+	
+	/** Add a breadcrumb element to be preprended to HTML body breadcrumb only (not to HTML head title)
+	 */
+	protected final void addBodyPrependedBreadCrumbElement(BreadCrumbElement breadCrumbElement) {
+		bodyPrependedBreadCrumbElementsModel.getObject().add(breadCrumbElement);
 	}
 
+	/** Add a breadcrumb element that will be shown in the page title. If none is added, the {@link #breadCrumbElementsModel} will be used.
+	 */
+	protected final void addHeadPageTitleElement(BreadCrumbElement breadCrumbElement) {
+		this.headPageTitleElementsModel.getObject().add(breadCrumbElement);
+	}
+	
+	protected final void addBreadCrumbElement(BreadCrumbElement breadCrumbElement) {
+		breadCrumbElementsModel.getObject().add(breadCrumbElement);
+	}
+	
+	protected final void setHeadPageTitleReversed(boolean headPageTitleReversed) {
+		this.headPageTitleReversedModel.setObject(headPageTitleReversed);
+	}
+	
+	protected Component createHeadPageTitle(String wicketId) {
+		return new HeadPageTitleBreadCrumbPanel(
+				wicketId,
+				headPageTitlePrependedElementsModel,
+				headPageTitleElementsModel, breadCrumbElementsModel,
+				headPageTitleSeparatorModel,
+				headPageTitleSeparatorReverseModel,
+				headPageTitleReversedModel
+		);
+	}
+	
+	protected Component createBodyBreadCrumb(String wicketId) {
+		return new BodyBreadCrumbPanel(wicketId, bodyPrependedBreadCrumbElementsModel, breadCrumbElementsModel);
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		headPageTitlePrependedElementsModel.detach();
+		headPageTitleElementsModel.detach();
+		headPageTitleReversedModel.detach();
+		headPageTitleSeparatorModel.detach();
+		headPageTitleSeparatorReverseModel.detach();
+		
+		bodyPrependedBreadCrumbElementsModel.detach();
+		
+		breadCrumbElementsModel.detach();
+	}
 }

@@ -64,14 +64,14 @@ public class BreadCrumbElement implements Serializable {
 		return linkDescriptor;
 	}
 	
-	public Component component(String wicketId) {
+	public Component component(String wicketId, BreadCrumbMarkupTagRenderingBehavior renderingBehavior) {
 		if (linkDescriptor != null) {
-			return new LinkDescriptorBreadCrumbElementPanel(wicketId, this);
+			return new LinkDescriptorBreadCrumbElementPanel(wicketId, this, renderingBehavior);
 		} else {
 			if (pageClass != null) {
-				return new LinkBreadCrumbElementPanel(wicketId, this);
+				return new LinkBreadCrumbElementPanel(wicketId, this, renderingBehavior);
 			} else {
-				return new SimpleBreadCrumbElementPanel(wicketId, this);
+				return new SimpleBreadCrumbElementPanel(wicketId, this, renderingBehavior);
 			}
 		}
 	}

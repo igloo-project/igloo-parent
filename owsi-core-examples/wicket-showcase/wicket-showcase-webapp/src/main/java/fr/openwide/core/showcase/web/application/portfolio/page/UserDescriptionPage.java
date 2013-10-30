@@ -37,8 +37,10 @@ public class UserDescriptionPage extends MainTemplate {
 	public UserDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
+		setHeadPageTitleReversed(true);
+		
 		IModel<User> userModel = new GenericEntityModel<Long, User>(null);
-		linkDescriptor(userModel).extractSafely(parameters, PortfolioMainPage.linkDescriptor(), getString("common.error.noItem"));
+		linkDescriptor(userModel).extractSafely(parameters, PortfolioMainPage.linkDescriptor());
 		
 		setDefaultModel(userModel);
 		
