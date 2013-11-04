@@ -47,7 +47,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	private boolean active = false;
 
-	private boolean availableForAction = false;
+	private boolean availableForAction = true;
 
 	private int stopTimeout;
 	
