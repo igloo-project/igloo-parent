@@ -30,4 +30,6 @@ public interface IQueuedTaskHolderService extends IGenericEntityService<Long, Qu
 	List<String> listTypes();
 
 	boolean isReloadable(QueuedTaskHolder task);
+
+	boolean isCancellable(QueuedTaskHolder task);
 }

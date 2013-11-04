@@ -166,6 +166,15 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 			}
 		}
 	}
+	
+	@Override
+	public void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
+		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+		if (queuedTaskHolder != null) {
+			queuedTaskHolder.setStatus(TaskStatus.CANCELLED);
+			queuedTaskHolderService.update(queuedTaskHolder);
+		}
+	}
 
 	/**
 	 * Warning: this destroy method is called twice, so all the related code has

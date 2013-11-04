@@ -21,7 +21,10 @@ public interface IQueuedTaskHolderManager {
 	
 	void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
 	
+	void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
+	
 	void destroy();
 	
 	void stop();
+
 }

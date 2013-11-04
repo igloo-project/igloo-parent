@@ -43,9 +43,6 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	
 	private static final QueuedTaskHolderBinding QUEUED_TASK_HOLDER_BINDING = new QueuedTaskHolderBinding();
 
-	private static final List<TaskStatus> CONSUMABLE_TASK_STATUS = Lists.newArrayList(TaskStatus.TO_RUN,
-			TaskStatus.RUNNING, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<QueuedTaskHolder> search(QueuedTaskHolderSearchQueryParameters searchParams, Long limit, Long offset)
@@ -229,7 +226,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 		JPQLQuery query = new JPAQuery(getEntityManager());
 
 		query.from(qQueuedTaskHolder)
-				.where(qQueuedTaskHolder.status.in(CONSUMABLE_TASK_STATUS))
+				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
 				.orderBy(qQueuedTaskHolder.id.asc());
 
 		return query.list(qQueuedTaskHolder);

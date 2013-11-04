@@ -141,6 +141,36 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 			}
 		});
 
+		statusContainer.add(new AjaxConfirmLink<QueuedTaskHolder>("cancel", queuedTaskHolderModel, new ResourceModel(
+				"console.maintenance.task.description.mainInformation.cancel.title"), new ResourceModel(
+				"console.maintenance.task.description.mainInformation.cancel.confirmation"), new ResourceModel(
+				"common.yes"), new ResourceModel("common.no"), null, true) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				try {
+					queuedTaskHolderManager.cancel(getModelObject().getId());
+					Session.get().success(
+							getString("console.maintenance.task.description.mainInformation.cancel.success"));
+					throw linkDescriptor(getModel()).newRestartResponseException();
+				} catch (RestartResponseException e) {
+					throw e;
+				} catch (Exception e) {
+					LOGGER.error("Unexpected error while cancelling task", e);
+					getSession().error(getString("common.error.unexpected"));
+				}
+
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(queuedTaskHolderService.isCancellable(getModelObject()));
+			}
+		});
+		
 		add(new Label("name", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
 		add(new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
 				DatePattern.SHORT_DATETIME));
