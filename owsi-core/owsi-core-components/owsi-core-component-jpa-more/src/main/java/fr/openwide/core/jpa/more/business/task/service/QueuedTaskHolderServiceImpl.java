@@ -18,9 +18,6 @@ import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, QueuedTaskHolder> implements
 		IQueuedTaskHolderService {
 	
-	private static final List<TaskStatus> RELOADABLE_TASK_STATUS = Lists.newArrayList(TaskStatus.CANCELLED,
-			TaskStatus.FAILED, TaskStatus.INTERRUPTED);
-
 	private IQueuedTaskHolderDao queuedTaskHolderDao;
 
 	@Autowired
@@ -88,7 +85,11 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 	
 	@Override
 	public boolean isReloadable(QueuedTaskHolder task) {
-		return RELOADABLE_TASK_STATUS.contains(task.getStatus());
+		return TaskStatus.RELOADABLE_TASK_STATUS.contains(task.getStatus());
 	}
 
+	@Override
+	public boolean isCancellable(QueuedTaskHolder task) {
+		return TaskStatus.CANCELLABLE_TASK_STATUS.contains(task.getStatus());
+	}
 }
