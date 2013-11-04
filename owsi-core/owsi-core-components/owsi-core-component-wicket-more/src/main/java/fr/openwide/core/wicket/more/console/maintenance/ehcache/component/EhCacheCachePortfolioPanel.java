@@ -33,6 +33,8 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCac
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import fr.openwide.core.wicket.more.markup.html.basic.PercentageValueLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardDataAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
@@ -52,6 +54,8 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 	public EhCacheCachePortfolioPanel(String id, IModel<List<CacheManager>> model) {
 		super(id, model);
 		setOutputMarkupId(true);
+
+		add(new ZeroClipboardBehavior());
 
 		ListView<CacheManager> cacheManagerList = new ListView<CacheManager>("cacheManagerList", getModel()) {
 			private static final long serialVersionUID = -6252990816594161742L;
@@ -137,6 +141,11 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								CoreWicketMoreBinding.ehCacheCacheInformation().name())));
 						item.add(new TextField<String>("cacheNameInput", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBinding.ehCacheCacheInformation().name())));
+						
+						WebMarkupContainer copyToClipboard = new WebMarkupContainer("copyToClipboard");
+						copyToClipboard.add(new ZeroClipboardDataAttributeAppender(Model.of(true), BindingModel.of(
+								cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name())));
+						item.add(copyToClipboard);
 						
 						item.add(new Label("cacheMaxElements", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBinding.ehCacheCacheInformation().maxElementsInMemory())));
