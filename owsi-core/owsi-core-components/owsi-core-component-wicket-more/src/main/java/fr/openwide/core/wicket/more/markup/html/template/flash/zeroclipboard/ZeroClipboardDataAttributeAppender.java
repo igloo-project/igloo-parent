@@ -4,6 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 public class ZeroClipboardDataAttributeAppender extends Behavior {
 
@@ -16,6 +17,10 @@ public class ZeroClipboardDataAttributeAppender extends Behavior {
 	private IModel<Boolean> dataClipboardModel;
 
 	private IModel<String> dataClipboardTextModel;
+	
+	public ZeroClipboardDataAttributeAppender(IModel<String> dataClipboardTextModel) {
+		this(Model.of(true), dataClipboardTextModel);
+	}
 
 	public ZeroClipboardDataAttributeAppender(IModel<Boolean> dataClipboardModel, IModel<String> dataClipboardTextModel) {
 		this.dataClipboardModel = dataClipboardModel;

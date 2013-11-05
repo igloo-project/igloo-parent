@@ -143,7 +143,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								CoreWicketMoreBinding.ehCacheCacheInformation().name())));
 						
 						WebMarkupContainer copyToClipboard = new WebMarkupContainer("copyToClipboard");
-						copyToClipboard.add(new ZeroClipboardDataAttributeAppender(Model.of(true), BindingModel.of(
+						copyToClipboard.add(new ZeroClipboardDataAttributeAppender(BindingModel.of(
 								cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name())));
 						item.add(copyToClipboard);
 						
