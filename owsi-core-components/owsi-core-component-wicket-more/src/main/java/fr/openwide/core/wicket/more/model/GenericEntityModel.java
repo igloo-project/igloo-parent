@@ -35,7 +35,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@SpringBean
 	private IEntityService entityService;
 	
-	private Class<E> clazz;
+	private Class<? extends E> clazz;
 	
 	private transient boolean attached = false;
 
@@ -76,13 +76,37 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setObject(E entity) {
 		E persistentObject = HibernateUtils.unwrap(entity);
-		
-		if (persistentObject != null) {
-			clazz = (Class<E>) persistentObject.getClass();
+		super.setObject(persistentObject);
+		attached = true;
+		updateSerializableData(); // Useless ; for compatibility with old applications only
+	}
+	
+	protected K getId() {
+		return id;
+	}
+
+	@Override
+	public void detach() {
+		if (!attached) {
+			return;
+		}
+		updateSerializableData();
+		super.detach();
+		attached = false;
+	}
+	
+	/**
+	 * Updates the serializable data (id, clazz, notYetPersistedEntity) according to the attached object's value.
+	 * <p>Only called when the model is attached.
+	 */
+	@SuppressWarnings("unchecked")
+	private void updateSerializableData() {
+		E entity = super.getObject();
+		if (entity != null) {
+			clazz = (Class<? extends E>) entity.getClass();
 			
 			if (entity.getId() != null) {
 				id = entity.getId();
@@ -96,22 +120,6 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 			id = null;
 			notYetPersistedEntity = null;
 		}
-		
-		super.setObject(persistentObject);
-		attached = true;
-	}
-	
-	protected K getId() {
-		return id;
-	}
-
-	@Override
-	public void detach() {
-		if (!attached) {
-			return;
-		}
-		super.detach();
-		attached = false;
 	}
 
 }
