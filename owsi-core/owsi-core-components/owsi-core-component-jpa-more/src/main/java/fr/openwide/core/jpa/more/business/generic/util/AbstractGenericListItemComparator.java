@@ -1,6 +1,5 @@
 package fr.openwide.core.jpa.more.business.generic.util;
 
-import java.text.Collator;
 import java.util.Comparator;
 
 import com.google.common.collect.Ordering;
@@ -13,29 +12,16 @@ public abstract class AbstractGenericListItemComparator<E extends GenericListIte
 	
 	private static final long serialVersionUID = -6024767658595096844L;
 	
-	private static final Comparator<Integer> DEFAULT_POSITION_COMPARATOR = Ordering.natural().nullsLast();
-	private static final Comparator<String> DEFAULT_LABEL_COMPARATOR = Ordering.from(GenericEntity.DEFAULT_STRING_COLLATOR).nullsLast();
+	private static final Ordering<Integer> DEFAULT_POSITION_COMPARATOR = Ordering.natural().nullsLast();
+	private static final Ordering<String> DEFAULT_LABEL_COMPARATOR = GenericEntity.DEFAULT_STRING_COLLATOR;
 	
 	private final Comparator<? super Integer> positionComparator;
 	private final Comparator<? super String> labelComparator;
-	
-	private static final Comparator<? super String> makeNullSafe(Collator collator) {
-		return Ordering.from(collator).nullsLast();
-	}
 
 	public AbstractGenericListItemComparator() {
 		super();
 		this.positionComparator = DEFAULT_POSITION_COMPARATOR;
 		this.labelComparator = DEFAULT_LABEL_COMPARATOR;
-	}
-
-	/**
-	 * @param labelCollator The {@link GenericListItem#getLabel() label} collator.
-	 * 		Will be wrapped in order to make it consider null elements as higher than non-null elements.
-	 * 		Must be serializable in order for this comparator to be serializable.
-	 */
-	public AbstractGenericListItemComparator(Collator labelCollator) {
-		this(makeNullSafe((Collator)labelCollator.clone()));
 	}
 
 	/**
@@ -47,21 +33,6 @@ public abstract class AbstractGenericListItemComparator<E extends GenericListIte
 		super();
 		this.positionComparator = DEFAULT_POSITION_COMPARATOR;
 		this.labelComparator = labelComparator;
-	}
-
-	/**
-	 * @param nullIsLow see {@link AbstractGenericEntityComparator#AbstractGenericEntityComparator(boolean, Comparator)}
-	 * @param keyComparator see {@link AbstractGenericEntityComparator#AbstractGenericEntityComparator(boolean, Comparator)}
-	 * @param positionComparator The {@link GenericListItem#getPosition() position} comparator.
-	 * 		Must be null-safe in order for this comparator to be null-safe.
-	 * 		Must be serializable in order for this comparator to be serializable.
-	 * @param labelCollator The {@link GenericListItem#getLabel() label} collator.
-	 * 		Will be wrapped in order to make it consider null elements as higher than non-null elements.
-	 * 		Must be serializable in order for this comparator to be serializable.
-	 */
-	public AbstractGenericListItemComparator(boolean nullIsLow, Comparator<? super Long> keyComparator,
-			Comparator<? super Integer> positionComparator, Collator labelCollator) {
-		this(nullIsLow, keyComparator, positionComparator, makeNullSafe((Collator)labelCollator.clone()));
 	}
 
 	/**

@@ -21,8 +21,12 @@ import java.io.Serializable;
 import java.text.Collator;
 import java.util.Locale;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.Hibernate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Ordering;
+
+import fr.openwide.core.commons.util.ordering.SerializableCollator;
 
 /**
  * <p>Entité racine pour la persistence des objets via JPA.</p>
@@ -36,10 +40,13 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
-	public static final Collator DEFAULT_STRING_COLLATOR = Collator.getInstance(Locale.FRENCH);
+	public static final Ordering<String> DEFAULT_STRING_COLLATOR;
 	
 	static {
-		DEFAULT_STRING_COLLATOR.setStrength(Collator.PRIMARY);
+		// On n'utilise PAS la classe Collator directement, car elle n'est pas Serializable.
+		SerializableCollator collator = new SerializableCollator(Locale.FRENCH);
+		collator.setStrength(Collator.PRIMARY);
+		DEFAULT_STRING_COLLATOR = collator.nullsLast();
 	}
 	
 	/**
