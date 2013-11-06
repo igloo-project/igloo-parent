@@ -9,6 +9,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
+import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.more.business.link.service.IExternalLinkWrapperService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAudit;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
@@ -34,12 +36,16 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 
 	@Autowired
 	protected ITestEntityService testEntityService;
+	
+	@Autowired
+	protected IExternalLinkWrapperService externalLinkWrapperService;
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanAudits();
 		cleanTestEntities();
 		cleanFeaturesAndActions();
+		cleanExternalLinkWrappers();
 	}
 
 	private void cleanAudits() throws ServiceException, SecurityServiceException {
@@ -51,6 +57,12 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 	private void cleanTestEntities() throws ServiceException, SecurityServiceException {
 		for (TestEntity testEntity : testEntityService.list()) {
 			testEntityService.delete(testEntity);
+		}
+	}
+	
+	private void cleanExternalLinkWrappers() throws ServiceException, SecurityServiceException {
+		for (ExternalLinkWrapper externalLinkWrapper : externalLinkWrapperService.list()) {
+			externalLinkWrapperService.delete(externalLinkWrapper);
 		}
 	}
 
