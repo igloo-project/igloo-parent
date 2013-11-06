@@ -198,7 +198,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getExternalLinkCheckerRetryAttemptsLimit() {
-		return getPropertyAsInteger("externalLinkChecker.retryAttemtpsNumber", 5);
+		return getPropertyAsInteger("externalLinkChecker.retryAttemptsNumber", 5);
 	}
 	
 	public int getExternalLinkCheckerThreadPoolSize() {
