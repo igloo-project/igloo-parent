@@ -58,6 +58,7 @@ public abstract class AbstractGenericEntityCollectionModel
 			E unsavedEntity = unsavedEntityList.get(i);
 			
 			assert id != null || unsavedEntity != null;
+			assert id == null || unsavedEntity == null;
 			
 			if (unsavedEntity != null) {
 				entityCollection.add(unsavedEntity);
