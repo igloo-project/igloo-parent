@@ -62,6 +62,13 @@
 			<artifactId>imageinfo</artifactId>
 		</dependency>
 		
+		<!-- Http Client -->
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		
 		<!-- Database pooling -->
 		
 		<dependency>

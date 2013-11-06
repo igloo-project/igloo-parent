@@ -181,4 +181,27 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public String getSecurityPasswordSalt() {
 		return getPropertyAsString("security.passwordSalt");
 	}
+	
+	/**
+	 * Configuration of the link checker tool
+	 */
+	public String getExternalLinkCheckerUserAgent() {
+		return getPropertyAsString("externalLinkChecker.userAgent", "Core External Link Checker");
+	}
+	
+	public int getExternalLinkCheckerMaxRedirects() {
+		return getPropertyAsInteger("externalLinkChecker.maxRedirects", 2);
+	}
+	
+	public int getExternalLinkCheckerTimeout() {
+		return getPropertyAsInteger("externalLinkChecker.timeout", 3000);
+	}
+	
+	public int getExternalLinkCheckerRetryAttemptsLimit() {
+		return getPropertyAsInteger("externalLinkChecker.retryAttemtpsNumber", 5);
+	}
+	
+	public int getExternalLinkCheckerThreadPoolSize() {
+		return getPropertyAsInteger("externalLinkChecker.threadPoolSize", Runtime.getRuntime().availableProcessors());
+	}
 }
