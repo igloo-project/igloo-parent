@@ -1,6 +1,9 @@
 package fr.openwide.core.test.wicket.more.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,7 +20,6 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 import fr.openwide.core.test.wicket.more.AbstractWicketMoreJpaTestCase;
@@ -121,7 +123,7 @@ public class TestGenericEntityModel extends AbstractWicketMoreJpaTestCase {
 		assertThat(model.getObject(), attachedToSession());
 	}
 	
-	@Test(expected = ServiceException.class)
+	@Test
 	public void testAttachedWhenPersistedAndDetachedWhenTransient() throws Exception {
 		Person person = new Person("John", "Doe");
 		personService.create(person);
@@ -132,7 +134,8 @@ public class TestGenericEntityModel extends AbstractWicketMoreJpaTestCase {
 		
 		personService.delete(person);
 		
-		model = serializeAndDeserialize(model); // BOOM
+		model = serializeAndDeserialize(model);
+		assertNull(model.getObject()); // Tries to load an entity whose id no longer exists => null
 	}
 
 }
