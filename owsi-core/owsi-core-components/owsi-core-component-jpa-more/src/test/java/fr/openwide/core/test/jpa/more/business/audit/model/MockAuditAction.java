@@ -12,6 +12,9 @@ public class MockAuditAction extends AbstractAuditAction {
 
 	@Enumerated(EnumType.STRING)
 	private MockAuditActionEnum auditActionEnum;
+	
+	protected MockAuditAction() {
+	}
 
 	public MockAuditAction(String label, MockAuditActionEnum auditActionEnum, Integer position) {
 		super(label, position);
