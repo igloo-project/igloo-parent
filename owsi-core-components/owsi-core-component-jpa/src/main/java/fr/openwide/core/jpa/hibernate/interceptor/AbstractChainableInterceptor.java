@@ -2,6 +2,8 @@ package fr.openwide.core.jpa.hibernate.interceptor;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.CallbackException;
 import org.hibernate.EntityMode;
@@ -9,6 +11,8 @@ import org.hibernate.Hibernate;
 import org.hibernate.Interceptor;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
+
+import com.google.common.collect.Sets;
 
 /**
  * Apart from providing a couple of utility methods, the main point of this class it to make final all the methods which
@@ -28,6 +32,20 @@ public abstract class AbstractChainableInterceptor implements Interceptor {
 			}
 		}
 		return false;
+	}
+	
+	protected void updatePropertyValues(Map<String, Object> propertyValuesMap, String[] propertyNames,
+			Object[] currentState) {
+		Set<String> propertiesToUpdate = Sets.newTreeSet(propertyValuesMap.keySet());
+		for (int i = 0; i < propertyNames.length; ++i) {
+			if (propertyValuesMap.containsKey(propertyNames[i])) {
+				currentState[i] = propertyValuesMap.get(propertyNames[i]);
+				propertiesToUpdate.remove(propertyNames[i]);
+			}
+			if (propertiesToUpdate.isEmpty()) {
+				break;
+			}
+		}
 	}
 	
 	@Override

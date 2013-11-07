@@ -27,27 +27,29 @@ public class ChainedInterceptor extends EmptyInterceptor {
 	
 	@Override
 	public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-		boolean modified = false;
+		boolean result = false;
 		
 		for (AbstractChainableInterceptor interceptor : interceptors) {
 			if (interceptor.applyTo(entity)) {
-				modified = modified || interceptor.onSave(entity, id, state, propertyNames, types);
+				boolean modified = interceptor.onSave(entity, id, state, propertyNames, types);
+				result = result || modified;
 			}
 		}
-		return modified;
+		return result;
 	}
 	
 	@Override
 	public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
 			String[] propertyNames, Type[] types) {
-		boolean modified = false;
+		boolean result = false;
 		
 		for (AbstractChainableInterceptor interceptor : interceptors) {
 			if (interceptor.applyTo(entity)) {
-				modified = modified || interceptor.onFlushDirty(entity, id, currentState, previousState, propertyNames, types);
+				boolean modified = interceptor.onFlushDirty(entity, id, currentState, previousState, propertyNames, types);
+				result = result || modified;
 			}
 		}
-		return modified;
+		return result;
 	}
 	
 	@Override
