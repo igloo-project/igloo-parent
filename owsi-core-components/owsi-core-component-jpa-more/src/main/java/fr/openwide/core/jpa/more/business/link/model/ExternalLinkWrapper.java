@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.business.link.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.DocumentId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -25,6 +27,8 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper> {
 
 	private static final long serialVersionUID = -4558332826839419557L;
+	
+	private static final ExternalLinkWrapperBinding BINDING = new ExternalLinkWrapperBinding();
 
 	@Id
 	@GeneratedValue
@@ -127,10 +131,13 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	}
 	
 	@Transient
-	public void resetStatus() {
-		status = ExternalLinkStatus.ONLINE;
-		consecutiveFailures = 0;
-		lastStatusCode = null;
-		lastCheckDate = null;
+	public Map<String, Object> getResetStatusPropertyValues() {
+		Map<String, Object> changes = Maps.newHashMap();
+		changes.put(BINDING.status().getPath(), ExternalLinkStatus.ONLINE);
+		changes.put(BINDING.consecutiveFailures().getPath(), 0);
+		changes.put(BINDING.lastStatusCode().getPath(), null);
+		changes.put(BINDING.lastCheckDate().getPath(), null);
+		
+		return changes;
 	}
 }

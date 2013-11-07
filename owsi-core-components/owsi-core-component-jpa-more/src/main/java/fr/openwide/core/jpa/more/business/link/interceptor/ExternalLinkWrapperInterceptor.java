@@ -25,7 +25,8 @@ public class ExternalLinkWrapperInterceptor extends AbstractSimplePropertyUpdate
 	@Override
 	protected boolean onChange(ExternalLinkWrapper entity, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
 		// If the link's URL field changes, we reset its other properties
-		entity.resetStatus();
+		
+		updatePropertyValues(entity.getResetStatusPropertyValues(), propertyNames, currentState);
 		
 		return true;
 	}
