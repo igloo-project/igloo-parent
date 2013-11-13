@@ -1,26 +1,24 @@
 package fr.openwide.core.wicket.markup.html.basic;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
-import org.springframework.util.StringUtils;
 
-public class HideableLabel extends Label {
+public class HideableLabel extends AbstractCoreLabel<HideableLabel> {
 
 	private static final long serialVersionUID = 1L;
 
 	public HideableLabel(String id, IModel<?> model) {
 		super(id, model);
+		hideIfEmpty();
 	}
 
 	public HideableLabel(String id, String label) {
 		super(id, label);
+		hideIfEmpty();
 	}
 
 	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-		
-		setVisible(StringUtils.hasText(getDefaultModelObjectAsString()));
+	protected HideableLabel thisAsT() {
+		return this;
 	}
 
 }
