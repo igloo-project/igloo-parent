@@ -70,9 +70,9 @@ public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkable
 			getApplication().getResourceReferenceRegistry().registerResourceReference(resourceReference);
 		}
 		
-		return getRequestCycle().urlFor(
-			new ResourceReferenceRequestHandler(resourceReference, resourceParameters)
-		);
+		return makeAbsoluteIfNeeded(getRequestCycle().urlFor(
+				new ResourceReferenceRequestHandler(resourceReference, resourceParameters)
+		));
 	}
 	
 	@Override

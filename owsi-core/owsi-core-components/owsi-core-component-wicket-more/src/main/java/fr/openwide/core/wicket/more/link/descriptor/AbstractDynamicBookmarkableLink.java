@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.link.descriptor;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
@@ -38,6 +39,8 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	private final ILinkParameterValidator parametersValidator;
 	
 	private boolean autoHideIfInvalid = false;
+	
+	private boolean absolute = false;
 
 	public AbstractDynamicBookmarkableLink(
 			String wicketId,
@@ -73,6 +76,21 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		return this;
 	}
 	
+	public boolean isAbsolute() {
+		return absolute;
+	}
+
+	/**
+	 * Sets whether the link should be absolute or relative.
+	 * <p> Default is false: the link is relative by default.
+	 * 
+	 * @param absolute True to make the link absolute.
+	 */
+	public AbstractDynamicBookmarkableLink setAbsolute(boolean absolute) {
+		this.absolute = absolute;
+		return this;
+	}
+
 	private PageParameters getParameters() {
 		return parametersMapping.getObject();
 	}
@@ -119,6 +137,14 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	}
 	
 	protected abstract CharSequence getURL(PageParameters parameters) throws LinkInvalidTargetRuntimeException;
+	
+	protected CharSequence makeAbsoluteIfNeeded(CharSequence url) {
+		if (isAbsolute()) {
+			return getRequestCycle().getUrlRenderer().renderFullUrl(Url.parse(url));
+		} else {
+			return url;
+		}
+	}
 	
 	/**
 	 * No click event is allowed.

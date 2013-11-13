@@ -63,7 +63,7 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 		if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
 			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + getClass() + "' was not authorized when trying to render the URL.");
 		}
-		return urlFor(pageClass, pageParameters);
+		return makeAbsoluteIfNeeded(urlFor(pageClass, pageParameters));
 	}
 	
 	@Override
