@@ -15,13 +15,11 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 	
 	private static final long serialVersionUID = 1697388050602143288L;
 	
-	private static final ResourceModel DEFAULT_EMPTY_FIELD_MODEL = new ResourceModel("common.emptyField");
-	
 	private IModel<?> mainModel;
 	
 	private boolean showPlaceholder = false;
 	
-	private IModel<String> placeholderModel = DEFAULT_EMPTY_FIELD_MODEL;
+	private IModel<String> placeholderModel;
 	
 	private boolean hideIfEmpty = false;
 	
@@ -29,7 +27,7 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 	
 	public AbstractCoreLabel(String id, IModel<?> model) {
 		super(id, model);
-		this.mainModel = model;
+		this.mainModel = wrap(model);
 	}
 	
 	public AbstractCoreLabel(String id, Serializable label) {
@@ -46,6 +44,9 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 		if (!mainModelIsEmpty) {
 			setDefaultModel(mainModel);
 		} else if (showPlaceholder) {
+			if (placeholderModel == null) {
+				placeholderModel = new ResourceModel("common.emptyField");
+			}
 			setDefaultModel(placeholderModel);
 		} else {
 			setDefaultModel(null);
