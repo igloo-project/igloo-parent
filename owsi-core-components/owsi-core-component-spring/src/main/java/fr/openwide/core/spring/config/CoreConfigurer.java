@@ -204,4 +204,19 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public int getExternalLinkCheckerThreadPoolSize() {
 		return getPropertyAsInteger("externalLinkChecker.threadPoolSize", Runtime.getRuntime().availableProcessors());
 	}
+	
+	/**
+	 * Configuration of the RequestCycle builder for background threads
+	 */
+	public String getWicketBackgroundRequestCycleBuilderUrlScheme() {
+		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.scheme", "http");
+	}
+	
+	public String getWicketBackgroundRequestCycleBuilderUrlServerName() {
+		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.serverName", "localhost");
+	}
+	
+	public int getWicketBackgroundRequestCycleBuilderUrlServerPort() {
+		return getPropertyAsInteger("wicket.backgroundThreadContextBuilder.url.serverPort", 8080);
+	}
 }
