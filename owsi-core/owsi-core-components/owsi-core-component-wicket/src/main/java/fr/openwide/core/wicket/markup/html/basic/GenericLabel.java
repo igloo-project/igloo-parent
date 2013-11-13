@@ -10,7 +10,7 @@ public class GenericLabel<E> extends AbstractCoreLabel<GenericLabel<E>> {
 	
 	public GenericLabel(String id, IModel<E> model) {
 		super(id, model);
-		this.mainModel = model;
+		this.mainModel = wrap(model);
 	}
 	
 	@Override
