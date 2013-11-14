@@ -2,19 +2,13 @@ package fr.openwide.core.wicket.more.link.descriptor;
 
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
 /**
  * A {@link Link} whose parameters may change during the page life cycle (for instance on an Ajax refresh).
@@ -35,22 +29,12 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final IModel<PageParameters> parametersMapping;
-	private final ILinkParameterValidator parametersValidator;
-	
 	private boolean autoHideIfInvalid = false;
 	
 	private boolean absolute = false;
 
-	public AbstractDynamicBookmarkableLink(
-			String wicketId,
-			IModel<PageParameters> parametersMapping,
-			ILinkParameterValidator parametersValidator) {
+	public AbstractDynamicBookmarkableLink(String wicketId) {
 		super(wicketId);
-		Args.notNull(parametersMapping, "parametersMapping");
-		Args.notNull(parametersValidator, "parametersValidator");
-		this.parametersMapping = wrap(parametersMapping);
-		this.parametersValidator = parametersValidator;
 	}
 	
 	/**
@@ -91,26 +75,14 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		return this;
 	}
 
-	private PageParameters getParameters() {
-		return parametersMapping.getObject();
-	}
-	
-	protected abstract boolean isTargetValid();
-	
+	protected abstract boolean isValid();
+
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
 		
-		if (autoHideIfInvalid) {
-			setVisible(false);
-			if (isTargetValid()) {
-				if (LinkParameterValidators.isModelValid(parametersValidator)) {
-					PageParameters parameters = getParameters();
-					if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
-						setVisible(true);
-					}
-				}
-			}
+		if (isAutoHideIfInvalid()) {
+			setVisible(isValid());
 		} else {
 			setVisible(true);
 		}
@@ -118,32 +90,19 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	
 	@Override
 	protected final CharSequence getURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException {
-		PageParameters parameters;
-		
-		try {
-			LinkParameterValidators.checkModel(parametersValidator);
-			parameters = getParameters();
-			LinkParameterValidators.checkSerialized(parameters, parametersValidator);
-		} catch(LinkParameterValidationException e) {
-			throw new LinkParameterValidationRuntimeException(e);
+		CharSequence relativeUrl = getRelativeURL();
+		if (isAbsolute()) {
+			return getRequestCycle().getUrlRenderer().renderFullUrl(Url.parse(relativeUrl));
+		} else {
+			return relativeUrl;
 		}
-		
-		return getURL(parameters);
 	}
+	
+	protected abstract CharSequence getRelativeURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
 	
 	@Override
 	protected boolean getStatelessHint() {
 		return true;
-	}
-	
-	protected abstract CharSequence getURL(PageParameters parameters) throws LinkInvalidTargetRuntimeException;
-	
-	protected CharSequence makeAbsoluteIfNeeded(CharSequence url) {
-		if (isAbsolute()) {
-			return getRequestCycle().getUrlRenderer().renderFullUrl(Url.parse(url));
-		} else {
-			return url;
-		}
 	}
 	
 	/**
@@ -152,13 +111,6 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	@Override
 	public final void onClick() {
 		// Unused
-	}
-	
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		parametersMapping.detach();
-		parametersValidator.detach();
 	}
 
 }

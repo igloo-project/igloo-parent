@@ -17,7 +17,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
  * <p>This implementation could not derive from {@link BookmarkablePageLink}, whose target Page class is inherently static.
  * @see BookmarkablePageLink
  */
-public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink {
+public class DynamicBookmarkablePageLink extends AbstractCoreExplicitelyParameterizedDynamicBookmarkableLink {
 
 	private static final long serialVersionUID = -7297463634865525448L;
 	
@@ -38,9 +38,10 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 	}
 	
 	@Override
-	protected final boolean isTargetValid() {
+	protected final boolean isValid() {
 		Class<? extends Page> pageClass = getPageClass();
-		return pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+		return pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)
+				&& super.isValid();
 	}
 	
 	/**
@@ -55,15 +56,15 @@ public class DynamicBookmarkablePageLink extends AbstractDynamicBookmarkableLink
 	 * @see BookmarkablePageLink
 	 */
 	@Override
-	protected CharSequence getURL(PageParameters pageParameters) {
+	protected CharSequence getRelativeURL(PageParameters pageParameters) {
 		Class<? extends Page> pageClass = getPageClass();
 		if (pageClass == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page class of a link of type '" + getClass() + "' was null when trying to render the URL.");
 		}
 		if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
-			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + getClass() + "' was not authorized when trying to render the URL.");
+			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + pageClass + "' was not authorized when trying to render the URL.");
 		}
-		return makeAbsoluteIfNeeded(urlFor(pageClass, pageParameters));
+		return urlFor(pageClass, pageParameters);
 	}
 	
 	@Override

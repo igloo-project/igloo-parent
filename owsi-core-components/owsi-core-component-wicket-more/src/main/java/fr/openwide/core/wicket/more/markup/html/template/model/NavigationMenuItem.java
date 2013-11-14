@@ -15,7 +15,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 public class NavigationMenuItem implements IDetachable {
 
@@ -23,7 +23,7 @@ public class NavigationMenuItem implements IDetachable {
 	
 	private IModel<String> labelModel;
 	
-	private IPageLinkDescriptor pageLinkDescriptor;
+	private IPageLinkGenerator pageLinkGenerator;
 	
 	private Class<? extends Page> pageClass;
 	
@@ -33,7 +33,7 @@ public class NavigationMenuItem implements IDetachable {
 	
 	protected NavigationMenuItem(NavigationMenuItem wrapped) {
 		setLabelModel(wrapped.getLabelModel());
-		setPageLinkDescriptor(wrapped.getPageLinkDescriptor());
+		setPageLinkGenerator(wrapped.getPageLinkGenerator());
 		setPageClass(wrapped.getPageClass());
 		setPageParameters(wrapped.getPageParameters());
 		setSubMenuItems(wrapped.getSubMenuItems());
@@ -44,18 +44,18 @@ public class NavigationMenuItem implements IDetachable {
 	}
 	
 	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters,
-			IPageLinkDescriptor pageLinkDescriptor, Collection<NavigationMenuItem> subMenuItems) {
+			IPageLinkGenerator pageLinkGenerator, Collection<NavigationMenuItem> subMenuItems) {
 		this.labelModel = labelModel;
 		this.pageClass = pageClass;
 		this.pageParameters = pageParameters;
-		this.pageLinkDescriptor = pageLinkDescriptor;
+		this.pageLinkGenerator = pageLinkGenerator;
 		this.subMenuItems.addAll(subMenuItems);
 	}
 	
 	public NavigationMenuItem(IModel<String> labelModel,
 			Class<? extends Page> pageClass, PageParameters pageParameters,
-			IPageLinkDescriptor pageLinkDescriptor) {
-		this(labelModel, pageClass, pageParameters, pageLinkDescriptor,
+			IPageLinkGenerator pageLinkGenerator) {
+		this(labelModel, pageClass, pageParameters, pageLinkGenerator,
 				Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
 	}
 	
@@ -86,8 +86,8 @@ public class NavigationMenuItem implements IDetachable {
 		if (labelModel != null) {
 			labelModel.detach();
 		}
-		if (pageLinkDescriptor != null) {
-			pageLinkDescriptor.detach();
+		if (pageLinkGenerator != null) {
+			pageLinkGenerator.detach();
 		}
 		
 		for (NavigationMenuItem subMenuItem : subMenuItems) {
@@ -96,8 +96,8 @@ public class NavigationMenuItem implements IDetachable {
 	}
 
 	public Link<Void> link(String wicketId) {
-		if (pageLinkDescriptor != null) {
-			return pageLinkDescriptor.link(wicketId);
+		if (pageLinkGenerator != null) {
+			return pageLinkGenerator.link(wicketId);
 		} else {
 			return new BookmarkablePageLink<Void>(wicketId, pageClass, pageParameters);
 		}
@@ -108,8 +108,8 @@ public class NavigationMenuItem implements IDetachable {
 	}
 	
 	public boolean isAccessible() {
-		if (pageLinkDescriptor != null) {
-			return pageLinkDescriptor.isAccessible();
+		if (pageLinkGenerator != null) {
+			return pageLinkGenerator.isAccessible();
 		} else {
 			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 		}
@@ -123,12 +123,12 @@ public class NavigationMenuItem implements IDetachable {
 		this.labelModel = labelModel;
 	}
 	
-	protected IPageLinkDescriptor getPageLinkDescriptor() {
-		return pageLinkDescriptor;
+	protected IPageLinkGenerator getPageLinkGenerator() {
+		return pageLinkGenerator;
 	}
 
-	protected void setPageLinkDescriptor(IPageLinkDescriptor pageLinkDescriptor) {
-		this.pageLinkDescriptor = pageLinkDescriptor;
+	protected void setPageLinkGenerator(IPageLinkGenerator pageLinkGenerator) {
+		this.pageLinkGenerator = pageLinkGenerator;
 	}
 
 	protected Class<? extends Page> getPageClass() {

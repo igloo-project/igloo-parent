@@ -12,7 +12,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
-public class CoreResourceLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IResourceLinkDescriptor {
+public class CoreResourceLinkDescriptorImpl extends AbstractCoreExplicitelyParameterizedLinkDescriptor implements IResourceLinkDescriptor {
 
 	private static final long serialVersionUID = -2046898427977725120L;
 	

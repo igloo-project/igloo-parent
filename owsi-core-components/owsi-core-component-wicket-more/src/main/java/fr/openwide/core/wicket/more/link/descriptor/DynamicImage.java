@@ -78,22 +78,23 @@ public class DynamicImage extends Image {
 		super.onConfigure();
 
 		if (autoHideIfInvalid) {
-			setVisible(false);
-			if (isTargetValid()) {
-				if (LinkParameterValidators.isModelValid(parametersValidator)) {
-					PageParameters parameters = getParameters();
-					if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
-						setVisible(true);
-					}
-				}
-			}
+			setVisible(isValid());
 		} else {
 			setVisible(true);
 		}
 	}
 	
-	private boolean isTargetValid() {
-		return getImageResourceReference() != null;
+	private boolean isValid() {
+		if (getImageResourceReference() != null) {
+			if (LinkParameterValidators.isModelValid(parametersValidator)) {
+				PageParameters parameters = getParameters();
+				if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	@Override

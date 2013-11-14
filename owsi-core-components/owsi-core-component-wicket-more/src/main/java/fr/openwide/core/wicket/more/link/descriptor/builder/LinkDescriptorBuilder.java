@@ -8,9 +8,13 @@ import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderFactory;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderPageInstanceStateImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderParametersStateImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IBaseState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.IPageInstanceState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import fr.openwide.core.wicket.more.link.model.PageModel;
 
 public class LinkDescriptorBuilder implements IBaseState {
 	
@@ -28,6 +32,16 @@ public class LinkDescriptorBuilder implements IBaseState {
 		return new CoreLinkDescriptorBuilderParametersStateImpl<IPageLinkDescriptor>(
 				CoreLinkDescriptorBuilderFactory.page(pageClassModel)
 		);
+	}
+	
+	@Override
+	public IPageInstanceState<? extends IPageLinkGenerator> pageInstance(Page page) {
+		return pageInstance(PageModel.of(page));
+	}
+	
+	@Override
+	public IPageInstanceState<? extends IPageLinkGenerator> pageInstance(IModel<? extends Page> pageInstanceModel) {
+		return new CoreLinkDescriptorBuilderPageInstanceStateImpl(pageInstanceModel);
 	}
 
 	@Override
