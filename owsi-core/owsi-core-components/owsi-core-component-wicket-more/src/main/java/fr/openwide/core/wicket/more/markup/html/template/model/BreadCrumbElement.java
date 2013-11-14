@@ -7,9 +7,9 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.markup.html.template.component.LinkBreadCrumbElementPanel;
-import fr.openwide.core.wicket.more.markup.html.template.component.LinkDescriptorBreadCrumbElementPanel;
+import fr.openwide.core.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import fr.openwide.core.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 
 @SuppressWarnings("deprecation")
@@ -19,7 +19,7 @@ public class BreadCrumbElement implements Serializable {
 
 	private IModel<String> labelModel;
 	
-	private ILinkDescriptor linkDescriptor;
+	private ILinkGenerator linkGenerator;
 	
 	private Class<? extends Page> pageClass;
 	
@@ -41,9 +41,9 @@ public class BreadCrumbElement implements Serializable {
 		this.pageParameters = pageParameters;
 	}
 	
-	public BreadCrumbElement(IModel<String> labelModel, ILinkDescriptor linkDescriptor) {
+	public BreadCrumbElement(IModel<String> labelModel, ILinkGenerator linkGenerator) {
 		this.labelModel = labelModel;
-		this.linkDescriptor = linkDescriptor;
+		this.linkGenerator = linkGenerator;
 	}
 
 	public IModel<String> getLabelModel() {
@@ -60,13 +60,13 @@ public class BreadCrumbElement implements Serializable {
 		return pageParameters;
 	}
 	
-	public ILinkDescriptor getLinkDescriptor() {
-		return linkDescriptor;
+	public ILinkGenerator getLinkGenerator() {
+		return linkGenerator;
 	}
 	
 	public Component component(String wicketId, BreadCrumbMarkupTagRenderingBehavior renderingBehavior) {
-		if (linkDescriptor != null) {
-			return new LinkDescriptorBreadCrumbElementPanel(wicketId, this, renderingBehavior);
+		if (linkGenerator != null) {
+			return new LinkGeneratorBreadCrumbElementPanel(wicketId, this, renderingBehavior);
 		} else {
 			if (pageClass != null) {
 				return new LinkBreadCrumbElementPanel(wicketId, this, renderingBehavior);

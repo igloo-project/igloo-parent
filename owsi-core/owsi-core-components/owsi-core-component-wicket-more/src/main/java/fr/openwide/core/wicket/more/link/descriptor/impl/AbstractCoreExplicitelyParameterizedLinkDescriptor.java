@@ -13,14 +13,14 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
-public abstract class AbstractCoreLinkDescriptor implements ILinkDescriptor {
+public abstract class AbstractCoreExplicitelyParameterizedLinkDescriptor implements ILinkDescriptor {
 
 	private static final long serialVersionUID = 2474433766347554582L;
 	
 	protected final LinkParametersMapping parametersMapping;
 	protected final ILinkParameterValidator parametersValidator;
 
-	public AbstractCoreLinkDescriptor(
+	public AbstractCoreExplicitelyParameterizedLinkDescriptor(
 			LinkParametersMapping parametersMapping,
 			ILinkParameterValidator parametersValidator) {
 		super();

@@ -1,10 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.core.util.lang.WicketObjects;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.springframework.util.Assert;
@@ -18,6 +16,7 @@ import fr.openwide.core.wicket.more.link.descriptor.impl.CorePageLinkDescriptorI
 import fr.openwide.core.wicket.more.link.descriptor.impl.CoreResourceLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.model.ClassModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor> implements IDetachable {
@@ -29,17 +28,7 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 	public abstract T create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator);
 
 	public static <P extends Page> CoreLinkDescriptorBuilderFactory<IPageLinkDescriptor> page(Class<P> pageClass) {
-		final String className = pageClass.getName();
-
-		// Seems to be the "clean" Wicket way to serialize a class object. See BookmarkablePageLink.
-		IModel<Class<P>> pageClassModel = 
-				new LoadableDetachableModel<Class<P>>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected Class<P> load() {
-						return WicketObjects.<P>resolveClass(className);
-					}
-				};
+		IModel<Class<P>> pageClassModel = ClassModel.of(pageClass);
 
 		return new CorePageLinkDescriptorBuilderFactory(pageClassModel);
 	}

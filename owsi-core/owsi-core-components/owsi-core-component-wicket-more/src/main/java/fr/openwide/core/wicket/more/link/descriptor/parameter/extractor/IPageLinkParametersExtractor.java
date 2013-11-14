@@ -10,6 +10,8 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 /**
  * An {@link ILinkParametersExtractor} that also allows for "safe" extraction, redirecting to a given page if an
  * {@link Exception} is caught during the extraction.
+ * 
+ * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior notice.
  * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before serialization.
  */
 public interface IPageLinkParametersExtractor extends ILinkParametersExtractor {

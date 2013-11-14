@@ -29,7 +29,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
-public class CorePageLinkDescriptorImpl extends AbstractCoreLinkDescriptor implements IPageLinkDescriptor {
+public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameterizedLinkDescriptor implements IPageLinkDescriptor {
 	
 	private static final long serialVersionUID = -9139677593653180236L;
 	

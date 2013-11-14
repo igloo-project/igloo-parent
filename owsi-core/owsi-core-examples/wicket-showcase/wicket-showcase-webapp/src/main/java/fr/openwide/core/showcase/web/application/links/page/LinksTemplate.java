@@ -2,6 +2,7 @@ package fr.openwide.core.showcase.web.application.links.page;
 
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -20,6 +21,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
+import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -45,6 +47,13 @@ public abstract class LinksTemplate extends MainTemplate {
 		}
 		
 		add(new Label("title", getTitleModel()));
+		
+		Component linkToPage1 = new LinkDescriptorBuilder().pageInstance(this).validate(LinksPage1.class).build()
+				.link("linkToThisPageInstanceOnlyIfPage1").setAutoHideIfInvalid(true);
+		add(linkToPage1);
+		
+		add(new LinkDescriptorBuilder().pageInstance(this).validate(LinksTemplate.class).build().link("linkToThisPageInstance")
+				.add(new PlaceholderBehavior().component(linkToPage1)));
 		
 		add(new DynamicLinkTestPanel("linkTestPanel", userModel));
 		

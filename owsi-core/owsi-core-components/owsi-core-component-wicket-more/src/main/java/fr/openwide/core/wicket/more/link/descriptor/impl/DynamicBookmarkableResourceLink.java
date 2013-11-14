@@ -16,7 +16,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
  * <p>This implementation could not derive from {@link ResourceLink}, whose target Resource is inherently static.
  * @see ResourceLink
  */
-public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkableLink {
+public class DynamicBookmarkableResourceLink extends AbstractCoreExplicitelyParameterizedDynamicBookmarkableLink {
 	
 	private static final long serialVersionUID = 7217475839311474526L;
 
@@ -34,22 +34,19 @@ public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkable
 
 	protected final ResourceReference getResourceReference() {
 		ResourceReference resourceReference = resourceReferenceModel.getObject();
-		if (resourceReference == null) {
-			throw new IllegalStateException("The resourceReference of a link of type " + getClass() + " was found to be null.");
-		}
 		return resourceReference;
 	}
 	
 	@Override
-	protected final boolean isTargetValid() {
-		return getResourceReference() != null;
+	protected final boolean isValid() {
+		return getResourceReference() != null && super.isValid();
 	}
 
 	/**
 	 * @see ResourceLink
 	 */
 	@Override
-	protected final CharSequence getURL(PageParameters resourceParameters) {
+	protected final CharSequence getRelativeURL(PageParameters resourceParameters) {
 		ResourceReference resourceReference = getResourceReference();
 		if (resourceReference == null) {
 			throw new LinkInvalidTargetRuntimeException("The target ResourceReference of a link of type " + getClass() + " was null when trying to render the URL.");
@@ -70,9 +67,9 @@ public class DynamicBookmarkableResourceLink extends AbstractDynamicBookmarkable
 			getApplication().getResourceReferenceRegistry().registerResourceReference(resourceReference);
 		}
 		
-		return makeAbsoluteIfNeeded(getRequestCycle().urlFor(
+		return getRequestCycle().urlFor(
 				new ResourceReferenceRequestHandler(resourceReference, resourceParameters)
-		));
+		);
 	}
 	
 	@Override
