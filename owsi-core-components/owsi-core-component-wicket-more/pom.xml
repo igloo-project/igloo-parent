@@ -69,6 +69,13 @@
 			<artifactId>lesscss-engine</artifactId>
 		</dependency>
 		
+		<!-- Phloc CSS (pour les styles des notifications mail) -->
+		<dependency>
+			<groupId>com.phloc</groupId>
+			<artifactId>phloc-css</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		
 		<!-- WiQuery-jqPlot -->
 		<dependency>
 			<groupId>nl.topicus</groupId>
@@ -156,6 +163,14 @@
 			<id>com.asual.maven.public</id>
 			<name>Asual Public Repository</name>
 			<url>http://www.asual.com/maven/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>phloc.com</id>
+			<url>http://repo.phloc.com/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>

@@ -10,14 +10,14 @@ import com.google.common.collect.ImmutableMap;
 
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
 
-public class MapBasedHtmlNotificationCssRegistry implements IHtmlNotificationCssRegistry {
+public class SimpleMapHtmlNotificationCssRegistry implements IHtmlNotificationCssRegistry {
 	
 	private static final Splitter CSS_CLASSES_SPLITTER = Splitter.on(CharMatcher.WHITESPACE);
 
 	private final Map<String, String> tagNameStyles;
 	private final Map<String, String> cssClassStyles;
 	
-	public MapBasedHtmlNotificationCssRegistry(Map<String, String> tagNameStyles, Map<String, String> cssClassStyles) {
+	public SimpleMapHtmlNotificationCssRegistry(Map<String, String> tagNameStyles, Map<String, String> cssClassStyles) {
 		super();
 		this.tagNameStyles = ImmutableMap.copyOf(tagNameStyles);
 		this.cssClassStyles = ImmutableMap.copyOf(cssClassStyles);
