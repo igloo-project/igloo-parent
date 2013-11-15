@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2AjaxMultipleChoice;
 import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2DropDownChoice;
 import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2ListMultipleChoice;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -38,6 +39,8 @@ public class SelectBoxPage extends WidgetsTemplate {
 	private IModel<User> userModel = Model.of();
 	
 	private List<User> selectedUsers = Lists.newArrayList();
+	
+	private List<User> ajaxSelectedUsers = Lists.newArrayList();
 	
 	public static IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
@@ -71,6 +74,21 @@ public class SelectBoxPage extends WidgetsTemplate {
 		UserSelect2ListMultipleChoice listMultipleChoice = new UserSelect2ListMultipleChoice("listMultipleChoice",
 				new CollectionModel<User>(selectedUsers), userList);
 		add(newShowcaseForm("multi", listMultipleChoice));
+		
+		// Ajax
+		add(new ListView<User>("ajaxSelectedUser", ajaxSelectedUsers) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem<User> item) {
+				item.add(new Label("userName", BindingModel.of(item.getModel(), USER_BINDING.fullName())));
+			}
+		});
+		
+		UserSelect2AjaxMultipleChoice ajaxMultipleChoice = new UserSelect2AjaxMultipleChoice("ajaxMultipleChoice",
+				new CollectionModel<User>(ajaxSelectedUsers));
+		
+		add(newShowcaseForm("ajax", ajaxMultipleChoice));
 	}
 	
 	private <T> Form<T> newShowcaseForm(String id, FormComponent<T> child) {

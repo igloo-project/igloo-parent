@@ -37,6 +37,22 @@
 		</section>
 		
 		<section>
+			<h3><wicket:message key="widgets.selectbox.ajax" /></h3>
+			<div style="margin-left: 20px;">
+				<p>
+					<wicket:message key="widgets.selectbox.selected" />
+					<strong><wicket:container wicket:id="ajaxSelectedUser"> <span wicket:id="userName"></span> </wicket:container></strong>
+				</p>
+				<form wicket:id="ajax">
+					<input type="hidden" wicket:id="ajaxMultipleChoice" style="width: 300px;" />
+					<div class="form-actions">
+						<button type="submit" class="btn">Submit</button>
+					</div>
+				</form>
+			</div>
+		</section>
+		
+		<section>
 			<h3><wicket:message key="widgets.selectbox.tagify" /></h3>
 			<div style="margin-left: 20px;">
 				<form onsubmit="alert(OWSI.StringUtils.tagify($('#testtag').val())); return false;">
