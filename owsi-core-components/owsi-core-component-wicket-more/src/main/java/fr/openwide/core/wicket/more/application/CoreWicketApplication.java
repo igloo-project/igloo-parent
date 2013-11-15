@@ -26,6 +26,8 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
+import fr.openwide.core.wicket.more.notification.listener.HtmlNotificationComponentCssClassHandler;
+import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWithHtmlNotificationSupport;
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
 import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
@@ -65,6 +67,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 		// nettoyage des tags Wicket
 		getMarkupSettings().setStripWicketTags(true);
+		
+		// gestion des styles lors du rendu HTML des mails de notification
+		getMarkupSettings().setMarkupFactory(new MarkupFactoryWithHtmlNotificationSupport()); // Handles tags that are not attached to wicket components
+		getComponentInitializationListeners().add(new HtmlNotificationComponentCssClassHandler()); // Handles tags that *are* attached to wicket components
 		
 		// mise en place d'un timeout plus élevé histoire d'éviter les timeouts lors des téléchargements
 		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
