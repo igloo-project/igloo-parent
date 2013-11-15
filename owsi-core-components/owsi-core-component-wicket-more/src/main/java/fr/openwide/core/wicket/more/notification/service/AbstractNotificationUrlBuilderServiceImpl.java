@@ -10,18 +10,18 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.spring.util.StringUtils;
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 public abstract class AbstractNotificationUrlBuilderServiceImpl extends AbstractBackgroundWicketThreadContextBuilder {
 	
 	private static final String ANCHOR_ROOT = "#";
 	
-	protected String buildUrl(IPageLinkDescriptor pageLinkDescriptor) {
-		return buildUrl(pageLinkDescriptor);
+	protected String buildUrl(IPageLinkGenerator pageLinkGenerator) {
+		return buildUrl(pageLinkGenerator);
 	}
 	
-	protected String buildUrl(IPageLinkDescriptor pageLinkDescriptor, String anchor) {
-		Args.notNull(pageLinkDescriptor, "pageLinkDescriptor");
+	protected String buildUrl(IPageLinkGenerator pageLinkGenerator, String anchor) {
+		Args.notNull(pageLinkGenerator, "pageLinkGenerator");
 		
 		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
 		
@@ -29,7 +29,7 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl extends Abstract
 			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
 			
 			StringBuilder url = new StringBuilder();
-			url.append(pageLinkDescriptor.fullUrl());
+			url.append(pageLinkGenerator.fullUrl());
 			if (StringUtils.hasText(anchor)) {
 				url.append(ANCHOR_ROOT).append(anchor);
 			}
