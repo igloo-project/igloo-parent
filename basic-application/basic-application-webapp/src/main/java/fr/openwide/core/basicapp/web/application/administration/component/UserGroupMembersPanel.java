@@ -47,7 +47,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 			
 			@Override
 			protected void populateItem(final ListItem<User> item) {
-				item.add(AdministrationUserDescriptionPage.linkDescriptor(item.getModel()).link("userLink")
+				item.add(AdministrationUserDescriptionPage.linkGenerator(item.getModel()).link("userLink")
 						.setBody(BindingModel.of(item.getModel(), Binding.user().fullName())));
 				
 				item.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));

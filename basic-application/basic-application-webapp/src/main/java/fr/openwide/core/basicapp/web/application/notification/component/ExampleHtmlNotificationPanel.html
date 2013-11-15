@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h2 class="title">
+			<wicket:message key="notification.panel.example.title" />
+		</h2>
+		
+		<div class="content">
+			<p wicket:id="intro" class="intro" />
+			
+			<wicket:message key="notification.panel.example.text" />
+			
+			<p class="main-link-container">
+				<a wicket:id="mainLink">
+					<wicket:message key="notification.panel.example.link.label" />
+				</a>
+			</p>
+			
+			<table wicket:id="propertiesTable">
+				<tbody>
+					<tr>
+						<th wicket:id="username">
+							<wicket:message key="administration.user.field.userName" />
+						</th>
+						<td wicket:id="usernameValue">
+							<a wicket:id="userLink" />
+						</td>
+					</tr>
+					
+					<tr>
+						<th wicket:id="lastname">
+							<wicket:message key="administration.user.field.lastName" />
+						</th>
+						<td wicket:id="lastnameValue" />
+					</tr>
+					
+					<tr>
+						<th wicket:id="firstname">
+							<wicket:message key="administration.user.field.firstName" />
+						</th>
+						<td wicket:id="firstnameValue" />
+					</tr>
+					
+					<tr>
+						<th wicket:id="email">
+							<wicket:message key="administration.user.field.email" />
+						</th>
+						<td wicket:id="emailValue" />
+					</tr>
+					
+					<tr>
+						<th wicket:id="lastLoginDate">
+							<wicket:message key="administration.user.field.lastLoginDate" />
+						</th>
+						<td wicket:id="lastLoginDateValue" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</wicket:extend>
+</html>

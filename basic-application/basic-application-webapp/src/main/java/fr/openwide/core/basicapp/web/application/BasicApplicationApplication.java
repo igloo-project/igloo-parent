@@ -11,9 +11,11 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
+import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
+import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
@@ -21,6 +23,8 @@ import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
+	
+	public static final String NAME = "BasicApplication";
 	
 	public static BasicApplicationApplication get() {
 		final Application application = Application.get();
@@ -50,6 +54,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");
 		consoleConfiguration.mountPages(this);
+		
+		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection("notificationsMenuSection", "console.notifications",
+				"notifications", ConsoleNotificationDemoIndexPage.class);
+		consoleConfiguration.addMenuSection(notificationMenuSection);
 		
 		// Monitoring
 		mountPage("/monitoring/db-access/", DatabaseMonitoringPage.class);

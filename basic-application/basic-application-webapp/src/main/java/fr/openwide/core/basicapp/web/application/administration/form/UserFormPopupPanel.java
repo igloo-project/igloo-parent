@@ -185,7 +185,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 										userService.setPasswords(user, newPasswordValue);
 										
 										getSession().success(getString("administration.user.form.add.success"));
-										throw AdministrationUserDescriptionPage.linkDescriptor(UserFormPopupPanel.this.getModel())
+										throw AdministrationUserDescriptionPage.linkGenerator(UserFormPopupPanel.this.getModel())
 												.newRestartResponseException();
 									} else {
 										LOGGER.warn("Username '" + user.getUserName() + "' already used");

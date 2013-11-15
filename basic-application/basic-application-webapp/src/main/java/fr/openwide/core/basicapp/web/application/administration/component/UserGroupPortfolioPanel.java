@@ -17,6 +17,7 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
@@ -34,7 +35,7 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected void addItemColumns(Item<UserGroup> item, IModel<? extends UserGroup> userGroupModel) {
-		item.add(AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel)).link("nameLink")
+		item.add(AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel), PageModel.of(getPage())).link("nameLink")
 				.setBody(BindingModel.of(userGroupModel, Binding.userGroup().name())));
 		item.add(new Label("description", BindingModel.of(userGroupModel, Binding.userGroup().description())));
 	}
@@ -56,7 +57,7 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected MarkupContainer getActionLink(String id, final IModel<? extends UserGroup> userGroupModel) {
-		return AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel)).link(id);
+		return AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel), PageModel.of(getPage())).link(id);
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 			
 			@Override
 			protected void populateItem(final ListItem<UserGroup> item) {
-				item.add(AdministrationUserGroupDescriptionPage.linkDescriptor(item.getModel()).link("groupLink")
+				item.add(AdministrationUserGroupDescriptionPage.linkGenerator(item.getModel()).link("groupLink")
 						.setBody(BindingModel.of(item.getModel(), Binding.userGroup().name())));
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
