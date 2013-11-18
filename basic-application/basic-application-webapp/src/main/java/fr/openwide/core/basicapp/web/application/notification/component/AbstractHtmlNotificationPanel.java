@@ -30,7 +30,7 @@ public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 	
 	@Override
 	public String getVariation() {
-		return BasicApplicationWebappConfig.NOTIFICATION_VARIATION;
+		return BasicApplicationWebappConfig.DEFAULT_NOTIFICATION_VARIATION;
 	}
 	
 	protected void addTopProperty(MarkupContainer table, String headerComponentId, Component dataComponent) {

@@ -59,6 +59,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 				"notifications", ConsoleNotificationDemoIndexPage.class);
 		consoleConfiguration.addMenuSection(notificationMenuSection);
 		
+		mountPage("/console/notifications/", ConsoleNotificationDemoIndexPage.class);
+		
 		// Monitoring
 		mountPage("/monitoring/db-access/", DatabaseMonitoringPage.class);
 	}

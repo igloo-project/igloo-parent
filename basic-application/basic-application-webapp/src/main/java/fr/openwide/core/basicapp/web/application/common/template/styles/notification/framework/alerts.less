@@ -1,0 +1,28 @@
+.alert {
+	padding: 8px 14px;
+	background: @warningBackground;
+	color: @warningText;
+	border: 1px solid @warningBorder;
+	.border-radius(@baseBorderRadius);
+}
+
+.alert-info {
+	.alert();
+	background: @infoBackground;
+	border: 1px solid @infoBorder;
+	color: @infoText;
+}
+
+.alert-success {
+	.alert();
+	background: @successBackground;
+	border: 1px solid @successBorder;
+	color: @successText;
+}
+
+.alert-error {
+	.alert();
+	background: @errorBackground;
+	border: 1px solid @errorBorder;
+	color: @errorText;
+}
