@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.notification.service;
+package fr.openwide.core.wicket.more.notification.service.impl;
 
 import java.text.Collator;
 import java.util.Collection;
@@ -7,15 +7,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.markup.ComponentTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
 import com.phloc.css.CCSS;
 import com.phloc.css.ECSSVersion;
 import com.phloc.css.ICSSWriterSettings;
@@ -29,11 +35,18 @@ import com.phloc.css.writer.CSSWriterSettings;
 
 import fr.openwide.core.commons.util.ordering.SerializableCollator;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
-import fr.openwide.core.wicket.more.notification.service.impl.CssDeclarationPrecedence;
-import fr.openwide.core.wicket.more.notification.service.impl.CssSelectorSpecificity;
-import fr.openwide.core.wicket.more.notification.service.impl.PhlocCssMatchableComponentTag;
 
-public class PhlocCssHtmlNotificationCssRegistry implements IHtmlNotificationCssRegistry {
+/**
+ * A simple IHtmlNotificationCssRegistry using Phloc CSS.
+ * <p>This registry does <strong>not</strong> optimize selector matching at all : each time getStyle() is called, the component
+ * tags are compared to every single selector in the stylesheet.
+ */
+public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificationCssRegistry {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplePhlocCssHtmlNotificationCssRegistry.class);
+	
+	private static final Splitter CSS_CLASSES_SPLITTER = Splitter.on(CharMatcher.WHITESPACE);
+	
 	private static Comparator<String> CSS_PROPERTY_NAME_COLLATOR;
 	static {
 		SerializableCollator collator = new SerializableCollator(Locale.ROOT);
@@ -49,10 +62,52 @@ public class PhlocCssHtmlNotificationCssRegistry implements IHtmlNotificationCss
 
 	private final CascadingStyleSheet styleSheet;
 	
-	public PhlocCssHtmlNotificationCssRegistry(CascadingStyleSheet styleSheet) {
+	public SimplePhlocCssHtmlNotificationCssRegistry(CascadingStyleSheet styleSheet) {
 		super();
 		Assert.notNull(styleSheet);
 		this.styleSheet = styleSheet;
+	}
+	
+	private class PhlocCssMatchableComponentTag {
+		
+		private final String name;
+		private final String id;
+		private final Collection<String> classes;
+		
+		public PhlocCssMatchableComponentTag(ComponentTag tag) {
+			name = StringUtils.defaultString(tag.getName());
+			id = StringUtils.defaultString(tag.getId());
+			classes = Sets.newHashSet(CSS_CLASSES_SPLITTER.splitToList(StringUtils.defaultString(tag.getAttribute("class"))));
+		}
+		
+		public boolean matches(CSSSelectorSimpleMember simpleMember) {
+			if (simpleMember.isClass()) {
+				return classes.contains(simpleMember.getValue().substring(1)); // Remove leading '.'
+			} else if (simpleMember.isElementName()) {
+				return name.equals(simpleMember.getValue());
+			} else if (simpleMember.isHash()) {
+				return id.equals(simpleMember.getValue().substring(1)); // Remove leading '#'
+			} else {
+				throw new IllegalArgumentException();
+			}
+		}
+		
+		public boolean matches(CSSSelector selector) {
+			for (ICSSSelectorMember member : selector.getAllMembers()) {
+				if (member instanceof CSSSelectorSimpleMember && !((CSSSelectorSimpleMember) member).isPseudo()) {
+					CSSSelectorSimpleMember simpleMember = (CSSSelectorSimpleMember) member;
+					if (!matches(simpleMember)) {
+						return false;
+					}
+				} else {
+					LOGGER.warn("Only simple selector members ('.class', 'name', '#id') are supported. The selector '{}' and the related declarations will be ignored.", selector);
+					return false;
+				}
+			}
+			
+			return true;
+		}
+
 	}
 
 	@Override

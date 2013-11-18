@@ -68,9 +68,10 @@ public class LessCssResource extends PackageResource {
 			String lessSource = IOUtils.toString(resourceStream.getInputStream(), "UTF-8");
 			long lastModifiedTime = resourceStream.lastModifiedTime().getMilliseconds();
 			
-			CssStylesheetInformation cssInformation = lessCssService.getCompiledStylesheet(getScope(), getName(),
-					new CssStylesheetInformation(lessSource, lastModifiedTime),
-					Application.get().usesDeploymentConfig());
+			CssStylesheetInformation cssInformation = lessCssService.getCompiledStylesheet(
+					new CssStylesheetInformation(getScope(), getName(), lessSource, lastModifiedTime),
+					Application.get().usesDevelopmentConfig()
+			);
 			
 			StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css");
 			lessCssResourceStream.setCharset(Charset.forName("UTF-8"));

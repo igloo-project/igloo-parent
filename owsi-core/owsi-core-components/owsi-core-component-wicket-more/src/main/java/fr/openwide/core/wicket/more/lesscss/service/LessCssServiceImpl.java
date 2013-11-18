@@ -10,6 +10,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.wicket.util.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -44,27 +45,32 @@ public class LessCssServiceImpl implements ILessCssService {
 	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
 	
 	@Override
+	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 
+	@CacheEvict(value = "lessCssService.compiledStylesheets", 
+			key = "T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)",
+			beforeInvocation = true,
+			condition= "#checkCacheEntryUpToDate && !(caches.?[name=='lessCssService.compiledStylesheets'][0]?.get(T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation))?.get()?.isUpToDate() ?: false)"
+			)
+	// THEN, we check if a cached value exists. If it does, it is returned ; if not, the method is called. 
 	@Cacheable(value = "lessCssService.compiledStylesheets",
-			key = "T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#scope, #name)",
-			condition = "#enableCache")
-	public CssStylesheetInformation getCompiledStylesheet(Class<?> scope, String name,
-			CssStylesheetInformation lessSource, boolean enableCache) throws ServiceException {
-		
-		CssStylesheetInformation rawStylesheet = prepareRawStylesheet(scope, name, lessSource);
+			key = "T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)")
+	public CssStylesheetInformation getCompiledStylesheet(CssStylesheetInformation lessInformation, boolean checkCacheEntryUpToDate)
+			throws ServiceException {
+		prepareRawStylesheet(lessInformation);
 		try {
 			CssStylesheetInformation compiledStylesheet = new CssStylesheetInformation(
-					LESS_ENGINE.compile(rawStylesheet.getSource()),
-					rawStylesheet.getLastModifiedTime());
+					lessInformation,
+					LESS_ENGINE.compile(lessInformation.getSource())
+			);
 			
 			return compiledStylesheet;
 		} catch (LessException e) {
 			throw new ServiceException(String.format("Error compiling %1$s (scope: %2$s)",
-					name, scope), e);
+					lessInformation.getName(), lessInformation.getScope()), e);
 		}
 	}
 	
-	private CssStylesheetInformation prepareRawStylesheet(Class<?> defaultScope, String name, CssStylesheetInformation lessSource)
-			throws ServiceException {
+	private void prepareRawStylesheet(CssStylesheetInformation lessSource) throws ServiceException {
 		Matcher matcher = LESSCSS_IMPORT_PATTERN.matcher(lessSource.getSource());
 		
 		ClassPathResource importedResource;
@@ -84,8 +90,9 @@ public class LessCssServiceImpl implements ILessCssService {
 				}
 				importedResourceFilename = scopeMatcher.group(2);
 			} else {
-				importedResourceFilename = getRelativeToScopePath(name, matcher.group(1));
-				scope = defaultScope;
+				// Defaults to importing file's scope
+				scope = lessSource.getScope();
+				importedResourceFilename = getRelativeToScopePath(lessSource.getName(), matcher.group(1));
 			}
 			
 			InputStream inputStream = null;
@@ -93,18 +100,15 @@ public class LessCssServiceImpl implements ILessCssService {
 				importedResource = new ClassPathResource(importedResourceFilename, scope);
 				inputStream = importedResource.getURL().openStream();
 				
-				CssStylesheetInformation importedStylesheet =
-						prepareRawStylesheet(scope, importedResourceFilename,
-								new CssStylesheetInformation(IOUtils.toString(inputStream), importedResource.lastModified()));
-			
-				if (importedStylesheet.getLastModifiedTime() > lessSource.getLastModifiedTime()) {
-					lessSource.setLastModifiedTime(importedStylesheet.getLastModifiedTime());
-				}
+				CssStylesheetInformation importedStylesheet = new CssStylesheetInformation(scope, importedResourceFilename, IOUtils.toString(inputStream), importedResource.lastModified());
+				prepareRawStylesheet(importedStylesheet);
+				
+				lessSource.addImportedStylesheet(importedStylesheet);
 				
 				lessSource.setSource(StringUtils.replace(lessSource.getSource(), matcher.group(), importedStylesheet.getSource()));
 			} catch (Exception e) {
 				throw new ServiceException(String.format("Error reading lesscss source for %1$s in %2$s (scope: %3$s)",
-					importedResourceFilename, name, scope), e);
+					importedResourceFilename, lessSource.getName(), scope), e);
 			} finally {
 				if (inputStream != null) {
 					try {
@@ -115,8 +119,6 @@ public class LessCssServiceImpl implements ILessCssService {
 				}
 			}
 		}
-		
-		return lessSource;
 	}
 	
 	private String getRelativeToScopePath(String sourceFile, String importFilename) {
@@ -146,11 +148,11 @@ public class LessCssServiceImpl implements ILessCssService {
 		SCOPES.put(scopeName, scope);
 	}
 	
-	public static String getCacheKey(Class<?> scope, String name) {
+	public static String getCacheKey(CssStylesheetInformation resourceInformation) {
 		StringBuilder cacheKeyBuilder = new StringBuilder();
-		cacheKeyBuilder.append(scope.getName());
+		cacheKeyBuilder.append(resourceInformation.getScope().getName());
 		cacheKeyBuilder.append("-");
-		cacheKeyBuilder.append(name);
+		cacheKeyBuilder.append(resourceInformation.getName());
 		
 		return cacheKeyBuilder.toString();
 	}

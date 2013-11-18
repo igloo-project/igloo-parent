@@ -2,11 +2,16 @@ package fr.openwide.core.wicket.more.notification.service;
 
 import org.apache.wicket.markup.ComponentTag;
 
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+
 public interface IHtmlNotificationCssService {
 	
-	IHtmlNotificationCssRegistry getRegistry(String componentVariation);
+	void registerStyles(String componentVariation, LessCssResourceReference cssResourceReference) throws ServiceException;
 	
-	void registerStyles(String componentVariation, IHtmlNotificationCssRegistry registry);
+	boolean hasRegistry(String componentVariation);
+	
+	IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException;
 	
 	interface IHtmlNotificationCssRegistry {
 		

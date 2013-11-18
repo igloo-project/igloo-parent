@@ -5,11 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
 import fr.openwide.core.wicket.more.link.service.DefaultLinkParameterConversionService;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
-import fr.openwide.core.wicket.more.notification.service.HtmlNotificationCssServiceImpl;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
+import fr.openwide.core.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
 
 @Configuration
 @Import({
@@ -27,8 +28,8 @@ public abstract class AbstractWebappConfig {
 	}
 	
 	@Bean
-	public IHtmlNotificationCssService htmlNotificationCssService() {
-		return new HtmlNotificationCssServiceImpl();
+	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
+		return new PhlocCssHtmlNotificationCssServiceImpl();
 	}
 
 }
