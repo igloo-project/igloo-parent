@@ -9,6 +9,7 @@ import org.apache.wicket.markup.MarkupResourceStream;
 import org.apache.wicket.markup.parser.IMarkupFilter;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 
 public class MarkupFactoryWithHtmlNotificationSupport extends MarkupFactory {
@@ -24,9 +25,13 @@ public class MarkupFactoryWithHtmlNotificationSupport extends MarkupFactory {
 	public MarkupParser newMarkupParser(final MarkupResourceStream resource) {
 		ContainerInfo containerInfo = resource.getContainerInfo();
 		if (containerInfo != null) {
-			IHtmlNotificationCssService.IHtmlNotificationCssRegistry registry = cssService.getRegistry(containerInfo.getVariation());
-			if (registry != null) {
-				return newMarkupParserWithHtmlNotificationSupport(resource, registry);
+			try {
+				IHtmlNotificationCssService.IHtmlNotificationCssRegistry registry = cssService.getRegistry(containerInfo.getVariation());
+				if (registry != null) {
+					return newMarkupParserWithHtmlNotificationSupport(resource, registry);
+				}
+			} catch (ServiceException e) {
+				throw new IllegalStateException(e);
 			}
 		}
 		
