@@ -30,13 +30,13 @@ public class PhlocCssMatchableComponentTag {
 		classes = Sets.newHashSet(CSS_CLASSES_SPLITTER.splitToList(StringUtils.defaultString(tag.getAttribute("class"))));
 	}
 	
-	public boolean matches(CSSSelectorSimpleMember member) {
-		if (member.isClass()) {
-			return classes.contains(member.getValue().substring(1)); // Remove leading '.'
-		} else if (member.isElementName()) {
-			return name.equals(member.getValue());
-		} else if (member.isHash()) {
-			return id.equals(member.getValue().substring(1)); // Remove leading '#'
+	public boolean matches(CSSSelectorSimpleMember simpleMember) {
+		if (simpleMember.isClass()) {
+			return classes.contains(simpleMember.getValue().substring(1)); // Remove leading '.'
+		} else if (simpleMember.isElementName()) {
+			return name.equals(simpleMember.getValue());
+		} else if (simpleMember.isHash()) {
+			return id.equals(simpleMember.getValue().substring(1)); // Remove leading '#'
 		} else {
 			throw new IllegalArgumentException();
 		}
