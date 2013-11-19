@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.core.config.application;
 
+import fr.openwide.core.basicapp.core.config.util.Environment;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
 public class BasicApplicationConfigurer extends CoreConfigurer {
@@ -8,5 +9,9 @@ public class BasicApplicationConfigurer extends CoreConfigurer {
 
 	public int getPortfolioItemsPerPage() {
 		return getPropertyAsInteger("portfolio.itemsPerPage", PORTFOLIO_ITEMS_PER_PAGE_DEFAULT_VALUE);
+	}
+	
+	public Environment getEnvironment() {
+		return getPropertyAsEnum("environment", Environment.class, Environment.production);
 	}
 }

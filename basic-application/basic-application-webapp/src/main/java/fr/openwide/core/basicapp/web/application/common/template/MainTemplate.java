@@ -30,6 +30,7 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
+import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
@@ -78,6 +79,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			breadCrumb = new EmptyPanel("breadCrumb");
 		}
 		add(breadCrumb);
+		
+		// Environment
+		add(new EnvironmentPanel("environment"));
 		
 		// Main navigation bar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
