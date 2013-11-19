@@ -2,24 +2,35 @@
 Animate.css - http://daneden.me/animate
 Licensed under the ☺ license (http://licence.visualidiot.com/)
 
-Copyright (c) 2012 Dan Eden*/
+Copyright (c) 2013 Dan Eden*/
 
 .animated {
-	-webkit-animation-duration: 1s;
-	   -moz-animation-duration: 1s;
-	     -o-animation-duration: 1s;
-	        animation-duration: 1s;
-	-webkit-animation-fill-mode: both;
-	   -moz-animation-fill-mode: both;
-	     -o-animation-fill-mode: both;
-	        animation-fill-mode: both;
+	-webkit-animation-fill-mode:both;
+	-moz-animation-fill-mode:both;
+	-ms-animation-fill-mode:both;
+	-o-animation-fill-mode:both;
+	animation-fill-mode:both;
+	-webkit-animation-duration:1s;
+	-moz-animation-duration:1s;
+	-ms-animation-duration:1s;
+	-o-animation-duration:1s;
+	animation-duration:1s;
+}
+
+.animated.hinge {
+	-webkit-animation-duration:1s;
+	-moz-animation-duration:1s;
+	-ms-animation-duration:1s;
+	-o-animation-duration:1s;
+	animation-duration:1s;
 }
 
 .animated.short {
-	-webkit-animation-duration: 0.5s;
-	   -moz-animation-duration: 0.5s;
-	     -o-animation-duration: 0.5s;
-	        animation-duration: 0.5s;
+	-webkit-animation-duration:0.5s;
+	-moz-animation-duration:0.5s;
+	-ms-animation-duration:0.5s;
+	-o-animation-duration:0.5s;
+	animation-duration:0.5s;
 }
 
 @-webkit-keyframes shake {
@@ -80,12 +91,12 @@ Copyright (c) 2012 Dan Eden*/
 @-o-keyframes fadeInDown {
 	0% {
 		opacity: 0;
-		-ms-transform: translateY(-10px);
+		-o-transform: translateY(-10px);
 	}
 	
 	100% {
 		opacity: 1;
-		-ms-transform: translateY(0);
+		-o-transform: translateY(0);
 	}
 }
 
@@ -99,6 +110,13 @@ Copyright (c) 2012 Dan Eden*/
 		opacity: 1;
 		transform: translateY(0);
 	}
+}
+
+.fadeInDown {
+	-webkit-animation-name: fadeInDown;
+	-moz-animation-name: fadeInDown;
+	-o-animation-name: fadeInDown;
+	animation-name: fadeInDown;
 }
 
 /*!
