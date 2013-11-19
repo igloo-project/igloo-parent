@@ -1,5 +1,5 @@
 /* ===========================================================
- * bootstrap-modal.js v2.1
+ * bootstrap-modal.js v2.2.0
  * ===========================================================
  * Copyright 2012 Jordan Schroter
  *
@@ -33,12 +33,17 @@
 		constructor: Modal,
 
 		init: function (element, options) {
+			var that = this;
+
 			this.options = options;
 
 			this.$element = $(element)
 				.delegate('[data-dismiss="modal"]', 'click.dismiss.modal', $.proxy(this.hide, this));
 
-			this.options.remote && this.$element.find('.modal-body').load(this.options.remote);
+			this.options.remote && this.$element.find('.modal-body').load(this.options.remote, function () {
+				var e = $.Event('loaded');
+				that.$element.trigger(e);
+			});
 
 			var manager = typeof this.options.manager === 'function' ?
 				this.options.manager.call(this) : this.options.manager;
@@ -59,6 +64,8 @@
 			if (this.isShown) return;
 
 			this.$element.trigger(e);
+			
+			$(document.activeElement).blur();
 
 			if (e.isDefaultPrevented()) return;
 
@@ -124,14 +131,14 @@
 				.css('overflow', '')
 				.css(prop, '');
 
-			var modalOverflow = $(window).height() - 10 < this.$element.height();
-
 			if (value){
 				this.$element.find('.modal-body')
 					.css('overflow', 'auto')
 					.css(prop, value);
 			}
 
+			var modalOverflow = $(window).height() - 10 < this.$element.height();
+            
 			if (modalOverflow || this.options.modalOverflow) {
 				this.$element
 					.css('margin-top', 0)
@@ -183,8 +190,16 @@
 				this.$element.on('keyup.dismiss.modal', function (e) {
 					e.which == 27 && that.hide();
 				});
+				if (this.$backdrop) {
+					$(window.document).on('keyup.dismiss.modal', function (e) {
+						e.which == 27 && that.hide();
+					});
+				}
 			} else if (!this.isShown) {
-				this.$element.off('keyup.dismiss.modal')
+				this.$element.off('keyup.dismiss.modal');
+				if (this.$backdrop) {
+					$(window.document).off('keyup.dismiss.modal');
+				}
 			}
 		},
 
@@ -202,10 +217,6 @@
 		},
 
 		hideModal: function () {
-			this.$element
-				.hide()
-				.trigger('hidden');
-
 			var prop = this.options.height ? 'height' : 'max-height';
 			var value = this.options.height || this.options.maxHeight;
 
@@ -215,6 +226,9 @@
 					.css(prop, '');
 			}
 
+			this.$element
+				.hide()
+				.trigger('hidden');
 		},
 
 		removeLoading: function () {
@@ -346,7 +360,8 @@
 		resize: false,
 		attentionAnimation: 'shake',
 		manager: 'body',
-		spinner: '<div class="loading-spinner" style="width: 200px; margin-left: -100px;"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div>'
+		spinner: '<div class="loading-spinner" style="width: 200px; margin-left: -100px;"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div>',
+		backdropTemplate: '<div class="modal-backdrop" />'
 	};
 
 	$.fn.modal.Constructor = Modal;
