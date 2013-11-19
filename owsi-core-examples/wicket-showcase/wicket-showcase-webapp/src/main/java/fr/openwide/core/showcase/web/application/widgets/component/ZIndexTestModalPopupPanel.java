@@ -1,6 +1,9 @@
 package fr.openwide.core.showcase.web.application.widgets.component;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -8,6 +11,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
@@ -49,6 +53,16 @@ public class ZIndexTestModalPopupPanel extends AbstractModalPopupPanel<Void> {
 		body.add(popoverLabel);
 		
 		body.add(new UserAutocompleteAjaxComponent("autocomplete", new GenericEntityModel<Long, User>(null)));
+		
+		body.add(new AjaxLink<Void>("feedbackTest") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				Session.get().warn(getString("widgets.modal.zIndexTest.feedbackTest.warn"));
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		});
 		
 		return body;
 	}

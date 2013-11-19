@@ -10,6 +10,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.Model;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -17,6 +18,7 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
+import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.alert.AlertJavascriptResourceReference;
 
 public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
@@ -50,6 +52,9 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 		WebMarkupContainer closeTrigger = new WebMarkupContainer("closeTrigger");
 		add(closeTrigger);
 		closeTrigger.add(new CloseAlertBehavior());
+		
+		// To retrieve main panel on close event.
+		add(new ClassAttributeAppender(new Model<String>("animated-global-feedback")));
 	}
 
 	@Override
