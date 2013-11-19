@@ -12,6 +12,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class BootstrapJsPage extends WidgetsTemplate {
@@ -58,6 +59,11 @@ public class BootstrapJsPage extends WidgetsTemplate {
 		someLabelBottom.add(new BootstrapPopoverBehavior(popoverOptions));
 		someLabelBottom.add(new ClassAttributeAppender(Model.of("popover-btn")));
 		add(someLabelBottom);
+		
+		// Tabs
+		WebMarkupContainer tabContainer = new WebMarkupContainer("tabContainer");
+		add(tabContainer);
+		tabContainer.add(new BootstrapTabBehavior());
 	}
 	
 	@Override
