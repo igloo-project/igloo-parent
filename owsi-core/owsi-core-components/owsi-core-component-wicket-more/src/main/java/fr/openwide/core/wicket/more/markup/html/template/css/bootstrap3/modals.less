@@ -1,0 +1,150 @@
+.modal-width (@width) {
+	width: @width;
+	margin-left: @width / -2;
+}
+
+#fancybox-wrap {
+	&.working {
+		.loadinfo {
+			background: #FFFFFF;
+			border: 1px solid #AAAAAA;
+			.border-radius(4px);
+			margin: 50px auto;
+			width: 200px;
+			padding: 20px;
+			display: block;
+			
+			.progress {
+				margin: 0;
+				
+				.bar {
+					width: 100%;
+				}
+			}
+		}
+		
+		.modal {
+			display: none;
+		}
+	}
+}
+
+.modal {
+	.modal-header {
+		min-height: 23px;
+		
+		h3 {
+			margin: 0;
+			font-weight: bold;
+			font-size: 16px;
+			line-height: 23px;
+			color: #666;
+			text-rendering: optimizelegibility; // Fix the character spacing for headings
+			margin-right: 20px;
+			border-bottom: none;
+		}
+	}
+	
+	input.hasDatepicker,
+	input.hasMonthpicker {
+		z-index: @zindex-modal;
+	}
+}
+
+// pour les anciennes modal basées sur fancybox
+.modal.fancybox-compatibility {
+	// surcharge de bootstrap-modal.less
+	position: relative;
+	margin: 0;
+	top: auto;
+	overflow: auto;
+	
+	left: auto;
+	width: auto;
+	min-width: 560px;
+	box-shadow: none;
+		
+	.modal-wait {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		
+		background-color: white;
+	}
+	
+	.modal-header {
+		h3 {
+			border-bottom: none;
+			.scroll-to {
+				display: inline-block;
+				line-height: 14px;
+				vertical-align: middle;
+				border: 1px solid #ccc;
+				-moz-border-radius: 3px;
+				-webkit-border-radius: 3px;
+				border-radius: 3px;
+			}
+		}
+	}
+	
+	.modal-body {
+		max-height: none;
+	}
+	
+	.modal-footer {
+		min-height: 16px;
+		color: #666;
+		
+		.legende {
+			display: block;
+			text-align: left;
+			padding: 5px;
+			font-size: 12px;
+		}
+		
+		.copyright {
+			display: block;
+			font-size: 9px;
+			text-align: right;
+			margin-top: 3px;
+		}
+	}
+	
+	&.image {
+		position: static;
+		
+		min-width: 0;
+		
+		.modal-error {
+			min-height: 150px;
+		}
+	}
+	
+	&.confirm .modal-footer {
+		text-align: right;
+	}
+}
+
+#fancybox-wrap {
+	#fancybox-left, #fancybox-right {
+		background-position: 0 0;
+		background-position: 0 0;
+		background-color: #666;
+		opacity: .9;
+	}
+
+	#fancybox-left {
+		-moz-border-radius: 0 5px 5px 0;
+		-webkit-border-radius: 0 5px 5px 0;
+		border-radius: 0 5px 5px 0;
+		left: 10px;
+	}
+	#fancybox-right {
+		-moz-border-radius: 5px 0 0 5px;
+		-webkit-border-radius: 5px 0 0 5px;
+		border-radius: 5px 0 0 5px;
+		right: 10px;
+	}
+}

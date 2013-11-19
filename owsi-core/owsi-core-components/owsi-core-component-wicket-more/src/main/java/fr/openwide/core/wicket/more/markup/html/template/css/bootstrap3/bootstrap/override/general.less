@@ -1,0 +1,218 @@
+// Titles
+
+// TODO : revoir les titres par rapport aux tailles des variables
+/*
+h1 {
+	font-size: @baseFontSize * 1.75;
+	line-height: @baseLineHeight * 1.5;
+}
+h2 {
+	font-size: @baseFontSize * 1.40;
+	line-height: @baseLineHeight * 1.30;
+}
+h3 {
+	font-size: @baseFontSize * 1.25;
+	line-height: @baseLineHeight * 1.15;
+}
+h4 {
+	font-size: @baseFontSize * 1.15;
+	line-height: @baseLineHeight * 1.05;
+}
+*/
+// Listes
+.unstyled() {
+	margin: 0;
+	list-style: none;
+}
+ul.unstyled,
+ol.unstyled {
+	.unstyled();
+}
+
+// Tabs
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover {
+	background-color: #FFFFFF;
+}
+
+// Boutons
+
+// Alignement vertical des icônes (à cause de la réduction de @baseFontSize)
+.btn [class^="icon-"],
+.btn [class*=" icon-"] {
+	margin-top: 0;
+}
+.btn-large [class^="icon-"],
+.btn-large [class*=" icon-"] {
+	margin-top: 2px;
+	vertical-align: top;
+}
+.btn .caret {
+	margin-top: 7px;
+}
+.btn-small .caret {
+	margin-top: 6px;
+}
+
+// Décalage des icones par rapport au texte
+.btn [class^="icon-"],
+.btn [class*=" icon-"] {
+	margin-right: 2px;
+	margin-left: -3px;
+}
+
+// Boutons sans texte (annulation du décalage)
+.btn.sans-texte [class^="icon-"],
+.btn.sans-texte [class*=" icon-"] {
+	margin-right: 0;
+	margin-left: 0;
+}
+.btn.btn-icon-only [class^="icon-"],
+.btn.btn-icon-only [class*=" icon-"] {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+// Placeholders pour les boutons
+.btn-icon-only.btn-placeholder {
+	display: inline-block;
+	width: 28px;
+}
+
+.btn img {
+	vertical-align: baseline;
+}
+
+// Btn visited
+.btn:visited {
+	color: @gray-dark;
+}
+
+.btn-primary:visited,
+.btn-warning:visited,
+.btn-danger:visited,
+.btn-success:visited,
+.btn-info:visited,
+.btn-info:hover:visited,
+.btn-inverse:visited {
+	color: #FFF;
+}
+
+// Disabled
+.btn.disabled,
+.btn[disabled] {
+	.opacity(100);
+}
+
+// Liste déroulante de boutons
+.dropdown-menu .btn {
+	border: medium none;
+	.border-radius(0px);
+	text-align: left;
+	width: 100%;
+	.box-shadow(none);
+	background: transparent;
+	
+	&:hover {
+		text-shadow: none;
+	}
+}
+
+.dropdown-menu .divider {
+	margin: 2px 1px;
+}
+
+// TODO : revoir les z-index / voir si les styles sur les boutons disabled sont utiles...
+
+// Modal
+.modal-backdrop {	// Modal n'est pas exactement celle de Bootstrap
+	z-index: 40;
+}
+
+.modal-backdrop,
+.modal-backdrop.fade.in {
+  .opacity(40);
+}
+
+#fancybox-wrap {	// Barre de chargement cachée par défaut, à supprimer quand on aura une nouvelle Modal
+	.loadinfo {
+		display: none;
+	}
+}
+
+// Progress-bar
+.progress.progress-mini {
+	height: 6px;
+	margin-bottom: 0px;
+}
+
+// Tooltip
+.tooltip-inner {
+	text-shadow: none;
+}
+
+// Popover
+span.popover-btn {
+	cursor: pointer;
+	color: @linkColor;
+	// Evite qu'un bouton pour popover ne soit coupé s'il est au bord de la page.
+	display: inline-block;
+}
+
+.popover {
+	z-index: 30;	// Pour être sous la modal
+	
+	.popover-title {
+		margin-bottom: 0;
+	}
+}
+
+// Dégradé vertical transparent (transparence désactivée pour IE)
+.transparent-vertical-gradient(@startColor, @endColor) {
+	#gradient > .vertical(@startColor, @endColor);
+	filter: none;
+}
+
+// Input prepend
+.input-prepend, .input-append {
+	.add-on {
+		color: @inputAddOnColor;
+		font-weight: bold;
+	}
+	
+	label.add-on {
+		margin-bottom: 0;
+	}
+}
+
+// Pagination
+.pagination {
+	text-align: right;
+}
+
+// Tables
+.table {
+	&.table-condensed {
+		th {
+			padding: 8px 5px;
+		}
+	}
+	
+	th {
+		background: @tableHeaderBackground;
+		color: @tableHeaderText;
+		padding: 10px 8px;
+	}
+	
+	.table-actions {
+		text-align: center;
+		vertical-align: middle;
+	}
+}
+
+// Formulaires
+
+// transition lors des modifications de hauteur, permet notamment à autosize d'être plus fluide
+textarea {
+	.transition(height 0.2s);
+}

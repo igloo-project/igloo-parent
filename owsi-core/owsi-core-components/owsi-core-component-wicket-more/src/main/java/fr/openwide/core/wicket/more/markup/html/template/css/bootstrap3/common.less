@@ -1,0 +1,121 @@
+// Espacement des .row-fluid
+.row-fluid.spaced {
+	margin-bottom: 10px;
+}
+
+.row-fluid + .row-fluid.spaced {
+	margin-top: 10px;
+}
+
+// Focus sur les éléments de formulaire
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+// Focus state
+	&:focus {
+		.input-focus();
+	}
+}
+
+// Nom de l'utilisateur
+.navbar .user-menu {
+	margin-top: 7px;
+	margin-right: 7px;
+	
+	.user-full-name {
+		display: inline-block;
+		padding: 4px 12px;
+		font-size: @font-size-base;
+		background: @userFullNameBackground;
+		line-height: @line-height-base;
+		text-align: center;
+		vertical-align: middle;
+		border: 1px solid @btn-default-border;
+		*border: 0;
+		border-bottom-color: darken(@btn-default-border, 10%);
+		border-right: none;
+		.border-radius(@border-radius-base);
+		.border-top-right-radius(0);
+		.border-bottom-right-radius(0);
+		// reset here as of 2.0.3 due to Recess property order
+		border-color: #c5c5c5;
+		border-color: rgba(0,0,0,.15) rgba(0,0,0,.15) rgba(0,0,0,.25);
+	}
+}
+
+// Date Picker : Goto today
+.ui-datepicker .ui-datepicker-buttonpane .ui-datepicker-current {
+	font-weight: bold;
+	.opacity(100);
+}
+
+// Item It widget
+ul.itemit {
+	.unstyled();
+}
+
+// Feedback panel
+.feedbackPanel {
+	.unstyled();
+}
+
+// Footer
+.footer {
+	border-top: 1px solid #CCC;
+	padding: 10px 15px;
+	text-align: right;
+	background: @footerBackground;
+	color: @footerText;
+	.border-radius(0 0 5px 5px);
+}
+
+// Boolean glyphicons (tick/cross)
+.boolean-glyphicon {
+	height: 14px;
+	width: 14px;
+	line-height: 14px;
+	display: inline-block;
+	margin-top: 1px;
+	vertical-align: text-top;
+}
+
+// TODO : zindex du scroll to top à variabiliser
+
+// Scroll to top
+.scroll-to-top {
+	opacity: 0;
+	display: none;
+	position: fixed;
+	left: 10px;
+	bottom: 10px;
+	height: 80px;
+	width: 80px;
+	background-image: url("@{common-root-url}/images/scrollToTop.png");
+	background-color: @scroll-to-top-bg;
+	.border-radius (5px);
+	z-index: 1500;
+	cursor: pointer;
+	
+	&.small {
+		height: 60px;
+		width: 60px;
+		background-position: -10px -10px;
+	}
+}
+
+.modal-open .scroll-to-top {
+	display: none !important;
+}
