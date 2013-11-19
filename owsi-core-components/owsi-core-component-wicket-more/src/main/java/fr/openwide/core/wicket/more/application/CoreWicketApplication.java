@@ -24,8 +24,9 @@ import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.CoreCssScope;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.CoreBootstrap2CssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
 import fr.openwide.core.wicket.more.notification.listener.HtmlNotificationComponentCssClassHandler;
 import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWithHtmlNotificationSupport;
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
@@ -107,7 +108,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 	}
 	
 	protected void registerLessImportScopes() {
-		lessCssService.registerImportScope("core", CoreCssScope.class);
+		lessCssService.registerImportScope("core", CoreBootstrap2CssScope.class);
+		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
 	}
 	

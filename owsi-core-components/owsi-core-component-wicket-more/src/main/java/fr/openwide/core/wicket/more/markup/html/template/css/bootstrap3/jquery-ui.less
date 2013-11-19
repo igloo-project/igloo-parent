@@ -1,0 +1,171 @@
+/* Component containers
+----------------------------------*/
+.ui-widget {
+	font-size: inherit;
+}
+
+.ui-widget-content {
+	border: 1px solid #dddddd;
+	background: #ffffff;
+	color: #444444;
+}
+.ui-widget-content a {
+	color: #444444;
+}
+.ui-widget-header {
+	border: 1px solid #dddddd;
+	background: #EEEEEE;
+	color: #555555;
+	font-weight: bold;
+}
+.ui-widget-header a {
+	color: #444444;
+}
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	border: 1px solid #dddddd;
+	background: #f6f6f6;
+	font-weight: bold;
+	color: #0088CC;
+}
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+	color: #0088CC;
+	text-decoration: none;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+	border: 1px solid #0088CC; 
+	background: #0088CC; 
+	font-weight: bold; 
+	color: #ffffff;
+}
+.ui-state-hover a, .ui-state-hover a:hover {
+	color: #ffffff;
+	text-decoration: none;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+	border: 1px solid #1188CC;
+	background: #22AAEE;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+	color: #112266;
+	text-decoration: none;
+}
+.ui-widget :active {
+	outline: none;
+}
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+	border: 1px solid #cccccc;
+	background: #ffffff;
+	color: #444444;
+}
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a {
+	color: #444444;
+}
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+	border: 1px solid #eed3d7;
+	background: #f2dede;
+	color: #b94a48;
+}
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a {
+	color: #b94a48;
+}
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text {
+	color: #b94a48;
+}
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary {
+	font-weight: bold;
+}
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary {
+	opacity: .7;
+	filter:Alpha(Opacity=70);
+	font-weight: normal;
+}
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
+	opacity: .35;
+	filter:Alpha(Opacity=35);
+	background-image: none;
+}
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+.ui-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_0073ea_256x240.png");
+}
+.ui-widget-content .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_0073ea_256x240.png");
+}
+.ui-widget-header .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_666666_256x240.png");
+}
+.ui-state-default .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_666666_256x240.png");
+}
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_ffffff_256x240.png");
+}
+.ui-state-active .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_454545_256x240.png");
+}
+.ui-state-highlight .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_0073ea_256x240.png");
+}
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
+	background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_b94a48_256x240.png");
+}
+
+/* Élément survolé (autocomplete, calendrier) */
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+	cursor: pointer;
+}
+
+/* Jour courant sélectionné dans le calendrier */
+.ui-datepicker-today .ui-state-active {
+	border: 1px solid #1188CC;
+	background: #22AAEE;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.ui-datepicker-next.ui-state-hover,
+.ui-datepicker-prev.ui-state-hover {
+	border-color: transparent;
+	background: transparent;
+	
+	.ui-icon {
+		background-image: url("@{common-root-url}/images/icons/jquery/ui-icons_454545_256x240.png");
+	}
+}
+
+/* Autocomplete */
+.ui-menu {
+	padding: 4px 0;
+	
+	.ui-menu-item {
+		a {
+			border: none;
+			margin: 0;
+			.border-radius(0);
+			padding: 2px 5px;
+			
+			&.ui-state-hover {
+				margin: 0;
+			}
+		}
+	}
+}

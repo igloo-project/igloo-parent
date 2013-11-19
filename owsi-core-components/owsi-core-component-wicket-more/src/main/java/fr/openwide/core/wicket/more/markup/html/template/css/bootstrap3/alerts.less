@@ -1,0 +1,41 @@
+/* Compléments aux styles bootstraps */
+
+.alert-global-panel {
+	z-index: @zindex-feedback-panel;
+	position: fixed;
+	width: 100%;
+	font-weight: bold;
+	
+	overflow: hidden;
+	display: none;
+}
+
+.alert-global-panel .close {
+	color: #888;
+	
+	z-index: (@zindex-feedback-panel+1);
+	position: absolute;
+	right: 20px;
+	top: 6px;
+	
+	font-size: 20px;
+	.opacity(100);
+}
+
+.alert-global-panel .alert {
+	position: relative;
+	margin: 0 auto;
+	width: 100%;
+	.box-sizing(border-box);
+	.border-radius(0 0 0 0);
+}
+
+.alert-global-panel .alert-success {
+	cursor: pointer;
+}
+
+.alert-neutral {
+	background-color: @gray-lighter;
+	border-color: #DDD;
+	color: #666;
+}
