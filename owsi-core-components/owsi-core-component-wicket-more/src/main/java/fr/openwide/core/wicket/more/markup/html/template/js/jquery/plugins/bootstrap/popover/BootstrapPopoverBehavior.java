@@ -21,7 +21,7 @@ public class BootstrapPopoverBehavior extends Behavior {
 	}
 
 	public JsStatement statement(Component component) {
-		return new JsStatement().$(component).chain(BOOTSTRAP_POPOVER, options.getJavaScriptOptions());
+		return new JsStatement().$(component).chain(BOOTSTRAP_POPOVER, options.getJavaScriptOptions(component));
 	}
 
 	@Override
