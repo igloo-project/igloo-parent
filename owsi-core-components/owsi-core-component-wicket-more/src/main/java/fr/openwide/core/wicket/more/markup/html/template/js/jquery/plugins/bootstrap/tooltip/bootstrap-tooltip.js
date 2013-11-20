@@ -189,6 +189,14 @@
 
       this.applyPlacement(calculatedOffset, placement)
       this.$element.trigger('shown.bs.' + this.type)
+      
+      var that = this;
+      var hideTooltip = function() {
+        if (!that.$element.is(":visible")) {
+          that.hide();
+        }
+      };
+      this.intervalId = setInterval(hideTooltip, 1000);
     }
   }
 
@@ -275,6 +283,10 @@
         .one($.support.transition.end, complete)
         .emulateTransitionEnd(150) :
       complete()
+    
+    if (that.intervalId) {
+      clearInterval(that.intervalId);
+    }
 
     this.$element.trigger('hidden.bs.' + this.type)
 
