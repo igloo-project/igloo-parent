@@ -6,9 +6,9 @@
 		
 		<!-- Simple -->
 		<h2><wicket:message key="buttons.simple" /></h2>
-		<div class="row-fluid spaced">
+		<div class="row spaced">
 			<div class="span3">
-				<button class="btn"><wicket:message key="buttons.default" /></button>
+				<button class="btn btn-default"><wicket:message key="buttons.default" /></button>
 			</div>
 			<div class="span3">
 				<button class="btn btn-primary"><wicket:message key="buttons.primary" /></button>
@@ -20,7 +20,7 @@
 				<button class="btn btn-success"><wicket:message key="buttons.success" /></button>
 			</div>
 		</div>
-		<div class="row-fluid spaced">
+		<div class="row spaced">
 			<div class="span3">
 				<button class="btn btn-warning"><wicket:message key="buttons.warning" /></button>
 			</div>
@@ -34,9 +34,9 @@
 		
 		<!-- With icons -->
 		<h2><wicket:message key="buttons.icons" /></h2>
-		<div class="row-fluid spaced">
+		<div class="row spaced">
 			<div class="span3">
-				<button class="btn">
+				<button class="btn btn-default">
 					<span class="icon-file" />
 					<wicket:message key="buttons.default" />
 				</button>
@@ -60,7 +60,7 @@
 				</button>
 			</div>
 		</div>
-		<div class="row-fluid spaced">
+		<div class="row spaced">
 			<div class="span3">
 				<button class="btn btn-warning">
 					<span class="icon-bell icon-white" />
@@ -83,7 +83,7 @@
 		
 		<!-- Disabled (css class or html attribute "disabled") -->
 		<h2><wicket:message key="buttons.disabled" /></h2>
-		<div class="row-fluid spaced">
+		<div class="row spaced">
 			<div class="span3">
 				<button class="btn disabled"><wicket:message key="buttons.default" /></button>
 			</div>
@@ -97,7 +97,7 @@
 				<button class="btn btn-success disabled"><wicket:message key="buttons.success" /></button>
 			</div>
 		</div>
-		<div class="row-fluid spaced">
+		<div class="row spaced">
 			<div class="span3">
 				<button class="btn btn-warning" disabled><wicket:message key="buttons.warning" /></button>
 			</div>
@@ -111,7 +111,7 @@
 		
 		<!-- Sizes -->
 		<h2><wicket:message key="buttons.sizes" /></h2>
-		<div class="row-fluid">
+		<div class="row">
 			<div class="span6">
 				<p>
 					<button class="btn btn-large btn-primary"><wicket:message key="buttons.sizes.large" /></button>
@@ -129,42 +129,42 @@
 				</p>
 				<p>
 					<button class="btn btn-primary"><wicket:message key="buttons.sizes.default" /></button>
-					<button class="btn">
+					<button class="btn btn-default">
 						<span class="icon-file" />
 						<wicket:message key="buttons.sizes.default" />
 					</button>
 					<button class="btn btn-icon-only">
 						<span class="icon-file" />
 					</button>
-					<button class="btn">
+					<button class="btn btn-default">
 						<wicket:message key="buttons.sizes.default" />
 						<span class="caret" />
 					</button>
 				</p>
 				<p>
 					<button class="btn btn-small btn-primary"><wicket:message key="buttons.sizes.small" /></button>
-					<button class="btn btn-small">
+					<button class="btn btn-small btn-default">
 						<span class="icon-file" />
 						<wicket:message key="buttons.sizes.small" />
 					</button>
 					<button class="btn btn-small btn-icon-only">
 						<span class="icon-file" />
 					</button>
-					<button class="btn btn-small">
+					<button class="btn btn-small btn-default">
 						<wicket:message key="buttons.sizes.small" />
 						<span class="caret" />
 					</button>
 				</p>
 				<p>
 					<button class="btn btn-mini btn-primary"><wicket:message key="buttons.sizes.mini" /></button>
-					<button class="btn btn-mini">
+					<button class="btn btn-mini btn-default">
 						<span class="icon-file" />
 						<wicket:message key="buttons.sizes.mini" />
 					</button>
-					<button class="btn btn-mini btn-icon-only">
+					<button class="btn btn-mini btn-icon-only btn-default">
 						<span class="icon-file" />
 					</button>
-					<button class="btn btn-mini">
+					<button class="btn btn-mini btn-default">
 						<wicket:message key="buttons.sizes.mini" />
 						<span class="caret" />
 					</button>
@@ -174,14 +174,14 @@
 				<p>
 					<span class="btn-group">
 						<button class="btn btn-large btn-primary"><wicket:message key="buttons.sizes.large" /></button>
-						<button class="btn btn-large">
+						<button class="btn btn-large btn-default">
 							<span class="icon-file" />
 							<wicket:message key="buttons.sizes.large" />
 						</button>
-						<button class="btn btn-large btn-icon-only">
+						<button class="btn btn-large btn-icon-only btn-default">
 							<span class="icon-file" />
 						</button>
-						<button class="btn btn-large">
+						<button class="btn btn-large btn-default">
 							<wicket:message key="buttons.sizes.large" />
 							<span class="caret" />
 						</button>
@@ -190,14 +190,14 @@
 				<p>
 					<span class="btn-group">
 						<button class="btn btn-primary"><wicket:message key="buttons.sizes.default" /></button>
-						<button class="btn">
+						<button class="btn btn-default">
 							<span class="icon-file" />
 							<wicket:message key="buttons.sizes.default" />
 						</button>
-						<button class="btn btn-icon-only">
+						<button class="btn btn-icon-only btn-default">
 							<span class="icon-file" />
 						</button>
-						<button class="btn">
+						<button class="btn btn-default">
 							<wicket:message key="buttons.sizes.default" />
 							<span class="caret" />
 						</button>
@@ -206,14 +206,14 @@
 				<p>
 					<span class="btn-group">
 						<button class="btn btn-small btn-primary"><wicket:message key="buttons.sizes.small" /></button>
-						<button class="btn btn-small">
+						<button class="btn btn-small btn-default">
 							<span class="icon-file" />
 							<wicket:message key="buttons.sizes.small" />
 						</button>
-						<button class="btn btn-small btn-icon-only">
+						<button class="btn btn-small btn-icon-only btn-default">
 							<span class="icon-file" />
 						</button>
-						<button class="btn btn-small">
+						<button class="btn btn-small btn-default">
 							<wicket:message key="buttons.sizes.small" />
 							<span class="caret" />
 						</button>
@@ -222,14 +222,14 @@
 				<p>
 					<span class="btn-group">
 						<button class="btn btn-mini btn-primary"><wicket:message key="buttons.sizes.mini" /></button>
-						<button class="btn btn-mini">
+						<button class="btn btn-mini btn-default">
 							<span class="icon-file" />
 							<wicket:message key="buttons.sizes.mini" />
 						</button>
-						<button class="btn btn-mini btn-icon-only">
+						<button class="btn btn-mini btn-icon-only btn-default">
 							<span class="icon-file" />
 						</button>
-						<button class="btn btn-mini">
+						<button class="btn btn-mini btn-default">
 							<wicket:message key="buttons.sizes.mini" />
 							<span class="caret" />
 						</button>

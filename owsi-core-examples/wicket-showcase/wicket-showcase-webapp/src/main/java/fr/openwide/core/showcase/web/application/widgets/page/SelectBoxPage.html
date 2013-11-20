@@ -14,7 +14,7 @@
 				<form wicket:id="single">
 					<select wicket:id="dropDownChoice" style="width: 300px;" />
 					<div class="form-actions">
-						<button type="submit" class="btn">Submit</button>
+						<button type="submit" class="btn btn-success">Submit</button>
 					</div>
 				</form>
 			</div>
@@ -30,7 +30,7 @@
 				<form wicket:id="multi">
 					<select wicket:id="listMultipleChoice" style="width: 300px;" />
 					<div class="form-actions">
-						<button type="submit" class="btn">Submit</button>
+						<button type="submit" class="btn btn-success">Submit</button>
 					</div>
 				</form>
 			</div>
@@ -46,7 +46,7 @@
 				<form wicket:id="ajax">
 					<input type="hidden" wicket:id="ajaxMultipleChoice" style="width: 300px;" />
 					<div class="form-actions">
-						<button type="submit" class="btn">Submit</button>
+						<button type="submit" class="btn btn-success">Submit</button>
 					</div>
 				</form>
 			</div>
@@ -56,9 +56,9 @@
 			<h3><wicket:message key="widgets.selectbox.tagify" /></h3>
 			<div style="margin-left: 20px;">
 				<form onsubmit="alert(OWSI.StringUtils.tagify($('#testtag').val())); return false;">
-					<input type="text" id="testtag" />
+					<input type="text" class="form-control" id="testtag" />
 					<div class="form-actions">
-						<button type="submit" class="btn"><wicket:message key="widgets.selectbox.tagify" /></button>
+						<button type="submit" class="btn btn-success"><wicket:message key="widgets.selectbox.tagify" /></button>
 					</div>
 				</form>
 			</div>
@@ -68,9 +68,9 @@
 			<h3><wicket:message key="widgets.selectbox.urlize" /></h3>
 			<div style="margin-left: 20px;">
 				<form onsubmit="alert(OWSI.StringUtils.urlize($('#testurl').val())); return false;">
-					<input type="text" id="testurl" />
+					<input type="text" class="form-control" id="testurl" />
 					<div class="form-actions">
-						<button type="submit" class="btn"><wicket:message key="widgets.selectbox.urlize" /></button>
+						<button type="submit" class="btn btn-success"><wicket:message key="widgets.selectbox.urlize" /></button>
 					</div>
 				</form>
 			</div>
