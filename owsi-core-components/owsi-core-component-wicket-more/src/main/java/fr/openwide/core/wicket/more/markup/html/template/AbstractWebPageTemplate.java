@@ -28,6 +28,8 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	
 	private static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE = " ‹ ";
 	
+	public static final String BOOTSTRAP3_VARIATION = "bs3";
+	
 	private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
 		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
 	}
