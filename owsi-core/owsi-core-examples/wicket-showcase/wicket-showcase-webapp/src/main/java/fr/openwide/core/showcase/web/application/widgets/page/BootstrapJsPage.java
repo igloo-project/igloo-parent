@@ -40,7 +40,6 @@ public class BootstrapJsPage extends WidgetsTemplate {
 		popoverOptions.setTitleText(new ResourceModel("widgets.popover.someInformation.title").getObject());
 		popoverOptions.setContentComponent(someInformation);
 		popoverOptions.setHtml(true);
-		popoverOptions.setContainer("body");
 		someLabelDefault.add(new BootstrapPopoverBehavior(popoverOptions));
 		someLabelDefault.add(new ClassAttributeAppender(Model.of("popover-btn")));
 		add(someLabelDefault);
@@ -59,6 +58,14 @@ public class BootstrapJsPage extends WidgetsTemplate {
 		someLabelBottom.add(new BootstrapPopoverBehavior(popoverOptions));
 		someLabelBottom.add(new ClassAttributeAppender(Model.of("popover-btn")));
 		add(someLabelBottom);
+		
+		Label someLabelWithoutTitle = new Label("someLabelWithoutTitle", new ResourceModel("widgets.popover.someLabel.withoutTitle"));
+		BootstrapPopoverOptions popoverWithoutTitleOptions = new BootstrapPopoverOptions();
+		popoverWithoutTitleOptions.setContentComponent(someInformation);
+		popoverWithoutTitleOptions.setHtml(true);
+		someLabelWithoutTitle.add(new BootstrapPopoverBehavior(popoverWithoutTitleOptions));
+		someLabelWithoutTitle.add(new ClassAttributeAppender(Model.of("popover-btn")));
+		add(someLabelWithoutTitle);
 		
 		// Tabs
 		WebMarkupContainer tabContainer = new WebMarkupContainer("tabContainer");

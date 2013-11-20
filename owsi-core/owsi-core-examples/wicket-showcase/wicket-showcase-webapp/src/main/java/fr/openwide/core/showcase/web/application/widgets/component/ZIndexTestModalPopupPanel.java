@@ -45,7 +45,6 @@ public class ZIndexTestModalPopupPanel extends AbstractModalPopupPanel<Void> {
 		
 		WebMarkupContainer popoverLabel = new WebMarkupContainer("popoverLabel");
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
-		popoverOptions.setComponent(popoverLabel);
 		popoverOptions.setTitleText(new ResourceModel("widgets.modal.zIndexTest.popover.title").getObject());
 		popoverOptions.setContentComponent(popoverInformation);
 		popoverOptions.setHtml(true);

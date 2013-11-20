@@ -15,8 +15,6 @@ public class BootstrapPopoverOptions extends Options {
 	private static final long serialVersionUID = 680573363463468690L;
 
 	// OWSI-Core options
-	private Component component;
-
 	private boolean addCloseButton = true;
 
 	// Bootstrap popover options
@@ -32,9 +30,13 @@ public class BootstrapPopoverOptions extends Options {
 
 	private String titleText;
 
+	private Component titleComponent;
+
 	private JsScope titleFunction;
 
 	private String contentText;
+
+	private Component contentComponent;
 
 	private JsScope contentFunction;
 
@@ -48,6 +50,10 @@ public class BootstrapPopoverOptions extends Options {
 
 	@Override
 	public CharSequence getJavaScriptOptions() {
+		throw new IllegalStateException("Please use getJavaScriptOptions(component)");
+	}
+
+	public CharSequence getJavaScriptOptions(Component popoverComponent) {
 		if (animation != null) {
 			put("animation", animation);
 		}
@@ -64,12 +70,28 @@ public class BootstrapPopoverOptions extends Options {
 			put("trigger", JsUtils.quotes(trigger.getValue()));
 		}
 		if (titleText != null) {
-			put("title", JsUtils.quotes(titleText, true));
+			// Si on veut ajouter un bouton de fermeture, on doit passer par une fonction,
+			// sinon on passe par l'option titleText classique.
+			if (addCloseButton) {
+				put("title", getTitleFunction(popoverComponent, new JsStatement().$(null, "<span></span>").chain("html", JsUtils.quotes(titleText, true))));
+			} else {
+				put("title", JsUtils.quotes(titleText, true));
+			}
+		} else if (titleComponent != null) {
+			put("title", getTitleFunction(popoverComponent, new JsStatement().$(titleComponent).chain("html")));
 		} else if (titleFunction != null) {
 			put("title", titleFunction.render().toString());
 		}
 		if (contentText != null) {
 			put("content", JsUtils.quotes(contentText, true));
+		} else if (contentComponent != null) {
+			put("content", new JsScope() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				protected void execute(JsScopeContext scopeContext) {
+					scopeContext.append("return " + new JsStatement().$(contentComponent).chain("html").render());
+				}
+			}.render().toString());
 		} else if (contentFunction != null) {
 			put("content", contentFunction.render().toString());
 		}
@@ -83,16 +105,23 @@ public class BootstrapPopoverOptions extends Options {
 		return super.getJavaScriptOptions();
 	}
 
+	private JsScope getTitleFunction(final Component popoverComponent, final JsStatement titleComponentStatement) {
+		return new JsScope() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected void execute(JsScopeContext scopeContext) {
+				scopeContext.append("var titleComponent = " + titleComponentStatement.render(false) + ";");
+				if (addCloseButton && popoverComponent != null) {
+					scopeContext.append("titleComponent.append($('<a class=\"close\">&times;</a>').on('click', function(e) { "
+							+ new JsStatement().$(popoverComponent).chain("popover", "'toggle'").render() + " e.preventDefault();"
+							+ " }));");
+				}
+				scopeContext.append("return titleComponent;");
+			}
+		};
+	}
+
 	// OWSI-Core options
-	public Component getComponent() {
-		return component;
-	}
-
-	public void setComponent(Component component) {
-		component.setOutputMarkupId(true);
-		this.component = component;
-	}
-
 	public boolean isAddCloseButton() {
 		return addCloseButton;
 	}
@@ -142,38 +171,20 @@ public class BootstrapPopoverOptions extends Options {
 		this.trigger = trigger;
 	}
 
-	protected void setTitleFunction(final JsStatement titleComponentStatement) {
-		setTitleFunction(new JsScope() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void execute(JsScopeContext scopeContext) {
-				scopeContext.append("var titleComponent = " + titleComponentStatement.render(false) + ";");
-				if (addCloseButton && component != null) {
-					scopeContext.append("titleComponent.append($('<a class=\"close\">&times;</a>').on('click', function(e) { "
-							+ new JsStatement().$(component).chain("popover", "'toggle'").render() + " e.preventDefault();"
-							+ " }));");
-				}
-				scopeContext.append("return titleComponent;");
-			}
-		});
-	}
-
 	public String getTitleText() {
 		return titleText;
 	}
 
-	/**
-	 * <strong>Attention</strong> : utiliser {@link #setComponent(Component)} avant {@link #setTitleText(String)}
-	 * si on veut ajouter un bouton de fermeture.
-	 */
 	public void setTitleText(String titleText) {
-		// Si on veut ajouter un bouton de fermeture, on doit passer par une fonction,
-		// sinon on passe par l'option titleText classique.
-		if (addCloseButton && component != null) {
-			setTitleFunction(new JsStatement().$(null, "<span></span>").chain("html", JsUtils.quotes(titleText)));
-		} else {
-			this.titleText = titleText;
-		}
+		this.titleText = titleText;
+	}
+
+	public Component getTitleComponent() {
+		return titleComponent;
+	}
+
+	public void setTitleComponent(Component titleComponent) {
+		this.titleComponent = titleComponent;
 	}
 
 	public JsScope getTitleFunction() {
@@ -184,15 +195,6 @@ public class BootstrapPopoverOptions extends Options {
 		this.titleFunction = titleFunction;
 	}
 
-	/**
-	 * <strong>Attention</strong> : utiliser {@link #setComponent(Component)} avant {@link #setTitleComponent(Component)}
-	 * si on veut ajouter un bouton de fermeture.
-	 */
-	public void setTitleComponent(final Component titleComponent) {
-		titleComponent.setOutputMarkupId(true);
-		setTitleFunction(new JsStatement().$(titleComponent).chain("html"));
-	}
-
 	public String getContentText() {
 		return contentText;
 	}
@@ -201,23 +203,20 @@ public class BootstrapPopoverOptions extends Options {
 		this.contentText = contentText;
 	}
 
+	public Component getContentComponent() {
+		return contentComponent;
+	}
+
+	public void setContentComponent(Component contentComponent) {
+		this.contentComponent = contentComponent;
+	}
+
 	public JsScope getContentFunction() {
 		return contentFunction;
 	}
 
 	public void setContentFunction(JsScope contentFunction) {
 		this.contentFunction = contentFunction;
-	}
-
-	public void setContentComponent(final Component contentComponent) {
-		contentComponent.setOutputMarkupId(true);
-		setContentFunction(new JsScope() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void execute(JsScopeContext scopeContext) {
-				scopeContext.append("return " + new JsStatement().$(contentComponent).chain("html").render());
-			}
-		});
 	}
 
 	public Integer getDelay() {
