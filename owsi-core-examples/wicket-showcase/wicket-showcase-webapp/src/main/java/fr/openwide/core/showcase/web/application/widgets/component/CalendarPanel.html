@@ -22,7 +22,10 @@
 			<div class="control-group">
 				<label class="control-label" wicket:for="endDatePicker"><wicket:label /></label>
 				<div class="controls">
-					<input wicket:id="endDatePicker" type="text" class="form-control input-small" />
+					<div class="input-append">
+						<input wicket:id="endDatePicker" type="text" class="form-control input-small" />
+						<span class="add-on"><label wicket:for="endDatePicker"><span class="icon-calendar" /></label></span>
+					</div>
 				</div>
 			</div>
 		</form>
