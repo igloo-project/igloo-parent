@@ -9,7 +9,7 @@
 			<div class="control-group">
 				<label class="control-label" wicket:for="modelField"><wicket:label /></label>
 				<div class="controls">
-					<input type="text" wicket:id="modelField" />
+					<input type="text" class="form-control" wicket:id="modelField" />
 				</div>
 			</div>
 			<div class="control-group">
@@ -22,7 +22,7 @@
 		
 		<div wicket:id="updatedContainer">
 			<!-- Model-based -->
-			<div class="row-fluid">
+			<div class="row">
 				<div class="span6 text-center">
 					<div class="alert alert-block alert-success" wicket:id="enclosureContainer">
 						<strong><wicket:message key="hideableComponents.model.enclosureContainer" /></strong>
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row-fluid">
+			<div class="row">
 				<div class="span6 text-center">
 					<strong class="label label-success" wicket:id="enclosureBehaviorComponent" />&nbsp;
 				</div>
@@ -45,14 +45,14 @@
 		
 			<!-- Component-based -->
 			<h2><wicket:message key="hideableComponents.component" /></h2>
-			<div class="row-fluid" wicket:id="enclosuresVisibleContainer">
+			<div class="row" wicket:id="enclosuresVisibleContainer">
 				<div class="span12 text-center">
 					<div class="alert alert-block alert-success">
 						<strong><wicket:message key="hideableComponents.component.enclosuresVisible" /></strong>
 					</div>
 				</div>
 			</div>
-			<div class="row-fluid" wicket:id="enclosuresInvisibleContainer">
+			<div class="row" wicket:id="enclosuresInvisibleContainer">
 				<div class="span12 text-center">
 					<div class="alert alert-block alert-danger">
 						<strong><wicket:message key="hideableComponents.component.enclosuresInvisible" /></strong>

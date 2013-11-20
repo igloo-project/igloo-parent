@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
 
@@ -29,8 +30,9 @@ public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 	@Override
 	protected void populateItem(ListItem<BreadCrumbElement> item) {
 		item.add(
-				new Label("divider", dividerModel)
-						.setVisible(item.getIndex() > 0)
+				new Label("divider", dividerModel).setVisible(
+						!AbstractWebPageTemplate.BOOTSTRAP3_VARIATION.equals(getVariation()) &&
+						item.getIndex() > 0)
 		);
 		
 		Component breadCrumbLink = item.getModelObject().component("breadCrumbElement", renderingBehavior);
