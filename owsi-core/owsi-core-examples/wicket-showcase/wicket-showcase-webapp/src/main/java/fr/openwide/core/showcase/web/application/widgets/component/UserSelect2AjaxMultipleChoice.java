@@ -14,10 +14,11 @@ public class UserSelect2AjaxMultipleChoice extends Select2MultipleChoice<User> {
 	public UserSelect2AjaxMultipleChoice(String id, IModel<Collection<User>> model) {
 		super(id, model, new UserSelect2AjaxAdapter());
 		
-		getSettings().setPlaceholderKey("widgets.selectbox.empty");
-		getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
-		getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
-		getSettings().setSelectionTooBigKey("widgets.selectbox.selectionTooBig");
+		// TODO : vérifier Session.get().getLocale();
+//		getSettings().setPlaceholderKey("widgets.selectbox.empty");
+//		getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
+//		getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
+//		getSettings().setSelectionTooBigKey("widgets.selectbox.selectionTooBig");
 		getSettings().setMaximumSelectionSize(3);
 	}
 
