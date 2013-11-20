@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -34,6 +35,7 @@ import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
@@ -175,5 +177,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		super.renderHead(response);
 		
 		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
+	}
+	
+	@Override
+	public String getVariation() {
+		return BOOTSTRAP3_VARIATION;
 	}
 }
