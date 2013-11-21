@@ -605,7 +605,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 }
 /* Bugfix Autocomplete/Popover dans modales Bootstrap */
 .ui-widget.ui-autocomplete, .popover {
-	z-index: 151;
+	z-index: 300;
 }
 /* Month picker */
 .ui-monthpicker select.ui-datepicker-year {
