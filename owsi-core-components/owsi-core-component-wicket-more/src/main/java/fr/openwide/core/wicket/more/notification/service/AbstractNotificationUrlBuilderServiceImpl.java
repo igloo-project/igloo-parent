@@ -17,7 +17,7 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl extends Abstract
 	private static final String ANCHOR_ROOT = "#";
 	
 	protected String buildUrl(IPageLinkGenerator pageLinkGenerator) {
-		return buildUrl(pageLinkGenerator);
+		return buildUrl(pageLinkGenerator, null);
 	}
 	
 	protected String buildUrl(IPageLinkGenerator pageLinkGenerator, String anchor) {
