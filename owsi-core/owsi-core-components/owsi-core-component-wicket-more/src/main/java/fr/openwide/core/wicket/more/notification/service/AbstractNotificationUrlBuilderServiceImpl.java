@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.notification.service;
 
+import java.util.concurrent.Callable;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.core.request.handler.BookmarkablePageRequestHandler;
 import org.apache.wicket.core.request.handler.PageProvider;
@@ -16,17 +18,19 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl extends Abstract
 	
 	private static final String ANCHOR_ROOT = "#";
 	
-	protected String buildUrl(IPageLinkGenerator pageLinkGenerator) {
-		return buildUrl(pageLinkGenerator, null);
+	protected String buildUrl(Callable<IPageLinkGenerator> pageLinkGeneratorTask) {
+		return buildUrl(pageLinkGeneratorTask, null);
 	}
 	
-	protected String buildUrl(IPageLinkGenerator pageLinkGenerator, String anchor) {
-		Args.notNull(pageLinkGenerator, "pageLinkGenerator");
+	protected String buildUrl(Callable<IPageLinkGenerator> pageLinkGeneratorTask, String anchor) {
+		Args.notNull(pageLinkGeneratorTask, "pageLinkGeneratorTask");
 		
 		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
 		
 		try {
 			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
+			
+			IPageLinkGenerator pageLinkGenerator = pageLinkGeneratorTask.call();
 			
 			StringBuilder url = new StringBuilder();
 			url.append(pageLinkGenerator.fullUrl());
@@ -35,6 +39,8 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl extends Abstract
 			}
 			
 			return url.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		} finally {
 			if (requestCycleStatus != null) {
 				detachRequestCycleIfNeeded(requestCycleStatus);
