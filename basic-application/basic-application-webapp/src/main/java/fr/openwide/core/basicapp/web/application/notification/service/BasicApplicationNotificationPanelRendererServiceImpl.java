@@ -2,7 +2,9 @@ package fr.openwide.core.basicapp.web.application.notification.service;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,15 @@ public class BasicApplicationNotificationPanelRendererServiceImpl extends Abstra
 		implements IBasicApplicationNotificationPanelRendererService {
 	
 	@Override
-	public String renderExampleNotificationPanel(User user, Date date) {
-		return renderComponent(
-				new ExampleHtmlNotificationPanel("htmlPanel", GenericEntityModel.of(user), Model.of(date))
-				, getLocale(user)
-		);
+	public String renderExampleNotificationPanel(final User user, final Date date) {
+		Callable<Component> component = new Callable<Component>() {
+			@Override
+			public Component call() throws Exception {
+				return new ExampleHtmlNotificationPanel("htmlPanel", GenericEntityModel.of(user), Model.of(date));
+			}
+		};
+		
+		return renderComponent(component, getLocale(user));
 	}
 	
 	private Locale getLocale(User user) {
