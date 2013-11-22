@@ -10,7 +10,6 @@ import org.apache.wicket.model.IObjectClassAwareModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.retzlaff.select2.AbstractSelect2Choice;
 import org.retzlaff.select2.ISelect2AjaxAdapter;
-import org.springframework.util.StringUtils;
 
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -73,16 +72,10 @@ public abstract class AbstractSelect2MultipleChoice<C extends Collection<T>, T> 
 	 */
 	@Override
 	protected void convertInput() {
-		String[] value = getInputAsArray();
-		String tmp = value != null && value.length > 0 ? value[0] : null;
-		if (getConvertEmptyInputStringToNull() && !StringUtils.hasText(tmp)) {
-			setConvertedInput(null);
-		} else {
-			try {
-				setConvertedInput(convertValue(getInputAsArray()));
-			} catch (ConversionException e) {
-				error(newValidationError(e));
-			}
+		try {
+			setConvertedInput(convertValue(getInputAsArray()));
+		} catch (ConversionException e) {
+			error(newValidationError(e));
 		}
 	}
 	
