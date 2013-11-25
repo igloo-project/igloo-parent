@@ -84,7 +84,7 @@ public abstract class AbstractSelect2MultipleChoice<C extends Collection<T>, T> 
 	 */
 	@Override
 	protected C convertValue(final String[] value) {
-		if (value == null || value.length == 0 || value[0] == null) {
+		if (value == null || value.length == 0 || value[0] == null || (value.length == 1 && value[0] == "")) {
 			return newEmptyImplementation();
 		}
 
