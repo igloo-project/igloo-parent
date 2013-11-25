@@ -12,5 +12,10 @@ public class CoreLowerCaseShaPasswordEncoder extends CoreShaPasswordEncoder {
 	public String encode(CharSequence rawPassword) {
 		return super.encode(StringUtils.lowerCase(rawPassword.toString()));
 	}
+	
+	@Override
+	public boolean matches(CharSequence rawPassword, String encodedPassword) {
+		return super.matches(StringUtils.lowerCase(rawPassword.toString()), encodedPassword);
+	}
 
 }
