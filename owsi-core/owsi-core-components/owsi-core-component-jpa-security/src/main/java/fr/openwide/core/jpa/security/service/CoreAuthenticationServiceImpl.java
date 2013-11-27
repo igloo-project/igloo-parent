@@ -32,7 +32,7 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	
 	@Override
 	public Collection<? extends Permission> getPermissions() {
-		return AuthenticationUtil.getPermissions();
+		return securityService.getPermissions(AuthenticationUtil.getAuthentication());
 	}
 
 	@Override
@@ -73,6 +73,11 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	@Override
 	public void signOut() {
 		AuthenticationUtil.setAuthentication(null);
+	}
+	
+	@Override
+	public boolean isSuperUser() {
+		return securityService.isSuperUser(AuthenticationUtil.getAuthentication());
 	}
 	
 	protected Authentication getAuthentication() {

@@ -73,21 +73,17 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 		throw new UnsupportedOperationException();
 	}
 	
+	protected Collection<? extends Permission> getAnonymousPermissions() {
+		return Collections.emptyList();
+	}
+	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object requiredPermission) {
 		if (isSuperUser(authentication)) {
 			return true;
 		}
-		if (authentication == null) {
-			return false;
-		}
 		
-		Object userDetailsCandidate = authentication.getPrincipal();
-		if (!(userDetailsCandidate instanceof CoreUserDetails)) {
-			return false;
-		}
-		CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
-		Collection<? extends Permission> userPermissions = userDetails.getPermissions();
+		Collection<? extends Permission> userPermissions = getPermissions(authentication);
 		
 		List<Permission> requiredPermissions = resolvePermission(requiredPermission);
 		
@@ -98,6 +94,20 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public Collection<? extends Permission> getPermissions(Authentication authentication) {
+		Collection<? extends Permission> userPermissions = getAnonymousPermissions();
+		if (authentication != null) {
+			Object userDetailsCandidate = authentication.getPrincipal();
+			if (userDetailsCandidate instanceof CoreUserDetails) {
+				CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
+				userPermissions = userDetails.getPermissions();
+			}
+		}
+		
+		return userPermissions;
 	}
 	
 	@Override

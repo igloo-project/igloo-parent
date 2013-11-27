@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.security.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -211,5 +212,15 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	public boolean hasPermission(IPerson person, Permission permission) {
 		return hasPermission(getAuthentication(person), permission);
 	}
-		
+	
+	@Override
+	public Collection<? extends Permission> getPermissions(Authentication authentication) {
+		return permissionEvaluator.getPermissions(authentication);
+	}
+	
+	@Override
+	public boolean isSuperUser(Authentication authentication) {
+		return permissionEvaluator.isSuperUser(authentication);
+	}
+	
 }

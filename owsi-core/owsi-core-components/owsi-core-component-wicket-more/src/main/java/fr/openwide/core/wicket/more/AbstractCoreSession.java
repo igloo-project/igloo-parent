@@ -63,7 +63,11 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	private Collection<? extends Permission> permissions = Lists.newArrayList();
 	
 	private boolean permissionsInitialized = false;
-
+	
+	private boolean isSuperUser = false;
+	
+	private boolean isSuperUserInitialized = false;
+	
 	public AbstractCoreSession(Request request) {
 		super(request);
 		
@@ -148,6 +152,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		
 		permissions = authenticationService.getPermissions();
 		permissionsInitialized = true;
+		
+		isSuperUser = authenticationService.isSuperUser();
+		isSuperUserInitialized = true;
 	}
 	
 	protected void onFirstLogin(P person) {
@@ -224,7 +231,19 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 	
 	public boolean hasPermission(Permission permission) {
+		if (isSuperUser()) {
+			return true;
+		}
+		
 		return getPermissions().contains(permission);
+	}
+	
+	protected boolean isSuperUser() {
+		if (!isSuperUserInitialized) {
+			isSuperUser = authenticationService.isSuperUser();
+			isSuperUserInitialized = true;
+		}
+		return isSuperUser;
 	}
 
 	/**
