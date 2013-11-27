@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -50,5 +51,9 @@ public interface ISecurityService {
 	void clearAuthentication();
 	
 	<T> T runAsSystem(Callable<T> task);
+
+	Collection<? extends Permission> getPermissions(Authentication authentication);
+
+	boolean isSuperUser(Authentication authentication);
 
 }

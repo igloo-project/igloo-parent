@@ -1,15 +1,11 @@
 package fr.openwide.core.jpa.security.service;
 
 import java.util.Collection;
-import java.util.Collections;
 
-import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
 final class AuthenticationUtil {
 
@@ -39,18 +35,6 @@ final class AuthenticationUtil {
 
 	static Collection<? extends GrantedAuthority> getAuthorities() {
 		return getAuthentication().getAuthorities();
-	}
-	
-	static Collection<? extends Permission> getPermissions() {
-		Authentication authentication = getAuthentication();
-		
-		Object userDetailsCandidate = authentication.getPrincipal();
-		if (!(userDetailsCandidate instanceof CoreUserDetails)) {
-			return Collections.emptyList();
-		}
-		CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
-		
-		return userDetails.getPermissions();
 	}
 
 	private AuthenticationUtil() {

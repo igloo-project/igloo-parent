@@ -32,5 +32,7 @@ public interface IAuthenticationService {
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 	
 	void signOut();
+
+	boolean isSuperUser();
 	
 }
