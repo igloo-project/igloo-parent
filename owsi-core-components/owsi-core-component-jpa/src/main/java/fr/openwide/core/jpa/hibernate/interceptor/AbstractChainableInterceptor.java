@@ -134,7 +134,7 @@ public abstract class AbstractChainableInterceptor implements Interceptor {
 
 	@Override
 	public final String onPrepareStatement(String sql) {
-		return null;
+		return sql;
 	}
 
 }
