@@ -97,7 +97,7 @@
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.3.1</owsi-core.httpclient.version>
 		
-		<owsi-core.jersey.version>1.17</owsi-core.jersey.version>
+		<owsi-core.jersey.version>1.18</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.4</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
