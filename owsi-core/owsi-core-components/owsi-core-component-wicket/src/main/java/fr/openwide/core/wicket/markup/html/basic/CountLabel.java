@@ -41,6 +41,10 @@ public class CountLabel extends Label
 {
     private static final long serialVersionUID = -889821092752173878L;
 
+    private boolean hideIfZeroOrNull = false;
+    
+    private IModel<? extends Number> countModel;
+
     /**
      * Constructs a label that will a display zero, singular or plural
      * variation based on the value of the specified {@code count} model.
@@ -55,11 +59,36 @@ public class CountLabel extends Label
      *              will also be made available to the string as an
      *              interpolated <code>${count}</code> variable.
      */
-    public CountLabel(String id, String messageKey, IModel<? extends Number> count)
+    public CountLabel(String id, String messageKey, IModel<? extends Number> countModel)
     {
         super(id);
-        setDefaultModel(new CountMessageModel(messageKey, this, count));
+        this.countModel = countModel;
+        setDefaultModel(new CountMessageModel(messageKey, this, countModel));
         setEscapeModelStrings(false);
     }
+	
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+		Number count = getCountModelObject();
+		setVisible(!hideIfZeroOrNull || (count != null && !count.equals(0L)));
+	}
+	
+	public CountLabel hideIfEmpty() {
+		this.hideIfZeroOrNull = true;
+		return this;
+	}
+	
+	private Number getCountModelObject() {
+		return countModel != null ? countModel.getObject() : null;
+	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		if (countModel != null) {
+			countModel.detach();
+		}
+	}
 
 }
