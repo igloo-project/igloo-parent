@@ -64,4 +64,6 @@ public interface IHibernateSearchService extends ITransactionalAspectAwareServic
 	Set<Class<?>> getIndexedRootEntities() throws ServiceException;
 
 	Set<Class<?>> getIndexedRootEntities(List<Class<?>> classes) throws ServiceException;
+
+	void flushToIndexes();
 }

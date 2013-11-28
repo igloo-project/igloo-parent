@@ -162,4 +162,9 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName, additionalLuceneQuery, limit, offset, sort);
 	}
+	
+	@Override
+	public void flushToIndexes() {
+		hibernateSearchDao.flushToIndexes();
+	}
 }

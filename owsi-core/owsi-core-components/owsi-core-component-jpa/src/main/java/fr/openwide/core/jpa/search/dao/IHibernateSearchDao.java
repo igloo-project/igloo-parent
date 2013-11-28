@@ -54,4 +54,6 @@ public interface IHibernateSearchDao {
 	Set<Class<?>> getIndexedRootEntities(Class<?>... selection);
 
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity);
+
+	void flushToIndexes();
 }

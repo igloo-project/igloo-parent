@@ -378,4 +378,10 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 					documentsAdded, totalCount, entitiesLoaded, documentsBuilt));
 		}
 	}
+	
+	@Override
+	public void flushToIndexes() {
+		Search.getFullTextEntityManager(entityManager).flushToIndexes();
+	}
+	
 }
