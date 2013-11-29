@@ -74,7 +74,7 @@ public class CountLabel extends Label
 		setVisible(!hideIfZeroOrNull || (count != null && !count.equals(0L)));
 	}
 	
-	public CountLabel hideIfEmpty() {
+	public CountLabel hideIfZeroOrNull() {
 		this.hideIfZeroOrNull = true;
 		return this;
 	}
