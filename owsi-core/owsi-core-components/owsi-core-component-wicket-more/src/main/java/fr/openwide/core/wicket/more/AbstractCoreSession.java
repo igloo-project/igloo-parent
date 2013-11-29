@@ -30,7 +30,7 @@ import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
 public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
 
@@ -121,7 +121,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 			throw new IllegalStateException("Unable to find the signed in user.");
 		}
 		
-		personModel = new GenericEntityModel<Long, P>(person);
+		personModel = new SessionThreadSafeGenericEntityModel<Long, P>(person);
 		
 		try {
 			if (person.getLastLoginDate() == null) {

@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
-
 @Configuration
-@ConfigurationLocations
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement
 public class WicketMoreTestCoreCommonConfig {
