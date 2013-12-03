@@ -17,10 +17,10 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
  * An alternative implementation of {@link GenericEntityModel} that is thread-safe, and may thus be used in multiple request cycles at the same time.
  * <p>This class should be used when entity models are needed in a global object, such as the {@link Session wicket session}.
  * 
- * @see SessionThreadSafeLoadableDetachableModel
+ * @see SessionThreadSafeDerivedSerializableStateLoadableDetachableModel
  */
 public class SessionThreadSafeGenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
-		extends SessionThreadSafeLoadableDetachableModel<E, SessionThreadSafeGenericEntityModel.SerializableData<K, E>> {
+		extends SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<E, SessionThreadSafeGenericEntityModel.SerializableState<K, E>> {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -38,27 +38,27 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 	}
 
 	@Override
-	protected E load(SerializableData<K, E> serializableObject) {
-		if (serializableObject == null) {
+	protected E load(SerializableState<K, E> serializableState) {
+		if (serializableState == null) {
 			return null;
 		}
 		
-		K id = serializableObject.id;
-		Class<? extends E> clazz = serializableObject.clazz;
+		K id = serializableState.id;
+		Class<? extends E> clazz = serializableState.clazz;
 		
 		if (id != null && clazz != null) {
 			return entityService.getEntity(clazz, id);
 		} else {
-			return serializableObject.notYetPersistedEntity;
+			return serializableState.notYetPersistedEntity;
 		}
 	}
 
 	@Override
-	protected SerializableData<K, E> makeSerializable(E currentObject) {
-		return new SerializableData<K, E>(currentObject);
+	protected SerializableState<K, E> makeSerializable(E currentObject) {
+		return new SerializableState<K, E>(currentObject);
 	}
 
-	protected static class SerializableData<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable {
+	protected static class SerializableState<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private final Class<? extends E> clazz;
@@ -70,7 +70,7 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 		private final E notYetPersistedEntity;
 		
 		@SuppressWarnings("unchecked")
-		public SerializableData(E entity) {
+		public SerializableState(E entity) {
 			E unwrapped = HibernateUtils.unwrap(entity);
 			if (unwrapped != null) {
 				clazz = (Class<? extends E>) unwrapped.getClass();
@@ -98,10 +98,10 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 			if (obj == this) {
 				return true;
 			}
-			if (!(obj instanceof SerializableData)) {
+			if (!(obj instanceof SerializableState)) {
 				return false;
 			}
-			SerializableData<K, E> other = (SerializableData<K, E>) obj;
+			SerializableState<K, E> other = (SerializableState<K, E>) obj;
 			
 			return new EqualsBuilder()
 					.append(clazz, other.clazz)
