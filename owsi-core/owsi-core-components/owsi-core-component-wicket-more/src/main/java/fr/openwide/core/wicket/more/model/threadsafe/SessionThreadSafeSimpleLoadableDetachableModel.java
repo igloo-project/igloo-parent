@@ -37,11 +37,6 @@ public abstract class SessionThreadSafeSimpleLoadableDetachableModel<T>
 	}
 	
 	@Override
-	protected final void onSetObject(ThreadContextImpl threadContext) {
-		// No need to override this in subclasses
-	}
-	
-	@Override
 	protected final T load(ThreadContextImpl threadContext) {
 		return load();
 	}
@@ -50,6 +45,15 @@ public abstract class SessionThreadSafeSimpleLoadableDetachableModel<T>
 	 * Loads the model object value from the implementation-defined data source.
 	 */
 	protected abstract T load();
+	
+	@Override
+	protected final void onSetObject(ThreadContextImpl threadContext) {
+		onSetObject(threadContext.getTransientModelObject());
+	}
+	
+	protected void onSetObject(T object) {
+		// Does nothing by default
+	}
 	
 	@Override
 	protected final void onDetach(ThreadContextImpl threadContext) {
