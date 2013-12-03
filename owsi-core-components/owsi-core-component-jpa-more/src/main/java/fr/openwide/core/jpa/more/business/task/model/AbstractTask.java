@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Throwables;
 
 import fr.openwide.core.commons.util.CloneUtils;
+import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 
@@ -30,9 +31,16 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	@Autowired
 	protected IQueuedTaskHolderService queuedTaskHolderService;
 
+	@Autowired
+	protected IQueuedTaskHolderManager queuedTaskHolderManager;
+
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
 	protected Long queuedTaskHolderId;
+
+	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
+	protected String report;
 
 	protected Date triggeringDate;
 
@@ -52,6 +60,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	@Override
 	public void run() {
 		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+
 		final Exception beforeTaskResult = transactionTemplate.execute(new TransactionCallback<Exception>() {
 			@Override
 			public Exception doInTransaction(TransactionStatus status) {
@@ -83,8 +92,9 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, beforeTaskResult);
 
-						queuedTaskHolder.setStatus(TaskStatus.FAILED);
+						queuedTaskHolder.setStatus(onFailStatus());
 						queuedTaskHolder.setEndDate(new Date());
+						queuedTaskHolder.setReport(report);
 						queuedTaskHolder.setResult(Throwables.getStackTraceAsString(beforeTaskResult));
 						queuedTaskHolderService.update(queuedTaskHolder);
 					} catch (Exception e) {
@@ -104,6 +114,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 					queuedTaskHolder.setEndDate(new Date());
 					queuedTaskHolder.setStatus(TaskStatus.COMPLETED);
+					queuedTaskHolder.setReport(report);
 					queuedTaskHolderService.update(queuedTaskHolder);
 
 					return null;
@@ -123,8 +134,9 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskResult);
 
-						queuedTaskHolder.setStatus(TaskStatus.FAILED);
+						queuedTaskHolder.setStatus(onFailStatus());
 						queuedTaskHolder.setEndDate(new Date());
+						queuedTaskHolder.setReport(report);
 						queuedTaskHolder.setResult(Throwables.getStackTraceAsString(taskResult));
 						queuedTaskHolderService.update(queuedTaskHolder);
 					} catch (Exception e) {
@@ -167,5 +179,19 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+
+	public String getReport() {
+		return report;
+	}
+
+	public void setReport(String report) {
+		this.report = report;
+	}
+
+	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
+	public TaskStatus onFailStatus() {
+		return TaskStatus.FAILED;
 	}
 }
