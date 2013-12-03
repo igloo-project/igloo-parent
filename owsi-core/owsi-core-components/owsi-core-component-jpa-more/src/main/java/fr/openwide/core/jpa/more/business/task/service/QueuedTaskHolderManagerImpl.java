@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -28,8 +27,6 @@ import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
 
-	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
-
 	private static final String THREAD_NAME = "Queued_Task_Holder_Executor";
 
 	@Autowired
@@ -37,6 +34,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	@Autowired
 	private IQueuedTaskHolderConsumer queuedTaskHolderConsumer;
+
+	@Autowired
+	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired
 	private CoreConfigurer configurer;
@@ -128,9 +128,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		QueuedTaskHolder newQueuedTaskHolder = null;
 		String serializedTask;
 		try {
-			serializedTask = OBJECT_MAPPER.writeValueAsString(task);
+			serializedTask = queuedTaskHolderObjectMapper.writeValueAsString(task);
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Serialized task: " + OBJECT_MAPPER.writeValueAsString(task));
+				LOGGER.debug("Serialized task: " + serializedTask);
 			}
 
 			newQueuedTaskHolder = new QueuedTaskHolder(task.getTaskName(), task.getTaskType(), serializedTask);
@@ -155,7 +155,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 		if (queuedTaskHolder != null) {
 			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
-			queuedTaskHolder.setResult(null);
+			queuedTaskHolder.resetExecutionInformation();
 			queuedTaskHolderService.update(queuedTaskHolder);
 			
 			if (active) {
@@ -241,7 +241,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 				try {
 					queuedTaskHolder.setStatus(TaskStatus.INTERRUPTED);
 					queuedTaskHolder.setEndDate(new Date());
-					queuedTaskHolder.setResult(null);
+					queuedTaskHolder.resetExecutionInformation();
 					queuedTaskHolderService.update(queuedTaskHolder);
 				} catch (Exception e) {
 					throw new RuntimeException(e);

@@ -70,7 +70,7 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 
 		for (QueuedTaskHolder queuedTaskHolder : queuedTaskHolderList) {
 			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
-			queuedTaskHolder.setResult(null);
+			queuedTaskHolder.resetExecutionInformation();
 			update(queuedTaskHolder);
 			taskIds.add(queuedTaskHolder.getId());
 		}

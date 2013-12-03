@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
@@ -33,12 +32,13 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
+	private ObjectMapper queuedTaskHolderObjectMapper;
+
+	@Autowired
 	private EntityManagerUtils entityManagerUtils;
 
 	@Autowired
 	private ApplicationContext applicationContext;
-
-	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
 
 	@Override
 	public void setQueue(BlockingQueue<Long> queue) {
@@ -98,7 +98,7 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 			if (queuedTaskHolder != null) {
 				queuedTaskHolder.setStatus(TaskStatus.INTERRUPTED);
 				queuedTaskHolder.setEndDate(new Date());
-				queuedTaskHolder.setResult(null);
+				queuedTaskHolder.resetExecutionInformation();
 			}
 			
 			working.set(false);
@@ -110,7 +110,7 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 
 	protected void consume(QueuedTaskHolder queuedTaskHolder) throws InterruptedException {
 		try {
-			AbstractTask runnableTask = OBJECT_MAPPER.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
+			AbstractTask runnableTask = queuedTaskHolderObjectMapper.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
 			runnableTask.setQueuedTaskHolderId(queuedTaskHolder.getId());
 			SpringBeanUtils.autowireBean(applicationContext, runnableTask);
 			runnableTask.run();
@@ -138,5 +138,4 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 	public void start() {
 		active = true;
 	}
-
 }

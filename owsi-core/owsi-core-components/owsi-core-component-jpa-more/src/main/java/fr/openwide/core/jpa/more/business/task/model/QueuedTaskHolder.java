@@ -20,6 +20,8 @@ import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.springframework.core.style.ToStringCreator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
@@ -78,6 +80,10 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Column
 	@Type(type = "org.hibernate.type.StringClobType")
 	private String result;
+
+	@Column
+	@Type(type = "org.hibernate.type.StringClobType")
+	private String report;
 
 	protected QueuedTaskHolder() {
 	}
@@ -178,6 +184,21 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public String getReport() {
+		return report;
+	}
+
+	public void setReport(String report) {
+		this.report = report;
+	}
+
+	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
+	public void resetExecutionInformation() {
+		result = null;
+		report = null;
 	}
 
 	@Override
