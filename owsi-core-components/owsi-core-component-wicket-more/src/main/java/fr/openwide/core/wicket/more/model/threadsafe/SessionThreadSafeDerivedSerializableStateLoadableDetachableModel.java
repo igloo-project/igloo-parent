@@ -72,13 +72,6 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 		threadContext.sharedSerializableStateOnLastLoad = sharedSerializableState.get();
 		return load(threadContext.sharedSerializableStateOnLastLoad);
 	}
-	
-	@Override
-	protected final void onSetObject(ThreadContextImpl threadContext) {
-		S serializableObject = makeSerializable(threadContext.getTransientModelObject());
-		sharedSerializableState.set(serializableObject);
-		threadContext.sharedSerializableStateOnLastLoad = serializableObject;
-	}
 
 	/**
 	 * Loads the model object value from the implementation-defined data source, using given {@link #makeSerializable(Object) serializable state}.
@@ -86,6 +79,18 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	 * @see #makeSerializable(T)
 	 */
 	protected abstract T load(S serializableState);
+	
+	@Override
+	protected final void onSetObject(ThreadContextImpl threadContext) {
+		S serializableObject = makeSerializable(threadContext.getTransientModelObject());
+		sharedSerializableState.set(serializableObject);
+		threadContext.sharedSerializableStateOnLastLoad = serializableObject;
+		onSetObject(threadContext.getTransientModelObject());
+	}
+	
+	protected void onSetObject(T object) {
+		// Does nothing by default
+	}
 	
 	/**
 	 * Creates the serializable state from the given object.
