@@ -85,10 +85,10 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 		S serializableObject = makeSerializable(threadContext.getTransientModelObject());
 		sharedSerializableState.set(serializableObject);
 		threadContext.sharedSerializableStateOnLastLoad = serializableObject;
-		onSetObject(threadContext.getTransientModelObject());
+		save(threadContext.getTransientModelObject());
 	}
 	
-	protected void onSetObject(T object) {
+	protected void save(T object) {
 		// Does nothing by default
 	}
 	
