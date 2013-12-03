@@ -6,6 +6,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
+import com.google.common.base.Predicate;
+
 import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder.Visibility;
 
@@ -53,8 +55,20 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	}
 	
 	@Override
+	public <T2> T model(Predicate<? super T2> predicate, IModel<? extends T2> model) {
+		visibilityBuilder.model(predicate, model);
+		return thisAsT();
+	}
+	
+	@Override
 	public T models(IModel<?> firstModel, IModel<?>... otherModels) {
 		visibilityBuilder.models(firstModel, otherModels);
+		return thisAsT();
+	}
+	
+	@Override
+	public <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, IModel<? extends T2>... otherModels) {
+		visibilityBuilder.models(predicate, firstModel, otherModels);
 		return thisAsT();
 	}
 	

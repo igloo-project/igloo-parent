@@ -1,6 +1,9 @@
 package fr.openwide.core.showcase.web.application.others.page;
 
+import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -17,8 +20,10 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.commons.util.functional.AbstractSerializablePredicate;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
@@ -97,6 +102,19 @@ public class HideableComponentsPage extends MainTemplate {
 				enclosureBehaviorComponent
 		);
 		
+		// Predicate-based hideable components
+		Predicate<Collection<?>> moreThanOneElementPredicate = new AbstractSerializablePredicate<Collection<?>>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean apply(@Nullable Collection<?> input) {
+				return input != null && input.size() > 1;
+			}
+		};
+		
+		updatedContainer.add(
+				new EnclosureContainer("moreThanOneElementEnclosureContainer").model(moreThanOneElementPredicate, collectionModel),
+				new PlaceholderContainer("moreThanOneElementPlaceholderContainer").model(moreThanOneElementPredicate, collectionModel)
+		);
 		
 		// Component-based hideable components
 		
