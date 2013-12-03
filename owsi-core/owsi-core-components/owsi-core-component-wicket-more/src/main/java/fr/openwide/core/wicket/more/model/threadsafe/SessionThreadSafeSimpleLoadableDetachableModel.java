@@ -48,10 +48,10 @@ public abstract class SessionThreadSafeSimpleLoadableDetachableModel<T>
 	
 	@Override
 	protected final void onSetObject(ThreadContextImpl threadContext) {
-		onSetObject(threadContext.getTransientModelObject());
+		save(threadContext.getTransientModelObject());
 	}
 	
-	protected void onSetObject(T object) {
+	protected void save(T object) {
 		// Does nothing by default
 	}
 	
