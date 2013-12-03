@@ -40,4 +40,13 @@ public class WicketTesterTestExecutionListener extends AbstractTestExecutionList
 		}
 		testCase.setWicketTester((WicketTester)tester);
 	}
+	
+	@Override
+	public void afterTestClass(TestContext testContext) throws Exception {
+		WicketTester tester = (WicketTester) testContext.getAttribute(WICKET_TESTER_ATTRIBUTE);
+		if (!(tester instanceof WicketTester)) {
+			throw new IllegalStateException("Missing or invalid wicket tester - someone messed up with the test context.");
+		}
+		tester.destroy();
+	}
 }
