@@ -48,6 +48,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	protected C load(SerializableState serializableState) {
 		C entityCollection = createEntityCollection();
 		
+		// Never, ever return null
 		if (serializableState == null) {
 			return entityCollection;
 		}
@@ -68,6 +69,20 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 				entityCollection.add(toEntity(id));
 			}
 		}
+		
+		return entityCollection;
+	}
+	
+	@Override
+	protected C wrap(C object) {
+		C entityCollection = createEntityCollection();
+		
+		// Never, ever return null
+		if (object == null) {
+			return entityCollection;
+		}
+		
+		entityCollection.addAll(object);
 		
 		return entityCollection;
 	}
