@@ -69,7 +69,7 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 
 			@Override
 			protected boolean matchesSafely(C item) {
-				return item != null && item.isEmpty();
+				return item.isEmpty();
 			}
 		};
 	}
@@ -113,6 +113,7 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 	@Test
 	public void testNotAttached() {
 		IModel<C> model = createModel();
+		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);
 		assertThat(model.getObject(), isEmpty());
 	}
@@ -121,6 +122,7 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 	public void testAttachedNull() {
 		IModel<C> model = createModel();
 		model.setObject(null);
+		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);
 		assertThat(model.getObject(), isEmpty());
 	}
@@ -223,6 +225,25 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		Iterator<Person> it = modelObject.iterator();
 		assertNull(it.next());
 		assertThat(it.next(), attachedToSession());
+	}
+	
+	@Test
+	public void testCollectionChangeWithoutSetObject() throws Exception {
+		Person person1 = new Person("John", "Doe");
+		Person person2 = new Person("John2", "Doe2");
+		personService.create(person1);
+		assertThat(person1, attachedToSession());
+		
+		C collection = createCollection(person1, person2);
+		
+		IModel<C> model = createModel();
+		C collectionSetOnModel = clone(collection);
+		model.setObject(collectionSetOnModel);
+		assertThat(model.getObject(), equals(collection));
+		
+		Person person3 = new Person("John3", "Doe3");
+		collectionSetOnModel.add(person3);
+		assertThat(model.getObject(), equals(collection));
 	}
 
 }
