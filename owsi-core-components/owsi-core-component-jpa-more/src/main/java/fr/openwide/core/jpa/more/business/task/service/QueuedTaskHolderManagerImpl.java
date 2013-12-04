@@ -13,6 +13,7 @@ import javax.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,6 +22,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
+import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 
@@ -36,6 +38,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	private IQueuedTaskHolderConsumer queuedTaskHolderConsumer;
 
 	@Autowired
+	@Qualifier(JpaMoreTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired

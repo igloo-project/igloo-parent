@@ -18,8 +18,10 @@ import fr.openwide.core.jpa.more.business.task.service.QueuedTaskHolderServiceIm
 
 @ComponentScan(basePackageClasses = { JpaMoreBusinessPackage.class })
 public class JpaMoreTaskManagementConfig {
+	
+	public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
 
-	@Bean(name = "queuedTaskHolderObjectMapper")
+	@Bean(name = OBJECT_MAPPER_BEAN_NAME)
 	public ObjectMapper queuedTaskHolderObjectMapper() {
 		return new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
 	}

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
+import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
@@ -33,7 +34,7 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
-	@Qualifier("queuedTaskHolderObjectMapper")
+	@Qualifier(JpaMoreTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired
