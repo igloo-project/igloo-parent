@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.util.HibernateUtils;
 
 public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 		<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, C extends Collection<E>>
-		extends SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<C, AbstractSessionThreadSafeGenericEntityCollectionModel.SerializableState<K, E>> {
+		extends SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<C, AbstractSessionThreadSafeGenericEntityCollectionModel<K, E, C>.SerializableState> {
 
 	private static final long serialVersionUID = -1768835911782930879L;
 
@@ -35,7 +35,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	}
 
 	protected abstract C createEntityCollection();
-
+	
 	protected K toId(E entity) {
 		return entity.getId();
 	}
@@ -45,7 +45,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	}
 
 	@Override
-	protected C load(SerializableState<K, E> serializableState) {
+	protected C load(SerializableState serializableState) {
 		C entityCollection = createEntityCollection();
 		
 		if (serializableState == null) {
@@ -73,11 +73,11 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	}
 	
 	@Override
-	protected SerializableState<K, E> makeSerializable(C currentObject) {
-		return new SerializableState<K, E>(currentObject);
+	protected SerializableState makeSerializable(C currentObject) {
+		return new SerializableState(currentObject);
 	}
 	
-	protected static class SerializableState<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable {
+	protected class SerializableState implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private final List<K> idList = Lists.newArrayList();
@@ -95,7 +95,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 						idList.add(null);
 					} else {
 						unsavedEntityList.add(null);
-						idList.add(entity.getId());
+						idList.add(toId(entity));
 					}
 				}
 			}
@@ -110,10 +110,10 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 			if (obj == this) {
 				return true;
 			}
-			if (!(obj instanceof SerializableState)) {
+			if (!(obj instanceof AbstractSessionThreadSafeGenericEntityCollectionModel.SerializableState)) {
 				return false;
 			}
-			SerializableState<K, E> other = (SerializableState<K, E>) obj;
+			SerializableState other = (SerializableState) obj;
 			
 			return new EqualsBuilder()
 					.append(idList, other.idList)
