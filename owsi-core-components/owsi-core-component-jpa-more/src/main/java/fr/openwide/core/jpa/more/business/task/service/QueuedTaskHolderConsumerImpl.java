@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +33,7 @@ public class QueuedTaskHolderConsumerImpl implements IQueuedTaskHolderConsumer {
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
+	@Qualifier("queuedTaskHolderObjectMapper")
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired
