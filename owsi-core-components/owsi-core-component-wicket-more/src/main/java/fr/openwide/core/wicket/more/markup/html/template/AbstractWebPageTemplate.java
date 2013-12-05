@@ -34,16 +34,15 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
 	}
 	
-	private final IModel<List<BreadCrumbElement>> headPageTitlePrependedElementsModel = newBreadCrumbListModel();
-	private final IModel<List<BreadCrumbElement>> headPageTitleElementsModel = newBreadCrumbListModel();
+	protected final IModel<List<BreadCrumbElement>> headPageTitlePrependedElementsModel = newBreadCrumbListModel();
+	protected final IModel<List<BreadCrumbElement>> headPageTitleElementsModel = newBreadCrumbListModel();
 	
 	private final IModel<Boolean> headPageTitleReversedModel = Model.of(false);
 	private final IModel<String> headPageTitleSeparatorModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR);
 	private final IModel<String> headPageTitleSeparatorReverseModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE);
 	
-	private final IModel<List<BreadCrumbElement>> bodyBreadCrumbPrependedElementsModel = newBreadCrumbListModel();
-	
-	private final IModel<List<BreadCrumbElement>> breadCrumbElementsModel = newBreadCrumbListModel();
+	protected final IModel<List<BreadCrumbElement>> bodyBreadCrumbPrependedElementsModel = newBreadCrumbListModel();
+	protected final IModel<List<BreadCrumbElement>> breadCrumbElementsModel = newBreadCrumbListModel();
 	
 	public AbstractWebPageTemplate(PageParameters parameters) {
 		super(parameters);
