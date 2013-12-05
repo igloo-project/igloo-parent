@@ -62,8 +62,8 @@
 		createMoreLink: function() {
 			return link = $("<a></a>")
 				.attr("href", "#")
-				.append($("<span class='icon-plus more-icon-open'></span>"))
-				.append($("<span class='icon-minus more-icon-close'></span>"));
+				.append($("<span class='icon-plus fa fa-plus more-icon-open'></span>"))
+				.append($("<span class='icon-minus fa fa-minus more-icon-close'></span>"));
 		}
 	};
 

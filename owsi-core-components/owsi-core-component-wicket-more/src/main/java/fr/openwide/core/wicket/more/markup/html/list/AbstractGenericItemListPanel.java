@@ -263,7 +263,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	protected IModel<String> getActionBootstrapIconClass(final IModel<? extends T> itemModel) {
-		return Model.of("icon-search");
+		return Model.of("icon-search fa fa-search fa-fw");
 	}
 
 	/**
@@ -295,7 +295,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	protected IModel<String> getEditBootstrapIconClass(final IModel<? extends T> itemModel) {
-		return Model.of("icon-pencil");
+		return Model.of("icon-pencil fa fa-pencil fa-fw");
 	}
 	
 	/**
@@ -323,7 +323,7 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 	}
 
 	protected IModel<String> getDeleteBootstrapIconClass(final IModel<? extends T> itemModel) {
-		return Model.of("icon-trash");
+		return Model.of("icon-trash fa fa-trash-o fa-fw");
 	}
 	
 	/**

@@ -51,17 +51,17 @@ public class TaskStatusPanel extends Panel {
 			public String getObject() {
 				switch (statusModel.getObject()) {
 				case CANCELLED:
-					return "icon-eject";
+					return "fa-eject icon-eject";
 				case COMPLETED:
-					return "icon-ok";
+					return "fa-check icon-ok";
 				case FAILED:
-					return "icon-remove";
+					return "fa-times icon-remove";
 				case INTERRUPTED:
-					return "icon-pause";
+					return "fa-pause icon-pause";
 				case RUNNING:
-					return "icon-repeat";
+					return "fa-repeat icon-repeat";
 				case TO_RUN:
-					return "icon-play";
+					return "fa-play icon-play";
 				default:
 					return "";
 				}
