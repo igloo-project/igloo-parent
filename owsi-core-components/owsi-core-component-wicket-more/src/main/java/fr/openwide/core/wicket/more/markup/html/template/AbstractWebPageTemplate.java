@@ -23,23 +23,19 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 public abstract class AbstractWebPageTemplate extends CoreWebPage {
 
 	private static final long serialVersionUID = -5598937641577320345L;
-
-	private static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR = " › ";
-	
-	private static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE = " ‹ ";
 	
 	public static final String BOOTSTRAP3_VARIATION = "bs3";
+
+	protected static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR = " › ";
 	
-	private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
-		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
-	}
+	protected static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE = " ‹ ";
 	
 	protected final IModel<List<BreadCrumbElement>> headPageTitlePrependedElementsModel = newBreadCrumbListModel();
 	protected final IModel<List<BreadCrumbElement>> headPageTitleElementsModel = newBreadCrumbListModel();
 	
-	private final IModel<Boolean> headPageTitleReversedModel = Model.of(false);
-	private final IModel<String> headPageTitleSeparatorModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR);
-	private final IModel<String> headPageTitleSeparatorReverseModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE);
+	protected final IModel<Boolean> headPageTitleReversedModel = Model.of(false);
+	protected final IModel<String> headPageTitleSeparatorModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR);
+	protected final IModel<String> headPageTitleSeparatorReverseModel = Model.of(DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE);
 	
 	protected final IModel<List<BreadCrumbElement>> bodyBreadCrumbPrependedElementsModel = newBreadCrumbListModel();
 	protected final IModel<List<BreadCrumbElement>> breadCrumbElementsModel = newBreadCrumbListModel();
@@ -88,6 +84,10 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	protected abstract Class<? extends WebPage> getFirstMenuPage();
 	
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
+	
+	private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
+		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
+	}
 	
 	/** Add a breadcrumb element to be preprended to HTML head title only (not to HTML body breadcrumb)
 	 */
