@@ -50,13 +50,13 @@
 						$("<div class='modal-footer'></div>")
 							.append(
 								$("<button class='btn btn-default' href='#' data-dismiss='modal'></a>")
-									.append($("<span class='icon-ban-circle'></span>"))
+									.append($("<span class='icon-ban-circle fa fa-ban'></span>"))
 									.append(document.createTextNode(" " + noLabel))
 									.click(onCancel)
 							)
 							.append(
 								$("<button class='btn btn-success' href='#'></a>")
-									.append($("<span class='icon-ok icon-white'></span>"))
+									.append($("<span class='icon-ok icon-white fa fa-check'></span>"))
 									.append(document.createTextNode(" " + yesLabel))
 									.click(onConfirm)
 							)

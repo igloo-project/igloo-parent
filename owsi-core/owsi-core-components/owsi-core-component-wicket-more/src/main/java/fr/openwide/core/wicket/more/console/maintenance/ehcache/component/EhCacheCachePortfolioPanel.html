@@ -7,11 +7,11 @@
 				<div class="subtitle">
 					<div class="actions">
 						<button wicket:id="clearStatistics" class="btn btn-mini btn-primary" type="button">
-							<i class="icon-refresh icon-white"></i>
+							<i class="fa fa-refresh icon-refresh icon-white"></i>
 							<wicket:message key="console.maintenance.ehcache.cacheManager.statistics.clear.title" />
 						</button>
 						<button wicket:id="cacheManagerPurgeLink" class="btn btn-mini btn-danger" type="button">
-							<i class="icon-trash icon-white"></i>
+							<i class="fa fa-trash-o icon-trash icon-white"></i>
 							<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
 						</button>
 					</div>
@@ -41,9 +41,9 @@
 						<wicket:container wicket:id="cacheList">
 							<tr class="cache-line-main filter-element">
 								<td rowspan="2" class="cache-name" style="vertical-align:middle">
-									<span class="icon icon-chevron-down show" wicket:message="title:console.maintenance.ehcache.portfolio.nom.show" />
-									<span class="icon icon-chevron-up hide" wicket:message="title:console.maintenance.ehcache.portfolio.nom.hide" />
-									<span class="icon icon-pushpin" wicket:id="copyToClipboard" wicket:message="title:console.maintenance.ehcache.portfolio.nom.copy" />
+									<span class="fa fa-chevron-down icon icon-chevron-down show" wicket:message="title:console.maintenance.ehcache.portfolio.nom.show" />
+									<span class="fa fa-chevron-up icon icon-chevron-up hide" wicket:message="title:console.maintenance.ehcache.portfolio.nom.hide" />
+									<span class="fa fa-thumb-tack icon icon-pushpin" wicket:id="copyToClipboard" wicket:message="title:console.maintenance.ehcache.portfolio.nom.copy" />
 									<span wicket:id="cacheName"></span><br />
 									<input wicket:id="cacheNameInput" class="cache-name-input" type="text" />
 								</td>
@@ -58,11 +58,11 @@
 									<div class="actions">
 										<button wicket:id="modifierCache" class="btn btn-mini btn-primary" type="button"
 											style="padding-right: 2px" wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
-											<i class="icon-pencil icon-white"></i>
+											<i class="fa fa-pencil icon-pencil icon-white"></i>
 										</button>
 										<button wicket:id="viderCache" class="btn btn-mini btn-danger" type="button"
 											style="padding-right: 2px" wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
-											<i class="icon-trash icon-white"></i>
+											<i class="fa fa-trash-o icon-trash icon-white"></i>
 										</button>
 										<div wicket:id="modificationPanel"></div>
 									</div>
