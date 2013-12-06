@@ -6,9 +6,7 @@ import org.apache.wicket.markup.parser.XmlTag.TagType;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Classes;
 
-import fr.openwide.core.wicket.markup.html.basic.GenericLabel;
-
-public class EnumCoreLabel<E extends Enum<E>> extends GenericLabel<E, EnumCoreLabel<E>> {
+public class EnumCoreLabel<E extends Enum<E>> extends AbstractGenericLabel<E, EnumCoreLabel<E>> {
 
 	private static final long serialVersionUID = 1809672380316539749L;
 	
