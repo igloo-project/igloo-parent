@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.markup.html.basic;
 
 import org.apache.wicket.model.IModel;
 
-public class GenericLabel<E> extends AbstractCoreLabel<GenericLabel<E>> {
+public class GenericLabel<E, T extends GenericLabel<E, T>> extends AbstractCoreLabel<GenericLabel<E, T>> {
 	
 	private static final long serialVersionUID = -6956425366331256600L;
 	
@@ -14,7 +14,7 @@ public class GenericLabel<E> extends AbstractCoreLabel<GenericLabel<E>> {
 	}
 	
 	@Override
-	protected GenericLabel<E> thisAsT() {
+	protected GenericLabel<E, T> thisAsT() {
 		return this;
 	}
 	

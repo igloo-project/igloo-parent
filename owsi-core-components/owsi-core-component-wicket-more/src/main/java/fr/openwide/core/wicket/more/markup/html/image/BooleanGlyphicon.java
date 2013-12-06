@@ -11,7 +11,10 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
  * Container utilisant les glyphicons de Bootstrap et affichant
  * une icône selon que le model soit true ou false.
  * Par défaut un tick ou une croix avec possibilité de personnaliser.
+ * 
+ * @deprecated Utiliser {@link BooleanIcon}
  */
+@Deprecated
 public class BooleanGlyphicon extends WebMarkupContainer {
 
 	private static final long serialVersionUID = -7046943814231028574L;
