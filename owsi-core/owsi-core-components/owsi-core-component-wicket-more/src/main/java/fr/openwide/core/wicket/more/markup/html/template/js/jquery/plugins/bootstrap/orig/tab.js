@@ -129,19 +129,7 @@
 
   $(document).on('click.bs.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
     e.preventDefault()
-    if (history.replaceState) {
-      var link = $(e.target).closest("a");
-      if (link) {
-        history.replaceState(null, null, link.prop("href"));
-      }
-    }
     $(this).tab('show')
   })
 
 }(jQuery);
-
-$(document).ready(function() {
-  if (window.location.hash) {
-    $('ul a[href=' + window.location.hash.replace('/', '') + ']').tab('show');
-  }
-});
