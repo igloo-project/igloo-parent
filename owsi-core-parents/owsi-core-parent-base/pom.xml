@@ -972,6 +972,19 @@
 					<version>${owsi-core.jersey2.version}</version>
 					<scope>test</scope>
 				</dependency>
+				
+				<dependency>
+					<groupId>org.glassfish.jersey.containers</groupId>
+					<artifactId>jersey-container-grizzly2-servlet</artifactId>
+					<version>${owsi-core.jersey2.version}</version>
+					<scope>test</scope>
+					<exclusions>
+						<exclusion>
+							<groupId>javax.servlet</groupId>
+							<artifactId>servlet-api</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
 			
 		</dependencies>
 	</dependencyManagement>
