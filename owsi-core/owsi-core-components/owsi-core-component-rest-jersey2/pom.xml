@@ -80,8 +80,30 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-servlet</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Database pooling (tests) -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Servlet API (tests) -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
