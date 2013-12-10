@@ -12,8 +12,7 @@ import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.rules.ExternalResource;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
@@ -21,27 +20,39 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 
 import fr.openwide.core.commons.util.logging.SLF4JLoggingListener;
 import fr.openwide.core.spring.config.ExtendedApplicationContextInitializer;
-import fr.openwide.core.test.AbstractJpaCoreTestCase;
 
-public abstract class AbstractRestServiceTestCase extends AbstractJpaCoreTestCase {
-	
+/**
+ * How to use :
+ * <ul>
+ * <li>Add a public field of this type to your test
+ * <li>Annotate this field with @Rule
+ * <li>Make sure this field is initialized when your test is constructed
+ * </ul>
+ */
+public abstract class RestServerTestResource extends ExternalResource {
+
 	private final String schemeAndHost;
 	private final int port;
 	private final String contextPath;
 	private final String servletPath;
+	private final Class<?> javaConfigClass;
 	
 	private HttpServer server;
 	
-	public AbstractRestServiceTestCase(String schemeAndHost, int port, String contextPath, String servletPath) {
+	public RestServerTestResource(String schemeAndHost, int port, String contextPath, String servletPath, Class<?> javaConfigClass) {
 		super();
 		this.schemeAndHost = schemeAndHost;
 		this.port = port;
 		this.contextPath = contextPath;
 		this.servletPath = servletPath;
+		this.javaConfigClass = javaConfigClass;
 	}
-
-	@Before
-	public final void startServer() throws Exception {
+	
+	/**
+	 * Start the REST server
+	 */
+	@Override
+	protected void before() throws Throwable {
 		ResourceConfig resource = createApplication();
 		try {
 			server = createServer(resource);
@@ -51,8 +62,11 @@ public abstract class AbstractRestServiceTestCase extends AbstractJpaCoreTestCas
 		}
 	}
 
-	@After
-	public final void stopServer() {
+	/**
+	 * Stop the REST server
+	 */
+	@Override
+	public final void after() {
 		if (server != null) {
 			server.stop();
 		}
@@ -77,7 +91,6 @@ public abstract class AbstractRestServiceTestCase extends AbstractJpaCoreTestCas
 	protected void configureContext(WebappContext context) {
 		context.setInitParameter(ContextLoader.CONTEXT_CLASS_PARAM, AnnotationConfigWebApplicationContext.class.getName());
 		context.setInitParameter(ContextLoader.CONTEXT_INITIALIZER_CLASSES_PARAM, ExtendedApplicationContextInitializer.class.getName());
-		Class<?> javaConfigClass = getJavaConfigClass();
 		if (javaConfigClass != null) {
 			context.setInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, javaConfigClass.getName());
 		}
@@ -94,23 +107,23 @@ public abstract class AbstractRestServiceTestCase extends AbstractJpaCoreTestCas
 		restFilterRegistration.addMapping(getServletPath() + "/*");
 	}
 	
-	protected final String getSchemeAndHost() {
+	public final String getSchemeAndHost() {
 		return schemeAndHost;
 	}
 	
-	protected final int getPort() {
+	public final int getPort() {
 		return port;
 	}
 	
-	protected final String getContextPath() {
+	public final String getContextPath() {
 		return contextPath;
 	}
 	
-	protected final String getServletPath() {
+	public final String getServletPath() {
 		return servletPath;
 	}
 	
-	protected final URI getBaseUri() {
+	public final URI getBaseUri() {
 		return UriBuilder.fromUri(getSchemeAndHost())
 				.port(getPort())
 				.path(getContextPath())
@@ -119,7 +132,4 @@ public abstract class AbstractRestServiceTestCase extends AbstractJpaCoreTestCas
 	}
 
 	protected abstract ResourceConfig createApplication();
-	
-	protected abstract Class<?> getJavaConfigClass();
-
 }
