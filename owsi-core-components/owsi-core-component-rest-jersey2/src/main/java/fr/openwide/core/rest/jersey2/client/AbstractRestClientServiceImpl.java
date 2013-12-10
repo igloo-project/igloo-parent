@@ -13,14 +13,19 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 public abstract class AbstractRestClientServiceImpl {
 	
-	private final String schemeAndHost;
-	private final int port;
-	private final String path;
+	private final URI targetUri;
 	
 	protected AbstractRestClientServiceImpl(String schemeAndHost, int port, String path) {
-		this.schemeAndHost = schemeAndHost;
-		this.port = port;
-		this.path = path;
+		this(
+				UriBuilder.fromUri(schemeAndHost)
+				.port(port)
+				.path(path)
+				.build()
+		);
+	}
+	
+	protected AbstractRestClientServiceImpl(URI remoteServiceUri) {
+		this.targetUri = remoteServiceUri;
 	}
 	
 	protected Client createJerseyClient() {
@@ -30,15 +35,11 @@ public abstract class AbstractRestClientServiceImpl {
 				.build();
 	}
 	
-	protected String getServiceUrl() {
-		URI uri = UriBuilder.fromUri(schemeAndHost)
-				.port(port)
-				.path(path)
-				.build();
-		return uri.toString();
+	protected URI getTargetUri() {
+		return targetUri;
 	}
 	
 	protected WebTarget getTarget() {
-		return createJerseyClient().target(getServiceUrl());
+		return createJerseyClient().target(targetUri);
 	}
 }
