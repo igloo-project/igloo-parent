@@ -127,8 +127,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	}
 	
 	protected Component createBodyBreadCrumb(String wicketId) {
-		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel)
-				.setTrailingSeparator(true);
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel);
 	}
 
 	@Override

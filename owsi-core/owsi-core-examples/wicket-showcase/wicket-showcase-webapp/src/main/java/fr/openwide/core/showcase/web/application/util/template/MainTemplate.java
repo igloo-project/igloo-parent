@@ -35,6 +35,7 @@ import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
@@ -167,6 +168,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	}
 	
 	protected abstract List<NavigationMenuItem> getSubNav();
+	
+	@Override
+	protected Component createBodyBreadCrumb(String wicketId) {
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel)
+				.setTrailingSeparator(true);
+	}
 	
 	protected boolean isBreadCrumbDisplayed() {
 		return true;
