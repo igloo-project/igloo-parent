@@ -11,7 +11,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfolioPanel;
@@ -22,7 +21,6 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class PortfolioMainPage extends MainTemplate {
 	private static final long serialVersionUID = 6572019030268485555L;
@@ -45,14 +43,15 @@ public class PortfolioMainPage extends MainTemplate {
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.linkDescriptor()));
 		
 		IModel<String> searchTermModel = Model.of("");
-		IModel<User> userModel = new GenericEntityModel<Long, User>(null);
 		IModel<Boolean> activeModel = Model.of(true);
 		
+		// Porfolio
 		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", new UserDataProvider(
 				searchTermModel, activeModel), showcaseConfigurer.getPortfolioItemsPerPage());
 		add(portfolioPanel);
 		
-		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getPageable(), searchTermModel, userModel, activeModel));
+		// Search
+		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getPageable(), searchTermModel, activeModel));
 	}
 	
 	@Override

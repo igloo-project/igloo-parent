@@ -2,31 +2,37 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="tasks.pageTitle" /></h1>
-		
-		<div class="row">
-			<div class="span4">
-				<h2><wicket:message key="tasks.createTask" /></h2>
-				<a wicket:id="createSuccessTask" class="btn btn-success">Success task</a>
-				<a wicket:id="createFailedTask" class="btn btn-danger">Failed task</a>
-				<a wicket:id="createStopQueueTask" class="btn btn-warning">Create task and stop queue</a>
-			</div>
-			<div class="span2">
-				<h2><wicket:message key="tasks.manageQueue" /></h2>
-				<a wicket:id="startQueue" class="btn btn-success">Start</a>
-				<a wicket:id="stopQueue" class="btn btn-danger">Stop</a>
-			</div>
-			<div class="span6">
-				<h2><wicket:message key="tasks.information" /></h2>
-				<div wicket:id="queuedTaskHolders">
-					<span wicket:id="id" /> · <span wicket:id="name" /> · <span wicket:id="status" />
-				</div>
-				<div wicket:id="placeholder" class="alert">
-					<wicket:message key="tasks.list.empty" />
-				</div>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="tasks.pageTitle" /></h1>
 			</div>
 		</div>
 		
-		
+		<div class="main-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<h2><wicket:message key="tasks.createTask" /></h2>
+						<a wicket:id="createSuccessTask" class="btn btn-success">Success task</a>
+						<a wicket:id="createFailedTask" class="btn btn-danger">Failed task</a>
+						<a wicket:id="createStopQueueTask" class="btn btn-warning">Create task and stop queue</a>
+					</div>
+					<div class="col-md-2">
+						<h2><wicket:message key="tasks.manageQueue" /></h2>
+						<a wicket:id="startQueue" class="btn btn-success">Start</a>
+						<a wicket:id="stopQueue" class="btn btn-danger">Stop</a>
+					</div>
+					<div class="col-md-6">
+						<h2><wicket:message key="tasks.information" /></h2>
+						<div wicket:id="queuedTaskHolders">
+							<span wicket:id="id" /> · <span wicket:id="name" /> · <span wicket:id="status" />
+						</div>
+						<div wicket:id="placeholder" class="alert">
+							<wicket:message key="tasks.list.empty" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</wicket:extend>
 </html>

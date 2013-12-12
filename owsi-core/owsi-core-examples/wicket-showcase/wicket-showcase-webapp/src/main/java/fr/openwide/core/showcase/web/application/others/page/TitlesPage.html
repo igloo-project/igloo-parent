@@ -2,40 +2,50 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1>
-			<span class="btn-group pull-right">
-				<button class="btn btn-default" type="button">
-					<span class="icon-ok" />
-					<wicket:message key="titles.button" />
-				</button>
-				<button class="btn btn-default" type="button">
-					<span class="icon-ok" />
-					<wicket:message key="titles.button" />
-				</button>
-			</span>
-			<wicket:message key="titles.pageTitle" />
-		</h1>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="navigation.titles" /></h1>
+			</div>
+		</div>
 		
-		<h2>
-			<span class="btn-group pull-right">
-				<button class="btn btn-default" type="button">
-					<span class="icon-ok" />
-					<wicket:message key="titles.button" />
-				</button>
-				<button class="btn btn-default" type="button">
-					<span class="icon-ok" />
-					<wicket:message key="titles.button" />
-				</button>
-			</span>
-			<wicket:message key="titles.level2" />
-		</h2>
-		
-		<h3><wicket:message key="titles.level3" /></h3>
-		
-		<h4><wicket:message key="titles.level4" /></h4>
-		
-		<h5><wicket:message key="titles.level5" /></h5>
-		
-		<h6><wicket:message key="titles.level6" /></h6>
+		<div class="main-content">
+			<div class="container">
+				<h1>
+					<span class="btn-group pull-right">
+						<button class="btn btn-default" type="button">
+							<span class="icon-ok" />
+							<wicket:message key="titles.button" />
+						</button>
+						<button class="btn btn-default" type="button">
+							<span class="icon-ok" />
+							<wicket:message key="titles.button" />
+						</button>
+					</span>
+					<wicket:message key="titles.pageTitle" />
+				</h1>
+				
+				<h2>
+					<span class="btn-group pull-right">
+						<button class="btn btn-default" type="button">
+							<span class="icon-ok" />
+							<wicket:message key="titles.button" />
+						</button>
+						<button class="btn btn-default" type="button">
+							<span class="icon-ok" />
+							<wicket:message key="titles.button" />
+						</button>
+					</span>
+					<wicket:message key="titles.level2" />
+				</h2>
+				
+				<h3><wicket:message key="titles.level3" /></h3>
+				
+				<h4><wicket:message key="titles.level4" /></h4>
+				
+				<h5><wicket:message key="titles.level5" /></h5>
+				
+				<h6><wicket:message key="titles.level6" /></h6>
+			</div>
+		</div>
 	</wicket:extend>
 </html>

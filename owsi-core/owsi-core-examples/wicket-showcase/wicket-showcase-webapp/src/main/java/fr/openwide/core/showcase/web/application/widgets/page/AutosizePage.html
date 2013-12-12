@@ -2,19 +2,27 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.autosize.title" /></h1>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="widgets.autosize.title" /></h1>
+			</div>
+		</div>
 		
-		<p>
-			<wicket:message key="widgets.autosize.explanation" />
-		</p>
-		
-		<h2><wicket:message key="widgets.autosize.default.title" /></h2>
-		<textarea class="form-control plugin-autosize" wicket:id="defaultBehavior"></textarea>
-		
-		<h2><wicket:message key="widgets.autosize.maxHeight.title" /></h2>
-		<textarea class="form-control plugin-autosize plugin-autosize-max-height" wicket:id="withMaxHeight"></textarea>
-		
-		<h1><wicket:message key="widgets.autosize.more.title" /></h1>
-		<div wicket:id="multiLineLabel" />
+		<div class="main-content">
+			<div class="container">
+				<p>
+					<wicket:message key="widgets.autosize.explanation" />
+				</p>
+				
+				<h2><wicket:message key="widgets.autosize.default.title" /></h2>
+				<textarea class="form-control plugin-autosize" wicket:id="defaultBehavior"></textarea>
+				
+				<h2><wicket:message key="widgets.autosize.maxHeight.title" /></h2>
+				<textarea class="form-control plugin-autosize plugin-autosize-max-height" wicket:id="withMaxHeight"></textarea>
+				
+				<h2><wicket:message key="widgets.autosize.more.title" /></h2>
+				<div wicket:id="multiLineLabel" />
+			</div>
+		</div>
 	</wicket:extend>
 </html>

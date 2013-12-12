@@ -19,15 +19,15 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 
 import java.util.Date;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.convert.IConverter;
 
+import fr.openwide.core.wicket.markup.html.basic.AbstractCoreLabel;
 import fr.openwide.core.wicket.more.util.IDatePattern;
 import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter;
 
-public class DateLabel extends Label {
+public class DateLabel extends AbstractCoreLabel<DateLabel> {
 	private static final long serialVersionUID = 7214422620839758144L;
 	
 	private IConverter<Date> converter;
@@ -47,5 +47,9 @@ public class DateLabel extends Label {
 			return super.getConverter(type);
 		}
 	}
-
+	
+	@Override
+	protected DateLabel thisAsT() {
+		return this;
+	}
 }
