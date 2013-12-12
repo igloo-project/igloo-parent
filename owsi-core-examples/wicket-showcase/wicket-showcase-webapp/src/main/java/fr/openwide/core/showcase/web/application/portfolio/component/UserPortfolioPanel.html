@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="portfolio">
-			<table class="table table-striped table-bordered table-condensed">
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th><wicket:message key="user.portfolio.header.lastName" /></th>
@@ -21,7 +21,7 @@
 						<td wicket:id="userName"></td>
 						<td wicket:id="email"></td>
 						<td style="text-align: center;">
-							<img wicket:id="active" style="width: 16px; height: 16px; vertical-align: middle;" class="icon" />
+							<span wicket:id="active" />
 						</td>
 						<td wicket:id="actionButtons" style="text-align: center;" class="table-column"></td>
 					</tr>

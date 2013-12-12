@@ -15,7 +15,7 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
@@ -41,7 +41,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 		item.add(new Label("lastName", BindingModel.of(userModel, USER_BINDING.lastName())));
 		item.add(new Label("userName", BindingModel.of(userModel, USER_BINDING.userName())));
 		item.add(new Label("email", BindingModel.of(userModel, USER_BINDING.email())));
-		item.add(new BooleanImage("active", BindingModel.of(userModel, USER_BINDING.active())));
+		item.add(new BooleanIcon("active", BindingModel.of(userModel, USER_BINDING.active())).hideIfNullOrFalse());
 	}
 
 	@Override

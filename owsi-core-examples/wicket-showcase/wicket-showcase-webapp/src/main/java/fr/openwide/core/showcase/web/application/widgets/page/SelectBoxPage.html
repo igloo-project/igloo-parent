@@ -2,78 +2,86 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.selectbox.title" /></h1>
-		
-		<section>
-			<h3><wicket:message key="widgets.selectbox.single" /></h3>
-			<div style="margin-left: 20px;">
-				<p>
-					<wicket:message key="widgets.selectbox.selected" />
-					<strong><span wicket:id="dropDownSelectedUser"></span></strong>
-				</p>
-				<form wicket:id="single">
-					<select wicket:id="dropDownChoice" style="width: 300px;" />
-					<div class="form-actions">
-						<button type="submit" class="btn btn-success">Submit</button>
-					</div>
-				</form>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="widgets.selectbox.title" /></h1>
 			</div>
-		</section>
+		</div>
 		
-		<section>
-			<h3><wicket:message key="widgets.selectbox.multi" /></h3>
-			<div style="margin-left: 20px;">
-				<p>
-					<wicket:message key="widgets.selectbox.selected" />
-					<strong><wicket:container wicket:id="listSelectedUser"> <span wicket:id="userName"></span> </wicket:container></strong>
-				</p>
-				<form wicket:id="multi">
-					<select wicket:id="listMultipleChoice" style="width: 300px;" />
-					<div class="form-actions">
-						<button type="submit" class="btn btn-success">Submit</button>
+		<div class="main-content">
+			<div class="container">
+				<section>
+					<h3><wicket:message key="widgets.selectbox.single" /></h3>
+					<div style="margin-left: 20px;">
+						<p>
+							<wicket:message key="widgets.selectbox.selected" />
+							<strong><span wicket:id="dropDownSelectedUser"></span></strong>
+						</p>
+						<form wicket:id="single">
+							<select wicket:id="dropDownChoice" style="width: 300px;" />
+							<div class="form-actions">
+								<button type="submit" class="btn btn-success">Submit</button>
+							</div>
+						</form>
 					</div>
-				</form>
-			</div>
-		</section>
-		
-		<section>
-			<h3><wicket:message key="widgets.selectbox.ajax" /></h3>
-			<div style="margin-left: 20px;">
-				<p>
-					<wicket:message key="widgets.selectbox.selected" />
-					<strong><wicket:container wicket:id="ajaxSelectedUser"> <span wicket:id="userName"></span> </wicket:container></strong>
-				</p>
-				<form wicket:id="ajax">
-					<input type="hidden" wicket:id="ajaxMultipleChoice" style="width: 300px;" />
-					<div class="form-actions">
-						<button type="submit" class="btn btn-success">Submit</button>
+				</section>
+				
+				<section>
+					<h3><wicket:message key="widgets.selectbox.multi" /></h3>
+					<div style="margin-left: 20px;">
+						<p>
+							<wicket:message key="widgets.selectbox.selected" />
+							<strong><wicket:container wicket:id="listSelectedUser"> <span wicket:id="userName"></span> </wicket:container></strong>
+						</p>
+						<form wicket:id="multi">
+							<select wicket:id="listMultipleChoice" style="width: 300px;" />
+							<div class="form-actions">
+								<button type="submit" class="btn btn-success">Submit</button>
+							</div>
+						</form>
 					</div>
-				</form>
-			</div>
-		</section>
-		
-		<section>
-			<h3><wicket:message key="widgets.selectbox.tagify" /></h3>
-			<div style="margin-left: 20px;">
-				<form onsubmit="alert(OWSI.StringUtils.tagify($('#testtag').val())); return false;">
-					<input type="text" class="form-control" id="testtag" />
-					<div class="form-actions">
-						<button type="submit" class="btn btn-success"><wicket:message key="widgets.selectbox.tagify" /></button>
+				</section>
+				
+				<section>
+					<h3><wicket:message key="widgets.selectbox.ajax" /></h3>
+					<div style="margin-left: 20px;">
+						<p>
+							<wicket:message key="widgets.selectbox.selected" />
+							<strong><wicket:container wicket:id="ajaxSelectedUser"> <span wicket:id="userName"></span> </wicket:container></strong>
+						</p>
+						<form wicket:id="ajax">
+							<input type="hidden" wicket:id="ajaxMultipleChoice" style="width: 300px;" />
+							<div class="form-actions">
+								<button type="submit" class="btn btn-success">Submit</button>
+							</div>
+						</form>
 					</div>
-				</form>
-			</div>
-		</section>
-		
-		<section>
-			<h3><wicket:message key="widgets.selectbox.urlize" /></h3>
-			<div style="margin-left: 20px;">
-				<form onsubmit="alert(OWSI.StringUtils.urlize($('#testurl').val())); return false;">
-					<input type="text" class="form-control" id="testurl" />
-					<div class="form-actions">
-						<button type="submit" class="btn btn-success"><wicket:message key="widgets.selectbox.urlize" /></button>
+				</section>
+				
+				<section>
+					<h3><wicket:message key="widgets.selectbox.tagify" /></h3>
+					<div style="margin-left: 20px;">
+						<form onsubmit="alert(OWSI.StringUtils.tagify($('#testtag').val())); return false;">
+							<input type="text" class="form-control" id="testtag" />
+							<div class="form-actions">
+								<button type="submit" class="btn btn-success"><wicket:message key="widgets.selectbox.tagify" /></button>
+							</div>
+						</form>
 					</div>
-				</form>
+				</section>
+				
+				<section>
+					<h3><wicket:message key="widgets.selectbox.urlize" /></h3>
+					<div style="margin-left: 20px;">
+						<form onsubmit="alert(OWSI.StringUtils.urlize($('#testurl').val())); return false;">
+							<input type="text" class="form-control" id="testurl" />
+							<div class="form-actions">
+								<button type="submit" class="btn btn-success"><wicket:message key="widgets.selectbox.urlize" /></button>
+							</div>
+						</form>
+					</div>
+				</section>
 			</div>
-		</section>
+		</div>
 	</wicket:extend>
 </html>

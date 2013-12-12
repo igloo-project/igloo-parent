@@ -31,28 +31,21 @@ input[type="color"],
 }
 
 // Nom de l'utilisateur
-.navbar .user-menu {
-	margin-top: 7px;
-	margin-right: 7px;
+.main-menu .user-menu {
+	.border-radius(4px);
+	color: #FFFFFF;
+	padding: 5px 4px 5px 14px;
+	.navbar-vertical-align(@line-height-computed + 12px); // 12px = 5px * 2 (vertical padding) + 1px * 2 (top and bottom border)
+	margin-right: -10px;
 	
-	.user-full-name {
-		display: inline-block;
-		padding: 4px 12px;
-		font-size: @font-size-base;
-		background: @userFullNameBackground;
-		line-height: @line-height-base;
-		text-align: center;
-		vertical-align: middle;
-		border: 1px solid @btn-default-border;
-		*border: 0;
-		border-bottom-color: darken(@btn-default-border, 10%);
-		border-right: none;
-		.border-radius(@border-radius-base);
-		.border-top-right-radius(0);
-		.border-bottom-right-radius(0);
-		// reset here as of 2.0.3 due to Recess property order
-		border-color: #c5c5c5;
-		border-color: rgba(0,0,0,.15) rgba(0,0,0,.15) rgba(0,0,0,.25);
+	float: right;
+	
+	.user-logout {
+		color: #FFFFFF;
+		font-weight: bold;
+		padding: 4px 10px;
+		margin-left: 6px;
+		border-left: 1px solid #FFFFFF;
 	}
 }
 
@@ -74,12 +67,12 @@ ul.itemit {
 
 // Footer
 .footer {
-	border-top: 1px solid #CCC;
+	/*border-top: 1px solid #CCC;
 	padding: 10px 15px;
 	text-align: right;
 	background: @footerBackground;
 	color: @footerText;
-	.border-radius(0 0 5px 5px);
+	.border-radius(0 0 5px 5px);*/
 }
 
 // Boolean glyphicons (tick/cross)

@@ -2,13 +2,15 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="application-users">
-			<h1 wicket:id="pageTitle"></h1>
-			
-			<div class="row">
-				<div class="span6">
-					<div wicket:id="profilePanel"></div>
-				</div>
+		<div class="page-title">
+			<div class="container">
+				<h1 wicket:id="pageTitle" class="page-title-text" />
+			</div>
+		</div>
+		
+		<div class="main-content application-users">
+			<div class="container">
+				<div wicket:id="profilePanel" class="" />
 			</div>
 		</div>
 	</wicket:extend>
