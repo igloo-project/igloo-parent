@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.component;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -18,6 +19,8 @@ public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 	private static final long serialVersionUID = -3398120588294325073L;
 	
 	protected static final IModel<String> DEFAULT_DIVIDER_MODEL = ReadOnlyModel.of(Model.of("/"));
+	
+	private boolean trailingSeparator = false;
 
 	public BodyBreadCrumbPanel(
 			String id,
@@ -48,6 +51,20 @@ public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 				}
 				.collectionModel(getModel())
 		);
-	}
+		
+		add(new WebMarkupContainer("trailingLi") {
+			private static final long serialVersionUID = 1L;
 
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(trailingSeparator);
+			}
+		});
+	}
+	
+	public BodyBreadCrumbPanel setTrailingSeparator(boolean trailingSeparator) {
+		this.trailingSeparator = trailingSeparator;
+		return this;
+	}
 }
