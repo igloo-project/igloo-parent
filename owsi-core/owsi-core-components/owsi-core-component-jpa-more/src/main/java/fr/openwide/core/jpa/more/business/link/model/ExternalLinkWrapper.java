@@ -43,7 +43,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	private ExternalLinkStatus status = ExternalLinkStatus.ONLINE;
 	
 	@Column(nullable = false)
-	private int consecutiveFailures;
+	private int consecutiveFailures = 0;
 	
 	@Column
 	private Integer lastStatusCode;
