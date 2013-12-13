@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.search.service;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public void reindexClasses(List<Class<?>> classes) throws ServiceException {
+	public void reindexClasses(Collection<Class<?>> classes) throws ServiceException {
 		if (classes != null && !classes.isEmpty()) {
 			hibernateSearchDao.reindexClasses(classes.toArray(new Class<?>[ classes.size() ]));
 		}
@@ -55,7 +56,7 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public Set<Class<?>> getIndexedRootEntities(List<Class<?>> classes) throws ServiceException {
+	public Set<Class<?>> getIndexedRootEntities(Collection<Class<?>> classes) throws ServiceException {
 		if (classes != null && !classes.isEmpty()) {
 			return hibernateSearchDao.getIndexedRootEntities(classes.toArray(new Class<?>[ classes.size() ]));
 		} else {
@@ -74,7 +75,7 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName);
 	}
 	
@@ -99,7 +100,7 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery);
 	}
 	
@@ -124,7 +125,7 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Integer limit, Integer offset, Sort sort) throws ServiceException {
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, limit, offset, sort);
 	}
 	
@@ -149,7 +150,7 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, limit, offset, sort);
 	}
 	
