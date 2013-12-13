@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.search.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -36,6 +37,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
+import com.google.common.collect.Iterables;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -86,7 +89,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
 				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
@@ -94,7 +97,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
 			String analyzerName) throws ServiceException {
 		return search(classes, fields, searchPattern, analyzerName, (Integer) null, (Integer) null, null);
 	}
@@ -133,7 +136,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
 				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
@@ -141,13 +144,13 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
 			String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, (Integer) null, (Integer) null, null);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
+	private <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
 			return Collections.emptyList();
@@ -165,7 +168,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 				booleanQuery.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
 			}
 			
-			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, classes.toArray(new Class<?>[classes.size()]));
+			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, Iterables.toArray(classes, Class.class));
 			if (offset != null) {
 				hibernateQuery.setFirstResult(offset);
 			}
