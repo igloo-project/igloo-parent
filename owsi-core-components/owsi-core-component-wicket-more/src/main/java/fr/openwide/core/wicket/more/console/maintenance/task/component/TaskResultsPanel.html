@@ -10,6 +10,7 @@
 				<tr>
 					<th class="status"></th>
 					<th><wicket:message key="console.maintenance.task.common.name" /></th>
+					<th><wicket:message key="console.maintenance.task.common.queue" /></th>
 					<th><wicket:message key="console.maintenance.task.common.creationDate" /></th>
 					<th><wicket:message key="console.maintenance.task.common.startDate" /></th>
 					<th><wicket:message key="console.maintenance.task.common.endDate" /></th>
@@ -21,6 +22,10 @@
 					<td class="name">
 						<a wicket:id="nameLink"></a>
 					</td>
+					<td class="queue">
+						<span wicket:id="queue" />
+						<span wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></span>
+					</td>
 					<td class="date"><span wicket:id="creationDate" /></td>
 					<td class="date"><span wicket:id="startDate" /></td>
 					<td class="date"><span wicket:id="endDate" /></td>
@@ -28,7 +33,7 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td wicket:id="emptyList" colspan="5">
+					<td wicket:id="emptyList" colspan="6">
 						<wicket:message key="console.maintenance.task.list.empty" />
 					</td>
 				</tr>

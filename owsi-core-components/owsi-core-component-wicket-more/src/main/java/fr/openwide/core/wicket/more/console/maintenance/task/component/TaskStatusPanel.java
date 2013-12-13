@@ -51,7 +51,7 @@ public class TaskStatusPanel extends Panel {
 			public String getObject() {
 				switch (statusModel.getObject()) {
 				case CANCELLED:
-					return "fa-eject icon-eject";
+					return "fa-thumbs-down icon-thumbs-down";
 				case COMPLETED:
 					return "fa-check icon-ok";
 				case FAILED:

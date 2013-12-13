@@ -25,7 +25,7 @@ public interface IQueuedTaskHolderService extends IGenericEntityService<Long, Qu
 
 	QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds);
 
-	List<Long> initializeTasksAndListConsumable() throws ServiceException, SecurityServiceException;
+	List<Long> initializeTasksAndListConsumable(String queueId) throws ServiceException, SecurityServiceException;
 
 	List<String> listTypes();
 

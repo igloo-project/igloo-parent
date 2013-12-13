@@ -1,6 +1,7 @@
 package fr.openwide.core.spring.config;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.util.StringUtils;
@@ -22,6 +24,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String CONFIGURATION_TYPE_DEPLOYMENT = "deployment";
 	
 	private static final int TASK_STOP_TIMEOUT_DEFAULT = 70000;
+	private static final int TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT = 1;
 	
 	public String getVersion() {
 		return getPropertyAsString("version");
@@ -176,6 +179,15 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public TaskQueueStartMode getTaskQueueStartMode() {
 		return getPropertyAsEnum("task.startMode", TaskQueueStartMode.class, TaskQueueStartMode.manual);
+	}
+
+	public List<String> getTaskQueueIds() {
+		return getPropertyAsStringList("task.queues");
+	}
+	
+	public int getTaskQueueNumberOfThreads(String queueId) {
+		Assert.notNull(queueId);
+		return getPropertyAsInteger("task.queues.config." + queueId + ".threads", TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT);
 	}
 	
 	public String getSecurityPasswordSalt() {

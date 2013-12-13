@@ -134,6 +134,18 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 			booleanJunction.must(subJunction.createQuery());
 		}
 
+		List<String> queueIds = searchParams.getQueueIds();
+		if (queueIds != null && !queueIds.isEmpty()) {
+			BooleanJunction<?> subJunction = queryBuilder.bool();
+			
+			for (String queueId : queueIds) {
+				subJunction.should(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.queueId().getPath())
+						.matching(queueId).createQuery());
+			}
+			
+			booleanJunction.must(subJunction.createQuery());
+		}
+
 		Date creationDate = searchParams.getCreationDate();
 		if (creationDate != null) {
 			booleanJunction.must(queryBuilder.range().onField(QUEUED_TASK_HOLDER_BINDING.creationDate().getPath())
@@ -224,11 +236,28 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	@Override
 	public List<QueuedTaskHolder> listConsumable() {
 		JPQLQuery query = new JPAQuery(getEntityManager());
-
+		
 		query.from(qQueuedTaskHolder)
 				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
 				.orderBy(qQueuedTaskHolder.id.asc());
-
+		
+		return query.list(qQueuedTaskHolder);
+	}
+	
+	@Override
+	public List<QueuedTaskHolder> listConsumable(String queueId) {
+		JPQLQuery query = new JPAQuery(getEntityManager());
+		
+		query.from(qQueuedTaskHolder)
+				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
+				.orderBy(qQueuedTaskHolder.id.asc());
+		
+		if (queueId != null) {
+			query.where(qQueuedTaskHolder.queueId.eq(queueId));
+		} else {
+			query.where(qQueuedTaskHolder.queueId.isNull());
+		}
+		
 		return query.list(qQueuedTaskHolder);
 	}
 

@@ -62,10 +62,10 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 	public QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds) {
 		return queuedTaskHolderDao.getStalledTask(taskType, executionTimeLimitInSeconds);
 	}
-
+	
 	@Override
-	public List<Long> initializeTasksAndListConsumable() throws ServiceException, SecurityServiceException {
-		List<QueuedTaskHolder> queuedTaskHolderList = queuedTaskHolderDao.listConsumable();
+	public List<Long> initializeTasksAndListConsumable(String queueId) throws ServiceException, SecurityServiceException {
+		List<QueuedTaskHolder> queuedTaskHolderList = queuedTaskHolderDao.listConsumable(queueId);
 		List<Long> taskIds = Lists.newArrayListWithExpectedSize(queuedTaskHolderList.size());
 
 		for (QueuedTaskHolder queuedTaskHolder : queuedTaskHolderList) {

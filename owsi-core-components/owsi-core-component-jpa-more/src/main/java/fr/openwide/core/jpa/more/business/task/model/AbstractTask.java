@@ -48,13 +48,23 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	protected String taskType;
 
-	protected AbstractTask() {
-	}
+	protected AbstractTask() { }
 
 	public AbstractTask(String taskName, ITaskTypeProvider taskTypeProvider, Date triggeringDate) {
+		this(taskName, taskTypeProvider.getTaskType(), triggeringDate);
+	}
+
+	public AbstractTask(String taskName, String taskType, Date triggeringDate) {
 		setTaskName(taskName);
-		setTaskType(taskTypeProvider.getTaskType());
+		setTaskType(taskType);
 		setTriggeringDate(triggeringDate);
+	}
+	
+	/**
+	 * @return The ID of the queue this task must be added in, or <code>null</code> for the default queue. 
+	 */
+	public IQueueId selectQueue() {
+		return null;
 	}
 
 	@Override
