@@ -2,16 +2,19 @@ package fr.openwide.core.showcase.web.application.task.page;
 
 import java.util.List;
 
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -23,8 +26,10 @@ import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
-import fr.openwide.core.showcase.web.application.task.model.FailedTask;
-import fr.openwide.core.showcase.web.application.task.model.SuccessTask;
+import fr.openwide.core.showcase.core.business.task.model.FailedTask;
+import fr.openwide.core.showcase.core.business.task.model.ShowcaseTaskQueueId;
+import fr.openwide.core.showcase.core.business.task.model.SuccessTask;
+import fr.openwide.core.showcase.web.application.task.component.ShowcaseTaskIdDropDownChoice;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -54,19 +59,27 @@ public class TaskMainPage extends MainTemplate {
 
 	public TaskMainPage(PageParameters parameters) {
 		super(parameters);
-
-		AjaxLink<Void> createSuccessTask = new AjaxLink<Void>("createSuccessTask") {
+		
+		final IModel<ShowcaseTaskQueueId> queueIdModel = Model.of();
+		
+		Form<?> form = new Form<Void>("taskForm");
+		add(form);
+		
+		form.add(
+				new ShowcaseTaskIdDropDownChoice("queueId", queueIdModel)
+						.setLabel(new ResourceModel("tasks.queue"))
+		);
+		
+		form.add(new AjaxSubmitLink("createSuccessTask") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					queuedTaskHolderManager.submit(new SuccessTask());
-
+					queuedTaskHolderManager.submit(new SuccessTask(queueIdModel.getObject()));
+					
 					Session.get().success(getString("tasks.createTask.add.success"));
-					throw new RestartResponseException(TaskMainPage.class);
-				} catch (RestartResponseException e) {
-					throw e;
+					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Unexpected error while adding a task", e);
 					Session.get().error(getString("common.error.unexpected"));
@@ -74,21 +87,18 @@ public class TaskMainPage extends MainTemplate {
 
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
-		};
-		add(createSuccessTask);
+		});
 
-		AjaxLink<Void> createFailedTask = new AjaxLink<Void>("createFailedTask") {
+		form.add(new AjaxSubmitLink("createFailedTask") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					queuedTaskHolderManager.submit(new FailedTask());
+					queuedTaskHolderManager.submit(new FailedTask(queueIdModel.getObject()));
 
 					Session.get().success(getString("tasks.createTask.add.success"));
-					throw new RestartResponseException(TaskMainPage.class);
-				} catch (RestartResponseException e) {
-					throw e;
+					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Unexpected error while adding a task", e);
 					Session.get().error(getString("common.error.unexpected"));
@@ -96,22 +106,19 @@ public class TaskMainPage extends MainTemplate {
 
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
-		};
-		add(createFailedTask);
+		});
 
-		AjaxLink<Void> createStopQueueTask = new AjaxLink<Void>("createStopQueueTask") {
+		form.add(new AjaxSubmitLink("createStopQueueTask") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					queuedTaskHolderManager.submit(new SuccessTask());
+					queuedTaskHolderManager.submit(new SuccessTask(queueIdModel.getObject()));
 					queuedTaskHolderManager.stop();
 
 					Session.get().success(getString("tasks.createTask.add.success"));
-					throw new RestartResponseException(TaskMainPage.class);
-				} catch (RestartResponseException e) {
-					throw e;
+					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Unexpected error while adding a task", e);
 					Session.get().error(getString("common.error.unexpected"));
@@ -119,10 +126,9 @@ public class TaskMainPage extends MainTemplate {
 
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
-		};
-		add(createStopQueueTask);
+		});
 
-		AjaxLink<Void> startQueue = new AjaxLink<Void>("startQueue") {
+		AjaxLink<Void> startManager = new AjaxLink<Void>("start") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -136,15 +142,13 @@ public class TaskMainPage extends MainTemplate {
 				try {
 					if (queuedTaskHolderManager.isAvailableForAction()) {
 						queuedTaskHolderManager.start();
-						getSession().success(getString("tasks.manageQueue.stop.success"));
+						getSession().success(getString("tasks.manager.start.success"));
 					} else {
-						getSession().error(getString("tasks.manageQueue.unavailable"));
+						getSession().error(getString("tasks.manager.unavailable"));
 					}
 
 					FeedbackUtils.refreshFeedback(target, getPage());
-					throw new RestartResponseException(TaskMainPage.class);
-				} catch (RestartResponseException e) {
-					throw e;
+					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Unexpected error while trying to stop the queue.", e);
 					Session.get().error(getString("common.error.unexpectedr"));
@@ -153,9 +157,9 @@ public class TaskMainPage extends MainTemplate {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		};
-		add(startQueue);
+		add(startManager);
 
-		AjaxLink<Void> stopQueue = new AjaxLink<Void>("stopQueue") {
+		AjaxLink<Void> stopManager = new AjaxLink<Void>("stop") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -169,15 +173,13 @@ public class TaskMainPage extends MainTemplate {
 				try {
 					if (queuedTaskHolderManager.isAvailableForAction()) {
 						queuedTaskHolderManager.stop();
-						getSession().success(getString("tasks.manageQueue.stop.success"));
+						getSession().success(getString("tasks.manager.stop.success"));
 					} else {
-						getSession().error(getString("tasks.manageQueue.unavailable"));
+						getSession().error(getString("tasks.manager.unavailable"));
 					}
 
 					FeedbackUtils.refreshFeedback(target, getPage());
-					throw new RestartResponseException(TaskMainPage.class);
-				} catch (RestartResponseException e) {
-					throw e;
+					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Unexpected error while trying to stop the queue.", e);
 					Session.get().error(getString("common.error.unexpectedr"));
@@ -186,7 +188,7 @@ public class TaskMainPage extends MainTemplate {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		};
-		add(stopQueue);
+		add(stopManager);
 
 		IModel<List<QueuedTaskHolder>> queuedTaskHoldersListModel = new LoadableDetachableModel<List<QueuedTaskHolder>>() {
 			private static final long serialVersionUID = 1L;

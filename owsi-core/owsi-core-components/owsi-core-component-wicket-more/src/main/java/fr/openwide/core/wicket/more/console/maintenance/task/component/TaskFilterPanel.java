@@ -34,7 +34,7 @@ public class TaskFilterPanel extends Panel {
 
 		final IModel<Long> rowCountModel = new LoadableDetachableModel<Long>() {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			protected Long load() {
 				return queuedTaskHolderDataProvider.size();
@@ -43,7 +43,7 @@ public class TaskFilterPanel extends Panel {
 
 		add(new CountLabel("topCount", "console.maintenance.task.common.count", rowCountModel) {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
@@ -53,7 +53,7 @@ public class TaskFilterPanel extends Panel {
 
 		Form<Void> filterForm = new Form<Void>("filterForm") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
@@ -70,6 +70,10 @@ public class TaskFilterPanel extends Panel {
 		FormComponent<Collection<String>> taskTypes = new TaskTypeListMultipleChoice("taskTypes",
 				queuedTaskHolderDataProvider.getTaskTypesModel());
 		filterForm.add(taskTypes);
+
+		FormComponent<Collection<String>> queueIds = new TaskQueueIdListMultipleChoice("queueIds",
+				queuedTaskHolderDataProvider.getQueueIdsModel());
+		filterForm.add(queueIds);
 
 		FormComponent<Collection<TaskStatus>> statuses = new TaskStatusListMultipleChoice("statuses",
 				queuedTaskHolderDataProvider.getStatusesModel());

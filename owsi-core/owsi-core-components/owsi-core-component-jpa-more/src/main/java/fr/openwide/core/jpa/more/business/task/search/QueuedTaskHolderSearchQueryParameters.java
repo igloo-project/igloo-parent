@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.CloneUtils;
@@ -20,6 +21,8 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 
 	private List<String> taskTypes;
 
+	private List<String> queueIds;
+
 	private Date creationDate;
 
 	private Date startDate;
@@ -29,14 +32,15 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	public QueuedTaskHolderSearchQueryParameters() {
 	}
 
-	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, Collection<String> taskTypes,
+	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, Collection<String> taskTypes, Collection<String> queueIds,
 			Date creationDate, Date startDate, Date endDate) {
-		setName(name);
-		setTaskTypes(taskTypes);
-		setStatuses(statuses);
-		setCreationDate(creationDate);
-		setStartDate(startDate);
-		setEndDate(endDate);
+		this.name = name;
+		this.statuses = statuses == null ? null : ImmutableList.copyOf(statuses);
+		this.taskTypes = taskTypes == null ? null : ImmutableList.copyOf(taskTypes);
+		this.queueIds = queueIds == null ? null : Lists.newArrayList(queueIds); // Null elements are allowed => not ImmutableList
+		this.creationDate = CloneUtils.clone(creationDate);
+		this.startDate = CloneUtils.clone(startDate);
+		this.endDate = CloneUtils.clone(endDate);
 	}
 
 	public String getName() {
@@ -51,44 +55,24 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 		return statuses;
 	}
 
-	public void setStatuses(Collection<TaskStatus> statuses) {
-		if (statuses != null) {
-			this.statuses = Lists.newArrayList(statuses);
-		}
-	}
-
 	public List<String> getTaskTypes() {
 		return taskTypes;
 	}
-
-	public void setTaskTypes(Collection<String> taskTypes) {
-		if (taskTypes != null) {
-			this.taskTypes = Lists.newArrayList(taskTypes);
-		}
+	
+	public List<String> getQueueIds() {
+		return queueIds;
 	}
 
 	public Date getCreationDate() {
 		return CloneUtils.clone(creationDate);
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = CloneUtils.clone(creationDate);
-	}
-
 	public Date getStartDate() {
 		return CloneUtils.clone(startDate);
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = CloneUtils.clone(startDate);
-	}
-
 	public Date getEndDate() {
 		return endDate;
-	}
-
-	public void setEndDate(Date completionDate) {
-		this.endDate = CloneUtils.clone(completionDate);
 	}
 
 }

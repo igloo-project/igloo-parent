@@ -1,14 +1,17 @@
 package fr.openwide.core.wicket.more.console.maintenance.task.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
+import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -33,6 +36,9 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 		item.add(ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(ReadOnlyModel.of(itemModel))
 				.link("nameLink")
 				.setBody(BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
+		
+		Component queue = new HideableLabel("queue", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId()));
+		item.add(queue, new PlaceholderContainer("defaultQueue").component(queue));
 
 		item.add(new DateLabel("creationDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
 				DatePattern.SHORT_DATETIME));

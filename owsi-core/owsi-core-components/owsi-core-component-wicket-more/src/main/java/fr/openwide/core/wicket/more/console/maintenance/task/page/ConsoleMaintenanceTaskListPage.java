@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.console.maintenance.task.page;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskFilterPanel;
-import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskQueueInformationPanel;
+import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskManagerInformationPanel;
 import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskResultsPanel;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
@@ -31,7 +31,7 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 		TaskResultsPanel resultsPanel = new TaskResultsPanel("resultsPanel", queuedTaskHolderDataProvider, 20);
 		add(resultsPanel);
 
-		add(new TaskQueueInformationPanel("queueInformationPanel"));
+		add(new TaskManagerInformationPanel("taskManagerInformationPanel"));
 
 		add(new TaskFilterPanel("filterPanel", queuedTaskHolderDataProvider, resultsPanel.getPageable()));
 	}

@@ -24,10 +24,17 @@
 				</div>
 				
 				<div>
-					<strong><wicket:message key="console.maintenance.task.common.name" /></strong> <wicket:container wicket:id="name" />
+					<strong><wicket:message key="console.maintenance.task.common.name" /></strong>
+					<wicket:container wicket:id="name" />
 				</div>
 				<div>
-					<strong><wicket:message key="console.maintenance.task.common.creationDate" /></strong> <wicket:container wicket:id="creationDate" />
+					<strong><wicket:message key="console.maintenance.task.common.queue" /></strong>
+					<wicket:container wicket:id="queue" />
+					<wicket:container wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></wicket:container>
+				</div>
+				<div>
+					<strong><wicket:message key="console.maintenance.task.common.creationDate" /></strong>
+					<wicket:container wicket:id="creationDate" />
 				</div>
 				<div>
 					<strong><wicket:message key="console.maintenance.task.common.startDate" /></strong>

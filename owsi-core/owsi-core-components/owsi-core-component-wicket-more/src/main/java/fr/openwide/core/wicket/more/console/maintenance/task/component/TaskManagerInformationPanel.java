@@ -21,16 +21,16 @@ import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
-public class TaskQueueInformationPanel extends Panel {
+public class TaskManagerInformationPanel extends Panel {
 
 	private static final long serialVersionUID = 6507651164801791278L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TaskQueueInformationPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TaskManagerInformationPanel.class);
 
 	@SpringBean
 	private IQueuedTaskHolderManager queuedTaskHolderManager;
 
-	public TaskQueueInformationPanel(String id) {
+	public TaskManagerInformationPanel(String id) {
 		super(id);
 		WebMarkupContainer statusContainer = new WebMarkupContainer("statusContainer");
 		add(statusContainer);
@@ -60,10 +60,10 @@ public class TaskQueueInformationPanel extends Panel {
 			}
 		};
 
-		statusContainer.add(new Label("status", new StringResourceModel("console.maintenance.task.queue.status.${}",
+		statusContainer.add(new Label("status", new StringResourceModel("console.maintenance.task.manager.status.${}",
 				queueStatusStringModel)));
 
-		add(new CountLabel("queueSize", "console.maintenance.task.queue.queueSize", new Model<Integer>() {
+		add(new CountLabel("queueSize", "console.maintenance.task.manager.queueSize", new Model<Integer>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -86,9 +86,9 @@ public class TaskQueueInformationPanel extends Panel {
 				try {
 					if (queuedTaskHolderManager.isAvailableForAction()) {
 						queuedTaskHolderManager.stop();
-						getSession().success(getString("console.maintenance.task.queue.stop.success"));
+						getSession().success(getString("console.maintenance.task.manager.stop.success"));
 					} else {
-						getSession().error(getString("console.maintenance.task.queue.action.unavailable"));
+						getSession().error(getString("console.maintenance.task.manager.action.unavailable"));
 					}
 
 					FeedbackUtils.refreshFeedback(target, getPage());
@@ -96,8 +96,8 @@ public class TaskQueueInformationPanel extends Panel {
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {
-					LOGGER.error("Unexpected error while trying to stop the queue.", e);
-					Session.get().error(getString("console.maintenance.task.queue.stop.error"));
+					LOGGER.error("Unexpected error while trying to stop the task manager.", e);
+					Session.get().error(getString("console.maintenance.task.manager.stop.error"));
 				}
 
 				FeedbackUtils.refreshFeedback(target, getPage());
@@ -118,9 +118,9 @@ public class TaskQueueInformationPanel extends Panel {
 				try {
 					if (queuedTaskHolderManager.isAvailableForAction()) {
 						queuedTaskHolderManager.start();
-						getSession().success(getString("console.maintenance.task.queue.start.success"));
+						getSession().success(getString("console.maintenance.task.manager.start.success"));
 					} else {
-						getSession().error(getString("console.maintenance.task.queue.action.unavailable"));
+						getSession().error(getString("console.maintenance.task.manager.action.unavailable"));
 					}
 
 					FeedbackUtils.refreshFeedback(target, getPage());
@@ -128,8 +128,8 @@ public class TaskQueueInformationPanel extends Panel {
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {
-					LOGGER.error("Unexpected error while trying to start the queue.", e);
-					Session.get().error(getString("console.maintenance.task.queue.start.error"));
+					LOGGER.error("Unexpected error while trying to start the task manager.", e);
+					Session.get().error(getString("console.maintenance.task.manager.start.error"));
 				}
 
 				FeedbackUtils.refreshFeedback(target, getPage());

@@ -47,6 +47,10 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	})
 	private String name;
 
+	@Column(nullable = true)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD), indexNullAs = Field.DEFAULT_NULL_TOKEN)
+	private String queueId;
+
 	@Column(nullable = false)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String taskType;
@@ -88,9 +92,10 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	protected QueuedTaskHolder() {
 	}
 
-	public QueuedTaskHolder(String name, String taskType, String serializedTask) {
+	public QueuedTaskHolder(String name, String queueId, String taskType, String serializedTask) {
 		super();
 		setName(name);
+		setQueueId(queueId);
 		setTaskType(taskType);
 		setSerializedTask(serializedTask);
 		setStatus(TaskStatus.TO_RUN);
@@ -112,6 +117,14 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getQueueId() {
+		return queueId;
+	}
+
+	public void setQueueId(String queueId) {
+		this.queueId = queueId;
 	}
 
 	public String getTaskType() {

@@ -33,9 +33,11 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 
 	private final IModel<Collection<String>> taskTypesModel = new CollectionModel<String>();
 
+	private final IModel<Collection<String>> queueIdsModel = new CollectionModel<String>();
+
 	private final IModel<Date> creationDateModel = new Model<Date>();
 
-	private final IModel<Date> stratDateModel = new Model<Date>();
+	private final IModel<Date> startDateModel = new Model<Date>();
 
 	private final IModel<Date> completionDateModel = new Model<Date>();
 
@@ -49,8 +51,8 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 
 	public QueuedTaskHolderSearchQueryParameters getSearchParameters() {
 		return new QueuedTaskHolderSearchQueryParameters(nameModel.getObject(), statusesModel.getObject(),
-				taskTypesModel.getObject(), creationDateModel.getObject(), stratDateModel.getObject(),
-				completionDateModel.getObject());
+				taskTypesModel.getObject(), queueIdsModel.getObject(),
+				creationDateModel.getObject(), startDateModel.getObject(), completionDateModel.getObject());
 	}
 
 	@Override
@@ -84,13 +86,17 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 	public IModel<Collection<String>> getTaskTypesModel() {
 		return taskTypesModel;
 	}
+	
+	public IModel<Collection<String>> getQueueIdsModel() {
+		return queueIdsModel;
+	}
 
 	public IModel<Date> getCreationDateModel() {
 		return creationDateModel;
 	}
 
-	public IModel<Date> getStratDateModel() {
-		return stratDateModel;
+	public IModel<Date> getStartDateModel() {
+		return startDateModel;
 	}
 
 	public IModel<Date> getCompletionDateModel() {
@@ -105,12 +111,12 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 	@Override
 	public void detach() {
 		super.detach();
-
+		
 		nameModel.detach();
 		statusesModel.detach();
 		taskTypesModel.detach();
 		creationDateModel.detach();
-		stratDateModel.detach();
+		startDateModel.detach();
 		completionDateModel.detach();
 	}
 }

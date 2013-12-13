@@ -12,15 +12,18 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-4">
-						<h2><wicket:message key="tasks.createTask" /></h2>
-						<a wicket:id="createSuccessTask" class="btn btn-success">Success task</a>
-						<a wicket:id="createFailedTask" class="btn btn-danger">Failed task</a>
-						<a wicket:id="createStopQueueTask" class="btn btn-warning">Create task and stop queue</a>
+						<form wicket:id="taskForm">
+							<h2><wicket:message key="tasks.createTask" /></h2>
+							<label wicket:for="queueId"><wicket:label /></label> <select wicket:id="queueId" />
+							<button wicket:id="createSuccessTask" class="btn btn-success">Success task</button>
+							<button wicket:id="createFailedTask" class="btn btn-danger">Failed task</button>
+							<button wicket:id="createStopQueueTask" class="btn btn-warning">Create task and stop queue</button>
+						</form>
 					</div>
 					<div class="col-md-2">
-						<h2><wicket:message key="tasks.manageQueue" /></h2>
-						<a wicket:id="startQueue" class="btn btn-success">Start</a>
-						<a wicket:id="stopQueue" class="btn btn-danger">Stop</a>
+						<h2><wicket:message key="tasks.manager" /></h2>
+						<a wicket:id="start" class="btn btn-success">Start</a>
+						<a wicket:id="stop" class="btn btn-danger">Stop</a>
 					</div>
 					<div class="col-md-6">
 						<h2><wicket:message key="tasks.information" /></h2>

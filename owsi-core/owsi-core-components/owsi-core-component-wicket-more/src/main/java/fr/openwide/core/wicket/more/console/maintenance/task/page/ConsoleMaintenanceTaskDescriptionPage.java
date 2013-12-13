@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.console.maintenance.task.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -30,6 +31,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -160,7 +162,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 					LOGGER.error("Unexpected error while cancelling task", e);
 					getSession().error(getString("common.error.unexpected"));
 				}
-
+				
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 
@@ -172,6 +174,8 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		});
 		
 		add(new Label("name", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
+		Component queue = new HideableLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId()));
+		add(queue, new PlaceholderContainer("defaultQueue").component(queue));
 		add(new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
 				DatePattern.SHORT_DATETIME));
 		add(new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().startDate()),
