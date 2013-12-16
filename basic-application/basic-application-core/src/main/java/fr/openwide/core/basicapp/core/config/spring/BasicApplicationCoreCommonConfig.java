@@ -21,7 +21,8 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @ConfigurationLocations
 @Import({
 	BasicApplicationCoreCommonJpaConfig.class,			// configuration de la persistence
-	BasicApplicationCoreSecurityConfig.class		// configuration de la sécurité
+	BasicApplicationCoreSecurityConfig.class,		// configuration de la sécurité
+	BasicApplicationTaskManagementConfig.class		// configuration de la gestion des tâches
 })
 @ComponentScan(
 	basePackageClasses = {
