@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
-import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
+import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
@@ -34,7 +34,7 @@ public final class TaskConsumer {
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
-	@Qualifier(JpaMoreTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+	@Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired

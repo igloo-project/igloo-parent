@@ -10,13 +10,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import com.google.common.collect.Lists;
+
+import fr.openwide.core.jpa.more.business.task.model.IQueueId;
+import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 
 public class TaskQueueIdListMultipleChoice extends ListMultipleChoice<String> {
 
 	private static final long serialVersionUID = 3147073422245294521L;
 	
-	private static final String DEFAULT_QUEUE_ID_VALUE = "&NULL";
+	private static final String DEFAULT_QUEUE_ID_VALUE = IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING;
 
 	public TaskQueueIdListMultipleChoice(String id, IModel<? extends Collection<String>> typeListModel) {
 		super(id, typeListModel, new QueueIdsChoicesModel());
@@ -27,7 +30,7 @@ public class TaskQueueIdListMultipleChoice extends ListMultipleChoice<String> {
 		private static final long serialVersionUID = 1L;
 
 		@SpringBean
-		private CoreConfigurer configurer;
+		private IQueuedTaskHolderManager taskManager;
 		
 		public QueueIdsChoicesModel() {
 			Injector.get().inject(this);
@@ -35,9 +38,12 @@ public class TaskQueueIdListMultipleChoice extends ListMultipleChoice<String> {
 		
 		@Override
 		protected List<String> load() {
-			List<String> queueIds = configurer.getTaskQueueIds();
-			queueIds.add(0, null);
-			return queueIds;
+			List<String> result = Lists.newArrayList();
+			result.add(null);
+			for (IQueueId queueId : taskManager.getQueueIds()) {
+				result.add(queueId.getUniqueStringId());
+			}
+			return result;
 		}
 	}
 	
