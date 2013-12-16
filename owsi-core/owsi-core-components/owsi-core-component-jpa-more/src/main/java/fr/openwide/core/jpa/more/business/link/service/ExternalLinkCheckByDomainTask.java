@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.business.link.service;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.hibernate.FlushMode;
@@ -36,10 +37,10 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 	@Autowired
 	private IExternalLinkWrapperService externalLinkWrapperService;
 	
-	private Collection<Long> ids;
+	private Map<String, Collection<Long>> urlToIdsMap;
 	
-	public ExternalLinkCheckByDomainTask(ApplicationContext applicationContext, Collection<Long> ids) {
-		this.ids = ids;
+	public ExternalLinkCheckByDomainTask(ApplicationContext applicationContext, Map<String, Collection<Long>> urlToIdsMap) {
+		this.urlToIdsMap = urlToIdsMap;
 		SpringBeanUtils.autowireBean(applicationContext, this);
 	}
 
@@ -54,16 +55,17 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 				session.setFlushMode(FlushMode.COMMIT);
 				
 				int count = 0;
-				for (Long id : ids) {
+				for (Map.Entry<String, Collection<Long>> urlToIdsEntry : urlToIdsMap.entrySet()) {
 					// We flush the session to avoid a memory overhead if there is a huge amount of links within the same domain
 					if (count >= SESSION_LIMIT) {
 						session.flush();
 						count = 0;
 					}
+					String url = urlToIdsEntry.getKey();
 					try {
-						ExternalLinkWrapper link = externalLinkWrapperService.getById(id);
-						linkCheckerService.checkLink(link);
-						++count;
+						Collection<ExternalLinkWrapper> links = externalLinkWrapperService.listByIds(urlToIdsEntry.getValue());
+						linkCheckerService.checkLinksWithSameUrl(url, links);
+						count += links.size();
 					} catch (Exception e) {
 						LOGGER.error("An error occurred while checking links", e);
 					}
