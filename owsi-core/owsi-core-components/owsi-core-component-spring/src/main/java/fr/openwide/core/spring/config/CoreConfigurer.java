@@ -179,10 +179,6 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public TaskQueueStartMode getTaskQueueStartMode() {
 		return getPropertyAsEnum("task.startMode", TaskQueueStartMode.class, TaskQueueStartMode.manual);
 	}
-
-	public List<String> getTaskQueueIds() {
-		return getPropertyAsStringList("task.queues");
-	}
 	
 	public int getTaskQueueNumberOfThreads(String queueId) {
 		Assert.notNull(queueId);

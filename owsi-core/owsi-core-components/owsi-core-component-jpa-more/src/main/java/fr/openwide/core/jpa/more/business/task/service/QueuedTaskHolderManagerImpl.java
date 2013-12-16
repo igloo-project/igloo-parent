@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.more.business.task.service;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -35,7 +36,7 @@ import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.impl.TaskConsumer;
 import fr.openwide.core.jpa.more.business.task.service.impl.TaskQueue;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
-import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
+import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.util.SpringBeanUtils;
@@ -50,11 +51,14 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
-	@Qualifier(JpaMoreTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+	@Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired
 	private CoreConfigurer configurer;
+	
+	@Resource
+	private Collection<? extends IQueueId> queueIds;
 	
 	private int stopTimeout;
 	
@@ -73,10 +77,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	private AtomicBoolean active = new AtomicBoolean(false);
 
 	private AtomicBoolean availableForAction = new AtomicBoolean(true);
-	
-	@Override
+
 	@PostConstruct
-	public void init() {
+	private void init() {
 		stopTimeout = configurer.getTaskStopTimeout();
 		
 		initQueues();
@@ -89,20 +92,25 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	}
 	
 	private final void initQueues() {
-		queuesById.clear();
-		consumersByQueue.clear();
+		Collection<String> queueIdsAsStrings = Lists.newArrayList();
 		
-		defaultQueue = initQueue(DEFAULT_QUEUE_ID, 1);
-		
-		Collection<String> queueIds = ImmutableSet.copyOf(configurer.getTaskQueueIds());
-		for (String queueId : queueIds) {
-			Assert.state(!DEFAULT_QUEUE_ID.equals(queueId), "Queue ID '" + DEFAULT_QUEUE_ID + "' is reserved for implementation purposes. Please choose another ID.");
-			int numberOfThreads = configurer.getTaskQueueNumberOfThreads(queueId);
+		// Sanity checks
+		for (IQueueId queueId : queueIds) {
+			String queueIdAsString = queueId.getUniqueStringId();
+			Assert.state(!IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING.equals(queueIdAsString),
+					"Queue ID '" + IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING + "' is reserved for implementation purposes. Please choose another ID.");
+			Assert.state(!queueIdsAsStrings.contains(queueIdAsString), "Queue ID '" + queueIdAsString + "' was defined more than once. Queue IDs must be unique.");
+			queueIdsAsStrings.add(queueIdAsString);
+		}
+
+		defaultQueue = initQueue(IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING, 1);
+		for (String queueIdAsString : queueIdsAsStrings) {
+			int numberOfThreads = configurer.getTaskQueueNumberOfThreads(queueIdAsString);
 			if (numberOfThreads < 1) {
-				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueId, numberOfThreads);
+				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueIdAsString, numberOfThreads);
 				numberOfThreads = 1;
 			}
-			initQueue(queueId, numberOfThreads);
+			initQueue(queueIdAsString, numberOfThreads);
 		}
 	}
 	
@@ -153,6 +161,11 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 			total += queue.size();
 		}
 		return total;
+	}
+	
+	@Override
+	public Collection<IQueueId> getQueueIds() {
+		return Collections.unmodifiableCollection(queueIds);
 	}
 
 	@Override
@@ -254,9 +267,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	 * 
 	 * @throws Exception
 	 */
-	@Override
 	@PreDestroy
-	public void destroy() {
+	private void destroy() {
 		stop();
 	}
 

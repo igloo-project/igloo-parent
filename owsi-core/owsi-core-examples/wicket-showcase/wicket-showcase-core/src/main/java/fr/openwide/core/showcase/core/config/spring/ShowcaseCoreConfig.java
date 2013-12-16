@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import fr.openwide.core.jpa.more.config.spring.JpaMoreTaskManagementConfig;
 import fr.openwide.core.showcase.core.ShowcaseCorePackage;
 import fr.openwide.core.showcase.core.init.BootstrapApplicationServiceImpl;
 import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
@@ -22,9 +21,9 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @ApplicationDescription(name = ShowcaseCoreConfig.APPLICATION_NAME)
 @ConfigurationLocations
 @Import({
-	ShowcaseCoreJpaConfig.class,			// configuration de la persistence
-	ShowcaseCoreSecurityConfig.class,		// configuration de la sécurité
-	JpaMoreTaskManagementConfig.class		// configuration des tâches
+	ShowcaseCoreJpaConfig.class,						// configuration de la persistence
+	ShowcaseCoreSecurityConfig.class,					// configuration de la sécurité
+	ShowcaseCoreJpaMoreTaskManagementConfig.class		// configuration des tâches
 })
 @ComponentScan(
 		basePackageClasses = {
