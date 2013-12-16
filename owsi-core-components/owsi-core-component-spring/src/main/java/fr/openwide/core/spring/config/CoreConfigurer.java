@@ -1,7 +1,6 @@
 package fr.openwide.core.spring.config;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -215,6 +214,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public int getExternalLinkCheckerThreadPoolSize() {
 		return getPropertyAsInteger("externalLinkChecker.threadPoolSize", Runtime.getRuntime().availableProcessors());
+	}
+	
+	public int getExternalLinkCheckerBatchSize() {
+		return getPropertyAsInteger("externalLinkChecker.batchSize", 500);
 	}
 	
 	/**

@@ -1,9 +1,12 @@
 package fr.openwide.core.jpa.more.business.link.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Multimap;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.more.business.link.dao.IExternalLinkWrapperDao;
@@ -20,9 +23,19 @@ public class ExternalLinkWrapperServiceImpl extends GenericEntityServiceImpl<Lon
 		
 		this.dao = externalLinkWrapperDao;
 	}
+	
+	@Override
+	public List<ExternalLinkWrapper> listByIds(Collection<Long> ids) {
+		return dao.listByIds(ids);
+	}
 
 	@Override
 	public List<ExternalLinkWrapper> listActive() {
 		return dao.listActive();
+	}
+	
+	@Override
+	public Multimap<String, ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
+		return dao.listNextCheckingBatch(batchSize);
 	}
 }

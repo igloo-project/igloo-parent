@@ -1,19 +1,19 @@
 package fr.openwide.core.jpa.more.business.link.service;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -34,11 +34,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
@@ -92,21 +93,27 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	// Public methods
 	
 	@Override
-	public void checkAllLinks() throws ServiceException, SecurityServiceException {
-		List<ExternalLinkWrapper> links = externalLinkWrapperService.listActive();
+	public void checkBatch() throws ServiceException, SecurityServiceException {
+		Multimap<String, ExternalLinkWrapper> links = externalLinkWrapperService.listNextCheckingBatch(configurer.getExternalLinkCheckerBatchSize());
 		
 		runTasksInParallel(createTasksByDomain(links), 10, TimeUnit.HOURS);
 	}
 	
 	@Override
 	public void checkLink(final ExternalLinkWrapper link) throws ServiceException, SecurityServiceException {
-		if (!ExternalLinkStatus.DEAD_LINK.equals(link.getStatus())) {
-			StatusLine status = sendRequest(link, true);
-			if (status != null && status.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
-				status = sendRequest(link, false);
-			}
-			
-			link.setLastCheckDate(new Date());
+		checkLinksWithSameUrl(link.getUrl(), ImmutableList.of(link));
+	}
+	
+	@Override
+	public void checkLinksWithSameUrl(String url, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+		StatusLine status = sendRequest(url, true);
+		if (status != null && status.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
+			status = sendRequest(url, false);
+		}
+		
+		Date checkDate = new Date();
+		for (ExternalLinkWrapper link : links) {
+			link.setLastCheckDate(checkDate);
 			if (status != null && status.getStatusCode() == HttpStatus.SC_OK) {
 				onSuccessfulCheck(link);
 			} else {
@@ -118,46 +125,48 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	// Private methods
 	
-	private Collection<Callable<Void>> createTasksByDomain(List<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+	private Collection<Callable<Void>> createTasksByDomain(Multimap<String, ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
 		Collection<Callable<Void>> tasks = Lists.newArrayList();
+
+		Map<String, Multimap<String, Long>> domainToUrlToIds = Maps.newLinkedHashMap();
 		
-		int fromIndex = 0;
-		String currentDomain = null;
-		for (int i = 0; i < links.size(); ++i) {
-			ExternalLinkWrapper link = links.get(i);
-			String domain = getDomainName(link.getUrl());
-			if (domain == null) { // URL has an invalid syntax: the check will fail
-				link.setStatus(ExternalLinkStatus.DEAD_LINK);
-				externalLinkWrapperService.update(link);
-				continue;
-			}
-			
-			if (currentDomain == null || !currentDomain.equals(domain)) {
-				currentDomain = domain;
-				
-				if (fromIndex != i) {
-					Collection<Long> idList = toIdList(links.subList(fromIndex, i));
-					fromIndex = i;
-					
-					tasks.add(new ExternalLinkCheckByDomainTask(applicationContext, idList));
+		for (Entry<String, Collection<ExternalLinkWrapper>> entry : links.asMap().entrySet()) {
+			String url = entry.getKey();
+			String domain = getDomain(url);
+			if (domain == null) {
+				markAsInvalid(entry.getValue());
+			} else {
+				Multimap<String, Long> urlToIds = domainToUrlToIds.get(domain);
+				if (urlToIds == null) {
+					urlToIds = LinkedListMultimap.create();
+					domainToUrlToIds.put(domain, urlToIds);
+				}
+				for (ExternalLinkWrapper link : entry.getValue()) {
+					urlToIds.put(url, link.getId());
 				}
 			}
 		}
-		if (fromIndex != links.size()) {
-			Collection<Long> idList = toIdList(links.subList(fromIndex, links.size()));
-			
-			tasks.add(new ExternalLinkCheckByDomainTask(applicationContext, idList));
+		
+		for (Multimap<String, Long> urlToIds : domainToUrlToIds.values()) {
+			tasks.add(new ExternalLinkCheckByDomainTask(applicationContext, urlToIds.asMap()));
 		}
 		
 		return tasks;
 	}
 	
-	private String getDomainName(String url) {
+	private String getDomain(String string) {
 		try {
-			URI uri = new URI(url);
+			URI uri = new URI(string);
 			return uri.getHost();
 		} catch (URISyntaxException e) {
 			return null;
+		}
+	}
+
+	private void markAsInvalid(Collection<ExternalLinkWrapper> linkWrappers) throws ServiceException, SecurityServiceException {
+		for (ExternalLinkWrapper link : linkWrappers) {
+			link.setStatus(ExternalLinkStatus.DEAD_LINK);
+			externalLinkWrapperService.update(link);
 		}
 	}
 	
@@ -180,12 +189,12 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		}
 	}
 	
-	private StatusLine sendRequest(final ExternalLinkWrapper link, boolean httpHead) {
+	private StatusLine sendRequest(final String url, boolean httpHead) {
 		HttpRequestBase method = null;
 		CloseableHttpResponse response = null;
 		
 		try {
-			method = (httpHead ? new HttpHead(link.getUrl()) : new HttpGet(link.getUrl()));
+			method = (httpHead ? new HttpHead(url) : new HttpGet(url));
 			
 			response = httpClient.execute(method);
 			return response.getStatusLine();
@@ -194,7 +203,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				.append("An error occurred while performing a ")
 				.append(httpHead ? "HEAD" : "GET")
 				.append(" request on ")
-				.append(link.getUrl());
+				.append(url);
 			LOGGER.debug(sb.toString(), e);
 		} finally {
 			if (method != null) {
@@ -234,19 +243,5 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				LOGGER.warn("An error occurred while shutting down threads", e);
 			}
 		}
-	}
-	
-	private <K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-			Collection<K> toIdList(Collection<E> entities) {
-		return Collections2.transform(entities, new Function<E, K>() {
-			@Override
-			@Nullable
-			public K apply(@Nullable E entity) {
-				if (entity == null) {
-					return null;
-				}
-				return entity.getId();
-			}
-		});
 	}
 }
