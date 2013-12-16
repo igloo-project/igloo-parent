@@ -1,6 +1,5 @@
 package fr.openwide.core.test.jpa.more.business;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.http.HttpStatus;
@@ -50,9 +49,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			id4 = externalLink4.getId();
 		}
 		
-		Calendar beforeFirstBatchCalendar = Calendar.getInstance();
-		beforeFirstBatchCalendar.add(Calendar.SECOND, -10);
-		Date beforeFirstBatchDate = beforeFirstBatchCalendar.getTime();
+		Date beforeFirstBatchDate = new Date();
+		Thread.sleep(1000); // Make sure the checkDate will not be exactly the same
 		
 		{
 			externalLinkCheckerService.checkBatch();
@@ -88,7 +86,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(externalLink2.getLastCheckDate(), externalLink2.getLastCheckDate());
 		}
 		
-		Date beforeSecondBatchDate = Calendar.getInstance().getTime();
+		Date beforeSecondBatchDate = new Date();
+		Thread.sleep(1000); // Make sure the checkDate will not be exactly the same
 		
 		{
 			externalLinkCheckerService.checkBatch();
