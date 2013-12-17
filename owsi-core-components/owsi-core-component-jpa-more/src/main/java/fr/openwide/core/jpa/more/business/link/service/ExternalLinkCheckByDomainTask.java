@@ -59,6 +59,7 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 					// We flush the session to avoid a memory overhead if there is a huge amount of links within the same domain
 					if (count >= SESSION_LIMIT) {
 						session.flush();
+						session.clear();
 						count = 0;
 					}
 					String url = urlToIdsEntry.getKey();
