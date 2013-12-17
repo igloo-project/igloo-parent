@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.DocumentId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +37,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	private Long id;
 	
 	@Column(nullable = false)
+	@Type(type = "org.hibernate.type.StringClobType") // SQL type "text" (unknown size)
 	private String url;
 	
 	@Column(nullable = false)
