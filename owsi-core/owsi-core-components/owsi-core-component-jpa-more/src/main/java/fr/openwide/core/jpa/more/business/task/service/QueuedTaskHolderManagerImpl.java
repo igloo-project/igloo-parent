@@ -190,6 +190,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		for (TaskQueue queue : queuesById.values()) {
 			try {
 				List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
+				if (queue == defaultQueue) {
+					taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
+				}
 				for (Long taskId : taskIds) {
 					boolean status = queue.offer(taskId);
 					if (!status) {
