@@ -125,7 +125,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		return queue;
 	}
 	
-	private String getQueueId(AbstractTask task) {
+	private String selectQueue(AbstractTask task) {
+		SpringBeanUtils.autowireBean(applicationContext, task);
 		IQueueId queueId = task.selectQueue();
 		String queueIdString = queueId == null ? null : queueId.getUniqueStringId();
 		return queueIdString;
@@ -205,7 +206,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	public void submit(AbstractTask task) throws ServiceException {
 		QueuedTaskHolder newQueuedTaskHolder = null;
 		String serializedTask;
-		String selectedQueueId = getQueueId(task);
+		String selectedQueueId = selectQueue(task);
 		TaskQueue selectedQueue = getQueue(selectedQueueId);
 		
 		try {
