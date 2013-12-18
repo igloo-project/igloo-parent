@@ -194,6 +194,7 @@
       var hideTooltip = function() {
         if (!that.$element.is(":visible")) {
           that.hide();
+          that.tip().detach();
         }
       };
       this.intervalId = setInterval(hideTooltip, 1000);
