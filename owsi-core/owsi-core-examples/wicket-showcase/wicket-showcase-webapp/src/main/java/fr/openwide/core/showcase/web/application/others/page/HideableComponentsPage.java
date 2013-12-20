@@ -23,7 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.commons.util.functional.AbstractSerializablePredicate;
+import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
@@ -103,7 +103,7 @@ public class HideableComponentsPage extends MainTemplate {
 		);
 		
 		// Predicate-based hideable components
-		Predicate<Collection<?>> moreThanOneElementPredicate = new AbstractSerializablePredicate<Collection<?>>() {
+		Predicate<Collection<?>> moreThanOneElementPredicate = new SerializablePredicate<Collection<?>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean apply(@Nullable Collection<?> input) {
