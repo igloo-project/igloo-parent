@@ -169,7 +169,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 */
 	public String getUserName() {
 		String userName = null;
-		if (isSignedIn() && personModel != null) {
+		if (isSignedIn()) {
 			userName = personModel.getObject().getUserName();
 		}
 		return userName;
@@ -178,7 +178,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	protected P getPerson() {
 		P person = null;
 
-		if (isSignedIn() && personModel != null) {
+		if (isSignedIn()) {
 			person = personModel.getObject();
 		}
 
@@ -328,17 +328,13 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	public void detach() {
 		super.detach();
 		
-		if (personModel != null) {
-			personModel.detach();
-		}
+		personModel.detach();
 	}
 	
 	@Override
 	public void internalDetach() {
 		super.internalDetach();
 		
-		if (personModel != null) {
-			personModel.detach();
-		}
+		personModel.detach();
 	}
 }
