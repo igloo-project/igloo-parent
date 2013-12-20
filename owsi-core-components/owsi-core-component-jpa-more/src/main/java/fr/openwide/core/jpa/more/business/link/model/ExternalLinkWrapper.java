@@ -129,7 +129,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		if (this.equals(other)) {
 			return 0;
 		}
-		return this.url.compareTo(other.getUrl());
+		return this.url.compareToIgnoreCase(other.getUrl());
 	}
 	
 	@Transient
