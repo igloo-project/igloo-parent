@@ -1,7 +1,5 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -16,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
-import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
@@ -102,17 +99,6 @@ public final class TaskConsumer {
 			}
 		}
 	}
-
-	private void consume(QueuedTaskHolder queuedTaskHolder) throws InterruptedException {
-		try {
-			AbstractTask runnableTask = queuedTaskHolderObjectMapper.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
-			runnableTask.setQueuedTaskHolderId(queuedTaskHolder.getId());
-			SpringBeanUtils.autowireBean(applicationContext, runnableTask);
-			runnableTask.run();
-		} catch (IOException e) {
-			LOGGER.error("Error while trying to deserialize task " + queuedTaskHolder, e);
-		}
-	}
 	
 	private class ConsumerRunnable implements Runnable {
 		@Override
@@ -145,7 +131,7 @@ public final class TaskConsumer {
 					while(active.get() && !Thread.currentThread().isInterrupted() && counter < 4) {
 						queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 						if(queuedTaskHolder != null) {
-							consume(queuedTaskHolder);
+							tryConsumeTask(queuedTaskHolder);
 							break;
 						} else {
 							Thread.sleep((2 + counter * 10) * 1000L);
@@ -162,18 +148,34 @@ public final class TaskConsumer {
 					working.set(false);
 				}
 			} catch (InterruptedException ex) {
-				/*
-				 * interrupt() method is null aware
-				 */
-				if (queuedTaskHolder != null) {
-					queuedTaskHolder.setStatus(TaskStatus.INTERRUPTED);
-					queuedTaskHolder.setEndDate(new Date());
-					queuedTaskHolder.resetExecutionInformation();
-				}
-				
 				working.set(false);
-				
+			}
+		}
+		
+		/**
+		 * TOTALLY safe, NEVER throws any exception.
+		 */
+		private void tryConsumeTask(QueuedTaskHolder queuedTaskHolder) {
+			AbstractTask runnableTask;
+			try {
+				runnableTask = queuedTaskHolderObjectMapper.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
+			} catch (Exception e) {
+				LOGGER.error("Error while trying to deserialize a task before run (holder: " + queuedTaskHolder + ").", e);
 				return;
+			}
+
+			try {
+				runnableTask.setQueuedTaskHolderId(queuedTaskHolder.getId());
+				SpringBeanUtils.autowireBean(applicationContext, runnableTask);
+			} catch (Exception e) {
+				LOGGER.error("Error while trying to initialize a task before run (holder: " + queuedTaskHolder + ").", e);
+				return;
+			}
+			
+			try {
+				runnableTask.run();
+			} catch (Exception e) {
+				LOGGER.error("Error while trying to consume a task (holder: " + queuedTaskHolder + "); the task holder was probably left in a stale state.", e);
 			}
 		}
 	}
