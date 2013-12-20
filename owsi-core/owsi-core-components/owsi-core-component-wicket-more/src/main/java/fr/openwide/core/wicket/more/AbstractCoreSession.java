@@ -54,7 +54,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;
 	
-	private IModel<P> personModel;
+	private final IModel<P> personModel = new SessionThreadSafeGenericEntityModel<Long, P>();
 	
 	private Roles roles = new Roles();
 	
@@ -121,7 +121,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 			throw new IllegalStateException("Unable to find the signed in user.");
 		}
 		
-		personModel = new SessionThreadSafeGenericEntityModel<Long, P>(person);
+		personModel.setObject(person);
 		
 		try {
 			if (person.getLastLoginDate() == null) {
@@ -252,7 +252,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 */
 	@Override
 	public void invalidate() {
-		personModel = null;
+		personModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
 		permissions = Lists.newArrayList();
