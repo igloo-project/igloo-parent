@@ -44,7 +44,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 			throw new LinkInvalidTargetRuntimeException("The target page instance was null");
 		}
 		Class<? extends Page> expectedPageClass = expectedPageClassModel.getObject();
-		if (expectedPageClass != null && expectedPageClass.isAssignableFrom(pageInstance.getClass())) {
+		if (expectedPageClass != null && !expectedPageClass.isAssignableFrom(pageInstance.getClass())) {
 			throw new LinkInvalidTargetRuntimeException("The target page instance '" + pageInstance + "' had unexpected type : got " + pageInstance.getClass().getName() + ", expected " + expectedPageClass.getName());
 		}
 		return pageInstance;
