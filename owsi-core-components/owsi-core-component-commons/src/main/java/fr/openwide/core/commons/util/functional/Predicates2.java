@@ -1,5 +1,6 @@
 package fr.openwide.core.commons.util.functional;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import com.google.common.base.Predicate;
@@ -16,7 +17,7 @@ public final class Predicates2 {
 		return CollectionPredicate.NOT_EMPTY.withNarrowedType();
 	}
 
-	private enum CollectionPredicate implements Predicate<Collection<?>> {
+	private enum CollectionPredicate implements Predicate<Collection<?>>, Serializable {
 		IS_EMPTY {
 			@Override
 			public boolean apply(Collection<?> input) {
