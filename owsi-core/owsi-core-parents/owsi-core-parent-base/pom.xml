@@ -63,7 +63,7 @@
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
 		<owsi-core.commons-lang3.version>3.1</owsi-core.commons-lang3.version>
 		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
-		<owsi-core.commons-codec.version>1.8</owsi-core.commons-codec.version>
+		<owsi-core.commons-codec.version>1.9</owsi-core.commons-codec.version>
 		<owsi-core.commons-exec.version>1.1</owsi-core.commons-exec.version>
 		<owsi-core.commons-compress.version>1.5</owsi-core.commons-compress.version>
 		
@@ -98,7 +98,7 @@
 		<owsi-core.httpclient.version>4.3.1</owsi-core.httpclient.version>
 		
 		<owsi-core.jersey.version>1.18</owsi-core.jersey.version>
-		<owsi-core.jersey2.version>2.4</owsi-core.jersey2.version>
+		<owsi-core.jersey2.version>2.5</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
