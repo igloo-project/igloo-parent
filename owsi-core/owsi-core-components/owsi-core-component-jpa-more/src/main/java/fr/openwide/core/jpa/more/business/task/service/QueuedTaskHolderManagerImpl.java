@@ -206,7 +206,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	}
 
 	@Override
-	public void submit(AbstractTask task) throws ServiceException {
+	public QueuedTaskHolder submit(AbstractTask task) throws ServiceException {
 		QueuedTaskHolder newQueuedTaskHolder = null;
 		String serializedTask;
 		String selectedQueueId = selectQueue(task);
@@ -235,6 +235,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 				LOGGER.error("Unable to offer the task " + newQueuedTaskHolder.getId() + " to the queue");
 			}
 		}
+		
+		return newQueuedTaskHolder;
 	}
 	
 	@Override
