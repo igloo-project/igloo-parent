@@ -8,7 +8,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
-import fr.openwide.core.wicket.more.util.DatePattern;
+import fr.openwide.core.wicket.more.util.IDatePattern;
 import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter;
 
 public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date> {
@@ -21,15 +21,15 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 
 	private IConverter<Date> converter;
 
-	private DatePattern datePattern;
+	private IDatePattern datePattern;
 	
 	private boolean isAutocompleteActive;
 
-	public DatePicker(String id, IModel<Date> model, DatePattern datePattern) {
+	public DatePicker(String id, IModel<Date> model, IDatePattern datePattern) {
 		this(id, model, datePattern, false);
 	}
 	
-	public DatePicker(String id, IModel<Date> model, DatePattern datePattern, boolean isAutocompleteActive) {
+	public DatePicker(String id, IModel<Date> model, IDatePattern datePattern, boolean isAutocompleteActive) {
 		super(id, model, Date.class);
 		this.datePattern = datePattern;
 		this.isAutocompleteActive = isAutocompleteActive;
