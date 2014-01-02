@@ -18,6 +18,8 @@ public class BooleanIcon extends WebMarkupContainer {
 	private static final String DEFAULT_TRUE_ICON_CLASS = "fa fa-check-square-o";
 	private static final String DEFAULT_FALSE_ICON_CLASS = "fa fa-square-o";
 	
+	private static final String DEFAULT_TRUE_HIDE_IF_NULL_OR_FALSE_ICON_CLASS = "fa fa-check";
+	
 	private static final String BOOLEAN_ICON_BASE_CLASS = "boolean-icon";
 	
 	private IModel<Boolean> booleanModel;
@@ -56,7 +58,11 @@ public class BooleanIcon extends WebMarkupContainer {
 	
 	private String getTrueIconClass() {
 		if (trueIconClassModel == null) {
-			trueIconClassModel = new Model<String>(DEFAULT_TRUE_ICON_CLASS);
+			if (hideIfNullOrFalse) {
+				trueIconClassModel = new Model<String>(DEFAULT_TRUE_HIDE_IF_NULL_OR_FALSE_ICON_CLASS);
+			} else {
+				trueIconClassModel = new Model<String>(DEFAULT_TRUE_ICON_CLASS);
+			}
 		}
 		return trueIconClassModel.getObject();
 	}
