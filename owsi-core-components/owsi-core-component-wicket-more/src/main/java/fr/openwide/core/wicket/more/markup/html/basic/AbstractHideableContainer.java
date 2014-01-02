@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -81,6 +82,12 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	@Override
 	public T components(Component firstComponent, Component... otherComponents) {
 		visibilityBuilder.components(firstComponent, otherComponents);
+		return thisAsT();
+	}
+	
+	@Override
+	public T components(List<Component> components) {
+		visibilityBuilder.components(components);
 		return thisAsT();
 	}
 	
