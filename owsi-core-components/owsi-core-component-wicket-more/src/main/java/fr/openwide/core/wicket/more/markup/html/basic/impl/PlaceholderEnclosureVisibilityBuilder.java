@@ -114,8 +114,8 @@ public class PlaceholderEnclosureVisibilityBuilder implements IDetachable, IPlac
 	}
 	
 	@Override
-	public PlaceholderEnclosureVisibilityBuilder components(List<Component> components) {
-		components.addAll(components);
+	public PlaceholderEnclosureVisibilityBuilder components(List<Component> targetComponents) {
+		components.addAll(targetComponents);
 		return this;
 	}
 	
