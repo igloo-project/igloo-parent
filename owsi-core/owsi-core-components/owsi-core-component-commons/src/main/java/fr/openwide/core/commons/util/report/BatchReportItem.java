@@ -17,6 +17,9 @@ public class BatchReportItem implements Serializable {
 
 	private Date date;
 
+	protected BatchReportItem() {
+	}
+
 	public BatchReportItem(BatchReportItemSeverity severity, String message) {
 		setSeverity(severity);
 		setMessage(message);
