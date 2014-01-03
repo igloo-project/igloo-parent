@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
@@ -18,7 +17,7 @@ public interface IPlaceholderEnclosureBuilder<T> {
 	 */
 	T components(Component firstComponent, Component... otherComponents);
 	
-	T components(List<Component> components);
+	T components(Collection<Component> components);
 
 	T model(IModel<?> model);
 
