@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.basic.impl;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
@@ -87,7 +86,7 @@ public abstract class AbstractPlaceholderEnclosureBehavior<T extends AbstractPla
 	}
 	
 	@Override
-	public T components(List<Component> components) {
+	public T components(Collection<Component> components) {
 		visibilityBuilder.components(components);
 		return thisAsT();
 	}
