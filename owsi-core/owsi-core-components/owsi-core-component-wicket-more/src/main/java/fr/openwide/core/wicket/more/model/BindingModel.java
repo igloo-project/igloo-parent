@@ -51,13 +51,13 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	
 	/**
 	 * Convenience method to convert a {@link BindingRoot} into a
-	 * {@link BindingRootModel}
+	 * {@link BindingModel}
 	 * 
 	 * @param <T>
 	 * @param binding
 	 * @return binding model for {@code binding}
 	 */
-	public static <R, T> IModel<T> of(IModel<? extends R> root, BindingRoot<R, T> binding) {
+	public static <R, T> BindingModel<R, T> of(IModel<? extends R> root, BindingRoot<R, T> binding) {
 		return new BindingModel<R, T>(root, binding);
 	}
 
