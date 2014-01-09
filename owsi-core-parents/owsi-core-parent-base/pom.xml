@@ -61,7 +61,7 @@
 		
 		<owsi-core.commons-io.version>2.4</owsi-core.commons-io.version>
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
-		<owsi-core.commons-lang3.version>3.2</owsi-core.commons-lang3.version>
+		<owsi-core.commons-lang3.version>3.2.1</owsi-core.commons-lang3.version>
 		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
 		<owsi-core.commons-codec.version>1.9</owsi-core.commons-codec.version>
 		<owsi-core.commons-exec.version>1.2</owsi-core.commons-exec.version>
