@@ -1,5 +1,7 @@
 package fr.openwide.core.spring.util.lucene.search;
 
+import java.util.List;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
@@ -15,6 +17,9 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.util.Version;
+
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -100,14 +105,11 @@ public final class LuceneUtils {
 		if(StringUtils.hasText(cleanSearchPattern)) {
 			StringBuilder cleanSearchPatternSb = new StringBuilder();
 			
-			String[] searchPatternElements = StringUtils.delimitedListToStringArray(cleanSearchPattern, StringUtils.SPACE);
+			List<String> searchPatternFragments = Splitter.on(CharMatcher.WHITESPACE.or(CharMatcher.is('-')))
+					.trimResults().omitEmptyStrings().splitToList(cleanSearchPattern);
 			
-			for (int i = 0; i < searchPatternElements.length; i++) {
-				String fragment = StringUtils.trimLeadingCharacter(searchPatternElements[i], StringUtils.DASH_CHAR);
-				
-				if (StringUtils.hasText(fragment)) {
-					cleanSearchPatternSb.append(fragment).append(StringUtils.SPACE);
-				}
+			for (String searchPatternFragment : searchPatternFragments) {
+				cleanSearchPatternSb.append(searchPatternFragment).append(StringUtils.SPACE);
 			}
 			
 			cleanSearchPattern = cleanSearchPatternSb.toString().trim();
