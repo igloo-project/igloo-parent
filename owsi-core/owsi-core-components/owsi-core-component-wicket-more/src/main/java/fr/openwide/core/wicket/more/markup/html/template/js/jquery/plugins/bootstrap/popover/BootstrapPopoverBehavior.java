@@ -29,5 +29,14 @@ public class BootstrapPopoverBehavior extends Behavior {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapPopoverJavascriptResourceReference.get()));
 		response.render(OnDomReadyHeaderItem.forScript(statement(component).render()));
 	}
+	
+	@Override
+	public void detach(Component component) {
+		super.detach(component);
+		
+		if (options != null) {
+			options.detach();
+		}
+	}
 
 }
