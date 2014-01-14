@@ -1,16 +1,20 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.options.Options;
+
+import com.google.common.collect.ImmutableMap;
+
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.SimpleOptions;
 
 /**
  * Options du plugin <a href="http://twitter.github.com/bootstrap/javascript.html#popovers">Bootstrap Popover</a>.
  */
-public class BootstrapPopoverOptions extends Options {
+public class BootstrapPopoverOptions extends SimpleOptions {
 
 	private static final long serialVersionUID = 680573363463468690L;
 
@@ -29,15 +33,19 @@ public class BootstrapPopoverOptions extends Options {
 	private PopoverTrigger trigger;
 
 	private String titleText;
+	
+	private IModel<String> titleModel;
 
 	private Component titleComponent;
 
 	private JsScope titleFunction;
 
 	private String contentText;
+	
+	private IModel<String> contentModel;
 
 	private Component contentComponent;
-
+	
 	private JsScope contentFunction;
 
 	private Integer delay;
@@ -48,44 +56,44 @@ public class BootstrapPopoverOptions extends Options {
 		super();
 	}
 
-	@Override
-	public CharSequence getJavaScriptOptions() {
-		throw new IllegalStateException("Please use getJavaScriptOptions(component)");
-	}
-
 	public CharSequence getJavaScriptOptions(Component popoverComponent) {
+		ImmutableMap.Builder<String, Object> options = ImmutableMap.builder();
+		
 		if (animation != null) {
-			put("animation", animation);
+			options.put("animation", animation);
 		}
 		if (html != null) {
-			put("html", html);
+			options.put("html", html);
 		}
 		if (placement != null) {
-			put("placement", JsUtils.quotes(placement.getValue()));
+			options.put("placement", JsUtils.quotes(placement.getValue()));
 		}
 		if (selector != null) {
-			put("selector", JsUtils.quotes(selector));
+			options.put("selector", JsUtils.quotes(selector));
 		}
 		if (trigger != null) {
-			put("trigger", JsUtils.quotes(trigger.getValue()));
+			options.put("trigger", JsUtils.quotes(trigger.getValue()));
 		}
-		if (titleText != null) {
+		String computedTitleText = (titleModel != null ? titleModel.getObject() : titleText);
+		if (computedTitleText != null) {
 			// Si on veut ajouter un bouton de fermeture, on doit passer par une fonction,
 			// sinon on passe par l'option titleText classique.
 			if (addCloseButton) {
-				put("title", getTitleFunction(popoverComponent, new JsStatement().$(null, "<span></span>").chain("html", JsUtils.quotes(titleText, true))));
+				options.put("title", getTitleFunction(popoverComponent, new JsStatement().$(null, "<span></span>").chain("html", JsUtils.quotes(computedTitleText, true))));
 			} else {
-				put("title", JsUtils.quotes(titleText, true));
+				options.put("title", JsUtils.quotes(computedTitleText, true));
 			}
 		} else if (titleComponent != null) {
-			put("title", getTitleFunction(popoverComponent, new JsStatement().$(titleComponent).chain("html")));
+			options.put("title", getTitleFunction(popoverComponent, new JsStatement().$(titleComponent).chain("html")));
 		} else if (titleFunction != null) {
-			put("title", titleFunction.render().toString());
+			options.put("title", titleFunction.render().toString());
 		}
-		if (contentText != null) {
-			put("content", JsUtils.quotes(contentText, true));
+		if (contentModel != null) {
+			options.put("content", JsUtils.quotes(contentModel.getObject(), true));
+		} else if (contentText != null) {
+			options.put("content", JsUtils.quotes(contentText, true));
 		} else if (contentComponent != null) {
-			put("content", new JsScope() {
+			options.put("content", new JsScope() {
 				private static final long serialVersionUID = 1L;
 				@Override
 				protected void execute(JsScopeContext scopeContext) {
@@ -93,16 +101,16 @@ public class BootstrapPopoverOptions extends Options {
 				}
 			}.render().toString());
 		} else if (contentFunction != null) {
-			put("content", contentFunction.render().toString());
+			options.put("content", contentFunction.render().toString());
 		}
 		if (delay != null) {
-			put("delay", delay);
+			options.put("delay", delay);
 		}
 		if (container != null) {
-			put("container", JsUtils.quotes(container));
+			options.put("container", JsUtils.quotes(container));
 		}
 		
-		return super.getJavaScriptOptions();
+		return super.getJavaScriptOptions(options.build());
 	}
 
 	private JsScope getTitleFunction(final Component popoverComponent, final JsStatement titleComponentStatement) {
@@ -178,6 +186,14 @@ public class BootstrapPopoverOptions extends Options {
 	public void setTitleText(String titleText) {
 		this.titleText = titleText;
 	}
+	
+	public IModel<String> getTitleModel() {
+		return titleModel;
+	}
+
+	public void setTitleModel(IModel<String> titleModel) {
+		this.titleModel = titleModel;
+	}
 
 	public Component getTitleComponent() {
 		return titleComponent;
@@ -201,6 +217,14 @@ public class BootstrapPopoverOptions extends Options {
 
 	public void setContentText(String contentText) {
 		this.contentText = contentText;
+	}
+	
+	public IModel<String> getContentModel() {
+		return contentModel;
+	}
+
+	public void setContentModel(IModel<String> contentModel) {
+		this.contentModel = contentModel;
 	}
 
 	public Component getContentComponent() {
@@ -233,6 +257,16 @@ public class BootstrapPopoverOptions extends Options {
 
 	public void setContainer(String container) {
 		this.container = container;
+	}
+	
+	@Override
+	public void detach() {
+		if (contentModel != null) {
+			contentModel.detach();
+		}
+		if (titleModel != null) {
+			titleModel.detach();
+		}
 	}
 
 }

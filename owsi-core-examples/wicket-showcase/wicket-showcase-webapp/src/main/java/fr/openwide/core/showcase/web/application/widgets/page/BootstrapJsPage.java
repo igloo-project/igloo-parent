@@ -37,7 +37,7 @@ public class BootstrapJsPage extends WidgetsTemplate {
 		
 		Label someLabelDefault = new Label("someLabelDefault", new ResourceModel("widgets.popover.someLabel.default"));
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
-		popoverOptions.setTitleText(new ResourceModel("widgets.popover.someInformation.title").getObject());
+		popoverOptions.setTitleModel(new ResourceModel("widgets.popover.someInformation.title"));
 		popoverOptions.setContentComponent(someInformation);
 		popoverOptions.setHtml(true);
 		someLabelDefault.add(new BootstrapPopoverBehavior(popoverOptions));
