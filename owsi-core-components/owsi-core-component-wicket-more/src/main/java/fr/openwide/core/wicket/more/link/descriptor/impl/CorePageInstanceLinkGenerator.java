@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.link.descriptor.impl;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -14,6 +15,8 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
@@ -29,13 +32,25 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 
 	private static final String ANCHOR_ROOT = "#";
 	
+	private static final GetNameFromClassModelFunction GET_NAME_FROM_CLASS_MODEL_FUNCTION = new GetNameFromClassModelFunction();
+	
 	private final IModel<? extends Page> pageInstanceModel;
 
-	private final IModel<? extends Class<? extends Page>> expectedPageClassModel;
+	private final Collection<IModel<? extends Class<? extends Page>>> expectedPageClassModels;
 
-	public CorePageInstanceLinkGenerator(IModel<? extends Page> pageInstanceModel, IModel<? extends Class<? extends Page>> expectedPageClassModel) {
+	public CorePageInstanceLinkGenerator(IModel<? extends Page> pageInstanceModel, Collection<IModel<? extends Class<? extends Page>>> expectedPageClassModels) {
 		this.pageInstanceModel = pageInstanceModel;
-		this.expectedPageClassModel = expectedPageClassModel;
+		this.expectedPageClassModels = expectedPageClassModels;
+	}
+	
+	protected Class<? extends Page> getValidExpectedPageClass(Page pageInstance) {
+		for (IModel<? extends Class<? extends Page>> expectedPageClassModel : expectedPageClassModels) {
+			Class<? extends Page> expectedPageClass = expectedPageClassModel.getObject();
+			if (expectedPageClass != null && expectedPageClass.isAssignableFrom(pageInstance.getClass())) {
+				return expectedPageClass;
+			}
+		}
+		return null;
 	}
 
 	protected Page getValidPageInstance() throws LinkInvalidTargetRuntimeException {
@@ -43,11 +58,26 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		if (pageInstance == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page instance was null");
 		}
-		Class<? extends Page> expectedPageClass = expectedPageClassModel.getObject();
-		if (expectedPageClass != null && !expectedPageClass.isAssignableFrom(pageInstance.getClass())) {
-			throw new LinkInvalidTargetRuntimeException("The target page instance '" + pageInstance + "' had unexpected type : got " + pageInstance.getClass().getName() + ", expected " + expectedPageClass.getName());
+		
+		Class<? extends Page> validPageClass = getValidExpectedPageClass(pageInstance);
+		
+		if (validPageClass == null) {
+			throw new LinkInvalidTargetRuntimeException("The target page instance '" + pageInstance + "' had unexpected type :"
+					+ " got " + pageInstance.getClass().getName() + ", "
+					+ "expected one of " + StringUtils.join(Collections2.transform(expectedPageClassModels, GET_NAME_FROM_CLASS_MODEL_FUNCTION), ", "));
 		}
+		
 		return pageInstance;
+	}
+	
+	public CharSequence relativeUrl() throws LinkInvalidTargetRuntimeException {
+		return relativeUrl(RequestCycle.get());
+	}
+	
+	public CharSequence relativeUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException {
+		return requestCycle.urlFor(
+				new RenderPageRequestHandler(new PageProvider(getValidPageInstance()))
+		);
 	}
 
 	@Override
@@ -57,18 +87,12 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 
 	@Override
 	public String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException {
-		return requestCycle.getUrlRenderer().renderFullUrl(
-				Url.parse(
-						requestCycle.urlFor(
-								new RenderPageRequestHandler(new PageProvider(getValidPageInstance()))
-						)
-				)
-		);
+		return requestCycle.getUrlRenderer().renderFullUrl(Url.parse(relativeUrl(requestCycle)));
 	}
 
 	@Override
 	public AbstractDynamicBookmarkableLink link(String wicketId) {
-		return new DynamicBookmarkablePageInstanceLink(wicketId, pageInstanceModel, expectedPageClassModel);
+		return new DynamicBookmarkablePageInstanceLink(wicketId, this);
 	}
 	
 	@Override
@@ -123,8 +147,8 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		if (pageInstance == null) {
 			return false;
 		}
-		Class<? extends Page> expectedPageClass = expectedPageClassModel.getObject();
-		if (expectedPageClass != null && !expectedPageClass.isAssignableFrom(pageInstance.getClass())) {
+		Class<? extends Page> validPageClass = getValidExpectedPageClass(pageInstance);
+		if (validPageClass == null) {
 			return false;
 		}
 		return Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER);
@@ -134,5 +158,15 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	public void detach() {
 		pageInstanceModel.detach();
 	}
+	
+	private static class GetNameFromClassModelFunction implements Function<IModel<? extends Class<?>>, String> {
+		@Override
+		public String apply(IModel<? extends Class<?>> input) {
+			if (input.getObject() != null) {
+				return input.getObject().getName();
+			}
+			return null;
+		}
+	};
 
 }

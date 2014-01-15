@@ -8,8 +8,8 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator
 
 public interface IPageInstanceState<L extends IPageLinkGenerator> extends ITerminalState<L> {
 	
-	<P extends Page> ITerminalState<L> validate(Class<P> expectedPageClass);
+	<P extends Page> IPageInstanceState<L> validate(Class<P> expectedPageClass);
 	
-	ITerminalState<L> validate(IModel<? extends Class<? extends Page>> expectedPageClassModel);
+	IPageInstanceState<L> validate(IModel<? extends Class<? extends Page>> expectedPageClassModel);
 
 }

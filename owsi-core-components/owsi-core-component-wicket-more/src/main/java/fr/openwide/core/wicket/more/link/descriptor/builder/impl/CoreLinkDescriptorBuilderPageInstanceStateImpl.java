@@ -1,10 +1,13 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl;
 
+import java.util.Set;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 
+import com.google.common.collect.Sets;
+
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IPageInstanceState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.ITerminalState;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CorePageInstanceLinkGenerator;
 import fr.openwide.core.wicket.more.model.ClassModel;
@@ -13,27 +16,26 @@ public class CoreLinkDescriptorBuilderPageInstanceStateImpl implements IPageInst
 	
 	private final IModel<? extends Page> pageInstanceModel;
 	
-	private IModel<? extends Class<? extends Page>> expectedPageClassModel;
+	private Set<IModel<? extends Class<? extends Page>>> expectedPageClassModels = Sets.newHashSet();
 
 	public CoreLinkDescriptorBuilderPageInstanceStateImpl(IModel<? extends Page> pageInstanceModel) {
 		this.pageInstanceModel = pageInstanceModel;
-		this.expectedPageClassModel = null;
 	}
 
 	@Override
-	public <P extends Page> ITerminalState<IPageLinkGenerator> validate(Class<P> expectedPageClass) {
+	public <P extends Page> IPageInstanceState<IPageLinkGenerator> validate(Class<P> expectedPageClass) {
 		return validate(ClassModel.of(expectedPageClass));
 	}
 
 	@Override
-	public ITerminalState<IPageLinkGenerator> validate(IModel<? extends Class<? extends Page>> expectedPageClassModel) {
-		this.expectedPageClassModel = expectedPageClassModel;
+	public IPageInstanceState<IPageLinkGenerator> validate(IModel<? extends Class<? extends Page>> expectedPageClassModel) {
+		expectedPageClassModels.add(expectedPageClassModel);
 		return this;
 	}
 
 	@Override
 	public IPageLinkGenerator build() {
-		return new CorePageInstanceLinkGenerator(pageInstanceModel, expectedPageClassModel);
+		return new CorePageInstanceLinkGenerator(pageInstanceModel, expectedPageClassModels);
 	}
 
 }
