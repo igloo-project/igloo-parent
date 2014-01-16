@@ -32,7 +32,6 @@ import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
-import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawesome.FontAwesomeCssScope;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
@@ -112,12 +111,6 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 	@Override
 	public Class<? extends WebPage> getSignInPageClass() {
 		return SignInPage.class;
-	}
-	
-	@Override
-	protected void registerLessImportScopes() {
-		super.registerLessImportScopes();
-		lessCssService.registerImportScope("font-awesome", FontAwesomeCssScope.class);
 	}
 
 }

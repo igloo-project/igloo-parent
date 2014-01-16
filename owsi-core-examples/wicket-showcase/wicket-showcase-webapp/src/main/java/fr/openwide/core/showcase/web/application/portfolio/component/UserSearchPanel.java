@@ -22,7 +22,7 @@ public class UserSearchPanel extends Panel {
 	private static final long serialVersionUID = -6224313886789870489L;
 	
 	@SpringBean
-	IAuthorityService authorityService;
+	private IAuthorityService authorityService;
 	
 	private IPageable pageable;
 	
