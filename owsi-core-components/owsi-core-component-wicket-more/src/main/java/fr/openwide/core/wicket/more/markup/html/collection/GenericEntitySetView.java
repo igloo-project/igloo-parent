@@ -13,7 +13,7 @@ public abstract class GenericEntitySetView<E extends GenericEntity<?, ?>> extend
 
 	private static final long serialVersionUID = -7384121758155351030L;
 
-	public GenericEntitySetView(String id, IModel<Set<? extends E>> model) {
+	public GenericEntitySetView(String id, IModel<? extends Set<? extends E>> model) {
 		super(id, model);
 	}
 

@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.apache.wicket.IGenericComponent;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.markup.repeater.util.ModelIteratorAdapter;
 import org.apache.wicket.model.IModel;
@@ -21,34 +20,22 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
  * @see GenericEntityListView
  */
 public abstract class AbstractGenericEntityCollectionView<T extends GenericEntity<?, ?>, C extends Collection<? extends T>>
-		extends RefreshingView<T> implements IGenericComponent<C> {
+		extends RefreshingView<T> { // Does not implement IGenericComponent<C> in order to allow using IModel<? extends C>, not only IModel<C>
 
 	private static final long serialVersionUID = 1L;
 
-	public AbstractGenericEntityCollectionView(String id, IModel<C> model) {
+	public AbstractGenericEntityCollectionView(String id, IModel<? extends C> model) {
 		super(id, model);
 	}
 	
-	@Override
 	@SuppressWarnings("unchecked")
-	public IModel<C> getModel() {
+	public IModel<? extends C> getModel() {
 		return (IModel<C>) getDefaultModel();
 	}
 	
-	@Override
 	@SuppressWarnings("unchecked")
 	public C getModelObject() {
 		return (C) getDefaultModelObject();
-	}
-	
-	@Override
-	public void setModel(IModel<C> model) {
-		setDefaultModel(model);
-	}
-	
-	@Override
-	public void setModelObject(C object) {
-		setDefaultModelObject(object);
 	}
 
 	/**

@@ -13,7 +13,7 @@ public abstract class GenericEntitySortedSetView<E extends GenericEntity<?, ?>> 
 
 	private static final long serialVersionUID = -7384121758155351030L;
 
-	public GenericEntitySortedSetView(String id, IModel<SortedSet<? extends E>> model) {
+	public GenericEntitySortedSetView(String id, IModel<? extends SortedSet<? extends E>> model) {
 		super(id, model);
 	}
 
