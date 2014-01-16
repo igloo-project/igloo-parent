@@ -1,11 +1,20 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+
+import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.wicket.more.link.model.PageModel;
+import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class AdministrationUserSearchPanel extends Panel {
 	
@@ -15,15 +24,37 @@ public class AdministrationUserSearchPanel extends Panel {
 	
 	private IModel<String> searchTermModel;
 	
-	public AdministrationUserSearchPanel(String id, IPageable pageable, IModel<String> searchTermModel) {
+	private IModel<Boolean> activeModel;
+	
+	public AdministrationUserSearchPanel(String id, IPageable pageable, IModel<String> searchTermModel, IModel<Boolean> activeModel) {
 		super(id);
 		
 		this.pageable = pageable;
 		
 		this.searchTermModel = searchTermModel;
+		this.activeModel = activeModel;
 		
+		// Quick search
+		UserAutocompleteAjaxComponent userQuickSearch = new UserAutocompleteAjaxComponent("userQuickSearch",
+				new GenericEntityModel<Long, User>()) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				if (getModelObject() != null) {
+					AdministrationUserDescriptionPage.linkDescriptor(getModel(), PageModel.of(getPage())).setResponsePage();
+					return;
+				}
+			}
+		};
+		userQuickSearch.setAutoUpdate(true);
+		userQuickSearch.getAutocompleteField().setLabel(new ResourceModel("common.quickAccess"));
+		userQuickSearch.getAutocompleteField().add(new LabelPlaceholderBehavior());
+		add(userQuickSearch);
+		
+		// Search form
 		Form<Void> form = new Form<Void>("form") {
-			private static final long serialVersionUID = -584576228542906811L;
+			private static final long serialVersionUID = 3070604877946816317L;
 			@Override
 			protected void onSubmit() {
 				// Lors de la soumission d'un formulaire de recherche, on retourne sur la première page
@@ -33,9 +64,13 @@ public class AdministrationUserSearchPanel extends Panel {
 		};
 		
 		TextField<String> searchInput = new TextField<String>("searchInput", this.searchTermModel);
+		searchInput.setLabel(new ResourceModel("administration.user.search.name"));
+		searchInput.add(new LabelPlaceholderBehavior());
 		form.add(searchInput);
 		
-		form.add(new SubmitLink("submit"));
+		CheckBox active = new CheckBox("active", this.activeModel);
+		active.setLabel(new ResourceModel("administration.user.field.active"));
+		form.add(active);
 		
 		add(form);
 	}
@@ -45,6 +80,9 @@ public class AdministrationUserSearchPanel extends Panel {
 		super.onDetach();
 		if (searchTermModel != null) {
 			this.searchTermModel.detach();
+		}
+		if (this.activeModel != null) {
+			this.activeModel.detach();
 		}
 	}
 }

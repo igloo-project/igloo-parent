@@ -2,6 +2,7 @@ package fr.openwide.core.basicapp.core.business.user.dao;
 
 import java.util.List;
 
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -25,48 +26,53 @@ public class UserDaoImpl extends AbstractPersonDaoImpl<User> implements IUserDao
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> search(String searchTerm, Integer limit, Integer offset) {
-		FullTextQuery query = getSearchQuery(searchTerm);
-		
-		query.setSort(new Sort(new SortField(Binding.user().userName().getPath(), SortField.STRING)));
+	public List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset)
+			throws ParseException {
+		FullTextQuery fullTextQuery = getSearchByNameActiveQuery(name, active);
+		fullTextQuery.setSort(new Sort(new SortField(User.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
+				new SortField(User.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING)));
 		
 		if (offset != null) {
-			query.setFirstResult(offset);
-		}
-		if (limit != null) {
-			query.setMaxResults(limit);
+			fullTextQuery.setFirstResult(offset);
 		}
 		
-		return (List<User>) query.getResultList();
+		if (limit != null) {
+			fullTextQuery.setMaxResults(limit);
+		}
+			
+		return (List<User>) fullTextQuery.getResultList();
 	}
-	
+
 	@Override
-	public int countSearch(String searchTerm) {
-		return getSearchQuery(searchTerm).getResultSize();
+	public int countByNameActive(String name, Boolean active) throws ParseException {
+		FullTextQuery fullTextQuery = getSearchByNameActiveQuery(name, active);
+		
+		return fullTextQuery.getResultSize();
 	}
 	
-	private FullTextQuery getSearchQuery(String searchTerm) {
+	private FullTextQuery getSearchByNameActiveQuery(String name, Boolean active) throws ParseException {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 		
 		QueryBuilder userQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
-				.forEntity(getObjectClass()).get();
+				.forEntity(User.class).get();
 		
 		BooleanJunction<?> booleanJunction = userQueryBuilder.bool();
 		
-		if (StringUtils.hasText(searchTerm)) {
-			booleanJunction.must(userQueryBuilder
-					.keyword()
-					.fuzzy().withPrefixLength(1).withThreshold(0.8F)
-					.onField(Binding.user().userName().getPath())
-					.andField(Binding.user().firstName().getPath())
-					.andField(Binding.user().lastName().getPath())
-					.andField(Binding.user().email().getPath())
-					.matching(searchTerm)
-					.createQuery());
+		if (StringUtils.hasText(name) || active != null) {
+			if (StringUtils.hasText(name)) {
+				booleanJunction.must(userQueryBuilder.keyword().fuzzy().withPrefixLength(1)
+						.onField(Binding.user().firstName().getPath())
+						.andField(Binding.user().lastName().getPath())
+						.andField(Binding.user().userName().getPath())
+						.matching(name).createQuery());
+			}
+			
+			if (active != null) {
+				booleanJunction.must(userQueryBuilder.keyword().onField(Binding.user().active().getPath()).matching(active).createQuery());
+			}
 		} else {
 			booleanJunction.must(userQueryBuilder.all().createQuery());
 		}
-		
-		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), getObjectClass());
+		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), User.class);
 	}
 }

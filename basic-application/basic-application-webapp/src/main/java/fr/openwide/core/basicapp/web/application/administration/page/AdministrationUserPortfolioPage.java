@@ -41,12 +41,13 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 				AdministrationUserPortfolioPage.linkDescriptor()));
 		
 		IModel<String> searchTermModel = Model.of("");
+		IModel<Boolean> activeModel = Model.of(true);
 		
-		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("portfolio", new UserDataProvider(searchTermModel),
+		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("portfolio", new UserDataProvider(searchTermModel, activeModel),
 				basicApplicationConfigurer.getPortfolioItemsPerPage());
 		add(portfolioPanel);
 
-		add(new AdministrationUserSearchPanel("searchPanel", portfolioPanel.getPageable(), searchTermModel));
+		add(new AdministrationUserSearchPanel("searchPanel", portfolioPanel.getPageable(), searchTermModel, activeModel));
 		
 		// User create popup
 		UserFormPopupPanel userCreatePanel = new UserFormPopupPanel("userCreatePopupPanel");

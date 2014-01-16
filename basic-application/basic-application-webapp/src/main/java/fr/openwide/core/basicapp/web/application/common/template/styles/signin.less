@@ -1,48 +1,79 @@
 // CSS Reset
-@import "@{scope-core}bootstrap/reset.less";
-@import "@{scope-core}bootstrap/override/reset.less";
+@import "@{scope-core-bs3}bootstrap/normalize.less";
+@import "@{scope-core-bs3}bootstrap/override/reset.less";
 
 // Core variables and mixins
-@import "@{scope-core}bootstrap/variables.less";
-@import "@{scope-core}bootstrap/override/variables.less";
+@import "@{scope-core-bs3}bootstrap/variables.less";
+@import "@{scope-core-bs3}bootstrap/override/variables.less";
 @import "variables.less";
 
-@import "@{scope-core}bootstrap/mixins.less";
-@import "@{scope-core}bootstrap/override/mixins.less";
+@import "@{scope-core-bs3}bootstrap/mixins.less";
+@import "@{scope-core-bs3}bootstrap/override/mixins.less";
 
-// Grid system and page structure
-@import "@{scope-core}bootstrap/scaffolding.less";
-@import "@{scope-core}bootstrap/layouts.less";
+// Core CSS
+@import "@{scope-core-bs3}bootstrap/scaffolding.less";
+@import "@{scope-core-bs3}bootstrap/type.less";
+@import "@{scope-core-bs3}bootstrap/code.less";
+@import "@{scope-core-bs3}bootstrap/grid.less";
+@import "@{scope-core-bs3}bootstrap/tables.less";
+@import "@{scope-core-bs3}bootstrap/forms.less";
+@import "@{scope-core-bs3}bootstrap/buttons.less";
 
-// Base CSS
-@import "@{scope-core}bootstrap/forms.less";
+// Components
+@import "@{scope-core-bs3}bootstrap/component-animations.less";
+@import "@{scope-core-bs3}bootstrap/dropdowns.less";
+@import "@{scope-core-bs3}bootstrap/button-groups.less";
+@import "@{scope-core-bs3}bootstrap/input-groups.less";
+@import "@{scope-core-bs3}bootstrap/navs.less";
+@import "@{scope-core-bs3}bootstrap/navbar.less";
+@import "@{scope-core-bs3}bootstrap/breadcrumbs.less";
+@import "@{scope-core-bs3}bootstrap/pagination.less";
+@import "@{scope-core-bs3}bootstrap/pager.less";
+@import "@{scope-core-bs3}bootstrap/labels.less";
+@import "@{scope-core-bs3}bootstrap/badges.less";
+@import "@{scope-core-bs3}bootstrap/jumbotron.less";
+@import "@{scope-core-bs3}bootstrap/thumbnails.less";
+@import "@{scope-core-bs3}bootstrap/alerts.less";
+@import "@{scope-core-bs3}bootstrap/progress-bars.less";
+@import "@{scope-core-bs3}bootstrap/media.less";
+@import "@{scope-core-bs3}bootstrap/list-group.less";
+@import "@{scope-core-bs3}bootstrap/panels.less";
+@import "@{scope-core-bs3}bootstrap/wells.less";
+@import "@{scope-core-bs3}bootstrap/close.less";
 
-// Components: common
-@import "@{scope-core}bootstrap/sprites.less";
-@import "@{scope-core}bootstrap/component-animations.less";
-@import "@{scope-core}bootstrap/close.less";
-
-// Components: Buttons & Alerts
-@import "@{scope-core}bootstrap/buttons.less";
-@import "@{scope-core}bootstrap/button-groups.less";
-@import "@{scope-core}bootstrap/alerts.less";
+// Components w/ JavaScript
+@import "@{scope-core-bs3}bootstrap/modals.less";
+@import "@{scope-core-bs3}bootstrap/tooltip.less";
+@import "@{scope-core-bs3}bootstrap/popovers.less";
 
 // Utility classes
-@import "@{scope-core}bootstrap/utilities.less";
+@import "@{scope-core-bs3}bootstrap/utilities.less";
+@import "@{scope-core-bs3}bootstrap/responsive-utilities.less";
 
-@import "@{scope-core}bootstrap/override/general.less";
+// Override
+@import "@{scope-core-bs3}bootstrap/override/general.less";
 
-@import "@{scope-core}common.less";
+// Icônes
+@import "@{scope-core-font-awesome}font-awesome.less";
 
-// Alerts complements
-@import "@{scope-core}alerts.less";
+// Éléments génériques
+@import "@{scope-core-bs3}common.less";
+@import "@{scope-core-bs3}nav.less";
+@import "@{scope-core-bs3}alerts.less";
+@import "@{scope-core-bs3}modals.less";
+@import "@{scope-core-bs3}bootstrap-modal.less";
+@import "@{scope-core-bs3}itemit.less";
+@import "@{scope-core-bs3}autocomplete.less";
+@import "@{scope-core-bs3}select2.less";
+@import "@{scope-core-bs3}more.less";
 
 // Page
+
 #login-page {
 	background: none repeat scroll 0 0 #EEEEEE;
-	padding-top: 150px;
+	padding-top: 120px;
 	.container {
-		width: 500px;
+		width: 430px;
 		
 		> .content {
 			background-color: #FFFFFF;
@@ -75,66 +106,36 @@
 			}
 		}
 	}
-}
-.login-title {
-	border-bottom: 1px solid #DDDDDD;
-	border-top: 1px solid #DDDDDD;
-	color: #FFFFFF;
-	background: @mainColor;
-	margin: 0;
-	padding: 10px 30px;
-}
-.login-content p:first-child {
-	margin-top: 0;
-}
-#sign-in-form {
-	margin: 0;
 	
-	.control-group {
-		margin-bottom: 25px;
-		
-		.control-label {
-			color: #666666;
-			font-size: 1.5em;
-			font-weight: bold;
-			height: 25px;
-			line-height: 25px;
-			padding-right: 30px;
-			width: 150px;
-		}
-		
-		.controls {
-			margin-left: 120px;
-			
-			input {
-				font-size: 1.5em;
-				height: 25px;
-			}
-		}
+	.login-title {
+		border-bottom: 1px solid #DDDDDD;
+		border-top: 1px solid #DDDDDD;
+		color: #FFFFFF;
+		background: @main-color;
+		margin: 0;
+		padding: 20px 30px;
 	}
-}
-#sign-in-form .form-actions {
-	background: none repeat scroll 0 0 transparent;
-	margin: 30px 0 0;
-	padding: 15px 0 0;
-	text-align: right;
 	
-	.btn-success {
-		font-size: 1.4em;
-		font-weight: bold;
-		
-		.icon {
-			margin-top: 1px;
-		}
+	.login-content p:first-child {
+		margin-top: 0;
 	}
-}
-#login-footer {
-	text-align:right;
-	width: 480px;
-	margin: 3px auto 20px;
-	color: #888;
 	
-	.separator {
-		margin: 0 2px;
+	#sign-in-form {
+		margin: 0;
+	}
+	
+	#sign-in-form .form-actions {
+		background: none repeat scroll 0 0 transparent;
+		margin: 30px 0 0;
+		padding: 15px 0 0;
+		text-align: right;
+	}
+	
+	#login-footer {
+		color: #888;
+		
+		.separator {
+			margin: 0 2px;
+		}
 	}
 }

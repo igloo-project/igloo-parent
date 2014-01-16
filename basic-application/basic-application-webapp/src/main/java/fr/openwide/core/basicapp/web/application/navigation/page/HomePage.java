@@ -15,11 +15,16 @@ public class HomePage extends MainTemplate {
 	public HomePage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitleElement(new BreadCrumbElement(new ResourceModel("home.pageTitle")));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle")));
 		
 		add(new Label("pageTitle", new ResourceModel("home.pageTitle")));
 	}
 
+	@Override
+	protected boolean isBreadCrumbDisplayed() {
+		return false;
+	}
+	
 	@Override
 	protected Class<? extends WebPage> getFirstMenuPage() {
 		return HomePage.class;

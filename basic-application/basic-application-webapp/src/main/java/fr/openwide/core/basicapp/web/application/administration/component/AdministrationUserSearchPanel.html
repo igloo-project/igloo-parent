@@ -2,15 +2,23 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<form class="form-inline" wicket:id="form">
-		<div class="input-append">
-			<input type="text" wicket:id="searchInput" wicket:message="placeholder:administration.user.search"/>
-			<button wicket:id="submit" class="btn btn-primary" type="submit">
-				<i class="icon-filter icon-white"></i>
-				<wicket:message key="common.action.filter" />
-			</button>
+	<form wicket:id="form" class="form-inline col-sm-8">
+		<div class="form-group">
+			<label class="sr-only" wicket:for="searchInput"><wicket:label /></label>
+			<input wicket:id="searchInput" class="form-control" type="text">
 		</div>
+		<div class="checkbox">
+			<label wicket:for="active">
+				<input wicket:id="active" type="checkbox" /> <wicket:label />
+			</label>
+		</div>
+		<button class="btn btn-primary" type="submit">
+			<i class="fa fa-filter"></i>
+			<wicket:message key="common.apply-filters" />
+		</button>
 	</form>
-	<div class="clear"></div>
+	<div class="col-sm-4 further">
+		<div wicket:id="userQuickSearch" class="pull-right" />
+	</div>
 </wicket:panel>
 </html>

@@ -2,6 +2,7 @@ package fr.openwide.core.basicapp.web.application.administration.model;
 
 import java.util.List;
 
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -12,7 +13,6 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataProvider;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -27,11 +27,14 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	
 	private IModel<String> searchTermModel;
 	
-	public UserDataProvider(IModel<String> searchTerm) {
+	private IModel<Boolean> activeModel;
+	
+	public UserDataProvider(IModel<String> searchTerm, IModel<Boolean> activeModel) {
 		super();
-		this.searchTermModel = searchTerm;
-		
 		Injector.get().inject(this);
+		
+		this.searchTermModel = searchTerm;
+		this.activeModel = activeModel;
 	}
 	
 	@Override
@@ -42,21 +45,29 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	@Override
 	protected List<User> loadList(long first, long count) {
 		try {
-			return userService.search(searchTermModel.getObject(), (int) count, (int) first);
-		} catch (ServiceException e) {
-			LOGGER.error("Unable to search for users.");
+			return userService.searchByNameActive(searchTermModel.getObject(),	getActiveClause(activeModel.getObject()), (int) count, (int) first);
+		} catch (ParseException e) {
+			LOGGER.error("Unable to search for users.", e);
 		}
 		return Lists.newArrayListWithExpectedSize(0);
 	}
-
+	
 	@Override
 	protected long loadSize() {
 		try {
-			return userService.countSearch(searchTermModel.getObject());
-		} catch (ServiceException e) {
-			LOGGER.error("Unable to search for users.");
+			return userService.countByNameActive(searchTermModel.getObject(), getActiveClause(activeModel.getObject()));
+		} catch (ParseException e) {
+			LOGGER.error("Unable to search for users.", e);
 		}
 		return 0;
+	}
+	
+	protected Boolean getActiveClause(Boolean active) {
+		if (Boolean.TRUE.equals(active)) {
+			return true;
+		} else {
+			return null;
+		}
 	}
 	
 	@Override

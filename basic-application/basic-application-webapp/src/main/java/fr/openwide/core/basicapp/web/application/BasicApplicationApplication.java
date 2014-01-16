@@ -45,10 +45,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		// Administration
 		mountPage("/administration/user/", AdministrationUserPortfolioPage.class);
-		mountPage("/administration/user/${" + CommonParameters.ID + "}/",
+		mountParameterizedPage("/administration/user/${" + CommonParameters.ID + "}/",
 				AdministrationUserDescriptionPage.class);
 		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
-		mountPage("/administration/user-group/${" + CommonParameters.ID + "}/",
+		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/",
 				AdministrationUserGroupDescriptionPage.class);
 		
 		// Console

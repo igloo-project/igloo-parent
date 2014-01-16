@@ -18,7 +18,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.more.link.model.PageModel;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
@@ -40,7 +40,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 				.setBody(BindingModel.of(userModel, Binding.user().userName())));
 		item.add(new Label("firstName", BindingModel.of(userModel, Binding.user().firstName())));
 		item.add(new Label("lastName", BindingModel.of(userModel, Binding.user().lastName())));
-		item.add(new BooleanGlyphicon("active", BindingModel.of(userModel, Binding.user().active())));
+		item.add(new BooleanIcon("active", BindingModel.of(userModel, Binding.user().active())).hideIfNullOrFalse());
 		item.add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
 	}
 

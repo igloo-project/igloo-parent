@@ -3,7 +3,7 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<head>
 		<title><wicket:message key="common.rootPageTitle" /> &rsaquo; <wicket:message key="signIn.pageTitle" /></title>
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge; IE=9; IE=8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 		<wicket:head />
 	</head>
 	
@@ -15,23 +15,19 @@
 					<img class="logo" src="" alt="Company logo" />
 				</div>
 				<h1 class="login-title"><wicket:message key="signIn.welcomeText" /></h1>
-				<form wicket:id="signInForm" id="sign-in-form" class="form-horizontal">
+				<form wicket:id="signInForm" id="sign-in-form">
 					<fieldset class="login-content">
-						<div class="control-group">
-							<label class="control-label" for="username"><wicket:message key="signIn.login" /></label>
-							<div class="controls">
-								<input wicket:id="userName" type="text" id="username" />
-							</div>
+						<div class="form-group">
+							<input class="form-control input-lg" wicket:id="userName" type="text" id="username"
+									wicket:message="placeholder:signIn.userName" />
 						</div>
-						<div class="control-group password-group">
-							<label class="control-label" for="password"><wicket:message key="signIn.password" /></label>
-							<div class="controls">
-								<input wicket:id="password" type="password" id="password" />
-							</div>
+						<div class="form-group">
+							<input class="form-control input-lg" wicket:id="password" type="password" id="password"
+									wicket:message="placeholder:signIn.password" />
 						</div>
 						<div class="form-actions">
-							<button class="btn btn-success btn-large" type="submit">
-								<span class="icon icon-lock icon-white" />
+							<button class="btn btn-success btn-lg pull-right" type="submit">
+								<span class="fa fa-lock" />
 								<wicket:message key="signIn.button" />
 							</button>
 						</div>

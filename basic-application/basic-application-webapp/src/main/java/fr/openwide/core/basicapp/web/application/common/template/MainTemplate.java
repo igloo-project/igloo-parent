@@ -2,13 +2,11 @@ package fr.openwide.core.basicapp.web.application.common.template;
 
 import java.util.List;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -23,7 +21,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
@@ -34,9 +32,10 @@ import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPan
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
-import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
@@ -55,15 +54,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		MarkupContainer htmlRootElement = new TransparentWebMarkupContainer("htmlRootElement");
-		htmlRootElement.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage()));
-		add(htmlRootElement);
-		
-		if (Application.get().getDebugSettings().isDevelopmentUtilitiesEnabled()) {
-			add(new DebugBar("debugBar"));
-		} else {
-			add(new InvisiblePanel("debugBar"));
-		}
+		add(new TransparentWebMarkupContainer("htmlRootElement")
+				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
@@ -82,6 +74,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// Environment
 		add(new EnvironmentPanel("environment"));
+		
+		// Back to home
+		add(new BookmarkablePageLink<Void>("backToHomeLink", getApplication().getHomePage()));
 		
 		// Main navigation bar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
@@ -156,43 +151,54 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new BootstrapDropdownBehavior());
 		
 		// Scroll to top
-		WebMarkupContainer scrollToTop = new WebMarkupContainer("scrollToTop");
-		scrollToTop.add(new ScrollToTopBehavior());
-		add(scrollToTop);
+		add(new WebMarkupContainer("scrollToTop")
+				.add(new ScrollToTopBehavior()));
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
-		return Lists.newArrayList(
+		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home")),
 				AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration"))
 		);
 	}
 
 	protected List<NavigationMenuItem> getSubNav() {
-		return Lists.newArrayList();
-	}
-
-	public static BootstrapTooltip getBootstrapTooltip() {
-		BootstrapTooltip bootstrapTooltip = new BootstrapTooltip();
-		bootstrapTooltip.setSelector("[title],[data-original-title]");
-		bootstrapTooltip.setAnimation(true);
-		bootstrapTooltip.setContainer("body");
-		return bootstrapTooltip;
-	}
-
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		
-		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
-	}
-
-	protected boolean isBreadCrumbDisplayed() {
-		return false;
+		return ImmutableList.of();
 	}
 
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return null;
+	}
+	
+	@Override
+	protected Component createBodyBreadCrumb(String wicketId) {
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel)
+				.setTrailingSeparator(true);
+	}
+	
+	protected boolean isBreadCrumbDisplayed() {
+		return true;
+	}
+	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		
+		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
+	}
+	
+	@Override
+	public String getVariation() {
+		return BOOTSTRAP3_VARIATION;
+	}
+	
+	protected BootstrapTooltip getBootstrapTooltip() {
+		BootstrapTooltip bootstrapTooltip = new BootstrapTooltip();
+		bootstrapTooltip.setSelector("[title],[data-original-title]");
+		bootstrapTooltip.setAnimation(true);
+		bootstrapTooltip.setContainer("body");
+		return bootstrapTooltip;
 	}
 }
