@@ -1,41 +1,64 @@
 /* Compléments aux styles bootstraps */
 
 .alert-global-panel {
-	z-index: @zindex-feedback-panel;
+	.border-top-right-radius(@border-radius-base);
+	
+	padding: 20px;
+	bottom: -40px;
+	
+	background: fade(#434343, 80%);
+	
+	z-index: 1000;
 	position: fixed;
-	width: 100%;
+	width: 60%;
 	font-weight: bold;
 	
 	overflow: hidden;
 	display: none;
-}
-
-.alert-global-panel .close {
-	color: #888;
 	
-	z-index: (@zindex-feedback-panel+1);
-	position: absolute;
-	right: 20px;
-	top: 6px;
+	.alert {
+		padding: 15px 42px;
+		
+		margin: 0 auto;
+		position: relative;
+		width: 100%;
+		
+		.icon-alert-type {
+			display: inline-block;
+			font-size: 15px;
+			position: absolute;
+			top: 16px;
+			left: 16px;
+		}
+		
+		&:first-of-type {
+			.border-top-radius(@border-radius-base);
+		}
+		
+		&:last-of-type {
+			.border-bottom-radius(@border-radius-base);
+		}
+	}
 	
-	font-size: 20px;
-	.opacity(100);
+	.alert-success {
+		cursor: pointer;
+	}
+	
+	.close {
+		color: #888;
+	
+		z-index: 1001;
+		position: absolute;
+		padding: 8px;
+		right: 30px;
+		top: 25px;
+		
+		font-size: 20px;
+		.opacity(100);
+	}
 }
 
-.alert-global-panel .alert {
-	position: relative;
-	margin: 0 auto;
-	width: 100%;
-	.box-sizing(border-box);
-	.border-radius(0 0 0 0);
-}
-
-.alert-global-panel .alert-success {
-	cursor: pointer;
-}
-
-.alert-neutral {
-	background-color: @gray-lighter;
-	border-color: #DDD;
-	color: #666;
+.animated-global-feedback[data-placement="bottom"] .alert-global-panel {
+	top: auto;
+	bottom: -40px;
 }
