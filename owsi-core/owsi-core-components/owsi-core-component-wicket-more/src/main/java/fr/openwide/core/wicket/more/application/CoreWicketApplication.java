@@ -27,7 +27,7 @@ import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.CoreBootstrap2CssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
-import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawesome.FontAwesomeCssScope;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
 import fr.openwide.core.wicket.more.notification.listener.HtmlNotificationComponentCssClassHandler;
 import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWithHtmlNotificationSupport;
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
@@ -112,6 +112,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		lessCssService.registerImportScope("core", CoreBootstrap2CssScope.class);
 		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
+		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);
 	}
 	
 	protected void mountCommonPages() {
@@ -119,7 +120,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	protected void mountCommonResources() {
 		mountStaticResourceDirectory("/common", AbstractWebPageTemplate.class);
-		mountStaticResourceDirectory("/font-awesome", FontAwesomeCssScope.class);
+		mountStaticResourceDirectory("/font-awesome", CoreFontAwesomeCssScope.class);
 	}
 	
 	protected abstract void mountApplicationPages();
