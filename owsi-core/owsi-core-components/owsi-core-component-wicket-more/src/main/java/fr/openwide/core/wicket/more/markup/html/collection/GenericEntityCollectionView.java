@@ -13,7 +13,7 @@ public abstract class GenericEntityCollectionView<E extends GenericEntity<?, ?>>
 
 	private static final long serialVersionUID = 7778450085654200497L;
 
-	public GenericEntityCollectionView(String id, IModel<Collection<? extends E>> model) {
+	public GenericEntityCollectionView(String id, IModel<? extends Collection<? extends E>> model) {
 		super(id, model);
 	}
 
