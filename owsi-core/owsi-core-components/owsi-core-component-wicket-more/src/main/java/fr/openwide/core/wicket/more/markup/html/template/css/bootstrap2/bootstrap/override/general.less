@@ -281,3 +281,10 @@ span.popover-btn {
 textarea {
 	.transition(height 0.2s);
 }
+
+// On force le font-variant et le text-transform de .fa en attendant la correction dans Font Awesome
+// cf https://github.com/FortAwesome/Font-Awesome/pull/2750
+.@{fa-css-prefix} {
+	font-variant: normal;
+	text-transform: normal;
+}
