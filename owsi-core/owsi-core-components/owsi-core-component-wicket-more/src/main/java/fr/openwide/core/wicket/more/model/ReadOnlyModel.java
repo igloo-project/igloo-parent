@@ -9,28 +9,42 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.Model;
 
-public class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+
+public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
 
 	private static final long serialVersionUID = -6272545665317639093L;
 	
-	private final IModel<? extends T> readModel;
+	private final IModel<? extends F> readModel;
 	
-	public static <T> ReadOnlyModel<T> of(IModel<? extends T> model) {
-		return new ReadOnlyModel<T>(model);
+	private final Function<F, T> function;
+	
+	public static <T> ReadOnlyModel<T, T> of(IModel<? extends T> model) {
+		return new ReadOnlyModel<T, T>(model, Functions.<T>identity());
 	}
 
-	public static <T extends Serializable> ReadOnlyModel<T> of(T object) {
-		return new ReadOnlyModel<T>(Model.of(object));
+	public static <T extends Serializable> ReadOnlyModel<T, T> of(T object) {
+		return new ReadOnlyModel<T, T>(Model.of(object), Functions.<T>identity());
+	}
+	
+	public static <F, T> ReadOnlyModel<F, T> of(IModel<? extends F> model, Function<F, T> function) {
+		return new ReadOnlyModel<F, T>(model, function);
 	}
 
-	protected ReadOnlyModel(IModel<? extends T> readModel) {
+	public static <F extends Serializable, T> ReadOnlyModel<F, T> of(F object, Function<F, T> function) {
+		return new ReadOnlyModel<F, T>(Model.of(object), function);
+	}
+
+	protected ReadOnlyModel(IModel<? extends F> readModel, Function<F, T> function) {
 		super();
 		this.readModel = readModel;
+		this.function = function;
 	}
 
 	@Override
 	public T getObject() {
-		return readModel.getObject();
+		return function.apply(readModel.getObject());
 	}
 	
 	@Override
@@ -44,11 +58,11 @@ public class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> implements ICompo
 		return new WrapModel(component);
 	}
 	
-	private class WrapModel extends ReadOnlyModel<T> implements IWrapModel<T> {
+	private class WrapModel extends ReadOnlyModel<F, T> implements IWrapModel<T> {
 		private static final long serialVersionUID = 7996314523359141428L;
 		
 		protected WrapModel(Component component) {
-			super(wrap(readModel, component));
+			super(wrap(readModel, component), function);
 		}
 		
 		@Override
