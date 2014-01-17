@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.form.EditUserPopupPanel;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -19,25 +19,23 @@ import fr.openwide.core.wicket.more.util.DatePattern;
 public class UserProfilePanel extends GenericPanel<User> {
 	private static final long serialVersionUID = 646894189220818498L;
 	
-	private static final UserBinding USER_BINDING = new UserBinding();
-	
 	public UserProfilePanel(String id, IModel<User> userModel) {
 		super(id, userModel);
 		
-		add(new CoreLabel("userName", BindingModel.of(userModel, USER_BINDING.userName())).showPlaceholder());
+		add(new CoreLabel("userName", BindingModel.of(userModel, Bindings.user().userName())).showPlaceholder());
 		
-		add(new ObfuscatedEmailLink("emailLink", BindingModel.of(userModel, USER_BINDING.email()), true));
+		add(new ObfuscatedEmailLink("emailLink", BindingModel.of(userModel, Bindings.user().email()), true));
 		
-		add(new CoreLabel("phoneNumber", BindingModel.of(userModel, USER_BINDING.phoneNumber())).showPlaceholder());
-		add(new CoreLabel("gsmNumber", BindingModel.of(userModel, USER_BINDING.gsmNumber())).showPlaceholder());
-		add(new CoreLabel("faxNumber", BindingModel.of(userModel, USER_BINDING.faxNumber())).showPlaceholder());
+		add(new CoreLabel("phoneNumber", BindingModel.of(userModel, Bindings.user().phoneNumber())).showPlaceholder());
+		add(new CoreLabel("gsmNumber", BindingModel.of(userModel, Bindings.user().gsmNumber())).showPlaceholder());
+		add(new CoreLabel("faxNumber", BindingModel.of(userModel, Bindings.user().faxNumber())).showPlaceholder());
 		
-		add(new DateLabel("creationDate", BindingModel.of(userModel, USER_BINDING.creationDate()),
+		add(new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
 				DatePattern.SHORT_DATETIME).showPlaceholder());
-		add(new DateLabel("lastLoginDate", BindingModel.of(userModel, USER_BINDING.lastLoginDate()),
+		add(new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
 				DatePattern.SHORT_DATETIME).showPlaceholder());
 		
-		add(new BooleanIcon("active", BindingModel.of(userModel, USER_BINDING.active())));
+		add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())));
 		
 		// Edit user popup panel
 		EditUserPopupPanel userEditPopupPanel = new EditUserPopupPanel("userEditPopupPanel", userModel);

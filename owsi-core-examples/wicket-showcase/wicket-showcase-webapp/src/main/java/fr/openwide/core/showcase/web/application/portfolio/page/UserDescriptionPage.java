@@ -11,7 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserProfilePanel;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -24,8 +24,6 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserDescriptionPage extends MainTemplate {
 	private static final long serialVersionUID = -3229942018297644108L;
-	
-	private static final UserBinding USER = new UserBinding();
 	
 	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel) {
 		return new LinkDescriptorBuilder()
@@ -45,9 +43,9 @@ public class UserDescriptionPage extends MainTemplate {
 		setDefaultModel(userModel);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.linkDescriptor()));
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, USER.displayName()), UserDescriptionPage.linkDescriptor(userModel)));
+		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().displayName()), UserDescriptionPage.linkDescriptor(userModel)));
 		
-		add(new Label("pageTitle", BindingModel.of(userModel, USER.displayName())));
+		add(new Label("pageTitle", BindingModel.of(userModel, Bindings.user().displayName())));
 		
 		add(new UserProfilePanel("profilePanel", userModel));
 	}

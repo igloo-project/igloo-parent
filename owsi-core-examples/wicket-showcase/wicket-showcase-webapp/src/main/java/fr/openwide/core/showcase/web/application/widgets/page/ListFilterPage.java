@@ -14,11 +14,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -26,8 +26,6 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class ListFilterPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 593301451585725585L;
-	
-	private static final UserBinding USER_BINDING = new UserBinding();
 	
 	public static IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
@@ -62,11 +60,11 @@ public class ListFilterPage extends WidgetsTemplate {
 			@Override
 			protected void populateItem(ListItem<User> item) {
 				IModel<User> userModel = item.getModel();
-				item.add(new Label("firstName", BindingModel.of(userModel, USER_BINDING.firstName())));
-				item.add(new Label("lastName", BindingModel.of(userModel, USER_BINDING.lastName())));
-				item.add(new Label("userName", BindingModel.of(userModel, USER_BINDING.userName())));
-				item.add(new Label("email", BindingModel.of(userModel, USER_BINDING.email())));
-				item.add(new BooleanImage("active", BindingModel.of(userModel, USER_BINDING.active())));
+				item.add(new Label("firstName", BindingModel.of(userModel, Bindings.user().firstName())));
+				item.add(new Label("lastName", BindingModel.of(userModel, Bindings.user().lastName())));
+				item.add(new Label("userName", BindingModel.of(userModel, Bindings.user().userName())));
+				item.add(new Label("email", BindingModel.of(userModel, Bindings.user().email())));
+				item.add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())));
 			}
 		});
 		
