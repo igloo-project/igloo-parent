@@ -3,7 +3,7 @@ package fr.openwide.core.basicapp.core.util.binding;
 import fr.openwide.core.basicapp.core.business.user.model.UserBinding;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroupBinding;
 
-public final class Binding {
+public final class Bindings {
 
 	private static final UserBinding USER = new UserBinding();
 
@@ -17,6 +17,6 @@ public final class Binding {
 		return USER_GROUP;
 	}
 	
-	private Binding() {
+	private Bindings() {
 	}
 }

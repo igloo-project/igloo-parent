@@ -10,7 +10,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupDescriptionPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupMembersPanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
@@ -54,10 +54,10 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.usergroup"),
 				AdministrationUserGroupPortfolioPage.linkDescriptor()));
 		
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userGroupModel, Binding.userGroup().name()),
+		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userGroupModel, Bindings.userGroup().name()),
 				AdministrationUserGroupDescriptionPage.linkDescriptor(userGroupModel, sourcePageModel)));
 		
-		add(new Label("pageTitle", BindingModel.of(userGroupModel, Binding.userGroup().name())));
+		add(new Label("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())));
 		
 		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, AdministrationUserGroupPortfolioPage.class)
 				.link("backToSourcePage").setAutoHideIfInvalid(true);

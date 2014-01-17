@@ -12,7 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -36,8 +36,8 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 	@Override
 	protected void addItemColumns(Item<UserGroup> item, IModel<? extends UserGroup> userGroupModel) {
 		item.add(AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel), PageModel.of(getPage())).link("nameLink")
-				.setBody(BindingModel.of(userGroupModel, Binding.userGroup().name())));
-		item.add(new Label("description", BindingModel.of(userGroupModel, Binding.userGroup().description())));
+				.setBody(BindingModel.of(userGroupModel, Bindings.userGroup().name())));
+		item.add(new Label("description", BindingModel.of(userGroupModel, Bindings.userGroup().description())));
 	}
 
 	@Override

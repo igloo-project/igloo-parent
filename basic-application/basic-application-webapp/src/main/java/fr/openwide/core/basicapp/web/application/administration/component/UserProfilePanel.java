@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.ChangePasswordPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
@@ -43,21 +43,21 @@ public class UserProfilePanel extends GenericPanel<User> {
 	public UserProfilePanel(String id, final IModel<User> userModel) {
 		super(id, userModel);
 		
-		add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
-		add(new BooleanGlyphicon("active", BindingModel.of(userModel, Binding.user().active())));
-		add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
-		add(new DateLabel("creationDate", BindingModel.of(userModel, Binding.user().creationDate()),
+		add(new Label("userName", BindingModel.of(userModel, Bindings.user().userName())));
+		add(new BooleanGlyphicon("active", BindingModel.of(userModel, Bindings.user().active())));
+		add(new EmailLink("email", BindingModel.of(userModel, Bindings.user().email())));
+		add(new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
 				DatePattern.SHORT_DATETIME));
-		add(new DateLabel("lastLoginDate", BindingModel.of(userModel, Binding.user().lastLoginDate()),
+		add(new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
 				DatePattern.SHORT_DATETIME));
-		add(new DateLabel("lastUpdateDate", BindingModel.of(userModel, Binding.user().lastUpdateDate()),
+		add(new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
 				DatePattern.SHORT_DATETIME));
 		add(new Label("locale", new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getObject() {
-				Locale locale = BindingModel.of(userModel, Binding.user().locale()).getObject();
+				Locale locale = BindingModel.of(userModel, Bindings.user().locale()).getObject();
 				return locale != null ? locale.getDisplayName(BasicApplicationSession.get().getLocale()) : null;
 			}
 		}));

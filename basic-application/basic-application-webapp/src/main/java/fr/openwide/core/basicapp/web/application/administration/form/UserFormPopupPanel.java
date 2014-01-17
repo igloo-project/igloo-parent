@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.LocaleDropDownChoice;
@@ -105,23 +105,23 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		body.add(userForm);
 		
 		TextField<String> firstNameField = new RequiredTextField<String>("firstName", BindingModel.of(userForm.getModel(),
-				Binding.user().firstName()));
+				Bindings.user().firstName()));
 		firstNameField.setLabel(new ResourceModel("administration.user.field.firstName"));
 		userForm.add(firstNameField);
 		
 		TextField<String> lastNameField = new RequiredTextField<String>("lastName", BindingModel.of(userForm.getModel(),
-				Binding.user().lastName()));
+				Bindings.user().lastName()));
 		lastNameField.setLabel(new ResourceModel("administration.user.field.lastName"));
 		userForm.add(lastNameField);
 		
 		TextField<String> userNameField = new RequiredTextField<String>("userName", BindingModel.of(userForm.getModel(),
-				Binding.user().userName()));
+				Bindings.user().userName()));
 		userNameField.add(USERNAME_PATTERN_VALIDATOR);
 		userNameField.setLabel(new ResourceModel("administration.user.field.userName"));
 		userForm.add(userNameField);
 		
 		TextField<String> emailField = new EmailTextField("email", BindingModel.of(userForm.getModel(),
-				Binding.user().email()));
+				Bindings.user().email()));
 		emailField.setLabel(new ResourceModel("administration.user.field.email"));
 		userForm.add(emailField);
 		
@@ -136,7 +136,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		};
 		userForm.add(passwordContainer);
 		
-		CheckBox activeField = new CheckBox("active", BindingModel.of(userForm.getModel(), Binding.user().active()));
+		CheckBox activeField = new CheckBox("active", BindingModel.of(userForm.getModel(), Bindings.user().active()));
 		activeField.setLabel(new ResourceModel("administration.user.field.active"));
 		passwordContainer.add(activeField);
 		
@@ -150,7 +150,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		confirmPasswordField.setRequired(true);
 		passwordContainer.add(confirmPasswordField);
 		
-		LocaleDropDownChoice localeField = new LocaleDropDownChoice("locale", BindingModel.of(userForm.getModel(), Binding.user().locale()));
+		LocaleDropDownChoice localeField = new LocaleDropDownChoice("locale", BindingModel.of(userForm.getModel(), Bindings.user().locale()));
 		localeField.setLabel(new ResourceModel("administration.user.field.locale"));
 		userForm.add(localeField);
 		

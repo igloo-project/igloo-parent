@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.more.link.model.PageModel;
@@ -84,17 +84,17 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		body.add(userGroupForm);
 		
 		TextField<String> nameField = new RequiredTextField<String>("name", BindingModel.of(userGroupForm.getModel(),
-				Binding.userGroup().name()));
+				Bindings.userGroup().name()));
 		nameField.setLabel(new ResourceModel("administration.usergroup.field.name"));
 		userGroupForm.add(nameField);
 		
 		TextArea<String> descriptionField = new TextArea<String>("description", BindingModel.of(userGroupForm.getModel(),
-				Binding.userGroup().description()));
+				Bindings.userGroup().description()));
 		descriptionField.setLabel(new ResourceModel("administration.usergroup.field.description"));
 		userGroupForm.add(descriptionField);
 		
 		final CheckGroup<Authority> authorityCheckGroup = new CheckGroup<Authority>("authoritiesGroup",
-				BindingModel.of(userGroupForm.getModel(), Binding.userGroup().authorities()));
+				BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().authorities()));
 		userGroupForm.add(authorityCheckGroup);
 		
 		ListView<Authority> authoritiesListView = new ListView<Authority>("authorities",

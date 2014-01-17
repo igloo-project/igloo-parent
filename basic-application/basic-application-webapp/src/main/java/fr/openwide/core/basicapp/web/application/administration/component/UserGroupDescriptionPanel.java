@@ -15,7 +15,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.form.UserGroupFormPopupPanel;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -43,7 +43,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 			}
 		});
 		
-		add(new MultiLineLabel("description", BindingModel.of(userGroupModel, Binding.userGroup().description())));
+		add(new MultiLineLabel("description", BindingModel.of(userGroupModel, Bindings.userGroup().description())));
 		
 		add(new ListView<Authority>("authorities", Model.ofList(authorityUtils.getPublicAuthorities())) {
 			private static final long serialVersionUID = -4307272691513553800L;

@@ -13,7 +13,7 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.jpa.security.business.person.dao.AbstractPersonDaoImpl;
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -61,14 +61,14 @@ public class UserDaoImpl extends AbstractPersonDaoImpl<User> implements IUserDao
 		if (StringUtils.hasText(name) || active != null) {
 			if (StringUtils.hasText(name)) {
 				booleanJunction.must(userQueryBuilder.keyword().fuzzy().withPrefixLength(1)
-						.onField(Binding.user().firstName().getPath())
-						.andField(Binding.user().lastName().getPath())
-						.andField(Binding.user().userName().getPath())
+						.onField(Bindings.user().firstName().getPath())
+						.andField(Bindings.user().lastName().getPath())
+						.andField(Bindings.user().userName().getPath())
 						.matching(name).createQuery());
 			}
 			
 			if (active != null) {
-				booleanJunction.must(userQueryBuilder.keyword().onField(Binding.user().active().getPath()).matching(active).createQuery());
+				booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().active().getPath()).matching(active).createQuery());
 			}
 		} else {
 			booleanJunction.must(userQueryBuilder.all().createQuery());

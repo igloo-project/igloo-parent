@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -42,15 +42,15 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		super(id, userGroupModel);
 		
 		// Members list
-		memberListView = new ListView<User>("members", BindingModel.of(getModel(), Binding.userGroup().persons())) {
+		memberListView = new ListView<User>("members", BindingModel.of(getModel(), Bindings.userGroup().persons())) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected void populateItem(final ListItem<User> item) {
 				item.add(AdministrationUserDescriptionPage.linkGenerator(item.getModel()).link("userLink")
-						.setBody(BindingModel.of(item.getModel(), Binding.user().fullName())));
+						.setBody(BindingModel.of(item.getModel(), Bindings.user().fullName())));
 				
-				item.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));
+				item.add(new Label("userName", BindingModel.of(item.getModel(), Bindings.user().userName())));
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
 						"administration.usergroup.members.delete.confirmation.text",

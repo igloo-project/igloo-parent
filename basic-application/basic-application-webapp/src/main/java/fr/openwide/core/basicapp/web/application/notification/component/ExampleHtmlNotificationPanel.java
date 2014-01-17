@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -25,7 +25,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		// Intro
 		StringResourceModel introModel = new StringResourceModel("notification.panel.example.intro", null,
 				new Object[] {
-					BindingModel.of(userModel, Binding.user().fullName()),
+					BindingModel.of(userModel, Bindings.user().fullName()),
 					dateModel
 		});
 		add(new Label("intro", introModel));
@@ -47,28 +47,28 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 				.add(AdministrationUserDescriptionPage.linkGenerator(userModel)
 						.link("userLink")
 						.setAbsolute(true)
-						.setBody(BindingModel.of(userModel, Binding.user().userName()))
+						.setBody(BindingModel.of(userModel, Bindings.user().userName()))
 				)
 		);
 		
 		// 	>	First name
 		addMiddleProperty(propertiesTable, "firstname",
-				new Label("firstnameValue", BindingModel.of(userModel, Binding.user().firstName()))
+				new Label("firstnameValue", BindingModel.of(userModel, Bindings.user().firstName()))
 		);
 		
 		// 	>	Last name
 		addMiddleProperty(propertiesTable, "lastname",
-				new Label("lastnameValue", BindingModel.of(userModel, Binding.user().lastName()))
+				new Label("lastnameValue", BindingModel.of(userModel, Bindings.user().lastName()))
 		);
 		
 		// 	>	E-mail
 		addMiddleProperty(propertiesTable, "email",
-				new Label("emailValue", BindingModel.of(userModel, Binding.user().email()))
+				new Label("emailValue", BindingModel.of(userModel, Bindings.user().email()))
 		);
 		
 		// 	>	Last login date
 		addBottomProperty(propertiesTable, "lastLoginDate",
-				new DateLabel("lastLoginDateValue", BindingModel.of(userModel, Binding.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+				new DateLabel("lastLoginDateValue", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
 		);
 	}
 

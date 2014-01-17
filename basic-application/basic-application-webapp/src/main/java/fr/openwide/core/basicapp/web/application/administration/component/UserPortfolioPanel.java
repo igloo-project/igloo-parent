@@ -11,7 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -37,11 +37,11 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	@Override
 	protected void addItemColumns(Item<User> item, IModel<? extends User> userModel) {
 		item.add(AdministrationUserDescriptionPage.linkDescriptor(ReadOnlyModel.of(userModel), PageModel.of(getPage())).link("userNameLink")
-				.setBody(BindingModel.of(userModel, Binding.user().userName())));
-		item.add(new Label("firstName", BindingModel.of(userModel, Binding.user().firstName())));
-		item.add(new Label("lastName", BindingModel.of(userModel, Binding.user().lastName())));
-		item.add(new BooleanIcon("active", BindingModel.of(userModel, Binding.user().active())).hideIfNullOrFalse());
-		item.add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
+				.setBody(BindingModel.of(userModel, Bindings.user().userName())));
+		item.add(new Label("firstName", BindingModel.of(userModel, Bindings.user().firstName())));
+		item.add(new Label("lastName", BindingModel.of(userModel, Bindings.user().lastName())));
+		item.add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())).hideIfNullOrFalse());
+		item.add(new EmailLink("email", BindingModel.of(userModel, Bindings.user().email())));
 	}
 
 	@Override

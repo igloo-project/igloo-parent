@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
-import fr.openwide.core.basicapp.core.util.binding.Binding;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.UserGroupAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -41,13 +41,13 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		super(id, userModel);
 		
 		// Groups list
-		userGroupListView = new ListView<UserGroup>("groups", BindingModel.of(getModel(), Binding.user().userGroups())) {
+		userGroupListView = new ListView<UserGroup>("groups", BindingModel.of(getModel(), Bindings.user().userGroups())) {
 			private static final long serialVersionUID = -6489746843440088695L;
 			
 			@Override
 			protected void populateItem(final ListItem<UserGroup> item) {
 				item.add(AdministrationUserGroupDescriptionPage.linkGenerator(item.getModel()).link("groupLink")
-						.setBody(BindingModel.of(item.getModel(), Binding.userGroup().name())));
+						.setBody(BindingModel.of(item.getModel(), Bindings.userGroup().name())));
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
 						"administration.usergroup.members.delete.confirmation.text",
