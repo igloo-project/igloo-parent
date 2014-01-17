@@ -3,7 +3,6 @@ package fr.openwide.core.test.wicket.more.model;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayInputStream;
@@ -11,7 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -220,11 +218,8 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		assertEquals(collection.size(), modelObject.size());
-		
-		Iterator<Person> it = modelObject.iterator();
-		assertNull(it.next());
-		assertThat(it.next(), attachedToSession());
+		C expected = createCollection(null, person2);
+		assertThat(modelObject, equals(expected));
 	}
 	
 	@Test

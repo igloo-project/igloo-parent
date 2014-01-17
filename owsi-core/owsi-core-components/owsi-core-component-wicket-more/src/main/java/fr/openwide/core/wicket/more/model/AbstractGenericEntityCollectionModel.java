@@ -9,6 +9,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -29,17 +30,22 @@ public abstract class AbstractGenericEntityCollectionModel
 	
 	private final Class<E> clazz;
 	
+	private final Supplier<? extends C> newCollectionSupplier;
+	
 	private transient C entityCollection = null;
 	
-	protected AbstractGenericEntityCollectionModel(Class<E> clazz) {
+	protected AbstractGenericEntityCollectionModel(Class<E> clazz, Supplier<? extends C> newCollectionSupplier) {
 		super();
 		Injector.get().inject(this);
 		
 		this.clazz = clazz;
+		this.newCollectionSupplier = newCollectionSupplier;
 		setObject(null); // Sets to an empty collection
 	}
 
-	protected abstract C createEntityCollection();
+	protected C createEntityCollection() {
+		return newCollectionSupplier.get();
+	}
 
 	protected K toId(E entity) {
 		return entity.getId();

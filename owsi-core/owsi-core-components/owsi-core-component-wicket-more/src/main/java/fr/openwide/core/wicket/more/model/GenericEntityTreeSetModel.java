@@ -24,17 +24,9 @@ public class GenericEntityTreeSetModel<K extends Serializable & Comparable<K>, E
 			GenericEntityTreeSetModel<K, E> of(Class<E> clazz, Comparator<? super E> comparator) {
 		return new GenericEntityTreeSetModel<K, E>(clazz, Suppliers2.<E>treeSet(comparator));
 	}
-	
-	private final Supplier<? extends TreeSet<E>> newCollectionSupplier;
 
 	public GenericEntityTreeSetModel(Class<E> clazz, Supplier<? extends TreeSet<E>> newCollectionSupplier) {
-		super(clazz);
-		this.newCollectionSupplier = newCollectionSupplier;
-	}
-
-	@Override
-	protected SortedSet<E> createEntityCollection() {
-		return newCollectionSupplier.get();
+		super(clazz, newCollectionSupplier);
 	}
 
 }
