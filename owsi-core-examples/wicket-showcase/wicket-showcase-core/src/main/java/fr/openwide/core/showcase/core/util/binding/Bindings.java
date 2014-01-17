@@ -2,9 +2,9 @@ package fr.openwide.core.showcase.core.util.binding;
 
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 
-public final class Binding {
+public final class Bindings {
 
-	private Binding() { }
+	private Bindings() { }
 	
 	private static final UserBinding USER = new UserBinding();
 	

@@ -20,7 +20,7 @@ import org.apache.wicket.model.ResourceModel;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.util.binding.Binding;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage1;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage2;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
@@ -39,7 +39,7 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 	public DynamicLinkTestPanel(String id, final IModel<User> userModel) {
 		super(id, userModel);
 		
-		Component lastUser = new HideableLabel("lastUser", BindingModel.of(userModel, Binding.user().fullName()));
+		Component lastUser = new HideableLabel("lastUser", BindingModel.of(userModel, Bindings.user().fullName()));
 		add(
 				lastUser
 				, new PlaceholderContainer("lastUserPlaceholder").component(lastUser)
