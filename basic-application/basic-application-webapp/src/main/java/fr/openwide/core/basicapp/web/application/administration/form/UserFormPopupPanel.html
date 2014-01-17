@@ -4,71 +4,83 @@
 	<wicket:panel>
 		<div wicket:id="body">
 			<form wicket:id="form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" wicket:for="firstName"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="firstName" type="text" />
+				<div class="form-group">
+					<label class="col-sm-3 control-label" wicket:for="firstName"><wicket:label /></label>
+					<div class="col-sm-7">
+						<input class="form-control" wicket:id="firstName" type="text" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="lastName"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="lastName" type="text" />
+				<div class="form-group">
+					<label class="col-sm-3 control-label" wicket:for="lastName"><wicket:label /></label>
+					<div class="col-sm-7">
+						<input class="form-control" wicket:id="lastName" type="text" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="userName"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="userName" type="text"
+				<div class="form-group">
+					<label class="col-sm-3 control-label" wicket:for="userName"><wicket:label /></label>
+					<div class="col-sm-7">
+						<input class="form-control" wicket:id="userName" type="text"
+							autocomplete="off"
 							data-placement="right"
 							wicket:message="title:administration.user.form.userName.tooltip" />
 					</div>
 				</div>
 				<wicket:container wicket:id="passwordContainer">
-					<div class="control-group">
-						<label class="control-label" wicket:for="newPassword"><wicket:label /></label>
-						<div class="controls">
-							<input wicket:id="newPassword" type="password"
-								data-placement="right"
-								wicket:message="title:administration.user.form.password.tooltip" />
+					<div class="form-group">
+						<label class="col-sm-3 control-label" wicket:for="newPassword"><wicket:label /></label>
+						<div class="col-sm-7">
+							<div class="input-group">
+								<input class="form-control" wicket:id="newPassword" type="password"
+										autocomplete="off"
+										data-placement="right"
+										wicket:message="title:administration.user.form.password.tooltip" />
+								<span class="input-group-addon"><span class="fa fa-key"></span></span>
+							</div>
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" wicket:for="confirmPassword"><wicket:label /></label>
-						<div class="controls">
-							<input wicket:id="confirmPassword" type="password"
-								data-placement="right"
-								wicket:message="title:administration.user.form.confirmPassword.tooltip" />
+					<div class="form-group">
+						<label class="col-sm-3 control-label" wicket:for="confirmPassword"><wicket:label /></label>
+						<div class="col-sm-7">
+							<div class="input-group">
+								<input class="form-control" wicket:id="confirmPassword" type="password"
+										autocomplete="off"
+										data-placement="right"
+										wicket:message="title:administration.user.form.confirmPassword.tooltip" />
+								<span class="input-group-addon"><span class="fa fa-key"></span></span>
+							</div>
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" wicket:for="active"><wicket:label /></label>
-						<div class="controls">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" wicket:for="active"><wicket:label /></label>
+						<div class="col-sm-7">
 							<input wicket:id="active" type="checkbox" />
 						</div>
 					</div>
 				</wicket:container>
-				<div class="control-group">
-					<label class="control-label" wicket:for="email"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="email" type="email" />
+				<div class="form-group">
+					<label class="col-sm-3 control-label" wicket:for="email"><wicket:label /></label>
+					<div class="col-sm-7">
+						<div class="input-group">
+							<input class="form-control" wicket:id="email" type="email" />
+							<span class="input-group-addon">@</span>
+						</div>
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="locale"><wicket:label /></label>
-					<div class="controls">
+				<div class="form-group">
+					<label class="col-sm-3 control-label" wicket:for="locale"><wicket:label /></label>
+					<div class="col-sm-7">
 						<select wicket:id="locale" />
 					</div>
 				</div>
 			</form>
 		</div>
 		<div wicket:id="footer">
-			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+			<button wicket:id="cancel" class="btn btn-default" type="button">
+				<span class="fa fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>

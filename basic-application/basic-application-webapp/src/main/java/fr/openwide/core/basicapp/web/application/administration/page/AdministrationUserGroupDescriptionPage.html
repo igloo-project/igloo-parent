@@ -2,25 +2,30 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="administration usergroup-description">
-			<h1>
-				<wicket:container wicket:id="pageTitle" />
-				<a wicket:id="backToSourcePage" class="pull-right btn btn-primary">
-					<span class="icon-white icon-arrow-left"></span>
-					<wicket:message key="administration.user.backToList" />
-				</a>
-				<a wicket:id="backToList" class="pull-right btn btn-primary">
-					<span class="icon-white icon-arrow-left"></span>
-					<wicket:message key="administration.usergroup.backToList" />
-				</a>
-			</h1>
-			
-			<div class="row-fluid">
-				<div class="span6">
-					<div wicket:id="description"></div>
+		<div class="administration user-description">
+			<div class="page-title">
+				<div class="container">
+					<h1 class="pull-left"><wicket:container wicket:id="pageTitle" /></h1>
+					<a wicket:id="backToSourcePage" class="pull-right btn btn-primary">
+						<span class="fa fa-reply" />
+						<wicket:message key="administration.usergroup.backToList" />
+					</a>
+					<a wicket:id="backToList" class="pull-right btn btn-primary">
+						<span class="fa fa-reply" />
+						<wicket:message key="administration.usergroup.backToList" />
+					</a>
 				</div>
-				<div class="span6">
-					<div wicket:id="members"></div>
+			</div>
+			<div class="main-content">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6">
+							<div wicket:id="description"></div>
+						</div>
+						<div class="col-sm-6">
+							<div wicket:id="members"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
