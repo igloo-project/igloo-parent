@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
@@ -29,8 +29,6 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	private static final long serialVersionUID = 3066059572097078436L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditUserPopupPanel.class);
-	
-	private static final UserBinding USER_BINDING = new UserBinding();
 	
 	@SpringBean
 	private IUserService userService;
@@ -54,41 +52,41 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		body.add(userEditForm);
 		
 		TextField<String> userNameField = new RequiredTextField<String>("userName",
-				BindingModel.of(getModel(), USER_BINDING.userName()));
+				BindingModel.of(getModel(), Bindings.user().userName()));
 		userNameField.setLabel(new ResourceModel("user.username"));
 		userEditForm.add(userNameField);
 		
 		TextField<String> firstNameField = new RequiredTextField<String>("firstName",
-				BindingModel.of(getModel(), USER_BINDING.firstName()));
+				BindingModel.of(getModel(), Bindings.user().firstName()));
 		firstNameField.setLabel(new ResourceModel("user.firstname"));
 		userEditForm.add(firstNameField);
 		
 		TextField<String> lastNameField = new RequiredTextField<String>("lastName",
-				BindingModel.of(getModel(), USER_BINDING.lastName()));
+				BindingModel.of(getModel(), Bindings.user().lastName()));
 		lastNameField.setLabel(new ResourceModel("user.lastname"));
 		userEditForm.add(lastNameField);
 		
 		TextField<String> emailField = new RequiredTextField<String>("email",
-				BindingModel.of(getModel(), USER_BINDING.email()));
+				BindingModel.of(getModel(), Bindings.user().email()));
 		emailField.setLabel(new ResourceModel("user.email"));
 		userEditForm.add(emailField);
 		
-		CheckBox activeCheckBox = new CheckBox("active", BindingModel.of(getModel(), USER_BINDING.active()));
+		CheckBox activeCheckBox = new CheckBox("active", BindingModel.of(getModel(), Bindings.user().active()));
 		activeCheckBox.setLabel(new ResourceModel("user.active"));
 		userEditForm.add(activeCheckBox);
 		
 		TextField<String> phoneNumberField = new RequiredTextField<String>("phoneNumber",
-				BindingModel.of(getModel(), USER_BINDING.phoneNumber()));
+				BindingModel.of(getModel(), Bindings.user().phoneNumber()));
 		phoneNumberField.setLabel(new ResourceModel("user.phone"));
 		userEditForm.add(phoneNumberField);
 		
 		TextField<String> gsmNumberField = new TextField<String>("gsmNumber",
-				BindingModel.of(getModel(), USER_BINDING.gsmNumber()));
+				BindingModel.of(getModel(), Bindings.user().gsmNumber()));
 		gsmNumberField.setLabel(new ResourceModel("user.phone"));
 		userEditForm.add(gsmNumberField);
 		
 		TextField<String> faxNumberField = new TextField<String>("faxNumber",
-				BindingModel.of(getModel(), USER_BINDING.faxNumber()));
+				BindingModel.of(getModel(), Bindings.user().faxNumber()));
 		faxNumberField.setLabel(new ResourceModel("user.phone"));
 		userEditForm.add(faxNumberField);
 		

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
@@ -25,8 +25,6 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserPortfolioPanel.class);
 
-	private static final UserBinding USER_BINDING = new UserBinding();
-
 	@SpringBean
 	private IUserService userService;
 
@@ -37,11 +35,11 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected void addItemColumns(Item<User> item, IModel<? extends User> userModel) {
-		item.add(new Label("firstName", BindingModel.of(userModel, USER_BINDING.firstName())));
-		item.add(new Label("lastName", BindingModel.of(userModel, USER_BINDING.lastName())));
-		item.add(new Label("userName", BindingModel.of(userModel, USER_BINDING.userName())));
-		item.add(new Label("email", BindingModel.of(userModel, USER_BINDING.email())));
-		item.add(new BooleanIcon("active", BindingModel.of(userModel, USER_BINDING.active())).hideIfNullOrFalse());
+		item.add(new Label("firstName", BindingModel.of(userModel, Bindings.user().firstName())));
+		item.add(new Label("lastName", BindingModel.of(userModel, Bindings.user().lastName())));
+		item.add(new Label("userName", BindingModel.of(userModel, Bindings.user().userName())));
+		item.add(new Label("email", BindingModel.of(userModel, Bindings.user().email())));
+		item.add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())).hideIfNullOrFalse());
 	}
 
 	@Override

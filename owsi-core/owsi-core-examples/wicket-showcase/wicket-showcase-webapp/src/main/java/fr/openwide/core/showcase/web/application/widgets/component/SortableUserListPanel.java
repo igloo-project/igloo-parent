@@ -24,8 +24,8 @@ import org.odlabs.wiquery.ui.sortable.SortableBehavior.ToleranceEnum;
 import org.odlabs.wiquery.ui.sortable.SortableRevert;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.sortable.SortableListUpdateJavaScriptResourceReference;
@@ -34,8 +34,6 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 public class SortableUserListPanel extends GenericPanel<List<User>> {
 
 	private static final long serialVersionUID = 2647182262770724957L;
-
-	private static final UserBinding USER_BINDING = new UserBinding();
 
 	@SpringBean
 	private IUserService userService;
@@ -82,11 +80,11 @@ public class SortableUserListPanel extends GenericPanel<List<User>> {
 				IModel<User> userModel = item.getModel();
 				item.setOutputMarkupId(true);
 				
-				item.add(new RequiredTextField<Integer>("positionField", BindingModel.of(userModel, USER_BINDING.position())));
+				item.add(new RequiredTextField<Integer>("positionField", BindingModel.of(userModel, Bindings.user().position())));
 				
-				item.add(new Label("positionLabel", BindingModel.of(userModel, USER_BINDING.position())));
-				item.add(new Label("username", BindingModel.of(userModel, USER_BINDING.userName())));
-				item.add(new Label("fullname", BindingModel.of(userModel, USER_BINDING.fullName())));
+				item.add(new Label("positionLabel", BindingModel.of(userModel, Bindings.user().position())));
+				item.add(new Label("username", BindingModel.of(userModel, Bindings.user().userName())));
+				item.add(new Label("fullname", BindingModel.of(userModel, Bindings.user().fullName())));
 			}
 		};
 		
