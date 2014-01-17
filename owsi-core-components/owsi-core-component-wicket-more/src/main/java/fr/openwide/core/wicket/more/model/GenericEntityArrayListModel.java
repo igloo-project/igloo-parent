@@ -3,8 +3,7 @@ package fr.openwide.core.wicket.more.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public class GenericEntityArrayListModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
@@ -18,12 +17,7 @@ public class GenericEntityArrayListModel<K extends Serializable & Comparable<K>,
 	}
 
 	public GenericEntityArrayListModel(Class<E> clazz) {
-		super(clazz);
-	}
-
-	@Override
-	protected List<E> createEntityCollection() {
-		return Lists.newArrayList();
+		super(clazz, Suppliers2.<E>arrayList());
 	}
 
 }

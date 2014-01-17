@@ -3,8 +3,9 @@ package fr.openwide.core.wicket.more.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Supplier;
 
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 public class GenericEntityCollectionModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
@@ -14,16 +15,16 @@ public class GenericEntityCollectionModel<K extends Serializable & Comparable<K>
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityCollectionModel<K, E> of(
 			Class<E> clazz) {
-		return new GenericEntityCollectionModel<K, E>(clazz);
+		return new GenericEntityCollectionModel<K, E>(clazz, Suppliers2.<E>arrayList());
 	}
 
-	protected GenericEntityCollectionModel(Class<E> clazz) {
-		super(clazz);
+	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityCollectionModel<K, E> of(
+			Class<E> clazz, Supplier<? extends Collection<E>> collectionSupplier) {
+		return new GenericEntityCollectionModel<K, E>(clazz, collectionSupplier);
 	}
 
-	@Override
-	protected Collection<E> createEntityCollection() {
-		return Lists.newArrayList();
+	protected GenericEntityCollectionModel(Class<E> clazz, Supplier<? extends Collection<E>> collectionSupplier) {
+		super(clazz, collectionSupplier);
 	}
 
 }
