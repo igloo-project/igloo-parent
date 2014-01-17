@@ -16,7 +16,7 @@ public final class Suppliers2 {
 	private Suppliers2() { }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // LinkedListSupplier works for any T
-	public <T> Supplier<LinkedList<T>> linkedList() {
+	public static <T> Supplier<LinkedList<T>> linkedList() {
 		return (Supplier) LinkedListSupplier.INSTANCE;
 	}
 	
@@ -30,7 +30,7 @@ public final class Suppliers2 {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // ArrayListSupplier works for any T
-	public <T> Supplier<ArrayList<T>> arrayList() {
+	public static <T> Supplier<ArrayList<T>> arrayList() {
 		return (Supplier) ArrayListSupplier.INSTANCE;
 	}
 	
@@ -44,7 +44,7 @@ public final class Suppliers2 {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // HashSetSupplier works for any T
-	public <T> Supplier<HashSet<T>> hashSet() {
+	public static <T> Supplier<HashSet<T>> hashSet() {
 		return (Supplier) HashSetSupplier.INSTANCE;
 	}
 	
@@ -58,20 +58,21 @@ public final class Suppliers2 {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // NaturalOrderTreeSetSupplier works for any T
-	public <T extends Comparable<T>> Supplier<TreeSet<T>> treeSet() {
+	public static <T extends Comparable> Supplier<TreeSet<T>> treeSet() {
 		return (Supplier) NaturalOrderTreeSetSupplier.INSTANCE;
 	}
-	
+
 	private static enum NaturalOrderTreeSetSupplier implements Supplier<TreeSet<?>> {
 		INSTANCE;
 		
 		@Override
+		@SuppressWarnings("rawtypes")
 		public TreeSet<?> get() {
-			return Sets.newTreeSet();
+			return (TreeSet) Sets.newTreeSet();
 		}
 	}
 	
-	public <T> Supplier<TreeSet<T>> treeSet(Comparator<? super T> comparator) {
+	public static <T> Supplier<TreeSet<T>> treeSet(Comparator<? super T> comparator) {
 		return new ComparatorTreeSetSupplier<T>(comparator);
 	}
 	
