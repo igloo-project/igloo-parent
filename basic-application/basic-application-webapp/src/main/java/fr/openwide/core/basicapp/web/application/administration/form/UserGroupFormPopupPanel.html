@@ -4,21 +4,21 @@
 	<wicket:panel>
 		<div wicket:id="body">
 			<form wicket:id="form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" wicket:for="name"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="name" type="text" />
+				<div class="form-group">
+					<label class="col-sm-4 control-label" wicket:for="name"><wicket:label /></label>
+					<div class="col-sm-8">
+						<input class="form-control" wicket:id="name" type="text" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="description"><wicket:label /></label>
-					<div class="controls">
-						<textarea wicket:id="description"></textarea>
+				<div class="form-group">
+					<label class="col-sm-4 control-label" wicket:for="description"><wicket:label /></label>
+					<div class="col-sm-8">
+						<textarea class="form-control" wicket:id="description"></textarea>
 					</div>
 				</div>
-				<div class="control-group">
-					<span class="control-label"><wicket:message key="administration.usergroup.field.authorities" /></span>
-					<div class="controls check-list">
+				<div class="form-group">
+					<label class="col-sm-4 control-label"><wicket:message key="administration.usergroup.field.authorities" /></label>
+					<div class="col-sm-8 check-list">
 						<div wicket:id="authoritiesGroup">
 							<div wicket:id="authorities" class="check-item">
 								<label class="check-label" wicket:for="authorityCheck"><wicket:label /></label>
@@ -32,12 +32,12 @@
 		</div>
 		
 		<div wicket:id="footer">
-			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+			<button wicket:id="cancel" class="btn btn-default" type="button">
+				<span class="fa fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>
