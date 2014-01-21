@@ -21,6 +21,7 @@ import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.UserGroupAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityListView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -41,7 +42,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		super(id, userModel);
 		
 		// Groups list
-		userGroupListView = new ListView<UserGroup>("groups", BindingModel.of(getModel(), Bindings.user().userGroups())) {
+		userGroupListView = new GenericEntityListView<UserGroup>("groups", BindingModel.of(getModel(), Bindings.user().userGroups())) {
 			private static final long serialVersionUID = -6489746843440088695L;
 			
 			@Override
