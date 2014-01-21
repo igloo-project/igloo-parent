@@ -3,11 +3,15 @@ package fr.openwide.core.wicket.more.markup.html.collection;
 import java.util.List;
 
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
+/**
+ * A {@link ListView} akin to {@link AbstractGenericEntityCollectionView}, which is itself a {@link RefreshingView}.
+ */
 public abstract class GenericEntityListView<T extends GenericEntity<?, ?>> extends ListView<T> {
 
 	private static final long serialVersionUID = 1L;

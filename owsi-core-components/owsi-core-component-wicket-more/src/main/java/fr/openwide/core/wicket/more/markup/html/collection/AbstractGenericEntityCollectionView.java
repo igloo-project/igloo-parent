@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.markup.repeater.util.ModelIteratorAdapter;
 import org.apache.wicket.model.IModel;
 
@@ -12,15 +11,15 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 /**
- * A {@link RefreshingView} that can be used for any type of {@link GenericEntity} collection.
+ * An {@link AbstractGenericCollectionView} that can be used for any type of {@link GenericEntity} collection.
  * <p>While this view supports lists, you may want to use {@link GenericEntityListView} when possible, since it provides more functionalities.
- * @see GenericEntityCollectionView
- * @see GenericEntitySetView
- * @see GenericEntitySortedSetView
- * @see GenericEntityListView
+ * @see SerializedItemCollectionView
+ * @see SerializedItemSetView
+ * @see SerializedItemSortedSetView
+ * @see SerializedItemListView
  */
 public abstract class AbstractGenericEntityCollectionView<T extends GenericEntity<?, ?>, C extends Collection<? extends T>>
-		extends RefreshingView<T> { // Does not implement IGenericComponent<C> in order to allow using IModel<? extends C>, not only IModel<C>
+		extends AbstractGenericCollectionView<T, C> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,18 +27,8 @@ public abstract class AbstractGenericEntityCollectionView<T extends GenericEntit
 		super(id, model);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public IModel<? extends C> getModel() {
-		return (IModel<C>) getDefaultModel();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public C getModelObject() {
-		return (C) getDefaultModelObject();
-	}
-
 	/**
-	 * Note: if you wish to override this, and overriding {@link #getModel(GenericEntity)} is not enough, you're better off extending {@link RefreshingView} directly.
+	 * Note: if you wish to override this, and overriding {@link #getModel(T)} is not enough, you're better off extending {@link AbstractGenericCollectionView} directly.
 	 */
 	@Override
 	protected final Iterator<IModel<T>> getItemModels() {
