@@ -16,6 +16,8 @@ public interface IPersonService<P extends AbstractPerson<P>> extends IGenericEnt
 	List<P> search(String searchPattern) throws ServiceException, SecurityServiceException;
 	
 	List<P> searchAutocomplete(String string) throws ServiceException, SecurityServiceException;
+	
+	List<P> searchAutocomplete(String string, Integer limit, Integer offset) throws ServiceException, SecurityServiceException;
 
 	void setActive(P person, boolean active) throws ServiceException, SecurityServiceException;
 
