@@ -25,6 +25,11 @@ public abstract class SerializedItemListView<T extends Serializable> extends Lis
 
 	@Override
 	protected IModel<T> getListItemModel(IModel<? extends List<T>> listViewModel, int index) {
-		return Model.of(listViewModel.getObject().get(index));
+		List<T> list = listViewModel.getObject();
+		return getItemModel(list == null ? null : list.get(index));
+	}
+
+	protected IModel<T> getItemModel(T object) {
+		return Model.of(object);
 	}
 }

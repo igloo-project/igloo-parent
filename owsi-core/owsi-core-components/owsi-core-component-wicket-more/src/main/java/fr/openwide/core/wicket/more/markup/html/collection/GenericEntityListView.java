@@ -25,12 +25,13 @@ public abstract class GenericEntityListView<T extends GenericEntity<?, ?>> exten
 	}
 
 	@Override
-	protected final IModel<T> getListItemModel(IModel<? extends List<T>> listViewModel, int index) {
-		return getModel(listViewModel.getObject().get(index));
+	protected IModel<T> getListItemModel(IModel<? extends List<T>> listViewModel, int index) {
+		List<T> list = listViewModel.getObject();
+		return getItemModel(list == null ? null : list.get(index));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" }) // Works around restrictions on GenericEntityModel that seem too strong.
-	protected IModel<T> getModel(T object) {
+	protected IModel<T> getItemModel(T object) {
 		return GenericEntityModel.of((GenericEntity)object);
 	}
 

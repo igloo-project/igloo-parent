@@ -2,11 +2,8 @@ package fr.openwide.core.wicket.more.markup.html.collection;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 
-import org.apache.wicket.markup.repeater.util.ModelIteratorAdapter;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -28,22 +25,9 @@ public abstract class AbstractSerializedItemCollectionView<T extends Serializabl
 	public AbstractSerializedItemCollectionView(String id, IModel<? extends C> model) {
 		super(id, model);
 	}
-
-	/**
-	 * Note: if you wish to override this, and overriding {@link #getModel(T)} is not enough, you're better off extending {@link AbstractGenericCollectionView} directly.
-	 */
-	@Override
-	protected final Iterator<IModel<T>> getItemModels() {
-		Collection<T> collectionWithoutTypeWildcard = Collections.unmodifiableCollection(getModelObject());
-		return new ModelIteratorAdapter<T>(collectionWithoutTypeWildcard.iterator()) {
-			@Override
-			protected IModel<T> model(T object) {
-				return AbstractSerializedItemCollectionView.this.getModel(object);
-			}
-		};
-	}
 	
-	public IModel<T> getModel(T object) {
+	@Override
+	protected IModel<T> getItemModel(T object) {
 		return new Model<T>(object); // Model object is serialized along with the item 
 	}
 
