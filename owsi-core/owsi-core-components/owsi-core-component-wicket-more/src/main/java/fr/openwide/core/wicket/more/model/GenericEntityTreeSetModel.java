@@ -25,7 +25,7 @@ public class GenericEntityTreeSetModel<K extends Serializable & Comparable<K>, E
 		return new GenericEntityTreeSetModel<K, E>(clazz, Suppliers2.<E>treeSet(comparator));
 	}
 
-	public GenericEntityTreeSetModel(Class<E> clazz, Supplier<? extends TreeSet<E>> newCollectionSupplier) {
+	protected GenericEntityTreeSetModel(Class<E> clazz, Supplier<? extends TreeSet<E>> newCollectionSupplier) {
 		super(clazz, newCollectionSupplier);
 	}
 
