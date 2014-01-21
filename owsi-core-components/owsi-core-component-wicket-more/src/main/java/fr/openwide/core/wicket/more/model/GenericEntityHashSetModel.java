@@ -16,7 +16,7 @@ public class GenericEntityHashSetModel<K extends Serializable & Comparable<K>, E
 		return new GenericEntityHashSetModel<K, E>(clazz);
 	}
 
-	public GenericEntityHashSetModel(Class<E> clazz) {
+	protected GenericEntityHashSetModel(Class<E> clazz) {
 		super(clazz, Suppliers2.<E>hashSet());
 	}
 
