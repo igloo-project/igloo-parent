@@ -89,7 +89,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						
 						cacheList.detach();
 						FeedbackUtils.refreshFeedback(target, getPage());
-						target.add(EhCacheCachePortfolioPanel.this);
+						target.add(item);
 					}
 				};
 				item.add(purgerCache);
@@ -122,7 +122,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						
 						cacheList.detach();
 						FeedbackUtils.refreshFeedback(target, getPage());
-						target.add(EhCacheCachePortfolioPanel.this);
+						target.add(item);
 					}
 				};
 				item.add(clearStatistics);
@@ -134,6 +134,8 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 					
 					@Override
 					protected void populateItem(final ListItem<Cache> item) {
+						item.setOutputMarkupId(true);
+						
 						EhCacheCacheInformationModel cacheInformationModel =
 								new EhCacheCacheInformationModel(item.getModelObject());
 						
@@ -199,13 +201,13 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								
 								cacheList.detach();
 								FeedbackUtils.refreshFeedback(target, getPage());
-								target.add(EhCacheCachePortfolioPanel.this);
+								target.add(item);
 							}
 						};
 						item.add(viderCache);
 						
 						modificationPanel = new EhCacheCacheModificationPanel("modificationPanel",
-								cacheInformationModel, EhCacheCachePortfolioPanel.this);
+								cacheInformationModel, item);
 						
 						AbstractLink modifierCache = new AbstractLink("modifierCache") {
 							private static final long serialVersionUID = 1L;
