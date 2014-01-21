@@ -13,10 +13,10 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 /**
  * An {@link AbstractGenericCollectionView} that can be used for any type of {@link GenericEntity} collection.
  * <p>While this view supports lists, you may want to use {@link GenericEntityListView} when possible, since it provides more functionalities.
- * @see SerializedItemCollectionView
- * @see SerializedItemSetView
- * @see SerializedItemSortedSetView
- * @see SerializedItemListView
+ * @see GenericEntityCollectionView
+ * @see GenericEntitySetView
+ * @see GenericEntitySortedSetView
+ * @see GenericEntityListView
  */
 public abstract class AbstractGenericEntityCollectionView<T extends GenericEntity<?, ?>, C extends Collection<? extends T>>
 		extends AbstractGenericCollectionView<T, C> {
