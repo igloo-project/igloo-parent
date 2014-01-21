@@ -26,9 +26,9 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	private static final IPersonBinding BINDING = new IPersonBinding();
 	
-	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
+	public static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
 	
-	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(AbstractPerson.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
+	public static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(AbstractPerson.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
 			new SortField(AbstractPerson.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING));
 
 	@Autowired
