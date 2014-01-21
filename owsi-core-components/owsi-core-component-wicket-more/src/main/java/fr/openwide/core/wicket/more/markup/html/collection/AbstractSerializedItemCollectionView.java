@@ -16,10 +16,10 @@ import org.apache.wicket.model.Model;
  * when item models must refer to the same value even when the list changed between a server response and the next client request (for example, when the user
  * clicks a button in the list).
  * <p>While this view supports lists, you may want to use {@link SerializedItemListView} when possible, since it provides more functionalities.
- * @see GenericEntityCollectionView
- * @see GenericEntitySetView
- * @see GenericEntitySortedSetView
- * @see GenericEntityListView
+ * @see SerializedItemCollectionView
+ * @see SerializedItemSetView
+ * @see SerializedItemSortedSetView
+ * @see SerializedItemListView
  */
 public abstract class AbstractSerializedItemCollectionView<T extends Serializable, C extends Collection<? extends T>> extends AbstractGenericCollectionView<T, C> {
 
