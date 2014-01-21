@@ -30,7 +30,13 @@
 }
 
 // Champs obligatoires
-.form-horizontal .control-group .control-label.required:before {
-	content: "* ";
-	color: #FF0000;
+.form-group .control-label.required:before {
+	content: "@{fa-var-asterisk}  ";
+	color: @brand-danger;
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
