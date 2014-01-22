@@ -1,10 +1,11 @@
 package fr.openwide.core.wicket.more.security.page;
 
-import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
+import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
 
 /**
  * This page is used only when a logged in user tries to access an unauthorized page.
@@ -21,9 +22,10 @@ public class AccessDeniedPage extends CoreWebPage {
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		AuthenticatedWebSession.get().getFeedbackMessages().clear();
-		AuthenticatedWebSession.get().error(getString("access.denied"));
-		AuthenticatedWebSession.get().invalidate();
+		AbstractCoreSession.get().signOut();
+		AbstractCoreSession.get().getFeedbackMessages().clear();
+		AbstractCoreSession.get().error(getString("access.denied"));
+		AbstractCoreSession.get().registerRedirectUrl(RequestCycleUtils.getSpringSecuritySavedRequest());
 		
 		throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
 	}

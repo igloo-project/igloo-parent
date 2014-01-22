@@ -6,10 +6,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 public final class RequestCycleUtils {
 	
 	private static final String QUERY_STRING_SEPARATOR = "?";
+	
+	public static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
 	public static String getCurrentRequestUrl() {
 		Request request = RequestCycle.get().getRequest();
@@ -46,6 +49,18 @@ public final class RequestCycleUtils {
 		}
 		
 		return ((HttpServletResponse) containerResponse);
+	}
+	
+	public static String getSpringSecuritySavedRequest() {
+		String redirectUrl = null;
+		
+		Object savedRequest = RequestCycleUtils.getCurrentContainerRequest().getSession().getAttribute(SPRING_SECURITY_SAVED_REQUEST);
+		if (savedRequest instanceof SavedRequest) {
+			redirectUrl = ((SavedRequest) savedRequest).getRedirectUrl();
+		}
+		RequestCycleUtils.getCurrentContainerRequest().getSession().removeAttribute(SPRING_SECURITY_SAVED_REQUEST);
+		
+		return redirectUrl;
 	}
 
 	private RequestCycleUtils() {
