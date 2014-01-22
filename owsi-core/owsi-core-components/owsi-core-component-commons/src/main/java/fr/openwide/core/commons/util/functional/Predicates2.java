@@ -6,10 +6,45 @@ import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 public final class Predicates2 {
 
 	private Predicates2() { }
+	
+	/**
+	 * An identity-like predicate evaluating to true when the input is true, false when it is false,
+	 * and <strong>false when the input is null</strong>.
+	 * @see Predicates2#isTrueOrNull()
+	 */
+	public static Predicate<Boolean> isTrue() {
+		return Predicates.equalTo(true);
+	}
+	
+	/**
+	 * An identity-like predicate evaluating to true when the input is true, false when it is false,
+	 * and <strong>true when the input is null</strong>.
+	 */
+	public static Predicate<Boolean> isTrueOrNull() {
+		return Predicates.or(Predicates.equalTo(true), Predicates.isNull());
+	}
+
+	/**
+	 * A not-like predicate evaluating to false when the input is true, true when it is false,
+	 * and <strong>false when the input is null</strong>.
+	 * @see Predicates2#isFalseOrNull()
+	 */
+	public static Predicate<Boolean> isFalse() {
+		return Predicates.equalTo(false);
+	}
+
+	/**
+	 * A not-like predicate evaluating to false when the input is true, true when it is false,
+	 * and <strong>true when the input is null</strong>.
+	 */
+	public static Predicate<Boolean> isFalseOrNull() {
+		return Predicates.or(Predicates.equalTo(false), Predicates.isNull());
+	}
 	
 	public static <T extends Collection<?>> Predicate<T> isEmpty() {
 		return CollectionPredicate.IS_EMPTY.withNarrowedType();
