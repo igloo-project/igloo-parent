@@ -6,7 +6,7 @@ import java.util.Set;
 import org.apache.wicket.model.IModel;
 
 /**
- * A simple class extending {@link AbstractSerializedItemCollectionView} and allowing to instanciate it without filling in the collection type.
+ * A simple class extending {@link AbstractSerializedItemCollectionView} and allowing to instantiate it without filling in the collection type.
  */
 public abstract class SerializedItemSetView<T extends Serializable> extends AbstractSerializedItemCollectionView<T, Set<? extends T>> {
 
