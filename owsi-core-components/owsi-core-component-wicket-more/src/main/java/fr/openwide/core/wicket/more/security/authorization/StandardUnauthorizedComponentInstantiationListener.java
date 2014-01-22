@@ -19,9 +19,10 @@ public class StandardUnauthorizedComponentInstantiationListener implements IUnau
 	@Override
 	public void onUnauthorizedInstantiation(Component component) {
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
+			AuthenticatedWebSession.get().getFeedbackMessages().clear();
 			AuthenticatedWebSession.get().error(component.getString("access.denied"));
 			String currentUrl = RequestCycleUtils.getCurrentRequestUrl();
-			if (currentUrl != null) {
+			if (currentUrl != null && !currentUrl.contains("")) {
 				AbstractCoreSession.get().registerRedirectUrl(currentUrl);
 			}
 			throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
