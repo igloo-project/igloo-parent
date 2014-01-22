@@ -10,14 +10,22 @@
 	<security:http pattern="/static/**" security="none" />
 	<security:http pattern="/wicket/resource/**" security="none" />
 	<security:http pattern="/monitoring/**" security="none" />
+	<security:http pattern="/favicon.ico" security="none" />
+	
 	
 	<security:http authentication-manager-ref="authenticationManager" auto-config="false" use-expressions="true">
 		<security:expression-handler ref="webSecurityExpressionHandler" />
 		<security:form-login login-page="/login/" default-target-url="/login/success/" always-use-default-target="true"
 				authentication-failure-url="/login/failure/" />
+		
+		<security:access-denied-handler error-page="/access-denied/" />
+		
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
+		
 		<security:intercept-url pattern="/login/" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/login/failure/" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/access-denied/" access="hasRole('ROLE_ANONYMOUS')" />
+		
 		<security:intercept-url pattern="/console/**" access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />
 	</security:http>
