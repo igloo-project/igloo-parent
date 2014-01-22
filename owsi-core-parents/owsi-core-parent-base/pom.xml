@@ -95,7 +95,7 @@
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.7.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.3.1</owsi-core.httpclient.version>
+		<owsi-core.httpclient.version>4.3.2</owsi-core.httpclient.version>
 		
 		<owsi-core.jersey.version>1.18</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.5</owsi-core.jersey2.version>
@@ -135,7 +135,7 @@
 		<owsi-core.maven-enforcer-plugin.version>1.3.1</owsi-core.maven-enforcer-plugin.version>
 		
 		<owsi-core.wagon-maven-plugin.version>1.0-beta-4</owsi-core.wagon-maven-plugin.version>
-		<owsi-core.wagon-ssh-external-plugin.version>2.5</owsi-core.wagon-ssh-external-plugin.version>
+		<owsi-core.wagon-ssh-external-plugin.version>2.6</owsi-core.wagon-ssh-external-plugin.version>
 		
 		<owsi-core.maven-processor-plugin.version>2.2.4</owsi-core.maven-processor-plugin.version>
 		<owsi-core.maven-yui-compressor-plugin.version>1.3.3</owsi-core.maven-yui-compressor-plugin.version>
