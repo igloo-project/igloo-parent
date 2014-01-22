@@ -247,11 +247,11 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 
 	/**
-	 * Invalidates the session. After a signout, you should redirect
-	 * the browser to the home page.
+	 * Sign out the user. If you want to completely invalidate the session, call invalidate() instead.
+	 * After a signout, you should redirect the browser to the home or sign in page.
 	 */
 	@Override
-	public void invalidate() {
+	public void signOut() {
 		personModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
@@ -261,7 +261,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		
 		authenticationService.signOut();
 		
-		super.invalidate();
+		super.signOut();
 	}
 	
 	/**
