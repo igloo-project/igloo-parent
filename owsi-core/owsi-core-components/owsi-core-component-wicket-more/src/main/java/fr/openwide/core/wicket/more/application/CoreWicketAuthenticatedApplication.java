@@ -24,6 +24,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import fr.openwide.core.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
+import fr.openwide.core.wicket.more.security.page.AccessDeniedPage;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class CoreWicketAuthenticatedApplication extends CoreWicketApplication implements IRoleCheckingStrategy {
@@ -73,6 +74,7 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 		super.mountCommonPages();
 		
 		mountPage("/logout/", LogoutPage.class);
+		mountPage("/access-denied/", AccessDeniedPage.class);
 	}
 	
 	@Override
