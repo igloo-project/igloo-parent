@@ -4,9 +4,9 @@
 	
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
-		<artifactId>owsi-core-parent-base</artifactId>
+		<artifactId>owsi-core-parent-maven-configuration-core</artifactId>
 		<version>0.9-SNAPSHOT</version>
-		<relativePath>../owsi-core-parents/owsi-core-parent-base/pom.xml</relativePath>
+		<relativePath>../owsi-core-parents/owsi-core-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
 	<groupId>fr.openwide.core.dependencies</groupId>

@@ -3,9 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>fr.openwide.core.examples</groupId>
-		<artifactId>owsi-core-examples</artifactId>
+		<groupId>fr.openwide.core.parents</groupId>
+		<artifactId>owsi-core-parent-core-project</artifactId>
 		<version>0.9-SNAPSHOT</version>
+		<relativePath>../../owsi-core-parents/owsi-core-parent-core-project/pom.xml</relativePath>
 	</parent>
 	
 	<groupId>fr.openwide.core.showcase</groupId>
