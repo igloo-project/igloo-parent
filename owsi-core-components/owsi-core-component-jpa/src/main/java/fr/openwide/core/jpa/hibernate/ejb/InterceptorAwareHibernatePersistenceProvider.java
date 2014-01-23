@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * The original idea came from the following blog:
  * http://blog.krecan.net/2009/01
- * /24/spring-managed-hibernate-interceptor-in-jpa/ but have been completely
- * overhauled with the ORM 4.3 upgrade.
+ * /24/spring-managed-hibernate-interceptor-in-jpa/
+ * but has been completely overhauled with the ORM 4.3 upgrade.
  */
 public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersistenceProvider {
 
@@ -48,7 +48,8 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 			public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
 				Configuration configuration = super.buildHibernateConfiguration(serviceRegistry);
 				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
-					if (configuration.getInterceptor() != null && !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
+					if (configuration.getInterceptor() != null
+							&& !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
 						log.error("The persistence provider was already configured with an interceptor: we override it.");
 					}
 					configuration.setInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
