@@ -15,7 +15,9 @@
 	<name>OWSI Core - Parents</name>
 	
 	<modules>
-		<module>owsi-core-parent-base</module>
+		<module>owsi-core-parent-maven-configuration-common</module>
+		<module>owsi-core-parent-maven-configuration-core</module>
+		<module>owsi-core-parent-core-project</module>
 	</modules>
 	<!--
 	<build>
