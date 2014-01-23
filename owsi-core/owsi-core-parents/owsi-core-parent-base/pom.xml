@@ -14,21 +14,21 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
-		<jdk.version>1.6</jdk.version>
+		<jdk.version>1.7</jdk.version>
 		
-		<minimal.maven.version>3.0.4</minimal.maven.version>
+		<minimal.maven.version>3.1.1</minimal.maven.version>
 		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>3.2.6.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>4.0.0.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.7.4</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>4.2.8.Final</owsi-core.hibernate-core.version>
-		<owsi-core.hibernate-jpa-2.0-api.version>1.0.1.Final</owsi-core.hibernate-jpa-2.0-api.version>
-		<owsi-core.hibernate-jpamodelgen.version>1.3.0.Final</owsi-core.hibernate-jpamodelgen.version>
+		<owsi-core.hibernate-core.version>4.3.0.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
+		<owsi-core.hibernate-jpamodelgen.version>4.3.0.Final</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.hibernate-commons-annotations.version>4.0.4.Final</owsi-core.hibernate-commons-annotations.version>
 		<owsi-core.jboss-logging.version>3.1.4.GA</owsi-core.jboss-logging.version>
 		<owsi-core.tomcat-jdbc.version>7.0.47</owsi-core.tomcat-jdbc.version>
@@ -42,17 +42,17 @@
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
-		<owsi-core.cglib.version>2.2.2</owsi-core.cglib.version>
+		<owsi-core.cglib.version>3.1</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.18.1-GA</owsi-core.javassist.version>
 		<owsi-core.asm.version>3.3.1</owsi-core.asm.version>
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
 		
-		<owsi-core.spring-security.version>3.1.4.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>3.2.0.RELEASE</owsi-core.spring-security.version>
 		
-		<owsi-core.spring-ldap.version>1.3.2.RELEASE</owsi-core.spring-ldap.version>
+		<owsi-core.spring-ldap.version>2.0.0.RELEASE</owsi-core.spring-ldap.version>
 		
-		<owsi-core.hibernate-search.version>4.4.2.Final</owsi-core.hibernate-search.version>
+		<owsi-core.hibernate-search.version>4.5.0.Alpha2</owsi-core.hibernate-search.version>
 		<owsi-core.lucene.version>3.6.2</owsi-core.lucene.version>
 		
 		<owsi-core.quartz.version>2.2.1</owsi-core.quartz.version>
@@ -442,8 +442,8 @@
 					
 					<dependency>
 						<groupId>org.hibernate.javax.persistence</groupId>
-						<artifactId>hibernate-jpa-2.0-api</artifactId>
-						<version>${owsi-core.hibernate-jpa-2.0-api.version}</version>
+						<artifactId>hibernate-jpa-2.1-api</artifactId>
+						<version>${owsi-core.hibernate-jpa-2.1-api.version}</version>
 					</dependency>
 					
 					<dependency>
