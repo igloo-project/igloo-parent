@@ -85,7 +85,7 @@
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.13</owsi-core.jackson.version>
 		<owsi-core.jackson2-core.version>2.3.1</owsi-core.jackson2-core.version>
-		<owsi-core.jackson2-annotations.version>2.3.0</owsi-core.jackson2-annotations.version>
+		<owsi-core.jackson2-annotations.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
 		<owsi-core.jackson2-dataformat-xml.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-dataformat-xml.version>
