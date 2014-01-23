@@ -68,7 +68,7 @@ public abstract class RestServerTestResource extends ExternalResource {
 	@Override
 	public final void after() {
 		if (server != null) {
-			server.stop();
+			server.shutdownNow();
 		}
 	}
 	
