@@ -1,0 +1,74 @@
+/* Navbar */
+.navbar {
+	margin-bottom : 0;
+	font-size : 1.2em;
+	
+	.navbar-inner {
+		.border-radius(0);
+		padding : 0;
+		border-style: none none solid none;
+	}
+}
+.navbar .nav > li > .nav-item {
+	display: block;
+	float: none;
+	@elementHeight: 20px;
+	padding: ((@navbarHeight - @elementHeight) / 2 - 1) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
+	line-height: 19px;
+	color: @navbarLinkColor;
+	text-decoration: none;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+}
+
+// Active nav items
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+	.box-shadow(none);
+}
+
+/* Subnav */
+.subnav {
+	width: auto;
+	height: 36px;
+	font-size : 1.1em;
+	border-bottom: 1px solid @subnavBorder;
+	.border-radius(0);
+	#gradient > .vertical(@subnavBackground, @subnavBackgroundHighlight);
+}
+.subnav .nav {
+	margin-bottom: 0;
+}
+.subnav .nav > li > a {
+	padding: 11px 10px;
+	margin: 0;
+	border-left: 1px solid @subnavLinkBorder;
+	border-right: 1px solid @subnavLinkBorder;
+	.border-radius(0);
+	
+	&:hover {
+		background-color: @subnavLinkBackgroundHover;
+	}
+}
+.subnav .nav > .active > a,
+.subnav .nav > .active > a:hover {
+	color: @subnavLinkActive;
+	background-color: #F5F5F5;
+	border-color: @subnavLinkBorder;
+	.box-shadow(inset 0 3px 5px rgba(0,0,0,.05));
+}
+.subnav .nav > .active > a .caret,
+.subnav .nav > .active > a:hover .caret {
+	border-top-color: @subnavLinkActive;
+}
+.subnav .nav .dropdown-menu {
+	.border-radius(0 0 4px 4px);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+	margin: 8px 10px 0 10px;
+	padding: 3px 8px;
+	background: @breadcrumbBackground;
+	border: 1px solid @breadcrumbBorder;
+}

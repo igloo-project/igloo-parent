@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.security.authorization;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -20,13 +19,14 @@ public class StandardUnauthorizedComponentInstantiationListener implements IUnau
 	@Override
 	public void onUnauthorizedInstantiation(Component component) {
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
+			AuthenticatedWebSession.get().getFeedbackMessages().clear();
 			AuthenticatedWebSession.get().error(component.getString("access.denied"));
 			String currentUrl = RequestCycleUtils.getCurrentRequestUrl();
-			if (currentUrl != null) {
+			if (currentUrl != null && !currentUrl.contains("")) {
 				AbstractCoreSession.get().registerRedirectUrl(currentUrl);
 			}
-			throw new RestartResponseAtInterceptPageException(
-					CoreWicketAuthenticatedApplication.get().getSignInPageClass());
+			throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
+					.newRestartResponseAtInterceptPageException();
 		} else {
 			throw new UnauthorizedInstantiationException(component.getClass());
 		}

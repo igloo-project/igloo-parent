@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<form wicket:id="form" class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label"><wicket:message key="widgets.calendar.date.label" /></label>
+				<div class="controls">
+					<div style="margin-top: 5px;">
+						<span wicket:id="beginDateLabel" />
+						-
+						<span wicket:id="endDateLabel" />
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" wicket:for="beginDatePicker"><wicket:label /></label>
+				<div class="controls">
+					<input wicket:id="beginDatePicker" type="text" class="form-control input-small" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" wicket:for="endDatePicker"><wicket:label /></label>
+				<div class="controls">
+					<div class="input-append">
+						<input wicket:id="endDatePicker" type="text" class="form-control input-small" />
+						<span class="add-on"><label wicket:for="endDatePicker"><span class="icon-calendar" /></label></span>
+					</div>
+				</div>
+			</div>
+		</form>
+		
+		<form class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" wicket:for="monthPicker"><wicket:label /></label>
+				<div class="controls">
+					<input wicket:id="monthPicker" type="text" class="form-control input-small" />
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</html>

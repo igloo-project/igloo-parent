@@ -26,7 +26,7 @@
 
 		titleHeight = 0, titleStr = '', start_pos, final_pos, busy = false, fx = $.extend($('<div/>')[0], { prop: 0 }),
 
-		isIE6 = $.browser.msie && $.browser.version < 7 && !window.XMLHttpRequest,
+		isIE6 = navigator.userAgent.match(/msie [6]/i) && !window.XMLHttpRequest,
 
 		/*
 		 * Private methods 
@@ -608,7 +608,7 @@
 			}
 
 			if (currentOpts.type == 'iframe') {
-				$('<iframe id="fancybox-frame" name="fancybox-frame' + new Date().getTime() + '" frameborder="0" hspace="0" ' + ($.browser.msie ? 'allowtransparency="true""' : '') + ' scrolling="' + selectedOpts.scrolling + '" src="' + currentOpts.href + '"></iframe>').appendTo(content);
+				$('<iframe id="fancybox-frame" name="fancybox-frame' + new Date().getTime() + '" frameborder="0" hspace="0" ' + (navigator.userAgent.match(/msie [6]/i) ? 'allowtransparency="true""' : '') + ' scrolling="' + selectedOpts.scrolling + '" src="' + currentOpts.href + '"></iframe>').appendTo(content);
 			}
 
 			wrap.show();
@@ -1170,62 +1170,4 @@
 	$(document).ready(function() {
 		$.fancybox.init();
 	});
-
-	$.fn.confirm = function(options) {
-		options = $.extend({}, $.fn.confirm.defaults, options);
-		$(this).each(function(index) {
-			var $this = $(this);
-			var text = $this.data("modal-confirm-text");
-			var title = $this.data("modal-confirm-title");
-			var yesLabel = $this.data("modal-confirm-yes-label");
-			var noLabel = $this.data("modal-confirm-no-label");
-			var noEscape = $this.data("modal-confirm-text-noescape");
-			var onConfirm = function(event) {
-				options.onConfirm();
-				$.fancybox.close();
-				event.preventDefault();
-			};
-			var onCancel = function(event) {
-				options.onCancel();
-				$.fancybox.close();
-				event.preventDefault();
-			};
-			var $content = $("<div class='modal confirm fancybox-compatibility'></div>")
-				.append(
-						$("<div class='modal-header'></div>").
-							append("<a class='close' data-dismiss='modal'>&#x00d7;</a>")
-							.append($("<h3></h3>").text(title))
-				);
-				
-				if (noEscape) {
-					$content.append($("<div class='modal-body'></div>").html(text))
-				} else {
-					$content.append($("<div class='modal-body'></div>").text(text))
-				}
-				
-				$content.append(
-						$("<div class='modal-footer'></div>")
-							.append(
-								$("<button class='btn' href='#'></a>")
-									.append($("<span class='icon-ban-circle'></span>"))
-									.append(document.createTextNode(" " + noLabel))
-									.click(onCancel)
-							)
-							.append(
-								$("<button class='btn btn-success' href='#'></a>")
-									.append($("<span class='icon-ok icon-white'></span>"))
-									.append(document.createTextNode(" " + yesLabel))
-									.click(onConfirm)
-							)
-				);
-			var fancyboxOptions = { content: $content };
-			$.fancybox(fancyboxOptions);
-		});
-	};
-
-	$.fn.confirm.defaults = {
-		onConfirm: function() { },
-		onCancel: function() { }
-	}
-
 })(jQuery);

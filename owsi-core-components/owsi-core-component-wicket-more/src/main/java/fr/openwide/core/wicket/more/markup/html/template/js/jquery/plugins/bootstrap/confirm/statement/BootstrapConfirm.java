@@ -16,7 +16,7 @@ public class BootstrapConfirm implements ChainableStatement {
 		return new CharSequence[0];
 	}
 
-	public final static BootstrapConfirm confirm() {
+	public static final BootstrapConfirm confirm() {
 		return new BootstrapConfirm();
 	}
 

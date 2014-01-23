@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="console-section">
+				<div class="subtitle">
+					<div class="subtitle-text"><wicket:message key="console.maintenance.task.description.mainInformation" /></div>
+				</div>
+				
+				<div wicket:id="statusContainer" class="alert">
+					<strong><wicket:container wicket:id="status" /></strong>
+					<div>
+						<a wicket:id="reload" class="btn btn-danger">
+							<span class="fa fa-repeat icon-repeat icon-white" />
+							<wicket:message key="console.maintenance.task.description.mainInformation.reload" />
+						</a>
+						<a wicket:id="cancel" class="btn btn-danger">
+							<span class="fa fa-times-circle icon-remove-sign icon-white" />
+							<wicket:message key="console.maintenance.task.description.mainInformation.cancel" />
+						</a>
+					</div>
+				</div>
+				
+				<div>
+					<strong><wicket:message key="console.maintenance.task.common.name" /></strong>
+					<wicket:container wicket:id="name" />
+				</div>
+				<div>
+					<strong><wicket:message key="console.maintenance.task.common.queue" /></strong>
+					<wicket:container wicket:id="queue" />
+					<wicket:container wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></wicket:container>
+				</div>
+				<div>
+					<strong><wicket:message key="console.maintenance.task.common.creationDate" /></strong>
+					<wicket:container wicket:id="creationDate" />
+				</div>
+				<div>
+					<strong><wicket:message key="console.maintenance.task.common.startDate" /></strong>
+					<wicket:container wicket:id="startDate" />
+				</div>
+				<div>
+					<strong><wicket:message key="console.maintenance.task.common.endDate" /></strong>
+					<wicket:container wicket:id="endDate" />
+				</div>
+			</div>
+			
+			<div class="console-section">
+				<wicket:enclosure child="result">
+					<div class="subtitle">
+						<div class="subtitle-text"><wicket:message key="console.maintenance.task.description.mainInformation.result" /></div>
+					</div>
+					<pre class="result"><wicket:container wicket:id="result" /></pre>
+				</wicket:enclosure>
+			</div>
+		</div>
+		<div class="console-section span6">
+			<div class="subtitle">
+				<div class="subtitle-text"><wicket:message key="console.maintenance.task.description.serializedTask" /></div>
+			</div>
+			
+			<pre class="serialized-task"><wicket:container wicket:id="serializedTask" /></pre>
+		</div>
+	</div>
+</wicket:extend>
+</html>

@@ -14,6 +14,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.widgets.component.SortableUserListPanel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class SortableListPage extends WidgetsTemplate {
@@ -22,10 +24,16 @@ public class SortableListPage extends WidgetsTemplate {
 	@SpringBean
 	private IUserService userService;
 	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(SortableListPage.class)
+				.build();
+	}
+	
 	public SortableListPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.sortable"), SortableListPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.sortable"), SortableListPage.linkDescriptor()));
 		
 		IModel<List<User>> userListModel = new LoadableDetachableModel<List<User>>() {
 			private static final long serialVersionUID = 9076101423574115944L;

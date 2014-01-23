@@ -23,6 +23,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+
 public class StatisticsPage extends WidgetsTemplate {
 
 	private static final long serialVersionUID = -2974578921366640131L;
@@ -39,6 +42,12 @@ public class StatisticsPage extends WidgetsTemplate {
 	private static final String Q2_TICK = "Q2";
 	private static final String Q3_TICK = "Q3";
 	private static final String Q4_TICK = "Q4";
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(StatisticsPage.class)
+				.build();
+	}
 	
 	public StatisticsPage(PageParameters parameters) {
 		super(parameters);

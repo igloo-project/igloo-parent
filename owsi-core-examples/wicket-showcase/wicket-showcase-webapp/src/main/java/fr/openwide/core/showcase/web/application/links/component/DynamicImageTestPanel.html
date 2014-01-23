@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<form wicket:id="form" class="form-horizontal">
+			<div class="control-group">
+				<label wicket:for="boolean" class="control-label"><wicket:label /></label>
+				<div class="controls">
+					<input type="checkbox" wicket:id="boolean" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label wicket:for="user" class="control-label"><wicket:label /></label>
+				<div wicket:id="user" class="controls" />
+			</div>
+		</form>
+		
+		<div wicket:id="testContainer">
+			<p>
+				<strong><wicket:message key="links.imageUrl" /></strong>
+				<span wicket:id="url" />
+			</p>
+			<hr />
+			<div>
+				<img wicket:id="dynamicImage" style="display:float-left" />
+				<a wicket:id="bookmarkableLink" class="btn btn-primary">
+					<wicket:message key="links.bookmarkable" />
+				</a>
+			</div>
+		</div>
+	</wicket:panel>
+</html>

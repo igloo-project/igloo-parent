@@ -29,10 +29,14 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 			String rawSource = IOUtils.toString(is);
 			
 			CssStylesheetInformation compiledStylesheet = lessCssService.getCompiledStylesheet(
-					TestLessCssServiceResourceScope.class,
-					"style.less",
-					new CssStylesheetInformation(rawSource, stylesheetResource.lastModified()),
-					true);
+					new CssStylesheetInformation(
+							TestLessCssServiceResourceScope.class,
+							"style.less",
+							rawSource,
+							stylesheetResource.lastModified()
+					),
+					false
+			);
 			
 			Assert.assertEquals(".test2 {\n  color: #eeeeee;\n}\n.test {\n  color: #cccccc;\n}\n", compiledStylesheet.getSource());
 			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
@@ -55,10 +59,14 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 			String rawSource = IOUtils.toString(is);
 			
 			CssStylesheetInformation compiledStylesheet = lessCssService.getCompiledStylesheet(
-					TestLessCssServiceResourceScope.class,
-					"style-scope.less",
-					new CssStylesheetInformation(rawSource, stylesheetResource.lastModified()),
-					true);
+					new CssStylesheetInformation(
+							TestLessCssServiceResourceScope.class,
+							"style-scope.less",
+							rawSource,
+							stylesheetResource.lastModified()
+					),
+					false
+			);
 			
 			Assert.assertEquals(".test2 {\n  color: #eeeeee;\n}\n.test {\n  color: #cccccc;\n}\n.test4 {\n  color: #cccccc;\n}\n.test5 {\n  color: #cccccc;\n}\ntest3 {\n  color: #eeeeee;\n}\n", compiledStylesheet.getSource());
 			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);

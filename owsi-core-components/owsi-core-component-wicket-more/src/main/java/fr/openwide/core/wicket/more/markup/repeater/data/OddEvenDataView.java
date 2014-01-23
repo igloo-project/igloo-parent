@@ -12,8 +12,7 @@ public abstract class OddEvenDataView<T> extends DataView<T> {
 
 	private static final long serialVersionUID = 7579892102655985018L;
 
-	public OddEvenDataView(String id, final IDataProvider<T> dataProvider,
-			int itemsPerPage) {
+	public OddEvenDataView(String id, final IDataProvider<T> dataProvider, long itemsPerPage) {
 		super(id, dataProvider, itemsPerPage);
 	}
 

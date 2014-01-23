@@ -25,6 +25,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 
+@Deprecated
 public class BooleanImage extends Image {
 	private static final long serialVersionUID = 174241024446763272L;
 	

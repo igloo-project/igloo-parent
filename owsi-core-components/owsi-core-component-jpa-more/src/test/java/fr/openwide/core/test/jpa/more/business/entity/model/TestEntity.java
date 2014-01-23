@@ -1,6 +1,7 @@
 package fr.openwide.core.test.jpa.more.business.entity.model;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +18,18 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 	
 	@Basic(optional = false)
 	private String label;
+	
+	@Column
+	private String simplePropertyUpdate;
+	
+	@Column
+	private String simplePropertyUpdateInterceptor;
+	
+	@Column
+	private String classicInterceptorSave;
+	
+	@Column
+	private String classicInterceptorFlushDirty;
 
 	public TestEntity(String label) {
 		super();
@@ -51,5 +64,38 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 	public String getDisplayName() {
 		return label;
 	}
+
+	public String getSimplePropertyUpdate() {
+		return simplePropertyUpdate;
+	}
+
+	public void setSimplePropertyUpdate(String simplePropertyUpdate) {
+		this.simplePropertyUpdate = simplePropertyUpdate;
+	}
+
+	public String getSimplePropertyUpdateInterceptor() {
+		return simplePropertyUpdateInterceptor;
+	}
+
+	public void setSimplePropertyUpdateInterceptor(String simplePropertyUpdateInterceptor) {
+		this.simplePropertyUpdateInterceptor = simplePropertyUpdateInterceptor;
+	}
+
+	public String getClassicInterceptorSave() {
+		return classicInterceptorSave;
+	}
+
+	public void setClassicInterceptorSave(String classicInterceptorSave) {
+		this.classicInterceptorSave = classicInterceptorSave;
+	}
+
+	public String getClassicInterceptorFlushDirty() {
+		return classicInterceptorFlushDirty;
+	}
+
+	public void setClassicInterceptorFlushDirty(String classicInterceptorFlushDirty) {
+		this.classicInterceptorFlushDirty = classicInterceptorFlushDirty;
+	}
+
 
 }

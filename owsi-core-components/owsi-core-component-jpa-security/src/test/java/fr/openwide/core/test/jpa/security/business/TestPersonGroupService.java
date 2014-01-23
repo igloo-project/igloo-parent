@@ -60,7 +60,7 @@ public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
 		user1 = mockPersonService.getByUserName(user1.getUserName());
 		
 		assertEquals(1, group1.getPersons().size());
-		assertEquals(1, user1.getGroups().size());
+		assertEquals(1, user1.getUserGroups().size());
 		
 		group1.addPerson(user2);
 		

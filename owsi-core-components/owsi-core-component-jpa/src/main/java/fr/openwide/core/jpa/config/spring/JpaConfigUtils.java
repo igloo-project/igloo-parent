@@ -10,7 +10,6 @@ import javax.persistence.SharedCacheMode;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
-import org.apache.lucene.util.Version;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.EJB3NamingStrategy;
@@ -140,7 +139,8 @@ public final class JpaConfigUtils {
 			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
 			properties.setProperty("hibernate.search.default.exclusive_index_use", Boolean.TRUE.toString());
 			properties.setProperty("hibernate.search.default.locking_strategy", "native");
-			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION, Version.LUCENE_36.name());
+			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION,
+					org.hibernate.search.Environment.DEFAULT_LUCENE_MATCH_VERSION.name());
 		} else {
 			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
 		}

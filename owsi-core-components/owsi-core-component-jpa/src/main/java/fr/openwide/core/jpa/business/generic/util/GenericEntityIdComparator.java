@@ -5,11 +5,20 @@ import java.util.Comparator;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
+/**
+ * This is a default comparator, it should probably not be used in production.
+ * 
+ * Inherit from {@link AbstractGenericEntityComparator} instead.
+ */
 public class GenericEntityIdComparator implements Comparator<GenericEntity<Long, ?>>, Serializable {
 	
 	private static final long serialVersionUID = -9178542049081510289L;
 
-	public static final Comparator<GenericEntity<Long, ?>> INSTANCE = new GenericEntityIdComparator();
+	private static final GenericEntityIdComparator INSTANCE = new GenericEntityIdComparator();
+	
+	public static final GenericEntityIdComparator get() {
+		return INSTANCE;
+	}
 
 	@Override
 	public int compare(GenericEntity<Long, ?> o1, GenericEntity<Long, ?> o2) {
@@ -22,6 +31,9 @@ public class GenericEntityIdComparator implements Comparator<GenericEntity<Long,
 			return 1;
 		}
 		return 0;
+	}
+	
+	private GenericEntityIdComparator() {
 	}
 
 }

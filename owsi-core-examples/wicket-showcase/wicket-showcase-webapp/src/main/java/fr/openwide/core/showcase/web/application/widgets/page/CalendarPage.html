@@ -2,47 +2,25 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.calendar.title" /></h1>
-		
-		<form wicket:id="form" class="form-horizontal">
-			<div class="control-group">
-				<label class="control-label"><wicket:message key="widgets.calendar.date.label" /></label>
-				<div class="controls">
-					<div style="margin-top: 5px;">
-						<span wicket:id="dateLabel" />
-						-
-						<span wicket:id="endDateLabel" />
-					</div>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" wicket:for="beginDatePicker"><wicket:label /></label>
-				<div class="controls">
-					<input wicket:id="beginDatePicker" id="begin-date-picker" type="text" class="input-small" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" wicket:for="endDatePicker"><wicket:label /></label>
-				<div class="controls">
-					<input wicket:id="endDatePicker" id="end-date-picker" type="text" class="input-small" />
-				</div>
-			</div>
-		</form>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#begin-date-picker').on('change', function(event) {
-					var dateDebut = $(this).datepicker('getDate');
-					var dateFin = $('#end-date-picker').datepicker('getDate');
-					if (dateFin < dateDebut) {
-						$('#end-date-picker').datepicker('setDate', null);
-					}
-				});
+		<div class="page-title">
+			<div class="container">
+				<span class="btn-group pull-right">
+					<button wicket:id="calendarPopupButton" class="btn btn-primary" type="button">
+						<span class="icon-resize-full" />
+						<wicket:message key="widgets.calendar.popup" />
+					</button>
+				</span>
 				
-				$("#end-date-picker").datepicker('option', 'beforeShow', function(input, inst) {
-					$(this).datepicker('option', 'minDate', $('#begin-date-picker').datepicker('getDate'));
-				});
-			});
-		</script>
+				<h1 class="page-title-text"><wicket:message key="widgets.calendar.title" /></h1>
+			</div>
+		</div>
+		
+		<div class="main-content">
+			<div class="container">
+				<wicket:container wicket:id="calendarPanel" />
+				
+				<wicket:container wicket:id="calendarPopupPanel" />
+			</div>
+		</div>
 	</wicket:extend>
 </html>

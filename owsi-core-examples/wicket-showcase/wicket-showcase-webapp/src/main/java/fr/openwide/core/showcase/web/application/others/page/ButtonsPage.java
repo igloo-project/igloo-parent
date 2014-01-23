@@ -8,11 +8,19 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public class ButtonsPage extends MainTemplate {
 
 	private static final long serialVersionUID = -1538563562722555674L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ButtonsPage.class)
+				.build();
+	}
 
 	public ButtonsPage(PageParameters parameters) {
 		super(parameters);

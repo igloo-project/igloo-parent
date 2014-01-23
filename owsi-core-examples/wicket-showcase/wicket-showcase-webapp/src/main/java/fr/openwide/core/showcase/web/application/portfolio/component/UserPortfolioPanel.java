@@ -2,7 +2,6 @@ package fr.openwide.core.showcase.web.application.portfolio.component;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
@@ -13,20 +12,18 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
-import fr.openwide.core.showcase.web.application.util.LinkUtils;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanImage;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	private static final long serialVersionUID = 6906542421342609922L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserPortfolioPanel.class);
-
-	private static final UserBinding USER_BINDING = new UserBinding();
 
 	@SpringBean
 	private IUserService userService;
@@ -38,11 +35,11 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected void addItemColumns(Item<User> item, IModel<? extends User> userModel) {
-		item.add(new Label("firstName", BindingModel.of(userModel, USER_BINDING.firstName())));
-		item.add(new Label("lastName", BindingModel.of(userModel, USER_BINDING.lastName())));
-		item.add(new Label("userName", BindingModel.of(userModel, USER_BINDING.userName())));
-		item.add(new Label("email", BindingModel.of(userModel, USER_BINDING.email())));
-		item.add(new BooleanImage("active", BindingModel.of(userModel, USER_BINDING.active())));
+		item.add(new Label("firstName", BindingModel.of(userModel, Bindings.user().firstName())));
+		item.add(new Label("lastName", BindingModel.of(userModel, Bindings.user().lastName())));
+		item.add(new Label("userName", BindingModel.of(userModel, Bindings.user().userName())));
+		item.add(new Label("email", BindingModel.of(userModel, Bindings.user().email())));
+		item.add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())).hideIfNullOrFalse());
 	}
 
 	@Override
@@ -57,8 +54,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected MarkupContainer getActionLink(String id, IModel<? extends User> userModel) {
-		return new BookmarkablePageLink<User>(id, UserDescriptionPage.class, LinkUtils
-				.getUserDescriptionPageParameters(userModel.getObject()));
+		return UserDescriptionPage.linkDescriptor(ReadOnlyModel.of(userModel)).link(id);
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends User> itemModel) {
 		return true;
 	}
 }

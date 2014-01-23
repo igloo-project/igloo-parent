@@ -31,6 +31,8 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.jpa.example.business.person.model.PersonSubTypeA;
+import fr.openwide.core.test.jpa.example.business.person.model.PersonSubTypeB;
 import fr.openwide.core.test.jpa.example.business.person.model.Person_;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
@@ -131,7 +133,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		personService.create(person);
 
 		personService.count();
-		Person person1 = personService.getEntity(Person.class, person.getId());
+		Person person1 = personService.getById(Person.class, person.getId());
 		Person person2 = personService.getById(person.getId());
 
 		Assert.assertTrue(person.equals(person1));
@@ -149,6 +151,38 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		personService.create(person);
 		
 		Assert.assertEquals(new Long(2), personService.count());
+	}
+
+	@Test
+	public void testSubTypeGet() throws ServiceException, SecurityServiceException {
+		Person personA = new PersonSubTypeA("Firstname", "A", "DATA");
+		Person personB = new PersonSubTypeB("Firstname", "B", 3);
+		personService.create(personA);
+		personService.create(personB);
+
+		personService.count();
+		Person personA1 = personService.getById(personA.getId());
+		Person personA2 = personService.getById(Person.class, personA.getId());
+		PersonSubTypeA personA3 = personService.getById(PersonSubTypeA.class, personA.getId());
+		PersonSubTypeB personA4 = personService.getById(PersonSubTypeB.class, personA.getId());
+
+		Person personB1 = personService.getById(personB.getId());
+		Person personB2 = personService.getById(Person.class, personB.getId());
+		PersonSubTypeB personB3 = personService.getById(PersonSubTypeB.class, personB.getId());
+		PersonSubTypeA personB4 = personService.getById(PersonSubTypeA.class, personB.getId());
+
+		Assert.assertTrue(personA.equals(personA1));
+		Assert.assertTrue(personA.equals(personA2));
+		Assert.assertTrue(personA.equals(personA3));
+		Assert.assertNull(personA4);
+		
+		Assert.assertTrue(personB.equals(personB1));
+		Assert.assertTrue(personB.equals(personB2));
+		Assert.assertTrue(personB.equals(personB3));
+		Assert.assertNull(personB4);
+		
+		cleanAll();
+		Assert.assertEquals(new Long(0), personService.count());
 	}
 	
 	@Test

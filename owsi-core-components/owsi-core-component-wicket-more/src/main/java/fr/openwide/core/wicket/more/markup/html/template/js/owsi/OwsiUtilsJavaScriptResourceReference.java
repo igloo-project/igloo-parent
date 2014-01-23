@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.owsi;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
-public class OwsiUtilsJavaScriptResourceReference extends JavaScriptResourceReference {
+public final class OwsiUtilsJavaScriptResourceReference extends JavaScriptResourceReference {
 
 	private static final long serialVersionUID = 1762476460042247594L;
 

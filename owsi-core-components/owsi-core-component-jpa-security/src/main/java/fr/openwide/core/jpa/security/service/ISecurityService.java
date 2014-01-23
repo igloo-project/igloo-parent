@@ -1,6 +1,8 @@
 package fr.openwide.core.jpa.security.service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
@@ -9,7 +11,6 @@ import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
-import fr.openwide.core.jpa.security.runas.IRunAsTask;
 
 public interface ISecurityService {
 	
@@ -47,10 +48,12 @@ public interface ISecurityService {
 	
 	SecurityContext buildSecureContext(String userName);
 	
-	<T> T runAsSystem(IRunAsTask<T> task);
-
-	List<Permission> getPermissions(Authentication authentication);
-
-	List<Permission> getPermissions(IPerson person);
+	void clearAuthentication();
 	
+	<T> T runAsSystem(Callable<T> task);
+
+	Collection<? extends Permission> getPermissions(Authentication authentication);
+
+	boolean isSuperUser(Authentication authentication);
+
 }

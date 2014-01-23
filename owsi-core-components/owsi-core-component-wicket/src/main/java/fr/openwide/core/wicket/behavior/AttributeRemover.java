@@ -49,12 +49,12 @@ public class AttributeRemover extends Behavior {
 	private void replaceAttributeValue(ComponentTag tag) {
 		if (removeModel != null && removeModel.getObject() != VALUELESS_ATTRIBUTE) {
 			final IValueMap tagAttributes = tag.getAttributes();
-			String attributeValue = tagAttributes.get(attribute).toString();
+			Object attributeValue = tagAttributes.get(attribute);
 			
 			List<String> valuesToRemove = getClassesToRemove();
 			
 			if (attributeValue != null && !valuesToRemove.isEmpty()) {
-				List<String> values = Arrays.asList(attributeValue.split(separator));
+				List<String> values = Arrays.asList(attributeValue.toString().split(separator));
 				
 				StringBuilder newAttributeValue = new StringBuilder();
 				for (String value : values) {

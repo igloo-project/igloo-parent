@@ -11,6 +11,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 public final class ModalJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
@@ -27,7 +28,8 @@ public final class ModalJavaScriptResourceReference extends AbstractCoreJQueryPl
 		List<HeaderItem> dependencies = Lists.newArrayList();
 		Iterables.addAll(dependencies, JavaScriptHeaderItems.forReferences(
 				EasingJavaScriptResourceReference.get(),
-				MouseJavaScriptResourceReference.get()
+				MouseJavaScriptResourceReference.get(),
+				ScrollToTopJavaScriptResourceReference.get()
 		));
 		dependencies.add(CssHeaderItem.forReference(ModalStyleSheetResourceReference.get()));
 		return dependencies;

@@ -70,6 +70,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	}
 
 	@Override
+	@Deprecated
 	public E getEntity(Class<? extends E> clazz, K id) {
 		return genericDao.getEntity(clazz, id);
 	}
@@ -77,6 +78,11 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	@Override
 	public E getById(K id) {
 		return genericDao.getById(id);
+	}
+	
+	@Override
+	public <T extends E> T getById(Class<T> clazz, K id) {
+		return genericDao.getById(clazz, id);
 	}
 
 	/**

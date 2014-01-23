@@ -2,29 +2,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.statistics.title" /></h1>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="widgets.statistics.title" /></h1>
+			</div>
+		</div>
 		
-		<ul style="margin-bottom: 20px;">
-			<li><a href="#default"><wicket:message key="widgets.statistics.default.title" /></a></li>
-			<li><a href="#stacked-bars"><wicket:message key="widgets.statistics.stackedBars.title" /></a></li>
-			<li><a href="#pie"><wicket:message key="widgets.statistics.pie.title" /></a></li>
-			<li><a href="#stacked-lines"><wicket:message key="widgets.statistics.stackedLines.title" /></a></li>
-		</ul>
-		
-		<h2 id="default"><wicket:message key="widgets.statistics.default.title" /></h2>
-		
-		<div wicket:id="defaultChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
-		
-		<h2 id="stacked-bars"><wicket:message key="widgets.statistics.stackedBars.title" /></h2>
-		
-		<div wicket:id="salesChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
-		
-		<h2 id="pie"><wicket:message key="widgets.statistics.pie.title" /></h2>
-		
-		<div wicket:id="pieChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
-		
-		<h2 id="stacked-lines"><wicket:message key="widgets.statistics.stackedLines.title" /></h2>
-		
-		<div wicket:id="stackedLinesChart" style="margin: 20px auto; width: 800px; height: 500px;"></div>
+		<div class="main-content">
+			<div class="container">
+				<ul style="margin-bottom: 20px; list-style-position: inside;">
+					<li><a href="#default"><wicket:message key="widgets.statistics.default.title" /></a></li>
+					<li><a href="#stacked-bars"><wicket:message key="widgets.statistics.stackedBars.title" /></a></li>
+					<li><a href="#pie"><wicket:message key="widgets.statistics.pie.title" /></a></li>
+					<li><a href="#stacked-lines"><wicket:message key="widgets.statistics.stackedLines.title" /></a></li>
+				</ul>
+				
+				<h2 id="default"><wicket:message key="widgets.statistics.default.title" /></h2>
+				
+				<div wicket:id="defaultChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
+				
+				<h2 id="stacked-bars"><wicket:message key="widgets.statistics.stackedBars.title" /></h2>
+				
+				<div wicket:id="salesChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
+				
+				<h2 id="pie"><wicket:message key="widgets.statistics.pie.title" /></h2>
+				
+				<div wicket:id="pieChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
+				
+				<h2 id="stacked-lines"><wicket:message key="widgets.statistics.stackedLines.title" /></h2>
+				
+				<div wicket:id="stackedLinesChart" style="margin: 20px auto; width: 800px; height: 500px;"></div>
+			</div>
+		</div>
 	</wicket:extend>
 </html>

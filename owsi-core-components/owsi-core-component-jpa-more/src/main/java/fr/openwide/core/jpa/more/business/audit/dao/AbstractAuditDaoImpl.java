@@ -47,8 +47,8 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	}
 
 	@Override
-	public GenericEntity<?, ?> getGenericEntity(Class<? extends GenericEntity<?, ?>> clazz, Long id) {
-		return (GenericEntity<?, ?>) getEntity(clazz, id);
+	public <E extends GenericEntity<?, ?>> E getGenericEntity(Class<E> clazz, Long id) {
+		return getEntity(clazz, id);
 	}
 
 	@Override

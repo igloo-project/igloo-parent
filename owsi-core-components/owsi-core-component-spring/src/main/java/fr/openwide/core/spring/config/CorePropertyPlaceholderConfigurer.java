@@ -146,9 +146,33 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 		try {
 			integerProperty = Integer.parseInt(stringProperty);
 		} catch(NumberFormatException e) {
-			LOGGER.warn("La valeur de la propriété " + key + " n'est pas un entier valide : utilisation de la valeur par défaut.", e);
+			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas un entier valide : utilisation de la valeur par défaut.", e);
 		}
 		return integerProperty;
+	}
+	
+	/**
+	 * Retourne une propriété sous la forme d'une enum.
+	 * 
+	 * @param key la clé
+	 * @param defaultValue valeur par défaut
+	 * @return valeur de la propriété sous la forme d'une enum ou defaultValue
+	 *         si la valeur de la propriété ne correspond pas à une instance de l'enum
+	 */
+	protected <E extends Enum<E>> E getPropertyAsEnum(String key, Class<E> enumType, E defaultValue) {
+		E enumProperty = defaultValue;
+		String stringProperty = getPropertyAsString(key);
+		
+		if (!StringUtils.hasText(stringProperty)) {
+			LOGGER.warn("La propriété " + key + " n'est pas définie : utilisation de la valeur par défaut.");
+			return enumProperty;
+		}
+		try {
+			enumProperty = Enum.valueOf(enumType, stringProperty);
+		} catch(Exception e) {
+			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas une enum valide : utilisation de la valeur par défaut.", e);
+		}
+		return enumProperty;
 	}
 
 	/**

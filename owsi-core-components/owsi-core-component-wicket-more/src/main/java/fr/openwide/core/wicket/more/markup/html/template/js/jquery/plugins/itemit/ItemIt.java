@@ -147,7 +147,9 @@ public class ItemIt implements ChainableStatement, Serializable {
 		if (fieldName != null) {
 			options.putLiteral("fieldName", fieldName);
 		}
-		if (groups != null) {
+		// pour que la définition de groupe par défaut soit prise en compte
+		// il ne faut surtout pas intégrer groups si la valeur est vide.
+		if (groups != null && !groups.isEmpty()) {
 			options.put("groups", groups);
 		}
 		

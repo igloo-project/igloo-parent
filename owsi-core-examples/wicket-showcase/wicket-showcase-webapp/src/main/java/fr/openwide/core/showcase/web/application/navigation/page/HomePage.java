@@ -3,7 +3,6 @@ package fr.openwide.core.showcase.web.application.navigation.page;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -20,8 +19,6 @@ public class HomePage extends MainTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle")));
-		
-		add(new Label("pageTitle", new ResourceModel("home.pageTitle")));
 	}
 	
 	@Override

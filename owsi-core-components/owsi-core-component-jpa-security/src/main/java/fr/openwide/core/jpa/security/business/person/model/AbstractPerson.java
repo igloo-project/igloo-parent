@@ -14,13 +14,19 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Fields;
+import org.springframework.security.acls.model.Permission;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Sets;
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -36,24 +42,34 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
+	public static final String FIRST_NAME_SORT_FIELD_NAME = "firstNameSort";
+	public static final String LAST_NAME_SORT_FIELD_NAME = "lastNameSort";
+	
 	@Id
 	@GeneratedValue
 	@DocumentId
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	@NaturalId(mutable = true)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String userName;
 	
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+			@Field(name = FIRST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String firstName;
 	
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+			@Field(name = LAST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String lastName;
 	
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String email;
 	
 	private String phoneNumber;
@@ -273,6 +289,12 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+	
+	@Override
+	@QueryType(PropertyType.NONE)
+	public Set<? extends Permission> getPermissions() {
+		return Sets.newHashSetWithExpectedSize(0);
 	}
 
 	@Override

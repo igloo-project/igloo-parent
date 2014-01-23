@@ -19,22 +19,22 @@ public abstract class WidgetsTemplate extends MainTemplate {
 	public WidgetsTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.root"), WidgetsMainPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.root"), WidgetsMainPage.linkDescriptor()));
 	}
 	
 	@Override
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList(
-				new NavigationMenuItem(new ResourceModel("widgets.menu.calendar"), CalendarPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.autocomplete"), AutocompletePage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.modal"), ModalPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.listFilter"), ListFilterPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.carousel"), CarouselPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.statistics"), StatisticsPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.autosize"), AutosizePage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.sortable"), SortableListPage.class),
-				new NavigationMenuItem(new ResourceModel("widgets.menu.selectbox"), SelectBoxPage.class)
+				CalendarPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.calendar")),
+				AutocompletePage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.autocomplete")),
+				ModalPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.modal")),
+				ListFilterPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.listFilter")),
+				BootstrapJsPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.bootstrapJs")),
+				CarouselPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.carousel")),
+				StatisticsPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.statistics")),
+				AutosizePage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.autosize")),
+				SortableListPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.sortable")),
+				SelectBoxPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.selectbox"))
 		);
 	}
 	

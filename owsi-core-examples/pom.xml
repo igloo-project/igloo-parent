@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.8.8-SNAPSHOT</version>
 		<relativePath>../owsi-core-parents/owsi-core-parent-base/pom.xml</relativePath>
 	</parent>
 
@@ -18,7 +18,6 @@
 	<modules>
 		<module>owsi-core-example-jpa</module>
 		<module>owsi-core-example-spring-security-web</module>
-		<module>owsi-core-example-springmvc</module>
 		<module>owsi-core-example-export</module>
 		<module>wicket-showcase</module>
 	</modules>

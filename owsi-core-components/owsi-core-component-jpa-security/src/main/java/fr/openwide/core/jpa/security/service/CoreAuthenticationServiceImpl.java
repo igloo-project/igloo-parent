@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.service;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
@@ -26,8 +26,13 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	}
 	
 	@Override
-	public List<? extends GrantedAuthority> getAuthorities() {
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthenticationUtil.getAuthorities();
+	}
+	
+	@Override
+	public Collection<? extends Permission> getPermissions() {
+		return securityService.getPermissions(AuthenticationUtil.getAuthentication());
 	}
 
 	@Override
@@ -61,11 +66,6 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	}
 	
 	@Override
-	public List<Permission> getPermissions() {
-		return securityService.getPermissions(AuthenticationUtil.getAuthentication());
-	}
-	
-	@Override
 	public boolean isAnonymousAuthority(String grantedAuthoritySid) {
 		return CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthoritySid);
 	}
@@ -73,6 +73,11 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	@Override
 	public void signOut() {
 		AuthenticationUtil.setAuthentication(null);
+	}
+	
+	@Override
+	public boolean isSuperUser() {
+		return securityService.isSuperUser(AuthenticationUtil.getAuthentication());
 	}
 	
 	protected Authentication getAuthentication() {

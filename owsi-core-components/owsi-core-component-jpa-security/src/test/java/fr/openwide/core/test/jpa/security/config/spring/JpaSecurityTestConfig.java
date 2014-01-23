@@ -9,7 +9,6 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
-import fr.openwide.core.test.jpa.security.acl.JpaSecurityTestAclPackage;
 import fr.openwide.core.test.jpa.security.business.JpaSecurityTestBusinessPackage;
 
 @Configuration
@@ -19,8 +18,7 @@ import fr.openwide.core.test.jpa.security.business.JpaSecurityTestBusinessPackag
 		"classpath:jpa-security-test.properties"
 })
 @ComponentScan(basePackageClasses = {
-		JpaSecurityTestBusinessPackage.class,
-		JpaSecurityTestAclPackage.class
+		JpaSecurityTestBusinessPackage.class
 })
 @Import({ JpaSecurityTestJpaConfig.class, JpaSecurityTestSecurityConfig.class })
 public class JpaSecurityTestConfig extends AbstractApplicationConfig {

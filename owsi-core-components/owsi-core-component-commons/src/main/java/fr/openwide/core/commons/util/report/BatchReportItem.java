@@ -1,10 +1,13 @@
 package fr.openwide.core.commons.util.report;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import fr.openwide.core.commons.util.CloneUtils;
 
-public class BatchReportItem {
+public class BatchReportItem implements Serializable {
+
+	private static final long serialVersionUID = -8250079955023459814L;
 
 	private String message;
 
@@ -13,6 +16,9 @@ public class BatchReportItem {
 	private Exception exception;
 
 	private Date date;
+
+	protected BatchReportItem() {
+	}
 
 	public BatchReportItem(BatchReportItemSeverity severity, String message) {
 		setSeverity(severity);

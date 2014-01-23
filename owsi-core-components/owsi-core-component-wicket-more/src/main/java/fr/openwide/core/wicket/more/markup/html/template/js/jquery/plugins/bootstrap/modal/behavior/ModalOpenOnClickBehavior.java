@@ -83,6 +83,16 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 	public JsStatement onModalHide() {
 		return null;
 	}
+	
+	/**
+	 * Rend le composant attaché invisible si la popup est invisible
+	 */
+	@Override
+	public void onConfigure(Component component) {
+		super.onConfigure(component);
+		modal.configure();
+		component.setVisibilityAllowed(modal.determineVisibility());
+	}
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {

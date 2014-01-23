@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+	<wicket:panel>
+		<div class="portfolio-outer">
+			<table class="execution-portfolio table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th style="width: 95%"><wicket:message key="console.maintenance.dataUpgrade.header.upgrade" /></th>
+						<th style="width: 5%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="dataUpgrades">
+						<td wicket:id="upgradeName"></td>
+						<td style="text-align: center;">
+							<a wicket:id="executeLink" class="btn btn-mini btn-primary btn-icon-only">
+								<i class="fa fa-play icon-play icon-white"></i>
+							</a>
+							<wicket:container wicket:id="alreadyExecutedContainer">
+								<i class="fa fa-check icon-ok" wicket:message="title:console.maintenance.dataUpgrade.alreadyExecuted" />
+							</wicket:container>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr wicket:id="emptyList">
+						<td colspan="2"><wicket:message key="console.maintenance.dataUpgrade.noUpgrade" /></td>
+					</tr>
+			</tfoot>
+			</table>
+		</div>
+	</wicket:panel>
+</body>
+</html>

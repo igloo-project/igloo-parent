@@ -3,12 +3,11 @@ package fr.openwide.core.showcase.core.config.spring;
 import java.net.MalformedURLException;
 
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.showcase.core.ShowcaseCorePackage;
@@ -22,8 +21,9 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @ApplicationDescription(name = ShowcaseCoreConfig.APPLICATION_NAME)
 @ConfigurationLocations
 @Import({
-	ShowcaseCoreJpaConfig.class,			// configuration de la persistence
-	ShowcaseCoreSecurityConfig.class		// configuration de la sécurité
+	ShowcaseCoreJpaConfig.class,						// configuration de la persistence
+	ShowcaseCoreSecurityConfig.class,					// configuration de la sécurité
+	ShowcaseCoreJpaMoreTaskManagementConfig.class		// configuration des tâches
 })
 @ComponentScan(
 		basePackageClasses = {
@@ -31,8 +31,8 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 		},
 		excludeFilters = @Filter(Configuration.class)
 )
-//fonctionnement de l'annotation @Transactional
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+// fonctionnement de l'annotation @Transactional
+@EnableTransactionManagement
 public class ShowcaseCoreConfig extends AbstractApplicationConfig {
 
 	public static final String APPLICATION_NAME = "showcase";

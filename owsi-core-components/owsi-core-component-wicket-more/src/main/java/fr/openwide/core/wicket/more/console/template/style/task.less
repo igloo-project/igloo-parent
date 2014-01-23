@@ -1,0 +1,54 @@
+table.tasks {
+	td {
+		&.status {
+			width: 18px;
+			padding: 0 6px;
+			vertical-align: middle;
+			
+			.status-label {
+				display: inline-block;
+				.border-radius(14px);
+				border-radius: 14px;
+				height: 14px;
+				padding: 1px;
+				
+				&.success {
+					border: 2px solid #5BB75B;
+					background-color: #5BB75B;
+				}
+				
+				&.info {
+					border: 2px solid #49AFCD;
+					background-color: #49AFCD;
+				}
+				
+				&.error {
+					border: 2px solid #DA4F49;
+					background-color: #DA4F49;
+				}
+				
+				.status-icon {
+					margin: 0;
+					vertical-align: top;
+				}
+			}
+		}
+		
+		&.date {
+			width: 90px;
+		}
+		
+		&.queue {
+			width: 150px;
+		}
+	}
+}
+
+.serialized-task {
+	overflow: auto;
+}
+	
+.result {
+	overflow: auto;
+	max-height: 300px;
+}

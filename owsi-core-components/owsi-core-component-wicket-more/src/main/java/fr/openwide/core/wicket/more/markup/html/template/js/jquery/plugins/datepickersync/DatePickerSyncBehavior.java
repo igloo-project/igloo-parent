@@ -51,5 +51,11 @@ public class DatePickerSyncBehavior extends Behavior {
 		}
 		return statement;
 	}
+	
+	@Override
+	public void detach(Component component) {
+		super.detach(component);
+		datePickerSync.detach();
+	}
 
 }

@@ -20,17 +20,13 @@
 			var datePickerCourant = this.$element;
 			
 			datePickerCourant.datepicker('option', 'beforeShow', function(input, inst) {
-				if (thisElement.options.precedents.length > 0) {
-					datePickerCourant.datepicker('option', 'minDate', thisElement._getMinDate());
-				}
-				if (thisElement.options.suivants.length > 0) {
-					datePickerCourant.datepicker('option', 'maxDate', thisElement._getMaxDate());
-				}
+				datePickerCourant.datepicker('option', 'minDate', thisElement._getMinDate());
+				datePickerCourant.datepicker('option', 'maxDate', thisElement._getMaxDate());
 			});
 		},
 		
 		_getMinDate: function() {
-			var minDate = null;
+			var minDate = this.options.precedentsModelsMaxDate;
 			var precedents = this.options.precedents;
 			var nbPrecedents = precedents.length;
 			if (nbPrecedents > 0) {
@@ -47,7 +43,7 @@
 		},
 		
 		_getMaxDate: function() {
-			var maxDate = null;
+			var maxDate = this.options.suivantsModelsMinDate;
 			var suivants = this.options.suivants;
 			var nbSuivants = suivants.length;
 			if (nbSuivants > 0) {
@@ -87,8 +83,10 @@
 	$.fn.datePickerSync.Constructor = DatePickerSync;
 	
 	$.fn.datePickerSync.defaults = {
-			precedents:	[],
+			precedents:					[],
+			precedentsModelsMaxDate:	null,
 			suivants:	[],
+			suivantsModelsMinDate:		null,
 			reset:		false
 	};
 }(window.jQuery, window, document);

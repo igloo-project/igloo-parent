@@ -14,7 +14,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.showcase.web.application.widgets.component.AddUserPopupPanel;
-import fr.openwide.core.showcase.web.application.widgets.component.PopoverTooltipModalPopupPanel;
+import fr.openwide.core.showcase.web.application.widgets.component.ZIndexTestModalPopupPanel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -27,6 +29,12 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 
 public class ModalPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ModalPage.class)
+				.build();
+	}
 
 	public ModalPage(PageParameters parameters) {
 		super(parameters);
@@ -35,32 +43,18 @@ public class ModalPage extends WidgetsTemplate {
 		options.setModalOverflow(false);
 		options.setFocusOnFirstNotHiddenInput();
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.modal"), ModalPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.modal"), ModalPage.linkDescriptor()));
 		
 		AddUserPopupPanel addUserPopupPanel = new AddUserPopupPanel("addUserPopupPanel");
 		add(addUserPopupPanel);
 		
 		Button addUserBtn = new Button("addUserBtn");
-		addUserBtn.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onShow(AjaxRequestTarget target) {
-				
-			}
-		});
+		addUserBtn.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK));
 		add(addUserBtn);
 		
 		Button addUserBtnDisabled = new Button("addUserBtnDisabled");
 		addUserBtnDisabled.setEnabled(false);
-		addUserBtnDisabled.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onShow(AjaxRequestTarget target) {
-				
-			}
-		});
+		addUserBtnDisabled.add(new AjaxModalOpenBehavior(addUserPopupPanel, MouseEvent.CLICK));
 		add(addUserBtnDisabled);
 		
 		// static modal
@@ -124,6 +118,23 @@ public class ModalPage extends WidgetsTemplate {
 		};
 		add(ajaxConfirmLink);
 		
+		AjaxConfirmLink<Void> ajaxConfirmLinkDisabled = new AjaxConfirmLink<Void>("ajaxConfirmLinkDisabled", null,
+				new ResourceModel("widgets.modal.ajaxConfirmLink.header"),
+				new ResourceModel("widgets.modal.ajaxConfirmLink.body"),
+				new ResourceModel("widgets.modal.ajaxConfirmLink.yes"),
+				new ResourceModel("widgets.modal.ajaxConfirmLink.no"),
+				null, false) {
+			private static final long serialVersionUID = 3980878234185635872L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		};
+		ajaxConfirmLinkDisabled.setEnabled(false);
+		add(ajaxConfirmLinkDisabled);
+		
 		Form<?> form = new Form<Void>("form");
 		AjaxConfirmButton ajaxConfirmButton = new AjaxConfirmButton("ajaxConfirmButton",
 				new ResourceModel("widgets.modal.ajaxConfirmButton.header"),
@@ -135,7 +146,7 @@ public class ModalPage extends WidgetsTemplate {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
+				getSession().success(getString("widgets.modal.ajaxConfirmButton.success"));
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 			
@@ -145,9 +156,33 @@ public class ModalPage extends WidgetsTemplate {
 		};
 		form.add(ajaxConfirmButton);
 		add(form);
+
 		
-		PopoverTooltipModalPopupPanel popoverTooltipModalPopupPanel = new PopoverTooltipModalPopupPanel("popoverTooltipModalPopupPanel", null);
-		WebMarkupContainer popoverTooltipModalOpen = new WebMarkupContainer("popoverTooltipModalOpen");
+		Form<?> formDisabled = new Form<Void>("formDisabled");
+		formDisabled.setEnabled(false);
+		AjaxConfirmButton ajaxConfirmButtonDisabled = new AjaxConfirmButton("ajaxConfirmButtonDisabled",
+				new ResourceModel("widgets.modal.ajaxConfirmButton.header"),
+				new ResourceModel("widgets.modal.ajaxConfirmButton.body"),
+				new ResourceModel("widgets.modal.ajaxConfirmButton.yes"),
+				new ResourceModel("widgets.modal.ajaxConfirmButton.no"),
+				null, false, null) {
+			private static final long serialVersionUID = -914995462538909927L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				getSession().success(getString("widgets.modal.ajaxConfirmButton.success"));
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+			}
+		};
+		formDisabled.add(ajaxConfirmButtonDisabled);
+		add(formDisabled);
+		
+		ZIndexTestModalPopupPanel popoverTooltipModalPopupPanel = new ZIndexTestModalPopupPanel("zIndexTestModalPopupPanel", null);
+		WebMarkupContainer popoverTooltipModalOpen = new WebMarkupContainer("zIndexTestModalOpen");
 		popoverTooltipModalPopupPanel.setBootstrapModal(options);
 		popoverTooltipModalPopupPanel.prepareLink(popoverTooltipModalOpen);
 		add(popoverTooltipModalOpen);

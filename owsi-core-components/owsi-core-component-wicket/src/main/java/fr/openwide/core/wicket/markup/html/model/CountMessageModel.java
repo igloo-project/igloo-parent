@@ -79,7 +79,6 @@ public class CountMessageModel extends AbstractReadOnlyModel<String>
     {
         super();
         Args.notNull(messageKey, "messageKey");
-        Args.notNull(component, "component");
         Args.notNull(count, "count");
         
         this.countModel = count;
@@ -97,6 +96,11 @@ public class CountMessageModel extends AbstractReadOnlyModel<String>
                 }
             }
         );
+    }
+    
+    public CountMessageModel(String messageKey, IModel<? extends Number> count)
+    {
+        this(messageKey, null, count);
     }
     
     /**
