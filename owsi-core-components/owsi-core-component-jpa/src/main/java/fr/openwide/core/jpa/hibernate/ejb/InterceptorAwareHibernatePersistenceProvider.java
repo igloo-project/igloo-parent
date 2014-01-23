@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceUnitInfo;
 
+import org.hibernate.EmptyInterceptor;
 import org.hibernate.Interceptor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -47,7 +48,7 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 			public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
 				Configuration configuration = super.buildHibernateConfiguration(serviceRegistry);
 				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
-					if (configuration.getInterceptor() != null) {
+					if (configuration.getInterceptor() != null && !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
 						log.error("The persistence provider was already configured with an interceptor: we override it.");
 					}
 					configuration.setInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
