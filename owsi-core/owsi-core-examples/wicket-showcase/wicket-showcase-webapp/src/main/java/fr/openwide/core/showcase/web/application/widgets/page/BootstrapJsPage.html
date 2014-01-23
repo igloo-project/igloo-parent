@@ -2,97 +2,138 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<!-- Dropdown -->
-		<h1 id="dropdown"><wicket:message key="widgets.dropdown.title" /></h1>
-		
-		<p>
-			<wicket:message key="widgets.dropdown.explanation" />
-		</p>
-		
-		<div class="row-fluid" style="margin-bottom: 50px;">
-			<div class="span3">
-				<div class="btn-group dropdown">
-					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						Show menu
-						<span class="caret" />
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="#dropdown">Dropdown</a></li>
-						<li class="divider"></li>
-						<li><a href="#tooltip">Tooltip</a></li>
-						<li><a href="#popover">Popover</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="span3">
-				<div class="btn-group dropup">
-					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						Show menu above
-						<span class="caret" />
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="#dropdown">Dropdown</a></li>
-						<li class="divider"></li>
-						<li><a href="#tooltip">Tooltip</a></li>
-						<li><a href="#popover">Popover</a></li>
-					</ul>
-				</div>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="widgets.bootstrapJs.title" /></h1>
 			</div>
 		</div>
 		
-		<!-- Tooltip -->
-		<h1 id="tooltip"><wicket:message key="widgets.tooltip.title" /></h1>
-		
-		<p>
-			<wicket:message key="widgets.tooltip.explanation" />
-		</p>
-		
-		<p style="text-align:center;">
-			<button class="btn" wicket:message="title:widgets.tooltip.default" style="margin: 50px 60px;">
-				<wicket:message key="widgets.tooltip.default" />
-			</button>
-			
-			<button class="btn" wicket:message="title:widgets.tooltip.top" data-placement="top" style="margin: 50px 60px;">
-				<wicket:message key="widgets.tooltip.top" />
-			</button>
-			
-			<button class="btn" wicket:message="title:widgets.tooltip.right" data-placement="right" style="margin: 50px 60px;">
-				<wicket:message key="widgets.tooltip.right" />
-			</button>
-			
-			<button class="btn" wicket:message="title:widgets.tooltip.left" data-placement="left" style="margin: 50px 60px;">
-				<wicket:message key="widgets.tooltip.left" />
-			</button>
-		</p>
-		
-		<!-- Popover -->
-		<h1 id="popover"><wicket:message key="widgets.popover.title" /></h1>
-		
-		<p>
-			<wicket:message key="widgets.popover.explanation" />
-		</p>
-		
-		<div class="clearfix" style="text-align:center">
-			<div style="float:left; width: 50%;">
+		<div class="main-content">
+			<div class="container">
+				<!-- Dropdown -->
+				<h2 id="dropdown"><wicket:message key="widgets.dropdown.title" /></h2>
+				
 				<p>
-					<span wicket:id="someLabelDefault" style="margin: 100px 100px;" />
+					<wicket:message key="widgets.dropdown.explanation" />
 				</p>
+				
+				<div class="row" style="margin-bottom: 50px;">
+					<div class="span3">
+						<div class="btn-group dropdown">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								Show menu
+								<span class="caret" />
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#dropdown">Dropdown</a></li>
+								<li class="divider"></li>
+								<li><a href="#tooltip">Tooltip</a></li>
+								<li><a href="#popover">Popover</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="span3">
+						<div class="btn-group dropup">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+								Show menu above
+								<span class="caret" />
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#dropdown">Dropdown</a></li>
+								<li class="divider"></li>
+								<li><a href="#tooltip">Tooltip</a></li>
+								<li><a href="#popover">Popover</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Tooltip -->
+				<h2 id="tooltip"><wicket:message key="widgets.tooltip.title" /></h2>
+				
 				<p>
-					<span wicket:id="someLabelLeft" data-placement="left" style="margin: 100px 100px;" />
+					<wicket:message key="widgets.tooltip.explanation" />
 				</p>
-			</div>
-			<div style="float:left; width: 50%;">
+				
+				<p style="text-align:center;">
+					<button class="btn btn-primary" wicket:message="title:widgets.tooltip.default" style="margin: 50px 60px;">
+						<wicket:message key="widgets.tooltip.default" />
+					</button>
+					
+					<button class="btn btn-primary" wicket:message="title:widgets.tooltip.top" data-placement="top" style="margin: 50px 60px;">
+						<wicket:message key="widgets.tooltip.top" />
+					</button>
+					
+					<button class="btn btn-primary" wicket:message="title:widgets.tooltip.right" data-placement="right" style="margin: 50px 60px;">
+						<wicket:message key="widgets.tooltip.right" />
+					</button>
+					
+					<button class="btn btn-primary" wicket:message="title:widgets.tooltip.left" data-placement="left" style="margin: 50px 60px;">
+						<wicket:message key="widgets.tooltip.left" />
+					</button>
+				</p>
+				
+				<!-- Popover -->
+				<h2 id="popover"><wicket:message key="widgets.popover.title" /></h2>
+				
 				<p>
-					<span wicket:id="someLabelTop" data-placement="top" style="margin: 100px 100px;" />
+					<wicket:message key="widgets.popover.explanation" />
 				</p>
-				<p>
-					<span wicket:id="someLabelBottom" data-placement="bottom" style="margin: 100px 100px;" />
-				</p>
-			</div>
-		</div>
-		<div style="display:none;">
-			<div wicket:id="someInfomration">
-				<wicket:message key="widgets.popover.someInformation.text" />
+				
+				<div class="clearfix" style="text-align:center">
+					<div style="float:left; width: 50%;">
+						<p>
+							<span wicket:id="someLabelDefault" style="margin: 100px 100px;" />
+						</p>
+						<p>
+							<span wicket:id="someLabelLeft" data-placement="left" style="margin: 100px 100px;" />
+						</p>
+					</div>
+					<div style="float:left; width: 50%;">
+						<p>
+							<span wicket:id="someLabelTop" data-placement="top" style="margin: 100px 100px;" />
+						</p>
+						<p>
+							<span wicket:id="someLabelBottom" data-placement="bottom" style="margin: 100px 100px;" />
+						</p>
+					</div>
+				</div>
+				
+				<div class="clearfix" style="text-align:center">
+					<div style="float:left; width: 50%;">
+						<p>
+							<span wicket:id="someLabelWithoutTitle" style="margin: 100px 100px;" />
+						</p>
+					</div>
+				</div>
+				<div style="display:none;">
+					<div wicket:id="someInfomration">
+						<wicket:message key="widgets.popover.someInformation.text" />
+					</div>
+				</div>
+				
+				<!-- Tabs -->
+				<h2 id="tab"><wicket:message key="widgets.tab.title" /></h2>
+				
+				<div wicket:id="tabContainer">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#home">Home</a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#profile">Profile</a>
+						</li>
+					</ul>
+					
+					<div class="tab-content">
+						<div id="home" class="tab-pane fade in active">
+							<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+						</div>
+						<div id="profile" class="tab-pane fade">
+							<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

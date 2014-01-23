@@ -8,18 +8,27 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class BootstrapJsPage extends WidgetsTemplate {
 	
 	private static final long serialVersionUID = -187415297020105589L;
 	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(BootstrapJsPage.class)
+				.build();
+	}
+	
 	public BootstrapJsPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.bootstrapJs"), BootstrapJsPage.linkDescriptor()));
 		
 		// Popover
 		WebMarkupContainer someInformation = new WebMarkupContainer("someInfomration");
@@ -28,10 +37,9 @@ public class BootstrapJsPage extends WidgetsTemplate {
 		
 		Label someLabelDefault = new Label("someLabelDefault", new ResourceModel("widgets.popover.someLabel.default"));
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
-		popoverOptions.setTitleText(new ResourceModel("widgets.popover.someInformation.title").getObject());
+		popoverOptions.setTitleModel(new ResourceModel("widgets.popover.someInformation.title"));
 		popoverOptions.setContentComponent(someInformation);
 		popoverOptions.setHtml(true);
-		popoverOptions.setContainer("body");
 		someLabelDefault.add(new BootstrapPopoverBehavior(popoverOptions));
 		someLabelDefault.add(new ClassAttributeAppender(Model.of("popover-btn")));
 		add(someLabelDefault);
@@ -50,6 +58,19 @@ public class BootstrapJsPage extends WidgetsTemplate {
 		someLabelBottom.add(new BootstrapPopoverBehavior(popoverOptions));
 		someLabelBottom.add(new ClassAttributeAppender(Model.of("popover-btn")));
 		add(someLabelBottom);
+		
+		Label someLabelWithoutTitle = new Label("someLabelWithoutTitle", new ResourceModel("widgets.popover.someLabel.withoutTitle"));
+		BootstrapPopoverOptions popoverWithoutTitleOptions = new BootstrapPopoverOptions();
+		popoverWithoutTitleOptions.setContentComponent(someInformation);
+		popoverWithoutTitleOptions.setHtml(true);
+		someLabelWithoutTitle.add(new BootstrapPopoverBehavior(popoverWithoutTitleOptions));
+		someLabelWithoutTitle.add(new ClassAttributeAppender(Model.of("popover-btn")));
+		add(someLabelWithoutTitle);
+		
+		// Tabs
+		WebMarkupContainer tabContainer = new WebMarkupContainer("tabContainer");
+		add(tabContainer);
+		tabContainer.add(new BootstrapTabBehavior());
 	}
 	
 	@Override

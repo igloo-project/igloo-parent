@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.lesscss;
 
 import java.util.Locale;
 
-import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 
 public class LessCssResourceReference extends ResourceReference {
@@ -18,7 +17,7 @@ public class LessCssResourceReference extends ResourceReference {
 	}
 
 	@Override
-	public IResource getResource() {
+	public LessCssResource getResource() {
 		return new LessCssResource(getScope(), getName(), getLocale(), getStyle(), getVariation());
 	}
 

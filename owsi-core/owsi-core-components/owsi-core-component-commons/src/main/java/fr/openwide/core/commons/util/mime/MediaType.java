@@ -15,6 +15,9 @@ public enum MediaType {
 	APPLICATION_XML("application/xml", "xml"),
 	APPLICATION_JSON("application/json", "json"),
 	APPLICATION_ZIP("application/zip", "zip"),
+	APPLICATION_RAR("application/rar", "rar"),
+	APPLICATION_7Z("application/x-7z-compressed", "7z"),
+	APPLICATION_TAR_GZ("application/x-tgz", "tar.gz"),
 	APPLICATION_KML("application/vnd.google-earth.kml+xml", "kml"),
 	APPLICATION_KMZ("application/vnd.google-earth.kmz", "kmz"),
 	APPLICATION_GPX("application/gpx+xml", "gpx"),
@@ -26,14 +29,15 @@ public enum MediaType {
 	APPLICATION_MS_EXCEL("application/vnd.ms-excel", "xls"),
 	APPLICATION_MS_POWERPOINT("application/vnd.ms-powerpoint", "ppt"),
 	
-	APPLICATION_OPENXML_POWERPOINT("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx"),
-	APPLICATION_OPENXML_EXCEL("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx"),
 	APPLICATION_OPENXML_WORD("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"),
+	APPLICATION_OPENXML_EXCEL("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx"),
+	APPLICATION_OPENXML_POWERPOINT("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx"),
 	
 	// Applications > Open Office
-	APPLICATION_ODF_CHART("application/vnd.oasis.opendocument.chart", "odc"),
 	APPLICATION_ODF_TEXT("application/vnd.oasis.opendocument.text", "odt"),
+	APPLICATION_ODF_SPREADSHEET("application/vnd.oasis.opendocument.spreadsheet", "ods"),
 	APPLICATION_ODF_PRESENTATION("application/vnd.oasis.opendocument.presentation", "odp"),
+	APPLICATION_ODF_CHART("application/vnd.oasis.opendocument.chart", "odc"),
 	
 	// Text
 	TEXT_PLAIN("text/plain", "plain"),

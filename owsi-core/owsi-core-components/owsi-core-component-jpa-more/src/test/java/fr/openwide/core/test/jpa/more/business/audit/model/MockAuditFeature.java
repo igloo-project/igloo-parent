@@ -12,6 +12,9 @@ public class MockAuditFeature extends AbstractAuditFeature {
 
 	@Enumerated(EnumType.STRING)
 	private MockAuditFeatureEnum auditFeatureEnum;
+	
+	protected MockAuditFeature() {
+	}
 
 	public MockAuditFeature(String label, MockAuditFeatureEnum auditFeatureEnum, Integer position) {
 		super(label, position);

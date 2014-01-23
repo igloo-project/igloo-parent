@@ -51,7 +51,6 @@ public class ImageServiceImpl implements IImageService {
 	@Autowired
 	private CoreConfigurer configurer;
 	
-	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init() {
 		imageMagickConvertBinary = getImageMagickConvertBinary(configurer.getImageMagickConvertBinary());

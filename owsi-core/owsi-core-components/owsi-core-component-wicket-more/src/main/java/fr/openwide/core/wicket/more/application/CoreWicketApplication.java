@@ -3,8 +3,10 @@ package fr.openwide.core.wicket.more.application;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.head.PriorityFirstComparator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
@@ -19,9 +21,17 @@ import org.springframework.context.ApplicationContext;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.css.CoreCssScope;
-import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.CoreBootstrap2CssScope;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
+import fr.openwide.core.wicket.more.notification.listener.HtmlNotificationComponentCssClassHandler;
+import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWithHtmlNotificationSupport;
+import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
+import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 
 public abstract class CoreWicketApplication extends WebApplication {
@@ -60,6 +70,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// nettoyage des tags Wicket
 		getMarkupSettings().setStripWicketTags(true);
 		
+		// gestion des styles lors du rendu HTML des mails de notification
+		getMarkupSettings().setMarkupFactory(new MarkupFactoryWithHtmlNotificationSupport()); // Handles tags that are not attached to wicket components
+		getComponentInitializationListeners().add(new HtmlNotificationComponentCssClassHandler()); // Handles tags that *are* attached to wicket components
+		
 		// mise en place d'un timeout plus élevé histoire d'éviter les timeouts lors des téléchargements
 		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
 		
@@ -81,6 +95,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 			// surcharge des ressources jQuery et jQuery UI
 			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
+			
+			// on place les éléments présents dans le wicket:head en premier
+			getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
 		
 		mountCommonResources();
 		mountCommonPages();
@@ -92,8 +109,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 	}
 	
 	protected void registerLessImportScopes() {
-		lessCssService.registerImportScope("core", CoreCssScope.class);
+		lessCssService.registerImportScope("core", CoreBootstrap2CssScope.class);
+		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
+		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);
 	}
 	
 	protected void mountCommonPages() {
@@ -101,6 +120,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	protected void mountCommonResources() {
 		mountStaticResourceDirectory("/common", AbstractWebPageTemplate.class);
+		mountStaticResourceDirectory("/font-awesome", CoreFontAwesomeCssScope.class);
 	}
 	
 	protected abstract void mountApplicationPages();
@@ -110,6 +130,14 @@ public abstract class CoreWicketApplication extends WebApplication {
 	protected final void mountStaticResourceDirectory(final String path, final Class<?> clazz) {
 		mount(new StaticResourceMapper("/static" + path, clazz));
 	}
+	
+	public final <T extends Page> void mountUnversionedPage(final String path, final Class<T> pageClass) {
+		mount(new NoVersionMountedMapper(path, pageClass));
+	}
+	
+	public final <T extends Page> void mountParameterizedPage(final String path, final Class<T> pageClass) {
+		mount(new PageParameterAwareMountedMapper(path, pageClass));
+	}
 
 	/**
 	 * Overriden to integrate configurationType via bean injection and
@@ -118,6 +146,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public RuntimeConfigurationType getConfigurationType() {
 		return RuntimeConfigurationType.valueOf(configurer.getConfigurationType().toUpperCase(Locale.ROOT));
+	}
+	
+	public final IPageLinkDescriptor getHomePageLinkDescriptor() {
+		return new LinkDescriptorBuilder().page(getHomePage()).build();
 	}
 
 }

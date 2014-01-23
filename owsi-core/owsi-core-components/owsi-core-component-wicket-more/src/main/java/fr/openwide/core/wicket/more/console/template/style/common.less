@@ -6,12 +6,6 @@ body {
 	max-width: @maxPageWidth; 
 	min-width: @minPageWidth; 
 	width: auto; 
-	margin-bottom: 40px; 
-	
-	border-width: 1px;
-	border-style: none solid solid solid; 
-	border-color: #CCC; 
-	.border-radius(0 0 5px 5px);
 }
 
 .content {
@@ -148,10 +142,17 @@ ul.itemit {
 }
 
 .console-section.reindex {
-	width: 30%;
-	
 	.actions {
 		margin-top : 15px;
+	}
+	
+	select[multiple] {
+		height: 150px;
+	}
+	
+	textarea.ids {
+		min-height: 150px;
+		resize: none;
 	}
 }
 

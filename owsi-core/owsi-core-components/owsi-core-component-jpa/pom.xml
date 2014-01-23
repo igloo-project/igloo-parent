@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.8.8-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa</artifactId>
@@ -43,10 +43,6 @@
 			<artifactId>hibernate-search-orm</artifactId>
 			<version>${owsi-core.hibernate-search.version}</version>
 			<exclusions>
-				<exclusion>
-					<artifactId>hibernate-commons-annotations</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
 				<!--
 				on utilise des classes de solr-core pour des analyzers mais on n'a vraiment pas besoin d'aller chercher
 				dans des analyzers aussi tordus que ceux qui sont dans ce package...
@@ -131,11 +127,6 @@
 					<groupId>org.apache.lucene</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-core-asl</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -247,6 +238,17 @@
 					</grammars>
 					<outputDirectory>${basedir}/src/main/java</outputDirectory>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

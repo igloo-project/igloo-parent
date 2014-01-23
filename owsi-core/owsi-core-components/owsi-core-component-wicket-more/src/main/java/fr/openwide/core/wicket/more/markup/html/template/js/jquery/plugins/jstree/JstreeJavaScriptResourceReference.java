@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.jstr
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public class JstreeJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
+public final class JstreeJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = 1762476460042247594L;
 

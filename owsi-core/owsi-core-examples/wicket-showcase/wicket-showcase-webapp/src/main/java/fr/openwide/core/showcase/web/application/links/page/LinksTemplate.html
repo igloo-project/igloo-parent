@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<div class="page-title">
+			<div class="container">
+				<a wicket:id="linkToThisPageInstanceOnlyIfPage1" class="pull-right btn btn-primary">Bookmarkable link to this page instance, which IS Page 1</a>
+				<a wicket:id="linkToThisPageInstance" class="pull-right btn btn-primary">Bookmarkable link to this page instance, which is NOT Page 1</a>
+				<h1 wicket:id="title" class="page-title-text" />
+			</div>
+		</div>
+		
+		<div class="main-content">
+			<div class="container">
+				<div wicket:id="linkTestPanel" />
+				<div wicket:id="imageTestPanel" />
+			</div>
+		</div>
+	</wicket:extend>
+</html>

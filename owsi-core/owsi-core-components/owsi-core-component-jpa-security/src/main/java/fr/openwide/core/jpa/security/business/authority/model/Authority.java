@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.business.authority.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ public class Authority extends GenericEntity<Long, Authority> {
 	@GeneratedValue
 	private Long id;
 
+	@Column
 	private String name;
 
 	public Authority() {

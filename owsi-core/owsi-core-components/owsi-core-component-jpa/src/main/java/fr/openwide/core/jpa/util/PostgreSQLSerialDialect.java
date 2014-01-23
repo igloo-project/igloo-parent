@@ -17,8 +17,9 @@
 
 package fr.openwide.core.jpa.util;
 
-import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.id.IdentifierGenerator;
+
+import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLAdvancedDialect;
 
 /**
  * <p>Surcharge du dialecte PostgreSQL qui permet de gérer les séquences par table plutôt que d'avoir une seule séquence
@@ -31,7 +32,8 @@ import org.hibernate.id.IdentifierGenerator;
  * 
  * @author Open Wide
  */
-public class PostgreSQLSerialDialect extends PostgreSQL82Dialect {
+@Deprecated
+public class PostgreSQLSerialDialect extends PostgreSQLAdvancedDialect {
 
 	@Override
 	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {

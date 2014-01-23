@@ -90,6 +90,9 @@ public class EntityManagerListener implements ApplicationListener<ContextRefresh
 						} catch (SQLException e) {
 							throw new RuntimeException("Erreur de récupération de la connection lors de l'initialisation", e);
 						}
+						if (connection == null) {
+							throw new RuntimeException("Connexion est null et ça risque d'être gênant pour exécuter ce qui suit.");
+						}
 						try {
 							if (wrapInTransaction) {
 								connection.setAutoCommit(false);
@@ -121,7 +124,7 @@ public class EntityManagerListener implements ApplicationListener<ContextRefresh
 								}
 							}
 						}
-						if (connection != null && wrapInTransaction) {
+						if (wrapInTransaction) {
 							try {
 								connection.commit();
 							} catch (SQLException e) {
@@ -133,19 +136,17 @@ public class EntityManagerListener implements ApplicationListener<ContextRefresh
 								}
 							}
 						}
-						if (connection != null) {
-							try {
-								connection.close();
-							} catch (SQLException e) {
-								if (failOnError) {
-									throw new RuntimeException("Erreur au close d'une transaction : " + e.getMessage());
-								} else {
-									LOGGER.error("Erreur au close d'une transaction : " + e.getMessage());
-									LOGGER.info("Stacktrace de l'erreur SQL", e);
-								}
-							} finally {
-								connection = null;
+						try {
+							connection.close();
+						} catch (SQLException e) {
+							if (failOnError) {
+								throw new RuntimeException("Erreur au close d'une transaction : " + e.getMessage());
+							} else {
+								LOGGER.error("Erreur au close d'une transaction : " + e.getMessage());
+								LOGGER.info("Stacktrace de l'erreur SQL", e);
 							}
+						} finally {
+							connection = null;
 						}
 						if (hasError && failOnError) {
 							throw new RuntimeException("Erreur lors de l'initialisation du fichier " + file);

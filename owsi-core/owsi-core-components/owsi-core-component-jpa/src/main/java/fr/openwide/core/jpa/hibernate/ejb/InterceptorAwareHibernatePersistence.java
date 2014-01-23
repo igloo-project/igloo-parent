@@ -27,8 +27,11 @@ public class InterceptorAwareHibernatePersistence extends HibernatePersistence {
 	public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo info, Map properties) {
 		Ejb3Configuration cfg = new Ejb3Configuration();
 		Ejb3Configuration configured = cfg.configure( info, properties );
-		configured.setInterceptor(interceptor);
-		return configured != null ? configured.buildEntityManagerFactory() : null;
+		if (configured != null) {
+			configured.setInterceptor(interceptor);
+			return configured.buildEntityManagerFactory();
+		}
+		return null;
 	}
 
 }

@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -46,17 +47,24 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 			Form<?> form) {
 		super(id, null, form);
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
-		
+
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.
-		// l'événement click habituel est supprimé par surcharge de newAjaxFormSubmitBehavior ci-dessous
-		add(new WiQueryEventBehavior(new Event(MouseEvent.CLICK) {
+		// l'événement click habituel est supprimé par surcharge de newAjaxEventBehavior ci-dessous
+		Event clickEvent = new Event(MouseEvent.CLICK) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public JsScope callback() {
 				return JsScopeEvent.quickScope(BootstrapConfirmStatement.confirm(AjaxConfirmButton.this).append("event.preventDefault();"));
 			}
-		}));
+		};
+		add(new WiQueryEventBehavior(clickEvent) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isEnabled(Component component) {
+				return AjaxConfirmButton.this.isEnabledInHierarchy();
+			}
+		});
 	}
 
 	/**
@@ -69,6 +77,12 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
+			public boolean isEnabled(Component component) {
+				// On ajoute le handler seulement si le composant est activé
+				return AjaxConfirmButton.this.isEnabledInHierarchy();
+			}
+			
+			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onSubmit(target, AjaxConfirmButton.this.getForm());
 			}
@@ -76,11 +90,6 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 			@Override
 			protected void onError(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
-			}
-			
-			@Override
-			public boolean getDefaultProcessing() {
-				return AjaxConfirmButton.this.getDefaultFormProcessing();
 			}
 		};
 	}

@@ -38,10 +38,10 @@ Index: src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery
    $(function () {
      $('body').on('click.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
        e.preventDefault()
-+      if (history.pushState) {
++      if (history.replaceState) {
 +         var link = $(e.target).closest("a");
 +         if (link) {
-+           history.pushState(null, null, link.prop("href"));
++           history.replaceState(null, null, link.prop("href"));
 +         }
 +      }
        $(this).tab('show')

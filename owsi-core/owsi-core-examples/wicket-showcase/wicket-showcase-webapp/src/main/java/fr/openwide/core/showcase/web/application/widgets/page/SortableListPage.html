@@ -2,15 +2,23 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h1><wicket:message key="widgets.sortable.title" /></h1>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="widgets.sortable.title" /></h1>
+			</div>
+		</div>
 		
-		<p>
-			<wicket:message key="widgets.sortable.explanation" />
-		</p>
-		
-		<div class="row-fluid">
-			<div class="span6">
-				<div wicket:id="sortableUserPanel"></div>
+		<div class="main-content">
+			<div class="container">
+				<p>
+					<wicket:message key="widgets.sortable.explanation" />
+				</p>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div wicket:id="sortableUserPanel"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

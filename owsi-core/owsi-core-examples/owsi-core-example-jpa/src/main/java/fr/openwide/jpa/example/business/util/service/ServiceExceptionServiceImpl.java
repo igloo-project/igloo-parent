@@ -53,7 +53,7 @@ public class ServiceExceptionServiceImpl implements ServiceExceptionService {
 		return companyService.count();
 	}
 	
-	private class MyException extends ServiceException {
+	private static class MyException extends ServiceException {
 		private static final long serialVersionUID = -6408089837070550022L;
 	}
 }

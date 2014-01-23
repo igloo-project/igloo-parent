@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public interface IMigratedFromOldApplicationEntity<K extends Serializable & Comparable<K>> {
 
-	public abstract K getOldApplicationId();
+	K getOldApplicationId();
+	
+	boolean isMigrated();
+	
+	void setMigrated(boolean migrated);
 
 }

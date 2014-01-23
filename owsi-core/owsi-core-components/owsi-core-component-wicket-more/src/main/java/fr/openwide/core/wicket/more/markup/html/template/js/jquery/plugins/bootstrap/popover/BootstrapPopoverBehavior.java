@@ -21,13 +21,22 @@ public class BootstrapPopoverBehavior extends Behavior {
 	}
 
 	public JsStatement statement(Component component) {
-		return new JsStatement().$(component).chain(BOOTSTRAP_POPOVER, options.getJavaScriptOptions());
+		return new JsStatement().$(component).chain(BOOTSTRAP_POPOVER, options.getJavaScriptOptions(component));
 	}
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapPopoverJavascriptResourceReference.get()));
 		response.render(OnDomReadyHeaderItem.forScript(statement(component).render()));
+	}
+	
+	@Override
+	public void detach(Component component) {
+		super.detach(component);
+		
+		if (options != null) {
+			options.detach();
+		}
 	}
 
 }

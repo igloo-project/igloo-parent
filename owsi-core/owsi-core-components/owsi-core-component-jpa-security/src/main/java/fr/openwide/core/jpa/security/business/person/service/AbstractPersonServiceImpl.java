@@ -4,9 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -24,6 +25,11 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 		implements IPersonService<P> {
 	
 	private static final IPersonBinding BINDING = new IPersonBinding();
+	
+	public static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
+	
+	public static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(AbstractPerson.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
+			new SortField(AbstractPerson.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING));
 
 	@Autowired
 	private IAuthorityService authorityService;
@@ -33,9 +39,6 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	@Autowired(required = false)
-	private SaltSource saltSource;
 	
 	private IPersonDao<P> personDao;
 	
@@ -64,9 +67,13 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public List<P> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
-		String[] searchFields = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
-		
-		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern);
+		return searchAutocomplete(searchPattern, null, null);
+	}
+	
+	@Override
+	public List<P> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
+		return hibernateSearchService.searchAutocomplete(getObjectClass(), AUTOCOMPLETE_SEARCH_FIELDS, searchPattern,
+				limit, offset, AUTOCOMPLETE_SORT);
 	}
 	
 	@Override
@@ -124,13 +131,7 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
 	
 	@Override
 	public void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException {
-		String passwordHash;
-		if (saltSource == null) {
-			passwordHash = passwordEncoder.encodePassword(clearTextPassword, null);
-		} else {
-			passwordHash = passwordEncoder.encodePassword(clearTextPassword, saltSource.getSalt(null));
-		}
-		person.setPasswordHash(passwordHash);
+		person.setPasswordHash(passwordEncoder.encode(clearTextPassword));
 		super.update(person);
 	}
 

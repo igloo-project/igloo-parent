@@ -1,10 +1,14 @@
 package fr.openwide.core.jpa.search.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,8 +21,8 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
-import org.apache.lucene.util.Version;
 import org.hibernate.CacheMode;
+import org.hibernate.search.Environment;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
@@ -27,12 +31,16 @@ import org.hibernate.search.impl.MassIndexerImpl;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
+import org.hibernate.search.util.impl.HibernateHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.google.common.collect.Iterables;
+
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
@@ -81,7 +89,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
 				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
@@ -89,7 +97,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
 			String analyzerName) throws ServiceException {
 		return search(classes, fields, searchPattern, analyzerName, (Integer) null, (Integer) null, null);
 	}
@@ -128,7 +136,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
 				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
@@ -136,13 +144,13 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
-	public <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern,
+	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
 			String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, (Integer) null, (Integer) null, null);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> List<T> search(List<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
+	private <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
 			return Collections.emptyList();
@@ -160,7 +168,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 				booleanQuery.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
 			}
 			
-			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, classes.toArray(new Class<?>[classes.size()]));
+			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, Iterables.toArray(classes, Class.class));
 			if (offset != null) {
 				hibernateQuery.setFirstResult(offset);
 			}
@@ -183,31 +191,65 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 
 	@Override
 	public void reindexAll() throws ServiceException {
+		reindexClasses(Object.class);
+	}
+	
+	@Override
+	public void reindexClasses(Class<?>... classes) throws ServiceException {
 		try {
 			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 			
-			int batchSize = configurer.getHibernateSearchReindexBatchSize();
-			int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
-			int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
-			
-			for (Class<?> clazz : getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), Object.class)) {
-				LOGGER.debug(String.format("Reindexing %1$s.", clazz));
-				ProgressMonitor progressMonitor = new ProgressMonitor();
-				Thread t = new Thread(progressMonitor);
-				t.start();
-				MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
-				indexer.batchSizeToLoadObjects(batchSize)
-						.threadsForSubsequentFetching(fetchingThreads)
-						.threadsToLoadObjects(loadThreads)
-						.cacheMode(CacheMode.NORMAL)
-						.progressMonitor(progressMonitor)
-						.startAndWait();
-				progressMonitor.stop();
-				t.interrupt();
-				LOGGER.debug(String.format("Reindexing %1$s done.", clazz));
-			}
+			reindexClasses(fullTextEntityManager, getIndexedRootEntities(fullTextEntityManager.getSearchFactory(),
+					classes.length > 0 ? classes : new Class<?>[] { Object.class }));
 		} catch (Exception e) {
 			throw new ServiceException(e);
+		}
+	}
+	
+	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
+			throws Exception {
+		int batchSize = configurer.getHibernateSearchReindexBatchSize();
+		int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
+		int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
+		
+		for (Class<?> clazz : entityClasses) {
+			LOGGER.debug(String.format("Reindexing %1$s.", clazz));
+			ProgressMonitor progressMonitor = new ProgressMonitor();
+			Thread t = new Thread(progressMonitor);
+			t.start();
+			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
+			indexer.batchSizeToLoadObjects(batchSize)
+					.threadsForSubsequentFetching(fetchingThreads)
+					.threadsToLoadObjects(loadThreads)
+					.cacheMode(CacheMode.NORMAL)
+					.progressMonitor(progressMonitor)
+					.startAndWait();
+			progressMonitor.stop();
+			t.interrupt();
+			LOGGER.debug(String.format("Reindexing %1$s done.", clazz));
+		}
+	}
+	
+	@Override
+	public Set<Class<?>> getIndexedRootEntities(Class<?>... selection) {
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		
+		Set<Class<?>> indexedEntityClasses = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
+			@Override
+			public int compare(Class<?> o1, Class<?> o2) {
+				return GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getSimpleName(), o2.getSimpleName());
+			}
+		});
+		indexedEntityClasses.addAll(getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), selection));
+		
+		return indexedEntityClasses;
+	}
+	
+	@Override
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity) {
+		if (entity != null) {
+			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+			fullTextEntityManager.index(HibernateHelper.unproxy(entity));
 		}
 	}
 	
@@ -262,7 +304,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextEntityManager fullTextEntityManager, String[] fields, Operator defaultOperator, Analyzer analyzer) {
-		MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, fields, analyzer);
+		MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION, fields, analyzer);
 		parser.setDefaultOperator(defaultOperator);
 		
 		return parser;
@@ -295,7 +337,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		
 		@Override
 		public void entitiesLoaded(int size) {
-			this.entitiesLoaded = size;
+			this.entitiesLoaded += size;
 		}
 		
 		@Override
@@ -339,4 +381,10 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 					documentsAdded, totalCount, entitiesLoaded, documentsBuilt));
 		}
 	}
+	
+	@Override
+	public void flushToIndexes() {
+		Search.getFullTextEntityManager(entityManager).flushToIndexes();
+	}
+	
 }

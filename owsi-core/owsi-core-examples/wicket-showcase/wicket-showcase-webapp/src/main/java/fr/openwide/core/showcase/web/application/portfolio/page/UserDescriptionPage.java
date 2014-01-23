@@ -7,16 +7,16 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.model.UserBinding;
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserProfilePanel;
-import fr.openwide.core.showcase.web.application.util.LinkUtils;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -25,29 +25,27 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public class UserDescriptionPage extends MainTemplate {
 	private static final long serialVersionUID = -3229942018297644108L;
 	
-	private static final UserBinding USER = new UserBinding();
-	
-	@SpringBean
-	private IUserService userService;
+	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel) {
+		return new LinkDescriptorBuilder()
+				.page(UserDescriptionPage.class)
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
+				.build();
+	}
 	
 	public UserDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		User user = null;
-		try {
-			user = userService.getById(parameters.get(LinkUtils.ITEM_ID_PARAMETER).toLong());
-		} catch (Exception e) {
-			getSession().error(getString("common.error.noItem"));
-			redirect(PortfolioMainPage.class);
-			return;
-		}
-		IModel<User> userModel = new GenericEntityModel<Long, User>(user);
+		setHeadPageTitleReversed(true);
+		
+		IModel<User> userModel = new GenericEntityModel<Long, User>(null);
+		linkDescriptor(userModel).extractSafely(parameters, PortfolioMainPage.linkDescriptor());
+		
 		setDefaultModel(userModel);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.class));
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, USER.displayName()), UserDescriptionPage.class, parameters));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.linkDescriptor()));
+		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().displayName()), UserDescriptionPage.linkDescriptor(userModel)));
 		
-		add(new Label("pageTitle", BindingModel.of(userModel, USER.displayName())));
+		add(new Label("pageTitle", BindingModel.of(userModel, Bindings.user().displayName())));
 		
 		add(new UserProfilePanel("profilePanel", userModel));
 	}

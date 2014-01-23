@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.8.8-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>owsi-core-component-wicket-more</artifactId>
@@ -69,6 +69,20 @@
 			<artifactId>lesscss-engine</artifactId>
 		</dependency>
 		
+		<!-- Phloc CSS (pour les styles des notifications mail) -->
+		<dependency>
+			<groupId>com.phloc</groupId>
+			<artifactId>phloc-css</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		
+		<!-- WiQuery-jqPlot -->
+		<dependency>
+			<groupId>nl.topicus</groupId>
+			<artifactId>wqplot</artifactId>
+			<version>${owsi-core.wqplot.version}</version>
+		</dependency>
+		
 		<!-- Test -->
 		
 		<dependency>
@@ -83,6 +97,20 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Database pooling (tests) -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -135,6 +163,14 @@
 			<id>com.asual.maven.public</id>
 			<name>Asual Public Repository</name>
 			<url>http://www.asual.com/maven/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>phloc.com</id>
+			<url>http://repo.phloc.com/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>

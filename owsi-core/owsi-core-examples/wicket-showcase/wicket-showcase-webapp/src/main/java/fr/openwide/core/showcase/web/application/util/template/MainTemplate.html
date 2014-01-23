@@ -7,28 +7,30 @@
 		<wicket:head />
 	</head>
 	<body>
-		<!-- Feedback -->
-		<div wicket:id="animatedGlobalFeedbackPanel">
-		</div>
+		<!-- Feedback (you can try data-placement="bottom") -->
+		<div wicket:id="animatedGlobalFeedbackPanel" data-placement="bottom" />
+		
 		<div class="page-container">
-			<div class="container">
-				<!-- Main navigation bar -->
-				<div class="navbar">
-					<div class="navbar-inner">
-						<!-- Back to home -->
-<!-- 						<a wicket:id="backToHomeLink" class="brand"> -->
-<!-- 							<wicket:message key="navigation.home" /> -->
-<!-- 						</a> -->
-						
-						<!-- User menu -->
-						<div wicket:enclosure="userFullName" class="btn-group user-menu pull-right">
-							<span wicket:id="userFullName" class="user-full-name">Julien Gonzalez</span>
-							<a wicket:id="logoutLink" class="btn btn-icon-only" wicket:message="title:common.top.logout.alt">
-								<span class="icon-off"></span>
+			<!-- Main navigation bar -->
+			<div class="navbar navbar-fixed-top navbar-default main-menu">
+				<div class="container">
+					<wicket:enclosure child="userFullName">
+						<div  class="user-menu">
+							<wicket:container wicket:id="userFullName" />
+							<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.top.logout.alt">
+								<span class="fa fa-power-off" />
 							</a>
 						</div>
-						
-						<ul class="nav">
+					</wicket:enclosure>
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target="#navbar-main-collapse">
+							<span class="sr-only">Toggle navigation</span> <span class="fa fa-bars fa-lg" />
+						</button>
+						<a class="navbar-brand" href="#">Showcase</a>
+					</div>
+					<div class="collapse navbar-collapse" id="navbar-main-collapse">
+						<ul class="nav navbar-nav">
 							<li wicket:id="mainNav">
 								<a wicket:id="navLink">
 									<wicket:container wicket:id="navLabel" />
@@ -37,28 +39,38 @@
 						</ul>
 					</div>
 				</div>
-				
-				<!-- Second level navigation bar -->
-				<div wicket:enclosure="subNav" class="subnav">
-					<ul class="nav nav-pills">
-						<li wicket:id="subNav">
-							<a wicket:id="navLink">
-								<wicket:container wicket:id="navLabel" />
-							</a>
-						</li>
-					</ul>
+			</div>
+			
+			<!-- Second level navigation bar -->
+			<wicket:enclosure child="subNav">
+				<div class="sub-menu">
+					<div class="container">
+						<ul class="nav navbar-nav">
+							<li wicket:id="subNav">
+								<a wicket:id="navLink">
+									<wicket:container wicket:id="navLabel" />
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-				
-				<!-- Bread crumb -->
-				<wicket:container wicket:id="breadCrumb"></wicket:container>
-				
-				<!-- Content -->
-				<div class="content">
-					<wicket:child />
+			</wicket:enclosure>
+			
+			<!-- Bread crumb -->
+			<wicket:enclosure child="breadCrumb">
+				<div class="page-breadcrumb">
+					<div class="container">
+						<wicket:container wicket:id="breadCrumb" />
+					</div>
 				</div>
-				
-				<!-- Footer -->
-				<div class="footer">
+			</wicket:enclosure>
+			
+			<!-- Page title and content -->
+			<wicket:child />
+			
+			<!-- Footer -->
+			<div class="footer">
+				<div class="container">
 					<a wicket:id="consoleLink">
 						<wicket:message key="navigation.console" />
 					</a>

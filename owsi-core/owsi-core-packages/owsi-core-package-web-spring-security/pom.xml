@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>owsi-core-packages</artifactId>
 		<groupId>fr.openwide.core.packages</groupId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.8.8-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>owsi-core-package-web-spring-security</artifactId>
@@ -16,10 +16,9 @@
 	<dependencies>
 	
 		<dependency>
-			<groupId>fr.openwide.core.dependencies</groupId>
-			<artifactId>owsi-core-dependency-web-spring-security</artifactId>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-web-security</artifactId>
 			<version>${project.version}</version>
-			<type>pom</type>
 		</dependency>
 	
 	</dependencies>

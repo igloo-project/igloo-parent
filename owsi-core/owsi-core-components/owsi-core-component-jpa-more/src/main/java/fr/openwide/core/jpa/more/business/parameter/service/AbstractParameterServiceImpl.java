@@ -14,13 +14,16 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.dao.IParameterDao;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter_;
+import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
 
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long, Parameter>
 		implements ApplicationListener<ContextRefreshedEvent>, IAbstractParameterService {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterServiceImpl.class);
-	
+
 	private static final String DATABASE_INITIALIZED = "databaseInitialized";
+
+	public static final String PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT = "dataUpgrade.";
 
 	private IParameterDao dao;
 
@@ -28,22 +31,32 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		super(dao);
 		this.dao = dao;
 	}
-	
+
 	@Override
 	public boolean isDatabaseInitialized() {
 		return getBooleanValue(DATABASE_INITIALIZED, false);
 	}
-	
+
 	@Override
-	public void setDatabaseInitialized(boolean databaseInitialized)
-			throws ServiceException, SecurityServiceException {
+	public void setDatabaseInitialized(boolean databaseInitialized) throws ServiceException, SecurityServiceException {
 		updateBooleanValue(DATABASE_INITIALIZED, databaseInitialized);
+	}
+
+	@Override
+	public boolean isDataUpgradeDone(IDataUpgrade upgrade) {
+		return getBooleanValue(getDataUpgradeParameterPrefix() + upgrade.getName(), false);
+	}
+
+	@Override
+	public void setDataUpgradeDone(IDataUpgrade upgrade, boolean dateUpgradeDone)
+			throws ServiceException, SecurityServiceException {
+		updateBooleanValue(getDataUpgradeParameterPrefix() + upgrade.getName(), dateUpgradeDone);
 	}
 
 	protected Parameter getByName(String name) {
 		return dao.getByField(Parameter_.name, name);
 	}
-	
+
 	protected boolean getBooleanValue(String name, boolean defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getBooleanValue() != null) {
@@ -52,7 +65,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			return defaultValue;
 		}
 	}
-	
+
 	protected String getStringValue(String name, String defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getStringValue() != null) {
@@ -61,7 +74,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			return defaultValue;
 		}
 	}
-	
+
 	protected String getStringValue(String name) {
 		Parameter parameter = getByName(name);
 		if (parameter != null) {
@@ -70,7 +83,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			return null;
 		}
 	}
-	
+
 	protected int getIntegerValue(String name, int defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getIntegerValue() != null) {
@@ -79,7 +92,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			return defaultValue;
 		}
 	}
-	
+
 	protected float getFloatValue(String name, float defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getFloatValue() != null) {
@@ -88,7 +101,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			return defaultValue;
 		}
 	}
-	
+
 	protected Date getDateValue(String name) {
 		Parameter parameter = getByName(name);
 		if (parameter != null) {
@@ -107,26 +120,24 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		// et qui est celui qui nous intéresse, et le contexte du -web, qui
 		// possède
 		// un parent et pour lequel il est superflu de lancer l'import).
-		if (event != null
-				&& event.getSource() != null
-				&& AbstractApplicationContext.class.isAssignableFrom(event
-						.getSource().getClass())
+		if (event != null && event.getSource() != null
+				&& AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
 				&& ((AbstractApplicationContext) event.getSource()).getParent() == null) {
-			// On peut avoir besoin de charger un certain nombre de paramètres du fichier de configuration
+			// On peut avoir besoin de charger un certain nombre de paramètres
+			// du fichier de configuration
 			// dans la base pour par exemple pouvoir y accéder via du pl/pgsql.
 			try {
 				LOGGER.info("Loading properties into the database.");
-				
 				doOnApplicationEvent();
 			} catch (Exception e) {
 				LOGGER.error("Unable to load the properties into the database.", e);
 			}
 		}
 	}
-	
+
 	protected void doOnApplicationEvent() throws ServiceException, SecurityServiceException {
 	}
-	
+
 	protected final void updateBooleanValue(String name, Boolean booleanValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -148,7 +159,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			create(new Parameter(name, integerValue));
 		}
 	}
-	
+
 	protected final void updateIntegerValue(String name, Float floatValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -159,7 +170,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			create(new Parameter(name, floatValue));
 		}
 	}
-	
+
 	protected final void updateStringValue(String name, String stringValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -170,7 +181,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			create(new Parameter(name, stringValue));
 		}
 	}
-	
+
 	protected final void updateDateValue(String name, Date dateValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -182,4 +193,8 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	protected String getDataUpgradeParameterPrefix() {
+		// On permet la surcharge pour les applications pré-existantes.
+		return PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT;
+	}
 }

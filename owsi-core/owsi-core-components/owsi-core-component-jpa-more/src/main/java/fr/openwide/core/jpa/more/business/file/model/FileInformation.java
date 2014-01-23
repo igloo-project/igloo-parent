@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.more.business.file.model;
 import java.io.File;
 import java.util.Date;
 
+import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 
 public class FileInformation {
@@ -62,11 +63,11 @@ public class FileInformation {
 	}
 	
 	public Date getLastModifiedDate() {
-		return lastModifiedDate;
+		return CloneUtils.clone(lastModifiedDate);
 	}
 
 	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
+		this.lastModifiedDate = CloneUtils.clone(lastModifiedDate);
 	}
 
 	public boolean isImage() {

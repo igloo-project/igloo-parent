@@ -71,6 +71,19 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	E refresh(E entity);
 	
 	/**
+	 * Retourne une entité à partir de sa classe et son id.
+	 * 
+	 * @deprecated Privilégier {@link #getById(Class, Serializable)}, qui renvoie le type demandé.
+	 * 
+	 * @param clazz classe
+	 * @param id identifiant
+	 * @return entité
+	 */
+	@Deprecated
+	E getEntity(Class<? extends E> clazz, K id);
+	
+	
+	/**
 	 * Retourne une entité à partir de son id.
 	 * 
 	 * @param id identifiant
@@ -79,20 +92,19 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	E getById(K id);
 	
 	/**
+	 * Retourne une entité à partir de sa classe (dérivée de {@link E}) et de son id.
+	 * 
+	 * @param id identifiant
+	 * @return entité
+	 */
+	<T extends E> T getById(Class<T> clazz, K id);
+	
+	/**
 	 * Renvoie la liste de l'ensemble des entités de ce type.
 	 * 
 	 * @return liste d'entités
 	 */
 	List<E> list();
-	
-	/**
-	 * Retourne une entité à partir de sa classe et son id.
-	 * 
-	 * @param clazz classe
-	 * @param id identifiant
-	 * @return entité
-	 */
-	E getEntity(Class<? extends E> clazz, K id);
 	
 	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.

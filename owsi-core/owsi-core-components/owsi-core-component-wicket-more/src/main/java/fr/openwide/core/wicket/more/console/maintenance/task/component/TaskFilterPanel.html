@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div class="console-section">
+		<div class="subtitle">
+			<div class="subtitle-text">
+				<wicket:message key="console.maintenance.task.filter.title" />
+				<span class="label label-info pull-right" wicket:id="topCount" />
+			</div>
+		</div>
+		
+		<form wicket:id="filterForm">
+			<fieldset>
+				<input wicket:id="name" type="text" />
+				<select wicket:id="taskTypes" />
+				<select wicket:id="statuses" />
+				<select wicket:id="queueIds" />
+				<button type="submit" class="btn">
+					<span class="fa fa-search icon-search" />
+					<wicket:message key="console.maintenance.task.filter.search" />
+				</button>
+			</fieldset>
+		</form>
+	</div>
+</wicket:panel>
+</html>

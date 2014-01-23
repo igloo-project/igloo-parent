@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.8.8-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>owsi-core-component-rest-jersey</artifactId>
@@ -98,7 +98,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>${owsi-core.maven-jar-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>

@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.runas;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
@@ -9,7 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.jpa.security.util.UserConstants;
 
 /**
  * Implémentation de {@link Authentication} permettant de faire tourner des tâches
@@ -21,22 +26,22 @@ public class RunAsSystemToken extends RunAsUserToken {
 	/**
 	 * Liste des autorités de l'authentication
 	 */
-	protected static final List<GrantedAuthority> SYSTEM_AUTHORITIES = new ArrayList<GrantedAuthority>();
-	
-	static {
-		SYSTEM_AUTHORITIES.add(new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM));
-	}
+	protected static final List<? extends GrantedAuthority> SYSTEM_AUTHORITIES = Lists.newArrayList(
+			new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM)
+	);
 	
 	/**
 	 * Construction d'un nouveau jeton système
 	 * 
-	 * @param key clé à utiliser. Pour que l'authentification soit réussie, il faut que cette clé
+	 * @param runAsKey clé à utiliser. Pour que l'authentification soit réussie, il faut que cette clé
 	 *   corresponde à celle configurée sur le bean {@link RunAsImplAuthenticationProvider}
 	 * @param principal identifiant lié à l'{@link Authentication}
 	 * @param credentials mot de passe lié à l'{@link Authentication}
 	 */
-	public RunAsSystemToken(String key, Object principal, Object credentials) {
-		super(key, principal, credentials, SYSTEM_AUTHORITIES, Authentication.class);
+	public RunAsSystemToken(String runAsKey, String principal, Collection<? extends GrantedAuthority> additionalAuthorities) {
+		super(runAsKey, principal, UserConstants.NO_CREDENTIALS, 
+				Sets.newHashSet(Iterables.concat(SYSTEM_AUTHORITIES, additionalAuthorities)),
+				Authentication.class);
 		setAuthenticated(true);
 	}
 	

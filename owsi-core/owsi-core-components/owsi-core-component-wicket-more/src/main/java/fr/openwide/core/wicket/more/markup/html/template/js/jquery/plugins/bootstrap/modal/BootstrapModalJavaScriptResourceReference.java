@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public class BootstrapModalJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
+public final class BootstrapModalJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;
 	
 	private static final BootstrapModalJavaScriptResourceReference INSTANCE = new BootstrapModalJavaScriptResourceReference();

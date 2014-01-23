@@ -60,7 +60,7 @@ $.widget( "ui.itemautocomplete", {
 				"aria-haspopup": "true"
 			})
 			.bind( "keydown.itemautocomplete", function( event ) {
-				if ( self.options.disabled || self.element.propAttr( "readOnly" ) ) {
+				if ( self.options.disabled || self.element.prop( "readOnly" ) ) {
 					return;
 				}
 
@@ -252,7 +252,7 @@ $.widget( "ui.itemautocomplete", {
 				.css({ top: 0, left: 0 })
 				.hide()
 				.appendTo(singleMenu)
-				.data( "itemitautocompletemenu" );
+				.data('ui-itemitautocompletemenu');
 			
 			this.menugroups[group.name] = menu;
 			if (this.options.groups.length == 1) {
@@ -567,7 +567,7 @@ $.widget( "ui.itemautocomplete", {
 		var ul = this._getMenuGroup(item);
 		var li = $( "<li></li>" )
 			.data( "item.itemautocomplete", item )
-			.append( $( "<a></a>" ).append( $("<span class='label'></span>").append(this.options.renderItem(item)) ) )
+			.append( $( "<a></a>" ).append( $("<span class='itemautocomplete-label'></span>").append(this.options.renderItem(item)) ) )
 			.appendTo( ul );
 		if (item[this.options.cssClassNameAttribute]) {
 			li.addClass(item[this.options.cssClassNameAttribute]);

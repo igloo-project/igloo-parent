@@ -33,12 +33,11 @@ public class HibernateBeanSerializerFactory extends BeanSerializerFactory {
 			throws JsonMappingException {
 		Class<?> clazz = origType.getRawClass();
 		
-		// nécessaire sinon les accesseurs de propriétés sont générés sur le type javassist
+		// as we only have the class information, we can't use Hibernate.getClass(object)
 		if (HibernateProxy.class.isAssignableFrom(clazz)) {
 			origType = SimpleType.construct(clazz.getSuperclass());
 		}
 		
-		// Well, then it is not a Hibernate proxy
 		return super.createSerializer(prov, origType);
 	}
 

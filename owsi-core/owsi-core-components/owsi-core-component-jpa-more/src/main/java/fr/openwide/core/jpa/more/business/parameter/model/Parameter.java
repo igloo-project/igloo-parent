@@ -23,7 +23,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.more.util.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
+import fr.openwide.core.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @Entity
@@ -82,6 +82,11 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
 					@TokenFilterDef(factory = TrimFilterFactory.class),
 					@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+					@TokenFilterDef(factory = PatternReplaceFilterFactory.class, params = {
+						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "('-&\\.,\\(\\))"),
+						@org.hibernate.search.annotations.Parameter(name = "replacement", value = " "),
+						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
+					}),
 					@TokenFilterDef(factory = PatternReplaceFilterFactory.class, params = {
 						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "([^0-9\\p{L} ])"),
 						@org.hibernate.search.annotations.Parameter(name = "replacement", value = ""),

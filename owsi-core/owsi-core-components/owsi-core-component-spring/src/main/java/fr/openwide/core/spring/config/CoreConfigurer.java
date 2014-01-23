@@ -10,40 +10,27 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
+import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.util.StringUtils;
 
 public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreConfigurer.class);
 
-	private static final String VERSION_PROPERTY = "version";
-	
-	private static final String CONFIGURATION_TYPE_PROPERTY = "configurationType";
 	private static final String CONFIGURATION_TYPE_DEVELOPMENT = "development";
 	private static final String CONFIGURATION_TYPE_DEPLOYMENT = "deployment";
 	
-	private static final String TMP_PATH = "tmp.path";
-	private static final String IMAGE_MAGICK_CONVERT_BINARY_PATH = "imageMagick.convertBinary.path";
-	private static final String IMAGE_MAGICK_CONVERT_BINARY_PATH_DEFAULT_VALUE = "/usr/bin/convert";
-	
-	private static final String LOCALE_AVAILABLE_LOCALES = "locale.availableLocales";
-	private static final String LOCALE_DEFAULT = "locale.default";
-	
-	private static final String HIBERNATE_SEARCH_REINDEX_BATCH_SIZE = "hibernate.search.reindex.batchSize";
-	private static final String HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS = "hibernate.search.reindex.fetchingThreads";
-	private static final String HIBERNATE_SEARCH_REINDEX_LOAD_THREADS = "hibernate.search.reindex.loadThreads";
-	
-	private static final String NOTIFICATION_MAIL_FROM = "notification.mail.from";
-	private static final String NOTIFICATION_MAIL_SUBJECT_PREFIX = "notification.mail.subjectPrefix";
-	private static final String NOTIFICATION_TEST_EMAILS = "notification.test.emails";
+	private static final int TASK_STOP_TIMEOUT_DEFAULT = 70000;
+	private static final int TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT = 1;
 	
 	public String getVersion() {
-		return getPropertyAsString(VERSION_PROPERTY);
+		return getPropertyAsString("version");
 	}
 
 	public String getConfigurationType() {
-		String configurationType = getPropertyAsString(CONFIGURATION_TYPE_PROPERTY);
+		String configurationType = getPropertyAsString("configurationType");
 		if (CONFIGURATION_TYPE_DEVELOPMENT.equals(configurationType) || CONFIGURATION_TYPE_DEPLOYMENT.equals(configurationType)) {
 			return configurationType;
 		} else {
@@ -56,7 +43,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public File getTmpDirectory() {
-		String tmpPath = getPropertyAsString(TMP_PATH);
+		String tmpPath = getPropertyAsString("tmp.path");
 		
 		if (StringUtils.hasText(tmpPath)) {
 			File tmpDirectory = new File(tmpPath);
@@ -77,7 +64,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public File getImageMagickConvertBinary() {
-		String imageMagickConvertBinary = getPropertyAsString(IMAGE_MAGICK_CONVERT_BINARY_PATH, IMAGE_MAGICK_CONVERT_BINARY_PATH_DEFAULT_VALUE);
+		String imageMagickConvertBinary = getPropertyAsString("imageMagick.convertBinary.path", "/usr/bin/convert");
 		
 		if (StringUtils.hasText(imageMagickConvertBinary)) {
 			return new File(imageMagickConvertBinary);
@@ -87,7 +74,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public Set<Locale> getAvailableLocales() {
-		List<String> localesAsString = getPropertyAsStringList(LOCALE_AVAILABLE_LOCALES);
+		List<String> localesAsString = getPropertyAsStringList("locale.availableLocales");
 		Set<Locale> locales = new HashSet<Locale>(localesAsString.size());
 		
 		for (String localeAsString : localesAsString) {
@@ -95,8 +82,8 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 				locales.add(LocaleUtils.toLocale(localeAsString));
 			} catch (Exception e) {
 				LOGGER.error(String.format(
-						"%1$s string from %2$s cannot be mapped to Locale, ignored",
-						localeAsString, LOCALE_AVAILABLE_LOCALES
+						"%1$s string from locale.availableLocales cannot be mapped to Locale, ignored",
+						localeAsString
 				));
 			}
 		}
@@ -104,7 +91,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public Locale getDefaultLocale() {
-		Locale defaultLocale = LocaleUtils.toLocale(getPropertyAsString(LOCALE_DEFAULT));
+		Locale defaultLocale = LocaleUtils.toLocale(getPropertyAsString("locale.default"));
 		if (defaultLocale == null) {
 			defaultLocale = Locale.US;
 		}
@@ -162,27 +149,85 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getHibernateSearchReindexBatchSize() {
-		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 10);
+		return getPropertyAsInteger("hibernate.search.reindex.batchSize", 25);
 	}
 	
 	public int getHibernateSearchReindexFetchingThreads() {
-		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_FETCHING_THREADS, 2);
+		return getPropertyAsInteger("hibernate.search.reindex.fetchingThreads", 8);
 	}
 	
 	public int getHibernateSearchReindexLoadThreads() {
-		return getPropertyAsInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 2);
+		return getPropertyAsInteger("hibernate.search.reindex.loadThreads", 8);
 	}
 	
 	public String getNotificationMailFrom() {
-		return getPropertyAsString(NOTIFICATION_MAIL_FROM);
+		return getPropertyAsString("notification.mail.from");
 	}
 	
 	public String getNotificationMailSubjectPrefix() {
-		return getPropertyAsString(NOTIFICATION_MAIL_SUBJECT_PREFIX);
+		return getPropertyAsString("notification.mail.subjectPrefix");
 	}
 	
 	public String[] getNotificationTestEmails() {
-		return getPropertyAsStringArray(NOTIFICATION_TEST_EMAILS);
+		return getPropertyAsStringArray("notification.test.emails");
 	}
 
+	public int getTaskStopTimeout() {
+		return getPropertyAsInteger("task.stop.timeout", TASK_STOP_TIMEOUT_DEFAULT);
+	}
+	
+	public TaskQueueStartMode getTaskQueueStartMode() {
+		return getPropertyAsEnum("task.startMode", TaskQueueStartMode.class, TaskQueueStartMode.manual);
+	}
+	
+	public int getTaskQueueNumberOfThreads(String queueId) {
+		Assert.notNull(queueId);
+		return getPropertyAsInteger("task.queues.config." + queueId + ".threads", TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT);
+	}
+	
+	public String getSecurityPasswordSalt() {
+		return getPropertyAsString("security.passwordSalt");
+	}
+	
+	/**
+	 * Configuration of the link checker tool
+	 */
+	public String getExternalLinkCheckerUserAgent() {
+		return getPropertyAsString("externalLinkChecker.userAgent", "Core External Link Checker");
+	}
+	
+	public int getExternalLinkCheckerMaxRedirects() {
+		return getPropertyAsInteger("externalLinkChecker.maxRedirects", 2);
+	}
+	
+	public int getExternalLinkCheckerTimeout() {
+		return getPropertyAsInteger("externalLinkChecker.timeout", 3000);
+	}
+	
+	public int getExternalLinkCheckerRetryAttemptsLimit() {
+		return getPropertyAsInteger("externalLinkChecker.retryAttemptsNumber", 5);
+	}
+	
+	public int getExternalLinkCheckerThreadPoolSize() {
+		return getPropertyAsInteger("externalLinkChecker.threadPoolSize", Runtime.getRuntime().availableProcessors());
+	}
+	
+	public int getExternalLinkCheckerBatchSize() {
+		return getPropertyAsInteger("externalLinkChecker.batchSize", 500);
+	}
+	
+	/**
+	 * Configuration of the RequestCycle builder for background threads
+	 */
+	public String getWicketBackgroundRequestCycleBuilderUrlScheme() {
+		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.scheme", "http");
+	}
+	
+	public String getWicketBackgroundRequestCycleBuilderUrlServerName() {
+		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.serverName", "localhost");
+	}
+	
+	public int getWicketBackgroundRequestCycleBuilderUrlServerPort() {
+		return getPropertyAsInteger("wicket.backgroundThreadContextBuilder.url.serverPort", 8080);
+	}
 }

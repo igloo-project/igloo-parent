@@ -4,12 +4,12 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CacheContainer<K, V> {
 
-	private static final Log LOGGER = LogFactory.getLog(CacheContainer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CacheContainer.class);
 	
 	private final ICacheRegion cacheRegion;
 
@@ -50,7 +50,7 @@ public class CacheContainer<K, V> {
 					LOGGER.debug("Cache hit for cache " + cacheRegion.getName() + " and key " + key.toString());
 				}
 				
-				return (V) element.getValue();
+				return (V) element.getObjectValue();
 			}
 		}
 		return null;

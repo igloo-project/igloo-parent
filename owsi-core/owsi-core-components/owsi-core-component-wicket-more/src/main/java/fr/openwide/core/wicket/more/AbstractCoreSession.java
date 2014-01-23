@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.Session;
@@ -30,7 +29,8 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
 public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
 
@@ -38,7 +38,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
 	
-	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirect";
+	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirectUrl";
+	
+	private static final String REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME = "redirectPageLinkDescriptor";
 	
 	@SpringBean(name="personService")
 	protected IPersonService<P> personService;
@@ -52,16 +54,20 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;
 	
-	private IModel<P> personModel;
+	private final IModel<P> personModel = new SessionThreadSafeGenericEntityModel<Long, P>();
 	
 	private Roles roles = new Roles();
 	
 	private boolean rolesInitialized = false;
 	
-	private List<Permission> permissions = Lists.newArrayList();
+	private Collection<? extends Permission> permissions = Lists.newArrayList();
 	
 	private boolean permissionsInitialized = false;
-
+	
+	private boolean isSuperUser = false;
+	
+	private boolean isSuperUserInitialized = false;
+	
 	public AbstractCoreSession(Request request) {
 		super(request);
 		
@@ -115,7 +121,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 			throw new IllegalStateException("Unable to find the signed in user.");
 		}
 		
-		personModel = new GenericEntityModel<Long, P>(person);
+		personModel.setObject(person);
 		
 		try {
 			if (person.getLastLoginDate() == null) {
@@ -146,6 +152,9 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		
 		permissions = authenticationService.getPermissions();
 		permissionsInitialized = true;
+		
+		isSuperUser = authenticationService.isSuperUser();
+		isSuperUserInitialized = true;
 	}
 	
 	protected void onFirstLogin(P person) {
@@ -160,7 +169,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	 */
 	public String getUserName() {
 		String userName = null;
-		if (isSignedIn() && personModel != null) {
+		if (isSignedIn()) {
 			userName = personModel.getObject().getUserName();
 		}
 		return userName;
@@ -169,7 +178,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	protected P getPerson() {
 		P person = null;
 
-		if (isSignedIn() && personModel != null) {
+		if (isSignedIn()) {
 			person = personModel.getObject();
 		}
 
@@ -213,7 +222,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		return hasRole(CoreAuthorityConstants.ROLE_ANONYMOUS);
 	}
 	
-	protected List<Permission> getPermissions() {
+	protected Collection<? extends Permission> getPermissions() {
 		if (!permissionsInitialized) {
 			permissions = authenticationService.getPermissions();
 			permissionsInitialized = true;
@@ -222,16 +231,28 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 	
 	public boolean hasPermission(Permission permission) {
+		if (isSuperUser()) {
+			return true;
+		}
+		
 		return getPermissions().contains(permission);
+	}
+	
+	protected boolean isSuperUser() {
+		if (!isSuperUserInitialized) {
+			isSuperUser = authenticationService.isSuperUser();
+			isSuperUserInitialized = true;
+		}
+		return isSuperUser;
 	}
 
 	/**
-	 * Invalidates the session. After a signout, you should redirect
-	 * the browser to the home page.
+	 * Sign out the user. If you want to completely invalidate the session, call invalidate() instead.
+	 * After a signout, you should redirect the browser to the home or sign in page.
 	 */
 	@Override
-	public void invalidate() {
-		personModel = null;
+	public void signOut() {
+		personModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
 		permissions = Lists.newArrayList();
@@ -240,7 +261,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		
 		authenticationService.signOut();
 		
-		super.invalidate();
+		super.signOut();
 	}
 	
 	/**
@@ -270,6 +291,32 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	}
 	
 	/**
+	 * Permet d'enregistrer une url de redirection : l'objectif est de permettre de rediriger après authentification
+	 * sur la page pour laquelle l'utilisateur n'avait pas les droits.
+	 */
+	public void registerRedirectPageLinkDescriptor(IPageLinkDescriptor pageLinkDescriptor) {
+		// le bind() est obligatoire pour demander à wicket de persister la session
+		// si on ne le fait pas, la session possède comme durée de vie le temps de
+		// la requête.
+		if (isTemporary()) {
+			bind();
+		}
+		
+		setAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME, pageLinkDescriptor);
+	}
+	
+	/**
+	 * Permet de récupérer la dernière url de redirection enregistrée
+	 * 
+	 * @return null si aucune url enregistrée
+	 */
+	public IPageLinkDescriptor getRedirectPageLinkDescriptor() {
+		IPageLinkDescriptor pageLinkDescriptor = (IPageLinkDescriptor) getAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
+		removeAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
+		return pageLinkDescriptor;
+	}
+	
+	/**
 	 * <p>Override to provide locale mapping to available application locales.</p>
 	 */
 	@Override
@@ -281,17 +328,13 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 	public void detach() {
 		super.detach();
 		
-		if (personModel != null) {
-			personModel.detach();
-		}
+		personModel.detach();
 	}
 	
 	@Override
 	public void internalDetach() {
 		super.internalDetach();
 		
-		if (personModel != null) {
-			personModel.detach();
-		}
+		personModel.detach();
 	}
 }

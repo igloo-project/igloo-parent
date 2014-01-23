@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<div class="page-title">
+			<div class="container">
+				<h1 class="page-title-text"><wicket:message key="hideableComponents.pageTitle" /></h1>
+			</div>
+		</div>
+		
+		<div class="main-content">
+			<div class="container">
+				<h2><wicket:message key="hideableComponents.model" /></h2>
+				<form wicket:id="form" class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" wicket:for="modelField"><wicket:label /></label>
+						<div class="controls">
+							<input type="text" class="form-control" wicket:id="modelField" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" wicket:for="collectionModelField"><wicket:label /></label>
+						<div class="controls">
+							<select wicket:id="collectionModelField" style="width: 300px;" />
+						</div>
+					</div>
+				</form>
+				
+				<div wicket:id="updatedContainer">
+					<!-- Model-based -->
+					<div class="row">
+						<div class="span6 text-center">
+							<div class="alert alert-block alert-success" wicket:id="enclosureContainer">
+								<strong><wicket:message key="hideableComponents.model.enclosureContainer" /></strong>
+							</div>
+						</div>
+						<div class="span6 text-center">
+							<div class="alert alert-block alert-danger" wicket:id="placeholderContainer">
+								<strong><wicket:message key="hideableComponents.model.placeholderContainer" /></strong>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span6 text-center">
+							<strong class="label label-success" wicket:id="enclosureBehaviorComponent" />&nbsp;
+						</div>
+						<div class="span6 text-center">
+							<strong class="label label-important" wicket:id="placeholderBehaviorComponent" />&nbsp;
+						</div>
+					</div>
+					
+					<!-- Predicate-based -->
+					<div class="row">
+						<div class="span6 text-center">
+							<div class="alert alert-block alert-success" wicket:id="moreThanOneElementEnclosureContainer">
+								<strong><wicket:message key="hideableComponents.predicate.moreThanOneElementEnclosureContainer" /></strong>
+							</div>
+						</div>
+						<div class="span6 text-center">
+							<div class="alert alert-block alert-danger" wicket:id="moreThanOneElementPlaceholderContainer">
+								<strong><wicket:message key="hideableComponents.predicate.moreThanOneElementPlaceholderContainer" /></strong>
+							</div>
+						</div>
+					</div>
+				
+					<!-- Component-based -->
+					<h2><wicket:message key="hideableComponents.component" /></h2>
+					<div class="row" wicket:id="enclosuresVisibleContainer">
+						<div class="span12 text-center">
+							<div class="alert alert-block alert-success">
+								<strong><wicket:message key="hideableComponents.component.enclosuresVisible" /></strong>
+							</div>
+						</div>
+					</div>
+					<div class="row" wicket:id="enclosuresInvisibleContainer">
+						<div class="span12 text-center">
+							<div class="alert alert-block alert-danger">
+								<strong><wicket:message key="hideableComponents.component.enclosuresInvisible" /></strong>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

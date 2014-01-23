@@ -23,8 +23,12 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.bindgen.Bindable;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Fields;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @MappedSuperclass
 @Bindable
@@ -32,13 +36,27 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		implements IGenericListItemBindingInterface {
 	
 	private static final long serialVersionUID = -6270832991786371463L;
+	
+	public static final String LABEL_SORT_FIELD_NAME = "labelSort";
+	
+	public static final String SHORT_LABEL_SORT_FIELD_NAME = "shortLabelSort";
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	
+	@Column
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = LABEL_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String label;
 	
+	@Column
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = SHORT_LABEL_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String shortLabel;
 	
 	@Column(nullable = false)

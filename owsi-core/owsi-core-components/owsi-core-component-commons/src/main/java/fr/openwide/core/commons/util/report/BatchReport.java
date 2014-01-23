@@ -1,11 +1,14 @@
 package fr.openwide.core.commons.util.report;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BatchReport {
+public class BatchReport implements Serializable {
+
+	private static final long serialVersionUID = 2058290436066602760L;
 
 	public static final String GLOBAL_CONTEXT = "GLOBAL";
 

@@ -85,6 +85,12 @@ public abstract class AbstractOptGroupDropDownChoice<E> extends DropDownChoice<E
 		}
 	}
 	
+	@Override
+	protected void onAfterRender() {
+		super.onAfterRender();
+		last = null;
+	}
+	
 	public boolean isGrouped() {
 		return grouped;
 	}
