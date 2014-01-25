@@ -9,9 +9,7 @@
 		<relativePath>../owsi-core-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 	
-	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-maven-configuration-core</artifactId>
-	<version>0.9-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Maven configuration - Core</name>
@@ -59,7 +57,7 @@
 		
 		<owsi-core.spring-ldap.version>2.0.0.RELEASE</owsi-core.spring-ldap.version>
 		
-		<owsi-core.hibernate-search.version>4.5.0.Alpha2</owsi-core.hibernate-search.version>
+		<owsi-core.hibernate-search.version>4.5.0.CR1</owsi-core.hibernate-search.version>
 		<owsi-core.lucene.version>3.6.2</owsi-core.lucene.version>
 		
 		<owsi-core.quartz.version>2.2.1</owsi-core.quartz.version>
@@ -1000,7 +998,6 @@
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
-					<version>${owsi-core.maven-processor-plugin.version}</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.hibernate</groupId>

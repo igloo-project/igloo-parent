@@ -187,48 +187,6 @@
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
 					<version>${owsi-core.maven-processor-plugin.version}</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.hibernate</groupId>
-							<artifactId>hibernate-jpamodelgen</artifactId>
-							<version>${owsi-core.hibernate-jpamodelgen.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>com.mysema.querydsl</groupId>
-							<artifactId>querydsl-apt</artifactId>
-							<version>${owsi-core.querydsl.version}</version>
-						</dependency>
-					</dependencies>
-					<configuration>
-						<outputDirectory>${generated-sources.directory}</outputDirectory>
-						<options>
-							<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
-							<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
-						</options>
-						<processors>
-							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-						</processors>
-					</configuration>
-					<executions>
-						<execution>
-							<id>maven-processor-plugin-default</id>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>process</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>maven-processor-plugin-default-test</id>
-							<phase>generate-test-sources</phase>
-							<goals>
-								<goal>process-test</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${generated-sources-test.directory}</outputDirectory>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>net.alchim31.maven</groupId>
