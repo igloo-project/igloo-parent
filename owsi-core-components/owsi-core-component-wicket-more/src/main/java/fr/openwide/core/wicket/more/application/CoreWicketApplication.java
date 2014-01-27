@@ -33,6 +33,7 @@ import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWith
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
 import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
+import fr.openwide.core.wicket.resource.JQueryUpdateResourceReference;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -98,6 +99,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 			
 			// on place les éléments présents dans le wicket:head en premier
 			getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
+		
+		// Update de jQuery : à commenter quand on se remet en ligne avec Wicket
+			getJavaScriptLibrarySettings().setJQueryReference(JQueryUpdateResourceReference.get());
 		
 		mountCommonResources();
 		mountCommonPages();

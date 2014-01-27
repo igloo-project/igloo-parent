@@ -3,12 +3,12 @@ package fr.openwide.core.wicket.resource;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.settings.IJavaScriptLibrarySettings;
 
-public class JQuery183ResourceReference extends JavaScriptResourceReference {
+public class JQueryUpdateResourceReference extends JavaScriptResourceReference {
 	private static final long serialVersionUID = 1L;
 
-	public static final String VERSION_1 = "jquery/jquery-1.8.3.js";
+	public static final String VERSION_1 = "jquery/jquery-1.11.0.js";
 
-	private static final JQuery183ResourceReference INSTANCE = new JQuery183ResourceReference();
+	private static final JQueryUpdateResourceReference INSTANCE = new JQueryUpdateResourceReference();
 
 	/**
 	 * Normally you should not use this method, but use
@@ -17,11 +17,11 @@ public class JQuery183ResourceReference extends JavaScriptResourceReference {
 	 * 
 	 * @return the single instance of the resource reference
 	 */
-	public static JQuery183ResourceReference get() {
+	public static JQueryUpdateResourceReference get() {
 		return INSTANCE;
 	}
 
-	protected JQuery183ResourceReference() {
-		super(JQuery183ResourceReference.class, VERSION_1);
+	protected JQueryUpdateResourceReference() {
+		super(JQueryUpdateResourceReference.class, VERSION_1);
 	}
 }
