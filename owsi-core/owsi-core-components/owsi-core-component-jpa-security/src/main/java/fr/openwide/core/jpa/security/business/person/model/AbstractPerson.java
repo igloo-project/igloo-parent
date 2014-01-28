@@ -313,5 +313,5 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	public String getDisplayName() {
 		return getFullName();
 	}
-
+	
 }

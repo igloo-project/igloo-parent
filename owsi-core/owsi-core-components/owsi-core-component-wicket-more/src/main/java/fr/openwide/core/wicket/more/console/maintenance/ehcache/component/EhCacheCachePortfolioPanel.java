@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Sets;
 
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.markup.html.list.OddEvenListView;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -72,26 +73,28 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 							Model.of(item.getModelObject().getName()),
 							Model.of(item.getModelObject().getName()));
 				
-				AjaxConfirmLink<CacheManager> purgerCache = new AjaxConfirmLink<CacheManager>("cacheManagerPurgeLink",
-						item.getModel(), new ResourceModel("common.confirmTitle"), purgerCacheTextModel,
-						new ResourceModel("common.yes"), new ResourceModel("common.no")) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						try {
-							item.getModelObject().clearAll();
-							getSession().success(getString("console.maintenance.ehcache.cacheManager.purge.success"));
-						} catch (Exception e) {
-							LOGGER.error("Erreur lors de la purge du cache manager", e);
-							getSession().error(getString("console.maintenance.ehcache.cacheManager.purge.failure"));
-						}
-						
-						cacheList.detach();
-						FeedbackUtils.refreshFeedback(target, getPage());
-						target.add(item);
-					}
-				};
+				AjaxConfirmLink<CacheManager> purgerCache = AjaxConfirmLink.build("cacheManagerPurgeLink", item.getModel())
+						.title(new ResourceModel("common.confirmTitle")).content(purgerCacheTextModel)
+						.yesNo()
+						.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public Void apply(AjaxRequestTarget target) {
+								try {
+									item.getModelObject().clearAll();
+									getSession().success(getString("console.maintenance.ehcache.cacheManager.purge.success"));
+								} catch (Exception e) {
+									LOGGER.error("Erreur lors de la purge du cache manager", e);
+									getSession().error(getString("console.maintenance.ehcache.cacheManager.purge.failure"));
+								}
+								
+								cacheList.detach();
+								FeedbackUtils.refreshFeedback(target, getPage());
+								target.add(item);
+								return null;
+							}
+						})
+						.create();
 				item.add(purgerCache);
 				
 				IModel<String> statisticsTextModel = new StringResourceModel(
@@ -99,32 +102,34 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 							Model.of(item.getModelObject().getName()),
 							Model.of(item.getModelObject().getName()));
 				
-				AjaxConfirmLink<CacheManager> clearStatistics = new AjaxConfirmLink<CacheManager>("clearStatistics",
-						item.getModel(), new ResourceModel("common.confirmTitle"), statisticsTextModel,
-						new ResourceModel("common.yes"), new ResourceModel("common.no")) {
-					private static final long serialVersionUID = 1L;
+				AjaxConfirmLink<CacheManager> clearStatistics = AjaxConfirmLink.build("clearStatistics", item.getModel())
+						.title(new ResourceModel("common.confirmTitle")).content(statisticsTextModel)
+						.yesNo()
+						.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+							private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						try {
-							Set<String> cacheNames = Sets.newTreeSet(GenericEntity.DEFAULT_STRING_COLLATOR);
-							cacheNames.addAll(Arrays.asList(item.getModelObject().getCacheNames()));
-							
-							for (String cacheName : cacheNames) {
-								Cache cache = item.getModelObject().getCache(cacheName);
-								cache.clearStatistics();
+							@Override
+							public Void apply(AjaxRequestTarget target) {
+								try {
+									Set<String> cacheNames = Sets.newTreeSet(GenericEntity.DEFAULT_STRING_COLLATOR);
+									cacheNames.addAll(Arrays.asList(item.getModelObject().getCacheNames()));
+									
+									for (String cacheName : cacheNames) {
+										Cache cache = item.getModelObject().getCache(cacheName);
+										cache.clearStatistics();
+									}
+									getSession().success(getString("console.maintenance.ehcache.cacheManager.statistics.clear.success"));
+								} catch (Exception e) {
+									LOGGER.error("Erreur lors de la purge du cache manager", e);
+									getSession().error(getString("console.maintenance.ehcache.cacheManager.statistics.clear.failure"));
+								}
+								
+								cacheList.detach();
+								FeedbackUtils.refreshFeedback(target, getPage());
+								return null;
 							}
-							getSession().success(getString("console.maintenance.ehcache.cacheManager.statistics.clear.success"));
-						} catch (Exception e) {
-							LOGGER.error("Erreur lors de la purge du cache manager", e);
-							getSession().error(getString("console.maintenance.ehcache.cacheManager.statistics.clear.failure"));
-						}
-						
-						cacheList.detach();
-						FeedbackUtils.refreshFeedback(target, getPage());
-						target.add(item);
-					}
-				};
+						})
+						.create();
 				item.add(clearStatistics);
 				
 				CacheManager cacheManager = item.getModelObject();
@@ -183,27 +188,29 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								BindingModel.of(cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name()),
 								BindingModel.of(cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name()));
 						
-						AjaxConfirmLink<Cache> viderCache = new AjaxConfirmLink<Cache>("viderCache",
-								item.getModel(), new ResourceModel("common.confirmTitle"), viderCacheTextModel,
-								new ResourceModel("common.yes"), new ResourceModel("common.no")) {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public void onClick(AjaxRequestTarget target) {
-								try {
-									item.getModelObject().removeAll();
-									getSession()
-											.success(getString("console.maintenance.ehcache.portfolio.viderCache.success"));
-								} catch (Exception e) {
-									LOGGER.error("Erreur lors du vidage du cache", e);
-									getSession().error(getString("console.maintenance.ehcache.portfolio.viderCache.error"));
-								}
-								
-								cacheList.detach();
-								FeedbackUtils.refreshFeedback(target, getPage());
-								target.add(item);
-							}
-						};
+						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.build("viderCache", item.getModel())
+								.title(new ResourceModel("common.confirmTitle")).content(viderCacheTextModel)
+								.yesNo()
+								.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public Void apply(AjaxRequestTarget target) {
+										try {
+											item.getModelObject().removeAll();
+											getSession().success(getString("console.maintenance.ehcache.portfolio.viderCache.success"));
+										} catch (Exception e) {
+											LOGGER.error("Erreur lors du vidage du cache", e);
+											getSession().error(getString("console.maintenance.ehcache.portfolio.viderCache.error"));
+										}
+										
+										cacheList.detach();
+										FeedbackUtils.refreshFeedback(target, getPage());
+										target.add(item);
+										return null;
+									}
+								})
+								.create();
+						
 						item.add(viderCache);
 						
 						modificationPanel = new EhCacheCacheModificationPanel("modificationPanel",

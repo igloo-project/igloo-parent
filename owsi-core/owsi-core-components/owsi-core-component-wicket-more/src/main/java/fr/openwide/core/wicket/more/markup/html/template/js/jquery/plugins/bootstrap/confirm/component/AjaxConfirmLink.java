@@ -14,26 +14,23 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.behavior.ConfirmContentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepStart;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.statement.BootstrapConfirmStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 
 public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
 	private static final long serialVersionUID = -645345859108195615L;
-
-	@Deprecated
-	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
-		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, false);
+	
+	public static <O> IAjaxConfirmLinkBuilderStepStart<O> build(String wicketId, IModel<O> model) {
+		return new AjaxConfirmLinkBuilder<O>(wicketId, model);
+	}
+	
+	public static IAjaxConfirmLinkBuilderStepStart<Void> build(String wicketId) {
+		return new AjaxConfirmLinkBuilder<Void>(wicketId, null);
 	}
 
-	@Deprecated
-	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, boolean textNoEscape) {
-		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, textNoEscape);
-	}
-
-	public AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+	protected AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
 			boolean textNoEscape) {
 		super(id, model);

@@ -80,4 +80,16 @@ public class User extends AbstractPerson<User> {
 		}
 		return builder.toString().trim();
 	}
+
+	@Override
+	public void addPersonGroup(IPersonGroup personGroup) {
+		if (personGroup instanceof UserGroup) {
+			this.userGroups.add((UserGroup) personGroup);
+		}
+	}
+	
+	@Override
+	public void removePersonGroup(IPersonGroup personGroup) {
+		this.userGroups.remove(personGroup);
+	}
 }
