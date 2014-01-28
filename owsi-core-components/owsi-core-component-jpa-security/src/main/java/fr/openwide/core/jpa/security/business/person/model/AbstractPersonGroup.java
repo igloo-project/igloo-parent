@@ -1,8 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.model;
 
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -17,6 +15,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SortComparator;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
@@ -28,9 +27,11 @@ import com.google.common.collect.Sets;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryType;
 
+import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.person.util.AbstractPersonComparator;
 
 @MappedSuperclass
 @Bindable
@@ -52,8 +53,8 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany(mappedBy = "userGroups")
 	@Cascade({CascadeType.SAVE_UPDATE})
-	@OrderBy("lastName, firstName")
-	private List<P> persons = new LinkedList<P>();
+	@SortComparator(AbstractPersonComparator.class)
+	private Set<P> persons = Sets.newTreeSet(AbstractPersonComparator.get());
 	
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
@@ -100,22 +101,22 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 		return this.getName();
 	}
 	
-	public List<P> getPersons() {
+	public Set<P> getPersons() {
 		return persons;
 	}
 
-	public void setPersons(List<P> persons) {
-		this.persons = persons;
+	public void setPersons(Set<P> persons) {
+		CollectionUtils.replaceAll(this.persons, persons);
 	}
 	
 	public void addPerson(P person) {
 		this.persons.add(person);
-		person.getPersonGroups().add(this);
+		person.addPersonGroup(this);
 	}
 	
 	public void removePerson(P person) {
 		this.persons.remove(person);
-		person.getPersonGroups().remove(this);
+		person.removePersonGroup(this);
 	}
 	
 	@Override

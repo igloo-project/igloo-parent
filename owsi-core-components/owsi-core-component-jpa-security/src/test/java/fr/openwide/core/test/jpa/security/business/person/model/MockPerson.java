@@ -32,5 +32,17 @@ public class MockPerson extends AbstractPerson<MockPerson> {
 	public List<IPersonGroup> getPersonGroups() {
 		return (List<IPersonGroup>) ((Object) userGroups);
 	}
+	
+	@Override
+	public void addPersonGroup(IPersonGroup personGroup) {
+		if (personGroup instanceof MockPersonGroup) {
+			this.userGroups.add((MockPersonGroup) personGroup);
+		}
+	}
+	
+	@Override
+	public void removePersonGroup(IPersonGroup personGroup) {
+		this.userGroups.remove(personGroup);
+	}
 
 }

@@ -16,6 +16,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -205,27 +206,30 @@ public abstract class AbstractGenericItemListPanel<T extends GenericEntity<Long,
 		return actionButtons;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected MarkupContainer getDeleteLink(String id, final IModel<? extends T> itemModel) {
-		return new AjaxConfirmLink<T>(id, (IModel<T>) itemModel, getDeleteConfirmationTitleModel(itemModel),
-				getDeleteConfirmationTextModel(itemModel), getDeleteConfirmationYesLabelModel(itemModel),
-				getDeleteConfirmationNoLabelModel(itemModel)) {
-
-			private static final long serialVersionUID = -5179621361619239269L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					doDeleteItem(itemModel);
-					Session.get().success(getString("common.delete.success"));
-				} catch (Exception e) {
-					Session.get().error(getString("common.delete.error"));
-				}
-				target.add(getPage());
-				dataProvider.detach();
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		};
+		return AjaxConfirmLink.build(id, itemModel)
+				.title(getDeleteConfirmationTitleModel(itemModel))
+				.content(getDeleteConfirmationTextModel(itemModel))
+				.yes(getDeleteConfirmationYesLabelModel(itemModel))
+				.no(getDeleteConfirmationNoLabelModel(itemModel))
+				.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Void apply(AjaxRequestTarget target) {
+						try {
+							doDeleteItem(itemModel);
+							Session.get().success(getString("common.delete.success"));
+						} catch (Exception e) {
+							Session.get().error(getString("common.delete.error"));
+						}
+						target.add(getPage());
+						dataProvider.detach();
+						FeedbackUtils.refreshFeedback(target, getPage());
+						return null;
+					}
+					
+				})
+				.create();
 	}
 
 	protected IModel<String> getDeleteConfirmationTitleModel(IModel<? extends T> itemModel) {

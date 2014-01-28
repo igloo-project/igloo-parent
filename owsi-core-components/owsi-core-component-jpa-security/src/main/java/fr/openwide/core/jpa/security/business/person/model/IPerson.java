@@ -21,6 +21,10 @@ public interface IPerson {
 	
 	String getFullName();
 	
+	void addPersonGroup(IPersonGroup personGroup);
+	
+	void removePersonGroup(IPersonGroup personGroup);
+	
 	List<IPersonGroup> getPersonGroups();
 
 	Set<Authority> getAuthorities();

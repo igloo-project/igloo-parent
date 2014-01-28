@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.service;
 
-import java.util.List;
+import java.util.Set;
 
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -17,6 +17,6 @@ public interface IPersonGroupService<G extends AbstractPersonGroup<G, P>, P exte
 	
 	void removePerson(G personGroup, P person) throws ServiceException, SecurityServiceException;
 
-	List<P> getPersonsFromPersonGroup(G personGroup) throws ServiceException, SecurityServiceException;
+	Set<P> getPersonsFromPersonGroup(G personGroup) throws ServiceException, SecurityServiceException;
 	
 }
