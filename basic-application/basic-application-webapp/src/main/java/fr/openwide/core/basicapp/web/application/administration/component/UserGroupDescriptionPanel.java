@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -19,7 +20,7 @@ import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.form.UserGroupFormPopupPanel;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -50,11 +51,17 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 			
 			@Override
 			protected void populateItem(ListItem<Authority> item) {
-				Authority authority = item.getModelObject();
+				final Authority authority = item.getModelObject();
 				item.add(new Label("authorityName", new ResourceModel(
 						"administration.usergroup.authority." + authority.getName())));
-				item.add(new BooleanGlyphicon("authorityCheck", Model.of(
-						userGroupModel.getObject().getAuthorities().contains(authority))));
+				item.add(new BooleanIcon("authorityCheck", new LoadableDetachableModel<Boolean>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected Boolean load() {
+						return userGroupModel.getObject().getAuthorities().contains(authority);
+					}
+				}));
 			}
 		});
 		

@@ -25,7 +25,7 @@ import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -44,7 +44,7 @@ public class UserProfilePanel extends GenericPanel<User> {
 		super(id, userModel);
 		
 		add(new Label("userName", BindingModel.of(userModel, Bindings.user().userName())));
-		add(new BooleanGlyphicon("active", BindingModel.of(userModel, Bindings.user().active())));
+		add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())));
 		add(new EmailLink("email", BindingModel.of(userModel, Bindings.user().email())));
 		add(new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
 				DatePattern.SHORT_DATETIME));

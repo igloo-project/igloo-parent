@@ -1,13 +1,12 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -21,8 +20,10 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityListView;
+import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntitySetView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -37,17 +38,15 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 	@SpringBean
 	private IUserGroupService userGroupService;
 
-	private ListView<User> memberListView;
-
 	public UserGroupMembersPanel(String id, IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
 		
 		// Members list
-		memberListView = new GenericEntityListView<User>("members", BindingModel.of(getModel(), Bindings.userGroup().persons())) {
+		Component memberListView = new GenericEntitySetView<User>("members", BindingModel.of(getModel(), Bindings.userGroup().persons())) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void populateItem(final ListItem<User> item) {
+			protected void populateItem(final Item<User> item) {
 				item.add(AdministrationUserDescriptionPage.linkGenerator(item.getModel()).link("userLink")
 						.setBody(BindingModel.of(item.getModel(), Bindings.user().fullName())));
 				
@@ -61,42 +60,35 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 						}
 				);
 				
-				item.add(new AjaxConfirmLink<User>("deleteLink", item.getModel(),
-						new ResourceModel("administration.usergroup.members.delete.confirmation.title"),
-						confirmationTextModel,
-						new ResourceModel("common.confirm"),
-						new ResourceModel("common.cancel")) {
-					private static final long serialVersionUID = -5179621361619239269L;
-					
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						try {
-							UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
-							User user = getModelObject();
-							
-							userGroupService.removePerson(userGroup, user);
-							Session.get().success(getString("administration.usergroup.members.delete.success"));
-						} catch (Exception e) {
-							LOGGER.error("Error occured while removing user from user group", e);
-							Session.get().error(getString("administration.usergroup.members.delete.error"));
-						}
-						target.add(getPage());
-						FeedbackUtils.refreshFeedback(target, getPage());
-					}
-				});
+				item.add(AjaxConfirmLink.build("deleteLink", item.getModel())
+						.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
+						.content(confirmationTextModel)
+						.confirm()
+						.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public Void apply(AjaxRequestTarget target) {
+								try {
+									UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
+									User user = item.getModelObject();
+									
+									userGroupService.removePerson(userGroup, user);
+									Session.get().success(getString("administration.usergroup.members.delete.success"));
+								} catch (Exception e) {
+									LOGGER.error("Error occured while removing user from user group", e);
+									Session.get().error(getString("administration.usergroup.members.delete.error"));
+								}
+								target.add(getPage());
+								FeedbackUtils.refreshFeedback(target, getPage());
+								return null;
+							}
+						})
+						.create());
 			}
 		};
 		add(memberListView);
 		
-		add(new WebMarkupContainer("emptyList") {
-			private static final long serialVersionUID = 6700720373087584498L;
-
-			@Override
-			public void onConfigure() {
-				super.onConfigure();
-				setVisible(memberListView.size() <= 0);
-			}
-		});
+		add(new PlaceholderContainer("emptyList").collectionModel(BindingModel.of(getModel(), Bindings.userGroup().persons())));
 		
 		// Add member form
 		IModel<User> emptyUserModel = new GenericEntityModel<Long, User>(null);
