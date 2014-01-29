@@ -8,66 +8,63 @@
 		<!-- Change password popup -->
 		<div wicket:id="changePasswordPopupPanel"></div>
 		
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<span class="btn-group pull-right">
-					<button wicket:id="updateUser" class="btn btn-primary" type="button">
-						<span class="fa fa-pencil"></span>
-						<wicket:message key="common.action.update" />
-					</button>
-					
-					<button wicket:id="changeUserPassword" class="btn btn-primary" type="button">
-						<span class="fa fa-key"></span>
-						<wicket:message key="administration.user.changePassword" />
-					</button>
-					
-					<button wicket:id="enableUser" class="btn btn-success" type="button">
-						<span class="fa fa-check"></span>
-						<wicket:message key="administration.user.enable" />
-					</button>
-					
-					<button wicket:id="disableUser" class="btn btn-danger" type="button">
-						<span class="fa fa-times"></span>
-						<wicket:message key="administration.user.disable" />
-					</button>
-				</span>
-				<h2 class="panel-title"><wicket:message key="administration.user.profile" /></h2>
+		<h2>
+			<wicket:message key="administration.user.profile" />
+			<span class="btn-group pull-right">
+				<button wicket:id="updateUser" class="btn btn-primary" type="button">
+					<span class="fa fa-pencil"></span>
+					<wicket:message key="common.action.update" />
+				</button>
+				
+				<button wicket:id="changeUserPassword" class="btn btn-primary" type="button">
+					<span class="fa fa-key"></span>
+					<wicket:message key="administration.user.changePassword" />
+				</button>
+				
+				<button wicket:id="enableUser" class="btn btn-success" type="button">
+					<span class="fa fa-check"></span>
+					<wicket:message key="administration.user.enable" />
+				</button>
+				
+				<button wicket:id="disableUser" class="btn btn-danger" type="button">
+					<span class="fa fa-times"></span>
+					<wicket:message key="administration.user.disable" />
+				</button>
+			</span>
+		</h2>
+		
+		<div class="key-value-list container">
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.userName" /></div>
+				<div class="line-value col-sm-7" wicket:id="userName"></div>
 			</div>
-			<div class="panel-body">
-				<div class="key-value-list">
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.userName" /></div>
-						<div class="line-value col-sm-7" wicket:id="userName"></div>
-					</div>
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.active" /></div>
-						<div class="line-value col-sm-7">
-							<span wicket:id="active"></span>
-						</div>
-					</div>
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.email" /></div>
-						<div class="line-value col-sm-7">
-							<a wicket:id="email"></a>
-						</div>
-					</div>
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.creationDate" /></div>
-						<div class="line-value col-sm-7" wicket:id="creationDate"></div>
-					</div>
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.lastLoginDate" /></div>
-						<div class="line-value col-sm-7" wicket:id="lastLoginDate"></div>
-					</div>
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.lastUpdateDate" /></div>
-						<div class="line-value col-sm-7" wicket:id="lastUpdateDate"></div>
-					</div>
-					<div class="line row">
-						<div class="line-label col-sm-5"><wicket:message key="administration.user.field.locale" /></div>
-						<div class="line-value col-sm-7" wicket:id="locale"></div>
-					</div>
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.active" /></div>
+				<div class="line-value col-sm-7">
+					<span wicket:id="active"></span>
 				</div>
+			</div>
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.email" /></div>
+				<div class="line-value col-sm-7">
+					<a wicket:id="email"></a>
+				</div>
+			</div>
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.creationDate" /></div>
+				<div class="line-value col-sm-7" wicket:id="creationDate"></div>
+			</div>
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.lastLoginDate" /></div>
+				<div class="line-value col-sm-7" wicket:id="lastLoginDate"></div>
+			</div>
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.lastUpdateDate" /></div>
+				<div class="line-value col-sm-7" wicket:id="lastUpdateDate"></div>
+			</div>
+			<div class="line row">
+				<div class="line-label col-sm-5"><wicket:message key="administration.user.field.locale" /></div>
+				<div class="line-value col-sm-7" wicket:id="locale"></div>
 			</div>
 		</div>
 	</wicket:panel>

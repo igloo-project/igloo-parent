@@ -14,19 +14,17 @@
 						<th width="5%"></th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr wicket:id="groups">
-						<td>
-							<a wicket:id="groupLink">Name</a>
-						</td>
-						<td class="table-actions">
-							<a class="btn btn-sm btn-danger btn-icon-only" wicket:id="deleteLink"
-								wicket:message="alt:administration.usergroup.members.delete,title:administration.usergroup.members.delete">
-								<i class="fa fa-trash-o"></i>
-							</a>
-						</td>
-					</tr>
-				</tbody>
+				<tr wicket:id="groups">
+					<td>
+						<a wicket:id="groupLink">Name</a>
+					</td>
+					<td class="table-actions">
+						<a class="btn btn-sm btn-danger btn-icon-only" wicket:id="deleteLink"
+							wicket:message="alt:administration.usergroup.members.delete,title:administration.usergroup.members.delete">
+							<i class="fa fa-trash-o"></i>
+						</a>
+					</td>
+				</tr>
 				<tfoot wicket:id="emptyList">
 					<tr class="empty-list">
 						<td colspan="2"><wicket:message key="administration.usergroup.noGroups" /></td>
