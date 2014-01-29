@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<wicket:enclosure child="actionLink">
+			<a class="btn btn-primary btn-sm btn-icon-only" wicket:id="actionLink">
+				<i wicket:id="actionIcon"></i>
+			</a>
+		</wicket:enclosure>
+		<wicket:container wicket:id="actionLinkHidden">
+			<div class="btn-icon-only btn-sm btn-placeholder">
+				<i class="fa fa-fw fa-ban"></i>
+			</div>
+		</wicket:container>
+		<wicket:enclosure child="editLink">
+			<a class="btn btn-primary btn-sm btn-icon-only" wicket:id="editLink">
+				<i wicket:id="editIcon"></i>
+			</a>
+		</wicket:enclosure>
+		<wicket:container wicket:id="editLinkHidden">
+			<div class="btn-icon-only btn-sm btn-placeholder">
+				<i class="fa fa-fw fa-ban"></i>
+			</div>
+		</wicket:container>
+		<wicket:enclosure child="deleteLink">
+			<a class="btn btn-danger btn-sm btn-icon-only" wicket:id="deleteLink">
+				<i wicket:id="deleteIcon"></i>
+			</a>
+		</wicket:enclosure>
+		<wicket:container wicket:id="deleteLinkHidden">
+			<div class="btn-icon-only btn-sm btn-placeholder">
+				<i class="fa fa-fw fa-ban"></i>
+			</div>
+		</wicket:container>
+	</wicket:panel>
+</html>
