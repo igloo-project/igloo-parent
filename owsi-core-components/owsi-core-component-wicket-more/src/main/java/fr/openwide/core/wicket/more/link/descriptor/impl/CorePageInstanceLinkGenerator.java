@@ -157,6 +157,10 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	@Override
 	public void detach() {
 		pageInstanceModel.detach();
+		
+		for (IModel<? extends Class<? extends Page>> expectedPageClassModel : expectedPageClassModels) {
+			expectedPageClassModel.detach();
+		}
 	}
 	
 	private static class GetNameFromClassModelFunction implements Function<IModel<? extends Class<?>>, String> {
