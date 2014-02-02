@@ -28,11 +28,9 @@ public class ClassModel<T> extends LoadableDetachableModel<Class<T>> {
 	}
 	
 	@Override
-	public void detach() {
-		if (isAttached()) {
-			Class<? extends T> clazz = getObject();
-			className = clazz == null ? null : clazz.getName();
-			super.detach();
-		}
+	public void onDetach() {
+		Class<? extends T> clazz = getObject();
+		className = (clazz == null) ? null : clazz.getName();
+		super.onDetach();
 	}
 }
