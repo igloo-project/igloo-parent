@@ -118,7 +118,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 		});
 
 		if (beforeTaskResult != null) {
-			getTaskTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
+			getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					try {
@@ -138,7 +138,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 			});
 		}
 
-		final Exception taskResult = getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallback<Exception>() {
+		final Exception taskResult = getTaskTransactionTemplate().execute(new TransactionCallback<Exception>() {
 			@Override
 			public Exception doInTransaction(TransactionStatus status) {
 				try {
