@@ -6,8 +6,10 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -25,7 +27,6 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
 
-	@Autowired
 	private TransactionTemplate transactionTemplate;
 
 	@Autowired
@@ -67,10 +68,33 @@ public abstract class AbstractTask implements Runnable, Serializable {
 		return null;
 	}
 
+	/**
+	 * Permet à la tâche d'indiquer un transactionTemplate alternatif. Utile en particulier :
+	 *  - pour s'assurer d'être readOnly
+	 *  - pour mettre en place une tâche non transactionnelle
+	 */
+	protected TransactionTemplate getTaskTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	/**
+	 * Permet à la tâche d'indiquer un transactionTemplate alternatif. Utile en particulier :
+	 *  - pour s'assurer d'être readOnly
+	 *  - pour mettre en place une tâche non transactionnelle
+	 */
+	protected TransactionTemplate getPropagationRequiresNewReadOnlyFalseTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	@Autowired
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		DefaultTransactionAttribute transactionAttributes = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		transactionAttributes.setReadOnly(false);
+		transactionTemplate = new TransactionTemplate(transactionManager, transactionAttributes);
+	}
+
 	@Override
 	public void run() {
-		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-
 		final Exception beforeTaskResult = transactionTemplate.execute(new TransactionCallback<Exception>() {
 			@Override
 			public Exception doInTransaction(TransactionStatus status) {
