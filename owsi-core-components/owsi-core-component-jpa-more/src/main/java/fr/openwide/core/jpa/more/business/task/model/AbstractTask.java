@@ -167,7 +167,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 			}
 		});
 
-		if (taskResult != null) {
+		if (taskResult == null) {
 			// Cas du succès
 			getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
 				@Override
