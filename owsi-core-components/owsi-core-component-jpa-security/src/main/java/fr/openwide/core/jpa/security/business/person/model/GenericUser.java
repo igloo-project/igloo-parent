@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.bindgen.Bindable;
@@ -37,18 +36,17 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.util.AbstractPersonGroupComparator;
-import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
 @NaturalIdCache
-public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends AbstractPersonGroup<G, P>> extends GenericEntity<Long, P>
-		implements IGroupedPerson<G>, INotificationRecipient {
+public abstract class GenericUser<U extends GenericUser<U, G>, G extends GenericUserGroup<G, U>>
+		extends GenericEntity<Long, U>
+		implements IGroupedUser<G> {
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
-	public static final String FIRST_NAME_SORT_FIELD_NAME = "firstNameSort";
-	public static final String LAST_NAME_SORT_FIELD_NAME = "lastNameSort";
+	public static final String USER_NAME_SORT_FIELD_NAME = "userNameSort";
 	
 	@Id
 	@GeneratedValue
@@ -57,31 +55,11 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	
 	@Column(nullable = false)
 	@NaturalId(mutable = true)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = USER_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String userName;
-	
-	@Column(nullable = false)
-	@Fields({
-			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-			@Field(name = FIRST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
-	})
-	private String firstName;
-	
-	@Column(nullable = false)
-	@Fields({
-			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-			@Field(name = LAST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
-	})
-	private String lastName;
-	
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	private String email;
-	
-	private String phoneNumber;
-	
-	private String gsmNumber;
-	
-	private String faxNumber;
 	
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
@@ -122,13 +100,11 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	@SortComparator(AbstractPersonGroupComparator.class)
 	private Set<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
 	
-	public AbstractPerson() {
+	public GenericUser() {
 	}
 	
-	public AbstractPerson(String userName, String firstName, String lastName, String passwordHash) {
+	public GenericUser(String userName, String passwordHash) {
 		this.userName = userName;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.passwordHash = passwordHash;
 	}
 	
@@ -150,40 +126,8 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
-	@Override
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	@Override
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 	
-	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
-	@Transient
-	@Override
-	public String getFullName() {
-		StringBuilder builder = new StringBuilder();
-		if(firstName != null) {
-			builder.append(firstName);
-			builder.append(" ");
-		}
-		if(lastName != null && !lastName.equals(firstName)) {
-			builder.append(lastName);
-		}
-		return builder.toString().trim();
-	}
+	public abstract String getFullName();
 
 	@Override
 	public Set<Authority> getAuthorities() {
@@ -220,45 +164,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	public void removeGroup(G personGroup) {
 		this.groups.remove(personGroup);
 	}
-
-	@Override
-	public String getNameForToString() {
-		return getUserName();
-	}
-
-	@Override
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public void setGsmNumber(String gsmNumber) {
-		this.gsmNumber = gsmNumber;
-	}
-
-	public String getGsmNumber() {
-		return gsmNumber;
-	}
-
-	public String getFaxNumber() {
-		return faxNumber;
-	}
-
-	public void setFaxNumber(String faxNumber) {
-		this.faxNumber = faxNumber;
-	}
-
+	
 	@Override
 	public String getPasswordHash() {
 		return passwordHash;
@@ -302,7 +208,7 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	}
 
 	/**
-	 * Fournit la locale préférée de l'utilisation. Il faut utiliser
+	 * Fournit la locale préférée de l'utilisateur. Il faut utiliser
 	 * {@link CoreConfigurer##toAvailableLocale(Locale)} si la locale
 	 * préférée de l'utilisateur doit être exploitée pour choisir des traductions.
 	 * Cette méthode permet de mapper une locale quelconque (incluant null) sur
@@ -310,7 +216,6 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	 * avoir un fonctionnement prédictible). 
 	 * @return une locale, possiblement null
 	 */
-	@Override
 	public Locale getLocale() {
 		return locale;
 	}
@@ -326,20 +231,21 @@ public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends A
 	}
 
 	@Override
-	public int compareTo(P person) {
-		if(this.equals(person)) {
+	public int compareTo(U user) {
+		if(this.equals(user)) {
 			return 0;
 		}
-		
-		if(DEFAULT_STRING_COLLATOR.compare(this.getLastName(), person.getLastName()) == 0) {
-			return DEFAULT_STRING_COLLATOR.compare(this.getFirstName(), person.getFirstName());
-		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getLastName(), person.getLastName());
+		return DEFAULT_STRING_COLLATOR.compare(this.getUserName(), user.getUserName());
+	}
+
+	@Override
+	public String getNameForToString() {
+		return getUserName();
 	}
 
 	@Override
 	public String getDisplayName() {
-		return getFullName();
+		return getUserName();
 	}
 	
 }

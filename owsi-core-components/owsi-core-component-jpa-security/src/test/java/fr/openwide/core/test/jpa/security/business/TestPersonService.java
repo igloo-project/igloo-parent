@@ -14,7 +14,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.test.AbstractJpaSecurityTestCase;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
 
 public class TestPersonService extends AbstractJpaSecurityTestCase {
 
@@ -23,8 +23,8 @@ public class TestPersonService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testAuthorities() throws ServiceException, SecurityServiceException {
-		MockPerson person1 = createMockPerson("login1", "firstName1", "lastName1");
-		MockPerson person2 = createMockPerson("login2", "firstName2", "lastName2");
+		MockUser person1 = createMockPerson("login1", "firstName1", "lastName1");
+		MockUser person2 = createMockPerson("login2", "firstName2", "lastName2");
 		
 		Authority adminAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN);
 		Authority group1Authority = authorityService.getByName(ROLE_GROUP_1);
@@ -56,8 +56,8 @@ public class TestPersonService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testCaseInsensitiveUserNameFetch() throws ServiceException, SecurityServiceException {
-		MockPerson person1 = createMockPerson("Login1", "firstName1", "lastName1");
-		MockPerson person2 = createMockPerson("logIn2", "firstName2", "lastName2");
+		MockUser person1 = createMockPerson("Login1", "firstName1", "lastName1");
+		MockUser person2 = createMockPerson("logIn2", "firstName2", "lastName2");
 		mockPersonService.setPasswords(person1, "toto");
 		mockPersonService.setPasswords(person2, "tata");
 		

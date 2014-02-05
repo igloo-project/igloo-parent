@@ -20,13 +20,13 @@ import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.model.IPerson;
+import fr.openwide.core.jpa.security.business.person.model.IUser;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.jpa.security.service.ISecurityService;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPersonGroup;
-import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonGroupService;
-import fr.openwide.core.test.jpa.security.business.person.service.IMockPersonService;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUserGroup;
+import fr.openwide.core.test.jpa.security.business.person.service.IMockUserGroupService;
+import fr.openwide.core.test.jpa.security.business.person.service.IMockUserService;
 import fr.openwide.core.test.jpa.security.config.spring.JpaSecurityTestConfig;
 
 @ContextConfiguration(classes = JpaSecurityTestConfig.class)
@@ -41,10 +41,10 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	public static final String ROLE_GROUP_3 = "ROLE_GROUP_3";
 
 	@Autowired
-	protected IMockPersonService mockPersonService;
+	protected IMockUserService mockPersonService;
 
 	@Autowired
-	protected IMockPersonGroupService mockPersonGroupService;
+	protected IMockUserGroupService mockPersonGroupService;
 
 	@Autowired
 	protected IAuthorityService authorityService;
@@ -83,15 +83,15 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	}
 
 	protected void cleanMockPersons() throws ServiceException, SecurityServiceException {
-		List<MockPerson> mockPersons = mockPersonService.list();
-		for (MockPerson person : mockPersons) {
+		List<MockUser> mockPersons = mockPersonService.list();
+		for (MockUser person : mockPersons) {
 			mockPersonService.delete(person);
 		}
 	}
 
 	protected void cleanMockPersonGroups() throws ServiceException, SecurityServiceException {
-		List<MockPersonGroup> mockPersonGroups = mockPersonGroupService.list();
-		for (MockPersonGroup mockPersonGroup : mockPersonGroups) {
+		List<MockUserGroup> mockPersonGroups = mockPersonGroupService.list();
+		for (MockUserGroup mockPersonGroup : mockPersonGroups) {
 			mockPersonGroupService.delete(mockPersonGroup);
 		}
 	}
@@ -110,12 +110,12 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		cleanAuthorities();
 	}
 
-	protected MockPerson createMockPerson(String userName, String firstName, String lastName) throws ServiceException, SecurityServiceException {
+	protected MockUser createMockPerson(String userName, String firstName, String lastName) throws ServiceException, SecurityServiceException {
 		return createMockPerson(userName, firstName, lastName, "test@example.com");
 	}
 	
-	protected MockPerson createMockPerson(String userName, String firstName, String lastName, String email) throws ServiceException, SecurityServiceException {
-		MockPerson person = new MockPerson();
+	protected MockUser createMockPerson(String userName, String firstName, String lastName, String email) throws ServiceException, SecurityServiceException {
+		MockUser person = new MockUser();
 		person.setUserName(userName);
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
@@ -129,8 +129,8 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		return person;
 	}
 	
-	protected MockPersonGroup createMockPersonGroup(String name) throws ServiceException, SecurityServiceException {
-		MockPersonGroup personGroup = new MockPersonGroup();
+	protected MockUserGroup createMockPersonGroup(String name) throws ServiceException, SecurityServiceException {
+		MockUserGroup personGroup = new MockUserGroup();
 		personGroup.setName(name);
 		
 		mockPersonGroupService.save(personGroup);
@@ -147,7 +147,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		return authority;
 	}
 	
-	protected void authenticateAs(IPerson person) {
+	protected void authenticateAs(IUser person) {
 		authenticateAs(new UsernamePasswordAuthenticationToken(person.getUserName(), DEFAULT_PASSWORD));
 	}
 	

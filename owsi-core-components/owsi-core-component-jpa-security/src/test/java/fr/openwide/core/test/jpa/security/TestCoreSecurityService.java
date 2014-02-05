@@ -12,13 +12,13 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.test.AbstractJpaSecurityTestCase;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
 
 public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testRoleHierarchy() throws ServiceException, SecurityServiceException {
-		MockPerson admin = createMockPerson("admin", "firstName", "lastName");
+		MockUser admin = createMockPerson("admin", "firstName", "lastName");
 		admin.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
 		mockPersonService.update(admin);
 		
@@ -27,7 +27,7 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 		assertTrue(securityService.hasAdminRole(admin));
 		assertTrue(securityService.hasAuthenticatedRole(admin));
 		
-		MockPerson authenticated = createMockPerson("authenticated", "firstName", "lastName");
+		MockUser authenticated = createMockPerson("authenticated", "firstName", "lastName");
 		authenticated.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockPersonService.update(authenticated);
 		

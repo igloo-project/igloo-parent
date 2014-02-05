@@ -10,41 +10,41 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.security.business.person.model.IPerson;
+import fr.openwide.core.jpa.security.business.person.model.IUser;
 
 public interface ISecurityService {
 	
 	boolean hasPermission(Authentication authentication, Permission requirePermission);
 	
-	boolean hasPermission(IPerson person, Permission requirePermission);
+	boolean hasPermission(IUser person, Permission requirePermission);
 	
 	boolean hasPermission(Authentication authentication, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	
-	boolean hasPermission(IPerson person, GenericEntity<?, ?> securedObject,
+	boolean hasPermission(IUser person, GenericEntity<?, ?> securedObject,
 			Permission requirePermission);
 	
 	boolean hasRole(Authentication authentication, String role);
 	
-	boolean hasRole(IPerson person, String role);
+	boolean hasRole(IUser person, String role);
 
 	boolean hasSystemRole(Authentication authentication);
 	
-	boolean hasSystemRole(IPerson person);
+	boolean hasSystemRole(IUser person);
 	
 	boolean hasAdminRole(Authentication authentication);
 	
-	boolean hasAdminRole(IPerson person);
+	boolean hasAdminRole(IUser person);
 	
 	boolean hasAuthenticatedRole(Authentication authentication);
 	
-	boolean hasAuthenticatedRole(IPerson person);
+	boolean hasAuthenticatedRole(IUser person);
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 
 	List<? extends GrantedAuthority> getAuthorities(Authentication authentication);
 	
-	List<? extends GrantedAuthority> getAuthorities(IPerson person);
+	List<? extends GrantedAuthority> getAuthorities(IUser person);
 	
 	SecurityContext buildSecureContext(String userName);
 	

@@ -15,8 +15,8 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.test.AbstractJpaSecurityTestCase;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPersonGroup;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUserGroup;
 
 public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 
@@ -26,26 +26,26 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testLoadUserByUsername() throws ServiceException, SecurityServiceException {
-		MockPersonGroup adminGroup = createMockPersonGroup("adminGroup");
+		MockUserGroup adminGroup = createMockPersonGroup("adminGroup");
 		adminGroup.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
 		
-		MockPersonGroup group1 = createMockPersonGroup("group1");
+		MockUserGroup group1 = createMockPersonGroup("group1");
 		group1.addAuthority(authorityService.getByName(ROLE_GROUP_1));
 		
-		MockPersonGroup group2 = createMockPersonGroup("group2");
+		MockUserGroup group2 = createMockPersonGroup("group2");
 		group2.addAuthority(authorityService.getByName(ROLE_GROUP_2));
 		
 		mockPersonGroupService.update(adminGroup);
 		mockPersonGroupService.update(group1);
 		mockPersonGroupService.update(group2);
 		
-		MockPerson personAdmin = createMockPerson("admin", "admin", "admin");
-		MockPerson personGroup1 = createMockPerson("userGroup1", "userGroup1", "userGroup1");
-		MockPerson personGroup2 = createMockPerson("userGroup2", "userGroup2", "userGroup2");
+		MockUser personAdmin = createMockPerson("admin", "admin", "admin");
+		MockUser personGroup1 = createMockPerson("userGroup1", "userGroup1", "userGroup1");
+		MockUser personGroup2 = createMockPerson("userGroup2", "userGroup2", "userGroup2");
 		
-		mockPersonGroupService.addPerson(adminGroup, personAdmin);
-		mockPersonGroupService.addPerson(group1, personGroup1);
-		mockPersonGroupService.addPerson(group2, personGroup2);
+		mockPersonGroupService.addUser(adminGroup, personAdmin);
+		mockPersonGroupService.addUser(group1, personGroup1);
+		mockPersonGroupService.addUser(group2, personGroup2);
 		
 		Collection<GrantedAuthority> grantedAuthorities;
 		Iterator<GrantedAuthority> iterator;

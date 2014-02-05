@@ -25,14 +25,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
-import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.business.person.model.GenericUser;
+import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
-public class AbstractCoreSession<P extends AbstractPerson<P, ?>> extends AuthenticatedWebSession {
+public class AbstractCoreSession<P extends GenericUser<P, ?>> extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 2591467597835056981L;
 	
@@ -43,7 +43,7 @@ public class AbstractCoreSession<P extends AbstractPerson<P, ?>> extends Authent
 	private static final String REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME = "redirectPageLinkDescriptor";
 	
 	@SpringBean(name="personService")
-	protected IPersonService<P> personService;
+	protected IGenericUserService<P> personService;
 	
 	@SpringBean(name="authenticationService")
 	protected IAuthenticationService authenticationService;

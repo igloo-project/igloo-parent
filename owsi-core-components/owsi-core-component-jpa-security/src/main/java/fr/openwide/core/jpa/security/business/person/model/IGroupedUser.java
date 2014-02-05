@@ -2,7 +2,7 @@ package fr.openwide.core.jpa.security.business.person.model;
 
 import java.util.Set;
 
-public interface IGroupedPerson<G extends IPersonGroup> extends IPerson {
+public interface IGroupedUser<G extends IUserGroup> extends IUser {
 	
 	Set<G> getGroups();
 	

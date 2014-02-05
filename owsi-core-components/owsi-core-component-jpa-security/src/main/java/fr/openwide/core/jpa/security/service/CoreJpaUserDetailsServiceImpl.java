@@ -18,9 +18,9 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.jpa.security.business.person.model.IGroupedPerson;
-import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
-import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.business.person.model.IGroupedUser;
+import fr.openwide.core.jpa.security.business.person.model.IUserGroup;
+import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
@@ -29,7 +29,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	private static final String EMPTY_PASSWORD_HASH = "* NO PASSWORD *";
 
 	@Autowired
-	private IPersonService<?> personService; 
+	private IGenericUserService<?> personService; 
 	
 	@Autowired
 	private RoleHierarchy roleHierarchy;
@@ -45,7 +45,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
-		IGroupedPerson<?> person;
+		IGroupedUser<?> person;
 		if (AuthenticationUserNameComparison.CASE_INSENSITIVE.equals(authenticationUserNameComparison)) {
 			person = personService.getByUserNameCaseInsensitive(userName);
 		} else {
@@ -69,14 +69,14 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		return userDetails;
 	}
 	
-	protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(IGroupedPerson<?> person) {
+	protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(IGroupedUser<?> person) {
 		Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
 		Set<Permission> permissions = Sets.newHashSet();
 		
 		addAuthorities(grantedAuthorities, person.getAuthorities());
 		permissions.addAll(person.getPermissions());
 		
-		for (IPersonGroup personGroup : person.getGroups()) {
+		for (IUserGroup personGroup : person.getGroups()) {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
 			permissions.addAll(personGroup.getPermissions());
 		}

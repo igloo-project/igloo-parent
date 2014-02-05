@@ -31,13 +31,13 @@ import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.jpa.security.business.person.util.AbstractPersonComparator;
+import fr.openwide.core.jpa.security.business.person.util.AbstractUserComparator;
 
 @MappedSuperclass
 @Bindable
-public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P, G>>
+public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P extends GenericUser<P, G>>
 		extends GenericEntity<Long, G>
-		implements IPersonGroup {
+		implements IUserGroup {
 
 	private static final long serialVersionUID = 2156717229285615454L;
 	
@@ -53,8 +53,8 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany(mappedBy = "groups")
 	@Cascade({CascadeType.SAVE_UPDATE})
-	@SortComparator(AbstractPersonComparator.class)
-	private Set<P> persons = Sets.newTreeSet(AbstractPersonComparator.get());
+	@SortComparator(AbstractUserComparator.class)
+	private Set<P> persons = Sets.newTreeSet(AbstractUserComparator.get());
 	
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
@@ -70,10 +70,10 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	@Column(nullable = false)
 	private boolean locked = false;
 	
-	public AbstractPersonGroup() {
+	public GenericUserGroup() {
 	}
 
-	public AbstractPersonGroup(String name) {
+	public GenericUserGroup(String name) {
 		this.name = name;
 	}
 	

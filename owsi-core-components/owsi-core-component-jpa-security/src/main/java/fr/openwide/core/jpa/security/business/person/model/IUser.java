@@ -8,20 +8,14 @@ import org.springframework.security.acls.model.Permission;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
 @Bindable
-public interface IPerson {
+public interface IUser {
 	
 	Long getId();
 	
 	String getUserName();
-	
-	String getFirstName();
-	
-	String getLastName();
-	
-	String getFullName();
 
 	Set<Authority> getAuthorities();
-	
+
 	Set<? extends Permission> getPermissions();
 
 	boolean isActive();

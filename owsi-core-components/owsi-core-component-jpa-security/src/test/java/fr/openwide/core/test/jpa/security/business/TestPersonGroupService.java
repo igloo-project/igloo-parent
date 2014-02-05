@@ -9,15 +9,15 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.test.AbstractJpaSecurityTestCase;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPersonGroup;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUserGroup;
 
 public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testAuthorities() throws ServiceException, SecurityServiceException {
-		MockPersonGroup group1 = createMockPersonGroup("group1");
-		MockPersonGroup group2 = createMockPersonGroup("group2");
+		MockUserGroup group1 = createMockPersonGroup("group1");
+		MockUserGroup group2 = createMockPersonGroup("group2");
 		
 		Authority adminAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN);
 		Authority group1Authority = authorityService.getByName(ROLE_GROUP_1);
@@ -49,10 +49,10 @@ public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
 	
 	@Test
 	public void testMembers() throws ServiceException, SecurityServiceException {
-		MockPersonGroup group1 = createMockPersonGroup("group1");
+		MockUserGroup group1 = createMockPersonGroup("group1");
 		
-		MockPerson user1 = createMockPerson("user1", "user1", "user1");
-		MockPerson user2 = createMockPerson("user2", "user2", "user2");
+		MockUser user1 = createMockPerson("user1", "user1", "user1");
+		MockUser user2 = createMockPerson("user2", "user2", "user2");
 		
 		group1.addPerson(user1);
 		mockPersonGroupService.update(group1);
