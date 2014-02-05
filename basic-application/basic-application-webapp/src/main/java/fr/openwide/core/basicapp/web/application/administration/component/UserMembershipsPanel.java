@@ -41,7 +41,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		super(id, userModel);
 		
 		// Groups list
-		Component userGroupListView = new GenericEntitySetView<UserGroup>("groups", BindingModel.of(getModel(), Bindings.user().userGroups())) {
+		Component userGroupListView = new GenericEntitySetView<UserGroup>("groups", BindingModel.of(getModel(), Bindings.user().groups())) {
 			private static final long serialVersionUID = -6489746843440088695L;
 			
 			@Override
@@ -86,7 +86,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		};
 		add(userGroupListView);
 		
-		add(new PlaceholderContainer("emptyList").collectionModel(BindingModel.of(getModel(), Bindings.user().userGroups())));
+		add(new PlaceholderContainer("emptyList").collectionModel(BindingModel.of(getModel(), Bindings.user().groups())));
 		
 		// Add group form
 		IModel<UserGroup> emptyUserGroupModel = new GenericEntityModel<Long, UserGroup>(null);

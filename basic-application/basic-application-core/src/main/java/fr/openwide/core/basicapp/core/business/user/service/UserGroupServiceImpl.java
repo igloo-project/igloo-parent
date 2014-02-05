@@ -9,13 +9,13 @@ import fr.openwide.core.basicapp.core.business.user.dao.IUserGroupDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
+import fr.openwide.core.jpa.security.business.person.service.AbstractPersonGroupServiceImpl;
 
 @Service("personGroupService")
-public class UserGroupServiceImpl extends GenericEntityServiceImpl<Long, UserGroup>
+public class UserGroupServiceImpl extends AbstractPersonGroupServiceImpl<UserGroup, User>
 		implements IUserGroupService {
 
 	@Autowired
@@ -27,20 +27,6 @@ public class UserGroupServiceImpl extends GenericEntityServiceImpl<Long, UserGro
 	@Autowired
 	public UserGroupServiceImpl(IUserGroupDao userGroupDao) {
 		super(userGroupDao);
-	}
-
-	@Override
-	public void addPerson(UserGroup group, User user)
-			throws ServiceException, SecurityServiceException {
-		user.getUserGroups().add(group);
-		userService.update(user);
-	}
-
-	@Override
-	public void removePerson(UserGroup group, User user)
-			throws ServiceException, SecurityServiceException {
-		user.getUserGroups().remove(group);
-		userService.update(user);
 	}
 
 	@Override

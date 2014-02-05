@@ -22,4 +22,9 @@ public class UserGroup extends AbstractPersonGroup<UserGroup, User> {
 		super(name);
 	}
 
+	@Override
+	protected UserGroup thisAsConcreteType() {
+		return this;
+	}
+
 }
