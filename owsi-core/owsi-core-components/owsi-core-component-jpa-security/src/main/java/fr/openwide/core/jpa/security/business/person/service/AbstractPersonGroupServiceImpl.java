@@ -12,7 +12,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup_;
 
-public abstract class AbstractPersonGroupServiceImpl<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
+public abstract class AbstractPersonGroupServiceImpl<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P, G>>
 		extends GenericEntityServiceImpl<Long, G> implements IPersonGroupService<G, P> {
 
 	protected IPersonGroupDao<G, P> personGroupDao;

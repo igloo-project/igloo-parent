@@ -8,4 +8,9 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup;
 public class MockPersonGroup extends AbstractPersonGroup<MockPersonGroup, MockPerson> {
 	private static final long serialVersionUID = 5310917945553360988L;
 
+	@Override
+	protected MockPersonGroup thisAsConcreteType() {
+		return this;
+	}
+
 }

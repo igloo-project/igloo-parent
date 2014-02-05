@@ -19,7 +19,7 @@ import fr.openwide.core.jpa.security.business.person.service.IPersonService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
-public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T>> implements ICorePermissionEvaluator {
+public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T, ?>> implements ICorePermissionEvaluator {
 
 	@Autowired
 	private PermissionFactory permissionFactory;

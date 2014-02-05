@@ -35,7 +35,7 @@ import fr.openwide.core.jpa.security.business.person.util.AbstractPersonComparat
 
 @MappedSuperclass
 @Bindable
-public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P>>
+public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P extends AbstractPerson<P, G>>
 		extends GenericEntity<Long, G>
 		implements IPersonGroup {
 
@@ -51,7 +51,7 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
-	@ManyToMany(mappedBy = "userGroups")
+	@ManyToMany(mappedBy = "groups")
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@SortComparator(AbstractPersonComparator.class)
 	private Set<P> persons = Sets.newTreeSet(AbstractPersonComparator.get());
@@ -76,6 +76,8 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	public AbstractPersonGroup(String name) {
 		this.name = name;
 	}
+	
+	protected abstract G thisAsConcreteType();
 
 	@Override
 	public Long getId() {
@@ -111,12 +113,12 @@ public abstract class AbstractPersonGroup<G extends AbstractPersonGroup<G, P>, P
 	
 	public void addPerson(P person) {
 		this.persons.add(person);
-		person.addPersonGroup(this);
+		person.addGroup(thisAsConcreteType());
 	}
 	
 	public void removePerson(P person) {
 		this.persons.remove(person);
-		person.removePersonGroup(this);
+		person.removeGroup(thisAsConcreteType());
 	}
 	
 	@Override

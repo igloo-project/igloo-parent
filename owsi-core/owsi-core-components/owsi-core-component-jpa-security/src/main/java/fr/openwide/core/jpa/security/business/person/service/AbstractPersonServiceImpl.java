@@ -20,7 +20,7 @@ import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.IPersonBinding;
 
-public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P>>
+public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P, ?>>
 		extends GenericEntityServiceImpl<Long, P>
 		implements IPersonService<P> {
 	

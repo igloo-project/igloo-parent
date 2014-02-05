@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -8,15 +9,17 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OrderBy;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
+import org.hibernate.annotations.SortComparator;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -29,16 +32,18 @@ import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryType;
 
 import fr.openwide.core.commons.util.CloneUtils;
+import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.person.util.AbstractPersonGroupComparator;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 @MappedSuperclass
 @Bindable
 @NaturalIdCache
-public abstract class AbstractPerson<P extends AbstractPerson<P>> extends GenericEntity<Long, P>
-		implements IPerson, INotificationRecipient {
+public abstract class AbstractPerson<P extends AbstractPerson<P, G>, G extends AbstractPersonGroup<G, P>> extends GenericEntity<Long, P>
+		implements IGroupedPerson<G>, INotificationRecipient {
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
@@ -110,8 +115,12 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-	@OrderBy("name")
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
+	
+	@ManyToMany
+	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
+	@SortComparator(AbstractPersonGroupComparator.class)
+	private Set<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
 	
 	public AbstractPerson() {
 	}
@@ -191,6 +200,25 @@ public abstract class AbstractPerson<P extends AbstractPerson<P>> extends Generi
 	
 	public void removeAuthority(Authority authority) {
 		this.authorities.remove(authority);
+	}
+	
+	@Override
+	public Set<G> getGroups() {
+		return Collections.unmodifiableSet(groups);
+	}
+
+	public void setGroups(Set<G> groups) {
+		CollectionUtils.replaceAll(this.groups, groups);
+	}
+
+	@Override
+	public void addGroup(G group) {
+		this.groups.add(group);
+	}
+	
+	@Override
+	public void removeGroup(G personGroup) {
+		this.groups.remove(personGroup);
 	}
 
 	@Override
