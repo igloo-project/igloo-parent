@@ -72,7 +72,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 									UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
 									User user = item.getModelObject();
 									
-									userGroupService.removePerson(userGroup, user);
+									userGroupService.removeUser(userGroup, user);
 									Session.get().success(getString("administration.usergroup.members.delete.success"));
 								} catch (Exception e) {
 									LOGGER.error("Error occured while removing user from user group", e);
@@ -110,7 +110,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 				if (selectedUser != null) {
 					if (!userGroup.getPersons().contains(selectedUser)) {
 						try {
-							userGroupService.addPerson(userGroup, selectedUser);
+							userGroupService.addUser(userGroup, selectedUser);
 							getSession().success(getString("administration.usergroup.members.add.success"));
 						} catch (Exception e) {
 							LOGGER.error("Unknown error occured while adding a user to a usergroup", e);

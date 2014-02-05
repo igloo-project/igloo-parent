@@ -6,13 +6,13 @@ import javax.persistence.Entity;
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
 
-import fr.openwide.core.jpa.security.business.person.model.AbstractPersonGroup;
+import fr.openwide.core.jpa.security.business.person.model.GenericUserGroup;
 
 @Entity
 @Indexed
 @Bindable
 @Cacheable
-public class UserGroup extends AbstractPersonGroup<UserGroup, User> {
+public class UserGroup extends GenericUserGroup<UserGroup, User> {
 	private static final long serialVersionUID = 2156717229285615454L;
 
 	public UserGroup() {

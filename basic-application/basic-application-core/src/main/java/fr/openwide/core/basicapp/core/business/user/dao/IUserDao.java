@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
+import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;
 
-public interface IUserDao extends IPersonDao<User> {
+public interface IUserDao extends IGenericUserDao<User> {
 	
 	List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset)
 			throws ParseException;	

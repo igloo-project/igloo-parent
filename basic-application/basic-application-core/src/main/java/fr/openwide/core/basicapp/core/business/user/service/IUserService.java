@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 
-public interface IUserService extends IPersonService<User> {
+public interface IUserService extends IGenericUserService<User> {
 
 	List<User> listByUserName(String userName);
 

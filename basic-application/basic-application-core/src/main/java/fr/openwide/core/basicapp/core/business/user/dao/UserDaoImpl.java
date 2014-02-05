@@ -14,11 +14,11 @@ import org.springframework.stereotype.Repository;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.jpa.security.business.person.dao.AbstractPersonDaoImpl;
+import fr.openwide.core.jpa.security.business.person.dao.GenericUserDaoImpl;
 import fr.openwide.core.spring.util.StringUtils;
 
 @Repository("personDao")
-public class UserDaoImpl extends AbstractPersonDaoImpl<User> implements IUserDao {
+public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 
 	public UserDaoImpl() {
 		super();
