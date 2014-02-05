@@ -1,6 +1,5 @@
 package fr.openwide.core.jpa.security.business.person.model;
 
-import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
@@ -20,12 +19,6 @@ public interface IPerson {
 	String getLastName();
 	
 	String getFullName();
-	
-	void addPersonGroup(IPersonGroup personGroup);
-	
-	void removePersonGroup(IPersonGroup personGroup);
-	
-	List<IPersonGroup> getPersonGroups();
 
 	Set<Authority> getAuthorities();
 	

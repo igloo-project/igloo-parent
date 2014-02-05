@@ -9,7 +9,7 @@ import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
 import fr.openwide.core.jpa.security.business.person.model.AbstractPerson_;
 import fr.openwide.core.jpa.security.business.person.model.QAbstractPerson;
 
-public abstract class AbstractPersonDaoImpl<P extends AbstractPerson<P>>
+public abstract class AbstractPersonDaoImpl<P extends AbstractPerson<P, ?>>
 		extends GenericEntityDaoImpl<Long, P>
 		implements IPersonDao<P> {
 	

@@ -32,7 +32,7 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
-public class AbstractCoreSession<P extends AbstractPerson<P>> extends AuthenticatedWebSession {
+public class AbstractCoreSession<P extends AbstractPerson<P, ?>> extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 2591467597835056981L;
 	
