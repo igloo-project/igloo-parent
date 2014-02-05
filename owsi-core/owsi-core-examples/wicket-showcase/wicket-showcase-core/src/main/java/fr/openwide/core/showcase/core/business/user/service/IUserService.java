@@ -6,10 +6,10 @@ import org.apache.lucene.queryParser.ParseException;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 import fr.openwide.core.showcase.core.business.user.model.User;
 
-public interface IUserService extends IPersonService<User> {
+public interface IUserService extends IGenericUserService<User> {
 
 	@Override
 	List<User> searchAutocomplete(String searchPattern) throws ServiceException;

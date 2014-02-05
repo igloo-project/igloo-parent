@@ -27,7 +27,7 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.model.IPerson;
+import fr.openwide.core.jpa.security.business.person.model.IUser;
 import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
 import fr.openwide.core.jpa.security.util.UserConstants;
 
@@ -56,7 +56,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasRole(IPerson person, String role) {
+	public boolean hasRole(IUser person, String role) {
 		if (person == null) {
 			return false;
 		}
@@ -70,7 +70,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasSystemRole(IPerson person) {
+	public boolean hasSystemRole(IUser person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_SYSTEM);
 	}
 
@@ -80,7 +80,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasAdminRole(IPerson person) {
+	public boolean hasAdminRole(IUser person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_ADMIN);
 	}
 
@@ -90,7 +90,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasAuthenticatedRole(IPerson person) {
+	public boolean hasAuthenticatedRole(IUser person) {
 		return hasRole(person, CoreAuthorityConstants.ROLE_AUTHENTICATED);
 	}
 
@@ -109,7 +109,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public List<GrantedAuthority> getAuthorities(IPerson person) {
+	public List<GrantedAuthority> getAuthorities(IUser person) {
 		return getAuthorities(getAuthentication(person));
 	}
 
@@ -121,7 +121,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		return secureContext;
 	}
 	
-	protected void authenticateAs(IPerson user) {
+	protected void authenticateAs(IUser user) {
 		authenticateAs(user.getUserName());
 	}
 
@@ -179,7 +179,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 	
 
-	protected Authentication getAuthentication(IPerson person) {
+	protected Authentication getAuthentication(IUser person) {
 		return getAuthentication(person.getUserName());
 	}
 
@@ -199,7 +199,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasPermission(IPerson person, GenericEntity<?, ?> securedObject, Permission requirePermission) {
+	public boolean hasPermission(IUser person, GenericEntity<?, ?> securedObject, Permission requirePermission) {
 		return hasPermission(getAuthentication(person), securedObject, requirePermission);
 	}
 
@@ -209,7 +209,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 	
 	@Override
-	public boolean hasPermission(IPerson person, Permission permission) {
+	public boolean hasPermission(IUser person, Permission permission) {
 		return hasPermission(getAuthentication(person), permission);
 	}
 	

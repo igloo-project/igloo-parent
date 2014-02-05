@@ -8,7 +8,7 @@ import org.springframework.security.acls.model.Permission;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 
 @Bindable
-public interface IPersonGroup {
+public interface IUserGroup {
 	
 	Long getId();
 	

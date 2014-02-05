@@ -14,12 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
-import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.business.person.model.GenericUser;
+import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
 import fr.openwide.core.jpa.security.model.CoreUserDetails;
 
-public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T, ?>> implements ICorePermissionEvaluator {
+public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?>> implements ICorePermissionEvaluator {
 
 	@Autowired
 	private PermissionFactory permissionFactory;
@@ -28,7 +28,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends AbstractPerson<T
 	private IPermissionHierarchy permissionHierarchy;
 	
 	@Autowired
-	private IPersonService<T> personService;
+	private IGenericUserService<T> personService;
 	
 	/**
 	 * Vérifie qu'un utilisateur possède la permission souhaitée

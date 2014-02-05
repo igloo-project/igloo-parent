@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.security.business.person.service.AbstractPersonServiceImpl;
+import fr.openwide.core.jpa.security.business.person.service.GenericUserServiceImpl;
 import fr.openwide.core.showcase.core.business.user.dao.IUserDao;
 import fr.openwide.core.showcase.core.business.user.model.User;
 
 @Service("personService")
-public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements IUserService {
+public class UserServiceImpl extends GenericUserServiceImpl<User> implements IUserService {
 
 	private IUserDao userDao;
 

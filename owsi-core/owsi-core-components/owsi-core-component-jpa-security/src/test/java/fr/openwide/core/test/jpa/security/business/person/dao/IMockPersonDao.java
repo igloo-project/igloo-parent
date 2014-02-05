@@ -1,8 +1,8 @@
 package fr.openwide.core.test.jpa.security.business.person.dao;
 
-import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
+import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
 
-public interface IMockPersonDao extends IPersonDao<MockPerson> {
+public interface IMockPersonDao extends IGenericUserDao<MockUser> {
 
 }

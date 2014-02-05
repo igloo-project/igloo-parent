@@ -21,7 +21,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.test.AbstractJpaSecurityTestCase;
-import fr.openwide.core.test.jpa.security.business.person.model.MockPerson;
+import fr.openwide.core.test.jpa.security.business.person.model.MockUser;
 
 public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 
@@ -29,7 +29,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 	public void testAuthenticationUserInfo() throws ServiceException, SecurityServiceException {
 		assertFalse(authenticationService.isLoggedIn());
 		
-		MockPerson user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
+		MockUser user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockPersonService.update(user);
 		
@@ -59,7 +59,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testAuthenticationRoles() throws ServiceException, SecurityServiceException {
-		MockPerson user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
+		MockUser user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockPersonService.update(user);
 		
@@ -95,7 +95,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testSecurityProxy() throws ServiceException, SecurityServiceException {
-		MockPerson user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
+		MockUser user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockPersonService.update(user);
 		authenticateAs(user);

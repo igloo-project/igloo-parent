@@ -10,13 +10,13 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
-import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
+import fr.openwide.core.jpa.security.business.person.model.GenericSimpleUser;
 
 @Entity(name="user_")
 @Bindable
 @Indexed
 @Cacheable
-public class User extends AbstractPerson<User, UserGroup> {
+public class User extends GenericSimpleUser<User, UserGroup> {
 	private static final long serialVersionUID = 7809996026983881824L;
 	
 	@Column(nullable = false)

@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
+import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;
 import fr.openwide.core.showcase.core.business.user.model.User;
 
-public interface IUserDao extends IPersonDao<User> {
+public interface IUserDao extends IGenericUserDao<User> {
 
 	List<User> searchAutocomplete(String searchPattern) throws ServiceException;
 	

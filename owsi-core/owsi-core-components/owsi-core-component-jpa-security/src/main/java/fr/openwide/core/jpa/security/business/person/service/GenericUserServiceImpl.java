@@ -16,20 +16,21 @@ import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.core.jpa.security.business.person.dao.IPersonDao;
-import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
-import fr.openwide.core.jpa.security.business.person.model.IPersonBinding;
+import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;
+import fr.openwide.core.jpa.security.business.person.model.GenericUser;
+import fr.openwide.core.jpa.security.business.person.model.IUserBinding;
 
-public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P, ?>>
-		extends GenericEntityServiceImpl<Long, P>
-		implements IPersonService<P> {
+public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
+		extends GenericEntityServiceImpl<Long, U>
+		implements IGenericUserService<U> {
 	
-	private static final IPersonBinding BINDING = new IPersonBinding();
+	private static final IUserBinding BINDING = new IUserBinding();
 	
-	public static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
+	private static final String[] SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
 	
-	public static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(AbstractPerson.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
-			new SortField(AbstractPerson.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING));
+	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
+	
+	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericUser.USER_NAME_SORT_FIELD_NAME, SortField.STRING));
 
 	@Autowired
 	private IAuthorityService authorityService;
@@ -40,44 +41,42 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P, ?>>
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	private IPersonDao<P> personDao;
+	private IGenericUserDao<U> personDao;
 	
 	@Autowired
-	public AbstractPersonServiceImpl(IPersonDao<P> personDao) {
+	public GenericUserServiceImpl(IGenericUserDao<U> personDao) {
 		super(personDao);
 		this.personDao = personDao;
 	}
 	
 	@Override
-	public P getByUserName(String userName) {
+	public U getByUserName(String userName) {
 		return getByNaturalId(userName);
 	}
 	
 	@Override
-	public P getByUserNameCaseInsensitive(String userName) {
+	public U getByUserNameCaseInsensitive(String userName) {
 		return personDao.getByUserNameCaseInsensitive(userName);
 	}
 	
 	@Override
-	public List<P> search(String searchPattern) throws ServiceException, SecurityServiceException {
-		String[] searchFields = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
-		
-		return hibernateSearchService.search(getObjectClass(), searchFields, searchPattern);
+	public List<U> search(String searchPattern) throws ServiceException, SecurityServiceException {
+		return hibernateSearchService.search(getObjectClass(), SEARCH_FIELDS, searchPattern);
 	}
 	
 	@Override
-	public List<P> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
+	public List<U> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
 		return searchAutocomplete(searchPattern, null, null);
 	}
 	
 	@Override
-	public List<P> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
+	public List<U> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), AUTOCOMPLETE_SEARCH_FIELDS, searchPattern,
 				limit, offset, AUTOCOMPLETE_SORT);
 	}
 	
 	@Override
-	protected void createEntity(P person) throws ServiceException, SecurityServiceException {
+	protected void createEntity(U person) throws ServiceException, SecurityServiceException {
 		super.createEntity(person);
 		
 		Date date = new Date();
@@ -97,29 +96,29 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P, ?>>
 	}
 	
 	@Override
-	protected void updateEntity(P person) throws ServiceException, SecurityServiceException {
+	protected void updateEntity(U person) throws ServiceException, SecurityServiceException {
 		person.setLastUpdateDate(new Date());
 		super.updateEntity(person);
 	}
 	
 	@Override
-	public void updateProfileInformation(P person) throws ServiceException, SecurityServiceException {
+	public void updateProfileInformation(U person) throws ServiceException, SecurityServiceException {
 		super.update(person);
 	}
 	
 	@Override
-	public void addAuthority(P person, Authority authority) throws ServiceException, SecurityServiceException {
+	public void addAuthority(U person, Authority authority) throws ServiceException, SecurityServiceException {
 		person.addAuthority(authority);
 		super.update(person);
 	}
 	
 	@Override
-	public void addAuthority(P person, String authorityName) throws ServiceException, SecurityServiceException {
+	public void addAuthority(U person, String authorityName) throws ServiceException, SecurityServiceException {
 		addAuthority(person, authorityService.getByName(authorityName));
 	}
 	
 	@Override
-	public void setActive(P person, boolean active) throws ServiceException, SecurityServiceException {
+	public void setActive(U person, boolean active) throws ServiceException, SecurityServiceException {
 		person.setActive(active);
 		super.update(person);
 	}
@@ -130,19 +129,19 @@ public abstract class AbstractPersonServiceImpl<P extends AbstractPerson<P, ?>>
 	}
 	
 	@Override
-	public void setPasswords(P person, String clearTextPassword) throws ServiceException, SecurityServiceException {
+	public void setPasswords(U person, String clearTextPassword) throws ServiceException, SecurityServiceException {
 		person.setPasswordHash(passwordEncoder.encode(clearTextPassword));
 		super.update(person);
 	}
 
 	@Override
-	public void updateLastLoginDate(P person) throws ServiceException, SecurityServiceException {
+	public void updateLastLoginDate(U person) throws ServiceException, SecurityServiceException {
 		person.setLastLoginDate(new Date());
 		super.updateEntity(person);
 	}
 	
 	@Override
-	public void updateLocale(P person, Locale locale) throws ServiceException, SecurityServiceException {
+	public void updateLocale(U person, Locale locale) throws ServiceException, SecurityServiceException {
 		person.setLocale(locale);
 		super.updateEntity(person);
 	}

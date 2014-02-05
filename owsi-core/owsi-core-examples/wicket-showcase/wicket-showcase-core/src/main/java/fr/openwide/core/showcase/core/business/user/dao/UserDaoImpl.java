@@ -16,12 +16,12 @@ import org.springframework.util.StringUtils;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
-import fr.openwide.core.jpa.security.business.person.dao.AbstractPersonDaoImpl;
+import fr.openwide.core.jpa.security.business.person.dao.GenericUserDaoImpl;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.model.UserBinding;
 
 @Repository("userDao")
-public class UserDaoImpl extends AbstractPersonDaoImpl<User> implements IUserDao {
+public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	
 	private static final UserBinding USER = new UserBinding();
 	
