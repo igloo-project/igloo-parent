@@ -32,7 +32,7 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
-public class AbstractCoreSession<P extends GenericUser<P, ?>> extends AuthenticatedWebSession {
+public class AbstractCoreSession<U extends GenericUser<U, ?>> extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 2591467597835056981L;
 	
@@ -43,7 +43,7 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 	private static final String REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME = "redirectPageLinkDescriptor";
 	
 	@SpringBean(name="personService")
-	protected IGenericUserService<P> personService;
+	protected IGenericUserService<U> userService;
 	
 	@SpringBean(name="authenticationService")
 	protected IAuthenticationService authenticationService;
@@ -54,7 +54,7 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 	@SpringBean(name="configurer")
 	protected CoreConfigurer configurer;
 	
-	private final IModel<P> personModel = new SessionThreadSafeGenericEntityModel<Long, P>();
+	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<Long, U>();
 	
 	private Roles roles = new Roles();
 	
@@ -115,32 +115,32 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 	}
 	
 	protected void doInitializeSession() {
-		P person = personService.getByUserName(authenticationService.getUserName());
+		U user = userService.getByUserName(authenticationService.getUserName());
 		
-		if (person == null) {
+		if (user == null) {
 			throw new IllegalStateException("Unable to find the signed in user.");
 		}
 		
-		personModel.setObject(person);
+		userModel.setObject(user);
 		
 		try {
-			if (person.getLastLoginDate() == null) {
-				onFirstLogin(person);
+			if (user.getLastLoginDate() == null) {
+				onFirstLogin(user);
 			}
 			
-			personService.updateLastLoginDate(person);
+			userService.updateLastLoginDate(user);
 			
-			Locale locale = person.getLocale();
+			Locale locale = user.getLocale();
 			if (locale != null) {
-				setLocale(person.getLocale());
+				setLocale(user.getLocale());
 			} else {
 				// si la personne ne possède pas de locale
 				// alors on enregistre celle mise en place
 				// automatiquement par le navigateur.
-				personService.updateLocale(person, getLocale());
+				userService.updateLocale(user, getLocale());
 			}
 		} catch (Exception e) {
-			LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", person), e);
+			LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", user), e);
 		}
 		
 		Collection<? extends GrantedAuthority> authorities = authenticationService.getAuthorities();
@@ -157,11 +157,11 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 		isSuperUserInitialized = true;
 	}
 	
-	protected void onFirstLogin(P person) {
+	protected void onFirstLogin(U user) {
 	}
 	
-	protected IModel<P> getPersonModel() {
-		return personModel;
+	public IModel<U> getUserModel() {
+		return userModel;
 	}
 
 	/**
@@ -170,16 +170,16 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 	public String getUserName() {
 		String userName = null;
 		if (isSignedIn()) {
-			userName = personModel.getObject().getUserName();
+			userName = userModel.getObject().getUserName();
 		}
 		return userName;
 	}
 
-	protected P getPerson() {
-		P person = null;
+	public U getUser() {
+		U person = null;
 
 		if (isSignedIn()) {
-			person = personModel.getObject();
+			person = userModel.getObject();
 		}
 
 		return person;
@@ -252,7 +252,7 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 	 */
 	@Override
 	public void signOut() {
-		personModel.setObject(null);
+		userModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
 		permissions = Lists.newArrayList();
@@ -328,13 +328,13 @@ public class AbstractCoreSession<P extends GenericUser<P, ?>> extends Authentica
 	public void detach() {
 		super.detach();
 		
-		personModel.detach();
+		userModel.detach();
 	}
 	
 	@Override
 	public void internalDetach() {
 		super.internalDetach();
 		
-		personModel.detach();
+		userModel.detach();
 	}
 }

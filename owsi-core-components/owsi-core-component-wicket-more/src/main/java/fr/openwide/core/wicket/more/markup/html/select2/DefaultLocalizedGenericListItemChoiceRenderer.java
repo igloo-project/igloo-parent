@@ -1,0 +1,30 @@
+package fr.openwide.core.wicket.more.markup.html.select2;
+
+import java.util.Locale;
+
+import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+
+import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
+
+public class DefaultLocalizedGenericListItemChoiceRenderer implements IChoiceRenderer<GenericLocalizedGenericListItem<?, ?>> {
+
+	private static final long serialVersionUID = -324543602711731900L;
+	
+	public DefaultLocalizedGenericListItemChoiceRenderer() { }
+
+	@Override
+	public Object getDisplayValue(GenericLocalizedGenericListItem<?, ?> object) {
+		return object == null ? null : object.getLabel().get(getLocale());
+	}
+
+	@Override
+	public String getIdValue(GenericLocalizedGenericListItem<?, ?> object, int index) {
+		return object == null ? null : object.getId().toString();
+	}
+	
+	protected Locale getLocale() {
+		return Session.get().getLocale();
+	}
+
+}
