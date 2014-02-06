@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
-import fr.openwide.core.jpa.security.business.person.service.GenericUserServiceImpl;
+import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 
 @Service("personService")
-public class UserServiceImpl extends GenericUserServiceImpl<User> implements IUserService {
+public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
 	@Autowired
 	private IUserDao userDao;
