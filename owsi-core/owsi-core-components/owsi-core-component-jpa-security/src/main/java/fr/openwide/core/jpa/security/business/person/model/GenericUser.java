@@ -131,11 +131,11 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@Override
 	public Set<Authority> getAuthorities() {
-		return authorities;
+		return Collections.unmodifiableSet(authorities);
 	}
 
 	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
+		CollectionUtils.replaceAll(this.authorities, authorities);
 	}
 	
 	public void addAuthority(Authority authority) {
