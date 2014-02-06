@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericLocalizedGenericListItemService;
@@ -17,6 +18,7 @@ public class LocalizedGenericListItemListModel<T extends GenericLocalizedGeneric
 	private final boolean enabled;
 	private final Comparator<? super T> comparator;
 
+	@SpringBean
 	private IGenericLocalizedGenericListItemService<? super T, ?> listItemService;
 
 	public LocalizedGenericListItemListModel(Class<T> clazz, boolean enabled, Comparator<? super T> comparator) {
