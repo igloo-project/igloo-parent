@@ -1,7 +1,6 @@
 package fr.openwide.core.basicapp.web.application;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -17,13 +16,5 @@ public class BasicApplicationSession extends AbstractCoreSession<User> {
 	
 	public static BasicApplicationSession get() {
 		return (BasicApplicationSession) Session.get();
-	}
-	
-	public User getUser() {
-		return super.getPerson();
-	}
-	
-	public IModel<User> getUserModel() {
-		return super.getPersonModel();
 	}
 }
