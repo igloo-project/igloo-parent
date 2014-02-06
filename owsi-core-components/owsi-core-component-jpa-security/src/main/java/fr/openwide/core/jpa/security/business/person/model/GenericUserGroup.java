@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.model;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -104,7 +105,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	}
 	
 	public Set<P> getPersons() {
-		return persons;
+		return Collections.unmodifiableSet(persons);
 	}
 
 	public void setPersons(Set<P> persons) {
@@ -123,11 +124,11 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	
 	@Override
 	public Set<Authority> getAuthorities() {
-		return authorities;
+		return Collections.unmodifiableSet(authorities);
 	}
 
 	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
+		CollectionUtils.replaceAll(this.authorities, authorities);
 	}
 	
 	public void addAuthority(Authority authority) {
