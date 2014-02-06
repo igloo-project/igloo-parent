@@ -16,3 +16,13 @@ img {
 a {
 	cursor: pointer;
 }
+
+@media print {
+	a[href]:after {
+		content: "";
+	}
+
+	abbr[title]:after {
+		content: "";
+	}
+}
