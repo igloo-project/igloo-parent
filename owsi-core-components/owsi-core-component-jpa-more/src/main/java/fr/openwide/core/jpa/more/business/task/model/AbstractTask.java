@@ -6,8 +6,10 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -16,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Throwables;
 
 import fr.openwide.core.commons.util.CloneUtils;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
@@ -25,7 +29,6 @@ public abstract class AbstractTask implements Runnable, Serializable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
 
-	@Autowired
 	private TransactionTemplate transactionTemplate;
 
 	@Autowired
@@ -67,11 +70,34 @@ public abstract class AbstractTask implements Runnable, Serializable {
 		return null;
 	}
 
+	/**
+	 * Permet à la tâche d'indiquer un transactionTemplate alternatif. Utile en particulier :
+	 *  - pour s'assurer d'être readOnly
+	 *  - pour mettre en place une tâche non transactionnelle
+	 */
+	protected TransactionTemplate getTaskTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	/**
+	 * Permet à la tâche d'indiquer un transactionTemplate alternatif. Utile en particulier :
+	 *  - pour s'assurer d'être readOnly
+	 *  - pour mettre en place une tâche non transactionnelle
+	 */
+	protected TransactionTemplate getPropagationRequiresNewReadOnlyFalseTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	@Autowired
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		DefaultTransactionAttribute transactionAttributes = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		transactionAttributes.setReadOnly(false);
+		transactionTemplate = new TransactionTemplate(transactionManager, transactionAttributes);
+	}
+
 	@Override
 	public void run() {
-		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-
-		final Exception beforeTaskResult = transactionTemplate.execute(new TransactionCallback<Exception>() {
+		final Exception beforeTaskResult = getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallback<Exception>() {
 			@Override
 			public Exception doInTransaction(TransactionStatus status) {
 				try {
@@ -94,7 +120,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 		});
 
 		if (beforeTaskResult != null) {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					try {
@@ -114,19 +140,25 @@ public abstract class AbstractTask implements Runnable, Serializable {
 			});
 		}
 
-		final Exception taskResult = transactionTemplate.execute(new TransactionCallback<Exception>() {
+		final Exception taskResult = getTaskTransactionTemplate().execute(new TransactionCallback<Exception>() {
 			@Override
 			public Exception doInTransaction(TransactionStatus status) {
 				try {
 					QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-
+					
+					// Auparavant, on mettait à jour le statut de succès ici, après avoir traité la tâche.
+					// La tâche pouvait intervenir sur les informations du queuedTaskHolder.
+					// Le problème de cette approche est qu'il n'est pas possible pour la tâche de gérer
+					// finement sa transaction et son entityManager car ils vont être partagés.
+					// 
+					// Maintenant : on sauve le queuedTaskHolder pour être compatible avec le code qui aurait
+					// fait des modifications (ce code ne doit pas jouer avec le entityManager ou les transactions)
+					// Pour le code qui veut jouer avec ces éléments, il peut traiter de manière spécifique le
+					// updateQueuedTaskHolder
+					// L'information de succès est sauvée dans un deuxième temps.
 					doTask(queuedTaskHolder);
-
-					queuedTaskHolder.setEndDate(new Date());
-					queuedTaskHolder.setStatus(TaskStatus.COMPLETED);
-					queuedTaskHolder.setReport(report);
-					queuedTaskHolderService.update(queuedTaskHolder);
-
+					updateQueuedTaskHolder(queuedTaskHolder);
+					
 					return null;
 				} catch (Exception e) {
 					status.setRollbackOnly();
@@ -135,15 +167,34 @@ public abstract class AbstractTask implements Runnable, Serializable {
 			}
 		});
 
-		if (taskResult != null) {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		if (taskResult == null) {
+			// Cas du succès
+			getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					try {
 						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-
+						
+						queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+						queuedTaskHolder.setEndDate(new Date());
+						queuedTaskHolder.setStatus(TaskStatus.COMPLETED);
+						queuedTaskHolder.setReport(report);
+						queuedTaskHolderService.update(queuedTaskHolder);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+		} else {
+			// Cas de l'erreur
+			getPropagationRequiresNewReadOnlyFalseTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					try {
+						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+						
 						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskResult);
-
+						
 						queuedTaskHolder.setStatus(onFailStatus());
 						queuedTaskHolder.setEndDate(new Date());
 						queuedTaskHolder.setReport(report);
@@ -155,6 +206,20 @@ public abstract class AbstractTask implements Runnable, Serializable {
 				}
 			});
 		}
+	}
+
+	/**
+	 * En cas d'utilisation compliquée du transactionManager, permet de laisser la task gérer de manière judicieuse
+	 * la mise à jour.
+	 * 
+	 * NOTA : il n'est pas nécessaire de mettre à jour les informations standard d'échec / succès.
+	 * 
+	 * @throws SecurityServiceException 
+	 * @throws ServiceException 
+	 */
+	protected void updateQueuedTaskHolder(QueuedTaskHolder queuedTaskHolder) throws ServiceException, SecurityServiceException {
+		// Dans le comportement par défaut, on met à jour les modifications potentielles sur le queuedTaskHolder
+		queuedTaskHolderService.update(queuedTaskHolder);
 	}
 
 	protected abstract void doTask(QueuedTaskHolder queuedTaskHolder) throws Exception;
