@@ -27,8 +27,8 @@ import fr.openwide.core.commons.util.ordering.SerializableCollator;
 public class TestSerializableCollator {
 	
 	private static final Iterable<Collection<String>> COMPARISON_TEST_DATA = ImmutableList.<Collection<String>>of(
-			ImmutableList.of("this", "is", "test", "data", "Test")
-			, ImmutableList.of("Et un", "autre", "aûtre", "avéc", "avec", "dès", "des", "dés", "àcçents", "accents")
+			ImmutableList.of("this", "is", "test", "data", "Test"),
+			ImmutableList.of("Et un", "autre", "aûtre", "avéc", "avec", "dès", "des", "dés", "àcçents", "accents")
 	);
 	
 	private static Iterable<Locale> locales() {
