@@ -29,6 +29,17 @@ ol.unstyled {
 	.unstyled();
 }
 
+// Labels
+
+.label {
+	font-size: 85%;
+	padding: 0.2em 0.6em;
+}
+
+.label + .label {
+	margin-left: 4px;
+}
+
 // Tabs
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
@@ -224,7 +235,7 @@ textarea.form-control {
 	vertical-align: middle;
 }
 
-// On force le font-variant et le text-transform de .fa en attendant la correction dans Font Awesome
+// On force le font-variant et le text-transform de .fa
 // cf https://github.com/FortAwesome/Font-Awesome/pull/2750
 .@{fa-css-prefix} {
 	font-variant: normal;
