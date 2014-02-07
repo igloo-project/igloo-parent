@@ -69,7 +69,7 @@ a.list-group-item {
   &.active,
   &.active:hover,
   &.active:focus {
-    z-index: 2; // Place active items above their siblings for proper border styling
+    z-index: @zindex-bootstrap-active; // Place active items above their siblings for proper border styling
     color: @list-group-active-color;
     background-color: @list-group-active-bg;
     border-color: @list-group-active-border;

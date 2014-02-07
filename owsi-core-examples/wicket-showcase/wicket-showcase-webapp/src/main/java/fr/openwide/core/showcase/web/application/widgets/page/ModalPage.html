@@ -13,6 +13,17 @@
 				<h2><wicket:message key="widgets.modal.bootstrapModal.title" /></h2>
 				
 				<div>
+					<div class="hidden" wicket:id="popoverInformation"><wicket:message key="widgets.modal.zIndexTest.popover.label" /></div>
+					
+					<button wicket:id="popoverLabel" class="btn btn-primary" type="button">
+						<span class="icon-ok"></span>
+						<wicket:message key="widgets.modal.zIndexTest.popover.label" />
+					</button>
+				</div>
+				
+				<br />
+				
+				<div>
 					<button wicket:id="addUserBtn" class="btn btn-primary" type="button" title="test tooltip">
 						<span class="icon-white icon-resize-full"></span>
 						<wicket:message key="widgets.modal.openModal" />
@@ -74,6 +85,8 @@
 						</button>
 					</form>
 				</div>
+				
+				<br />
 				
 				<div>
 					<button wicket:id="zIndexTestModalOpen" class="btn btn-primary">

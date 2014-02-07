@@ -8,7 +8,7 @@
 	
 	background: fade(#434343, 80%);
 	
-	z-index: 1000;
+	z-index: @zindex-alert-global;
 	position: fixed;
 	width: 60%;
 	font-weight: bold;
@@ -47,7 +47,7 @@
 	.close {
 		color: #888;
 	
-		z-index: 1001;
+		z-index: @zindex-alert-global-close;
 		position: absolute;
 		padding: 8px;
 		right: 30px;

@@ -15,6 +15,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.showcase.web.application.widgets.component.AddUserPopupPanel;
 import fr.openwide.core.showcase.web.application.widgets.component.ZIndexTestModalPopupPanel;
+import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -25,6 +26,8 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalBackdrop;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class ModalPage extends WidgetsTemplate {
@@ -42,6 +45,20 @@ public class ModalPage extends WidgetsTemplate {
 		options.setBackdrop(BootstrapModalBackdrop.NORMAL);
 		options.setModalOverflow(false);
 		options.setFocusOnFirstNotHiddenInput();
+		
+		// Popover -> to verify that popover stays behind modal
+		WebMarkupContainer popoverInformation = new WebMarkupContainer("popoverInformation");
+		popoverInformation.setOutputMarkupId(true);
+		add(popoverInformation);
+		
+		WebMarkupContainer popoverLabel = new WebMarkupContainer("popoverLabel");
+		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
+		popoverOptions.setTitleText(new ResourceModel("widgets.modal.zIndexTest.popover.title").getObject());
+		popoverOptions.setContentComponent(popoverInformation);
+		popoverOptions.setHtml(true);
+		popoverLabel.add(new BootstrapPopoverBehavior(popoverOptions));
+		popoverLabel.add(new ClassAttributeAppender(Model.of("popover-btn")));
+		add(popoverLabel);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("widgets.menu.modal"), ModalPage.linkDescriptor()));
 		
