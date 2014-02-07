@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.wicket.more.markup.html.basic;
+package fr.openwide.core.wicket.more.util.convert.converters;
 
 import java.util.Locale;
 
@@ -23,16 +23,16 @@ import org.apache.wicket.Localizer;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.lang.Classes;
 
-public class EnumToReadableStringConverter implements IConverter<Enum<?>> {
+public class HumanReadableEnumConverter implements IConverter<Enum<?>> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static EnumToReadableStringConverter INSTANCE = new EnumToReadableStringConverter();
-	public static EnumToReadableStringConverter get() {
+	private static HumanReadableEnumConverter INSTANCE = new HumanReadableEnumConverter();
+	public static HumanReadableEnumConverter get() {
 		return INSTANCE;
 	}
 	
-	private EnumToReadableStringConverter() { }
+	private HumanReadableEnumConverter() { }
 
 	@Override
 	public Enum<?> convertToObject(String value, Locale locale) {

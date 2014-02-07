@@ -17,30 +17,29 @@
 
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
-import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableLocalizedGenericListItemConverter;
 
 /**
  * Affichage sous forme de label d'un {@link GenericLocalizedGenericListItem}
- *
  */
-public class LocalizedGenericListItemLabel extends Label {
+public class LocalizedGenericListItemLabel extends CoreLabel {
 
 	private static final long serialVersionUID = -902689514465301799L;
 	
-	public LocalizedGenericListItemLabel(String id, IModel<? extends GenericListItem<?>> listItemModel) {
+	public LocalizedGenericListItemLabel(String id, IModel<? extends GenericLocalizedGenericListItem<?, ?>> listItemModel) {
 		super(id, listItemModel);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <C> IConverter<C> getConverter(Class<C> type) {
-		if (GenericListItem.class.isAssignableFrom(type)) {
-			return (IConverter<C>) LocalizedGenericListItemConverter.get();
+		if (GenericLocalizedGenericListItem.class.isAssignableFrom(type)) {
+			return (IConverter<C>) HumanReadableLocalizedGenericListItemConverter.get();
 		} else {
 			return super.getConverter(type);
 		}

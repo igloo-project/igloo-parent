@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.wicket.more.markup.html.basic;
+package fr.openwide.core.wicket.more.util.convert.converters;
 
 import java.util.Locale;
 
@@ -23,16 +23,16 @@ import org.apache.wicket.util.convert.IConverter;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 
-public class LocalizedGenericListItemConverter implements IConverter<GenericLocalizedGenericListItem<?, ?>> {
+public class HumanReadableLocalizedGenericListItemConverter implements IConverter<GenericLocalizedGenericListItem<?, ?>> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static LocalizedGenericListItemConverter INSTANCE = new LocalizedGenericListItemConverter();
-	public static LocalizedGenericListItemConverter get() {
+	private static HumanReadableLocalizedGenericListItemConverter INSTANCE = new HumanReadableLocalizedGenericListItemConverter();
+	public static HumanReadableLocalizedGenericListItemConverter get() {
 		return INSTANCE;
 	}
 	
-	private LocalizedGenericListItemConverter() { }
+	private HumanReadableLocalizedGenericListItemConverter() { }
 
 	@Override
 	public GenericLocalizedGenericListItem<?, ?> convertToObject(String value, Locale locale) {

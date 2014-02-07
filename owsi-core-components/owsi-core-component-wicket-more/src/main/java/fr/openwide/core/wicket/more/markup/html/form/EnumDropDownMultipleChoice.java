@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.markup.html.select2;
+package fr.openwide.core.wicket.more.markup.html.form;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +10,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import com.google.common.base.Supplier;
+
+import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownMultipleChoice;
 
 public class EnumDropDownMultipleChoice<E extends Enum<E>, C extends Collection<E>> extends GenericSelect2DropDownMultipleChoice<E, C> {
 
