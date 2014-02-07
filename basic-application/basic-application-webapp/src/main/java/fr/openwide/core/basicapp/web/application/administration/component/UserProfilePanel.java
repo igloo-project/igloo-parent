@@ -1,12 +1,9 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
-import java.util.Locale;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -24,6 +21,7 @@ import fr.openwide.core.basicapp.web.application.administration.form.UserFormPop
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.basic.LocaleLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -52,15 +50,7 @@ public class UserProfilePanel extends GenericPanel<User> {
 				DatePattern.SHORT_DATETIME));
 		add(new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
 				DatePattern.SHORT_DATETIME));
-		add(new Label("locale", new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getObject() {
-				Locale locale = BindingModel.of(userModel, Bindings.user().locale()).getObject();
-				return locale != null ? locale.getDisplayName(BasicApplicationSession.get().getLocale()) : null;
-			}
-		}));
+		add(new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale())));
 		
 		// User update popup
 		UserFormPopupPanel userUpdatePanel = new UserFormPopupPanel("userUpdatePopupPanel", getModel());
