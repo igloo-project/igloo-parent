@@ -16,8 +16,10 @@
 							http://www.springframework.org/schema/aop
 							http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
-	<security:http pattern="/wicket/resource/**" security="none" />
 	<security:http pattern="/static/**" security="none" />
+	<security:http pattern="/wicket/resource/**" security="none" />
+	<security:http pattern="/monitoring/**" security="none" />
+	<security:http pattern="/favicon.ico" security="none" />
 	
 	<security:http authentication-manager-ref="authenticationManager" auto-config="false" use-expressions="true">
 		<security:expression-handler ref="webSecurityExpressionHandler" />
