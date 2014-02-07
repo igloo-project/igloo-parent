@@ -25,6 +25,7 @@ import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.commons.util.FileUtils;
@@ -32,6 +33,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.parameter.service.IAbstractParameterService;
 import fr.openwide.core.jpa.more.util.init.dao.IImportDataDao;
 import fr.openwide.core.jpa.more.util.init.util.GenericEntityConverter;
@@ -92,10 +94,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void importGenericListItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 		for (String packageToScan : getGenericListItemPackagesToScan()) {
-			Set<Class<? extends GenericListItem>> classes = ReflectionUtils.findAssignableClasses(packageToScan, GenericListItem.class);
-			Map<Integer, Class<? extends GenericListItem>> orderedClasses = Maps.newTreeMap();
+			Set<Class<? extends GenericEntity>> classes = Sets.newHashSet();
+			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericListItem.class));
+			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericLocalizedGenericListItem.class));
+			Map<Integer, Class<? extends GenericEntity>> orderedClasses = Maps.newTreeMap();
 			
-			for (Class<? extends GenericListItem> genericListItemClass : classes) {
+			for (Class<? extends GenericEntity> genericListItemClass : classes) {
 				Sheet sheet = workbook.getSheet(getSheetName(genericListItemClass));
 				
 				if (sheet != null) {
@@ -103,7 +107,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 				}
 			}
 			
-			for (Class<? extends GenericListItem> genericListItemClass : orderedClasses.values()) {
+			for (Class<? extends GenericEntity> genericListItemClass : orderedClasses.values()) {
 				doImportItem(idsMapping, workbook, genericListItemClass);
 			}
 		}
