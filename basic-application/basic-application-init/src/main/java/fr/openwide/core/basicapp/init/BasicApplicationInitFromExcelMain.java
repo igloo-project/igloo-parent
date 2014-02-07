@@ -18,6 +18,7 @@ public final class BasicApplicationInitFromExcelMain {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasicApplicationInitFromExcelMain.class);
 
 	public static void main(String[] args) throws ServiceException, SecurityServiceException, IOException {
+		int returnStatus = 0;
 		ConfigurableApplicationContext context = null;
 		try {
 			context = new AnnotationConfigApplicationContext(BasicApplicationInitConfig.class);
@@ -31,11 +32,14 @@ public final class BasicApplicationInitFromExcelMain {
 			contextWrapper.reindexAll();
 			
 			LOGGER.info("Initialization complete");
+		} catch(Throwable e) {
+			LOGGER.error("Error during initialization", e);
+			returnStatus = 1;
 		} finally {
 			if (context != null) {
 				context.close();
 			}
-			System.exit(0);
+			System.exit(returnStatus);
 		}
 	}
 	
