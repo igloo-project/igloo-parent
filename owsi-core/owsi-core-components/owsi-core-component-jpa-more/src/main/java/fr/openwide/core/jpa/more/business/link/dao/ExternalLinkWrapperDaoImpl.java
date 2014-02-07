@@ -81,8 +81,8 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 				.orderBy(
 						// NOTE: if, for a given URL, one linkWrapper has a null lastCheckDate and the other has a non-null lastCheckDate, the null one is ignored.
 						// This is not really on purpose, but this does not impair functionality and the implementation is simpler that way.
-						qExternalLinkWrapper.lastCheckDate.max().asc().nullsFirst()
-						, url.asc()
+						qExternalLinkWrapper.lastCheckDate.max().asc().nullsFirst(),
+						url.asc()
 				);
 		
 		return query.limit(batchSize).list(url);

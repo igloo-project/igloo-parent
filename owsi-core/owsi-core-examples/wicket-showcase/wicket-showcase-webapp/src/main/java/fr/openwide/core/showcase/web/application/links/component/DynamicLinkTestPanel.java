@@ -41,8 +41,8 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 		
 		Component lastUser = new HideableLabel("lastUser", BindingModel.of(userModel, Bindings.user().fullName()));
 		add(
-				lastUser
-				, new PlaceholderContainer("lastUserPlaceholder").component(lastUser)
+				lastUser,
+				new PlaceholderContainer("lastUserPlaceholder").component(lastUser)
 		);
 		
 		Form<?> form = new Form<Void>("form");
@@ -53,8 +53,8 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 				new RadioChoice<Class<? extends WebPage>>("page", pageClassModel,
 						ImmutableList.<Class<? extends WebPage>>of(LinksPage1.class, LinksPage2.class, LinksPage3.class)
 				)
-						.setLabel(new ResourceModel("links.page"))
-				, new UserAutocompleteAjaxComponent("user", userModel)
+						.setLabel(new ResourceModel("links.page")),
+				new UserAutocompleteAjaxComponent("user", userModel)
 						.setLabel(new ResourceModel("links.user"))
 		);
 		
@@ -89,17 +89,17 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 						pageClassModel.detach();
 						userModel.detach();
 					}
-				})
-				, new Form<Void>("linkForm") {
+				}),
+				new Form<Void>("linkForm") {
 					private static final long serialVersionUID = 1L;
 					@Override
 					protected void onSubmit() {
 						LinksTemplate.linkDescriptor(pageClassModel, userModel).setResponsePage();
 					}
-				}
-				, LinksTemplate.linkDescriptor(pageClassModel, userModel).link("bookmarkableLink")
-						.setAutoHideIfInvalid(true)
-				, new Link<Void>("linkWithRedirect") {
+				},
+				LinksTemplate.linkDescriptor(pageClassModel, userModel).link("bookmarkableLink")
+						.setAutoHideIfInvalid(true),
+				new Link<Void>("linkWithRedirect") {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public void onClick() {

@@ -35,8 +35,8 @@ public class DynamicImageTestPanel extends GenericPanel<User> {
 		final IModel<Boolean> booleanModel = Model.of(false);
 		form.add(
 				new CheckBox("boolean", booleanModel)
-						.setLabel(new ResourceModel("links.boolean"))
-				, new UserAutocompleteAjaxComponent("user", userModel)
+						.setLabel(new ResourceModel("links.boolean")),
+				new UserAutocompleteAjaxComponent("user", userModel)
 						.setLabel(new ResourceModel("links.imageUnusedUserParameter"))
 		);
 		
@@ -69,10 +69,10 @@ public class DynamicImageTestPanel extends GenericPanel<User> {
 						booleanModel.detach();
 						userModel.detach();
 					}
-				})
-				, LinkFactory.get().testImage(booleanModel, userModel).image("dynamicImage")
-						.setAutoHideIfInvalid(true)
-				, LinkFactory.get().testImage(booleanModel, userModel).link("bookmarkableLink")
+				}),
+				LinkFactory.get().testImage(booleanModel, userModel).image("dynamicImage")
+						.setAutoHideIfInvalid(true),
+				LinkFactory.get().testImage(booleanModel, userModel).link("bookmarkableLink")
 						.setAutoHideIfInvalid(true)
 		);
 	}
