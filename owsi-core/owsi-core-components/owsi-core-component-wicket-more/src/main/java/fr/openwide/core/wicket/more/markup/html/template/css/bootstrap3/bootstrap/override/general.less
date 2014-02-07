@@ -123,7 +123,7 @@ ol.unstyled {
 
 // Modal
 .modal-backdrop {	// Modal n'est pas exactement celle de Bootstrap
-	z-index: 40;
+	z-index: @zindex-modal-backdrop;
 }
 
 .modal-backdrop,
@@ -157,7 +157,7 @@ span.popover-btn {
 }
 
 .popover {
-	z-index: 30;	// Pour être sous la modal
+	z-index: @zindex-page-popover;	// Pour être sous la modal
 	
 	.popover-title {
 		margin-bottom: 0;
