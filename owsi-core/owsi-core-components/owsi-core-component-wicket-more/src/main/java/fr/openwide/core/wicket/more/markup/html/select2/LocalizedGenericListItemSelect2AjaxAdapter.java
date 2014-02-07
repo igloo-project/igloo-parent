@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,7 @@ public class LocalizedGenericListItemSelect2AjaxAdapter<E extends GenericLocaliz
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(LocalizedGenericListItemSelect2AjaxAdapter.class);
 	
+	@SpringBean
 	private IGenericLocalizedGenericListItemService<? super E, ?> localizedGenericListItemService;
 	
 	private final Class<E> clazz;
