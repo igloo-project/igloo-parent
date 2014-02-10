@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.more.business.localization.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +19,9 @@ import com.google.common.collect.Lists;
 
 @MappedSuperclass
 @Bindable
-public abstract class AbstractLocalizedText {
+public abstract class AbstractLocalizedText implements Serializable, Cloneable {
+
+	private static final long serialVersionUID = -4433811130100791706L;
 
 	@Transient
 	public abstract Collection<Locale> getSupportedLocales();
