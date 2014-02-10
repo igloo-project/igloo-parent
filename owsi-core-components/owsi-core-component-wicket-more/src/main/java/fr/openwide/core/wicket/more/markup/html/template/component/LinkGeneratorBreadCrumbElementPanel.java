@@ -1,9 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.component;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
@@ -21,14 +21,7 @@ public class LinkGeneratorBreadCrumbElementPanel extends GenericPanel<String> {
 		add(breadCrumbLink);
 		
 		add(
-				new EnclosureBehavior() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void setVisibility(Component component, boolean visible) {
-						component.setVisible(visible);
-					}
-				}
-				.component(breadCrumbLink)
+				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).component(breadCrumbLink)
 		);
 	}
 	
