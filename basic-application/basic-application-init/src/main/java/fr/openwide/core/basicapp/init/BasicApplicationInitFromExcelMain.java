@@ -18,7 +18,6 @@ public final class BasicApplicationInitFromExcelMain {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasicApplicationInitFromExcelMain.class);
 
 	public static void main(String[] args) throws ServiceException, SecurityServiceException, IOException {
-		int returnStatus = 0;
 		ConfigurableApplicationContext context = null;
 		try {
 			context = new AnnotationConfigApplicationContext(BasicApplicationInitConfig.class);
@@ -32,15 +31,15 @@ public final class BasicApplicationInitFromExcelMain {
 			contextWrapper.reindexAll();
 			
 			LOGGER.info("Initialization complete");
-		} catch(Throwable e) {
+		} catch(Throwable e) { // NOSONAR We just want to log the Exception/Error, no error handling here.
 			LOGGER.error("Error during initialization", e);
-			returnStatus = 1;
+			throw e;
 		} finally {
 			if (context != null) {
 				context.close();
 			}
-			System.exit(returnStatus);
 		}
+		System.exit(0);
 	}
 	
 	private BasicApplicationInitFromExcelMain() {

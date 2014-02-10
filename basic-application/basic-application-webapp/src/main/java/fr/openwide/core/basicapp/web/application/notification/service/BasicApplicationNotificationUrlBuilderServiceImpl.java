@@ -30,7 +30,7 @@ public class BasicApplicationNotificationUrlBuilderServiceImpl extends AbstractN
 	public String getUserDescriptionUrl(final User user) {
 		Callable<IPageLinkGenerator> pageLinkGeneratorTask = new Callable<IPageLinkGenerator>() {
 			@Override
-			public IPageLinkGenerator call() throws Exception {
+			public IPageLinkGenerator call() {
 				return AdministrationUserDescriptionPage.linkGenerator(GenericEntityModel.of(user));
 			}
 		};

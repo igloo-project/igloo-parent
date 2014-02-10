@@ -15,7 +15,7 @@ public class EnvironmentPanel extends Panel {
 	
 	private static final long serialVersionUID = 3820180221938582333L;
 	
-	private static List<Environment> VISIBLE_ALERTS = Lists.newArrayList(Environment.staging);
+	private static final List<Environment> VISIBLE_ALERTS = Lists.newArrayList(Environment.staging);
 	
 	@SpringBean
 	private BasicApplicationConfigurer configurer;

@@ -1,5 +1,8 @@
 package fr.openwide.core.basicapp.web.application.console.notification.demo.template;
 
+import java.io.Serializable;
+import java.util.Collection;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
@@ -17,6 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Range;
 
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
@@ -48,21 +54,35 @@ public abstract class NotificationDemoTemplate extends WebPage {
 	protected abstract Component buildNotificationPanel(String wicketId, PageParameters parameters);
 
 	protected final <E extends GenericEntity<Long, ?>> IModel<E> getFirstInRange(Class<E> clazz, long minId, long maxId) {
-		return getFirstInRange(clazz, minId, maxId, Predicates.<E>alwaysTrue());
+		return getFirstInRange(clazz, Range.closed(minId, maxId));
+	}
+
+	protected final <E extends GenericEntity<Long, ?>> IModel<E> getFirstInRange(Class<E> clazz, Range<Long> range) {
+		return getFirstInRange(clazz, range, Predicates.<E>alwaysTrue());
 	}
 	
-	protected final <E extends GenericEntity<Long, ?>> IModel<E> getFirstInRange(Class<E> clazz, long minId, long maxId, Predicate<E> predicate) {
-		for (long id = minId ; id < maxId  ; ++id) {
+	protected final <E extends GenericEntity<Long, ?>> IModel<E> getFirstInRange(Class<E> clazz, Range<Long> range, Predicate<E> predicate) {
+		IModel<E> entityModel = getFirstWithId(clazz, ContiguousSet.create(range, DiscreteDomain.longs()), predicate);
+		
+		if (entityModel != null) {
+			return entityModel;
+		} else {
+			LOGGER.error("A demo object is missing for demo " + Classes.simpleName(getClass()));
+			Session.get().error(getString("console.notifications.demo.noDataAvailable"));
+			
+			throw ConsoleNotificationDemoIndexPage.linkDescriptor().newRestartResponseException();
+		}
+	}
+	
+	protected final <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> IModel<E> getFirstWithId(Class<E> clazz, Collection<K> ids, Predicate<E> predicate) {
+		for (K id : ids) {
 			E entity = entityService.getEntity(clazz, id);
 			if (entity != null && predicate.apply(entity)) {
-				return new GenericEntityModel<Long, E>(entity);
+				return GenericEntityModel.of(entity);
 			}
 		}
 		
-		LOGGER.error("A demo object is missing for demo " + Classes.simpleName(getClass()));
-		Session.get().error(getString("console.notifications.demo.noDataAvailable"));
-		
-		throw ConsoleNotificationDemoIndexPage.linkDescriptor().newRestartResponseException();
+		return null;
 	}
 	
 	protected final <E extends GenericEntity<Long, ?>> IModel<E> getNonNullModel(E object) {

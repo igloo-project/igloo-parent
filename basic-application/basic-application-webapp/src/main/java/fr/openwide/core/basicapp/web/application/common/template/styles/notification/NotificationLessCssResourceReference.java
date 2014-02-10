@@ -2,7 +2,7 @@ package fr.openwide.core.basicapp.web.application.common.template.styles.notific
 
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 
-public class NotificationLessCssResourceReference extends LessCssResourceReference {
+public final class NotificationLessCssResourceReference extends LessCssResourceReference {
 
 	private static final long serialVersionUID = 6317731503959025552L;
 	

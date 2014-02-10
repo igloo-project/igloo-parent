@@ -23,7 +23,7 @@ public class BasicApplicationNotificationPanelRendererServiceImpl extends Abstra
 	public String renderExampleNotificationPanel(final User user, final Date date) {
 		Callable<Component> component = new Callable<Component>() {
 			@Override
-			public Component call() throws Exception {
+			public Component call() {
 				return new ExampleHtmlNotificationPanel("htmlPanel", GenericEntityModel.of(user), Model.of(date));
 			}
 		};
