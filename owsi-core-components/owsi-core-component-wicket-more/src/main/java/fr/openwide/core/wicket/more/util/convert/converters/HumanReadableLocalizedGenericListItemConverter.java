@@ -44,7 +44,7 @@ public class HumanReadableLocalizedGenericListItemConverter implements IConverte
 		if (value == null) {
 			return null;
 		} else {
-			return value.getLabel().getOrDefault(locale);
+			return HumanReadableLocalizedTextConverter.get().convertToString(value.getLabel(), locale);
 		}
 	}
 
