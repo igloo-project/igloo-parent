@@ -3,6 +3,10 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 
+/**
+ * @deprecated Use {@link AbstractComponentBooleanPropertyBehavior} instead.
+ */
+@Deprecated
 public abstract class AbstractHidingBehavior extends Behavior {
 	
 	private static final long serialVersionUID = -1592398964983541809L;

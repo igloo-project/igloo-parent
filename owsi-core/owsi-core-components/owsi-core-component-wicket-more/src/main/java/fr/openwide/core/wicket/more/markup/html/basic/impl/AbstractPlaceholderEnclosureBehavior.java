@@ -7,33 +7,29 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Predicate;
 
-import fr.openwide.core.wicket.more.markup.html.basic.AbstractHidingBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.AbstractComponentBooleanPropertyBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.IPlaceholderEnclosureBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder.Visibility;
 
 public abstract class AbstractPlaceholderEnclosureBehavior<T extends AbstractPlaceholderEnclosureBehavior<T>>
-		extends AbstractHidingBehavior
+		extends AbstractComponentBooleanPropertyBehavior
 		implements IPlaceholderEnclosureBuilder<T> {
 
 	private static final long serialVersionUID = 5054905572454226562L;
 	
 	private final PlaceholderEnclosureVisibilityBuilder visibilityBuilder;
 	
-	protected AbstractPlaceholderEnclosureBehavior(Visibility visibility) {
-		super();
+	protected AbstractPlaceholderEnclosureBehavior(ComponentBooleanProperty property, Visibility visibility) {
+		super(property);
 		this.visibilityBuilder = new PlaceholderEnclosureVisibilityBuilder(visibility);
 	}
 	
 	@Override
-	protected boolean isVisible(Component boundComponent) {
+	protected boolean generatePropertyValue(Component component) {
 		return visibilityBuilder.isVisible();
-	}
-	
-	@Override
-	protected void setVisibility(Component component, boolean visible) {
-		component.setVisibilityAllowed(visible);
 	}
 	
 	/**
@@ -68,7 +64,8 @@ public abstract class AbstractPlaceholderEnclosureBehavior<T extends AbstractPla
 	}
 	
 	@Override
-	public <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, IModel<? extends T2>... otherModels) {
+	@SafeVarargs
+	public final <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, IModel<? extends T2>... otherModels) {
 		visibilityBuilder.models(predicate, firstModel, otherModels);
 		return thisAsT();
 	}

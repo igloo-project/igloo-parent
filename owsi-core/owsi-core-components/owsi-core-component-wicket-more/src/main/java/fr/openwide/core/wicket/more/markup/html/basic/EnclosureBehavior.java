@@ -8,7 +8,11 @@ public class EnclosureBehavior extends AbstractPlaceholderEnclosureBehavior<Encl
 	private static final long serialVersionUID = -589273014057505964L;
 
 	public EnclosureBehavior() {
-		super(Visibility.HIDE_IF_EMPTY);
+		this(ComponentBooleanProperty.VISIBILITY_ALLOWED);
+	}
+	
+	public EnclosureBehavior(ComponentBooleanProperty property) {
+		super(property, Visibility.HIDE_IF_EMPTY);
 	}
 
 	@Override

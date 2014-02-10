@@ -2,12 +2,12 @@ package fr.openwide.core.wicket.more.markup.html.template.component;
 
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElementListConcatModel;
@@ -42,14 +42,7 @@ public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 		add(new BreadCrumbListView("breadCrumbElementListView", getModel(), BreadCrumbMarkupTagRenderingBehavior.HTML_BODY, dividerModel));
 		
 		add(
-				new EnclosureBehavior() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void setVisibility(Component component, boolean visible) {
-						component.setVisible(visible);
-					}
-				}
-				.collectionModel(getModel())
+				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).collectionModel(getModel())
 		);
 		
 		add(new WebMarkupContainer("trailingLi") {

@@ -8,7 +8,11 @@ public class PlaceholderBehavior extends AbstractPlaceholderEnclosureBehavior<Pl
 	private static final long serialVersionUID = -4321921413728629980L;
 
 	public PlaceholderBehavior() {
-		super(Visibility.SHOW_IF_EMPTY);
+		this(ComponentBooleanProperty.VISIBILITY_ALLOWED);
+	}
+	
+	public PlaceholderBehavior(ComponentBooleanProperty property) {
+		super(property, Visibility.SHOW_IF_EMPTY);
 	}
 
 	@Override

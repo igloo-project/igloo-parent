@@ -40,6 +40,6 @@ public interface IPlaceholderEnclosureBuilder<T> {
 	 * <p><strong>WARNING:</strong> <code>predicate</code> must be serializable in order for this object to be serializable.
 	 * Also, it must implement IDetachable in order to be properly detached by this object. {@link Predicates#and(Predicate, Predicate)}, for instance, will produce not-detachable predicates.
 	 */
-	<T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, IModel<? extends T2>... otherModels);
+	<T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, @SuppressWarnings("unchecked") IModel<? extends T2>... otherModels);
 
 }

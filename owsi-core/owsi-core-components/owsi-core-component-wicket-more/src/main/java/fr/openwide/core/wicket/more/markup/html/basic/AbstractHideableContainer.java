@@ -14,7 +14,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureV
 /**
  * NE PAS RÉFÉRENCER CETTE CLASSE. Elle devrait être déplacée dans le sous-package 'impl' et être renommée
  * en AbstractPlaceholderEnclosureBehavior afin de créer un véritable AbstractHideableContainer, dont la seule fonction
- * implémentée est le fait de définir sa visibilité à chaque onConfigure() (cf. AbstractHidingBehavior).
+ * implémentée est le fait de définir sa visibilité à chaque onConfigure() (cf. {@link AbstractComponentBooleanPropertyBehavior}).
  */
 public abstract class AbstractHideableContainer<T extends AbstractHideableContainer<T>>
 		extends WebMarkupContainer
@@ -67,7 +67,9 @@ public abstract class AbstractHideableContainer<T extends AbstractHideableContai
 	}
 	
 	@Override
-	public <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, IModel<? extends T2>... otherModels) {
+	@SafeVarargs
+	public final <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel,
+			IModel<? extends T2>... otherModels) {
 		visibilityBuilder.models(predicate, firstModel, otherModels);
 		return thisAsT();
 	}

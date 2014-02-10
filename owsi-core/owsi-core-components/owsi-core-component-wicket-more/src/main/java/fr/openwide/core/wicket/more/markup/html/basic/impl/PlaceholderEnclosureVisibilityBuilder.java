@@ -92,9 +92,11 @@ public class PlaceholderEnclosureVisibilityBuilder implements IDetachable, IPlac
 		}
 		return this;
 	}
-	
+
 	@Override
-	public <T2> PlaceholderEnclosureVisibilityBuilder models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel, IModel<? extends T2>... otherModels) {
+	@SafeVarargs
+	public final <T2> PlaceholderEnclosureVisibilityBuilder models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel,
+			IModel<? extends T2>... otherModels) {
 		for (IModel<? extends T2> model : Lists.asList(firstModel, otherModels)) {
 			model(predicate, model);
 		}
