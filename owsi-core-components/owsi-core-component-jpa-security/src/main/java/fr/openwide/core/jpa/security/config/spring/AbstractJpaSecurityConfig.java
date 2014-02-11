@@ -169,12 +169,12 @@ public abstract class AbstractJpaSecurityConfig {
 		return runAsAuthenticationProvider;
 	}
 
-	protected String defaultPermissionHierarchyAsString() {
+	protected static String defaultPermissionHierarchyAsString() {
 		return CorePermissionConstants.ADMINISTRATION + " > " + CorePermissionConstants.WRITE + "\n"
 				+ CorePermissionConstants.WRITE + " > " + CorePermissionConstants.READ;
 	}
 
-	protected String defaultRoleHierarchyAsString() {
+	protected static String defaultRoleHierarchyAsString() {
 		return CoreAuthorityConstants.ROLE_SYSTEM + " > " + CoreAuthorityConstants.ROLE_ADMIN + "\n"
 				+ CoreAuthorityConstants.ROLE_ADMIN + " > " + CoreAuthorityConstants.ROLE_AUTHENTICATED + "\n"
 				+ CoreAuthorityConstants.ROLE_AUTHENTICATED + " > " + CoreAuthorityConstants.ROLE_ANONYMOUS + "\n";
