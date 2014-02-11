@@ -29,7 +29,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	private static final String EMPTY_PASSWORD_HASH = "* NO PASSWORD *";
 
 	@Autowired
-	private IGenericUserService<?> personService; 
+	private IGenericUserService<?> userService; 
 	
 	@Autowired
 	private RoleHierarchy roleHierarchy;
@@ -45,38 +45,38 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
-		IGroupedUser<?> person;
+		IGroupedUser<?> user;
 		if (AuthenticationUserNameComparison.CASE_INSENSITIVE.equals(authenticationUserNameComparison)) {
-			person = personService.getByUserNameCaseInsensitive(userName);
+			user = userService.getByUserNameCaseInsensitive(userName);
 		} else {
-			person = personService.getByUserName(userName);
+			user = userService.getByUserName(userName);
 		}
 		
-		if (person == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException("CoreHibernateUserDetailsServiceImpl: User not found: " + userName);
 		}
 		
-		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(person);
+		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(user);
 		
 		// In any case, we can't pass an empty password hash to the CoreUserDetails
 		
-		CoreUserDetails userDetails = new CoreUserDetails(person.getUserName(),
-				StringUtils.hasText(person.getPasswordHash()) ? person.getPasswordHash() : EMPTY_PASSWORD_HASH,
-				person.isActive(), true, true, true, 
+		CoreUserDetails userDetails = new CoreUserDetails(user.getUserName(),
+				StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
+				user.isActive(), true, true, true, 
 				roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft()),
 				permissionHierarchy.getAcceptablePermissions(authoritiesAndPermissions.getRight()));
 		
 		return userDetails;
 	}
 	
-	protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(IGroupedUser<?> person) {
+	protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(IGroupedUser<?> user) {
 		Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
 		Set<Permission> permissions = Sets.newHashSet();
 		
-		addAuthorities(grantedAuthorities, person.getAuthorities());
-		permissions.addAll(person.getPermissions());
+		addAuthorities(grantedAuthorities, user.getAuthorities());
+		permissions.addAll(user.getPermissions());
 		
-		for (IUserGroup personGroup : person.getGroups()) {
+		for (IUserGroup personGroup : user.getGroups()) {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
 			permissions.addAll(personGroup.getPermissions());
 		}
