@@ -15,24 +15,28 @@ public class LocalizedGenericListItemListModel<T extends GenericLocalizedGeneric
 	private static final long serialVersionUID = 1385903058801258105L;
 
 	private final Class<T> clazz;
-	private final boolean enabled;
 	private final Comparator<? super T> comparator;
+	private final boolean enabledOnly;
 
 	@SpringBean
 	private IGenericLocalizedGenericListItemService<? super T, ?> listItemService;
 
-	public LocalizedGenericListItemListModel(Class<T> clazz, boolean enabled, Comparator<? super T> comparator) {
+	public LocalizedGenericListItemListModel(Class<T> clazz, Comparator<? super T> comparator) {
+		this(clazz, comparator, true);
+	}
+
+	public LocalizedGenericListItemListModel(Class<T> clazz, Comparator<? super T> comparator, boolean enabledOnly) {
 		super();
 		Injector.get().inject(this);
 		
 		this.clazz = clazz;
-		this.enabled = enabled;
+		this.enabledOnly = enabledOnly;
 		this.comparator = comparator;
 	}
 
 	@Override
 	protected List<T> load() {
-		if (enabled) {
+		if (enabledOnly) {
 			return listItemService.listEnabled(clazz, comparator);
 		} else {
 			return listItemService.list(clazz, comparator);
