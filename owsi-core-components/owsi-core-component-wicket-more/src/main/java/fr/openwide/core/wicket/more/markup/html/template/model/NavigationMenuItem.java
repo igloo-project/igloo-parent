@@ -5,17 +5,16 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.model.Model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 
 public class NavigationMenuItem implements IDetachable {
 
@@ -23,19 +22,15 @@ public class NavigationMenuItem implements IDetachable {
 	
 	private IModel<String> labelModel;
 	
+	private IModel<String> cssClassesModel = Model.of("");
+	
 	private IPageLinkGenerator pageLinkGenerator;
-	
-	private Class<? extends Page> pageClass;
-	
-	private PageParameters pageParameters;
 	
 	private final List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
 	
 	protected NavigationMenuItem(NavigationMenuItem wrapped) {
 		setLabelModel(wrapped.getLabelModel());
 		setPageLinkGenerator(wrapped.getPageLinkGenerator());
-		setPageClass(wrapped.getPageClass());
-		setPageParameters(wrapped.getPageParameters());
 		setSubMenuItems(wrapped.getSubMenuItems());
 	}
 	
@@ -43,42 +38,15 @@ public class NavigationMenuItem implements IDetachable {
 		this.labelModel = labelModel;
 	}
 	
-	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters,
-			IPageLinkGenerator pageLinkGenerator, Collection<NavigationMenuItem> subMenuItems) {
+	public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator,
+			Collection<NavigationMenuItem> subMenuItems) {
 		this.labelModel = labelModel;
-		this.pageClass = pageClass;
-		this.pageParameters = pageParameters;
 		this.pageLinkGenerator = pageLinkGenerator;
 		this.subMenuItems.addAll(subMenuItems);
 	}
 	
-	public NavigationMenuItem(IModel<String> labelModel,
-			Class<? extends Page> pageClass, PageParameters pageParameters,
-			IPageLinkGenerator pageLinkGenerator) {
-		this(labelModel, pageClass, pageParameters, pageLinkGenerator,
-				Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
-	}
-	
-	@Deprecated
-	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass) {
-		this(labelModel, pageClass, null, null, Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
-	}
-	
-	@Deprecated
-	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters) {
-		this(labelModel, pageClass, pageParameters, null, Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
-	}
-	
-	@Deprecated
-	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass,
-			Collection<NavigationMenuItem> subMenuItems) {
-		this(labelModel, pageClass, null, null, subMenuItems);
-	}
-	
-	@Deprecated
-	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters,
-			Collection<NavigationMenuItem> subMenuItems) {
-		this(labelModel, pageClass, pageParameters, null, subMenuItems);
+	public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator) {
+		this(labelModel, pageLinkGenerator, ImmutableList.<NavigationMenuItem>of());
 	}
 	
 	@Override
@@ -95,23 +63,27 @@ public class NavigationMenuItem implements IDetachable {
 		}
 	}
 
-	public Link<Void> link(String wicketId) {
+	public AbstractLink link(String wicketId) {
 		if (pageLinkGenerator != null) {
 			return pageLinkGenerator.link(wicketId);
 		} else {
-			return new BookmarkablePageLink<Void>(wicketId, pageClass, pageParameters);
+			return new BlankLink(wicketId);
 		}
 	}
 	
 	public boolean isActive(Class<? extends Page> selectedPage) {
-		return pageClass.equals(selectedPage);
+		if (pageLinkGenerator != null) {
+			return pageLinkGenerator.isActive(selectedPage);
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean isAccessible() {
 		if (pageLinkGenerator != null) {
 			return pageLinkGenerator.isAccessible();
 		} else {
-			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+			return true;
 		}
 	}
 	
@@ -119,46 +91,43 @@ public class NavigationMenuItem implements IDetachable {
 		return labelModel;
 	}
 	
-	public void setLabelModel(IModel<String> labelModel) {
+	public NavigationMenuItem setLabelModel(IModel<String> labelModel) {
 		this.labelModel = labelModel;
+		return this;
 	}
 	
 	protected IPageLinkGenerator getPageLinkGenerator() {
 		return pageLinkGenerator;
 	}
 
-	protected void setPageLinkGenerator(IPageLinkGenerator pageLinkGenerator) {
+	protected NavigationMenuItem setPageLinkGenerator(IPageLinkGenerator pageLinkGenerator) {
 		this.pageLinkGenerator = pageLinkGenerator;
-	}
-
-	protected Class<? extends Page> getPageClass() {
-		return pageClass;
-	}
-
-	protected void setPageClass(Class<? extends Page> pageClass) {
-		this.pageClass = pageClass;
-	}
-
-	protected PageParameters getPageParameters() {
-		return pageParameters;
-	}
-
-	protected void setPageParameters(PageParameters pageParameters) {
-		this.pageParameters = pageParameters;
+		return this;
 	}
 	
 	public List<NavigationMenuItem> getSubMenuItems() {
 		return Collections.unmodifiableList(subMenuItems);
 	}
 	
-	public void addSubMenuItem(NavigationMenuItem subMenuItem) {
+	public NavigationMenuItem addSubMenuItem(NavigationMenuItem subMenuItem) {
 		this.subMenuItems.add(subMenuItem);
+		return this;
 	}
 	
-	public void setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
+	public NavigationMenuItem setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
 		Collection<NavigationMenuItem> menuItems = ImmutableList.copyOf(subMenuItems); // Handle collection views
 		this.subMenuItems.clear();
 		this.subMenuItems.addAll(menuItems);
+		return this;
+	}
+
+	public IModel<String> getCssClassesModel() {
+		return cssClassesModel;
+	}
+
+	public NavigationMenuItem setCssClassesModel(IModel<String> cssClassesModel) {
+		this.cssClassesModel = cssClassesModel;
+		return this;
 	}
 
 }
