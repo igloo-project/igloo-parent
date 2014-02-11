@@ -112,5 +112,11 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	 * @return
 	 */
 	boolean isAccessible();
+	
+	/**
+	 * Returns true if the page pointed by the page link descriptor is equals to the one passed as parameter.
+	 * @return
+	 */
+	boolean isActive(Class<? extends Page> selectedPage);
 
 }

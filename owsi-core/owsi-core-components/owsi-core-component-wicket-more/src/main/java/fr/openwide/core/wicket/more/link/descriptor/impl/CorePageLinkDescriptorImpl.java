@@ -147,9 +147,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	@Override
 	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
 			throws LinkParameterValidationRuntimeException {
-		PageParameters parameters = getValidatedParameters();
-		
-		return new NavigationMenuItem(labelModel, getNonNullPageClass(), parameters, this, subMenuItems);
+		return new NavigationMenuItem(labelModel, this, subMenuItems);
 	}
 	
 	@Override
@@ -159,6 +157,16 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 			return false;
 		} else {
 			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+		}
+	}
+	
+	@Override
+	public boolean isActive(Class<? extends Page> selectedPage) {
+		Class<? extends Page> pageClass = pageClassModel.getObject();
+		if (pageClass == null) {
+			return false;
+		} else {
+			return pageClass.equals(selectedPage);
 		}
 	}
 	

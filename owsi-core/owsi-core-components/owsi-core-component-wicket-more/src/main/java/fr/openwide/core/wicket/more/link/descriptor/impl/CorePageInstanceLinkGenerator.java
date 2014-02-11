@@ -137,8 +137,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	@Override
 	public NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
 			throws LinkInvalidTargetRuntimeException {
-		Page pageInstance = getValidPageInstance();
-		return new NavigationMenuItem(labelModel, pageInstance.getClass(), pageInstance.getPageParameters(), this, subMenuItems);
+		return new NavigationMenuItem(labelModel, this, subMenuItems);
 	}
 
 	@Override
@@ -153,6 +152,11 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		}
 		return Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER);
 	}
+	
+	@Override
+	public boolean isActive(Class<? extends Page> selectedPage) {
+		throw new IllegalStateException("We may not call isActive on a page instance link.");
+	};
 
 	@Override
 	public void detach() {
@@ -171,6 +175,6 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 			}
 			return null;
 		}
-	};
+	}
 
 }

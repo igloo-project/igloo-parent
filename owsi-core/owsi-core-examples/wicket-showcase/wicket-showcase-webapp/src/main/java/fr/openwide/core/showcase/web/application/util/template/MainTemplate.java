@@ -7,8 +7,8 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
@@ -69,7 +69,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				Link<Void> navLink = navItem.link("navLink");
+				AbstractLink navLink = navItem.link("navLink");
 				navLink.add(new Label("navLabel", navItem.getLabelModel()));
 				
 				item.setVisible(navItem.isAccessible());
@@ -89,7 +89,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				Link<Void> navLink = navItem.link("navLink");
+				AbstractLink navLink = navItem.link("navLink");
 				navLink.add(new Label("navLabel", navItem.getLabelModel()));
 				
 				item.setVisible(navItem.isAccessible());
