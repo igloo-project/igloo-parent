@@ -13,12 +13,19 @@ public class BreadCrumbElementListConcatModel extends AbstractReadOnlyModel<List
 	
 	private final IModel<List<BreadCrumbElement>> prependedListModel;
 	private final IModel<List<BreadCrumbElement>> appendedListModel;
+	private final int numberOfElementsToSubstract;
 	
 	public BreadCrumbElementListConcatModel(IModel<List<BreadCrumbElement>> prependedListModel,
 			IModel<List<BreadCrumbElement>> appendedListModel) {
+		this(prependedListModel, appendedListModel, 0);
+	}
+	
+	public BreadCrumbElementListConcatModel(IModel<List<BreadCrumbElement>> prependedListModel,
+			IModel<List<BreadCrumbElement>> appendedListModel, int numberOfElementsToSubstract) {
 		super();
 		this.prependedListModel = prependedListModel;
 		this.appendedListModel = appendedListModel;
+		this.numberOfElementsToSubstract = numberOfElementsToSubstract;
 	}
 
 	@Override
@@ -26,10 +33,16 @@ public class BreadCrumbElementListConcatModel extends AbstractReadOnlyModel<List
 		List<BreadCrumbElement> prependedList = prependedListModel.getObject();
 		List<BreadCrumbElement> appendedList = appendedListModel.getObject();
 		
-		return ImmutableList.<BreadCrumbElement>builder()
-				.addAll(prependedList)
-				.addAll(appendedList)
-				.build();
+		ImmutableList.Builder<BreadCrumbElement> builder = ImmutableList.builder();
+		builder.addAll(prependedList);
+		
+		if (numberOfElementsToSubstract > 0) {
+			builder.addAll(appendedList.subList(0, Math.max(0, appendedList.size() - numberOfElementsToSubstract)));
+		} else {
+			builder.addAll(appendedList);
+		}
+		
+		return builder.build();
 	}
 
 }

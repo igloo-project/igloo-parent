@@ -172,7 +172,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	
 	@Override
 	protected Component createBodyBreadCrumb(String wicketId) {
-		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, Model.of(""))
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, 1)
+				.setDividerModel(Model.of(""))
 				.setTrailingSeparator(true);
 	}
 	
