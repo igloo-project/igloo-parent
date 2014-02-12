@@ -174,7 +174,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	
 	@Override
 	protected Component createBodyBreadCrumb(String wicketId) {
-		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, Model.of(""))
+		// By default, we remove one element from the breadcrumb as it is usually also used to generate the page title.
+		// The last element is usually the title of the current page and shouldn't be displayed in the breadcrumb.
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, 1)
+				.setDividerModel(Model.of(""))
 				.setTrailingSeparator(true);
 	}
 	
