@@ -164,11 +164,11 @@ public final class JpaConfigUtils {
 	}
 
 	public static Advisor defaultTransactionAdvisor(PlatformTransactionManager transactionManager,
-			List<Class<? extends Exception>> additionalRolebackRuleExceptions) {
+			List<Class<? extends Exception>> additionalRollbackRuleExceptions) {
 		AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
 		
 		advisor.setExpression("this(" + ITransactionalAspectAwareService.class.getName() + ")");
-		advisor.setAdvice(defaultTransactionInterceptor(transactionManager, additionalRolebackRuleExceptions));
+		advisor.setAdvice(defaultTransactionInterceptor(transactionManager, additionalRollbackRuleExceptions));
 		
 		return advisor;
 		
@@ -178,7 +178,7 @@ public final class JpaConfigUtils {
 	 * Construit un transactionInterceptor avec une configuration par défaut.
 	 */
 	public static TransactionInterceptor defaultTransactionInterceptor(PlatformTransactionManager transactionManager,
-			List<Class<? extends Exception>> additionalRolebackRuleExceptions) {
+			List<Class<? extends Exception>> additionalRollbackRuleExceptions) {
 		TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
 		Properties transactionAttributes = new Properties();
 		
@@ -187,7 +187,7 @@ public final class JpaConfigUtils {
 		// TODO voir si on ajoute SecurityServiceException.class en fonction de ce que ça donne sur le Wombat
 		// ou voir si on ne la dégage pas carrément en fait...
 		
-		for (Class<? extends Exception> clazz : additionalRolebackRuleExceptions) {
+		for (Class<? extends Exception> clazz : additionalRollbackRuleExceptions) {
 			rollbackRules.add(new RollbackRuleAttribute(clazz));
 		}
 		
