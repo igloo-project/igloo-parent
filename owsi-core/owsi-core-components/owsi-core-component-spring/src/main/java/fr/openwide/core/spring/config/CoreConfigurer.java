@@ -230,4 +230,16 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public int getWicketBackgroundRequestCycleBuilderUrlServerPort() {
 		return getPropertyAsInteger("wicket.backgroundThreadContextBuilder.url.serverPort", 8080);
 	}
+	
+	public String getWicketDiskDataStorePath() {
+		return getPropertyAsString("wicket.diskDataStore.path", null);
+	}
+	
+	public int getWicketDiskDataStoreInMemoryCacheSize() {
+		return getPropertyAsInteger("wicket.diskDataStore.inMemoryCacheSize", 40);
+	}
+	
+	public int getWicketDiskDataStoreMaxSizePerSession() {
+		return getPropertyAsInteger("wicket.diskDataStore.maxSizePerSession", 10);
+	}
 }
