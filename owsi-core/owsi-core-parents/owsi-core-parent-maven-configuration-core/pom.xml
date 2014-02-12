@@ -215,6 +215,12 @@
 					<groupId>commons-validator</groupId>
 					<artifactId>commons-validator</artifactId>
 					<version>${owsi-core.commons-validator.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			
 			<!-- Spring -->
