@@ -29,12 +29,10 @@ import fr.openwide.core.imports.excel.mapping.column.MappedExcelImportColumnDefi
 import fr.openwide.core.imports.excel.mapping.column.builder.AbstractColumnBuilder;
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.TypeState;
-import fr.openwide.core.imports.excel.test.poi.TestApachePoiExcelImporter;
 
 /**
  * The central class of this Excel import framework.
- * See {@link TestApachePoiExcelImporter} for an example on how to use this class.
- * @see TestApachePoiExcelImporter
+ * See TestApachePoiExcelImporter for an example on how to use this class.
  * @author yrodiere
  */
 public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
