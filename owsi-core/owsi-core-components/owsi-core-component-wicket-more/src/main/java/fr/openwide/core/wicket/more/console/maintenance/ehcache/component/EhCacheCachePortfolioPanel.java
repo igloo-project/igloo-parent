@@ -35,7 +35,7 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCac
 import fr.openwide.core.wicket.more.markup.html.basic.PercentageValueLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardDataAttributeAppender;
+import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardDataAttributeModifier;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
@@ -150,7 +150,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								CoreWicketMoreBinding.ehCacheCacheInformation().name())));
 						
 						WebMarkupContainer copyToClipboard = new WebMarkupContainer("copyToClipboard");
-						copyToClipboard.add(new ZeroClipboardDataAttributeAppender(BindingModel.of(
+						copyToClipboard.add(new ZeroClipboardDataAttributeModifier(BindingModel.of(
 								cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name())));
 						item.add(copyToClipboard);
 						
