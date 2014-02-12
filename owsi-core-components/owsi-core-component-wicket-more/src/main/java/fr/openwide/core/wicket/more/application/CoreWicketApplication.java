@@ -1,7 +1,9 @@
 package fr.openwide.core.wicket.more.application;
 
+import java.io.File;
 import java.util.Locale;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -13,12 +15,16 @@ import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCac
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.time.Duration;
 import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -36,6 +42,8 @@ import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
 import fr.openwide.core.wicket.resource.JQueryUpdateResourceReference;
 
 public abstract class CoreWicketApplication extends WebApplication {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CoreWicketApplication.class);
 	
 	@Autowired
 	private CoreConfigurer configurer;
@@ -101,7 +109,24 @@ public abstract class CoreWicketApplication extends WebApplication {
 			getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
 		
 		// Update de jQuery : à commenter quand on se remet en ligne avec Wicket
-			getJavaScriptLibrarySettings().setJQueryReference(JQueryUpdateResourceReference.get());
+		getJavaScriptLibrarySettings().setJQueryReference(JQueryUpdateResourceReference.get());
+			
+		// configuration du disk data store de Wicket
+			getStoreSettings().setInmemoryCacheSize(configurer.getWicketDiskDataStoreInMemoryCacheSize());
+			getStoreSettings().setMaxSizePerSession(Bytes.megabytes(configurer.getWicketDiskDataStoreMaxSizePerSession()));
+		
+			String wicketDiskDataStorePath = configurer.getWicketDiskDataStorePath();
+			if (StringUtils.hasText(wicketDiskDataStorePath)) {
+				try {
+					File wicketDiskDataStoreFolder = new File(wicketDiskDataStorePath);
+					FileUtils.forceMkdir(wicketDiskDataStoreFolder);
+					
+					getStoreSettings().setFileStoreFolder(wicketDiskDataStoreFolder);
+				} catch (Exception e) {
+					LOGGER.error(String.format("Unable to define a specific path (%1$s) for wicket data store. Using the default one.",
+							wicketDiskDataStorePath), e);
+				}
+			}
 		
 		mountCommonResources();
 		mountCommonPages();
