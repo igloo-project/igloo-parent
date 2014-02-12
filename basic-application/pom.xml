@@ -28,6 +28,21 @@
 		<tomcat-jdbc.version>${owsi-core.tomcat-jdbc.version}</tomcat-jdbc.version>
 	</properties>
 	
+	<profiles>
+		<profile>
+			<id>recette</id>
+			<properties>
+				<remote-deployment-url>scpexe://root@openwidesi-vm-recettejava.accelance.net/root/livraison/${maven.build.timestamp}</remote-deployment-url>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<remote-deployment-url>scpexe://openwide@todo/data/home/openwide/livraison/${maven.build.timestamp}</remote-deployment-url>
+			</properties>
+		</profile>
+	</profiles>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -37,6 +52,20 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 	
 	<repositories>
 		<repository>

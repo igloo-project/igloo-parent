@@ -79,6 +79,23 @@
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<configuration>
+					<fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
+					<url>${remote-deployment-url}</url>
+				</configuration>
+				<executions>
+					<execution>
+						<id>upload-war-to-server</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload-single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
