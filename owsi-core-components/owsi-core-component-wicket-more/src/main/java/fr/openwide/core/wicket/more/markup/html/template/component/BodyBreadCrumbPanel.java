@@ -18,32 +18,31 @@ public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 	
 	private static final long serialVersionUID = -3398120588294325073L;
 	
-	protected static final IModel<String> DEFAULT_DIVIDER_MODEL = ReadOnlyModel.of(Model.of("/"));
+	protected IModel<String> dividerModel = ReadOnlyModel.of(Model.of("/"));
 	
 	private boolean trailingSeparator = false;
-
+	
 	public BodyBreadCrumbPanel(
 			String id,
 			IModel<List<BreadCrumbElement>> prependedBreadCrumbElementsModel,
 			IModel<List<BreadCrumbElement>> breadCrumbElementsModel) {
-		this(id, prependedBreadCrumbElementsModel, breadCrumbElementsModel, DEFAULT_DIVIDER_MODEL);
+		this(id, prependedBreadCrumbElementsModel, breadCrumbElementsModel, 0);
 	}
 	
 	public BodyBreadCrumbPanel(
 			String id,
 			IModel<List<BreadCrumbElement>> prependedBreadCrumbElementsModel,
-			IModel<List<BreadCrumbElement>> breadCrumbElementsModel,
-			IModel<String> dividerModel) {
-		super(
-				id,
-				new BreadCrumbElementListConcatModel(prependedBreadCrumbElementsModel, breadCrumbElementsModel)
-		);
+			IModel<List<BreadCrumbElement>> breadCrumbElementsModel, int numberOfElementsToSubstract) {
+		super(id, new BreadCrumbElementListConcatModel(prependedBreadCrumbElementsModel, breadCrumbElementsModel, numberOfElementsToSubstract));
+	}
+	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
 		
 		add(new BreadCrumbListView("breadCrumbElementListView", getModel(), BreadCrumbMarkupTagRenderingBehavior.HTML_BODY, dividerModel));
 		
-		add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).collectionModel(getModel())
-		);
+		add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).collectionModel(getModel()));
 		
 		add(new WebMarkupContainer("trailingLi") {
 			private static final long serialVersionUID = 1L;
@@ -53,7 +52,12 @@ public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 				super.onConfigure();
 				setVisible(trailingSeparator);
 			}
-		});
+		});	
+	}
+	
+	public BodyBreadCrumbPanel setDividerModel(IModel<String> dividerModel) {
+		this.dividerModel = dividerModel;
+		return this;
 	}
 	
 	public BodyBreadCrumbPanel setTrailingSeparator(boolean trailingSeparator) {
