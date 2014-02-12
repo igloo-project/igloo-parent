@@ -24,6 +24,7 @@
 		<module>owsi-core-component-jpa-security</module>
 		
 		<module>owsi-core-component-export</module>
+		<module>owsi-core-component-imports</module>
 		
 		<module>owsi-core-component-wicket</module>
 		<module>owsi-core-component-wicket-more</module>

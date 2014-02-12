@@ -32,6 +32,10 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<U, ?>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public U getByUserNameCaseInsensitive(String userName) {
+		if (userName == null) {
+			return null;
+		}
+		
 		// obtention d'un mapper querydsl branché à l'implémentation concrète
 		BeanPath<U> path = new BeanPath<U>(getObjectClass(), QGenericUser.genericUser.getMetadata());
 		QGenericUser qUser = new QGenericUser(path);
