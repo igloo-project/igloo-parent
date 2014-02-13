@@ -25,6 +25,10 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 
+/**
+ * @deprecated Use {@code new GenericListItemLabel(id, listItemModel).hideIfEmpty()} instead.
+ */
+@Deprecated
 public class GenericListItemHideableLabel extends HideableLabel {
 	
 	private static final long serialVersionUID = -8036310899053519542L;

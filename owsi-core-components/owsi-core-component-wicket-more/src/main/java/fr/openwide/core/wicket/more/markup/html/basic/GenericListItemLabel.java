@@ -17,19 +17,19 @@
 
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.bindgen.Binding;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 
 /**
  * Affichage sous forme de label d'un {@link GenericListItem}
  *
  */
-public class GenericListItemLabel extends Label {
+public class GenericListItemLabel extends CoreLabel {
 
 	private static final long serialVersionUID = -902689514465301799L;
 	

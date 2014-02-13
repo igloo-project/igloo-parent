@@ -2,6 +2,10 @@ package fr.openwide.core.wicket.markup.html.basic;
 
 import org.apache.wicket.model.IModel;
 
+/**
+ * @deprecated Use {@code new CoreLabel(id, model).hideIfEmpty()} instead.
+ */
+@Deprecated
 public class HideableLabel extends AbstractCoreLabel<HideableLabel> {
 
 	private static final long serialVersionUID = 1L;
