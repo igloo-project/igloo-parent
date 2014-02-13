@@ -27,15 +27,15 @@ import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.SheetSelec
 public class TestApachePoiExcelImporter {
 
 	private static class Columns extends ApachePoiImportColumnSet {
-		public Column<Date> dateColumn = withIndex(0).asDate().build();
-		public Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean(new Function<String, Boolean>() {
+		final Column<Date> dateColumn = withIndex(0).asDate().build();
+		final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean(new Function<String, Boolean>() {
 					@Override
 					public Boolean apply(String input) {
 						return "true".equals(input) ? true : false;
 					}
 				}).build();
-		public Column<String> stringColumn = withHeader("StringColumn", 2, false).asString().cleaned().build();
-		public Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
+		final Column<String> stringColumn = withHeader("StringColumn", 2, false).asString().cleaned().build();
+		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
 	}
 
 	private static Columns COLUMNS = new Columns();
