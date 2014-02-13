@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
 import org.javatuples.Quartet;
 
 import com.google.common.base.Function;
@@ -21,6 +22,7 @@ import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 import fr.openwide.core.imports.excel.poi.mapping.ApachePoiImportColumnSet;
 import fr.openwide.core.imports.excel.poi.scanner.ApachePoiExcelImportFileScanner;
 import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.IExcelImportFileVisitor;
+import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.SheetSelection;
 
 public class TestApachePoiExcelImporter {
 
@@ -43,9 +45,9 @@ public class TestApachePoiExcelImporter {
 	public List<Quartet<Date, Boolean, String, Integer>> doImport(InputStream stream, String filename) throws ExcelImportException {
 		final List<Quartet<Date, Boolean, String, Integer>> results = Lists.newArrayList();
 		
-		SCANNER.scan(stream, filename, new IExcelImportFileVisitor<Workbook, Sheet, Row, Cell>() {
+		SCANNER.scan(stream, filename, SheetSelection.ALL, new IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference>() {
 			@Override
-			public void visitSheet(IExcelImportNavigator<Sheet, Row, Cell> navigator, Workbook workbook, Sheet sheet)
+			public void visitSheet(IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, Workbook workbook, Sheet sheet)
 					throws ExcelImportException {
 				IExcelImportEventHandler eventHandler = new SimpleExcelImportEventHandler();
 				

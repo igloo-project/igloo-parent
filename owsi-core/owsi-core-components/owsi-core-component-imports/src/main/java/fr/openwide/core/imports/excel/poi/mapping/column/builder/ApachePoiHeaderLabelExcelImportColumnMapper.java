@@ -7,6 +7,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellReference;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
@@ -18,7 +19,7 @@ import fr.openwide.core.imports.excel.event.exception.ExcelImportHeaderLabelMapp
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
 
-/*package*/ class ApachePoiHeaderLabelExcelImportColumnMapper implements IExcelImportColumnMapper<Sheet, Row, Cell> {
+/*package*/ class ApachePoiHeaderLabelExcelImportColumnMapper implements IExcelImportColumnMapper<Sheet, Row, Cell, CellReference> {
 	
 	private final String expectedHeaderLabel;
 	
@@ -42,7 +43,7 @@ import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnM
 	}
 	
 	@Override
-	public Function<? super Row, Cell> map(Sheet sheet, IExcelImportNavigator<Sheet, Row, Cell> navigator, IExcelImportEventHandler eventHandler) throws ExcelImportHeaderLabelMappingException {
+	public Function<? super Row, CellReference> map(Sheet sheet, IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, IExcelImportEventHandler eventHandler) throws ExcelImportHeaderLabelMappingException {
 		int matchedColumnsCount = 0;
 		Row headersRow = sheet.getRow(sheet.getFirstRowNum());
 		
@@ -55,11 +56,11 @@ import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnM
 				if (predicate.apply(cellValue)) {
 					if (matchedColumnsCount == indexAmongMatchedColumns) {
 						final int index = cell.getColumnIndex();
-						return new SerializableFunction<Row, Cell>() {
+						return new SerializableFunction<Row, CellReference>() {
 							private static final long serialVersionUID = 1L;
 							@Override
-							public Cell apply(Row row) {
-								return row == null ? null : row.getCell(index);
+							public CellReference apply(Row row) {
+								return row == null ? null : new CellReference(row.getRowNum(), index);
 							}
 						};
 					} else {

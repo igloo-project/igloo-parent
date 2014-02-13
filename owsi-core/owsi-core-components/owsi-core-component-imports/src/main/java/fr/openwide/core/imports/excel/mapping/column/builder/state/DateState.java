@@ -5,13 +5,13 @@ import java.util.Date;
 import fr.openwide.core.commons.util.functional.builder.function.generic.GenericDateBuildStateImpl;
 import fr.openwide.core.imports.excel.mapping.AbstractExcelImportColumnSet;
 
-public abstract class DateState<TSheet, TRow, TCell> extends GenericDateBuildStateImpl
+public abstract class DateState<TSheet, TRow, TCell, TCellReference> extends GenericDateBuildStateImpl
 		<
-		AbstractExcelImportColumnSet<TSheet, TRow, TCell>.Column<Date>,
-		BooleanState<TSheet, TRow, TCell>,
-		DateState<TSheet, TRow, TCell>,
-		IntegerState<TSheet, TRow, TCell>,
-		StringState<TSheet, TRow, TCell>
+		AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference>.Column<Date>,
+		BooleanState<TSheet, TRow, TCell, TCellReference>,
+		DateState<TSheet, TRow, TCell, TCellReference>,
+		IntegerState<TSheet, TRow, TCell, TCellReference>,
+		StringState<TSheet, TRow, TCell, TCellReference>
 		> {
 
 }

@@ -6,8 +6,12 @@ import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
 import fr.openwide.core.imports.excel.event.exception.ExcelImportMappingException;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 
-public interface IExcelImportColumnMapper<TSheet, TRow, TCell> {
+public interface IExcelImportColumnMapper<TSheet, TRow, TCell, TCellReference> {
 	
-	Function<? super TRow, ? extends TCell> map(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell> navigator, IExcelImportEventHandler eventHandler) throws ExcelImportMappingException;
+	Function<? super TRow, ? extends TCellReference> map(
+			TSheet sheet,
+			IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator,
+			IExcelImportEventHandler eventHandler
+			) throws ExcelImportMappingException;
 
 }

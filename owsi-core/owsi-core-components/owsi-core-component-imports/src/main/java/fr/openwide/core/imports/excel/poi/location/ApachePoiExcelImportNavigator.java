@@ -14,7 +14,7 @@ import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.imports.excel.location.ExcelImportLocation;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 
-public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Sheet, Row, Cell> {
+public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Sheet, Row, Cell, CellReference> {
 	
 	private String fileName;
 
@@ -68,7 +68,7 @@ public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Shee
 	}
 
 	@Override
-	public ExcelImportLocation getLocation(Sheet sheet, Row row, Cell cell) {
+	public ExcelImportLocation getLocation(Sheet sheet, Row row, CellReference cellReference) {
 		String sheetName = null;
 		Integer rowIndex = null;
 		String cellAddress = null;
@@ -78,10 +78,22 @@ public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Shee
 		if (row != null) {
 			rowIndex = row.getRowNum();
 		}
-		if (cell != null) {
-			cellAddress = new CellReference(cell).formatAsString();
+		if (cellReference != null) {
+			cellAddress = cellReference.formatAsString();
 		}
 		return new ExcelImportLocation(fileName, sheetName, rowIndex, cellAddress);
+	}
+
+	@Override
+	public Cell getCell(Sheet sheet, CellReference cellReference) {
+		if (cellReference == null) {
+			return null;
+		}
+		Row row = sheet.getRow(cellReference.getRow());
+		if (row == null) {
+			return null;
+		}
+		return row.getCell(cellReference.getCol());
 	}
 
 }
