@@ -36,7 +36,7 @@ import fr.openwide.core.imports.excel.mapping.column.builder.state.TypeState;
  * @author yrodiere
  */
 public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference> {
-	protected static final Comparator<? super String> DEFAULT_HEADER_LABEL_COLLATOR;
+	private static final Comparator<? super String> DEFAULT_HEADER_LABEL_COLLATOR;
 	static {
 		Collator collator = Collator.getInstance(Locale.ROOT);
 		collator.setStrength(Collator.IDENTICAL);
