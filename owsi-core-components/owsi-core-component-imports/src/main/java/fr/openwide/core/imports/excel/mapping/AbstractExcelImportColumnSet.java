@@ -35,7 +35,7 @@ import fr.openwide.core.imports.excel.mapping.column.builder.state.TypeState;
  * See TestApachePoiExcelImporter for an example on how to use this class.
  * @author yrodiere
  */
-public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
+public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference> {
 	protected static final Comparator<? super String> DEFAULT_HEADER_LABEL_COLLATOR;
 	static {
 		Collator collator = Collator.getInstance(Locale.ROOT);
@@ -45,61 +45,61 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 	
 	private final Comparator<? super String> defaultHeaderLabelCollator;
 	
-	private final AbstractColumnBuilder<TSheet, TRow, TCell> builder;
+	private final AbstractColumnBuilder<TSheet, TRow, TCell, TCellReference> builder;
 	
 	private final Collection<Column<?>> columns = Lists.newArrayList();
 	
-	public AbstractExcelImportColumnSet(AbstractColumnBuilder<TSheet, TRow, TCell> builder) {
+	public AbstractExcelImportColumnSet(AbstractColumnBuilder<TSheet, TRow, TCell, TCellReference> builder) {
 		this(builder, DEFAULT_HEADER_LABEL_COLLATOR);
 	}
 	
-	public AbstractExcelImportColumnSet(AbstractColumnBuilder<TSheet, TRow, TCell> builder, Comparator<? super String> defaultHeaderLabelCollator) {
+	public AbstractExcelImportColumnSet(AbstractColumnBuilder<TSheet, TRow, TCell, TCellReference> builder, Comparator<? super String> defaultHeaderLabelCollator) {
 		super();
 		this.builder = builder;
 		this.defaultHeaderLabelCollator = defaultHeaderLabelCollator;
 	}
 
-	public final TypeState<TSheet, TRow, TCell> withHeader(String headerLabel) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference> withHeader(String headerLabel) {
 		return withHeader(headerLabel, false);
 	}
 	
-	public final TypeState<TSheet, TRow, TCell>  withHeader(String headerLabel, Comparator<? super String> collator) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference>  withHeader(String headerLabel, Comparator<? super String> collator) {
 		return withHeader(headerLabel, collator, 0, false);
 	}
 	
-	public final TypeState<TSheet, TRow, TCell>  withHeader(String headerLabel, boolean optional) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference>  withHeader(String headerLabel, boolean optional) {
 		return withHeader(headerLabel, 0, optional);
 	}
 	
-	public final TypeState<TSheet, TRow, TCell>  withHeader(String headerLabel, int indexAmongMatchedColumns, boolean optional) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference>  withHeader(String headerLabel, int indexAmongMatchedColumns, boolean optional) {
 		return withHeader(headerLabel, defaultHeaderLabelCollator, indexAmongMatchedColumns, optional);
 	}
 	
-	public final TypeState<TSheet, TRow, TCell>  withHeader(String headerLabel, Equivalence<? super String> headerEquivalence, int indexAmongMatchedColumns, boolean optional) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference>  withHeader(String headerLabel, Equivalence<? super String> headerEquivalence, int indexAmongMatchedColumns, boolean optional) {
 		return builder.withHeader(this, headerLabel, headerEquivalence.equivalentTo(headerLabel), indexAmongMatchedColumns, optional);
 	}
 	
-	public final TypeState<TSheet, TRow, TCell>  withHeader(String headerLabel, Comparator<? super String> collator, int indexAmongMatchedColumns, boolean optional) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference>  withHeader(String headerLabel, Comparator<? super String> collator, int indexAmongMatchedColumns, boolean optional) {
 		return builder.withHeader(this, headerLabel, Predicates2.comparesEqualTo(headerLabel, collator), indexAmongMatchedColumns, optional);
 	}
 	
-	public final TypeState<TSheet, TRow, TCell>  withIndex(int index) {
+	public final TypeState<TSheet, TRow, TCell, TCellReference>  withIndex(int index) {
 		return builder.withIndex(this, index);
 	}
 	
 	/**
 	 * The actual column implementation.
-	 * <p>This class is implemented as an inner class in order to get rid of the <TSheet, TRow, TCell> generic
+	 * <p>This class is implemented as an inner class in order to get rid of the <TSheet, TRow, TCellReference, TCell, TValue> generic
 	 * parameters when the client references columns.
 	 */
-	public class Column<TValue> implements IExcelImportColumnDefinition<TSheet, TRow, TCell, TValue> {
-		private final IExcelImportColumnMapper<TSheet, TRow, TCell> mapper;
+	public class Column<TValue> implements IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> {
+		private final IExcelImportColumnMapper<TSheet, TRow, TCell, TCellReference> mapper;
 		
 		private final Function<? super TCell, ? extends TValue> cellToValueFunction;
 		
 		private final Predicate<? super TValue> mandatoryValuePredicate;
 
-		public Column(IExcelImportColumnMapper<TSheet, TRow, TCell> mapper,
+		public Column(IExcelImportColumnMapper<TSheet, TRow, TCell, TCellReference> mapper,
 				Function<? super TCell, ? extends TValue> cellToValueFunction, Predicate<? super TValue> mandatoryValuePredicate) {
 			super();
 			this.mapper = mapper;
@@ -111,26 +111,26 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 		}
 
 		@Override
-		public IMappedExcelImportColumnDefinition<TRow, TCell, TValue> map(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell> navigator,
+		public IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> map(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator,
 				IExcelImportEventHandler eventHandler) throws ExcelImportMappingException {
-			Function<? super TRow, ? extends TCell> rowToCellFunction = mapper.map(sheet, navigator, eventHandler);
-			return new MappedExcelImportColumnDefinitionImpl<TSheet, TRow, TCell, TValue>(rowToCellFunction, cellToValueFunction, mandatoryValuePredicate);
+			Function<? super TRow, ? extends TCellReference> rowToCellReferenceFunction = mapper.map(sheet, navigator, eventHandler);
+			return new MappedExcelImportColumnDefinitionImpl<TSheet, TRow, TCell, TCellReference, TValue>(sheet, rowToCellReferenceFunction, navigator, cellToValueFunction, mandatoryValuePredicate);
 		}
 	}
 	
-	public final SheetContext map(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell> navigator, IExcelImportEventHandler eventHandler) throws ExcelImportMappingException {
+	public final SheetContext map(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator, IExcelImportEventHandler eventHandler) throws ExcelImportMappingException {
 		return new SheetContext(sheet, navigator, eventHandler);
 	}
 	
 	public class SheetContext implements IExcelImportLocationContext, Iterable<RowContext> {
 		
 		private final TSheet sheet;
-		private final IExcelImportNavigator<TSheet, TRow, TCell> navigator;
+		private final IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator;
 		private final IExcelImportEventHandler eventHandler;
 		
-		private final Map<Column<?>, IMappedExcelImportColumnDefinition<TRow, TCell, ?>> mappings;
+		private final Map<Column<?>, IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, ?>> mappings;
 		
-		private SheetContext(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell> navigator, IExcelImportEventHandler eventHandler)
+		private SheetContext(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator, IExcelImportEventHandler eventHandler)
 				throws ExcelImportMappingException {
 			Validate.notNull(sheet);
 			
@@ -138,7 +138,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 			this.navigator = navigator;
 			this.eventHandler = eventHandler;
 
-			Map<Column<?>, IMappedExcelImportColumnDefinition<TRow, TCell, ?>> mutableMappings = Maps.newHashMap();
+			Map<Column<?>, IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, ?>> mutableMappings = Maps.newHashMap();
 			for (Column<?> columnDefinition : columns) {
 				mutableMappings.put(columnDefinition, columnDefinition.map(sheet, navigator, eventHandler));
 			}
@@ -175,10 +175,13 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 		}
 
 		@SuppressWarnings("unchecked")
-		private <TValue> IMappedExcelImportColumnDefinition<TRow, TCell,TValue> getMappedColumn(TRow row, IExcelImportColumnDefinition<TSheet, TRow, TCell, TValue> columnDefinition) {
-			IMappedExcelImportColumnDefinition<TRow, TCell,TValue> mappedColumn = (IMappedExcelImportColumnDefinition<TRow, TCell,TValue>) mappings.get(columnDefinition);
+		private <TValue> IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> getMappedColumn(
+				TRow row, IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> columnDefinition) {
+			IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> mappedColumn =
+					(IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue>) mappings.get(columnDefinition);
 			if (mappedColumn == null) {
-				throw new IllegalStateException("Column " + columnDefinition + " was not properly registered, hence it has not been mapped. Please use AbstractColumns.add() before using AbstractColumns.newMapping().");
+				throw new IllegalStateException("Column " + columnDefinition
+						+ " was not properly registered, hence it has not been mapped. Please use AbstractColumns.add() before using AbstractColumns.newMapping().");
 			}
 			return mappedColumn;
 		}
@@ -200,8 +203,8 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 			eventHandler.error(message, navigator.getLocation(sheet, row, null));
 		}
 		
-		public void error(String message, TRow row, TCell cell) throws ExcelImportContentException {
-			eventHandler.error(message, navigator.getLocation(sheet, row, cell));
+		public void error(String message, TRow row, TCellReference cellReference) throws ExcelImportContentException {
+			eventHandler.error(message, navigator.getLocation(sheet, row, cellReference));
 		}
 	}
 	
@@ -225,8 +228,8 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 			sheetContext.error(message, row);
 		}
 		
-		public void error(String message, TCell cell) throws ExcelImportContentException {
-			sheetContext.error(message, row, cell);
+		public void error(String message, TCellReference cellReference) throws ExcelImportContentException {
+			sheetContext.error(message, row, cellReference);
 		}
 	}
 	
@@ -234,9 +237,9 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 
 		private final SheetContext sheetContext;
 		private final RowContext rowContext;
-		private final IMappedExcelImportColumnDefinition<TRow, TCell, T> mappedColumn;
+		private final IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn;
 
-		public CellContext(SheetContext sheetContext, RowContext rowContext, IMappedExcelImportColumnDefinition<TRow, TCell, T> mappedColumn) {
+		public CellContext(SheetContext sheetContext, RowContext rowContext, IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn) {
 			super();
 			this.sheetContext = sheetContext;
 			this.rowContext = rowContext;
@@ -258,13 +261,13 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell> {
 		public void missingValue(String error) throws ExcelImportContentException {
 			sheetContext.eventHandler.missingValue(
 					error,
-					sheetContext.navigator.getLocation(sheetContext.sheet, rowContext.row, mappedColumn.getCell(rowContext.row))
+					sheetContext.navigator.getLocation(sheetContext.sheet, rowContext.row, mappedColumn.getCellReference(rowContext.row))
 			);
 		}
 		
 		@Override
 		public void error(String error) throws ExcelImportContentException {
-			rowContext.error(error, mappedColumn.getCell(rowContext.row));
+			rowContext.error(error, mappedColumn.getCellReference(rowContext.row));
 		}
 	}
 }

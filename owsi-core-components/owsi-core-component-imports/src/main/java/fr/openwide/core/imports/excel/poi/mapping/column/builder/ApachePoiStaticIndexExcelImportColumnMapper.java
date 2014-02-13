@@ -3,6 +3,7 @@ package fr.openwide.core.imports.excel.poi.mapping.column.builder;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellReference;
 
 import com.google.common.base.Function;
 
@@ -11,7 +12,7 @@ import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
 
-/*package*/ class ApachePoiStaticIndexExcelImportColumnMapper implements IExcelImportColumnMapper<Sheet, Row, Cell> {
+/*package*/ class ApachePoiStaticIndexExcelImportColumnMapper implements IExcelImportColumnMapper<Sheet, Row, Cell, CellReference> {
 	
 	private final int columnIndex;
 
@@ -22,12 +23,12 @@ import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnM
 	}
 	
 	@Override
-	public Function<? super Row, Cell> map(Sheet sheet, IExcelImportNavigator<Sheet, Row, Cell> navigator, IExcelImportEventHandler eventHandler) {
-		return new SerializableFunction<Row, Cell>() {
+	public Function<? super Row, CellReference> map(Sheet sheet, IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, IExcelImportEventHandler eventHandler) {
+		return new SerializableFunction<Row, CellReference>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public Cell apply(Row row) {
-				return row == null ? null : row.getCell(columnIndex);
+			public CellReference apply(Row row) {
+				return row == null ? null : new CellReference(row.getRowNum(), columnIndex);
 			}
 		};
 	}

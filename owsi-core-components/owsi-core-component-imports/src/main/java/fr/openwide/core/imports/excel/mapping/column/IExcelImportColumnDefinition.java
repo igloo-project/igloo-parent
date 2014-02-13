@@ -4,17 +4,17 @@ import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
 import fr.openwide.core.imports.excel.event.exception.ExcelImportMappingException;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 
-public interface IExcelImportColumnDefinition<TSheet, TRow, TCell, TValue> {
+public interface IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> {
 	
-	IMappedExcelImportColumnDefinition<TRow, TCell, TValue> map(
+	IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> map(
 			TSheet sheet,
-			IExcelImportNavigator<TSheet, TRow, TCell> navigator,
+			IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator,
 			IExcelImportEventHandler eventHandler
 			) throws ExcelImportMappingException;
 	
-	interface IMappedExcelImportColumnDefinition<TRow, TCell, TValue> {
+	interface IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> {
 
-		TCell getCell(TRow row);
+		TCellReference getCellReference(TRow row);
 		
 		TValue getValue(TRow row);
 		
