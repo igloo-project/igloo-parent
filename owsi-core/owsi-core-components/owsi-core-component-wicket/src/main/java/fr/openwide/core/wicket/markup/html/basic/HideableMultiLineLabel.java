@@ -2,6 +2,10 @@ package fr.openwide.core.wicket.markup.html.basic;
 
 import org.apache.wicket.model.IModel;
 
+/**
+ * @deprecated Use {@code new CoreLabel(id, model).multiline().hideIfEmpty()} instead.
+ */
+@Deprecated
 public class HideableMultiLineLabel extends AbstractCoreLabel<HideableMultiLineLabel> {
 
 	private static final long serialVersionUID = 1L;
