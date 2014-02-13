@@ -32,7 +32,7 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
-import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
@@ -127,7 +127,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		});
 		
 		// User menu
-		add(new HideableLabel("userFullName", new LoadableDetachableModel<String>() {
+		add(new CoreLabel("userFullName", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -139,7 +139,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				}
 				return userFullName;
 			}
-		}));
+		}).hideIfEmpty());
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 
 		// Footer
