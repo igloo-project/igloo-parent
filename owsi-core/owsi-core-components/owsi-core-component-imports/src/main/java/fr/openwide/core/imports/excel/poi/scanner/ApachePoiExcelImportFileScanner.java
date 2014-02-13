@@ -74,7 +74,7 @@ public class ApachePoiExcelImportFileScanner implements IExcelImportFileScanner<
 		Validate.notNull(file);
 		Validate.notNull(visitor);
 		
-		ApachePoiExcelImportNavigator navigator = new ApachePoiExcelImportNavigator(file.getName());
+		ApachePoiExcelImportNavigator navigator = new ApachePoiExcelImportNavigator(filename);
 		
 		try (InputStream stream = new TFileInputStream(file)) {
 			Workbook workbook = WorkbookFactory.create(stream);
@@ -95,7 +95,7 @@ public class ApachePoiExcelImportFileScanner implements IExcelImportFileScanner<
 		Validate.notNull(stream);
 		Validate.notNull(visitor);
 		
-		ApachePoiExcelImportNavigator navigator = new ApachePoiExcelImportNavigator(null);
+		ApachePoiExcelImportNavigator navigator = new ApachePoiExcelImportNavigator(filename);
 		try {
 			Workbook workbook = WorkbookFactory.create(stream);
 			
