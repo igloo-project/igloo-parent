@@ -18,6 +18,7 @@
 package fr.openwide.core.commons.util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +43,21 @@ public final class CloneUtils {
 			return null;
 		} else {
 			return (Date) date.clone();
+		}
+	}
+	
+	/**
+	 * Clône un calendar.
+	 * Cette méthode est null safe.
+	 * 
+	 * @param calendar à clôner
+	 * @return clône du calendar passé en paramètre
+	 */
+	public static Calendar clone(Calendar calendar) {
+		if (calendar == null) {
+			return null;
+		} else {
+			return (Calendar) calendar.clone();
 		}
 	}
 
