@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.security.business.person.dao;
 
+import java.util.List;
+
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.path.BeanPath;
@@ -9,7 +11,7 @@ import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
 import fr.openwide.core.jpa.security.business.person.model.QGenericUser;
 
-public abstract class GenericUserDaoImpl<U extends GenericUser<U, ?>>
+public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		extends GenericEntityDaoImpl<Long, U>
 		implements IGenericUserDao<U> {
 	
@@ -24,6 +26,24 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<U, ?>>
 		flush();
 	}
 	
+	protected BeanPath<U> getEntityPath() {
+		// obtention d'un mapper querydsl branché à l'implémentation concrète
+		return new BeanPath<U>(getObjectClass(), QGenericUser.genericUser.getMetadata());
+	}
+	
+	@Override
+	public List<String> listActiveUserNames() {
+		QGenericUser qUser = new QGenericUser(getEntityPath());
+		
+		JPQLQuery query = new JPAQuery(getEntityManager());
+		
+		query.from(qUser)
+				.where(qUser.active.isTrue())
+				.orderBy(qUser.userName.asc());
+		
+		return query.list(qUser.userName);
+	}
+	
 	@Override
 	public Long countActive() {
 		return countByField(GenericUser_.active, true);
@@ -36,9 +56,7 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<U, ?>>
 			return null;
 		}
 		
-		// obtention d'un mapper querydsl branché à l'implémentation concrète
-		BeanPath<U> path = new BeanPath<U>(getObjectClass(), QGenericUser.genericUser.getMetadata());
-		QGenericUser qUser = new QGenericUser(path);
+		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
 		JPQLQuery query = new JPAQuery(getEntityManager()).from(qUser);
 		query.where(qUser.userName.lower().eq(userName.toLowerCase()));
