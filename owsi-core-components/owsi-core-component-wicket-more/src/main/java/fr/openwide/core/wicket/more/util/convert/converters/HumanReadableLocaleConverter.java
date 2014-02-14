@@ -24,9 +24,6 @@ public class HumanReadableLocaleConverter implements IConverter<Locale> {
 
 	@Override
 	public String convertToString(Locale value, Locale locale) {
-		if (locale == null) {
-			return null;
-		}
 		return locale != null ? locale.getDisplayName(Session.get().getLocale()) : null;
 	}
 
