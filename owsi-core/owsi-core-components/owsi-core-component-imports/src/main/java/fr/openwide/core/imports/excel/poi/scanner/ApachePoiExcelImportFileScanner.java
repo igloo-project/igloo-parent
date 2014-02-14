@@ -38,7 +38,7 @@ public class ApachePoiExcelImportFileScanner implements IExcelImportFileScanner<
 		return DEFAULT_DIRECTORY_CHILD_FILTER;
 	}
 	
-	protected final Map<SheetSelection, ? extends Predicate<? super Sheet>> SELECTIONS_PREDICATES = ImmutableMap.of(
+	protected static final Map<SheetSelection, ? extends Predicate<? super Sheet>> SELECTIONS_PREDICATES = ImmutableMap.of(
 			SheetSelection.ALL, Predicates.<Sheet>alwaysTrue(),
 			SheetSelection.NON_HIDDEN_ONLY, new SerializablePredicate<Sheet>() {
 				private static final long serialVersionUID = 1L;

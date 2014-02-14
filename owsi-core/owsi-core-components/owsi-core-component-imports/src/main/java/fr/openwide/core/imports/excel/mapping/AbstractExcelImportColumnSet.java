@@ -122,7 +122,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		return new SheetContext(sheet, navigator, eventHandler);
 	}
 	
-	public class SheetContext implements IExcelImportLocationContext, Iterable<RowContext> {
+	public final class SheetContext implements IExcelImportLocationContext, Iterable<RowContext> {
 		
 		private final TSheet sheet;
 		private final IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator;
@@ -176,7 +176,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 
 		@SuppressWarnings("unchecked")
 		private <TValue> IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> getMappedColumn(
-				TRow row, IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> columnDefinition) {
+				IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> columnDefinition) {
 			IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> mappedColumn =
 					(IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue>) mappings.get(columnDefinition);
 			if (mappedColumn == null) {
@@ -208,19 +208,19 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		}
 	}
 	
-	public class RowContext implements IExcelImportLocationContext {
+	public final class RowContext implements IExcelImportLocationContext {
 		
 		private final SheetContext sheetContext;
 		private final TRow row;
 
-		public RowContext(SheetContext sheetContext, TRow row) {
+		private RowContext(SheetContext sheetContext, TRow row) {
 			super();
 			this.sheetContext = sheetContext;
 			this.row = row;
 		}
 
 		public <TValue> CellContext<TValue> cell(Column<TValue> columnDefinition) {
-			return new CellContext<>(sheetContext, this, sheetContext.getMappedColumn(row, columnDefinition));
+			return new CellContext<>(sheetContext, this, sheetContext.getMappedColumn(columnDefinition));
 		}
 		
 		@Override
@@ -233,13 +233,13 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		}
 	}
 	
-	public class CellContext<T> implements IExcelImportLocationContext {
+	public final class CellContext<T> implements IExcelImportLocationContext {
 
 		private final SheetContext sheetContext;
 		private final RowContext rowContext;
 		private final IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn;
 
-		public CellContext(SheetContext sheetContext, RowContext rowContext, IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn) {
+		private CellContext(SheetContext sheetContext, RowContext rowContext, IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn) {
 			super();
 			this.sheetContext = sheetContext;
 			this.rowContext = rowContext;

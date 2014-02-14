@@ -38,9 +38,8 @@ public class TestApachePoiExcelImporter {
 		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
 	}
 
-	private static Columns COLUMNS = new Columns();
-	
-	private static ApachePoiExcelImportFileScanner SCANNER = new ApachePoiExcelImportFileScanner();
+	private static final Columns COLUMNS = new Columns();
+	private static final ApachePoiExcelImportFileScanner SCANNER = new ApachePoiExcelImportFileScanner();
 
 	public List<Quartet<Date, Boolean, String, Integer>> doImport(InputStream stream, String filename) throws ExcelImportException {
 		final List<Quartet<Date, Boolean, String, Integer>> results = Lists.newArrayList();

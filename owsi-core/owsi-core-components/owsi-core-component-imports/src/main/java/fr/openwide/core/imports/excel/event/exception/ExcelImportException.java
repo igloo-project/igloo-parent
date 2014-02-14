@@ -35,7 +35,7 @@ public class ExcelImportException extends Exception {
 
 	public ExcelImportException(String message, Throwable cause, ExcelImportLocation location) {
 		super(message, cause);
-		this.location = null;
+		this.location = location;
 	}
 
 	public ExcelImportLocation getLocation() {
