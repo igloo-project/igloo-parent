@@ -11,7 +11,7 @@ import fr.openwide.core.commons.util.functional.SerializablePredicate;
  * A fixed DomainValidator that allows <em>any</em> TLD, and not only some hard-coded list, since allowed TLDs may vary over time.
  * <p>Regular expressions were taken from {@link DomainValidator}
  */
-public class AnyTldDomainValidator extends RegexValidator implements SerializablePredicate<String> {
+public final class AnyTldDomainValidator extends RegexValidator implements SerializablePredicate<String> {
 
 	private static final long serialVersionUID = 6571374115899151352L;
 
