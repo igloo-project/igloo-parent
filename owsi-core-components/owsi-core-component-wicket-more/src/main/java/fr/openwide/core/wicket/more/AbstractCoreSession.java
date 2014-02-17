@@ -56,6 +56,25 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 	
 	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<Long, U>();
 	
+	private final IModel<Locale> localeModel = new IModel<Locale>() {
+		private static final long serialVersionUID = -4356509005738585888L;
+		
+		@Override
+		public Locale getObject() {
+			return AbstractCoreSession.this.getLocale();
+		}
+		
+		@Override
+		public void setObject(Locale object) {
+			AbstractCoreSession.this.setLocale(object);
+		}
+		
+		@Override
+		public void detach() {
+			// Nothing to do
+		}
+	};
+	
 	private Roles roles = new Roles();
 	
 	private boolean rolesInitialized = false;
@@ -324,11 +343,16 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 		super.setLocale(configurer.toAvailableLocale(locale));
 	}
 	
+	public IModel<Locale> getLocaleModel() {
+		return localeModel;
+	}
+	
 	@Override
 	public void detach() {
 		super.detach();
 		
 		userModel.detach();
+		localeModel.detach();
 	}
 	
 	@Override
@@ -336,5 +360,6 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 		super.internalDetach();
 		
 		userModel.detach();
+		localeModel.detach();
 	}
 }
