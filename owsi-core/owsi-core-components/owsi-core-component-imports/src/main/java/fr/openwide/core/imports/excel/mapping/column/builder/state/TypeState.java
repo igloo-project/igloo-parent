@@ -2,9 +2,9 @@ package fr.openwide.core.imports.excel.mapping.column.builder.state;
 
 import java.io.Serializable;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
@@ -23,7 +23,7 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public NumberFormat get() {
-			NumberFormat format = new DecimalFormat();
+			NumberFormat format = NumberFormat.getNumberInstance(Locale.ROOT);
 			format.setRoundingMode(RoundingMode.HALF_UP);
 			return format;
 		}
