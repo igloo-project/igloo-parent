@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.lesscss.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,9 +15,12 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import com.asual.lesscss.LessEngine;
-import com.asual.lesscss.LessException;
+import com.github.sommeri.less4j.Less4jException;
+import com.github.sommeri.less4j.LessCompiler.CompilationResult;
+import com.github.sommeri.less4j.LessCompiler.Problem;
+import com.github.sommeri.less4j.core.ThreadUnsafeLessCompiler;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -31,8 +35,6 @@ import fr.openwide.core.wicket.more.lesscss.model.CssStylesheetInformation;
 public class LessCssServiceImpl implements ILessCssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LessCssServiceImpl.class);
-	
-	private static final LessEngine LESS_ENGINE = new LessEngine();
 	
 	private static final Pattern LESSCSS_IMPORT_PATTERN =
 			Pattern.compile("^\\p{Blank}*@import\\p{Blank}+\"([^\"]+)\"\\p{Blank}*;", Pattern.MULTILINE);
@@ -58,13 +60,28 @@ public class LessCssServiceImpl implements ILessCssService {
 			throws ServiceException {
 		prepareRawStylesheet(lessInformation);
 		try {
+			CompilationResult compilationResult = new ThreadUnsafeLessCompiler().compile(lessInformation.getSource());
+			
 			CssStylesheetInformation compiledStylesheet = new CssStylesheetInformation(
-					lessInformation,
-					LESS_ENGINE.compile(lessInformation.getSource())
+					lessInformation, compilationResult.getCss()
 			);
 			
+			List<Problem> warnings = compilationResult.getWarnings();
+			if (!CollectionUtils.isEmpty(warnings)) {
+				for (Problem warning : warnings) {
+					LOGGER.warn(formatLess4jProblem(warning));
+				}
+			}
+			
 			return compiledStylesheet;
-		} catch (LessException e) {
+		} catch (Less4jException e) {
+			List<Problem> errors = e.getErrors();
+			if (!CollectionUtils.isEmpty(errors)) {
+				for (Problem error : errors) {
+					LOGGER.warn(formatLess4jProblem(error));
+				}
+			}
+			
 			throw new ServiceException(String.format("Error compiling %1$s (scope: %2$s)",
 					lessInformation.getName(), lessInformation.getScope()), e);
 		}
@@ -155,6 +172,16 @@ public class LessCssServiceImpl implements ILessCssService {
 		cacheKeyBuilder.append(resourceInformation.getName());
 		
 		return cacheKeyBuilder.toString();
+	}
+	
+	public static String formatLess4jProblem(Problem problem) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(problem.getMessage());
+		sb.append(" at line ").append(problem.getLine());
+		sb.append(" at character ").append(problem.getCharacter());
+		
+		return sb.toString();
 	}
 
 }
