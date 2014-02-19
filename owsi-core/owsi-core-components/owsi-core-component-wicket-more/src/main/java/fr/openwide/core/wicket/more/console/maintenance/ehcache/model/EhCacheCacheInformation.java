@@ -23,15 +23,15 @@ public class EhCacheCacheInformation {
 	}
 	
 	public long getMemoryStoreObjectCount() {
-		return cache.getStatistics().getMemoryStoreObjectCount();
+		return cache.getStatistics().getLocalHeapSize();
 	}
 	
-	public int getMaxElementsInMemory() {
-		return cache.getCacheConfiguration().getMaxElementsInMemory();
+	public long getMaxElementsInMemory() {
+		return cache.getCacheConfiguration().getMaxEntriesLocalHeap();
 	}
 	
-	public void setMaxElementsInMemory(int maxElementsInMemory) {
-		cache.getCacheConfiguration().setMaxElementsInMemory(maxElementsInMemory);
+	public void setMaxElementsInMemory(long maxElementsInMemory) {
+		cache.getCacheConfiguration().setMaxEntriesLocalHeap(maxElementsInMemory);
 	}
 	
 	public Float getCacheFillRatio() {
@@ -43,11 +43,11 @@ public class EhCacheCacheInformation {
 	}
 	
 	public long getCacheHits() {
-		return cache.getStatistics().getCacheHits();
+		return cache.getStatistics().cacheHitCount();
 	}
 	
 	public long getCacheMisses() {
-		return cache.getStatistics().getCacheMisses();
+		return cache.getStatistics().cacheMissCount();
 	}
 	
 	public Float getHitRatio() {
@@ -59,11 +59,7 @@ public class EhCacheCacheInformation {
 	}
 	
 	public long getEvictionCount() {
-		return cache.getStatistics().getEvictionCount();
-	}
-	
-	public long getAverageSearchTime() {
-		return cache.getStatistics().getAverageSearchTime();
+		return cache.getStatistics().cacheEvictedCount();
 	}
 	
 	public Cache getCache() {
