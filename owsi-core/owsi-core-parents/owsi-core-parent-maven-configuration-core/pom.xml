@@ -993,6 +993,47 @@
 	</dependencyManagement>
 	
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${owsi-core.maven-enforcer-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>enforce</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<DependencyConvergence />
+								<bannedDependencies>
+									<excludes>
+										<exclude>org.springframework:spring</exclude>
+										<exclude>org.springframework:spring-ldap</exclude>
+										<exclude>commons-logging:commons-logging</exclude>
+										<exclude>cglib:cglib</exclude>
+										<exclude>rhino:rhino</exclude>
+										<exclude>rhino:js</exclude>
+										<exclude>javassist:javassist</exclude>
+										<exclude>xml-apis:xml-apis</exclude>
+										<exclude>apache-xerces:xml-apis</exclude>
+										<exclude>javax.servlet:servlet-api</exclude>
+										<exclude>net.sf.ehcache:ehcache-core</exclude>
+									</excludes>
+								</bannedDependencies>
+								<requireMavenVersion>
+									<version>[${minimal.maven.version},)</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>${jdk.version}</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
