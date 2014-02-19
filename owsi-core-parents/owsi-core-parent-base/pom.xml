@@ -1016,6 +1016,7 @@
 										<exclude>xml-apis:xml-apis</exclude>
 										<exclude>apache-xerces:xml-apis</exclude>
 										<exclude>javax.servlet:servlet-api</exclude>
+										<exclude>net.sf.ehcache:ehcache-core</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
