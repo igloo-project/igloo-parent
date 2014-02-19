@@ -1,8 +1,6 @@
 package fr.openwide.core.wicket.more.console.maintenance.ehcache.component;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -22,10 +20,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
-
 import fr.openwide.core.commons.util.functional.SerializableFunction;
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.markup.html.list.OddEvenListView;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.console.common.component.JavaPackageLabel;
@@ -96,41 +91,6 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						})
 						.create();
 				item.add(purgerCache);
-				
-				IModel<String> statisticsTextModel = new StringResourceModel(
-						"console.maintenance.ehcache.cacheManager.statistics.clear.confirm", this,
-							Model.of(item.getModelObject().getName()),
-							Model.of(item.getModelObject().getName()));
-				
-				AjaxConfirmLink<CacheManager> clearStatistics = AjaxConfirmLink.build("clearStatistics", item.getModel())
-						.title(new ResourceModel("common.confirmTitle")).content(statisticsTextModel)
-						.yesNo()
-						.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public Void apply(AjaxRequestTarget target) {
-								try {
-									Set<String> cacheNames = Sets.newTreeSet(GenericEntity.DEFAULT_STRING_COLLATOR);
-									cacheNames.addAll(Arrays.asList(item.getModelObject().getCacheNames()));
-									
-									for (String cacheName : cacheNames) {
-										Cache cache = item.getModelObject().getCache(cacheName);
-										cache.clearStatistics();
-									}
-									getSession().success(getString("console.maintenance.ehcache.cacheManager.statistics.clear.success"));
-								} catch (Exception e) {
-									LOGGER.error("Erreur lors de la purge du cache manager", e);
-									getSession().error(getString("console.maintenance.ehcache.cacheManager.statistics.clear.failure"));
-								}
-								
-								cacheList.detach();
-								FeedbackUtils.refreshFeedback(target, getPage());
-								return null;
-							}
-						})
-						.create();
-				item.add(clearStatistics);
 				
 				CacheManager cacheManager = item.getModelObject();
 				cacheList = new OddEvenListView<Cache>("cacheList", new EhCacheCacheListModel(
