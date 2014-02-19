@@ -489,8 +489,8 @@
 			<!-- Cache (also used for Hibernate second level cache) -->
 			
 				<dependency>
-					<groupId>net.sf.ehcache</groupId>
-					<artifactId>ehcache</artifactId>
+					<groupId>net.sf.ehcache.internal</groupId>
+					<artifactId>ehcache-core</artifactId>
 					<version>${owsi-core.ehcache.version}</version>
 				</dependency>
 			

@@ -48,8 +48,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
+			<groupId>net.sf.ehcache.internal</groupId>
+			<artifactId>ehcache-core</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->
