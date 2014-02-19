@@ -65,8 +65,8 @@
 		<!-- LessCSS -->
 		
 		<dependency>
-			<groupId>com.asual.lesscss</groupId>
-			<artifactId>lesscss-engine</artifactId>
+			<groupId>com.github.sommeri</groupId>
+			<artifactId>less4j</artifactId>
 		</dependency>
 		
 		<!-- Phloc CSS (pour les styles des notifications mail) -->
