@@ -78,7 +78,7 @@ public class LessCssServiceImpl implements ILessCssService {
 			List<Problem> errors = e.getErrors();
 			if (!CollectionUtils.isEmpty(errors)) {
 				for (Problem error : errors) {
-					LOGGER.warn(formatLess4jProblem(error));
+					LOGGER.error(formatLess4jProblem(error));
 				}
 			}
 			
