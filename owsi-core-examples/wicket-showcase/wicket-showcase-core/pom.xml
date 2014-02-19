@@ -61,13 +61,6 @@
 			</exclusions>
 		</dependency>
 		
-		<!-- ANTLR -->
-		<dependency> 
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>${antlr.version}</version>
-		</dependency> 
-		
 		<!-- Jetty -->
 <!--		<dependency>-->
 <!--			<groupId>org.eclipse.jetty</groupId>-->
