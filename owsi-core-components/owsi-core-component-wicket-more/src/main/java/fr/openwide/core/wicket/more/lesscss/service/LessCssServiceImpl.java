@@ -153,7 +153,7 @@ public class LessCssServiceImpl implements ILessCssService {
 	@Override
 	public void registerImportScope(String scopeName, Class<?> scope) {
 		if (SCOPES.containsKey(scopeName)) {
-			LOGGER.error(String.format("Scope %1$s already registered: ignored", scopeName));
+			LOGGER.warn(String.format("Scope %1$s already registered: ignored", scopeName));
 			return;
 		}
 		Matcher matcher = SCOPE_NAME_PATTERN.matcher(scopeName);
