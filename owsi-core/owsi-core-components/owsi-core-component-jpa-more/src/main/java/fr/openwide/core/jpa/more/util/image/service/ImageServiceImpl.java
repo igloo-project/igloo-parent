@@ -44,7 +44,7 @@ public class ImageServiceImpl implements IImageService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageServiceImpl.class);
 	
-	private static final int IMAGE_MAGICK_CONVERT_TIMEOUT = 5000;
+	private static final int IMAGE_MAGICK_CONVERT_TIMEOUT = 15000;
 	
 	private File imageMagickConvertBinary;
 	
