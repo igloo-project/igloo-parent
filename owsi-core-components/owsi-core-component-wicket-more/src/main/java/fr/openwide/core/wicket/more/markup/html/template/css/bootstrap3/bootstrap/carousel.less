@@ -21,7 +21,7 @@
     // Account for jankitude on images
     > img,
     > a > img {
-      .img-responsive();
+      &:extend(.img-responsive);
       line-height: 1;
     }
   }
@@ -104,7 +104,7 @@
   .glyphicon-chevron-right {
     position: absolute;
     top: 50%;
-    z-index: @zindex-carousel-navigation;
+    z-index: 5;
     display: inline-block;
   }
   .icon-prev,
@@ -145,7 +145,7 @@
   position: absolute;
   bottom: 10px;
   left: 50%;
-  z-index: @zindex-carousel-indicator;
+  z-index: 15;
   width: 60%;
   margin-left: -30%;
   padding-left: 0;
@@ -189,7 +189,7 @@
   left: 15%;
   right: 15%;
   bottom: 20px;
-  z-index: @zindex-carousel-caption;
+  z-index: 10;
   padding-top: 20px;
   padding-bottom: 20px;
   color: @carousel-caption-color;
@@ -206,8 +206,8 @@
 
   // Scale up the controls a smidge
   .carousel-control {
-    .glyphicons-chevron-left,
-    .glyphicons-chevron-right,
+    .glyphicon-chevron-left,
+    .glyphicon-chevron-right,
     .icon-prev,
     .icon-next {
       width: 30px;
