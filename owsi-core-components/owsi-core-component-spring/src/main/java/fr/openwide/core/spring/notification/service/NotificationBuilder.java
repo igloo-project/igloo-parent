@@ -189,14 +189,14 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	@Deprecated
 	public INotificationBuilderBuildState bcc(String... bcc) {
 		if (!ObjectUtils.isEmpty(bcc)) {
-			toAddress(Lists.newArrayList(bcc));
+			bccAddress(Lists.newArrayList(bcc));
 		}
 		return this;
 	}
 	
 	@Override
 	public INotificationBuilderBuildState bccAddress(String bccFirst, String... bccOthers) {
-		return toAddress(Lists.asList(bccFirst, bccOthers));
+		return bccAddress(Lists.asList(bccFirst, bccOthers));
 	}
 	
 	@Override
@@ -213,7 +213,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState bcc(INotificationRecipient bccFirst, INotificationRecipient ... bccOthers) {
-		return to(Lists.asList(bccFirst, bccOthers));
+		return bcc(Lists.asList(bccFirst, bccOthers));
 	}
 	
 	@Override
