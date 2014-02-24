@@ -145,14 +145,14 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	@Deprecated
 	public INotificationBuilderBuildState cc(String... cc) {
 		if (!ObjectUtils.isEmpty(cc)) {
-			toAddress(Lists.newArrayList(cc));
+			ccAddress(Lists.newArrayList(cc));
 		}
 		return this;
 	}
 	
 	@Override
 	public INotificationBuilderBuildState ccAddress(String ccFirst, String... ccOthers) {
-		return toAddress(Lists.asList(ccFirst, ccOthers));
+		return ccAddress(Lists.asList(ccFirst, ccOthers));
 	}
 	
 	@Override
@@ -169,7 +169,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState cc(INotificationRecipient ccFirst, INotificationRecipient ... ccOthers) {
-		return to(Lists.asList(ccFirst, ccOthers));
+		return cc(Lists.asList(ccFirst, ccOthers));
 	}
 	
 	@Override
