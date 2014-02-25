@@ -23,8 +23,8 @@
 		
 		<!-- Database dependencies -->
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+			<groupId>com.impossibl.pgjdbc-ng</groupId>
+			<artifactId>pgjdbc-ng</artifactId>
 		</dependency>
 	
 		<!-- Hibernate dependencies -->
