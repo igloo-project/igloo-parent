@@ -45,6 +45,7 @@
 		<owsi-core.guava.version>16.0.1</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.0-801.jdbc3</owsi-core.postgresql.version>
+		<owsi-core.pgjdbc-ng.version>0.3</owsi-core.pgjdbc-ng.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
@@ -408,6 +409,12 @@
 						<groupId>postgresql</groupId>
 						<artifactId>postgresql</artifactId>
 						<version>${owsi-core.postgresql.version}</version>
+					</dependency>
+					
+					<dependency>
+						<groupId>com.impossibl.pgjdbc-ng</groupId>
+						<artifactId>pgjdbc-ng</artifactId>
+						<version>${owsi-core.pgjdbc-ng.version}</version>
 					</dependency>
 				
 				<!-- Pooling -->
