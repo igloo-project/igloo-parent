@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -40,14 +41,15 @@ import fr.openwide.core.jpa.more.util.init.util.GenericEntityConverter;
 import fr.openwide.core.jpa.more.util.init.util.WorkbookUtils;
 import fr.openwide.core.spring.util.ReflectionUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
+import fr.openwide.core.spring.util.StringUtils;
 
 public abstract class AbstractImportDataServiceImpl implements IImportDataService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImportDataServiceImpl.class);
 	
-	private static final String REFERENCE_DATA_FILE = "reference_data.xls";
+	protected static final String REFERENCE_DATA_FILE = "reference_data.xls";
 	
-	private static final String BUSINESS_DATA_FILE = "business_data.xls";
+	protected static final String BUSINESS_DATA_FILE = "business_data.xls";
 	
 	private static final String ID_FIELD_NAME = "id";
 	
@@ -74,7 +76,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
-		Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<Long, GenericEntity<Long, ?>>>();
+		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<String, GenericEntity<Long, ?>>>();
 		
 		Workbook genericListItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
 		importGenericListItems(idsMapping, genericListItemWorkbook);
@@ -92,7 +94,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	protected abstract List<String> getGenericListItemPackagesToScan();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void importGenericListItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
+	protected void importGenericListItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 		for (String packageToScan : getGenericListItemPackagesToScan()) {
 			Set<Class<? extends GenericEntity>> classes = Sets.newHashSet();
 			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericListItem.class));
@@ -113,14 +115,14 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		}
 	}
 	
-	protected abstract void importMainBusinessItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook);
+	protected abstract void importMainBusinessItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook);
 	
-	protected void importFiles(File directory, Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping) 
+	protected void importFiles(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping) 
 			throws ServiceException, SecurityServiceException {
 		// nothing, override if necessary
 	}
 	
-	protected <E extends GenericEntity<Long, ?>> void doImportItem(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping,
+	protected <E extends GenericEntity<Long, ?>> void doImportItem(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping,
 				Workbook workbook, Class<E> clazz) {
 		Sheet sheet = workbook.getSheet(getSheetName(clazz));
 		if (sheet != null) {
@@ -129,19 +131,22 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			GenericConversionService conversionService = getConversionService(converter);
 			converter.setConversionService(conversionService);
 			
-			Map<Long, GenericEntity<Long, ?>> idsMappingForClass = new HashMap<Long, GenericEntity<Long, ?>>();
-			idsMapping.put(clazz.getName(), idsMappingForClass);
+			Map<String, GenericEntity<Long, ?>> idsMappingForClass = idsMapping.get(clazz.getName());
+			if (idsMappingForClass == null) {
+				idsMappingForClass = new HashMap<String, GenericEntity<Long, ?>>();
+				idsMapping.put(clazz.getName(), idsMappingForClass);
+			}
 			
 			for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
 				if (!idsMapping.containsKey(referencedClass.getName())) {
-					idsMapping.put(referencedClass.getName(), new HashMap<Long, GenericEntity<Long, ?>>());
+					idsMapping.put(referencedClass.getName(), new HashMap<String, GenericEntity<Long, ?>>());
 				}
 			}
 			
 			for (Map<String, Object> line : WorkbookUtils.getSheetContent(sheet)) {
 				E item = BeanUtils.instantiateClass(clazz);
 				
-				Long importId = Long.parseLong(line.get(ID_FIELD_NAME).toString());
+				String importId = StringUtils.trimWhitespace(Objects.toString(line.get(ID_FIELD_NAME), null));
 				line.remove(ID_FIELD_NAME);
 				
 				doFilterLine(clazz, line);
