@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.link.model;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -17,6 +18,10 @@ public class AnchorNameModel extends LoadableDetachableModel<String> {
 	private final IModel<String> unencodedAnchorNameModel;
 
 	private final AnchorType anchorType;
+
+	public AnchorNameModel(String unencodedAnchorName, AnchorType anchorType) {
+		this(Model.of(unencodedAnchorName), anchorType);
+	}
 
 	public AnchorNameModel(IModel<String> unencodedAnchorNameModel, AnchorType anchorType) {
 		super();
