@@ -17,6 +17,8 @@ import org.springframework.util.StringUtils;
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.file.model.path.IFileStorePathGenerator;
+import fr.openwide.core.jpa.more.business.file.model.path.SimpleFileStorePathGeneratorImpl;
 
 
 public class SimpleFileStoreImpl implements IFileStore {
@@ -29,10 +31,17 @@ public class SimpleFileStoreImpl implements IFileStore {
 	
 	private boolean writable;
 	
+	private final IFileStorePathGenerator pathGenerator;
+	
 	public SimpleFileStoreImpl(String key, String rootDirectoryPath, boolean writable) {
+		this(key, rootDirectoryPath, new SimpleFileStorePathGeneratorImpl(), writable);
+	}
+	
+	public SimpleFileStoreImpl(String key, String rootDirectoryPath, IFileStorePathGenerator pathGenerator, boolean writable) {
 		this.key = key;
 		this.rootDirectoryPath = rootDirectoryPath;
 		this.writable = writable;
+		this.pathGenerator = pathGenerator;
 	}
 	
 	@Override
@@ -77,7 +86,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 		FileOutputStream outputStream = null;
 		File outputFile = null;
 		
-		String cleanExtension = extension.toLowerCase(Locale.ROOT);
+		String cleanExtension = extension == null ? null : extension.toLowerCase(Locale.ROOT);
 		
 		try {
 			String filePath = getFilePath(fileKey, cleanExtension);
@@ -156,7 +165,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 	}
 	
 	protected String getFilePath(String fileKey, String extension) {
-		return FilenameUtils.concat(rootDirectoryPath, fileKey + "." + extension);
+		return FilenameUtils.concat(rootDirectoryPath, pathGenerator.getFilePath(fileKey, extension));
 	}
 	
 	protected String getRootDirectoryPath() {
