@@ -1,9 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractPlaceholderEnclosureBehavior;
-import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder.Visibility;
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior;
 
-public class PlaceholderBehavior extends AbstractPlaceholderEnclosureBehavior<PlaceholderBehavior> {
+public class PlaceholderBehavior extends AbstractConfigurableComponentBooleanPropertyBehavior<PlaceholderBehavior> {
 
 	private static final long serialVersionUID = -4321921413728629980L;
 
@@ -12,7 +11,7 @@ public class PlaceholderBehavior extends AbstractPlaceholderEnclosureBehavior<Pl
 	}
 	
 	public PlaceholderBehavior(ComponentBooleanProperty property) {
-		super(property, Visibility.SHOW_IF_EMPTY);
+		super(property, Operator.WHEN_ALL_FALSE);
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-import fr.openwide.core.wicket.more.markup.html.basic.impl.PlaceholderEnclosureVisibilityBuilder.Visibility;
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyContainer;
 
-public class PlaceholderContainer extends AbstractHideableContainer<PlaceholderContainer> {
+public class PlaceholderContainer extends AbstractConfigurableComponentBooleanPropertyContainer<PlaceholderContainer> {
 
 	private static final long serialVersionUID = 1664956501257659431L;
 
 	public PlaceholderContainer(String id) {
-		super(id, Visibility.SHOW_IF_EMPTY);
+		super(id, new PlaceholderBehavior());
 	}
 	
 	@Override
