@@ -1,7 +1,5 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component;
 
-import java.io.Serializable;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -18,9 +16,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 
 public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepStart<O>, IAjaxConfirmLinkBuilderStepContent<O>,
 		IAjaxConfirmLinkBuilderStepEndContent<O>, IAjaxConfirmLinkBuilderStepNo<O>, IAjaxConfirmLinkBuilderStepOnclick<O>,
-		IAjaxConfirmLinkBuilderStepTerminal<O>, Serializable {
-	
-	private static final long serialVersionUID = 228523313752120108L;
+		IAjaxConfirmLinkBuilderStepTerminal<O> {
 
 	private String wicketId;
 	
@@ -125,15 +121,8 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	@Override
 	public AjaxConfirmLink<O> create() {
 		try {
-			return new AjaxConfirmLink<O>(wicketId, model, titleModel, contentModel,
-					yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup) {
-				private static final long serialVersionUID = -6542616889427451607L;
-
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					AjaxConfirmLinkBuilder.this.onClick.apply(target);
-				}
-			};
+			return new FunctionalAjaxConfirmLink<O>(wicketId, model, titleModel, contentModel,
+					yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup, onClick);
 		} finally {
 			wicketId = null;
 			model = null;
@@ -143,6 +132,25 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 			noLabelModel = null;
 			cssClassNamesModel = null;
 		}
+	}
+	
+	private static class FunctionalAjaxConfirmLink<O> extends AjaxConfirmLink<O> {
+		private static final long serialVersionUID = -2098954474307467112L;
+		
+		private final SerializableFunction<AjaxRequestTarget, Void> onClick;
+		
+		public FunctionalAjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
+				boolean textNoEscape, SerializableFunction<AjaxRequestTarget, Void> onClick) {
+			super(id, model, titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape);
+			this.onClick = onClick;
+		}
+		
+		@Override
+		public void onClick(AjaxRequestTarget target) {
+			this.onClick.apply(target);
+		}
+		
 	}
 
 }
