@@ -19,6 +19,8 @@ package fr.openwide.core.wicket.more.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -120,6 +122,34 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 			id = null;
 			notYetPersistedEntity = null;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof GenericEntityModel)) {
+			return false;
+		}
+		GenericEntityModel<?, ?> other = (GenericEntityModel<?, ?>) obj;
+		return new EqualsBuilder()
+				.append(clazz, other.clazz)
+				.append(id, other.id)
+				.append(notYetPersistedEntity, other.notYetPersistedEntity)
+				.isEquals();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(clazz)
+				.append(id)
+				.append(notYetPersistedEntity)
+				.toHashCode();
 	}
 
 }
