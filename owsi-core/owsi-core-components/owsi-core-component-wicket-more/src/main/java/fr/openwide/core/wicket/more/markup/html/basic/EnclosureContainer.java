@@ -7,7 +7,7 @@ public class EnclosureContainer extends AbstractConfigurableComponentBooleanProp
 	private static final long serialVersionUID = 8163938380844150417L;
 
 	public EnclosureContainer(String id) {
-		super(id, new EnclosureBehavior());
+		super(id, new EnclosureBehavior(ComponentBooleanProperty.VISIBLE));
 	}
 	
 	@Override
