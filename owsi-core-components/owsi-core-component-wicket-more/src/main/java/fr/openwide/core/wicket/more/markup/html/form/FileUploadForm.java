@@ -24,6 +24,10 @@ public class FileUploadForm<T> extends Form<T> {
 
 	private static final String UPLOAD_FAILED_RESOURCE_KEY = "uploadFailed";
 	
+	public FileUploadForm(String id) {
+		super(id);
+	}
+	
 	public FileUploadForm(String id, IModel<T> model) {
 		super(id, model);
 	}
