@@ -403,14 +403,18 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			return null;
 		}
 		
+		Set<String> filteredCc = filterCcBcc(cc);
+		Set<String> filteredBcc = filterCcBcc(cc);
+		
 		helper.setFrom(from);
 		helper.setTo(filteredTo);
-		helper.setCc(cc.toArray(new String[cc.size()]));
-		helper.setBcc(bcc.toArray(new String[bcc.size()]));
+		helper.setCc(filteredCc.toArray(new String[filteredCc.size()]));
+		helper.setBcc(filteredBcc.toArray(new String[filteredBcc.size()]));
 		helper.setSubject(subject);
 
-		String textBodyPrefix = getBodyPrefix(to, MailFormat.TEXT);
-		String htmlBodyPrefix = getBodyPrefix(to, MailFormat.HTML);
+		String textBodyPrefix = getBodyPrefix(to, cc, bcc, MailFormat.TEXT);
+		String htmlBodyPrefix = getBodyPrefix(to, cc, bcc, MailFormat.HTML);
+		
 		if (StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody)) {
 			helper.setText(textBodyPrefix + textBody, htmlBodyPrefix + htmlBody);
 		} else if (StringUtils.hasText(htmlBody)) {
@@ -486,8 +490,15 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	private String[] filterEmails(String[] emails) {
-		if (configurer.isConfigurationTypeDevelopment()) {
+		if (emails != null && configurer.isConfigurationTypeDevelopment()) {
 			return configurer.getNotificationTestEmails();
+		}
+		return emails;
+	}
+	
+	private Set<String> filterCcBcc(Set<String> emails) {
+		if (configurer.isConfigurationTypeDevelopment()) {
+			return Sets.newHashSet();
 		}
 		return emails;
 	}
@@ -501,7 +512,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return subjectPrefix.toString();
 	}
 	
-	private String getBodyPrefix(String[] to, MailFormat mailFormat) {
+	private String getBodyPrefix(String[] to, Set<String> cc, Set<String> bcc, MailFormat mailFormat) {
 		if (configurer.isConfigurationTypeDevelopment()) {
 			
 			String newLine = MailFormat.HTML.equals(mailFormat) ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
@@ -510,6 +521,12 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			newBody.append("#############").append(newLine);
 			newBody.append("#").append(newLine);
 			newBody.append("# To: ").append(StringUtils.join(to, ", ")).append(newLine);
+			if (cc != null && !cc.isEmpty()) {
+				newBody.append("# Cc: ").append(StringUtils.join(cc, ", ")).append(newLine);
+			}
+			if (bcc != null && !bcc.isEmpty()) {
+				newBody.append("# Bcc: ").append(StringUtils.join(bcc, ", ")).append(newLine);
+			}
 			newBody.append("#").append(newLine);
 			newBody.append("#############").append(newLine).append(newLine).append(newLine);
 			
