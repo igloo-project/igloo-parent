@@ -3,6 +3,8 @@ package fr.openwide.core.wicket.more.model.threadsafe;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.lang.Objects;
@@ -111,6 +113,32 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	}
 	
 	protected void onDetach() {
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof SessionThreadSafeDerivedSerializableStateLoadableDetachableModel)) {
+			return false;
+		}
+		SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?> other =
+				(SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<?, ?>) obj;
+		return new EqualsBuilder()
+				.append(sharedSerializableState.get(), other.sharedSerializableState.get())
+				.isEquals();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(sharedSerializableState.get())
+				.toHashCode();
 	}
 
 }
