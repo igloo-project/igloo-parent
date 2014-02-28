@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 
 public final class Functions2 {
 
@@ -104,4 +105,22 @@ public final class Functions2 {
 		}
 	}
 	
+	public static <T> Function<Iterable<T>, T> first() {
+		return new IterableFirstFunction<T>();
+	}
+	
+	private static final class IterableFirstFunction<T> implements Function<Iterable<T>, T>, Serializable {
+
+		private static final long serialVersionUID = -8259072136500802108L;
+
+		@Override
+		public T apply(Iterable<T> input) {
+			return input == null ? null : Iterables.getFirst(input, null);
+		}
+		
+		@Override
+		public String toString() {
+			return "first";
+		}
+	}
 }
