@@ -9,7 +9,7 @@ public final class NotificationLessCssResourceReference extends LessCssResourceR
 	private static final NotificationLessCssResourceReference INSTANCE = new NotificationLessCssResourceReference();
 	
 	private NotificationLessCssResourceReference() {
-		super(NotificationLessCssResourceReference.class, "styles.less");
+		super(NotificationLessCssResourceReference.class, "notification.less");
 	}
 
 	public static NotificationLessCssResourceReference get() {
