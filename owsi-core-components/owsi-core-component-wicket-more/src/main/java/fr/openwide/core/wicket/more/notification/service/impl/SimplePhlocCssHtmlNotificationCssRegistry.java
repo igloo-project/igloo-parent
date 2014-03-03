@@ -101,7 +101,8 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 					}
 				} else {
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Only simple selector members ('.class', 'name', '#id') are supported. The selector '{}' and the related declarations will be ignored.", selector);
+						LOGGER.debug("Only simple selector members ('.class', 'name', '#id') are supported. The selector '{}' and the related declarations will be ignored.",
+								selector.getAsCSSString(new CSSWriterSettings(ECSSVersion.CSS30), 0));
 					}
 					return false;
 				}
