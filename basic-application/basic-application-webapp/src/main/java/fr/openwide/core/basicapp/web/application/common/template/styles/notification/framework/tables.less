@@ -8,43 +8,40 @@
 
 table {
 	width: 100%;
-	border: 1px solid @tableBorder;
-	border-top: none;
-	border-left: none;
-	.border-radius(@baseBorderRadius);
+	border-right: 1px solid @table-border-color;
+	border-bottom: 1px solid @table-border-color;
+	background-color: @table-bg;
 	border-spacing: 0;
 	border-collapse: separate;
 }
 
+// Baseline styles
+
 td, th {
-	font-family: @baseFontFamily;
-	font-size: @baseFontSize;
-	line-height: @baseLineHeight;
+	font-family: @font-family-base;
+	font-size: @font-size-base;
+	line-height: @line-height-base;
 	
-	border-left: 1px solid @tableBorder;
-	border-top: 1px solid @tableBorder;
-	padding: 10px 8px;
+	border-left: 1px solid @table-border-color;
+	border-top: 1px solid @table-border-color;
+	padding: @table-cell-padding;
+	vertical-align: top;
 	text-align: left;
 	
 	&.top-left {
-		border-top-left-radius: 4px;
 	}
 	
 	&.top-right {
-		border-top-right-radius: 4px;
 	}
 	
 	&.bottom-left {
-		border-bottom-left-radius: 4px;
 	}
 	
 	&.bottom-right {
-		border-bottom-right-radius: 4px;
 	}
 }
 
 th {
 	vertical-align: bottom;
-	color: #555555;
 	font-weight: bold;
 }
