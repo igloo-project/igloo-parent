@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.feedback;
 
+import org.apache.wicket.feedback.ExactLevelFeedbackMessageFilter;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 class ErrorLevelFeedbackPanel extends FeedbackPanel {
@@ -8,7 +9,7 @@ class ErrorLevelFeedbackPanel extends FeedbackPanel {
 	protected int level;
 
 	public ErrorLevelFeedbackPanel(String id, int level) {
-		super(id, new ErrorLevelFeedbackMessageFilter(level));
+		super(id, new ExactLevelFeedbackMessageFilter(level));
 		this.level = level;
 	}
 	
