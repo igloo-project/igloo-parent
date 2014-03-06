@@ -1,7 +1,9 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -81,15 +83,37 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 				// On ajoute le handler seulement si le composant est activé
 				return AjaxConfirmButton.this.isEnabledInHierarchy();
 			}
-			
+
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onSubmit(target, AjaxConfirmButton.this.getForm());
 			}
-			
+
+			@Override
+			protected void onAfterSubmit(AjaxRequestTarget target) {
+				AjaxConfirmButton.this.onAfterSubmit(target, AjaxConfirmButton.this.getForm());
+			}
+
 			@Override
 			protected void onError(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
+			}
+
+			@SuppressWarnings("deprecation")
+			@Override
+			protected AjaxChannel getChannel() {
+				return AjaxConfirmButton.this.getChannel();
+			}
+
+			@Override
+			protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+				super.updateAjaxAttributes(attributes);
+				AjaxConfirmButton.this.updateAjaxAttributes(attributes);
+			}
+
+			@Override
+			public boolean getDefaultProcessing() {
+				return AjaxConfirmButton.this.getDefaultFormProcessing();
 			}
 		};
 	}
