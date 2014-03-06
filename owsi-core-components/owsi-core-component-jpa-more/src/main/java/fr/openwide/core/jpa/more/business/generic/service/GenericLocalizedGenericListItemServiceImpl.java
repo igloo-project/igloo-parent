@@ -19,7 +19,7 @@ import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedTe
 public abstract class GenericLocalizedGenericListItemServiceImpl<GE extends GenericLocalizedGenericListItem<?, T>, T extends AbstractLocalizedText>
 		implements IGenericLocalizedGenericListItemService<GE, T> {
 	
-	protected final IGenericLocalizedGenericListItemDao<GE, T> dao;
+	private final IGenericLocalizedGenericListItemDao<GE, T> dao;
 	
 	public GenericLocalizedGenericListItemServiceImpl(IGenericLocalizedGenericListItemDao<GE, T> dao) {
 		super();
