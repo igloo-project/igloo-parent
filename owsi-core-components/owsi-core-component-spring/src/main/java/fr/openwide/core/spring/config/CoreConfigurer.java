@@ -168,6 +168,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsString("notification.mail.subjectPrefix");
 	}
 	
+	public boolean isNotificationMailRecipientsFiltered() {
+		return isConfigurationTypeDevelopment() || getPropertyAsBoolean("notification.mail.recipientsFiltered");
+	}
+	
 	public String[] getNotificationTestEmails() {
 		return getPropertyAsStringArray("notification.test.emails");
 	}
@@ -242,4 +246,5 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public int getWicketDiskDataStoreMaxSizePerSession() {
 		return getPropertyAsInteger("wicket.diskDataStore.maxSizePerSession", 10);
 	}
+	
 }
