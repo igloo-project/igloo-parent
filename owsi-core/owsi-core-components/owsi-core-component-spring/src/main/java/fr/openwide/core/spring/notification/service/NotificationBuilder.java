@@ -490,14 +490,14 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	}
 	
 	private String[] filterEmails(String[] emails) {
-		if (emails != null && configurer.isConfigurationTypeDevelopment()) {
+		if (emails != null && configurer.isNotificationMailRecipientsFiltered()) {
 			return configurer.getNotificationTestEmails();
 		}
 		return emails;
 	}
 	
 	private Set<String> filterCcBcc(Set<String> emails) {
-		if (configurer.isConfigurationTypeDevelopment()) {
+		if (configurer.isNotificationMailRecipientsFiltered()) {
 			return Sets.newHashSet();
 		}
 		return emails;
