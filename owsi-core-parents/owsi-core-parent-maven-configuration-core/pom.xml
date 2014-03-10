@@ -123,7 +123,7 @@
 		<owsi-core.wicket-select2.version>1.1.9</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>6.1.1.owsi3</owsi-core.wqplot.version>
 		
-		<owsi-core.less4j.version>1.4.0</owsi-core.less4j.version>
+		<owsi-core.less4j.version>1.4.1</owsi-core.less4j.version>
 		
 		<owsi-core.junit.version>4.11</owsi-core.junit.version>
 		<owsi-core.grizzly.version>1.9.59</owsi-core.grizzly.version>
