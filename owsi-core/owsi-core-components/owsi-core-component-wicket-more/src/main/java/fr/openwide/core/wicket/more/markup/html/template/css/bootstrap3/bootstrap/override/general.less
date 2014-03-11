@@ -103,6 +103,22 @@ ol.unstyled {
 	}
 }
 
+.btn.btn-disable {
+	.button-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+	
+	&:hover {
+		.button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+	}
+}
+
+.btn.btn-enable {
+	.button-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+	
+	&:hover {
+		.button-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+	}
+}
+
 .btn img {
 	vertical-align: baseline;
 }
