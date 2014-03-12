@@ -24,7 +24,7 @@ import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 	
-	public static final String NAME = "BasicApplication";
+	public static final String NAME = "BasicApplicationApplication";
 	
 	public static BasicApplicationApplication get() {
 		final Application application = Application.get();
