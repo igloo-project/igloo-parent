@@ -22,19 +22,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
-import fr.openwide.core.jpa.more.business.audit.dao.IAuditDao;
+import fr.openwide.core.jpa.more.business.audit.dao.IAbstractAuditDao;
 import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
 
 /**
  * <p>Implémentation du service {@link IAuditService}.</p>
  */
 public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends GenericEntityServiceImpl<Long, T> 
-		implements IAuditService<T> {
+		implements IAbstractAuditService<T> {
 
 	/**
 	 * DAO du journal d'activité.
 	 */
-	private IAuditDao<T> auditDao;
+	private IAbstractAuditDao<T> auditDao;
 
 	/**
 	 * Constructeur.
@@ -42,7 +42,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	 * @param auditDao DAO du journal d'activité injecté par Spring
 	 */
 	@Autowired
-	public AbstractAuditServiceImpl(IAuditDao<T> auditDao) {
+	public AbstractAuditServiceImpl(IAbstractAuditDao<T> auditDao) {
 		super(auditDao);
 		this.auditDao = auditDao;
 	}
