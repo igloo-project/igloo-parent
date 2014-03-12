@@ -25,7 +25,7 @@ import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
 /**
  * <p>DAO concernant les {@link AbstractAudit}.</p>
  */
-public interface IAuditDao<T extends AbstractAudit> extends IGenericEntityDao<Long, T> {
+public interface IAbstractAuditDao<T extends AbstractAudit> extends IGenericEntityDao<Long, T> {
 
 	/**
 	 * Renvoie l'entité correspondant à la classe et l'identifiant demandés.

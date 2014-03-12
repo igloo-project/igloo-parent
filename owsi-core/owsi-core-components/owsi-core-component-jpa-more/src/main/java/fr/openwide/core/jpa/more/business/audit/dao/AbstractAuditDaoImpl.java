@@ -38,7 +38,7 @@ import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit_;
  * @author Open Wide
  */
 public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends GenericEntityDaoImpl<Long, T> 
-	implements IAuditDao<T> {
+	implements IAbstractAuditDao<T> {
 
 	/**
 	 * Constructeur.
