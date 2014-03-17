@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
@@ -83,7 +84,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 	@Override
 	public FileInformation addFile(InputStream inputStream, String fileKey, String extension)
 			throws ServiceException, SecurityServiceException {
-		FileOutputStream outputStream = null;
+		OutputStream outputStream = null;
 		File outputFile = null;
 		
 		String cleanExtension = extension == null ? null : extension.toLowerCase(Locale.ROOT);
@@ -99,7 +100,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 			}
 			
 			outputFile = new File(filePath);
-			outputStream = new FileOutputStream(outputFile);
+			outputStream = createOutputStream(outputFile);
 			IOUtils.copy(inputStream, outputStream);
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -126,6 +127,10 @@ public class SimpleFileStoreImpl implements IFileStore {
 		return fileInformation;
 	}
 	
+	protected OutputStream createOutputStream(File outputFile) throws IOException {
+		return new FileOutputStream(outputFile);
+	}
+
 	@Override
 	public void removeFile(String fileKey, String extension) {
 		File file = getFile(fileKey, extension);
