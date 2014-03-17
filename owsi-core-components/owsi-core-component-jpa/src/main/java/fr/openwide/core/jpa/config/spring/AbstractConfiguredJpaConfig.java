@@ -29,7 +29,7 @@ public abstract class AbstractConfiguredJpaConfig extends AbstractJpaConfig {
 	@Override
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
-		return JpaConfigUtils.dataSource(defaultJpaConfig.defaultTomcatPoolConfigurationProvider());
+		return JpaConfigUtils.dataSource(defaultJpaConfig.defaultDatabaseConnectionPoolConfigurationProvider());
 	}
 
 }

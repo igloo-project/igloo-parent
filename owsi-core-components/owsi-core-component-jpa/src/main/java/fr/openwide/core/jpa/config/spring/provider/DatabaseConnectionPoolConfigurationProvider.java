@@ -4,10 +4,10 @@ import java.sql.Driver;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public class DefaultTomcatPoolConfigurationProvider {
+public class DatabaseConnectionPoolConfigurationProvider {
 
 	@Value("${${db.type}.db.driverClass}")
-	private Class<Driver> driver;
+	private Class<Driver> driverClass;
 
 	@Value("${db.jdbcUrl}")
 	private String url;
@@ -30,8 +30,8 @@ public class DefaultTomcatPoolConfigurationProvider {
 	@Value("${${db.type}.db.preferredTestQuery}")
 	private String validationQuery;
 
-	public Class<Driver> getDriver() {
-		return driver;
+	public Class<Driver> getDriverClass() {
+		return driverClass;
 	}
 
 	public String getUrl() {

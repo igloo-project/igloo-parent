@@ -1,6 +1,5 @@
 package fr.openwide.core.jpa.config.spring;
 
-import java.sql.Driver;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -33,8 +32,8 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
+import fr.openwide.core.jpa.config.spring.provider.DatabaseConnectionPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
-import fr.openwide.core.jpa.config.spring.provider.DefaultTomcatPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.util.FixedDefaultComponentSafeNamingStrategy;
@@ -216,24 +215,29 @@ public final class JpaConfigUtils {
 		return transactionInterceptor;
 	}
 
-	public static DataSource dataSource(DefaultTomcatPoolConfigurationProvider provider) {
-		return dataSource(provider.getDriver(), provider.getUrl(), provider.getUser(), provider.getPassword(),
-				provider.getMinPoolSize(), provider.getMaxPoolSize(), provider.getInitialPoolSize(),
-				provider.getValidationQuery());
-	}
-
-	public static DataSource dataSource(Class<? extends Driver> driver, String url, String username, String password,
-			int minPoolSize, int maxPoolSize, int initialPoolSize, String validationQuery) {
+	public static DataSource dataSource(DatabaseConnectionPoolConfigurationProvider configurationProvider) {
+		/*
+		HikariDataSource dataSource = new HikariDataSource();
+		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
+		dataSource.setJdbcUrl(configurationProvider.getUrl());
+		dataSource.addDataSourceProperty("user", configurationProvider.getUser());
+		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
+		dataSource.setMinimumPoolSize(configurationProvider.getMinPoolSize());
+		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
+		
+		dataSource.setJdbc4ConnectionTest(false);
+		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
+		*/
 		org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-		dataSource.setDriverClassName(driver.getName());
-		dataSource.setUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		dataSource.setMaxActive(maxPoolSize);
-		dataSource.setMinIdle(minPoolSize);
-		dataSource.setMaxIdle(maxPoolSize);
-		dataSource.setInitialSize(initialPoolSize);
-		dataSource.setValidationQuery(validationQuery);
+		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
+		dataSource.setUrl(configurationProvider.getUrl());
+		dataSource.setUsername(configurationProvider.getUser());
+		dataSource.setPassword(configurationProvider.getPassword());
+		dataSource.setMaxActive(configurationProvider.getMaxPoolSize());
+		dataSource.setMinIdle(configurationProvider.getMinPoolSize());
+		dataSource.setMaxIdle(configurationProvider.getMaxPoolSize());
+		dataSource.setInitialSize(configurationProvider.getInitialPoolSize());
+		dataSource.setValidationQuery(configurationProvider.getValidationQuery());
 		dataSource.setTestOnBorrow(true);
 		dataSource.setLogValidationErrors(false);
 		dataSource.setValidationInterval(30000);
