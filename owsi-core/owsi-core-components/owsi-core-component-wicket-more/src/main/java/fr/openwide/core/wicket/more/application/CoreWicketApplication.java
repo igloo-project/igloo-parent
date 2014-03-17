@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.application;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
@@ -16,6 +17,7 @@ import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVe
 import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
+import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.time.Duration;
 import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.slf4j.Logger;
@@ -26,6 +28,7 @@ import org.springframework.context.ApplicationContext;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
+import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -166,6 +169,26 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	public final <T extends Page> void mountParameterizedPage(final String path, final Class<T> pageClass) {
 		mount(new PageParameterAwareMountedMapper(path, pageClass));
+	}
+
+	protected void preloadStyleSheets(LessCssResourceReference... lessCssResourcesReferences) {
+		for (LessCssResourceReference resourceReference : lessCssResourcesReferences) {
+			LOGGER.info("Preloading stylesheet '{}/{}'...", resourceReference.getScope().getName(),
+					resourceReference.getName());
+			IResourceStream resourceStream = null;
+			try {
+				// Just initialize the underlying cache, whatever the content is.
+				resourceStream = resourceReference.getResource().getResourceStream();
+			} finally {
+				if (resourceStream != null) {
+					try {
+						resourceStream.close();
+					} catch (IOException e) {
+						LOGGER.error("Error when closing a stream while trying to preload stylesheets.", e);
+					}
+				}
+			}
+		}
 	}
 
 	/**
