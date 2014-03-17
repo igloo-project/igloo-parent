@@ -23,7 +23,7 @@
 		
 		<!-- Database dependencies -->
 		<dependency>
-			<groupId>postgresql</groupId>
+			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
 	
@@ -231,6 +231,12 @@
 			<artifactId>tomcat-jdbc</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>
