@@ -5,6 +5,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
@@ -14,6 +15,7 @@ import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
+import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
@@ -26,6 +28,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	
 	public static final String NAME = "BasicApplicationApplication";
 	
+	@Autowired
+	private CoreConfigurer configurer;
+	
 	public static BasicApplicationApplication get() {
 		final Application application = Application.get();
 		if (application instanceof BasicApplicationApplication) {
@@ -33,6 +38,22 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		}
 		throw new WicketRuntimeException("There is no BasicApplicationApplication attached to current thread " +
 				Thread.currentThread().getName());
+	}
+	
+	@Override
+	public void init() {
+		super.init();
+		
+		// si on n'est pas en développement, on précharge les feuilles de styles pour éviter la ruée et permettre le remplissage du cache
+		// XXX : mettre en place ça dès qu'on sera passé à Wicket 6.15.
+//		if (!configurer.isConfigurationTypeDevelopment()) {
+//			preloadStyleSheets(
+//					ConsoleLessCssResourceReference.get(),
+//					NotificationLessCssResourceReference.get(),
+//					SignInLessCssResourceReference.get(),
+//					StylesLessCssResourceReference.get()
+//			);
+//		}
 	}
 
 	@Override
