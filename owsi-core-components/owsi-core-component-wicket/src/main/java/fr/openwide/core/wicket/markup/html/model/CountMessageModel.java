@@ -15,10 +15,16 @@
  */
 package fr.openwide.core.wicket.markup.html.model;
 
+import java.io.Serializable;
+
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.IWrapModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Args;
 
 /**
@@ -52,98 +58,123 @@ import org.apache.wicket.util.lang.Args;
  * 
  * @since 2.0
  */
-public class CountMessageModel extends AbstractReadOnlyModel<String>
-{
-    private static final long serialVersionUID = 3717960938783720989L;
-    
-    private StringResourceModel stringModel;
-    private IModel<? extends Number> countModel;
-    
-    /**
-     * Constructs a CountMessageModel that will choose the appropriate
-     * localized string from a properties file.
-     * 
-     * @param messageKey The key that will be consulted in the properties file.
-     *                   The key will have ".zero", ".one" or ".many" appended
-     *                   to it depending on the value of the {@code count}.
-     * @param component The Wicket component that will be used for finding
-     *                  the properties file. Usually this is the page or panel
-     *                  where you plan to use the model.
-     * @param count The number that will be used in the message. This will
-     *              be used to substitute any <code>${count}</code> expressions
-     *              in the message.
-     */
-    public CountMessageModel(String messageKey,
-                             Component component,
-                             IModel<? extends Number> count)
-    {
-        super();
-        Args.notNull(messageKey, "messageKey");
-        Args.notNull(count, "count");
-        
-        this.countModel = count;
-        this.stringModel = new StringResourceModel(
-            messageKey + "${resourceSuffix}",
-            component,
-            new AbstractReadOnlyModel<CountMessageModel>()
-            {
-                private static final long serialVersionUID = 1L;
+public class CountMessageModel extends AbstractReadOnlyModel<String> implements IComponentAssignedModel<String> {
+	private static final long serialVersionUID = 3717960938783720989L;
 
-                @Override
-                public CountMessageModel getObject()
-                {
-                    return CountMessageModel.this;
-                }
-            }
-        );
-    }
-    
-    public CountMessageModel(String messageKey, IModel<? extends Number> count)
-    {
-        this(messageKey, null, count);
-    }
-    
-    /**
-     * Detaches the count model passed into the constructor and other
-     * internal state.
-     */
-    @Override
-    public void detach()
-    {
-        this.countModel.detach();
-        this.stringModel.detach();
-        super.detach();
-    }
+	private String messageKey;
+	private IModel<? extends Number> countModel;
 
-    /**
-     * Returns the message after all interpolation has been performed.
-     */
-    @Override
-    public String getObject()
-    {
-        return this.stringModel.getObject();
-    }
-    
-    /**
-     * Returns the current value of the count model. This is exposed as
-     * <code>${count}</code> within the message.
-     */
-    public int getCount()
-    {
-        Number num = this.countModel.getObject();
-        return num != null ? num.intValue() : 0;
-    }
-    
-    /**
-     * Returns either ".zero", ".one", or ".many" depending on the current
-     * value of the count model.
-     */
-    public String getResourceSuffix()
-    {
-        int count = getCount();
-        
-        if(0 == count) return ".zero";
-        if(1 == count) return ".one";
-        return ".many";
-    }
+	/**
+	 * Constructs a CountMessageModel that will choose the appropriate localized
+	 * string from a properties file.
+	 * 
+	 * @param messageKey
+	 *            The key that will be consulted in the properties file. The key
+	 *            will have ".zero", ".one" or ".many" appended to it depending
+	 *            on the value of the {@code count}.
+	 * @param component
+	 *            The Wicket component that will be used for finding the
+	 *            properties file. Usually this is the page or panel where you
+	 *            plan to use the model.
+	 * @param count
+	 *            The number that will be used in the message. This will be used
+	 *            to substitute any <code>${count}</code> expressions in the
+	 *            message.
+	 */
+	public CountMessageModel(String messageKey, IModel<? extends Number> count) {
+		super();
+		Args.notNull(messageKey, "messageKey");
+		Args.notNull(count, "count");
+		
+		this.messageKey = messageKey;
+		this.countModel = count;
+	}
+	
+	@Override
+	public IWrapModel<String> wrapOnAssignment(Component component) {
+		return new AssignmentWrapper(component);
+	}
+
+	@Override
+	public void detach() {
+		this.countModel.detach();
+		super.detach();
+	}
+
+	@Override
+	public String getObject() {
+		// this shouldn't be called always wrapped!
+		return Application.get().getResourceSettings().getLocalizer().getString(getResourceKey(), null, CountMessageModel.this);
+	}
+
+	public int getCount() {
+		Number num = this.countModel.getObject();
+		return num != null ? num.intValue() : 0;
+	}
+
+	public String getResourceKey() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(messageKey);
+		
+		int count = getCount();
+
+		if (0 == count) {
+			sb.append(".zero");
+		} else if (1 == count) {
+			sb.append(".one");
+		} else {
+			sb.append(".many");
+		}
+		return sb.toString();
+	}
+	
+	public PropertySubstitutionBean getPropertySubstitutionBean() {
+		return new PropertySubstitutionBean(getCount());
+	}
+	
+	private static class PropertySubstitutionBean implements Serializable {
+		private static final long serialVersionUID = 5422751133639920585L;
+		
+		private int count;
+		
+		private PropertySubstitutionBean(int count) {
+			this.count = count;
+		}
+		
+		@SuppressWarnings("unused")
+		private int getCount() {
+			return count;
+		}
+	}
+	
+	private class AssignmentWrapper extends LoadableDetachableModel<String> implements IWrapModel<String> {
+		private static final long serialVersionUID = 1L;
+
+		private final Component component;
+
+		public AssignmentWrapper(Component component) {
+			this.component = component;
+		}
+
+		/**
+		 * @see org.apache.wicket.model.IWrapModel#getWrappedModel()
+		 */
+		@Override
+		public IModel<String> getWrappedModel() {
+			return CountMessageModel.this;
+		}
+
+		@Override
+		protected String load() {
+			return Application.get().getResourceSettings().getLocalizer()
+					.getString(CountMessageModel.this.getResourceKey(), component,
+					Model.of(CountMessageModel.this.getPropertySubstitutionBean()));
+		}
+
+		@Override
+		protected void onDetach() {
+			CountMessageModel.this.detach();
+		}
+	}
+	
 }
