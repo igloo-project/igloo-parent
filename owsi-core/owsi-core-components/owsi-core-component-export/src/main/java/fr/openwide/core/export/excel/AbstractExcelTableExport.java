@@ -33,6 +33,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeMap;
+import com.google.common.collect.TreeRangeMap;
+
 /**
  * <p>Classe abstraite permettant de construire des tableaux Excel.</p>
  *
@@ -530,7 +536,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		
 		Row rowHeader = sheet.createRow(rowIndex);
 		for (String header : headers) {
-			addHeaderCell(rowHeader, columnIndex, getLocalizedLabel(header));
+			addHeaderCell(rowHeader, columnIndex, getColumnLabel(header));
 			columnIndex++;
 		}
 	}
@@ -553,7 +559,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		for (Entry<String, ColumnInformation> entry : columnInfos.entrySet()) {
 			ColumnInformation columnInformation = entry.getValue();
 			sheet.setColumnHidden(columnIndex, columnInformation.isHidden());
-			addHeaderCell(rowHeader, columnIndex, getLocalizedLabel(columnInformation.getHeaderKey() != null ? columnInformation.getHeaderKey() : entry.getKey()));
+			addHeaderCell(rowHeader, columnIndex, getColumnLabel(columnInformation.getHeaderKey() != null ? columnInformation.getHeaderKey() : entry.getKey()));
 			columnIndex++;
 		}
 	}
@@ -571,8 +577,36 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		Row rowHeader = sheet.createRow(rowIndex);
 		for (ColumnInformation columnInformation : columnInfos) {
 			sheet.setColumnHidden(columnIndex, columnInformation.isHidden());
-			addHeaderCell(rowHeader, columnIndex, getLocalizedLabel(columnInformation.getHeaderKey()));
+			addHeaderCell(rowHeader, columnIndex, getColumnLabel(columnInformation.getHeaderKey()));
 			columnIndex++;
+		}
+	}
+
+	/**
+	 * Ajoute les en-têtes dans la feuille de calcul et cache les colonnes qui doivent l'être.
+	 * 
+	 * @param sheet feuille de calcul
+	 * @param rowIndex numéro de la ligne
+	 * @param columnInfos RangeMap contenant les informations de colonnes (valeurs) et les index sur auxquelles s'appliquent ces colonnes (clés).
+	 *                    Les "colonnes" s'étendant sur plus d'un index seront automatiquement fusionnées.
+	 */
+	protected void addHeadersToSheet(Sheet sheet, int rowIndex, RangeMap<Integer, ColumnInformation> columnInfos) {
+		Row rowHeader = sheet.createRow(rowIndex);
+		for (Map.Entry<Range<Integer>, ColumnInformation> entry : columnInfos.asMapOfRanges().entrySet()) {
+			Range<Integer> range = entry.getKey();
+			ColumnInformation columnInformation = entry.getValue();
+			
+			addHeaderCell(rowHeader, range.lowerEndpoint(), getColumnLabel(columnInformation.getHeaderKey()));
+			
+			for (Integer columnIndex : ContiguousSet.create(range, DiscreteDomain.integers())) {
+				sheet.setColumnHidden(columnIndex, columnInformation.isHidden());
+			}
+			
+			int beginIndex = range.lowerEndpoint();
+			int endIndex = range.upperEndpoint();
+			if (beginIndex != endIndex) {
+				sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex, beginIndex, endIndex));
+			}
 		}
 	}
 	
@@ -629,13 +663,41 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * redimensionnement automatique des colonnes.
 	 * 
 	 * @param sheet feuilles de calcul
-	 * @param columnInfos map contenant l'en-tête et les informations d'une colonne
+	 * @param columnInfos collection contenant les informations de colonnes
 	 * @param landscapePrintSetup définit si la feuille est imprimée en paysage ou non
 	 */
 	protected void finalizeSheet(Sheet sheet, Collection<ColumnInformation> columnInfos, boolean landscapePrintSetup) {
-		int columnIndex = 0;
-		for (ColumnInformation columnInformation : columnInfos) {
-			sheet.autoSizeColumn(columnIndex);
+		RangeMap<Integer, ColumnInformation> map = TreeRangeMap.create();
+		int index = 0;
+		for (ColumnInformation column : columnInfos) {
+			map.put(Range.singleton(index), column);
+			++index;
+		}
+		finalizeSheet(sheet, map, landscapePrintSetup);
+	}
+
+	/**
+	 * @see #finalizeSheet(Sheet, RangeMap, boolean)
+	 */
+	protected void finalizeSheet(Sheet sheet, RangeMap<Integer, ColumnInformation> columnInfos) {
+		// Par défaut, le format d'impression est en paysage pour les tableaux Excel
+		finalizeSheet(sheet, columnInfos, true);
+	}
+	
+	/**
+	 * Finalise la création de la feuille de calcul, notamment en demandant le
+	 * redimensionnement automatique des colonnes.
+	 * 
+	 * @param sheet feuilles de calcul
+	 * @param columnInfos map contenant l'en-tête et les informations d'une colonne
+	 * @param landscapePrintSetup définit si la feuille est imprimée en paysage ou non
+	 */
+	protected void finalizeSheet(Sheet sheet, RangeMap<Integer, ColumnInformation> columnInfos, boolean landscapePrintSetup) {
+		for (Map.Entry<Range<Integer>, ColumnInformation> entry : columnInfos.asMapOfRanges().entrySet()) {
+			ColumnInformation columnInformation = entry.getValue();
+			Range<Integer> range = entry.getKey();
+			int beginIndex = range.lowerEndpoint();
+			int endIndex = range.upperEndpoint();
 			
 			// Détermination de la taille maximum de cette colonne
 			int maxColumnWidth;
@@ -650,13 +712,20 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 			if (columnInformation.getColumnWidth() != -1) {
 				columnWidth = columnInformation.getColumnWidth();
 			} else {
-				columnWidth = (int) (sheet.getColumnWidth(columnIndex) * COLUMN_RESIZE_RATIO);
+				columnWidth = (int) (sheet.getColumnWidth(beginIndex) * COLUMN_RESIZE_RATIO);
 			}
 			
-			// On redimmensionne la colonne
-			sheet.setColumnWidth(columnIndex, columnWidth < maxColumnWidth ? columnWidth : maxColumnWidth);
+			columnWidth = Math.min(columnWidth, maxColumnWidth);
 			
-			columnIndex++;
+			// On prend en compte le fait que la "colonne" peut s'étendre en fait sur plusieurs colonnes (fusion de cellules au niveau du header)
+			int columnSpan = endIndex - beginIndex + 1;
+			columnWidth = columnWidth / columnSpan;
+			
+			// On redimmensionne la colonne
+			for (int columnIndex = beginIndex ; columnIndex <= endIndex ; ++columnIndex) {
+				sheet.autoSizeColumn(columnIndex);
+				sheet.setColumnWidth(columnIndex, columnWidth);
+			}
 		}
 		
 		finalizeSheet(sheet, landscapePrintSetup);
@@ -693,7 +762,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 				if (mergedRegion.getFirstColumn() == mergedRegion.getLastColumn()) {
 					int columnIndex = mergedRegion.getFirstColumn();
 					
-					String headerText = getLocalizedLabel(columnsInfo.get(columnIndex).getHeaderKey());
+					String headerText = getColumnLabel(columnsInfo.get(columnIndex).getHeaderKey());
 					
 					int headerSize = (int) (headerText.length() * 300 * COLUMN_RESIZE_RATIO);
 					if (sheet.getColumnWidth(columnIndex) < headerSize) {
@@ -711,6 +780,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * @return message
 	 */
 	protected abstract String getLocalizedLabel(String key);
+	
+	/**
+	 * Peut être surchargé pour permettre, par exemple, de considérer la "headerKey" comme le libellé déjà localisé. 
+	 */
+	protected String getColumnLabel(String headerKey) {
+		return getLocalizedLabel(headerKey);
+	}
 
 	public String getFontName() {
 		return fontName;

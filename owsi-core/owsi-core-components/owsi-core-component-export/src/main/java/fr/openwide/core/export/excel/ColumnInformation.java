@@ -5,7 +5,7 @@ package fr.openwide.core.export.excel;
  */
 public class ColumnInformation {
 
-	String headerKey;
+	private String headerKey;
 
 	private boolean hidden = false;
 
