@@ -14,15 +14,15 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 	
 	private static final long serialVersionUID = 1697388050602143288L;
 	
-	private boolean showPlaceholder = false;
+	protected boolean showPlaceholder = false;
 	
-	private IModel<String> placeholderModel;
+	protected IModel<String> placeholderModel;
 	
-	private boolean hideIfEmpty = false;
+	protected boolean hideIfEmpty = false;
 	
-	private boolean multiline = false;
+	protected boolean multiline = false;
 	
-	private transient IModel<?> currentModel;
+	protected transient IModel<?> currentModel;
 	
 	public AbstractCoreLabel(String id, IModel<?> model) {
 		super(id, model);
