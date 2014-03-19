@@ -17,7 +17,7 @@ import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth
 import fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 
-public class GenericSelect2AjaxDropDownMultipleChoice<T, C extends Collection<T>> extends Select2MultipleChoice<T> {
+public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2MultipleChoice<T> {
 
 	private static final long serialVersionUID = 6355575209286187233L;
 	
@@ -27,7 +27,8 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T, C extends Collection<T>
 	 */
 	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
 
-	protected GenericSelect2AjaxDropDownMultipleChoice(String id, IModel<C> model, Supplier<? extends C> collectionSupplier, ISelect2AjaxAdapter<T> adapter) {
+	protected <C extends Collection<T>> GenericSelect2AjaxDropDownMultipleChoice(
+			String id, IModel<C> model, Supplier<? extends C> collectionSupplier, ISelect2AjaxAdapter<T> adapter) {
 		super(id, new ConcreteCollectionToCollectionWrapperModel<T, C>(model, collectionSupplier), adapter);
 		
 		fillSelect2Settings(getSettings());
@@ -51,7 +52,7 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T, C extends Collection<T>
 		Select2Utils.setDefaultAjaxSettings(settings);
 	}
 	
-	public GenericSelect2AjaxDropDownMultipleChoice<T, C> setWidth(IDropDownChoiceWidth width) {
+	public GenericSelect2AjaxDropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {
 		Args.notNull(width, "width");
 		this.width = width;
 		return this;
