@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 
-public abstract class LoadableDetachableDataProvider<T> implements IDataProvider<T> {
+import fr.openwide.core.wicket.more.model.IBindableDataProvider;
+
+public abstract class LoadableDetachableDataProvider<T> implements IDataProvider<T>, IBindableDataProvider {
 
 	private static final long serialVersionUID = -1126491236540289799L;
 
