@@ -16,12 +16,14 @@ public abstract class AbstractGenericLabel<E, T extends AbstractGenericLabel<E, 
 	@Override
 	protected abstract T thisAsT();
 	
-	@Override
-	protected E getMainModelObject() {
-		if (mainModel != null) {
-			return mainModel.getObject();
-		}
-		return null;
+	@SuppressWarnings("unchecked")
+	public final IModel<E> getModel() {
+		return (IModel<E>) getDefaultModel();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public final E getModelObject() {
+		return (E) getDefaultModelObject();
 	}
 	
 	@Override
