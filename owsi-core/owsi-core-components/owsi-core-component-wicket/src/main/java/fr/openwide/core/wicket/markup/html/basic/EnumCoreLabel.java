@@ -21,7 +21,7 @@ public class EnumCoreLabel<E extends Enum<E>> extends AbstractGenericLabel<E, En
 	
 	@Override
 	public void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
-		E value = getMainModelObject();
+		E value = getModelObject();
 		if (value != null) {
 			replaceComponentTagBody(markupStream, openTag, getString(resourceKey(value)));
 		} else {
