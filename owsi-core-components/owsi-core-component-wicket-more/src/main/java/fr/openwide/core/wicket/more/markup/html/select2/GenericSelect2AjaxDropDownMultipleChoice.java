@@ -12,10 +12,10 @@ import org.retzlaff.select2.Select2Settings;
 
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.wicket.markup.html.model.ConcreteCollectionToCollectionWrapperModel;
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
-import fr.openwide.core.wicket.more.model.ConcreteCollectionToCollectionWrapperModel;
 
 public class GenericSelect2AjaxDropDownMultipleChoice<T, C extends Collection<T>> extends Select2MultipleChoice<T> {
 

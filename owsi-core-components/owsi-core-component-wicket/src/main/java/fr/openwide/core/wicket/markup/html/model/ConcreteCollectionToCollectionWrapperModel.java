@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.model;
+package fr.openwide.core.wicket.markup.html.model;
 
 import java.util.Collection;
 
