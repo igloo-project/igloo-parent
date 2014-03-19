@@ -19,7 +19,7 @@ import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth
 import fr.openwide.core.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 
-public abstract class GenericSelect2DropDownMultipleChoice<T, C extends Collection<T>> extends ListMultipleChoice<T> {
+public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<T> {
 	
 	private static final long serialVersionUID = -6179538711780820058L;
 	
@@ -31,7 +31,8 @@ public abstract class GenericSelect2DropDownMultipleChoice<T, C extends Collecti
 	
 	private MultipleChoicesWrapperModel<T> choicesWrapperModel;
 	
-	protected GenericSelect2DropDownMultipleChoice(String id, IModel<C> collectionModel, Supplier<? extends C> collectionSupplier,
+	protected <C extends Collection<T>> GenericSelect2DropDownMultipleChoice(
+			String id, IModel<C> collectionModel, Supplier<? extends C> collectionSupplier,
 			IModel<? extends List<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		
@@ -65,7 +66,7 @@ public abstract class GenericSelect2DropDownMultipleChoice<T, C extends Collecti
 		Select2Utils.setDefaultSettings(settings);
 	}
 	
-	public GenericSelect2DropDownMultipleChoice<T, C> setWidth(IDropDownChoiceWidth width) {
+	public GenericSelect2DropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {
 		this.width = width;
 		return this;
 	}
