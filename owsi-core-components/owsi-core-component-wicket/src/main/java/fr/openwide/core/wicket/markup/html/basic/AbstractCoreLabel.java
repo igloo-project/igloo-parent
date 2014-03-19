@@ -26,12 +26,12 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 	private boolean multiline = false;
 	
 	public AbstractCoreLabel(String id, IModel<?> model) {
-		super(id, model);
+		super(id, Model.of());
 		this.mainModel = wrap(model);
 	}
 	
 	public AbstractCoreLabel(String id, Serializable label) {
-		super(id, label);
+		super(id, Model.of());
 		this.mainModel = Model.of(label);
 	}
 	
@@ -114,6 +114,8 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 	
 	@Override
 	protected void onDetach() {
+		setDefaultModel(null);
+		
 		super.onDetach();
 		if (mainModel != null) {
 			mainModel.detach();
