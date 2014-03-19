@@ -115,17 +115,24 @@ public class CountMessageModel extends AbstractReadOnlyModel<String> implements 
 	public String getResourceKey() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(messageKey);
-		
+		sb.append(getResourceSuffix());
+		return sb.toString();
+	}
+	
+	/**
+	 * Returns either ".zero", ".one", or ".many" depending on the current value
+	 * of the count model.
+	 */
+	public String getResourceSuffix() {
 		int count = getCount();
 
 		if (0 == count) {
-			sb.append(".zero");
+			return ".zero";
 		} else if (1 == count) {
-			sb.append(".one");
+			return ".one";
 		} else {
-			sb.append(".many");
+			return ".many";
 		}
-		return sb.toString();
 	}
 	
 	public PropertySubstitutionBean getPropertySubstitutionBean() {
