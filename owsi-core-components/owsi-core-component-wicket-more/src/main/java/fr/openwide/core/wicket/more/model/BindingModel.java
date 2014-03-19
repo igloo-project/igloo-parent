@@ -44,7 +44,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 
 	private final Binding<T> binding;
 	
-	public BindingModel(IModel<? extends R> root, BindingRoot<R, T> binding) {
+	private BindingModel(Object root, BindingRoot<R, T> binding) {
 		super(root);
 		this.binding = binding;
 	}
@@ -58,6 +58,18 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	 * @return binding model for {@code binding}
 	 */
 	public static <R, T> BindingModel<R, T> of(IModel<? extends R> root, BindingRoot<R, T> binding) {
+		return new BindingModel<R, T>(root, binding);
+	}
+	
+	/**
+	 * Convenience method to convert a {@link BindingRoot} into a
+	 * {@link BindingModel}
+	 * 
+	 * @param <T>
+	 * @param binding
+	 * @return binding model for {@code binding}
+	 */
+	public static <R, T> BindingModel<R, T> of(IBindableDataProvider root, BindingRoot<R, T> binding) {
 		return new BindingModel<R, T>(root, binding);
 	}
 
