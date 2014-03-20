@@ -708,23 +708,28 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 			}
 			
 			// Détermination de la taille souhaitée pour la colonne
-			int columnWidth;
 			if (columnInformation.getColumnWidth() != -1) {
-				columnWidth = columnInformation.getColumnWidth();
+				// On force la taille des colonnes en fonction de la columnInformation
+				
+				int columnWidth = columnInformation.getColumnWidth();
+				columnWidth = Math.min(columnWidth, maxColumnWidth);
+				
+				// On prend en compte le fait que la "colonne" peut s'étendre en fait sur plusieurs colonnes (fusion de cellules au niveau du header)
+				int columnSpan = endIndex - beginIndex + 1;
+				columnWidth = columnWidth / columnSpan;
+				
+				// On redimmensionne les colonnes
+				for (int columnIndex = beginIndex ; columnIndex <= endIndex ; ++columnIndex) {
+					sheet.setColumnWidth(columnIndex, columnWidth);
+				}
 			} else {
-				columnWidth = (int) (sheet.getColumnWidth(beginIndex) * COLUMN_RESIZE_RATIO);
-			}
-			
-			columnWidth = Math.min(columnWidth, maxColumnWidth);
-			
-			// On prend en compte le fait que la "colonne" peut s'étendre en fait sur plusieurs colonnes (fusion de cellules au niveau du header)
-			int columnSpan = endIndex - beginIndex + 1;
-			columnWidth = columnWidth / columnSpan;
-			
-			// On redimmensionne la colonne
-			for (int columnIndex = beginIndex ; columnIndex <= endIndex ; ++columnIndex) {
-				sheet.autoSizeColumn(columnIndex);
-				sheet.setColumnWidth(columnIndex, columnWidth);
+				// On redimmensionne les colonnes une à une en prennant leur taille actuelle et en les augmentant un petit peu
+				for (int columnIndex = beginIndex ; columnIndex <= endIndex ; ++columnIndex) {
+					sheet.autoSizeColumn(columnIndex);
+					int columnWidth = (int) (sheet.getColumnWidth(beginIndex) * COLUMN_RESIZE_RATIO);
+					columnWidth = Math.min(columnWidth, maxColumnWidth);
+					sheet.setColumnWidth(columnIndex, columnWidth);
+				}
 			}
 		}
 		
