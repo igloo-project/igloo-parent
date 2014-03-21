@@ -8,6 +8,8 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	
+	<packaging>jar</packaging>
+	
 	<artifactId>basic-application-init</artifactId>
 	
 	<name>${archetypeFullApplicationName} - Init</name>
@@ -32,4 +34,42 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+				<archive>
+					<manifest>
+						<mainClass>fr.openwide.core.basicapp.init.BasicApplicationInitFromExcelMain</mainClass>
+						<addClasspath>true</addClasspath>
+						<classpathPrefix>lib/</classpathPrefix>
+						<useUniqueVersions>false</useUniqueVersions><!-- For snapshots -->
+					</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
