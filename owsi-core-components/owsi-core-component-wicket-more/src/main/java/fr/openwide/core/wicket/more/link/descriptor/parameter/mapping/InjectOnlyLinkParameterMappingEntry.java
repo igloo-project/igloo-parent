@@ -22,15 +22,7 @@ public class InjectOnlyLinkParameterMappingEntry<T> extends AbstractLinkParamete
 	protected final String parameterName;
 	protected final IModel<? extends T> mappedModel;
 	
-	public static final <R, T> InjectOnlyLinkParameterMappingEntry<T> of(String parameterName, IModel<R> rootModel, AbstractBinding<R, T> binding) {
-		return new InjectOnlyLinkParameterMappingEntry<T>(parameterName, BindingModel.of(rootModel, binding));
-	}
-	
-	public static final <T> InjectOnlyLinkParameterMappingEntry<T> of(String parameterName, IModel<? extends T> mappedModel) {
-		return new InjectOnlyLinkParameterMappingEntry<T>(parameterName, mappedModel);
-	}
-	
-	protected InjectOnlyLinkParameterMappingEntry(String parameterName, IModel<? extends T> mappedModel) {
+	public InjectOnlyLinkParameterMappingEntry(String parameterName, IModel<? extends T> mappedModel) {
 		this.parameterName = parameterName;
 		this.mappedModel = mappedModel;
 	}
