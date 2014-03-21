@@ -4,17 +4,23 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
+import org.bindgen.BindingRoot;
+import org.bindgen.binding.AbstractBinding;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.InjectOnlyLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.PermissionLinkParameterValidator;
+import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescriptor>
 		implements IParameterMappingState<L>, IAddedParameterMappingState<L> {
@@ -51,6 +57,16 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 	}
 	
 	@Override
+	public <T> IAddedParameterMappingState<L> renderInUrl(String parameterName, IModel<T> valueModel) {
+		return map(new InjectOnlyLinkParameterMappingEntry<>(parameterName, valueModel));
+	}
+	
+	@Override
+	public <R, T> IAddedParameterMappingState<L> renderInUrl(String parameterName, IModel<R> rootModel, AbstractBinding<R, T> binding) {
+		return map(new InjectOnlyLinkParameterMappingEntry<>(parameterName, BindingModel.of(rootModel, binding)));
+	}
+	
+	@Override
 	public IParameterMappingState<L> optional() {
 		return this;
 	}
@@ -66,6 +82,18 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 		Args.notNull(validator, "validator");
 		parameterValidators.add(validator);
 		return this;
+	}
+	
+	@Override
+	public IParameterMappingState<L> permission(IModel<? extends GenericEntity<?, ?>> model,
+			String firstPermissionName, String... otherPermissionNames) {
+		return validator(new PermissionLinkParameterValidator(model, firstPermissionName, otherPermissionNames));
+	}
+	
+	@Override
+	public <R, T extends GenericEntity<?, ?>> IParameterMappingState<L> permission(
+			IModel<R> model, BindingRoot<R, T> binding, String firstPermissionName, String... otherPermissionNames) {
+		return permission(BindingModel.of(model, binding), firstPermissionName, otherPermissionNames);
 	}
 	
 	@Override
