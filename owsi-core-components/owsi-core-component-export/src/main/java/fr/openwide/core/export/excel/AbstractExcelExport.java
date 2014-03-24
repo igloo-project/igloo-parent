@@ -192,21 +192,18 @@ public abstract class AbstractExcelExport {
 			}
 		}
 	}
-	
-	protected final XSSFColor createXSSFColor(Color color) {
-		// Workaround for the "fix" in XSSFColor#correctRGB, which switches black and white... So we switch it beforehand.
-		Color colorWhithoutAlpha = new Color(color.getRGB());
-		if (Color.BLACK.equals(colorWhithoutAlpha)) {
-			color = new Color(0xFF, 0xFF, 0xFF, color.getAlpha());
-		} else if (Color.WHITE.equals(colorWhithoutAlpha)) {
-			color = new Color(0x00, 0x00, 0x00, color.getAlpha());
-		}
-		return new XSSFColor(color);
-	}
 
 	protected final void setFontColor(Font font, Map<Short, Color> colorRegistry, short color) {
 		if (font instanceof XSSFFont && colorRegistry.containsKey(color)) {
-			((XSSFFont) font).setColor(createXSSFColor(colorRegistry.get(color)));
+			Color awtColor = colorRegistry.get(color);
+			XSSFColor xssfColor = new XSSFColor(awtColor);
+			
+			// As of 2014-03-24, the fix in XSSFColor#correctRGB (which switches black and white to work around a bug in Excel) is
+			// not effective when using the constructor... So we must call setRgb() explicitely.
+			// See ticket:150
+			xssfColor.setRgb(new byte[] { (byte) awtColor.getRed(), (byte) awtColor.getGreen(), (byte) awtColor.getBlue() });
+			
+			((XSSFFont) font).setColor(xssfColor);
 		} else {
 			font.setColor(color);
 		}
@@ -214,7 +211,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleFillForegroundColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setFillForegroundColor(createXSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setFillForegroundColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			style.setFillForegroundColor(color);
 		}
@@ -222,7 +219,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleFillBackgroundColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setFillBackgroundColor(createXSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setFillBackgroundColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			style.setFillBackgroundColor(color);
 		}
@@ -230,7 +227,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleTopBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setTopBorderColor(createXSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setTopBorderColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			style.setTopBorderColor(color);
 		}
@@ -238,7 +235,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleBottomBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setBottomBorderColor(createXSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setBottomBorderColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			style.setBottomBorderColor(color);
 		}
@@ -246,7 +243,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleLeftBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setLeftBorderColor(createXSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setLeftBorderColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			style.setLeftBorderColor(color);
 		}
@@ -254,7 +251,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleRightBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setRightBorderColor(createXSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setRightBorderColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			style.setRightBorderColor(color);
 		}
