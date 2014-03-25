@@ -1,42 +1,66 @@
 /* Compléments aux styles bootstraps */
 
 .alert-global-panel {
-	z-index: 1000;
+	.border-top-right-radius(@baseBorderRadius);
+	
+	padding: 20px;
+	bottom: -40px;
+	
+	background: fade(#434343, 80%);
+	
+	z-index: @zindex-alert-global;
 	position: fixed;
-	width: 100%;
+	width: 60%;
 	font-weight: bold;
+	line-height: 18px;
 	
 	overflow: hidden;
 	display: none;
-}
-
-.alert-global-panel .close {
-	color: #888;
 	
-	z-index: 1001;
-	position: absolute;
-	right: 20px;
-	top: 6px;
+	.alert {
+		padding: 15px 42px;
+		
+		margin: 0 auto;
+		position: relative;
+		
+		.icon-alert-type {
+			display: inline-block;
+			font-size: 15px;
+			position: absolute;
+			top: 16px;
+			left: 16px;
+		}
+		
+		&:first-of-type {
+			.border-top-radius(@baseBorderRadius);
+		}
+		
+		&:last-of-type {
+			.border-bottom-radius(@baseBorderRadius);
+		}
+	}
 	
-	font-size: 20px;
-	.opacity(100);
-}
-
-.alert-global-panel .alert {
-	position: relative;
-	margin: 0 auto;
-	width: 100%;
-	.box-sizing(border-box);
-	.border-radius(0 0 0 0);
+	.alert-success {
+		cursor: pointer;
+	}
 	
-	// On cache les icônes ajoutées avec Fontawesome 4
-	.icon-alert-type {
-		display: none;
+	.close {
+		color: #888;
+		
+		z-index: @zindex-alert-global-close;
+		position: absolute;
+		padding: 8px;
+		right: 30px;
+		top: 25px;
+		
+		font-size: 20px;
+		.opacity(100);
 	}
 }
 
-.alert-global-panel .alert-success {
-	cursor: pointer;
+.animated-global-feedback[data-placement="bottom"] .alert-global-panel {
+	top: auto;
+	bottom: -40px;
 }
 
 .alert-neutral {
