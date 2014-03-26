@@ -115,13 +115,6 @@ public final class Functions2 {
 	}
 	
 	/**
-	 * Shorthand for {@code defaulValue(validValuePredicate, Functions.constant(valueIfInvalid))}
-	 */
-	public static <T> Function<T, T> defaultValue(Predicate<? super T> validValuePredicate, T valueIfInvalid) {
-		return defaultValue(validValuePredicate, Functions.constant(valueIfInvalid));
-	}
-	
-	/**
 	 * Shorthand for {@code defaulValue(Predicates.notNull(), Functions.constant(valueIfInvalid))}
 	 */
 	public static <T> Function<T, T> defaultValue(T valueIfInvalid) {
