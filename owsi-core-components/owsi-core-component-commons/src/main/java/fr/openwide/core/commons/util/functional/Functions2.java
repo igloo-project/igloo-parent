@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 public final class Functions2 {
 
@@ -101,6 +104,50 @@ public final class Functions2 {
 		@Override
 		public String toString() {
 			return "unmodifiableMap";
+		}
+	}
+	
+	/**
+	 * @return A function that returns its argument if {@code validValuePredicate.apply(argument)} and {@code defaultValueFunction.apply(argument)} otherwise.
+	 */
+	public static <T> Function<T, T> defaultValue(Predicate<? super T> validValuePredicate, Function<? super T, ? extends T> defaultValueFunction) {
+		return new DefaultValueFunction<T>(validValuePredicate, defaultValueFunction);
+	}
+	
+	/**
+	 * Shorthand for {@code defaulValue(validValuePredicate, Functions.constant(valueIfInvalid))}
+	 */
+	public static <T> Function<T, T> defaultValue(Predicate<? super T> validValuePredicate, T valueIfInvalid) {
+		return defaultValue(validValuePredicate, Functions.constant(valueIfInvalid));
+	}
+	
+	/**
+	 * Shorthand for {@code defaulValue(Predicates.notNull(), Functions.constant(valueIfInvalid))}
+	 */
+	public static <T> Function<T, T> defaultValue(T valueIfInvalid) {
+		return defaultValue(Predicates.notNull(), Functions.constant(valueIfInvalid));
+	}
+	
+	private static final class DefaultValueFunction<T> implements Function<T, T>, Serializable {
+		private static final long serialVersionUID = 5952443669998059686L;
+		
+		private final Predicate<? super T> validValuePredicate;
+		private final Function<? super T, ? extends T> defaultValueFunction;
+		
+		public DefaultValueFunction(Predicate<? super T> validValuePredicate, Function<? super T, ? extends T> defaultValueFunction) {
+			super();
+			this.validValuePredicate = validValuePredicate;
+			this.defaultValueFunction = defaultValueFunction;
+		}
+
+		@Override
+		public T apply(T input) {
+			return validValuePredicate.apply(input) ? input : defaultValueFunction.apply(input);
+		}
+		
+		@Override
+		public String toString() {
+			return "default(if not " + validValuePredicate + ", then " + defaultValueFunction + ")";
 		}
 	}
 	
