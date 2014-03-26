@@ -103,8 +103,9 @@ public class CountMessageModel extends AbstractReadOnlyModel<String> implements 
 
 	@Override
 	public String getObject() {
-		// this shouldn't be called always wrapped!
-		return Application.get().getResourceSettings().getLocalizer().getString(getResourceKey(), null, CountMessageModel.this);
+		// this shouldn't be called in theory BUT a few classes extending this class are indeed using it.
+		return Application.get().getResourceSettings().getLocalizer().getString(getResourceKey(), null,
+				Model.of(getPropertySubstitutionBean()));
 	}
 
 	public int getCount() {
