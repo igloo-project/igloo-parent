@@ -16,6 +16,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
@@ -40,7 +41,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 	static {
 		Collator collator = Collator.getInstance(Locale.ROOT);
 		collator.setStrength(Collator.IDENTICAL);
-		DEFAULT_HEADER_LABEL_COLLATOR = collator;
+		DEFAULT_HEADER_LABEL_COLLATOR = Ordering.from(collator).nullsFirst();
 	}
 	
 	private final Comparator<? super String> defaultHeaderLabelCollator;
