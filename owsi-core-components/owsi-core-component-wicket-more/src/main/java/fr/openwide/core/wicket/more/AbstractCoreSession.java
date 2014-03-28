@@ -271,12 +271,20 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 	 */
 	@Override
 	public void signOut() {
+		signOutWithoutCleaningUpRedirectUrl();
+		
+		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
+	}
+	
+	/**
+	 * We don't want to remove the redirect url in this case
+	 */
+	public void signOutWithoutCleaningUpRedirectUrl() {
 		userModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
 		permissions = Lists.newArrayList();
 		permissionsInitialized = false;
-		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		
 		authenticationService.signOut();
 		

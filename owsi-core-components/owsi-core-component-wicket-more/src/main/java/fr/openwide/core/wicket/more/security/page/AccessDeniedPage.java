@@ -31,7 +31,7 @@ public class AccessDeniedPage extends CoreWebPage {
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		AbstractCoreSession.get().signOut();
+		AbstractCoreSession.get().signOutWithoutCleaningUpRedirectUrl();
 		AbstractCoreSession.get().getFeedbackMessages().clear();
 		AbstractCoreSession.get().error(getString("access.denied"));
 		
