@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.security.page;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -33,7 +34,9 @@ public class AccessDeniedPage extends CoreWebPage {
 		AbstractCoreSession.get().signOut();
 		AbstractCoreSession.get().getFeedbackMessages().clear();
 		AbstractCoreSession.get().error(getString("access.denied"));
-		AbstractCoreSession.get().registerRedirectUrl(RequestCycleUtils.getSpringSecuritySavedRequest());
+		if (StringUtils.hasText(RequestCycleUtils.getSpringSecuritySavedRequest())) {
+			AbstractCoreSession.get().registerRedirectUrl(RequestCycleUtils.getSpringSecuritySavedRequest());
+		}
 		
 		throw signInPageLinkDescriptor.newRestartResponseException();
 	}
