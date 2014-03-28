@@ -34,8 +34,10 @@ public class AccessDeniedPage extends CoreWebPage {
 		AbstractCoreSession.get().signOut();
 		AbstractCoreSession.get().getFeedbackMessages().clear();
 		AbstractCoreSession.get().error(getString("access.denied"));
-		if (StringUtils.hasText(RequestCycleUtils.getSpringSecuritySavedRequest())) {
-			AbstractCoreSession.get().registerRedirectUrl(RequestCycleUtils.getSpringSecuritySavedRequest());
+		
+		String springSecuritySavedRequest = RequestCycleUtils.getSpringSecuritySavedRequest();
+		if (StringUtils.hasText(springSecuritySavedRequest)) {
+			AbstractCoreSession.get().registerRedirectUrl(springSecuritySavedRequest);
 		}
 		
 		throw signInPageLinkDescriptor.newRestartResponseException();
