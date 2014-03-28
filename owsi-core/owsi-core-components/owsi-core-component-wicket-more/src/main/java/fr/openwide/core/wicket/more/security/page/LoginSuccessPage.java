@@ -37,7 +37,7 @@ public class LoginSuccessPage extends CoreWebPage {
 			throw pageLinkDescriptor.newRestartResponseException();
 		}
 		
-		String redirectUrl = session.getRedirectUrl();
+		String redirectUrl = session.consumeRedirectUrl();
 		if (!StringUtils.hasText(redirectUrl)) {
 			redirectUrl = RequestCycleUtils.getSpringSecuritySavedRequest();
 		}

@@ -299,12 +299,19 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 	}
 	
 	/**
-	 * Permet de récupérer la dernière url de redirection enregistrée
+	 * Permet de récupérer la dernière url de redirection.
+	 */
+	public String getRedirectUrl() {
+		return (String) getAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
+	}
+	
+	/**
+	 * Permet de récupérer la dernière url de redirection enregistrée et la supprime de la session.
 	 * 
 	 * @return null si aucune url enregistrée
 	 */
-	public String getRedirectUrl() {
-		String redirectUrl = (String) getAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
+	public String consumeRedirectUrl() {
+		String redirectUrl = getRedirectUrl();
 		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		return redirectUrl;
 	}
