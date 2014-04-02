@@ -22,7 +22,9 @@ import org.hibernate.annotations.SortComparator;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.Indexed;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,10 +35,12 @@ import com.mysema.query.annotations.QueryType;
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.util.AbstractPersonGroupComparator;
 
+@Indexed
 @MappedSuperclass
 @Bindable
 @NaturalIdCache
@@ -98,6 +102,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@ManyToMany
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
 	@SortComparator(AbstractPersonGroupComparator.class)
+	@Field(bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Set<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
 	
 	public GenericUser() {

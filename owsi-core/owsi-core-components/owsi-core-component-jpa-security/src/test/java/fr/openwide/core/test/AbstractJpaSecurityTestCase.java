@@ -41,10 +41,10 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	public static final String ROLE_GROUP_3 = "ROLE_GROUP_3";
 
 	@Autowired
-	protected IMockUserService mockPersonService;
+	protected IMockUserService mockUserService;
 
 	@Autowired
-	protected IMockUserGroupService mockPersonGroupService;
+	protected IMockUserGroupService mockUserGroupService;
 
 	@Autowired
 	protected IAuthorityService authorityService;
@@ -83,16 +83,16 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	}
 
 	protected void cleanMockPersons() throws ServiceException, SecurityServiceException {
-		List<MockUser> mockPersons = mockPersonService.list();
+		List<MockUser> mockPersons = mockUserService.list();
 		for (MockUser person : mockPersons) {
-			mockPersonService.delete(person);
+			mockUserService.delete(person);
 		}
 	}
 
 	protected void cleanMockPersonGroups() throws ServiceException, SecurityServiceException {
-		List<MockUserGroup> mockPersonGroups = mockPersonGroupService.list();
+		List<MockUserGroup> mockPersonGroups = mockUserGroupService.list();
 		for (MockUserGroup mockPersonGroup : mockPersonGroups) {
-			mockPersonGroupService.delete(mockPersonGroup);
+			mockUserGroupService.delete(mockPersonGroup);
 		}
 	}
 
@@ -123,8 +123,8 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		
 		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
-		mockPersonService.save(person);
-		mockPersonService.setPasswords(person, DEFAULT_PASSWORD);
+		mockUserService.save(person);
+		mockUserService.setPasswords(person, DEFAULT_PASSWORD);
 		
 		return person;
 	}
@@ -133,7 +133,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		MockUserGroup personGroup = new MockUserGroup();
 		personGroup.setName(name);
 		
-		mockPersonGroupService.save(personGroup);
+		mockUserGroupService.save(personGroup);
 		
 		return personGroup;
 	}

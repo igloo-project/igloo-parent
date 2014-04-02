@@ -49,11 +49,18 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String name;
-	
+
+	/**
+	 * This field is here just to generate bindings (qGenericUserGroup).
+	 * <p>It should not be accessed, since:
+	 * <ol>
+	 * <li>it is not kept up to date when adding a user to a group</li>
+	 * <li>loading it or keeping it up to date may lead to performance issues when groups contain many users (> 10k).
+	 * </ol>
+	 */
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany(mappedBy = "groups")
-	@Cascade({CascadeType.SAVE_UPDATE})
 	@SortComparator(AbstractUserComparator.class)
 	private Set<P> persons = Sets.newTreeSet(AbstractUserComparator.get());
 	
@@ -102,24 +109,6 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	@Override
 	public String getDisplayName() {
 		return this.getName();
-	}
-	
-	public Set<P> getPersons() {
-		return Collections.unmodifiableSet(persons);
-	}
-
-	public void setPersons(Set<P> persons) {
-		CollectionUtils.replaceAll(this.persons, persons);
-	}
-	
-	public void addPerson(P person) {
-		this.persons.add(person);
-		person.addGroup(thisAsConcreteType());
-	}
-	
-	public void removePerson(P person) {
-		this.persons.remove(person);
-		person.removeGroup(thisAsConcreteType());
 	}
 	
 	@Override
