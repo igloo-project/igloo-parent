@@ -13,6 +13,8 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
+import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.jpa.security.business.person.dao.GenericUserDaoImpl;
 import fr.openwide.core.spring.util.StringUtils;
@@ -26,9 +28,9 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset)
+	public List<User> search(UserSearchParameters searchParams, Integer limit, Integer offset)
 			throws ParseException {
-		FullTextQuery fullTextQuery = getSearchByNameActiveQuery(name, active);
+		FullTextQuery fullTextQuery = getSearchQuery(searchParams);
 		fullTextQuery.setSort(new Sort(new SortField(User.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
 				new SortField(User.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING)));
 		
@@ -44,35 +46,39 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	}
 
 	@Override
-	public int countByNameActive(String name, Boolean active) throws ParseException {
-		FullTextQuery fullTextQuery = getSearchByNameActiveQuery(name, active);
+	public int count(UserSearchParameters searchParams) throws ParseException {
+		FullTextQuery fullTextQuery = getSearchQuery(searchParams);
 		
 		return fullTextQuery.getResultSize();
 	}
 	
-	private FullTextQuery getSearchByNameActiveQuery(String name, Boolean active) throws ParseException {
+	private FullTextQuery getSearchQuery(UserSearchParameters searchParams) throws ParseException {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 		
 		QueryBuilder userQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 				.forEntity(User.class).get();
 		
-		BooleanJunction<?> booleanJunction = userQueryBuilder.bool();
+		BooleanJunction<?> booleanJunction = userQueryBuilder.bool().must(userQueryBuilder.all().createQuery());
 		
-		if (StringUtils.hasText(name) || active != null) {
-			if (StringUtils.hasText(name)) {
-				booleanJunction.must(userQueryBuilder.keyword().fuzzy().withPrefixLength(1)
-						.onField(Bindings.user().firstName().getPath())
-						.andField(Bindings.user().lastName().getPath())
-						.andField(Bindings.user().userName().getPath())
-						.matching(name).createQuery());
-			}
-			
-			if (active != null) {
-				booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().active().getPath()).matching(active).createQuery());
-			}
-		} else {
-			booleanJunction.must(userQueryBuilder.all().createQuery());
+		String name = searchParams.getName();
+		if (StringUtils.hasText(name)) {
+			booleanJunction.must(userQueryBuilder.keyword().fuzzy().withPrefixLength(1)
+					.onField(Bindings.user().firstName().getPath())
+					.andField(Bindings.user().lastName().getPath())
+					.andField(Bindings.user().userName().getPath())
+					.matching(name).createQuery());
 		}
+		
+		UserGroup group = searchParams.getGroup();
+		if (group != null) {
+			booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().groups().getPath()).matching(group).createQuery());
+		}
+		
+		Boolean active = searchParams.getActive();
+		if (active != null) {
+			booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().active().getPath()).matching(active).createQuery());
+		}
+		
 		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), User.class);
 	}
 }

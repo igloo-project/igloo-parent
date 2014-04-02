@@ -33,16 +33,16 @@
 					</tr>
 				</tbody>
 			</table>
-			<form wicket:id="addMemberForm">
-				<div class="pull-right">
+			<div class="clearfix">
+				<div wicket:id="pager" class="pull-left" />
+				<form wicket:id="addMemberForm" class="pull-right form-inline">
+					<span wicket:id="userAutocomplete" style="margin-right: 10px;"></span>
 					<a class="btn btn-success" wicket:id="addMemberLink">
 						<i class="fa fa-plus"></i>
 						<wicket:message key="administration.usergroup.members.add" />
 					</a>
-				</div>
-				<div class="pull-right" wicket:id="userAutocomplete" style="margin-right: 10px;"></div>
-				<div class="clearfix"></div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</wicket:panel>
 </html>

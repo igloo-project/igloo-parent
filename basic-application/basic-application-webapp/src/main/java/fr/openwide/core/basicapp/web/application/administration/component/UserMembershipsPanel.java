@@ -106,7 +106,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 				UserGroup selectedUserGroup = userGroupAutocomplete.getModelObject();
 				
 				if (selectedUserGroup != null) {
-					if (!selectedUserGroup.getPersons().contains(user)) {
+					if (!user.getGroups().contains(selectedUserGroup)) {
 						try {
 							userGroupService.addUser(selectedUserGroup, user);
 							getSession().success(getString("administration.usergroup.members.add.success"));

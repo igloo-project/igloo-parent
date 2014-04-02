@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 
@@ -29,12 +30,12 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 	
 	@Override
-	public List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset) throws ParseException {
-		return userDao.searchByNameActive(name, active, limit, offset);
+	public List<User> search(UserSearchParameters searchParameters, Integer limit, Integer offset) throws ParseException {
+		return userDao.search(searchParameters, limit, offset);
 	}
 	
 	@Override
-	public int countByNameActive(String name, Boolean active) throws ParseException {
-		return userDao.countByNameActive(name, active);
+	public int count(UserSearchParameters searchParameters) throws ParseException {
+		return userDao.count(searchParameters);
 	}
 }
