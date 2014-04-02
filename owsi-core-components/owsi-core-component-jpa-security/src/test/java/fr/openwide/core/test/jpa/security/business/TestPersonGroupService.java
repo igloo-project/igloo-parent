@@ -25,24 +25,24 @@ public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
 		group1.addAuthority(adminAuthority);
 		group1.addAuthority(group1Authority);
 		
-		mockPersonGroupService.update(group1);
+		mockUserGroupService.update(group1);
 		
 		assertEquals(2, group1.getAuthorities().size());
 		
 		group2.addAuthority(adminAuthority);
 		group2.addAuthority(group1Authority);
 		
-		mockPersonGroupService.update(group2);
+		mockUserGroupService.update(group2);
 		
 		assertEquals(2, group2.getAuthorities().size());
 		
-		mockPersonGroupService.delete(group1);
+		mockUserGroupService.delete(group1);
 		
 		assertEquals(2, group2.getAuthorities().size());
 		
 		group2.removeAuthority(adminAuthority);
 		
-		mockPersonGroupService.update(group2);
+		mockUserGroupService.update(group2);
 		
 		assertEquals(1, group2.getAuthorities().size());
 	}
@@ -53,21 +53,20 @@ public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
 		
 		MockUser user1 = createMockPerson("user1", "user1", "user1");
 		MockUser user2 = createMockPerson("user2", "user2", "user2");
+
+		mockUserGroupService.addUser(group1, user1);
 		
-		group1.addPerson(user1);
-		mockPersonGroupService.update(group1);
+		user1 = mockUserService.getByUserName(user1.getUserName());
 		
-		user1 = mockPersonService.getByUserName(user1.getUserName());
-		
-		assertEquals(1, group1.getPersons().size());
+		assertEquals(1, mockUserGroupService.listUsersByUserGroup(group1).size());
 		assertEquals(1, user1.getGroups().size());
 		
-		group1.addPerson(user2);
+		mockUserGroupService.addUser(group1, user2);
 		
-		assertEquals(2, group1.getPersons().size());
+		assertEquals(2, mockUserGroupService.listUsersByUserGroup(group1).size());
 		
-		group1.removePerson(user1);
+		mockUserGroupService.removeUser(group1, user2);
 		
-		assertEquals(1, group1.getPersons().size());
+		assertEquals(1, mockUserGroupService.listUsersByUserGroup(group1).size());
 	}
 }

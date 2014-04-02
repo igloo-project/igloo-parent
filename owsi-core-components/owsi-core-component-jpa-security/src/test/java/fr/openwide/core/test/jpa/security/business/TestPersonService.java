@@ -32,24 +32,24 @@ public class TestPersonService extends AbstractJpaSecurityTestCase {
 		person1.addAuthority(adminAuthority);
 		person1.addAuthority(group1Authority);
 		
-		mockPersonService.update(person1);
+		mockUserService.update(person1);
 		
 		assertEquals(3, person1.getAuthorities().size());
 		
 		person2.addAuthority(adminAuthority);
 		person2.addAuthority(group1Authority);
 		
-		mockPersonService.update(person2);
+		mockUserService.update(person2);
 		
 		assertEquals(3, person2.getAuthorities().size());
 		
-		mockPersonService.delete(person1);
+		mockUserService.delete(person1);
 		
 		assertEquals(3, person2.getAuthorities().size());
 		
 		person2.removeAuthority(adminAuthority);
 		
-		mockPersonService.update(person2);
+		mockUserService.update(person2);
 		
 		assertEquals(2, person2.getAuthorities().size());
 	}
@@ -58,16 +58,16 @@ public class TestPersonService extends AbstractJpaSecurityTestCase {
 	public void testCaseInsensitiveUserNameFetch() throws ServiceException, SecurityServiceException {
 		MockUser person1 = createMockPerson("Login1", "firstName1", "lastName1");
 		MockUser person2 = createMockPerson("logIn2", "firstName2", "lastName2");
-		mockPersonService.setPasswords(person1, "toto");
-		mockPersonService.setPasswords(person2, "tata");
+		mockUserService.setPasswords(person1, "toto");
+		mockUserService.setPasswords(person2, "tata");
 		
-		assertEquals(person1, mockPersonService.getByUserNameCaseInsensitive("login1"));
-		assertEquals(person1, mockPersonService.getByUserNameCaseInsensitive("Login1"));
-		assertEquals(person1, mockPersonService.getByUserNameCaseInsensitive("LogIn1"));
+		assertEquals(person1, mockUserService.getByUserNameCaseInsensitive("login1"));
+		assertEquals(person1, mockUserService.getByUserNameCaseInsensitive("Login1"));
+		assertEquals(person1, mockUserService.getByUserNameCaseInsensitive("LogIn1"));
 		
-		assertEquals(person2, mockPersonService.getByUserNameCaseInsensitive("login2"));
-		assertEquals(person2, mockPersonService.getByUserNameCaseInsensitive("Login2"));
-		assertEquals(person2, mockPersonService.getByUserNameCaseInsensitive("LogIn2"));
+		assertEquals(person2, mockUserService.getByUserNameCaseInsensitive("login2"));
+		assertEquals(person2, mockUserService.getByUserNameCaseInsensitive("Login2"));
+		assertEquals(person2, mockUserService.getByUserNameCaseInsensitive("LogIn2"));
 		
 		assertEquals("Login1", userDetailsService.loadUserByUsername("Login1").getUsername());
 		assertEquals("Login1", userDetailsService.loadUserByUsername("login1").getUsername());

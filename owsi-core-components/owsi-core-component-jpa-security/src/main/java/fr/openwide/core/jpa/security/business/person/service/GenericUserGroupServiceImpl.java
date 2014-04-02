@@ -1,7 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +22,9 @@ public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, 
 	private static final String[] SEARCH_FIELDS = new String[] { BINDING.name().getPath() };
 
 	@Autowired
+	private IGenericUserService<U> userService;
+	
+	@Autowired
 	private IHibernateSearchService hibernateSearchService;
 
 	protected IGenericUserGroupDao<G, U> personGroupDao;
@@ -40,20 +42,17 @@ public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, 
 	}
 
 	@Override
-	public void addUser(G personGroup, U person) throws ServiceException, SecurityServiceException {
-		personGroup.addPerson(person);
-		update(personGroup);
+	public void addUser(G group, U person) throws ServiceException, SecurityServiceException {
+		person.addGroup(group);
+		update(group);
+		userService.update(person);
 	}
 	
 	@Override
-	public void removeUser(G personGroup, U person) throws ServiceException, SecurityServiceException {
-		personGroup.removePerson(person);
-		update(personGroup);
-	}
-	
-	@Override
-	public Set<U> getUsersFromUserGroup(G personGroup) throws ServiceException, SecurityServiceException {
-		return personGroup.getPersons();
+	public void removeUser(G group, U person) throws ServiceException, SecurityServiceException {
+		person.removeGroup(group);
+		update(group);
+		userService.update(person);
 	}
 
 	@Override

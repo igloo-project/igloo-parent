@@ -31,7 +31,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		
 		MockUser user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-		mockPersonService.update(user);
+		mockUserService.update(user);
 		
 		/*
 		 * Pour des raisons de sécurité le mot de passe est effacé après authentification.
@@ -61,7 +61,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 	public void testAuthenticationRoles() throws ServiceException, SecurityServiceException {
 		MockUser user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-		mockPersonService.update(user);
+		mockUserService.update(user);
 		
 		authenticateAs(user);
 		
@@ -97,15 +97,15 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 	public void testSecurityProxy() throws ServiceException, SecurityServiceException {
 		MockUser user = createMockPerson(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-		mockPersonService.update(user);
+		mockUserService.update(user);
 		authenticateAs(user);
 		
 		try {
-			mockPersonService.protectedMethodRoleAdmin();
+			mockUserService.protectedMethodRoleAdmin();
 			Assert.fail("L'accès devrait être interdit.");
 		} catch (AccessDeniedException e) {}
 		
-		mockPersonService.protectedMethodRoleAuthenticated();
+		mockUserService.protectedMethodRoleAuthenticated();
 	}
 	
 	@Before
