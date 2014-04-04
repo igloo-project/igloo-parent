@@ -186,7 +186,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	protected File getPropertyAsWritableDirectory(String key) {
 		String path = getPropertyAsString(key);
 		
-		if (StringUtils.hasText(path)) {
+		if (StringUtils.hasText(path) && !"/".equals(path)) {
 			File directory = new File(path);
 			
 			if (directory.isDirectory() && directory.canWrite()) {
