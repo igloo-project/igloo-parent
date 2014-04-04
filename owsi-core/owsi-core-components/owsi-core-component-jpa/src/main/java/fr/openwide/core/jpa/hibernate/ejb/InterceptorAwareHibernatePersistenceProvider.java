@@ -2,15 +2,11 @@ package fr.openwide.core.jpa.hibernate.ejb;
 
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceUnitInfo;
-
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.Interceptor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
-import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor;
 import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
 import org.hibernate.service.ServiceRegistry;
@@ -27,19 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersistenceProvider {
 
-	private static final Logger log = Logger.getLogger(InterceptorAwareHibernatePersistenceProvider.class);
+	private static final Logger LOGGER = Logger.getLogger(InterceptorAwareHibernatePersistenceProvider.class);
 
 	@Autowired
 	private Interceptor interceptor;
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo info, Map properties) {
-		log.tracef("Starting createContainerEntityManagerFactory : %s", info.getPersistenceUnitName());
-
-		return getEntityManagerFactoryBuilder(new PersistenceUnitInfoDescriptor(info), properties, null).build();
-	}
-
 	@SuppressWarnings("rawtypes")
 	public EntityManagerFactoryBuilder getEntityManagerFactoryBuilder(
 			PersistenceUnitDescriptor persistenceUnitDescriptor, Map integration, ClassLoader providedClassLoader) {
@@ -50,7 +39,7 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
 					if (configuration.getInterceptor() != null
 							&& !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
-						log.error("The persistence provider was already configured with an interceptor: we override it.");
+						LOGGER.error("The persistence provider was already configured with an interceptor: we override it.");
 					}
 					configuration.setInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
 				}
