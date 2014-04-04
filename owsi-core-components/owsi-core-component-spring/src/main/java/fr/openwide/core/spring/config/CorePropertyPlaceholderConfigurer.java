@@ -17,9 +17,11 @@
 
 package fr.openwide.core.spring.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -173,6 +175,33 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas une enum valide : utilisation de la valeur par défaut.", e);
 		}
 		return enumProperty;
+	}
+	
+	/**
+	 * Retourne un répertoire dans lequel on est sûr de pouvoir écrire à partir du path déclaré dans la propriété.
+	 * 
+	 * @param key la clé
+	 * @return un répertoire dans lequel on est sûr de pouvoir écrire
+	 */
+	protected File getPropertyAsWritableDirectory(String key) {
+		String path = getPropertyAsString(key);
+		
+		if (StringUtils.hasText(path)) {
+			File directory = new File(path);
+			
+			if (directory.isDirectory() && directory.canWrite()) {
+				return directory;
+			}
+			if (!directory.exists()) {
+				try {
+					FileUtils.forceMkdir(directory);
+					return directory;
+				} catch (Exception e) {
+					throw new IllegalStateException("The directory " + key + " - " + path + " does not exist and it is impossible to create it.");
+				}
+			}
+		}
+		throw new IllegalStateException("The tmp directory " + key + " - " + path + " is not writable.");
 	}
 
 	/**

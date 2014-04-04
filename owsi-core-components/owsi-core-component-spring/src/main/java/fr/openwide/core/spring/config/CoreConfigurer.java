@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,24 +42,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public File getTmpDirectory() {
-		String tmpPath = getPropertyAsString("tmp.path");
-		
-		if (StringUtils.hasText(tmpPath)) {
-			File tmpDirectory = new File(tmpPath);
-			
-			if (tmpDirectory.isDirectory() && tmpDirectory.canWrite()) {
-				return tmpDirectory;
-			}
-			if (!tmpDirectory.exists()) {
-				try {
-					FileUtils.forceMkdir(tmpDirectory);
-					return tmpDirectory;
-				} catch (Exception e) {
-					throw new IllegalStateException("The tmp directory " + tmpPath + " does not exist and it is impossible to create it.");
-				}
-			}
-		}
-		throw new IllegalStateException("The tmp directory " + tmpPath + " is not writable.");
+		return getPropertyAsWritableDirectory("tmp.path");
 	}
 	
 	public File getImageMagickConvertBinary() {
