@@ -45,6 +45,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@Type(type = "org.hibernate.type.StringClobType")
 	private String name;
 
 	@Column(nullable = true)
