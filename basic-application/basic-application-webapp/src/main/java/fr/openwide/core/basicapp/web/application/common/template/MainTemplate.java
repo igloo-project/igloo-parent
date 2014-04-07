@@ -76,9 +76,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		// Environment
 		add(new EnvironmentPanel("environment"));
 		
-		// Back to home
-		add(new BookmarkablePageLink<Void>("backToHomeLink", getApplication().getHomePage()));
-		
 		// Main navigation bar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
 			private static final long serialVersionUID = -2257358650754295013L;
@@ -87,10 +84,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				AbstractLink navLink = navItem.link("navLink");
-				navLink.add(new Label("navLabel", navItem.getLabelModel()));
+				AbstractLink navLink = navItem.link("navLink")
+						.setBody(navItem.getLabelModel());
+				navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 				
-				item.setVisible(navItem.isAccessible());
+				item.setVisibilityAllowed(navItem.isAccessible());
 				if (navItem.isActive(MainTemplate.this.getFirstMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
@@ -107,10 +105,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				AbstractLink navLink = navItem.link("navLink");
-				navLink.add(new Label("navLabel", navItem.getLabelModel()));
+				AbstractLink navLink = navItem.link("navLink")
+						.setBody(navItem.getLabelModel());
+				navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 				
-				item.setVisible(navItem.isAccessible());
+				item.setVisibilityAllowed(navItem.isAccessible());
 				if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
@@ -152,14 +151,15 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new BootstrapDropdownBehavior());
 		
 		// Scroll to top
-		add(new WebMarkupContainer("scrollToTop")
-				.add(new ScrollToTopBehavior()));
+		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
 		return ImmutableList.of(
-				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home")),
+				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home"))
+						.setCssClassesModel(Model.of("home")),
 				AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration"))
+						.setCssClassesModel(Model.of("administration"))
 		);
 	}
 

@@ -1,0 +1,94 @@
+.description-section {
+	padding: 10px;
+	width: auto;
+	
+	& + .description-section {
+		margin-top: 15px;
+	}
+	
+	* + .description-section {
+		margin-top: 10px;
+	}
+	
+	h2, h3 {
+		margin-top: 0;
+	}
+	
+	.description-section {
+		padding: 0;
+	}
+	
+	.col-md-3, .col-md-4, .col-md-5 {
+		.description-section {
+			padding: 0 0 10px;
+			@media (min-width: @screen-md-min) {
+				padding: 0;
+			}
+		}
+	}
+	
+	// -----------------------------------
+	// Info groups (label/value pairs)
+	// -----------------------------------
+	.info-group {
+		&+ .info-group {
+			margin-top: 7px;
+		}
+		
+		.clearfix();
+		
+		.info-label, .info-content {
+			float:			left;
+			vertical-align:	top;
+		}
+		.info-label {
+			display:	inline-block;
+			max-width:	160px;
+			
+			width:		40%;
+		}
+		.info-content {
+			display:		block;
+			min-height: @line-height-computed;
+			margin-left:	2%;
+			
+			width:			58%;
+			
+			
+			.boolean-glyphicon {
+				margin-top: 0;
+			}
+		}
+	}
+	&.labels-small {
+		.info-group {
+			.info-label {
+				width:		30%;
+			}
+			.info-content {
+				width:		68%;
+			}
+		}
+	}
+	&.labels-large {
+		.info-group {
+			.info-label {
+				width:		50%;
+			}
+			.info-content {
+				width:		48%;
+			}
+		}
+	}
+	&.labels-xlarge {
+		.info-group {
+			.info-label {
+				width:		60%;
+				max-width:	200px;
+			}
+			.info-content {
+				width:		38%;
+			}
+		}
+	}
+}

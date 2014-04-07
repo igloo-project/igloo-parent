@@ -32,14 +32,12 @@
 							data-target="#navbar-main-collapse">
 							<span class="sr-only"><wicket:message key="navigation.toggle" /></span> <span class="fa fa-bars fa-lg" />
 						</button>
-						<a class="navbar-brand" wicket:id="backToHomeLink"><wicket:message key="common.rootPageTitle" /></a>
+						<span class="navbar-brand"><wicket:message key="common.rootPageTitle" /></span>
 					</div>
 					<div class="collapse navbar-collapse" id="navbar-main-collapse">
 						<ul class="nav navbar-nav">
 							<li wicket:id="mainNav">
-								<a wicket:id="navLink">
-									<wicket:container wicket:id="navLabel" />
-								</a>
+								<a wicket:id="navLink">navLabel</a>
 							</li>
 						</ul>
 					</div>
@@ -52,9 +50,7 @@
 					<div class="container">
 						<ul class="nav navbar-nav">
 							<li wicket:id="subNav">
-								<a wicket:id="navLink">
-									<wicket:container wicket:id="navLabel" />
-								</a>
+								<a wicket:id="navLink">navLabel</a>
 							</li>
 						</ul>
 					</div>
@@ -79,9 +75,20 @@
 			<!-- Footer -->
 			<div class="footer">
 				<div class="container">
-					<wicket:message key="common.rootPageTitle" />&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span wicket:id="version"></span>
+					<div class="footer-content">
+						<wicket:message key="common.rootPageTitle" />&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span wicket:id="version"></span>
+					</div>
 				</div>
 			</div>
+			<!--
+			<div class="version">
+				<div class="container">
+					<div class="pull-right">
+						<wicket:message key="common.version" /> <span wicket:id="version"></span>
+					</div>
+				</div>
+			</div>
+			-->
 		</div>
 	</body>
 </html>

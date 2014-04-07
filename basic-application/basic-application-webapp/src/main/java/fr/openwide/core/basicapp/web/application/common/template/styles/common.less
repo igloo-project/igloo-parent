@@ -15,40 +15,88 @@ body {
 	width: auto;
 }
 
-.navbar-nav > li > a {
-	border-left: 1px dotted #EEEEEE;
-}
-
-.navbar-nav > li:last-of-type > a {
-	border-right: 1px dotted #EEEEEE;
-}
-
 .main-menu {
-	border-bottom: none;
+	.navbar-nav {
+		margin-left: -15px;
+	}
 	
 	.navbar-nav > li {
+		margin-right: 15px;
+		
 		> a {
-			border-color: #1387B7;
+			font-weight: bold;
+			font-size: 1.1em;
+			padding-top: 11px;
+			padding-bottom: 7px;
 			
 			&:hover {
-				border-color: transparent;
+				border-bottom: 4px solid @navbar-default-link-active-color;
+			}
+			
+			&:before {
+				font-family: FontAwesome;
+				font-style: normal;
+				font-weight: normal;
+				line-height: 1;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				vertical-align: baseline;
+				font-size: (4em / 3);
+				line-height: (3em / 4);
+				vertical-align: -12%;
+				margin-right: 4px;
+			}
+			
+			&.home:before {
+				content: "@{fa-var-home}";
+			}
+			&.administration:before {
+				content: "@{fa-var-cog}";
 			}
 		}
 		
 		&.active {
 			> a {
-				border-color: transparent;
+				border-bottom: 4px solid @navbar-default-link-active-color;
+			}
+		}
+	}
+	
+	.user-menu {
+		color: #666;
+		
+		.user-logout {
+			border-left: 1px solid #666666;
+			color: #666;
+			
+			&:hover {
+				color: @link-color;
 			}
 		}
 	}
 	
 	.navbar-brand {
 		float: left;
+		padding: 11px 40px 11px 11px;
 		
 		@media (max-width: @grid-float-breakpoint) {
 			float: left;
 			padding-left: 5px;
 			padding-right: 5px;
+		}
+		
+		&.navbar-brand-logo {
+			padding-top: 0;
+			padding-bottom: 0;
+			height: @navbar-height;
+			
+			// Align logo vertically
+			line-height: @navbar-height;
+			vertical-align: middle;
+			
+			img {
+				margin-right: 20px;
+			}
 		}
 	}
 	
@@ -72,18 +120,22 @@ body {
 	border-bottom: 1px solid #CCCCCC;
 	
 	.container {
-		//background: #FFFFFF;
-		//border-bottom: 1px solid #444444;
-		
 		.navbar-nav {
-			margin-left: -15px;
-			margin-right: -15px;
+			margin-left: -13px;
+			margin-right: -13px;
 			
 			> li > a {
+				font-weight: bold;
+				margin-right: 10px;
 				color: @sub-menu-link-color;
+				border-bottom: 3px solid transparent;
+				
+				padding-top: 11px;
+				padding-bottom: 7px;
 				
 				&:hover,
 				&:focus {
+					border-bottom: 3px solid #FFF;
 					color: @sub-menu-link-hover-color;
 					background-color: @sub-menu-link-hover-bg;
 				}
@@ -92,6 +144,7 @@ body {
 				&,
 				&:hover,
 				&:focus {
+					border-bottom: 3px solid #FFF;
 					color: @sub-menu-link-active-color;
 					background-color: @sub-menu-link-active-bg;
 				}
@@ -111,6 +164,9 @@ body {
 .page-breadcrumb {
 	.container {
 		background: @page-breadcrumb-bg;
+		
+		padding-top: 8px;
+		margin-bottom: -5px;
 		
 		border-left: 1px solid #CCCCCC;
 		border-right: 1px solid #CCCCCC;
@@ -135,11 +191,12 @@ body {
 		border-left: 1px solid #CCCCCC;
 		border-right: 1px solid #CCCCCC;
 		
-		padding-top: 7px;
-		padding-bottom: 7px;
+		padding-top: 8px;
+		padding-bottom: 8px;
 		
 		.page-title-text {
 			margin: 0;
+			margin-left: 5px;
 			padding: 0;
 		}
 	}
@@ -164,6 +221,10 @@ body {
 			
 			.form-inline {
 				padding-top: @grid-gutter-half-width;
+				padding-bottom: 0;
+				> .form-group, > .btn, > .checkbox {
+					margin-bottom: @grid-gutter-half-width;
+				}
 			}
 			
 			.further {
@@ -177,9 +238,28 @@ body {
 	.container {
 		background: @footer-bg;
 		color: @footer-color;
-		padding: 40px 15px;
-		text-align: right;
+		border: 1px solid #CCC;
+		border-top: 0;
+		padding: 0;
+		
+		.footer-content {
+			border-top: 5px solid #EEE;
+			padding: 15px 15px;
+			text-align: right;
+			
+			&:after {
+				clear: both;
+				content: " ";
+				display: table;
+			}
+		}
 	}
+}
+
+.version {
+	color: #666;
+	font-size: 0.8em;
+	margin-top: 5px;
 }
 
 .main-content, .modal {
@@ -250,26 +330,6 @@ body {
 	.btn-group.pull-right {
 		margin-top: -8px;
 		margin-right: -12px;
-	}
-}
-
-// User description
-.application-users {
-	.key-value-list {
-		.line {
-			border-bottom: 1px solid #EEE;
-			padding-top: 5px;
-			padding-bottom: 5px;
-			
-			&:last-child {
-				border-bottom: none;
-			}
-			
-			.line-label {
-				color: #888888;
-				font-weight: bold;
-			}
-		}
 	}
 }
 

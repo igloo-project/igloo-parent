@@ -9,7 +9,7 @@
 @min-page-width:						0;
 
 // Variables Bootstrap
-@body-bg:							#EFEFEF;
+@body-bg:							#DDD;
 
 @font-size-base:					13px;
 @line-height-base:					1.384615385; // > @line-height-computed ~ 18px
@@ -26,35 +26,55 @@
 @grid-gutter-half-width:			(@grid-gutter-width / 2);
 
 // Link
-//@link-color:						@main-color;
-//@link-hover-color:					darken(@link-color, 10%);
+@link-color:						@main-color;
+@link-hover-color:					darken(@link-color, 10%);
+
+// Navbar
+@navbar-height:						40px;
+@main-menu-height:					@navbar-height + @navbar-height;
+
+// Tables
+@table-header-bg:					@table-bg;
+@table-header-color:				inherit;
+
+// Custom Bootstrap variables
+
+@state-default-text:				@gray-light;
+@state-default-bg:					@gray-lighter;
+@state-default-border:				darken(spin(@state-default-bg, -10), 7%);
+
+@alert-default-bg:					@state-default-bg;
+@alert-default-text:				@state-default-text;
+@alert-default-border:				@state-default-border;
+
+@label-warning-severe-bg:			#E85127;
 
 // Sub menu (OWSI-Core)
-@sub-menu-bg:						#DAE6EF;
-@sub-menu-link-color:				@link-color;
-@sub-menu-link-hover-color:			@link-hover-color;
-@sub-menu-link-hover-bg:			#FAFAFA;
-@sub-menu-link-active-color:		@sub-menu-link-color;
-@sub-menu-link-active-bg:			#F8F8F8;
-@sub-menu-link-disabled-color:		#CCCCCC;
-@sub-menu-link-disabled-bg:			transparent;
+@sub-menu-bg:						@main-color;
+@sub-menu-link-color:				#FFF;
+@sub-menu-link-hover-color:			#FFF;
+@sub-menu-link-hover-bg:			transparent;
+@sub-menu-link-active-color:		#FFF;
+@sub-menu-link-active-bg:			transparent;
+@sub-menu-link-disabled-color:		#CCC;
+@sub-menu-link-disabled-bg:			#CCC;
 
 // Main menu
-@navbar-default-color:				#FFFFFF;
-@navbar-default-bg:					@main-color;
-@navbar-default-border:				@sub-menu-bg;
+@navbar-default-color:				#666;
+@navbar-default-bg:					#FFF;
+@navbar-default-border:				#CCC;
 
 // Main menu links
-@navbar-default-link-color:				#FFFFFF;
-@navbar-default-link-hover-color:		#666666;
-@navbar-default-link-hover-bg:			#FAFAFA;
-@navbar-default-link-active-color:		@sub-menu-link-color;
-@navbar-default-link-active-bg:			@sub-menu-bg;
+@navbar-default-link-color:				#666;
+@navbar-default-link-hover-color:		@main-color;
+@navbar-default-link-hover-bg:			transparent;
+@navbar-default-link-active-color:		@main-color;
+@navbar-default-link-active-bg:			transparent;
 @navbar-default-link-disabled-color:	#CCCCCC;
 @navbar-default-link-disabled-bg:		transparent;
 
 // Main menu brand label
-@navbar-default-brand-color:			@navbar-default-link-color;
+@navbar-default-brand-color:			@main-color;
 @navbar-default-brand-hover-color:		darken(@navbar-default-brand-color, 10%);
 @navbar-default-brand-hover-bg:			transparent;
 
@@ -63,15 +83,10 @@
 @navbar-default-toggle-icon-bar-bg:		#FFFFFF;
 @navbar-default-toggle-border-color:	#FFFFFF;
 
-//@main-menu-bg:						#0C96C7;
+// Breadcrumb
 @page-breadcrumb-bg:				#F8F8F8;
 @page-title-bg:						#F8F8F8;
 @page-title-color:					#666666;
 
+// Page lead
 @page-lead-bg:						#EEEEEE;
-
-@navbar-height:						40px;
-@main-menu-height:					@navbar-height + @navbar-height;
-
-@table-header-bg:					@table-bg;
-@table-header-color:				inherit;
