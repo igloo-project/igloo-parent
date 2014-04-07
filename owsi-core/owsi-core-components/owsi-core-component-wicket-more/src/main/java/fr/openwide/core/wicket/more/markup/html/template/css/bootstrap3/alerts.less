@@ -1,10 +1,10 @@
 /* Compléments aux styles bootstraps */
 
 .alert-global-panel {
-	.border-top-right-radius(@border-radius-base);
+	.border-bottom-right-radius(@border-radius-base);
 	
 	padding: 20px;
-	bottom: -40px;
+	top: -40px;
 	
 	background: fade(#434343, 80%);
 	
@@ -61,4 +61,6 @@
 .animated-global-feedback[data-placement="bottom"] .alert-global-panel {
 	top: auto;
 	bottom: -40px;
+	.border-bottom-right-radius(0);
+	.border-top-right-radius(@border-radius-base);
 }
