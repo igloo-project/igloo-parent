@@ -23,8 +23,9 @@
 		
 		<!-- Database dependencies -->
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+			<groupId>com.impossibl.pgjdbc-ng</groupId>
+			<artifactId>pgjdbc-ng</artifactId>
+			<version>${owsi-core.pgjdbc-ng.version}</version>
 		</dependency>
 	
 		<!-- Hibernate dependencies -->
