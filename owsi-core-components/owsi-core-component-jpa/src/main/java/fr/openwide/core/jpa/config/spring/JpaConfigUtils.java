@@ -223,6 +223,8 @@ public final class JpaConfigUtils {
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
 		dataSource.setJdbcUrl(configurationProvider.getUrl());
+		dataSource.setUsername(configurationProvider.getUser());
+		dataSource.setPassword(configurationProvider.getPassword());
 		dataSource.addDataSourceProperty("user", configurationProvider.getUser());
 		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
 		dataSource.setMinimumIdle(configurationProvider.getMinIdle());
