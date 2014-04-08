@@ -31,6 +31,7 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
+import com.zaxxer.hikari.HikariDataSource;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.config.spring.provider.DatabaseConnectionPoolConfigurationProvider;
@@ -218,31 +219,16 @@ public final class JpaConfigUtils {
 	}
 
 	public static DataSource dataSource(DatabaseConnectionPoolConfigurationProvider configurationProvider) {
-		/*
+		
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
 		dataSource.setJdbcUrl(configurationProvider.getUrl());
 		dataSource.addDataSourceProperty("user", configurationProvider.getUser());
 		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
-		dataSource.setMinimumPoolSize(configurationProvider.getMinPoolSize());
+		dataSource.setMinimumIdle(configurationProvider.getMinIdle());
 		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
-		
 		dataSource.setJdbc4ConnectionTest(false);
 		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
-		*/
-		org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
-		dataSource.setUrl(configurationProvider.getUrl());
-		dataSource.setUsername(configurationProvider.getUser());
-		dataSource.setPassword(configurationProvider.getPassword());
-		dataSource.setMaxActive(configurationProvider.getMaxPoolSize());
-		dataSource.setMinIdle(configurationProvider.getMinPoolSize());
-		dataSource.setMaxIdle(configurationProvider.getMaxPoolSize());
-		dataSource.setInitialSize(configurationProvider.getInitialPoolSize());
-		dataSource.setValidationQuery(configurationProvider.getValidationQuery());
-		dataSource.setTestOnBorrow(true);
-		dataSource.setLogValidationErrors(false);
-		dataSource.setValidationInterval(30000);
 		
 		return dataSource;
 	}
