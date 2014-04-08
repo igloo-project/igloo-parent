@@ -18,14 +18,11 @@ public class DatabaseConnectionPoolConfigurationProvider {
 	@Value("${db.password}")
 	private String password;
 
-	@Value("${db.minPoolSize}")
-	private int minPoolSize;
+	@Value("${db.minIdle}")
+	private int minIdle;
 
 	@Value("${db.maxPoolSize}")
 	private int maxPoolSize;
-
-	@Value("${db.initialPoolSize}")
-	private int initialPoolSize;
 
 	@Value("${${db.type}.db.preferredTestQuery}")
 	private String validationQuery;
@@ -46,16 +43,12 @@ public class DatabaseConnectionPoolConfigurationProvider {
 		return password;
 	}
 
-	public int getMinPoolSize() {
-		return minPoolSize;
+	public int getMinIdle() {
+		return minIdle;
 	}
 
 	public int getMaxPoolSize() {
 		return maxPoolSize;
-	}
-
-	public int getInitialPoolSize() {
-		return initialPoolSize;
 	}
 
 	public String getValidationQuery() {
