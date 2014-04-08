@@ -1,16 +1,18 @@
 package fr.openwide.core.wicket.more.console.template;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -25,6 +27,8 @@ import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMain
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
@@ -70,63 +74,20 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
 		// Menu sections
-		ListView<ConsoleMenuSection> menuSectionsListView = new ListView<ConsoleMenuSection>("menuSectionsListView", 
+		ListView<ConsoleMenuSection> menuSectionsListView = new ListView<ConsoleMenuSection>("menuSectionListView", 
 				ConsoleConfiguration.get().getMenuSections()) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected void populateItem(ListItem<ConsoleMenuSection> item) {
-				ConsoleMenuSection menuSection = item.getModelObject();
-				Link<Void> menuSectionLink = new BookmarkablePageLink<Void>("menuSectionLink", menuSection.getPageClass());
-				menuSectionLink.add(new Label("menuSectionLabel", new ResourceModel(menuSection.getDisplayStringKey())));
-				item.add(menuSectionLink);
-				if (menuSection.getPageClass() != null && menuSection.getPageClass().equals(getMenuSectionPageClass())) {
-					item.add(new ClassAttributeAppender("active"));
+				if (item.getModelObject().getMenuItems().size() > 0) {
+					item.add(new MenuSectionWithDropDownFragment("menuSectionFragment", "menuSectionWithDropDown", item.getModel()));
+				} else {
+					item.add(new MenuSectionWithoutDropDownFragment("menuSectionFragment", "menuSectionWithoutDropDown", item.getModel()));
 				}
 			}
 		};
 		add(menuSectionsListView);
-		
-		// Menu items of the selected menu section
-		ConsoleMenuSection selectedMenuSection = getSelectedSection();
-		
-		List<ConsoleMenuItem> menuItems;
-		if (selectedMenuSection != null) {
-			menuItems = selectedMenuSection.getMenuItems();
-		} else {
-			menuItems = Collections.emptyList();
-		}
-		
-		ListView<ConsoleMenuItem> menuItemsListView = new ListView<ConsoleMenuItem>("menuItemsListView", menuItems) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void populateItem(ListItem<ConsoleMenuItem> item) {
-				ConsoleMenuItem menuItem = item.getModelObject();
-				
-				BookmarkablePageLink<Void> menuItemLink = new BookmarkablePageLink<Void>("menuItemLink", menuItem.getPageClass());
-				
-				// On ajoute la page des DataUpgrade seulement si un DataUpgradeService existe
-				if (ConsoleMaintenanceDonneesPage.class.isAssignableFrom(menuItem.getPageClass())) {
-					menuItemLink.setVisible(dataUpgradeService != null);
-				}
-				
-				menuItemLink.add(new Label("menuItemLabel", new ResourceModel(menuItem.getDisplayStringKey())));
-				
-				item.add(menuItemLink);
-				
-				if (menuItem.getPageClass() != null && menuItem.getPageClass().equals(getMenuItemPageClass())) {
-					item.add(new ClassAttributeAppender("active"));
-				}
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(!getModelObject().isEmpty());
-			}
-		};
-		add(menuItemsListView);
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
@@ -144,15 +105,6 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		return bootstrapTooltip;
 	}
 	
-	private ConsoleMenuSection getSelectedSection() {
-		for (ConsoleMenuSection menuSection : ConsoleConfiguration.get().getMenuSections()) {
-			if (menuSection.getPageClass() != null && menuSection.getPageClass().equals(getMenuSectionPageClass())) {
-				return menuSection;
-			}
-		}
-		return null;
-	}
-	
 	protected abstract Class<? extends ConsoleTemplate> getMenuSectionPageClass();
 	
 	protected abstract Class<? extends ConsoleTemplate> getMenuItemPageClass();
@@ -168,5 +120,71 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 			lessCssResourceReference = ConsoleConfiguration.get().getLessCssResourceReference();
 		}
 		response.render(CssHeaderItem.forReference(lessCssResourceReference));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
+	}
+
+	private class MenuSectionWithoutDropDownFragment extends Fragment {
+		private static final long serialVersionUID = 8410165897953003122L;
+		
+		public MenuSectionWithoutDropDownFragment(String id, String markupId, IModel<ConsoleMenuSection> menuSectionModel) {
+			super(id, markupId, ConsoleTemplate.this, menuSectionModel);
+			
+			ConsoleMenuSection menuSection = menuSectionModel.getObject();
+			
+			WebMarkupContainer menuSectionContainer = new WebMarkupContainer("menuSection");
+			add(menuSectionContainer);
+			
+			AbstractLink menuSectionLink = new BookmarkablePageLink<Void>("menuSectionLink", menuSection.getPageClass())
+					.setBody(new ResourceModel(menuSection.getDisplayStringKey()));
+			menuSectionContainer.add(menuSectionLink);
+			if (menuSection.getPageClass() != null && menuSection.getPageClass().equals(getMenuSectionPageClass())) {
+				menuSectionContainer.add(new ClassAttributeAppender("active"));
+			}
+		}
+	}
+	
+	private class MenuSectionWithDropDownFragment extends Fragment {
+		private static final long serialVersionUID = -7869292249062558408L;
+
+		public MenuSectionWithDropDownFragment(String id, String markupId, IModel<ConsoleMenuSection> menuSectionModel) {
+			super(id, markupId, ConsoleTemplate.this, menuSectionModel);
+			
+			ConsoleMenuSection menuSection = menuSectionModel.getObject();
+			
+			WebMarkupContainer menuSectionContainer = new WebMarkupContainer("menuSection");
+			add(menuSectionContainer);
+
+			if (menuSection.getPageClass() != null && menuSection.getPageClass().equals(getMenuSectionPageClass())) {
+				menuSectionContainer.add(new ClassAttributeAppender("active"));
+			}
+			
+			menuSectionContainer.add(new Label("menuSectionLabel", new ResourceModel(menuSection.getDisplayStringKey())));
+			menuSectionContainer.add(new ListView<ConsoleMenuItem>("subMenuListView", menuSection.getMenuItems()) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void populateItem(ListItem<ConsoleMenuItem> item) {
+					ConsoleMenuItem menuItem = item.getModelObject();
+
+					AbstractLink menuItemLink = new BookmarkablePageLink<Void>("subMenuLink", menuItem.getPageClass())
+							.setBody(new ResourceModel(menuItem.getDisplayStringKey()));
+
+					// On ajoute la page des DataUpgrade seulement si un
+					// DataUpgradeService existe
+					if (ConsoleMaintenanceDonneesPage.class.isAssignableFrom(menuItem.getPageClass())) {
+						menuItemLink.setVisible(dataUpgradeService != null);
+					}
+
+					item.add(menuItemLink);
+
+					if (menuItem.getPageClass() != null && menuItem.getPageClass().equals(getMenuItemPageClass())) {
+						item.add(new ClassAttributeAppender("active"));
+					}
+				}
+
+			});
+		}
+
 	}
 }

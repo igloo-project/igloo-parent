@@ -10,11 +10,11 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 public class EhCacheProgressBarComponent extends GenericPanel<Float> {
 	private static final long serialVersionUID = 3992803188589160149L;
 	
-	private static final String CLASS_PROGRESS_SUCCESS = "progress-success";
+	private static final String CLASS_PROGRESS_SUCCESS = "progress-bar-success";
 	
-	private static final String CLASS_PROGRESS_WARNING = "progress-warning";
+	private static final String CLASS_PROGRESS_WARNING = "progress-bar-warning";
 	
-	private static final String CLASS_PROGRESS_DANGER = "progress-danger";
+	private static final String CLASS_PROGRESS_DANGER = "progress-bar-danger";
 	
 	public EhCacheProgressBarComponent(String id, IModel<Float> value, boolean sign, float low, float high) {
 		super(id, value);
@@ -23,11 +23,8 @@ public class EhCacheProgressBarComponent extends GenericPanel<Float> {
 			throw new IllegalArgumentException("low threshold has to be less lower than high threshold");
 		}
 		
-		WebMarkupContainer progressBar = new WebMarkupContainer("progressBar");
-		add(progressBar);
-		
 		WebMarkupContainer progressBarWidth = new WebMarkupContainer("progressBarWidth");
-		progressBar.add(progressBarWidth);
+		add(progressBarWidth);
 		
 		double width = 0;
 		
@@ -52,7 +49,7 @@ public class EhCacheProgressBarComponent extends GenericPanel<Float> {
 					className = CLASS_PROGRESS_SUCCESS;
 				}
 			}
-			progressBar.add(new ClassAttributeAppender(className));
+			progressBarWidth.add(new ClassAttributeAppender(className));
 		}
 		
 		progressBarWidth.add(new AttributeModifier("style", "width:" + width + "%;"));
