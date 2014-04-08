@@ -42,7 +42,7 @@ public class TaskManagerInformationPanel extends Panel {
 				if (queuedTaskHolderManager.isActive()) {
 					return "alert-success";
 				} else {
-					return "alert-error";
+					return "alert-danger";
 				}
 			}
 		}));

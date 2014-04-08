@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.UrlUtils;
+import org.bindgen.Bindable;
 
 import com.google.common.collect.Lists;
 
+@Bindable
 public class ConsoleMenuItem implements Serializable {
 	
 	private static final long serialVersionUID = -4624715918901057500L;

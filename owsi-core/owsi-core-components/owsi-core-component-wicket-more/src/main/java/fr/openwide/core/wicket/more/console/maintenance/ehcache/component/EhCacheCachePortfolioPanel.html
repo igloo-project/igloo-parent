@@ -4,18 +4,19 @@
 	<body>
 		<wicket:panel>
 			<div class="console-section" wicket:id="cacheManagerList">
-				<div class="subtitle">
-					<div class="actions">
-						<button wicket:id="cacheManagerPurgeLink" class="btn btn-mini btn-danger" type="button">
-							<i class="fa fa-trash-o icon-trash icon-white"></i>
+				<h2>
+					<span class="pull-right">
+						<button wicket:id="cacheManagerPurgeLink" class="btn btn-xs btn-danger" type="button">
+							<i class="fa fa-trash-o"></i>
 							<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
 						</button>
-					</div>
-					<div wicket:id="cacheManagerName" class="subtitle-text" />
-				</div>
+					</span>
+					<wicket:container wicket:id="cacheManagerName" />
+				</h2>
 				
-				<div class="input-prepend cache-filter">
-					<span class="add-on"><wicket:message key="console.maintenance.ehcache.portfolio.filtre" /></span><input class="filter-input" type="text" autocomplete="off">
+				<div class="input-group cache-filter">
+					<span class="input-group-addon"><wicket:message key="console.maintenance.ehcache.portfolio.filtre" /></span>
+					<input class="form-control filter-input" type="text" autocomplete="off">
 				</div>
 				
 				
@@ -36,11 +37,18 @@
 					<tbody wicket:id="cacheList">
 						<tr class="cache-line-main filter-element">
 							<td rowspan="2" class="cache-name" style="vertical-align:middle">
-								<span class="fa fa-chevron-down icon icon-chevron-down show" wicket:message="title:console.maintenance.ehcache.portfolio.nom.show" />
-								<span class="fa fa-chevron-up icon icon-chevron-up hide" wicket:message="title:console.maintenance.ehcache.portfolio.nom.hide" />
-								<span class="fa fa-thumb-tack icon icon-pushpin" wicket:id="copyToClipboard" wicket:message="title:console.maintenance.ehcache.portfolio.nom.copy" />
-								<span wicket:id="cacheName"></span><br />
-								<input wicket:id="cacheNameInput" class="cache-name-input" type="text" />
+								<span wicket:id="cacheName"></span>
+								<div class="pull-right">
+									<div class="btn-group btn-group-xs">
+										<button class="btn btn-default toggle-full-name" type="button" wicket:message="title:console.maintenance.ehcache.portfolio.nom.show">
+											<i class="fa fa-chevron-down fa-fw toggle-close" />
+											<i class="fa fa-chevron-up fa-fw toggle-open" />
+										</button>
+										<button class="btn btn-default" wicket:id="copyToClipboard" wicket:message="title:console.maintenance.ehcache.portfolio.nom.copy"><i class="fa fa-thumb-tack fa-fw" /></button>
+									</div>
+								</div>
+								<br />
+								<input wicket:id="cacheNameInput" class="form-control cache-name-input" type="text" />
 							</td>
 							<td rowspan="2" style="text-align: right;"><span wicket:id="cacheEvictionCount"></span></td>
 							<td style="text-align: right;"><span wicket:id="cacheHits"></span></td>
@@ -49,15 +57,15 @@
 							<td style="text-align: right;"><span wicket:id="cacheStoredElements"></span></td>
 							<td style="text-align: right;"><span wicket:id="cacheMaxElements"></span></td>
 							<td style="text-align: right;"><span wicket:id="cacheCacheFillRatio"></span></td>
-							<td rowspan="2" style="text-align: center; vertical-align:middle;">
+							<td rowspan="2" style="text-align: center; vertical-align:middle; white-space: nowrap;">
 								<div class="actions">
-									<button wicket:id="modifierCache" class="btn btn-mini btn-primary" type="button"
-										style="padding-right: 2px" wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
-										<i class="fa fa-pencil icon-pencil icon-white"></i>
+									<button wicket:id="modifierCache" class="btn btn-xs btn-primary" type="button"
+											wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
+										<i class="fa fa-pencil"></i>
 									</button>
-									<button wicket:id="viderCache" class="btn btn-mini btn-danger" type="button"
-										style="padding-right: 2px" wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
-										<i class="fa fa-trash-o icon-trash icon-white"></i>
+									<button wicket:id="viderCache" class="btn btn-xs btn-danger" type="button"
+											wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
+										<i class="fa fa-trash-o"></i>
 									</button>
 									<div wicket:id="modificationPanel"></div>
 								</div>
@@ -80,14 +88,6 @@
 						</tr>
 					</tfoot>
 				</table>
-				<script type="text/javascript">
-					$('.cache-name .show').on('click', function(event) {
-						$(this).parent().addClass('opened');
-					});
-					$('.cache-name .hide').on('click', function(event) {
-						$(this).parent().removeClass('opened');
-					});
-				</script>
 			</div>
 		</wicket:panel>
 	</body>

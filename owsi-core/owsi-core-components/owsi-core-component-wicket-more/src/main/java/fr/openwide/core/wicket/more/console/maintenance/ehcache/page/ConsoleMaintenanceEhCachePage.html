@@ -4,6 +4,11 @@
 <body>
 	<wicket:extend>
 		<div wicket:id="portfolio" class="cache-portfolio"></div>
+		<script type="text/javascript">
+			$('.cache-name .toggle-full-name').click(function(event) {
+				$(this).closest('.cache-name').toggleClass('opened');
+			});
+		</script>
 	</wicket:extend>
 </body>
 </html>

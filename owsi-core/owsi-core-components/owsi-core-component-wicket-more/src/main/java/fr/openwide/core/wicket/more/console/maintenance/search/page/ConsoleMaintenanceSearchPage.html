@@ -3,61 +3,57 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:extend>
-		<div class="row-fluid">
-			<div class="console-section reindex span4">
-				<div class="subtitle">
-					<div class="subtitle-text">
-						<wicket:message key="console.maintenance.search.reindex.title" />
-					</div>
-				</div>
-				<div class="alert alert-info">
-					<wicket:message key="console.maintenance.search.reindex.description" />
-				</div>
-				<div class="actions">
-					<button wicket:id="reindexContentLink" class="btn btn-primary">
-						<span class="fa fa-refresh icon-refresh icon-white" />
-						<wicket:message key="console.maintenance.search.reindex.action" />
-					</button>
-				</div>
-			</div>
-		</div>
-		
-		<wicket:enclosure child="reindexClassesForm">
-			<div class="row-fluid">
-				<div class="console-section reindex span8">
-					<div class="subtitle">
-						<div class="subtitle-text">
-							<wicket:message key="console.maintenance.search.reindex.partial.title" />
-						</div>
-					</div>
+		<div class="reindex">
+			<div class="row">
+				<div class="console-section col-sm-6">
+					<h2><wicket:message key="console.maintenance.search.reindex.title" /></h2>
 					<div class="alert alert-info">
-						<wicket:message key="console.maintenance.search.reindex.partial.description" />
+						<wicket:message key="console.maintenance.search.reindex.description" />
 					</div>
-					<form wicket:id="reindexClassesForm" class="form-horizontal">
-						<div class="row-fluid">
-							<div class="control-group span6">
-								<label class="control-label" wicket:for="classes"><wicket:label /></label>
-								<div class="controls">
-									<select wicket:id="classes" class="input-block-level" />
-								</div>
-							</div>
-							<div class="control-group span6">
-								<label class="control-label" wicket:for="ids"><wicket:label /></label>
-								<div class="controls">
-									<textarea wicket:id="ids" class="ids input-block-level" />
-								</div>
-							</div>
-						</div>
-						<div class="actions">
-							<button wicket:id="reindexClassesLink" class="btn btn-primary">
-								<span class="fa fa-refresh icon-refresh icon-white" />
-								<wicket:message key="console.maintenance.search.reindex.action" />
-							</button>
-						</div>
-					</form>
+					<div class="actions">
+						<button wicket:id="reindexContentLink" class="btn btn-primary">
+							<span class="fa fa-refresh" />
+							<wicket:message key="console.maintenance.search.reindex.action" />
+						</button>
+					</div>
 				</div>
 			</div>
-		</wicket:enclosure>
+			
+			<wicket:enclosure child="reindexClassesForm">
+				<div class="row">
+					<div class="console-section col-sm-10">
+						<h2><wicket:message key="console.maintenance.search.reindex.partial.title" /></h2>
+						<div class="alert alert-info">
+							<wicket:message key="console.maintenance.search.reindex.partial.description" />
+						</div>
+						<form wicket:id="reindexClassesForm">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label wicket:for="classes"><wicket:label /></label>
+											<select wicket:id="classes" class="form-control" />
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label wicket:for="ids"><wicket:label /></label>
+											<textarea wicket:id="ids" class="ids form-control" />
+										</div>
+									</div>
+								</div>
+								<div class="actions">
+									<button wicket:id="reindexClassesLink" class="btn btn-primary">
+										<span class="fa fa-refresh" />
+										<wicket:message key="console.maintenance.search.reindex.action" />
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</wicket:enclosure>
+		</div>
 	</wicket:extend>
 </body>
 </html>

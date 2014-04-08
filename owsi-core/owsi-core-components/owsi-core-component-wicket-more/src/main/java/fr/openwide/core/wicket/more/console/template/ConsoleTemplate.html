@@ -17,7 +17,7 @@
 	<body>
 		<div class="page-container">
 			<!-- Feedback -->
-			<div wicket:id="animatedGlobalFeedbackPanel">
+			<div wicket:id="animatedGlobalFeedbackPanel" data-placement="bottom">
 			</div>
 			
 			<!-- Scroll to top -->
@@ -25,31 +25,35 @@
 			
 			<div class="container">
 				<!-- Menu sections -->
-				<div class="navbar navbar-inverse">
-					<div class="navbar-inner">
-						<div class="nav-collapse collapse">
-							<ul class="nav">
-								<li wicket:id="menuSectionsListView">
-									<a wicket:id="menuSectionLink">
-										<wicket:container wicket:id="menuSectionLabel" />
-									</a>
-								</li>
+				<nav class="navbar navbar-default navbar-inverse">
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="fa fa-bars fa-lg" />
+							</button>
+							<span class="navbar-brand"><wicket:message key="console.pageTitle" /></span>
+						</div>
+						<div class="collapse navbar-collapse" id="main-navbar-collapse">
+							<ul class="nav navbar-nav">
+								<wicket:container wicket:id="menuSectionListView">
+									<wicket:container wicket:id="menuSectionFragment" />
+								</wicket:container>
+								<wicket:fragment wicket:id="menuSectionWithoutDropDown">
+									<li wicket:id="menuSection"><a wicket:id="menuSectionLink">menuSectionLabel</a></li>
+								</wicket:fragment>
+								<wicket:fragment wicket:id="menuSectionWithDropDown">
+									<li wicket:id="menuSection" class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown"><wicket:container wicket:id="menuSectionLabel"></wicket:container> <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<li wicket:id="subMenuListView"><a wicket:id="subMenuLink">subMenu</a></li>
+										</ul>
+									</li>
+								</wicket:fragment>
 							</ul>
 						</div>
 					</div>
-				</div>
-				<!-- Menu items -->
-				<wicket:enclosure child="menuItemsListView">
-					<div class="subnav">
-						<ul class="nav nav-pills">
-							<li wicket:id="menuItemsListView">
-								<a wicket:id="menuItemLink">
-									<wicket:container wicket:id="menuItemLabel" />
-								</a>
-							</li>
-						</ul>
-					</div>
-				</wicket:enclosure>
+				</nav>
 				
 				<!-- Content -->
 				<div class="content">

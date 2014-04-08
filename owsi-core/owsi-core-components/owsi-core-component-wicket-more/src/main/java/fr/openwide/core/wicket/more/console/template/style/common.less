@@ -1,21 +1,26 @@
 body {
-	padding-top: 0;
-}
-
-.container { 
-	max-width: @maxPageWidth; 
-	min-width: @minPageWidth; 
-	width: auto; 
+	background-color: #DDD;
+	
+	> .page-container > .container {
+		padding-top: 10px;
+		padding-bottom: 15px;
+		margin-bottom: 15px;
+		.border-bottom-radius(3px);
+		background-color: #FFF;
+		border: 1px solid #CCC;
+		border-top: 0;
+	}
 }
 
 .content {
 	min-height: 450px;
 	padding: 15px;
+	padding-top: 0;
 	
 	.clearfix();
 }
 
-.content, .modal {
+.modal {
 	h1 {
 		border-bottom: 1px #CCC solid;
 		margin-bottom: 20px;
@@ -91,93 +96,11 @@ ul.itemit {
 
 // Footer
 .footer {
-	border-top: 1px solid #CCC;
+	margin-top: 15px;
 	padding: 10px 15px;
 	text-align: right;
-	background: @footerBackground;
-	color: @footerText;
-	.border-radius(0 0 5px 5px);
-}
-
-// jQuery UI
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	color: @mainColor;
-}
-
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-	background: @mainColor;
-	border-color: @mainColorHighlight;
-	color: #FFFFFF;
-}
-
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-datepicker-today .ui-state-active {
-	background: @mainColorHighlight;
-	border-color: @mainColor;
-	color: #FFFFFF;
-}
-
-.ui-datepicker-next.ui-state-hover, .ui-datepicker-prev.ui-state-hover {
-	background: transparent;
-	border-color: transparent;
-}
-
-.console-section {
-	margin-bottom : 30px;
-	
-	.subtitle {
-		border-bottom : 1px solid #CCC;
-		margin-bottom : 8px;
-		padding : 4px 0;
-		
-		.subtitle-text {
-			font-size : 16px;
-			line-height : 20px;
-			height : 20px;
-		}
-		
-		.actions {
-			float : right;
-		}
-	}
-}
-
-.console-section.reindex {
-	.actions {
-		margin-top : 15px;
-	}
-	
-	select[multiple] {
-		height: 150px;
-	}
-	
-	textarea.ids {
-		min-height: 150px;
-		resize: none;
-	}
-}
-
-.form-horizontal.ehcache-modification {
-	.control-label {
-		width : 70px;
-		font-weight : bold;
-		font-size : 14px;
-		color : #888;
-		text-align : left;
-	}
-	
-	.controls {
-		margin-left : 80px;
-		
-		input {
-			width : 80px;
-		}
-	}
-}
-
-select {
-	.border-radius(4px);
-}
-
-select[multiple] {
-	.border-radius(0);
+	background: #DDD;
+	color: #666;
+	border: 1px solid #CCC;
+	.border-radius(2px);
 }
