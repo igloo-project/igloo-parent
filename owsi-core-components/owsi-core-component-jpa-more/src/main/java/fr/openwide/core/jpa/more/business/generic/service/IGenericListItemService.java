@@ -17,6 +17,7 @@
 
 package fr.openwide.core.jpa.more.business.generic.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
@@ -34,8 +35,12 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
+	<E extends GenericListItem<?>> List<E> list(Class<E> clazz, Comparator<? super E> comparator);
+
 	<E extends GenericListItem<?>> long count(Class<E> clazz);
 
 	<E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz);
+
+	<E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz, Comparator<? super E> comparator);
 
 }
