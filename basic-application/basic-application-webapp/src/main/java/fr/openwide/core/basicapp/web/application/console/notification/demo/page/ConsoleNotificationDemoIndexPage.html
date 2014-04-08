@@ -3,16 +3,18 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="console-section">
-			<div class="subtitle">
-				<div class="subtitle-text">
-					<wicket:message key="console.notifications" />
+			<h2><wicket:message key="console.notifications" /></h2>
+			<div class="container">
+				<div class="row">
+					<div class="list-group col-sm-6">
+						<wicket:container wicket:id="notifications">
+							<a wicket:id="link" class="list-group-item">
+								<i class="fa fa-share-square-o" />
+								<span wicket:id="label" />
+							</a>
+						</wicket:container>
+					</div>
 				</div>
-			</div>
-			<div wicket:id="notifications">
-				<a wicket:id="link" style="margin-left:10px">
-					<i class="icon-share" />
-					<span wicket:id="label" />
-				</a>
 			</div>
 			<div wicket:id="emptyList"><wicket:message key="common.emptyList" /></div>
 		</div>
