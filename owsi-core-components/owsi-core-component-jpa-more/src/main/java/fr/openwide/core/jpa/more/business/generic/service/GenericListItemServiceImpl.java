@@ -17,6 +17,8 @@
 
 package fr.openwide.core.jpa.more.business.generic.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
@@ -74,8 +76,22 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	}
 	
 	@Override
+	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz, Comparator<? super E> comparator) {
+		List<E> result = list(clazz);
+		Collections.sort(result, comparator);
+		return result;
+	}
+	
+	@Override
 	public <E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz) {
 		return genericListItemDao.listByField(clazz, GenericListItem_.enabled, true);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz, Comparator<? super E> comparator) {
+		List<E> result = listEnabled(clazz);
+		Collections.sort(result, comparator);
+		return result;
 	}
 
 	@Override
