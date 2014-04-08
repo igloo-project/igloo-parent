@@ -17,6 +17,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.AvailableSettings;
+import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
@@ -106,6 +107,7 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
+			properties.setProperty(Environment.BATCH_FETCH_STYLE, BatchFetchStyle.PADDED.name());
 		}
 		
 		if (StringUtils.hasText(hibernateHbm2DdlImportFiles)) {
