@@ -102,7 +102,7 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.HBM2DDL_AUTO, hibernateHbm2Ddl);
 		properties.setProperty(Environment.SHOW_SQL, Boolean.FALSE.toString());
 		properties.setProperty(Environment.FORMAT_SQL, Boolean.FALSE.toString());
-		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.TRUE.toString());
+		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
