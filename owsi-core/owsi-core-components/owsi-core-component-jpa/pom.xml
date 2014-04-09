@@ -25,7 +25,11 @@
 		<dependency>
 			<groupId>com.impossibl.pgjdbc-ng</groupId>
 			<artifactId>pgjdbc-ng</artifactId>
-			<version>${owsi-core.pgjdbc-ng.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 	
 		<!-- Hibernate dependencies -->
