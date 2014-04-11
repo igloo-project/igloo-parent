@@ -17,6 +17,7 @@ import com.google.common.base.Supplier;
 import fr.openwide.core.imports.excel.mapping.AbstractExcelImportColumnSet;
 import fr.openwide.core.imports.excel.mapping.column.builder.AbstractColumnBuilder;
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
+import fr.openwide.core.imports.excel.mapping.column.builder.MappingConstraint;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.DateState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.IntegerState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.StringState;
@@ -26,8 +27,8 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 	
 	@Override
 	public ApachePoiTypeState withHeader(AbstractExcelImportColumnSet<Sheet, Row, Cell, CellReference> columnSet, String headerLabel,
-			Predicate<? super String> predicate, int indexAmongMatchedColumns, boolean optional) {
-		return new ApachePoiTypeState(columnSet, new ApachePoiHeaderLabelExcelImportColumnMapper(headerLabel, predicate, indexAmongMatchedColumns, optional));
+			Predicate<? super String> predicate, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
+		return new ApachePoiTypeState(columnSet, new ApachePoiHeaderLabelExcelImportColumnMapper(headerLabel, predicate, indexAmongMatchedColumns, mappingConstraint));
 	}
 
 	@Override

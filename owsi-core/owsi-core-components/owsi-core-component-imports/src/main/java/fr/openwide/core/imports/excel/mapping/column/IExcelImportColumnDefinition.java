@@ -13,7 +13,12 @@ public interface IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReferenc
 			) throws ExcelImportMappingException;
 	
 	interface IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, TValue> {
-
+		
+		/**
+		 * @return True if this "mapped" column is actually bound to a column in the sheet, false otherwise.
+		 */
+		boolean isBound();
+		
 		TCellReference getCellReference(TRow row);
 		
 		TValue getValue(TRow row);
