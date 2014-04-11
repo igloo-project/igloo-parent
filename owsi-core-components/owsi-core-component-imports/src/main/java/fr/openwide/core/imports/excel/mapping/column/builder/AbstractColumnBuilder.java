@@ -9,7 +9,7 @@ public abstract class AbstractColumnBuilder<TSheet, TRow, TCell, TCellReference>
 	
 	public abstract TypeState<TSheet, TRow, TCell, TCellReference> withHeader(
 			AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference> columnSet,
-			String headerLabel, Predicate<? super String> predicate, int indexAmongMatchedColumns, boolean optional
+			String headerLabel, Predicate<? super String> predicate, int indexAmongMatchedColumns, MappingConstraint mappingConstraint
 	);
 	
 	public abstract TypeState<TSheet, TRow, TCell, TCellReference> withIndex(AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference> columnSet, int index);
