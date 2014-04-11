@@ -1,5 +1,8 @@
 package fr.openwide.core.imports.excel.test.poi;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,7 @@ import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
 import fr.openwide.core.imports.excel.event.SimpleExcelImportEventHandler;
 import fr.openwide.core.imports.excel.event.exception.ExcelImportException;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
+import fr.openwide.core.imports.excel.mapping.column.builder.MappingConstraint;
 import fr.openwide.core.imports.excel.poi.mapping.ApachePoiImportColumnSet;
 import fr.openwide.core.imports.excel.poi.scanner.ApachePoiExcelImportFileScanner;
 import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.IExcelImportFileVisitor;
@@ -34,8 +38,9 @@ public class TestApachePoiExcelImporter {
 						return "true".equals(input) ? true : false;
 					}
 				}).build();
-		final Column<String> stringColumn = withHeader("StringColumn", 2, false).asString().cleaned().build();
+		final Column<String> stringColumn = withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().cleaned().build();
 		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
+		final Column<Integer> missingColumn = withHeader("MissingColumn", MappingConstraint.OPTIONAL).asInteger().build();
 	}
 
 	private static final Columns COLUMNS = new Columns();
@@ -51,6 +56,11 @@ public class TestApachePoiExcelImporter {
 				IExcelImportEventHandler eventHandler = new SimpleExcelImportEventHandler();
 				
 				Columns.SheetContext sheetContext = COLUMNS.map(sheet, navigator, eventHandler);
+				
+				assertTrue(sheetContext.column(COLUMNS.dateColumn).exists());
+				assertTrue(sheetContext.column(COLUMNS.integerColumn).exists());
+				assertTrue(sheetContext.column(COLUMNS.booleanColumn).exists());
+				assertFalse(sheetContext.column(COLUMNS.missingColumn).exists());
 				
 				for (Columns.RowContext rowContext : Iterables.skip(sheetContext, 1)) {
 					Quartet<Date, Boolean, String, Integer> result = Quartet.with(

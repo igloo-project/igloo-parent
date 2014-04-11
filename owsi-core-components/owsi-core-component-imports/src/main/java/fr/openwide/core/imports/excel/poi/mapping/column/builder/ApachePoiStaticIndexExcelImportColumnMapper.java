@@ -23,7 +23,7 @@ import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnM
 	}
 	
 	@Override
-	public Function<? super Row, CellReference> map(Sheet sheet, IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, IExcelImportEventHandler eventHandler) {
+	public Function<? super Row, CellReference> tryMap(Sheet sheet, IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, IExcelImportEventHandler eventHandler) {
 		return new SerializableFunction<Row, CellReference>() {
 			private static final long serialVersionUID = 1L;
 			@Override
