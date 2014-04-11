@@ -2,6 +2,7 @@ package fr.openwide.core.commons.util.functional;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -85,6 +86,27 @@ public final class Predicates2 {
 			public boolean apply(String input) {
 				return StringUtils.isNotBlank(input);
 			}
+		}
+	}
+	
+	public static <T> Predicate<T> comparesEqualTo(T value, Comparator<? super T> comparator) {
+		return new ComparesEqualToPredicate<T>(value, comparator);
+	}
+	
+	private static class ComparesEqualToPredicate<T> implements SerializablePredicate<T> {
+		private static final long serialVersionUID = -9193654606378621631L;
+		
+		private final T referenceValue;
+		private final Comparator<? super T> comparator;
+		
+		public ComparesEqualToPredicate(T header, Comparator<? super T> comparator) {
+			this.referenceValue = header;
+			this.comparator = comparator;
+		}
+		
+		@Override
+		public boolean apply(T input) {
+			return comparator.compare(referenceValue, input) == 0;
 		}
 	}
 
