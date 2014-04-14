@@ -72,7 +72,11 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	
 	@Override
 	public void inject(PageParameters targetParameters, ILinkParameterConversionService conversionService) throws LinkParameterInjectionException {
-		inject(targetParameters, conversionService, parameterName, mappedModel.getObject());
+		C collection = mappedModel.getObject();
+		if (collection != null && collection.isEmpty()) {
+			collection = null; // Just make sure that the default spring converter for collections won't translate this to an empty string.
+		}
+		inject(targetParameters, conversionService, parameterName, collection);
 	}
 	
 	@Override
