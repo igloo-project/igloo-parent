@@ -4,12 +4,15 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
+import org.springframework.core.convert.TypeDescriptor;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.CollectionLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
@@ -38,6 +41,32 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 		Args.notNull(valueType, "valueType");
 
 		return map(new SimpleLinkParameterMappingEntry<T>(name, valueModel, valueType));
+	}
+	
+	@Override
+	@SuppressWarnings("rawtypes")
+	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<L> mapCollection(
+			String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType, Class<T> elementType) {
+		return mapCollection(parameterName, valueModel, rawCollectionType, TypeDescriptor.valueOf(elementType));
+	}
+	
+	@Override
+	@SuppressWarnings("rawtypes")
+	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<L> mapCollection(
+			String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor) {
+		return map(new CollectionLinkParameterMappingEntry<RawC, C>(
+				parameterName, valueModel, rawCollectionType, elementTypeDescriptor
+				));
+	}
+	
+	@Override
+	@SuppressWarnings("rawtypes")
+	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<L> mapCollection(
+			String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor,
+			Supplier<C> emptyCollectionSupplier) {
+		return map(new CollectionLinkParameterMappingEntry<RawC, C>(
+				parameterName, valueModel, rawCollectionType, elementTypeDescriptor, emptyCollectionSupplier
+				));
 	}
 	
 	@Override

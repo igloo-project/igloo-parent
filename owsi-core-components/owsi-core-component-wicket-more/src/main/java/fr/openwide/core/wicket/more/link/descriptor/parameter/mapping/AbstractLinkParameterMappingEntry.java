@@ -6,6 +6,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.springframework.core.convert.ConversionException;
+import org.springframework.core.convert.TypeDescriptor;
 
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
@@ -48,6 +49,25 @@ public abstract class AbstractLinkParameterMappingEntry implements ILinkParamete
 		if (parameterValue != null) {
 			try {
 				mappedValue = conversionService.convert(parameterValue, mappedType);
+			} catch (ConversionException e) {
+				throw new LinkParameterExtractionException(e);
+			}
+		}
+		
+		return mappedValue;
+	}
+
+	protected Object extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService, String parameterName, TypeDescriptor mappedTypeDescriptor)
+			throws LinkParameterExtractionException {
+		Args.notNull(sourceParameters, "sourceParameters");
+		Args.notNull(conversionService, "conversionService");
+		
+		String parameterValue = sourceParameters.get(parameterName).toString();
+		
+		Object mappedValue = null;
+		if (parameterValue != null) {
+			try {
+				mappedValue = conversionService.convert(parameterValue, TypeDescriptor.valueOf(String.class), mappedTypeDescriptor);
 			} catch (ConversionException e) {
 				throw new LinkParameterExtractionException(e);
 			}
