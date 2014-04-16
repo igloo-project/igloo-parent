@@ -40,6 +40,9 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
+	@SuppressWarnings("rawtypes")
+	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
+	
 	public static final Ordering<String> DEFAULT_STRING_COLLATOR;
 	
 	static {
@@ -111,11 +114,16 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	}
 
 	@Override
-	public int compareTo(E o) {
-		if (this == o) {
+	public int compareTo(E right) {
+		if (this == right) {
 			return 0;
 		}
-		return this.getId().compareTo(o.getId());
+		K leftId = getId();
+		K rightId = right.getId();
+		if (leftId == null && rightId == null) {
+			throw new IllegalArgumentException("Cannot compare two different entities with null IDs");
+		}
+		return DEFAULT_KEY_ORDERING.compare(leftId, rightId);
 	}
 
 	@Override

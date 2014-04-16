@@ -13,9 +13,9 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 /**
  * A {@link GenericEntity} comparator that compares IDs.
  * <p>The {@link #AbstractGenericEntityComparator() default implementation} mimics the behavior of {@link GenericEntity#compareTo(GenericEntity)},
- * except that it is null-safe, both regarding entities and regarding their IDs. It assumes a null entity is <em>more</em>
+ * except that it is null-safe. It assumes a null entity is <em>more</em>
  * than a non-null one, and that an entity with a null ID is <em>more</em> than an entity with a non-null ID. This behavior is consistent with
- * {@link GenericEntity#isNew()}: an entity without an id is new, hence more recent than an entity with an id, which is not new.
+ * {@link GenericEntity#isNew()} and {@link GenericEntity#compareTo(GenericEntity)}: an entity without an id is new, hence more recent than an entity with an id, which is not new.
  * <p>This comparator is consistent with equals as long as the {@link #equalsNotNullObjects(GenericEntity, GenericEntity)} method is not overridden.
  * <p><strong>WARNING:</strong> trying to compare two not-null entities with null IDs which are different according to
  * {@link #equalsNotNullObjects(GenericEntity, GenericEntity)} will result in an {@link IllegalArgumentException}
