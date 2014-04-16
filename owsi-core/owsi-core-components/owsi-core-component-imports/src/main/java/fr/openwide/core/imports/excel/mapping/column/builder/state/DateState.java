@@ -11,6 +11,8 @@ public abstract class DateState<TSheet, TRow, TCell, TCellReference> extends Gen
 		BooleanState<TSheet, TRow, TCell, TCellReference>,
 		DateState<TSheet, TRow, TCell, TCellReference>,
 		IntegerState<TSheet, TRow, TCell, TCellReference>,
+		LongState<TSheet, TRow, TCell, TCellReference>,
+		DoubleState<TSheet, TRow, TCell, TCellReference>,
 		StringState<TSheet, TRow, TCell, TCellReference>
 		> {
 
