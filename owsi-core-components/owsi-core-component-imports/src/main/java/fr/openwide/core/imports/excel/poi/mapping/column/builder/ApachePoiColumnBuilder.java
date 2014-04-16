@@ -19,7 +19,9 @@ import fr.openwide.core.imports.excel.mapping.column.builder.AbstractColumnBuild
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
 import fr.openwide.core.imports.excel.mapping.column.builder.MappingConstraint;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.DateState;
+import fr.openwide.core.imports.excel.mapping.column.builder.state.DoubleState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.IntegerState;
+import fr.openwide.core.imports.excel.mapping.column.builder.state.LongState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.StringState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.TypeState;
 
@@ -49,16 +51,26 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 		
 		@Override
 		public IntegerState<Sheet, Row, Cell, CellReference> asInteger() {
-			return new TypeStateSwitcher<Cell>(Functions.<Cell>identity()).toInteger(new Function<Cell, Integer>() {
+			return asDouble().toInteger();
+		}
+		
+		@Override
+		public LongState<Sheet, Row, Cell, CellReference> asLong() {
+			return asDouble().toLong();
+		}
+		
+		@Override
+		public DoubleState<Sheet, Row, Cell, CellReference> asDouble() {
+			return new TypeStateSwitcher<Cell>(Functions.<Cell>identity()).toDouble(new Function<Cell, Double>() {
 				@Override
-				public Integer apply(Cell cell) {
+				public Double apply(Cell cell) {
 					if (cell == null) {
 						return null;
 					}
 					
 					switch(cell.getCellType()) {
 						case Cell.CELL_TYPE_NUMERIC:
-							return (int) cell.getNumericCellValue();
+							return cell.getNumericCellValue();
 						default:
 							return null;
 					}

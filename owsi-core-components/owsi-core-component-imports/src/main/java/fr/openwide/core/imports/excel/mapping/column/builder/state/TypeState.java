@@ -40,6 +40,10 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 	
 	public abstract IntegerState<TSheet, TRow, TCell, TCellReference> asInteger();
 	
+	public abstract LongState<TSheet, TRow, TCell, TCellReference> asLong();
+	
+	public abstract DoubleState<TSheet, TRow, TCell, TCellReference> asDouble();
+	
 	public StringState<TSheet, TRow, TCell, TCellReference> asString() {
 		return asString(new DefaultNumericFormatSupplier());
 	}
@@ -55,6 +59,8 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 			BooleanState<TSheet, TRow, TCell, TCellReference>,
 			DateState<TSheet, TRow, TCell, TCellReference>,
 			IntegerState<TSheet, TRow, TCell, TCellReference>,
+			LongState<TSheet, TRow, TCell, TCellReference>,
+			DoubleState<TSheet, TRow, TCell, TCellReference>,
 			StringState<TSheet, TRow, TCell, TCellReference>
 			> {
 		
@@ -97,6 +103,28 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 			return new IntegerState<TSheet, TRow, TCell, TCellReference>() {
 				@Override
 				protected TypeStateSwitcher<Integer> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+		
+		@Override
+		public LongState<TSheet, TRow, TCell, TCellReference> toLong(Function<? super T, Long> function) {
+			final TypeStateSwitcher<Long> switcher = newSwitcher(function);
+			return new LongState<TSheet, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<Long> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+		
+		@Override
+		public DoubleState<TSheet, TRow, TCell, TCellReference> toDouble(Function<? super T, Double> function) {
+			final TypeStateSwitcher<Double> switcher = newSwitcher(function);
+			return new DoubleState<TSheet, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<Double> getStateSwitcher() {
 					return switcher;
 				}
 			};
