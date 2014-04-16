@@ -1,10 +1,10 @@
 package fr.openwide.core.commons.util.functional.builder.function;
 
-import com.google.common.base.CharMatcher;
 
-public interface StringFunctionBuildState
+public interface NumberFunctionBuildState
 		<
 		TBuildResult,
+		TNumber extends Number,
 		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>, 
 		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
@@ -12,22 +12,12 @@ public interface StringFunctionBuildState
 		TDoubleState extends DoubleFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TStringState extends StringFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
 		>
-		extends FunctionBuildState<TBuildResult, String, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
-	
-	TStringState trimmed();
+		extends FunctionBuildState<TBuildResult, TNumber, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
 
-	/** Strips all whitespace characters from the beginning and the end of <code>charSequence</code>.
-	 * <p>Exactly what is a whitespace is defined by {@link CharMatcher.WHITESPACE} ; this includes non-breaking spaces.
-	 */
-	TStringState stripped();
+	TLongState toLong();
 	
-	/**
-	 * Shorthand for .trimmed().stripped()
-	 */
-	TStringState cleaned();
+	TIntegerState toInteger();
 	
-	TStringState capitalized(char... delimiters);
-	
-	TStringState capitalizedFully(char... delimiters);
+	TDoubleState toDouble();
 
 }

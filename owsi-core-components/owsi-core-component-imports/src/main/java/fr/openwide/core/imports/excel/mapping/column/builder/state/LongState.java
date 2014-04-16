@@ -1,11 +1,11 @@
 package fr.openwide.core.imports.excel.mapping.column.builder.state;
 
-import fr.openwide.core.commons.util.functional.builder.function.generic.GenericBooleanFunctionBuildStateImpl;
+import fr.openwide.core.commons.util.functional.builder.function.generic.GenericLongFunctionBuildStateImpl;
 import fr.openwide.core.imports.excel.mapping.AbstractExcelImportColumnSet;
 
-public abstract class BooleanState<TSheet, TRow, TCell, TCellReference> extends GenericBooleanFunctionBuildStateImpl
+public abstract class LongState<TSheet, TRow, TCell, TCellReference> extends GenericLongFunctionBuildStateImpl
 		<
-		AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference>.Column<Boolean>,
+		AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference>.Column<Long>,
 		BooleanState<TSheet, TRow, TCell, TCellReference>,
 		DateState<TSheet, TRow, TCell, TCellReference>,
 		IntegerState<TSheet, TRow, TCell, TCellReference>,

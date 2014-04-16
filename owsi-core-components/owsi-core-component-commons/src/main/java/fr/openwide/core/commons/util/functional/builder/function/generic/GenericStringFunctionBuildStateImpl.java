@@ -9,19 +9,23 @@ import com.google.common.base.Strings;
 
 import fr.openwide.core.commons.util.functional.builder.function.BooleanFunctionBuildState;
 import fr.openwide.core.commons.util.functional.builder.function.DateFunctionBuildState;
+import fr.openwide.core.commons.util.functional.builder.function.DoubleFunctionBuildState;
 import fr.openwide.core.commons.util.functional.builder.function.IntegerFunctionBuildState;
+import fr.openwide.core.commons.util.functional.builder.function.LongFunctionBuildState;
 import fr.openwide.core.commons.util.functional.builder.function.StringFunctionBuildState;
 
 public abstract class GenericStringFunctionBuildStateImpl
 		<
 		TBuildResult,
-		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TStringState>,
-		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TStringState>, 
-		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TStringState>,
-		TStringState extends StringFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TStringState>
+		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
+		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>, 
+		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
+		TLongState extends LongFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
+		TDoubleState extends DoubleFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
+		TStringState extends StringFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
 		>
-		extends GenericFunctionBuildStateImpl<TBuildResult, String, TBooleanState, TDateState, TIntegerState, TStringState>
-		implements StringFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TStringState> {
+		extends GenericFunctionBuildStateImpl<TBuildResult, String, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
+		implements StringFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
 	
 	private static final char[] DEFAULT_WORD_DELIMITERS =  { ' ', '\t', '\'' };
 	
