@@ -24,6 +24,7 @@ import fr.openwide.core.imports.excel.mapping.column.builder.state.IntegerState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.LongState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.StringState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.TypeState;
+import fr.openwide.core.imports.excel.poi.util.ApachePoiUtils;
 
 public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Cell, CellReference> {
 	
@@ -68,7 +69,7 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 						return null;
 					}
 					
-					switch(cell.getCellType()) {
+					switch(ApachePoiUtils.getCellActualValueType(cell)) {
 						case Cell.CELL_TYPE_NUMERIC:
 							return cell.getNumericCellValue();
 						default:
@@ -87,7 +88,7 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 						return null;
 					}
 					
-					switch(cell.getCellType()) {
+					switch(ApachePoiUtils.getCellActualValueType(cell)) {
 						case Cell.CELL_TYPE_NUMERIC:
 							return formatIfNumeric.get().format(cell.getNumericCellValue());
 						case Cell.CELL_TYPE_STRING:
@@ -108,7 +109,7 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 						return null;
 					}
 					
-					switch(cell.getCellType()) {
+					switch(ApachePoiUtils.getCellActualValueType(cell)) {
 						case Cell.CELL_TYPE_STRING:
 							return null;
 						default:
