@@ -55,4 +55,14 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 	 */
 	<E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String shortLabel) throws NonUniqueResultException;
 
+	/**
+	 * WARNING: only use this if unique constraints were set on {@code lower(label)} in the {@code source} table.
+	 */
+	<E extends GenericListItem<?>> E getByLabelIgnoreCase(Class<E> clazz, String label) throws NonUniqueResultException;
+	
+	/**
+	 * WARNING: only use this if unique constraints were set on {@code lower(shortLabel)} in the {@code source} table.
+	 */
+	<E extends GenericListItem<?>> E getByShortLabelIgnoreCase(Class<E> clazz, String shortLabel) throws NonUniqueResultException;
+
 }

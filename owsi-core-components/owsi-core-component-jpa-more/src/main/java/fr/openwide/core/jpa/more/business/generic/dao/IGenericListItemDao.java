@@ -63,5 +63,16 @@ public interface IGenericListItemDao {
 	 * @throws NonUniqueResultException
 	 */
 	<E extends GenericListItem<?>, V>  E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue);
+	
+	/**
+	 * Obtient un objet par la condition lower(attribut) = lower(valeur).
+	 * 
+	 * @param clazz
+	 * @param attribute
+	 * @param fieldValue
+	 * @return
+	 * @throws NonUniqueResultException
+	 */
+	<E extends GenericListItem<?>>  E getByFieldIgnoreCase(Class<E> clazz, SingularAttribute<? super E, String> attribute, String fieldValue);
 
 }
