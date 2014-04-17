@@ -16,6 +16,7 @@ public abstract class GenericFunctionBuildStateImpl
 		<
 		TBuildResult,
 		TCurrentType,
+		TStateSwitcher extends FunctionBuildStateSwitcher<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>, 
 		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
@@ -25,7 +26,7 @@ public abstract class GenericFunctionBuildStateImpl
 		>
 		implements FunctionBuildState<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
 	
-	protected abstract FunctionBuildStateSwitcher<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> getStateSwitcher();
+	protected abstract TStateSwitcher getStateSwitcher();
 
 	@Override
 	public TStringState toString(Function<? super TCurrentType, String> function) {
