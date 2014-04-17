@@ -11,6 +11,7 @@ import fr.openwide.core.commons.util.functional.builder.function.StringFunctionB
 public abstract class GenericLongFunctionBuildStateImpl
 		<
 		TBuildResult,
+		TStateSwitcher extends FunctionBuildStateSwitcher<TBuildResult, Long, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>, 
 		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
@@ -18,7 +19,7 @@ public abstract class GenericLongFunctionBuildStateImpl
 		TDoubleState extends DoubleFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TStringState extends StringFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
 		>
-		extends GenericNumberFunctionBuildStateImpl<TBuildResult, Long, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
+		extends GenericNumberFunctionBuildStateImpl<TBuildResult, Long, TStateSwitcher, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
 		implements LongFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
 	
 	@Override
