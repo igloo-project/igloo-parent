@@ -83,6 +83,22 @@ public class JpaDaoSupport {
 		}
 	}
 	
+	public <T> T getEntityByFieldIgnoreCase(Class<T> clazz, SingularAttribute<? super T, String> attribute, String fieldValue) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(clazz);
+		Root<T> root = criteria.from(clazz);
+		criteria.where(builder.equal(
+				builder.lower(root.get(attribute)),
+				builder.lower(builder.literal(fieldValue))
+				));
+		
+		try {
+			return buildTypedQuery(criteria, null, null).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
 	protected <T> void update(T entity) {
 		if (!getEntityManager().contains(entity)) {
 			throw new PersistenceException("Updated entity must be attached");

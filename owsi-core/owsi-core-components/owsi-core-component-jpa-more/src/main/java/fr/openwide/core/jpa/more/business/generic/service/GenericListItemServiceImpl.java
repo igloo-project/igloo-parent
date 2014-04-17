@@ -35,7 +35,7 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem_;
 @Service("genericListItemService")
 public class GenericListItemServiceImpl implements IGenericListItemService {
 	
-	protected IGenericListItemDao genericListItemDao;
+	protected final IGenericListItemDao genericListItemDao;
 	
 	@Autowired
 	public GenericListItemServiceImpl(@Qualifier("genericListItemDao") IGenericListItemDao genericListItemDao) {
@@ -106,8 +106,18 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String shortLabel) throws NonUniqueResultException {
-		return genericListItemDao.getByField(clazz, GenericListItem_.shortLabel, shortLabel);
+	public <E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String label) throws NonUniqueResultException {
+		return genericListItemDao.getByField(clazz, GenericListItem_.shortLabel, label);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> E getByLabelIgnoreCase(Class<E> clazz, String label) throws NonUniqueResultException {
+		return genericListItemDao.getByFieldIgnoreCase(clazz, GenericListItem_.label, label);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> E getByShortLabelIgnoreCase(Class<E> clazz, String shortLabel) throws NonUniqueResultException {
+		return genericListItemDao.getByFieldIgnoreCase(clazz, GenericListItem_.shortLabel, shortLabel);
 	}
 
 }

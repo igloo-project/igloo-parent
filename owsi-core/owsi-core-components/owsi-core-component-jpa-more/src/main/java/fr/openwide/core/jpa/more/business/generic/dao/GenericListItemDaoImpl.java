@@ -61,6 +61,12 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 	}
 	
 	@Override
+	public <E extends GenericListItem<?>> E getByFieldIgnoreCase(Class<E> clazz, SingularAttribute<? super E, String> attribute,
+			String fieldValue) {
+		return super.getEntityByFieldIgnoreCase(clazz, attribute, fieldValue);
+	}
+	
+	@Override
 	public <E extends GenericListItem<?>> void update(E entity) { // NOSONAR
 		super.update(entity);
 	}

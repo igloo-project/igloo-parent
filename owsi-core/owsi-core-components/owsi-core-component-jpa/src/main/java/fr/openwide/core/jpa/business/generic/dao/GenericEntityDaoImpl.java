@@ -90,6 +90,11 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
+	public E getByFieldIgnoreCase(SingularAttribute<? super E, String> attribute, String fieldValue) {
+		return super.getEntityByField(getObjectClass(), attribute, fieldValue);
+	}
+	
+	@Override
 	public void update(E entity) { // NOSONAR
 		super.update(entity);
 	}

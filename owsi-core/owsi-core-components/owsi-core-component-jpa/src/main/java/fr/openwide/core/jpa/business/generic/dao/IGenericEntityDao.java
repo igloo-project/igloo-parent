@@ -161,6 +161,16 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 */
 	<V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
+	/**
+	 * Obtient un objet par la condition lower(attribut) = lower(valeur)
+	 * 
+	 * @param attribute
+	 * @param fieldValue
+	 * @return
+	 * @throws NonUniqueResultException
+	 */
+	E getByFieldIgnoreCase(SingularAttribute<? super E, String> attribute, String fieldValue);
+
 	<T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders);
 
 	Long count(Expression<Boolean> filter);
