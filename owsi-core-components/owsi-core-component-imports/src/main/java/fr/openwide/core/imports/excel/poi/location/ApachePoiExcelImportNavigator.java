@@ -44,11 +44,17 @@ public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Shee
 	}
 	
 	protected boolean cellHasContent(Cell cell) {
-		String value = cell.getStringCellValue();
-		if (!StringUtils.isEmpty(value)) {
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_BLANK:
+			return false;
+		case Cell.CELL_TYPE_STRING:
+			return !StringUtils.isEmpty(cell.getStringCellValue());
+		default:
+			// In other cases we cannot detect whether the cell is actually empty in the
+			// underlying file, or at least not without relying on low-level APIs.
+			// Just give up.
 			return true;
 		}
-		return false;
 	}
 	
 	@Override
