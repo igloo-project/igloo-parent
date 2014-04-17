@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,16 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	@Override
 	public <E extends GenericListItem<?>> long count(Class<E> clazz) {
 		return genericListItemDao.count(clazz);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> E getByLabel(Class<E> clazz, String label) throws NonUniqueResultException {
+		return genericListItemDao.getByField(clazz, GenericListItem_.label, label);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String shortLabel) throws NonUniqueResultException {
+		return genericListItemDao.getByField(clazz, GenericListItem_.shortLabel, shortLabel);
 	}
 
 }
