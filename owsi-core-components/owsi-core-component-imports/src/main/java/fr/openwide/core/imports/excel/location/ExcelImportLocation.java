@@ -2,6 +2,8 @@ package fr.openwide.core.imports.excel.location;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class ExcelImportLocation implements Serializable {
 	private static final long serialVersionUID = 6866449558201453287L;
 	
@@ -36,5 +38,15 @@ public class ExcelImportLocation implements Serializable {
 	
 	public String getCellAddress() {
 		return cellAddress;
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("fileName", fileName)
+				.append("sheetName", sheetName)
+				.append("rowIndex (1-based)", getRowIndexOneBased())
+				.append("cellAddress", cellAddress)
+				.build();
 	}
 }
