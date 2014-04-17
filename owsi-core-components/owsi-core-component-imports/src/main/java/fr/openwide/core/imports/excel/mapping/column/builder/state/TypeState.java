@@ -13,7 +13,6 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Supplier;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
-import fr.openwide.core.commons.util.functional.builder.function.generic.FunctionBuildStateSwitcher;
 import fr.openwide.core.imports.excel.mapping.AbstractExcelImportColumnSet;
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
 
@@ -52,17 +51,7 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 	
 	public abstract DateState<TSheet, TRow, TCell, TCellReference> asDate();
 	
-	protected class TypeStateSwitcher<T> implements FunctionBuildStateSwitcher
-			<
-			AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellReference>.Column<T>,
-			T,
-			BooleanState<TSheet, TRow, TCell, TCellReference>,
-			DateState<TSheet, TRow, TCell, TCellReference>,
-			IntegerState<TSheet, TRow, TCell, TCellReference>,
-			LongState<TSheet, TRow, TCell, TCellReference>,
-			DoubleState<TSheet, TRow, TCell, TCellReference>,
-			StringState<TSheet, TRow, TCell, TCellReference>
-			> {
+	protected class TypeStateSwitcher<T> implements ColumnFunctionBuildStateSwitcher<TSheet, TRow, TCell, TCellReference, T> {
 		
 		private final Function<? super TCell, ? extends T> function;
 		
@@ -147,6 +136,17 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 			return new BooleanState<TSheet, TRow, TCell, TCellReference>() {
 				@Override
 				protected TypeStateSwitcher<Boolean> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public <TValue> GenericState<TSheet, TRow, TCell, TCellReference, TValue> toGeneric(Function<? super T, TValue> function) {
+			final TypeStateSwitcher<TValue> switcher = newSwitcher(function);
+			return new GenericState<TSheet, TRow, TCell, TCellReference, TValue>() {
+				@Override
+				protected TypeStateSwitcher<TValue> getStateSwitcher() {
 					return switcher;
 				}
 			};

@@ -17,6 +17,7 @@ import fr.openwide.core.commons.util.functional.builder.function.StringFunctionB
 public abstract class GenericStringFunctionBuildStateImpl
 		<
 		TBuildResult,
+		TStateSwitcher extends FunctionBuildStateSwitcher<TBuildResult, String, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>, 
 		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
@@ -24,7 +25,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 		TDoubleState extends DoubleFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
 		TStringState extends StringFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
 		>
-		extends GenericFunctionBuildStateImpl<TBuildResult, String, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
+		extends GenericFunctionBuildStateImpl<TBuildResult, String, TStateSwitcher, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
 		implements StringFunctionBuildState<TBuildResult, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
 	
 	private static final char[] DEFAULT_WORD_DELIMITERS =  { ' ', '\t', '\'' };
