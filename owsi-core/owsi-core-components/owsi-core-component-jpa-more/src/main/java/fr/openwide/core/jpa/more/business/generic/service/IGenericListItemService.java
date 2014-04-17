@@ -20,6 +20,8 @@ package fr.openwide.core.jpa.more.business.generic.service;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
@@ -42,5 +44,15 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 	<E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz);
 
 	<E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz, Comparator<? super E> comparator);
+
+	/**
+	 * WARNING: only use this if unique constraints were set on the label column of {@code source}.
+	 */
+	<E extends GenericListItem<?>> E getByLabel(Class<E> clazz, String label) throws NonUniqueResultException;
+	
+	/**
+	 * WARNING: only use this if unique constraints were set on the label column of {@code source}.
+	 */
+	<E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String shortLabel) throws NonUniqueResultException;
 
 }
