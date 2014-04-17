@@ -13,6 +13,7 @@ import com.google.common.collect.Iterators;
 import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.imports.excel.location.ExcelImportLocation;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
+import fr.openwide.core.imports.excel.poi.util.ApachePoiUtils;
 
 public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Sheet, Row, Cell, CellReference> {
 	
@@ -44,7 +45,7 @@ public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Shee
 	}
 	
 	protected boolean cellHasContent(Cell cell) {
-		switch (cell.getCellType()) {
+		switch (ApachePoiUtils.getCellActualValueType(cell)) {
 		case Cell.CELL_TYPE_BLANK:
 			return false;
 		case Cell.CELL_TYPE_STRING:
