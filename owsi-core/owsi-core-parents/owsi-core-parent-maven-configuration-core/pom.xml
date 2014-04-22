@@ -86,8 +86,6 @@
 		<owsi-core.freemarker.version>2.3.20</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		
-		<!-- BUG Apache POI en 3.8: https://issues.apache.org/bugzilla/show_bug.cgi?id=53028
-		normalement corrigé en 3.9 : on verra -->
 		<owsi-core.poi.version>3.10-FINAL</owsi-core.poi.version>
 		
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
