@@ -7,24 +7,28 @@ import java.sql.SQLException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.type.StringClobType;
+import org.hibernate.type.SingleColumnType;
 import org.hibernate.usertype.UserType;
 
-@SuppressWarnings("deprecation")
-public abstract class AbstractImmutableMaterializedStringValueUserType<T extends AbstractMaterializedPrimitiveValue<String, T>>
+abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P, T extends AbstractMaterializedPrimitiveValue<P, T>>
 		implements UserType {
 	
-	private final UserType delegateType = new StringClobType();
+	private final SingleColumnType<P> delegateType;
+
+	public AbstractImmutableMaterializedPrimitiveValueUserType(SingleColumnType<P> delegateType) {
+		super();
+		this.delegateType = delegateType;
+	}
 
 	@Override
 	public int[] sqlTypes() {
-		return delegateType.sqlTypes();
+		return new int[] { delegateType.sqlType() };
 	}
 	
 	@Override
 	public abstract Class<T> returnedClass();
 
-	protected abstract T instantiate(String value);
+	protected abstract T instantiate(P value);
 
 	@Override
 	public boolean equals(Object x, Object y) throws HibernateException { // NOSONAR
@@ -39,7 +43,8 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 	@Override
 	public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner)
 			throws HibernateException, SQLException {
-		String value = (String) delegateType.nullSafeGet(rs, names, session, owner);
+		@SuppressWarnings("unchecked")
+		P value = (P) delegateType.nullSafeGet(rs, names, session, owner);
 		if (value == null) {
 			return null;
 		} else {
@@ -53,7 +58,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 		if (value == null) {
 			delegateType.nullSafeSet(st, null, index, session);
 		} else {
-			delegateType.nullSafeSet(st, ((AbstractMaterializedStringValue<?>)value).getValue(), index, session);
+			delegateType.nullSafeSet(st, ((AbstractMaterializedPrimitiveValue<?, ?>)value).getValue(), index, session);
 		}
 	}
 
