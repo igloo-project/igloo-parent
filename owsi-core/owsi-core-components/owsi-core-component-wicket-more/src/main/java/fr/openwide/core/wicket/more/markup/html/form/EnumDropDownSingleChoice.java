@@ -27,4 +27,8 @@ public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2D
 		super(id, model, choicesModel, renderer);
 	}
 
+	protected EnumDropDownSingleChoice(String id, IModel<E> model, Class<E> clazz, IChoiceRenderer<? super E> renderer) {
+		super(id, model, Model.ofList(EnumUtils.getEnumList(clazz)), renderer);
+	}
+
 }
