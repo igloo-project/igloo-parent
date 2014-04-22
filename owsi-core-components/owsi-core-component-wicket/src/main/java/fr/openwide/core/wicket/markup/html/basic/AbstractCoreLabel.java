@@ -82,6 +82,10 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 		return thisAsT();
 	}
 	
+	public T showPlaceholder(IModel<String> placeholderModel) {
+		return showPlaceholder().placeholderModel(placeholderModel);
+	}
+	
 	public IModel<String> getPlaceholderModel() {
 		return placeholderModel;
 	}
