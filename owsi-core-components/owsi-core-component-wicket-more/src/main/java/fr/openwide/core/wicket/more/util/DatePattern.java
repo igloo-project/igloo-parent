@@ -2,6 +2,9 @@ package fr.openwide.core.wicket.more.util;
 
 public enum DatePattern implements IDatePattern {
 	
+	DAY("date.format.day", "javascript.date.format.day"),
+	DAY_FIXED("date.format.dayFixed", "javascript.date.format.dayFixed"),
+	
 	SHORT_DATE("date.format.shortDate", "javascript.date.format.shortDate"),
 	SHORT_DATETIME("date.format.shortDateTime", null),
 	
