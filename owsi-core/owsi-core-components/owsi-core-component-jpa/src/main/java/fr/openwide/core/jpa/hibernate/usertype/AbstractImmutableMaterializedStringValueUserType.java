@@ -53,7 +53,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 		if (value == null) {
 			delegateType.nullSafeSet(st, null, index, session);
 		} else {
-			delegateType.nullSafeSet(st, ((AbstractMaterializedStringValue<?>)value).getValue(), index, session);
+			delegateType.nullSafeSet(st, ((AbstractMaterializedPrimitiveValue<?, ?>)value).getValue(), index, session);
 		}
 	}
 
