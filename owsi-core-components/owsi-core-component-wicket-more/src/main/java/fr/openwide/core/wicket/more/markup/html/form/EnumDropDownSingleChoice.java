@@ -7,8 +7,10 @@ import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.retzlaff.select2.Select2Settings;
 
 import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
+import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 
 public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2DropDownSingleChoice<E> {
 
@@ -29,6 +31,12 @@ public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2D
 
 	protected EnumDropDownSingleChoice(String id, IModel<E> model, Class<E> clazz, IChoiceRenderer<? super E> renderer) {
 		super(id, model, Model.ofList(EnumUtils.getEnumList(clazz)), renderer);
+	}
+	
+	@Override
+	protected void fillSelect2Settings(Select2Settings settings) {
+		super.fillSelect2Settings(settings);
+		Select2Utils.disableSearch(settings);
 	}
 
 }
