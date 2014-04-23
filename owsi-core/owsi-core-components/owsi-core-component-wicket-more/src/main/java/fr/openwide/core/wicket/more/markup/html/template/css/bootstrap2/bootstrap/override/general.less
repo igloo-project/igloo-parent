@@ -267,6 +267,18 @@ span.popover-btn {
 		background: @tableHeaderBackground;
 		color: @tableHeaderText;
 		padding: 10px 8px;
+		
+		.sort-link {
+			margin: 0;
+			padding: 0 3px;
+			float: right;
+			color: @tableHeaderText;
+			border: none;
+			
+			&.active {
+				color: @linkColor;
+			}
+		}
 	}
 	
 	td.text-right {

@@ -207,6 +207,18 @@ div.pagination {
 		background: @table-header-bg;
 		color: @table-header-color;
 		padding: 10px 8px;
+		
+		.sort-link {
+			margin: 0;
+			padding: 0 3px;
+			float: right;
+			color: @table-header-color;
+			border: none;
+			
+			&.active {
+				color: @link-color;
+			}
+		}
 	}
 	
 	.table-actions {
