@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
@@ -18,20 +19,28 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	
 	private final Map<T, SortOrder> map = Maps.newLinkedHashMap();
 	
+	private final Map<T, SortOrder> defaultSort;
+	
 	public CompositeSortModel(CompositingStrategy compositingStrategy) {
-		this(compositingStrategy, null);
+		this(compositingStrategy, (T) null);
 	}
 	
 	public CompositeSortModel(CompositingStrategy compositingStrategy, T defaultSort) {
+		this(compositingStrategy, defaultSort == null ? ImmutableMap.<T, SortOrder>of() : ImmutableMap.of(defaultSort, defaultSort.getDefaultOrder()));
+	}
+	
+	public CompositeSortModel(CompositingStrategy compositingStrategy, Map<T, SortOrder> defaultSort) {
 		this.compositingStrategy = compositingStrategy;
-		if (defaultSort != null) {
-			setOrder(defaultSort, defaultSort.getDefaultOrder());
-		}
+		this.defaultSort = ImmutableMap.copyOf(defaultSort);
 	}
 
 	@Override
 	public Map<T, SortOrder> getObject() {
-		return Collections.unmodifiableMap(map);
+		if (map.isEmpty()) {
+			return defaultSort; // immutable
+		} else {
+			return Collections.unmodifiableMap(map);
+		}
 	}
 	
 	public SortOrder getOrder(T sort) {
@@ -58,9 +67,24 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 			}
 		},
 		/**
-		 * The sorts will be queued: the last modified sort being applied last.
+		 * Queues the sorts by order of insertion.
+		 * <p>Modifying an already active sort will leave its position in the queue unchanged.
 		 */
-		QUEUE {
+		QUEUE_BY_INSERTION {
+			@Override
+			protected <T extends ISort<?>> void setOrder(Map<T, SortOrder> map, T sort, SortOrder order) {
+				if (order == null) {
+					map.remove(sort);
+				} else {
+					map.put(sort, order);
+				}
+			}
+		},
+		/**
+		 * Queues the sorts by order of modification.
+		 * <p>Modifying an already active sort will push it to the back of the queue.
+		 */
+		QUEUE_BY_LAST_MODIFICATION {
 			@Override
 			protected <T extends ISort<?>> void setOrder(Map<T, SortOrder> map, T sort, SortOrder order) {
 				map.remove(sort);
