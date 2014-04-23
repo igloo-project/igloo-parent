@@ -44,7 +44,7 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	}
 	
 	public SortOrder getOrder(T sort) {
-		return map.get(sort);
+		return getObject().get(sort);
 	}
 	
 	public void setOrder(T sort, SortOrder order) {
