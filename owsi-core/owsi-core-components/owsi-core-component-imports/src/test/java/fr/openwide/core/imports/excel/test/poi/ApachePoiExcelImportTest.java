@@ -34,7 +34,7 @@ public class ApachePoiExcelImportTest {
 				newResult(firstDate, true, "String 3", 123),
 				newResult(null, false, "string 4", 123),
 				newResult(null, false, null, 9723),
-				newResult(secondDate, false, "4,244.12", null)
+				newResult(secondDate, false, "4244.12", null)
 		);
 		
 		assertEquals(expectedResults.size(), results.size());

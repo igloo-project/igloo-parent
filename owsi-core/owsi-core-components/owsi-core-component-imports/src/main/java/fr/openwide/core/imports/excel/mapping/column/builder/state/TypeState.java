@@ -23,6 +23,7 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 		@Override
 		public NumberFormat get() {
 			NumberFormat format = NumberFormat.getNumberInstance(Locale.ROOT);
+			format.setGroupingUsed(false);
 			format.setRoundingMode(RoundingMode.HALF_UP);
 			return format;
 		}
