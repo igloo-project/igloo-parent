@@ -18,10 +18,10 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.wicket.more.markup.html.form.impl.GenericListItemChoiceRenderer;
 import fr.openwide.core.wicket.more.markup.html.model.GenericListItemListModel;
 
 public class GenericListItemDropDownChoice<T extends GenericListItem<? super T>> extends DropDownChoice<T> {
@@ -31,23 +31,8 @@ public class GenericListItemDropDownChoice<T extends GenericListItem<? super T>>
 		super(id);
 		setModel(model);
 		setChoices(new GenericListItemListModel<T>(clazz, true));
-		setChoiceRenderer(new GenericListItemChoiceRenderer());
+		setChoiceRenderer(GenericListItemChoiceRenderer.get());
 		setNullValid(true);
-	}
-	
-	private class GenericListItemChoiceRenderer implements IChoiceRenderer<T> {
-		private static final long serialVersionUID = 69846864597356995L;
-
-		@Override
-		public Object getDisplayValue(T object) {
-			return object.getLabel();
-		}
-
-		@Override
-		public String getIdValue(T object, int index) {
-			return object.getId().toString();
-		}
-		
 	}
 
 }

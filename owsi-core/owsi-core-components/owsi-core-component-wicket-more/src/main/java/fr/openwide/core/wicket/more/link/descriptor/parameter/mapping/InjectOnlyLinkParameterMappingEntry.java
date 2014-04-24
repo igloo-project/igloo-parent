@@ -3,17 +3,13 @@ package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.bindgen.binding.AbstractBinding;
 
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.AbstractLinkParameterMappingEntry;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
-import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class InjectOnlyLinkParameterMappingEntry<T> extends AbstractLinkParameterMappingEntry {
 

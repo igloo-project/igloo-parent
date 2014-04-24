@@ -2,9 +2,17 @@ package fr.openwide.core.jpa.hibernate.usertype;
 
 import java.io.Serializable;
 
+import com.google.common.base.Function;
+
+import fr.openwide.core.commons.util.functional.SerializableFunction;
+
 public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMaterializedPrimitiveValue<P, T>> implements Serializable {
 	
 	private static final long serialVersionUID = 1388663091843463782L;
+	
+	public static <P, T extends AbstractMaterializedPrimitiveValue<P, T>> Function<T, P> materializedToPrimitive() {
+		return new MaterializedToPrimitiveFunction<P, T>();
+	}
 	
 	private final P value;
 	
@@ -44,6 +52,17 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 	@Override
 	public String toString() {
 		return value.toString();
+	}
+	
+	private static class MaterializedToPrimitiveFunction<P, T extends AbstractMaterializedPrimitiveValue<P, T>>
+			implements SerializableFunction<T, P> {
+		
+		private static final long serialVersionUID = -4430088664760813685L;
+		
+		@Override
+		public P apply(T input) {
+			return input.getValue();
+		}
 	}
 
 }
