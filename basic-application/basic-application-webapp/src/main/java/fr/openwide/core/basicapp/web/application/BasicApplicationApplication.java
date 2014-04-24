@@ -1,6 +1,8 @@
 package fr.openwide.core.basicapp.web.application;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -23,6 +25,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
+import fr.openwide.core.wicket.more.util.convert.HibernateProxyAwareConverterLocator;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 	
@@ -54,6 +57,13 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 //					StylesLessCssResourceReference.get()
 //			);
 //		}
+	}
+	
+	@Override
+	protected IConverterLocator newConverterLocator() {
+		ConverterLocator locator = new ConverterLocator();
+		
+		return new HibernateProxyAwareConverterLocator(locator);
 	}
 
 	@Override
