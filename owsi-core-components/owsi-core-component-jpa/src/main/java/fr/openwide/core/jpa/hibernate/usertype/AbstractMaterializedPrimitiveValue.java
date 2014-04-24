@@ -10,8 +10,8 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 	
 	private static final long serialVersionUID = 1388663091843463782L;
 	
-	public static <P, T extends AbstractMaterializedPrimitiveValue<P, T>> Function<T, P> materializedToPrimitive() {
-		return new MaterializedToPrimitiveFunction<P, T>();
+	public static <P> Function<AbstractMaterializedPrimitiveValue<P, ?>, P> materializedToPrimitive() {
+		return new MaterializedToPrimitiveFunction<P>();
 	}
 	
 	private final P value;
@@ -54,14 +54,14 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 		return value.toString();
 	}
 	
-	private static class MaterializedToPrimitiveFunction<P, T extends AbstractMaterializedPrimitiveValue<P, T>>
-			implements SerializableFunction<T, P> {
+	private static class MaterializedToPrimitiveFunction<P>
+			implements SerializableFunction<AbstractMaterializedPrimitiveValue<P, ?>, P> {
 		
 		private static final long serialVersionUID = -4430088664760813685L;
 		
 		@Override
-		public P apply(T input) {
-			return input.getValue();
+		public P apply(AbstractMaterializedPrimitiveValue<P, ?> input) {
+			return input == null ? null : input.getValue();
 		}
 	}
 
