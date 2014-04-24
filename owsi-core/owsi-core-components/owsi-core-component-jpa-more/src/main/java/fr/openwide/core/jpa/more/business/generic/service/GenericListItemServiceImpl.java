@@ -17,7 +17,6 @@
 
 package fr.openwide.core.jpa.more.business.generic.service;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.openwide.core.jpa.more.business.generic.dao.IGenericListItemDao;
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem_;
 
@@ -73,26 +73,27 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 
 	@Override
 	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz) {
-		return genericListItemDao.list(clazz);
+		return list(clazz, null);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz, Comparator<? super E> comparator) {
-		List<E> result = list(clazz);
-		Collections.sort(result, comparator);
-		return result;
+		return genericListItemDao.list(clazz, EnabledFilter.ALL, comparator);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator) {
+		return genericListItemDao.list(clazz, enabledFilter, comparator);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz) {
-		return genericListItemDao.listByField(clazz, GenericListItem_.enabled, true);
+		return listEnabled(clazz, null);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> List<E> listEnabled(Class<E> clazz, Comparator<? super E> comparator) {
-		List<E> result = listEnabled(clazz);
-		Collections.sort(result, comparator);
-		return result;
+		return genericListItemDao.list(clazz, EnabledFilter.ENABLED_ONLY, comparator);
 	}
 
 	@Override

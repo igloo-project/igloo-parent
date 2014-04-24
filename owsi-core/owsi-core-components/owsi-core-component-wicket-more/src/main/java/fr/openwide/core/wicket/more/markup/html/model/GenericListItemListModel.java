@@ -3,10 +3,13 @@ package fr.openwide.core.wicket.more.markup.html.model;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
 
@@ -16,35 +19,47 @@ public class GenericListItemListModel<T extends GenericListItem<?>> extends Load
 	
 	private Class<T> clazz;
 	private final Comparator<? super T> comparator;
-	private boolean enabledOnly;
+	private final EnabledFilter enabledFilter;
 
 	@SpringBean(name = "genericListItemService")
 	private IGenericListItemService genericListItemService;
 
+	/**
+	 * @deprecated Use {@link #GenericListItemListModel(Class, EnabledFilter)} instead
+	 */
+	@Deprecated
 	public GenericListItemListModel(Class<T> clazz, boolean enabledOnly) {
 		this(clazz, null, enabledOnly);
 	}
 
-	public GenericListItemListModel(Class<T> clazz, Comparator<? super T> comparator) {
-		this(clazz, comparator, true);
+	public GenericListItemListModel(Class<T> clazz, EnabledFilter enabledFilter) {
+		this(clazz, null, enabledFilter);
 	}
 
-	public GenericListItemListModel(Class<T> clazz, Comparator<? super T> comparator, boolean enabledOnly) {
+	public GenericListItemListModel(Class<T> clazz, @Nullable Comparator<? super T> comparator) {
+		this(clazz, comparator, EnabledFilter.ENABLED_ONLY);
+	}
+
+	/**
+	 * @deprecated Use {@link #GenericListItemListModel(Class, Comparator, EnabledFilter)} instead
+	 */
+	@Deprecated
+	public GenericListItemListModel(Class<T> clazz, @Nullable Comparator<? super T> comparator, boolean enabledOnly) {
+		this(clazz, comparator, enabledOnly ? EnabledFilter.ENABLED_ONLY : EnabledFilter.ALL);
+	}
+
+	public GenericListItemListModel(Class<T> clazz, @Nullable Comparator<? super T> comparator, EnabledFilter enabledFilter) {
 		super();
 		Injector.get().inject(this);
 		
 		this.clazz = clazz;
-		this.enabledOnly = enabledOnly;
+		this.enabledFilter = enabledFilter;
 		this.comparator = comparator;
 	}
 
 	@Override
 	protected List<T> load() {
-		if (enabledOnly) {
-			return genericListItemService.listEnabled(clazz, comparator);
-		} else {
-			return genericListItemService.list(clazz, comparator);
-		}
+		return genericListItemService.list(clazz, enabledFilter, comparator);
 	}
 
 }

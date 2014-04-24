@@ -25,6 +25,7 @@ import com.mysema.query.types.path.StringPath;
 
 import fr.openwide.core.jpa.business.generic.dao.JpaDaoSupport;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItemBinding;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem_;
@@ -83,8 +84,44 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	}
 	
 	@Override
+	public <E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter) {
+		return list(clazz, enabledFilter, null);
+	}
+	
+	@Override
+	public <E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<E> criteria = builder.createQuery(clazz);
+		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
+		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
+			criteria.where(builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
+		}
+		
+		List<E> entities = buildTypedQuery(criteria, null, null).getResultList();
+		
+		Collections.sort(entities, comparator);
+		
+		return entities;
+	}
+	
+	@Override
 	public <E extends GE> Long count(Class<E> clazz) {
-		return super.countEntity(clazz);
+		return count(clazz, EnabledFilter.ALL);
+	}
+	
+	@Override
+	public <E extends GE> Long count(Class<E> clazz, EnabledFilter enabledFilter) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		
+		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
+		criteria.select(builder.count(root));
+		
+		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
+			filterCriteriaQuery(criteria, builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
+		}
+		
+		return buildTypedQuery(criteria, null, null).getSingleResult();
 	}
 	
 	@Override
@@ -94,12 +131,53 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	
 	@Override
 	public <E extends GE,V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
-		return super.listEntityByField(clazz, field, fieldValue);
+		return listByField(clazz, field, fieldValue, EnabledFilter.ALL, null);
+	}
+	
+	@Override
+	public <E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter) {
+		return listByField(clazz, field, fieldValue, enabledFilter, null);
+	}
+	
+	@Override
+	public <E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter, Comparator<? super E> comparator) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<E> criteria = builder.createQuery(clazz);
+		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
+		filterCriteriaQuery(criteria, builder.equal(root.get(field), fieldValue));
+		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
+			filterCriteriaQuery(criteria, builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
+		}
+		
+		List<E> entities = buildTypedQuery(criteria, null, null).getResultList();
+		
+		Collections.sort(entities, comparator);
+		
+		return entities;
 	}
 	
 	@Override
 	public <E extends GE, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
-		return super.countEntityByField(clazz, attribute, fieldValue);
+		return countByField(clazz, attribute, fieldValue, EnabledFilter.ALL);
+	}
+	
+	@Override
+	public <E extends GE, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		
+		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
+		criteria.select(builder.count(root));
+		
+		filterCriteriaQuery(criteria, builder.equal(root.get(field), fieldValue));
+		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
+			filterCriteriaQuery(criteria, builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
+		}
+		
+		return buildTypedQuery(criteria, null, null).getSingleResult();
 	}
 
 	@Override
