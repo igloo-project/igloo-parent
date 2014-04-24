@@ -81,8 +81,9 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 		return choicesWrapperModel.isSelectedObjectForcedInChoices();
 	}
 	
-	public void setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
+	public GenericSelect2DropDownSingleChoice<T> setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
 		choicesWrapperModel.setSelectedObjectForcedInChoices(selectedObjectForcedInChoices);
+		return this;
 	}
 	
 	@Override

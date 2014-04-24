@@ -75,7 +75,8 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		return choicesWrapperModel.isSelectedObjectForcedInChoices();
 	}
 	
-	public void setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
+	public GenericSelect2DropDownMultipleChoice<T> setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
 		choicesWrapperModel.setSelectedObjectForcedInChoices(selectedObjectForcedInChoices);
+		return this;
 	}
 }

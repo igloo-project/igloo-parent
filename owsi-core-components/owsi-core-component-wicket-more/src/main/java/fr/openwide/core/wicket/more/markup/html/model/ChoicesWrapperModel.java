@@ -12,7 +12,7 @@ public class ChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T>> {
 	
 	private static final long serialVersionUID = -8579290778036203349L;
 	
-	private boolean selectedObjectForcedInChoices = false;
+	private boolean selectedObjectForcedInChoices = true;
 	
 	private IModel<T> selectedObjectModel;
 	
