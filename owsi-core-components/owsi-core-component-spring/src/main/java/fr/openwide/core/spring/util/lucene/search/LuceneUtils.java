@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.QueryParser.Operator;
@@ -20,6 +21,7 @@ import org.apache.lucene.util.Version;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -43,9 +45,19 @@ public final class LuceneUtils {
 		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
 	}
 	
-	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
-			String searchPattern) throws ParseException {
+	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer, String searchPattern) throws ParseException {
 		return getAutocompleteQuery(fieldName, analyzer, searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
+	}
+	
+	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer,
+			String searchPattern, int enableWildcardMinChars) throws ParseException {
+		QueryParser queryParser = new MultiFieldQueryParser(LUCENE_VERSION, Iterables.toArray(fieldNames, String.class), analyzer);
+		queryParser.setDefaultOperator(Operator.AND);
+		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
+	}
+	
+	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer, String searchPattern) throws ParseException {
+		return getAutocompleteQuery(fieldNames, analyzer, searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
 	}
 	
 	public static String getAutocompleteQuery(String searchPattern) {
