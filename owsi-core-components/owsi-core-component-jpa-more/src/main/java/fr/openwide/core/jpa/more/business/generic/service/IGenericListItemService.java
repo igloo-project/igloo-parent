@@ -23,6 +23,7 @@ import java.util.List;
 import javax.persistence.NonUniqueResultException;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 public interface IGenericListItemService extends ITransactionalAspectAwareService {
@@ -38,6 +39,8 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz, Comparator<? super E> comparator);
+
+	<E extends GenericListItem<?>> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator);
 
 	<E extends GenericListItem<?>> long count(Class<E> clazz);
 

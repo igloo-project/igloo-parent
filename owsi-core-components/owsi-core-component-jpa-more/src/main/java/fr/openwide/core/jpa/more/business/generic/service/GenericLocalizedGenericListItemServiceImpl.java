@@ -1,7 +1,6 @@
 package fr.openwide.core.jpa.more.business.generic.service;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -12,8 +11,8 @@ import com.mysema.query.types.EntityPath;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.dao.IGenericLocalizedGenericListItemDao;
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
-import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem_;
 import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
 
 public abstract class GenericLocalizedGenericListItemServiceImpl<GE extends GenericLocalizedGenericListItem<?, T>, T extends AbstractLocalizedText>
@@ -51,22 +50,28 @@ public abstract class GenericLocalizedGenericListItemServiceImpl<GE extends Gene
 	}
 
 	@Override
-	public <E extends GE> List<E> list(Class<E> clazz, Comparator<? super E> localizedGenericListItemComparator) {
-		List<E> list = dao.list(clazz);
-		Collections.sort(list, localizedGenericListItemComparator);
-		return list;
+	public <E extends GE> List<E> list(Class<E> clazz, Comparator<? super E> comparator) {
+		return dao.list(clazz, EnabledFilter.ALL, comparator);
 	}
 	
 	@Override
 	public <E extends GE> List<E> listEnabled(Class<E> clazz, Comparator<? super E> comparator) {
-		List<E> list = dao.listByField(clazz, GenericLocalizedGenericListItem_.enabled, true);
-		Collections.sort(list, comparator);
-		return list;
+		return dao.list(clazz, EnabledFilter.ENABLED_ONLY, comparator);
+	}
+	
+	@Override
+	public <E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator) {
+		return dao.list(clazz, enabledFilter, comparator);
 	}
 
 	@Override
 	public <E extends GE> long count(Class<E> clazz) {
 		return dao.count(clazz);
+	}
+	
+	@Override
+	public <E extends GE> long count(Class<E> clazz, EnabledFilter enabledFilter) {
+		return dao.count(clazz, enabledFilter);
 	}
 	
 	@Override

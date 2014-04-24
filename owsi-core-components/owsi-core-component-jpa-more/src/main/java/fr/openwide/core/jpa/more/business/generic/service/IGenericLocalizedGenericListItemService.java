@@ -12,6 +12,7 @@ import com.mysema.query.types.EntityPath;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
 
@@ -26,10 +27,18 @@ public interface IGenericLocalizedGenericListItemService<GE extends GenericLocal
 
 	<E extends GE> void delete(E entity);
 
-	<E extends GE> List<E> list(Class<E> clazz, Comparator<? super E> localizedGenericListItemComparator);
+	<E extends GE> List<E> list(Class<E> clazz, Comparator<? super E> comparator);
+
+	<E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator);
 
 	<E extends GE> long count(Class<E> clazz);
 
+	<E extends GE> long count(Class<E> clazz, EnabledFilter enabledFilter);
+
+	/**
+	 * @deprecated Use {@link #list(Class, EnabledFilter, Comparator)} instead.
+	 */
+	@Deprecated
 	<E extends GE> List<E> listEnabled(Class<E> clazz, Comparator<? super E> comparator);
 
 	<E extends GE> List<E> listByLocalizedLabel(EntityPath<E> source, Locale locale, String label);

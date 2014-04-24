@@ -7,6 +7,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericLocalizedGenericListItemService;
 
@@ -16,7 +17,7 @@ public class LocalizedGenericListItemListModel<T extends GenericLocalizedGeneric
 
 	private final Class<T> clazz;
 	private final Comparator<? super T> comparator;
-	private final boolean enabledOnly;
+	private final EnabledFilter enabledFilter;
 
 	@SpringBean
 	private IGenericLocalizedGenericListItemService<? super T, ?> listItemService;
@@ -25,22 +26,26 @@ public class LocalizedGenericListItemListModel<T extends GenericLocalizedGeneric
 		this(clazz, comparator, true);
 	}
 
+	/**
+	 * @deprecated Use {@link #LocalizedGenericListItemListModel(Class, Comparator, EnabledFilter)} instead
+	 */
+	@Deprecated
 	public LocalizedGenericListItemListModel(Class<T> clazz, Comparator<? super T> comparator, boolean enabledOnly) {
+		this(clazz, comparator, enabledOnly ? EnabledFilter.ENABLED_ONLY : EnabledFilter.ALL);
+	}
+
+	public LocalizedGenericListItemListModel(Class<T> clazz, Comparator<? super T> comparator, EnabledFilter enabledFilter) {
 		super();
 		Injector.get().inject(this);
 		
 		this.clazz = clazz;
-		this.enabledOnly = enabledOnly;
+		this.enabledFilter = enabledFilter;
 		this.comparator = comparator;
 	}
 
 	@Override
 	protected List<T> load() {
-		if (enabledOnly) {
-			return listItemService.listEnabled(clazz, comparator);
-		} else {
-			return listItemService.list(clazz, comparator);
-		}
+		return listItemService.list(clazz, enabledFilter, comparator);
 	}
 
 }

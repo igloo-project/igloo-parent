@@ -17,11 +17,13 @@
 
 package fr.openwide.core.jpa.more.business.generic.dao;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.metamodel.SingularAttribute;
 
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
 /**
@@ -44,11 +46,26 @@ public interface IGenericListItemDao {
 
 	<E extends GenericListItem<?>> E refresh(E entity);
 
+	<E extends GenericListItem<?>> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator);
+
+	<E extends GenericListItem<?>> List<E> list(Class<E> clazz, EnabledFilter enabledFilter);
+
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
+
+	<E extends GenericListItem<?>, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter, Comparator<? super E> comparator);
+
+	<E extends GenericListItem<?>, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter);
 
 	<E extends GenericListItem<?>, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
+	<E extends GenericListItem<?>> Long count(Class<E> clazz, EnabledFilter enabledFilter);
+
 	<E extends GenericListItem<?>> Long count(Class<E> clazz);
+
+	<E extends GenericListItem<?>, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue,
+			EnabledFilter enabledFilter);
 
 	<E extends GenericListItem<?>, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 

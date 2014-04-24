@@ -9,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.mysema.query.types.EntityPath;
 
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
 
@@ -28,21 +29,40 @@ public interface IGenericLocalizedGenericListItemDao<GE extends GenericLocalized
 
 	<E extends GE> E refresh(E entity);
 
+	<E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator);
+
+	<E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter);
+
 	<E extends GE> List<E> list(Class<E> clazz);
+
+	<E extends GE> Long count(Class<E> clazz, EnabledFilter enabledFilter);
 
 	<E extends GE> Long count(Class<E> clazz);
 
 	<E extends GE, V> E getByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
+	<E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter, Comparator<? super E> comparator);
+
+	<E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter);
+
 	<E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
+
+	<E extends GE, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue, EnabledFilter enabledFilter);
 
 	<E extends GE, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 	/**
-	 * @param comparator A comparator to use when sorting the results. If <code>null</code>, use natural ordering.
+	 * @deprecated Use {@link #listByField(Class, SingularAttribute, Object, EnabledFilter, Comparator)} instead.
 	 */
+	@Deprecated
 	<E extends GE, V> List<E> listEnabledByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue, Comparator<? super E> comparator);
 
+	/**
+	 * @deprecated Use {@link #countByField(Class, SingularAttribute, Object, EnabledFilter)} instead.
+	 */
+	@Deprecated
 	<E extends GE, V> Long countEnabledByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 	<E extends GE> List<E> listByLocalizedLabel(EntityPath<E> source, Locale locale, String label);
