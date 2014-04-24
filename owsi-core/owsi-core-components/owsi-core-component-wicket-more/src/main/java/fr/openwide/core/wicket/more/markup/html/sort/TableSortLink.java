@@ -5,7 +5,8 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.panel.IMarkupSourcingStrategy;
+import org.apache.wicket.markup.html.panel.PanelMarkupSourcingStrategy;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -15,9 +16,14 @@ import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
 
-public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
+/**
+ * CAUTION when extending : this "link" uses a PANEL markup sourcing strategy, for implementation purposes.
+ */
+public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 
 	private static final long serialVersionUID = 9088886381233297454L;
+
+	private static final String SORT_BUTTON_CSS_CLASS = "btn btn-sort";
 	
 	private final IPageable pageable;
 	
@@ -69,39 +75,30 @@ public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
 		protected abstract SortOrder getNext(ISort<?> sort, SortOrder currentOrder);
 	}
 
-
-	public TableSortLinkPanel(String id, CompositeSortModel<T> compositeSortModel, T sort, IPageable pageable) {
+	public TableSortLink(String id, CompositeSortModel<T> compositeSortModel, T sort, IPageable pageable) {
 		this(id, compositeSortModel, sort, pageable, null);
 	}
 	
-	public TableSortLinkPanel(String id, CompositeSortModel<T> compositeSortModel, T sort, IPageable pageable, IModel<String> tooltipTextModel) {
-		super(id, compositeSortModel);
+	public TableSortLink(String id, CompositeSortModel<T> compositeSortModel, T sort, IPageable pageable, IModel<String> tooltipTextModel) {
+		super(id);
 		
 		this.compositeSortModel = compositeSortModel;
 		this.pageable = pageable;
 		this.sort = sort;
 		
-		AjaxLink<?> sortLink = new AjaxLink<Void>("sortLink") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				TableSortLinkPanel.this.doOnClick(target);
-			}
-		};
-		sortLink.add(new AttributeAppender("title", tooltipTextModel));
-		sortLink.add(new ClassAttributeAppender(new LoadableDetachableModel<String>() {
+		add(new AttributeAppender("title", tooltipTextModel));
+		add(new ClassAttributeAppender(SORT_BUTTON_CSS_CLASS));
+		add(new ClassAttributeAppender(new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected String load() {
-				if (TableSortLinkPanel.this.isSortActive()) {
+				if (TableSortLink.this.isSortActive()) {
 					return "active";
 				}
 				return null;
 			}
 		}));
-		add(sortLink);
 		
 		WebMarkupContainer iconAscContainer = new WebMarkupContainer("iconAsc") {
 			private static final long serialVersionUID = 1L;
@@ -109,7 +106,7 @@ public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
 			protected void onConfigure() {
 				super.onConfigure();
 				
-				SortOrder displayedSort = TableSortLinkPanel.this.getDisplayedSort();
+				SortOrder displayedSort = TableSortLink.this.getDisplayedSort();
 				setVisible(SortOrder.ASC.equals(displayedSort));
 			}
 		};
@@ -120,7 +117,7 @@ public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
 				return sortIconCssStyle.getAscIconCssClasses();
 			}
 		}));
-		sortLink.add(iconAscContainer);
+		add(iconAscContainer);
 		
 		WebMarkupContainer iconDescContainer = new WebMarkupContainer("iconDesc") {
 			private static final long serialVersionUID = 1L;
@@ -128,7 +125,7 @@ public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
 			protected void onConfigure() {
 				super.onConfigure();
 				
-				SortOrder displayedSort = TableSortLinkPanel.this.getDisplayedSort();
+				SortOrder displayedSort = TableSortLink.this.getDisplayedSort();
 				setVisible(SortOrder.DESC.equals(displayedSort));
 			}
 		};
@@ -139,26 +136,25 @@ public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
 				return sortIconCssStyle.getDescIconCssClasses();
 			}
 		}));
-		sortLink.add(iconDescContainer);
+		add(iconDescContainer);
 	}
 	
-	public TableSortLinkPanel<T> cycleMode(CycleMode cycleMode) {
-		this.cycleMode = cycleMode;
-		return this;
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		compositeSortModel.detach();
 	}
 	
-	public TableSortLinkPanel<T> iconStyle(ISortIconStyle iconStyle) {
-		this.sortIconCssStyle = iconStyle;
-		return this;
+	@Override
+	protected IMarkupSourcingStrategy newMarkupSourcingStrategy() {
+		return new PanelMarkupSourcingStrategy(false);
 	}
-	
-	private boolean isSortActive() {
-		return compositeSortModel.getOrder(sort) != null;
-	}
-	
-	private SortOrder getDisplayedSort() {
-		final SortOrder currentOrder = compositeSortModel.getOrder(sort);
-		return sort.getDefaultOrder().asDefaultFor(currentOrder);
+
+	@Override
+	public void onClick(AjaxRequestTarget target) {
+		switchSort();
+		pageable.setCurrentPage(0);
+		refreshOnSort(target);
 	}
 	
 	protected void switchSort() {
@@ -166,11 +162,24 @@ public class TableSortLinkPanel<T extends ISort<?>> extends Panel {
 		final SortOrder nextOrder = cycleMode.getNext(sort, currentOrder);
 		compositeSortModel.setOrder(sort, nextOrder);
 	}
-
-	protected void doOnClick(AjaxRequestTarget target) {
-		switchSort();
-		pageable.setCurrentPage(0);
-		refreshOnSort(target);
+	
+	public TableSortLink<T> cycleMode(CycleMode cycleMode) {
+		this.cycleMode = cycleMode;
+		return this;
+	}
+	
+	public TableSortLink<T> iconStyle(ISortIconStyle iconStyle) {
+		this.sortIconCssStyle = iconStyle;
+		return this;
+	}
+	
+	protected boolean isSortActive() {
+		return compositeSortModel.getOrder(sort) != null;
+	}
+	
+	protected SortOrder getDisplayedSort() {
+		final SortOrder currentOrder = compositeSortModel.getOrder(sort);
+		return sort.getDefaultOrder().asDefaultFor(currentOrder);
 	}
 	
 	protected void refreshOnSort(AjaxRequestTarget target) {
