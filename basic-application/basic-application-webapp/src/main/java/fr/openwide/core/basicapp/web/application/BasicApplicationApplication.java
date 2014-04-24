@@ -14,6 +14,9 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
+import fr.openwide.core.basicapp.web.application.common.template.styles.SignInLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
@@ -21,6 +24,7 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
+import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
@@ -48,15 +52,14 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		super.init();
 		
 		// si on n'est pas en développement, on précharge les feuilles de styles pour éviter la ruée et permettre le remplissage du cache
-		// XXX : mettre en place ça dès qu'on sera passé à Wicket 6.15.
-//		if (!configurer.isConfigurationTypeDevelopment()) {
-//			preloadStyleSheets(
-//					ConsoleLessCssResourceReference.get(),
-//					NotificationLessCssResourceReference.get(),
-//					SignInLessCssResourceReference.get(),
-//					StylesLessCssResourceReference.get()
-//			);
-//		}
+		if (!configurer.isConfigurationTypeDevelopment()) {
+			preloadStyleSheets(
+					ConsoleLessCssResourceReference.get(),
+					NotificationLessCssResourceReference.get(),
+					SignInLessCssResourceReference.get(),
+					StylesLessCssResourceReference.get()
+			);
+		}
 	}
 	
 	@Override
