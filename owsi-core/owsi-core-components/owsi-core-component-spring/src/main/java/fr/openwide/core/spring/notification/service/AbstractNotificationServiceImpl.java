@@ -10,7 +10,7 @@ public class AbstractNotificationServiceImpl {
 	@Autowired
 	protected ApplicationContext applicationContext;
 
-	protected final INotificationBuilderBaseState builder() {
+	protected INotificationBuilderBaseState builder() {
 		INotificationBuilderBaseState notificationBuilder = new NotificationBuilder();
 		SpringBeanUtils.autowireBean(applicationContext, notificationBuilder);
 		return notificationBuilder;
