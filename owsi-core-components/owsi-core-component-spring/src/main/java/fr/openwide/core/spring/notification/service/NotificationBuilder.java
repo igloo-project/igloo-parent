@@ -489,15 +489,19 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return configurer.toAvailableLocale(recipient.getLocale());
 	}
 	
+	protected boolean isMailRecipientsFiltered() {
+		return configurer.isConfigurationTypeDevelopment();
+	}
+	
 	private String[] filterEmails(String[] emails) {
-		if (emails != null && configurer.isConfigurationTypeDevelopment()) {
+		if (emails != null && isMailRecipientsFiltered()) {
 			return configurer.getNotificationTestEmails();
 		}
 		return emails;
 	}
 	
 	private Set<String> filterCcBcc(Set<String> emails) {
-		if (configurer.isConfigurationTypeDevelopment()) {
+		if (isMailRecipientsFiltered()) {
 			return Sets.newHashSet();
 		}
 		return emails;
