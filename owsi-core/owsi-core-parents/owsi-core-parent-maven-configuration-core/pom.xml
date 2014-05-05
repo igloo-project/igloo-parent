@@ -40,10 +40,10 @@
 		<owsi-core.hikaricp.version>1.3.8</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.8.2</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>3.3.2</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>3.3.3</owsi-core.querydsl.version>
 		
 		
-		<owsi-core.guava.version>16.0.1</owsi-core.guava.version>
+		<owsi-core.guava.version>17.0</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.3-1101-jdbc41</owsi-core.postgresql.version>
 		<owsi-core.pgjdbc-ng.version>0.4-SNAPSHOT</owsi-core.pgjdbc-ng.version>
@@ -103,6 +103,7 @@
 		<owsi-core.jsoup.version>1.7.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.3.3</owsi-core.httpclient.version>
+		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
 		
 		<owsi-core.jersey.version>1.18.1</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.6</owsi-core.jersey2.version>
@@ -685,6 +686,12 @@
 							<groupId>commons-logging</groupId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.ocpsoft.prettytime</groupId>
+					<artifactId>prettytime</artifactId>
+					<version>${owsi-core.prettytime.version}</version>
 				</dependency>
 			
 			<!-- Exports divers -->
