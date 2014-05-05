@@ -1,8 +1,10 @@
 package fr.openwide.core.jpa.more.business.link.service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedListMultimap;
@@ -106,9 +109,14 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	@Override
 	public void checkLinksWithSameUrl(String url, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
-		StatusLine status = sendRequest(url, true);
+		checkLinksWithSameUrl(getURI(url), links);
+	}
+	
+	@Override
+	public void checkLinksWithSameUrl(URI uri, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+		StatusLine status = sendRequest(uri, true);
 		if (status != null && status.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
-			status = sendRequest(url, false);
+			status = sendRequest(uri, false);
 		}
 		
 		Date checkDate = new Date();
@@ -162,6 +170,26 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			return null;
 		}
 	}
+	
+	private URI getURI(String urlString) {
+		try {
+			URI uri;
+			urlString = StringUtils.trimWhitespace(urlString);
+			if (urlString.indexOf('%') > 0 && urlString.indexOf(' ') == -1) {
+				// the URI is already escaped, just build the URI
+				uri = new URI(urlString);
+			} else {
+				// play with URL and URI to force the escaping
+				URL url = new URL(urlString);
+				uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+			}
+			return uri;
+		} catch (URISyntaxException e) {
+			return null;
+		} catch (MalformedURLException e) {
+			return null;
+		}
+	}
 
 	private void markAsInvalid(Collection<ExternalLinkWrapper> linkWrappers) throws ServiceException, SecurityServiceException {
 		for (ExternalLinkWrapper link : linkWrappers) {
@@ -189,7 +217,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		}
 	}
 	
-	private StatusLine sendRequest(final String url, boolean httpHead) {
+	private StatusLine sendRequest(final URI url, boolean httpHead) {
 		HttpRequestBase method = null;
 		CloseableHttpResponse response = null;
 		
