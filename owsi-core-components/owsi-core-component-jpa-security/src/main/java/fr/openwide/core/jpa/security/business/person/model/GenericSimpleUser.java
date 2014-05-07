@@ -92,7 +92,7 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 			builder.append(firstName);
 			builder.append(" ");
 		}
-		if(lastName != null && !lastName.equals(firstName)) {
+		if(lastName != null && !lastName.equalsIgnoreCase(firstName)) {
 			builder.append(lastName);
 		}
 		return builder.toString().trim();
