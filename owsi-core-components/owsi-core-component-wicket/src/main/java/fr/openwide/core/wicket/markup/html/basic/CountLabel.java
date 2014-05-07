@@ -70,7 +70,7 @@ public class CountLabel extends Label {
 	protected void onConfigure() {
 		super.onConfigure();
 		Number count = getCountModelObject();
-		setVisible(!hideIfZeroOrNull || (count != null && !count.equals(0L)));
+		setVisible(!hideIfZeroOrNull || (count != null && !(count.longValue() == 0L))); // .equals(0L) will not work for Integers.
 	}
 
 	public CountLabel hideIfZeroOrNull() {
