@@ -1,6 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.sort.model;
 
-import java.util.Collections;
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+
 import java.util.Map;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -36,11 +38,10 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 
 	@Override
 	public Map<T, SortOrder> getObject() {
-		if (map.isEmpty()) {
-			return defaultSort; // immutable
-		} else {
-			return Collections.unmodifiableMap(map);
-		}
+		return ImmutableMap.<T, SortOrder>builder()
+				.putAll(map)
+				.putAll(Maps.filterKeys(defaultSort, not(in(map.keySet()))))
+				.build();
 	}
 	
 	public SortOrder getOrder(T sort) {
