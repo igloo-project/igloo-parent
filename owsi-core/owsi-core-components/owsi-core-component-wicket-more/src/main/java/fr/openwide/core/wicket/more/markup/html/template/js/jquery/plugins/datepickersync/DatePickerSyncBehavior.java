@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -31,6 +33,13 @@ public class DatePickerSyncBehavior extends Behavior {
 		super();
 		this.selector = selector;
 		this.datePickerSync = datePickerSync;
+	}
+	
+	@Override
+	public void onConfigure(Component component) {
+		checkState(!datePickerSync.getPrecedents().contains(component), "Un datepicker ne peut pas se précéder lui-même.");
+		checkState(!datePickerSync.getSuivants().contains(component), "Un datepicker ne peut pas se suivre lui-même.");
+		super.onConfigure(component);
 	}
 	
 	@Override
