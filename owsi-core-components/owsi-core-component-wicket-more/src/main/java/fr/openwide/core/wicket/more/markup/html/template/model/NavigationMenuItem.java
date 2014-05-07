@@ -24,6 +24,8 @@ public class NavigationMenuItem implements IDetachable {
 	
 	private IModel<String> cssClassesModel = Model.of("");
 	
+	private IModel<String> iconClassesModel = Model.of("");
+	
 	private IPageLinkGenerator pageLinkGenerator;
 	
 	private final List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
@@ -127,6 +129,15 @@ public class NavigationMenuItem implements IDetachable {
 
 	public NavigationMenuItem setCssClassesModel(IModel<String> cssClassesModel) {
 		this.cssClassesModel = cssClassesModel;
+		return this;
+	}
+
+	public IModel<String> getIconClassesModel() {
+		return iconClassesModel;
+	}
+
+	public NavigationMenuItem setIconClassesModel(IModel<String> iconClassesModel) {
+		this.iconClassesModel = iconClassesModel;
 		return this;
 	}
 
