@@ -29,6 +29,7 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	private static final String JS_ARRAY_START = "[";
 	private static final String JS_ARRAY_CLOSE = "]";
 	
+	@Deprecated
 	private final DatePicker courant;
 	
 	private final List<DatePicker> precedents = Lists.newArrayList();
@@ -36,11 +37,34 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	
 	private final List<DatePicker> suivants = Lists.newArrayList();
 	private final List<IModel<? extends Date>> suivantsModels = Lists.newArrayList();
+
+	public DatePickerSync() {
+		this.courant = null;
+	}
 	
+	public DatePickerSync(DatePicker precedent, DatePicker suivant) {
+		this.courant = null;
+		if (precedent != null) {
+			addPrecedents(precedent);
+		}
+		if (suivant != null) {
+			addSuivants(suivant);
+		}
+	}
+	
+	/**
+	 * @deprecated Use {@link #DatePickerSync()} instead.
+	 * @param courant
+	 */
+	@Deprecated
 	public DatePickerSync(DatePicker courant) {
 		this(courant, null, null);
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #DatePickerSync(DatePicker, DatePicker)} instead.
+	 * @param courant
+	 */
 	public DatePickerSync(DatePicker courant, DatePicker precedent, DatePicker suivant) {
 		super();
 		
@@ -107,7 +131,8 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		return CloneUtils.clone(precedentsModels);
 	}
 	
-	public DatePickerSync addPrecedentsModels(IModel<? extends Date> first, IModel<? extends Date> ... rest) {
+	@SafeVarargs
+	public final DatePickerSync addPrecedentsModels(IModel<? extends Date> first, IModel<? extends Date> ... rest) {
 		for (IModel<? extends Date> precedent : Lists.asList(first, rest)) {
 			if (precedent != null) {
 				if (!this.precedentsModels.contains(precedent)) {
@@ -139,8 +164,9 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	public List<IModel<? extends Date>> getSuivantsModels() {
 		return CloneUtils.clone(suivantsModels);
 	}
-	
-	public DatePickerSync addSuivantsModels(IModel<? extends Date> first, IModel<? extends Date> ... rest) {
+
+	@SafeVarargs
+	public final DatePickerSync addSuivantsModels(IModel<? extends Date> first, IModel<? extends Date> ... rest) {
 		for (IModel<? extends Date> suivant : Lists.asList(first, rest)) {
 			if (suivant != null) {
 				if (!this.suivantsModels.contains(suivant)) {
