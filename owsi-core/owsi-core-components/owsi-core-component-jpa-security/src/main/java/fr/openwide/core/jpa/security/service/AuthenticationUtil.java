@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.google.common.collect.ImmutableSet;
+
 final class AuthenticationUtil {
 
 	static Authentication getAuthentication() {
@@ -34,7 +36,8 @@ final class AuthenticationUtil {
 	}
 
 	static Collection<? extends GrantedAuthority> getAuthorities() {
-		return getAuthentication().getAuthorities();
+		Authentication authentication = getAuthentication();
+		return authentication == null ? ImmutableSet.<GrantedAuthority>of() : authentication.getAuthorities();
 	}
 
 	private AuthenticationUtil() {
