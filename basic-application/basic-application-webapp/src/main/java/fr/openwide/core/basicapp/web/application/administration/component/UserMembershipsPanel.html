@@ -31,16 +31,15 @@
 					</tr>
 				</tbody>
 			</table>
-			<form wicket:id="addGroupForm">
-				<div class="pull-right">
+			<div class="clearfix">
+				<form wicket:id="addGroupForm" class="pull-right form-inline">
+					<span wicket:id="userGroupAutocomplete" style="margin-right: 10px;"></span>
 					<a class="btn btn-success" wicket:id="addGroupLink">
 						<i class="fa fa-plus"></i>
 						<wicket:message key="administration.usergroup.members.add" />
 					</a>
-				</div>
-				<div class="pull-right" wicket:id="userGroupAutocomplete" style="margin-right: 10px;"></div>
-				<div class="clearfix"></div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</wicket:panel>
 </html>
