@@ -21,6 +21,7 @@ import javax.annotation.PreDestroy;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -73,6 +74,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				.setConnectionRequestTimeout(configurer.getExternalLinkCheckerTimeout())
 				.setConnectTimeout(configurer.getExternalLinkCheckerTimeout())
 				.setStaleConnectionCheckEnabled(true)
+				.setCookieSpec(CookieSpecs.BROWSER_COMPATIBILITY) // contournement d'un bug JVM. Cf https://code.google.com/p/crawler4j/issues/detail?id=136
 				.build();
 		
 		httpClient = HttpClientBuilder.create()
