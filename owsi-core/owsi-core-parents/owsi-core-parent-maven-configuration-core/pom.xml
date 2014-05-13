@@ -104,6 +104,7 @@
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.3.3</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
+		<owsi-core.phloc-css.version>3.7.4</owsi-core.phloc-css.version>
 		
 		<owsi-core.jersey.version>1.18.1</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.6</owsi-core.jersey2.version>
@@ -121,7 +122,7 @@
 		<owsi-core.wicket.version>6.15.0</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>6.12.0</owsi-core.wiquery.version>
 		<owsi-core.wicket-select2.version>1.1.9</owsi-core.wicket-select2.version>
-		<owsi-core.wqplot.version>6.1.1.owsi3</owsi-core.wqplot.version>
+		<owsi-core.wqplot.version>6.1.1.owsi4</owsi-core.wqplot.version>
 		
 		<owsi-core.less4j.version>1.5.3</owsi-core.less4j.version>
 		

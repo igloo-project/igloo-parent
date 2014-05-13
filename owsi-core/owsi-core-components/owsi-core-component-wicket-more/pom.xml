@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>com.phloc</groupId>
 			<artifactId>phloc-css</artifactId>
-			<version>3.6.0</version>
+			<version>${owsi-core.phloc-css.version}</version>
 		</dependency>
 		
 		<!-- WiQuery-jqPlot -->
