@@ -17,6 +17,7 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalBackdrop;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
@@ -176,6 +177,15 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	@Override
 	public BootstrapModal getBootstrapModal() {
 		return this.bootstrapModal;
+	}
+
+	public AbstractModalPopupPanel<O> setStatic() {
+		if (bootstrapModal == null) {
+			bootstrapModal = BootstrapModal.modal();
+		}
+		bootstrapModal.setKeyboard(false);
+		bootstrapModal.setBackdrop(BootstrapModalBackdrop.STATIC);
+		return this;
 	}
 
 }
