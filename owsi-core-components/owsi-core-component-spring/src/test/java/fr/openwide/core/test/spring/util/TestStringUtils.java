@@ -133,7 +133,7 @@ public class TestStringUtils {
 
 		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
 		cleanStr = StringUtils.clean(str_regEx);
-		assertEquals("23 ", cleanStr);
+		assertEquals("23", cleanStr);
 
 		String str_trimDash = " --test-test--";
 		cleanStr = StringUtils.clean(str_trimDash);
@@ -141,6 +141,43 @@ public class TestStringUtils {
 
 		String str_null = null;
 		cleanStr = StringUtils.clean(str_null);
+		assertNull(cleanStr);
+	}
+	
+	@Test
+	public void testCleanQuery() {
+		String cleanStr;
+
+		String str_maj = "ABCDEFG";
+		cleanStr = StringUtils.cleanForQuery(str_maj);
+		assertEquals("abcdefg", cleanStr);
+
+		String str_accent = "éèàçù";
+		cleanStr = StringUtils.cleanForQuery(str_accent);
+		assertEquals("eeacu", cleanStr);
+
+		String str_dashes = "---------";
+		cleanStr = StringUtils.cleanForQuery(str_dashes);
+		assertEquals("", cleanStr);
+
+		String str_spaces = "         ";
+		cleanStr = StringUtils.cleanForQuery(str_spaces);
+		assertEquals("", cleanStr);
+		
+		String str_words = " test word   wo-rd";
+		cleanStr = StringUtils.cleanForQuery(str_words);
+		assertEquals("test word wo-rd", cleanStr);
+
+		String str_regEx = "[’'`«»\n\r\t\":;,\\.!¡\\?¿&|°_%\\\\©®€²³\\+\\*÷×/%<>()^\\[\\]…–]";
+		cleanStr = StringUtils.cleanForQuery(str_regEx);
+		assertEquals("23 *", cleanStr);
+
+		String str_trimDash = " --test-test--";
+		cleanStr = StringUtils.cleanForQuery(str_trimDash);
+		assertEquals("test-test", cleanStr);
+
+		String str_null = null;
+		cleanStr = StringUtils.cleanForQuery(str_null);
 		assertNull(cleanStr);
 	}
 

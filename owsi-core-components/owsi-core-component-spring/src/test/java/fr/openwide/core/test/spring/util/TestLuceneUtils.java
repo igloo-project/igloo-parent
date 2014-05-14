@@ -23,22 +23,30 @@ public class TestLuceneUtils {
 
 	@Test
 	public void testGetAutocompleteQuery() {
-		assertNull(LuceneUtils.getAutocompleteQuery(null));
+		assertEquals(null, LuceneUtils.getAutocompleteQuery(null));
 		assertEquals("", LuceneUtils.getAutocompleteQuery(""));
-		assertEquals("alfresc*", LuceneUtils.getAutocompleteQuery("alfresc"));
-		assertEquals("alfresco sha*", LuceneUtils.getAutocompleteQuery("alfresco-sha"));
-		assertEquals("alfresco sha1*", LuceneUtils.getAutocompleteQuery("alfresco-sha1"));
-		assertEquals("alfresco sha1*", LuceneUtils.getAutocompleteQuery("alfresco sha1"));
-		assertEquals("t es t*", LuceneUtils.getAutocompleteQuery("t' -_es**t"));
+		assertEquals("(alfresc OR alfresc*)", LuceneUtils.getAutocompleteQuery("alfresc"));
+		assertEquals("(alfresc OR alfresc*)", LuceneUtils.getAutocompleteQuery("alfresc*"));
+		assertEquals("alfresco AND (sha OR sha*)", LuceneUtils.getAutocompleteQuery("alfresco-sha"));
+		assertEquals("alfresco AND (sha1 OR sha1*)", LuceneUtils.getAutocompleteQuery("alfresco-sha1"));
+		assertEquals("alfresco AND (sha1 OR sha1*)", LuceneUtils.getAutocompleteQuery("alfresco sha1"));
+		assertEquals("t AND es AND (t OR t*)", LuceneUtils.getAutocompleteQuery("t' -_es**t"));
 	}
 	
 	@Test
 	public void testGetSimilarityQuery() {
-		assertEquals("alfresc~0.7", LuceneUtils.getSimilarityQuery("alfresc", 0.7f));
-		assertEquals("alfresco~0.7 sha~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha", 0.7f));
-		assertEquals("alfresco~0.7 sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha1", 0.7f));
-		assertEquals("alfresco~0.7 sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco sha1", 0.7f));
-		assertEquals("t~0.7 es~0.7 t~0.7", LuceneUtils.getSimilarityQuery("t' -_es**t", 0.7f));
+		assertEquals("(alfresc OR alfresc~0.7)", LuceneUtils.getSimilarityQuery("alfresc", 0.7f));
+		assertEquals("(alfresco OR alfresco~0.7) AND (sha OR sha~0.7)", LuceneUtils.getSimilarityQuery("alfresco-sha", 0.7f));
+		assertEquals("(alfresco OR alfresco~0.7) AND (sha1 OR sha1~0.7)", LuceneUtils.getSimilarityQuery("alfresco-sha1", 0.7f));
+		assertEquals("(alfresco OR alfresco~0.7) AND (sha1 OR sha1~0.7)", LuceneUtils.getSimilarityQuery("alfresco sha1", 0.7f));
+		assertEquals("(t OR t~0.7) AND (es OR es~0.7) AND (t OR t~0.7)", LuceneUtils.getSimilarityQuery("t' -_es**t", 0.7f));
+	}
+	
+	@Test
+	public void testGetQuery() {
+		assertEquals("elephant AND de AND test", LuceneUtils.getQuery("éléphant de test"));
+		assertEquals("elephant AND (de OR de*) AND (test OR test*)", LuceneUtils.getQuery("éléphant de* test*"));
+		assertEquals("elephant AND (test OR test*)", LuceneUtils.getQuery("éléphant * test*"));
 	}
 	
 	@Test
