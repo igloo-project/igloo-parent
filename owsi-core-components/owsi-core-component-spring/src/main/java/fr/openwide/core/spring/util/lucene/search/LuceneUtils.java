@@ -175,7 +175,7 @@ public final class LuceneUtils {
 	 * Privilégier plutôt getQuery() sauf par exemple si on veut faire du Solr en utilisant le paramètre mm.
 	 */
 	public static String getSearchPatternWithoutExplicitOperators(String searchPattern) {
-		return Joiner.on(" ").join(getSearchPatternFragments(searchPattern));
+		return Joiner.on(" ").join(getSearchPatternFragments(StringUtils.cleanForQuery(searchPattern)));
 	}
 	
 	private static List<String> getSearchPatternFragments(String searchPattern) {
