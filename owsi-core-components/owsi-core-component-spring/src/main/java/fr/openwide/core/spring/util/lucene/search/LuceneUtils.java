@@ -1,5 +1,6 @@
 package fr.openwide.core.spring.util.lucene.search;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -20,6 +21,7 @@ import org.apache.lucene.util.Version;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -53,14 +55,34 @@ public final class LuceneUtils {
 	}
 	
 	public static String getAutocompleteQuery(String searchPattern, int enableWildcardMinChars) {
-		String cleanSearchPattern = cleanSearchPattern(searchPattern);
+		String cleanSearchPattern = StringUtils.clean(searchPattern);
 		
-		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= enableWildcardMinChars
-				&& !cleanSearchPattern.endsWith(WILDCARD_SUFFIX)) {
-			StringBuilder autocompleteQuery = new StringBuilder(cleanSearchPattern);
-			autocompleteQuery.append(WILDCARD_SUFFIX);
+		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= enableWildcardMinChars) {
+			List<String> searchPatternFragments = getSearchPatternFragments(cleanSearchPattern);
 			
-			cleanSearchPattern = autocompleteQuery.toString();
+			StringBuilder autocompleteQuery = new StringBuilder();
+			Iterator<String> searchPatternFragmentsIt = searchPatternFragments.iterator();
+			
+			while (searchPatternFragmentsIt.hasNext()) {
+				if (autocompleteQuery.length() > 0) {
+					autocompleteQuery.append(" ").append(Operator.AND).append(" ");
+				}
+				
+				String searchPatternFragment = searchPatternFragmentsIt.next();
+				if (searchPatternFragmentsIt.hasNext()) {
+					autocompleteQuery.append(searchPatternFragment);
+				} else {
+					// on est dans le cas d'une recherche wildcard, on double la recherche sur le wildcard et le pas wildcard
+					// notamment à cause des problèmatiques de stemming
+					autocompleteQuery.append("(");
+					autocompleteQuery.append(searchPatternFragment);
+					autocompleteQuery.append(" ").append(Operator.OR).append(" ");
+					autocompleteQuery.append(searchPatternFragment).append(WILDCARD_SUFFIX);
+					autocompleteQuery.append(")");
+				}
+			}
+			
+			cleanSearchPattern = autocompleteQuery.toString().trim();
 		}
 		
 		return cleanSearchPattern;
@@ -82,34 +104,71 @@ public final class LuceneUtils {
 			throw new IllegalArgumentException("minSimilarity may not be null");
 		}
 		
-		String cleanSearchPattern = cleanSearchPattern(searchPattern);
+		String cleanSearchPattern = StringUtils.clean(searchPattern);
 		
 		if (!StringUtils.hasText(cleanSearchPattern)) {
 			throw new IllegalArgumentException("cleanSearchPattern may not be empty");
 		}
 		
+		List<String> searchPatternFragments = getSearchPatternFragments(cleanSearchPattern);
+		
 		StringBuilder similarityQuery = new StringBuilder();
-		
-		String[] searchPatternElements = StringUtils.delimitedListToStringArray(cleanSearchPattern, StringUtils.SPACE);
-		
-		for (int i = 0; i < searchPatternElements.length; i++) {
-			similarityQuery.append(searchPatternElements[i]).append("~").append(minSimilarity.toString()).append(" ");
+		for (String searchPatternFragment : searchPatternFragments) {
+			if (similarityQuery.length() > 0) {
+				similarityQuery.append(" ").append(Operator.AND).append(" ");
+			}
+			similarityQuery.append("(");
+			similarityQuery.append(searchPatternFragment);
+			similarityQuery.append(" ").append(Operator.OR).append(" ");
+			similarityQuery.append(searchPatternFragment).append("~").append(minSimilarity.toString());
+			similarityQuery.append(")");
 		}
 		
 		return similarityQuery.toString().trim();
 	}
 	
-	public static String cleanSearchPattern(String searchPattern) {
-		String cleanSearchPattern = StringUtils.clean(searchPattern);
+	private static List<String> getSearchPatternFragments(String searchPattern) {
+		List<String> searchPatternFragments = Lists.newArrayList();
+		
+		if(StringUtils.hasText(searchPattern)) {
+			searchPatternFragments = Splitter.on(CharMatcher.WHITESPACE.or(CharMatcher.is('-')))
+					.trimResults().omitEmptyStrings().splitToList(searchPattern);
+		}
+		
+		return searchPatternFragments;
+	}
+	
+	/**
+	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard. Dans le cas d'un wildcard de fin, on fait
+	 * une recherche sur le pattern lui-même et sur le wildcard de manière à faire en sorte que le stemming puisse
+	 * être pris en compte.
+	 */
+	public static String getQuery(String searchPattern) {
+		String cleanSearchPattern = StringUtils.cleanForQuery(searchPattern);
 		
 		if(StringUtils.hasText(cleanSearchPattern)) {
+			List<String> searchPatternFragments = getSearchPatternFragments(cleanSearchPattern);
+			
 			StringBuilder cleanSearchPatternSb = new StringBuilder();
-			
-			List<String> searchPatternFragments = Splitter.on(CharMatcher.WHITESPACE.or(CharMatcher.is('-')))
-					.trimResults().omitEmptyStrings().splitToList(cleanSearchPattern);
-			
 			for (String searchPatternFragment : searchPatternFragments) {
-				cleanSearchPatternSb.append(searchPatternFragment).append(StringUtils.SPACE);
+				if (WILDCARD_SUFFIX.equals(searchPatternFragment)) {
+					// si c'est juste une *, on ne peut pas faire grand chose, passons...
+					continue;
+				}
+				if (cleanSearchPatternSb.length() > 0) {
+					cleanSearchPatternSb.append(" ").append(Operator.AND).append(" ");
+				}
+				if (searchPatternFragment.endsWith(WILDCARD_SUFFIX)) {
+					// on est dans le cas d'une recherche wildcard, on double la recherche sur le wildcard et le pas wildcard
+					// notamment à cause des problèmatiques de stemming
+					cleanSearchPatternSb.append("(");
+					cleanSearchPatternSb.append(StringUtils.trimTrailingCharacter(searchPatternFragment, WILDCARD_SUFFIX.charAt(0)));
+					cleanSearchPatternSb.append(" ").append(Operator.OR).append(" ");
+					cleanSearchPatternSb.append(searchPatternFragment);
+					cleanSearchPatternSb.append(")");
+				} else {
+					cleanSearchPatternSb.append(searchPatternFragment);
+				}
 			}
 			
 			cleanSearchPattern = cleanSearchPatternSb.toString().trim();
@@ -156,6 +215,8 @@ public final class LuceneUtils {
 			sb.append(formatWildcardQuery((WildcardQuery) luceneQuery));
 		} else if (luceneQuery instanceof NumericRangeQuery) {
 			sb.append(formatNumericRangeQuery((NumericRangeQuery<? extends Number>) luceneQuery));
+		} else if (luceneQuery instanceof IToQueryStringAwareLuceneQuery) {
+			sb.append(((IToQueryStringAwareLuceneQuery) luceneQuery).toQueryString());
 		} else {
 			throw new IllegalStateException(String.format("Query of type %1$s not supported",
 					luceneQuery.getClass().getName()));
