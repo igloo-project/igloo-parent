@@ -38,6 +38,8 @@ public final class LuceneUtils {
 	
 	public static final String WILDCARD_SUFFIX = "*";
 	
+	public static final String FUZZY_PARAMETER_SUFFIX = "~";
+	
 	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
 			String searchPattern, int enableWildcardMinChars) throws ParseException {
 		QueryParser queryParser = new QueryParser(LUCENE_VERSION, fieldName, analyzer);
@@ -120,7 +122,7 @@ public final class LuceneUtils {
 			similarityQuery.append("(");
 			similarityQuery.append(searchPatternFragment);
 			similarityQuery.append(" ").append(Operator.OR).append(" ");
-			similarityQuery.append(searchPatternFragment).append("~").append(minSimilarity.toString());
+			similarityQuery.append(searchPatternFragment).append(FUZZY_PARAMETER_SUFFIX).append(minSimilarity.toString());
 			similarityQuery.append(")");
 		}
 		
@@ -296,7 +298,7 @@ public final class LuceneUtils {
 			sb.append(":");
 		}
 		sb.append(QueryParser.escape(term.text()))
-			.append("~")
+			.append(FUZZY_PARAMETER_SUFFIX)
 			.append(Float.toString(fuzzyQuery.getMinSimilarity()));
 		return sb.toString();
 	}
