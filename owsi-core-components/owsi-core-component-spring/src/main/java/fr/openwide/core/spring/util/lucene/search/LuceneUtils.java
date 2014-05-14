@@ -20,7 +20,6 @@ import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.util.Version;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
@@ -54,10 +53,18 @@ public final class LuceneUtils {
 	}
 	
 	public static String getAutocompleteQuery(String searchPattern) {
-		return getAutocompleteQuery(searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
+		return getAutocompleteQuery(searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS, null);
+	}
+	
+	public static String getAutocompleteQuery(String searchPattern, Operator operator) {
+		return getAutocompleteQuery(searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS, operator);
 	}
 	
 	public static String getAutocompleteQuery(String searchPattern, int enableWildcardMinChars) {
+		return getAutocompleteQuery(searchPattern, enableWildcardMinChars, null);
+	}
+	
+	public static String getAutocompleteQuery(String searchPattern, int enableWildcardMinChars, Operator operator) {
 		String cleanSearchPattern = StringUtils.clean(searchPattern);
 		
 		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= enableWildcardMinChars) {
@@ -68,20 +75,16 @@ public final class LuceneUtils {
 			
 			while (searchPatternFragmentsIt.hasNext()) {
 				if (autocompleteQuery.length() > 0) {
-					autocompleteQuery.append(" ").append(Operator.AND).append(" ");
+					autocompleteQuery.append(" ");
+					if (operator != null) {
+						autocompleteQuery.append(Operator.AND).append(" ");
+					}
 				}
 				
-				String searchPatternFragment = searchPatternFragmentsIt.next();
-				if (searchPatternFragmentsIt.hasNext()) {
-					autocompleteQuery.append(searchPatternFragment);
-				} else {
-					// on est dans le cas d'une recherche wildcard, on double la recherche sur le wildcard et le pas wildcard
-					// notamment à cause des problèmatiques de stemming
-					autocompleteQuery.append("(");
-					autocompleteQuery.append(searchPatternFragment);
-					autocompleteQuery.append(" ").append(Operator.OR).append(" ");
-					autocompleteQuery.append(searchPatternFragment).append(WILDCARD_SUFFIX);
-					autocompleteQuery.append(")");
+				autocompleteQuery.append(searchPatternFragmentsIt.next());
+				
+				if (!searchPatternFragmentsIt.hasNext()) {
+					autocompleteQuery.append(WILDCARD_SUFFIX);
 				}
 			}
 			
@@ -103,6 +106,10 @@ public final class LuceneUtils {
 	}
 	
 	public static String getSimilarityQuery(String searchPattern, Float minSimilarity) {
+		return getSimilarityQuery(searchPattern, minSimilarity, null);
+	}
+	
+	public static String getSimilarityQuery(String searchPattern, Float minSimilarity, Operator operator) {
 		if (minSimilarity == null) {
 			throw new IllegalArgumentException("minSimilarity may not be null");
 		}
@@ -118,13 +125,12 @@ public final class LuceneUtils {
 		StringBuilder similarityQuery = new StringBuilder();
 		for (String searchPatternFragment : searchPatternFragments) {
 			if (similarityQuery.length() > 0) {
-				similarityQuery.append(" ").append(Operator.AND).append(" ");
+				similarityQuery.append(" ");
+				if (operator != null) {
+					similarityQuery.append(operator).append(" ");
+				}
 			}
-			similarityQuery.append("(");
-			similarityQuery.append(searchPatternFragment);
-			similarityQuery.append(" ").append(Operator.OR).append(" ");
 			similarityQuery.append(searchPatternFragment).append(FUZZY_PARAMETER_SUFFIX).append(minSimilarity.toString());
-			similarityQuery.append(")");
 		}
 		
 		return similarityQuery.toString().trim();
@@ -134,48 +140,43 @@ public final class LuceneUtils {
 	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard. Dans le cas d'un wildcard de fin, on fait
 	 * une recherche sur le pattern lui-même et sur le wildcard de manière à faire en sorte que le stemming puisse
 	 * être pris en compte.
+	 * 
+	 * Met un AND entre les différents paramètres.
 	 */
 	public static String getQuery(String searchPattern) {
+		return getQuery(searchPattern, null);
+	}
+	
+	/**
+	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard. Dans le cas d'un wildcard de fin, on fait
+	 * une recherche sur le pattern lui-même et sur le wildcard de manière à faire en sorte que le stemming puisse
+	 * être pris en compte.
+	 */
+	public static String getQuery(String searchPattern, Operator operator) {
 		String cleanSearchPattern = StringUtils.cleanForQuery(searchPattern);
 		
 		if(StringUtils.hasText(cleanSearchPattern)) {
 			List<String> searchPatternFragments = getSearchPatternFragments(cleanSearchPattern);
 			
-			StringBuilder cleanSearchPatternSb = new StringBuilder();
+			StringBuilder query = new StringBuilder();
 			for (String searchPatternFragment : searchPatternFragments) {
 				if (WILDCARD_SUFFIX.equals(searchPatternFragment)) {
 					// si c'est juste une *, on ne peut pas faire grand chose, passons...
 					continue;
 				}
-				if (cleanSearchPatternSb.length() > 0) {
-					cleanSearchPatternSb.append(" ").append(Operator.AND).append(" ");
+				if (query.length() > 0) {
+					query.append(" ");
+					if (operator != null) {
+						query.append(operator).append(" ");
+					}
 				}
-				if (searchPatternFragment.endsWith(WILDCARD_SUFFIX)) {
-					// on est dans le cas d'une recherche wildcard, on double la recherche sur le wildcard et le pas wildcard
-					// notamment à cause des problèmatiques de stemming
-					cleanSearchPatternSb.append("(");
-					cleanSearchPatternSb.append(StringUtils.trimTrailingCharacter(searchPatternFragment, WILDCARD_SUFFIX.charAt(0)));
-					cleanSearchPatternSb.append(" ").append(Operator.OR).append(" ");
-					cleanSearchPatternSb.append(searchPatternFragment);
-					cleanSearchPatternSb.append(")");
-				} else {
-					cleanSearchPatternSb.append(searchPatternFragment);
-				}
+				query.append(searchPatternFragment);
 			}
 			
-			cleanSearchPattern = cleanSearchPatternSb.toString().trim();
+			cleanSearchPattern = query.toString().trim();
 		}
 		
 		return cleanSearchPattern;
-	}
-	
-	/**
-	 * Retourne une chaîne nettoyée avec les différents tokens. Attention, n'ajoute pas d'opérateurs explicites.
-	 * 
-	 * Privilégier plutôt getQuery() sauf par exemple si on veut faire du Solr en utilisant le paramètre mm.
-	 */
-	public static String getSearchPatternWithoutExplicitOperators(String searchPattern) {
-		return Joiner.on(" ").join(getSearchPatternFragments(StringUtils.cleanForQuery(searchPattern)));
 	}
 	
 	private static List<String> getSearchPatternFragments(String searchPattern) {
