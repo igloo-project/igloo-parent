@@ -20,6 +20,7 @@ import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.util.Version;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
@@ -129,17 +130,6 @@ public final class LuceneUtils {
 		return similarityQuery.toString().trim();
 	}
 	
-	private static List<String> getSearchPatternFragments(String searchPattern) {
-		List<String> searchPatternFragments = Lists.newArrayList();
-		
-		if(StringUtils.hasText(searchPattern)) {
-			searchPatternFragments = Splitter.on(CharMatcher.WHITESPACE.or(CharMatcher.is('-')))
-					.trimResults().omitEmptyStrings().splitToList(searchPattern);
-		}
-		
-		return searchPatternFragments;
-	}
-	
 	/**
 	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard. Dans le cas d'un wildcard de fin, on fait
 	 * une recherche sur le pattern lui-même et sur le wildcard de manière à faire en sorte que le stemming puisse
@@ -177,6 +167,26 @@ public final class LuceneUtils {
 		}
 		
 		return cleanSearchPattern;
+	}
+	
+	/**
+	 * Retourne une chaîne nettoyée avec les différents tokens. Attention, n'ajoute pas d'opérateurs explicites.
+	 * 
+	 * Privilégier plutôt getQuery() sauf par exemple si on veut faire du Solr en utilisant le paramètre mm.
+	 */
+	public static String getSearchPatternWithoutExplicitOperators(String searchPattern) {
+		return Joiner.on(" ").join(getSearchPatternFragments(searchPattern));
+	}
+	
+	private static List<String> getSearchPatternFragments(String searchPattern) {
+		List<String> searchPatternFragments = Lists.newArrayList();
+		
+		if(StringUtils.hasText(searchPattern)) {
+			searchPatternFragments = Splitter.on(CharMatcher.WHITESPACE.or(CharMatcher.is('-')))
+					.trimResults().omitEmptyStrings().splitToList(searchPattern);
+		}
+		
+		return searchPatternFragments;
 	}
 	
 	public static RawLuceneQuery toFilterRangeQuery(String field, Number min, Number max) {
