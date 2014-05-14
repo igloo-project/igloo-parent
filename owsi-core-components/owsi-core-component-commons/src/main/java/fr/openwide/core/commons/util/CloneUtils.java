@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import fr.openwide.core.commons.util.clone.ICloneable;
+
 /**
  * <p>Utilitaires utilisés pour cloner les objets Java.</p>
  * 
@@ -58,6 +60,20 @@ public final class CloneUtils {
 			return null;
 		} else {
 			return (Calendar) calendar.clone();
+		}
+	}
+	/**
+	 * Clône un ICloneable<T>.
+	 * Cette méthode est null safe.
+	 * 
+	 * @param cloneable à clôner
+	 * @return clône du cloneable passé en paramètre
+	 */
+	public static <T> T clone(ICloneable<T> cloneable) {
+		if (cloneable == null) {
+			return null;
+		} else {
+			return (T) cloneable.clone();
 		}
 	}
 
