@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.util.ArrayUtil;
@@ -46,10 +47,15 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	public static final String SPACE = " ";
 	public static final char DASH_CHAR = '-';
 	public static final String DASH = "-";
-	public static final String CLEAN_SPECIAL_CHARS_REGEXP = "[^a-z0-9-]";
-	public static final String CLEAN_DUPLICATE_DASHES_REGEXP = "--*";
-	public static final String CLEAN_DUPLICATE_SPACES_REGEXP = "  *";
-	public static final String TAGIFY_REGEXP = "[^a-z0-9.]";
+	public static final String ASTERISK = "*";
+	public static final char ASTERISK_CHAR = '*';
+	
+	public static final Pattern CLEAN_SPECIAL_CHARS_REGEXP_PATTERN = Pattern.compile("[^a-z0-9-]");
+	public static final Pattern CLEAN_SPECIAL_CHARS_QUERY_REGEXP_PATTERN = Pattern.compile("[^a-z0-9-*]");
+	public static final Pattern CLEAN_DUPLICATE_DASHES_REGEXP_PATTERN = Pattern.compile("--*");
+	public static final Pattern CLEAN_DUPLICATE_SPACES_REGEXP_PATTERN = Pattern.compile("  *");
+	public static final Pattern CLEAN_DUPLICATE_ASTERISKS_REGEXP_PATTERN = Pattern.compile("\\*\\**");
+	public static final Pattern TAGIFY_REGEXP_PATTERN = Pattern.compile("[^a-z0-9.]");
 	public static final String COLLECTION_DEFAULT_DELIMITER = ", ";
 	
 	public static final String NEW_LINE_ANTISLASH_N = "\n";
@@ -137,7 +143,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @return chaîne nettoyée
 	 */
 	public static String urlize(String strToClean) {
-		return sanitizeString(strToClean, CLEAN_SPECIAL_CHARS_REGEXP);
+		return sanitizeString(strToClean, CLEAN_SPECIAL_CHARS_REGEXP_PATTERN);
 	}
 	
 	/**
@@ -149,10 +155,10 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @return chaîne nettoyée
 	 */
 	public static String tagify(String strToClean) {
-		return sanitizeString(strToClean, TAGIFY_REGEXP);
+		return sanitizeString(strToClean, TAGIFY_REGEXP_PATTERN);
 	}
 	
-	private static String sanitizeString(String strToClean, String cleanRegexp) {
+	private static String sanitizeString(String strToClean, Pattern cleanRegexpPattern) {
 		if (strToClean == null) {
 			return null;
 		}
@@ -161,11 +167,10 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		str = StringUtils.removeAccents(str);
 		str = StringUtils.lowerCase(str);
 		
-		str = str.replaceAll(cleanRegexp, DASH);
-		str = str.replaceAll(CLEAN_DUPLICATE_DASHES_REGEXP, DASH);
+		str = cleanRegexpPattern.matcher(str).replaceAll(DASH);
+		str = CLEAN_DUPLICATE_DASHES_REGEXP_PATTERN.matcher(str).replaceAll(DASH);
 		
-		str = StringUtils.trimLeadingCharacter(str, DASH_CHAR);
-		str = StringUtils.trimTrailingCharacter(str, DASH_CHAR);
+		str = org.apache.commons.lang3.StringUtils.strip(str, DASH);
 		
 		return str;
 	}
@@ -177,6 +182,18 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @return chaîne nettoyée
 	 */
 	public static String clean(String strToClean) {
+		return clean(strToClean, CLEAN_SPECIAL_CHARS_REGEXP_PATTERN);
+	}
+	
+	/**
+	 * Nettoie une chaîne de caractères qui part à destination d'une recherche Lucene. On souhaite autoriser le fait
+	 * qu'il puisse y avoir un wildcard.
+	 */
+	public static String cleanForQuery(String strToClean) {
+		return clean(strToClean, CLEAN_SPECIAL_CHARS_QUERY_REGEXP_PATTERN);
+	}
+	
+	private static String clean(String strToClean, Pattern forbiddenCharactersPattern) {
 		if (strToClean == null) {
 			return null;
 		}
@@ -185,14 +202,11 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		str = StringUtils.removeAccents(str);
 		str = StringUtils.lowerCase(str);
 		
-		str = str.replaceAll(CLEAN_SPECIAL_CHARS_REGEXP, SPACE);
-		str = str.replaceAll(CLEAN_DUPLICATE_SPACES_REGEXP, SPACE);
+		str = forbiddenCharactersPattern.matcher(str).replaceAll(SPACE);
+		str = CLEAN_DUPLICATE_SPACES_REGEXP_PATTERN.matcher(str).replaceAll(SPACE);
+		str = CLEAN_DUPLICATE_ASTERISKS_REGEXP_PATTERN.matcher(str).replaceAll(ASTERISK);
 		
-		str = StringUtils.trimLeadingCharacter(str, SPACE_CHAR);
-		str = StringUtils.trimTrailingCharacter(str, SPACE_CHAR);
-		
-		str = StringUtils.trimLeadingCharacter(str, DASH_CHAR);
-		str = StringUtils.trimTrailingCharacter(str, DASH_CHAR);
+		str = org.apache.commons.lang3.StringUtils.strip(str, SPACE + DASH);
 		
 		return str;
 	}
