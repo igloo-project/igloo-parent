@@ -44,8 +44,13 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 				.build();
 	}
 	
+	/**
+	 * Used to highlight the sort links if the sort is enabled.
+	 * 
+	 * We only highlight the current selection, not the default sort added in the CompositeSortModel.
+	 */
 	public SortOrder getOrder(T sort) {
-		return getObject().get(sort);
+		return map.get(sort);
 	}
 	
 	public void setOrder(T sort, SortOrder order) {
