@@ -32,9 +32,9 @@ public final class BasicApplicationInitFromExcelMain {
 			contextWrapper.reindexAll();
 			
 			LOGGER.info("Initialization complete");
-		} catch(Throwable e) { // NOSONAR We just want to log the Exception/Error, no error handling here.
+		} catch (Throwable e) { // NOSONAR We just want to log the Exception/Error, no error handling here.
 			LOGGER.error("Error during initialization", e);
-			throw new RuntimeException(e);
+			throw new IllegalStateException(e);
 		} finally {
 			if (context != null) {
 				context.close();
