@@ -19,7 +19,7 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataProvider;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class UserDataProvider extends LoadableDetachableDataProvider<User> {
+public class UserDataProvider<U extends User> extends LoadableDetachableDataProvider<U> {
 	
 	private static final long serialVersionUID = -8540890431031886412L;
 	
@@ -27,6 +27,8 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	
 	@SpringBean
 	private IUserService userService;
+	
+	private final Class<U> clazz;
 
 	private final IModel<String> nameModel;
 	
@@ -34,17 +36,19 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	
 	private final IModel<Boolean> activeModel;
 	
-	public UserDataProvider(IModel<String> searchTerm, IModel<Boolean> activeModel) {
-		this(searchTerm, new GenericEntityModel<Long, UserGroup>(), activeModel);
+	public UserDataProvider(Class<U> clazz, IModel<String> searchTerm, IModel<Boolean> activeModel) {
+		this(clazz, searchTerm, new GenericEntityModel<Long, UserGroup>(), activeModel);
 	}
 	
-	public UserDataProvider(IModel<UserGroup> groupModel) {
-		this(new Model<String>(), groupModel, new Model<Boolean>());
+	public UserDataProvider(Class<U> clazz, IModel<UserGroup> groupModel) {
+		this(clazz, new Model<String>(), groupModel, new Model<Boolean>());
 	}
 	
-	public UserDataProvider(IModel<String> nameModel, IModel<UserGroup> groupModel, IModel<Boolean> activeModel) {
+	public UserDataProvider(Class<U> clazz, IModel<String> nameModel, IModel<UserGroup> groupModel, IModel<Boolean> activeModel) {
 		super();
 		Injector.get().inject(this);
+		
+		this.clazz = clazz;
 		
 		this.nameModel = nameModel;
 		this.groupModel = groupModel;
@@ -52,8 +56,8 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	}
 	
 	@Override
-	public IModel<User> model(User item) {
-		return new GenericEntityModel<Long, User>(item);
+	public IModel<U> model(U item) {
+		return new GenericEntityModel<Long, U>(item);
 	}
 	
 	protected UserSearchParameters getSearchParameters() {
@@ -73,9 +77,9 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	}
 
 	@Override
-	protected List<User> loadList(long first, long count) {
+	protected List<U> loadList(long first, long count) {
 		try {
-			return userService.search(getSearchParameters(), (int) count, (int) first);
+			return userService.search(clazz, getSearchParameters(), (int) count, (int) first);
 		} catch (ParseException e) {
 			LOGGER.error("Unable to search for users.", e);
 		}
@@ -85,7 +89,7 @@ public class UserDataProvider extends LoadableDetachableDataProvider<User> {
 	@Override
 	protected long loadSize() {
 		try {
-			return userService.count(getSearchParameters());
+			return userService.count(clazz, getSearchParameters());
 		} catch (ParseException e) {
 			LOGGER.error("Unable to search for users.", e);
 		}

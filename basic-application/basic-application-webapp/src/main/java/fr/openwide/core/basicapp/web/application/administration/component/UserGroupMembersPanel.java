@@ -51,7 +51,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		setOutputMarkupId(true);
 		
 		// Members list
-		UserDataProvider dataProvider = new UserDataProvider(userGroupModel);
+		UserDataProvider<User> dataProvider = new UserDataProvider<>(User.class, userGroupModel);
 		DataView<User> membersView = new DataView<User>("members", dataProvider, configurer.getPortfolioItemsPerPage()) {
 			private static final long serialVersionUID = 1L;
 			

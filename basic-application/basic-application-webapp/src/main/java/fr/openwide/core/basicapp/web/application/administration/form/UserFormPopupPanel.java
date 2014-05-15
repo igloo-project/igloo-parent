@@ -28,6 +28,8 @@ import org.apache.wicket.validation.validator.PatternValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Supplier;
+
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
@@ -40,8 +42,9 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
-public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
+public class UserFormPopupPanel<U extends User> extends AbstractAjaxModalPopupPanel<U> {
 
 	private static final long serialVersionUID = -3575009149241618972L;
 
@@ -54,9 +57,11 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	private FormPanelMode mode;
+	private final FormPanelMode mode;
+	
+	private final Supplier<U> newUserSupplier;
 
-	private Form<User> userForm;
+	private Form<U> userForm;
 	
 	private PasswordTextField newPasswordField;
 	
@@ -73,19 +78,20 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 			}
 		};
 	}
-
-	public UserFormPopupPanel(String id, IModel<User> userModel) {
-		this(id, userModel, FormPanelMode.EDIT);
+	
+	public UserFormPopupPanel(String id, IModel<U> userModel) {
+		this(id, userModel, FormPanelMode.EDIT, null);
+	}
+	
+	public UserFormPopupPanel(String id, Supplier<U> newUserSupplier) {
+		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, newUserSupplier);
 	}
 
-	public UserFormPopupPanel(String id) {
-		this(id, new GenericEntityModel<Long, User>(new User()), FormPanelMode.ADD);
-	}
-
-	public UserFormPopupPanel(String id, IModel<User> userModel, FormPanelMode mode) {
+	protected UserFormPopupPanel(String id, IModel<U> userModel, FormPanelMode mode, Supplier<U> newUserSupplier) {
 		super(id, userModel);
 		
 		this.mode = mode;
+		this.newUserSupplier = newUserSupplier;
 	}
 
 	@Override
@@ -101,7 +107,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserFormPopupPanel.class);
 		
-		userForm = new Form<User>("form", getModel());
+		userForm = new Form<U>("form", getModel());
 		body.add(userForm);
 		
 		TextField<String> firstNameField = new RequiredTextField<String>("firstName", BindingModel.of(userForm.getModel(),
@@ -185,7 +191,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 										userService.setPasswords(user, newPasswordValue);
 										
 										getSession().success(getString("administration.user.form.add.success"));
-										throw AdministrationUserDescriptionPage.linkGenerator(UserFormPopupPanel.this.getModel())
+										throw AdministrationUserDescriptionPage.linkGenerator(ReadOnlyModel.<User>of(UserFormPopupPanel.this.getModel()))
 												.newRestartResponseException();
 									} else {
 										LOGGER.warn("Username '" + user.getUserName() + "' already used");
@@ -270,7 +276,7 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	protected void onShow(AjaxRequestTarget target) {
 		super.onShow(target);
 		if (isAddMode()) {
-			getModel().setObject(new User());
+			getModel().setObject(newUserSupplier.get());
 		}
 	}
 }

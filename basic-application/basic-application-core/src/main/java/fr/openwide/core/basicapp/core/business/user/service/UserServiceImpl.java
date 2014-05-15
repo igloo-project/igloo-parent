@@ -30,12 +30,12 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 	
 	@Override
-	public List<User> search(UserSearchParameters searchParameters, Integer limit, Integer offset) throws ParseException {
-		return userDao.search(searchParameters, limit, offset);
+	public <U extends User> List<U> search(Class<U> clazz, UserSearchParameters searchParameters, Integer limit, Integer offset) throws ParseException {
+		return userDao.search(clazz, searchParameters, limit, offset);
 	}
 	
 	@Override
-	public int count(UserSearchParameters searchParameters) throws ParseException {
-		return userDao.count(searchParameters);
+	public <U extends User> int count(Class<U> clazz, UserSearchParameters searchParameters) throws ParseException {
+		return userDao.count(clazz, searchParameters);
 	}
 }

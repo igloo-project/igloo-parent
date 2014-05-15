@@ -53,7 +53,7 @@ public class UserProfilePanel extends GenericPanel<User> {
 		add(new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale())));
 		
 		// User update popup
-		UserFormPopupPanel userUpdatePanel = new UserFormPopupPanel("userUpdatePopupPanel", getModel());
+		UserFormPopupPanel<User> userUpdatePanel = new UserFormPopupPanel<>("userUpdatePopupPanel", getModel());
 		add(userUpdatePanel);
 		
 		Button updateUser = new Button("updateUser");

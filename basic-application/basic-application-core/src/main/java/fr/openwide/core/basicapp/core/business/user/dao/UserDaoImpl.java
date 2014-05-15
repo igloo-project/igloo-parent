@@ -28,9 +28,9 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> search(UserSearchParameters searchParams, Integer limit, Integer offset)
+	public <U extends User> List<U> search(Class<U> clazz, UserSearchParameters searchParams, Integer limit, Integer offset)
 			throws ParseException {
-		FullTextQuery fullTextQuery = getSearchQuery(searchParams);
+		FullTextQuery fullTextQuery = getSearchQuery(clazz, searchParams);
 		fullTextQuery.setSort(new Sort(new SortField(User.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
 				new SortField(User.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING)));
 		
@@ -42,17 +42,17 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 			fullTextQuery.setMaxResults(limit);
 		}
 			
-		return (List<User>) fullTextQuery.getResultList();
+		return (List<U>) fullTextQuery.getResultList();
 	}
 
 	@Override
-	public int count(UserSearchParameters searchParams) throws ParseException {
-		FullTextQuery fullTextQuery = getSearchQuery(searchParams);
+	public <U extends User> int count(Class<U> clazz, UserSearchParameters searchParams) throws ParseException {
+		FullTextQuery fullTextQuery = getSearchQuery(clazz, searchParams);
 		
 		return fullTextQuery.getResultSize();
 	}
 	
-	private FullTextQuery getSearchQuery(UserSearchParameters searchParams) throws ParseException {
+	private <U extends User> FullTextQuery getSearchQuery(Class<U> clazz, UserSearchParameters searchParams) throws ParseException {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 		
 		QueryBuilder userQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
@@ -79,6 +79,6 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 			booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().active().getPath()).matching(active).createQuery());
 		}
 		
-		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), User.class);
+		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), clazz);
 	}
 }

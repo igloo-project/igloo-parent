@@ -12,8 +12,8 @@ public interface IUserService extends IGenericUserService<User> {
 
 	List<User> listByUserName(String userName);
 
-	List<User> search(UserSearchParameters searchParams, Integer limit, Integer offset) throws ParseException;
+	<U extends User> List<U> search(Class<U> clazz, UserSearchParameters searchParams, Integer limit, Integer offset) throws ParseException;
 	
-	int count(UserSearchParameters searchParams) throws ParseException;
+	<U extends User> int count(Class<U> clazz, UserSearchParameters searchParams) throws ParseException;
 
 }

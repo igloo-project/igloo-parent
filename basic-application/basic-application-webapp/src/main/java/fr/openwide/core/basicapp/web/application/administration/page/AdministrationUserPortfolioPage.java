@@ -3,6 +3,7 @@ package fr.openwide.core.basicapp.web.application.administration.page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -10,12 +11,14 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
+import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.component.AdministrationUserSearchPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
+import fr.openwide.core.commons.util.functional.SerializableSupplier;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -26,7 +29,7 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 	private static final long serialVersionUID = 1824247169136460059L;
 
 	@SpringBean
-	private BasicApplicationConfigurer basicApplicationConfigurer;
+	private BasicApplicationConfigurer configurer;
 	
 	public static IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
@@ -43,14 +46,21 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 		IModel<String> searchTermModel = Model.of("");
 		IModel<Boolean> activeModel = Model.of(true);
 		
-		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("portfolio", new UserDataProvider(searchTermModel, activeModel),
-				basicApplicationConfigurer.getPortfolioItemsPerPage());
+		IDataProvider<User> dataProvider = new UserDataProvider<User>(User.class, searchTermModel, activeModel);
+		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("portfolio", dataProvider,
+				configurer.getPortfolioItemsPerPage());
 		add(portfolioPanel);
 
 		add(new AdministrationUserSearchPanel("searchPanel", portfolioPanel.getPageable(), searchTermModel, activeModel));
 		
 		// User create popup
-		UserFormPopupPanel userCreatePanel = new UserFormPopupPanel("userCreatePopupPanel");
+		UserFormPopupPanel<User> userCreatePanel = new UserFormPopupPanel<User>("userCreatePopupPanel", new SerializableSupplier<User>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public User get() {
+				return new User();
+			}
+		});
 		add(userCreatePanel);
 		
 		Button createUser = new Button("createUser");

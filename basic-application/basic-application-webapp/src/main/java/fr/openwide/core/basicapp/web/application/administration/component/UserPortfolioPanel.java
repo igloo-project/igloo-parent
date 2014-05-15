@@ -17,6 +17,7 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
@@ -36,12 +37,16 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected void addItemColumns(Item<User> item, IModel<? extends User> userModel) {
-		item.add(AdministrationUserDescriptionPage.linkDescriptor(ReadOnlyModel.of(userModel), PageModel.of(getPage())).link("userNameLink")
+		item.add(getPageLinkGenerator(item.getModel()).link("userNameLink")
 				.setBody(BindingModel.of(userModel, Bindings.user().userName())));
 		item.add(new Label("firstName", BindingModel.of(userModel, Bindings.user().firstName())));
 		item.add(new Label("lastName", BindingModel.of(userModel, Bindings.user().lastName())));
 		item.add(new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())).hideIfNullOrFalse());
 		item.add(new EmailLink("email", BindingModel.of(userModel, Bindings.user().email())));
+	}
+	
+	protected IPageLinkGenerator getPageLinkGenerator(IModel<? extends User> userModel) {
+		return AdministrationUserDescriptionPage.linkDescriptor(ReadOnlyModel.of(userModel), PageModel.of(getPage()));
 	}
 
 	@Override
@@ -61,7 +66,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
 	@Override
 	protected MarkupContainer getActionLink(String id, IModel<? extends User> userModel) {
-		return AdministrationUserDescriptionPage.linkDescriptor(ReadOnlyModel.of(userModel), PageModel.of(getPage())).link(id);
+		return getPageLinkGenerator(ReadOnlyModel.of(userModel)).link(id);
 	}
 
 	@Override
