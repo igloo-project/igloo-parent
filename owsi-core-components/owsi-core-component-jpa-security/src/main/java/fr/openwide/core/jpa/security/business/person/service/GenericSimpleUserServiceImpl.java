@@ -37,8 +37,8 @@ public abstract class GenericSimpleUserServiceImpl<U extends GenericSimpleUser<U
 	}
 	
 	@Override
-	public List<U> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
-		return hibernateSearchService.searchAutocomplete(getObjectClass(), AUTOCOMPLETE_SEARCH_FIELDS, searchPattern,
+	public <U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
+		return hibernateSearchService.searchAutocomplete(clazz, AUTOCOMPLETE_SEARCH_FIELDS, searchPattern,
 				limit, offset, AUTOCOMPLETE_SORT);
 	}
 

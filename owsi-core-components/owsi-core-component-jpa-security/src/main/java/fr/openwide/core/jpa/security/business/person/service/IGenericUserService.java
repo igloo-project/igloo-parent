@@ -17,7 +17,12 @@ public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGener
 	
 	List<U> searchAutocomplete(String string) throws ServiceException, SecurityServiceException;
 	
+	<U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern) throws ServiceException, SecurityServiceException;
+	
 	List<U> searchAutocomplete(String string, Integer limit, Integer offset) throws ServiceException, SecurityServiceException;
+
+	<U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern, Integer limit, Integer offset)
+			throws ServiceException, SecurityServiceException;
 
 	void setActive(U person, boolean active) throws ServiceException, SecurityServiceException;
 
