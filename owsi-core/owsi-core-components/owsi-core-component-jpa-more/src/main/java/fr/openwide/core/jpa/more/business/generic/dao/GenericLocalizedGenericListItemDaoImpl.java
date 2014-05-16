@@ -235,7 +235,7 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 		return searchAutocomplete(searchPattern, clazz, null, locale, limit, offset);
 	}
 	
-	private <E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
+	protected final <E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
 			String[] fields, Locale locale, Integer limit, Integer offset) throws ServiceException {
 		GenericLocalizedGenericListItemBinding<E, T> binding = new GenericLocalizedGenericListItemBinding<E, T>();
 		String localizedLabelBindingPath = binding.label().getPath();

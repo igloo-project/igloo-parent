@@ -23,6 +23,7 @@ import java.util.List;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.metamodel.SingularAttribute;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
@@ -91,5 +92,7 @@ public interface IGenericListItemDao {
 	 * @throws NonUniqueResultException
 	 */
 	<E extends GenericListItem<?>>  E getByFieldIgnoreCase(Class<E> clazz, SingularAttribute<? super E, String> attribute, String fieldValue);
+
+	<E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, Integer limit, Integer offset) throws ServiceException;
 
 }

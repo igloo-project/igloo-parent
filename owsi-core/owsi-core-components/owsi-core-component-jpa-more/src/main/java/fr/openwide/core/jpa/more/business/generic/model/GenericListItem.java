@@ -62,6 +62,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	@Column(nullable = false)
 	private Integer position;
 
+	@Field
 	@Column(nullable = false)
 	private boolean enabled = true;
 	
