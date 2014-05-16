@@ -22,7 +22,10 @@ import java.util.List;
 
 import javax.persistence.NonUniqueResultException;
 
+import org.hibernate.search.annotations.Indexed;
+
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
@@ -67,5 +70,11 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 	 * WARNING: only use this if unique constraints were set on {@code lower(shortLabel)} in the {@code source} table.
 	 */
 	<E extends GenericListItem<?>> E getByShortLabelIgnoreCase(Class<E> clazz, String shortLabel) throws NonUniqueResultException;
+
+	/**
+	 * WARNING: only works on classes that were annotated with {@link Indexed}.
+	 */
+	<E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, int limit, int offset)
+			throws ServiceException;
 
 }

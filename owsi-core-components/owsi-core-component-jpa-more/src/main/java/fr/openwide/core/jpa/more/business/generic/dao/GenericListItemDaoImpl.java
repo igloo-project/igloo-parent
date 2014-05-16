@@ -28,16 +28,29 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import fr.openwide.core.jpa.business.generic.dao.JpaDaoSupport;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem_;
 import fr.openwide.core.jpa.more.business.generic.util.GenericListItemComparator;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
+import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 @Component("genericListItemDao")
 public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericListItemDao {
+	
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
 	
 	/**
 	 * Constructeur.
@@ -199,6 +212,36 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 	
 	public <E extends GenericListItem<?>> Long count(Class<E> objectClass, Expression<Boolean> filter) {
 		return super.countEntity(objectClass, filter);
+	}
+
+	@Override
+	public <E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
+			Integer limit, Integer offset) throws ServiceException {
+		return searchAutocomplete(searchPattern, clazz, null, limit, offset);
+	}
+	
+	protected final <E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
+			String[] fields, Integer limit, Integer offset) throws ServiceException {
+		GenericListItemBinding<E> binding = new GenericListItemBinding<E>();
+		String labelBindingPath = binding.label().getPath();
+		
+		QueryBuilder queryBuilder = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().buildQueryBuilder()
+				.forEntity(clazz).get();
+		
+		Query luceneQuery = queryBuilder.keyword().onField(binding.enabled().getPath()).matching(true).createQuery();
+		
+		String[] actualFields = fields;
+		if (actualFields == null || actualFields.length == 0) {
+			actualFields = new String[] { labelBindingPath };
+		}
+		
+		return hibernateSearchService.search(clazz,
+				actualFields,
+				LuceneUtils.getAutocompleteQuery(searchPattern),
+				luceneQuery,
+				limit, offset,
+				new Sort(new SortField(GenericListItem.LABEL_SORT_FIELD_NAME, SortField.STRING))
+		);
 	}
 	
 }

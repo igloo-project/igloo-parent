@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.dao.IGenericListItemDao;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
@@ -119,6 +120,12 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	@Override
 	public <E extends GenericListItem<?>> E getByShortLabelIgnoreCase(Class<E> clazz, String shortLabel) throws NonUniqueResultException {
 		return genericListItemDao.getByFieldIgnoreCase(clazz, GenericListItem_.shortLabel, shortLabel);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, int limit, int offset)
+			throws ServiceException {
+		return genericListItemDao.searchAutocomplete(searchPattern, clazz, limit, offset);
 	}
 
 }
