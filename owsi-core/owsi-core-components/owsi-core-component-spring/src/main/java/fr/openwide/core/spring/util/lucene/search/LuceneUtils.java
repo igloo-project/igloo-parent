@@ -149,20 +149,22 @@ public final class LuceneUtils {
 	}
 	
 	/**
-	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard. Dans le cas d'un wildcard de fin, on fait
-	 * une recherche sur le pattern lui-même et sur le wildcard de manière à faire en sorte que le stemming puisse
-	 * être pris en compte.
+	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard.
 	 * 
-	 * Met un AND entre les différents paramètres.
+	 * A noter que si stemming ou truc tordu il y a, il faut quand même faire la recherche à la fois sur le champ stemmé
+	 * et sur un champ non stemmé sinon le wildcard pourra ne pas renvoyer de résultat.
+	 * 
+	 * Ne met pas d'opérateur explicite entre les différents mots.
 	 */
 	public static String getQuery(String searchPattern) {
 		return getQuery(searchPattern, null);
 	}
 	
 	/**
-	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard. Dans le cas d'un wildcard de fin, on fait
-	 * une recherche sur le pattern lui-même et sur le wildcard de manière à faire en sorte que le stemming puisse
-	 * être pris en compte.
+	 * Nettoie la chaîne de recherche et autorise une recherche avec wildcard.
+	 * 
+	 * A noter que si stemming ou truc tordu il y a, il faut quand même faire la recherche à la fois sur le champ stemmé
+	 * et sur un champ non stemmé sinon le wildcard pourra ne pas renvoyer de résultat.
 	 */
 	public static String getQuery(String searchPattern, Operator operator) {
 		String cleanSearchPattern = StringUtils.cleanForQuery(searchPattern);
