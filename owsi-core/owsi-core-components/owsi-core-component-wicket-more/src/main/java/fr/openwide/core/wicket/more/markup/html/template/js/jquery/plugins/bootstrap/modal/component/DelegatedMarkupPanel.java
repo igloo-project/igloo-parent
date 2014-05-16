@@ -15,10 +15,18 @@ public class DelegatedMarkupPanel extends Panel {
 
 	private static final long serialVersionUID = -5918955824552499431L;
 
+	/** The wicket:id of the associated markup fragment */
+	private final String associatedMarkupId;
+
 	private final Class<?> markupClazz;
 
 	public DelegatedMarkupPanel(String id, Class<?> markupClazz) {
+		this(id, id, markupClazz);
+	}
+
+	public DelegatedMarkupPanel(String id, String associatedMarkupId, Class<?> markupClazz) {
 		super(id);
+		this.associatedMarkupId = associatedMarkupId;
 		this.markupClazz = markupClazz;
 	}
 
@@ -29,7 +37,7 @@ public class DelegatedMarkupPanel extends Panel {
 
 	@Override
 	protected IMarkupSourcingStrategy newMarkupSourcingStrategy() {
-		final String markupId = getId();
+		final String markupId = associatedMarkupId;
 		return new FragmentMarkupSourcingStrategy(markupId, null) {
 			@Override
 			public IMarkupFragment chooseMarkup(Component component) {
