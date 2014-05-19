@@ -63,17 +63,28 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		
 		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(user);
 		
+		Collection<? extends GrantedAuthority> expandedGrantedAuthorities = roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft());
+		addPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
+		
+		Collection<Permission> expandedAcceptablePermissions = permissionHierarchy.getAcceptablePermissions(authoritiesAndPermissions.getRight());
+		
 		// In any case, we can't pass an empty password hash to the CoreUserDetails
 		
 		CoreUserDetails userDetails = new CoreUserDetails(user.getUserName(),
 				StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
 				user.isActive(), true, true, true, 
-				roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft()),
-				permissionHierarchy.getAcceptablePermissions(authoritiesAndPermissions.getRight()));
+				expandedGrantedAuthorities, expandedAcceptablePermissions);
 		
 		return userDetails;
 	}
 	
+	/**
+	 * Override this in order to define some permissions based on the (expanded) granted authorities.
+	 */
+	protected void addPermissionsFromAuthorities(Collection<? extends GrantedAuthority> expandedGrantedAuthorities, Set<Permission> permissions) {
+		// Does nothing by default
+	}
+
 	protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(IGroupedUser<?> user) {
 		Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
 		Set<Permission> permissions = Sets.newHashSet();
