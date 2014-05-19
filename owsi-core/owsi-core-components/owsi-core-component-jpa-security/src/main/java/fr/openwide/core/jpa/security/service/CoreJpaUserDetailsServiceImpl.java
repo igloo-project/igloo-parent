@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.service;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -7,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,6 +38,9 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
 	private IPermissionHierarchy permissionHierarchy;
+	
+	@Autowired
+	private PermissionFactory permissionFactory;
 
 	private AuthenticationUserNameComparison authenticationUserNameComparison = AuthenticationUserNameComparison.CASE_SENSITIVE;
 
@@ -87,6 +92,12 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	protected void addAuthorities(Set<GrantedAuthority> grantedAuthorities, Set<Authority> authorities) {
 		for (Authority authority : authorities) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+		}
+	}
+	
+	protected void addPermissions(Set<Permission> permissions, Collection<String> permissionNames) {
+		for (String permissionName : permissionNames) {
+			permissions.add(permissionFactory.buildFromName(permissionName));
 		}
 	}
 
