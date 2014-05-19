@@ -35,19 +35,11 @@ public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T ext
 		}
 	};
 	
-	/**
-	 * @deprecated Use BooleanOperator instead.
-	 */
-	@Deprecated
 	public static enum Operator {
-		/** AND(*) */
-		WHEN_ALL_TRUE(BooleanOperator.WHEN_ALL_TRUE),
-		/** OR(*) */
-		WHEN_ANY_TRUE(BooleanOperator.WHEN_ANY_TRUE),
-		/** NOT(OR(*)) */
-		WHEN_ALL_FALSE(BooleanOperator.WHEN_ALL_FALSE),
-		/** NOT(AND(*)) */
-		WHEN_ANY_FALSE(BooleanOperator.WHEN_ANY_FALSE);
+		WHEN_ALL_TRUE(BooleanOperator.AND),
+		WHEN_ANY_TRUE(BooleanOperator.OR),
+		WHEN_ALL_FALSE(BooleanOperator.NOR),
+		WHEN_ANY_FALSE(BooleanOperator.NAND);
 		
 		private final BooleanOperator booleanOperator;
 		
@@ -64,14 +56,14 @@ public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T ext
 	
 	private final List<Condition> conditions = Lists.newArrayList();
 	
-	protected AbstractConfigurableComponentBooleanPropertyBehavior(ComponentBooleanProperty property, BooleanOperator operator) {
+	protected AbstractConfigurableComponentBooleanPropertyBehavior(ComponentBooleanProperty property, Operator operator) {
+		this(property, operator.getBooleanOperator());
+	}
+	
+	private AbstractConfigurableComponentBooleanPropertyBehavior(ComponentBooleanProperty property, BooleanOperator operator) {
 		super(property);
 		this.operator = operator;
 		Injector.get().inject(this);
-	}
-	
-	protected AbstractConfigurableComponentBooleanPropertyBehavior(ComponentBooleanProperty property, Operator operator) {
-		this(property, operator.getBooleanOperator());
 	}
 	
 	@Override
