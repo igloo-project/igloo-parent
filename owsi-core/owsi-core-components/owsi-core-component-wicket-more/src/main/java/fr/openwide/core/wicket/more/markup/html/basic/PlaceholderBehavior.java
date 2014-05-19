@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
+import fr.openwide.core.wicket.more.condition.BooleanOperator;
 import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior;
 
 public class PlaceholderBehavior extends AbstractConfigurableComponentBooleanPropertyBehavior<PlaceholderBehavior> {
@@ -11,7 +12,7 @@ public class PlaceholderBehavior extends AbstractConfigurableComponentBooleanPro
 	}
 	
 	public PlaceholderBehavior(ComponentBooleanProperty property) {
-		super(property, Operator.WHEN_ALL_FALSE);
+		super(property, BooleanOperator.WHEN_ALL_FALSE);
 	}
 
 	@Override

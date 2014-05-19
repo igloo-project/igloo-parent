@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Predicate;
@@ -13,6 +13,8 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
+import fr.openwide.core.wicket.more.condition.BooleanOperator;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.AbstractComponentBooleanPropertyBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
@@ -32,86 +34,49 @@ public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T ext
 			return null;
 		}
 	};
-
+	
+	/**
+	 * @deprecated Use BooleanOperator instead.
+	 */
+	@Deprecated
 	public static enum Operator {
 		/** AND(*) */
-		WHEN_ALL_TRUE {
-			@Override public boolean isDecisiveOperand(boolean operand) { return operand == false; }
-			@Override public boolean getResultWhenDecisiveOperandMet() { return false; }
-		},
+		WHEN_ALL_TRUE(BooleanOperator.WHEN_ALL_TRUE),
 		/** OR(*) */
-		WHEN_ANY_TRUE {
-			@Override public boolean isDecisiveOperand(boolean operand) { return operand == true; }
-			@Override public boolean getResultWhenDecisiveOperandMet() { return true; }
-		},
+		WHEN_ANY_TRUE(BooleanOperator.WHEN_ANY_TRUE),
 		/** NOT(OR(*)) */
-		WHEN_ALL_FALSE {
-			@Override public boolean isDecisiveOperand(boolean operand) { return operand == true; }
-			@Override public boolean getResultWhenDecisiveOperandMet() { return false; }
-		},
+		WHEN_ALL_FALSE(BooleanOperator.WHEN_ALL_FALSE),
 		/** NOT(AND(*)) */
-		WHEN_ANY_FALSE {
-			@Override public boolean isDecisiveOperand(boolean operand) { return operand == false; }
-			@Override public boolean getResultWhenDecisiveOperandMet() { return true; }
-		};
+		WHEN_ANY_FALSE(BooleanOperator.WHEN_ANY_FALSE);
 		
-		public abstract boolean isDecisiveOperand(boolean operand);
-		public abstract boolean getResultWhenDecisiveOperandMet();
+		private final BooleanOperator booleanOperator;
+		
+		private Operator(BooleanOperator booleanOperator) {
+			this.booleanOperator = booleanOperator;
+		}
+		
+		public BooleanOperator getBooleanOperator() {
+			return booleanOperator;
+		}
 	}
 
-	private final Operator operator;
+	private final BooleanOperator operator;
 	
-	private final List<Component> components = Lists.newArrayList();
+	private final List<Condition> conditions = Lists.newArrayList();
 	
-	private final List<PredicateWrapper<?>> predicateWrappers = Lists.newArrayList();
-	
-	private static class PredicateWrapper<T> implements IDetachable {
-		private static final long serialVersionUID = 1L;
-		
-		private final Predicate<? super T> predicate;
-		private final IModel<? extends T> model;
-		
-		@SuppressWarnings("unchecked")
-		public PredicateWrapper(Predicate<? super T> predicate, IModel<? extends T> model) {
-			super();
-			this.predicate = predicate;
-			this.model = model == null ? (IModel<T>) NULL_MODEL : model;
-		}
-		
-		public boolean apply() {
-			return predicate.apply(model.getObject());
-		}
-		
-		@Override
-		public void detach() {
-			if (predicate instanceof IDetachable) {
-				((IDetachable)predicate).detach();
-			}
-			model.detach();
-		}
+	protected AbstractConfigurableComponentBooleanPropertyBehavior(ComponentBooleanProperty property, BooleanOperator operator) {
+		super(property);
+		this.operator = operator;
+		Injector.get().inject(this);
 	}
 	
 	protected AbstractConfigurableComponentBooleanPropertyBehavior(ComponentBooleanProperty property, Operator operator) {
-		super(property);
-		this.operator = operator;
+		this(property, operator.getBooleanOperator());
 	}
 	
 	@Override
 	protected boolean generatePropertyValue(Component attachedComponent) {
-		for (Component component : components) {
-			component.configure();
-			if (operator.isDecisiveOperand(component.determineVisibility())) {
-				return operator.getResultWhenDecisiveOperandMet();
-			}
-		}
-		
-		for (PredicateWrapper<?> predicateWrapper : predicateWrappers) {
-			if (operator.isDecisiveOperand(predicateWrapper.apply())) {
-				return operator.getResultWhenDecisiveOperandMet();
-			}
-		}
-
-		return !operator.getResultWhenDecisiveOperandMet();
+		return operator.apply(conditions);
 	}
 	
 	/**
@@ -133,8 +98,9 @@ public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T ext
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T2> T model(Predicate<? super T2> predicate, IModel<? extends T2> model) {
-		predicateWrappers.add(new PredicateWrapper<T2>(predicate, model));
+		conditions.add(Condition.predicate(model == null ? (IModel<? extends T2>) NULL_MODEL : model, predicate));
 		return thisAsT();
 	}
 	
@@ -158,27 +124,33 @@ public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T ext
 	
 	@Override
 	public T component(Component component) {
-		components.add(component);
+		conditions.add(Condition.visible(component));
 		return thisAsT();
 	}
 	
 	@Override
 	public T components(Component firstComponent, Component... otherComponents) {
-		components.addAll(Lists.asList(firstComponent, otherComponents));
-		return thisAsT();
+		return components(Lists.asList(firstComponent, otherComponents));
 	}
 	
 	@Override
 	public T components(Collection<Component> targetComponents) {
-		components.addAll(targetComponents);
+		for (Component component : targetComponents) {
+			conditions.add(Condition.visible(component));
+		}
+		return thisAsT();
+	}
+	
+	public T condition(Condition condition) {
+		conditions.add(condition);
 		return thisAsT();
 	}
 	
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		for (PredicateWrapper<?> predicateWrapper : predicateWrappers) {
-			predicateWrapper.detach();
+		for (Condition condition : conditions) {
+			condition.detach();
 		}
 	}
 

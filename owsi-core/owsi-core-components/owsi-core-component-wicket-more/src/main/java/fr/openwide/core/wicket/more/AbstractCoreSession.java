@@ -221,7 +221,7 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 		return roles;
 	}
 	
-	protected boolean hasRole(String authority) {
+	public boolean hasRole(String authority) {
 		return getRoles().contains(authority);
 	}
 
