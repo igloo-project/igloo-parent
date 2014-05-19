@@ -9,6 +9,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.util.HibernateUtils;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -43,11 +44,10 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 			return null;
 		}
 		
-		K id = serializableState.id;
-		Class<? extends E> clazz = serializableState.clazz;
+		GenericEntityReference<K, E> persistedEntityReference = serializableState.persistedEntityReference;
 		
-		if (id != null && clazz != null) {
-			return entityService.getEntity(clazz, id);
+		if (persistedEntityReference != null) {
+			return entityService.getEntity(persistedEntityReference);
 		} else {
 			return serializableState.notYetPersistedEntity;
 		}
@@ -61,30 +61,25 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 	protected static class SerializableState<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		private final Class<? extends E> clazz;
-		private final K id;
+		private final GenericEntityReference<K, E> persistedEntityReference;
 		/**
 		 * L'objectif est ici de stocker les entités qui n'ont pas encore été persistées en base (typiquement, quand
 		 * on fait la création).
 		 */
 		private final E notYetPersistedEntity;
 		
-		@SuppressWarnings("unchecked")
 		public SerializableState(E entity) {
 			E unwrapped = HibernateUtils.unwrap(entity);
 			if (unwrapped != null) {
-				clazz = (Class<? extends E>) unwrapped.getClass();
-				
 				if (unwrapped.getId() != null) {
-					id = unwrapped.getId();
+					persistedEntityReference = GenericEntityReference.of(unwrapped);
 					notYetPersistedEntity = null;
 				} else {
-					id = null;
+					persistedEntityReference = null;
 					notYetPersistedEntity = unwrapped;
 				}
 			} else {
-				clazz = null;
-				id = null;
+				persistedEntityReference = null;
 				notYetPersistedEntity = null;
 			}
 		}
@@ -104,8 +99,7 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 			SerializableState<K, E> other = (SerializableState<K, E>) obj;
 			
 			return new EqualsBuilder()
-					.append(clazz, other.clazz)
-					.append(id, other.id)
+					.append(persistedEntityReference, other.persistedEntityReference)
 					.append(notYetPersistedEntity, other.notYetPersistedEntity)
 					.build();
 		}
@@ -113,8 +107,7 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 		@Override
 		public int hashCode() {
 			return new HashCodeBuilder()
-					.append(clazz)
-					.append(id)
+					.append(persistedEntityReference)
 					.append(notYetPersistedEntity)
 					.toHashCode();
 		}

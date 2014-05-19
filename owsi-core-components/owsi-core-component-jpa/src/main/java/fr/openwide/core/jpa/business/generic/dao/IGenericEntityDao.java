@@ -33,6 +33,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 
 /**
  * <p>DAO racine pour la gestion des entités.</p>
@@ -70,6 +71,14 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @return entité
 	 */
 	<T extends E> T getById(Class<T> clazz, K id);
+	
+	/**
+	 * Retourne une entité à partir d'une référence.
+	 * 
+	 * @param reference
+	 * @return entité
+	 */
+	<T extends E> T getById(GenericEntityReference<K, T> reference);
 	
 	/**
 	 * Retourne une entité à partir de son id naturelle (si elle a été déclarée avec @NaturalId)

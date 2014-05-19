@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
@@ -98,6 +99,14 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	 * @return entité
 	 */
 	<T extends E> T getById(Class<T> clazz, K id);
+	
+	/**
+	 * Retourne une entité à partir d'une référence.
+	 * 
+	 * @param reference
+	 * @return entité
+	 */
+	<T extends E> T getById(GenericEntityReference<K, T> reference);
 	
 	/**
 	 * Renvoie la liste de l'ensemble des entités de ce type.

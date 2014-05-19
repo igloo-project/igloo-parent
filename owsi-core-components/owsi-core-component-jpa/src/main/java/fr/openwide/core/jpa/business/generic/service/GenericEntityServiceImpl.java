@@ -24,6 +24,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -83,6 +84,11 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	@Override
 	public <T extends E> T getById(Class<T> clazz, K id) {
 		return genericDao.getById(clazz, id);
+	}
+	
+	@Override
+	public <T extends E> T getById(GenericEntityReference<K, T> reference) {
+		return genericDao.getById(reference);
 	}
 
 	/**
