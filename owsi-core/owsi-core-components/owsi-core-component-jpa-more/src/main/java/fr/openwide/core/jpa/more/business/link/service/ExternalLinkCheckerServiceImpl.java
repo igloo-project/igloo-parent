@@ -1,10 +1,11 @@
 package fr.openwide.core.jpa.more.business.link.service;
 
+import io.mola.galimatias.GalimatiasParseException;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedListMultimap;
@@ -46,6 +46,7 @@ import com.google.common.collect.Multimap;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.link.model.ExternalLinkErrorType;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
 import fr.openwide.core.spring.config.CoreConfigurer;
@@ -110,24 +111,38 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	}
 	
 	@Override
-	public void checkLinksWithSameUrl(String url, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
-		checkLinksWithSameUrl(getURI(url), links);
-	}
-	
-	@Override
-	public void checkLinksWithSameUrl(URI uri, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
-		StatusLine status = sendRequest(uri, true);
-		if (status != null && status.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
-			status = sendRequest(uri, false);
+	public void checkLinksWithSameUrl(String urlString, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+		URI uri;
+		StatusLine status = null;
+		ExternalLinkErrorType errorType = null;
+		
+		try {
+			uri = getURI(urlString);
+			
+			status = sendRequest(uri, true);
+			if (status != null && status.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
+				status = sendRequest(uri, false);
+			}
+			if (status == null) {
+				errorType = ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR;
+			} else if (status.getStatusCode() != HttpStatus.SC_OK) {
+				errorType = ExternalLinkErrorType.HTTP;
+			}
+		} catch (MalformedURLException e) {
+			errorType = ExternalLinkErrorType.MALFORMED_URL;
+		} catch (IllegalArgumentException e) {
+			errorType = ExternalLinkErrorType.INVALID_IDN;
+		} catch (URISyntaxException e) {
+			errorType = ExternalLinkErrorType.URI_SYNTAX;
 		}
 		
 		Date checkDate = new Date();
 		for (ExternalLinkWrapper link : links) {
 			link.setLastCheckDate(checkDate);
-			if (status != null && status.getStatusCode() == HttpStatus.SC_OK) {
+			if (errorType == null) {
 				onSuccessfulCheck(link);
 			} else {
-				onCheckFailure(link, status);
+				onCheckFailure(link, errorType, status);
 			}
 			externalLinkWrapperService.update(link);
 		}
@@ -166,36 +181,26 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	private String getDomain(String string) {
 		try {
-			URI uri = new URI(string);
-			return uri.getHost();
-		} catch (URISyntaxException e) {
+			io.mola.galimatias.URL url = io.mola.galimatias.URL.parse(string);
+			return url.host().toHumanString();
+		} catch (Exception e) {
 			return null;
 		}
 	}
 	
-	private URI getURI(String urlString) {
+	private URI getURI(String urlString) throws URISyntaxException, MalformedURLException, IllegalArgumentException {
 		try {
-			URI uri;
-			urlString = StringUtils.trimWhitespace(urlString);
-			if (urlString.indexOf('%') > 0 && urlString.indexOf(' ') == -1) {
-				// the URI is already escaped, just build the URI
-				uri = new URI(urlString);
-			} else {
-				// play with URL and URI to force the escaping
-				URL url = new URL(urlString);
-				uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-			}
-			return uri;
-		} catch (URISyntaxException e) {
-			return null;
-		} catch (MalformedURLException e) {
-			return null;
+			io.mola.galimatias.URL url = io.mola.galimatias.URL.parse(urlString);
+			return url.toJavaURI();
+		} catch (GalimatiasParseException ex) {
+			throw new URISyntaxException(urlString, ex.getMessage());
 		}
 	}
 
 	private void markAsInvalid(Collection<ExternalLinkWrapper> linkWrappers) throws ServiceException, SecurityServiceException {
 		for (ExternalLinkWrapper link : linkWrappers) {
 			link.setStatus(ExternalLinkStatus.DEAD_LINK);
+			link.setLastErrorType(ExternalLinkErrorType.URI_SYNTAX);
 			externalLinkWrapperService.update(link);
 		}
 	}
@@ -206,10 +211,14 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		link.setLastStatusCode(HttpStatus.SC_OK);
 	}
 	
-	private void onCheckFailure(final ExternalLinkWrapper link, final StatusLine status) {
+	private void onCheckFailure(final ExternalLinkWrapper link, final ExternalLinkErrorType errorType, final StatusLine status) {
+		link.setLastErrorType(errorType);
 		link.setConsecutiveFailures(link.getConsecutiveFailures() + 1);
+		
 		if (status != null) {
 			link.setLastStatusCode(status.getStatusCode());
+		} else {
+			link.setLastStatusCode(null);
 		}
 		
 		if (link.getConsecutiveFailures() >= configurer.getExternalLinkCheckerRetryAttemptsLimit()) {
