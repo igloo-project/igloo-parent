@@ -69,6 +69,13 @@
 			<artifactId>httpclient</artifactId>
 		</dependency>
 		
+		<!-- Parsing d'URL (les classes de net.java ne sont pas assez tolérantes et ne gèrent ni l'escaping ni les IDN) -->
+		
+		<dependency>
+			<groupId>io.mola.galimatias</groupId>
+			<artifactId>galimatias</artifactId>
+		</dependency>
+		
 		<!-- Database pooling -->
 		
 		<dependency>
