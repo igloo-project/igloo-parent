@@ -1,8 +1,10 @@
 package fr.openwide.core.wicket.more.condition;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
@@ -135,6 +137,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	private static class ObjectPermissionCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 		
+		@SpringBean
 		private IAuthenticationService authenticationService;
 		
 		private final IModel<?> securedObjectModel;
@@ -145,6 +148,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			super();
 			this.securedObjectModel = securedObjectModel;
 			this.permission = permission;
+			Injector.get().inject(this);
 		}
 		
 		@Override
