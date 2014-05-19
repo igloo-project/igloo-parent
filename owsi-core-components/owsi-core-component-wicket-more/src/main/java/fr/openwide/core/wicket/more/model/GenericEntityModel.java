@@ -132,8 +132,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		}
 		GenericEntityModel<?, ?> other = (GenericEntityModel<?, ?>) obj;
 		return new EqualsBuilder()
-				.append(clazz, other.clazz)
-				.append(id, other.id)
+				.append(persistedEntityReference, other.persistedEntityReference)
 				.append(notYetPersistedEntity, other.notYetPersistedEntity)
 				.isEquals();
 	}
@@ -141,8 +140,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(clazz)
-				.append(id)
+				.append(persistedEntityReference)
 				.append(notYetPersistedEntity)
 				.toHashCode();
 	}
