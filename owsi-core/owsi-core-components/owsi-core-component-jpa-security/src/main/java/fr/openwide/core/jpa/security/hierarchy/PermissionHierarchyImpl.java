@@ -18,11 +18,9 @@ package fr.openwide.core.jpa.security.hierarchy;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.SetMultimap;
 
 
 /**
@@ -80,15 +82,27 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
 
     /**
      * permissionsAcceptableInOneStepMap is a Map that under the key of a specific permission name contains a set of all permissions
-     * acceptable from this permission in 1 step
+     * that can be accepted in place of this permission in 1 step
      */
-    private Map<Permission, Set<Permission>> permissionsAcceptableInOneStepMap = null;
+    private SetMultimap<Permission, Permission> permissionsReachableInOneStepMap = null;
+
+    /**
+     * permissionsAcceptableInOneStepMap is a Map that under the key of a specific permission name contains a set of all permissions
+     * reachable from this permission in 1 step
+     */
+    private SetMultimap<Permission, Permission> permissionsAcceptableInOneStepMap = null;
 
     /**
      * permissionsAcceptableInOneOrMoreStepsMap is a Map that under the key of a specific permission name contains a set of all
-     * permissions acceptable from this permission in 1 or more steps
+     * permissions that can be accepted in place of this permission in 1 or more steps
      */
-    private Map<Permission, Set<Permission>> permissionsAcceptableInOneOrMoreStepsMap = null;
+    private SetMultimap<Permission, Permission> permissionsAcceptableInOneOrMoreStepsMap = null;
+
+    /**
+     * permissionsAcceptableInOneOrMoreStepsMap is a Map that under the key of a specific permission name contains a set of all
+     * permissions reachable from this permission in 1 or more steps
+     */
+    private SetMultimap<Permission, Permission> permissionsReachableInOneOrMoreStepsMap = null;
     
     private PermissionFactory permissionFactory;
     
@@ -111,16 +125,14 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
 
         LOGGER.debug("setHierarchy() - The following permission hierarchy was set: " + permissionHierarchyStringRepresentation);
 
-        buildPermissionsAcceptableInOneStepMap();
-        buildPermissionsAcceptableInOneOrMoreStepsMap();
+        buildOneStepRelationsMaps();
+        this.permissionsAcceptableInOneOrMoreStepsMap = buildClosures(permissionsAcceptableInOneStepMap);
+        this.permissionsReachableInOneOrMoreStepsMap = buildClosures(permissionsReachableInOneStepMap);
     }
     
     @Override
     public List<Permission> getAcceptablePermissions(Permission permission) {
-    	Collection<Permission> permissions = new ArrayList<Permission>(1);
-    	permissions.add(permission);
-    	
-    	return getAcceptablePermissions(permissions);
+    	return getAcceptablePermissions(ImmutableSet.of(permission));
     }
 
     @Override
@@ -140,23 +152,53 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
         }
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("getAcceptablePermissions() - From the permissions " + permissions
-                    + " one can reach " + acceptablePermissions + " in zero or more steps.");
+            LOGGER.debug("getAcceptablePermissions() - For one of the permissions " + permissions
+                    + " one can accept any of " + acceptablePermissions);
         }
 
         return new ArrayList<Permission>(acceptablePermissions);
     }
+    
+    @Override
+    public List<Permission> getReachablePermissions(Permission permission) {
+    	return getReachablePermissions(ImmutableSet.of(permission));
+    }
+
+    @Override
+    public List<Permission> getReachablePermissions(Collection<Permission> permissions) {
+        if (permissions == null || permissions.size() == 0) {
+            return new ArrayList<Permission>(0);
+        }
+
+        Set<Permission> reachablePermissions = new HashSet<Permission>();
+
+        for (Permission permission : permissions) {
+            reachablePermissions.add(permission);
+            Set<Permission> additionalReachablePermissions = permissionsReachableInOneOrMoreStepsMap.get(permission);
+            if (additionalReachablePermissions != null) {
+                reachablePermissions.addAll(additionalReachablePermissions);
+            }
+        }
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getReachablePermissions() - From the permissions " + permissions
+                    + " one can reach " + reachablePermissions + " in zero or more steps.");
+        }
+
+        return new ArrayList<Permission>(reachablePermissions);
+    }
 
     /**
-     * Parse input and build the map for the permissions acceptable in one step: the higher permission will become a key that
-     * references a set of the acceptable lower permissions.
+     * Parse input and build the map for the permissions reachable in one step: the higher permission will become a key that
+     * references a set of the reachable lower permissions.
      */
-    private void buildPermissionsAcceptableInOneStepMap() {
+    private void buildOneStepRelationsMaps() {
         String parsingRegex = "(\\s*([^\\s>]+)\\s*\\>\\s*([^\\s>]+))";
         Pattern pattern = Pattern.compile(parsingRegex);
 
         Matcher permissionHierarchyMatcher = pattern.matcher(permissionHierarchyStringRepresentation);
-        permissionsAcceptableInOneStepMap = new HashMap<Permission, Set<Permission>>();
+        permissionsReachableInOneStepMap = HashMultimap.create();
+        permissionsAcceptableInOneStepMap = HashMultimap.create();
 
         while (permissionHierarchyMatcher.find()) {
             String higherPermissionString = permissionHierarchyMatcher.group(2);
@@ -173,37 +215,25 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
                 continue;
             }
             
-            Set<Permission> permissionsAcceptableInOneStepSet = null;
-
-            if (!permissionsAcceptableInOneStepMap.containsKey(higherPermission)) {
-                permissionsAcceptableInOneStepSet = new HashSet<Permission>();
-                permissionsAcceptableInOneStepMap.put(higherPermission, permissionsAcceptableInOneStepSet);
-            } else {
-                permissionsAcceptableInOneStepSet = permissionsAcceptableInOneStepMap.get(higherPermission);
-            }
-            permissionsAcceptableInOneStepSet.add(lowerPermission);
+            permissionsReachableInOneStepMap.put(higherPermission, lowerPermission);
+            permissionsAcceptableInOneStepMap.put(lowerPermission, higherPermission);
 
             LOGGER.debug("buildPermissionsAcceptableInOneStepMap() - From permission "
                     + higherPermission + " one can reach permission " + lowerPermission + " in one step.");
         }
     }
 
-    /**
-     * For every higher permission from permissionsAcceptableInOneStepMap store all permissions that are acceptable from it in the map of
-     * permissions acceptable in one or more steps. (Or throw a CycleInPermissionHierarchyException if a cycle in the permission
-     * hierarchy definition is detected)
-     */
-    private void buildPermissionsAcceptableInOneOrMoreStepsMap() {
-        permissionsAcceptableInOneOrMoreStepsMap = new HashMap<Permission, Set<Permission>>();
+    private SetMultimap<Permission, Permission> buildClosures(SetMultimap<Permission, Permission> oneStepRelations) {
+    	SetMultimap<Permission, Permission> closures = HashMultimap.create();
         // iterate over all higher permissions from permissionsAcceptableInOneStepMap
-        Iterator<Permission> permissionIterator = permissionsAcceptableInOneStepMap.keySet().iterator();
+        Iterator<Permission> permissionIterator = oneStepRelations.keySet().iterator();
 
         while (permissionIterator.hasNext()) {
             Permission permission = (Permission) permissionIterator.next();
             Set<Permission> permissionsToVisitSet = new HashSet<Permission>();
 
-            if (permissionsAcceptableInOneStepMap.containsKey(permission)) {
-                permissionsToVisitSet.addAll(permissionsAcceptableInOneStepMap.get(permission));
+            if (oneStepRelations.containsKey(permission)) {
+                permissionsToVisitSet.addAll(oneStepRelations.get(permission));
             }
 
             Set<Permission> visitedPermissionsSet = new HashSet<Permission>();
@@ -213,23 +243,22 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
                 Permission aPermission = (Permission) permissionsToVisitSet.iterator().next();
                 permissionsToVisitSet.remove(aPermission);
                 visitedPermissionsSet.add(aPermission);
-                if (permissionsAcceptableInOneStepMap.containsKey(aPermission)) {
-                    Set<Permission> newAcceptablePermissions = (Set<Permission>) permissionsAcceptableInOneStepMap.get(aPermission);
+                if (closures.containsKey(aPermission)) {
+                    Set<Permission> newClosure = (Set<Permission>) closures.get(aPermission);
 
                     // definition of a cycle: you can reach the permission you are starting from
                     if (permissionsToVisitSet.contains(permission) || visitedPermissionsSet.contains(permission)) {
                         throw new CycleInPermissionHierarchyException();
                     } else {
                          // no cycle
-                        permissionsToVisitSet.addAll(newAcceptablePermissions);
+                        permissionsToVisitSet.addAll(newClosure);
                     }
                 }
             }
-            permissionsAcceptableInOneOrMoreStepsMap.put(permission, visitedPermissionsSet);
-
-            LOGGER.debug("buildPermissionsAcceptableInOneOrMoreStepsMap() - From permission "
-                    + permission + " one can reach " + visitedPermissionsSet + " in one or more steps.");
+        closures.putAll(permission, visitedPermissionsSet);
         }
+        
+        return closures;
 
     }
 

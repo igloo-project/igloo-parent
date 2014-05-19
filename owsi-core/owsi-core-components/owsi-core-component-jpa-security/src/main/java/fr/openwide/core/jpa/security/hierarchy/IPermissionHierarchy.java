@@ -11,4 +11,8 @@ public interface IPermissionHierarchy {
 
 	List<Permission> getAcceptablePermissions(Collection<Permission> permissions);
 
+	List<Permission> getReachablePermissions(Permission permission);
+
+	List<Permission> getReachablePermissions(Collection<Permission> permissions);
+
 }

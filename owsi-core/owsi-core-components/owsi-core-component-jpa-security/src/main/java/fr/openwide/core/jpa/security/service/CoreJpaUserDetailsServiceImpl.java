@@ -66,14 +66,14 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		Collection<? extends GrantedAuthority> expandedGrantedAuthorities = roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft());
 		addPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
 		
-		Collection<Permission> expandedAcceptablePermissions = permissionHierarchy.getAcceptablePermissions(authoritiesAndPermissions.getRight());
+		Collection<Permission> expandedReachablePermissions = permissionHierarchy.getReachablePermissions(authoritiesAndPermissions.getRight());
 		
 		// In any case, we can't pass an empty password hash to the CoreUserDetails
 		
 		CoreUserDetails userDetails = new CoreUserDetails(user.getUserName(),
 				StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
 				user.isActive(), true, true, true, 
-				expandedGrantedAuthorities, expandedAcceptablePermissions);
+				expandedGrantedAuthorities, expandedReachablePermissions);
 		
 		return userDetails;
 	}
