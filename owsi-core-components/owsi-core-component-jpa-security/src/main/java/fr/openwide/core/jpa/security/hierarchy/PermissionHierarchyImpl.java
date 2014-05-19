@@ -175,16 +175,16 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
             
             Set<Permission> permissionsAcceptableInOneStepSet = null;
 
-            if (!permissionsAcceptableInOneStepMap.containsKey(lowerPermission)) {
+            if (!permissionsAcceptableInOneStepMap.containsKey(higherPermission)) {
                 permissionsAcceptableInOneStepSet = new HashSet<Permission>();
-                permissionsAcceptableInOneStepMap.put(lowerPermission, permissionsAcceptableInOneStepSet);
+                permissionsAcceptableInOneStepMap.put(higherPermission, permissionsAcceptableInOneStepSet);
             } else {
-                permissionsAcceptableInOneStepSet = permissionsAcceptableInOneStepMap.get(lowerPermission);
+                permissionsAcceptableInOneStepSet = permissionsAcceptableInOneStepMap.get(higherPermission);
             }
-            permissionsAcceptableInOneStepSet.add(higherPermission);
+            permissionsAcceptableInOneStepSet.add(lowerPermission);
 
             LOGGER.debug("buildPermissionsAcceptableInOneStepMap() - From permission "
-                    + lowerPermission + " one can reach permission " + higherPermission + " in one step.");
+                    + higherPermission + " one can reach permission " + lowerPermission + " in one step.");
         }
     }
 
