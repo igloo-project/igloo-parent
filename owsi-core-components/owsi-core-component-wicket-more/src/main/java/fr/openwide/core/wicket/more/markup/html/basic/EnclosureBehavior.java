@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
-import fr.openwide.core.wicket.more.condition.BooleanOperator;
 import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior;
 
 public class EnclosureBehavior extends AbstractConfigurableComponentBooleanPropertyBehavior<EnclosureBehavior> {
@@ -12,7 +11,7 @@ public class EnclosureBehavior extends AbstractConfigurableComponentBooleanPrope
 	}
 	
 	public EnclosureBehavior(ComponentBooleanProperty property) {
-		super(property, BooleanOperator.WHEN_ANY_TRUE);
+		super(property, Operator.WHEN_ANY_TRUE);
 	}
 
 	@Override
