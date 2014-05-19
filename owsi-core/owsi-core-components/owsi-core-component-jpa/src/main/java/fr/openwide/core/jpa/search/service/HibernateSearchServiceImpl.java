@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.dao.IHibernateSearchDao;
@@ -45,8 +46,12 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(Class<E> clazz,
-			K id) {
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(GenericEntityReference<K, E> reference) {
+		hibernateSearchDao.reindexEntity(entityService.getEntity(reference));
+	}
+	
+	@Override
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(Class<E> clazz, K id) {
 		hibernateSearchDao.reindexEntity(entityService.getEntity(clazz, id));
 	}
 	

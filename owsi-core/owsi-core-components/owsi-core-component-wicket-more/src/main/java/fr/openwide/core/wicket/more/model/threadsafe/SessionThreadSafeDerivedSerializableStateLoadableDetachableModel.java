@@ -16,7 +16,7 @@ import fr.openwide.core.wicket.more.model.threadsafe.impl.LoadableDetachableMode
  * An implementation of {@link LoadableDetachableModel} that is thread-safe, and may thus be used in multiple request cycles at the same time.
  * <p>This should be used mainly as an abstract base class for entity-related loadable/detachable models (such as {@link SessionThreadSafeGenericEntityModel}).
  * When in doubt, prefer {@link SessionThreadSafeSimpleLoadableDetachableModel} as an abstract base class for your custom thread-safe loadable/detachable model.
- * <p>This class may be used as a basis for loadable/detachable models when :
+ * <p>This class may be used as a basis for loadable/detachable models when:
  * <ul>
  * 	<li>the model is stored in a global object, such as the {@link Session wicket session}
  * 	<li>the serializable state of this loadable/detachable model derives directly from the model object (see {@link #load(Serializable)} and {@link #makeSerializable(Object)})
@@ -26,7 +26,7 @@ import fr.openwide.core.wicket.more.model.threadsafe.impl.LoadableDetachableMode
  * should be advised that only the changes from the call to {@link #setObject(Object)} will be kept, except if the said object experienced changes affecting
  * its {@link #makeSerializable(Object) serialized form} afterwards. In this last case, the actual effect is well-defined, but quite complex and should probably not be relied on.
  * 
- * <p>Actual changes to the stored serialized form of the model object will happen in the following situations :<ul>
+ * <p>Actual changes to the stored serialized form of the model object will happen in the following situations:<ul>
  * <li>{@link #ThreadSafeLoadableDetachableModel(T)} is called
  * <li>{@link #setObject(T)} is called
  * <li>{@link #detach()} is called AND the model is attached AND the object returned by {@link #makeSerializable(T)} is not {@link #equals(Object) equal} to

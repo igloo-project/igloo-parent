@@ -25,6 +25,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 
 /**
@@ -77,6 +78,11 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	@Override
 	public <T extends E> T getById(Class<T> clazz, K id) {
 		return super.getEntity(clazz, id);
+	}
+	
+	@Override
+	public <T extends E> T getById(GenericEntityReference<K, T> reference) {
+		return getById(reference.getEntityClass(), reference.getEntityId());
 	}
 	
 	@Override

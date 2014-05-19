@@ -26,6 +26,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.util.HibernateUtils;
 
@@ -37,11 +38,9 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@SpringBean
 	private IEntityService entityService;
 	
-	private Class<? extends E> clazz;
-	
 	private transient boolean attached = false;
 
-	private K id;
+	private GenericEntityReference<K, E> persistedEntityReference;
 
 	/**
 	 * L'objectif est ici de stocker les entités qui n'ont pas encore été persistées en base (typiquement, quand
@@ -69,8 +68,8 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@Override
 	protected E load() {
 		E result = null;
-		if (id != null) {
-			result = HibernateUtils.unwrap(entityService.getEntity(clazz, id));
+		if (persistedEntityReference != null) {
+			result = HibernateUtils.unwrap(entityService.getEntity(persistedEntityReference));
 		} else {
 			result = notYetPersistedEntity;
 		}
@@ -87,7 +86,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	}
 	
 	protected K getId() {
-		return id;
+		return persistedEntityReference != null ? persistedEntityReference.getEntityId() : null;
 	}
 
 	@Override
@@ -104,22 +103,18 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	 * Updates the serializable data (id, clazz, notYetPersistedEntity) according to the attached object's value.
 	 * <p>Only called when the model is attached.
 	 */
-	@SuppressWarnings("unchecked")
 	private void updateSerializableData() {
 		E entity = super.getObject();
 		if (entity != null) {
-			clazz = (Class<? extends E>) entity.getClass();
-			
 			if (entity.getId() != null) {
-				id = entity.getId();
+				persistedEntityReference = GenericEntityReference.of(entity);
 				notYetPersistedEntity = null;
 			} else {
-				id = null;
+				persistedEntityReference = null;
 				notYetPersistedEntity = entity;
 			}
 		} else {
-			clazz = null;
-			id = null;
+			persistedEntityReference = null;
 			notYetPersistedEntity = null;
 		}
 	}
