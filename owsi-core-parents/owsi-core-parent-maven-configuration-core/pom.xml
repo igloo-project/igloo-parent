@@ -105,6 +105,7 @@
 		<owsi-core.httpclient.version>4.3.3</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.4</owsi-core.phloc-css.version>
+		<owsi-core.galimatias.version>0.0.4</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.18.1</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.6</owsi-core.jersey2.version>
@@ -687,6 +688,12 @@
 							<groupId>commons-logging</groupId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>io.mola.galimatias</groupId>
+					<artifactId>galimatias</artifactId>
+					<version>${owsi-core.galimatias.version}</version>
 				</dependency>
 				
 				<dependency>

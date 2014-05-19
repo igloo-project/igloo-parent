@@ -48,6 +48,10 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	private int consecutiveFailures = 0;
 	
 	@Column
+	@Enumerated(EnumType.STRING)
+	private ExternalLinkErrorType lastErrorType;
+	
+	@Column
 	private Integer lastStatusCode;
 	
 	@Column
@@ -94,6 +98,14 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		this.consecutiveFailures = consecutiveFailures;
 	}
 	
+	public ExternalLinkErrorType getLastErrorType() {
+		return lastErrorType;
+	}
+
+	public void setLastErrorType(ExternalLinkErrorType lastErrorType) {
+		this.lastErrorType = lastErrorType;
+	}
+
 	public Integer getLastStatusCode() {
 		return lastStatusCode;
 	}
@@ -139,6 +151,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		changes.put(BINDING.consecutiveFailures().getPath(), 0);
 		changes.put(BINDING.lastStatusCode().getPath(), null);
 		changes.put(BINDING.lastCheckDate().getPath(), null);
+		changes.put(BINDING.lastErrorType().getPath(), null);
 		
 		return changes;
 	}
