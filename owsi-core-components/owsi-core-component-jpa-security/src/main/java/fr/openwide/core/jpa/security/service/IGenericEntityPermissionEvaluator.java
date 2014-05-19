@@ -1,12 +1,13 @@
 package fr.openwide.core.jpa.security.service;
 
-import org.springframework.security.acls.model.Permission;
-
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 
-public interface IGenericEntityPermissionEvaluator<U extends GenericUser<U, ?>, E extends GenericEntity<Long, E>> {
-
-	boolean hasPermission(U user, E genericEntity, Permission permission);
+/**
+ * Use IGenericPermissionEvaluator instead.
+ */
+@Deprecated
+public interface IGenericEntityPermissionEvaluator<U extends GenericUser<U, ?>, E extends GenericEntity<Long, ?>>
+		extends IGenericPermissionEvaluator<U, E> {
 
 }

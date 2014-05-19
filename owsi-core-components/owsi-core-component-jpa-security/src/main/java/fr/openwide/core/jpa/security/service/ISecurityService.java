@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.person.model.IUser;
 
 public interface ISecurityService {
@@ -18,10 +17,10 @@ public interface ISecurityService {
 	
 	boolean hasPermission(IUser person, Permission requirePermission);
 	
-	boolean hasPermission(Authentication authentication, GenericEntity<?, ?> securedObject,
+	boolean hasPermission(Authentication authentication, Object securedObject,
 			Permission requirePermission);
 	
-	boolean hasPermission(IUser person, GenericEntity<?, ?> securedObject,
+	boolean hasPermission(IUser person, Object securedObject,
 			Permission requirePermission);
 	
 	boolean hasRole(Authentication authentication, String role);
