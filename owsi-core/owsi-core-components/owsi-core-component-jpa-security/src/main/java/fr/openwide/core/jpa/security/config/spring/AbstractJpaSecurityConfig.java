@@ -171,7 +171,7 @@ public abstract class AbstractJpaSecurityConfig {
 
 	protected static String defaultPermissionHierarchyAsString() {
 		return CorePermissionConstants.ADMINISTRATION + " > " + CorePermissionConstants.WRITE + "\n"
-				+ CorePermissionConstants.WRITE + " > " + CorePermissionConstants.READ;
+				+ CorePermissionConstants.WRITE + " > " + CorePermissionConstants.READ + "\n";
 	}
 
 	protected static String defaultRoleHierarchyAsString() {
