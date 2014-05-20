@@ -16,6 +16,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -67,6 +68,13 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	private CloseableHttpClient httpClient = null;
 	
+	/**
+	 * we can put here some URLs known to fail. Otherwise, it's better to do it directly in the application.
+	 */
+	private List<Pattern> ignorePatterns = Lists.newArrayList(
+			Pattern.compile("^http://translate.googleusercontent.com/.*")
+	);
+	
 	@PostConstruct
 	private void initialize() {
 		RequestConfig requestConfig = RequestConfig.custom()
@@ -116,6 +124,21 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		StatusLine status = null;
 		ExternalLinkErrorType errorType = null;
 		
+		// Special casing the ignore patterns
+		for (Pattern pattern : ignorePatterns) {
+			if (pattern.matcher(urlString).matches()) {
+				Date checkDate = new Date();
+				for (ExternalLinkWrapper link : links) {
+					link.setLastCheckDate(checkDate);
+					link.setConsecutiveFailures(0);
+					link.setStatus(ExternalLinkStatus.IGNORED);
+					externalLinkWrapperService.update(link);
+				}
+				return;
+			}
+		}
+		
+		// Check the URL and update the links
 		try {
 			uri = getURI(urlString);
 			
@@ -282,5 +305,9 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				LOGGER.warn("An error occurred while shutting down threads", e);
 			}
 		}
+	}
+	
+	public void addIgnorePattern(Pattern ignorePattern) {
+		this.ignorePatterns.add(ignorePattern);
 	}
 }

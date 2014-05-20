@@ -34,6 +34,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		Long id5 = null;
 		Long id6 = null;
 		Long id7 = null;
+		Long id8 = null;
+		Long id9 = null;
 		
 		{
 			ExternalLinkWrapper externalLink1 = new ExternalLinkWrapper("http://www.google.fr/");
@@ -63,6 +65,14 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			ExternalLinkWrapper externalLink7 = new ExternalLinkWrapper("http://62.210.184.140/V2/Partenaires/00043/Images/Chalet 95/dheilly003.JPG");
 			externalLinkWrapperService.create(externalLink7);
 			id7 = externalLink7.getId();
+			
+			ExternalLinkWrapper externalLink8 = new ExternalLinkWrapper("http://hotel.reservit.com/reservit/avail-info.php?hotelid=104461&userid=4340d8abb651c8ca20e6cd57a844f5708354&__utma=1.804870725.1361370840.1361370840.1361370840.1&__utmc=1&__utmz=1.1361370840.1.1.utmcsr=%28direct%29|utmccn=%28direct%29|utmcmd=%28none%29");
+			externalLinkWrapperService.create(externalLink8);
+			id8 = externalLink8.getId();
+			
+			ExternalLinkWrapper externalLink9 = new ExternalLinkWrapper("http://translate.googleusercontent.com/translate_c?client=tmpg&depth=1&hl=en&langpair=fr|en&rurl=translate.google.com&u=http://www.agence-bellemontagne.com/index.php%3Foption%3Dcom_content%26view%3Darticle%26id%3D49%26Itemid%3D51&usg=ALkJrhgFkVHObqq4-hABxmDFkFE00p369A");
+			externalLinkWrapperService.create(externalLink9);
+			id9 = externalLink9.getId();
 		}
 		
 		Date beforeFirstBatchDate = new Date();
@@ -127,6 +137,19 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink7.getLastStatusCode());
 			Assert.assertNull(externalLink7.getLastErrorType());
 			Assert.assertTrue(externalLink7.getLastCheckDate().after(beforeFirstBatchDate));
+			
+			ExternalLinkWrapper externalLink8 = externalLinkWrapperService.getById(id8);
+			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink8.getStatus());
+			Assert.assertEquals(0, externalLink8.getConsecutiveFailures());
+			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink8.getLastStatusCode());
+			Assert.assertNull(externalLink8.getLastErrorType());
+			Assert.assertTrue(externalLink8.getLastCheckDate().after(beforeFirstBatchDate));
+			
+			ExternalLinkWrapper externalLink9 = externalLinkWrapperService.getById(id9);
+			Assert.assertEquals(ExternalLinkStatus.IGNORED, externalLink9.getStatus());
+			Assert.assertEquals(0, externalLink9.getConsecutiveFailures());
+			Assert.assertNull(externalLink9.getLastErrorType());
+			Assert.assertTrue(externalLink9.getLastCheckDate().after(beforeFirstBatchDate));
 		}
 		
 		Date beforeSecondBatchDate = new Date();
@@ -191,6 +214,13 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink7.getLastStatusCode());
 			Assert.assertNull(externalLink7.getLastErrorType());
 			Assert.assertTrue(externalLink7.getLastCheckDate().after(beforeSecondBatchDate));
+			
+			// This link should have been ignored
+			ExternalLinkWrapper externalLink9 = externalLinkWrapperService.getById(id9);
+			Assert.assertEquals(ExternalLinkStatus.IGNORED, externalLink9.getStatus());
+			Assert.assertEquals(0, externalLink9.getConsecutiveFailures());
+			Assert.assertNull(externalLink9.getLastErrorType());
+			Assert.assertTrue(externalLink9.getLastCheckDate().after(beforeFirstBatchDate));
 		}
 	}
 
