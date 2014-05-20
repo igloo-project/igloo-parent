@@ -766,6 +766,14 @@
 					</exclusions>
 				</dependency>
 			
+			<!-- OpenCSV -->
+			
+				<dependency>
+					<groupId>net.sf.opencsv</groupId>
+					<artifactId>opencsv</artifactId>
+					<version>${owsi-core.opencsv.version}</version>
+				</dependency>
+			
 			<!-- TrueZip -->
 			
 				<dependency>

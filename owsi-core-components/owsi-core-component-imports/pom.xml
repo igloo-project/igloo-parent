@@ -30,6 +30,11 @@
 			<artifactId>poi-ooxml</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+		</dependency>
+		
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
