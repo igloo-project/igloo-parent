@@ -57,8 +57,9 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		// Query to list the matching linkwrappers (may be more than <batchsize>)
 		query.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.url.lower().in(nextUrlsToCheckSubquery))
-				// Only links with the following statuses are to be checked
-				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.DEAD_LINK, ExternalLinkStatus.DELETED))
+				// Only links without the following statuses are to be checked
+				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.DEAD_LINK, ExternalLinkStatus.DELETED,
+						ExternalLinkStatus.IGNORED))
 				.orderBy(qExternalLinkWrapper.id.asc());
 		
 		return Multimaps.index(query.list(qExternalLinkWrapper), new Function<ExternalLinkWrapper, String>() {
