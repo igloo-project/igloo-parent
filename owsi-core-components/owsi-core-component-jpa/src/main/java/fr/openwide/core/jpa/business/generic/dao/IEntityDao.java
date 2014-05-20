@@ -11,4 +11,7 @@ public interface IEntityDao {
 	
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference);
 	
+	void flush();
+	
+	void clear();
 }
