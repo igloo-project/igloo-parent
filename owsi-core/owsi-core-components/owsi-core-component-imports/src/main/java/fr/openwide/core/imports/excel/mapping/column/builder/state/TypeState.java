@@ -1,6 +1,7 @@
 package fr.openwide.core.imports.excel.mapping.column.builder.state;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -43,6 +44,8 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 	public abstract LongState<TSheet, TRow, TCell, TCellReference> asLong();
 	
 	public abstract DoubleState<TSheet, TRow, TCell, TCellReference> asDouble();
+	
+	public abstract BigDecimalState<TSheet, TRow, TCell, TCellReference> asBigDecimal();
 	
 	public StringState<TSheet, TRow, TCell, TCellReference> asString() {
 		return asString(new DefaultNumericFormatSupplier());
@@ -115,6 +118,17 @@ public abstract class TypeState<TSheet, TRow, TCell, TCellReference> {
 			return new DoubleState<TSheet, TRow, TCell, TCellReference>() {
 				@Override
 				protected TypeStateSwitcher<Double> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+		
+		@Override
+		public BigDecimalState<TSheet, TRow, TCell, TCellReference> toBigDecimal(Function<? super T, BigDecimal> function) {
+			final TypeStateSwitcher<BigDecimal> switcher = newSwitcher(function);
+			return new BigDecimalState<TSheet, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<BigDecimal> getStateSwitcher() {
 					return switcher;
 				}
 			};

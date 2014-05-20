@@ -14,6 +14,7 @@ public abstract class IntegerState<TSheet, TRow, TCell, TCellReference> extends 
 		IntegerState<TSheet, TRow, TCell, TCellReference>,
 		LongState<TSheet, TRow, TCell, TCellReference>,
 		DoubleState<TSheet, TRow, TCell, TCellReference>,
+		BigDecimalState<TSheet, TRow, TCell, TCellReference>,
 		StringState<TSheet, TRow, TCell, TCellReference>
 		>
 		implements ColumnFunctionBuildState<TSheet, TRow, TCell, TCellReference, Integer> {

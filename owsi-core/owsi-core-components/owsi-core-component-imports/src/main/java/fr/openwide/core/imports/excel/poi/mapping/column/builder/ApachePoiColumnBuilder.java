@@ -18,6 +18,7 @@ import fr.openwide.core.imports.excel.mapping.AbstractExcelImportColumnSet;
 import fr.openwide.core.imports.excel.mapping.column.builder.AbstractColumnBuilder;
 import fr.openwide.core.imports.excel.mapping.column.builder.IExcelImportColumnMapper;
 import fr.openwide.core.imports.excel.mapping.column.builder.MappingConstraint;
+import fr.openwide.core.imports.excel.mapping.column.builder.state.BigDecimalState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.DateState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.DoubleState;
 import fr.openwide.core.imports.excel.mapping.column.builder.state.IntegerState;
@@ -57,7 +58,7 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 		
 		@Override
 		public LongState<Sheet, Row, Cell, CellReference> asLong() {
-			return asDouble().toLong();
+			return asDouble().toLong(); // Potential loss of data, but we cannot do better using the main API
 		}
 		
 		@Override
@@ -77,6 +78,11 @@ public class ApachePoiColumnBuilder extends AbstractColumnBuilder<Sheet, Row, Ce
 					}
 				}
 			});
+		}
+		
+		@Override
+		public BigDecimalState<Sheet, Row, Cell, CellReference> asBigDecimal() {
+			return asDouble().toBigDecimal(); // Potential loss of data, but we cannot do better using the main API
 		}
 
 		@Override
