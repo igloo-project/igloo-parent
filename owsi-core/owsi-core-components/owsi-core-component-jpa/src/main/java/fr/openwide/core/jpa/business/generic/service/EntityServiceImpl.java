@@ -25,4 +25,14 @@ public class EntityServiceImpl implements IEntityService {
 		return entityDao.getEntity(reference);
 	}
 
+	@Override
+	public void flush() {
+		entityDao.flush();
+	}
+
+	@Override
+	public void clear() {
+		entityDao.clear();
+	}
+
 }

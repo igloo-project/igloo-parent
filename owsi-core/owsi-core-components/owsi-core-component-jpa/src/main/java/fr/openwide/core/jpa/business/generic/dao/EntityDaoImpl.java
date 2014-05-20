@@ -26,5 +26,15 @@ public class EntityDaoImpl implements IEntityDao {
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference) {
 		return getEntity(reference.getEntityClass(), reference.getEntityId());
 	}
+	
+	@Override
+	public void flush() {
+		entityManager.flush();
+	}
+	
+	@Override
+	public void clear() {
+		entityManager.clear();
+	}
 
 }

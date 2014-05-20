@@ -77,12 +77,16 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<String, GenericEntity<Long, ?>>>();
-		
+
+		LOGGER.info("Importing {}", REFERENCE_DATA_FILE);
 		Workbook genericListItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
 		importGenericListItems(idsMapping, genericListItemWorkbook);
-		
+		LOGGER.info("Import of {} complete", REFERENCE_DATA_FILE);
+
+		LOGGER.info("Importing {}", BUSINESS_DATA_FILE);
 		Workbook businessItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
+		LOGGER.info("Import of {} complete", BUSINESS_DATA_FILE);
 		
 		importFiles(directory, idsMapping);
 		
