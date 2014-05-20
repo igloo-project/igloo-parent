@@ -1,6 +1,8 @@
 package fr.openwide.core.commons.util.functional.builder.function;
 
-public interface LongFunctionBuildState
+import java.math.BigDecimal;
+
+public interface BigDecimalFunctionBuildState
 		<
 		TBuildResult,
 		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
@@ -11,6 +13,6 @@ public interface LongFunctionBuildState
 		TBigDecimalState extends BigDecimalFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
 		TStringState extends StringFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>
 		>
-		extends NumberFunctionBuildState<TBuildResult, Long, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState> {
+		extends NumberFunctionBuildState<TBuildResult, BigDecimal, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState> {
 	
 }
