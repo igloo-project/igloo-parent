@@ -1,46 +1,46 @@
 // Select2 styles override
 body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par défaut.
-		
-		.select2-container.select2-container-multi {
-			.select2-choices .select2-search-choice {
-				color: @select2-multiple-choice-color;
-				background-color: @select2-multiple-choice-bg;
-				border: 1px solid @select2-multiple-choice-border-color;
-				border:none;
+	.select2-container.select2-container-multi {
+		.select2-choices .select2-search-choice {
+			color: @select2-multiple-choice-color;
+			background-color: @select2-multiple-choice-bg;
+			border: 1px solid @select2-multiple-choice-border-color;
+			border:none;
+			
+			padding-left: 3px;
+			
+			> div {
+				display: inline-block;
+				padding: 0 6px;
+			}
+			
+			.select2-search-choice-close {
+				padding: 0px;
+				margin-right: 0px;
+				color: @select2-multiple-choice-close-color;
 				
-				padding-left: 3px;
+				// Annulation style naturel de select2
+				position: static;
+				background: none;
+				width: auto;
+				font-size: 1em;
 				
-				> div {
-					display: inline-block;
-					padding: 0 6px;
-				}
+				// fa
+				display: inline-block;
+				font-family: FontAwesome;
+				font-style: normal;
+				font-weight: normal;
+				line-height: 1;
 				
-				.select2-search-choice-close {
-					padding: 0px;
-					margin-right: 0px;
-					color: @select2-multiple-choice-close-color;
-					
-					// Annulation style naturel de select2
-					position: static;
-					background: none;
-					width: auto;
-					font-size: 1em;
-					
-					// fa
-					display: inline-block;
-					font-family: FontAwesome;
-					font-style: normal;
-					font-weight: normal;
-					line-height: 1;
-					
-					// fa-times-circle
-					&:before {
-						content: @fa-var-times-circle;
-					}
+				// fa-times-circle
+				&:before {
+					content: @fa-var-times-circle;
 				}
 			}
 		}
-		
+	}
+	
+	.select2-drop {
 		&.select2-drop-mini {
 			min-width: 60px;
 			max-width: 60px;
@@ -75,4 +75,5 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 			min-width: 800px;
 			max-width: 800px;
 		}
+	}
 }
