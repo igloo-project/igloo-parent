@@ -26,7 +26,8 @@ public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Shee
 	
 	@Override
 	public boolean sheetHasContent(Sheet sheet) {
-		return sheet.getRow(sheet.getFirstRowNum()) != null;
+		// Use rowIterator() instead of iterator() in order to only consider the rows that are actually defined
+		return sheet.rowIterator().hasNext();
 	}
 	
 	@Override
@@ -35,8 +36,10 @@ public class ApachePoiExcelImportNavigator implements IExcelImportNavigator<Shee
 			return false;
 		}
 		
-		for (Cell cell : row) {
-			if (cellHasContent(cell)) {
+		// Use cellIterator() instead of iterator() in order to only consider the cells that are actually defined
+		Iterator<Cell> iterator = row.cellIterator();
+		while (iterator.hasNext()) {
+			if (cellHasContent(iterator.next())) {
 				return true;
 			}
 		}
