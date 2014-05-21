@@ -55,12 +55,16 @@ public class MappedExcelImportColumnDefinitionImpl<TSheet, TRow, TCell, TCellRef
 
 	@Override
 	public TValue getMandatoryValue(TRow row) {
-		TCellReference cellReference = getCellReference(row);
-		TCell cell = navigator.getCell(sheet, cellReference);
-		TValue value = cellToValueFunction.apply(cell);
+		TValue value = getValue(row);
 		if (!mandatoryValuePredicate.apply(value)) {
 			return null;
 		}
 		return value;
+	}
+	
+	@Override
+	public boolean hasContent(TRow row) {
+		TValue value = getValue(row);
+		return mandatoryValuePredicate.apply(value);
 	}
 }
