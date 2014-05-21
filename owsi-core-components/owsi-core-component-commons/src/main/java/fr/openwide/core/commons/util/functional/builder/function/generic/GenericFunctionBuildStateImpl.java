@@ -1,9 +1,11 @@
 package fr.openwide.core.commons.util.functional.builder.function.generic;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.common.base.Function;
 
+import fr.openwide.core.commons.util.functional.builder.function.BigDecimalFunctionBuildState;
 import fr.openwide.core.commons.util.functional.builder.function.BooleanFunctionBuildState;
 import fr.openwide.core.commons.util.functional.builder.function.DateFunctionBuildState;
 import fr.openwide.core.commons.util.functional.builder.function.DoubleFunctionBuildState;
@@ -16,15 +18,16 @@ public abstract class GenericFunctionBuildStateImpl
 		<
 		TBuildResult,
 		TCurrentType,
-		TStateSwitcher extends FunctionBuildStateSwitcher<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
-		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
-		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>, 
-		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
-		TLongState extends LongFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
-		TDoubleState extends DoubleFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>,
-		TStringState extends StringFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState>
+		TStateSwitcher extends FunctionBuildStateSwitcher<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
+		TBooleanState extends BooleanFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
+		TDateState extends DateFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>, 
+		TIntegerState extends IntegerFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
+		TLongState extends LongFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
+		TDoubleState extends DoubleFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
+		TBigDecimalState extends BigDecimalFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>,
+		TStringState extends StringFunctionBuildState<?, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState>
 		>
-		implements FunctionBuildState<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TStringState> {
+		implements FunctionBuildState<TBuildResult, TCurrentType, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState> {
 	
 	protected abstract TStateSwitcher getStateSwitcher();
 
@@ -46,6 +49,11 @@ public abstract class GenericFunctionBuildStateImpl
 	@Override
 	public TDoubleState toDouble(Function<? super TCurrentType, Double> function) {
 		return getStateSwitcher().toDouble(function);
+	}
+	
+	@Override
+	public TBigDecimalState toBigDecimal(Function<? super TCurrentType, BigDecimal> function) {
+		return getStateSwitcher().toBigDecimal(function);
 	}
 
 	@Override

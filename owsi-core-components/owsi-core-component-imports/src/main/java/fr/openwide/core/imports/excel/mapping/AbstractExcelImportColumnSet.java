@@ -224,6 +224,10 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 			this.sheetContext = sheetContext;
 			this.row = row;
 		}
+		
+		public boolean hasContent() {
+			return sheetContext.navigator.rowHasContent(row);
+		}
 
 		public <TValue> CellContext<TValue> cell(Column<TValue> columnDefinition) {
 			return new CellContext<TValue>(sheetContext, this, sheetContext.getMappedColumn(columnDefinition));
@@ -282,6 +286,10 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 				missingValue(error);
 			}
 			return value;
+		}
+
+		public boolean hasContent() {
+			return mappedColumn.hasContent(rowContext.row);
 		}
 		
 		public void missingValue(String error) throws ExcelImportContentException {

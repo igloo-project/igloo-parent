@@ -108,6 +108,41 @@ public final class Functions2 {
 	}
 	
 	/**
+	 * Same as {@link Functions#forMap(Map, Object)}, except that the default value is defined as a function of the unknown key.
+	 */
+	public static <K, V> Function<K, V> forMap(Map<? super K, ? extends V> map, Function<? super K, ? extends V> defaultValueFunction) {
+		return new ForMapFunction<>(map, defaultValueFunction);
+	}
+	
+	private static final class ForMapFunction<K, V> implements Function<K, V>, Serializable {
+		
+		private static final long serialVersionUID = 1409896188722279336L;
+		
+		private final Map<? super K, ? extends V> map;
+		private final Function<? super K, ? extends V> defaultValueFunction;
+
+		public ForMapFunction(Map<? super K, ? extends V> map, Function<? super K, ? extends V> defaultValueFunction) {
+			super();
+			this.map = map;
+			this.defaultValueFunction = defaultValueFunction;
+		}
+
+		@Override
+		public V apply(K key) {
+			if (map.containsKey(key)) {
+				return map.get(key);
+			} else {
+				return defaultValueFunction.apply(key);
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return "forMap(" + map + ", " + defaultValueFunction + ")";
+		}
+	}
+	
+	/**
 	 * @return A function that returns its argument if {@code validValuePredicate.apply(argument)} and {@code defaultValueFunction.apply(argument)} otherwise.
 	 */
 	public static <T> Function<T, T> defaultValue(Predicate<? super T> validValuePredicate, Function<? super T, ? extends T> defaultValueFunction) {

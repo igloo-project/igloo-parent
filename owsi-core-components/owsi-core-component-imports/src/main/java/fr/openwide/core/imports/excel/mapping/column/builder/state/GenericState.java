@@ -16,6 +16,7 @@ public abstract class GenericState<TSheet, TRow, TCell, TCellReference, TCurrent
 		IntegerState<TSheet, TRow, TCell, TCellReference>,
 		LongState<TSheet, TRow, TCell, TCellReference>,
 		DoubleState<TSheet, TRow, TCell, TCellReference>,
+		BigDecimalState<TSheet, TRow, TCell, TCellReference>,
 		StringState<TSheet, TRow, TCell, TCellReference>
 		>
 		implements ColumnFunctionBuildState<TSheet, TRow, TCell, TCellReference, TCurrentType> {

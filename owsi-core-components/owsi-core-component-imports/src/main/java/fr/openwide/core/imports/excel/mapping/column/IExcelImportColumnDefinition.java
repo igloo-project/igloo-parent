@@ -31,6 +31,13 @@ public interface IExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReferenc
 		 */
 		TValue getMandatoryValue(TRow row);
 		
+		/**
+		 * @return True if the value satisfies "mandatory requirements" for the value type, false otherwise.
+		 * <p>In general, this means that the value is not null.
+		 * In some cases though, the value must respect some additional requirements. For instance, when dealing whith strings, a cell containing an empty string would be considered as having no content.
+		 */
+		boolean hasContent(TRow row);
+		
 	}
 
 }

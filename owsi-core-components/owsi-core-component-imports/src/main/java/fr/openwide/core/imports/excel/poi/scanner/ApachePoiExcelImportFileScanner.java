@@ -1,12 +1,18 @@
 package fr.openwide.core.imports.excel.poi.scanner;
 
+import static org.apache.commons.io.filefilter.FileFilterUtils.and;
+import static org.apache.commons.io.filefilter.FileFilterUtils.fileFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.nameFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.notFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.or;
+import static org.apache.commons.io.filefilter.FileFilterUtils.prefixFileFilter;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -34,9 +40,16 @@ public class ApachePoiExcelImportFileScanner implements IExcelImportFileScanner<
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApachePoiExcelImportFileScanner.class);
 	
 	private static final String HIDDEN_FILE_PREFIX = ".";
+	private static final String THUMBS_DB_NAME = "Thumbs.db";
 
-	// Default is to scan all files except hidden files and files in hidden directories.
-	public static final FileFilter DEFAULT_DIRECTORY_CHILD_FILTER = FileFilterUtils.notFileFilter(FileFilterUtils.prefixFileFilter(HIDDEN_FILE_PREFIX));
+	// Default is to scan all files except: hidden files, files in hidden directories and files named "Thumbs.db".
+	public static final FileFilter DEFAULT_DIRECTORY_CHILD_FILTER = notFileFilter(or(
+			prefixFileFilter(HIDDEN_FILE_PREFIX),
+			and(
+				fileFileFilter(),
+				nameFileFilter(THUMBS_DB_NAME)
+			)
+	));
 	
 	protected FileFilter getDirectoryChildFilter() {
 		return DEFAULT_DIRECTORY_CHILD_FILTER;

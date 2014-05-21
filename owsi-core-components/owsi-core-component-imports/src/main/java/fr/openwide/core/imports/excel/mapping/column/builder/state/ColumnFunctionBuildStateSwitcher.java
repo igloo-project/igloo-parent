@@ -15,6 +15,7 @@ public interface ColumnFunctionBuildStateSwitcher<TSheet, TRow, TCell, TCellRefe
 		IntegerState<TSheet, TRow, TCell, TCellReference>,
 		LongState<TSheet, TRow, TCell, TCellReference>,
 		DoubleState<TSheet, TRow, TCell, TCellReference>,
+		BigDecimalState<TSheet, TRow, TCell, TCellReference>,
 		StringState<TSheet, TRow, TCell, TCellReference>
 		> {
 	
