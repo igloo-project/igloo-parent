@@ -111,7 +111,7 @@ public final class Functions2 {
 	 * Same as {@link Functions#forMap(Map, Object)}, except that the default value is defined as a function of the unknown key.
 	 */
 	public static <K, V> Function<K, V> forMap(Map<? super K, ? extends V> map, Function<? super K, ? extends V> defaultValueFunction) {
-		return new ForMapFunction<>(map, defaultValueFunction);
+		return new ForMapFunction<K, V>(map, defaultValueFunction);
 	}
 	
 	private static final class ForMapFunction<K, V> implements Function<K, V>, Serializable {
