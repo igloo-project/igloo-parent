@@ -24,7 +24,9 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	 */
 	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
 	
-	private ChoicesWrapperModel<T> choicesWrapperModel;
+	private final ChoicesWrapperModel<T> choicesWrapperModel;
+	
+	private final Select2Behavior<T, T> select2Behavior;
 	
 	protected GenericSelect2DropDownSingleChoice(String id, IModel<T> model, IModel<? extends List<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
@@ -35,7 +37,7 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 		setChoiceRenderer(renderer);
 		setNullValid(true);
 		
-		Select2Behavior<T, T> select2Behavior = Select2Behavior.forChoice(this);
+		select2Behavior = Select2Behavior.forChoice(this);
 		fillSelect2Settings(select2Behavior.getSettings());
 		add(select2Behavior);
 	}
@@ -52,6 +54,14 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 				return "width: " + width.getWidth() + "px";
 			}
 		}));
+	}
+	
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+		if (isRequired()) {
+			select2Behavior.getSettings().setAllowClear(false);
+		}
 	}
 	
 	protected void fillSelect2Settings(Select2Settings settings) {
