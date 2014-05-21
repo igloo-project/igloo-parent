@@ -29,7 +29,9 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	 */
 	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
 	
-	private MultipleChoicesWrapperModel<T> choicesWrapperModel;
+	private final MultipleChoicesWrapperModel<T> choicesWrapperModel;
+	
+	private final Select2Behavior<T, T> select2Behavior;
 	
 	protected <C extends Collection<T>> GenericSelect2DropDownMultipleChoice(
 			String id, IModel<C> collectionModel, Supplier<? extends C> collectionSupplier,
@@ -43,7 +45,7 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		setSelectedObjectForcedInChoices(true);
 		setChoiceRenderer(renderer);
 		
-		Select2Behavior<T, T> select2Behavior = Select2Behavior.forChoice(this);
+		select2Behavior = Select2Behavior.forChoice(this);
 		fillSelect2Settings(select2Behavior.getSettings());
 		add(select2Behavior);
 	}
@@ -60,6 +62,14 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 				return "width: " + width.getWidth() + "px";
 			}
 		}));
+	}
+	
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+		if (isRequired()) {
+			select2Behavior.getSettings().setAllowClear(false);
+		}
 	}
 	
 	protected void fillSelect2Settings(Select2Settings settings) {
