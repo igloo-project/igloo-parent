@@ -2,7 +2,6 @@ package fr.openwide.core.imports.csv.scanner;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +11,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang.Validate;
 
 import au.com.bytecode.opencsv.CSVReader;
+import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.imports.csv.location.OpenCsvImportNavigator;
 import fr.openwide.core.imports.csv.model.CsvCell;
 import fr.openwide.core.imports.csv.model.CsvCellReference;
@@ -59,10 +59,6 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvSheet,
 		return new InputStreamReader(inputStream);
 	}
 	
-	protected Reader createReader(File file, String filename) throws IOException {
-		return new FileReader(file);
-	}
-	
 	protected CSVReader createCsvReader(Reader reader, String filename) {
 		return new CSVReader(reader);
 	}
@@ -75,7 +71,8 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvSheet,
 		OpenCsvImportNavigator navigator = new OpenCsvImportNavigator(filename);
 		
 		try (
-				Reader reader = createReader(file, filename);
+				InputStream stream = new TFileInputStream(file);
+				Reader reader = createReader(stream, filename);
 				CSVReader csvReader = createCsvReader(reader, filename)
 		) {
 			CsvSheet sheet = new CsvSheet(csvReader.readAll());
