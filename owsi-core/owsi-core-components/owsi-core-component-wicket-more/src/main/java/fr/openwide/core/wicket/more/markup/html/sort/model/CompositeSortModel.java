@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
+import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink;
 
 public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyModel<Map<T, SortOrder>> {
 	
@@ -23,34 +24,65 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	
 	private final Map<T, SortOrder> defaultSort;
 	
+	private final Map<T, SortOrder> stabilizationSort;
+	
+	private static final <T extends ISort<?>> ImmutableMap<T, SortOrder> toMap(T item) {
+		return item == null ? ImmutableMap.<T, SortOrder>of() : ImmutableMap.of(item, item.getDefaultOrder());
+	}
+	
 	public CompositeSortModel(CompositingStrategy compositingStrategy) {
-		this(compositingStrategy, (T) null);
+		this(compositingStrategy, (T) null, null);
+	}
+
+	/**
+	 * @see CompositeSortModel#CompositeSortModel(CompositingStrategy, Map, Map)
+	 */
+	public CompositeSortModel(CompositingStrategy compositingStrategy, T defaultAndStabilizationSort) {
+		this(compositingStrategy, defaultAndStabilizationSort, defaultAndStabilizationSort);
+	}
+
+	/**
+	 * @see CompositeSortModel#CompositeSortModel(CompositingStrategy, Map, Map)
+	 */
+	public CompositeSortModel(CompositingStrategy compositingStrategy, T defaultSort, T concatenatedSort) {
+		this(compositingStrategy, toMap(defaultSort), toMap(concatenatedSort));
 	}
 	
-	public CompositeSortModel(CompositingStrategy compositingStrategy, T defaultSort) {
-		this(compositingStrategy, defaultSort == null ? ImmutableMap.<T, SortOrder>of() : ImmutableMap.of(defaultSort, defaultSort.getDefaultOrder()));
-	}
-	
-	public CompositeSortModel(CompositingStrategy compositingStrategy, Map<T, SortOrder> defaultSort) {
+	/**
+	 * @param defaultSort The sort to be used when no sort was selected. This will be displayed when using {@link TableSortLink}s if no sort was selected.
+	 * @param stabilizationSort The sort to be performed after the selected sort was performed, in order to make sure the elements order will not depend
+	 * on some implementation detail. This will be ignored when using {@link TableSortLink}s.
+	 */
+	public CompositeSortModel(CompositingStrategy compositingStrategy, Map<T, SortOrder> defaultSort, Map<T, SortOrder> stabilizationSort) {
 		this.compositingStrategy = compositingStrategy;
 		this.defaultSort = ImmutableMap.copyOf(defaultSort);
+		this.stabilizationSort = ImmutableMap.copyOf(stabilizationSort);
 	}
 
 	@Override
 	public Map<T, SortOrder> getObject() {
+		Map<T, SortOrder> selectedSort = getSelectedSort();
 		return ImmutableMap.<T, SortOrder>builder()
-				.putAll(map)
-				.putAll(Maps.filterKeys(defaultSort, not(in(map.keySet()))))
+				.putAll(selectedSort)
+				.putAll(Maps.filterKeys(stabilizationSort, not(in(selectedSort.keySet()))))
 				.build();
+	}
+	
+	public Map<T, SortOrder> getSelectedSort() {
+		if (map.isEmpty()) {
+			return defaultSort;
+		} else {
+			return map;
+		}
 	}
 	
 	/**
 	 * Used to highlight the sort links if the sort is enabled.
 	 * 
-	 * We only highlight the current selection, not the default sort added in the CompositeSortModel.
+	 * We only highlight the current selection (or the default sort if there is no selection). The concatenated sort is ignored here.
 	 */
 	public SortOrder getOrder(T sort) {
-		return map.get(sort);
+		return getSelectedSort().get(sort);
 	}
 	
 	public void setOrder(T sort, SortOrder order) {
