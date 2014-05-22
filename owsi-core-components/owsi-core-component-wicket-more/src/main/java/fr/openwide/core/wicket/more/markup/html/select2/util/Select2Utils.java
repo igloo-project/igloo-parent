@@ -42,6 +42,11 @@ public final class Select2Utils {
 		settings.setAllowClear(true);
 	}
 	
+	public static void setRequiredSettings(Select2Settings settings) {
+		settings.setPlaceholderKey("common.select2.required.placeholder");
+		settings.setAllowClear(false);
+	}
+	
 	public static void setDefaultAjaxSettings(Select2Settings settings) {
 		setDefaultSettings(settings);
 		settings.setMinimumInputLength(AJAX_DEFAULT_MINIMUM_INPUT_LENGTH);
