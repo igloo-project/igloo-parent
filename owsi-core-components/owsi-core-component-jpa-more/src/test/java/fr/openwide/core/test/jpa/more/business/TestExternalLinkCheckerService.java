@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkErrorType;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
@@ -36,43 +38,37 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		Long id7 = null;
 		Long id8 = null;
 		Long id9 = null;
+		Long id10 = null;
+		Long id11 = null;
+		Long id12 = null;
+		Long id13 = null;
 		
 		{
-			ExternalLinkWrapper externalLink1 = new ExternalLinkWrapper("http://www.google.fr/");
-			externalLinkWrapperService.create(externalLink1);
-			id1 = externalLink1.getId();
+			id1 = createLink("http://www.google.fr/");
 			
-			ExternalLinkWrapper externalLink2 = new ExternalLinkWrapper("http://zzz.totototototo.zzz/totoz/");
-			externalLinkWrapperService.create(externalLink2);
-			id2 = externalLink2.getId();
+			id2 = createLink("http://zzz.totototototo.zzz/totoz/");
 			
-			ExternalLinkWrapper externalLink3 = new ExternalLinkWrapper("http://www.google.fr/tititototata");
-			externalLinkWrapperService.create(externalLink3);
-			id3 = externalLink3.getId();
+			id3 = createLink("http://www.google.fr/tititototata");
 			
-			ExternalLinkWrapper externalLink4 = new ExternalLinkWrapper("http://zzz.totototototo.zzz/totoz/");
-			externalLinkWrapperService.create(externalLink4);
-			id4 = externalLink4.getId();
+			id4 = createLink("http://zzz.totototototo.zzz/totoz/");
 			
-			ExternalLinkWrapper externalLink5 = new ExternalLinkWrapper("http://location-gîte-ardeche.fr/index.html");
-			externalLinkWrapperService.create(externalLink5);
-			id5 = externalLink5.getId();
+			id5 = createLink("http://location-gîte-ardeche.fr/index.html");
 			
-			ExternalLinkWrapper externalLink6 = new ExternalLinkWrapper("http: http://example.com/");
-			externalLinkWrapperService.create(externalLink6);
-			id6 = externalLink6.getId();
+			id6 = createLink("http: http://example.com/");
 			
-			ExternalLinkWrapper externalLink7 = new ExternalLinkWrapper("http://62.210.184.140/V2/Partenaires/00043/Images/Chalet 95/dheilly003.JPG");
-			externalLinkWrapperService.create(externalLink7);
-			id7 = externalLink7.getId();
+			id7 = createLink("http://62.210.184.140/V2/Partenaires/00043/Images/Chalet 95/dheilly003.JPG");
 			
-			ExternalLinkWrapper externalLink8 = new ExternalLinkWrapper("http://hotel.reservit.com/reservit/avail-info.php?hotelid=104461&userid=4340d8abb651c8ca20e6cd57a844f5708354&__utma=1.804870725.1361370840.1361370840.1361370840.1&__utmc=1&__utmz=1.1361370840.1.1.utmcsr=%28direct%29|utmccn=%28direct%29|utmcmd=%28none%29");
-			externalLinkWrapperService.create(externalLink8);
-			id8 = externalLink8.getId();
+			id8 = createLink("http://hotel.reservit.com/reservit/avail-info.php?hotelid=104461&userid=4340d8abb651c8ca20e6cd57a844f5708354&__utma=1.804870725.1361370840.1361370840.1361370840.1&__utmc=1&__utmz=1.1361370840.1.1.utmcsr=%28direct%29|utmccn=%28direct%29|utmcmd=%28none%29");
 			
-			ExternalLinkWrapper externalLink9 = new ExternalLinkWrapper("http://translate.googleusercontent.com/translate_c?client=tmpg&depth=1&hl=en&langpair=fr|en&rurl=translate.google.com&u=http://www.agence-bellemontagne.com/index.php%3Foption%3Dcom_content%26view%3Darticle%26id%3D49%26Itemid%3D51&usg=ALkJrhgFkVHObqq4-hABxmDFkFE00p369A");
-			externalLinkWrapperService.create(externalLink9);
-			id9 = externalLink9.getId();
+			id9 = createLink("http://translate.googleusercontent.com/translate_c?client=tmpg&depth=1&hl=en&langpair=fr|en&rurl=translate.google.com&u=http://www.agence-bellemontagne.com/index.php%3Foption%3Dcom_content%26view%3Darticle%26id%3D49%26Itemid%3D51&usg=ALkJrhgFkVHObqq4-hABxmDFkFE00p369A");
+			
+			id10 = createLink("http://drome-hotel.for-system.com/index.aspx?Globales/ListeIdFournisseur=20716");
+			
+			id11 = createLink("http://cyclosyennois.free.fr/");
+			
+			id12 = createLink("http://lacroisee26.com/");
+			
+			id13 = createLink("http://ledauphine.com/");
 		}
 		
 		Date beforeFirstBatchDate = new Date();
@@ -85,12 +81,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		entityManagerUtils.getEntityManager().clear();
 		
 		{
-			ExternalLinkWrapper externalLink1 = externalLinkWrapperService.getById(id1);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink1.getStatus());
-			Assert.assertEquals(0, externalLink1.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink1.getLastStatusCode());
-			Assert.assertNull(externalLink1.getLastErrorType());
-			Assert.assertTrue(externalLink1.getLastCheckDate().after(beforeFirstBatchDate));
+			checkStatusOK(id1, beforeFirstBatchDate);
 
 			ExternalLinkWrapper externalLink2 = externalLinkWrapperService.getById(id2);
 			Assert.assertEquals(ExternalLinkStatus.OFFLINE, externalLink2.getStatus());
@@ -114,13 +105,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(externalLink2.getLastErrorType(), externalLink4.getLastErrorType());
 			Assert.assertEquals(externalLink2.getLastCheckDate(), externalLink2.getLastCheckDate());
 			
-			// IDN
-			ExternalLinkWrapper externalLink5 = externalLinkWrapperService.getById(id5);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink5.getStatus());
-			Assert.assertEquals(0, externalLink5.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink5.getLastStatusCode());
-			Assert.assertNull(externalLink5.getLastErrorType());
-			Assert.assertTrue(externalLink5.getLastCheckDate().after(beforeFirstBatchDate));
+			checkStatusOK(id5, beforeFirstBatchDate);
 			
 			// Invalid URL
 			ExternalLinkWrapper externalLink6 = externalLinkWrapperService.getById(id6);
@@ -128,28 +113,15 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(0, externalLink6.getConsecutiveFailures());
 			Assert.assertNull(externalLink6.getLastStatusCode());
 			Assert.assertEquals(ExternalLinkErrorType.URI_SYNTAX, externalLink6.getLastErrorType());
-			Assert.assertTrue(externalLink5.getLastCheckDate().after(beforeFirstBatchDate));
+			Assert.assertTrue(externalLink6.getLastCheckDate().after(beforeFirstBatchDate));
 			
-			// Link with non escaped space
-			ExternalLinkWrapper externalLink7 = externalLinkWrapperService.getById(id7);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink7.getStatus());
-			Assert.assertEquals(0, externalLink7.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink7.getLastStatusCode());
-			Assert.assertNull(externalLink7.getLastErrorType());
-			Assert.assertTrue(externalLink7.getLastCheckDate().after(beforeFirstBatchDate));
-			
-			ExternalLinkWrapper externalLink8 = externalLinkWrapperService.getById(id8);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink8.getStatus());
-			Assert.assertEquals(0, externalLink8.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink8.getLastStatusCode());
-			Assert.assertNull(externalLink8.getLastErrorType());
-			Assert.assertTrue(externalLink8.getLastCheckDate().after(beforeFirstBatchDate));
-			
-			ExternalLinkWrapper externalLink9 = externalLinkWrapperService.getById(id9);
-			Assert.assertEquals(ExternalLinkStatus.IGNORED, externalLink9.getStatus());
-			Assert.assertEquals(0, externalLink9.getConsecutiveFailures());
-			Assert.assertNull(externalLink9.getLastErrorType());
-			Assert.assertTrue(externalLink9.getLastCheckDate().after(beforeFirstBatchDate));
+			checkStatusOK(id7, beforeFirstBatchDate);
+			checkStatusOK(id8, beforeFirstBatchDate);
+			checkStatusOK(id9, beforeFirstBatchDate);
+			checkStatusOK(id10, beforeFirstBatchDate);
+			checkStatusOK(id11, beforeFirstBatchDate);
+			checkStatusOK(id12, beforeFirstBatchDate);
+			checkStatusOK(id13, beforeFirstBatchDate);
 		}
 		
 		Date beforeSecondBatchDate = new Date();
@@ -162,12 +134,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		entityManagerUtils.getEntityManager().clear();
 		
 		{
-			ExternalLinkWrapper externalLink1 = externalLinkWrapperService.getById(id1);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink1.getStatus());
-			Assert.assertEquals(0, externalLink1.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink1.getLastStatusCode());
-			Assert.assertNull(externalLink1.getLastErrorType());
-			Assert.assertTrue(externalLink1.getLastCheckDate().after(beforeSecondBatchDate));
+			checkStatusOK(id1, beforeSecondBatchDate);
 
 			ExternalLinkWrapper externalLink2 = externalLinkWrapperService.getById(id2);
 			Assert.assertEquals(ExternalLinkStatus.OFFLINE, externalLink2.getStatus());
@@ -191,13 +158,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(externalLink2.getLastErrorType(), externalLink4.getLastErrorType());
 			Assert.assertEquals(externalLink2.getLastCheckDate(), externalLink2.getLastCheckDate());
 			
-			// IDN
-			ExternalLinkWrapper externalLink5 = externalLinkWrapperService.getById(id5);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink5.getStatus());
-			Assert.assertEquals(0, externalLink5.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink5.getLastStatusCode());
-			Assert.assertNull(externalLink5.getLastErrorType());
-			Assert.assertTrue(externalLink5.getLastCheckDate().after(beforeSecondBatchDate));
+			checkStatusOK(id5, beforeSecondBatchDate);
 			
 			// Invalid URL
 			ExternalLinkWrapper externalLink6 = externalLinkWrapperService.getById(id6);
@@ -205,23 +166,34 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(0, externalLink6.getConsecutiveFailures());
 			Assert.assertNull(externalLink6.getLastStatusCode());
 			Assert.assertEquals(ExternalLinkErrorType.URI_SYNTAX, externalLink6.getLastErrorType());
-			Assert.assertTrue(externalLink5.getLastCheckDate().after(beforeFirstBatchDate));
+			Assert.assertTrue(externalLink6.getLastCheckDate().after(beforeFirstBatchDate));
 			
-			// Link with non escaped space
-			ExternalLinkWrapper externalLink7 = externalLinkWrapperService.getById(id7);
-			Assert.assertEquals(ExternalLinkStatus.ONLINE, externalLink7.getStatus());
-			Assert.assertEquals(0, externalLink7.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_OK), externalLink7.getLastStatusCode());
-			Assert.assertNull(externalLink7.getLastErrorType());
-			Assert.assertTrue(externalLink7.getLastCheckDate().after(beforeSecondBatchDate));
-			
-			// This link should have been ignored
-			ExternalLinkWrapper externalLink9 = externalLinkWrapperService.getById(id9);
-			Assert.assertEquals(ExternalLinkStatus.IGNORED, externalLink9.getStatus());
-			Assert.assertEquals(0, externalLink9.getConsecutiveFailures());
-			Assert.assertNull(externalLink9.getLastErrorType());
-			Assert.assertTrue(externalLink9.getLastCheckDate().after(beforeFirstBatchDate));
+			checkStatusOK(id7, beforeSecondBatchDate);
 		}
+	}
+	
+	private Long createLink(String url) throws ServiceException, SecurityServiceException {
+		ExternalLinkWrapper externalLink = new ExternalLinkWrapper(url);
+		externalLinkWrapperService.create(externalLink);
+		return externalLink.getId();
+	}
+	
+	private void checkStatusOK(Long id8, Date beforeFirstBatchDate) {
+		checkStatus(id8, beforeFirstBatchDate,
+				ExternalLinkStatus.ONLINE, 0, Integer.valueOf(HttpStatus.SC_OK), null);
+	}
+
+	private void checkStatus(Long id8, Date beforeFirstBatchDate,
+			ExternalLinkStatus externalLinkStatus,
+			int consecutiveFailures,
+			Integer httpStatus,
+			ExternalLinkErrorType errorType) {
+		ExternalLinkWrapper externalLink8 = externalLinkWrapperService.getById(id8);
+		Assert.assertEquals(externalLinkStatus, externalLink8.getStatus());
+		Assert.assertEquals(consecutiveFailures, externalLink8.getConsecutiveFailures());
+		Assert.assertEquals(httpStatus, externalLink8.getLastStatusCode());
+		Assert.assertEquals(errorType, externalLink8.getLastErrorType());
+		Assert.assertTrue(externalLink8.getLastCheckDate().after(beforeFirstBatchDate));
 	}
 
 }

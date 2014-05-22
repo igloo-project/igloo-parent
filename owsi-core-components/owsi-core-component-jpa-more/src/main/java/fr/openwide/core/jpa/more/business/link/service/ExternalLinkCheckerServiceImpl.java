@@ -72,7 +72,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	 * we can put here some URLs known to fail. Otherwise, it's better to do it directly in the application.
 	 */
 	private List<Pattern> ignorePatterns = Lists.newArrayList(
-			Pattern.compile("^http://translate.googleusercontent.com/.*")
+			//Pattern.compile("^http://translate.googleusercontent.com/.*")
 	);
 	
 	@PostConstruct
@@ -142,8 +142,12 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		try {
 			uri = getURI(urlString);
 			
+			// We try a HEAD request
 			status = sendRequest(uri, true);
-			if (status != null && status.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
+			if (status != null && status.getStatusCode() != HttpStatus.SC_OK) {
+				// If the result of the HEAD request is not OK, we try a GET request
+				// Using HttpStatus.SC_METHOD_NOT_ALLOWED looked like a clever trick but a lot of sites return
+				// 400 or 500 errors for HEAD requests
 				status = sendRequest(uri, false);
 			}
 			if (status == null) {
@@ -221,9 +225,11 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	}
 
 	private void markAsInvalid(Collection<ExternalLinkWrapper> linkWrappers) throws ServiceException, SecurityServiceException {
+		Date checkDate = new Date();
 		for (ExternalLinkWrapper link : linkWrappers) {
 			link.setStatus(ExternalLinkStatus.DEAD_LINK);
 			link.setLastErrorType(ExternalLinkErrorType.URI_SYNTAX);
+			link.setLastCheckDate(checkDate);
 			externalLinkWrapperService.update(link);
 		}
 	}
