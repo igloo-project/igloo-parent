@@ -5,7 +5,7 @@ import org.hibernate.search.bridge.FieldBridge;
 import org.hibernate.search.bridge.LuceneOptions;
 import org.hibernate.search.bridge.StringBridge;
 
-import fr.openwide.core.jpa.hibernate.usertype.AbstractMaterializedStringValue;
+import fr.openwide.core.jpa.hibernate.usertype.AbstractMaterializedPrimitiveValue;
 
 public class MaterializedStringValueFieldBridge implements FieldBridge, StringBridge {
 
@@ -14,11 +14,15 @@ public class MaterializedStringValueFieldBridge implements FieldBridge, StringBr
 		if (object == null) {
 			return null;
 		}
-		if (!(object instanceof AbstractMaterializedStringValue)) {
-			throw new IllegalArgumentException("This FieldBridge only supports AbstractMaterializedStringValue properties.");
+		if (!(object instanceof AbstractMaterializedPrimitiveValue)) {
+			throw new IllegalArgumentException("This FieldBridge only supports AbstractMaterializedPrimitiveValue<String, ?> properties.");
 		}
-		AbstractMaterializedStringValue<?> materializedStringValue = (AbstractMaterializedStringValue<?>) object;
-		return materializedStringValue.getValue();
+		AbstractMaterializedPrimitiveValue<?, ?> materializedStringValue = (AbstractMaterializedPrimitiveValue<?, ?>) object;
+		Object value = materializedStringValue.getValue();
+		if (!(value instanceof String)) {
+			throw new IllegalArgumentException("This FieldBridge only supports AbstractMaterializedPrimitiveValue<String, ?> properties.");
+		}
+		return (String) value;
 	}
 
 	@Override

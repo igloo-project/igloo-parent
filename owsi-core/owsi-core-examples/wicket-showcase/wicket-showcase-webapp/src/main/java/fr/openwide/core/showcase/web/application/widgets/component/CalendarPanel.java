@@ -32,7 +32,6 @@ public class CalendarPanel extends Panel {
 	
 	private IModel<Date> monthModel;
 	
-	@SuppressWarnings("unchecked")
 	public CalendarPanel(String id) {
 		super(id);
 		
@@ -90,11 +89,11 @@ public class CalendarPanel extends Panel {
 		Calendar absoluteMinDate = GregorianCalendar.getInstance();
 		absoluteMinDate.add(Calendar.MONTH, -3);
 		beginDatePicker.add(new DatePickerSyncBehavior(
-				new DatePickerSync(beginDatePicker, null, endDatePicker)
+				new DatePickerSync(null, endDatePicker)
 						.addPrecedentsModels(Model.of(absoluteMinDate.getTime()))
 		));
 		endDatePicker.add(
-				new DatePickerSyncBehavior(new DatePickerSync(endDatePicker, beginDatePicker, null)
+				new DatePickerSyncBehavior(new DatePickerSync(beginDatePicker, null)
 						.addSuivantsModels(Model.of(absoluteMaxDate.getTime()))
 		));
 		

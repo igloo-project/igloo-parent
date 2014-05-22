@@ -24,7 +24,7 @@ import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
-import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -174,7 +174,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		});
 		
 		add(new Label("name", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
-		Component queue = new HideableLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId()));
+		Component queue = new CoreLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId())).hideIfEmpty();
 		add(queue, new PlaceholderContainer("defaultQueue").component(queue));
 		add(new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
 				DatePattern.SHORT_DATETIME));
@@ -183,7 +183,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		add(new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().endDate()),
 				DatePattern.SHORT_DATETIME));
 
-		add(new HideableLabel("result", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().result())));
+		add(new CoreLabel("result", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().result())).hideIfEmpty());
 
 		add(new Label("serializedTask", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
