@@ -8,11 +8,12 @@ import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.string.Strings;
 
-import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 
 public abstract class AbstractMonitoringPage extends Page {
 	
@@ -57,7 +58,7 @@ public abstract class AbstractMonitoringPage extends Page {
 			}
 		});
 		
-		add(new HideableLabel("message", getMessage()).setEscapeModelStrings(false));
+		add(new CoreLabel("message", Model.of(getMessage())).hideIfEmpty().setEscapeModelStrings(false));
 	}
 
 	@Override

@@ -20,6 +20,7 @@ package fr.openwide.core.wicket.more.markup.html.form;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.wicket.more.markup.html.form.impl.GenericListItemChoiceRenderer;
 import fr.openwide.core.wicket.more.markup.html.model.GenericListItemListModel;
@@ -30,7 +31,7 @@ public class GenericListItemDropDownChoice<T extends GenericListItem<? super T>>
 	public GenericListItemDropDownChoice(String id, IModel<T> model, Class<T> clazz) {
 		super(id);
 		setModel(model);
-		setChoices(new GenericListItemListModel<T>(clazz, true));
+		setChoices(new GenericListItemListModel<T>(clazz, EnabledFilter.ENABLED_ONLY));
 		setChoiceRenderer(GenericListItemChoiceRenderer.get());
 		setNullValid(true);
 	}

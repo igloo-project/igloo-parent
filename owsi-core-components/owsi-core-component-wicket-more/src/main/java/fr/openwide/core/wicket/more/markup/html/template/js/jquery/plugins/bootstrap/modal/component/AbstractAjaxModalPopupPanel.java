@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.iterator.ComponentHierarchyIterator;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
@@ -57,12 +57,12 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 		target.add(getContainer());
 		onShow(target);
 		if (resetInputOnShow) {
-			ComponentHierarchyIterator iterator = visitChildren(Form.class);
-			for (Component component : iterator) {
-				if (Form.class.isAssignableFrom(component.getClass())) {
-					((Form<?>) component).clearInput();
+			visitChildren(Form.class, new IVisitor<Form<?>, Void>() {
+				@Override
+				public void component(Form<?> component, IVisit<Void> visit) {
+					component.clearInput();
 				}
-			}
+			});
 		}
 		FeedbackUtils.refreshFeedback(target, getPage());
 	}
