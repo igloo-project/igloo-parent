@@ -68,12 +68,16 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	protected void onConfigure() {
 		super.onConfigure();
 		if (isRequired()) {
-			select2Behavior.getSettings().setAllowClear(false);
+			Select2Utils.setRequiredSettings(getSettings());
 		}
 	}
 	
 	protected void fillSelect2Settings(Select2Settings settings) {
 		Select2Utils.setDefaultSettings(settings);
+	}
+	
+	protected final Select2Settings getSettings() {
+		return select2Behavior.getSettings();
 	}
 	
 	public GenericSelect2DropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {

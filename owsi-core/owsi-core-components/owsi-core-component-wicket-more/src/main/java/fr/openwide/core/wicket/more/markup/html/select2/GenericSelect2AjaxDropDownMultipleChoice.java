@@ -52,7 +52,7 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2Multiple
 	protected void onConfigure() {
 		super.onConfigure();
 		if (isRequired()) {
-			getSettings().setAllowClear(false);
+			Select2Utils.setRequiredSettings(getSettings());
 		}
 	}
 

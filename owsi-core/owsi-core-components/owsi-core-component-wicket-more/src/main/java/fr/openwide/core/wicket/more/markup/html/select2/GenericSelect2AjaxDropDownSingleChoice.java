@@ -56,7 +56,7 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 	protected void onConfigure() {
 		super.onConfigure();
 		if (isRequired()) {
-			getSettings().setAllowClear(false);
+			Select2Utils.setRequiredSettings(getSettings());
 		}
 	}
 	
