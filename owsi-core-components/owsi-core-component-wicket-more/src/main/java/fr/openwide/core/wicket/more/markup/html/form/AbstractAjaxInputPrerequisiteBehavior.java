@@ -50,12 +50,19 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private final Collection<Component> attachedComponents = Lists.newArrayList();
 	
+	private boolean updatePrerequisiteModel = false;
+	
 	private transient /* Scope : request */ boolean processingPrerequisiteFieldChange = false;
 
 	public AbstractAjaxInputPrerequisiteBehavior(FormComponent<T> prerequisiteField) {
 		super();
 		Args.notNull(prerequisiteField, "prerequisiteField");
 		this.prerequisiteField = prerequisiteField;
+	}
+	
+	public AbstractAjaxInputPrerequisiteBehavior<T> setUpdatePrerequisiteModel(boolean updatePrerequisiteModel) {
+		this.updatePrerequisiteModel = updatePrerequisiteModel;
+		return this;
 	}
 	
 	private static class InputPrerequisiteAjaxEventBehavior extends AjaxEventBehavior {
@@ -171,6 +178,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				prerequisiteField.validate();
 				
 				if (isConvertedInputSatisfyingRequirements(prerequisiteField, prerequisiteField.getConvertedInput())) {
+					updateModelIfNecessary(prerequisiteField);
 					setUpAttachedComponent(component);
 				} else {
 					cleanDefaultModelObject(component);
@@ -184,6 +192,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				prerequisiteField.validate();
 				
 				if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
+					updateModelIfNecessary(prerequisiteField);
 					setUpAttachedComponent(component);
 				} else {
 					cleanDefaultModelObject(component);
@@ -196,6 +205,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		} else {
 			cleanDefaultModelObject(component);
 			takeDownAttachedComponent(component);
+		}
+	}
+
+	private void updateModelIfNecessary(FormComponent<T> prerequisiteField) {
+		if (updatePrerequisiteModel) {
+			prerequisiteField.updateModel();
 		}
 	}
 
