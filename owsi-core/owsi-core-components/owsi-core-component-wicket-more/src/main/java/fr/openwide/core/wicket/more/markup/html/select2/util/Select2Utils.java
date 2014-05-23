@@ -43,7 +43,9 @@ public final class Select2Utils {
 	}
 	
 	public static void setRequiredSettings(Select2Settings settings) {
-		settings.setPlaceholderKey("common.select2.required.placeholder");
+		if (settings.getPlaceholderKey() == null) {
+			settings.setPlaceholderKey("common.select2.required.placeholder");
+		}
 		settings.setAllowClear(false);
 	}
 	
