@@ -137,6 +137,13 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 	
 	/**
+	 * @see org.apache.commons.lang3.StringUtils#leftPad(String, int, char)
+	 */
+	public static String leftPad(String str, int size, char padChar) {
+		return org.apache.commons.lang3.StringUtils.leftPad(str, size, padChar);
+	}
+	
+	/**
 	 * Supprime les caractères spéciaux d'une chaîne de caractères et retourne une chaîne utilisable dans une URL.
 	 * 
 	 * @param strToClean chaîne à nettoyer
