@@ -39,6 +39,32 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	@Override
 	public void detach() { }
 	
+	public static Condition not(Condition condition) {
+		return new NotCondition(condition);
+	}
+	
+	private static class NotCondition extends Condition {
+		private static final long serialVersionUID = 1L;
+
+		private final Condition condition;
+		
+		public NotCondition(Condition condition) {
+			super();
+			this.condition = condition;
+		}
+		
+		@Override
+		public boolean applies() {
+			return !condition.applies();
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			condition.detach();
+		}
+	}
+	
 	public static <T> Condition predicate(IModel<? extends T> model, Predicate<? super T> predicate) {
 		return new PredicateCondition<>(model, predicate);
 	}
