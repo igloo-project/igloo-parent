@@ -56,9 +56,9 @@
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
 		
-		<owsi-core.spring-security.version>3.2.3.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>3.2.4.RELEASE</owsi-core.spring-security.version>
 		
-		<owsi-core.spring-ldap.version>2.0.1.RELEASE</owsi-core.spring-ldap.version>
+		<owsi-core.spring-ldap.version>2.0.2.RELEASE</owsi-core.spring-ldap.version>
 		
 		<owsi-core.hibernate-search.version>4.5.1.Final</owsi-core.hibernate-search.version>
 		<owsi-core.lucene.version>3.6.2</owsi-core.lucene.version>
@@ -108,7 +108,7 @@
 		<owsi-core.galimatias.version>0.0.4</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.18.1</owsi-core.jersey.version>
-		<owsi-core.jersey2.version>2.6</owsi-core.jersey2.version>
+		<owsi-core.jersey2.version>2.9</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
