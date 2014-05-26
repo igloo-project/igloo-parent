@@ -109,8 +109,12 @@ public abstract class GenericStringFunctionBuildStateImpl
 		return toString(new Function<String, String>() {
 			@Override
 			public String apply(String input) {
-				Matcher matcher = pattern.matcher(input);
-				return matcher.replaceAll(replacement);
+				if (input == null) {
+					return null;
+				} else {
+					Matcher matcher = pattern.matcher(input);
+					return matcher.replaceAll(replacement);
+				}
 			}
 		});
 	}
@@ -130,11 +134,15 @@ public abstract class GenericStringFunctionBuildStateImpl
 		return toString(new Function<String, String>() {
 			@Override
 			public String apply(String input) {
-				Matcher matcher = pattern.matcher(input);
-				if (matcher.find()) {
-					return matcher.group(group);
-				} else {
+				if (input == null) {
 					return null;
+				} else {
+					Matcher matcher = pattern.matcher(input);
+					if (matcher.find()) {
+						return matcher.group(group);
+					} else {
+						return null;
+					}
 				}
 			}
 		});
