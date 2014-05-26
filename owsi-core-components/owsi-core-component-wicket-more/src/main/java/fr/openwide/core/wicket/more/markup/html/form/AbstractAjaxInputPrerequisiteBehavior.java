@@ -192,7 +192,6 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				prerequisiteField.validate();
 				
 				if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
-					updateModelIfNecessary(prerequisiteField);
 					setUpAttachedComponent(component);
 				} else {
 					cleanDefaultModelObject(component);
