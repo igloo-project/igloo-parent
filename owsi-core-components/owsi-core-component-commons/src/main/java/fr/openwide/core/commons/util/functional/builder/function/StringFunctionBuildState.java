@@ -18,21 +18,21 @@ public interface StringFunctionBuildState
 		>
 		extends FunctionBuildState<TBuildResult, String, TBooleanState, TDateState, TIntegerState, TLongState, TDoubleState, TBigDecimalState, TStringState> {
 	
-	TStringState trimmed();
+	TStringState trim();
 
 	/** Strips all whitespace characters from the beginning and the end of <code>charSequence</code>.
 	 * <p>Exactly what is a whitespace is defined by {@link CharMatcher.WHITESPACE} ; this includes non-breaking spaces.
 	 */
-	TStringState stripped();
+	TStringState strip();
 	
 	/**
 	 * Shorthand for .trimmed().stripped()
 	 */
-	TStringState cleaned();
+	TStringState clean();
 	
-	TStringState capitalized(char... delimiters);
+	TStringState capitalize(char... delimiters);
 	
-	TStringState capitalizedFully(char... delimiters);
+	TStringState capitalizeFully(char... delimiters);
 	
 	TStringState replaceAll(Pattern pattern, String replacement);
 	
@@ -47,5 +47,7 @@ public interface StringFunctionBuildState
 	 * @see Matcher#group(int)
 	 */
 	TStringState extract(Pattern pattern, int group);
+
+	TStringState stripLineBreaks();
 
 }
