@@ -9,6 +9,7 @@ import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
 
+import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 
@@ -94,6 +95,34 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			}
 			model.detach();
 		}
+	}
+	
+	/**
+	 * @see Predicates2#isTrue()
+	 */
+	public static Condition isTrue(IModel<Boolean> model) {
+		return predicate(model, Predicates2.isTrue());
+	}
+
+	/**
+	 * @see Predicates2#isTrueOrNull()
+	 */
+	public static Condition isTrueOrNull(IModel<Boolean> model) {
+		return predicate(model, Predicates2.isTrueOrNull());
+	}
+
+	/**
+	 * @see Predicates2#isFalse()
+	 */
+	public static Condition isFalse(IModel<Boolean> model) {
+		return predicate(model, Predicates2.isFalse());
+	}
+
+	/**
+	 * @see Predicates2#isFalseOrNull()
+	 */
+	public static Condition isFalseOrNull(IModel<Boolean> model) {
+		return predicate(model, Predicates2.isFalseOrNull());
 	}
 	
 	public static Condition visible(Component component) {
