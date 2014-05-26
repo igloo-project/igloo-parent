@@ -3,14 +3,14 @@ package fr.openwide.core.wicket.more.markup.html.select2;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IObjectClassAwareModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.convert.ConversionException;
-import org.apache.wicket.util.lang.Args;
 import org.retzlaff.select2.ISelect2AjaxAdapter;
 import org.retzlaff.select2.Select2Behavior;
 import org.retzlaff.select2.Select2Settings;
@@ -26,11 +26,7 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 
 	private static final long serialVersionUID = 6355575209286187233L;
 	
-	/**
-	 * Hack.
-	 * @see IDropDownChoiceWidth
-	 */
-	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
+	private IDropDownChoiceWidth width = DropDownChoiceWidth.AUTO;
 
 	protected GenericSelect2AjaxDropDownSingleChoice(String id, IModel<T> model, ISelect2AjaxAdapter<T> adapter) {
 		super(id, model, adapter);
@@ -42,14 +38,21 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		add(new AttributeAppender("style", new LoadableDetachableModel<String>() {
+		add(new AttributeModifier("style", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected String load() {
-				return "width: " + width.getWidth() + "px";
+				return "width: " + width.getWidth();
 			}
-		}));
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component component) {
+				return width != null;
+			}
+		});
 	}
 	
 	@Override
@@ -65,7 +68,6 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 	}
 	
 	public GenericSelect2AjaxDropDownSingleChoice<T> setWidth(IDropDownChoiceWidth width) {
-		Args.notNull(width, "width");
 		this.width = width;
 		return this;
 	}

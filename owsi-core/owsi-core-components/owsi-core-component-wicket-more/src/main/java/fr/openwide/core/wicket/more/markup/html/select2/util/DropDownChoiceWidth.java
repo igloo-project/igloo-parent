@@ -2,19 +2,20 @@ package fr.openwide.core.wicket.more.markup.html.select2.util;
 
 public enum DropDownChoiceWidth implements IDropDownChoiceWidth {
 	
-	SMALL(104),
-	NORMAL(220),
-	XLARGE(284),
-	XXLARGE(534);
+	AUTO("100%"),
+	SMALL("104px"),
+	NORMAL("220px"),
+	XLARGE("284px"),
+	XXLARGE("534px");
 	
-	private int width;
+	private String width;
 	
-	private DropDownChoiceWidth(int width) {
+	private DropDownChoiceWidth(String width) {
 		this.width = width;
 	}
 	
 	@Override
-	public int getWidth() {
+	public String getWidth() {
 		return width;
 	}
 

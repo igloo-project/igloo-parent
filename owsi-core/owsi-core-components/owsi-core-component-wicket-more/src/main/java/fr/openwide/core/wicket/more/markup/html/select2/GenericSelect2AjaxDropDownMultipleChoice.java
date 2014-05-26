@@ -2,10 +2,10 @@ package fr.openwide.core.wicket.more.markup.html.select2;
 
 import java.util.Collection;
 
-import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.util.lang.Args;
 import org.retzlaff.select2.ISelect2AjaxAdapter;
 import org.retzlaff.select2.Select2MultipleChoice;
 import org.retzlaff.select2.Select2Settings;
@@ -21,11 +21,7 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2Multiple
 
 	private static final long serialVersionUID = 6355575209286187233L;
 	
-	/**
-	 * Hack.
-	 * @see IDropDownChoiceWidth
-	 */
-	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
+	private IDropDownChoiceWidth width = DropDownChoiceWidth.AUTO;
 
 	protected <C extends Collection<T>> GenericSelect2AjaxDropDownMultipleChoice(
 			String id, IModel<C> model, Supplier<? extends C> collectionSupplier, ISelect2AjaxAdapter<T> adapter) {
@@ -38,14 +34,21 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2Multiple
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		add(new AttributeAppender("style", new LoadableDetachableModel<String>() {
+		add(new AttributeModifier("style", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected String load() {
-				return "width: " + width.getWidth() + "px";
+				return "width: " + width.getWidth();
 			}
-		}));
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component component) {
+				return width != null;
+			}
+		});
 	}
 	
 	@Override
@@ -61,7 +64,6 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2Multiple
 	}
 	
 	public GenericSelect2AjaxDropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {
-		Args.notNull(width, "width");
 		this.width = width;
 		return this;
 	}
