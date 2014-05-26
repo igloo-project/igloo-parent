@@ -38,7 +38,7 @@ public class TestApachePoiExcelImporter {
 						return "true".equals(input) ? true : false;
 					}
 				}).build();
-		final Column<String> stringColumn = withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().cleaned().build();
+		final Column<String> stringColumn = withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().clean().build();
 		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
 		final Column<Integer> missingColumn = withHeader("MissingColumn", MappingConstraint.OPTIONAL).asInteger().build();
 	}

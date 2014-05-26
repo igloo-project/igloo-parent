@@ -79,12 +79,12 @@ public class OpenCsvColumnBuilder extends AbstractColumnBuilder<CsvSheet, CsvRow
 		
 		@Override
 		public DoubleState<CsvSheet, CsvRow, CsvCell, CsvCellReference> asDouble() {
-			return asString().cleaned().toDouble(DOUBLE_FORMAT_FUNCTION);
+			return asString().stripLineBreaks().clean().toDouble(DOUBLE_FORMAT_FUNCTION);
 		}
 		
 		@Override
 		public BigDecimalState<CsvSheet, CsvRow, CsvCell, CsvCellReference> asBigDecimal() {
-			return asString().cleaned().toBigDecimal(BIG_DECIMAL_FORMAT_FUNCTION);
+			return asString().stripLineBreaks().clean().toBigDecimal(BIG_DECIMAL_FORMAT_FUNCTION);
 		}
 
 		@Override

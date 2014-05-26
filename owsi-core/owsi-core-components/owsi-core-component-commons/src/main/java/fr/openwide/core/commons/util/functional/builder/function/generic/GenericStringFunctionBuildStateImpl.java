@@ -3,7 +3,7 @@ package fr.openwide.core.commons.util.functional.builder.function.generic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.google.common.base.CharMatcher;
@@ -53,7 +53,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	}
 	
 	@Override
-	public TStringState stripped() {
+	public TStringState strip() {
 		return toString(new Function<String, String>() {
 			@Override
 			public String apply(String input) {
@@ -63,7 +63,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	}
 	
 	@Override
-	public TStringState trimmed() {
+	public TStringState trim() {
 		return toString(new Function<String, String>() {
 			@Override
 			public String apply(String input) {
@@ -73,7 +73,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	}
 	
 	@Override
-	public TStringState cleaned() {
+	public TStringState clean() {
 		return toString(new Function<String, String>() {
 			@Override
 			public String apply(String input) {
@@ -83,7 +83,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	}
 	
 	@Override
-	public TStringState capitalized(char... delimiters) {
+	public TStringState capitalize(char... delimiters) {
 		final char[] actualDelimiters = (delimiters == null || delimiters.length == 0) ? DEFAULT_WORD_DELIMITERS : delimiters; 
 		return toString(new Function<String, String>() {
 			@Override
@@ -94,7 +94,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	}
 	
 	@Override
-	public TStringState capitalizedFully(char... delimiters) {
+	public TStringState capitalizeFully(char... delimiters) {
 		final char[] actualDelimiters = (delimiters == null || delimiters.length == 0) ? DEFAULT_WORD_DELIMITERS : delimiters;
 		return toString(new Function<String, String>() {
 			@Override
@@ -144,6 +144,24 @@ public abstract class GenericStringFunctionBuildStateImpl
 						return null;
 					}
 				}
+			}
+		});
+	}
+	
+	@Override
+	public TStringState stripLineBreaks() {
+		return toString(new Function<String, String>() {
+			@Override
+			public String apply(String input) {
+				if (input == null) {
+					return null;
+				}
+				
+				String cleanString = input.replace(StringUtils.CR + StringUtils.LF, " ");
+				cleanString = cleanString.replace(StringUtils.LF, " ");
+				cleanString = cleanString.replace(StringUtils.CR, " ");
+				
+				return cleanString;
 			}
 		});
 	}
