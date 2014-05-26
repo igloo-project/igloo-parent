@@ -2,7 +2,8 @@ package fr.openwide.core.wicket.more.markup.html.select2;
 
 import java.util.List;
 
-import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
@@ -18,11 +19,7 @@ import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
 	private static final long serialVersionUID = -3776700270762640109L;
 	
-	/**
-	 * Hack.
-	 * @see IDropDownChoiceWidth
-	 */
-	private IDropDownChoiceWidth width = DropDownChoiceWidth.NORMAL;
+	private IDropDownChoiceWidth width = DropDownChoiceWidth.AUTO;
 	
 	private final ChoicesWrapperModel<T> choicesWrapperModel;
 	
@@ -46,14 +43,21 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		add(new AttributeAppender("style", new LoadableDetachableModel<String>() {
+		add(new AttributeModifier("style", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected String load() {
-				return "width: " + width.getWidth() + "px";
+				return "width: " + width.getWidth();
 			}
-		}));
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component component) {
+				return width != null;
+			}
+		});
 	}
 	
 	@Override
