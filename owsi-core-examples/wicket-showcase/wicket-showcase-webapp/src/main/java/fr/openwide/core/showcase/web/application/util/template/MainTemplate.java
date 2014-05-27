@@ -78,6 +78,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				
 				item.add(navLink);
 			}
+			
+			@Override
+			protected void onDetach() {
+				super.onDetach();
+				for (NavigationMenuItem item : getModelObject()) {
+					item.detach();
+				}
+			}
 		});
 		
 		// Second level navigation bar
@@ -97,6 +105,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				}
 				
 				item.add(navLink);
+			}
+			
+			@Override
+			protected void onDetach() {
+				super.onDetach();
+				for (NavigationMenuItem item : getModelObject()) {
+					item.detach();
+				}
 			}
 			
 			@Override
