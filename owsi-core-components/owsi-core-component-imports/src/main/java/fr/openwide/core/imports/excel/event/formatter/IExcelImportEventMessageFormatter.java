@@ -4,8 +4,8 @@ import fr.openwide.core.imports.excel.location.ExcelImportLocation;
 
 public interface IExcelImportEventMessageFormatter {
 
-	public String formatHeaderLabelMappingErrorMessage(String expectedHeaderLabel, int indexAmongMatchedColumns, ExcelImportLocation location);
+	public String formatHeaderLabelMappingErrorMessage(ExcelImportLocation location, String expectedHeaderLabel, int indexAmongMatchedColumns);
 
-	public String formatErrorMessage(String message, ExcelImportLocation location);
+	public String formatErrorMessage(ExcelImportLocation location, String message, Object ... parameters);
 
 }
