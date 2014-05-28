@@ -77,22 +77,50 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<String, GenericEntity<Long, ?>>>();
-
+		
+		importBeforeReferenceData(directory, idsMapping);
+		
 		LOGGER.info("Importing {}", REFERENCE_DATA_FILE);
 		Workbook genericListItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
 		importGenericListItems(idsMapping, genericListItemWorkbook);
 		LOGGER.info("Import of {} complete", REFERENCE_DATA_FILE);
+		
+		importAfterReferenceData(directory, idsMapping);
+		
+		importBeforeBusinessData(directory, idsMapping);
 
 		LOGGER.info("Importing {}", BUSINESS_DATA_FILE);
 		Workbook businessItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
 		LOGGER.info("Import of {} complete", BUSINESS_DATA_FILE);
 		
+		importAfterBusinessData(directory, idsMapping);
+		
 		importFiles(directory, idsMapping);
 		
 		parameterService.setDatabaseInitialized(true);
 		
 		LOGGER.info("Import complete");
+	}
+	
+	protected void importBeforeReferenceData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
+		// nothing, override if necessary
+	}
+	
+	protected void importAfterReferenceData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
+		// nothing, override if necessary
+	}
+	
+	protected void importBeforeBusinessData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
+		// nothing, override if necessary
+	}
+	
+	protected void importAfterBusinessData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
+		// nothing, override if necessary
 	}
 	
 	protected abstract List<String> getGenericListItemPackagesToScan();
