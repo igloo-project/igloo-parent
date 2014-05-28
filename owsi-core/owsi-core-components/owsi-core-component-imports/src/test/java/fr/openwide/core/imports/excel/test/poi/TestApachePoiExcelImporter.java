@@ -13,13 +13,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
 import org.javatuples.Quartet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.imports.excel.event.ExcelImportNonFatalErrorHandling;
 import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
-import fr.openwide.core.imports.excel.event.SimpleExcelImportEventHandler;
+import fr.openwide.core.imports.excel.event.LoggerExcelImportEventHandler;
 import fr.openwide.core.imports.excel.event.exception.ExcelImportException;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 import fr.openwide.core.imports.excel.mapping.column.builder.MappingConstraint;
@@ -29,6 +32,8 @@ import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.IExcelImpo
 import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.SheetSelection;
 
 public class TestApachePoiExcelImporter {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestApachePoiExcelImporter.class);
 
 	private static class Columns extends ApachePoiImportColumnSet {
 		final Column<Date> dateColumn = withIndex(0).asDate().build();
@@ -53,7 +58,7 @@ public class TestApachePoiExcelImporter {
 			@Override
 			public void visitSheet(IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, Workbook workbook, Sheet sheet)
 					throws ExcelImportException {
-				IExcelImportEventHandler eventHandler = new SimpleExcelImportEventHandler();
+				IExcelImportEventHandler eventHandler = new LoggerExcelImportEventHandler(ExcelImportNonFatalErrorHandling.THROW_IMMEDIATELY, LOGGER);
 				
 				Columns.SheetContext sheetContext = COLUMNS.map(sheet, navigator, eventHandler);
 				
