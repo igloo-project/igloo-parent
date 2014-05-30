@@ -52,6 +52,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private boolean updatePrerequisiteModel = false;
 	
+	private boolean resetAttachedModel = false;
+	
 	private transient /* Scope : request */ boolean processingPrerequisiteFieldChange = false;
 
 	public AbstractAjaxInputPrerequisiteBehavior(FormComponent<T> prerequisiteField) {
@@ -59,9 +61,20 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		Args.notNull(prerequisiteField, "prerequisiteField");
 		this.prerequisiteField = prerequisiteField;
 	}
-	
+
+	/**
+	 * Sets if the prerequisite field model is to be updated when the prerequisite field input changes.
+	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setUpdatePrerequisiteModel(boolean updatePrerequisiteModel) {
 		this.updatePrerequisiteModel = updatePrerequisiteModel;
+		return this;
+	}
+	
+	/**
+	 * Sets if the attached component's models are to be set to null when the prerequisite model changes.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModel(boolean resetAttachedModel) {
+		this.resetAttachedModel = resetAttachedModel;
 		return this;
 	}
 	
@@ -141,6 +154,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		processingPrerequisiteFieldChange = true;
 		for (Component attachedComponent : attachedComponents) {
 			target.add(getAjaxTarget(attachedComponent));
+			if (resetAttachedModel) {
+				attachedComponent.setDefaultModelObject(null);
+			}
 		}
 		onPrerequisiteFieldChange(target, prerequisiteField, Collections.unmodifiableCollection(attachedComponents));
 	}
