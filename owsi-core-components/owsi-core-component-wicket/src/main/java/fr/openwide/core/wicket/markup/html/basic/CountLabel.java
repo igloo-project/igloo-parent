@@ -15,6 +15,7 @@
  */
 package fr.openwide.core.wicket.markup.html.basic;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.markup.html.model.CountMessageModel;
@@ -36,7 +37,7 @@ import fr.openwide.core.wicket.markup.html.model.CountMessageModel;
  * 
  * @since 2.0
  */
-public class CountLabel extends CoreLabel {
+public class CountLabel extends Label {
 	private static final long serialVersionUID = -889821092752173878L;
 
 	private boolean hideIfZeroOrNull = false;
