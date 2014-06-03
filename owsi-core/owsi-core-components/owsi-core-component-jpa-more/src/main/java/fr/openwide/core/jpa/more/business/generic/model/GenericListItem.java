@@ -60,6 +60,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	private String shortLabel;
 	
 	@Column(nullable = false)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Integer position;
 
 	@Field
