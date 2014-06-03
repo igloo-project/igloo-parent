@@ -38,10 +38,10 @@
 		.clearfix();
 		
 		.info-label, .info-content {
-			float:			left;
 			vertical-align:	top;
 		}
 		.info-label {
+			float:		left;
 			display:	inline-block;
 			max-width:	160px;
 			
@@ -49,45 +49,46 @@
 		}
 		.info-content {
 			display:		block;
+			overflow:		hidden; // Block Formatting Context; see http://colinaarts.com/articles/the-magic-of-overflow-hidden/
 			min-height: @line-height-computed;
 			margin-left:	2%;
-			
-			width:			58%;
-			
 			
 			.boolean-glyphicon {
 				margin-top: 0;
 			}
 		}
+		
+		&.info-group-block {
+			.info-label, .info-content {
+				float: none;
+				display: block;
+				width: auto;
+				max-width: none;
+				margin: 0;
+			}
+		}
 	}
 	&.labels-small {
-		.info-group {
+		.info-group:not(.info-group-block) {
 			.info-label {
 				width:		30%;
-			}
-			.info-content {
-				width:		68%;
+				max-width:	100px;
 			}
 		}
 	}
 	&.labels-large {
-		.info-group {
+		.info-group:not(.info-group-block) {
 			.info-label {
 				width:		50%;
-			}
-			.info-content {
-				width:		48%;
+				max-width:	180px;
 			}
 		}
 	}
 	&.labels-xlarge {
-		.info-group {
+		.info-group:not(.info-group-block) {
 			.info-label {
 				width:		60%;
 				max-width:	200px;
-			}
-			.info-content {
-				width:		38%;
 			}
 		}
 	}
