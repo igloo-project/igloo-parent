@@ -13,7 +13,7 @@ public class PermissivePhoneNumberValidator extends RegexValidator implements Se
 
 	private static final long serialVersionUID = 5254830905190414225L;
 	
-	private static PermissivePhoneNumberValidator INSTANCE = new PermissivePhoneNumberValidator();
+	private static final PermissivePhoneNumberValidator INSTANCE = new PermissivePhoneNumberValidator();
 	
 	private static final String PHONE_NUMBER_REGEX = "^\\+?[0-9 \\-\\.()]+$";
 	
