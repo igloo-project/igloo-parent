@@ -18,9 +18,16 @@ public class MaskBehavior extends JQueryAbstractBehavior {
 	
 	private final String maskPattern;
 	
+	private final MaskOptions options;
+	
 	public MaskBehavior(String maskPattern) {
+		this(maskPattern, null);
+	}
+	
+	public MaskBehavior(String maskPattern, MaskOptions options) {
 		Args.notBlank(maskPattern, "maskPattern");
 		this.maskPattern = maskPattern;
+		this.options = options;
 	}
 	
 	@Override
@@ -30,6 +37,10 @@ public class MaskBehavior extends JQueryAbstractBehavior {
 	}
 	
 	public JsStatement statement() {
-		return new JsStatement().$(getComponent()).chain(MASK, JsUtils.quotes(maskPattern));
+		if (options != null) {
+			return new JsStatement().$(getComponent()).chain(MASK, JsUtils.quotes(maskPattern), options.getJavaScriptOptions());
+		} else {
+			return new JsStatement().$(getComponent()).chain(MASK, JsUtils.quotes(maskPattern));
+		}
 	}
 }
