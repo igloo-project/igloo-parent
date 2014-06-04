@@ -1,24 +1,15 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.mask;
 
-import java.util.Map;
-
+import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 import org.odlabs.wiquery.core.options.IComplexOption;
 import org.odlabs.wiquery.core.options.Options;
 
-import com.google.common.collect.Maps;
-
 public class MaskOptions extends Options {
 	private static final long serialVersionUID = 8361789161890761478L;
 
-	private JsScope onKeyPress;
-
-	private JsScope onComplete;
-
-	private JsScope onChange;
-	
-	private Map<Character, MaskTranslationOptions> translation = Maps.newLinkedHashMap();
+	private final Options translationOptions = new Options();
 	
 	private static class MaskTranslationOptions implements IComplexOption {
 		private static final long serialVersionUID = -7911528421294931614L;
@@ -44,51 +35,31 @@ public class MaskOptions extends Options {
 		}
 		
 	}
-
+	
+	@Override
+	public void detach() {
+		super.detach();
+		translationOptions.detach();
+	}
+	
 	@Override
 	public CharSequence getJavaScriptOptions() {
-		if (onKeyPress != null) {
-			put("onKeyPress", onKeyPress.render().toString());
-		}
-		if (onComplete != null) {
-			put("onComplete", onComplete.render().toString());
-		}
-		if (onChange != null) {
-			put("onChange", onChange.render().toString());
-		}
-		Options translationOptions = new Options();
-		for (Map.Entry<Character, MaskTranslationOptions> entry : translation.entrySet()) {
-			translationOptions.put(JsUtils.quotes(entry.getKey().toString()), entry.getValue());
-		}
 		put("translation", translationOptions.getJavaScriptOptions().toString());
-		
 		return super.getJavaScriptOptions();
 	}
 
-	public JsScope getOnKeyPress() {
-		return onKeyPress;
-	}
-
 	public MaskOptions setOnKeyPress(JsScope onKeyPress) {
-		this.onKeyPress = onKeyPress;
+		put("onKeyPress", onKeyPress);
 		return this;
-	}
-
-	public JsScope getOnComplete() {
-		return onComplete;
 	}
 
 	public MaskOptions setOnComplete(JsScope onComplete) {
-		this.onComplete = onComplete;
+		put("onComplete", onComplete);
 		return this;
 	}
 
-	public JsScope getOnChange() {
-		return onChange;
-	}
-
 	public MaskOptions setOnChange(JsScope onChange) {
-		this.onChange = onChange;
+		put("onChange", onChange);
 		return this;
 	}
 	
@@ -97,7 +68,12 @@ public class MaskOptions extends Options {
 	}
 	
 	public MaskOptions addTranslation(char character, String pattern, boolean optional, boolean recursive) {
-		translation.put(character, new MaskTranslationOptions(pattern, optional, recursive));
+		translationOptions.put(JsUtils.quotes(String.valueOf(character)), new MaskTranslationOptions(pattern, optional, recursive));
+		return this;
+	}
+	
+	public MaskOptions setPlaceholder(IModel<String> placeholder) {
+		putLiteral("placeholder", placeholder);
 		return this;
 	}
 
