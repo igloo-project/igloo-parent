@@ -18,6 +18,7 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -34,7 +35,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	private ApplicationContext applicationContext;
 
 	/**
-	 * Parcours les beans du contexte pour extraire les informations sur l'application et les emplacements de
+	 * Parcourt les beans du contexte pour extraire les informations sur l'application et les emplacements de
 	 * configuration par la prise en compte des annotations {@link ApplicationDescription} et
 	 * {@link ConfigurationLocations}
 	 */
@@ -111,6 +112,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		}
 		
 		// ce sont les fichiers qui doivent être pris en compte avant l'environnement
+		configurer.setFileEncoding(Charsets.UTF_8.name());
 		configurer.setLocalOverride(true);
 		configurer.setIgnoreResourceNotFound(true);
 		configurer.setLocations(locations.toArray(new Resource[locations.size()]));
