@@ -41,16 +41,11 @@ public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig 
 
 	public static final String PROFILE_TEST = "test";
 	
-	private static final String UTF8 = "UTF-8";
-
 	/**
 	 * L'obtention du configurer doit être statique.
 	 */
 	@Bean(name = { "configurer" })
 	public static BasicApplicationConfigurer environment(ConfigurableApplicationContext context) throws MalformedURLException {
-		BasicApplicationConfigurer configurer = new BasicApplicationConfigurer();
-		configurer.setFileEncoding(UTF8);
-		
-		return configurer;
+		return new BasicApplicationConfigurer();
 	}
 }
