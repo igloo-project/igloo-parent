@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.condition;
 
+import java.util.Arrays;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IDetachable;
@@ -63,6 +65,57 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public void detach() {
 			super.detach();
 			condition.detach();
+		}
+	}
+	
+	public static Condition or(Condition ... operands) {
+		return composite(BooleanOperator.OR, operands);
+	}
+	
+	public static Condition nor(Condition ... operands) {
+		return composite(BooleanOperator.NOR, operands);
+	}
+	
+	public static Condition and(Condition ... operands) {
+		return composite(BooleanOperator.AND, operands);
+	}
+	
+	public static Condition nand(Condition ... operands) {
+		return composite(BooleanOperator.NAND, operands);
+	}
+	
+	public static Condition composite(BooleanOperator operator, Condition ... operands) {
+		return new CompositeCondition(operator, Arrays.asList(operands));
+	}
+	
+	public static Condition composite(BooleanOperator operator, Iterable<? extends Condition> operands) {
+		return new CompositeCondition(operator, operands);
+	}
+	
+	private static class CompositeCondition extends Condition {
+		private static final long serialVersionUID = 1L;
+		
+		private final BooleanOperator operator;
+
+		private final Iterable<? extends Condition> operands;
+		
+		public CompositeCondition(BooleanOperator operator, Iterable<? extends Condition> operands) {
+			super();
+			this.operator = operator;
+			this.operands = operands;
+		}
+
+		@Override
+		public boolean applies() {
+			return operator.apply(operands);
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			for (Condition operand : operands) {
+				operand.detach();
+			}
 		}
 	}
 	
