@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -12,6 +13,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.odlabs.wiquery.core.events.StateEvent;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -55,6 +58,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	private boolean resetAttachedModel = false;
 	
 	private transient /* Scope : request */ boolean processingPrerequisiteFieldChange = false;
+	
+	private Predicate<? super T> objectValidPredicate = Predicates.notNull();
 
 	public AbstractAjaxInputPrerequisiteBehavior(FormComponent<T> prerequisiteField) {
 		super();
@@ -63,7 +68,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 
 	/**
-	 * Sets if the prerequisite field model is to be updated when the prerequisite field input changes.
+	 * Sets whether the prerequisite field model is to be updated when the prerequisite field input changes.
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setUpdatePrerequisiteModel(boolean updatePrerequisiteModel) {
 		this.updatePrerequisiteModel = updatePrerequisiteModel;
@@ -71,10 +76,19 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	/**
-	 * Sets if the attached component's models are to be set to null when the prerequisite model changes.
+	 * Sets whether the attached component's models are to be set to null when the prerequisite model changes.
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModel(boolean resetAttachedModel) {
 		this.resetAttachedModel = resetAttachedModel;
+		return this;
+	}
+	
+	/**
+	 * Sets the predicate used to determine whether the prerequisite field value is valid.
+	 * <strong>Note:</strong> the predicate must be {@link Serializable}.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setObjectValidPredicate(Predicate<? super T> objectValidPredicate) {
+		this.objectValidPredicate = objectValidPredicate;
 		return this;
 	}
 	
@@ -245,8 +259,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		return prerequisiteField.isValid() && isObjectValid(currentModel.getObject());
 	}
 	
-	protected boolean isObjectValid(T object) {
-		return object != null;
+	protected final boolean isObjectValid(T object) {
+		return objectValidPredicate.apply(object);
 	}
 
 	protected void cleanDefaultModelObject(Component attachedComponent) {
