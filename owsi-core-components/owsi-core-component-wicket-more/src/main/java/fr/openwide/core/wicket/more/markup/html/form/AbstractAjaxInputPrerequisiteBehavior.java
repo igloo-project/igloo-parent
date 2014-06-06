@@ -7,6 +7,7 @@ import java.util.Collections;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
@@ -53,9 +54,13 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private final Collection<Component> attachedComponents = Lists.newArrayList();
 	
+	private boolean useWicketValidation = false;
+	
 	private boolean updatePrerequisiteModel = false;
 	
 	private boolean resetAttachedModel = false;
+	
+	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
 	
 	private transient /* Scope : request */ boolean processingPrerequisiteFieldChange = false;
 	
@@ -67,6 +72,17 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		this.prerequisiteField = prerequisiteField;
 	}
 
+	/**
+	 * Sets whether wicket validation ({@link FormComponent#validate()} method) is to be taken into account before
+	 * trying to apply the {@code #setObjectValidPredicate(Predicate) objectValidPredicate}.
+	 * <p><strong>WARNING:</strong> The wicket validation relies solely on input, and not on the model object. Thus any wicket validation
+	 * will systematically deem a field invalid when there is no input. In particular, this means that the prerequisite field will systematically be deemed invalid on
+	 * the first page rendering, which means this feature is not suitable for "editing" forms, where the form is filled before the first rendering.
+	 */
+	public void setUseWicketValidation(boolean validatePrerequisiteInput) {
+		this.useWicketValidation = validatePrerequisiteInput;
+	}
+	
 	/**
 	 * Sets whether the prerequisite field model is to be updated when the prerequisite field input changes.
 	 */
@@ -89,6 +105,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setObjectValidPredicate(Predicate<? super T> objectValidPredicate) {
 		this.objectValidPredicate = objectValidPredicate;
+		return this;
+	}
+	
+	public AbstractAjaxInputPrerequisiteBehavior<T> onChange(AbstractListener listener) {
+		this.onChangeListeners.add(listener);
 		return this;
 	}
 	
@@ -172,6 +193,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				attachedComponent.setDefaultModelObject(null);
 			}
 		}
+		for (AbstractListener onChangeListener : onChangeListeners) {
+			target.addListener(onChangeListener);
+		}
 		onPrerequisiteFieldChange(target, prerequisiteField, Collections.unmodifiableCollection(attachedComponents));
 	}
 	
@@ -191,7 +215,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	/**
 	 * Ajax call triggered by a change on the prerequisite field.
 	 * Called after adding the attached components to the target, and before generating the response.
+	 * @deprecated Use {@link #onChange(AbstractListener)} instead.
 	 */
+	@Deprecated
 	protected void onPrerequisiteFieldChange(AjaxRequestTarget target, FormComponent<T> prerequisiteField, Collection<Component> attachedComponents) {
 		
 	}
@@ -205,7 +231,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				// The prerequisiteField input has changed : the rendering of the attached component was triggered by our InputPrerequisiteAjaxEventBehavior.
 				// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's input.
 				prerequisiteField.inputChanged();
-				prerequisiteField.validate();
+				prerequisiteField.validate(); // Performs input conversion
 				
 				if (isConvertedInputSatisfyingRequirements(prerequisiteField, prerequisiteField.getConvertedInput())) {
 					updateModelIfNecessary(prerequisiteField);
@@ -214,12 +240,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 					cleanDefaultModelObject(component);
 					takeDownAttachedComponent(component);
 				}
-				
+
 				prerequisiteField.clearInput();
 			} else {
-				// The prerequisiteField input has NOT changed : the rendering of the attached component was triggered by something else.
-				// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's model.
-				prerequisiteField.validate();
+				prerequisiteField.validate(); // Performs input conversion
 				
 				if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
 					setUpAttachedComponent(component);
@@ -251,12 +275,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		return true;
 	}
 	
-	protected boolean isConvertedInputSatisfyingRequirements(FormComponent<T> prerequisiteField, T convertedInput) {
-		return prerequisiteField.isValid() && isObjectValid(convertedInput);
+	protected final boolean isConvertedInputSatisfyingRequirements(FormComponent<T> prerequisiteField, T convertedInput) {
+		return (!useWicketValidation || prerequisiteField.isValid()) && isObjectValid(convertedInput);
 	}
 	
-	protected boolean isCurrentModelSatisfyingRequirements(FormComponent<T> prerequisiteField, IModel<T> currentModel) {
-		return prerequisiteField.isValid() && isObjectValid(currentModel.getObject());
+	protected final boolean isCurrentModelSatisfyingRequirements(FormComponent<T> prerequisiteField, IModel<T> currentModel) {
+		return (!useWicketValidation || prerequisiteField.isValid()) && isObjectValid(currentModel.getObject());
 	}
 	
 	protected final boolean isObjectValid(T object) {
