@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
@@ -64,7 +65,23 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 				}
 			});
 		}
+		visitChildren(IAjaxModalShowListener.class, new OnShowVisitor<>(target));
 		FeedbackUtils.refreshFeedback(target, getPage());
+	}
+	
+	private class OnShowVisitor<T extends Component & IAjaxModalShowListener> implements IVisitor<T, Void> {
+		
+		private final AjaxRequestTarget target;
+		
+		public OnShowVisitor(AjaxRequestTarget target) {
+			super();
+			this.target = target;
+		}
+
+		@Override
+		public void component(T object, IVisit<Void> visit) {
+			object.onShow(AbstractAjaxModalPopupPanel.this, target);
+		}
 	}
 
 	protected final void closePopup(AjaxRequestTarget target) {
