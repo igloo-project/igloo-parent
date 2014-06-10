@@ -79,7 +79,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 				Charset.defaultCharset(), ECSSVersion.CSS30);
 		
 		if (sheet == null) {
-			throw new ServiceException("An error occurred while parsing notification CSS ; see the logs for details.");
+			throw new ServiceException("An error occurred while parsing notification CSS; see the logs for details.");
 		} else {
 			return new SimplePhlocCssHtmlNotificationCssRegistry(sheet);
 		}
@@ -100,12 +100,12 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 				return new FilterInputStream(resourceStream.getInputStream()) {
 					@Override
 					public void close() throws IOException {
-						resourceStream.close(); // The wicket way : close the resource stream, not the input stream
+						resourceStream.close(); // The wicket way: close the resource stream, not the input stream
 					}
 				};
 			} catch (ResourceStreamNotFoundException e) {
 				LOGGER.error("Error while getting a resource for CSS parsing", e);
-				return null; // The phloc way : return null, do not throw exceptions
+				return null; // The phloc way: return null, do not throw exceptions
 			}
 		}
 	}
