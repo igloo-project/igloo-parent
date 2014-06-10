@@ -23,12 +23,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -64,7 +65,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private String from;
 	
-	private MultiValueMap<Locale, String> emailsByLocale = new LinkedMultiValueMap<Locale, String>();
+	private Multimap<Locale, String> emailsByLocale = LinkedHashMultimap.create();
 	
 	private Set<String> cc = Sets.newLinkedHashSet();
 	
@@ -84,7 +85,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private Map<String, File> inlines = Maps.newHashMap();
 	
-	private MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+	private Multimap<String, String> headers = LinkedHashMultimap.create();
 	
 	private int priority;
 	
@@ -117,7 +118,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (to != null) {
 			for (String email : to) {
 				if (StringUtils.hasText(email)) {
-					emailsByLocale.add(getDefaultLocale(), email);
+					emailsByLocale.put(getDefaultLocale(), email);
 				}
 			}
 		}
@@ -134,7 +135,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (to != null) {
 			for (INotificationRecipient receiver : to) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					emailsByLocale.add(getLocale(receiver), receiver.getEmail());
+					emailsByLocale.put(getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
@@ -329,7 +330,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	public INotificationBuilderSendState header(String name, String value) {
 		Assert.hasText(name, "Header name must contain text");
 		Assert.hasText(value, "Header value must contain text");
-		this.headers.add(name, value);
+		this.headers.put(name, value);
 		return this;
 	}
 	
@@ -361,7 +362,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	@Override
 	public void send(String encoding) throws ServiceException {
 		try {
-			for (Entry<Locale, List<String>> entry : emailsByLocale.entrySet()) {
+			for (Entry<Locale, Collection<String>> entry : emailsByLocale.asMap().entrySet()) {
 				String[] to = entry.getValue().toArray(new String[entry.getValue().size()]);
 				
 				try {
@@ -429,7 +430,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		for (Map.Entry<String, File> inline : inlines.entrySet()) {
 			helper.addInline(inline.getKey(), inline.getValue());
 		}
-		for (Entry<String, List<String>> header : headers.entrySet()) {
+		for (Entry<String, Collection<String>> header : headers.asMap().entrySet()) {
 			for (String value : header.getValue()) {
 				message.addHeader(header.getKey(), value);
 			}
