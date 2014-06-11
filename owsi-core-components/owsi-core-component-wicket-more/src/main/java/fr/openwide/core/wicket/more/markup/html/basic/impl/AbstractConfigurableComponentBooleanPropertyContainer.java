@@ -8,6 +8,7 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Predicate;
 
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.AbstractComponentBooleanPropertyBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.IPlaceholderEnclosureBuilder;
@@ -86,6 +87,16 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	@Override
 	public T components(Collection<Component> components) {
 		behavior.components(components);
+		return thisAsT();
+	}
+	
+	public T condition(Condition condition) {
+		behavior.condition(condition);
+		return thisAsT();
+	}
+	
+	public T anyChildVisible() {
+		behavior.condition(Condition.anyChildVisible(this));
 		return thisAsT();
 	}
 
