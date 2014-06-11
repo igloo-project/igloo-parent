@@ -44,8 +44,24 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	@Override
 	public void detach() { }
 	
-	public static Condition not(Condition condition) {
-		return new NotCondition(condition);
+	public Condition or(Condition operand) {
+		return composite(BooleanOperator.OR, this, operand);
+	}
+	
+	public Condition nor(Condition operand) {
+		return composite(BooleanOperator.NOR, this, operand);
+	}
+	
+	public Condition and(Condition operand) {
+		return composite(BooleanOperator.AND, this, operand);
+	}
+	
+	public Condition nand(Condition operand) {
+		return composite(BooleanOperator.NAND, this, operand);
+	}
+	
+	public Condition not() {
+		return new NotCondition(this);
 	}
 	
 	private static class NotCondition extends Condition {
@@ -68,22 +84,6 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			super.detach();
 			condition.detach();
 		}
-	}
-	
-	public static Condition or(Condition ... operands) {
-		return composite(BooleanOperator.OR, operands);
-	}
-	
-	public static Condition nor(Condition ... operands) {
-		return composite(BooleanOperator.NOR, operands);
-	}
-	
-	public static Condition and(Condition ... operands) {
-		return composite(BooleanOperator.AND, operands);
-	}
-	
-	public static Condition nand(Condition ... operands) {
-		return composite(BooleanOperator.NAND, operands);
 	}
 	
 	public static Condition composite(BooleanOperator operator, Condition ... operands) {
