@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.condition;
 import java.util.Arrays;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
@@ -10,6 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
@@ -102,7 +104,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public CompositeCondition(BooleanOperator operator, Iterable<? extends Condition> operands) {
 			super();
 			this.operator = operator;
-			this.operands = operands;
+			this.operands = ImmutableList.copyOf(operands);
 		}
 
 		@Override
@@ -196,6 +198,32 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public boolean applies() {
 			component.configure();
 			return component.determineVisibility();
+		}
+	}
+	
+	public static Condition anyChildVisible(MarkupContainer container) {
+		return new AnyChildVisibleCondition(container);
+	}
+	
+	private static class AnyChildVisibleCondition extends Condition {
+		private static final long serialVersionUID = 1L;
+		
+		private final MarkupContainer container;
+		
+		public AnyChildVisibleCondition(MarkupContainer container) {
+			super();
+			this.container = container;
+		}
+		
+		@Override
+		public boolean applies() {
+			for (Component child : container) {
+				child.configure();
+				if (child.determineVisibility()) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 	
