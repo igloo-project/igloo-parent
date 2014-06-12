@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 
 import org.apache.wicket.Component;
@@ -38,6 +40,8 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 
 	protected ReadOnlyModel(IModel<? extends F> readModel, Function<F, T> function) {
 		super();
+		checkNotNull(readModel);
+		checkNotNull(function);
 		this.readModel = readModel;
 		this.function = function;
 	}
