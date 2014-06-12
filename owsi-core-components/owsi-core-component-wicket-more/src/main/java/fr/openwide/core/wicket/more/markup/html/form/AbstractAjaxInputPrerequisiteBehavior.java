@@ -60,6 +60,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private boolean resetAttachedModel = false;
 	
+	private boolean refreshParent = false;
+	
 	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
 	
 	private transient /* Scope : request */ boolean processingPrerequisiteFieldChange = false;
@@ -105,6 +107,15 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setObjectValidPredicate(Predicate<? super T> objectValidPredicate) {
 		this.objectValidPredicate = objectValidPredicate;
+		return this;
+	}
+	
+	/**
+	 * Sets whether the ajax refresh should target the attached component's parent instead of the component itself.
+	 * <p>This is useful for components that use javascript to generate siblings in the DOM tree, such as Select2.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setRefreshParent(boolean refreshParent) {
+		this.refreshParent = refreshParent;
 		return this;
 	}
 	
@@ -205,11 +216,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		processingPrerequisiteFieldChange = false;
 	}
 	
-	/**
-	 * When overriden, allows to redirect render requests to another component (for example, its parent).
-	 */
-	protected Component getAjaxTarget(Component componentToRender) {
-		return componentToRender;
+	private Component getAjaxTarget(Component componentToRender) {
+		if (refreshParent) {
+			return componentToRender.getParent();
+		} else {
+			return componentToRender;
+		}
 	}
 	
 	/**
