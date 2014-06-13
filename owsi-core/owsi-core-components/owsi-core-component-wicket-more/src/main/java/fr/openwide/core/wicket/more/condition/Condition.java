@@ -61,16 +61,16 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		return composite(BooleanOperator.NAND, this, operand);
 	}
 	
-	public Condition not() {
-		return new NotCondition(this);
+	public Condition negate() {
+		return new NegateCondition(this);
 	}
 	
-	private static class NotCondition extends Condition {
+	private static class NegateCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 
 		private final Condition condition;
 		
-		public NotCondition(Condition condition) {
+		public NegateCondition(Condition condition) {
 			super();
 			this.condition = condition;
 		}
