@@ -8,6 +8,7 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
@@ -247,6 +248,10 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
+	public static Condition permission(String permissionName) {
+		return new GlobalPermissionCondition(permissionName);
+	}
+	
 	public static Condition permission(Permission permission) {
 		return new GlobalPermissionCondition(permission);
 	}
@@ -254,18 +259,36 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	private static class GlobalPermissionCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 		
+		@SpringBean
+		private PermissionFactory permissionFactory;
+		
+		@SpringBean
+		private IAuthenticationService authenticationService;
+		
 		private final Permission permission;
+		
+		public GlobalPermissionCondition(String permissionName) {
+			super();
+			Injector.get().inject(this);
+			this.permission = permissionFactory.buildFromName(permissionName);
+		}
 		
 		public GlobalPermissionCondition(Permission permission) {
 			super();
+			Injector.get().inject(this);
 			this.permission = permission;
 		}
 		
 		@Override
 		public boolean applies() {
-			return AbstractCoreSession.get().hasPermission(permission);
+			return authenticationService.hasPermission(permission);
 		}
 	}
+	
+	public static Condition permission(IModel<?> securedObjectModel, String permissionName) {
+		return new ObjectPermissionCondition(securedObjectModel, permissionName);
+	}
+	
 	public static Condition permission(IModel<?> securedObjectModel, Permission permission) {
 		return new ObjectPermissionCondition(securedObjectModel, permission);
 	}
@@ -274,17 +297,27 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		private static final long serialVersionUID = 1L;
 		
 		@SpringBean
+		private PermissionFactory permissionFactory;
+		
+		@SpringBean
 		private IAuthenticationService authenticationService;
 		
 		private final IModel<?> securedObjectModel;
 		
 		private final Permission permission;
 		
+		public ObjectPermissionCondition(IModel<?> securedObjectModel, String permissionName) {
+			super();
+			Injector.get().inject(this);
+			this.securedObjectModel = securedObjectModel;
+			this.permission = permissionFactory.buildFromName(permissionName);
+		}
+		
 		public ObjectPermissionCondition(IModel<?> securedObjectModel, Permission permission) {
 			super();
+			Injector.get().inject(this);
 			this.securedObjectModel = securedObjectModel;
 			this.permission = permission;
-			Injector.get().inject(this);
 		}
 		
 		@Override
