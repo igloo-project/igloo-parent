@@ -36,7 +36,7 @@ public class BooleanIcon extends WebMarkupContainer {
 	
 	public BooleanIcon(String id, IModel<Boolean> booleanModel,
 			IModel<String> trueIconClassModel, IModel<String> falseIconClassModel) {
-		super(id);
+		super(id, booleanModel);
 		this.booleanModel = booleanModel;
 		this.trueIconClassModel = trueIconClassModel;
 		this.falseIconClassModel = falseIconClassModel;
