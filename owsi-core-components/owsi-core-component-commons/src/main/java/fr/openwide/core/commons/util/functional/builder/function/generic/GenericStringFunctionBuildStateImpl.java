@@ -120,8 +120,36 @@ public abstract class GenericStringFunctionBuildStateImpl
 	}
 	
 	@Override
+	public TStringState replaceAll(final CharMatcher charMatcher, final CharSequence replacement) {
+		return toString(new Function<String, String>() {
+			@Override
+			public String apply(String input) {
+				if (input == null) {
+					return null;
+				} else {
+					return charMatcher.replaceFrom(input, replacement);
+				}
+			}
+		});
+	}
+	
+	@Override
 	public TStringState removeAll(Pattern pattern) {
 		return replaceAll(pattern, "");
+	}
+	
+	@Override
+	public TStringState removeAll(final CharMatcher charMatcher) {
+		return toString(new Function<String, String>() {
+			@Override
+			public String apply(String input) {
+				if (input == null) {
+					return null;
+				} else {
+					return charMatcher.removeFrom(input);
+				}
+			}
+		});
 	}
 	
 	@Override

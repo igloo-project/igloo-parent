@@ -35,8 +35,12 @@ public interface StringFunctionBuildState
 	TStringState capitalizeFully(char... delimiters);
 	
 	TStringState replaceAll(Pattern pattern, String replacement);
+
+	TStringState replaceAll(CharMatcher charMatcher, CharSequence replacement);
 	
 	TStringState removeAll(Pattern pattern);
+
+	TStringState removeAll(CharMatcher charMatcher);
 	
 	/**
 	 * @see Matcher#group()
