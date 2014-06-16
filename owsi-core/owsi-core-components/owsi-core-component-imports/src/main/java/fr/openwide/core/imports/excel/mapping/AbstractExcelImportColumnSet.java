@@ -25,6 +25,7 @@ import fr.openwide.core.imports.excel.event.ExcelImportEvent;
 import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
 import fr.openwide.core.imports.excel.event.exception.ExcelImportContentException;
 import fr.openwide.core.imports.excel.event.exception.ExcelImportMappingException;
+import fr.openwide.core.imports.excel.location.ExcelImportLocation;
 import fr.openwide.core.imports.excel.location.ExcelImportLocationContext;
 import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
 import fr.openwide.core.imports.excel.mapping.column.IExcelImportColumnDefinition;
@@ -137,6 +138,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		
 		private SheetContext(TSheet sheet, IExcelImportNavigator<TSheet, TRow, TCell, TCellReference> navigator, IExcelImportEventHandler eventHandler)
 				throws ExcelImportMappingException {
+			super(eventHandler);
 			Validate.notNull(sheet);
 			
 			this.sheet = sheet;
@@ -202,21 +204,13 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		public <TValue> CellContext<TValue> cell(TRow row, Column<TValue> columnDefinition) {
 			return row(row).cell(columnDefinition);
 		}
-
+		
 		/**
-		 * @see ExcelImportLocationContext The shorthand methods error(), info(), etc. defined in the superclass.
+		 * @see ExcelImportLocationContext The event recording methods error(), info(), etc. defined in the superclass.
 		 */
 		@Override
-		public void event(ExcelImportErrorEvent event, String message, Object ... args) throws ExcelImportContentException {
-			event(event, message, null, null, (Object[])args);
-		}
-
-		/**
-		 * @see ExcelImportLocationContext The shorthand methods error(), info(), etc. defined in the superclass.
-		 */
-		@Override
-		public void event(ExcelImportInfoEvent event, String message, Object ... args) {
-			event(event, message, null, null, (Object[])args);
+		public ExcelImportLocation getLocation() {
+			return navigator.getLocation(sheet, null, null);
 		}
 		
 		public void event(ExcelImportErrorEvent event, String message, TRow row, Object ... args) throws ExcelImportContentException {
@@ -242,7 +236,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		private final TRow row;
 
 		private RowContext(SheetContext sheetContext, TRow row) {
-			super();
+			super(sheetContext.eventHandler);
 			this.sheetContext = sheetContext;
 			this.row = row;
 		}
@@ -254,21 +248,13 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		public <TValue> CellContext<TValue> cell(Column<TValue> columnDefinition) {
 			return new CellContext<>(this, sheetContext.getMappedColumn(columnDefinition));
 		}
-
+		
 		/**
-		 * @see ExcelImportLocationContext The shorthand methods error(), info(), etc. defined in the superclass.
+		 * @see ExcelImportLocationContext The event recording methods error(), info(), etc. defined in the superclass.
 		 */
 		@Override
-		public void event(ExcelImportErrorEvent event, String message, Object ... args) throws ExcelImportContentException {
-			event(event, message, null, (Object[])args);
-		}
-
-		/**
-		 * @see ExcelImportLocationContext The shorthand methods error(), info(), etc. defined in the superclass.
-		 */
-		@Override
-		public void event(ExcelImportInfoEvent event, String message, Object ... args) {
-			event(event, message, null, (Object[])args);
+		public ExcelImportLocation getLocation() {
+			return sheetContext.navigator.getLocation(sheetContext.sheet, row, null);
 		}
 		
 		public void event(ExcelImportErrorEvent event, String message, TCellReference cellReference, Object ... args) throws ExcelImportContentException {
@@ -306,7 +292,7 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		private final IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn;
 
 		private CellContext(RowContext rowContext, IMappedExcelImportColumnDefinition<TSheet, TRow, TCell, TCellReference, T> mappedColumn) {
-			super();
+			super(rowContext.sheetContext.eventHandler);
 			this.rowContext = rowContext;
 			this.mappedColumn = mappedColumn;
 		}
@@ -346,21 +332,13 @@ public abstract class AbstractExcelImportColumnSet<TSheet, TRow, TCell, TCellRef
 		public void missingValue(String message) throws ExcelImportContentException {
 			error(message);
 		}
-
+		
 		/**
-		 * @see ExcelImportLocationContext The shorthand methods error(), info(), etc. defined in the superclass.
+		 * @see ExcelImportLocationContext The event recording methods error(), info(), etc. defined in the superclass.
 		 */
 		@Override
-		public void event(ExcelImportErrorEvent event, String message, Object ... args) throws ExcelImportContentException {
-			rowContext.event(event, message, mappedColumn.getCellReference(rowContext.row), (Object[])args);
-		}
-
-		/**
-		 * @see ExcelImportLocationContext The shorthand methods error(), info(), etc. defined in the superclass.
-		 */
-		@Override
-		public void event(ExcelImportInfoEvent event, String message, Object ... args) {
-			rowContext.event(event, message, mappedColumn.getCellReference(rowContext.row), (Object[])args);
+		public ExcelImportLocation getLocation() {
+			return rowContext.sheetContext.navigator.getLocation(rowContext.sheetContext.sheet, rowContext.row, mappedColumn.getCellReference(rowContext.row));
 		}
 	}
 }
