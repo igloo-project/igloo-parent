@@ -15,7 +15,7 @@ public class LinkGeneratorBreadCrumbElementPanel extends GenericPanel<String> {
 	public LinkGeneratorBreadCrumbElementPanel(String id, BreadCrumbElement breadCrumbElement, BreadCrumbMarkupTagRenderingBehavior renderingBehavior) {
 		super(id, breadCrumbElement.getLabelModel());
 		
-		Link<Void> breadCrumbLink = breadCrumbElement.getLinkGenerator().link("breadCrumbElementLink").setAutoHideIfInvalid(true);
+		Link<Void> breadCrumbLink = breadCrumbElement.getLinkGenerator().link("breadCrumbElementLink").hideIfInvalid();
 		breadCrumbLink.setBody(getModel());
 		breadCrumbLink.add(renderingBehavior);
 		add(breadCrumbLink);
