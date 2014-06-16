@@ -13,6 +13,8 @@ import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
@@ -229,34 +231,47 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	}
 	
 	public static Condition role(String role) {
-		return new RoleCondition(role);
+		return new AnyRoleCondition(ImmutableList.of(role));
 	}
 	
-	private static class RoleCondition extends Condition {
+	public static Condition anyRole(String role, String ... otherRoles) {
+		return new AnyRoleCondition(Lists.asList(role, otherRoles));
+	}
+	
+	private static class AnyRoleCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 		
-		private final String roleName;
+		private final Iterable<String> roleNames;
 		
-		public RoleCondition(String roleName) {
+		public AnyRoleCondition(Iterable<String> roleNames) {
 			super();
-			this.roleName = roleName;
+			this.roleNames = ImmutableSet.copyOf(roleNames);
 		}
 		
 		@Override
 		public boolean applies() {
-			return AbstractCoreSession.get().hasRole(roleName);
+			for (String roleName : roleNames) {
+				if (AbstractCoreSession.get().hasRole(roleName)) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 	
 	public static Condition permission(String permissionName) {
-		return new GlobalPermissionCondition(permissionName);
+		return new AnyGlobalPermissionCondition(ImmutableList.of(permissionName));
+	}
+	
+	public static Condition anyPermission(String permissionName, String ... otherPermissionNames) {
+		return new AnyGlobalPermissionCondition(Lists.asList(permissionName, otherPermissionNames));
 	}
 	
 	public static Condition permission(Permission permission) {
-		return new GlobalPermissionCondition(permission);
+		return new AnyGlobalPermissionCondition(permission);
 	}
 	
-	private static class GlobalPermissionCondition extends Condition {
+	private static class AnyGlobalPermissionCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 		
 		@SpringBean
@@ -265,35 +280,44 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		@SpringBean
 		private IAuthenticationService authenticationService;
 		
-		private final Permission permission;
+		private final Iterable<Permission> permissions;
 		
-		public GlobalPermissionCondition(String permissionName) {
+		public AnyGlobalPermissionCondition(Iterable<String> permissionNames) {
 			super();
 			Injector.get().inject(this);
-			this.permission = permissionFactory.buildFromName(permissionName);
+			this.permissions = permissionFactory.buildFromNames(ImmutableList.copyOf(permissionNames));
 		}
 		
-		public GlobalPermissionCondition(Permission permission) {
+		public AnyGlobalPermissionCondition(Permission permission) {
 			super();
 			Injector.get().inject(this);
-			this.permission = permission;
+			this.permissions = ImmutableList.of(permission);
 		}
 		
 		@Override
 		public boolean applies() {
-			return authenticationService.hasPermission(permission);
+			for (Permission permission : permissions) {
+				if (authenticationService.hasPermission(permission)) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 	
 	public static Condition permission(IModel<?> securedObjectModel, String permissionName) {
-		return new ObjectPermissionCondition(securedObjectModel, permissionName);
+		return new AnyObjectPermissionCondition(securedObjectModel, ImmutableList.of(permissionName));
+	}
+	
+	public static Condition anyPermission(IModel<?> securedObjectModel, String permissionName, String ... otherPermissionNames) {
+		return new AnyObjectPermissionCondition(securedObjectModel, Lists.asList(permissionName, otherPermissionNames));
 	}
 	
 	public static Condition permission(IModel<?> securedObjectModel, Permission permission) {
-		return new ObjectPermissionCondition(securedObjectModel, permission);
+		return new AnyObjectPermissionCondition(securedObjectModel, permission);
 	}
 	
-	private static class ObjectPermissionCondition extends Condition {
+	private static class AnyObjectPermissionCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 		
 		@SpringBean
@@ -304,25 +328,31 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		
 		private final IModel<?> securedObjectModel;
 		
-		private final Permission permission;
+		private final Iterable<Permission> permissions;
 		
-		public ObjectPermissionCondition(IModel<?> securedObjectModel, String permissionName) {
+		public AnyObjectPermissionCondition(IModel<?> securedObjectModel, Iterable<String> permissionNames) {
 			super();
 			Injector.get().inject(this);
 			this.securedObjectModel = securedObjectModel;
-			this.permission = permissionFactory.buildFromName(permissionName);
+			this.permissions = permissionFactory.buildFromNames(ImmutableList.copyOf(permissionNames));
 		}
 		
-		public ObjectPermissionCondition(IModel<?> securedObjectModel, Permission permission) {
+		public AnyObjectPermissionCondition(IModel<?> securedObjectModel, Permission permission) {
 			super();
 			Injector.get().inject(this);
 			this.securedObjectModel = securedObjectModel;
-			this.permission = permission;
+			this.permissions = ImmutableList.of(permission);
 		}
 		
 		@Override
 		public boolean applies() {
-			return authenticationService.hasPermission(securedObjectModel.getObject(), permission);
+			Object securedObject = securedObjectModel.getObject();
+			for (Permission permission : permissions) {
+				if (authenticationService.hasPermission(securedObject, permission)) {
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		@Override
