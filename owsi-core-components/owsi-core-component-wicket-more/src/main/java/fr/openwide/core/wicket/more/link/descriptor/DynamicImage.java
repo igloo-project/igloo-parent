@@ -22,7 +22,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
  * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target ResourceReference is invalid,
  * then a {@link LinkInvalidTargetRuntimeException} will be thrown.
  * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden when they are not.
- * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
+ * The latter can be obtained by either using {@link #hideIfInvalid()}, or adding custom {@link Behavior behaviors}
  * using the {@link #setVisibilityAllowed(boolean)} method.
  * @see LinkInvalidTargetRuntimeException
  * @see LinkParameterValidationRuntimeException
@@ -53,19 +53,24 @@ public class DynamicImage extends Image {
 		this.parametersMapping = parametersMapping;
 		this.parametersValidator = parametersValidator;
 	}
-	
-	/**
-	 * Same as {@link AbstractDynamicBookmarkableLink#isAutoHideIfInvalid()}
-	 */
-	public boolean isAutoHideIfInvalid() {
-		return autoHideIfInvalid;
-	}
 
 	/**
 	 * Same as {@link AbstractDynamicBookmarkableLink#setAutoHideIfInvalid()}
+	 * @deprecated Use {@link #hideIfInvalid()} instead.
 	 */
+	@Deprecated
 	public DynamicImage setAutoHideIfInvalid(boolean autoHideIfInvalid) {
 		this.autoHideIfInvalid = autoHideIfInvalid;
+		return this;
+	}
+
+	/**
+	 * Sets the link up so that it will automatically hide (using {@link #setVisible(boolean)}) when its target or parameters are invalid.
+	 * <p>Default behavior is throwing a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
+	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 */
+	public DynamicImage hideIfInvalid() {
+		setAutoHideIfInvalid(true);
 		return this;
 	}
 	

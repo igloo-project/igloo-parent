@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor;
 
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.Url;
 
@@ -15,9 +16,9 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
  * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
  * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target is invalid, then a
  * {@link LinkInvalidTargetRuntimeException} will be thrown.
- * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden when they are not.
- * The latter can be obtained by either using {@link #setAutoHideIfInvalid(boolean) setAutoHideIfInvalid(true)}, or adding custom {@link Behavior behaviors}
- * using the {@link #setVisibilityAllowed(boolean)} method.
+ * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden or disabled when they are not.
+ * The latter can be obtained by either using {@link #hideIfInvalid()} or {@link #disableIfInvalid()}, or adding custom {@link Behavior behaviors}
+ * using the {@link #setVisibilityAllowed(boolean)} or the {@link #setEnabled(boolean)} methods.
  * @see LinkInvalidTargetRuntimeException
  * @see LinkParameterSerializedFormValidationException
  * @see LinkDescriptorBuilder
@@ -29,7 +30,30 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private boolean autoHideIfInvalid = false;
+	private static enum BehaviorIfInvalid {
+		THROW_EXCEPTION {
+			@Override
+			protected void onConfigure(AbstractDynamicBookmarkableLink link) {
+				link.setVisible(true); // If invalid, the exception will be thrown when rendering
+			}
+		},
+		HIDE {
+			@Override
+			protected void onConfigure(AbstractDynamicBookmarkableLink link) {
+				link.setVisible(link.isValid());
+			}
+		},
+		DISABLE {
+			@Override
+			protected void onConfigure(AbstractDynamicBookmarkableLink link) {
+				link.setEnabled(link.isValid());
+			}
+		};
+		
+		protected abstract void onConfigure(AbstractDynamicBookmarkableLink link);
+	}
+	
+	private BehaviorIfInvalid behaviorIfInvalid = BehaviorIfInvalid.THROW_EXCEPTION;
 	
 	private boolean absolute = false;
 
@@ -38,26 +62,63 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	}
 	
 	/**
-	 * Gets whether this link will hide when its target or parameters are invalid.
-	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
-	 * may be thrown if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
-	 * @return True if this link is hidden when its target or parameters are invalid, false otherwise.
+	 * @deprecated Use {@link #hideIfInvalid()} instead.
 	 */
-	public boolean isAutoHideIfInvalid() {
-		return autoHideIfInvalid;
+	@Deprecated
+	public AbstractDynamicBookmarkableLink setAutoHideIfInvalid(boolean autoHideIfInvalid) {
+		if (autoHideIfInvalid) {
+			hideIfInvalid();
+		} else {
+			this.behaviorIfInvalid = BehaviorIfInvalid.THROW_EXCEPTION;
+		}
+		return this;
+	}
+
+	/**
+	 * Sets the link up so that it will automatically hide (using {@link #setVisible(boolean)}) when its target or parameters are invalid.
+	 * <p>Default behavior is throwing a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
+	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 */
+	public AbstractDynamicBookmarkableLink hideIfInvalid() {
+		this.behaviorIfInvalid = BehaviorIfInvalid.HIDE;
+		return this;
+	}
+
+	/**
+	 * Sets the link up so that it will automatically be disabled when its target or parameters are invalid.
+	 * <p>Default behavior is throwing a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
+	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 */
+	public AbstractDynamicBookmarkableLink disableIfInvalid() {
+		this.behaviorIfInvalid = BehaviorIfInvalid.DISABLE;
+		return this;
 	}
 	
-	/**
-	 * Sets whether this link will hide when its target or parameters are invalid.
-	 * <p>Default is false.
-	 * <p>Note: if autohide is disabled, then a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
-	 * may be thrown if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
-	 * @param autoHideIfInvalid True to enable auto hiding, false to disable it.
+	/*
+	 * TODO YRO Delete this once the Wicket team cleaned the AbstractLink class (will happen in Wicket 7, it seems)
 	 */
-	public AbstractDynamicBookmarkableLink setAutoHideIfInvalid(boolean autoHideIfInvalid) {
-		this.autoHideIfInvalid = autoHideIfInvalid;
-		return this;
+	@Override
+	protected void disableLink(ComponentTag tag) {
+		setBeforeDisabledLink("");
+		setAfterDisabledLink("");
+		// if the tag is an anchor proper
+		if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link") ||
+			tag.getName().equalsIgnoreCase("area"))
+		{
+			// Do NOT change anchor link to span tag (difference with super implementation)
+//			tag.setName("span");
+
+			// Remove any href from the old link
+			tag.remove("href");
+
+			tag.remove("onclick");
+		}
+		// if the tag is a button or input
+		else if ("button".equalsIgnoreCase(tag.getName()) ||
+			"input".equalsIgnoreCase(tag.getName()))
+		{
+			tag.put("disabled", "disabled");
+		}
 	}
 	
 	public boolean isAbsolute() {
@@ -81,11 +142,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	protected void onConfigure() {
 		super.onConfigure();
 		
-		if (isAutoHideIfInvalid()) {
-			setVisible(isValid());
-		} else {
-			setVisible(true);
-		}
+		behaviorIfInvalid.onConfigure(this);
 	}
 	
 	@Override
