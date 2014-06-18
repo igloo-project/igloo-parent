@@ -11,9 +11,10 @@ import com.google.common.base.Objects;
 import fr.openwide.core.jpa.hibernate.interceptor.AbstractChainableInterceptor;
 import fr.openwide.core.jpa.more.business.audit.model.embeddable.AbstractAuditableProperty;
 
-public abstract class AuditablePropertyUpdateInterceptor extends AbstractChainableInterceptor {
-	
-	protected abstract boolean isIntercepted(Object entity);
+public abstract class AbstractAuditablePropertyUpdateInterceptor extends AbstractChainableInterceptor {
+
+	@Override
+	public abstract boolean applyTo(Object entity);
 	
 	protected void updateProperty(AbstractAuditableProperty<?> property) {
 		property.setLastEditDate(new Date());
@@ -23,14 +24,12 @@ public abstract class AuditablePropertyUpdateInterceptor extends AbstractChainab
 	public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
 		boolean stateChanged = false;
 		
-		if (isIntercepted(entity)) {
-			for (int i = 0 ; i < state.length ; ++i) {
-				Type type = types[i];
-				
-				if (AbstractAuditableProperty.class.isAssignableFrom(type.getReturnedClass())) {
-					stateChanged = true;
-					refreshAuditableProperty(state, i, type);
-				}
+		for (int i = 0 ; i < state.length ; ++i) {
+			Type type = types[i];
+			
+			if (AbstractAuditableProperty.class.isAssignableFrom(type.getReturnedClass())) {
+				stateChanged = true;
+				refreshAuditableProperty(state, i, type);
 			}
 		}
 		
@@ -43,17 +42,15 @@ public abstract class AuditablePropertyUpdateInterceptor extends AbstractChainab
 		String[] propertyNames, Type[] types) {
 		boolean stateChanged = false;
 
-		if (isIntercepted(entity)) {
-			for (int i = 0 ; i < currentState.length ; ++i) {
-				Type type = types[i];
-				Object currentProperty = currentState[i];
-				Object oldProperty = previousState[i];
-				
-				if (AbstractAuditableProperty.class.isAssignableFrom(type.getReturnedClass())
-						&& (currentProperty == null || !Objects.equal(currentProperty, oldProperty))) {
-					stateChanged = true;
-					refreshAuditableProperty(currentState, i, type);
-				}
+		for (int i = 0 ; i < currentState.length ; ++i) {
+			Type type = types[i];
+			Object currentProperty = currentState[i];
+			Object oldProperty = previousState[i];
+			
+			if (AbstractAuditableProperty.class.isAssignableFrom(type.getReturnedClass())
+					&& (currentProperty == null || !Objects.equal(currentProperty, oldProperty))) {
+				stateChanged = true;
+				refreshAuditableProperty(currentState, i, type);
 			}
 		}
 		
