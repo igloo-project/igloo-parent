@@ -244,9 +244,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's input.
 				prerequisiteField.inputChanged();
 				prerequisiteField.validate(); // Performs input conversion
+				updateModelIfNecessary(prerequisiteField);
 				
 				if (isConvertedInputSatisfyingRequirements(prerequisiteField, prerequisiteField.getConvertedInput())) {
-					updateModelIfNecessary(prerequisiteField);
 					setUpAttachedComponent(component);
 				} else {
 					cleanDefaultModelObject(component);
