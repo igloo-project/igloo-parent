@@ -11,7 +11,7 @@ import com.google.common.base.Objects;
 import fr.openwide.core.jpa.hibernate.interceptor.AbstractChainableInterceptor;
 import fr.openwide.core.jpa.more.business.audit.model.embeddable.AbstractAuditableProperty;
 
-public abstract class AuditablePropertyUpdateInterceptor extends AbstractChainableInterceptor {
+public abstract class AbstractAuditablePropertyUpdateInterceptor extends AbstractChainableInterceptor {
 	
 	protected abstract boolean isIntercepted(Object entity);
 	
