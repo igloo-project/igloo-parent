@@ -21,6 +21,8 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import fr.openwide.core.wicket.more.condition.Condition;
+
 /**
  * Performs abstract actions on the attached component according to the actual, client-side content of a given {@link FormComponent}.<br>
  * This Behavior takes into account the fact that, in some cases, the model of a FormComponent may not reflect
@@ -67,6 +69,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
 	
 	private Predicate<? super T> objectValidPredicate = Predicates.notNull();
+	
+	private Condition forceSetUpConditon = null;
+	private Condition forceTakeDownConditon = null;
 
 	public AbstractAjaxInputPrerequisiteBehavior(FormComponent<T> prerequisiteField) {
 		super();
@@ -107,6 +112,22 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setObjectValidPredicate(Predicate<? super T> objectValidPredicate) {
 		this.objectValidPredicate = objectValidPredicate;
+		return this;
+	}
+	
+	/**
+	 * Sets the condition under which the attached component will be "set up" regardless of the value of the prerequisite field.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setForceSetUpCondition(Condition condition) {
+		this.forceSetUpConditon = condition;
+		return this;
+	}
+
+	/**
+	 * Sets the condition under which the attached component will be "taken down" regardless of the value of the prerequisite field.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setForceTakeDownCondition(Condition condition) {
+		this.forceTakeDownConditon = condition;
 		return this;
 	}
 	
@@ -255,7 +276,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		super.onConfigure(component);
 		
 		if (prerequisiteField.determineVisibility()) {
-			if (shouldSetUpAttachedComponent()) {
+			if (forceTakeDownConditon != null && forceTakeDownConditon.applies()) {
+				cleanDefaultModelObject(component);
+				takeDownAttachedComponent(component);
+			} else if (forceSetUpConditon != null && forceSetUpConditon.applies()) {
+				setUpAttachedComponent(component);
+			} else {
 				if (hasInputChanged(prerequisiteField)) {
 					// The prerequisiteField input has changed : the rendering of the attached component was triggered either by our
 					// InputPrerequisiteAjaxEventBehavior or by a form submit.
@@ -286,9 +312,6 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				
 				// We need to clear the message that may have been added during the validation, since they are not relevant to the user (no form was submitted)
 				prerequisiteField.getFeedbackMessages().clear();
-			} else {
-				cleanDefaultModelObject(component);
-				takeDownAttachedComponent(component);
 			}
 		}
 	}
@@ -297,14 +320,6 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		if (updatePrerequisiteModel) {
 			prerequisiteField.updateModel();
 		}
-	}
-	
-	/** Allows to restrict whether the attached component should be set up or not based on external, <code>prerequisiteField</code>-independent conditions.
-	 * @return True if we can proceed inspecting the <code>prerequisiteField</code> value.
-	 *         False if the attached component should be taken down regardless of the <code>prerequisiteField</code> status.
-	 */
-	protected boolean shouldSetUpAttachedComponent() {
-		return true;
 	}
 	
 	protected final boolean isConvertedInputSatisfyingRequirements(FormComponent<T> prerequisiteField, T convertedInput) {
