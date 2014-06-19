@@ -124,6 +124,52 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
+	public static Condition constant(boolean value) {
+		return value ? alwaysTrue() : alwaysFalse();
+	}
+	
+	public static Condition alwaysTrue() {
+		return ConstantCondition.ALWAYS_TRUE;
+	}
+	
+	public static Condition alwaysFalse() {
+		return ConstantCondition.ALWAYS_FALSE;
+	}
+	
+	private static class ConstantCondition extends Condition {
+		private static final long serialVersionUID = -7678144550356610455L;
+		
+		private static ConstantCondition ALWAYS_TRUE = new ConstantCondition(true) {
+			private static final long serialVersionUID = -8786829515620843503L;
+			private Object readResolve() {
+				return ALWAYS_TRUE;
+			}
+		};
+		private static ConstantCondition ALWAYS_FALSE = new ConstantCondition(false) {
+			private static final long serialVersionUID = -6055735778127387150L;
+			private Object readResolve() {
+				return ALWAYS_FALSE;
+			}
+		};
+		
+		private final boolean value;
+
+		public ConstantCondition(boolean value) {
+			super();
+			this.value = value;
+		}
+		
+		@Override
+		public boolean applies() {
+			return value;
+		}
+		
+		@Override
+		public String toString() {
+			return String.valueOf(value);
+		}
+	}
+	
 	public static <T> Condition predicate(IModel<? extends T> model, Predicate<? super T> predicate) {
 		return new PredicateCondition<>(model, predicate);
 	}
