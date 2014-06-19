@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.form;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -12,6 +13,7 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
+import org.apache.wicket.util.string.StringValue;
 import org.odlabs.wiquery.core.events.StateEvent;
 
 import com.google.common.base.Predicate;
@@ -63,8 +65,6 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	private boolean refreshParent = false;
 	
 	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
-	
-	private transient /* Scope : request */ boolean processingPrerequisiteFieldChange = false;
 	
 	private Predicate<? super T> objectValidPredicate = Predicates.notNull();
 
@@ -197,7 +197,6 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	private void prerequisiteFieldChange(AjaxRequestTarget target) {
-		processingPrerequisiteFieldChange = true;
 		for (Component attachedComponent : attachedComponents) {
 			target.add(getAjaxTarget(attachedComponent));
 			if (resetAttachedModel) {
@@ -213,7 +212,6 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		processingPrerequisiteFieldChange = false;
 	}
 	
 	private Component getAjaxTarget(Component componentToRender) {
@@ -233,14 +231,20 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	protected void onPrerequisiteFieldChange(AjaxRequestTarget target, FormComponent<T> prerequisiteField, Collection<Component> attachedComponents) {
 		
 	}
+	
+	private static boolean hasInputChanged(FormComponent<?> formComponent) {
+		List<StringValue> input = formComponent.getRequest().getRequestParameters().getParameterValues(formComponent.getInputName());
+		return input != null && !input.isEmpty();
+	}
 
 	@Override
 	public final void onConfigure(Component component) {
 		super.onConfigure(component);
 		
 		if (shouldSetUpAttachedComponent()) {
-			if (processingPrerequisiteFieldChange) {
-				// The prerequisiteField input has changed : the rendering of the attached component was triggered by our InputPrerequisiteAjaxEventBehavior.
+			if (hasInputChanged(prerequisiteField)) {
+				// The prerequisiteField input has changed : the rendering of the attached component was triggered either by our
+				// InputPrerequisiteAjaxEventBehavior or by a form submit.
 				// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's input.
 				prerequisiteField.inputChanged();
 				prerequisiteField.validate(); // Performs input conversion
@@ -252,8 +256,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 					cleanDefaultModelObject(component);
 					takeDownAttachedComponent(component);
 				}
-
-				prerequisiteField.clearInput();
+				
+				// Clearing the input seems useless here, and may harm if the input is used when rendering the form component.
+//				prerequisiteField.clearInput();
 			} else {
 				prerequisiteField.validate(); // Performs input conversion
 				
