@@ -148,6 +148,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		
 		@Override
 		protected void onEvent(AjaxRequestTarget target) {
+			notify(target);
+		}
+		
+		public void notify(AjaxRequestTarget target) {
 			for (AbstractAjaxInputPrerequisiteBehavior<?> listener : listeners) {
 				listener.prerequisiteFieldChange(target);
 			}
@@ -155,11 +159,15 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	private InputPrerequisiteAjaxEventBehavior getExistingAjaxEventBehavior() {
-		Collection<InputPrerequisiteAjaxEventBehavior> ajaxEventBehaviors = prerequisiteField.getBehaviors(InputPrerequisiteAjaxEventBehavior.class);
+		return getExistingAjaxEventBehavior(prerequisiteField);
+	}
+	
+	private InputPrerequisiteAjaxEventBehavior getExistingAjaxEventBehavior(Component component) {
+		Collection<InputPrerequisiteAjaxEventBehavior> ajaxEventBehaviors = component.getBehaviors(InputPrerequisiteAjaxEventBehavior.class);
 		if (ajaxEventBehaviors.isEmpty()) {
 			return null;
 		} else if (ajaxEventBehaviors.size() > 1) {
-			throw new IllegalStateException("There should not be more than ONE InputPrerequisiteAjaxEventBehavior attached to " + prerequisiteField);
+			throw new IllegalStateException("There should not be more than ONE InputPrerequisiteAjaxEventBehavior attached to " + component);
 		} else {
 			return ajaxEventBehaviors.iterator().next();
 		}
@@ -201,6 +209,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			target.add(getAjaxTarget(attachedComponent));
 			if (resetAttachedModel) {
 				attachedComponent.setDefaultModelObject(null);
+				// Handle chained prerequisites
+				InputPrerequisiteAjaxEventBehavior behavior = getExistingAjaxEventBehavior(attachedComponent);
+				if (behavior != null) {
+					behavior.notify(target);
+				}
 			}
 		}
 		for (AbstractListener onChangeListener : onChangeListeners) {
@@ -241,40 +254,42 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	public final void onConfigure(Component component) {
 		super.onConfigure(component);
 		
-		if (shouldSetUpAttachedComponent()) {
-			if (hasInputChanged(prerequisiteField)) {
-				// The prerequisiteField input has changed : the rendering of the attached component was triggered either by our
-				// InputPrerequisiteAjaxEventBehavior or by a form submit.
-				// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's input.
-				prerequisiteField.inputChanged();
-				prerequisiteField.validate(); // Performs input conversion
-				updateModelIfNecessary(prerequisiteField);
-				
-				if (isConvertedInputSatisfyingRequirements(prerequisiteField, prerequisiteField.getConvertedInput())) {
-					setUpAttachedComponent(component);
+		if (prerequisiteField.determineVisibility()) {
+			if (shouldSetUpAttachedComponent()) {
+				if (hasInputChanged(prerequisiteField)) {
+					// The prerequisiteField input has changed : the rendering of the attached component was triggered either by our
+					// InputPrerequisiteAjaxEventBehavior or by a form submit.
+					// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's input.
+					prerequisiteField.inputChanged();
+					prerequisiteField.validate(); // Performs input conversion
+					updateModelIfNecessary(prerequisiteField);
+					
+					if (isConvertedInputSatisfyingRequirements(prerequisiteField, prerequisiteField.getConvertedInput())) {
+						setUpAttachedComponent(component);
+					} else {
+						cleanDefaultModelObject(component);
+						takeDownAttachedComponent(component);
+					}
+					
+					// Clearing the input seems useless here, and may harm if the input is used when rendering the form component.
+	//				prerequisiteField.clearInput();
 				} else {
-					cleanDefaultModelObject(component);
-					takeDownAttachedComponent(component);
+					prerequisiteField.validate(); // Performs input conversion
+					
+					if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
+						setUpAttachedComponent(component);
+					} else {
+						cleanDefaultModelObject(component);
+						takeDownAttachedComponent(component);
+					}
 				}
 				
-				// Clearing the input seems useless here, and may harm if the input is used when rendering the form component.
-//				prerequisiteField.clearInput();
+				// We need to clear the message that may have been added during the validation, since they are not relevant to the user (no form was submitted)
+				prerequisiteField.getFeedbackMessages().clear();
 			} else {
-				prerequisiteField.validate(); // Performs input conversion
-				
-				if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
-					setUpAttachedComponent(component);
-				} else {
-					cleanDefaultModelObject(component);
-					takeDownAttachedComponent(component);
-				}
+				cleanDefaultModelObject(component);
+				takeDownAttachedComponent(component);
 			}
-			
-			// We need to clear the message that may have been added during the validation, since they are not relevant to the user (no form was submitted)
-			prerequisiteField.getFeedbackMessages().clear();
-		} else {
-			cleanDefaultModelObject(component);
-			takeDownAttachedComponent(component);
 		}
 	}
 
@@ -283,7 +298,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			prerequisiteField.updateModel();
 		}
 	}
-
+	
 	/** Allows to restrict whether the attached component should be set up or not based on external, <code>prerequisiteField</code>-independent conditions.
 	 * @return True if we can proceed inspecting the <code>prerequisiteField</code> value.
 	 *         False if the attached component should be taken down regardless of the <code>prerequisiteField</code> status.
