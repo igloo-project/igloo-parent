@@ -84,6 +84,10 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		return select2Behavior.getSettings();
 	}
 	
+	public IModel<? extends List<? extends T>> getChoicesModel() {
+		return choicesWrapperModel;
+	}
+	
 	public GenericSelect2DropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {
 		this.width = width;
 		return this;
