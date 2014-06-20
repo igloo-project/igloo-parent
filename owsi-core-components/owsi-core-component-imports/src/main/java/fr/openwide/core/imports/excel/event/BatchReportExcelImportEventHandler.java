@@ -34,6 +34,8 @@ public class BatchReportExcelImportEventHandler extends AbstractRecordingExcelIm
 	protected void record(ExcelImportInfoEvent event, ExcelImportLocation location, String formattedMessage) {
 		if (ExcelImportEvent.WARNING.equals(event)) {
 			batchReport.warn(formattedMessage);
+		} else if (ExcelImportEvent.DEBUG.equals(event)) {
+			batchReport.debug(formattedMessage);
 		} else {
 			batchReport.info(formattedMessage);
 		}

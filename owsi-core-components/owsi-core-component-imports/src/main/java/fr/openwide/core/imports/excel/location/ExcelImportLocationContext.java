@@ -34,6 +34,10 @@ public abstract class ExcelImportLocationContext {
 	public final void info(String message, Object ... args) {
 		event(ExcelImportEvent.INFO, message, (Object[])args);
 	}
+
+	public final void debug(String message, Object ... args) {
+		event(ExcelImportEvent.DEBUG, message, (Object[])args);
+	}
 	
 	public void event(ExcelImportInfoEvent event, String message, Object ... args) {
 		eventHandler.event(event, getLocation(), message, (Object[])args);
