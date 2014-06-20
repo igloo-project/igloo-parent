@@ -14,6 +14,10 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 
+/**
+ * @deprecated Use {@link fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState#permission(IModel, String, String...)} <strong>once for each permission</strong> instead
+ */
+@Deprecated
 public class PermissionLinkParameterValidator implements ILinkParameterValidator {
 	
 	private static final long serialVersionUID = -3298853605826007922L;

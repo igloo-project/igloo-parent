@@ -11,6 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -23,6 +24,8 @@ import fr.openwide.core.wicket.more.AbstractCoreSession;
 public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	private static final long serialVersionUID = -3315852580233582804L;
+	
+	private static final Joiner COMMA_JOINER = Joiner.on(',');
 
 	public abstract boolean applies();
 	
@@ -87,6 +90,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			super.detach();
 			condition.detach();
 		}
+		
+		@Override
+		public String toString() {
+			return "not(" + condition + ")";
+		}
 	}
 	
 	public static Condition composite(BooleanOperator operator, Condition ... operands) {
@@ -121,6 +129,13 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			for (Condition operand : operands) {
 				operand.detach();
 			}
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append(operator.name().toLowerCase()).append("(").append(COMMA_JOINER.join(operands)).append(")");
+			return builder.toString();
 		}
 	}
 	
@@ -248,6 +263,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			component.configure();
 			return component.determineVisibility();
 		}
+		
+		@Override
+		public String toString() {
+			return "visible(" + component + ")";
+		}
 	}
 	
 	public static Condition anyChildVisible(MarkupContainer container) {
@@ -273,6 +293,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 				}
 			}
 			return false;
+		}
+		
+		@Override
+		public String toString() {
+			return "anyChildVisible(" + container + ")";
 		}
 	}
 	
@@ -302,6 +327,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 				}
 			}
 			return false;
+		}
+		
+		@Override
+		public String toString() {
+			return "anyRole(" + COMMA_JOINER.join(roleNames) + ")";
 		}
 	}
 	
@@ -348,6 +378,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 				}
 			}
 			return false;
+		}
+		
+		@Override
+		public String toString() {
+			return "anyGlobalPermission(" + COMMA_JOINER.join(permissions) + ")";
 		}
 	}
 	
@@ -405,6 +440,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public void detach() {
 			super.detach();
 			securedObjectModel.detach();
+		}
+		
+		@Override
+		public String toString() {
+			return "anyPermission(" + securedObjectModel + "," + COMMA_JOINER.join(permissions) + ")";
 		}
 	}
 }
