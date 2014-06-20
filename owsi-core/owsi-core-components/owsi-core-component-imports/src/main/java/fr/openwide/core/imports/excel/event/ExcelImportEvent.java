@@ -6,6 +6,7 @@ public class ExcelImportEvent {
 	public static ExcelImportErrorEvent ERROR = new ExcelImportErrorEvent("ERROR", ExcelImportErrorSeverity.NON_FATAL);
 	public static ExcelImportInfoEvent WARNING = new ExcelImportInfoEvent("WARNING");
 	public static ExcelImportInfoEvent INFO = new ExcelImportInfoEvent("INFO");
+	public static ExcelImportInfoEvent DEBUG = new ExcelImportInfoEvent("DEBUG");
 	
 	private final String name;
 	

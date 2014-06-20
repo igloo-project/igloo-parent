@@ -43,6 +43,8 @@ public class LoggerExcelImportEventHandler extends AbstractRecordingExcelImportE
 	protected void record(ExcelImportInfoEvent event, ExcelImportLocation location, String formattedMessage) {
 		if (ExcelImportEvent.WARNING.equals(event)) {
 			logger.warn(formattedMessage);
+		} else if (ExcelImportEvent.DEBUG.equals(event)) {
+			logger.debug(formattedMessage);
 		} else {
 			logger.info(formattedMessage);
 		}
