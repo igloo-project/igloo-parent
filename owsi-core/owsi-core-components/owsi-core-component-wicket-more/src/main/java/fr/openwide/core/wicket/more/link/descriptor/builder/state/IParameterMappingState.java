@@ -10,6 +10,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import com.google.common.base.Supplier;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -43,7 +44,13 @@ public interface IParameterMappingState<L extends ILinkParametersExtractor> exte
 	IParameterMappingState<L> validator(ILinkParameterValidator validator);
 	
 	@Override
-	IParameterMappingState<L> permission(IModel<? extends GenericEntity<?, ?>> model, String firstPermissionName, String... otherPermissionNames);
+	IParameterMappingState<L> validator(Condition condition);
+	
+	@Override
+	IParameterMappingState<L> permission(IModel<?> model, String permissionName);
+	
+	@Override
+	IParameterMappingState<L> permission(IModel<?> model, String firstPermissionName, String... otherPermissionNames);
 	
 	@Override
 	<R, T extends GenericEntity<?, ?>>
