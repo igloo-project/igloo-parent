@@ -56,6 +56,12 @@ public class NavigationMenuItem implements IDetachable {
 		if (labelModel != null) {
 			labelModel.detach();
 		}
+		if (cssClassesModel != null) {
+			cssClassesModel.detach();
+		}
+		if (iconClassesModel != null) {
+			iconClassesModel.detach();
+		}
 		if (pageLinkGenerator != null) {
 			pageLinkGenerator.detach();
 		}
