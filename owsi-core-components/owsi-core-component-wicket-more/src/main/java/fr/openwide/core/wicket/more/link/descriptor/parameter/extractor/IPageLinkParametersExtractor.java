@@ -5,7 +5,7 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 /**
  * An {@link ILinkParametersExtractor} that also allows for "safe" extraction, redirecting to a given page if an
@@ -22,7 +22,7 @@ public interface IPageLinkParametersExtractor extends ILinkParametersExtractor {
 	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkParametersExtractor} class logger.
 	 * @see #extract(PageParameters)
 	 */
-	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink) throws RestartResponseException;
+	void extractSafely(PageParameters parameters, IPageLinkGenerator fallbackLink) throws RestartResponseException;
 	
 	/**
 	 * Attempts to extract the page parameters, {@link #newRestartResponseException() throwing a RestartResponseException}
@@ -30,7 +30,7 @@ public interface IPageLinkParametersExtractor extends ILinkParametersExtractor {
 	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkParametersExtractor} class logger.
 	 * @see #extract(PageParameters)
 	 */
-	void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink, String errorMessage)
+	void extractSafely(PageParameters parameters, IPageLinkGenerator fallbackLink, String errorMessage)
 			throws RestartResponseException;
 
 }

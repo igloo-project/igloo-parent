@@ -22,6 +22,7 @@ import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
@@ -70,12 +71,12 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	}
 	
 	@Override
-	public void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink) throws RestartResponseException {
+	public void extractSafely(PageParameters parameters, IPageLinkGenerator fallbackLink) throws RestartResponseException {
 		extractSafely(parameters, fallbackLink, null);
 	}
 	
 	@Override
-	public void extractSafely(PageParameters parameters, IPageLinkDescriptor fallbackLink, String errorMessage)
+	public void extractSafely(PageParameters parameters, IPageLinkGenerator fallbackLink, String errorMessage)
 			throws RestartResponseException {
 		try {
 			extract(parameters);
