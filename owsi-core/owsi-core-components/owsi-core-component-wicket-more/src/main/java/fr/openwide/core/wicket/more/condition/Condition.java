@@ -5,6 +5,8 @@ import java.util.Arrays;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -187,6 +189,23 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	public static <T> Condition predicate(IModel<? extends T> model, Predicate<? super T> predicate) {
 		return new PredicateCondition<>(model, predicate);
+	}
+	
+	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Predicate<? super T> predicate) {
+		return predicate(
+				new AbstractReadOnlyModel<T>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public T getObject() {
+						return formComponent.getConvertedInput();
+					}
+					@Override
+					public String toString() {
+						return formComponent.toString();
+					}
+				},
+				predicate
+		);
 	}
 	
 	private static class PredicateCondition<T> extends Condition {
