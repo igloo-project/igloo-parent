@@ -9,9 +9,19 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
+import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.string.StringValue;
 import org.odlabs.wiquery.core.events.StateEvent;
@@ -53,6 +63,11 @@ import fr.openwide.core.wicket.more.condition.Condition;
 public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior {
 
 	private static final long serialVersionUID = 4689707482303046984L;
+	
+	private static final ResourceReference CHOICE_JS = new JQueryPluginResourceReference(
+			AbstractAjaxInputPrerequisiteBehavior.class,
+			"jquery.AbstractAjaxInputPrerequisiteBehavior.Choice.js"
+	);
 
 	private final FormComponent<T> prerequisiteField;
 	
@@ -150,8 +165,48 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		
 		private final Collection<AbstractAjaxInputPrerequisiteBehavior<?>> listeners = Sets.newHashSet();
 		
+		private boolean choice;
+		
 		public InputPrerequisiteAjaxEventBehavior() {
 			super(StateEvent.CHANGE.getEventLabel());
+		}
+		
+		@Override
+		protected void onBind() {
+			super.onBind();
+			Component component = getComponent();
+			choice = (component instanceof RadioChoice) ||
+					(component instanceof CheckBoxMultipleChoice) || (component instanceof RadioGroup) ||
+					(component instanceof CheckGroup);
+		}
+		
+		@Override
+		public void renderHead(Component component, IHeaderResponse response) {
+			super.renderHead(component, response);
+			if (choice) {
+				response.render(JavaScriptHeaderItem.forReference(CHOICE_JS));
+			}
+		}
+
+		@Override
+		protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+			super.updateAjaxAttributes(attributes);
+			
+			FormComponent<?> component = (FormComponent<?>)getComponent();
+			if (choice) {
+				// Copied from AjaxFormChoiceComponentUpdatingBehavior
+				attributes.getAjaxCallListeners().add(new AjaxCallListener() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public CharSequence getPrecondition(Component component) {
+						return String.format("return OWSI.AbtractAjaxInputPrerequisiteBehavior.Choice.acceptInput('%s', attrs)", ((FormComponent<?>)component).getInputName());
+					}
+				});
+				
+				attributes.getDynamicExtraParameters().add(
+						String.format("return OWSI.AbtractAjaxInputPrerequisiteBehavior.Choice.getInputValues('%s', attrs)", component.getInputName())
+				);
+			}
 		}
 		
 		public void register(AbstractAjaxInputPrerequisiteBehavior<?> inputPrerequisiteBehavior) {
