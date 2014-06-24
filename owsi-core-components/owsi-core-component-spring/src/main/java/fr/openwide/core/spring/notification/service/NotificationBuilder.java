@@ -2,6 +2,7 @@ package fr.openwide.core.spring.notification.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -363,7 +365,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	public void send(String encoding) throws ServiceException {
 		try {
 			for (Entry<Locale, Collection<String>> entry : emailsByLocale.asMap().entrySet()) {
-				String[] to = entry.getValue().toArray(new String[entry.getValue().size()]);
+				Collection<String> to = entry.getValue();
 				
 				try {
 					MimeMessage message = buildMessage(to, encoding, entry.getKey());
@@ -386,7 +388,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		}
 	}
 	
-	private MimeMessage buildMessage(String[] to, String encoding, Locale locale) throws IOException, TemplateException, MessagingException {
+	private MimeMessage buildMessage(Collection<String> to, String encoding, Locale locale) throws IOException, TemplateException, MessagingException {
 		if (templateKey != null) {
 			subject(getSubject(templateKey, locale));
 			textBody = getBodyText(templateKey, locale);
@@ -399,18 +401,18 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (from == null) {
 			from = getDefaultFrom();
 		}
-		String[] filteredTo = filterEmails(to);
-		if (filteredTo.length == 0) {
+		Collection<String> filteredTo = filterEmails(to);
+		if (filteredTo.isEmpty()) {
 			return null;
 		}
 		
-		Set<String> filteredCc = filterCcBcc(cc);
-		Set<String> filteredBcc = filterCcBcc(cc);
+		Collection<String> filteredCc = filterCcBcc(cc);
+		Collection<String> filteredBcc = filterCcBcc(bcc);
 		
 		helper.setFrom(from);
-		helper.setTo(filteredTo);
-		helper.setCc(filteredCc.toArray(new String[filteredCc.size()]));
-		helper.setBcc(filteredBcc.toArray(new String[filteredBcc.size()]));
+		helper.setTo(Iterables.toArray(filteredTo, String.class));
+		helper.setCc(Iterables.toArray(filteredCc, String.class));
+		helper.setBcc(Iterables.toArray(filteredBcc, String.class));
 		helper.setSubject(subject);
 
 		String textBodyPrefix = getBodyPrefix(to, cc, bcc, MailFormat.TEXT);
@@ -494,14 +496,18 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return configurer.isNotificationMailRecipientsFiltered();
 	}
 	
-	private String[] filterEmails(String[] emails) {
+	private Collection<String> filterEmails(Collection<String> emails) {
 		if (emails != null && isMailRecipientsFiltered()) {
-			return configurer.getNotificationTestEmails();
+			return getNotificationTestEmails();
 		}
 		return emails;
 	}
 	
-	private Set<String> filterCcBcc(Set<String> emails) {
+	protected Collection<String> getNotificationTestEmails() {
+		return Arrays.asList(configurer.getNotificationTestEmails());
+	}
+	
+	private Collection<String> filterCcBcc(Collection<String> emails) {
 		if (isMailRecipientsFiltered()) {
 			return Sets.newHashSet();
 		}
@@ -517,7 +523,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return subjectPrefix.toString();
 	}
 	
-	private String getBodyPrefix(String[] to, Set<String> cc, Set<String> bcc, MailFormat mailFormat) {
+	private String getBodyPrefix(Collection<String> to, Collection<String> cc, Collection<String> bcc, MailFormat mailFormat) {
 		if (configurer.isConfigurationTypeDevelopment()) {
 			
 			String newLine = MailFormat.HTML.equals(mailFormat) ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
