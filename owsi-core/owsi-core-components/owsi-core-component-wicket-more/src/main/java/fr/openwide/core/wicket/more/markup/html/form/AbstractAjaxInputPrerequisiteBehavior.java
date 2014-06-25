@@ -73,6 +73,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private final Collection<Component> attachedComponents = Lists.newArrayList();
 	
+	private boolean defaultWhenPrerequisiteInvisible = true;
+	
 	private boolean useWicketValidation = false;
 	
 	private boolean updatePrerequisiteModel = false;
@@ -93,6 +95,16 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		Args.notNull(prerequisiteField, "prerequisiteField");
 		this.prerequisiteField = prerequisiteField;
 	}
+	
+	/**
+	 * Sets whether the attached component should be set up (<code>true</code>) or taken down (<code>false</code>)
+	 * when the prerequisiteField is invisible.
+	 * <p>Default is <code>true</code>.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setDefaultWhenPrerequisiteInvisible(boolean defaultToSetUp) {
+		this.defaultWhenPrerequisiteInvisible = defaultToSetUp;
+		return this;
+	}
 
 	/**
 	 * Sets whether wicket validation ({@link FormComponent#validate()} method) is to be taken into account before
@@ -101,8 +113,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * will systematically deem a field invalid when there is no input. In particular, this means that the prerequisite field will systematically be deemed invalid on
 	 * the first page rendering, which means this feature is not suitable for "editing" forms, where the form is filled before the first rendering.
 	 */
-	public void setUseWicketValidation(boolean validatePrerequisiteInput) {
+	public AbstractAjaxInputPrerequisiteBehavior<T> setUseWicketValidation(boolean validatePrerequisiteInput) {
 		this.useWicketValidation = validatePrerequisiteInput;
+		return this;
 	}
 	
 	/**
@@ -367,6 +380,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				
 				// We need to clear the message that may have been added during the validation, since they are not relevant to the user (no form was submitted)
 				prerequisiteField.getFeedbackMessages().clear();
+			}
+		} else {
+			if (defaultWhenPrerequisiteInvisible) {
+				setUpAttachedComponent(component);
+			} else {
+				takeDownAttachedComponent(component);
 			}
 		}
 	}
