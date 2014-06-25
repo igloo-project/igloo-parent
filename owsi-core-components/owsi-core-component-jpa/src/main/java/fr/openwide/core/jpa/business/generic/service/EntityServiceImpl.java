@@ -24,6 +24,12 @@ public class EntityServiceImpl implements IEntityService {
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference) {
 		return entityDao.getEntity(reference);
 	}
+	
+	@Override
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(E entity) {
+		return entityDao.getEntity(GenericEntityReference.of(entity));
+	}
+	
 
 	@Override
 	public void flush() {
