@@ -37,6 +37,7 @@ public class CacheModel<T> implements IModel<T> {
 	}
 
 	public void read() {
+		cached = true;
 		cache.setObject(reference.getObject());
 	}
 	
