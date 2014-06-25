@@ -12,6 +12,8 @@ public final class Select2Utils {
 	public static final String CSS_DROP_XXLARGE = "select2-drop-xxlarge";
 	public static final String CSS_DROP_XXXLARGE = "select2-drop-xxxlarge";
 	
+	private static final int DEFAULT_MINIMUM_RESULTS_FOR_SEARCH = 6;
+	
 	private static final int AJAX_DEFAULT_MINIMUM_INPUT_LENGTH = 2;
 	
 	private static final String DEFAULT_MATCHER = "function(term, text) { return OWSI.StringUtils.removeAccents('' + text).indexOf(OWSI.StringUtils.removeAccents('' + term))>=0; }";
@@ -39,6 +41,7 @@ public final class Select2Utils {
 		settings.setNoMatchesKey("common.select2.noChoice");
 		settings.setMatcher(DEFAULT_MATCHER);
 		settings.setFormatResult(DEFAULT_FORMAT_RESULT);
+		settings.setMinimumResultsForSearch(DEFAULT_MINIMUM_RESULTS_FOR_SEARCH);
 		settings.setAllowClear(true);
 	}
 	
