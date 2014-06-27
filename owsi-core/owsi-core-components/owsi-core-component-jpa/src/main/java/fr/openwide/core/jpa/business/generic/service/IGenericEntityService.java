@@ -20,6 +20,7 @@ package fr.openwide.core.jpa.business.generic.service;
 import java.io.Serializable;
 import java.util.List;
 
+import fr.openwide.core.jpa.business.generic.annotation.PermissionObject;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -41,35 +42,35 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	 * 
 	 * @param entity entité
 	 */
-	void save(E entity) throws ServiceException, SecurityServiceException;
+	void save(@PermissionObject E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
 	 * Met à jour l'entité dans la base de données.
 	 * 
 	 * @param entity entité
 	 */
-	void update(E entity) throws ServiceException, SecurityServiceException;
+	void update(@PermissionObject E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
 	 * Crée l'entité dans la base de données.
 	 * 
 	 * @param entity entité
 	 */
-	void create(E entity) throws ServiceException, SecurityServiceException;
+	void create(@PermissionObject E entity) throws ServiceException, SecurityServiceException;
 
 	/**
 	 * Supprime l'entité de la base de données
 	 * 
 	 * @param entity entité
 	 */
-	void delete(E entity) throws ServiceException, SecurityServiceException;
+	void delete(@PermissionObject E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
 	 * Rafraîchit l'entité depuis la base de données
 	 * 
 	 * @param entity entité
 	 */
-	E refresh(E entity);
+	E refresh(@PermissionObject E entity);
 	
 	/**
 	 * Retourne une entité à partir de sa classe et son id.
@@ -90,7 +91,7 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	 * @param id identifiant
 	 * @return entité
 	 */
-	E getById(K id);
+	E getById(@PermissionObject K id);
 	
 	/**
 	 * Retourne une entité à partir de sa classe (dérivée de {@link E}) et de son id.
