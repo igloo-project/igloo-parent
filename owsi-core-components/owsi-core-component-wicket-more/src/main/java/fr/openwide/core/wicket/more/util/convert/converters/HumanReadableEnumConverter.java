@@ -20,6 +20,7 @@ package fr.openwide.core.wicket.more.util.convert.converters;
 import java.util.Locale;
 
 import org.apache.wicket.Localizer;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.lang.Classes;
 
@@ -44,7 +45,7 @@ public class HumanReadableEnumConverter implements IConverter<Enum<?>> {
 		if (value == null) {
 			return null;
 		}
-		return Localizer.get().getString(resourceKey(value), null);
+		return Localizer.get().getString(resourceKey(value), null, Model.of(value));
 	}
 
 	protected String resourceKey(Enum<?> value) {
