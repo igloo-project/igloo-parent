@@ -26,12 +26,12 @@ public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2D
 		this(id, model, choicesModel, new ResourceKeyWithParameterEnumChoiceRenderer<E>());
 	}
 
-	protected EnumDropDownSingleChoice(String id, IModel<E> model, IModel<? extends List<? extends E>> choicesModel,
+	public EnumDropDownSingleChoice(String id, IModel<E> model, IModel<? extends List<? extends E>> choicesModel,
 			IChoiceRenderer<? super E> renderer) {
 		super(id, model, choicesModel, renderer);
 	}
 
-	protected EnumDropDownSingleChoice(String id, IModel<E> model, Class<E> clazz, IChoiceRenderer<? super E> renderer) {
+	public EnumDropDownSingleChoice(String id, IModel<E> model, Class<E> clazz, IChoiceRenderer<? super E> renderer) {
 		super(id, model, Model.ofList(EnumUtils.getEnumList(clazz)), renderer);
 	}
 	
