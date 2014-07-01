@@ -37,6 +37,7 @@ import com.google.common.collect.Sets;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
+import fr.openwide.core.spring.notification.util.NotificationUtils;
 import fr.openwide.core.spring.util.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -363,6 +364,10 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 
 	@Override
 	public void send(String encoding) throws ServiceException {
+		if (!NotificationUtils.isNotificationsEnabled()) {
+			return;
+		}
+		
 		try {
 			Set<Locale> allLocales = ImmutableSet.<Locale> builder()
 					.addAll(toByLocale.keySet())
