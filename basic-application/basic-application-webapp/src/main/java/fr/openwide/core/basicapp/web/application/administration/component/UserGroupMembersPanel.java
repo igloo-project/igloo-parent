@@ -23,7 +23,7 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
-import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
 import fr.openwide.core.basicapp.web.application.util.binding.WebappBindings;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;

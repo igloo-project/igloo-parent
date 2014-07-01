@@ -1,8 +1,7 @@
-package fr.openwide.core.basicapp.web.application.common.component;
+package fr.openwide.core.basicapp.web.application.common.form;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -12,6 +11,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.web.application.common.form.impl.UserChoiceRenderer;
 import fr.openwide.core.wicket.more.markup.html.form.AutocompleteAjaxComponent;
 
 public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<User> {
@@ -20,14 +20,12 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserAutocompleteAjaxComponent.class);
 
-	private static final UserChoiceRenderer USER_CHOICE_RENDERER = new UserChoiceRenderer();
-
 	@SpringBean
 	private IUserService userService;
 
 	public UserAutocompleteAjaxComponent(String id, IModel<User> userModel) {
 		super(id, userModel);
-		setChoiceRenderer(USER_CHOICE_RENDERER);
+		setChoiceRenderer(UserChoiceRenderer.get());
 	}
 
 	@Override
@@ -43,19 +41,5 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 	@Override
 	public User getValueOnSearchFail(String input) {
 		return null;
-	}
-
-	private static final class UserChoiceRenderer implements IChoiceRenderer<User> {
-		private static final long serialVersionUID = 1L;
-		
-		@Override
-		public Object getDisplayValue(User user) {
-			return user != null ? user.getFullName() : "";
-		}
-		
-		@Override
-		public String getIdValue(User user, int index) {
-			return user != null ? user.getId().toString() : "-1";
-		}
 	}
 }

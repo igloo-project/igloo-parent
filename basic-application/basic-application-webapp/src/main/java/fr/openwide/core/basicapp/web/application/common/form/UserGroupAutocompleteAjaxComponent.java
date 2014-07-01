@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.web.application.common.component;
+package fr.openwide.core.basicapp.web.application.common.form;
 
 import java.util.List;
 

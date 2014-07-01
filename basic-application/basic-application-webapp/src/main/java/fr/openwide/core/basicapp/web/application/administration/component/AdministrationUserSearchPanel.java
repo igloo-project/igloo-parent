@@ -11,7 +11,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
-import fr.openwide.core.basicapp.web.application.common.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;

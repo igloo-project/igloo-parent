@@ -18,7 +18,7 @@ import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
-import fr.openwide.core.basicapp.web.application.common.component.UserGroupAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.common.form.UserGroupAutocompleteAjaxComponent;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
