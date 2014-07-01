@@ -2,6 +2,7 @@ package fr.openwide.core.spring.notification.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +23,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -64,11 +67,11 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private String from;
 	
-	private MultiValueMap<Locale, String> emailsByLocale = new LinkedMultiValueMap<Locale, String>();
+	private Multimap<Locale, String> toByLocale = LinkedHashMultimap.create();
 	
-	private Set<String> cc = Sets.newLinkedHashSet();
+	private Multimap<Locale, String> ccByLocale = LinkedHashMultimap.create();
 	
-	private Set<String> bcc = Sets.newLinkedHashSet();
+	private Multimap<Locale, String> bccByLocale = LinkedHashMultimap.create();
 	
 	private String templateKey;
 	
@@ -84,7 +87,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private Map<String, File> inlines = Maps.newHashMap();
 	
-	private MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+	private Multimap<String, String> headers = LinkedHashMultimap.create();
 	
 	private int priority;
 	
@@ -117,7 +120,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (to != null) {
 			for (String email : to) {
 				if (StringUtils.hasText(email)) {
-					emailsByLocale.add(getDefaultLocale(), email);
+					toByLocale.put(getDefaultLocale(), email);
 				}
 			}
 		}
@@ -134,7 +137,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (to != null) {
 			for (INotificationRecipient receiver : to) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					emailsByLocale.add(getLocale(receiver), receiver.getEmail());
+					toByLocale.put(getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
@@ -160,7 +163,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (cc != null) {
 			for (String email : cc) {
 				if (StringUtils.hasText(email)) {
-					this.cc.add(email);
+					ccByLocale.put(getDefaultLocale(), email);
 				}
 			}
 		}
@@ -177,7 +180,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (cc != null) {
 			for (INotificationRecipient receiver : cc) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					this.cc.add(receiver.getEmail());
+					ccByLocale.put(getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
@@ -204,7 +207,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (bcc != null) {
 			for (String email : bcc) {
 				if (StringUtils.hasText(email)) {
-					this.bcc.add(email);
+					bccByLocale.put(getDefaultLocale(), email);
 				}
 			}
 		}
@@ -221,7 +224,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (bcc != null) {
 			for (INotificationRecipient receiver : bcc) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					this.bcc.add(receiver.getEmail());
+					bccByLocale.put(getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
@@ -329,7 +332,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	public INotificationBuilderSendState header(String name, String value) {
 		Assert.hasText(name, "Header name must contain text");
 		Assert.hasText(value, "Header value must contain text");
-		this.headers.add(name, value);
+		this.headers.put(name, value);
 		return this;
 	}
 	
@@ -361,21 +364,33 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	@Override
 	public void send(String encoding) throws ServiceException {
 		try {
-			for (Entry<Locale, List<String>> entry : emailsByLocale.entrySet()) {
-				String[] to = entry.getValue().toArray(new String[entry.getValue().size()]);
-				
+			Set<Locale> allLocales = ImmutableSet.<Locale> builder()
+					.addAll(toByLocale.keySet())
+					.addAll(ccByLocale.keySet())
+					.addAll(bccByLocale.keySet())
+					.build();
+			for (Locale locale : allLocales) {
+				Collection<String> to = toByLocale.get(locale);
+				Collection<String> cc = ccByLocale.get(locale);
+				Collection<String> bcc = bccByLocale.get(locale);
 				try {
-					MimeMessage message = buildMessage(to, encoding, entry.getKey());
-				
+					MimeMessage message = buildMessage(to, cc, bcc, encoding, locale);
+					
 					if (message == null) {
 						continue;
 					}
-				
+					
 					mailSender.send(message);
 				} catch (MessagingException e) {
-					throw new ServiceException("Error building the MIME message for: " + ArrayUtils.toString(to), e);
+					throw new ServiceException(
+							String.format("Error building the MIME message (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
+							e
+					);
 				} catch (MailException e) {
-					throw new ServiceException("Error sending email to: " + ArrayUtils.toString(to), e);
+					throw new ServiceException(
+							String.format("Error sending email (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
+							e
+					);
 				}
 			}
 		} catch (IOException e) {
@@ -385,7 +400,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		}
 	}
 	
-	private MimeMessage buildMessage(String[] to, String encoding, Locale locale) throws IOException, TemplateException, MessagingException {
+	private MimeMessage buildMessage(Collection<String> to, Collection<String> cc, Collection<String> bcc, String encoding, Locale locale) throws IOException, TemplateException, MessagingException {
 		if (templateKey != null) {
 			subject(getSubject(templateKey, locale));
 			textBody = getBodyText(templateKey, locale);
@@ -398,22 +413,21 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (from == null) {
 			from = getDefaultFrom();
 		}
-		String[] filteredTo = filterEmails(to);
-		if (filteredTo.length == 0) {
+		Collection<String> filteredTo = filterTo(to);
+		Collection<String> filteredCc = filterCcBcc(cc);
+		Collection<String> filteredBcc = filterCcBcc(bcc);
+		if (filteredTo.isEmpty() && filteredCc.isEmpty() && filteredBcc.isEmpty()) {
 			return null;
 		}
 		
-		Set<String> filteredCc = filterCcBcc(cc);
-		Set<String> filteredBcc = filterCcBcc(cc);
-		
 		helper.setFrom(from);
-		helper.setTo(filteredTo);
-		helper.setCc(filteredCc.toArray(new String[filteredCc.size()]));
-		helper.setBcc(filteredBcc.toArray(new String[filteredBcc.size()]));
+		helper.setTo(Iterables.toArray(filteredTo, String.class));
+		helper.setCc(Iterables.toArray(filteredCc, String.class));
+		helper.setBcc(Iterables.toArray(filteredBcc, String.class));
 		helper.setSubject(subject);
 
-		String textBodyPrefix = getBodyPrefix(to, cc, bcc, MailFormat.TEXT);
-		String htmlBodyPrefix = getBodyPrefix(to, cc, bcc, MailFormat.HTML);
+		String textBodyPrefix = getBodyPrefix(to, cc, bcc, encoding, locale, MailFormat.TEXT);
+		String htmlBodyPrefix = getBodyPrefix(to, cc, bcc, encoding, locale, MailFormat.HTML);
 		
 		if (StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody)) {
 			helper.setText(textBodyPrefix + textBody, htmlBodyPrefix + htmlBody);
@@ -429,7 +443,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		for (Map.Entry<String, File> inline : inlines.entrySet()) {
 			helper.addInline(inline.getKey(), inline.getValue());
 		}
-		for (Entry<String, List<String>> header : headers.entrySet()) {
+		for (Entry<String, Collection<String>> header : headers.asMap().entrySet()) {
 			for (String value : header.getValue()) {
 				message.addHeader(header.getKey(), value);
 			}
@@ -493,14 +507,18 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return configurer.isConfigurationTypeDevelopment();
 	}
 	
-	private String[] filterEmails(String[] emails) {
-		if (emails != null && isMailRecipientsFiltered()) {
-			return configurer.getNotificationTestEmails();
+	private Collection<String> filterTo(Collection<String> emails) {
+		if (isMailRecipientsFiltered()) {
+			return getNotificationTestEmails();
 		}
 		return emails;
 	}
 	
-	private Set<String> filterCcBcc(Set<String> emails) {
+	protected Collection<String> getNotificationTestEmails() {
+		return Arrays.asList(configurer.getNotificationTestEmails());
+	}
+	
+	private Collection<String> filterCcBcc(Collection<String> emails) {
 		if (isMailRecipientsFiltered()) {
 			return Sets.newHashSet();
 		}
@@ -516,21 +534,19 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return subjectPrefix.toString();
 	}
 	
-	private String getBodyPrefix(String[] to, Set<String> cc, Set<String> bcc, MailFormat mailFormat) {
-		if (configurer.isConfigurationTypeDevelopment()) {
-			
+	private String getBodyPrefix(Collection<String> to, Collection<String> cc, Collection<String> bcc, String encoding, Locale locale, MailFormat mailFormat) {
+		if (isMailRecipientsFiltered()) {
 			String newLine = MailFormat.HTML.equals(mailFormat) ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
 			
 			StringBuffer newBody = new StringBuffer();
 			newBody.append("#############").append(newLine);
 			newBody.append("#").append(newLine);
-			newBody.append("# To: ").append(StringUtils.join(to, ", ")).append(newLine);
-			if (cc != null && !cc.isEmpty()) {
-				newBody.append("# Cc: ").append(StringUtils.join(cc, ", ")).append(newLine);
-			}
-			if (bcc != null && !bcc.isEmpty()) {
-				newBody.append("# Bcc: ").append(StringUtils.join(bcc, ", ")).append(newLine);
-			}
+			newBody.append("# To: ").append(renderAddressesForDebug(to, mailFormat)).append(newLine);
+			newBody.append("# Cc: ").append(renderAddressesForDebug(cc, mailFormat)).append(newLine);
+			newBody.append("# Bcc: ").append(renderAddressesForDebug(bcc, mailFormat)).append(newLine);
+			newBody.append("#").append(newLine);
+			newBody.append("# Encoding: ").append(encoding).append(newLine);
+			newBody.append("# Locale: ").append(locale).append(newLine);
 			newBody.append("#").append(newLine);
 			newBody.append("#############").append(newLine).append(newLine).append(newLine);
 			
@@ -539,6 +555,22 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return "";
 	}
 	
+	private Object renderAddressesForDebug(Collection<String> addresses, MailFormat mailFormat) {
+		final String prefix, suffix;
+		if (MailFormat.HTML.equals(mailFormat)) {
+			prefix = "&lt";
+			suffix = "&gt";
+		} else {
+			prefix = "<";
+			suffix = ">";
+		}
+		if (addresses != null && !addresses.isEmpty()) {
+			return prefix + StringUtils.join(addresses, suffix + ", " + prefix) + suffix;
+		} else {
+			return prefix + "none" + suffix;
+		}
+	}
+
 	private String getBodyText(String key, Locale locale) throws IOException, TemplateException {
 		return getMailElement(key, MailElement.BODY_TEXT, locale);
 	}
