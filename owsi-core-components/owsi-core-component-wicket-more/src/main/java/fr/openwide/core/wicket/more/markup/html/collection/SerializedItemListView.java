@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -11,16 +12,26 @@ import org.apache.wicket.model.Model;
 /**
  * A {@link ListView} akin to {@link AbstractSerializedItemCollectionView}, which is itself a {@link RefreshingView}.
  */
-public abstract class SerializedItemListView<T extends Serializable> extends ListView<T> {
+public abstract class SerializedItemListView<T extends Serializable> extends PageableListView<T> {
 
 	private static final long serialVersionUID = -8621785529210100553L;
 
 	public SerializedItemListView(String id, IModel<? extends List<? extends T>> model) {
-		super(id, model);
+		this(id, model, Long.MAX_VALUE);
+	}
+
+	public SerializedItemListView(String id, IModel<? extends List<? extends T>> model, long itemsPerPage) {
+		super(id, model, Integer.MAX_VALUE /* The constructor asks for an int, so we use the setter instead */);
+		setItemsPerPage(itemsPerPage);
 	}
 
 	public SerializedItemListView(String id, List<? extends T> list) {
-		super(id, list);
+		this(id, list, Long.MAX_VALUE);
+	}
+
+	public SerializedItemListView(String id, List<? extends T> list, long itemsPerPage) {
+		super(id, list, Integer.MAX_VALUE /* The constructor asks for an int, so we use the setter instead */);
+		setItemsPerPage(itemsPerPage);
 	}
 
 	@Override
