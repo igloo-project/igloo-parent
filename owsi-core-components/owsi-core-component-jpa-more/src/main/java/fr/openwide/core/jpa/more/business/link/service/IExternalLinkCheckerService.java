@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.business.link.service;
 
+import io.mola.galimatias.URL;
+
 import java.util.Collection;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
@@ -13,6 +15,7 @@ public interface IExternalLinkCheckerService extends ITransactionalAspectAwareSe
 	
 	void checkLink(ExternalLinkWrapper link) throws ServiceException, SecurityServiceException;
 
-	void checkLinksWithSameUrl(String url, Collection<ExternalLinkWrapper> link) throws ServiceException, SecurityServiceException;
+	void checkLinksWithSameUrl(URL url, Collection<ExternalLinkWrapper> links) throws ServiceException,
+			SecurityServiceException;
 
 }
