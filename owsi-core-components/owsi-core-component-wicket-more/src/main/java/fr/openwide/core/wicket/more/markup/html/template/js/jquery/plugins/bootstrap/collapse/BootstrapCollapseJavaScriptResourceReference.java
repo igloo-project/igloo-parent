@@ -10,7 +10,7 @@ public final class BootstrapCollapseJavaScriptResourceReference extends Abstract
 	private static final BootstrapCollapseJavaScriptResourceReference INSTANCE = new BootstrapCollapseJavaScriptResourceReference();
 
 	private BootstrapCollapseJavaScriptResourceReference() {
-		super(BootstrapCollapseJavaScriptResourceReference.class, "bootstrap-collapse.js");
+		super(BootstrapCollapseJavaScriptResourceReference.class, "collapse.js");
 	}
 
 	public static BootstrapCollapseJavaScriptResourceReference get() {

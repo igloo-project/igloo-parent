@@ -13,7 +13,7 @@ public final class BootstrapPopoverJavascriptResourceReference extends AbstractC
 	private static final BootstrapPopoverJavascriptResourceReference INSTANCE = new BootstrapPopoverJavascriptResourceReference();
 
 	private BootstrapPopoverJavascriptResourceReference() {
-		super(BootstrapPopoverJavascriptResourceReference.class, "bootstrap-popover.js");
+		super(BootstrapPopoverJavascriptResourceReference.class, "popover.js");
 	}
 
 	@Override

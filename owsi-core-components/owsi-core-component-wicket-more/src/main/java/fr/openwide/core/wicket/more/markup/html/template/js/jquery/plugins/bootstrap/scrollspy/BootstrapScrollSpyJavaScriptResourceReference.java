@@ -9,7 +9,7 @@ public final class BootstrapScrollSpyJavaScriptResourceReference extends Abstrac
 	private static final BootstrapScrollSpyJavaScriptResourceReference INSTANCE = new BootstrapScrollSpyJavaScriptResourceReference();
 
 	private BootstrapScrollSpyJavaScriptResourceReference() {
-		super(BootstrapScrollSpyJavaScriptResourceReference.class, "bootstrap-scrollspy.js");
+		super(BootstrapScrollSpyJavaScriptResourceReference.class, "scrollspy.js");
 	}
 
 	public static BootstrapScrollSpyJavaScriptResourceReference get() {
