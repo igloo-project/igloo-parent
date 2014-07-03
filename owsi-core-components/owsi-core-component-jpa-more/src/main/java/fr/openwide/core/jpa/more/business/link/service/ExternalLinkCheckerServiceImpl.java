@@ -3,14 +3,12 @@ package fr.openwide.core.jpa.more.business.link.service;
 import io.mola.galimatias.GalimatiasParseException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
+import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -108,25 +106,29 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	@Override
 	public void checkBatch() throws ServiceException, SecurityServiceException {
-		Multimap<String, ExternalLinkWrapper> links = externalLinkWrapperService.listNextCheckingBatch(configurer.getExternalLinkCheckerBatchSize());
+		List<ExternalLinkWrapper> links = externalLinkWrapperService.listNextCheckingBatch(configurer.getExternalLinkCheckerBatchSize());
 		
 		runTasksInParallel(createTasksByDomain(links), 10, TimeUnit.HOURS);
 	}
 	
 	@Override
 	public void checkLink(final ExternalLinkWrapper link) throws ServiceException, SecurityServiceException {
-		checkLinksWithSameUrl(link.getUrl(), ImmutableList.of(link));
+		try {
+			io.mola.galimatias.URL url = io.mola.galimatias.URL.parse(link.getUrl());
+			checkLinksWithSameUrl(url, ImmutableList.of(link));
+		} catch (GalimatiasParseException e) {
+			markAsInvalid(link);
+		}
 	}
 	
 	@Override
-	public void checkLinksWithSameUrl(String urlString, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
-		URI uri;
+	public void checkLinksWithSameUrl(io.mola.galimatias.URL url, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
 		StatusLine status = null;
 		ExternalLinkErrorType errorType = null;
 		
 		// Special casing the ignore patterns
 		for (Pattern pattern : ignorePatterns) {
-			if (pattern.matcher(urlString).matches()) {
+			if (pattern.matcher(url.toHumanString()).matches()) {
 				Date checkDate = new Date();
 				for (ExternalLinkWrapper link : links) {
 					link.setLastCheckDate(checkDate);
@@ -140,29 +142,29 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		
 		// Check the URL and update the links
 		try {
-			uri = getURI(urlString);
-			
 			// We try a HEAD request
-			status = sendRequest(uri, true);
+			status = sendRequest(new HttpHead(url.toJavaURI()));
 			if (status != null && status.getStatusCode() != HttpStatus.SC_OK) {
 				// If the result of the HEAD request is not OK, we try a GET request
 				// Using HttpStatus.SC_METHOD_NOT_ALLOWED looked like a clever trick but a lot of sites return
 				// 400 or 500 errors for HEAD requests
-				status = sendRequest(uri, false);
+				status = sendRequest(new HttpGet(url.toJavaURI()));
 			}
 			if (status == null) {
 				errorType = ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR;
 			} else if (status.getStatusCode() != HttpStatus.SC_OK) {
 				errorType = ExternalLinkErrorType.HTTP;
 			}
-		} catch (MalformedURLException e) {
-			errorType = ExternalLinkErrorType.MALFORMED_URL;
 		} catch (IllegalArgumentException e) {
 			errorType = ExternalLinkErrorType.INVALID_IDN;
 		} catch (URISyntaxException e) {
 			errorType = ExternalLinkErrorType.URI_SYNTAX;
+		} catch (SocketTimeoutException e) {
+			errorType = ExternalLinkErrorType.TIMEOUT;
+		} catch (IOException e) {
+			errorType = ExternalLinkErrorType.IO;
 		}
-		
+
 		Date checkDate = new Date();
 		for (ExternalLinkWrapper link : links) {
 			link.setLastCheckDate(checkDate);
@@ -177,61 +179,43 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	// Private methods
 	
-	private Collection<Callable<Void>> createTasksByDomain(Multimap<String, ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+	private Collection<Callable<Void>> createTasksByDomain(List<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
 		Collection<Callable<Void>> tasks = Lists.newArrayList();
-
-		Map<String, Multimap<String, Long>> domainToUrlToIds = Maps.newLinkedHashMap();
 		
-		for (Entry<String, Collection<ExternalLinkWrapper>> entry : links.asMap().entrySet()) {
-			String url = entry.getKey();
-			String domain = getDomain(url);
-			if (domain == null) {
-				markAsInvalid(entry.getValue());
-			} else {
-				Multimap<String, Long> urlToIds = domainToUrlToIds.get(domain);
+		Map<String, Multimap<io.mola.galimatias.URL, Long>> domainToUrlToIds = Maps.newLinkedHashMap();
+		
+		for (ExternalLinkWrapper link : links) {
+			try {
+				// there's no need to normalize the URL further as galimatias already normalizes the host and it's the
+				// only part we can normalize.
+				io.mola.galimatias.URL url = io.mola.galimatias.URL.parse(link.getUrl());
+				String domain = url.host().toHumanString();
+				
+				Multimap<io.mola.galimatias.URL, Long> urlToIds = domainToUrlToIds.get(domain);
 				if (urlToIds == null) {
 					urlToIds = LinkedListMultimap.create();
 					domainToUrlToIds.put(domain, urlToIds);
 				}
-				for (ExternalLinkWrapper link : entry.getValue()) {
-					urlToIds.put(url, link.getId());
-				}
+				urlToIds.put(url, link.getId());
+			} catch (Exception e) {
+				// if we cannot parse the URI, there's no need to go further, we mark it as invalid and we ignore it
+				markAsInvalid(link);
 			}
 		}
 		
-		for (Multimap<String, Long> urlToIds : domainToUrlToIds.values()) {
+		for (Multimap<io.mola.galimatias.URL, Long> urlToIds : domainToUrlToIds.values()) {
 			tasks.add(new ExternalLinkCheckByDomainTask(applicationContext, urlToIds.asMap()));
 		}
 		
 		return tasks;
 	}
-	
-	private String getDomain(String string) {
-		try {
-			io.mola.galimatias.URL url = io.mola.galimatias.URL.parse(string);
-			return url.host().toHumanString();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	private URI getURI(String urlString) throws URISyntaxException, MalformedURLException, IllegalArgumentException {
-		try {
-			io.mola.galimatias.URL url = io.mola.galimatias.URL.parse(urlString);
-			return url.toJavaURI();
-		} catch (GalimatiasParseException ex) {
-			throw new URISyntaxException(urlString, ex.getMessage());
-		}
-	}
 
-	private void markAsInvalid(Collection<ExternalLinkWrapper> linkWrappers) throws ServiceException, SecurityServiceException {
+	private void markAsInvalid(ExternalLinkWrapper link) throws ServiceException, SecurityServiceException {
 		Date checkDate = new Date();
-		for (ExternalLinkWrapper link : linkWrappers) {
-			link.setStatus(ExternalLinkStatus.DEAD_LINK);
-			link.setLastErrorType(ExternalLinkErrorType.URI_SYNTAX);
-			link.setLastCheckDate(checkDate);
-			externalLinkWrapperService.update(link);
-		}
+		link.setStatus(ExternalLinkStatus.DEAD_LINK);
+		link.setLastErrorType(ExternalLinkErrorType.URI_SYNTAX);
+		link.setLastCheckDate(checkDate);
+		externalLinkWrapperService.update(link);
 	}
 	
 	private void onSuccessfulCheck(final ExternalLinkWrapper link) {
@@ -257,25 +241,15 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		}
 	}
 	
-	private StatusLine sendRequest(final URI url, boolean httpHead) {
-		HttpRequestBase method = null;
+	private StatusLine sendRequest(HttpRequestBase request) throws IOException {
 		CloseableHttpResponse response = null;
 		
 		try {
-			method = (httpHead ? new HttpHead(url) : new HttpGet(url));
-			
-			response = httpClient.execute(method);
+			response = httpClient.execute(request);
 			return response.getStatusLine();
-		} catch (Exception e) {
-			StringBuilder sb = new StringBuilder()
-				.append("An error occurred while performing a ")
-				.append(httpHead ? "HEAD" : "GET")
-				.append(" request on ")
-				.append(url);
-			LOGGER.debug(sb.toString(), e);
 		} finally {
-			if (method != null) {
-				method.reset();
+			if (request != null) {
+				request.reset();
 			}
 			if (response != null) {
 				try {
@@ -285,7 +259,6 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				}
 			}
 		}
-		return null;
 	}
 	
 	private void runTasksInParallel(Collection<? extends Callable<Void>> tasks, long timeout, TimeUnit timeoutUnit) throws ServiceException {

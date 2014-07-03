@@ -183,7 +183,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getExternalLinkCheckerTimeout() {
-		return getPropertyAsInteger("externalLinkChecker.timeout", 3000);
+		return getPropertyAsInteger("externalLinkChecker.timeout", 10000);
 	}
 	
 	public int getExternalLinkCheckerRetryAttemptsLimit() {

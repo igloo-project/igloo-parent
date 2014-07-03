@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Multimap;
-
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.more.business.link.dao.IExternalLinkWrapperDao;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
@@ -35,7 +33,7 @@ public class ExternalLinkWrapperServiceImpl extends GenericEntityServiceImpl<Lon
 	}
 	
 	@Override
-	public Multimap<String, ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
+	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
 		return dao.listNextCheckingBatch(batchSize);
 	}
 }
