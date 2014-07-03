@@ -37,9 +37,9 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 	@Autowired
 	private IExternalLinkWrapperService externalLinkWrapperService;
 	
-	private Map<String, Collection<Long>> urlToIdsMap;
+	private Map<io.mola.galimatias.URL, Collection<Long>> urlToIdsMap;
 	
-	public ExternalLinkCheckByDomainTask(ApplicationContext applicationContext, Map<String, Collection<Long>> urlToIdsMap) {
+	public ExternalLinkCheckByDomainTask(ApplicationContext applicationContext, Map<io.mola.galimatias.URL, Collection<Long>> urlToIdsMap) {
 		this.urlToIdsMap = urlToIdsMap;
 		SpringBeanUtils.autowireBean(applicationContext, this);
 	}
@@ -55,14 +55,14 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 				session.setFlushMode(FlushMode.COMMIT);
 				
 				int count = 0;
-				for (Map.Entry<String, Collection<Long>> urlToIdsEntry : urlToIdsMap.entrySet()) {
+				for (Map.Entry<io.mola.galimatias.URL, Collection<Long>> urlToIdsEntry : urlToIdsMap.entrySet()) {
 					// We flush the session to avoid a memory overhead if there is a huge amount of links within the same domain
 					if (count >= SESSION_LIMIT) {
 						session.flush();
 						session.clear();
 						count = 0;
 					}
-					String url = urlToIdsEntry.getKey();
+					io.mola.galimatias.URL url = urlToIdsEntry.getKey();
 					try {
 						Collection<ExternalLinkWrapper> links = externalLinkWrapperService.listByIds(urlToIdsEntry.getValue());
 						linkCheckerService.checkLinksWithSameUrl(url, links);

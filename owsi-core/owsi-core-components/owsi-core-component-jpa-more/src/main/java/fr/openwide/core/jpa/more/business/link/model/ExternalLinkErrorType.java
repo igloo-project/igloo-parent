@@ -6,6 +6,8 @@ public enum ExternalLinkErrorType {
 	INVALID_IDN,
 	URI_SYNTAX,
 	MALFORMED_URL,
+	IO,
+	TIMEOUT,
 	UNKNOWN_HTTPCLIENT_ERROR;
 	
 }

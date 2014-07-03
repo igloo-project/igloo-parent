@@ -29,6 +29,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 	@Test
 	public void testExternalLinkCheckerService() throws Exception {
 		
+		Long id0 = null;
 		Long id1 = null;
 		Long id2 = null;
 		Long id3 = null;
@@ -44,6 +45,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		Long id13 = null;
 		
 		{
+			id0 = createLink("http://www.auditorium-lyon.com/var/aonl/storage/images/www.onl.fr/saison-2013-2014/concerts-de-l-orchestre/concerts-expresso/expresso-de-15h00/mozart-expresso/76670-3-fre-FR/Mozart-Expresso_image_export.jpg");
+			
 			id1 = createLink("http://www.google.fr/");
 			
 			id2 = createLink("http://zzz.totototototo.zzz/totoz/");
@@ -81,13 +84,15 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		entityManagerUtils.getEntityManager().clear();
 		
 		{
+			checkStatusOK(id0, beforeFirstBatchDate);
+			
 			checkStatusOK(id1, beforeFirstBatchDate);
 
 			ExternalLinkWrapper externalLink2 = externalLinkWrapperService.getById(id2);
 			Assert.assertEquals(ExternalLinkStatus.OFFLINE, externalLink2.getStatus());
 			Assert.assertEquals(1, externalLink2.getConsecutiveFailures());
 			Assert.assertNull(externalLink2.getLastStatusCode());
-			Assert.assertEquals(ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR, externalLink2.getLastErrorType());
+			Assert.assertEquals(ExternalLinkErrorType.IO, externalLink2.getLastErrorType());
 			Assert.assertTrue(externalLink2.getLastCheckDate().after(beforeFirstBatchDate));
 			
 			ExternalLinkWrapper externalLink3 = externalLinkWrapperService.getById(id3);
@@ -140,7 +145,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			Assert.assertEquals(ExternalLinkStatus.OFFLINE, externalLink2.getStatus());
 			Assert.assertEquals(2, externalLink2.getConsecutiveFailures());
 			Assert.assertNull(externalLink2.getLastStatusCode());
-			Assert.assertEquals(ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR, externalLink2.getLastErrorType());
+			Assert.assertEquals(ExternalLinkErrorType.IO, externalLink2.getLastErrorType());
 			Assert.assertTrue(externalLink2.getLastCheckDate().after(beforeSecondBatchDate));
 			
 			ExternalLinkWrapper externalLink3 = externalLinkWrapperService.getById(id3);

@@ -2,14 +2,10 @@ package fr.openwide.core.jpa.more.business.link.dao;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.expr.StringExpression;
@@ -47,7 +43,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	}
 
 	@Override
-	public Multimap<String, ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
+	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
 		JPQLQuery query = new JPAQuery(getEntityManager());
 		
 		// Query to list the next <batchsize> URLs
@@ -62,12 +58,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 						ExternalLinkStatus.IGNORED))
 				.orderBy(qExternalLinkWrapper.id.asc());
 		
-		return Multimaps.index(query.list(qExternalLinkWrapper), new Function<ExternalLinkWrapper, String>() {
-			@Override
-			public String apply(ExternalLinkWrapper input) {
-				return input.getUrl().toLowerCase(Locale.ROOT);
-			}
-		});
+		return query.list(qExternalLinkWrapper);
 	}
 	
 	private List<String> listNextCheckingBatchUrls(int batchSize) {
