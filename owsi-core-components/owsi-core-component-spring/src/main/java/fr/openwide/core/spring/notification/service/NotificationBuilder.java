@@ -563,8 +563,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	private Object renderAddressesForDebug(Collection<String> addresses, MailFormat mailFormat) {
 		final String prefix, suffix;
 		if (MailFormat.HTML.equals(mailFormat)) {
-			prefix = "&lt";
-			suffix = "&gt";
+			prefix = "&lt;";
+			suffix = "&gt;";
 		} else {
 			prefix = "<";
 			suffix = ">";
