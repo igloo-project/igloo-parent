@@ -9,7 +9,7 @@ public final class BootstrapTabJavascriptResourceReference extends AbstractCoreJ
 	private static final BootstrapTabJavascriptResourceReference INSTANCE = new BootstrapTabJavascriptResourceReference();
 
 	private BootstrapTabJavascriptResourceReference() {
-		super(BootstrapTabJavascriptResourceReference.class, "bootstrap-tab.js");
+		super(BootstrapTabJavascriptResourceReference.class, "tab.js");
 	}
 
 	public static BootstrapTabJavascriptResourceReference get() {

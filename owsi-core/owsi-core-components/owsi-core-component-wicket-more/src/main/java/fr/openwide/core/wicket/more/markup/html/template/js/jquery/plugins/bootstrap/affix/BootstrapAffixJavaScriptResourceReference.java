@@ -10,7 +10,7 @@ public final class BootstrapAffixJavaScriptResourceReference extends AbstractCor
 	private static final BootstrapAffixJavaScriptResourceReference INSTANCE = new BootstrapAffixJavaScriptResourceReference();
 
 	private BootstrapAffixJavaScriptResourceReference() {
-		super(BootstrapAffixJavaScriptResourceReference.class, "bootstrap-affix.js");
+		super(BootstrapAffixJavaScriptResourceReference.class, "affix.js");
 	}
 
 	public static BootstrapAffixJavaScriptResourceReference get() {

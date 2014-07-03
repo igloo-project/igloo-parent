@@ -10,7 +10,7 @@ public final class BootstrapDropDownJavaScriptResourceReference extends Abstract
 	private static final BootstrapDropDownJavaScriptResourceReference INSTANCE = new BootstrapDropDownJavaScriptResourceReference();
 
 	private BootstrapDropDownJavaScriptResourceReference() {
-		super(BootstrapDropDownJavaScriptResourceReference.class, "bootstrap-dropdown.js");
+		super(BootstrapDropDownJavaScriptResourceReference.class, "dropdown.js");
 	}
 
 	public static BootstrapDropDownJavaScriptResourceReference get() {

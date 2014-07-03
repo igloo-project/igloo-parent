@@ -9,7 +9,7 @@ public final class BootstrapButtonJavaScriptResourceReference extends AbstractCo
 	private static final BootstrapButtonJavaScriptResourceReference INSTANCE = new BootstrapButtonJavaScriptResourceReference();
 	
 	private BootstrapButtonJavaScriptResourceReference() {
-		super(BootstrapButtonJavaScriptResourceReference.class, "bootstrap-button.js");
+		super(BootstrapButtonJavaScriptResourceReference.class, "button.js");
 	}
 	
 	public static BootstrapButtonJavaScriptResourceReference get() {
