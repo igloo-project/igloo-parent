@@ -44,6 +44,9 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	}
 	
 	protected Class<? extends Page> getValidExpectedPageClass(Page pageInstance) {
+		if (expectedPageClassModels.isEmpty()) {
+			return pageInstance.getClass();
+		}
 		for (IModel<? extends Class<? extends Page>> expectedPageClassModel : expectedPageClassModels) {
 			Class<? extends Page> expectedPageClass = expectedPageClassModel.getObject();
 			if (expectedPageClass != null && expectedPageClass.isAssignableFrom(pageInstance.getClass())) {
