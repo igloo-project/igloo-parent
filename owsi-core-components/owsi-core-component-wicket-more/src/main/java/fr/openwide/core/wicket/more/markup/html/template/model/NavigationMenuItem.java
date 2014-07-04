@@ -98,20 +98,32 @@ public class NavigationMenuItem implements IDetachable {
 	public Link<Void> link(String wicketId) {
 		if (pageLinkGenerator != null) {
 			return pageLinkGenerator.link(wicketId);
-		} else {
+		} else if (pageClass != null) {
 			return new BookmarkablePageLink<Void>(wicketId, pageClass, pageParameters);
+		} else {
+			return new Link<Void>(wicketId) {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				protected CharSequence getURL() {
+					return "#";
+				}
+				
+				@Override
+				public void onClick() { }
+			};
 		}
 	}
 	
 	public boolean isActive(Class<? extends Page> selectedPage) {
-		return pageClass.equals(selectedPage);
+		return pageClass != null && pageClass.equals(selectedPage);
 	}
 	
 	public boolean isAccessible() {
 		if (pageLinkGenerator != null) {
 			return pageLinkGenerator.isAccessible();
 		} else {
-			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
+			return pageClass == null || Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
 		}
 	}
 	
