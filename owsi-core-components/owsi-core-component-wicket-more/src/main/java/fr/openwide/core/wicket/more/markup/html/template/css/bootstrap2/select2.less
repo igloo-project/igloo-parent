@@ -1,5 +1,5 @@
 // Select2 styles override
-body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par défaut.
+body {	// Pour rajouter un sélecteur et être sûr de surcharger les styles par défaut.
 
 	.select2-default {
 		color: @placeholderText !important;
@@ -18,6 +18,8 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 		.select2-choice {
 			color: @gray;
 			
+			.box-sizing(border-box);
+			
 			.select2-search-choice-close {
 				top: 6px;
 				padding: 1px;
@@ -26,6 +28,9 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 			.select2-arrow {
 				background: #EEEEEE;
 				border-left-color: @inputBorder;
+				b {
+					background-position: 0 0;
+				}
 			}
 		}
 		
@@ -56,6 +61,7 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 			}
 			
 			.select2-choices {
+				.box-sizing(border-box);
 				max-height: 26px;
 				.border-radius(3px);
 				border-color: @inputBorder;
@@ -69,6 +75,12 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 						top: 2px;
 						right: 2px;
 					}
+				}
+				
+				.select2-search-field input {
+					margin-top: 0;
+					margin-bottom: 0;
+					padding-top: 4px;
 				}
 			}
 		}
