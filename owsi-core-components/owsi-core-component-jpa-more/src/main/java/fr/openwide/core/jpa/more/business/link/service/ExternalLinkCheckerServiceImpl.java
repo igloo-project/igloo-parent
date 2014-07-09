@@ -4,6 +4,7 @@ import io.mola.galimatias.GalimatiasParseException;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Date;
@@ -87,7 +88,11 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		httpClient = HttpClientBuilder.create()
 				.setUserAgent(configurer.getExternalLinkCheckerUserAgent())
 				.setDefaultRequestConfig(requestConfig)
-				.setDefaultHeaders(Lists.newArrayList(new BasicHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE)))
+				.setDefaultHeaders(Lists.newArrayList(
+						new BasicHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE),
+						new BasicHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),
+						new BasicHeader("Accept-Language", "fr,en;q=0.8,fr-fr;q=0.6,en-us;q=0.4,en-gb;q=0.2")
+				))
 				.build();
 	}
 	
@@ -123,57 +128,56 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	@Override
 	public void checkLinksWithSameUrl(io.mola.galimatias.URL url, Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
-		StatusLine status = null;
+		StatusLine httpStatus = null;
 		ExternalLinkErrorType errorType = null;
 		
 		// Special casing the ignore patterns
 		for (Pattern pattern : ignorePatterns) {
 			if (pattern.matcher(url.toHumanString()).matches()) {
-				Date checkDate = new Date();
-				for (ExternalLinkWrapper link : links) {
-					link.setLastCheckDate(checkDate);
-					link.setConsecutiveFailures(0);
-					link.setStatus(ExternalLinkStatus.IGNORED);
-					externalLinkWrapperService.update(link);
-				}
+				markAsIgnored(links);
 				return;
 			}
+		}
+		
+		URI uri;
+		try {
+			uri = url.toJavaURI();
+		} catch (URISyntaxException e) {
+			// java.net.URI is buggy and doesn't support domain names with underscores. As galimatias already check
+			// the URL format, if we are here, it's probably because java.net.URI doesn't handle this case very well
+			// so we simply ignore the link instead of marking it as dead.
+			// see http://bugs.java.com/view_bug.do?bug_id=6587184 and https://issues.apache.org/jira/browse/HTTPCLIENT-911
+			markAsIgnored(links);
+			return;
 		}
 		
 		// Check the URL and update the links
 		try {
 			// We try a HEAD request
-			status = sendRequest(new HttpHead(url.toJavaURI()));
-			if (status != null && status.getStatusCode() != HttpStatus.SC_OK) {
+			httpStatus = sendRequest(new HttpHead(uri));
+			if (httpStatus != null && httpStatus.getStatusCode() != HttpStatus.SC_OK) {
 				// If the result of the HEAD request is not OK, we try a GET request
 				// Using HttpStatus.SC_METHOD_NOT_ALLOWED looked like a clever trick but a lot of sites return
 				// 400 or 500 errors for HEAD requests
-				status = sendRequest(new HttpGet(url.toJavaURI()));
+				httpStatus = sendRequest(new HttpGet(uri));
 			}
-			if (status == null) {
+			if (httpStatus == null) {
 				errorType = ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR;
-			} else if (status.getStatusCode() != HttpStatus.SC_OK) {
+			} else if (httpStatus.getStatusCode() != HttpStatus.SC_OK) {
 				errorType = ExternalLinkErrorType.HTTP;
 			}
 		} catch (IllegalArgumentException e) {
 			errorType = ExternalLinkErrorType.INVALID_IDN;
-		} catch (URISyntaxException e) {
-			errorType = ExternalLinkErrorType.URI_SYNTAX;
 		} catch (SocketTimeoutException e) {
 			errorType = ExternalLinkErrorType.TIMEOUT;
 		} catch (IOException e) {
 			errorType = ExternalLinkErrorType.IO;
 		}
-
-		Date checkDate = new Date();
-		for (ExternalLinkWrapper link : links) {
-			link.setLastCheckDate(checkDate);
-			if (errorType == null) {
-				onSuccessfulCheck(link);
-			} else {
-				onCheckFailure(link, errorType, status);
-			}
-			externalLinkWrapperService.update(link);
+		
+		if (errorType == null) {
+			markAsOnline(links);
+		} else {
+			markAsOfflineOrDead(links, errorType, httpStatus);
 		}
 	}
 	
@@ -211,33 +215,52 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	}
 
 	private void markAsInvalid(ExternalLinkWrapper link) throws ServiceException, SecurityServiceException {
-		Date checkDate = new Date();
+		link.setLastCheckDate(new Date());
 		link.setStatus(ExternalLinkStatus.DEAD_LINK);
 		link.setLastErrorType(ExternalLinkErrorType.URI_SYNTAX);
-		link.setLastCheckDate(checkDate);
 		externalLinkWrapperService.update(link);
 	}
 	
-	private void onSuccessfulCheck(final ExternalLinkWrapper link) {
-		link.setConsecutiveFailures(0);
-		link.setStatus(ExternalLinkStatus.ONLINE);
-		link.setLastStatusCode(HttpStatus.SC_OK);
+	private void markAsIgnored(Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+		Date checkDate = new Date();
+		for (ExternalLinkWrapper link : links) {
+			link.setLastCheckDate(checkDate);
+			link.setConsecutiveFailures(0);
+			link.setStatus(ExternalLinkStatus.IGNORED);
+			externalLinkWrapperService.update(link);
+		}
 	}
 	
-	private void onCheckFailure(final ExternalLinkWrapper link, final ExternalLinkErrorType errorType, final StatusLine status) {
-		link.setLastErrorType(errorType);
-		link.setConsecutiveFailures(link.getConsecutiveFailures() + 1);
-		
-		if (status != null) {
-			link.setLastStatusCode(status.getStatusCode());
-		} else {
-			link.setLastStatusCode(null);
+	private void markAsOnline(Collection<ExternalLinkWrapper> links) throws ServiceException, SecurityServiceException {
+		Date checkDate = new Date();
+		for (ExternalLinkWrapper link : links) {
+			link.setLastCheckDate(checkDate);
+			link.setConsecutiveFailures(0);
+			link.setStatus(ExternalLinkStatus.ONLINE);
+			link.setLastStatusCode(HttpStatus.SC_OK);
+			externalLinkWrapperService.update(link);
 		}
-		
-		if (link.getConsecutiveFailures() >= configurer.getExternalLinkCheckerRetryAttemptsLimit()) {
-			link.setStatus(ExternalLinkStatus.DEAD_LINK);
-		} else {
-			link.setStatus(ExternalLinkStatus.OFFLINE);
+	}
+	
+	private void markAsOfflineOrDead(Collection<ExternalLinkWrapper> links, final ExternalLinkErrorType errorType, final StatusLine status) throws ServiceException, SecurityServiceException {
+		Date checkDate = new Date();
+		for (ExternalLinkWrapper link : links) {
+			link.setLastCheckDate(checkDate);
+			link.setLastErrorType(errorType);
+			link.setConsecutiveFailures(link.getConsecutiveFailures() + 1);
+			
+			if (status != null) {
+				link.setLastStatusCode(status.getStatusCode());
+			} else {
+				link.setLastStatusCode(null);
+			}
+			
+			if (link.getConsecutiveFailures() >= configurer.getExternalLinkCheckerRetryAttemptsLimit()) {
+				link.setStatus(ExternalLinkStatus.DEAD_LINK);
+			} else {
+				link.setStatus(ExternalLinkStatus.OFFLINE);
+			}
+			externalLinkWrapperService.update(link);
 		}
 	}
 	
