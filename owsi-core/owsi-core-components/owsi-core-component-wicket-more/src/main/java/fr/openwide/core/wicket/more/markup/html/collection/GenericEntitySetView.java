@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 /**
- * A simple class extending {@link AbstractGenericEntityCollectionView} and allowing to instanciate it without filling in the collection type.
+ * A simple class extending {@link AbstractGenericEntityCollectionView} and allowing to instantiate it without filling in the collection type.
  */
 public abstract class GenericEntitySetView<E extends GenericEntity<?, ?>> extends AbstractGenericEntityCollectionView<E, Set<? extends E>> {
 
