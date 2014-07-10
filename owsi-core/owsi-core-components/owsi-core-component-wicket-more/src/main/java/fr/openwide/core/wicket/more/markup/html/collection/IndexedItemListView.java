@@ -50,7 +50,7 @@ public abstract class IndexedItemListView<T>
 			
 			@Override
 			public boolean hasNext() {
-				return index < end && index < list.size();
+				return index < end && index < internalGetItemCount();
 			}
 			
 			@Override
