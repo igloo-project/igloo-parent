@@ -75,10 +75,10 @@ public abstract class AbstractGenericEntityCollectionModel
 		
 		return entityCollection;
 	}
-	
+
 	/**
-	 * ATTENTION : si l'utilisateur appelle <code>setObject(null)</code>, un appel à <code>getObjet()</code>
-	 * ne renverra pas <code>null</code>, mais <em>une collection vide</em>.
+	 * WARNING: if the client calls <code>setObject(null)</code>, a subsequent call to <code>getObject()</code>
+	 * will not return <code>null</code>, but <em>an empty collection</em>.
 	 */
 	@Override
 	public void setObject(C object) {
@@ -92,7 +92,7 @@ public abstract class AbstractGenericEntityCollectionModel
 	@Override
 	protected void onDetach() {
 		if (entityCollection != null) {
-			// On sauvegarde les éventuelles modifications apportées à entityCollection
+			// Saves the possible modifications applied to entityCollection
 			idList.clear();
 			unsavedEntityList.clear();
 			
