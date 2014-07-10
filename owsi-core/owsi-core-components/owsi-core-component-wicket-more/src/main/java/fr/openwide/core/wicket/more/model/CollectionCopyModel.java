@@ -47,6 +47,6 @@ public final class CollectionCopyModel<C extends Collection>
 	@Override
 	public void detach() {
 		// Rien à faire
-	};
+	}
 
 }
