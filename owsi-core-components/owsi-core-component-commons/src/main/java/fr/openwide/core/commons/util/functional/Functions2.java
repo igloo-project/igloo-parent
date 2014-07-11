@@ -18,7 +18,7 @@ public final class Functions2 {
 
 	private Functions2() { }
 	
-	public <T> Function<Collection<? extends T>, Collection<T>> unmodifiableCollection() {
+	public static <T> Function<Collection<? extends T>, Collection<T>> unmodifiableCollection() {
 		return new UnmodifiableCollectionFunction<T>();
 	}
 	
@@ -36,7 +36,7 @@ public final class Functions2 {
 		}
 	}
 	
-	public <T> Function<List<? extends T>, List<T>> unmodifiableList() {
+	public static <T> Function<List<? extends T>, List<T>> unmodifiableList() {
 		return new UnmodifiableListFunction<T>();
 	}
 	
@@ -54,7 +54,7 @@ public final class Functions2 {
 		}
 	}
 	
-	public <T> Function<Set<? extends T>, Set<T>> unmodifiableSet() {
+	public static <T> Function<Set<? extends T>, Set<T>> unmodifiableSet() {
 		return new UnmodifiableSetFunction<T>();
 	}
 	
@@ -72,7 +72,7 @@ public final class Functions2 {
 		}
 	}
 	
-	public <T> Function<SortedSet<T>, SortedSet<T>> unmodifiableSortedSet() {
+	public static <T> Function<SortedSet<T>, SortedSet<T>> unmodifiableSortedSet() {
 		return new UnmodifiableSortedSetFunction<T>();
 	}
 	
@@ -90,7 +90,7 @@ public final class Functions2 {
 		}
 	}
 	
-	public <K, V> Function<Map<? extends K, ? extends V>, Map<K, V>> unmodifiableMap() {
+	public static <K, V> Function<Map<? extends K, ? extends V>, Map<K, V>> unmodifiableMap() {
 		return new UnmodifiableMapFunction<K, V>();
 	}
 	
