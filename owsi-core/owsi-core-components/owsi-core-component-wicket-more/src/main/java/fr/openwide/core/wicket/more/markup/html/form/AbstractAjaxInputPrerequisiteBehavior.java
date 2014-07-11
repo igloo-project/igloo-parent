@@ -3,9 +3,9 @@ package fr.openwide.core.wicket.more.markup.html.form;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
@@ -23,7 +23,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.apache.wicket.util.lang.Args;
-import org.apache.wicket.util.string.StringValue;
 import org.odlabs.wiquery.core.events.StateEvent;
 
 import com.google.common.base.Predicate;
@@ -31,6 +30,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.wicket.more.condition.Condition;
 
 /**
@@ -79,7 +79,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private boolean updatePrerequisiteModel = false;
 	
-	private boolean resetAttachedModel = false;
+	private Predicate<? super T> resetAttachedModelPredicate = Predicates.alwaysFalse();
 	
 	private boolean refreshParent = false;
 	
@@ -130,7 +130,30 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * Sets whether the attached component's models are to be set to null when the prerequisite model changes.
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModel(boolean resetAttachedModel) {
-		this.resetAttachedModel = resetAttachedModel;
+		this.resetAttachedModelPredicate = resetAttachedModel ? Predicates.alwaysTrue() : Predicates.alwaysFalse();
+		return this;
+	}
+	
+	/**
+	 * Sets whether the attached component's models are to be set to null when the prerequisite model is updated <em>and its new object is invalid</em>.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelIfInvalid(boolean resetAttachedModel) {
+		this.resetAttachedModelPredicate = new SerializablePredicate<T>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean apply(T input) {
+				return !objectValidPredicate.apply(input);
+			}
+		};
+		return this;
+	}
+
+	/**
+	 * Sets a predicate to determine, based on the prerequisite model value, whether the attached component's
+	 * models are to be set to null when the prerequisite model changes.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelPredicate(Predicate<? super T> resetAttachedModelPredicate) {
+		this.resetAttachedModelPredicate = resetAttachedModelPredicate;
 		return this;
 	}
 	
@@ -176,12 +199,21 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	private static class InputPrerequisiteAjaxEventBehavior extends AjaxEventBehavior {
 		private static final long serialVersionUID = -2099510409333557398L;
 		
+		private static final MetaDataKey<Boolean> IS_SUBMITTED_USING_THIS_BEHAVIOR = new MetaDataKey<Boolean>() {
+			private static final long serialVersionUID = 1L;
+		};
+		
 		private final Collection<AbstractAjaxInputPrerequisiteBehavior<?>> listeners = Sets.newHashSet();
 		
 		private boolean choice;
 		
 		public InputPrerequisiteAjaxEventBehavior() {
 			super(StateEvent.CHANGE.getEventLabel());
+		}
+		
+		public boolean isInputSubmitted() {
+			Boolean submitted = getComponent().getMetaData(IS_SUBMITTED_USING_THIS_BEHAVIOR);
+			return submitted != null && submitted;
 		}
 		
 		@Override
@@ -237,6 +269,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		
 		@Override
 		protected void onEvent(AjaxRequestTarget target) {
+			getComponent().setMetaData(IS_SUBMITTED_USING_THIS_BEHAVIOR, true);
 			notify(target);
 		}
 		
@@ -244,6 +277,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			for (AbstractAjaxInputPrerequisiteBehavior<?> listener : listeners) {
 				listener.prerequisiteFieldChange(target);
 			}
+		}
+		
+		@Override
+		public void detach(Component component) {
+			super.detach(component);
+			component.setMetaData(IS_SUBMITTED_USING_THIS_BEHAVIOR, null);
 		}
 	}
 	
@@ -294,9 +333,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	private void prerequisiteFieldChange(AjaxRequestTarget target) {
+		T convertedInput = getPrerequisiteFieldConvertedInput();
+		
 		for (Component attachedComponent : attachedComponents) {
 			target.add(getAjaxTarget(attachedComponent));
-			if (resetAttachedModel) {
+			if (resetAttachedModelPredicate.apply(convertedInput)) {
 				attachedComponent.setDefaultModelObject(null);
 				// Handle chained prerequisites
 				InputPrerequisiteAjaxEventBehavior behavior = getExistingAjaxEventBehavior(attachedComponent);
@@ -305,9 +346,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				}
 			}
 		}
+		
 		for (AbstractListener onChangeListener : onChangeListeners) {
 			target.addListener(onChangeListener);
 		}
+		
 		onPrerequisiteFieldChange(target, prerequisiteField, Collections.unmodifiableCollection(attachedComponents));
 	}
 	
@@ -334,9 +377,17 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		
 	}
 	
-	private static boolean hasInputChanged(FormComponent<?> formComponent) {
-		List<StringValue> input = formComponent.getRequest().getRequestParameters().getParameterValues(formComponent.getInputName());
-		return input != null && !input.isEmpty();
+	private boolean hasPrerequisiteFieldInputChanged() {
+		return prerequisiteField.getForm().isSubmitted() || prerequisiteField.getForm().getRootForm().isSubmitted()
+				|| getExistingAjaxEventBehavior().isInputSubmitted();
+	}
+	
+	private T getPrerequisiteFieldConvertedInput() {
+		prerequisiteField.inputChanged();
+		prerequisiteField.validate(); // Performs input conversion
+		T converted = prerequisiteField.getConvertedInput();
+		prerequisiteField.getFeedbackMessages().clear();
+		return converted;
 	}
 
 	@Override
@@ -350,7 +401,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			} else if (forceSetUpConditon != null && forceSetUpConditon.applies()) {
 				setUpAttachedComponent(component);
 			} else {
-				if (hasInputChanged(prerequisiteField)) {
+				if (hasPrerequisiteFieldInputChanged()) {
 					// The prerequisiteField input has changed : the rendering of the attached component was triggered either by our
 					// InputPrerequisiteAjaxEventBehavior or by a form submit.
 					// We will decide whether the attached component should be set up or taken down based on the prerequisiteField's input.
