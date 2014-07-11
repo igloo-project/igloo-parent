@@ -76,6 +76,25 @@ public final class Predicates2 {
 		}
 	}
 	
+	public static Predicate<Collection<?>> contains(Object referenceValue) {
+		return new ContainsPredicate(referenceValue);
+	}
+	
+	private static class ContainsPredicate implements SerializablePredicate<Collection<?>> {
+		private static final long serialVersionUID = -9193654606378621631L;
+		
+		private final Object referenceValue;
+		
+		public ContainsPredicate(Object referenceValue) {
+			this.referenceValue = referenceValue;
+		}
+		
+		@Override
+		public boolean apply(Collection<?> input) {
+			return input != null && input.contains(referenceValue);
+		}
+	}
+	
 	public static Predicate<String> hasText() {
 		return StringPredicate.HAS_TEXT;
 	}
