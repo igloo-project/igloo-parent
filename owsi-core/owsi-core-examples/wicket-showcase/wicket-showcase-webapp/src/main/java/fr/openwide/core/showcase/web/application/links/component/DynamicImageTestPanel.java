@@ -71,9 +71,9 @@ public class DynamicImageTestPanel extends GenericPanel<User> {
 					}
 				}),
 				LinkFactory.get().testImage(booleanModel, userModel).image("dynamicImage")
-						.setAutoHideIfInvalid(true),
+						.hideIfInvalid(),
 				LinkFactory.get().testImage(booleanModel, userModel).link("bookmarkableLink")
-						.setAutoHideIfInvalid(true)
+						.hideIfInvalid()
 		);
 	}
 

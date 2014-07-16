@@ -49,7 +49,7 @@ public abstract class LinksTemplate extends MainTemplate {
 		add(new Label("title", getTitleModel()));
 		
 		Component linkToPage1 = new LinkDescriptorBuilder().pageInstance(this).validate(LinksPage1.class).build()
-				.link("linkToThisPageInstanceOnlyIfPage1").setAutoHideIfInvalid(true);
+				.link("linkToThisPageInstanceOnlyIfPage1").hideIfInvalid();
 		add(linkToPage1);
 		
 		add(new LinkDescriptorBuilder().pageInstance(this).validate(LinksTemplate.class).build().link("linkToThisPageInstance")
