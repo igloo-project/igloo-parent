@@ -98,7 +98,7 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 					}
 				},
 				LinksTemplate.linkDescriptor(pageClassModel, userModel).link("bookmarkableLink")
-						.setAutoHideIfInvalid(true),
+						.hideIfInvalid(),
 				new Link<Void>("linkWithRedirect") {
 					private static final long serialVersionUID = 1L;
 					@Override
