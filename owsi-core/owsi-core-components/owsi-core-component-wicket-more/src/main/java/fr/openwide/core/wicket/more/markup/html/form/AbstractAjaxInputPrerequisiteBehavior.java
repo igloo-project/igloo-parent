@@ -378,8 +378,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	private boolean hasPrerequisiteFieldInputChanged() {
-		return prerequisiteField.getForm().isSubmitted() || prerequisiteField.getForm().getRootForm().isSubmitted()
-				|| getExistingAjaxEventBehavior().isInputSubmitted();
+		return prerequisiteField.isEnabledInHierarchy() && prerequisiteField.isVisibleInHierarchy()
+				&& 
+				(
+						prerequisiteField.getForm().isSubmitted()
+						|| getExistingAjaxEventBehavior().isInputSubmitted()
+				);
 	}
 	
 	private T getPrerequisiteFieldConvertedInput() {
