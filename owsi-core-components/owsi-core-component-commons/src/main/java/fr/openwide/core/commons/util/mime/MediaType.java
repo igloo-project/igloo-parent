@@ -45,6 +45,8 @@ public enum MediaType {
 	TEXT_CSV("text/csv", "csv"),
 	TEXT_HTML("text/html", "html", Lists.newArrayList("htm")),
 	TEXT_CALENDAR("text/calendar", "ics"),
+	TEXT_JAVASCRIPT("text/javascript", "js"),
+	TEXT_JSON("text/json", "json"),
 	
 	// Images
 	IMAGE_ANY("image/*"),
