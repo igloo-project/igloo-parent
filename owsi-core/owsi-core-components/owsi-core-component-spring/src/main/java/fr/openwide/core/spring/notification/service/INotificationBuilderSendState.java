@@ -1,9 +1,11 @@
 package fr.openwide.core.spring.notification.service;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
+import org.javatuples.LabelValue;
 import org.springframework.util.MultiValueMap;
 
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -17,6 +19,8 @@ public interface INotificationBuilderSendState {
 	INotificationBuilderSendState attach(String attachmentFilename, File file);
 	
 	INotificationBuilderSendState attach(Map<String, File> attachments);
+
+	INotificationBuilderSendState attach(Collection<LabelValue<String, File>> attachments);
 
 	INotificationBuilderSendState inline(String contentId, File file);
 
