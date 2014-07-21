@@ -22,6 +22,13 @@ public class PlaceholderPolyfillBehavior extends Behavior {
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(PlaceholderPolyfillJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(null, DEFAULT_SELECTOR).chain(PLACEHOLDER).render()));
+		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
+	}
+	
+	/**
+	 * Made available for use on ajax refreshes.
+	 */
+	public static JsStatement statement() {
+		return new JsStatement().$(null, DEFAULT_SELECTOR).chain(PLACEHOLDER);
 	}
 }
