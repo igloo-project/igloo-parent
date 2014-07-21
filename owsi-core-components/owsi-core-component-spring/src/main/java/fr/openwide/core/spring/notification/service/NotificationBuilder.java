@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.javatuples.LabelValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,27 +69,31 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private String from;
 	
-	private Multimap<Locale, String> toByLocale = LinkedHashMultimap.create();
+	private final Multimap<Locale, String> toByLocale = LinkedHashMultimap.create();
 	
-	private Multimap<Locale, String> ccByLocale = LinkedHashMultimap.create();
+	private final Multimap<Locale, String> ccByLocale = LinkedHashMultimap.create();
 	
-	private Multimap<Locale, String> bccByLocale = LinkedHashMultimap.create();
+	private final Multimap<Locale, String> bccByLocale = LinkedHashMultimap.create();
 	
 	private String templateKey;
 	
-	private Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<Locale, HashMap<String,Object>>();
+	private final Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<Locale, HashMap<String,Object>>();
 	
 	private String subject;
 	
 	private String textBody;
 	
-	private Map<Locale, String> htmlBodyByLocale = Maps.newHashMap();
+	private final Map<Locale, String> htmlBodyByLocale = Maps.newHashMap();
 
-	private Map<String, File> attachments = Maps.newHashMap();
+	/**
+	 * This is not a map, since duplicate filenames are allowed. This is not a multimap either, since mutliple
+	 * attachements with the same name are not related to each other.
+	 */
+	private final Collection<LabelValue<String, File>> attachments = Lists.newArrayList();
 	
-	private Map<String, File> inlines = Maps.newHashMap();
+	private final Map<String, File> inlines = Maps.newHashMap();
 	
-	private Multimap<String, String> headers = LinkedHashMultimap.create();
+	private final Multimap<String, String> headers = LinkedHashMultimap.create();
 	
 	private int priority;
 	
@@ -308,7 +313,14 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	public INotificationBuilderSendState attach(String attachmentFilename, File file) {
 		Assert.hasText(attachmentFilename, "Attachment filename must contain text");
 		Assert.notNull(file, "Attached file must not be null");
-		this.attachments.put(attachmentFilename, file);
+		this.attachments.add(LabelValue.with(attachmentFilename, file));
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderSendState attach(Collection<LabelValue<String, File>> attachments) {
+		Assert.notNull(attachments, "Attachment map must not be null");
+		this.attachments.addAll(attachments);
 		return this;
 	}
 	
@@ -442,8 +454,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			helper.setText(textBodyPrefix + textBody);
 		}
 	
-		for (Map.Entry<String, File> attachment : attachments.entrySet()) {
-			helper.addAttachment(attachment.getKey(), attachment.getValue());
+		for (LabelValue<String, File> attachment : attachments) {
+			helper.addAttachment(attachment.getLabel(), attachment.getValue());
 		}
 		for (Map.Entry<String, File> inline : inlines.entrySet()) {
 			helper.addInline(inline.getKey(), inline.getValue());
@@ -485,9 +497,13 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			templateVariables.putAll(localeDependentVariables);
 		}
 		
-		if (attachments != null && !attachments.isEmpty()) {
+		if (!attachments.isEmpty()) {
 			if (!templateVariables.containsKey(ATTACHMENT_NAMES_VARIABLE_NAME)) {
-				templateVariables.put(ATTACHMENT_NAMES_VARIABLE_NAME, attachments.keySet());
+				Collection<String> labels = Lists.newArrayList();
+				for (LabelValue<String, ?> labelValue : attachments) {
+					labels.add(labelValue.getLabel());
+				}
+				templateVariables.put(ATTACHMENT_NAMES_VARIABLE_NAME, labels);
 			} else {
 				LOGGER.warn(ATTACHMENT_NAMES_VARIABLE_NAME + " already present in the map. We don't override it.");
 			}
