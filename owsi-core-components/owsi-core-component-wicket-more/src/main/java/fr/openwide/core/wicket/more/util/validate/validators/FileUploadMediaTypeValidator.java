@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.util.validate.validators;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -11,6 +12,7 @@ import org.apache.wicket.validation.ValidationError;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.mime.MediaType;
@@ -18,12 +20,19 @@ import fr.openwide.core.commons.util.mime.MediaType;
 public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>> {
 
 	private static final long serialVersionUID = 1507793945782623835L;
-
-	private List<MediaType> mediaTypes;
 	
-	public FileUploadMediaTypeValidator(List<MediaType> mediaTypes) {
+	private final String errorResourceKey;
+
+	private final List<MediaType> mediaTypes;
+	
+	public FileUploadMediaTypeValidator(Collection<MediaType> mediaTypes) {
+		this(null, mediaTypes);
+	}
+	
+	public FileUploadMediaTypeValidator(String errorResourceKey, Collection<MediaType> mediaTypes) {
 		Args.notNull(mediaTypes, "mediaTypes");
-		this.mediaTypes = Lists.newArrayList(mediaTypes);
+		this.errorResourceKey = errorResourceKey;
+		this.mediaTypes = ImmutableList.copyOf(mediaTypes);
 	}
 	
 	@Override
@@ -33,7 +42,11 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 			MediaType fileUploadMediaType = MediaType.fromExtension(fileUploadExtension);
 			
 			if (fileUploadMediaType == null || !mediaTypes.contains(fileUploadMediaType)) {
-				ValidationError error = new ValidationError(this);
+				ValidationError error = new ValidationError();
+				if (errorResourceKey != null) {
+					error.addKey(errorResourceKey);
+				}
+				error.addKey(this);
 				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(Lists.transform(mediaTypes, new Function<MediaType, String>() {
 					@Override
 					public String apply(MediaType input) {
