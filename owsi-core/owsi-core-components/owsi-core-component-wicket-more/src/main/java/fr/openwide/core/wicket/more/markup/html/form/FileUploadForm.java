@@ -34,15 +34,19 @@ public class FileUploadForm<T> extends Form<T> {
 	
 	@Override
 	protected void onFileUploadException(final FileUploadException e, final Map<String, Object> model) {
+		onFileUploadException(this, e, model);
+	}
+	
+	public static void onFileUploadException(Form<?> form, FileUploadException e, Map<String, Object> model) {
 		if (e instanceof SizeLimitExceededException) {
-			final String defaultValue = "Upload must be less than " + getMaxSize();
+			final String defaultValue = "Upload must be less than " + form.getMaxSize();
 			model.put("actualSize", Bytes.bytes(((SizeLimitExceededException)e).getActualSize()));
-			String msg = getString(FileUploadForm.class.getSimpleName() + '.' + UPLOAD_TOO_LARGE_RESOURCE_KEY, Model.ofMap(model), defaultValue);
-			error(msg);
+			String msg = form.getString(FileUploadForm.class.getSimpleName() + '.' + UPLOAD_TOO_LARGE_RESOURCE_KEY, Model.ofMap(model), defaultValue);
+			form.error(msg);
 		} else {
 			final String defaultValue = "Upload failed: " + e.getLocalizedMessage();
-			String msg = getString(FileUploadForm.class.getSimpleName() + '.' + UPLOAD_FAILED_RESOURCE_KEY, Model.ofMap(model), defaultValue);
-			error(msg);
+			String msg = form.getString(FileUploadForm.class.getSimpleName() + '.' + UPLOAD_FAILED_RESOURCE_KEY, Model.ofMap(model), defaultValue);
+			form.error(msg);
 		}
 	}
 }
