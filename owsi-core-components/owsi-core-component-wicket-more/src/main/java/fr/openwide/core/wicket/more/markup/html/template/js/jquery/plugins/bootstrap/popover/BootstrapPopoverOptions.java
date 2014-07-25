@@ -79,7 +79,7 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 			// Si on veut ajouter un bouton de fermeture, on doit passer par une fonction,
 			// sinon on passe par l'option titleText classique.
 			if (addCloseButton) {
-				options.put("title", getTitleFunction(popoverComponent, new JsStatement().$(null, "<span></span>").chain("html", JsUtils.quotes(computedTitleText, true))));
+				options.put("title", getTitleFunction(popoverComponent, new JsStatement().append(JsUtils.quotes(computedTitleText, true))));
 			} else {
 				options.put("title", JsUtils.quotes(computedTitleText, true));
 			}
@@ -118,13 +118,25 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void execute(JsScopeContext scopeContext) {
-				scopeContext.append("var titleComponent = " + titleComponentStatement.render(false) + ";");
-				if (addCloseButton && popoverComponent != null) {
-					scopeContext.append("titleComponent.append($('<a class=\"close\">&times;</a>').on('click', function(e) { "
-							+ new JsStatement().$(popoverComponent).chain("popover", "'toggle'").render() + " e.preventDefault();"
-							+ " }));");
+				if (addCloseButton) {
+					scopeContext
+							.append("var titleHtml = " + titleComponentStatement.render())
+							.append("titleHtml = titleHtml.concat(")
+							.append(
+									JsUtils.quotes(
+											"<a class=\"close\""
+											// Note : c'est moche, mais au moins ça marche. On renvoie bien du *html* ici,
+											// ajouter des bindings jquery n'aura aucun effet.
+											+ " onclick=\"new function() {"
+											+ new JsStatement().$(popoverComponent).chain("popover", "'toggle'").render() + " return false;"
+											+ "}\""
+											+ ">&times;</a>",
+											true
+									)
+							)
+							.append(");");
 				}
-				scopeContext.append("return titleComponent;");
+				scopeContext.append("return titleHtml;");
 			}
 		};
 	}
