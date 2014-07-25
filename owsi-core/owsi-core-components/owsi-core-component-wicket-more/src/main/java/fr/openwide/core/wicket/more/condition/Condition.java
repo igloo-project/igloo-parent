@@ -320,6 +320,37 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
+	public static Condition anyChildEnabled(MarkupContainer container) {
+		return new AnyChildEnabledCondition(container);
+	}
+	
+	private static class AnyChildEnabledCondition extends Condition {
+		private static final long serialVersionUID = 1L;
+		
+		private final MarkupContainer container;
+		
+		public AnyChildEnabledCondition(MarkupContainer container) {
+			super();
+			this.container = container;
+		}
+		
+		@Override
+		public boolean applies() {
+			for (Component child : container) {
+				child.configure();
+				if (child.isEnabled() && child.isEnableAllowed()) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		public String toString() {
+			return "anyChildEnabled(" + container + ")";
+		}
+	}
+	
 	public static Condition role(String role) {
 		return new AnyRoleCondition(ImmutableList.of(role));
 	}
