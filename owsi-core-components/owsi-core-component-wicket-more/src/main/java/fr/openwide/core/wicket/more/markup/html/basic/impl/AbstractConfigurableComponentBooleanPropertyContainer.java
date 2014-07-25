@@ -99,5 +99,10 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 		behavior.condition(Condition.anyChildVisible(this));
 		return thisAsT();
 	}
+	
+	public T anyChildEnabled() {
+		behavior.condition(Condition.anyChildEnabled(this));
+		return thisAsT();
+	}
 
 }

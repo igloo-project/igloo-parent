@@ -7,7 +7,11 @@ public class PlaceholderContainer extends AbstractConfigurableComponentBooleanPr
 	private static final long serialVersionUID = 1664956501257659431L;
 
 	public PlaceholderContainer(String id) {
-		super(id, new PlaceholderBehavior(ComponentBooleanProperty.VISIBLE));
+		this(id, ComponentBooleanProperty.VISIBLE);
+	}
+
+	public PlaceholderContainer(String id, ComponentBooleanProperty property) {
+		super(id, new PlaceholderBehavior(property));
 	}
 	
 	@Override
