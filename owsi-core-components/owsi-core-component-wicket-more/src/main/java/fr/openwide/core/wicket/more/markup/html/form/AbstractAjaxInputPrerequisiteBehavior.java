@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +14,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes.EventPropagation;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -23,6 +27,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.apache.wicket.util.lang.Args;
+import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.StateEvent;
 
 import com.google.common.base.Predicate;
@@ -205,10 +210,24 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		
 		private final Collection<AbstractAjaxInputPrerequisiteBehavior<?>> listeners = Sets.newHashSet();
 		
-		private boolean choice;
+		private final FormComponent<?> prerequisiteField;
 		
-		public InputPrerequisiteAjaxEventBehavior() {
-			super(StateEvent.CHANGE.getEventLabel());
+		private final boolean choice;
+		
+		public InputPrerequisiteAjaxEventBehavior(FormComponent<?> prerequisiteField) {
+			this(prerequisiteField, isChoice(prerequisiteField));
+		}
+		
+		private InputPrerequisiteAjaxEventBehavior(FormComponent<?> prerequisiteField, boolean choice) {
+			super(choice ? MouseEvent.CLICK.getEventLabel() /* Internet Explorer... */ : StateEvent.CHANGE.getEventLabel());
+			this.prerequisiteField = checkNotNull(prerequisiteField);
+			this.choice = choice;
+		}
+		
+		private static boolean isChoice(Component component) {
+			return (component instanceof RadioChoice) ||
+					(component instanceof CheckBoxMultipleChoice) || (component instanceof RadioGroup) ||
+					(component instanceof CheckGroup);
 		}
 		
 		public boolean isInputSubmitted() {
@@ -220,9 +239,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		protected void onBind() {
 			super.onBind();
 			Component component = getComponent();
-			choice = (component instanceof RadioChoice) ||
-					(component instanceof CheckBoxMultipleChoice) || (component instanceof RadioGroup) ||
-					(component instanceof CheckGroup);
+			checkState(prerequisiteField.equals(component),
+					"This behavior can only be attached to the component passed to its constructor (%s)", prerequisiteField);
+			if (choice) {
+				component.setRenderBodyOnly(false);
+			}
 		}
 		
 		@Override
@@ -247,6 +268,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 						return String.format("return OWSI.AbtractAjaxInputPrerequisiteBehavior.Choice.acceptInput('%s', attrs)", ((FormComponent<?>)component).getInputName());
 					}
 				});
+				
+				// Allow clicks on labels to work properly
+				// Also makes the radio/check buttons properly change their visual aspect on IE.
+				attributes.setAllowDefault(true);
 				
 				attributes.getDynamicExtraParameters().add(
 						String.format("return OWSI.AbtractAjaxInputPrerequisiteBehavior.Choice.getInputValues('%s', attrs)", component.getInputName())
@@ -309,7 +334,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			// even if multiple components are attached to different InputPrerequisiteBehavior pointing to the same prerequisiteField.
 			InputPrerequisiteAjaxEventBehavior ajaxEventBehavior = getExistingAjaxEventBehavior();
 			if (ajaxEventBehavior == null) {
-				ajaxEventBehavior = new InputPrerequisiteAjaxEventBehavior();
+				ajaxEventBehavior = new InputPrerequisiteAjaxEventBehavior(prerequisiteField);
 				prerequisiteField.add(ajaxEventBehavior);
 			}
 			ajaxEventBehavior.register(this);
