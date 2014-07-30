@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -54,6 +55,20 @@ public final class Suppliers2 {
 		@Override
 		public HashSet<?> get() {
 			return Sets.newHashSet();
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // HashSetSupplier works for any T
+	public static <T> Supplier<LinkedHashSet<T>> linkedHashSet() {
+		return (Supplier) LinkedHashSetSupplier.INSTANCE;
+	}
+	
+	private static enum LinkedHashSetSupplier implements Supplier<HashSet<?>> {
+		INSTANCE;
+		
+		@Override
+		public HashSet<?> get() {
+			return Sets.newLinkedHashSet();
 		}
 	}
 	
