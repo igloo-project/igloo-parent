@@ -1,6 +1,8 @@
 package fr.openwide.core.jpa.business.generic.service;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,11 @@ public class EntityServiceImpl implements IEntityService {
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference) {
 		return entityDao.getEntity(reference);
+	}
+	
+	@Override
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids) {
+		return entityDao.listEntity(clazz, ids);
 	}
 	
 	@Override
