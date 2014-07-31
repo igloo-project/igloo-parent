@@ -15,10 +15,8 @@ public final class AnyTldDomainAndPortValidator extends RegexValidator implement
 
 	private static final long serialVersionUID = -8166436754268661547L;
 	
-	private static final String DOMAIN_LABEL_REGEX = "\\p{Alnum}(?>[\\p{Alnum}-]*\\p{Alnum})*";
-	private static final String TOP_LABEL_REGEX = "\\p{Alpha}{2,}";
 	private static final String PORT_REGEX = "\\d+";
-	private static final String DOMAIN_NAME_AND_PORT_REGEX = "^(?:" + DOMAIN_LABEL_REGEX + "\\.)+" + "(" + TOP_LABEL_REGEX + ")" + "(\\:" + PORT_REGEX + ")?" + "$";
+	private static final String DOMAIN_NAME_AND_PORT_REGEX = "^(?:" + AnyTldDomainValidator.DOMAIN_LABEL_REGEX + "\\.)+" + "(" + AnyTldDomainValidator.TOP_LABEL_REGEX + ")" + "(\\:" + PORT_REGEX + ")?" + "$";
 	
 	private static final AnyTldDomainAndPortValidator INSTANCE = new AnyTldDomainAndPortValidator();
 	
