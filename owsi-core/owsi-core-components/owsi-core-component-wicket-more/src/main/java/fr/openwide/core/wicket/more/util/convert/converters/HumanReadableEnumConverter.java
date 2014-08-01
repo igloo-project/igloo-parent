@@ -24,6 +24,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.lang.Classes;
 
+import fr.openwide.core.spring.util.StringUtils;
+
 public class HumanReadableEnumConverter implements IConverter<Enum<?>> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
@@ -33,8 +35,30 @@ public class HumanReadableEnumConverter implements IConverter<Enum<?>> {
 		return INSTANCE;
 	}
 	
+	public static HumanReadableEnumConverter withPrefix(String prefix) {
+		return with(prefix, null);
+	};
+	
+	public static HumanReadableEnumConverter withSuffix(String suffix) {
+		return with(null, suffix);
+	};
+	
+	public static HumanReadableEnumConverter with(String prefix, String suffix) {
+		return new HumanReadableEnumConverter(prefix, suffix);
+	}
+	
+	private String prefix = null;
+	
+	private String suffix = null;
+	
 	private HumanReadableEnumConverter() { }
 
+	public HumanReadableEnumConverter(String prefix, String suffix) {
+		this();
+		this.prefix = prefix;
+		this.suffix = suffix;
+	}
+	
 	@Override
 	public Enum<?> convertToObject(String value, Locale locale) {
 		throw new UnsupportedOperationException("This converter cannot convert from string to Enum<?>");
@@ -45,7 +69,20 @@ public class HumanReadableEnumConverter implements IConverter<Enum<?>> {
 		if (value == null) {
 			return null;
 		}
-		return Localizer.get().getString(resourceKey(value), null, Model.of(value));
+		
+		StringBuilder key = new StringBuilder();
+		
+		if (StringUtils.hasText(prefix)) {
+			key.append(prefix).append(".");
+		}
+		
+		key.append(resourceKey(value));
+		
+		if (StringUtils.hasText(suffix)) {
+			key.append(".").append(suffix);
+		}
+		
+		return Localizer.get().getString(key.toString(), null, Model.of(value));
 	}
 
 	protected String resourceKey(Enum<?> value) {
