@@ -126,7 +126,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T ext
 	}
 	
 	@Override
-	public T components(Collection<Component> targetComponents) {
+	public T components(Collection<? extends Component> targetComponents) {
 		for (Component component : targetComponents) {
 			conditions.add(Condition.visible(component));
 		}

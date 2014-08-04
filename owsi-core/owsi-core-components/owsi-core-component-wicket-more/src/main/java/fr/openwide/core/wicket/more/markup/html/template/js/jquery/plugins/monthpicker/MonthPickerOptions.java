@@ -23,14 +23,19 @@ public class MonthPickerOptions extends Options {
 	 * ! - Windows ticks (100ns since 01/01/0001)
 	 * '...' - literal text
 	 * '' - single quote
-	 * 
-	 * @param altFormat
 	 */
-	public void setDateFormat(String dateFormat) {
+	public MonthPickerOptions setDateFormat(String dateFormat) {
 		putLiteral("dateFormat", dateFormat);
+		return this;
 	}
-
-	public Options getOptions() {
+	
+	/**
+	 * Range of years to display in drop-down,
+	 * either relative to today's year (-nn:+nn), relative to currently displayed year
+	 * (c-nn:c+nn), absolute (nnnn:nnnn), or a combination of the above (nnnn:-n)
+	*/
+	public MonthPickerOptions setYearRange(String yearRange) {
+		putLiteral("yearRange", yearRange);
 		return this;
 	}
 }

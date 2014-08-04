@@ -5,14 +5,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 public final class Functions2 {
 
@@ -197,5 +198,38 @@ public final class Functions2 {
 		public String toString() {
 			return "default(if not " + validValuePredicate + ", then " + defaultValueFunction + ")";
 		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // Works for any K, since it is read-only
+	public static <K> Function<Entry<? extends K, ?>, K> entryKey() {
+		return (Function) EntryFunction.KEY;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // Works for any V, since it is read-only
+	public static <V> Function<Entry<?, ? extends V>, V> entryValue() {
+		return (Function) EntryFunction.VALUE;
+	}
+	
+	private enum EntryFunction implements Function<Entry<?, ?>, Object> {
+		KEY {
+			@Override
+			public Object apply(Entry<?, ?> entry) {
+				return entry.getKey();
+			}
+			@Override
+			public String toString() {
+				return "key";
+			}
+		},
+		VALUE {
+			@Override
+			public Object apply(Entry<?, ?> entry) {
+				return entry.getValue();
+			}
+			@Override
+			public String toString() {
+				return "value";
+			}
+		};
 	}
 }

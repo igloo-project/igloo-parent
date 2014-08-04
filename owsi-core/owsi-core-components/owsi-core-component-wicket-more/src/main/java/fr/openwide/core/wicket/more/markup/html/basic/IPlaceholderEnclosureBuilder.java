@@ -17,7 +17,7 @@ public interface IPlaceholderEnclosureBuilder<T> {
 	 */
 	T components(Component firstComponent, Component... otherComponents);
 	
-	T components(Collection<Component> components);
+	T components(Collection<? extends Component> components);
 
 	T model(IModel<?> model);
 

@@ -85,7 +85,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	@Override
-	public T components(Collection<Component> components) {
+	public T components(Collection<? extends Component> components) {
 		behavior.components(components);
 		return thisAsT();
 	}
