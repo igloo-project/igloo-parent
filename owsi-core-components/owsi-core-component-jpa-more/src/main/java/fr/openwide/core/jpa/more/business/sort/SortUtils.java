@@ -76,7 +76,7 @@ public final class SortUtils {
 
 	@SafeVarargs
 	public static <S extends ISort<? extends Comparator<? super T>>, T> Ordering<T> getComparatorSortWithDefaults(
-			Map<S, SortOrder> sortsMap, S firstDefaultSort, S ... otherDefaultSorts) {
+			Map<? extends S, SortOrder> sortsMap, S firstDefaultSort, S ... otherDefaultSorts) {
 		List<Comparator<? super T>> sortFields = SortUtils.collectComparators(sortsMap);
 		for (S defaultSort : Lists.asList(firstDefaultSort, otherDefaultSorts)) {
 			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
