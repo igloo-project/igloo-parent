@@ -1,18 +1,19 @@
 package fr.openwide.core.jpa.more.business.generic.util;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 import org.hibernate.Hibernate;
+
+import com.google.common.collect.Ordering;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
-public class GenericListItemComparator implements Comparator<GenericListItem<?>>, Serializable {
+public class GenericListItemComparator extends Ordering<GenericListItem<?>> implements Serializable {
 	
 	private static final long serialVersionUID = 2641214465049416075L;
 
-	public static final Comparator<GenericListItem<?>> INSTANCE = new GenericListItemComparator();
+	public static final Ordering<GenericListItem<?>> INSTANCE = new GenericListItemComparator().nullsFirst();
 	
 	@Override
 	public int compare(GenericListItem<?> o1, GenericListItem<?> o2) {
