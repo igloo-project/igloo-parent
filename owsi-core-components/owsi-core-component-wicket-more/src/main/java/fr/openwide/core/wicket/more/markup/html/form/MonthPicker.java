@@ -21,11 +21,11 @@ public class MonthPicker extends TextField<Date> {
 
 	private static final long serialVersionUID = -573676335913472856L;
 
-	private MonthPickerOptions options;
+	private final DatePattern monthPattern;
+
+	private final MonthPickerOptions options;
 
 	private IConverter<Date> converter;
-
-	private DatePattern monthPattern;
 
 	public MonthPicker(String id, IModel<Date> model, DatePattern monthPattern) {
 		super(id, model, Date.class);
@@ -57,6 +57,11 @@ public class MonthPicker extends TextField<Date> {
 		options.setDateFormat(dateFormat);
 		return this;
 	}
+	
+	public MonthPicker setYearRange(String yearRange) {
+		options.setYearRange(yearRange);
+		return this;
+	}
 
 	@Override
 	protected void detachModel() {
@@ -76,6 +81,6 @@ public class MonthPicker extends TextField<Date> {
 		}
 		
 		response.render(OnDomReadyHeaderItem.forScript(new JsQuery(this).$()
-				.chain("monthpicker", options.getOptions().getJavaScriptOptions()).render().toString()));
+				.chain("monthpicker", options.getJavaScriptOptions()).render().toString()));
 	}
 }

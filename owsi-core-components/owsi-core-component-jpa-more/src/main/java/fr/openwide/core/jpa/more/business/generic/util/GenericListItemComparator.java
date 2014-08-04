@@ -53,5 +53,9 @@ public class GenericListItemComparator implements Comparator<GenericListItem<?>>
 		}
 		return order;
 	}
+	
+	public Object readResolve() { // Maintains equals() consistency
+		return INSTANCE;
+	}
 
 }

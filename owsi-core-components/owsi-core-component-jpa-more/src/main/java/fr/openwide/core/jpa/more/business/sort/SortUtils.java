@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.business.sort;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +13,7 @@ import org.bindgen.Binding;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 
@@ -60,6 +62,26 @@ public final class SortUtils {
 			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
 		}
 		return new Sort(sortFields.toArray(new SortField[sortFields.size()]));
+	}
+
+	private static <T extends ISort<? extends C>, C extends Comparator<?>> List<C> collectComparators(Map<T, SortOrder> sortsMap) {
+		List<C> sortFields = Lists.newArrayList();
+		if (sortsMap != null) {
+			for (Entry<T, SortOrder> sortOrderEntry : sortsMap.entrySet()) {
+				sortFields.addAll(sortOrderEntry.getKey().getSortFields(sortOrderEntry.getValue()));
+			}
+		}
+		return sortFields;
+	}
+
+	@SafeVarargs
+	public static <S extends ISort<? extends Comparator<? super T>>, T> Ordering<T> getComparatorSortWithDefaults(
+			Map<S, SortOrder> sortsMap, S firstDefaultSort, S ... otherDefaultSorts) {
+		List<Comparator<? super T>> sortFields = SortUtils.collectComparators(sortsMap);
+		for (S defaultSort : Lists.asList(firstDefaultSort, otherDefaultSorts)) {
+			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
+		}
+		return Ordering.compound(sortFields);
 	}
 
 }
