@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.condition;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.apache.wicket.Component;
@@ -9,6 +12,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
@@ -96,6 +100,48 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		@Override
 		public String toString() {
 			return "not(" + condition + ")";
+		}
+	}
+	
+	public <T> IModel<T> asValue(IModel<? extends T> modelIfTrue, IModel<? extends T> modelIfFalse) {
+		return new ConditionalModel<>(this, modelIfTrue, modelIfFalse);
+	}
+	
+	public <T extends Serializable> IModel<T> asValue(T valueIfTrue, T valueIfFalse) {
+		return new ConditionalModel<>(this, Model.of(valueIfTrue), Model.of(valueIfFalse));
+	}
+	
+	private static final class ConditionalModel<T> extends AbstractReadOnlyModel<T> {
+		private static final long serialVersionUID = 4696234484508240728L;
+		
+		private final Condition condition;
+		
+		private IModel<? extends T> modelIfTrue;
+		
+		private IModel<? extends T> modelIfFalse;
+		
+		private ConditionalModel(Condition condition, IModel<? extends T> modelIfTrue, IModel<? extends T> modelIfFalse) {
+			super();
+			this.condition = checkNotNull(condition);
+			this.modelIfTrue = checkNotNull(modelIfTrue);
+			this.modelIfFalse = checkNotNull(modelIfFalse);
+		}
+		
+		@Override
+		public T getObject() {
+			if (condition.applies()) {
+				return modelIfTrue.getObject();
+			} else {
+				return modelIfFalse.getObject();
+			}
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			condition.detach();
+			modelIfTrue.detach();
+			modelIfFalse.detach();
 		}
 	}
 	
