@@ -40,7 +40,7 @@
 		<owsi-core.hikaricp.version>1.4.0</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.8.2</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>3.4.1</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>3.4.2</owsi-core.querydsl.version>
 		
 		
 		<owsi-core.guava.version>17.0</owsi-core.guava.version>
@@ -102,7 +102,7 @@
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.7.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.3.4</owsi-core.httpclient.version>
+		<owsi-core.httpclient.version>4.3.5</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.4</owsi-core.phloc-css.version>
 		<owsi-core.galimatias.version>0.0.4</owsi-core.galimatias.version>
