@@ -75,6 +75,14 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 		protected abstract SortOrder getNext(ISort<?> sort, SortOrder currentOrder);
 	}
 
+	public TableSortLink(String id, CompositeSortModel<T> compositeSortModel, T sort) {
+		this(id, compositeSortModel, sort, null, null);
+	}
+
+	public TableSortLink(String id, CompositeSortModel<T> compositeSortModel, T sort, IModel<String> tooltipTextModel) {
+		this(id, compositeSortModel, sort, null, tooltipTextModel);
+	}
+
 	public TableSortLink(String id, CompositeSortModel<T> compositeSortModel, T sort, IPageable pageable) {
 		this(id, compositeSortModel, sort, pageable, null);
 	}
@@ -153,7 +161,9 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 	@Override
 	public void onClick(AjaxRequestTarget target) {
 		switchSort();
-		pageable.setCurrentPage(0);
+		if (pageable != null) {
+			pageable.setCurrentPage(0);
+		}
 		refreshOnSort(target);
 	}
 	
