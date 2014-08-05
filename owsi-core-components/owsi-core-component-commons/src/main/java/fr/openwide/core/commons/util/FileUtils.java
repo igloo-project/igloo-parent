@@ -3,9 +3,11 @@ package fr.openwide.core.commons.util;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -93,6 +95,46 @@ public final class FileUtils {
 		innerListRecursively(results, directory, resultsFilter, effectiveRecurseFilter);
 		
 		return results;
+	}
+	
+	/**
+	 * Based on org.apache.commons.io.FileUtils#cleanDirectory(File directory) but only deletes files older than a
+	 * certain date.
+	 * 
+	 * @param directory
+	 * @param onlyCleanFilesOlderThanThisDate
+	 * @throws IOException
+	 */
+	public static void cleanDirectory(File directory, Date onlyCleanFilesOlderThanThisDate) throws IOException {
+		if (!directory.exists()) {
+			String message = directory + " does not exist";
+			throw new IllegalArgumentException(message);
+		}
+
+		if (!directory.isDirectory()) {
+			String message = directory + " is not a directory";
+			throw new IllegalArgumentException(message);
+		}
+
+		File[] files = directory.listFiles();
+		if (files == null) { // null if security restricted
+			throw new IOException("Failed to list contents of " + directory);
+		}
+
+		IOException exception = null;
+		for (File file : files) {
+			if (onlyCleanFilesOlderThanThisDate == null || onlyCleanFilesOlderThanThisDate.after(new Date(file.lastModified()))) {
+				try {
+					org.apache.commons.io.FileUtils.forceDelete(file);
+				} catch (IOException ioe) {
+					exception = ioe;
+				}
+			}
+		}
+
+		if (null != exception) {
+			throw exception;
+		}
 	}
 	
 	private static void innerListRecursively(Collection<File> results, File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
