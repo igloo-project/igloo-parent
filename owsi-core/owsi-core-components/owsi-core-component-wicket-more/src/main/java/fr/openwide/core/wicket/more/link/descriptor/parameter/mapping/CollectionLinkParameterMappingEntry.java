@@ -29,7 +29,7 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	protected final String parameterName;
 	protected final IModel<C> mappedModel;
 	protected final Class<RawC> rawCollectionType;
-	protected final TypeDescriptor mappedTypeDescriptor;
+	protected final TypeDescriptor elementTypeDescriptor;
 	protected final Function<? super C, ? extends C> collectionCustomizerFunction;
 
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
@@ -66,8 +66,13 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 		this.parameterName = parameterName;
 		this.mappedModel = mappedModel;
 		this.rawCollectionType = rawCollectionType;
-		this.mappedTypeDescriptor = TypeDescriptor.collection(rawCollectionType, elementTypeDescriptor);
+		this.elementTypeDescriptor = elementTypeDescriptor;
 		this.collectionCustomizerFunction = collectionCustomizerFunction;
+	}
+	
+	// NOTE: we cannot store the collection type descriptor, since it is not Serializable.
+	protected TypeDescriptor getMappedTypeDescriptor() {
+		return TypeDescriptor.collection(rawCollectionType, elementTypeDescriptor);
 	}
 	
 	@Override
@@ -81,7 +86,7 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	
 	@Override
 	public void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService) throws LinkParameterExtractionException {
-		Object extractedCollection = extract(sourceParameters, conversionService, parameterName, mappedTypeDescriptor);
+		Object extractedCollection = extract(sourceParameters, conversionService, parameterName, getMappedTypeDescriptor());
 		@SuppressWarnings("unchecked")
 		C castedCollection = (C)rawCollectionType.cast(extractedCollection);
 		C finalCollection = collectionCustomizerFunction.apply(castedCollection);
@@ -92,7 +97,7 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	public ILinkParameterMappingEntry wrap(Component component) {
 		IModel<C> wrappedModel = wrap(mappedModel, component);
 		return new CollectionLinkParameterMappingEntry<RawC, C>(parameterName, wrappedModel, rawCollectionType,
-				mappedTypeDescriptor.getElementTypeDescriptor(), collectionCustomizerFunction);
+				elementTypeDescriptor, collectionCustomizerFunction);
 	}
 	
 	@Override
