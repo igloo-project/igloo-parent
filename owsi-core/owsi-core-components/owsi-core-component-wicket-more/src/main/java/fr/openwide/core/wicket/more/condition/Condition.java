@@ -26,13 +26,14 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
+import fr.openwide.core.wicket.more.util.Detach;
 
 public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	private static final long serialVersionUID = -3315852580233582804L;
 	
 	private static final Joiner COMMA_JOINER = Joiner.on(',');
-
+	
 	public abstract boolean applies();
 	
 	/**
@@ -234,10 +235,18 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	}
 	
 	public static <T> Condition predicate(IModel<? extends T> model, Predicate<? super T> predicate) {
-		return new PredicateCondition<>(model, predicate);
+		return predicate(model, Detach.YES, predicate);
+	}
+	
+	public static <T> Condition predicate(IModel<? extends T> model, Detach detachModel, Predicate<? super T> predicate) {
+		return new PredicateCondition<>(model, detachModel, predicate);
 	}
 	
 	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Predicate<? super T> predicate) {
+		return convertedInputPredicate(formComponent, Detach.YES, predicate);
+	}
+	
+	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Detach detachModel, Predicate<? super T> predicate) {
 		return predicate(
 				new AbstractReadOnlyModel<T>() {
 					private static final long serialVersionUID = 1L;
@@ -250,6 +259,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 						return formComponent.toString();
 					}
 				},
+				detachModel,
 				predicate
 		);
 	}
@@ -258,11 +268,13 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		private static final long serialVersionUID = 1L;
 
 		private final IModel<? extends T> model;
+		private final Detach detachModel;
 		private final Predicate<? super T> predicate;
 		
-		public PredicateCondition(IModel<? extends T> model, Predicate<? super T> predicate) {
+		public PredicateCondition(IModel<? extends T> model, Detach detachModel, Predicate<? super T> predicate) {
 			super();
 			this.model = model;
+			this.detachModel = detachModel;
 			this.predicate = predicate;
 		}
 		
@@ -277,7 +289,9 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			if (predicate instanceof IDetachable) {
 				((IDetachable)predicate).detach();
 			}
-			model.detach();
+			if (Detach.YES.equals(detachModel)) {
+				model.detach();
+			}
 		}
 	}
 	
