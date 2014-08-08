@@ -1,15 +1,24 @@
 package fr.openwide.core.wicket.request.mapper;
 
+import java.lang.reflect.Method;
+
 import org.apache.wicket.Application;
+import org.apache.wicket.RequestListenerInterface;
+import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.handler.PageAndComponentProvider;
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.mapper.info.ComponentInfo;
+import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.info.PageInfo;
 import org.apache.wicket.request.mapper.parameter.IPageParametersEncoder;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.IProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class comes from: https://github.com/unterstein/wicket-tales/
@@ -60,6 +69,8 @@ import org.apache.wicket.util.IProvider;
  */
 public class PageParameterAwareMountedMapper extends MountedMapper {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PageParameterAwareMountedMapper.class);
+	
 	public PageParameterAwareMountedMapper(String mountPath, Class<? extends IRequestablePage> pageClass,
 			IPageParametersEncoder pageParametersEncoder) {
 		super(mountPath, pageClass, pageParametersEncoder);
@@ -108,5 +119,54 @@ public class PageParameterAwareMountedMapper extends MountedMapper {
 			}
 		}
 		return handler;
+	}
+	
+	@Override
+	/**
+	 * See https://issues.apache.org/jira/browse/WICKET-5539.
+	 * 
+	 * This implementation:
+	 * - doesn't set the page parameters to null if there is a page id: a page id 
+	 * - overwrite the page parameters with the ones of the page instance if we can find a valid page instance
+	 */
+	protected IRequestHandler processListener(PageComponentInfo pageComponentInfo,
+			Class<? extends IRequestablePage> pageClass, PageParameters pageParameters) {
+		PageInfo pageInfo = pageComponentInfo.getPageInfo();
+		ComponentInfo componentInfo = pageComponentInfo.getComponentInfo();
+		Integer renderCount = null;
+		RequestListenerInterface listenerInterface = null;
+
+		if (componentInfo != null) {
+			renderCount = componentInfo.getRenderCount();
+			listenerInterface = requestListenerInterfaceFromString(componentInfo.getListenerInterface());
+		}
+
+		if (listenerInterface != null) {
+			PageAndComponentProvider provider = new PageAndComponentProvider(pageInfo.getPageId(), pageClass,
+					pageParameters, renderCount, componentInfo.getComponentPath());
+			if (!provider.isNewPageInstance()) {
+				try {
+					Method setPageParametersMethod = PageProvider.class.getDeclaredMethod("setPageParameters",
+							PageParameters.class);
+					setPageParametersMethod.setAccessible(true);
+					setPageParametersMethod.invoke(provider, provider.getPageInstance().getPageParameters());
+				} catch (Exception e) {
+					LOGGER.error("Error while trying to override the PageParameters of the provider with the instance PageParameters", e);
+				}
+			}
+
+			provider.setPageSource(getContext());
+
+			return new ListenerInterfaceRequestHandler(provider, listenerInterface, componentInfo.getBehaviorId());
+		} else {
+			if (LOGGER.isWarnEnabled()) {
+				if (componentInfo != null) {
+					LOGGER.warn("Unknown listener interface '{}'", componentInfo.getListenerInterface());
+				} else {
+					LOGGER.warn("Cannot extract the listener interface for PageComponentInfo: '{}'" + pageComponentInfo);
+				}
+			}
+			return null;
+		}
 	}
 }
