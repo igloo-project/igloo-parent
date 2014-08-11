@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.javatuples.valueintf.IValue0;
+import org.javatuples.valueintf.IValue1;
+
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
@@ -229,6 +232,42 @@ public final class Functions2 {
 			@Override
 			public String toString() {
 				return "value";
+			}
+		};
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // Works for any T, since it is read-only
+	public static <T> Function<IValue0<? extends T>, T> tupleValue0() {
+		return (Function) JavaTuplesValue0Function.INSTANCE;
+	}
+	
+	private enum JavaTuplesValue0Function implements Function<IValue0<?>, Object> {
+		INSTANCE {
+			@Override
+			public Object apply(IValue0<?> entry) {
+				return entry.getValue0();
+			}
+			@Override
+			public String toString() {
+				return "value0";
+			}
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // Works for any T, since it is read-only
+	public static <T> Function<IValue1<? extends T>, T> tupleValue1() {
+		return (Function) JavaTuplesValue1Function.INSTANCE;
+	}
+	
+	private enum JavaTuplesValue1Function implements Function<IValue1<?>, Object> {
+		INSTANCE {
+			@Override
+			public Object apply(IValue1<?> entry) {
+				return entry.getValue1();
+			}
+			@Override
+			public String toString() {
+				return "value1";
 			}
 		};
 	}
