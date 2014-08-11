@@ -62,7 +62,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @return booléen de la propriété
 	 */
 	protected Boolean getPropertyAsBoolean(String key) {
-		return Boolean.valueOf(getPropertyAsString(key));
+		return Boolean.valueOf(StringUtils.trimWhitespace(getPropertyAsString(key)));
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 */
 	protected Integer getPropertyAsInteger(String key, Integer defaultValue) {
 		Integer integerProperty = defaultValue;
-		String stringProperty = getPropertyAsString(key);
+		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
 		
 		if (!StringUtils.hasText(stringProperty)) {
 			LOGGER.warn("La propriété " + key + " n'est pas définie : utilisation de la valeur par défaut.");
@@ -163,7 +163,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 */
 	protected <E extends Enum<E>> E getPropertyAsEnum(String key, Class<E> enumType, E defaultValue) {
 		E enumProperty = defaultValue;
-		String stringProperty = getPropertyAsString(key);
+		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
 		
 		if (!StringUtils.hasText(stringProperty)) {
 			LOGGER.warn("La propriété " + key + " n'est pas définie : utilisation de la valeur par défaut.");
@@ -184,7 +184,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @return un répertoire dans lequel on est sûr de pouvoir écrire
 	 */
 	protected File getPropertyAsWritableDirectory(String key) {
-		String path = getPropertyAsString(key);
+		String path = StringUtils.trimWhitespace(getPropertyAsString(key));
 		
 		if (StringUtils.hasText(path) && !"/".equals(path)) {
 			File directory = new File(path);
