@@ -10,15 +10,17 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
+import com.phloc.css.ECSSVersion;
 import com.phloc.css.decl.CSSSelector;
 import com.phloc.css.decl.CSSSelectorSimpleMember;
 import com.phloc.css.decl.ICSSSelectorMember;
+import com.phloc.css.writer.CSSWriterSettings;
 
 public class PhlocCssMatchableComponentTag {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhlocCssMatchableComponentTag.class);
 	
-	private static final Splitter CSS_CLASSES_SPLITTER = Splitter.on(CharMatcher.WHITESPACE);
+	private static final Splitter CSS_CLASSES_SPLITTER = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
 	
 	private final String name;
 	private final String id;
@@ -50,7 +52,10 @@ public class PhlocCssMatchableComponentTag {
 					return false;
 				}
 			} else {
-				LOGGER.warn("Only simple selector members ('.class', 'name', '#id') are supported. The selector '{}' and the related declarations will be ignored.", selector);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Only simple selector members ('.class', 'name', '#id') are supported. The selector '{}' and the related declarations will be ignored.",
+							selector.getAsCSSString(new CSSWriterSettings(ECSSVersion.CSS30), 0));
+				}
 				return false;
 			}
 		}
