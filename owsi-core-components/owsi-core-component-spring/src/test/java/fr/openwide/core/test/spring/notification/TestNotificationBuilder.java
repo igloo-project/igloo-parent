@@ -1,5 +1,6 @@
 package fr.openwide.core.test.spring.notification;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,6 +35,10 @@ public class TestNotificationBuilder {
 				.subject("Test notification builder")
 				.textBody("Test notification builder")
 				.send();
+	}
+	
+	@Test
+	public void emptyDummyTest() {
 	}
 
 }
