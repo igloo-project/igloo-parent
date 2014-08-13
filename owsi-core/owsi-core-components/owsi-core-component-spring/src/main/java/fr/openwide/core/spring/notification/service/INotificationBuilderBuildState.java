@@ -40,4 +40,13 @@ public interface INotificationBuilderBuildState extends INotificationBuilderToSt
 	INotificationBuilderBodyState subject(String prefix, String subject);
 	
 	INotificationBuilderTemplateState template(String templateKey);
+
+	INotificationBuilderBuildState except(Collection<? extends INotificationRecipient> except);
+
+	INotificationBuilderBuildState except(INotificationRecipient exceptFirst, INotificationRecipient... exceptOthers);
+
+	INotificationBuilderBuildState exceptAddress(String exceptFirst, String... exceptOthers);
+
+	INotificationBuilderBuildState exceptAddress(Collection<String> except);
+	
 }

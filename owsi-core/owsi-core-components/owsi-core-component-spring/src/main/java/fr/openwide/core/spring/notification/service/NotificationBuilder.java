@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
@@ -57,6 +58,16 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private static final String ATTACHMENT_NAMES_VARIABLE_NAME = "attachments";
 	
+	private static final Function<INotificationRecipient, String> I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION = new Function<INotificationRecipient, String>() {
+		@Override
+		public String apply(INotificationRecipient recipient) {
+			if (recipient == null) {
+				return null;
+			}
+			return recipient.getEmail();
+		}
+	};
+	
 	@Autowired
 	private JavaMailSender mailSender;
 	
@@ -74,6 +85,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	private final Multimap<Locale, String> ccByLocale = LinkedHashMultimap.create();
 	
 	private final Multimap<Locale, String> bccByLocale = LinkedHashMultimap.create();
+	
+	private final Set<String> recipientsToIgnore = Sets.newHashSet();
 	
 	private String templateKey;
 	
@@ -97,7 +110,11 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private int priority;
 	
-	public NotificationBuilder() {
+	protected NotificationBuilder() {
+	}
+	
+	public static INotificationBuilderBaseState create() {
+		return new NotificationBuilder();
 	}
 	
 	@Override
@@ -126,7 +143,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (to != null) {
 			for (String email : to) {
 				if (StringUtils.hasText(email)) {
-					toByLocale.put(getDefaultLocale(), email);
+					addRecipient(toByLocale, getDefaultLocale(), email);
 				}
 			}
 		}
@@ -143,7 +160,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (to != null) {
 			for (INotificationRecipient receiver : to) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					toByLocale.put(getLocale(receiver), receiver.getEmail());
+					addRecipient(toByLocale, getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
@@ -169,7 +186,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (cc != null) {
 			for (String email : cc) {
 				if (StringUtils.hasText(email)) {
-					ccByLocale.put(getDefaultLocale(), email);
+					addRecipient(ccByLocale, getDefaultLocale(), email);
 				}
 			}
 		}
@@ -186,7 +203,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (cc != null) {
 			for (INotificationRecipient receiver : cc) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					ccByLocale.put(getLocale(receiver), receiver.getEmail());
+					addRecipient(ccByLocale, getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
@@ -213,7 +230,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (bcc != null) {
 			for (String email : bcc) {
 				if (StringUtils.hasText(email)) {
-					bccByLocale.put(getDefaultLocale(), email);
+					addRecipient(bccByLocale, getDefaultLocale(), email);
 				}
 			}
 		}
@@ -230,10 +247,35 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		if (bcc != null) {
 			for (INotificationRecipient receiver : bcc) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					bccByLocale.put(getLocale(receiver), receiver.getEmail());
+					addRecipient(bccByLocale, getLocale(receiver), receiver.getEmail());
 				}
 			}
 		}
+		return this;
+	}
+	
+	
+	@Override
+	public INotificationBuilderBuildState exceptAddress(Collection<String> except) {
+		recipientsToIgnore.addAll(except);
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState exceptAddress(String exceptFirst, String... exceptOthers) {
+		recipientsToIgnore.addAll(Lists.asList(exceptFirst, exceptOthers));
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState except(INotificationRecipient exceptFirst, INotificationRecipient... exceptOthers) {
+		recipientsToIgnore.addAll(Lists.transform(Lists.asList(exceptFirst, exceptOthers), I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION));
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState except(Collection<? extends INotificationRecipient> except) {
+		recipientsToIgnore.addAll(Lists.transform(Lists.newArrayList(except), I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION));
 		return this;
 	}
 	
@@ -381,6 +423,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		}
 		
 		try {
+			removeDuplicatesAndRecipientsToIgnoreBeforeSendingMessage();
+			
 			Set<Locale> allLocales = ImmutableSet.<Locale> builder()
 					.addAll(toByLocale.keySet())
 					.addAll(ccByLocale.keySet())
@@ -390,6 +434,11 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 				Collection<String> to = toByLocale.get(locale);
 				Collection<String> cc = ccByLocale.get(locale);
 				Collection<String> bcc = bccByLocale.get(locale);
+				
+				if (to.isEmpty() && cc.isEmpty() && bcc.isEmpty()) { // Multimap.get(unknown key) returns an empty collection
+					continue;
+				}
+				
 				try {
 					MimeMessage message = buildMessage(to, cc, bcc, encoding, locale);
 					
@@ -414,6 +463,34 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			throw new ServiceException("Error while generating email from template", e);
 		} catch (TemplateException e) {
 			throw new ServiceException("Error while generating email from template", e);
+		}
+	}
+	
+	private void addRecipient(Multimap<Locale, String> recipients, Locale locale, String recipient) {
+		if (!recipients.containsValue(recipient)) {
+			recipients.put(locale, recipient);
+		}
+	}
+	
+	private void removeDuplicatesAndRecipientsToIgnoreBeforeSendingMessage() {
+		Collection<String> tos = ImmutableSet.copyOf(toByLocale.values());
+		Collection<String> ccs = ImmutableSet.copyOf(ccByLocale.values());
+		
+		doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(toByLocale, recipientsToIgnore);
+		doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(ccByLocale, recipientsToIgnore, tos);
+		doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(bccByLocale, recipientsToIgnore, tos, ccs);
+	}
+	
+	@SafeVarargs
+	private final void doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(Multimap<Locale, String> candidates, Collection<String>... recipientListsToRemove) {
+		if (ObjectUtils.isEmpty(recipientListsToRemove)) {
+			return;
+		}
+		
+		for (Locale locale : candidates.keySet()) {
+			for (Collection<String> recipientsToRemove : recipientListsToRemove) {
+				candidates.get(locale).removeAll(recipientsToRemove);
+			}
 		}
 	}
 	
