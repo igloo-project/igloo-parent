@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,15 +51,14 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
-		IGroupedUser<?> user;
-		if (AuthenticationUserNameComparison.CASE_INSENSITIVE.equals(authenticationUserNameComparison)) {
-			user = userService.getByUserNameCaseInsensitive(userName);
-		} else {
-			user = userService.getByUserName(userName);
-		}
+		IGroupedUser<?> user = getUserByUsername(userName);
 		
 		if (user == null) {
 			throw new UsernameNotFoundException("CoreHibernateUserDetailsServiceImpl: User not found: " + userName);
+		}
+		
+		if (!user.isActive()) {
+			throw new DisabledException("User is disabled");
 		}
 		
 		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(user);
@@ -76,6 +76,16 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 				expandedGrantedAuthorities, expandedReachablePermissions);
 		
 		return userDetails;
+	}
+	
+	protected IGroupedUser<?> getUserByUsername(String userName) {
+		IGroupedUser<?> user;
+		if (AuthenticationUserNameComparison.CASE_INSENSITIVE.equals(authenticationUserNameComparison)) {
+			user = userService.getByUserNameCaseInsensitive(userName);
+		} else {
+			user = userService.getByUserName(userName);
+		}
+		return user;
 	}
 	
 	/**
