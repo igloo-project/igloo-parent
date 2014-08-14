@@ -381,7 +381,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected String normalizeLineBreaks(String input) {
 		if (input == null) {
-			return input;
+			return null;
 		}
 		return input.replace("\r\n", "\n").replace("\r", "\n");
 	}
