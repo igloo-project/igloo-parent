@@ -216,7 +216,7 @@ public class TestStringUtils {
 	}
 	
 	@Test
-	public void testCleanNewLines() {
+	public void testNormalizeNewLines() {
 		String cleanStr;
 		
 		String str1 = "Ceci \r\n est un test d'uniformisation \r des retours \n à la ligne.";
