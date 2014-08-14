@@ -349,7 +349,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
 		cell.setCellType(Cell.CELL_TYPE_STRING);
-		cell.setCellValue(creationHelper.createRichTextString(text));
+		cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text)));
 
 		return cell;
 	}
@@ -366,9 +366,19 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getStyle(STYLE_HEADER_NAME));
 		cell.setCellType(Cell.CELL_TYPE_STRING);
-		cell.setCellValue(creationHelper.createRichTextString(text));
+		cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text)));
 
 		return cell;
+	}
+	
+	/**
+	 * Unifie les retours à la ligne avant ajout du texte.
+	 */
+	protected String normalizeLineBreaks(String input) {
+		if (input == null) {
+			return input;
+		}
+		return input.replace("\r\n", "\n").replace("\r", "\n");
 	}
 
 	/**
