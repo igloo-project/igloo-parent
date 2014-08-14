@@ -277,8 +277,8 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 			return null;
 		}
 		
-		String cleanString = string.replaceAll(NEW_LINE_ANTISLASH_R_ANTISLASH_N, NEW_LINE_ANTISLASH_N);
-		cleanString = cleanString.replaceAll(NEW_LINE_ANTISLASH_R, NEW_LINE_ANTISLASH_N);
+		String cleanString = string.replace(NEW_LINE_ANTISLASH_R_ANTISLASH_N, NEW_LINE_ANTISLASH_N);
+		cleanString = cleanString.replace(NEW_LINE_ANTISLASH_R, NEW_LINE_ANTISLASH_N);
 		
 		return cleanString;
 	}
