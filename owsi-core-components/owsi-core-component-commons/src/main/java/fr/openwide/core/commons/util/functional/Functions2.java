@@ -17,6 +17,8 @@ import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 
 public final class Functions2 {
 
@@ -109,6 +111,24 @@ public final class Functions2 {
 		@Override
 		public String toString() {
 			return "unmodifiableMap";
+		}
+	}
+	
+	public static <R, C, V> Function<Table<? extends R, ? extends C, ? extends V>, Table<R, C, V>> unmodifiableTable() {
+		return new UnmodifiableTableFunction<>();
+	}
+	
+	private static final class UnmodifiableTableFunction<R, C, V> implements Function<Table<? extends R, ? extends C, ? extends V>, Table<R, C, V>>, Serializable {
+		private static final long serialVersionUID = 5952443669998059686L;
+		
+		@Override
+		public Table<R, C, V> apply(Table<? extends R, ? extends C, ? extends V> input) {
+			return input == null ? null : Tables.unmodifiableTable(input);
+		}
+		
+		@Override
+		public String toString() {
+			return "unmodifiableTable";
 		}
 	}
 	
