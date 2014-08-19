@@ -87,7 +87,7 @@
 		<owsi-core.freemarker.version>2.3.20</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		
-		<owsi-core.poi.version>3.10-FINAL</owsi-core.poi.version>
+		<owsi-core.poi.version>3.10.1</owsi-core.poi.version>
 		
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
@@ -106,7 +106,7 @@
 		<owsi-core.httpclient.version>4.3.5</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.4</owsi-core.phloc-css.version>
-		<owsi-core.galimatias.version>0.0.4</owsi-core.galimatias.version>
+		<owsi-core.galimatias.version>0.2.0</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.18.1</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.11</owsi-core.jersey2.version>
