@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.mont
 
 import org.apache.wicket.Component;
 import org.odlabs.wiquery.core.options.Options;
+import org.odlabs.wiquery.ui.datepicker.DateOption;
 
 public class MonthPickerOptions extends Options {
 
@@ -38,4 +39,19 @@ public class MonthPickerOptions extends Options {
 		putLiteral("yearRange", yearRange);
 		return this;
 	}
+	
+	/**
+	 * Undocumented option. Seems to set the minimum <strong>year</strong>.
+	 */
+	public void setMinDate(DateOption minDate) {
+		put("minDate", minDate);
+	}
+	
+	/**
+	 * Undocumented option. Seems to set the maximum <strong>year</strong>.
+	 */
+	public void setMaxDate(DateOption maxDate) {
+		put("maxDate", maxDate);
+	}
+
 }
