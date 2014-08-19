@@ -39,6 +39,7 @@ public final class Select2Utils {
 		settings.setTextEncoding("UTF-8");
 		settings.setWidth("resolve");
 		settings.setNoMatchesKey("common.select2.noChoice");
+		settings.setInputTooShortKey("common.select2.inputTooShort");
 		settings.setMatcher(DEFAULT_MATCHER);
 		settings.setFormatResult(DEFAULT_FORMAT_RESULT);
 		settings.setMinimumResultsForSearch(DEFAULT_MINIMUM_RESULTS_FOR_SEARCH);
