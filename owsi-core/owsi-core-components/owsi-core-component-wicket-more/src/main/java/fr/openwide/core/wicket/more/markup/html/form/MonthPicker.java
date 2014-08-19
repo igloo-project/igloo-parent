@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.odlabs.wiquery.core.javascript.JsQuery;
+import org.odlabs.wiquery.ui.datepicker.DateOption;
 import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerJavaScriptResourceReference;
@@ -60,6 +61,16 @@ public class MonthPicker extends TextField<Date> {
 	
 	public MonthPicker setYearRange(String yearRange) {
 		options.setYearRange(yearRange);
+		return this;
+	}
+	
+	public MonthPicker setMinDate(DateOption minDate) {
+		options.setMinDate(minDate);
+		return this;
+	}
+	
+	public MonthPicker setMaxDate(DateOption maxDate) {
+		options.setMaxDate(maxDate);
 		return this;
 	}
 
