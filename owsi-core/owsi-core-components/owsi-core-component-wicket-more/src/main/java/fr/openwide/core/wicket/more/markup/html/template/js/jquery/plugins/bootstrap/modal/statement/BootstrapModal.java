@@ -133,32 +133,36 @@ public final class BootstrapModal implements ChainableStatement, Serializable {
 		return backdrop;
 	}
 
-	public void setBackdrop(BootstrapModalBackdrop backdrop) {
+	public BootstrapModal setBackdrop(BootstrapModalBackdrop backdrop) {
 		this.backdrop = backdrop;
+		return this;
 	}
 
 	public Boolean getModalOverflow() {
 		return modalOverflow;
 	}
 
-	public void setModalOverflow(Boolean modalOverflow) {
+	public BootstrapModal setModalOverflow(Boolean modalOverflow) {
 		this.modalOverflow = modalOverflow;
+		return this;
 	}
 
 	public String getWidth() {
 		return width;
 	}
 
-	public void setWidth(String width) {
+	public BootstrapModal setWidth(String width) {
 		this.width = width;
+		return this;
 	}
 
 	public String getHeight() {
 		return height;
 	}
 
-	public void setHeight(String height) {
+	public BootstrapModal setHeight(String height) {
 		this.height = height;
+		return this;
 	}
 
 	public String getFocusOn() {
@@ -168,44 +172,50 @@ public final class BootstrapModal implements ChainableStatement, Serializable {
 	/**
 	 * Sélecteur pour un focus sur le premier champ non caché de la popup.
 	 */
-	public void setFocusOnFirstNotHiddenInput() {
+	public BootstrapModal setFocusOnFirstNotHiddenInput() {
 		this.focusOn = "input[type!='hidden']:first";
+		return this;
 	}
 
-	public void setFocusOn(String focusOn) {
+	public BootstrapModal setFocusOn(String focusOn) {
 		this.focusOn = focusOn;
+		return this;
 	}
 
 	public String getAttentionAnimation() {
 		return attentionAnimation;
 	}
 
-	public void setAttentionAnimation(String attentionAnimation) {
+	public BootstrapModal setAttentionAnimation(String attentionAnimation) {
 		this.attentionAnimation = attentionAnimation;
+		return this;
 	}
 
 	public Boolean getReplace() {
 		return replace;
 	}
 
-	public void setReplace(Boolean replace) {
+	public BootstrapModal setReplace(Boolean replace) {
 		this.replace = replace;
+		return this;
 	}
 
 	public String getSpinner() {
 		return spinner;
 	}
 
-	public void setSpinner(String spinner) {
+	public BootstrapModal setSpinner(String spinner) {
 		this.spinner = spinner;
+		return this;
 	}
 
 	public Boolean getKeyboard() {
 		return keyboard;
 	}
 
-	public void setKeyboard(Boolean keyboard) {
+	public BootstrapModal setKeyboard(Boolean keyboard) {
 		this.keyboard = keyboard;
+		return this;
 	}
 
 	public static final BootstrapModal modal() {
