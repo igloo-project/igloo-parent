@@ -49,8 +49,10 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			@Override
 			public void onClick() {
 				try {
+					LOGGER.info("Réindexation complète : début du traitement.");
 					hibernateSearchService.reindexAll();
 					getSession().success(getString("console.maintenance.search.reindex.success"));
+					LOGGER.info("Réindexation complète : fin du traitement.");
 				} catch(Exception e) {
 					LOGGER.error("console.maintenance.search.reindex.failure", e);
 					getSession().error(getString("console.maintenance.search.reindex.failure"));
@@ -86,6 +88,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 				@Override
 				public void onSubmit() {
 					try {
+						LOGGER.info("Réindexation partielle : début du traitement.");
 						Set<Long> entityIds = Sets.newHashSet();
 						
 						for (String entityIdString : StringUtils.splitAsList(
@@ -117,6 +120,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 						idsTextArea.setModelObject("");
 						
 						getSession().success(getString("console.maintenance.search.reindex.success"));
+						LOGGER.info("Réindexation partielle : fin du traitement.");
 					} catch (Exception e) {
 						LOGGER.error("Erreur lors la réindexation d'entités", e);
 						getSession().error(getString("console.maintenance.search.reindex.failure"));
