@@ -1,14 +1,18 @@
 package fr.openwide.core.commons.util.functional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 public final class Predicates2 {
 
@@ -92,6 +96,43 @@ public final class Predicates2 {
 		@Override
 		public boolean apply(Collection<?> input) {
 			return input != null && input.contains(referenceValue);
+		}
+		
+		@Override
+		public String toString() {
+			return "contains(" + referenceValue + ")";
+		}
+	}
+	
+	public static Predicate<Collection<?>> containsAny(Iterable<?> referenceValues) {
+		return new ContainsAnyPredicate(referenceValues);
+	}
+	
+	private static class ContainsAnyPredicate implements SerializablePredicate<Collection<?>> {
+		private static final long serialVersionUID = -9193654606378621631L;
+		
+		private final Set<?> referenceValues;
+		
+		public ContainsAnyPredicate(Iterable<?> referenceValues) {
+			this.referenceValues = Sets.newLinkedHashSet(checkNotNull(referenceValues));
+		}
+		
+		@Override
+		public boolean apply(Collection<?> input) {
+			if (input == null) {
+				return false;
+			}
+			for (Object value : referenceValues) {
+				if (input.contains(value)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		public String toString() {
+			return "containsAny(" + referenceValues + ")";
 		}
 	}
 	
