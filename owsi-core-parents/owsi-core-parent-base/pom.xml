@@ -143,7 +143,7 @@
 		<owsi-core.maven-yui-compressor-plugin.version>1.3.3</owsi-core.maven-yui-compressor-plugin.version>
 		<owsi-core.aspectj-maven-plugin.version>1.4</owsi-core.aspectj-maven-plugin.version>
 		
-		<owsi-core.wqplot.version>6.1.1.owsi5</owsi-core.wqplot.version>
+		<owsi-core.wqplot.version>6.1.1.owsi6</owsi-core.wqplot.version>
 	</properties>
 	
 	<prerequisites>
