@@ -1,8 +1,6 @@
 package fr.openwide.core.export.test.export;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -27,15 +25,13 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 		init();
 	}
 
-	public HSSFWorkbook generate(List<Person> persons, Map<String, ColumnInformation> columnsInfos) {
-		HSSFSheet sheet = (HSSFSheet) createSheet("Document .xls");
+	public HSSFWorkbook generate(List<Person> persons, List<ColumnInformation> columnsInfos) {
+		HSSFSheet sheet = (HSSFSheet) createSheet("Feuille 1");
 
 		int rowIndex = 0;
 
 		addHeadersToSheet(sheet, rowIndex, columnsInfos);
 		rowIndex++;
-
-		List<String> columnNames = new ArrayList<String>(columnsInfos.keySet());
 
 		for (Person person : persons) {
 			HSSFRow currentRow = sheet.createRow(rowIndex);
@@ -43,8 +39,8 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 
 			int columnIndex = 0;
 
-			for (String column : columnNames) {
-				addCell(currentRow, columnIndex, person, column);
+			for (ColumnInformation columnInfo : columnsInfos) {
+				addCell(currentRow, columnIndex, person, columnInfo.getHeaderKey());
 				columnIndex++;
 			}
 		}

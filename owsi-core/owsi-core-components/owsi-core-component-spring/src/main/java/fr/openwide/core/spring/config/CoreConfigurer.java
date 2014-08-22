@@ -139,10 +139,6 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsInteger("hibernate.search.reindex.batchSize", 25);
 	}
 	
-	public int getHibernateSearchReindexFetchingThreads() {
-		return getPropertyAsInteger("hibernate.search.reindex.fetchingThreads", 8);
-	}
-	
 	public int getHibernateSearchReindexLoadThreads() {
 		return getPropertyAsInteger("hibernate.search.reindex.loadThreads", 8);
 	}
