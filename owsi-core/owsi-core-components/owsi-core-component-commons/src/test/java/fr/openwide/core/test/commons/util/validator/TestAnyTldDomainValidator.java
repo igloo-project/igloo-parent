@@ -15,6 +15,7 @@ public class TestAnyTldDomainValidator {
 		Assert.assertTrue(AnyTldDomainValidator.getInstance().isValid("gîte-lasoldanelle.com"));
 		Assert.assertTrue(AnyTldDomainValidator.getInstance().isValid("www.gîte-lasoldanelle.com"));
 		Assert.assertTrue(AnyTldDomainValidator.getInstance().isValid("île-lasoldanelle.com"));
+		Assert.assertTrue(AnyTldDomainValidator.getInstance().isValid("location_maechler.monsite-orange.fr"));
 		Assert.assertFalse(AnyTldDomainValidator.getInstance().isValid("-test-plop.fr"));
 		Assert.assertFalse(AnyTldDomainValidator.getInstance().isValid("test-plop-.fr"));
 		Assert.assertFalse(AnyTldDomainValidator.getInstance().isValid("test-plop-.fr"));
