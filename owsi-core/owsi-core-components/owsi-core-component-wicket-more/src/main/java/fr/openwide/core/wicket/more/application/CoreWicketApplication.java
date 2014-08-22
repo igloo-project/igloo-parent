@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -90,46 +91,46 @@ public abstract class CoreWicketApplication extends WebApplication {
 		getRequestCycleSettings().setTimeout(DEFAULT_TIMEOUT);
 		
 		// configuration des ressources
-			// depuis Wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
-			// on ajoute globalement l'accès aux ressources less.
-			((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
-			
-			// on autorise l'accès aux .htc pour CSS3PIE
-			((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
-			
-			// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
-			getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
-			// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
-			getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
-			
-			// gestion du cache sur les ressources
-			getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
+		// depuis Wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
+		// on ajoute globalement l'accès aux ressources less.
+		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
 		
-			// surcharge des ressources jQuery et jQuery UI
-			addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
-			
-			// on place les éléments présents dans le wicket:head en premier
-			getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
+		// on autorise l'accès aux .htc pour CSS3PIE
+		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
+		
+		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
+		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
+		// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
+		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
+		
+		// gestion du cache sur les ressources
+		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
+		
+		// surcharge des ressources jQuery et jQuery UI
+		addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
+		
+		// on place les éléments présents dans le wicket:head en premier
+		getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
 		
 		// Update de jQuery : à commenter quand on se remet en ligne avec Wicket
 		getJavaScriptLibrarySettings().setJQueryReference(JQueryUpdateResourceReference.get());
 			
 		// configuration du disk data store de Wicket
-			getStoreSettings().setInmemoryCacheSize(configurer.getWicketDiskDataStoreInMemoryCacheSize());
-			getStoreSettings().setMaxSizePerSession(Bytes.megabytes(configurer.getWicketDiskDataStoreMaxSizePerSession()));
+		getStoreSettings().setInmemoryCacheSize(configurer.getWicketDiskDataStoreInMemoryCacheSize());
+		getStoreSettings().setMaxSizePerSession(Bytes.megabytes(configurer.getWicketDiskDataStoreMaxSizePerSession()));
 		
-			String wicketDiskDataStorePath = configurer.getWicketDiskDataStorePath();
-			if (StringUtils.hasText(wicketDiskDataStorePath)) {
-				try {
-					File wicketDiskDataStoreFolder = new File(wicketDiskDataStorePath);
-					FileUtils.forceMkdir(wicketDiskDataStoreFolder);
-					
-					getStoreSettings().setFileStoreFolder(wicketDiskDataStoreFolder);
-				} catch (Exception e) {
-					LOGGER.error(String.format("Unable to define a specific path (%1$s) for wicket data store. Using the default one.",
-							wicketDiskDataStorePath), e);
-				}
+		String wicketDiskDataStorePath = configurer.getWicketDiskDataStorePath();
+		if (StringUtils.hasText(wicketDiskDataStorePath)) {
+			try {
+				File wicketDiskDataStoreFolder = new File(wicketDiskDataStorePath);
+				FileUtils.forceMkdir(wicketDiskDataStoreFolder);
+				
+				getStoreSettings().setFileStoreFolder(wicketDiskDataStoreFolder);
+			} catch (Exception e) {
+				LOGGER.error(String.format("Unable to define a specific path (%1$s) for wicket data store. Using the default one.",
+						wicketDiskDataStorePath), e);
 			}
+		}
 		
 		mountCommonResources();
 		mountCommonPages();
@@ -138,6 +139,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationPages();
 		
 		registerLessImportScopes();
+		
+		BooleanQuery.setMaxClauseCount(configurer.getLuceneBooleanQueryMaxClauseCount());
 	}
 	
 	protected void registerLessImportScopes() {
