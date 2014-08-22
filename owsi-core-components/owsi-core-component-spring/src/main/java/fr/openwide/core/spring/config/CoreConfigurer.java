@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.lang3.LocaleUtils;
+import org.apache.lucene.search.BooleanQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -43,6 +44,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public File getTmpDirectory() {
 		return getPropertyAsWritableDirectory("tmp.path");
+	}
+	
+	public int getLuceneBooleanQueryMaxClauseCount() {
+		return getPropertyAsInteger("lucene.booleanQuery.maxClauseCount", BooleanQuery.getMaxClauseCount());
 	}
 	
 	public File getImageMagickConvertBinary() {
