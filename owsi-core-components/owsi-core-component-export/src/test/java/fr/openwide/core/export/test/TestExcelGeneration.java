@@ -5,13 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.export.excel.ColumnInformation;
 import fr.openwide.core.export.test.export.PersonHSSFExport;
@@ -24,15 +25,16 @@ public class TestExcelGeneration {
 	public void testHSSFGeneration() {
 		int maxColumnWidth = 2000;
 		
-		LinkedHashMap<String, ColumnInformation> columns = new LinkedHashMap<String, ColumnInformation>();
-		columns.put("username", new ColumnInformation("username", false, maxColumnWidth));
-		columns.put("firstname", new ColumnInformation("firstname", false, maxColumnWidth, 1500));
-		columns.put("lastname", new ColumnInformation("lastname", false, maxColumnWidth));
-		columns.put("birth date", new ColumnInformation("birth date", true, maxColumnWidth, 2500));
-		columns.put("birth hour", new ColumnInformation("birth hour", true, maxColumnWidth));
-		columns.put("age", new ColumnInformation("age", false, maxColumnWidth));
-		columns.put("size", new ColumnInformation("size", true, maxColumnWidth));
-		columns.put("percentage", new ColumnInformation("percentage", false, maxColumnWidth));
+		List<ColumnInformation> columns = ImmutableList.<ColumnInformation>builder()
+				.add(new ColumnInformation("username", false, maxColumnWidth))
+				.add(new ColumnInformation("firstname", false, maxColumnWidth, 1500))
+				.add(new ColumnInformation("lastname", false, maxColumnWidth))
+				.add(new ColumnInformation("birth date", true, maxColumnWidth, 2500))
+				.add(new ColumnInformation("birth hour", true, maxColumnWidth))
+				.add(new ColumnInformation("age", false, maxColumnWidth))
+				.add(new ColumnInformation("size", true, maxColumnWidth))
+				.add(new ColumnInformation("percentage", false, maxColumnWidth))
+				.build();
 
 		List<Person> persons = new LinkedList<Person>();
 		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 24, 1.80, .88));
@@ -46,8 +48,8 @@ public class TestExcelGeneration {
 		
 		// Validation de la taille des colonnes
 		int columnIndex = 0;
-		for (String columnName : columns.keySet()) {
-			if ("firstname".equals(columnName)) {
+		for (ColumnInformation column : columns) {
+			if ("firstname".equals(column.getHeaderKey())) {
 				assertEquals(1500, workbook.getSheetAt(0).getColumnWidth(columnIndex));
 			} else {
 				assertTrue(workbook.getSheetAt(0).getColumnWidth(columnIndex) <= 2000);

@@ -209,7 +209,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
 			throws Exception {
 		int batchSize = configurer.getHibernateSearchReindexBatchSize();
-		int fetchingThreads = configurer.getHibernateSearchReindexFetchingThreads();
 		int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
 		
 		for (Class<?> clazz : entityClasses) {
@@ -219,7 +218,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			t.start();
 			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
 			indexer.batchSizeToLoadObjects(batchSize)
-					.threadsForSubsequentFetching(fetchingThreads)
 					.threadsToLoadObjects(loadThreads)
 					.cacheMode(CacheMode.NORMAL)
 					.progressMonitor(progressMonitor)
