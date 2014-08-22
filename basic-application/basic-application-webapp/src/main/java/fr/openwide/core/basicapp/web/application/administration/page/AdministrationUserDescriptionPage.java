@@ -60,7 +60,7 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 		add(new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())));
 		
 		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, AdministrationUserPortfolioPage.class)
-				.link("backToSourcePage").setAutoHideIfInvalid(true);
+				.link("backToSourcePage").hideIfInvalid();
 		add(
 				backToSourcePage,
 				AdministrationUserPortfolioPage.linkDescriptor().link("backToList")

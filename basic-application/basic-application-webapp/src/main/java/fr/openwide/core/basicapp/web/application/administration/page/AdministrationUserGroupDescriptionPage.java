@@ -60,7 +60,7 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		add(new Label("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())));
 		
 		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, AdministrationUserGroupPortfolioPage.class)
-				.link("backToSourcePage").setAutoHideIfInvalid(true);
+				.link("backToSourcePage").hideIfInvalid();
 		add(
 				backToSourcePage,
 				AdministrationUserGroupPortfolioPage.linkDescriptor().link("backToList")
