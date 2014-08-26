@@ -43,7 +43,7 @@
 		<owsi-core.querydsl.version>3.4.2</owsi-core.querydsl.version>
 		
 		
-		<owsi-core.guava.version>17.0</owsi-core.guava.version>
+		<owsi-core.guava.version>18.0</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.3-1101-jdbc41</owsi-core.postgresql.version>
 		<owsi-core.pgjdbc-ng.version>0.4</owsi-core.pgjdbc-ng.version>
