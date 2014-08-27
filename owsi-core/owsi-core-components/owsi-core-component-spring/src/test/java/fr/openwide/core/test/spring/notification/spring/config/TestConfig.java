@@ -14,7 +14,7 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 
 @Configuration
 @ApplicationDescription(name = "TestNotification")
-@ConfigurationLocations(locations = "classpath:notification-test.properties")
+@ConfigurationLocations(locations = {"classpath:notification-test.properties", "classpath:notification-test-${user}.properties"})
 @Import({ NotificationTestConfig.class })
 public class TestConfig {
 	

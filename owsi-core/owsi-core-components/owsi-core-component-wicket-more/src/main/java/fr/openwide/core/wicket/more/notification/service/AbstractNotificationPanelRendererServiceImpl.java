@@ -6,10 +6,19 @@ import java.util.concurrent.Callable;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.core.util.string.ComponentRenderer;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Args;
 
 import com.google.common.base.Supplier;
 
+/**
+ * @deprecated You may instead :<ul>
+ *   <li>Extend {@link AbstractNotificationContentDescriptorFactory}, if you need to render e-mail notifications.
+ *   <li>Extend {@link AbstractWicketRendererServiceImpl}, if you only need to render components/strings
+ * </ul>
+ */
+@Deprecated
 public abstract class AbstractNotificationPanelRendererServiceImpl extends AbstractBackgroundWicketThreadContextBuilder {
 	
 	/**
@@ -62,4 +71,30 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 		}
 	}
 	
+	protected String renderString(String messageKey, Locale locale, IModel<?> modelParameter, Object ... positionalParameters) {
+		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
+		
+		try {
+			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
+			
+			Session session = Session.get();
+			
+			Locale oldLocale = session.getLocale();
+			if (locale != null) {
+				session.setLocale(configurer.toAvailableLocale(locale));
+			}
+			
+			String result = new StringResourceModel(messageKey, null, modelParameter, (Object[]) positionalParameters).getObject();
+			
+			session.setLocale(oldLocale);
+			
+			return result;
+		} catch (Exception e) {
+			throw new IllegalStateException("Error rendering string for key '" + messageKey + "' and locale '" + locale + "'", e);
+		} finally {
+			if (requestCycleStatus != null) {
+				detachRequestCycleIfNeeded(requestCycleStatus);
+			}
+		}
+	}
 }

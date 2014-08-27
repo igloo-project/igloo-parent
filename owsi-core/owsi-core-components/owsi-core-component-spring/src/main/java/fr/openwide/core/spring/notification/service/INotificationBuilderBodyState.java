@@ -6,6 +6,8 @@ import java.util.Locale;
 public interface INotificationBuilderBodyState {
 
 	INotificationBuilderSendState textBody(String textBody);
+
+	INotificationBuilderSendState textBody(String textBody, Locale locale);
 	
 	INotificationBuilderSendState htmlBody(String htmlBody);
 	
