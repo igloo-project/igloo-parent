@@ -34,7 +34,8 @@ public abstract class WidgetsTemplate extends MainTemplate {
 				StatisticsPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.statistics")),
 				AutosizePage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.autosize")),
 				SortableListPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.sortable")),
-				SelectBoxPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.selectbox"))
+				SelectBoxPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.selectbox")),
+				FileUploadPage.linkDescriptor().navigationMenuItem(new ResourceModel("widgets.menu.fileupload"))
 		);
 	}
 	
