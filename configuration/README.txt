@@ -22,3 +22,16 @@ pour utiliser le repository snapshot :
 
 pour utiliser le repository release :
 	* mvn archetype:generate -DarchetypeCatalog=https://openwide:openwide@projects.openwide.fr/services/nexus/content/repositories/owsi-core/ -DartifactId=hermes-referentiel-images -DgroupId=com.hermes -Dversion=0.1-SNAPSHOT -Dpackage=com.hermes.referentielimages -DarchetypeApplicationNamePrefix="ReferentielImages" -DarchetypeFullApplicationName="Hermès - Référentiel Images" -DarchetypeDatabasePrefix=h_referentiel_images -DarchetypeDataDirectory=referentiel-images
+
+*************************************
+* Pousser le projet
+*************************************
+
+cd /tmp/
+<exécuter la commande plus haut pour générer le projet>
+cd le-projet
+/bin/bash init-svn.sh <nom unix du projet wombat>
+
+puis récupérer le projet dans Eclipse via un checkout classique de projet Maven : ça permet de vérifier que ce sera OK pour les autres !
+
+/!\ ne pas utiliser le projet qui est dans le /tmp/ !
