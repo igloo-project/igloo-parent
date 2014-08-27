@@ -7,4 +7,8 @@ public class ShowcaseConfigurer extends CoreConfigurer {
 	public int getPortfolioItemsPerPage() {
 		return getPropertyAsInteger("portfolio.itemsPerPage", 3);
 	}
+
+	public String getShowcaseFileFileStoreRootDirectory() {
+		return getPropertyAsString("showcaseFile.rootDirectory");
+	}
 }
