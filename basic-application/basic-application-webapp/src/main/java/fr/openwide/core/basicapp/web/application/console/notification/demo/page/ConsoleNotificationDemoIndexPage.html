@@ -3,7 +3,13 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="console-section">
-			<h2><wicket:message key="console.notifications" /></h2>
+			<h2>
+				<button type="button" wicket:id="sendExample" class="btn btn-primary pull-right">
+					<span class="fa fa-send" />
+					<wicket:message key="console.notifications.example.send" />
+				</button>
+				<wicket:message key="console.notifications" />
+			</h2>
 			<div class="container">
 				<div class="row">
 					<div class="list-group col-sm-6">
