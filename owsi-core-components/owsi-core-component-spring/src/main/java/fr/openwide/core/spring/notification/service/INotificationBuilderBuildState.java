@@ -2,6 +2,7 @@ package fr.openwide.core.spring.notification.service;
 
 import java.util.Collection;
 
+import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 
@@ -34,6 +35,8 @@ public interface INotificationBuilderBuildState extends INotificationBuilderToSt
 	INotificationBuilderBuildState bcc(INotificationRecipient toFirst, INotificationRecipient ... toOthers);
 	
 	INotificationBuilderBuildState bcc(Collection<? extends INotificationRecipient> bcc);
+
+	INotificationBuilderContentState content(INotificationContentDescriptor contentDescriptor);
 	
 	INotificationBuilderBodyState subject(String subject);
 	

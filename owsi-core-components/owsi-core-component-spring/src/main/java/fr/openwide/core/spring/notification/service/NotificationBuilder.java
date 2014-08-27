@@ -1,10 +1,11 @@
 package fr.openwide.core.spring.notification.service;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,14 +16,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.javatuples.LabelValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
@@ -38,16 +36,18 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
+import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
+import fr.openwide.core.spring.notification.service.impl.ExplicitelyDefinedNotificationContentDescriptorImpl;
+import fr.openwide.core.spring.notification.service.impl.FirstNotNullNotificationContentDescriptorImpl;
+import fr.openwide.core.spring.notification.service.impl.FreemarkerTemplateNotificationContentDescriptorImpl;
 import fr.openwide.core.spring.notification.util.NotificationUtils;
 import fr.openwide.core.spring.util.StringUtils;
 import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
 
 public class NotificationBuilder implements INotificationBuilderBaseState, INotificationBuilderBuildState,
-		INotificationBuilderBodyState, INotificationBuilderTemplateState, INotificationBuilderSendState {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationBuilder.class);
+		INotificationBuilderBodyState, INotificationBuilderContentState, INotificationBuilderTemplateState, INotificationBuilderSendState {
 	
 	private static final String DEFAULT_MAIL_ENCODING = "utf-8";
 	
@@ -55,8 +55,6 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	private static final String NEW_LINE_HTML = "<br />";
 	
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
-	
-	private static final String ATTACHMENT_NAMES_VARIABLE_NAME = "attachments";
 	
 	private static final Function<INotificationRecipient, String> I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION = new Function<INotificationRecipient, String>() {
 		@Override
@@ -88,15 +86,12 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private final Set<String> recipientsToIgnore = Sets.newHashSet();
 	
-	private String templateKey;
+	private INotificationContentDescriptor userContentDescriptor;
 	
-	private final Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<Locale, HashMap<String,Object>>();
+	private FreemarkerTemplateNotificationContentDescriptorImpl templateContentDescriptor;
 	
-	private String subject;
-	
-	private String textBody;
-	
-	private final Map<Locale, String> htmlBodyByLocale = Maps.newHashMap();
+	private ExplicitelyDefinedNotificationContentDescriptorImpl explicitelyDefinedContentDescriptor =
+			new ExplicitelyDefinedNotificationContentDescriptorImpl();
 
 	/**
 	 * This is not a map, since duplicate filenames are allowed. This is not a multimap either, since mutliple
@@ -282,7 +277,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	@Override
 	public INotificationBuilderTemplateState template(String templateKey) {
 		Assert.hasText(templateKey, "Template key must contain text");
-		this.templateKey = templateKey;
+		this.templateContentDescriptor = new FreemarkerTemplateNotificationContentDescriptorImpl(templateConfiguration, templateKey, Collections.unmodifiableCollection(attachments));
 		return this;
 	}
 	
@@ -291,14 +286,13 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return variable(name, value, null);
 	}
 	
-	// If locale == null, the variable will be considered as not locale-sensitive and will be available for all locales
+	/**
+	 * If locale == null, the variable will be considered as not locale-sensitive and will be available for all locales
+	 */
 	@Override
 	public INotificationBuilderTemplateState variable(String name, Object value, Locale locale) {
 		Assert.hasText(name, "Variable name must contain text");
-		if (!templateVariablesByLocale.containsKey(locale)) {
-			templateVariablesByLocale.put(locale, new HashMap<String, Object>());
-		}
-		templateVariablesByLocale.get(locale).put(name, value);
+		templateContentDescriptor.setVariable(locale, name, value);
 		return this;
 	}
 	
@@ -309,11 +303,13 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 
 	@Override
 	public INotificationBuilderTemplateState variables(Map<String, ?> variables, Locale locale) {
-		if (!templateVariablesByLocale.containsKey(locale)) {
-			templateVariablesByLocale.put(locale, new HashMap<String, Object>());
-		}
-		templateVariablesByLocale.get(locale).putAll(variables);
-		
+		templateContentDescriptor.setVariables(locale, variables);
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderContentState content(INotificationContentDescriptor contentDescriptor) {
+		this.userContentDescriptor = checkNotNull(contentDescriptor);
 		return this;
 	}
 	
@@ -326,16 +322,21 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	public INotificationBuilderBodyState subject(String prefix, String subject) {
 		Assert.hasText(subject, "Email subject must contain text");
 		if (StringUtils.hasText(prefix)) {
-			this.subject = prefix + " " + subject;
+			this.explicitelyDefinedContentDescriptor.setSubject(null, prefix + " " + subject);
 		} else {
-			this.subject = subject;
+			this.explicitelyDefinedContentDescriptor.setSubject(null, subject);
 		}
 		return this;
 	}
 	
 	@Override
 	public INotificationBuilderSendState textBody(String textBody) {
-		this.textBody = textBody;
+		return textBody(textBody, null);
+	}
+	
+	@Override
+	public INotificationBuilderSendState textBody(String textBody, Locale locale) {
+		this.explicitelyDefinedContentDescriptor.setTextBody(locale, textBody);
 		return this;
 	}
 	
@@ -347,7 +348,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	// If locale == null, the associated htmlBody will be used for any locale that do not have one
 	@Override
 	public INotificationBuilderSendState htmlBody(String htmlBody, Locale locale) {
-		this.htmlBodyByLocale.put(locale, htmlBody);
+		this.explicitelyDefinedContentDescriptor.setHtmlBody(locale, htmlBody);
 		return this;
 	}
 	
@@ -422,47 +423,43 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			return;
 		}
 		
-		try {
-			removeDuplicatesAndRecipientsToIgnoreBeforeSendingMessage();
+		removeDuplicatesAndRecipientsToIgnoreBeforeSendingMessage();
+		
+		Set<Locale> allLocales = ImmutableSet.<Locale> builder()
+				.addAll(toByLocale.keySet())
+				.addAll(ccByLocale.keySet())
+				.addAll(bccByLocale.keySet())
+				.build();
+		for (Locale locale : allLocales) {
+			Collection<String> to = toByLocale.get(locale);
+			Collection<String> cc = ccByLocale.get(locale);
+			Collection<String> bcc = bccByLocale.get(locale);
 			
-			Set<Locale> allLocales = ImmutableSet.<Locale> builder()
-					.addAll(toByLocale.keySet())
-					.addAll(ccByLocale.keySet())
-					.addAll(bccByLocale.keySet())
-					.build();
-			for (Locale locale : allLocales) {
-				Collection<String> to = toByLocale.get(locale);
-				Collection<String> cc = ccByLocale.get(locale);
-				Collection<String> bcc = bccByLocale.get(locale);
+			if (to.isEmpty() && cc.isEmpty() && bcc.isEmpty()) { // Multimap.get(unknown key) returns an empty collection
+				continue;
+			}
+			
+			try {
+				MimeMessage message = buildMessage(to, cc, bcc, encoding, locale);
 				
-				if (to.isEmpty() && cc.isEmpty() && bcc.isEmpty()) { // Multimap.get(unknown key) returns an empty collection
+				if (message == null) {
 					continue;
 				}
 				
-				try {
-					MimeMessage message = buildMessage(to, cc, bcc, encoding, locale);
-					
-					if (message == null) {
-						continue;
-					}
-					
-					mailSender.send(message);
-				} catch (MessagingException e) {
-					throw new ServiceException(
-							String.format("Error building the MIME message (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
-							e
-					);
-				} catch (MailException e) {
-					throw new ServiceException(
-							String.format("Error sending email (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
-							e
-					);
-				}
+				mailSender.send(message);
+			} catch (NotificationContentRenderingException e) {
+				throw new ServiceException("Error while rendering email notification", e);
+			} catch (MessagingException e) {
+				throw new ServiceException(
+						String.format("Error building the MIME message (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
+						e
+				);
+			} catch (MailException e) {
+				throw new ServiceException(
+						String.format("Error sending email notification (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
+						e
+				);
 			}
-		} catch (IOException e) {
-			throw new ServiceException("Error while generating email from template", e);
-		} catch (TemplateException e) {
-			throw new ServiceException("Error while generating email from template", e);
 		}
 	}
 	
@@ -494,15 +491,26 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		}
 	}
 	
-	private MimeMessage buildMessage(Collection<String> to, Collection<String> cc, Collection<String> bcc, String encoding, Locale locale) throws IOException, TemplateException, MessagingException {
-		if (templateKey != null) {
-			subject(getSubject(templateKey, locale));
-			textBody = getBodyText(templateKey, locale);
+	private INotificationContentDescriptor chooseNotificationContentDescriptor() {
+		List<INotificationContentDescriptor> descriptors = Lists.newArrayList();
+		if (userContentDescriptor != null) { // Maximum priority
+			descriptors.add(userContentDescriptor);
 		}
-		String htmlBody = getHtmlBody(locale);
+		if (templateContentDescriptor != null) {
+			descriptors.add(templateContentDescriptor);
+		}
+		descriptors.add(explicitelyDefinedContentDescriptor); // Minimum priority
+		return new FirstNotNullNotificationContentDescriptorImpl(descriptors);
+	}
+	
+	private MimeMessage buildMessage(Collection<String> to, Collection<String> cc, Collection<String> bcc, String encoding, Locale locale) throws NotificationContentRenderingException, MessagingException {
+		INotificationContentDescriptor contentDescriptor = chooseNotificationContentDescriptor();
+		String subject = contentDescriptor.renderSubject(locale);
+		String textBody = contentDescriptor.renderTextBody(locale);
+		String htmlBody = contentDescriptor.renderHtmlBody(locale);
 		
 		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(htmlBody), encoding);
+		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(textBody, htmlBody), encoding);
 		
 		if (from == null) {
 			from = getDefaultFrom();
@@ -518,6 +526,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		helper.setTo(Iterables.toArray(filteredTo, String.class));
 		helper.setCc(Iterables.toArray(filteredCc, String.class));
 		helper.setBcc(Iterables.toArray(filteredBcc, String.class));
+		
 		helper.setSubject(subject);
 
 		String textBodyPrefix = getBodyPrefix(to, cc, bcc, encoding, locale, MailFormat.TEXT);
@@ -548,45 +557,9 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return message;
 	}
 	
-	private boolean isMultipartNeeded(String htmlBody) {
-		boolean alternativeTexts = StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody);
-		return alternativeTexts || !attachments.isEmpty() || !inlines.isEmpty();
-	}
-	
-	private String getHtmlBody(Locale locale) {
-		String htmlBody = htmlBodyByLocale.get(locale);
-		if (htmlBody == null) {
-			htmlBody = htmlBodyByLocale.get(null);
-		}
-		return htmlBody;
-	}
-	
-	private Map<String, Object> getTemplateVariables(Locale locale) {
-		Map<String, Object> templateVariables = Maps.newHashMap();
-		
-		Map<String, Object> sharedVariables = templateVariablesByLocale.get(null);
-		if (sharedVariables != null) {
-			templateVariables.putAll(sharedVariables);
-		}
-		
-		Map<String, Object> localeDependentVariables = templateVariablesByLocale.get(locale);
-		if (localeDependentVariables != null) {
-			templateVariables.putAll(localeDependentVariables);
-		}
-		
-		if (!attachments.isEmpty()) {
-			if (!templateVariables.containsKey(ATTACHMENT_NAMES_VARIABLE_NAME)) {
-				Collection<String> labels = Lists.newArrayList();
-				for (LabelValue<String, ?> labelValue : attachments) {
-					labels.add(labelValue.getLabel());
-				}
-				templateVariables.put(ATTACHMENT_NAMES_VARIABLE_NAME, labels);
-			} else {
-				LOGGER.warn(ATTACHMENT_NAMES_VARIABLE_NAME + " already present in the map. We don't override it.");
-			}
-		}
-		
-		return templateVariables;
+	private boolean isMultipartNeeded(String textBody, String htmlBody) {
+		boolean multipleBodies = StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody);
+		return multipleBodies || !attachments.isEmpty() || !inlines.isEmpty();
 	}
 	
 	private String getDefaultFrom() {
@@ -667,29 +640,6 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		} else {
 			return prefix + "none" + suffix;
 		}
-	}
-
-	private String getBodyText(String key, Locale locale) throws IOException, TemplateException {
-		return getMailElement(key, MailElement.BODY_TEXT, locale);
-	}
-	
-	private String getSubject(String key, Locale locale) throws IOException, TemplateException {
-		return getMailElement(key, MailElement.SUBJECT, locale);
-	}
-	
-	private String getMailElement(String key, MailElement element, Locale locale)
-			throws IOException, TemplateException {
-		Map<String, Object> freemarkerModelMap = getTemplateVariables(locale);
-		if (freemarkerModelMap.containsKey(element.toString())) {
-			throw new IllegalStateException(String.format("Provided map must not contain %1$s key", element));
-		}
-		freemarkerModelMap.put(element.toString(), true);
-		return FreeMarkerTemplateUtils.processTemplateIntoString(templateConfiguration.getTemplate(key, locale), freemarkerModelMap);
-	}
-	
-	private enum MailElement {
-		BODY_TEXT,
-		SUBJECT
 	}
 	
 	private enum MailFormat {

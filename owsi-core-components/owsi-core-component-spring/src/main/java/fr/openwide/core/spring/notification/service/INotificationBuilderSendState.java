@@ -12,8 +12,16 @@ import fr.openwide.core.jpa.exception.ServiceException;
 
 public interface INotificationBuilderSendState {
 	
+	/**
+	 * @deprecated Use {@link INotificationBuilderBuildState#content(fr.openwide.core.spring.notification.model.INotificationContentDescriptor)} instead.
+	 */
+	@Deprecated
 	INotificationBuilderSendState htmlBody(String htmlBody);
 	
+	/**
+	 * @deprecated Use {@link INotificationBuilderBuildState#content(fr.openwide.core.spring.notification.model.INotificationContentDescriptor)} instead.
+	 */
+	@Deprecated
 	INotificationBuilderSendState htmlBody(String htmlBody, Locale locale);
 
 	INotificationBuilderSendState attach(String attachmentFilename, File file);
