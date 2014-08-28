@@ -184,7 +184,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getExternalLinkCheckerMaxRedirects() {
-		return getPropertyAsInteger("externalLinkChecker.maxRedirects", 2);
+		return getPropertyAsInteger("externalLinkChecker.maxRedirects", 5);
 	}
 	
 	public int getExternalLinkCheckerTimeout() {
