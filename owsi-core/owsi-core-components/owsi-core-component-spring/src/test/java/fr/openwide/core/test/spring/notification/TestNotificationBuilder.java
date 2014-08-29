@@ -28,7 +28,7 @@ public class TestNotificationBuilder {
 		INotificationBuilderBaseState builder = NotificationBuilder.create();
 		SpringBeanUtils.autowireBean(applicationContext, builder);
 		
-		builder.toAddress("test-to-1@example.com", "test-to-2@example.com", "test-to-ignore@example.com")
+		builder.toAddress("test-to-1@example.com", "test-to-2@example.com", "pas un mail valide", "mail@îdn.fr", "test-to-ignore@example.com")
 				.ccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-cc-2@example.com", "test-cc-ignore@example.com")
 				.bccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-bcc-1@example.com", "test-bcc-2@example.com", "test-bcc-ignore@example.com")
 				.exceptAddress("test-to-ignore@example.com", "test-cc-ignore@example.com", "test-bcc-ignore@example.com")

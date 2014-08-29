@@ -155,8 +155,8 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return isConfigurationTypeDevelopment() || getPropertyAsBoolean("notification.mail.recipientsFiltered");
 	}
 	
-	public String[] getNotificationTestEmails() {
-		return getPropertyAsStringArray("notification.test.emails");
+	public List<String> getNotificationTestEmails() {
+		return getPropertyAsStringList("notification.test.emails");
 	}
 
 	public int getTaskStopTimeout() {
