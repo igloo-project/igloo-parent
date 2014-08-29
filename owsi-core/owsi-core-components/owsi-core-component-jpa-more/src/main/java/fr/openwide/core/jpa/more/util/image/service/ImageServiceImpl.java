@@ -141,7 +141,7 @@ public class ImageServiceImpl implements IImageService {
 			throws ImageThumbnailGenerationException {
 		try {
 			CommandLine commandLine = new CommandLine(imageMagickConvertBinary);
-			commandLine.addArgument("-strip");
+			commandLine.addArgument("-auto-orient");
 			commandLine.addArgument("-thumbnail");
 			if (thumbnailFormat.isAllowEnlarge()) {
 				commandLine.addArgument("${width}x${height}");
