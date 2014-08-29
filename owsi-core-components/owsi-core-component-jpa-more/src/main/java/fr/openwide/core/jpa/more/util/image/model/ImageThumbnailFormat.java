@@ -1,12 +1,12 @@
 package fr.openwide.core.jpa.more.util.image.model;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.mime.MediaType;
+import fr.openwide.core.spring.util.StringUtils;
 
 public class ImageThumbnailFormat {
 	
@@ -84,13 +84,13 @@ public class ImageThumbnailFormat {
 		String thumbnailExtension = extension;
 		
 		if (thumbnailExtension == null) {
-			if (AUTHORIZED_THUMBNAIL_EXTENSIONS.contains(originalFileExtension.toLowerCase(Locale.ROOT))) {
+			if (AUTHORIZED_THUMBNAIL_EXTENSIONS.contains(StringUtils.lowerCase(originalFileExtension))) {
 				thumbnailExtension = originalFileExtension;
 			} else {
 				thumbnailExtension = DEFAULT_THUMBNAIL_EXTENSION;
 			}
 		}
-		return thumbnailExtension.toLowerCase(Locale.ROOT);
+		return StringUtils.lowerCase(thumbnailExtension);
 	}
 	
 	public String getJavaFormatName(String originalFileExtension) {
