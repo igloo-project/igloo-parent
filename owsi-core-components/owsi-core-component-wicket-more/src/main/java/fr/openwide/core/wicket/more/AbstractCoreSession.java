@@ -245,19 +245,27 @@ public class AbstractCoreSession<P extends AbstractPerson<P>> extends Authentica
 		}
 		return isSuperUser;
 	}
-
+	
 	/**
 	 * Sign out the user. If you want to completely invalidate the session, call invalidate() instead.
 	 * After a signout, you should redirect the browser to the home or sign in page.
 	 */
 	@Override
 	public void signOut() {
+		signOutWithoutCleaningUpRedirectUrl();
+		
+		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
+	}
+	
+	/**
+	 * We don't want to remove the redirect url in this case
+	 */
+	public void signOutWithoutCleaningUpRedirectUrl() {
 		personModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
 		permissions = Lists.newArrayList();
 		permissionsInitialized = false;
-		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 		
 		authenticationService.signOut();
 		

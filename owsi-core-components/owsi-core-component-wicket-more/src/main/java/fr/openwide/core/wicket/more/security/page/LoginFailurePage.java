@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.security.page;
 
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 
 public class LoginFailurePage extends CoreWebPage {
@@ -12,6 +13,12 @@ public class LoginFailurePage extends CoreWebPage {
 
 		throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
 				.newRestartResponseException();
+	}
+	
+	protected LoginFailurePage(IPageLinkDescriptor signInPageLinkDescriptor) {
+		getSession().error(getLocalizer().getString("login.failed", this));
+		
+		throw signInPageLinkDescriptor.newRestartResponseException();
 	}
 
 }
