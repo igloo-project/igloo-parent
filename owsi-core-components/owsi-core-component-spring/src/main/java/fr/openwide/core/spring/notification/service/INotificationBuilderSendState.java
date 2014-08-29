@@ -40,5 +40,4 @@ public interface INotificationBuilderSendState {
 	
 	void send() throws ServiceException;
 	
-	void send(String encoding) throws ServiceException;
 }
