@@ -12,7 +12,7 @@ public class LoginFailurePage extends CoreWebPage {
 		this(CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor());
 	}
 
-	public LoginFailurePage(IPageLinkDescriptor signInPageLinkDescriptor) {
+	protected LoginFailurePage(IPageLinkDescriptor signInPageLinkDescriptor) {
 		getSession().error(getLocalizer().getString("login.failed", this));
 		
 		throw signInPageLinkDescriptor.newRestartResponseException();
