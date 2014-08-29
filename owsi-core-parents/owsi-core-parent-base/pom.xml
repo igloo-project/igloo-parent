@@ -128,7 +128,7 @@
 		<owsi-core.maven-install-plugin.version>2.5.1</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.5</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>2.4</owsi-core.maven-war-plugin.version>
-		<owsi-core.maven-assembly-plugin.version>2.4.1</owsi-core.maven-assembly-plugin.version>
+		<owsi-core.maven-assembly-plugin.version>2.4</owsi-core.maven-assembly-plugin.version><!-- maven filtering 1.2 buggé : http://jira.codehaus.org/browse/MSHARED-325 (souci avec Sitra) -->
 		<owsi-core.maven-jar-plugin.version>2.4</owsi-core.maven-jar-plugin.version>
 		<owsi-core.maven-deploy-plugin.version>2.8.1</owsi-core.maven-deploy-plugin.version>
 		<owsi-core.maven-source-plugin.version>2.3</owsi-core.maven-source-plugin.version>
