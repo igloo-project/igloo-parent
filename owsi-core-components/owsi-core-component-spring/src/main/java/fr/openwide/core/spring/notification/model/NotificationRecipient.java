@@ -27,6 +27,21 @@ public class NotificationRecipient implements Serializable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationRecipient.class);
 	
+	private static final Function<String, NotificationRecipient> EMAIL_TO_NOTIFICATION_RECIPIENT_FUNCTION = new Function<String, NotificationRecipient>() {
+		@Override
+		public NotificationRecipient apply(String email) {
+			if (!StringUtils.hasText(email)) {
+				return null;
+			}
+			try {
+				return NotificationRecipient.of(email);
+			} catch (AddressException e) {
+				LOGGER.warn(String.format("Ignoring address %1$s", email), e);
+				return null;
+			}
+		}
+	};
+	
 	private InternetAddress address;
 	
 	private NotificationRecipient(InternetAddress address) {
@@ -42,20 +57,7 @@ public class NotificationRecipient implements Serializable {
 	}
 	
 	public static List<NotificationRecipient> of(Collection<String> emails) {
-		return FluentIterable.from(emails).transform(new Function<String, NotificationRecipient>() {
-			@Override
-			public NotificationRecipient apply(String email) {
-				if (!StringUtils.hasText(email)) {
-					return null;
-				}
-				try {
-					return NotificationRecipient.of(email);
-				} catch (AddressException e) {
-					LOGGER.warn(String.format("Ignoring address %1$s", email), e);
-					return null;
-				}
-			}
-		}).filter(Predicates.notNull()).toList();
+		return FluentIterable.from(emails).transform(EMAIL_TO_NOTIFICATION_RECIPIENT_FUNCTION).filter(Predicates.notNull()).toList();
 	}
 	
 	public static NotificationRecipient of(INotificationRecipient recipient, Charset charset) throws AddressException {
