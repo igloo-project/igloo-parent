@@ -115,12 +115,16 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private Charset charset;
 	
+	protected NotificationBuilder() {
+		this(DEFAULT_MAIL_CHARSET);
+	}
+	
 	protected NotificationBuilder(Charset charset) {
 		this.charset = charset;
 	}
 	
 	public static INotificationBuilderBaseState create() {
-		return new NotificationBuilder(DEFAULT_MAIL_CHARSET);
+		return new NotificationBuilder();
 	}
 	
 	public static INotificationBuilderBaseState create(Charset charset) {
