@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.validator;
 
-import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -13,7 +12,6 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
 	
 	public ConditionLinkParameterValidator(Condition condition) {
 		this.condition = condition;
-		Injector.get().inject(this);
 	}
 
 	@Override
