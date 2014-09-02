@@ -3,7 +3,6 @@ package fr.openwide.core.showcase.web.application.widgets.resource;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -52,7 +51,8 @@ public class FileUploadResource extends AbstractFileUploadResource {
 	}
 
 	@Override
-	protected void saveFiles(Attributes attributes, List<FileApiFile> fileApiFiles, List<FileItem> fileItems) throws IOException {
+	protected void saveFiles(Attributes attributes, List<FileApiFile> fileApiFiles, List<FileItem> fileItems,
+			List<FileApiFile> successFiles, List<FileApiFile> errorFiles) throws IOException {
 		for (FileItem fileItem : fileItems) {
 			int i = fileItems.indexOf(fileItem);
 			FileApiFile fileApiFile = fileApiFiles.get(i);
@@ -63,9 +63,12 @@ public class FileUploadResource extends AbstractFileUploadResource {
 				if (showcaseFile.getId().toString().equals(fileApiFile.getIdentifier())) {
 					try {
 						showcaseFileService.addFile(showcaseFile, fileItem.getInputStream());
+						successFiles.add(fileApiFile);
 						found = true;
 					} catch (Exception e) {
 						LOGGER.error("Error uploading file.", e);
+						fileApiFile.setErrorMessage(e.getMessage());
+						errorFiles.add(fileApiFile);
 					}
 				}
 			}
@@ -76,20 +79,13 @@ public class FileUploadResource extends AbstractFileUploadResource {
 	}
 
 	@Override
-	protected String generateJsonResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest,
-			List<FileItem> files) {
-		return "";
-	}
-
-	@Override
-	protected String generateHtmlResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest,
-			List<FileItem> files) {
-		return "";
-	}
-
-	@Override
 	protected Bytes getMaxSize() {
 		return Bytes.megabytes(750);
+	}
+
+	@Override
+	protected String getFileSizeErrorMessage() {
+		return "widgets.fileupload.globalError";
 	}
 
 }

@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.fileapi.resource;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +15,14 @@ import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.util.upload.FileItem;
+import org.apache.wicket.util.upload.FileUploadBase.SizeLimitExceededException;
 import org.apache.wicket.util.upload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.wicket.more.fileapi.behavior.FileUploadBehavior;
 import fr.openwide.core.wicket.more.fileapi.model.FileApiFile;
@@ -51,7 +57,8 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 	 * @param fileItems
 	 * @throws IOException
 	 */
-	protected abstract void saveFiles(Attributes attributes, List<FileApiFile> identifiers, List<FileItem> fileItems) throws IOException;
+	protected abstract void saveFiles(Attributes attributes, List<FileApiFile> identifiers, List<FileItem> fileItems,
+			List<FileApiFile> successFiles, List<FileApiFile> errorFiles) throws IOException;
 
 	/**
 	 * Reads and stores the uploaded files
@@ -66,17 +73,28 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 		final ServletWebRequest webRequest = (ServletWebRequest) attributes.getRequest();
 		
 		try {
-			MultipartServletWebRequest multiPartRequest = webRequest.newMultipartWebRequest(getMaxSize(), "ignored");
+			MultipartServletWebRequest multiPartRequest;
+			try {
+				multiPartRequest = webRequest.newMultipartWebRequest(getMaxSize(), "ignored");
+			} catch (SizeLimitExceededException fileLimitException) {
+				// cas où la limite globale d'upload est dépassée
+				String responseContent = generateJsonFileSizeErrorResponse(resourceResponse, webRequest);
+				prepareResponse(resourceResponse, webRequest, responseContent);
+				return resourceResponse;
+			}
 			
 			Map<String, List<FileItem>> files = multiPartRequest.getFiles();
 			List<FileItem> fileItems = files.get(FileUploadBehavior.PARAMETERS_FILE_UPLOAD);
-			List<FileApiFile> fileApiFiles = FileUploadBehavior.readfileApiFiles(multiPartRequest.getRequestParameters());
+			List<FileApiFile> fileApiFiles = FileUploadBehavior.readFileApiFiles(multiPartRequest.getRequestParameters());
 			if (fileApiFiles.size() != fileItems.size()) {
 				throw new IllegalStateException("Files and uploaded files list size inconsistent");
 			}
-			saveFiles(attributes, fileApiFiles, fileItems);
+			List<FileApiFile> successFiles = Lists.newArrayList();
+			List<FileApiFile> errorFiles = Lists.newArrayList();
+			saveFiles(attributes, fileApiFiles, fileItems, successFiles, errorFiles);
 			
-			prepareResponse(resourceResponse, webRequest, fileItems);
+			String responseContent = generateJsonResponse(resourceResponse, webRequest, fileItems, successFiles, errorFiles);
+			prepareResponse(resourceResponse, webRequest, responseContent);
 		} catch (Exception fux) {
 			LOGGER.error("An error occurred while uploading a file", fux);
 			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, fux.getMessage());
@@ -94,22 +112,9 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 	 * @throws FileUploadException
 	 * @throws IOException
 	 */
-	protected void prepareResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest,
-			List<FileItem> fileItems) throws FileUploadException, IOException {
-
-		final String responseContent;
-		String accept = webRequest.getHeader("Accept");
-		if (wantsHtml(accept)) {
-			// Internet Explorer
-			resourceResponse.setContentType("text/html");
-
-			responseContent = generateHtmlResponse(resourceResponse, webRequest, fileItems);
-		} else {
-			// a real browser
-			resourceResponse.setContentType("application/json");
-
-			responseContent = generateJsonResponse(resourceResponse, webRequest, fileItems);
-		}
+	protected void prepareResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest, final String responseContent)
+					throws FileUploadException, IOException {
+		resourceResponse.setContentType("application/json");
 
 		resourceResponse.setWriteCallback(new WriteCallback() {
 			@Override
@@ -139,19 +144,32 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 	 * @param webRequest
 	 * @param files
 	 * @return
+	 * @throws JsonProcessingException 
 	 */
-	protected abstract String generateJsonResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest,
-			List<FileItem> files);
+	protected String generateJsonResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest,
+			List<FileItem> files, List<FileApiFile> successFiles, List<FileApiFile> errorFiles) throws JsonProcessingException {
+		HashMap<String, Object> response = Maps.newHashMap();
+		response.put("successFileList", successFiles);
+		response.put("errorFileList", errorFiles);
+		try {
+			return FileUploadBehavior.OBJECT_MAPPER.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Erreur de sérialisation d'une réponse d'upload", e);
+			throw e;
+		}
+	}
 
-	/**
-	 * Should generate the response's body in HTML format
-	 * 
-	 * @param resourceResponse
-	 * @param webRequest
-	 * @param files
-	 * @return
-	 */
-	protected abstract String generateHtmlResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest,
-			List<FileItem> files);
+	protected String generateJsonFileSizeErrorResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest) throws JsonProcessingException {
+		HashMap<String, Object> response = Maps.newHashMap();
+		response.put("uploadFailsErrorMessage", getFileSizeErrorMessage());
+		try {
+			return FileUploadBehavior.OBJECT_MAPPER.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Erreur de sérialisation d'une réponse d'upload", e);
+			throw e;
+		}
+	}
+
+	protected abstract String getFileSizeErrorMessage();
 
 }
