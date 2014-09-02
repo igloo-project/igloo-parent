@@ -74,7 +74,11 @@
 			});
 			dataSend.formData["fileList"] = JSON.stringify(window[dataVariableName]);
 			dataSend.files = toSendFiles;
-			$that.fileupload('send', dataSend).success($.proxy($.fileuploadglue.onUploadDone, that)).error($.proxy($.fileuploadglue.onUploadFails, that));
+			if (dataSend.files.length > 0) {
+				$that.fileupload('send', dataSend).success($.proxy($.fileuploadglue.onUploadDone, that)).error($.proxy($.fileuploadglue.onUploadFails, that));
+			} else {
+				console.log('No files to upload ; send ignored');
+			}
 		};
 		var error = function() { console.log(arguments) };
 		onChangeCallback(dataVariableName, JSON.stringify(fileList), success, error);
