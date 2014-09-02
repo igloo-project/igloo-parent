@@ -23,6 +23,12 @@ public class ShowcaseFileServiceImpl extends GenericEntityServiceImpl<Long, Show
 	}
 
 	@Override
+	public void delete(ShowcaseFile showcaseFile) throws ServiceException, SecurityServiceException {
+		showcaseFileFileStoreService.removeFile(showcaseFile);
+		super.delete(showcaseFile);
+	}
+
+	@Override
 	public void addFile(ShowcaseFile showcaseFile, InputStream dataInputStream) throws ServiceException, SecurityServiceException {
 		showcaseFileFileStoreService.addFile(showcaseFile, dataInputStream);
 	}

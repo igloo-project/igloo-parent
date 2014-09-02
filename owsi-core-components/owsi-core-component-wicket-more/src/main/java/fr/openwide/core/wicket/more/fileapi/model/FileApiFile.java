@@ -22,6 +22,11 @@ public class FileApiFile implements Serializable {
 
 	private String objectUrl;
 
+	/**
+	 * Disponible pour les implémentations pour stocker des messages d'erreur lié à l'upload du fichier
+	 */
+	private String errorMessage;
+
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -60,5 +65,13 @@ public class FileApiFile implements Serializable {
 
 	public void setObjectUrl(String objectUrl) {
 		this.objectUrl = objectUrl;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

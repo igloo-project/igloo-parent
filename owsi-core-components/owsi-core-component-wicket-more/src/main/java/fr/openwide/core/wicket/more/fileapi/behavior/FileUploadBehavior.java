@@ -44,6 +44,22 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	 * nom du paramètre utilisé pour transmettre les informations issues de file API (métadonnées)
 	 */
 	private static final String PARAMETERS_FILE_LIST = "fileList";
+
+	/**
+	 * nom du paramètre utilisé pour transmettre les informations à la fin de l'upload (fichiers uploadés avec succès)
+	 */
+	private static final String PARAMETERS_UPLOAD_DONE_SUCCESS_FILE_LIST = "successFileList";
+
+	/**
+	 * nom du paramètre utilisé pour transmettre les informations à la fin de l'upload (fichiers non uploadés)
+	 */
+	private static final String PARAMETERS_UPLOAD_DONE_ERROR_FILE_LIST = "errorFileList";
+
+	/**
+	 * nom du paramètre utilisé pour transmettre les informations à la fin de l'upload (fichiers non uploadés)
+	 */
+	private static final String PARAMETERS_UPLOAD_FAILS_ERROR_MESSAGE = "uploadFailsErrorMessage";
+
 	/**
 	 * nom de la variable globale d'échange ; permet de communiquer dans informations javascript
 	 * via le AjaxRequestTarget.
@@ -68,6 +84,16 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	 */
 	private static final String OPTIONS_ON_CHANGE_CALLBACK = "onChangeCallback";
 	/**
+	 * nom de l'option qui indique la méthode wicket qui communique avec le serveur
+	 * pattern -> change -> fileuploadglue -> onUploadDoneCallback
+	 */
+	private static final String OPTIONS_ON_UPLOAD_DONE_CALLBACK = "onUploadDoneCallback";
+	/**
+	 * nom de l'option qui indique la méthode wicket qui communique avec le serveur
+	 * pattern -> change -> fileuploadglue -> onUploadFailsCallback
+	 */
+	private static final String OPTIONS_ON_UPLOAD_FAILS_CALLBACK = "onUploadFailsCallback";
+	/**
 	 * nom de l'option pour l'auto-upload (désactivé dans notre cas)
 	 */
 	private static final String OPTIONS_AUTO_UPLOAD = "autoUpload";
@@ -80,7 +106,8 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	 */
 	private static final String OPTIONS_URL = "url";
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
 	private final Component progressComponent;
 
 	public FileUploadBehavior(Component progressComponent) {
@@ -93,7 +120,7 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	/**
 	 * File change callback. Override to perform custom tasks on file change.
 	 */
-	protected abstract void onFileChange(AjaxRequestTarget target, List<FileApiFile> fileList);
+	protected abstract List<FileApiFile> onFileChange(AjaxRequestTarget target, List<FileApiFile> fileList);
 
 	/**
 	 * Override to perform custom tasks on error.
@@ -154,6 +181,11 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		case CHANGE:
 			respondChange(target);
 			break;
+		case UPLOAD_DONE:
+			respondUploadDone(target);
+		case UPLOAD_FAILS:
+			respondUploadFails(target);
+			break;
 		default:
 			throw new IllegalStateException();
 		}
@@ -164,12 +196,52 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	 * 
 	 * @param target
 	 */
+	protected void respondUploadDone(AjaxRequestTarget target) {
+		IRequestParameters req = RequestCycle.get().getRequest().getRequestParameters();
+		try {
+			List<FileApiFile> successfileList = readSuccessFileApiFiles(req);
+			List<FileApiFile> errorfileList = readErrorFileApiFiles(req);
+			onFileUploadDone(target, successfileList, errorfileList);
+		} catch (Exception e) {
+			logReadFileListParameterError(e);
+			onError(FileUploadMode.UPLOAD_DONE, target, e);
+			return;
+		}
+	}
+
+	/**
+	 * change wicket callback.
+	 * 
+	 * @param target
+	 */
+	protected void respondUploadFails(AjaxRequestTarget target) {
+		IRequestParameters req = RequestCycle.get().getRequest().getRequestParameters();
+		try {
+			String errorMessage = req.getParameterValue(PARAMETERS_UPLOAD_FAILS_ERROR_MESSAGE).toString("");
+			onFileUploadFails(target, errorMessage);
+		} catch (Exception e) {
+			logReadFileListParameterError(e);
+			onError(FileUploadMode.UPLOAD_FAILS, target, e);
+			return;
+		}
+	}
+
+	protected abstract void onFileUploadDone(AjaxRequestTarget target, List<FileApiFile> successFileList, List<FileApiFile> errorFileList);
+
+	protected abstract void onFileUploadFails(AjaxRequestTarget target, String errorMessage);
+
+	/**
+	 * change wicket callback.
+	 * 
+	 * @param target
+	 * @return to upload file list (upload will be processed by objectUrl comparison)
+	 */
 	protected void respondChange(AjaxRequestTarget target) {
 		IRequestParameters req = RequestCycle.get().getRequest().getRequestParameters();
 		try {
-			List<FileApiFile> fileList = readfileApiFiles(req);
-			onFileChange(target, fileList);
-			target.prependJavaScript("window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + " = JSON.parse(" + JsUtils.doubleQuotes(writefileApiFiles(fileList), true) + "); console.log(window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + ");");
+			List<FileApiFile> fileList = readFileApiFiles(req);
+			List<FileApiFile> acceptedFiles = onFileChange(target, fileList);
+			target.prependJavaScript("window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + " = JSON.parse(" + JsUtils.doubleQuotes(writeFileApiFiles(acceptedFiles), true) + "); console.log(window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + ");");
 		} catch (Exception e) {
 			logReadFileListParameterError(e);
 			onError(FileUploadMode.CHANGE, target, e);
@@ -204,6 +276,41 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	}
 
 	/**
+	 * wicket javascript callback glue - function (fileList, onSuccess, onFailure) ; mode = 'change'
+	 */
+	private CharSequence getOnUploadFailsCallbackScript() {
+		CallbackParameter callbackParameterMode = CallbackParameter.resolved(PARAMETERS_MODE, JsUtils.quotes(FileUploadMode.UPLOAD_FAILS.name()));
+		// installation dans le scope des callbacks d'échec et de succès
+		// réutilisés par les IAjaxCallListener
+		CallbackParameter callbackParameterErrorMessage = CallbackParameter.explicit(PARAMETERS_UPLOAD_FAILS_ERROR_MESSAGE);
+		CallbackParameter callbackParameterDataVariableName = CallbackParameter.explicit(PARAMETERS_DATA_VARIABLE_NAME);
+		CallbackParameter callbackParameterOnSuccess = CallbackParameter.context("onSuccess");
+		CallbackParameter callbackParameterOnFailure = CallbackParameter.context("onFailure");
+		return getCallbackFunction(callbackParameterMode, // mode
+				callbackParameterDataVariableName, // variable d'échange
+				callbackParameterErrorMessage, // message d'erreur
+				callbackParameterOnSuccess, callbackParameterOnFailure);
+	}
+
+	/**
+	 * wicket javascript callback glue - function (fileList, onSuccess, onFailure) ; mode = 'change'
+	 */
+	private CharSequence getOnUploadDoneCallbackScript() {
+		CallbackParameter callbackParameterMode = CallbackParameter.resolved(PARAMETERS_MODE, JsUtils.quotes(FileUploadMode.UPLOAD_DONE.name()));
+		// installation dans le scope des callbacks d'échec et de succès
+		// réutilisés par les IAjaxCallListener
+		CallbackParameter callbackParameterSuccessFileListName = CallbackParameter.explicit(PARAMETERS_UPLOAD_DONE_SUCCESS_FILE_LIST);
+		CallbackParameter callbackParameterErrorFileListName = CallbackParameter.explicit(PARAMETERS_UPLOAD_DONE_ERROR_FILE_LIST);
+		CallbackParameter callbackParameterDataVariableName = CallbackParameter.explicit(PARAMETERS_DATA_VARIABLE_NAME);
+		CallbackParameter callbackParameterOnSuccess = CallbackParameter.context("onSuccess");
+		CallbackParameter callbackParameterOnFailure = CallbackParameter.context("onFailure");
+		return getCallbackFunction(callbackParameterMode, // mode
+				callbackParameterDataVariableName, // variable d'échange
+				callbackParameterSuccessFileListName, callbackParameterErrorFileListName, // listes des succès et échecs
+				callbackParameterOnSuccess, callbackParameterOnFailure);
+	}
+
+	/**
 	 * widget initialization code generation.
 	 * 
 	 * @param component
@@ -214,6 +321,8 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		options.put(OPTIONS_CHANGE, new JsScopeFunction("$.fileuploadglue.onChange"));
 		// options used by change callback to communicate with wicket
 		options.put(OPTIONS_ON_CHANGE_CALLBACK, getOnChangeCallbackScript().toString());
+		options.put(OPTIONS_ON_UPLOAD_FAILS_CALLBACK, getOnUploadFailsCallbackScript().toString());
+		options.put(OPTIONS_ON_UPLOAD_DONE_CALLBACK, getOnUploadDoneCallbackScript().toString());
 		options.put(OPTIONS_AUTO_UPLOAD, false);
 		options.put(OPTIONS_URL, new LiteralOption(getFileUploadUrl(), true).toString());
 		options.put(OPTIONS_PARAM_NAME, new LiteralOption(PARAMETERS_FILE_UPLOAD, true).toString());
@@ -232,11 +341,19 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		response.render(OnDomReadyHeaderItem.forScript(statement(component).render()));
 	}
 
-	public static List<FileApiFile> readfileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
+	public static List<FileApiFile> readSuccessFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
+		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_UPLOAD_DONE_SUCCESS_FILE_LIST).toString());
+	}
+
+	public static List<FileApiFile> readErrorFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
+		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_UPLOAD_DONE_ERROR_FILE_LIST).toString());
+	}
+
+	public static List<FileApiFile> readFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
 		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_FILE_LIST).toString());
 	}
 
-	public static String writefileApiFiles(List<FileApiFile> files) throws JsonProcessingException, IOException {
+	public static String writeFileApiFiles(List<FileApiFile> files) throws JsonProcessingException, IOException {
 		return OBJECT_MAPPER.writeValueAsString(files);
 	}
 
