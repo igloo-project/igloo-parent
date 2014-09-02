@@ -17,6 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
+import com.google.common.base.Equivalence;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -231,6 +232,44 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		@Override
 		public String toString() {
 			return String.valueOf(value);
+		}
+	}
+	
+	public static <T> Condition isEqual(IModel<? extends T> leftModel, IModel<? extends T> rightModel) {
+		return isEquivalent(leftModel, rightModel, Equivalence.equals());
+	}
+	
+	public static <T> Condition isEquivalent(IModel<? extends T> leftModel, IModel<? extends T> rightModel, Equivalence<? super T> equivalence) {
+		return new EquivalenceCondition<>(leftModel, rightModel, equivalence);
+	}
+	
+	private static class EquivalenceCondition<T> extends Condition {
+		private static final long serialVersionUID = 1L;
+
+		private final IModel<? extends T> leftModel;
+		private final IModel<? extends T> rightModel;
+		private final Equivalence<? super T> equivalence;
+		
+		public EquivalenceCondition(IModel<? extends T> leftModel, IModel<? extends T> rightModel, Equivalence<? super T> equivalence) {
+			super();
+			this.leftModel = leftModel;
+			this.rightModel = rightModel;
+			this.equivalence = equivalence;
+		}
+		
+		@Override
+		public boolean applies() {
+			return equivalence.equivalent(leftModel.getObject(), rightModel.getObject());
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			if (equivalence instanceof IDetachable) {
+				((IDetachable)equivalence).detach();
+			}
+			leftModel.detach();
+			rightModel.detach();
 		}
 	}
 	
