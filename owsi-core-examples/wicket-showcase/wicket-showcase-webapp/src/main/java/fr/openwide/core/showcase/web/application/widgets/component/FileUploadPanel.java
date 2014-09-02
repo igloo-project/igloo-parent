@@ -25,6 +25,7 @@ import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileS
 import fr.openwide.core.showcase.web.application.widgets.resource.FileUploadResource;
 import fr.openwide.core.wicket.more.fileapi.behavior.FileUploadBehavior;
 import fr.openwide.core.wicket.more.fileapi.model.FileApiFile;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
 public class FileUploadPanel extends Panel {
 
@@ -63,25 +64,71 @@ public class FileUploadPanel extends Panel {
 			private static final long serialVersionUID = 8090452933671159353L;
 			
 			@Override
-			protected void onFileChange(AjaxRequestTarget target, List<FileApiFile> fileList) {
+			protected List<FileApiFile> onFileChange(AjaxRequestTarget target, List<FileApiFile> fileList) {
+				List<FileApiFile> acceptedFiles = Lists.newArrayList();
 				for (FileApiFile fileApiFile : fileList) {
+					if (fileList.indexOf(fileApiFile) == 0) {
+						continue;
+					}
 					ShowcaseFile file = new ShowcaseFile();
 					file.setExtension(FilenameUtils.getExtension(fileApiFile.getName()));
 					file.setName(fileApiFile.getName());
 					try {
 						showcaseFileService.create(file);
 						fileApiFile.setIdentifier(file.getId().toString());
+						acceptedFiles.add(fileApiFile);
 					} catch (Exception e) {
 						LOGGER.error("Erreur d'enregistrement du fichier");
 					}
 				}
-				fileListModel.getObject().addAll(fileList);
+				fileListModel.getObject().addAll(acceptedFiles);
 				target.add(fileListContainer);
+				return acceptedFiles;
 			}
 
 			@Override
 			protected String getFileUploadUrl() {
 				return FileUploadResource.linkDescriptor().fullUrl();
+			}
+
+			@Override
+			protected void onFileUploadDone(AjaxRequestTarget target, List<FileApiFile> successFileList, List<FileApiFile> errorFileList) {
+				if (!errorFileList.isEmpty()) {
+					error(getString("widgets.fileupload.partialError"));
+				}
+				List<FileApiFile> toRemove = Lists.newArrayList();
+				for (FileApiFile file : errorFileList) {
+					ShowcaseFile showcaseFile = showcaseFileService.getById(Long.valueOf(file.getIdentifier()));
+					for (FileApiFile fileApiFile : fileListModel.getObject()) {
+						if (fileApiFile.getIdentifier() != null && fileApiFile.getIdentifier().equals(fileApiFile.getIdentifier())) {
+							toRemove.add(fileApiFile);
+						}
+					}
+					try {
+						showcaseFileService.delete(showcaseFile);
+					} catch (Exception e) {
+						LOGGER.error("Erreur de nettoyage des fichiers", e);
+					}
+				}
+				fileListModel.getObject().removeAll(toRemove);
+				FeedbackUtils.refreshFeedback(target, getPage());
+				target.add(fileListContainer);
+			}
+
+			@Override
+			protected void onFileUploadFails(AjaxRequestTarget target, String errorMessage) {
+				error(getString(errorMessage));
+				for (FileApiFile file : fileListModel.getObject()) {
+					ShowcaseFile showcaseFile = showcaseFileService.getById(Long.valueOf(file.getIdentifier()));
+					try {
+						showcaseFileService.delete(showcaseFile);
+					} catch (Exception e) {
+						LOGGER.error("Erreur de nettoyage des fichiers", e);
+					}
+				}
+				fileListModel.getObject().removeAll(fileListModel.getObject());
+				FeedbackUtils.refreshFeedback(target, getPage());
+				target.add(fileListContainer);
 			}
 		});
 		
