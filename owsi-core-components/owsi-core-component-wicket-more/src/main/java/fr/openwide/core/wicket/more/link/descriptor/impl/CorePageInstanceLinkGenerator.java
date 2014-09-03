@@ -159,7 +159,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	@Override
 	public boolean isActive(Class<? extends Page> selectedPage) {
 		throw new IllegalStateException("We may not call isActive on a page instance link.");
-	};
+	}
 
 	@Override
 	public void detach() {
