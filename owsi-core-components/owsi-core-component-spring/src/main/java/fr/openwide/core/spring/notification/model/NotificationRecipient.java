@@ -90,6 +90,9 @@ public class NotificationRecipient implements Serializable {
 	
 	@Override
 	public String toString() {
+		if (address == null) {
+			return "<null>";
+		}
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.hasText(address.getPersonal())) {
 			sb.append(address.getPersonal()).append(" ");
