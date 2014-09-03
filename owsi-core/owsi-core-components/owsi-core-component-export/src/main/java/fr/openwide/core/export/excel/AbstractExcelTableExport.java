@@ -35,6 +35,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
@@ -514,6 +515,30 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		}
 		
 		return cell;
+	}
+	
+	/**
+	 * Ajoute plusieurs cellules vides stylées pour garder la cohérence des lignes odd/even
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 */
+	protected List<Cell> addEmptyCells(Row row, int startColumnIndex, int nbCells) {
+		List<Cell> cells = Lists.newArrayListWithExpectedSize(nbCells);
+		for (int i = 0 ; i < nbCells ; ++i) {
+			cells.add(addEmptyCell(row, startColumnIndex + i));
+		}
+		return cells;
+	}
+
+	/**
+	 * Ajoute une cellule vide stylée pour garder la cohérence des lignes odd/even
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 */
+	protected Cell addEmptyCell(Row row, int startColumnIndex) {
+		return addTextCell(row, startColumnIndex, null);
 	}
 	
 	/**
