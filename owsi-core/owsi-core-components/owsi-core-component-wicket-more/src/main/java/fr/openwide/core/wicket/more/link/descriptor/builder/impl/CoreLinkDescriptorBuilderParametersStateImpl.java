@@ -135,7 +135,7 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 	}
 	
 	@Override
-	public <R, T extends GenericEntity<?, ?>> IParameterMappingState<L> permission(
+	public <R, T> IParameterMappingState<L> permission(
 			IModel<R> model, BindingRoot<R, T> binding, String firstPermissionName, String... otherPermissionNames) {
 		return permission(BindingModel.of(model, binding), firstPermissionName, otherPermissionNames);
 	}

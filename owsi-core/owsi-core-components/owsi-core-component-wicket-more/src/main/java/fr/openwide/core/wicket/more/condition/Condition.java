@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
-import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.util.Detach;
 
 public abstract class Condition implements IModel<Boolean>, IDetachable {
@@ -461,17 +460,21 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	private static class AnyRoleCondition extends Condition {
 		private static final long serialVersionUID = 1L;
 		
+		@SpringBean
+		private IAuthenticationService authenticationService;
+		
 		private final Iterable<String> roleNames;
 		
 		public AnyRoleCondition(Iterable<String> roleNames) {
 			super();
+			Injector.get().inject(this);
 			this.roleNames = ImmutableSet.copyOf(roleNames);
 		}
 		
 		@Override
 		public boolean applies() {
 			for (String roleName : roleNames) {
-				if (AbstractCoreSession.get().hasRole(roleName)) {
+				if (authenticationService.hasRole(roleName)) {
 					return true;
 				}
 			}
