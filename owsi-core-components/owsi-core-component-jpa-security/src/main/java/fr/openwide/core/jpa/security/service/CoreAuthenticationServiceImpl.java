@@ -7,7 +7,6 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 
 public class CoreAuthenticationServiceImpl implements IAuthenticationService {
@@ -56,8 +55,8 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	}
 	
 	@Override
-	public boolean hasPermission(GenericEntity<?, ?> entity, Permission permission) {
-		return securityService.hasPermission(AuthenticationUtil.getAuthentication(), entity, permission);
+	public boolean hasPermission(Object securedObject, Permission permission) {
+		return securityService.hasPermission(AuthenticationUtil.getAuthentication(), securedObject, permission);
 	}
 	
 	@Override

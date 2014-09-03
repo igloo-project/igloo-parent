@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.IPerson;
 import fr.openwide.core.jpa.security.runas.RunAsSystemToken;
@@ -193,13 +192,13 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasPermission(Authentication authentication, GenericEntity<?, ?> securedObject,
+	public boolean hasPermission(Authentication authentication, Object securedObject,
 			Permission requirePermission) {
 		return permissionEvaluator.hasPermission(authentication, securedObject, requirePermission);
 	}
 
 	@Override
-	public boolean hasPermission(IPerson person, GenericEntity<?, ?> securedObject, Permission requirePermission) {
+	public boolean hasPermission(IPerson person, Object securedObject, Permission requirePermission) {
 		return hasPermission(getAuthentication(person), securedObject, requirePermission);
 	}
 

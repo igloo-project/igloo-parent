@@ -1,14 +1,18 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl;
 
+import static fr.openwide.core.wicket.more.condition.Condition.anyPermission;
+
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
+import org.bindgen.BindingRoot;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
@@ -16,8 +20,10 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.Collection
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
+import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescriptor>
 		implements IParameterMappingState<L>, IAddedParameterMappingState<L> {
@@ -95,6 +101,30 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<L extends ILinkDescrip
 		Args.notNull(validator, "validator");
 		parameterValidators.add(validator);
 		return this;
+	}
+
+	@Override
+	public IParameterMappingState<L> validator(Condition condition) {
+		Args.notNull(condition, "condition");
+		parameterValidators.add(new ConditionLinkParameterValidator(condition));
+		return this;
+	}
+	
+	@Override
+	public IParameterMappingState<L> permission(IModel<?> model, String permissionName) {
+		return validator(new ConditionLinkParameterValidator(Condition.permission(model, permissionName)));
+	}
+	
+	@Override
+	public IParameterMappingState<L> permission(IModel<?> model,
+			String firstPermissionName, String... otherPermissionNames) {
+		return validator(new ConditionLinkParameterValidator(anyPermission(model, firstPermissionName, otherPermissionNames)));
+	}
+	
+	@Override
+	public <R, T> IParameterMappingState<L> permission(
+			IModel<R> model, BindingRoot<R, T> binding, String firstPermissionName, String... otherPermissionNames) {
+		return permission(BindingModel.of(model, binding), firstPermissionName, otherPermissionNames);
 	}
 	
 	@Override
