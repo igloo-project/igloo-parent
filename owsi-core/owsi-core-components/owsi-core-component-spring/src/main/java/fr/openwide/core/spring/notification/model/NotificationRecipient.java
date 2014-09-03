@@ -90,7 +90,12 @@ public class NotificationRecipient implements Serializable {
 	
 	@Override
 	public String toString() {
-		return address.toString();
+		StringBuilder sb = new StringBuilder();
+		if (StringUtils.hasText(address.getPersonal())) {
+			sb.append(address.getPersonal()).append(" ");
+		}
+		sb.append("<").append(address.getAddress()).append(">");
+		return sb.toString();
 	}
 	
 	@Override
