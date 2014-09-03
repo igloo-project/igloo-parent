@@ -59,6 +59,17 @@ public class NavigationMenuItem implements IDetachable {
 				Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
 	}
 	
+	public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator,
+			Collection<NavigationMenuItem> subMenuItems) {
+		this.labelModel = labelModel;
+		this.pageLinkGenerator = pageLinkGenerator;
+		this.subMenuItems.addAll(subMenuItems);
+	}
+	
+	public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator) {
+		this(labelModel, pageLinkGenerator, ImmutableList.<NavigationMenuItem>of());
+	}
+	
 	@Deprecated
 	public NavigationMenuItem(IModel<String> labelModel, Class<? extends Page> pageClass) {
 		this(labelModel, pageClass, null, null, Lists.<NavigationMenuItem>newArrayListWithExpectedSize(0));
@@ -116,7 +127,11 @@ public class NavigationMenuItem implements IDetachable {
 	}
 	
 	public boolean isActive(Class<? extends Page> selectedPage) {
-		return pageClass != null && pageClass.equals(selectedPage);
+		if (pageLinkGenerator != null) {
+			return pageLinkGenerator.isActive(selectedPage);
+		} else {
+			return pageClass != null && pageClass.equals(selectedPage);
+		}
 	}
 	
 	public boolean isAccessible() {

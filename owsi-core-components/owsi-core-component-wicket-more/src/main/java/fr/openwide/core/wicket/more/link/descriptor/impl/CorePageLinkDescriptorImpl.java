@@ -163,6 +163,16 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	}
 	
 	@Override
+	public boolean isActive(Class<? extends Page> selectedPage) {
+		Class<? extends Page> pageClass = pageClassModel.getObject();
+		if (pageClass == null) {
+			return false;
+		} else {
+			return pageClass.equals(selectedPage);
+		}
+	}
+	
+	@Override
 	public void detach() {
 		super.detach();
 		pageClassModel.detach();
