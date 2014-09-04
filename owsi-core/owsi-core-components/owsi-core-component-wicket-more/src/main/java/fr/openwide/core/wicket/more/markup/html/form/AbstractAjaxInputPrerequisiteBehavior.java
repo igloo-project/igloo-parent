@@ -26,6 +26,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.apache.wicket.util.lang.Args;
+import org.apache.wicket.util.visit.ClassVisitFilter;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitFilter;
+import org.apache.wicket.util.visit.IVisitor;
+import org.apache.wicket.util.visit.Visits;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.StateEvent;
 
@@ -85,6 +90,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private Predicate<? super T> resetAttachedModelPredicate = Predicates.alwaysFalse();
 	
+	private Predicate<? super T> resetAttachedFormComponentsPredicate = Predicates.alwaysFalse();
+	
 	private boolean refreshParent = false;
 	
 	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
@@ -132,7 +139,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	/**
 	 * Sets whether the attached component's models are to be set to null when the prerequisite model changes.
+	 * @deprecated Use {@link #setResetAttachedFormComponentsIfInvalid(boolean) instead. Be aware that, on contrary to
+	 * this method, the other also applies to descendants of the attached component and clears FormComponent inputs.
 	 */
+	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModel(boolean resetAttachedModel) {
 		this.resetAttachedModelPredicate = resetAttachedModel ? Predicates.alwaysTrue() : Predicates.alwaysFalse();
 		return this;
@@ -140,7 +150,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	/**
 	 * Sets whether the attached component's models are to be set to null when the prerequisite model is updated <em>and its new object is invalid</em>.
+	 * @deprecated Use {@link #setResetAttachedFormComponentsIfInvalid(boolean) instead. Be aware that, on contrary to
+	 * this method, the other also applies to descendants of the attached component and clears FormComponent inputs.
 	 */
+	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelIfInvalid(boolean resetAttachedModel) {
 		this.resetAttachedModelPredicate = new SerializablePredicate<T>() {
 			private static final long serialVersionUID = 1L;
@@ -155,9 +168,53 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	/**
 	 * Sets a predicate to determine, based on the prerequisite model value, whether the attached component's
 	 * models are to be set to null when the prerequisite model changes.
+	 * <p>Note that FormComponents children will not be reset (allowing the use of FormComponentPanels, which should
+	 * handle input clearing of their children themselves).
+	 * @deprecated Use {@link #setResetAttachedFormComponentsIfInvalid(boolean) instead. Be aware that, on contrary to
+	 * this method, the other also applies to descendants of the attached component and clears FormComponent inputs.
 	 */
+	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelPredicate(Predicate<? super T> resetAttachedModelPredicate) {
 		this.resetAttachedModelPredicate = resetAttachedModelPredicate;
+		return this;
+	}
+	
+	/**
+	 * Sets whether the attached component and all its children are to be reset if they are FormComponents, i.e. their
+	 * model are to be set to null and their convertedInput are to be cleared, when the prerequisite model changes.
+	 * <p>Note that FormComponents children will not be reset (allowing the use of FormComponentPanels, which should
+	 * handle input clearing of their children themselves).
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponents() {
+		this.resetAttachedFormComponentsPredicate = Predicates.alwaysTrue();
+		return this;
+	}
+	
+	/**
+	 * Sets whether the attached component and all its children are to be reset if they are FormComponents, i.e. their
+	 * model are to be set to null and their convertedInput are to be cleared, when the prerequisite model changes
+	 * <em>and its new object is invalid</em>.
+	 * <p>Note that FormComponents children will not be reset (allowing the use of FormComponentPanels, which should
+	 * handle input clearing of their children themselves).
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsIfInvalid() {
+		this.resetAttachedFormComponentsPredicate = new SerializablePredicate<T>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean apply(T input) {
+				return !objectValidPredicate.apply(input);
+			}
+		};
+		return this;
+	}
+
+	/**
+	 * Sets whether the attached component and all its children are to be reset if they are FormComponents, i.e. their
+	 * model are to be set to null and their convertedInput are to be cleared, when the prerequisite model changes and
+	 * the given predicate does not apply to the prerequisite model value anymore.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsPredicate(Predicate<? super T> resetAttachedFormComponentsPredicate) {
+		this.resetAttachedFormComponentsPredicate = resetAttachedModelPredicate;
 		return this;
 	}
 	
@@ -361,8 +418,16 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		
 		for (Component attachedComponent : attachedComponents) {
 			target.add(getAjaxTarget(attachedComponent));
+			boolean hasReset = false;
 			if (resetAttachedModelPredicate.apply(convertedInput)) {
 				attachedComponent.setDefaultModelObject(null);
+				hasReset = true;
+			}
+			if (resetAttachedFormComponentsPredicate.apply(convertedInput)) {
+				resetFormComponents(attachedComponent);
+				hasReset = true;
+			}
+			if (hasReset) {
 				// Handle chained prerequisites
 				InputPrerequisiteAjaxEventBehavior behavior = getExistingAjaxEventBehavior(attachedComponent);
 				if (behavior != null) {
@@ -378,6 +443,27 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		onPrerequisiteFieldChange(target, prerequisiteField, Collections.unmodifiableCollection(attachedComponents));
 	}
 	
+	private void resetFormComponents(Component attachedComponent) {
+		visit(attachedComponent, RESET_FORM_COMPONENTS_VISITOR, new ClassVisitFilter(FormComponent.class));
+	}
+	
+	// Visits.visit is screwed: it does not accept Components, but only Iterable<Component>, on contrary to Visits.visitPostOrder
+	private static final <T extends Component, R> R visit(Component component, IVisitor<T, R> visitor, IVisitFilter filter) {
+		return Visits.visitChildren(Collections.<Component>singleton(component), visitor, filter);
+	}
+	
+	private static final IVisitor<FormComponent<?>, Void> RESET_FORM_COMPONENTS_VISITOR = new IVisitor<FormComponent<?>, Void>() {
+		@Override
+		public void component(FormComponent<?> object, IVisit<Void> visit) {
+			IModel<?> model = object.getDefaultModel();
+			if (model != null) {
+				model.setObject(null);
+			}
+			object.clearInput();
+			visit.dontGoDeeper();
+		}
+	};
+
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
