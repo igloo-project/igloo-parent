@@ -27,6 +27,7 @@ import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMain
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
@@ -186,5 +187,12 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 			});
 		}
 
+	}
+
+	@Override
+	public String getVariation() {
+		// La console en BS3 quoi qu'il arrive, il ne faut pas laisser l'application
+		// qui l'utilise choisir si on utilise BS2 ou BS3.
+		return AbstractWebPageTemplate.BOOTSTRAP3_VARIATION;
 	}
 }
