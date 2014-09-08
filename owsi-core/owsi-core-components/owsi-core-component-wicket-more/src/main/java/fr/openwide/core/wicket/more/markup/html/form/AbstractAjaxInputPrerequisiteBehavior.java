@@ -92,6 +92,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private Predicate<? super T> resetAttachedFormComponentsPredicate = Predicates.alwaysFalse();
 	
+	/**
+	 * @deprecated This should disappear soon, along with the {@link #cleanDefaultModelObject(Component)} method.
+	 */
+	@Deprecated
+	private boolean resetAttachedModelOnConfigure = true;
+	
 	private boolean refreshParent = false;
 	
 	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
@@ -215,6 +221,15 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsPredicate(Predicate<? super T> resetAttachedFormComponentsPredicate) {
 		this.resetAttachedFormComponentsPredicate = resetAttachedModelPredicate;
+		return this;
+	}
+	
+	/**
+	 * Sets whether the attached component's model are to be set to null when calling onConfigure if the prerequisite model is invalid.
+	 * <p>This should be used only to prevent a legacy behavior.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setNoResetAttachedModelOnConfigure() {
+		this.resetAttachedModelOnConfigure = false;
 		return this;
 	}
 	
@@ -526,7 +541,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 					if (isConvertedInputSatisfyingRequirements(prerequisiteField, prerequisiteField.getConvertedInput())) {
 						setUpAttachedComponent(component);
 					} else {
-						cleanDefaultModelObject(component);
+						if (resetAttachedModelOnConfigure) {
+							cleanDefaultModelObject(component);
+						}
 						takeDownAttachedComponent(component);
 					}
 					
@@ -538,7 +555,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 					if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
 						setUpAttachedComponent(component);
 					} else {
-						cleanDefaultModelObject(component);
+						if (resetAttachedModelOnConfigure) {
+							cleanDefaultModelObject(component);
+						}
 						takeDownAttachedComponent(component);
 					}
 				}
@@ -573,6 +592,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		return objectValidPredicate.apply(object);
 	}
 
+	/**
+	 * @deprecated Use the various setReset*() methods instead.
+	 */
+	@Deprecated
 	protected void cleanDefaultModelObject(Component attachedComponent) {
 		IModel<?> model = attachedComponent.getDefaultModel();
 		// It is not necessary to set the model object to null if it already is.
