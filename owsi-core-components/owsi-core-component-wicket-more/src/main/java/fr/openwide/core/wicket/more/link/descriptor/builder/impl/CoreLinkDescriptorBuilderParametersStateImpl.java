@@ -13,7 +13,6 @@ import org.springframework.core.convert.TypeDescriptor;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
