@@ -12,7 +12,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.notification.service.INotificationBuilderBaseState;
 import fr.openwide.core.spring.notification.service.NotificationBuilder;
-import fr.openwide.core.spring.util.SpringBeanUtils;
 import fr.openwide.core.test.spring.notification.spring.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,8 +24,7 @@ public class TestNotificationBuilder {
 	
 //	@Test
 	public void testToCcBccExcept() throws ServiceException {
-		INotificationBuilderBaseState builder = NotificationBuilder.create();
-		SpringBeanUtils.autowireBean(applicationContext, builder);
+		INotificationBuilderBaseState builder = NotificationBuilder.create().init(applicationContext);
 		
 		builder.toAddress("test-to-1@example.com", "test-to-2@example.com", "pas un mail valide", "mail@îdn.fr", "test-to-ignore@example.com")
 				.ccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-cc-2@example.com", "test-cc-ignore@example.com")

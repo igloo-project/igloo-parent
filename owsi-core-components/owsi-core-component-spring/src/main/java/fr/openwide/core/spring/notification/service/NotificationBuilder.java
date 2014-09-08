@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -49,10 +50,11 @@ import fr.openwide.core.spring.notification.service.impl.ExplicitelyDefinedNotif
 import fr.openwide.core.spring.notification.service.impl.FirstNotNullNotificationContentDescriptorImpl;
 import fr.openwide.core.spring.notification.service.impl.FreemarkerTemplateNotificationContentDescriptorImpl;
 import fr.openwide.core.spring.notification.util.NotificationUtils;
+import fr.openwide.core.spring.util.SpringBeanUtils;
 import fr.openwide.core.spring.util.StringUtils;
 import freemarker.template.Configuration;
 
-public class NotificationBuilder implements INotificationBuilderBaseState, INotificationBuilderBuildState,
+public class NotificationBuilder implements INotificationBuilderInitState, INotificationBuilderBaseState, INotificationBuilderBuildState,
 		INotificationBuilderBodyState, INotificationBuilderContentState, INotificationBuilderTemplateState, INotificationBuilderSendState {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationBuilder.class);
@@ -94,6 +96,8 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	private final Set<NotificationRecipient> recipientsToIgnore = Sets.newHashSet();
 	
+	private String subjectPrefix;
+	
 	private INotificationContentDescriptor userContentDescriptor;
 	
 	private FreemarkerTemplateNotificationContentDescriptorImpl templateContentDescriptor;
@@ -123,12 +127,21 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		this.charset = charset;
 	}
 	
-	public static INotificationBuilderBaseState create() {
+	public static INotificationBuilderInitState create() {
 		return new NotificationBuilder();
 	}
 	
-	public static INotificationBuilderBaseState create(Charset charset) {
+	public static INotificationBuilderInitState create(Charset charset) {
 		return new NotificationBuilder(charset);
+	}
+	
+	@Override
+	public INotificationBuilderBaseState init(ApplicationContext applicationContext) {
+		SpringBeanUtils.autowireBean(applicationContext, this);
+		
+		this.subjectPrefix = configurer.getNotificationMailSubjectPrefix();
+		
+		return this;
 	}
 	
 	@Override
@@ -334,17 +347,21 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	
 	@Override
 	public INotificationBuilderBodyState subject(String subject) {
-		return subject(getSubjectPrefix(), subject);
+		Assert.hasText(subject, "Email subject must contain text");
+		this.explicitelyDefinedContentDescriptor.setSubject(null, subject);
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderBuildState subjectPrefix(String prefix) {
+		this.subjectPrefix = prefix;
+		return this;
 	}
 	
 	@Override
 	public INotificationBuilderBodyState subject(String prefix, String subject) {
-		Assert.hasText(subject, "Email subject must contain text");
-		if (StringUtils.hasText(prefix)) {
-			this.explicitelyDefinedContentDescriptor.setSubject(null, prefix + " " + subject);
-		} else {
-			this.explicitelyDefinedContentDescriptor.setSubject(null, subject);
-		}
+		subjectPrefix(prefix);
+		subject(subject);
 		return this;
 	}
 	
@@ -537,7 +554,7 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 	private MimeMessage buildMessage(Collection<NotificationRecipient> tos, Collection<NotificationRecipient> ccs, Collection<NotificationRecipient> bccs,
 			String encoding, Locale locale) throws NotificationContentRenderingException, MessagingException {
 		INotificationContentDescriptor contentDescriptor = chooseNotificationContentDescriptor();
-		String subject = contentDescriptor.renderSubject(locale);
+		String subject = buildSubject(contentDescriptor.renderSubject(locale));
 		String textBody = contentDescriptor.renderTextBody(locale);
 		String htmlBody = contentDescriptor.renderHtmlBody(locale);
 		
@@ -595,6 +612,21 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 		return message;
 	}
 	
+	private String buildSubject(String subject) {
+		StringBuilder builder = new StringBuilder();
+		if (StringUtils.hasText(subjectPrefix)) {
+			builder.append(subjectPrefix);
+		}
+		if (configurer.isConfigurationTypeDevelopment()) {
+			builder.append(DEV_SUBJECT_PREFIX);
+		}
+		if (builder.length() > 0) {
+			builder.append(" ");
+		}
+		builder.append(subject);
+		return builder.toString();
+	}
+
 	private boolean isMultipartNeeded(String textBody, String htmlBody) {
 		boolean multipleBodies = StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody);
 		return multipleBodies || !attachments.isEmpty() || !inlines.isEmpty();
@@ -632,15 +664,6 @@ public class NotificationBuilder implements INotificationBuilderBaseState, INoti
 			return Sets.newHashSetWithExpectedSize(0);
 		}
 		return emails;
-	}
-	
-	private String getSubjectPrefix() {
-		StringBuilder subjectPrefix = new StringBuilder();
-		subjectPrefix.append(configurer.getNotificationMailSubjectPrefix());
-		if (configurer.isConfigurationTypeDevelopment()) {
-			subjectPrefix.append(DEV_SUBJECT_PREFIX);
-		}
-		return subjectPrefix.toString();
 	}
 	
 	private String getBodyPrefix(Collection<NotificationRecipient> to, Collection<NotificationRecipient> cc, Collection<NotificationRecipient> bcc,

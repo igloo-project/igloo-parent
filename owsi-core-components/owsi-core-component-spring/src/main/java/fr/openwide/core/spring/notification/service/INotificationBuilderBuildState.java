@@ -38,8 +38,14 @@ public interface INotificationBuilderBuildState extends INotificationBuilderToSt
 
 	INotificationBuilderContentState content(INotificationContentDescriptor contentDescriptor);
 	
-	INotificationBuilderBodyState subject(String subject);
+	INotificationBuilderBuildState subjectPrefix(String subject);
 	
+	INotificationBuilderBodyState subject(String subject);
+
+	/**
+	 * @deprecated Use {@link #subjectPrefix(String)} and then {@link #subject(String)} instead.
+	 */
+	@Deprecated
 	INotificationBuilderBodyState subject(String prefix, String subject);
 	
 	INotificationBuilderTemplateState template(String templateKey);
