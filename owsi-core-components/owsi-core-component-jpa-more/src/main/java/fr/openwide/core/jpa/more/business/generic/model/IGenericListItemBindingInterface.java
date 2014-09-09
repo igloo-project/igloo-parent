@@ -11,6 +11,8 @@ public interface IGenericListItemBindingInterface {
 	
 	String getShortLabel();
 	
+	String getCode();
+	
 	Integer getPosition();
 	
 	boolean isEnabled();

@@ -88,6 +88,10 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 	public void setDeleteable(boolean deleteable) {
 		this.deleteable = deleteable;
 	}
+	
+	public String getCode() {
+		return null;
+	}
 
 	@Override
 	@JsonIgnore

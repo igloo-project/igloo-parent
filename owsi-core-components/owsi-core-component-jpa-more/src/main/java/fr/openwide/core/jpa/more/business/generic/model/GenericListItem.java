@@ -40,6 +40,8 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	public static final String LABEL_SORT_FIELD_NAME = "labelSort";
 	
 	public static final String SHORT_LABEL_SORT_FIELD_NAME = "shortLabelSort";
+	
+	public static final String CODE_FIELD_NAME = "code";
 
 	@Id
 	@GeneratedValue
@@ -112,6 +114,15 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	@Override
 	public String getShortLabel() {
 		return shortLabel;
+	}
+
+	@Override
+	@Fields({
+		@Field(name = CODE_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+		// A priori, pas besoin d'un champ spécifique pour le tri ici... ?
+	})
+	public String getCode() {
+		return null;
 	}
 
 	public void setPosition(Integer order) {
