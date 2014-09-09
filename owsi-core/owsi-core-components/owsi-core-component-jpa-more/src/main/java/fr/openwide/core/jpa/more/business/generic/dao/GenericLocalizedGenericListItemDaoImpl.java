@@ -247,7 +247,10 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 		
 		String[] actualFields = fields;
 		if (actualFields == null || actualFields.length == 0) {
-			actualFields = new String[] { localizedLabelBindingPath + "." + labelTextAutocompleteFieldName(locale) };
+			actualFields = new String[] {
+					localizedLabelBindingPath + "." + labelTextAutocompleteFieldName(locale),
+					binding.code().getPath()
+			};
 		}
 		
 		return hibernateSearchService.search(clazz,

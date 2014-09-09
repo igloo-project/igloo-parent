@@ -232,7 +232,10 @@ public class GenericListItemDaoImpl extends JpaDaoSupport implements IGenericLis
 		
 		String[] actualFields = fields;
 		if (actualFields == null || actualFields.length == 0) {
-			actualFields = new String[] { labelBindingPath };
+			actualFields = new String[] {
+					labelBindingPath,
+					binding.code().getPath()
+			};
 		}
 		
 		return hibernateSearchService.search(clazz,
