@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.config.spring;
 
+import java.sql.Driver;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -219,18 +220,26 @@ public final class JpaConfigUtils {
 	}
 
 	public static DataSource dataSource(DatabaseConnectionPoolConfigurationProvider configurationProvider) {
+		return dataSource(configurationProvider.getDriverClass(), configurationProvider.getUrl(),
+				configurationProvider.getUser(), configurationProvider.getPassword(),
+				configurationProvider.getMinIdle(), configurationProvider.getMaxPoolSize(),
+				configurationProvider.getValidationQuery());
+	}
+
+	public static DataSource dataSource(Class<Driver> driverClass, String jdbcUrl, String username, String password,
+			int minimumIdle, int maximumPoolSize, String connectionTestQuery) {
 		
 		HikariDataSource dataSource = new HikariDataSource();
-		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
-		dataSource.setJdbcUrl(configurationProvider.getUrl());
-		dataSource.setUsername(configurationProvider.getUser());
-		dataSource.setPassword(configurationProvider.getPassword());
-		dataSource.addDataSourceProperty("user", configurationProvider.getUser());
-		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
-		dataSource.setMinimumIdle(configurationProvider.getMinIdle());
-		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
+		dataSource.setDriverClassName(driverClass.getName());
+		dataSource.setJdbcUrl(jdbcUrl);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		dataSource.addDataSourceProperty("user", username);
+		dataSource.addDataSourceProperty("password", password);
+		dataSource.setMinimumIdle(minimumIdle);
+		dataSource.setMaximumPoolSize(maximumPoolSize);
 		dataSource.setJdbc4ConnectionTest(false);
-		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
+		dataSource.setConnectionTestQuery(connectionTestQuery);
 		
 		return dataSource;
 	}
