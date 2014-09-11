@@ -16,4 +16,8 @@ public interface IAbstractParameterService extends IGenericEntityService<Long, P
 
 	void setDataUpgradeDone(IDataUpgrade upgrade, boolean dateUpgradeDone) throws ServiceException,
 			SecurityServiceException;
+
+	void setParameterMaintenance(boolean value) throws ServiceException, SecurityServiceException;
+
+	boolean isInMaintenance();
 }

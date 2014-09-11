@@ -14,6 +14,7 @@ import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
+import fr.openwide.core.wicket.more.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
@@ -56,6 +57,9 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceSearchMenuItem = new ConsoleMenuItem("maintenanceSearchMenuItem",
 					"console.maintenance.search", "search", ConsoleMaintenanceSearchPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceSearchMenuItem);
+			ConsoleMenuItem maintenanceGestionMenuItem = new ConsoleMenuItem("maintenanceGestionMenuItem",
+					"console.maintenance.gestion", "gestion", ConsoleMaintenanceGestionPage.class);
+			maintenanceMenuSection.addMenuItem(maintenanceGestionMenuItem);
 			ConsoleMenuItem maintenanceEhcacheMenuItem = new ConsoleMenuItem("maintenanceEhcacheMenuItem",
 					"console.maintenance.ehcache", "ehcache", ConsoleMaintenanceEhCachePage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceEhcacheMenuItem);

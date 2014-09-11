@@ -2,11 +2,19 @@ package fr.openwide.core.jpa.more.business.parameter.service;
 
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -25,11 +33,38 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 
 	public static final String PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT = "dataUpgrade.";
 
+	private static final String PARAMETER_MAINTENANCE = "sitra.maintenance";
+
+	private Boolean isInMaintenance;
+
 	private IParameterDao dao;
 
-	public AbstractParameterServiceImpl(IParameterDao dao) {
+	private TransactionTemplate transactionTemplate;
+	
+	public AbstractParameterServiceImpl(IParameterDao dao, PlatformTransactionManager transactionManager) {
 		super(dao);
 		this.dao = dao;
+		
+		DefaultTransactionAttribute transactionAttributes = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		transactionAttributes.setReadOnly(false);
+		transactionTemplate = new TransactionTemplate(transactionManager, transactionAttributes);
+	}
+
+	@PostConstruct
+	public void init() throws ServiceException, SecurityServiceException {
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				try {
+					if (getByName(PARAMETER_MAINTENANCE) == null) {
+						setParameterMaintenance(false);
+					}
+					isInMaintenance = getParameterMaintenance();
+				} catch (Exception e) {
+					LOGGER.error("Erreur lors de l'initialisation de la variable maintenance", e);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -196,5 +231,20 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 	protected String getDataUpgradeParameterPrefix() {
 		// On permet la surcharge pour les applications pré-existantes.
 		return PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT;
+	}
+
+	private boolean getParameterMaintenance() {
+		return getBooleanValue(PARAMETER_MAINTENANCE, false);
+	}
+	
+	@Override
+	public boolean isInMaintenance() {
+		return isInMaintenance;
+	}
+
+	@Override
+	public void setParameterMaintenance(boolean value) throws ServiceException, SecurityServiceException {
+		updateBooleanValue(PARAMETER_MAINTENANCE, value);
+		isInMaintenance = value;
 	}
 }
