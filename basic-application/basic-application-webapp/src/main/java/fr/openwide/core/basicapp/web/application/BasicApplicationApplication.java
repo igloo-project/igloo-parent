@@ -19,10 +19,15 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLe
 import fr.openwide.core.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
+import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
+import fr.openwide.core.wicket.more.console.navigation.page.ConsoleAccessDeniedPage;
+import fr.openwide.core.wicket.more.console.navigation.page.ConsoleLoginFailurePage;
+import fr.openwide.core.wicket.more.console.navigation.page.ConsoleLoginSuccessPage;
+import fr.openwide.core.wicket.more.console.navigation.page.ConsoleSignInPage;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -76,6 +81,15 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/login/", getSignInPageClass());
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
+		
+		// Console sign in
+		mountPage("/console/login/", ConsoleSignInPage.class);
+		mountPage("/console/login/failure/", ConsoleLoginFailurePage.class);
+		mountPage("/console/login/success/", ConsoleLoginSuccessPage.class);
+		mountPage("/console/access-denied/", ConsoleAccessDeniedPage.class);
+		
+		// Maintenance
+		mountPage("/static/maintenance/", MaintenancePage.class);
 		
 		// Administration
 		mountPage("/administration/user/", AdministrationUserPortfolioPage.class);

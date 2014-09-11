@@ -10,13 +10,18 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.flow.RedirectToUrlException;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
+import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.common.template.styles.SignInLessCssResourceReference;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
@@ -29,12 +34,25 @@ public class SignInPage extends CoreWebPage {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SignInPage.class);
 	
+	@SpringBean
+	private BasicApplicationConfigurer configurer;
+
+	@SpringBean
+	private IParameterService parameterService;
+	
+	@SpringBean
+	private IAuthenticationService authenticationService;
+	
 	private FormComponent<String> userNameField;
 	
 	private FormComponent<String> passwordField;
 	
 	public SignInPage() {
 		super();
+		
+		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole()) {
+			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
+		}
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		

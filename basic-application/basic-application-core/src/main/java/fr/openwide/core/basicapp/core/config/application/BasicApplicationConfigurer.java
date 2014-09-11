@@ -14,4 +14,8 @@ public class BasicApplicationConfigurer extends CoreConfigurer {
 	public Environment getEnvironment() {
 		return getPropertyAsEnum("environment", Environment.class, Environment.production);
 	}
+	
+	public String getMaintenanceUrl() {
+		return getPropertyAsString("maintenance.url");
+	}
 }

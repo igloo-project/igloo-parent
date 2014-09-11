@@ -19,11 +19,13 @@ import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.ImmutableList;
 
+import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
@@ -31,6 +33,7 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
@@ -52,8 +55,18 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
 
+	@SpringBean
+	private IParameterService parameterService;
+	
+	@SpringBean
+	private IAuthenticationService authenticationService;
+	
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
+		
+		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole()) {
+			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
+		}
 		
 		add(new TransparentWebMarkupContainer("htmlRootElement")
 				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
