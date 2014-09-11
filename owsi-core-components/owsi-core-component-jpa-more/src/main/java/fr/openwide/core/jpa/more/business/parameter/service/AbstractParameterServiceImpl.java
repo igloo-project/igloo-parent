@@ -33,7 +33,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 
 	public static final String PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT = "dataUpgrade.";
 
-	private static final String PARAMETER_MAINTENANCE = "sitra.maintenance";
+	private static final String PARAMETER_MAINTENANCE = "maintenance";
 
 	private Boolean isInMaintenance;
 
