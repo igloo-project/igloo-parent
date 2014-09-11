@@ -80,6 +80,8 @@
 		<owsi-core.jta.version>1.1</owsi-core.jta.version>
 		<owsi-core.javax-mail.version>1.4.5</owsi-core.javax-mail.version>
 		
+		<owsi-core.xml-apis.version>1.4.01</owsi-core.xml-apis.version>
+		
 		<owsi-core.slf4j.version>1.7.7</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
@@ -632,6 +634,12 @@
 				</dependency>
 				
 				<dependency>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+					<version>${owsi-core.xml-apis.version}</version>
+				</dependency>
+				
+				<dependency>
 					<groupId>org.freemarker</groupId>
 					<artifactId>freemarker</artifactId>
 					<version>${owsi-core.freemarker.version}</version>
@@ -1059,7 +1067,6 @@
 										<exclude>rhino:rhino</exclude>
 										<exclude>rhino:js</exclude>
 										<exclude>javassist:javassist</exclude>
-										<exclude>xml-apis:xml-apis</exclude>
 										<exclude>apache-xerces:xml-apis</exclude>
 										<exclude>javax.servlet:servlet-api</exclude>
 										<exclude>net.sf.ehcache:ehcache-core</exclude>
