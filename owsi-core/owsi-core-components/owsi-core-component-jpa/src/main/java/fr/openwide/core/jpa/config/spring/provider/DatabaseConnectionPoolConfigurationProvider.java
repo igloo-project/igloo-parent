@@ -27,6 +27,9 @@ public class DatabaseConnectionPoolConfigurationProvider implements IDatabaseCon
 	@Value("${${db.type}.db.preferredTestQuery}")
 	private String validationQuery;
 
+	@Value("${db.initSql}")
+	private String initSql;
+
 	@Override
 	public Class<Driver> getDriverClass() {
 		return driverClass;
@@ -60,6 +63,11 @@ public class DatabaseConnectionPoolConfigurationProvider implements IDatabaseCon
 	@Override
 	public String getValidationQuery() {
 		return validationQuery;
+	}
+
+	@Override
+	public String getInitSql() {
+		return initSql;
 	}
 
 }

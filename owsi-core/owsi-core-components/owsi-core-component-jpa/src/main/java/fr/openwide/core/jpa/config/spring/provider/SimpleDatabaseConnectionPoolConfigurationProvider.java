@@ -18,6 +18,8 @@ public class SimpleDatabaseConnectionPoolConfigurationProvider implements IDatab
 
 	private String validationQuery;
 
+	private String initSql;
+
 	@Override
 	public Class<Driver> getDriverClass() {
 		return driverClass;
@@ -85,6 +87,16 @@ public class SimpleDatabaseConnectionPoolConfigurationProvider implements IDatab
 
 	public SimpleDatabaseConnectionPoolConfigurationProvider setValidationQuery(String validationQuery) {
 		this.validationQuery = validationQuery;
+		return this;
+	}
+
+	@Override
+	public String getInitSql() {
+		return initSql;
+	}
+
+	public SimpleDatabaseConnectionPoolConfigurationProvider setInitSql(String initSql) {
+		this.initSql = initSql;
 		return this;
 	}
 
