@@ -18,4 +18,6 @@ public interface IDatabaseConnectionPoolConfigurationProvider {
 
 	String getValidationQuery();
 
+	String getInitSql();
+
 }

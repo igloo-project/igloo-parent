@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.config.spring;
 
+import static com.impossibl.postgres.utils.guava.Strings.emptyToNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -231,6 +233,7 @@ public final class JpaConfigUtils {
 		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
 		dataSource.setJdbc4ConnectionTest(false);
 		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
+		dataSource.setConnectionInitSql(emptyToNull(configurationProvider.getInitSql()));
 		
 		return dataSource;
 	}
