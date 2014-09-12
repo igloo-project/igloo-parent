@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -39,19 +40,20 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 
 	private IParameterDao dao;
 
-	private TransactionTemplate transactionTemplate;
+	@Autowired
+	private PlatformTransactionManager transactionManager;
 	
-	public AbstractParameterServiceImpl(IParameterDao dao, PlatformTransactionManager transactionManager) {
+	public AbstractParameterServiceImpl(IParameterDao dao) {
 		super(dao);
 		this.dao = dao;
-		
-		DefaultTransactionAttribute transactionAttributes = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		transactionAttributes.setReadOnly(false);
-		transactionTemplate = new TransactionTemplate(transactionManager, transactionAttributes);
 	}
 
 	@PostConstruct
 	public void init() throws ServiceException, SecurityServiceException {
+		DefaultTransactionAttribute transactionAttributes = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		transactionAttributes.setReadOnly(false);
+		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager, transactionAttributes);
+		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
