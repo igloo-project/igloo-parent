@@ -4,7 +4,7 @@ import java.sql.Driver;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public class DatabaseConnectionPoolConfigurationProvider {
+public class DatabaseConnectionPoolConfigurationProvider implements IDatabaseConnectionPoolConfigurationProvider {
 
 	@Value("${${db.type}.db.driverClass}")
 	private Class<Driver> driverClass;
@@ -27,30 +27,37 @@ public class DatabaseConnectionPoolConfigurationProvider {
 	@Value("${${db.type}.db.preferredTestQuery}")
 	private String validationQuery;
 
+	@Override
 	public Class<Driver> getDriverClass() {
 		return driverClass;
 	}
 
+	@Override
 	public String getUrl() {
 		return url;
 	}
 
+	@Override
 	public String getUser() {
 		return user;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
 
+	@Override
 	public int getMinIdle() {
 		return minIdle;
 	}
 
+	@Override
 	public int getMaxPoolSize() {
 		return maxPoolSize;
 	}
 
+	@Override
 	public String getValidationQuery() {
 		return validationQuery;
 	}

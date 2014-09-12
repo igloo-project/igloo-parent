@@ -1,6 +1,5 @@
 package fr.openwide.core.jpa.config.spring;
 
-import java.sql.Driver;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -35,8 +34,8 @@ import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
-import fr.openwide.core.jpa.config.spring.provider.DatabaseConnectionPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
+import fr.openwide.core.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.util.FixedDefaultComponentSafeNamingStrategy;
@@ -219,27 +218,19 @@ public final class JpaConfigUtils {
 		return transactionInterceptor;
 	}
 
-	public static DataSource dataSource(DatabaseConnectionPoolConfigurationProvider configurationProvider) {
-		return dataSource(configurationProvider.getDriverClass(), configurationProvider.getUrl(),
-				configurationProvider.getUser(), configurationProvider.getPassword(),
-				configurationProvider.getMinIdle(), configurationProvider.getMaxPoolSize(),
-				configurationProvider.getValidationQuery());
-	}
-
-	public static DataSource dataSource(Class<Driver> driverClass, String jdbcUrl, String username, String password,
-			int minimumIdle, int maximumPoolSize, String connectionTestQuery) {
-		
+	public static DataSource dataSource(IDatabaseConnectionPoolConfigurationProvider configurationProvider) {
 		HikariDataSource dataSource = new HikariDataSource();
-		dataSource.setDriverClassName(driverClass.getName());
-		dataSource.setJdbcUrl(jdbcUrl);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		dataSource.addDataSourceProperty("user", username);
-		dataSource.addDataSourceProperty("password", password);
-		dataSource.setMinimumIdle(minimumIdle);
-		dataSource.setMaximumPoolSize(maximumPoolSize);
+		
+		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
+		dataSource.setJdbcUrl(configurationProvider.getUrl());
+		dataSource.setUsername(configurationProvider.getUser());
+		dataSource.setPassword(configurationProvider.getPassword());
+		dataSource.addDataSourceProperty("user", configurationProvider.getUser());
+		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
+		dataSource.setMinimumIdle(configurationProvider.getMinIdle());
+		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
 		dataSource.setJdbc4ConnectionTest(false);
-		dataSource.setConnectionTestQuery(connectionTestQuery);
+		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
 		
 		return dataSource;
 	}
