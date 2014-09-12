@@ -37,6 +37,9 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 
 		@SuppressWarnings("unchecked")
 		T other = (T) object;
+		if (value == null && other.getValue() == null) {
+			return true;
+		}
 		return value.equals(other.getValue());
 	}
 	
