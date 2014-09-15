@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.wicket.Application;
@@ -13,6 +15,9 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.head.PriorityFirstComparator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
@@ -28,6 +33,7 @@ import org.springframework.context.ApplicationContext;
 
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.more.application.servlet.CoreWicketServletWebResponse;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
@@ -71,6 +77,14 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	public CoreWicketApplication() {
 		super();
+	}
+	
+	/**
+	 * Fix temporaire du problème d'encodage des ancres des Url par Wicket.
+	 */
+	@Override
+	protected WebResponse newWebResponse(WebRequest webRequest, HttpServletResponse httpServletResponse) {
+		return new CoreWicketServletWebResponse((ServletWebRequest)webRequest, httpServletResponse);
 	}
 	
 	@Override
