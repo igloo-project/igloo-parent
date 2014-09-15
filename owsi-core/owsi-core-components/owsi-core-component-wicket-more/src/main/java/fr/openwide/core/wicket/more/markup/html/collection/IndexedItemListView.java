@@ -10,7 +10,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 
-import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
 
 import fr.openwide.core.wicket.more.markup.html.model.ListItemModel;
