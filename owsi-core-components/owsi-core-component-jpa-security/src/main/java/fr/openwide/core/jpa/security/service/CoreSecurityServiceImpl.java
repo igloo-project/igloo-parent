@@ -12,6 +12,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
 import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -183,12 +184,16 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	protected Authentication getAuthentication(String userName) {
-		UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-
-		Authentication authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
-				"no-credentials", userDetails.getAuthorities(), UsernamePasswordAuthenticationToken.class);
-		
-		return authentication;
+		try {
+			UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+			
+			Authentication authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
+					"no-credentials", userDetails.getAuthorities(), UsernamePasswordAuthenticationToken.class);
+			
+			return authentication;
+		} catch (DisabledException e) {
+			return null;
+		}
 	}
 
 	@Override
