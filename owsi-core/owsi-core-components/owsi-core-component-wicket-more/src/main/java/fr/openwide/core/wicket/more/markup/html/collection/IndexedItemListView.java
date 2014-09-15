@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.collection;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public abstract class IndexedItemListView<T>
 	protected Iterator<IModel<T>> getItemModels(final long offset, final long size) {
 		final List<T> list = getModelObject();
 		if (list == null) {
-			return Iterators.emptyIterator();
+			return Collections.emptyIterator();
 		}
 		
 		return new UnmodifiableIterator<IModel<T>>() {

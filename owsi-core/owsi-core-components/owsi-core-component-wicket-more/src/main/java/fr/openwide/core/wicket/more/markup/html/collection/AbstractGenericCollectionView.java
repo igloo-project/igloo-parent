@@ -8,8 +8,6 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.markup.repeater.util.ModelIteratorAdapter;
 import org.apache.wicket.model.IModel;
 
-import com.google.common.collect.Iterators;
-
 public abstract class AbstractGenericCollectionView<T, C extends Collection<? extends T>>
 		extends RefreshingView<T> { // Does not implement IGenericComponent<C> in order to allow using IModel<? extends C>, not only IModel<C>
 
@@ -36,7 +34,7 @@ public abstract class AbstractGenericCollectionView<T, C extends Collection<? ex
 	protected final Iterator<IModel<T>> getItemModels() {
 		C collection = getModelObject();
 		if (collection == null) {
-			return Iterators.emptyIterator();
+			return Collections.emptyIterator();
 		}
 		
 		Collection<T> collectionWithoutTypeWildcard = Collections.unmodifiableCollection(getModelObject());
