@@ -49,7 +49,7 @@ public class CoreWicketServletWebResponse extends ServletWebResponse {
 			anchor = "";
 		} else {
 			urlWithoutAnchor = urlStr.substring(0, anchorAt);
-			anchor = urlStr.substring(anchorAt + 1);
+			anchor = urlStr.substring(anchorAt);
 		}
 
 		UrlRenderer urlRenderer = getUrlRenderer();
