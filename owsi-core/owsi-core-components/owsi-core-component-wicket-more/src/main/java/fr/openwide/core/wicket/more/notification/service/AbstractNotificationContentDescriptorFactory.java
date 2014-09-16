@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import org.apache.http.util.Args;
 import org.apache.wicket.Component;
-import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
@@ -55,21 +54,29 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 			this.messageKeyRoot = messageKeyRoot;
 		}
 
+		public String getMessageKeyRoot() {
+			return messageKeyRoot;
+		}
+
 		@Override
 		public final String renderSubject(Locale locale) {
 			return AbstractNotificationContentDescriptorFactory.this.renderString(
-					messageKeyRoot + ".subject", locale,
-					getSubjectModelParameter(),
+					getSubjectMessageKey(), locale,
+					getSubjectParameter(),
 					(Object[]) Iterables.toArray(getSubjectPositionalParameters(), Object.class)
 			);
 		}
 		
-		protected IModel<?> getSubjectModelParameter() {
+		protected Object getSubjectParameter() {
 			return null;
 		}
 		
 		protected Iterable<?> getSubjectPositionalParameters() {
 			return ImmutableList.of();
+		}
+		
+		protected String getSubjectMessageKey() {
+			return getMessageKeyRoot() + ".subject";
 		}
 	}
 
