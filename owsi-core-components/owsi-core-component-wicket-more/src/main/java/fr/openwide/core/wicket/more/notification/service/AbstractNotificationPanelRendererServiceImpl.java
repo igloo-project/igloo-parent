@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.core.util.string.ComponentRenderer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Args;
@@ -71,7 +72,7 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 		}
 	}
 	
-	protected String renderString(String messageKey, Locale locale, IModel<?> modelParameter, Object ... positionalParameters) {
+	protected String renderString(String messageKey, Locale locale, final Object parameter, Object ... positionalParameters) {
 		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
 		
 		try {
@@ -82,6 +83,19 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 			Locale oldLocale = session.getLocale();
 			if (locale != null) {
 				session.setLocale(configurer.toAvailableLocale(locale));
+			}
+			
+			IModel<?> modelParameter;
+			if (parameter instanceof IModel) {
+				modelParameter = (IModel<?>) parameter;
+			} else {
+				modelParameter = new AbstractReadOnlyModel<Object>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Object getObject() {
+						return parameter;
+					}
+				};
 			}
 			
 			String result = new StringResourceModel(messageKey, null, modelParameter, (Object[]) positionalParameters).getObject();
