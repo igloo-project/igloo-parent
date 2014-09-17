@@ -31,7 +31,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl extends Ab
 		final IModel<User> userModel = GenericEntityModel.of(user);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.example") {
 			@Override
-			public IModel<?> getSubjectModelParameter() {
+			public Object getSubjectParameter() {
 				return userModel;
 			}
 			@Override
