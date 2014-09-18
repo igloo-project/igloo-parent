@@ -3,8 +3,7 @@ package fr.openwide.core.basicapp.core.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
+import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.test.config.spring.BasicApplicationCoreTestCommonConfig;
@@ -26,7 +25,10 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	
 	@Autowired
 	protected IAuthorityService authorityService;
-
+	
+	@Autowired
+	protected IParameterService parameterService;
+	
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
@@ -35,27 +37,10 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanUsers();
-		cleanUserGroups();
-		cleanAuthorities();
-	}
-
-	protected void cleanUsers() throws ServiceException, SecurityServiceException {
-		for (User user : userService.list()) {
-			userService.delete(user);
-		}
-	}
-
-	protected void cleanUserGroups() throws ServiceException, SecurityServiceException {
-		for (UserGroup userGroup : userGroupService.list()) {
-			userGroupService.delete(userGroup);
-		}
-	}
-
-	protected void cleanAuthorities() throws ServiceException, SecurityServiceException {
-		for (Authority authority : authorityService.list()) {
-			authorityService.delete(authority);
-		}
+		cleanEntities(userService);
+		cleanEntities(userGroupService);
+		cleanEntities(authorityService);
+		cleanEntities(parameterService);
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {
