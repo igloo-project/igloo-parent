@@ -1,7 +1,5 @@
 package fr.openwide.core.test;
 
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,32 +80,11 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		super.close();
 	}
 
-	protected void cleanMockPersons() throws ServiceException, SecurityServiceException {
-		List<MockUser> mockPersons = mockUserService.list();
-		for (MockUser person : mockPersons) {
-			mockUserService.delete(person);
-		}
-	}
-
-	protected void cleanMockPersonGroups() throws ServiceException, SecurityServiceException {
-		List<MockUserGroup> mockPersonGroups = mockUserGroupService.list();
-		for (MockUserGroup mockPersonGroup : mockPersonGroups) {
-			mockUserGroupService.delete(mockPersonGroup);
-		}
-	}
-
-	protected void cleanAuthorities() throws ServiceException, SecurityServiceException {
-		List<Authority> authorities = authorityService.list();
-		for (Authority authority : authorities) {
-			authorityService.delete(authority);
-		}
-	}
-
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanMockPersons();
-		cleanMockPersonGroups();
-		cleanAuthorities();
+		cleanEntities(mockUserService);
+		cleanEntities(mockUserGroupService);
+		cleanEntities(authorityService);
 	}
 
 	protected MockUser createMockPerson(String userName, String firstName, String lastName) throws ServiceException, SecurityServiceException {
