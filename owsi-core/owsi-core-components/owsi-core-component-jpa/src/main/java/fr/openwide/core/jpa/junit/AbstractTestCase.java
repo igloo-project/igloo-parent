@@ -41,7 +41,7 @@ public abstract class AbstractTestCase {
 	
 	protected abstract void cleanAll() throws ServiceException, SecurityServiceException;
 	
-	protected <E extends GenericEntity<?, ? super E>> void cleanEntities(IGenericEntityService<?, E> service) throws ServiceException, SecurityServiceException {
+	protected static <E extends GenericEntity<?, ? super E>> void cleanEntities(IGenericEntityService<?, E> service) throws ServiceException, SecurityServiceException {
 		for (E entity : service.list()) {
 			service.delete(entity);
 		}
