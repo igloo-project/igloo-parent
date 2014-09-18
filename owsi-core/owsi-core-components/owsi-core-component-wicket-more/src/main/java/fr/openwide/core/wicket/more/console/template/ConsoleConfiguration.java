@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.console.template;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -9,6 +10,7 @@ import org.apache.wicket.request.UrlUtils;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
@@ -34,7 +36,7 @@ public final class ConsoleConfiguration {
 	
 	private String consolePageTitleKey;
 	
-	private LessCssResourceReference lessCssResourceReference;
+	private Set<LessCssResourceReference> lessCssResourcesReferences = Sets.newLinkedHashSet();
 	
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
@@ -76,7 +78,7 @@ public final class ConsoleConfiguration {
 			maintenanceMenuSection.addMenuItem(maintenanceTasksMenuItem);
 
 			INSTANCE.addMenuSection(maintenanceMenuSection);
-			INSTANCE.setLessCssResourceReference(ConsoleLessCssResourceReference.get());
+			INSTANCE.addLessCssResourceReference(ConsoleLessCssResourceReference.get());
 		}
 		
 		return INSTANCE;
@@ -138,12 +140,12 @@ public final class ConsoleConfiguration {
 		this.consolePageTitleKey = consolePageTitleKey;
 	}
 
-	public LessCssResourceReference getLessCssResourceReference() {
-		return lessCssResourceReference;
+	public Set<LessCssResourceReference> getLessCssResourcesReferences() {
+		return lessCssResourcesReferences;
 	}
 
-	public void setLessCssResourceReference(LessCssResourceReference lessCssResourceReference) {
-		this.lessCssResourceReference = lessCssResourceReference;
+	public boolean addLessCssResourceReference(LessCssResourceReference lessCssResourceReference) {
+		return lessCssResourcesReferences.add(lessCssResourceReference);
 	}
 
 	private ConsoleConfiguration() {

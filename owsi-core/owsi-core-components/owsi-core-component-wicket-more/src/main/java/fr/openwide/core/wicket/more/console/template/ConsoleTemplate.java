@@ -45,8 +45,6 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 	
 	private List<String> headPageTitleKeys = Lists.newArrayList();
 	
-	private LessCssResourceReference lessCssResourceReference;
-	
 	public ConsoleTemplate(PageParameters parameters) {
 		super(parameters);
 		
@@ -117,10 +115,9 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		if (lessCssResourceReference == null) {
-			lessCssResourceReference = ConsoleConfiguration.get().getLessCssResourceReference();
+		for (LessCssResourceReference lessCssResourceReference : ConsoleConfiguration.get().getLessCssResourcesReferences()) {
+			response.render(CssHeaderItem.forReference(lessCssResourceReference));
 		}
-		response.render(CssHeaderItem.forReference(lessCssResourceReference));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
 	}
