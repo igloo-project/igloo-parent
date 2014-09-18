@@ -1,7 +1,5 @@
 package fr.openwide.jpa.test;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -55,32 +53,11 @@ public abstract class AbstractJpaTestCase extends AbstractTestCase {
 		
 		return project;
 	}
-	
-	protected void cleanCompanies() throws ServiceException, SecurityServiceException {
-		List<Company> companies = companyService.list();
-		for (Company company : companies) {
-			companyService.delete(company);
-		}
-	}
-	
-	protected void cleanPersons() throws ServiceException, SecurityServiceException {
-		List<Person> persons = personService.list();
-		for (Person person : persons) {
-			personService.delete(person);
-		}
-	}
-	
-	protected void cleanProjects() throws ServiceException, SecurityServiceException {
-		List<Project> projects = projectService.list();
-		for (Project project : projects) {
-			projectService.delete(project);
-		}
-	}
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanProjects();
-		cleanCompanies();
-		cleanPersons();
+		cleanEntities(projectService);
+		cleanEntities(companyService);
+		cleanEntities(personService);
 	}
 }

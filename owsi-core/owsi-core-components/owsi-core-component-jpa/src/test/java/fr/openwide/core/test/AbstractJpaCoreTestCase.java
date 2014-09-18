@@ -17,8 +17,6 @@
 
 package fr.openwide.core.test;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -27,10 +25,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.test.config.spring.JpaTestConfig;
-import fr.openwide.core.test.jpa.example.business.label.model.Label;
 import fr.openwide.core.test.jpa.example.business.label.service.LabelService;
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
-import fr.openwide.core.test.jpa.example.business.person.model.PersonReference;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonReferenceService;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
@@ -48,32 +43,11 @@ public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 	
 	@Autowired
 	protected LabelService labelService;
-	
-	protected void cleanPersonReferences() throws ServiceException, SecurityServiceException {
-		List<PersonReference> persons = personReferenceService.list();
-		for (PersonReference person : persons) {
-			personReferenceService.delete(person);
-		}
-	}
-	
-	protected void cleanPersons() throws ServiceException, SecurityServiceException {
-		List<Person> persons = personService.list();
-		for (Person person : persons) {
-			personService.delete(person);
-		}
-	}
-	
-	protected void cleanLabels() throws ServiceException, SecurityServiceException {
-		List<Label> labels = labelService.list();
-		for (Label label : labels) {
-			labelService.delete(label);
-		}
-	}
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanPersonReferences();
-		cleanPersons();
-		cleanLabels();
+		cleanEntities(personReferenceService);
+		cleanEntities(personService);
+		cleanEntities(labelService);
 	}
 }
