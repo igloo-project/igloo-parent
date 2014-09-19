@@ -128,39 +128,39 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		return new TableContext(sheet, navigator, eventHandler);
 	}
 	
-	public final class TableContext extends TableImportLocationContext implements Iterable<RowContext> {
+	public class TableContext extends TableImportLocationContext implements Iterable<RowContext> {
 		
-		private final TTable sheet;
+		private final TTable table;
 		private final ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator;
 		private final ITableImportEventHandler eventHandler;
 		
 		private final Map<Column<?>, IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, ?>> mappings;
 		
-		private TableContext(TTable sheet, ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator, ITableImportEventHandler eventHandler)
+		private TableContext(TTable table, ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator, ITableImportEventHandler eventHandler)
 				throws TableImportMappingException {
 			super(eventHandler);
-			Validate.notNull(sheet);
+			Validate.notNull(table);
 			
-			this.sheet = sheet;
+			this.table = table;
 			this.navigator = navigator;
 			this.eventHandler = eventHandler;
 
 			Map<Column<?>, IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, ?>> mutableMappings = Maps.newHashMap();
 			for (Column<?> columnDefinition : columns) {
-				mutableMappings.put(columnDefinition, columnDefinition.map(sheet, navigator, eventHandler));
+				mutableMappings.put(columnDefinition, columnDefinition.map(table, navigator, eventHandler));
 			}
 			this.mappings = Collections.unmodifiableMap(mutableMappings);
 			
 			this.eventHandler.checkNoMappingErrorOccurred();
 		}
 		
-		public TTable getSheet() {
-			return sheet;
+		public TTable getTable() {
+			return table;
 		}
 		
 		@Override
 		public Iterator<RowContext> iterator() {
-			return toRowContexts(navigator.rows(sheet));
+			return toRowContexts(navigator.rows(table));
 		}
 		
 		protected Iterator<RowContext> toRowContexts(Iterator<TRow> rows) {
@@ -176,7 +176,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 			return new Iterable<RowContext>() {
 				@Override
 				public Iterator<RowContext> iterator() {
-					return toRowContexts(navigator.nonEmptyRows(sheet));
+					return toRowContexts(navigator.nonEmptyRows(table));
 				}
 			};
 		}
@@ -210,7 +210,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		 */
 		@Override
 		public TableImportLocation getLocation() {
-			return navigator.getLocation(sheet, null, null);
+			return navigator.getLocation(table, null, null);
 		}
 		
 		public void event(ExcelImportErrorEvent event, String message, TRow row, Object ... args) throws TableImportContentException {
@@ -222,11 +222,17 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		}
 		
 		public void event(ExcelImportErrorEvent event, String message, TRow row, TCellReference cellReference, Object ... args) throws TableImportContentException {
-			eventHandler.event(event, navigator.getLocation(sheet, row, cellReference), message, (Object[])args);
+			eventHandler.event(event, navigator.getLocation(table, row, cellReference), message, (Object[])args);
 		}
 		
 		public void event(ExcelImportInfoEvent event, String message, TRow row, TCellReference cellReference, Object ... args) {
-			eventHandler.event(event, navigator.getLocation(sheet, row, cellReference), message, (Object[])args);
+			eventHandler.event(event, navigator.getLocation(table, row, cellReference), message, (Object[])args);
+		}
+	}
+	
+	public final class SheetContext extends TableContext {
+		public TTable getSheet() {
+			return getTable();
 		}
 	}
 	
@@ -254,7 +260,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		 */
 		@Override
 		public TableImportLocation getLocation() {
-			return sheetContext.navigator.getLocation(sheetContext.sheet, row, null);
+			return sheetContext.navigator.getLocation(sheetContext.table, row, null);
 		}
 		
 		public void event(ExcelImportErrorEvent event, String message, TCellReference cellReference, Object ... args) throws TableImportContentException {
@@ -338,7 +344,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		 */
 		@Override
 		public TableImportLocation getLocation() {
-			return rowContext.sheetContext.navigator.getLocation(rowContext.sheetContext.sheet, rowContext.row, mappedColumn.getCellReference(rowContext.row));
+			return rowContext.sheetContext.navigator.getLocation(rowContext.sheetContext.table, rowContext.row, mappedColumn.getCellReference(rowContext.row));
 		}
 	}
 }
