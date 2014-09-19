@@ -119,14 +119,24 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	@Deprecated
 	@Override
 	public IAjaxConfirmLinkBuilderStepTerminal<O> onClick(final SerializableFunction<AjaxRequestTarget, Void> onClick) {
-		this.onClick = new AjaxResponseAction() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void execute(AjaxRequestTarget target) {
-				onClick.apply(target);
-			}
-		};
+		this.onClick = new FunctionAjaxResponseAction(onClick);
 		return this;
+	}
+	
+	private static final class FunctionAjaxResponseAction extends AjaxResponseAction {
+		private static final long serialVersionUID = 1L;
+		
+		private final SerializableFunction<AjaxRequestTarget, Void> function;
+		
+		public FunctionAjaxResponseAction(SerializableFunction<AjaxRequestTarget, Void> function) {
+			super();
+			this.function = function;
+		}
+		
+		@Override
+		public void execute(AjaxRequestTarget target) {
+			function.apply(target);
+		}
 	}
 
 	@Override
