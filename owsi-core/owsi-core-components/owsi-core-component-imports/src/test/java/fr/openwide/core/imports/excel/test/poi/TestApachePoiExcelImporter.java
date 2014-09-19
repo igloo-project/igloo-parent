@@ -20,16 +20,16 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.imports.excel.event.ExcelImportNonFatalErrorHandling;
-import fr.openwide.core.imports.excel.event.IExcelImportEventHandler;
-import fr.openwide.core.imports.excel.event.LoggerExcelImportEventHandler;
-import fr.openwide.core.imports.excel.event.exception.ExcelImportException;
-import fr.openwide.core.imports.excel.location.IExcelImportNavigator;
-import fr.openwide.core.imports.excel.mapping.column.builder.MappingConstraint;
-import fr.openwide.core.imports.excel.poi.mapping.ApachePoiImportColumnSet;
-import fr.openwide.core.imports.excel.poi.scanner.ApachePoiExcelImportFileScanner;
-import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.IExcelImportFileVisitor;
-import fr.openwide.core.imports.excel.scanner.IExcelImportFileScanner.SheetSelection;
+import fr.openwide.core.imports.table.apache.poi.mapping.ApachePoiImportColumnSet;
+import fr.openwide.core.imports.table.apache.poi.scanner.ApachePoiImportFileScanner;
+import fr.openwide.core.imports.table.common.event.ITableImportEventHandler;
+import fr.openwide.core.imports.table.common.event.LoggerTableImportEventHandler;
+import fr.openwide.core.imports.table.common.event.TableImportNonFatalErrorHandling;
+import fr.openwide.core.imports.table.common.event.exception.TableImportException;
+import fr.openwide.core.imports.table.common.excel.scanner.IExcelImportFileScanner.IExcelImportFileVisitor;
+import fr.openwide.core.imports.table.common.excel.scanner.IExcelImportFileScanner.SheetSelection;
+import fr.openwide.core.imports.table.common.location.ITableImportNavigator;
+import fr.openwide.core.imports.table.common.mapping.column.builder.MappingConstraint;
 
 public class TestApachePoiExcelImporter {
 	
@@ -49,18 +49,18 @@ public class TestApachePoiExcelImporter {
 	}
 
 	private static final Columns COLUMNS = new Columns();
-	private static final ApachePoiExcelImportFileScanner SCANNER = new ApachePoiExcelImportFileScanner();
+	private static final ApachePoiImportFileScanner SCANNER = new ApachePoiImportFileScanner();
 
-	public List<Quartet<Date, Boolean, String, Integer>> doImport(InputStream stream, String filename) throws ExcelImportException {
+	public List<Quartet<Date, Boolean, String, Integer>> doImport(InputStream stream, String filename) throws TableImportException {
 		final List<Quartet<Date, Boolean, String, Integer>> results = Lists.newArrayList();
 		
 		SCANNER.scan(stream, filename, SheetSelection.ALL, new IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference>() {
 			@Override
-			public void visitSheet(IExcelImportNavigator<Sheet, Row, Cell, CellReference> navigator, Workbook workbook, Sheet sheet)
-					throws ExcelImportException {
-				IExcelImportEventHandler eventHandler = new LoggerExcelImportEventHandler(ExcelImportNonFatalErrorHandling.THROW_IMMEDIATELY, LOGGER);
+			public void visitSheet(ITableImportNavigator<Sheet, Row, Cell, CellReference> navigator, Workbook workbook, Sheet sheet)
+					throws TableImportException {
+				ITableImportEventHandler eventHandler = new LoggerTableImportEventHandler(TableImportNonFatalErrorHandling.THROW_IMMEDIATELY, LOGGER);
 				
-				Columns.SheetContext sheetContext = COLUMNS.map(sheet, navigator, eventHandler);
+				Columns.TableContext sheetContext = COLUMNS.map(sheet, navigator, eventHandler);
 				
 				assertTrue(sheetContext.column(COLUMNS.dateColumn).exists());
 				assertTrue(sheetContext.column(COLUMNS.integerColumn).exists());

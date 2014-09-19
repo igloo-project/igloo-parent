@@ -13,12 +13,12 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.imports.excel.event.exception.ExcelImportException;
+import fr.openwide.core.imports.table.common.event.exception.TableImportException;
 
 public class ApachePoiExcelImportTest {
 	
 	@Test
-	public void testSuccess() throws ExcelImportException {
+	public void testSuccess() throws TableImportException {
 		InputStream stream = ApachePoiExcelImportTest.class.getResourceAsStream("/wellFormattedFile.xlsx");
 		TestApachePoiExcelImporter importer = new TestApachePoiExcelImporter();
 		
