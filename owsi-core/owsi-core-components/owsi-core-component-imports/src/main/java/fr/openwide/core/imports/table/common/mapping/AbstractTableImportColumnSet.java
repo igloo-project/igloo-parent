@@ -230,29 +230,23 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		}
 	}
 	
-	public final class SheetContext extends TableContext {
-		public TTable getSheet() {
-			return getTable();
-		}
-	}
-	
 	public final class RowContext extends TableImportLocationContext {
 		
-		private final TableContext sheetContext;
+		private final TableContext tableContext;
 		private final TRow row;
 
 		private RowContext(TableContext sheetContext, TRow row) {
 			super(sheetContext.eventHandler);
-			this.sheetContext = sheetContext;
+			this.tableContext = sheetContext;
 			this.row = row;
 		}
 		
 		public boolean hasContent() {
-			return sheetContext.navigator.rowHasContent(row);
+			return tableContext.navigator.rowHasContent(row);
 		}
 
 		public <TValue> CellContext<TValue> cell(Column<TValue> columnDefinition) {
-			return new CellContext<>(this, sheetContext.getMappedColumn(columnDefinition));
+			return new CellContext<>(this, tableContext.getMappedColumn(columnDefinition));
 		}
 		
 		/**
@@ -260,35 +254,35 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		 */
 		@Override
 		public TableImportLocation getLocation() {
-			return sheetContext.navigator.getLocation(sheetContext.table, row, null);
+			return tableContext.navigator.getLocation(tableContext.table, row, null);
 		}
 		
 		public void event(ExcelImportErrorEvent event, String message, TCellReference cellReference, Object ... args) throws TableImportContentException {
-			sheetContext.event(event, message, row, cellReference, (Object[])args);
+			tableContext.event(event, message, row, cellReference, (Object[])args);
 		}
 		
 		public void event(ExcelImportInfoEvent event, String message, TCellReference cellReference, Object ... args) {
-			sheetContext.event(event, message, row, cellReference, (Object[])args);
+			tableContext.event(event, message, row, cellReference, (Object[])args);
 		}
 	}
 	
 	public final class ColumnContext<TValue> {
 		
-		private final TableContext sheetContext;
+		private final TableContext tableContext;
 		private final Column<TValue> columnDefinition;
 
 		private ColumnContext(TableContext sheetContext, Column<TValue> columnDefinition) {
 			super();
-			this.sheetContext = sheetContext;
+			this.tableContext = sheetContext;
 			this.columnDefinition = columnDefinition;
 		}
 
 		public CellContext<TValue> cell(TRow row) {
-			return sheetContext.row(row).cell(columnDefinition);
+			return tableContext.row(row).cell(columnDefinition);
 		}
 		
 		public boolean exists() {
-			return sheetContext.getMappedColumn(columnDefinition).isBound();
+			return tableContext.getMappedColumn(columnDefinition).isBound();
 		}
 	}
 	
@@ -298,7 +292,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		private final IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, T> mappedColumn;
 
 		private CellContext(RowContext rowContext, IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, T> mappedColumn) {
-			super(rowContext.sheetContext.eventHandler);
+			super(rowContext.tableContext.eventHandler);
 			this.rowContext = rowContext;
 			this.mappedColumn = mappedColumn;
 		}
@@ -344,7 +338,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		 */
 		@Override
 		public TableImportLocation getLocation() {
-			return rowContext.sheetContext.navigator.getLocation(rowContext.sheetContext.table, rowContext.row, mappedColumn.getCellReference(rowContext.row));
+			return rowContext.tableContext.navigator.getLocation(rowContext.tableContext.table, rowContext.row, mappedColumn.getCellReference(rowContext.row));
 		}
 	}
 }
