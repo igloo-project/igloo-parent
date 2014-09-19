@@ -6,6 +6,14 @@ import com.google.common.base.Function;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 
+/**
+ * A value that must be stored as a primitive type, but has a strong business significance and must thus be
+ * represented differently in business code.
+ * 
+ * @see AbstractImmutableMaterializedPrimitiveValueUserType
+ * @see AbstractImmutableMaterializedStringValueUserType
+ * @see AbstractImmutableMaterializedIntegerValueUserType
+ */
 public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMaterializedPrimitiveValue<P, T>> implements Serializable {
 	
 	private static final long serialVersionUID = 1388663091843463782L;
@@ -37,9 +45,8 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 
 		@SuppressWarnings("unchecked")
 		T other = (T) object;
-		if (value == null && other.getValue() == null) {
-			return true;
-		}
+		
+		// "value" may not be null (see constructor)
 		return value.equals(other.getValue());
 	}
 	

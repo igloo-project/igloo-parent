@@ -6,10 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.hibernate.HibernateException;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.type.SingleColumnType;
 import org.hibernate.usertype.UserType;
 
+/**
+ * A Hibernate {@link UserType} for {@link AbstractMaterializedPrimitiveValue}.
+ * 
+ * <p><strong>CAUTION</strong>: in order for this {@link UserType} to be used by Hibernate, you must either register it as the default for
+ * your {@link AbstractMaterializedPrimitiveValue} using {@link TypeDef} or add the {@link Type} annotation to the
+ * entity properties.
+ */
 abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P, T extends AbstractMaterializedPrimitiveValue<P, T>>
 		implements UserType {
 	
