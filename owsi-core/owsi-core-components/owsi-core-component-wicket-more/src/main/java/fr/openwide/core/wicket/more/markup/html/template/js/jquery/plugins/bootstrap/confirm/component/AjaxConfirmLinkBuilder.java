@@ -13,6 +13,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepOnclick;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepStart;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepTerminal;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 
 public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepStart<O>, IAjaxConfirmLinkBuilderStepContent<O>,
 		IAjaxConfirmLinkBuilderStepEndContent<O>, IAjaxConfirmLinkBuilderStepNo<O>, IAjaxConfirmLinkBuilderStepOnclick<O>,
@@ -34,7 +35,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	
 	private boolean keepMarkup = false;
 	
-	private SerializableFunction<AjaxRequestTarget, Void> onClick;
+	private AjaxResponseAction onClick;
 	
 	protected AjaxConfirmLinkBuilder(String wicketId, IModel<O> model) {
 		this.wicketId = wicketId;
@@ -111,9 +112,25 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 		this.noLabelModel = new ResourceModel("common.cancel");
 		return this;
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #onClick(AjaxResponseAction)} instead.
+	 */
+	@Deprecated
 	@Override
 	public IAjaxConfirmLinkBuilderStepTerminal<O> onClick(final SerializableFunction<AjaxRequestTarget, Void> onClick) {
+		this.onClick = new AjaxResponseAction() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void execute(AjaxRequestTarget target) {
+				onClick.apply(target);
+			}
+		};
+		return this;
+	}
+
+	@Override
+	public IAjaxConfirmLinkBuilderStepTerminal<O> onClick(AjaxResponseAction onClick) {
 		this.onClick = onClick;
 		return this;
 	}
@@ -137,18 +154,19 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	private static class FunctionalAjaxConfirmLink<O> extends AjaxConfirmLink<O> {
 		private static final long serialVersionUID = -2098954474307467112L;
 		
-		private final SerializableFunction<AjaxRequestTarget, Void> onClick;
+		private final AjaxResponseAction onClick;
 		
 		public FunctionalAjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
-				boolean textNoEscape, SerializableFunction<AjaxRequestTarget, Void> onClick) {
+				boolean textNoEscape, AjaxResponseAction onClick) {
 			super(id, model, titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape);
 			this.onClick = onClick;
 		}
 		
 		@Override
 		public void onClick(AjaxRequestTarget target) {
-			this.onClick.apply(target);
+			this.onClick.execute(target);
+			this.onClick.detach();
 		}
 		
 	}
