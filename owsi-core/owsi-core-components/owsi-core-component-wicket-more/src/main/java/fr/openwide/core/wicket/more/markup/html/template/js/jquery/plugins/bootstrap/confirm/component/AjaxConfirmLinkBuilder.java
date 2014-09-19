@@ -176,6 +176,11 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 		@Override
 		public void onClick(AjaxRequestTarget target) {
 			this.onClick.execute(target);
+		}
+		
+		@Override
+		protected void onDetach() {
+			super.onDetach();
 			this.onClick.detach();
 		}
 		
