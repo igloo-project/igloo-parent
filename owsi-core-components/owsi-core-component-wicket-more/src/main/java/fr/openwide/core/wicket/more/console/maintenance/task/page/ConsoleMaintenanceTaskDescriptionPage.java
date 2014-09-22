@@ -25,15 +25,19 @@ import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
@@ -113,65 +117,73 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 				"console.maintenance.task.description.mainInformation.status.${}", taskStatusStringModel,
 				BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().status()))));
 
-		statusContainer.add(new AjaxConfirmLink<QueuedTaskHolder>("reload", queuedTaskHolderModel, new ResourceModel(
-				"console.maintenance.task.description.mainInformation.reload.title"), new ResourceModel(
-				"console.maintenance.task.description.mainInformation.reload.confirmation"), new ResourceModel(
-				"common.yes"), new ResourceModel("common.no"), null, true) {
-			private static final long serialVersionUID = 1L;
+		statusContainer.add(
+				AjaxConfirmLink.build("reload", queuedTaskHolderModel)
+						.title(new ResourceModel("console.maintenance.task.description.mainInformation.reload.title"))
+						.content(new ResourceModel("console.maintenance.task.description.mainInformation.reload.confirmation"))
+						.keepMarkup()
+						.yesNo()
+						.onClick(new AjaxResponseAction() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute(AjaxRequestTarget target) {
+								try {
+									queuedTaskHolderManager.reload(queuedTaskHolderModel.getObject().getId());
+									Session.get().success(
+											getString("console.maintenance.task.description.mainInformation.reload.success"));
+									throw linkDescriptor(queuedTaskHolderModel).newRestartResponseException();
+								} catch (RestartResponseException e) {
+									throw e;
+								} catch (Exception e) {
+									LOGGER.error("Unexpected error while reloading task", e);
+									getSession().error(getString("common.error.unexpected"));
+								}
+								FeedbackUtils.refreshFeedback(target, getPage());
+							}
+						})
+						.create()
+						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public boolean applies() {
+								return queuedTaskHolderService.isReloadable(queuedTaskHolderModel.getObject());
+							}
+						}))
+		);
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					queuedTaskHolderManager.reload(getModelObject().getId());
-					Session.get().success(
-							getString("console.maintenance.task.description.mainInformation.reload.success"));
-					throw linkDescriptor(getModel()).newRestartResponseException();
-				} catch (RestartResponseException e) {
-					throw e;
-				} catch (Exception e) {
-					LOGGER.error("Unexpected error while reloading task", e);
-					getSession().error(getString("common.error.unexpected"));
-				}
-
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(queuedTaskHolderService.isReloadable(getModelObject()));
-			}
-		});
-
-		statusContainer.add(new AjaxConfirmLink<QueuedTaskHolder>("cancel", queuedTaskHolderModel, new ResourceModel(
-				"console.maintenance.task.description.mainInformation.cancel.title"), new ResourceModel(
-				"console.maintenance.task.description.mainInformation.cancel.confirmation"), new ResourceModel(
-				"common.yes"), new ResourceModel("common.no"), null, true) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					queuedTaskHolderManager.cancel(getModelObject().getId());
-					Session.get().success(
-							getString("console.maintenance.task.description.mainInformation.cancel.success"));
-					throw linkDescriptor(getModel()).newRestartResponseException();
-				} catch (RestartResponseException e) {
-					throw e;
-				} catch (Exception e) {
-					LOGGER.error("Unexpected error while cancelling task", e);
-					getSession().error(getString("common.error.unexpected"));
-				}
-				
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(queuedTaskHolderService.isCancellable(getModelObject()));
-			}
-		});
+		statusContainer.add(
+				AjaxConfirmLink.build("cancel", queuedTaskHolderModel)
+						.title(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.title"))
+						.content(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.confirmation"))
+						.keepMarkup()
+						.yesNo()
+						.onClick(new AjaxResponseAction() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute(AjaxRequestTarget target) {
+								try {
+									queuedTaskHolderManager.cancel(queuedTaskHolderModel.getObject().getId());
+									Session.get().success(
+											getString("console.maintenance.task.description.mainInformation.cancel.success"));
+									throw linkDescriptor(queuedTaskHolderModel).newRestartResponseException();
+								} catch (RestartResponseException e) {
+									throw e;
+								} catch (Exception e) {
+									LOGGER.error("Unexpected error while cancelling task", e);
+									getSession().error(getString("common.error.unexpected"));
+								}
+								FeedbackUtils.refreshFeedback(target, getPage());
+							}
+						})
+						.create()
+						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public boolean applies() {
+								return queuedTaskHolderService.isCancellable(queuedTaskHolderModel.getObject());
+							}
+						}))
+		);
 		
 		add(new Label("name", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
 		Component queue = new CoreLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId())).hideIfEmpty();

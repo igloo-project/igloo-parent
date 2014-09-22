@@ -22,6 +22,7 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
@@ -119,36 +120,34 @@ public class ModalPage extends WidgetsTemplate {
 		};
 		add(confirmLink);
 		
-		AjaxConfirmLink<Void> ajaxConfirmLink = new AjaxConfirmLink<Void>("ajaxConfirmLink", null,
-				new ResourceModel("widgets.modal.ajaxConfirmLink.header"),
-				new ResourceModel("widgets.modal.ajaxConfirmLink.body"),
-				new ResourceModel("widgets.modal.ajaxConfirmLink.yes"),
-				new ResourceModel("widgets.modal.ajaxConfirmLink.no"),
-				null, false) {
-			private static final long serialVersionUID = 3980878234185635872L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		};
+		Component ajaxConfirmLink = AjaxConfirmLink.build("ajaxConfirmLink")
+				.title(new ResourceModel("widgets.modal.ajaxConfirmLink.header"))
+				.content(new ResourceModel("widgets.modal.ajaxConfirmLink.body"))
+				.yesNo()
+				.onClick(new AjaxResponseAction() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void execute(AjaxRequestTarget target) {
+						getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
+						FeedbackUtils.refreshFeedback(target, getPage());
+					}
+				})
+				.create();
 		add(ajaxConfirmLink);
 		
-		AjaxConfirmLink<Void> ajaxConfirmLinkDisabled = new AjaxConfirmLink<Void>("ajaxConfirmLinkDisabled", null,
-				new ResourceModel("widgets.modal.ajaxConfirmLink.header"),
-				new ResourceModel("widgets.modal.ajaxConfirmLink.body"),
-				new ResourceModel("widgets.modal.ajaxConfirmLink.yes"),
-				new ResourceModel("widgets.modal.ajaxConfirmLink.no"),
-				null, false) {
-			private static final long serialVersionUID = 3980878234185635872L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		};
+		Component ajaxConfirmLinkDisabled = AjaxConfirmLink.build("ajaxConfirmLinkDisabled")
+				.title(new ResourceModel("widgets.modal.ajaxConfirmLink.header"))
+				.content(new ResourceModel("widgets.modal.ajaxConfirmLink.body"))
+				.yesNo()
+				.onClick(new AjaxResponseAction() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void execute(AjaxRequestTarget target) {
+						getSession().success(getString("widgets.modal.ajaxConfirmLink.success"));
+						FeedbackUtils.refreshFeedback(target, getPage());
+					}
+				})
+				.create();
 		ajaxConfirmLinkDisabled.setEnabled(false);
 		add(ajaxConfirmLinkDisabled);
 		
