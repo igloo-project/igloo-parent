@@ -20,11 +20,15 @@ import fr.openwide.core.basicapp.web.application.administration.form.ChangePassw
 import fr.openwide.core.basicapp.web.application.administration.form.UserFormPopupPanel;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.LocaleLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
@@ -108,34 +112,36 @@ public class UserProfilePanel extends GenericPanel<User> {
 				new Object[] { userModel.getObject().getFullName() }
 		);
 		
-		add(new AjaxConfirmLink<User>("disableUser", userModel,
-				new ResourceModel("administration.user.disable.confirmation.title"),
-				confirmationTextModel,
-				new ResourceModel("common.confirm"),
-				new ResourceModel("common.cancel"),
-				null, false) {
-			private static final long serialVersionUID = 6157423807032594861L;
-			
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					userService.setActive(getModelObject(), false);
-					getSession().success(getString("administration.user.disable.success"));
-				} catch (Exception e) {
-					LOGGER.error("Error occured while disabling user", e);
-					getSession().error(getString("common.error"));
-				}
-				target.add(getPage());
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				User displayedUser = getModelObject();
-				User currentUser = BasicApplicationSession.get().getUser();
-				setVisible(!displayedUser.equals(currentUser) && displayedUser.isActive());
-			}
-		});
+		add(
+				AjaxConfirmLink.build("disableUser", userModel)
+						.title(new ResourceModel("administration.user.disable.confirmation.title"))
+						.content(confirmationTextModel)
+						.confirm()
+						.onClick(new AjaxResponseAction() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute(AjaxRequestTarget target) {
+								try {
+									userService.setActive(userModel.getObject(), false);
+									getSession().success(getString("administration.user.disable.success"));
+								} catch (Exception e) {
+									LOGGER.error("Error occured while disabling user", e);
+									getSession().error(getString("common.error"));
+								}
+								target.add(getPage());
+								FeedbackUtils.refreshFeedback(target, getPage());
+							}
+						})
+						.create()
+						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public boolean applies() {
+								User displayedUser = getModelObject();
+								User currentUser = BasicApplicationSession.get().getUser();
+								return !displayedUser.equals(currentUser) && displayedUser.isActive();
+							}
+						}))
+			);
 	}
 }
