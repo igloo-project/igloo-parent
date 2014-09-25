@@ -18,7 +18,6 @@ package fr.openwide.core.wicket.more.model;
 
 import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.bindgen.Binding;
 import org.bindgen.BindingRoot;
 
 /**
@@ -42,11 +41,11 @@ import org.bindgen.BindingRoot;
 public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	private static final long serialVersionUID = -4018038300151228083L;
 
-	private final Binding<T> binding;
+	private final String propertyExpression;
 	
-	private BindingModel(Object root, BindingRoot<R, T> binding) {
+	private BindingModel(Object root, String propertyExpression) {
 		super(root);
-		this.binding = binding;
+		this.propertyExpression = propertyExpression;
 	}
 	
 	/**
@@ -58,7 +57,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	 * @return binding model for {@code binding}
 	 */
 	public static <R, T> BindingModel<R, T> of(IModel<? extends R> root, BindingRoot<R, T> binding) {
-		return new BindingModel<R, T>(root, binding);
+		return new BindingModel<R, T>(root, binding.getPath());
 	}
 	
 	/**
@@ -70,12 +69,12 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	 * @return binding model for {@code binding}
 	 */
 	public static <R, T> BindingModel<R, T> of(IBindableDataProvider root, BindingRoot<R, T> binding) {
-		return new BindingModel<R, T>(root, binding);
+		return new BindingModel<R, T>(root, binding.getPath());
 	}
 
 	@Override
 	protected String propertyExpression() {
-		return binding.getPath();
+		return propertyExpression;
 	}
 
 }
