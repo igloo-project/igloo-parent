@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.more.util.image.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -8,8 +9,10 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.spring.util.StringUtils;
 
-public class ImageThumbnailFormat {
-	
+public class ImageThumbnailFormat implements Serializable {
+
+	private static final long serialVersionUID = -2325299250310910619L;
+
 	private static final Pattern NAME_PATTERN = Pattern.compile("[a-z0-9_-]+", Pattern.CASE_INSENSITIVE);
 	
 	private static final List<String> AUTHORIZED_THUMBNAIL_EXTENSIONS = Lists.newArrayList(
