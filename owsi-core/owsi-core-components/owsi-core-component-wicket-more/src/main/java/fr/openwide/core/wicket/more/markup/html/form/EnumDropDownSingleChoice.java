@@ -12,6 +12,7 @@ import org.retzlaff.select2.Select2Settings;
 
 import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
+import fr.openwide.core.wicket.more.rendering.EnumRenderer;
 import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableEnumConverter;
 
 public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2DropDownSingleChoice<E> {
@@ -48,7 +49,7 @@ public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2D
 			// This converter adds the enum value as a model parameter when rendering the resource key, which
 			// enables the rendering of properties of the enum value
 			// (DateEnum.TOMORROW being rendered as "Tomorrow (${date})" with DateEnum implementing getDate(), for instance).
-			return HumanReadableEnumConverter.get().convertToString(object, Session.get().getLocale());
+			return EnumRenderer.get().render(object, Session.get().getLocale());
 		}
 	}
 

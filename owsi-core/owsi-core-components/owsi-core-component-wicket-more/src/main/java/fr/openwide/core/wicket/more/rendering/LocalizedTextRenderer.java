@@ -15,23 +15,34 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.wicket.more.util.convert.converters;
+package fr.openwide.core.wicket.more.rendering;
 
-import fr.openwide.core.wicket.more.rendering.LocalizedTextRenderer;
+import java.util.Locale;
 
-/**
- * @deprecated Use {@link LocalizedTextRenderer} instead.
- */
-@Deprecated
-public class HumanReadableLocalizedTextConverter extends LocalizedTextRenderer {
+import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
+
+public class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
 	
 	private static final long serialVersionUID = -6397339082088737503L;
 	
-	private static HumanReadableLocalizedTextConverter INSTANCE = new HumanReadableLocalizedTextConverter();
-	public static HumanReadableLocalizedTextConverter get() {
+	private static LocalizedTextRenderer INSTANCE = new LocalizedTextRenderer();
+	public static LocalizedTextRenderer get() {
 		return INSTANCE;
 	}
-	
-	private HumanReadableLocalizedTextConverter() { }
+
+	/**
+	 * @deprecated Use {@link #get()} instead.
+	 */
+	@Deprecated
+	protected LocalizedTextRenderer() { }
+
+	@Override
+	public String render(AbstractLocalizedText value, Locale locale) {
+		if (value == null) {
+			return null;
+		} else {
+			return value.getOrDefault(locale);
+		}
+	}
 
 }
