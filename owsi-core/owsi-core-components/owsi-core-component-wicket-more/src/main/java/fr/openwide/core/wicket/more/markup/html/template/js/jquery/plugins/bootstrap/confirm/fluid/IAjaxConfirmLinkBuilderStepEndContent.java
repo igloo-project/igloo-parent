@@ -6,6 +6,8 @@ public interface IAjaxConfirmLinkBuilderStepEndContent<O> {
 	
 	IAjaxConfirmLinkBuilderStepEndContent<O> keepMarkup();
 	
+	IAjaxConfirmLinkBuilderStepEndContent<O> cssClassNamesModel(IModel<String> cssClassNamesModel);
+	
 	IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel);
 	
 	IAjaxConfirmLinkBuilderStepOnclick<O> yesNo();

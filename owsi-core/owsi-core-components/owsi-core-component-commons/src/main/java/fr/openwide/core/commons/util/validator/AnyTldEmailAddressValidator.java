@@ -13,9 +13,9 @@ public class AnyTldEmailAddressValidator extends EmailValidator implements Seria
 
 	private static final long serialVersionUID = 3764517887042593145L;
 	
-	private static AnyTldEmailAddressValidator INSTANCE = new AnyTldEmailAddressValidator(false);
+	private static final AnyTldEmailAddressValidator INSTANCE = new AnyTldEmailAddressValidator(false);
 	
-	private static AnyTldEmailAddressValidator INSTANCE_WITH_LOCAL = new AnyTldEmailAddressValidator(true);
+	private static final AnyTldEmailAddressValidator INSTANCE_WITH_LOCAL = new AnyTldEmailAddressValidator(true);
 	
 	public static AnyTldEmailAddressValidator getInstance() {
 		return INSTANCE;

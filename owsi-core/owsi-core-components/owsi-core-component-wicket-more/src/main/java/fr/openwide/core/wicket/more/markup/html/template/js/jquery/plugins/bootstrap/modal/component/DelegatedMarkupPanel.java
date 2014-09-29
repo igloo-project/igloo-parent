@@ -68,10 +68,7 @@ public class DelegatedMarkupPanel extends Panel {
 					if (associatedMarkup != null)
 					{
 						markup = associatedMarkup;
-						if (markup != null)
-						{
-							childMarkup = markup.find(markupId);
-						}
+						childMarkup = markup.find(markupId);
 					}
 				}
 
