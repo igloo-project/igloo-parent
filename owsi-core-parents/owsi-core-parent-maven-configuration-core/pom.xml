@@ -103,7 +103,7 @@
 		<owsi-core.flying-saucer.version>9.0.6</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.14</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
-		<owsi-core.jsoup.version>1.7.3</owsi-core.jsoup.version>
+		<owsi-core.jsoup.version>1.8.1</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.3.5</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
