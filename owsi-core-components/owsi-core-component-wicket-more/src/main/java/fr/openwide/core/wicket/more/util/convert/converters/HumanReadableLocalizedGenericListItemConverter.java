@@ -17,13 +17,13 @@
 
 package fr.openwide.core.wicket.more.util.convert.converters;
 
-import java.util.Locale;
+import fr.openwide.core.wicket.more.rendering.LocalizedGenericListItemRenderer;
 
-import org.apache.wicket.util.convert.IConverter;
-
-import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
-
-public class HumanReadableLocalizedGenericListItemConverter implements IConverter<GenericLocalizedGenericListItem<?, ?>> {
+/**
+ * @deprecated Use {@link LocalizedGenericListItemRenderer} instead.
+ */
+@Deprecated
+public class HumanReadableLocalizedGenericListItemConverter extends LocalizedGenericListItemRenderer {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
@@ -33,19 +33,5 @@ public class HumanReadableLocalizedGenericListItemConverter implements IConverte
 	}
 	
 	private HumanReadableLocalizedGenericListItemConverter() { }
-
-	@Override
-	public GenericLocalizedGenericListItem<?, ?> convertToObject(String value, Locale locale) {
-		throw new UnsupportedOperationException("This converter cannot convert from string to LocalizedGenericListItem");
-	}
-
-	@Override
-	public String convertToString(GenericLocalizedGenericListItem<?, ?> value, Locale locale) {
-		if (value == null) {
-			return null;
-		} else {
-			return HumanReadableLocalizedTextConverter.get().convertToString(value.getLabel(), locale);
-		}
-	}
 
 }

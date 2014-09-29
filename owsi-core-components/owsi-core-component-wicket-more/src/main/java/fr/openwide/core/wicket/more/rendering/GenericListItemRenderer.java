@@ -15,23 +15,34 @@
  * limitations under the License.
  */
 
-package fr.openwide.core.wicket.more.util.convert.converters;
+package fr.openwide.core.wicket.more.rendering;
 
-import fr.openwide.core.wicket.more.rendering.GenericListItemRenderer;
+import java.util.Locale;
 
-/**
- * @deprecated Use {@link GenericListItemRenderer} instead.
- */
-@Deprecated
-public class HumanReadableGenericListItemConverter extends GenericListItemRenderer {
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+
+public class GenericListItemRenderer extends Renderer<GenericListItem<?>> {
 
 	private static final long serialVersionUID = -4595938276377495743L;
 	
-	private static HumanReadableGenericListItemConverter INSTANCE = new HumanReadableGenericListItemConverter();
-	public static HumanReadableGenericListItemConverter get() {
+	private static GenericListItemRenderer INSTANCE = new GenericListItemRenderer();
+	public static GenericListItemRenderer get() {
 		return INSTANCE;
 	}
 	
-	private HumanReadableGenericListItemConverter() { }
+	/**
+	 * @deprecated Use {@link #get()} instead.
+	 */
+	@Deprecated
+	protected GenericListItemRenderer() { }
+
+	@Override
+	public String render(GenericListItem<?> value, Locale locale) {
+		if (value == null) {
+			return null;
+		} else {
+			return value.getLabel();
+		}
+	}
 
 }
