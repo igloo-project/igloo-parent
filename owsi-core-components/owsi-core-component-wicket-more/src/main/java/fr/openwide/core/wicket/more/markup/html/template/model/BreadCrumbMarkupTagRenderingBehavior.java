@@ -19,7 +19,7 @@ public class BreadCrumbMarkupTagRenderingBehavior extends Behavior {
 		}
 	};
 	
-	public static BreadCrumbMarkupTagRenderingBehavior HTML_BODY = new BreadCrumbMarkupTagRenderingBehavior() {
+	public static final BreadCrumbMarkupTagRenderingBehavior HTML_BODY = new BreadCrumbMarkupTagRenderingBehavior() {
 		private static final long serialVersionUID = 7310978949663064632L;
 		
 		// No specific behavior

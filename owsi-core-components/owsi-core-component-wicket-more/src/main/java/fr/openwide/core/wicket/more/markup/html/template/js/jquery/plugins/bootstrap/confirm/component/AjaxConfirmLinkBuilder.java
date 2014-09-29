@@ -55,6 +55,12 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 	
 	@Override
+	public IAjaxConfirmLinkBuilderStepEndContent<O> cssClassNamesModel(IModel<String> cssClassNamesModel) {
+		this.cssClassNamesModel = cssClassNamesModel;
+		return this;
+	}
+	
+	@Override
 	public IAjaxConfirmLinkBuilderStepOnclick<O> deleteConfirmation() {
 		confirm();
 		this.titleModel = new ResourceModel("common.confirmTitle");
