@@ -5,6 +5,7 @@ import org.apache.wicket.model.IDetachable;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
 
 /**
  * A utility object implementing both {@link ILinkDescriptor} and {@link ILinkParametersExtractor}.
@@ -18,5 +19,11 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkPar
  * @see ILinkParametersExtractor
  */
 public interface ILinkDescriptor extends ILinkParametersExtractor, ILinkGenerator, IDetachable {
+	
+	/**
+	 * Executes validation checks on the underlying models, assuming they already have been populated.
+	 * @throws LinkParameterModelValidationException if the validation of the parameters model returned an error
+	 */
+	void checkModels() throws LinkParameterModelValidationException;
 
 }

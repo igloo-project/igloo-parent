@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.link.descriptor;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IDetachable;
+import org.slf4j.Logger;
 
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLinkParametersExtractor;
@@ -17,5 +18,21 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLin
  * @see IPageLinkParametersExtractor
  */
 public interface IPageLinkDescriptor extends ILinkDescriptor, IPageLinkGenerator, IPageLinkParametersExtractor, IDetachable {
+	
+	/**
+	 * Attempts to validate the underlying models, {@link #newRestartResponseException() throwing a RestartResponseException}
+	 * with the provided fallback link if any {@link Exception} is caught.
+	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkParametersExtractor} class logger.
+	 * @see #checkModels()
+	 */
+	void checkModelsSafely(IPageLinkGenerator fallbackLink);
+
+	/**
+	 * Attempts to validate the underlying models, {@link #newRestartResponseException() throwing a RestartResponseException}
+	 * with the provided fallback link if any {@link Exception} is caught. The provided error message is added to the session.
+	 * <p>If an exception is caught, it is {@link Logger logged} at error level on the {@link IPageLinkParametersExtractor} class logger.
+	 * @see #checkModels()
+	 */
+	void checkModelsSafely(IPageLinkGenerator fallbackLink, String errorMessage);
 
 }

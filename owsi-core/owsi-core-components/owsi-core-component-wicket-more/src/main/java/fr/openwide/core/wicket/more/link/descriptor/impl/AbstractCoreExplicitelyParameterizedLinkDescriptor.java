@@ -48,6 +48,11 @@ public abstract class AbstractCoreExplicitelyParameterizedLinkDescriptor impleme
 		parametersMapping.setObject(parameters);
 		LinkParameterValidators.checkModel(parametersValidator);
 	}
+	
+	@Override
+	public void checkModels() throws LinkParameterModelValidationException {
+		LinkParameterValidators.checkModel(parametersValidator);
+	}
 
 	@Override
 	public void detach() {

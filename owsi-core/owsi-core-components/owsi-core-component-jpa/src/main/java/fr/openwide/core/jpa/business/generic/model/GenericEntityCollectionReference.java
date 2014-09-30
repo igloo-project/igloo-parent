@@ -1,68 +1,74 @@
 package fr.openwide.core.jpa.business.generic.model;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.Hibernate;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.springframework.util.Assert;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
-@Embeddable
-public class GenericEntityReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
+public class GenericEntityCollectionReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 		implements Serializable {
 	
 	private static final long serialVersionUID = 1357434247523209721L;
 
 	@Column(nullable = true)
-	private /* final */ Class<? extends E> entityClass;
+	private final Class<? extends E> entityClass;
 	
 	@Column(nullable = true)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private /* final */ K entityId;
-
-	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(E entity) {
-		return entity == null ? null : new GenericEntityReference<K, E>(entity);
-	}
-
-	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(
-			Class<? extends E> entityClass, K entityId) {
-		return new GenericEntityReference<K, E>(entityClass, entityId);
-	}
+	private final List<K> entityIdList;
 	
-	protected GenericEntityReference() { } // Pour Hibernate
-	
-	@SuppressWarnings("unchecked")
-	public GenericEntityReference(E entity) {
-		Assert.notNull(entity, "The referenced entity must not be null");
-		Assert.state(!entity.isNew(), "The referenced entity must not be transient");
-		this.entityClass = (Class<? extends E>)Hibernate.getClass(entity);
-		this.entityId = entity.getId();
+	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
+			GenericEntityCollectionReference<K, E> of(Class<E> entityClass, Collection<? extends E> entityCollection) {
+		List<K> entityIdCollection = Lists.newArrayListWithExpectedSize(entityCollection.size());
+		for (E entity : entityCollection) {
+			Assert.state(!entity.isNew(), "None of the referenced entities must be transient");
+			entityIdCollection.add(entity.getId());
+		}
+		return new GenericEntityCollectionReference<>(entityClass, entityIdCollection);
 	}
 	
-	public GenericEntityReference(Class<? extends E> entityClass, K entityId) {
+	public GenericEntityCollectionReference(E object) {
+		this(GenericEntityReference.of(object));
+	}
+	
+	public GenericEntityCollectionReference(GenericEntityReference<K, E> reference) {
+		this(reference.getEntityClass(), ImmutableList.of(reference.getEntityId()));
+	}
+	
+	public GenericEntityCollectionReference(Class<? extends E> entityClass) {
+		this(entityClass, ImmutableList.<K>of());
+	}
+	
+	public GenericEntityCollectionReference(Class<? extends E> entityClass, Collection<K> entityIdCollection) {
 		super();
 		Assert.notNull(entityClass, "entityClass must not be null");
-		Assert.notNull(entityId, "entityId must not be null");
+		Assert.notNull(entityIdCollection, "entityIdCollection must not be null");
 		this.entityClass = entityClass;
-		this.entityId = entityId;
+		this.entityIdList = Collections.unmodifiableList(Lists.newArrayList(entityIdCollection));
 	}
 
 	public Class<? extends E> getEntityClass() {
 		return entityClass;
 	}
 
-	public K getEntityId() {
-		return entityId;
+	public List<K> getEntityIdList() {
+		return entityIdList;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -82,12 +88,12 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof GenericEntityReference)) {
+		if (!(obj instanceof GenericEntityCollectionReference)) {
 			return false;
 		}
-		GenericEntityReference<?, ?> other = (GenericEntityReference<?, ?>) obj;
+		GenericEntityCollectionReference<?, ?> other = (GenericEntityCollectionReference<?, ?>) obj;
 		return new EqualsBuilder()
-				.append(getEntityId(), other.getEntityId())
+				.append(getEntityIdList(), other.getEntityIdList())
 				.append(getUpperEntityClass(getEntityClass()), getUpperEntityClass(other.getEntityClass()))
 				.build();
 	}
@@ -95,7 +101,7 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(getEntityId())
+				.append(getEntityIdList())
 				.append(getUpperEntityClass(getEntityClass()))
 				.build();
 	}
@@ -104,7 +110,7 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	public String toString() {
 		return new ToStringBuilder(ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("class", getEntityClass())
-				.append("id", getEntityId())
+				.append("id", getEntityIdList())
 				.build();
 	}
 
