@@ -4,6 +4,7 @@
 	
 	var nonce = 0;
 	var globalVariableName = function() { return $.expando + "_fileUpload_" + nonce++; };
+	window.URL = window.URL || window.webkitURL;
 	
 	if (!window.console) {
 		var console = {
