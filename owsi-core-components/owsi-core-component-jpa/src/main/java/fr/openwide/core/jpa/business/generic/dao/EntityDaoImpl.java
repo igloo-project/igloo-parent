@@ -14,6 +14,8 @@ import javax.persistence.criteria.Root;
 import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 
@@ -36,16 +38,20 @@ public class EntityDaoImpl implements IEntityDao {
 	
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids) {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<E> criteria = builder.createQuery(clazz);
-		Root<E> root = criteria.from(clazz);
-		criteria.where(((CriteriaBuilderImpl)builder).in(root.<K>get("id"), ids));
-		
-		List<E> entities = entityManager.createQuery(criteria).getResultList();
-		
-		Collections.sort(entities, null);
-		
-		return entities;
+		if (ids == null || ids.isEmpty()) {
+			return Lists.newArrayList();
+		} else {
+			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<E> criteria = builder.createQuery(clazz);
+			Root<E> root = criteria.from(clazz);
+			criteria.where(((CriteriaBuilderImpl)builder).in(root.<K>get("id"), ids));
+			
+			List<E> entities = entityManager.createQuery(criteria).getResultList();
+			
+			Collections.sort(entities, null);
+			
+			return entities;
+		}
 	}
 	
 	@Override

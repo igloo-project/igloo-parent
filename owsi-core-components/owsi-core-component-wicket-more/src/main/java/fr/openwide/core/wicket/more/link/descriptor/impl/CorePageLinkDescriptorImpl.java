@@ -176,5 +176,23 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		super.detach();
 		pageClassModel.detach();
 	}
+	
+	@Override
+	public void checkModelsSafely(IPageLinkGenerator fallbackLink) {
+		checkModelsSafely(fallbackLink, null);
+	}
+	
+	@Override
+	public void checkModelsSafely(IPageLinkGenerator fallbackLink, String errorMessage) {
+		try {
+			checkModels();
+		} catch (Exception e) {
+			EXTRACTOR_INTERFACE_LOGGER.error("Error while extracting page parameters", e);
+			if (StringUtils.hasText(errorMessage)) {
+				Session.get().error(errorMessage);
+			}
+			throw fallbackLink.newRestartResponseException();
+		}
+	}
 
 }
