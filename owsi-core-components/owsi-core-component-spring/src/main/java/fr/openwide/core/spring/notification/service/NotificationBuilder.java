@@ -230,7 +230,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (cc != null) {
 			for (INotificationRecipient receiver : cc) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					addRecipient(ccByLocale, getLocale(receiver), receiver.getEmail());
+					addRecipient(ccByLocale, getLocale(receiver), receiver);
 				}
 			}
 		}
@@ -274,7 +274,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (bcc != null) {
 			for (INotificationRecipient receiver : bcc) {
 				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					addRecipient(bccByLocale, getLocale(receiver), receiver.getEmail());
+					addRecipient(bccByLocale, getLocale(receiver), receiver);
 				}
 			}
 		}
