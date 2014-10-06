@@ -57,14 +57,14 @@ public class ConsoleSignInPage extends CoreWebPage {
 					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
 					success = true;
 				} catch (BadCredentialsException e) {
-					session.error(getString("signIn.error.authentication"));
+					session.error(getString("console.signIn.error.authentication"));
 				} catch (UsernameNotFoundException e) {
-					session.error(getString("signIn.error.authentication"));
+					session.error(getString("console.signIn.error.authentication"));
 				} catch (DisabledException e) {
-					session.error(getString("signIn.error.userDisabled"));
+					session.error(getString("console.signIn.error.userDisabled"));
 				} catch (Exception e) {
 					LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
-					session.error(getString("signIn.error.unknown"));
+					session.error(getString("console.signIn.error.unknown"));
 				}
 				
 				if (success) {
@@ -77,13 +77,13 @@ public class ConsoleSignInPage extends CoreWebPage {
 		add(signInForm);
 		
 		userNameField = new RequiredTextField<String>("userName", Model.of(""));
-		userNameField.setLabel(new ResourceModel("signIn.userName"));
+		userNameField.setLabel(new ResourceModel("console.signIn.userName"));
 		userNameField.add(new LabelPlaceholderBehavior());
 		userNameField.setOutputMarkupId(true);
 		signInForm.add(userNameField);
 		
 		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
-		passwordField.setLabel(new ResourceModel("signIn.password"));
+		passwordField.setLabel(new ResourceModel("console.signIn.password"));
 		passwordField.add(new LabelPlaceholderBehavior());
 		signInForm.add(passwordField);
 	}
