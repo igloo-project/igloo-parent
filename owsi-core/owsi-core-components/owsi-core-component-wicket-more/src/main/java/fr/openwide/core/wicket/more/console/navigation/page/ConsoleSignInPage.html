@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<head>
-		<title><wicket:message key="common.rootPageTitle" /> &rsaquo; <wicket:message key="signIn.pageTitle" /></title>
+		<title><wicket:message key="console.signIn.pageTitle" /></title>
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 		<wicket:head />
 	</head>
@@ -14,9 +14,9 @@
 			<div class="container">
 				<div class="content">
 					<div class="login-header">
-						<img class="logo" src="static/application/images/logo_openwide.png" alt="Company logo" width="210" height="66" />
+						<img class="logo" src="static/common/images/logo_openwide.png" alt="Company logo" width="210" height="66" />
 					</div>
-					<h1 class="login-title"><wicket:message key="signIn.welcomeText" /></h1>
+					<h1 class="login-title"><wicket:message key="console.signIn.welcomeText" /></h1>
 					<form wicket:id="signInForm" id="sign-in-form">
 						<fieldset class="login-content">
 							<div class="form-group">
@@ -28,7 +28,7 @@
 							<div class="form-actions">
 								<button class="btn btn-success btn-lg pull-right" type="submit">
 									<span class="fa fa-lock" />
-									<wicket:message key="signIn.button" />
+									<wicket:message key="console.signIn.button" />
 								</button>
 							</div>
 						</fieldset>
