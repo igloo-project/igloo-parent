@@ -49,7 +49,10 @@ public class LessCssServiceImpl implements ILessCssService {
 	
 	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
 	
-	@Autowired
+	/**
+	 * required = false pour les tests unitaires
+	 */
+	@Autowired(required = false)
 	private CoreConfigurer configurer;
 	
 	@Override
@@ -67,7 +70,7 @@ public class LessCssServiceImpl implements ILessCssService {
 		prepareRawStylesheet(lessInformation);
 		try {
 			Configuration configuration = new Configuration();
-			if (configurer.isConfigurationTypeDevelopment()) {
+			if (configurer != null && configurer.isConfigurationTypeDevelopment()) {
 				// on insère inline une source map
 				// -> utile seulement si on a les outils adéquats pour l'exploiter
 				configuration.getSourceMapConfiguration().setInline(true);
