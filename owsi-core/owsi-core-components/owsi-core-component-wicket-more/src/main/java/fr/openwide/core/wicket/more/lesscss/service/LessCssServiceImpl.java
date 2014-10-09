@@ -11,6 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.wicket.util.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
@@ -19,11 +20,13 @@ import org.springframework.util.CollectionUtils;
 
 import com.github.sommeri.less4j.Less4jException;
 import com.github.sommeri.less4j.LessCompiler.CompilationResult;
+import com.github.sommeri.less4j.LessCompiler.Configuration;
 import com.github.sommeri.less4j.LessCompiler.Problem;
 import com.github.sommeri.less4j.core.ThreadUnsafeLessCompiler;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.config.spring.WicketMoreServiceConfig;
 import fr.openwide.core.wicket.more.lesscss.model.CssStylesheetInformation;
@@ -46,6 +49,9 @@ public class LessCssServiceImpl implements ILessCssService {
 	
 	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
 	
+	@Autowired
+	private CoreConfigurer configurer;
+	
 	@Override
 	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 
 	@CacheEvict(value = "lessCssService.compiledStylesheets", 
@@ -60,7 +66,16 @@ public class LessCssServiceImpl implements ILessCssService {
 			throws ServiceException {
 		prepareRawStylesheet(lessInformation);
 		try {
-			CompilationResult compilationResult = new ThreadUnsafeLessCompiler().compile(lessInformation.getSource());
+			Configuration configuration = new Configuration();
+			if (configurer.isConfigurationTypeDevelopment()) {
+				// on insère inline une source map
+				// -> utile seulement si on a les outils adéquats pour l'exploiter
+				configuration.getSourceMapConfiguration().setInline(true);
+			} else {
+				// on n'insère aucune information sur l'emplacement des fichiers
+				configuration.getSourceMapConfiguration().setLinkSourceMap(false);
+			}
+			CompilationResult compilationResult = new ThreadUnsafeLessCompiler().compile(lessInformation.getSource(), configuration);
 			
 			CssStylesheetInformation compiledStylesheet = new CssStylesheetInformation(
 					lessInformation, compilationResult.getCss()
