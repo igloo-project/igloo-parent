@@ -18,7 +18,7 @@
 				</p>
 				
 				<div class="row" style="margin-bottom: 50px;">
-					<div class="span3">
+					<div class="col-sm-4">
 						<div class="btn-group dropdown">
 							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
 								Show menu
@@ -32,10 +32,58 @@
 							</ul>
 						</div>
 					</div>
-					<div class="span3">
+					<div class="col-sm-4">
 						<div class="btn-group dropup">
 							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
 								Show menu above
+								<span class="caret" />
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#dropdown">Dropdown</a></li>
+								<li class="divider"></li>
+								<li><a href="#tooltip">Tooltip</a></li>
+								<li><a href="#popover">Popover</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row" style="margin-bottom: 50px;">
+					<div class="col-sm-4">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"
+								data-hover="dropdown">
+								Show menu on hover
+								<span class="caret" />
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#dropdown">Dropdown</a></li>
+								<li class="divider"></li>
+								<li><a href="#tooltip">Tooltip</a></li>
+								<li><a href="#popover">Popover</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"
+								data-hover="dropdown" data-close-others="false">
+								Show on hover without closing others
+								<span class="caret" />
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#dropdown">Dropdown</a></li>
+								<li class="divider"></li>
+								<li><a href="#tooltip">Tooltip</a></li>
+								<li><a href="#popover">Popover</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"
+								data-hover="dropdown" data-delay="2000">
+								Show on hover 2s delay
 								<span class="caret" />
 							</a>
 							<ul class="dropdown-menu">
