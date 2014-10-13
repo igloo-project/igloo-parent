@@ -39,19 +39,19 @@ public class EntityDaoImpl implements IEntityDao {
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids) {
 		if (ids == null || ids.isEmpty()) {
-			return Lists.newArrayList();
-		} else {
-			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-			CriteriaQuery<E> criteria = builder.createQuery(clazz);
-			Root<E> root = criteria.from(clazz);
-			criteria.where(((CriteriaBuilderImpl)builder).in(root.<K>get("id"), ids));
-			
-			List<E> entities = entityManager.createQuery(criteria).getResultList();
-			
-			Collections.sort(entities, null);
-			
-			return entities;
+			return Lists.newArrayListWithCapacity(0);
 		}
+		
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<E> criteria = builder.createQuery(clazz);
+		Root<E> root = criteria.from(clazz);
+		criteria.where(((CriteriaBuilderImpl)builder).in(root.<K>get("id"), ids));
+		
+		List<E> entities = entityManager.createQuery(criteria).getResultList();
+		
+		Collections.sort(entities, null);
+		
+		return entities;
 	}
 	
 	@Override
