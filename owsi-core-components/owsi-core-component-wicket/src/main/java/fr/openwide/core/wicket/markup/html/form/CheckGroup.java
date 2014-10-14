@@ -26,6 +26,13 @@ public class CheckGroup<T> extends org.apache.wicket.markup.html.form.CheckGroup
 		this(id, model, Suppliers2.<T>arrayList());
 	}
 
+	/**
+	 * WARNING: using this constructor for anonymous classes (inline class declarations) will result in compilation
+	 * errors when using the official javac compilator. Only use this in named subclasses or for direct, non-subclassing
+	 * instantiation.
+	 * 
+	 * @see InlineOverridableCheckGroup
+	 */
 	public <C extends Collection<T>> CheckGroup(String id, IModel<C> model, Supplier<? extends C> collectionSupplier) {
 		super(id, new ConcreteCollectionToCollectionWrapperModel<T, C>(model, collectionSupplier));
 	}
