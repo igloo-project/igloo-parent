@@ -14,7 +14,7 @@ public class BootstrapHoverDropdownBehavior extends JQueryAbstractBehavior {
 
 	private static final String DROPDOWN_HOVER = "dropdownHover";
 
-	public static final String DEFAULT_SELECTOR = "[data-hover='dropdown']";
+	public static final String DEFAULT_SELECTOR = "[data-hover=\"dropdown\"]";
 
 	private final String selector;
 
