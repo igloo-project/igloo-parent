@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.net.ssl.SSLHandshakeException;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -170,6 +171,10 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			errorType = ExternalLinkErrorType.INVALID_IDN;
 		} catch (SocketTimeoutException e) {
 			errorType = ExternalLinkErrorType.TIMEOUT;
+		} catch (SSLHandshakeException e) {
+			// certificate not supported by Java: we ignore the links
+			markAsIgnored(links);
+			return;
 		} catch (IOException e) {
 			errorType = ExternalLinkErrorType.IO;
 		}
