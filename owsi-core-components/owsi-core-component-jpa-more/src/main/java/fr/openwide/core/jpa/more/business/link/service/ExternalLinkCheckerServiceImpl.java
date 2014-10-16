@@ -284,7 +284,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			// TODO RJO External links : ajouter un n° de version d'algo permettant de retrouver
 			// avec quelle version du checker on a eu l'erreur ?
 			failureAuditBuilder.append(
-					new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+					new ToStringBuilder(link, ToStringStyle.DEFAULT_STYLE)
 						.append("checkDate", checkDate)
 						.append("errorType", errorType)
 						.append("consecutiveFailures", consecutiveFailures)
