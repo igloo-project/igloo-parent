@@ -183,6 +183,7 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 			break;
 		case UPLOAD_DONE:
 			respondUploadDone(target);
+			break;
 		case UPLOAD_FAILS:
 			respondUploadFails(target);
 			break;
