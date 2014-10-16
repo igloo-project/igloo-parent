@@ -21,6 +21,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.net.ssl.SSLHandshakeException;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.config.CookieSpecs;
@@ -38,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedListMultimap;
@@ -243,28 +246,54 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			link.setConsecutiveFailures(0);
 			link.setStatus(ExternalLinkStatus.ONLINE);
 			link.setLastStatusCode(HttpStatus.SC_OK);
+			link.setFailureAudit(null);
 			externalLinkWrapperService.update(link);
 		}
 	}
 	
-	private void markAsOfflineOrDead(Collection<ExternalLinkWrapper> links, final ExternalLinkErrorType errorType, final StatusLine status) throws ServiceException, SecurityServiceException {
+	private void markAsOfflineOrDead(Collection<ExternalLinkWrapper> links, final ExternalLinkErrorType errorType, final StatusLine httpStatus) throws ServiceException, SecurityServiceException {
 		Date checkDate = new Date();
 		for (ExternalLinkWrapper link : links) {
 			link.setLastCheckDate(checkDate);
 			link.setLastErrorType(errorType);
-			link.setConsecutiveFailures(link.getConsecutiveFailures() + 1);
+			int consecutiveFailures = link.getConsecutiveFailures() + 1;
+			link.setConsecutiveFailures(consecutiveFailures);
 			
-			if (status != null) {
-				link.setLastStatusCode(status.getStatusCode());
+			Integer statusCode;
+			if (httpStatus != null) {
+				statusCode = httpStatus.getStatusCode();
 			} else {
-				link.setLastStatusCode(null);
+				statusCode = null;
 			}
+			link.setLastStatusCode(statusCode);
 			
+			ExternalLinkStatus status;
 			if (link.getConsecutiveFailures() >= configurer.getExternalLinkCheckerRetryAttemptsLimit()) {
-				link.setStatus(ExternalLinkStatus.DEAD_LINK);
+				status = ExternalLinkStatus.DEAD_LINK;
 			} else {
-				link.setStatus(ExternalLinkStatus.OFFLINE);
+				status = ExternalLinkStatus.OFFLINE;
 			}
+			link.setStatus(status);
+			
+			// Failure audit
+			StringBuilder failureAuditBuilder = new StringBuilder();
+			String failureAudit = link.getFailureAudit();
+			if (StringUtils.hasText(failureAudit)) {
+				failureAuditBuilder.append(failureAudit).append("\n");
+			}
+			// TODO RJO External links : ajouter un n° de version d'algo permettant de retrouver
+			// avec quelle version du checker on a eu l'erreur ?
+			failureAuditBuilder.append(
+					new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+						.append("checkDate", checkDate)
+						.append("errorType", errorType)
+						.append("consecutiveFailures", consecutiveFailures)
+						.append("statusCode", statusCode)
+						.append("status", status)
+						.build()
+			);
+			link.setFailureAudit(failureAuditBuilder.toString());
+			
 			externalLinkWrapperService.update(link);
 		}
 	}

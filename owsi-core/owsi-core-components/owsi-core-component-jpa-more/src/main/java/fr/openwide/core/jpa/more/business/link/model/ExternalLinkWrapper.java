@@ -30,7 +30,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	private static final long serialVersionUID = -4558332826839419557L;
 	
 	private static final ExternalLinkWrapperBinding BINDING = new ExternalLinkWrapperBinding();
-
+	
 	@Id
 	@GeneratedValue
 	@DocumentId
@@ -57,11 +57,25 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	@Column
 	private Date lastCheckDate;
 	
+	@Column
+	@Type(type = "org.hibernate.type.StringClobType") // SQL type "text" (unknown size)
+	private String failureAudit;
+	
 	protected ExternalLinkWrapper() {
 	}
 	
 	public ExternalLinkWrapper(String url) {
 		this.url = url;
+	}
+	
+	public ExternalLinkWrapper(ExternalLinkWrapper link) {
+		setUrl(link.getUrl());
+		setStatus(link.getStatus());
+		setConsecutiveFailures(link.getConsecutiveFailures());
+		setLastErrorType(link.getLastErrorType());
+		setLastStatusCode(link.getLastStatusCode());
+		setLastCheckDate(link.getLastCheckDate());
+		setFailureAudit(link.getFailureAudit());
 	}
 	
 	@Override
@@ -122,6 +136,14 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		this.lastCheckDate = CloneUtils.clone(lastCheckDate);
 	}
 
+	public String getFailureAudit() {
+		return failureAudit;
+	}
+
+	public void setFailureAudit(String failureAudit) {
+		this.failureAudit = failureAudit;
+	}
+
 	@Override
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
@@ -145,6 +167,17 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	}
 	
 	@Transient
+	public void resetStatus() {
+		status = ExternalLinkStatus.ONLINE;
+		consecutiveFailures = 0;
+		lastStatusCode = null;
+		lastCheckDate = null;
+		lastErrorType = null;
+		// TODO RJO External links : supprimer le failureAudit quand on repasse ONLINE ?
+		// (reset par la console et plus tard par un bouton "Ce lien est correct")
+	}
+	
+	@Transient
 	public Map<String, Object> getResetStatusPropertyValues() {
 		Map<String, Object> changes = Maps.newHashMap();
 		changes.put(BINDING.status().getPath(), ExternalLinkStatus.ONLINE);
@@ -152,6 +185,8 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		changes.put(BINDING.lastStatusCode().getPath(), null);
 		changes.put(BINDING.lastCheckDate().getPath(), null);
 		changes.put(BINDING.lastErrorType().getPath(), null);
+		// TODO RJO External links : supprimer le failureAudit quand on repasse ONLINE ?
+		// (reset par modification de l'url)
 		
 		return changes;
 	}
