@@ -19,4 +19,10 @@ public interface IExternalLinkWrapperDao extends IGenericEntityDao<Long, Externa
 	 */
 	List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize);
 
+	List<String> listUrlsFromIds(Collection<Long> ids);
+
+	List<String> listUrlsFromStatuses(Collection<ExternalLinkStatus> statuses);
+
+	List<ExternalLinkWrapper> listFromUrls(Collection<String> urls);
+
 }

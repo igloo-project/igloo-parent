@@ -2,10 +2,13 @@ package fr.openwide.core.jpa.more.business.link.dao;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.expr.StringExpression;
@@ -77,6 +80,37 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 				);
 		
 		return query.limit(batchSize).list(url);
+	}
+
+	@Override
+	public List<String> listUrlsFromIds(Collection<Long> ids) {
+		return new JPAQuery(getEntityManager())
+				.where(qExternalLinkWrapper.id.in(ids))
+				.orderBy(qExternalLinkWrapper.url.asc())
+				.distinct()
+				.list(qExternalLinkWrapper.url);
+	}
+
+	@Override
+	public List<String> listUrlsFromStatuses(Collection<ExternalLinkStatus> statuses) {
+		return new JPAQuery(getEntityManager())
+				.where(qExternalLinkWrapper.status.in(statuses))
+				.orderBy(qExternalLinkWrapper.url.asc())
+				.distinct()
+				.list(qExternalLinkWrapper.url);
+	}
+
+	@Override
+	public List<ExternalLinkWrapper> listFromUrls(Collection<String> urls) {
+		Set<String> lowerUrls = Sets.newHashSet();
+		for (String url : urls) {
+			lowerUrls.add(StringUtils.lowerCase(url));
+		}
+		
+		return new JPAQuery(getEntityManager())
+				.where(qExternalLinkWrapper.url.lower().in(lowerUrls))
+				.orderBy(qExternalLinkWrapper.id.asc())
+				.list(qExternalLinkWrapper);
 	}
 
 }
