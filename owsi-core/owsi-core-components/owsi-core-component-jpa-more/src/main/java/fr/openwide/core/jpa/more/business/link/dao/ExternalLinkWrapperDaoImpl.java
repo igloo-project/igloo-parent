@@ -85,6 +85,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	@Override
 	public List<String> listUrlsFromIds(Collection<Long> ids) {
 		return new JPAQuery(getEntityManager())
+				.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.id.in(ids))
 				.orderBy(qExternalLinkWrapper.url.asc())
 				.distinct()
@@ -94,6 +95,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	@Override
 	public List<String> listUrlsFromStatuses(Collection<ExternalLinkStatus> statuses) {
 		return new JPAQuery(getEntityManager())
+				.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.status.in(statuses))
 				.orderBy(qExternalLinkWrapper.url.asc())
 				.distinct()
@@ -108,6 +110,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		}
 		
 		return new JPAQuery(getEntityManager())
+				.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.url.lower().in(lowerUrls))
 				.orderBy(qExternalLinkWrapper.id.asc())
 				.list(qExternalLinkWrapper);

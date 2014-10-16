@@ -56,6 +56,7 @@ public class ExternalLinkWrapperServiceImpl extends GenericEntityServiceImpl<Lon
 	
 	@Override
 	public Set<ExternalLinkWrapper> resetLinksFromUrls(Collection<String> urls) throws ServiceException, SecurityServiceException {
+		// TODO RJO External links : utiliser un Set<Long> et faire des flush par lots de 500 ?
 		Set<ExternalLinkWrapper> resetLinks = Sets.newHashSet();
 		for (ExternalLinkWrapper wrapper : dao.listFromUrls(urls)) {
 			wrapper.resetStatus();
