@@ -36,7 +36,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		JPQLQuery query = new JPAQuery(getEntityManager());
 		
 		query.from(qExternalLinkWrapper)
-				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.DEAD_LINK, ExternalLinkStatus.DELETED))
+				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.INACTIVES))
 				.orderBy(qExternalLinkWrapper.url.lower().asc());
 		
 		return query.list(qExternalLinkWrapper);
@@ -54,8 +54,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		query.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.url.lower().in(nextUrlsToCheckSubquery))
 				// Only links without the following statuses are to be checked
-				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.DEAD_LINK, ExternalLinkStatus.DELETED,
-						ExternalLinkStatus.IGNORED))
+				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.INACTIVES))
 				.orderBy(qExternalLinkWrapper.id.asc());
 		
 		return query.list(qExternalLinkWrapper);
@@ -68,7 +67,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		
 		query.from(qExternalLinkWrapper)
 				// Only links with the following statuses are to be checked
-				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.DEAD_LINK, ExternalLinkStatus.DELETED))
+				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.INACTIVES))
 				.groupBy(url)
 				.orderBy(
 						// NOTE: if, for a given URL, one linkWrapper has a null lastCheckDate and the other has a non-null lastCheckDate, the null one is ignored.
