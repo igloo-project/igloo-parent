@@ -173,8 +173,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		lastStatusCode = null;
 		lastCheckDate = null;
 		lastErrorType = null;
-		// TODO RJO External links : supprimer le failureAudit quand on repasse ONLINE ?
-		// (reset par la console et plus tard par un bouton "Ce lien est correct")
+		failureAudit = null;
 	}
 	
 	@Transient
@@ -185,8 +184,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 		changes.put(BINDING.lastStatusCode().getPath(), null);
 		changes.put(BINDING.lastCheckDate().getPath(), null);
 		changes.put(BINDING.lastErrorType().getPath(), null);
-		// TODO RJO External links : supprimer le failureAudit quand on repasse ONLINE ?
-		// (reset par modification de l'url)
+		changes.put(BINDING.failureAudit().getPath(), null);
 		
 		return changes;
 	}
