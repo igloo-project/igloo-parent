@@ -225,11 +225,6 @@
 			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-		</dependency>
-		
 		<!-- Database pooling -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>

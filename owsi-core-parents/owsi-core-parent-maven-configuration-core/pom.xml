@@ -52,7 +52,6 @@
 		
 		<owsi-core.cglib.version>3.1</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.18.2-GA</owsi-core.javassist.version>
-		<owsi-core.asm.version>3.3.1</owsi-core.asm.version>
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
 		
@@ -111,7 +110,7 @@
 		<owsi-core.galimatias.version>0.2.0</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.18.1</owsi-core.jersey.version>
-		<owsi-core.jersey2.version>2.11</owsi-core.jersey2.version>
+		<owsi-core.jersey2.version>2.13</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
@@ -346,12 +345,6 @@
 					<groupId>org.javassist</groupId>
 					<artifactId>javassist</artifactId>
 					<version>${owsi-core.javassist.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>asm</groupId>
-					<artifactId>asm</artifactId>
-					<version>${owsi-core.asm.version}</version>
 				</dependency>
 			
 			<!-- Spring Security -->
