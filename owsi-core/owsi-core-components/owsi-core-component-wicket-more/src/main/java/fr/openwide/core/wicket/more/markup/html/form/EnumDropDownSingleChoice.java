@@ -13,7 +13,6 @@ import org.retzlaff.select2.Select2Settings;
 import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
 import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 import fr.openwide.core.wicket.more.rendering.EnumRenderer;
-import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableEnumConverter;
 
 public class EnumDropDownSingleChoice<E extends Enum<E>> extends GenericSelect2DropDownSingleChoice<E> {
 
