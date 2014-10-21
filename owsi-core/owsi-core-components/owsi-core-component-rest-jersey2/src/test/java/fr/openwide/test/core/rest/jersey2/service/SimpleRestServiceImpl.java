@@ -5,12 +5,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import fr.openwide.core.rest.jersey2.service.AbstractRestServiceImpl;
+import fr.openwide.core.test.jpa.example.business.person.model.Person;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
 @Component
@@ -23,8 +23,8 @@ public class SimpleRestServiceImpl extends AbstractRestServiceImpl {
 
 	@GET
 	@Path("get/{id}/")
-	public Response get(@PathParam("id") Long id) {
-		return ok(personService.getById(id));
+	public Person get(@PathParam("id") Long id) {
+		return personService.getById(id);
 	}
 
 }
