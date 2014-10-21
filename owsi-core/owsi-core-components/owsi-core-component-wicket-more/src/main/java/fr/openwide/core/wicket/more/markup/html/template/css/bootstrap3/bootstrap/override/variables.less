@@ -17,6 +17,9 @@
 // TODO : pas possible de le mettre en px car calculs foireux après sinon
 //@line-height-base:				16px;
 
+// On utilise un round plutôt qu'un floor ou un ceil pour qu'un 15.999996 soit arrondi à 16 plutôt qu'à 15...
+@line-height-computed:				round(@font-size-base * @line-height-base); // 20px
+
 // Forms
 
 @input-color-placeholder:		#999;
