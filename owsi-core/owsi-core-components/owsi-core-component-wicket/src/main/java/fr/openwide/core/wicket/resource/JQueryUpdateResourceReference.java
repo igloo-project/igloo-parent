@@ -6,7 +6,7 @@ import org.apache.wicket.settings.IJavaScriptLibrarySettings;
 public class JQueryUpdateResourceReference extends JavaScriptResourceReference {
 	private static final long serialVersionUID = 1L;
 
-	public static final String VERSION_1 = "jquery/jquery-1.11.0.js";
+	public static final String VERSION_1 = "jquery/jquery-1.11.1.js";
 
 	private static final JQueryUpdateResourceReference INSTANCE = new JQueryUpdateResourceReference();
 
