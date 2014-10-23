@@ -129,8 +129,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	}
 	
 	/**
-	 * Retourne une propriété sous la forme d'un entier La séparation se fait
-	 * sur le caractère espace.
+	 * Retourne une propriété sous la forme d'un entier.
 	 * 
 	 * @param key la clé
 	 * @param defaultValue valeur par défaut
@@ -138,6 +137,22 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 *         si la valeur de la propriété n'est pas un entier valide
 	 */
 	protected Integer getPropertyAsInteger(String key, Integer defaultValue) {
+		return getPropertyAsInteger(key, defaultValue, null, null);
+	}
+	
+	/**
+	 * Retourne une propriété sous la forme d'un entier.
+	 * 
+	 * @param key la clé
+	 * @param defaultValue valeur par défaut
+	 * @param minValue valeur minimale
+	 * @param maxValue valeur maximale
+	 * @return valeur de la propriété sous la forme d'un entier
+	 *         ou defaultValue si la valeur de la propriété n'est pas un entier valide
+	 *         ou minValue si la valeur est inférieure à la valeur minimale
+	 *         ou maxValue si la valeur est supérieure à la valeur maximale
+	 */
+	protected Integer getPropertyAsInteger(String key, Integer defaultValue, Integer minValue, Integer maxValue) {
 		Integer integerProperty = defaultValue;
 		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
 		
@@ -149,6 +164,13 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 			integerProperty = Integer.parseInt(stringProperty);
 		} catch(NumberFormatException e) {
 			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas un entier valide : utilisation de la valeur par défaut.", e);
+		}
+		if (minValue != null && integerProperty < minValue) {
+			LOGGER.warn("La propriété " + key + " est inférieure à la valeur minimale : utilisation de cette valeur minimale.");
+			return minValue;
+		} else if (maxValue != null && integerProperty > maxValue) {
+			LOGGER.warn("La propriété " + key + " est supérieure à la valeur maximale : utilisation de cette valeur maximale.");
+			return maxValue;
 		}
 		return integerProperty;
 	}

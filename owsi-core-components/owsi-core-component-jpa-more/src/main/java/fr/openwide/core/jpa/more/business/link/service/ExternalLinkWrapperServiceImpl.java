@@ -36,8 +36,8 @@ public class ExternalLinkWrapperServiceImpl extends GenericEntityServiceImpl<Lon
 	}
 	
 	@Override
-	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
-		return dao.listNextCheckingBatch(batchSize);
+	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize, int minDelayBetweenTwoChecks) {
+		return dao.listNextCheckingBatch(batchSize, minDelayBetweenTwoChecks);
 	}
 	
 	@Override

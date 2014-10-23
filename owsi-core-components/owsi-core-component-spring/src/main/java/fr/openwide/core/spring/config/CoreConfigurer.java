@@ -203,6 +203,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsInteger("externalLinkChecker.batchSize", 500);
 	}
 	
+	public int getExternalLinkCheckerMinDelayBetweenTwoChecksInDays() {
+		return getPropertyAsInteger("externalLinkChecker.minDelayBetweenTwoChecksInDays", 3, 0, null);
+	}
+	
 	/**
 	 * Configuration of the RequestCycle builder for background threads
 	 */
