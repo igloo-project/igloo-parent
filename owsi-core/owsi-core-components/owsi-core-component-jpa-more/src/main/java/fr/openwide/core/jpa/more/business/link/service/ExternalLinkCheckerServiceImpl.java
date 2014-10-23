@@ -78,6 +78,10 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			//Pattern.compile("^http://translate.googleusercontent.com/.*")
 	);
 	
+	private int batchSize;
+	
+	private int minDelayBetweenTwoChecks;
+	
 	@PostConstruct
 	private void initialize() {
 		RequestConfig requestConfig = RequestConfig.custom()
@@ -98,6 +102,9 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 						new BasicHeader("Accept-Language", "fr,en;q=0.8,fr-fr;q=0.6,en-us;q=0.4,en-gb;q=0.2")
 				))
 				.build();
+		
+		batchSize = configurer.getExternalLinkCheckerBatchSize();
+		minDelayBetweenTwoChecks = configurer.getExternalLinkCheckerMinDelayBetweenTwoChecksInDays();
 	}
 	
 	@PreDestroy
@@ -115,7 +122,8 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	@Override
 	public void checkBatch() throws ServiceException, SecurityServiceException {
-		List<ExternalLinkWrapper> links = externalLinkWrapperService.listNextCheckingBatch(configurer.getExternalLinkCheckerBatchSize());
+		List<ExternalLinkWrapper> links = externalLinkWrapperService.listNextCheckingBatch(
+				batchSize, minDelayBetweenTwoChecks);
 		
 		runTasksInParallel(createTasksByDomain(links), 10, TimeUnit.HOURS);
 	}

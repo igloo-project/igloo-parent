@@ -15,9 +15,9 @@ public interface IExternalLinkWrapperDao extends IGenericEntityDao<Long, Externa
 
 	/**
 	 * @return A list of ExternalLinkWrappers containing at most <code>batchSize</code> urls.
-	 * The status of the returned ExternalLinkWrapper is anything but {@link ExternalLinkStatus#DEAD_LINK} or {@link ExternalLinkStatus#DELETED}. 
+	 * The status of the returned ExternalLinkWrapper is not in {@link ExternalLinkStatus#INACTIVES}. 
 	 */
-	List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize);
+	List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize, int minDelayBetweenTwoChecks);
 
 	List<String> listUrlsFromIds(Collection<Long> ids);
 

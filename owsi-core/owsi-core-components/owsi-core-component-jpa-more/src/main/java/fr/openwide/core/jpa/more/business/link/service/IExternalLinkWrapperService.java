@@ -15,7 +15,7 @@ public interface IExternalLinkWrapperService extends IGenericEntityService<Long,
 	
 	List<ExternalLinkWrapper> listActive();
 
-	List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize);
+	List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize, int minDelayBetweenTwoChecks);
 
 	void resetLinksFromIds(Collection<Long> ids) throws ServiceException, SecurityServiceException;
 

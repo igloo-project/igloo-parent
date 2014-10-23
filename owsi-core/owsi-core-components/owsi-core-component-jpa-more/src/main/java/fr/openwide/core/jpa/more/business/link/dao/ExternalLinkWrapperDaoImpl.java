@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.business.link.dao;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +12,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.template.DateTemplate;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
@@ -46,12 +49,16 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	}
 
 	@Override
-	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize) {
+	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize, int minDelayBetweenTwoChecks) {
 		JPQLQuery query = new JPAQuery(getEntityManager());
 		
 		// Query to list the next <batchsize> URLs
 		// Must be a separate query, not a subquery, since JPQL doesn't support limit in subqueries
-		List<String> nextUrlsToCheckSubquery = listNextCheckingBatchUrls(batchSize);
+		List<String> nextUrlsToCheckSubquery = listNextCheckingBatchUrls(batchSize, minDelayBetweenTwoChecks);
+		
+		if (nextUrlsToCheckSubquery.isEmpty()) {
+			return Lists.newArrayListWithCapacity(0);
+		}
 		
 		// Query to list the matching linkwrappers (may be more than <batchsize>)
 		query.from(qExternalLinkWrapper)
@@ -63,7 +70,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		return query.list(qExternalLinkWrapper);
 	}
 	
-	private List<String> listNextCheckingBatchUrls(int batchSize) {
+	private List<String> listNextCheckingBatchUrls(int batchSize, int minDelayBetweenTwoChecks) {
 		JPQLQuery query = new JPAQuery(getEntityManager());
 		
 		StringExpression url = qExternalLinkWrapper.url.lower();
@@ -78,6 +85,13 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 						qExternalLinkWrapper.lastCheckDate.max().asc().nullsFirst(),
 						url.asc()
 				);
+		
+		if (minDelayBetweenTwoChecks > 0) {
+			DateExpression<Date> nowMinusMinDelay = DateTemplate.create(Date.class,
+					"NOW() - interval({0})", minDelayBetweenTwoChecks + " days");
+			query.where(qExternalLinkWrapper.lastCheckDate.isNull()
+					.or(qExternalLinkWrapper.lastCheckDate.before(nowMinusMinDelay)));
+		}
 		
 		return query.limit(batchSize).list(url);
 	}
