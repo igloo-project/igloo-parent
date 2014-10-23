@@ -28,6 +28,15 @@ input[type="color"],
 	.form-control-focus();
 }
 
+// Bootstrap ne gère pas les input-group avec plusieurs champs,
+// ce petit ajustement semble faire l'affaire pour les cas simples.
+.input-group-addon {
+	&:not(:first-child):not(:last-child) {
+		border-left: none;
+		border-right: none;
+	}
+}
+
 // Petites flêches inutiles sur les input[type=number]
 // http://stackoverflow.com/questions/23372903/hide-spinner-in-input-number-firefox-29
 input[type=number] {
