@@ -189,10 +189,45 @@ span.popover-btn {
 	filter: none;
 }
 
-// Pagination
+// Portfolio (count et pagination)
+.count-container {
+	.clearfix();
+	margin: 5px 0;
+	
+	.count {
+		margin: 2px 0;
+		font-size: 16px;
+		line-height: 28px;
+		color: #666;
+		font-weight: bold;
+	}
+	
+	.pagination {
+		margin: 0;
+	}
+	
+	@media (min-width: @screen-sm-min) {
+		.pagination-outer {
+			text-align: right;
+			.pull-right();
+		}
+		
+		.pagination {
+			margin-left: 5px;
+			vertical-align: middle;
+		}
+		
+		.btn-group {
+			margin-left: 5px;
+			vertical-align: middle;
+		}
+	}
+}
 
-.portfolio-pagination {
-	.pull-right();
+.portfolio-outer {
+	.table {
+		margin-bottom: 5px;
+	}
 }
 
 // Tables
