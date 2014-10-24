@@ -36,7 +36,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
+import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>> {
 	private static final long serialVersionUID = -7588751914016782042L;
@@ -105,48 +105,48 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								new EhCacheCacheInformationModel(item.getModelObject());
 						
 						item.add(new JavaPackageLabel("cacheName", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().name())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().name())));
 						item.add(new TextField<String>("cacheNameInput", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().name())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().name())));
 						
 						WebMarkupContainer copyToClipboard = new WebMarkupContainer("copyToClipboard");
 						copyToClipboard.add(new ZeroClipboardDataAttributeModifier(BindingModel.of(
-								cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name())));
+								cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name())));
 						item.add(copyToClipboard);
 						
 						item.add(new Label("cacheMaxElements", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().maxElementsInMemory())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory())));
 						item.add(new Label("cacheStoredElements", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().memoryStoreObjectCount())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().memoryStoreObjectCount())));
 						item.add(new Label("cacheEvictionCount", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().evictionCount())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().evictionCount())));
 						item.add(new PercentageValueLabel("cacheCacheFillRatio", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().cacheFillRatio())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio())));
 						item.add(new Label("cacheHits", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().cacheHits())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().cacheHits())));
 						item.add(new Label("cacheMisses", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().cacheMisses())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().cacheMisses())));
 						item.add(new PercentageValueLabel("cacheHitRatio", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBinding.ehCacheCacheInformation().hitRatio())));
+								CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio())));
 						
 						WebMarkupContainer progressBarsContainer = new WebMarkupContainer("progressBarsContainer");
 						item.add(progressBarsContainer);
 						EhCacheProgressBarComponent progressBarObject = 
 								new EhCacheProgressBarComponent("progressBarObject", 
-										BindingModel.of(cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().cacheFillRatio()),
+										BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio()),
 										true, 70, 90);
 						progressBarsContainer.add(progressBarObject);
 						
 						EhCacheProgressBarComponent progressBarHit = 
 								new EhCacheProgressBarComponent("progressBarHit", 
-										BindingModel.of(cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().hitRatio()),
+										BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio()),
 										false, 20, 60);
 						progressBarsContainer.add(progressBarHit);
 						
 						IModel<String> viderCacheTextModel = new StringResourceModel(
 								"console.maintenance.ehcache.portfolio.viderCache.confirm", this, 
-								BindingModel.of(cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name()),
-								BindingModel.of(cacheInformationModel, CoreWicketMoreBinding.ehCacheCacheInformation().name()));
+								BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()),
+								BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()));
 						
 						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.build("viderCache", item.getModel())
 								.title(new ResourceModel("common.confirmTitle")).content(viderCacheTextModel)

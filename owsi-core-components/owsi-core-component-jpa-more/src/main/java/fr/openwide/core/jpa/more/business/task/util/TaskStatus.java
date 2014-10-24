@@ -12,17 +12,26 @@ public enum TaskStatus {
 	RUNNING,
 	COMPLETED,
 	FAILED,
-	INTERRUPTED,
+	INTERRUPTED, // Utilisé pour indiquer que la tâche est interrompue par arrêt technique de la file ou du serveur (INTERRUPTED != FAILED)
 	CANCELLED;
 	
-	public static final List<TaskStatus> CONSUMABLE_TASK_STATUS = Lists.newArrayList(TaskStatus.TO_RUN,
-			TaskStatus.RUNNING, TaskStatus.FAILED, TaskStatus.INTERRUPTED);
+	public static final List<TaskStatus> CONSUMABLE_TASK_STATUS = Lists.newArrayList(
+			TaskStatus.TO_RUN,
+			TaskStatus.RUNNING,
+			TaskStatus.FAILED,
+			TaskStatus.INTERRUPTED
+	);
 
-	public static final List<TaskStatus> RELOADABLE_TASK_STATUS = Lists.newArrayList(TaskStatus.CANCELLED,
-			TaskStatus.FAILED, TaskStatus.INTERRUPTED);
+	public static final List<TaskStatus> RELOADABLE_TASK_STATUS = Lists.newArrayList(
+			TaskStatus.CANCELLED,
+			TaskStatus.FAILED,
+			TaskStatus.INTERRUPTED
+	);
 	
-	public static final List<TaskStatus> CANCELLABLE_TASK_STATUS = Lists.newArrayList(TaskStatus.FAILED,
-			TaskStatus.INTERRUPTED);
+	public static final List<TaskStatus> CANCELLABLE_TASK_STATUS = Lists.newArrayList(
+			TaskStatus.FAILED,
+			TaskStatus.INTERRUPTED
+	);
 	
 	public static List<String> getValuesAsStringList() {
 		List<TaskStatus> taskStatusList = Arrays.asList(values());

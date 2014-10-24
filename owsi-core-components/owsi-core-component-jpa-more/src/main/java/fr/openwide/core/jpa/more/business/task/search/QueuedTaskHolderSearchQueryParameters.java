@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.CloneUtils;
+import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 
 public class QueuedTaskHolderSearchQueryParameters implements Serializable {
@@ -18,6 +19,8 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	private String name;
 
 	private List<TaskStatus> statuses;
+
+	private List<TaskResult> results;
 
 	private List<String> taskTypes;
 
@@ -32,10 +35,12 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 	public QueuedTaskHolderSearchQueryParameters() {
 	}
 
-	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses, Collection<String> taskTypes, Collection<String> queueIds,
+	public QueuedTaskHolderSearchQueryParameters(String name, Collection<TaskStatus> statuses,
+			Collection<TaskResult> results, Collection<String> taskTypes, Collection<String> queueIds,
 			Date creationDate, Date startDate, Date endDate) {
 		this.name = name;
 		this.statuses = statuses == null ? null : ImmutableList.copyOf(statuses);
+		this.results = results == null ? null : ImmutableList.copyOf(results);
 		this.taskTypes = taskTypes == null ? null : ImmutableList.copyOf(taskTypes);
 		this.queueIds = queueIds == null ? null : Lists.newArrayList(queueIds); // Null elements are allowed => not ImmutableList
 		this.creationDate = CloneUtils.clone(creationDate);
@@ -53,6 +58,10 @@ public class QueuedTaskHolderSearchQueryParameters implements Serializable {
 
 	public List<TaskStatus> getStatuses() {
 		return statuses;
+	}
+
+	public List<TaskResult> getResults() {
+		return results;
 	}
 
 	public List<String> getTaskTypes() {

@@ -4,35 +4,14 @@ table.tasks {
 			width: 18px;
 			padding: 0 6px;
 			vertical-align: middle;
-			
-			.status-label {
-				display: inline-block;
-				.border-radius(14px);
-				border-radius: 14px;
-				height: 18px;
-				padding: 1px;
-				color: #FFF;
-				
-				&.success {
-					border: 2px solid #5BB75B;
-					background-color: #5BB75B;
-				}
-				
-				&.info {
-					border: 2px solid #49AFCD;
-					background-color: #49AFCD;
-				}
-				
-				&.error {
-					border: 2px solid #DA4F49;
-					background-color: #DA4F49;
-				}
-				
-				.status-icon {
-					margin: 0;
-					vertical-align: top;
-				}
-			}
+			text-align: center;
+		}
+		
+		&.result {
+			width: 18px;
+			padding: 0 6px;
+			vertical-align: middle;
+			text-align: center;
 		}
 		
 		&.date {
@@ -45,11 +24,39 @@ table.tasks {
 	}
 }
 
-.serialized-task {
-	overflow: auto;
-}
-	
-.result {
-	overflow: auto;
-	max-height: 300px;
+.execution-result {
+	.batch-report {
+		display: block;
+		padding: ((@line-height-computed - 1) / 2);
+		margin: 0 0 (@line-height-computed / 2);
+		font-size: (@font-size-base - 1);
+		line-height: @line-height-base;
+		word-break: break-all;
+		word-wrap: break-word;
+		color: @pre-color;
+		background-color: @pre-bg;
+		border: 1px solid @pre-border-color;
+		border-radius: @border-radius-base;
+		
+		font-family: @font-family-monospace;
+		
+		.batch-report-context-container:first-child .batch-report-context {
+			margin-top: 0;
+		}
+		.batch-report-context {
+			font-size: (@font-size-base + 1);
+		}
+		
+		.batch-report-item {
+			.clearfix();
+			
+			.batch-report-item-icon {
+				float: left;
+			}
+			
+			.batch-report-item-message {
+				margin-left: 18px;
+			}
+		}
+	}
 }

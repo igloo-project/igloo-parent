@@ -21,9 +21,12 @@ import org.hibernate.search.annotations.Indexed;
 import org.springframework.core.style.ToStringCreator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
@@ -34,6 +37,9 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private static final long serialVersionUID = 3926959721176678607L;
 
 	public static final String NAME_SORT_FIELD_NAME = "nameSort";
+	public static final String CREATION_DATE_SORT_FIELD_NAME = "creationDateSort";
+	public static final String START_DATE_SORT_FIELD_NAME = "startDateSort";
+	public static final String END_DATE_SORT_FIELD_NAME = "endDateSort";
 
 	@Id
 	@GeneratedValue
@@ -57,16 +63,25 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private String taskType;
 
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = CREATION_DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private Date creationDate;
 
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Date triggeringDate = null;
 
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = START_DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private Date startDate = null;
 
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = END_DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private Date endDate = null;
 
 	@Version
@@ -81,10 +96,15 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Enumerated(EnumType.STRING)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private TaskStatus status;
+	
+	@Column
+	@Enumerated(EnumType.STRING)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	private TaskResult result;
 
 	@Column
 	@Type(type = "org.hibernate.type.StringClobType")
-	private String result;
+	private String stackTrace;
 
 	@Column
 	@Type(type = "org.hibernate.type.StringClobType")
@@ -192,12 +212,20 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 		this.status = status;
 	}
 
-	public String getResult() {
+	public TaskResult getResult() {
 		return result;
 	}
 
-	public void setResult(String result) {
+	public void setResult(TaskResult result) {
 		this.result = result;
+	}
+
+	public String getStackTrace() {
+		return stackTrace;
+	}
+
+	public void setStackTrace(String stackTrace) {
+		this.stackTrace = stackTrace;
 	}
 
 	public String getReport() {
@@ -211,8 +239,20 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
 	public void resetExecutionInformation() {
-		result = null;
-		report = null;
+		setResult(null);
+		setStackTrace(null);
+		setReport(null);
+	}
+	
+	@JsonIgnore
+	@org.codehaus.jackson.annotate.JsonIgnore
+	public void updateExecutionInformation(TaskExecutionResult executionResult, ObjectMapper objectMapper)
+			throws JsonProcessingException {
+		if (executionResult != null) {
+			setResult(executionResult.getResult());
+			setStackTrace(executionResult.getStackTrace());
+			setReport(objectMapper.writeValueAsString(executionResult.getReport()));
+		}
 	}
 
 	@Override

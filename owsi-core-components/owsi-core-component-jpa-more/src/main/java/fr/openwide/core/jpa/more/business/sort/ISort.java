@@ -31,4 +31,10 @@ public interface ISort<S> extends Serializable {
 			return sortOrder == null ? this : sortOrder;
 		}
 	}
+	
+	public enum SortNull {
+		NONE,
+		NULL_FIRST,
+		NULL_LAST;
+	}
 }

@@ -27,15 +27,23 @@ import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.showcase.core.business.task.model.FailedTask;
+import fr.openwide.core.showcase.core.business.task.model.FailedWithBusinessExceptionTask;
 import fr.openwide.core.showcase.core.business.task.model.ShowcaseTaskQueueId;
 import fr.openwide.core.showcase.core.business.task.model.SuccessTask;
-import fr.openwide.core.showcase.web.application.task.component.ShowcaseTaskIdDropDownChoice;
+import fr.openwide.core.showcase.core.business.task.model.SuccessWithAlertTask;
+import fr.openwide.core.showcase.core.business.task.model.SuccessWithErrorTask;
+import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
+import fr.openwide.core.showcase.web.application.task.component.ShowcaseTaskQueueIdDropDownChoice;
+import fr.openwide.core.showcase.web.application.task.component.TaskPortfolioPanel;
+import fr.openwide.core.showcase.web.application.task.component.TaskSearchPanel;
+import fr.openwide.core.showcase.web.application.task.model.TaskDataProvider;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -50,6 +58,9 @@ public class TaskMainPage extends MainTemplate {
 
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
+
+	@SpringBean
+	private ShowcaseConfigurer configurer;
 	
 	public static IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
@@ -66,8 +77,9 @@ public class TaskMainPage extends MainTemplate {
 		add(form);
 		
 		form.add(
-				new ShowcaseTaskIdDropDownChoice("queueId", queueIdModel)
+				new ShowcaseTaskQueueIdDropDownChoice("queueId", queueIdModel)
 						.setLabel(new ResourceModel("tasks.queue"))
+						.add(new LabelPlaceholderBehavior())
 		);
 		
 		form.add(new AjaxSubmitLink("createSuccessTask") {
@@ -88,6 +100,44 @@ public class TaskMainPage extends MainTemplate {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		});
+		
+		form.add(new AjaxSubmitLink("createSuccessWithAlertTask") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				try {
+					queuedTaskHolderManager.submit(new SuccessWithAlertTask(queueIdModel.getObject()));
+					
+					Session.get().success(getString("tasks.createTask.add.success"));
+					target.add(getPage());
+				} catch (Exception e) {
+					LOGGER.error("Unexpected error while adding a task", e);
+					Session.get().error(getString("common.error.unexpected"));
+				}
+
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		});
+		
+		form.add(new AjaxSubmitLink("createSuccessWithErrorTask") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				try {
+					queuedTaskHolderManager.submit(new SuccessWithErrorTask(queueIdModel.getObject()));
+					
+					Session.get().success(getString("tasks.createTask.add.success"));
+					target.add(getPage());
+				} catch (Exception e) {
+					LOGGER.error("Unexpected error while adding a task", e);
+					Session.get().error(getString("common.error.unexpected"));
+				}
+
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		});
 
 		form.add(new AjaxSubmitLink("createFailedTask") {
 			private static final long serialVersionUID = 1L;
@@ -97,6 +147,25 @@ public class TaskMainPage extends MainTemplate {
 				try {
 					queuedTaskHolderManager.submit(new FailedTask(queueIdModel.getObject()));
 
+					Session.get().success(getString("tasks.createTask.add.success"));
+					target.add(getPage());
+				} catch (Exception e) {
+					LOGGER.error("Unexpected error while adding a task", e);
+					Session.get().error(getString("common.error.unexpected"));
+				}
+
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+		});
+		
+		form.add(new AjaxSubmitLink("createFailedWithBusinessExceptionTask") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				try {
+					queuedTaskHolderManager.submit(new FailedWithBusinessExceptionTask(queueIdModel.getObject()));
+					
 					Session.get().success(getString("tasks.createTask.add.success"));
 					target.add(getPage());
 				} catch (Exception e) {
@@ -213,6 +282,15 @@ public class TaskMainPage extends MainTemplate {
 		});
 
 		add(new PlaceholderContainer("placeholder").collectionModel(queuedTaskHoldersListModel));
+		
+		// Search & porfolio
+		TaskDataProvider dataProvider = new TaskDataProvider();
+		
+		TaskPortfolioPanel portfolio = new TaskPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
+		add(
+				new TaskSearchPanel("search", portfolio.getPageable(), dataProvider),
+				portfolio
+		);
 	}
 
 	@Override

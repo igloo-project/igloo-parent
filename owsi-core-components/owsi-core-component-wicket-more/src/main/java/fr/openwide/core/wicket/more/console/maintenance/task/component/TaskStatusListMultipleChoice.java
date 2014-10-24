@@ -10,6 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.util.lang.Classes;
 
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 
@@ -34,7 +35,7 @@ public class TaskStatusListMultipleChoice extends ListMultipleChoice<TaskStatus>
 
 		@Override
 		public Object getDisplayValue(final TaskStatus object) {
-			return object != null ? new StringResourceModel("console.maintenance.task.common.status.${}",
+			return object != null ? new StringResourceModel(Classes.simpleName(TaskStatus.class) + ".${}",
 					TaskStatusListMultipleChoice.this, Model.of(object.name())).getString() : "";
 		}
 

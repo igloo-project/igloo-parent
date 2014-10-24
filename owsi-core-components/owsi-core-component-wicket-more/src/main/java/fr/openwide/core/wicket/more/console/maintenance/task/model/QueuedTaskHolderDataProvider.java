@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSearchQueryParameters;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
+import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataProvider;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -30,6 +31,8 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 	private final IModel<String> nameModel = new Model<String>();
 
 	private final IModel<Collection<TaskStatus>> statusesModel = new CollectionModel<TaskStatus>();
+
+	private final IModel<Collection<TaskResult>> resultsModel = new CollectionModel<TaskResult>();
 
 	private final IModel<Collection<String>> taskTypesModel = new CollectionModel<String>();
 
@@ -50,7 +53,8 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 	}
 
 	public QueuedTaskHolderSearchQueryParameters getSearchParameters() {
-		return new QueuedTaskHolderSearchQueryParameters(nameModel.getObject(), statusesModel.getObject(),
+		return new QueuedTaskHolderSearchQueryParameters(nameModel.getObject(),
+				statusesModel.getObject(), resultsModel.getObject(),
 				taskTypesModel.getObject(), queueIdsModel.getObject(),
 				creationDateModel.getObject(), startDateModel.getObject(), completionDateModel.getObject());
 	}
@@ -81,6 +85,10 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 
 	public IModel<Collection<TaskStatus>> getStatusesModel() {
 		return statusesModel;
+	}
+
+	public IModel<Collection<TaskResult>> getResultsModel() {
+		return resultsModel;
 	}
 
 	public IModel<Collection<String>> getTaskTypesModel() {
@@ -114,6 +122,7 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 		
 		nameModel.detach();
 		statusesModel.detach();
+		resultsModel.detach();
 		taskTypesModel.detach();
 		creationDateModel.detach();
 		startDateModel.detach();

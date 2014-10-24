@@ -4,12 +4,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -23,9 +23,15 @@ import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
-import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.jpa.more.business.task.util.TaskResult;
+import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
+import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.markup.html.basic.EnumCoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskExecutionResultPanel;
+import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskResultPanel;
+import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskStatusPanel;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -41,7 +47,6 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
-import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
 
 public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTemplate {
 
@@ -75,48 +80,62 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		
 		addHeadPageTitleKey("console.maintenance.tasks");
 		
-		WebMarkupContainer statusContainer = new WebMarkupContainer("statusContainer");
-		statusContainer.add(new ClassAttributeAppender(new LoadableDetachableModel<String>() {
+		WebMarkupContainer statusContainer = new WebMarkupContainer("statusContainer") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			public String load() {
-				switch (queuedTaskHolderModel.getObject().getStatus()) {
+			protected void onComponentTag(ComponentTag tag) {
+				super.onComponentTag(tag);
+				QueuedTaskHolder queuedTaskHolder = queuedTaskHolderModel.getObject();
+				String classAttribute = null;
+				switch (queuedTaskHolder.getStatus()) {
 				case COMPLETED:
-					return "alert-success";
+					TaskResult result = queuedTaskHolder.getResult();
+					if (result == null) {
+						classAttribute = "alert-info";
+						break;
+					}
+					switch (result) {
+					case SUCCESS:
+						classAttribute = "alert-success";
+						break;
+					case WARN:
+						classAttribute = "alert-warning";
+						break;
+					case ERROR:
+					case FATAL:
+						classAttribute = "alert-danger";
+						break;
+					}
+					break;
 				case TO_RUN:
-					return "alert-info";
+					classAttribute = "alert-info";
+					break;
 				case RUNNING:
-					return "alert-warning";
+					classAttribute = "alert-warning";
+					break;
+				case FAILED:
+				case CANCELLED:
+				case INTERRUPTED:
 				default:
-					return "alert-error";
+					classAttribute = "alert-danger";
+					break;
 				}
-			}
-		}));
-		add(statusContainer);
-
-		IModel<String> taskStatusStringModel = new LoadableDetachableModel<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String load() {
-				switch (queuedTaskHolderModel.getObject().getStatus()) {
-				case COMPLETED:
-					return "success";
-				case TO_RUN:
-					return "toRun";
-				case RUNNING:
-					return "running";
-				default:
-					return "error";
-				}
+				tag.append("class", classAttribute, " ");
 			}
 		};
-
-		statusContainer.add(new Label("status", new StringResourceModel(
-				"console.maintenance.task.description.mainInformation.status.${}", taskStatusStringModel,
-				BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().status()))));
-
+		add(statusContainer);
+		
+		statusContainer.add(new EnumCoreLabel<TaskStatus>("status",
+				BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected String resourceKey(TaskStatus value) {
+				return "console.maintenance.task.description.mainInformation." + super.resourceKey(value);
+			}
+		});
+		
 		statusContainer.add(
 				AjaxConfirmLink.build("reload", queuedTaskHolderModel)
 						.title(new ResourceModel("console.maintenance.task.description.mainInformation.reload.title"))
@@ -150,7 +169,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 							}
 						}))
 		);
-
+		
 		statusContainer.add(
 				AjaxConfirmLink.build("cancel", queuedTaskHolderModel)
 						.title(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.title"))
@@ -185,18 +204,29 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 						}))
 		);
 		
-		add(new Label("name", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
-		Component queue = new CoreLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId())).hideIfEmpty();
-		add(queue, new PlaceholderContainer("defaultQueue").component(queue));
-		add(new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
-				DatePattern.SHORT_DATETIME));
-		add(new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().startDate()),
-				DatePattern.SHORT_DATETIME));
-		add(new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().endDate()),
-				DatePattern.SHORT_DATETIME));
+		// Main information detail
+		Component queue = new CoreLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().queueId())).hideIfEmpty();
+		add(
+				new Label("name", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().name())),
+				queue,
+				new PlaceholderContainer("defaultQueue").component(queue),
+				new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()),
+						DatePattern.SHORT_DATETIME),
+				new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()),
+						DatePattern.SHORT_DATETIME),
+				new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()),
+						DatePattern.SHORT_DATETIME),
+				new EnumCoreLabel<TaskStatus>("status", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
+				new TaskStatusPanel("statusIcon", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
+				new EnumCoreLabel<TaskResult>("result", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result())),
+				new TaskResultPanel("resultIcon", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result()))
+		);
 
-		add(new CoreLabel("result", BindingModel.of(queuedTaskHolderModel, CoreWicketMoreBinding.queuedTaskHolderBinding().result())).hideIfEmpty());
+		// Stack trace
+		add(new CoreLabel("stackTrace", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().stackTrace()))
+				.hideIfEmpty());
 
+		// Serialized task
 		add(new Label("serializedTask", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -211,6 +241,9 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 				}
 			}
 		}));
+		
+		// Execution result
+		add(new TaskExecutionResultPanel("executionResult", queuedTaskHolderModel));
 	}
 
 	@Override
