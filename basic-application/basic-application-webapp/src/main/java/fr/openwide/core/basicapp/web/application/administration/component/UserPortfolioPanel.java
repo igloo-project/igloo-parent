@@ -20,11 +20,11 @@ import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
-import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
+import fr.openwide.core.wicket.more.markup.html.list.PageablePortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
-public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
+public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
 
 	private static final long serialVersionUID = 6030960404037116497L;
 
@@ -32,7 +32,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	private IUserService userService;
 
 	public UserPortfolioPanel(String id, IDataProvider<User> dataProvider, int itemsPerPage) {
-		super(id, dataProvider, itemsPerPage);
+		super(id, dataProvider, itemsPerPage, "administration.user.count");
 	}
 
 	@Override

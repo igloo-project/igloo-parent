@@ -18,11 +18,11 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.link.model.PageModel;
-import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
+import fr.openwide.core.wicket.more.markup.html.list.PageablePortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
-public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
+public class UserGroupPortfolioPanel extends PageablePortfolioPanel<UserGroup> {
 
 	private static final long serialVersionUID = -2237967697027843105L;
 
@@ -30,7 +30,7 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 	private IUserGroupService userGroupService;
 
 	public UserGroupPortfolioPanel(String id, IModel<List<UserGroup>> userGroupListModel, int itemsPerPage) {
-		super(id, userGroupListModel, itemsPerPage);
+		super(id, userGroupListModel, itemsPerPage, "administration.usergroup.count");
 	}
 
 	@Override
