@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<div class="count-container">
+			<div wicket:id="topPager" class="pagination-outer" />
+			<div wicket:id="count" class="count" />
+		</div>
+		
+		<wicket:child />
+		
+		<wicket:enclosure child="bottomPager">
+			<div class="count-container">
+				<div wicket:id="bottomPager" class="pagination-outer" />
+			</div>
+		</wicket:enclosure>
+	</wicket:extend>
+</html>
