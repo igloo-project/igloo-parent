@@ -16,6 +16,8 @@ public class TaskResultPanel extends Panel {
 
 	private boolean hideIfEmpty;
 	
+	private String faSize = "fa-lg";
+	
 	public TaskResultPanel(String id, final IModel<TaskResult> resultModel) {
 		super(id, resultModel);
 		
@@ -26,24 +28,21 @@ public class TaskResultPanel extends Panel {
 					@Override
 					protected void onComponentTag(ComponentTag tag) {
 						super.onComponentTag(tag);
-						String iconClass = null;
+						String iconClass = faSize;
 						TaskResult result = resultModel.getObject();
 						if (result != null) {
 							switch (result) {
 							case SUCCESS:
-								iconClass = "fa-check-circle success";
+								iconClass += " fa-check-circle success";
 								break;
 							case WARN:
-								iconClass = "fa-exclamation-circle warning";
+								iconClass += " fa-exclamation-circle warning";
 								break;
 							case ERROR:
-								iconClass = "fa-times-circle danger";
+								iconClass += " fa-times-circle danger";
 								break;
 							case FATAL:
-								iconClass = "fa-times-circle-o fail";
-								break;
-							default:
-								iconClass = "";
+								iconClass += " fa-times-circle-o fail";
 								break;
 							}
 							tag.append("class", iconClass, " ");
@@ -69,6 +68,11 @@ public class TaskResultPanel extends Panel {
 	
 	public TaskResultPanel hideIfEmpty() {
 		hideIfEmpty = true;
+		return this;
+	}
+	
+	public TaskResultPanel faSize(String faSize) {
+		this.faSize = faSize;
 		return this;
 	}
 }

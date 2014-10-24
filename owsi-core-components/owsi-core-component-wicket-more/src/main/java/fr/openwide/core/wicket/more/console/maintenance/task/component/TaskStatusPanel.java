@@ -16,6 +16,8 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 
 	private boolean hideIfEmpty;
 	
+	private String faSize = "fa-lg";
+	
 	public TaskStatusPanel(String id, final IModel<TaskStatus> statusModel) {
 		super(id, statusModel);
 		
@@ -26,30 +28,27 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 					@Override
 					protected void onComponentTag(ComponentTag tag) {
 						super.onComponentTag(tag);
-						String iconClass = null;
+						String iconClass = faSize;
 						TaskStatus status = statusModel.getObject();
 						if (status != null) {
 							switch (status) {
 								case TO_RUN:
-									iconClass = "fa-play-circle info";
+									iconClass += " fa-play-circle info";
 									break;
 								case RUNNING:
-									iconClass = "fa-repeat info";
+									iconClass += " fa-repeat info";
 									break;
 								case COMPLETED:
-									iconClass = "fa-check-circle success";
+									iconClass += " fa-check-circle success";
 									break;
 								case FAILED:
-									iconClass = "fa-times-circle fail";
+									iconClass += " fa-times-circle fail";
 									break;
 								case INTERRUPTED:
-									iconClass = "fa-pause fail";
+									iconClass += " fa-pause fail";
 									break;
 								case CANCELLED:
-									iconClass = "fa-ban fail";
-									break;
-								default:
-									iconClass = "";
+									iconClass += " fa-ban fail";
 									break;
 							}
 							tag.append("class", iconClass, " ");
@@ -75,6 +74,11 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 	
 	public TaskStatusPanel hideIfEmpty() {
 		hideIfEmpty = true;
+		return this;
+	}
+	
+	public TaskStatusPanel faSize(String faSize) {
+		this.faSize = faSize;
 		return this;
 	}
 }
