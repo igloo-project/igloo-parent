@@ -2,9 +2,10 @@ package fr.openwide.core.showcase.core.business.task.model;
 
 import java.util.Date;
 
+import fr.openwide.core.commons.util.report.BatchReport;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
-import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
+import fr.openwide.core.jpa.more.business.task.model.TaskExecutionResult;
 
 public class FailedTask extends AbstractTask {
 
@@ -25,11 +26,14 @@ public class FailedTask extends AbstractTask {
 	}
 
 	@Override
-	protected void doTask(QueuedTaskHolder queuedTaskHolder) throws Exception {
-		queuedTaskHolder.setName("Pray for a rollback");
-		queuedTaskHolderService.update(queuedTaskHolder);
-
-		throw new Exception("Expected exception from a FailedTask.");
+	protected TaskExecutionResult doTask() throws Exception {
+		BatchReport batchReport = new BatchReport();
+		
+		batchReport.info("Task execution info.");
+		
+		throw new Exception("Unexpected technical exception from a FailedTask.");
+		
+		// Rest of the task...
 	}
 
 }

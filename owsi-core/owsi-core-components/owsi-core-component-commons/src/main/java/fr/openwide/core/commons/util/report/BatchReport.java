@@ -2,9 +2,10 @@ package fr.openwide.core.commons.util.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 public class BatchReport implements Serializable {
 
@@ -14,9 +15,9 @@ public class BatchReport implements Serializable {
 
 	private String context;
 
-	private Map<String, List<BatchReportItem>> items = new LinkedHashMap<String, List<BatchReportItem>>();
+	private Map<String, List<BatchReportItem>> items = Maps.newLinkedHashMap();
 
-	private boolean isOnError = false;
+	private boolean onError = false;
 
 	public BatchReport() {
 		this(GLOBAL_CONTEXT);
@@ -71,7 +72,7 @@ public class BatchReport implements Serializable {
 		items.get(context).add(new BatchReportItem(severity, message, e));
 	}
 
-	public Map<String, List<BatchReportItem>> getAllItems() {
+	public Map<String, List<BatchReportItem>> getItems() {
 		return items;
 	}
 
@@ -88,11 +89,11 @@ public class BatchReport implements Serializable {
 	}
 
 	public boolean isOnError() {
-		return isOnError;
+		return onError;
 	}
 
-	public void setOnError(boolean isOnError) {
-		this.isOnError = isOnError;
+	public void setOnError(boolean onError) {
+		this.onError = onError;
 	}
 
 }

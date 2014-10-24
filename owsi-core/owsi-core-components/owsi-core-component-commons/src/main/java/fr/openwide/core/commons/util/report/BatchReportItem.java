@@ -3,6 +3,8 @@ package fr.openwide.core.commons.util.report;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import fr.openwide.core.commons.util.CloneUtils;
 
 public class BatchReportItem implements Serializable {
@@ -64,4 +66,12 @@ public class BatchReportItem implements Serializable {
 		return CloneUtils.clone(date);
 	}
 
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("severity", severity.name())
+				.append("date", date)
+				.append("message", message)
+				.build();
+	}
 }

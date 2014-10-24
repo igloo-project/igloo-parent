@@ -2,9 +2,11 @@ package fr.openwide.core.showcase.core.business.task.model;
 
 import java.util.Date;
 
+import fr.openwide.core.commons.util.report.BatchReport;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
+import fr.openwide.core.jpa.more.business.task.model.BatchReportBean;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
-import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
+import fr.openwide.core.jpa.more.business.task.model.TaskExecutionResult;
 
 public class SuccessTask extends AbstractTask {
 
@@ -25,7 +27,12 @@ public class SuccessTask extends AbstractTask {
 	}
 
 	@Override
-	protected void doTask(QueuedTaskHolder queuedTaskHolder) throws Exception {
+	protected TaskExecutionResult doTask() throws Exception {
+		BatchReport batchReport = new BatchReport();
+		
+		batchReport.info("Task execution info.");
+		
+		return TaskExecutionResult.completed(new BatchReportBean(batchReport));
 	}
 
 }

@@ -2,6 +2,10 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
+		<div class="count-container">
+			<div wicket:id="topPager" class="pagination-outer" />
+			<div wicket:id="topCount" class="count" />
+		</div>
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered">
 				<thead>
@@ -30,6 +34,9 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="count-container">
+			<div wicket:id="bottomPager" class="pagination-outer" />
 		</div>
 	</wicket:extend>
 </html>

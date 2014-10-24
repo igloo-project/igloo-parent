@@ -7,6 +7,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
+import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
@@ -17,7 +18,6 @@ import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePaging
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
-import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
 
 public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHolder> {
 
@@ -31,21 +31,21 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 	protected void addItemColumns(final Item<QueuedTaskHolder> item, IModel<? extends QueuedTaskHolder> itemModel) {
 		item.setOutputMarkupId(true);
 		
-		item.add(new TaskStatusPanel("status", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().status())));
-
-		item.add(ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(ReadOnlyModel.of(itemModel))
-				.link("nameLink")
-				.setBody(BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().name())));
-		
-		Component queue = new CoreLabel("queue", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().queueId())).hideIfEmpty();
-		item.add(queue, new PlaceholderContainer("defaultQueue").component(queue));
-
-		item.add(new DateLabel("creationDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().creationDate()),
-				DatePattern.SHORT_DATETIME));
-		item.add(new DateLabel("startDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().startDate()),
-				DatePattern.SHORT_DATETIME));
-		item.add(new DateLabel("endDate", BindingModel.of(itemModel, CoreWicketMoreBinding.queuedTaskHolderBinding().endDate()),
-				DatePattern.SHORT_DATETIME));
+		Component queue = new CoreLabel("queue", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().queueId())).hideIfEmpty();
+		item.add(
+				new TaskStatusPanel("status", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
+				new TaskResultPanel("result", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().result())),
+				ConsoleMaintenanceTaskDescriptionPage.linkDescriptor(ReadOnlyModel.of(itemModel))
+						.link("nameLink")
+						.setBody(BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().name())),
+				queue,
+				new PlaceholderContainer("defaultQueue").component(queue),
+				new DateLabel("creationDate", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()),
+						DatePattern.SHORT_DATETIME),
+				new DateLabel("startDate", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()),
+						DatePattern.SHORT_DATETIME),
+				new DateLabel("endDate", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()),
+						DatePattern.SHORT_DATETIME));
 	}
 
 	@Override

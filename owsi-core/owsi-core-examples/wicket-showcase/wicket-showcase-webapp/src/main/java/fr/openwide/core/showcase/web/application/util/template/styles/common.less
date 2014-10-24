@@ -154,18 +154,73 @@ body {
 			background: @page-lead-bg;
 			border-bottom: 1px solid #CCCCCC;
 			
+			padding-top: @grid-gutter-half-width;
+			
 			.form-inline {
-				padding-top: @grid-gutter-half-width;
 				padding-bottom: 0;
 				> .form-group, > .btn, > .checkbox {
 					margin-bottom: @grid-gutter-half-width;
 				}
 			}
 			
-			.further {
+			h2 {
+				margin-top: 0;
+			}
+			
+			hr {
+				border-color: #CCCCCC;
+			}
+			
+			+ .page-lead {
 				padding-top: @grid-gutter-half-width;
 			}
 		}
+	}
+}
+
+.input-group {
+	label[for].input-group-addon {
+		cursor: pointer;
+	}
+}
+
+.count-container {
+	.clearfix();
+	margin: 5px 0;
+	
+	.count {
+		margin: 2px 0;
+		font-size: 16px;
+		line-height: 28px;
+		color: #666;
+		font-weight: bold;
+	}
+	
+	.pagination {
+		margin: 0;
+	}
+	
+	@media (min-width: @screen-sm-min) {
+		.pagination-outer {
+			text-align: right;
+			.pull-right();
+		}
+		
+		.pagination {
+			margin-left: 5px;
+			vertical-align: middle;
+		}
+		
+		.btn-group {
+			margin-left: 5px;
+			vertical-align: middle;
+		}
+	}
+}
+
+.portfolio-outer {
+	.table {
+		margin-bottom: 5px;
 	}
 }
 

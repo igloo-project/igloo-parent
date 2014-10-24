@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.apache.solr.search.Sorting;
 import org.bindgen.Binding;
 
 import com.google.common.base.Joiner;
@@ -15,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
+import fr.openwide.core.jpa.more.business.sort.ISort.SortNull;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 
 public final class SortUtils {
@@ -41,7 +43,16 @@ public final class SortUtils {
 	}
 	
 	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, int type, String fieldName) {
-		return new SortField(fieldName, type, SortOrder.DESC == sort.getDefaultOrder().asDefaultFor(order));
+		return new SortField(fieldName, type, isReverse(sort, order));
+	}
+	
+	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, SortNull sortNull) {
+		return Sorting.getStringSortField(fieldName, isReverse(sort, order),
+				SortNull.NULL_LAST.equals(sortNull), SortNull.NULL_FIRST.equals(sortNull));
+	}
+	
+	private static boolean isReverse(ISort<SortField> sort, SortOrder order) {
+		return SortOrder.DESC == sort.getDefaultOrder().asDefaultFor(order);
 	}
 
 	public static <T extends ISort<SortField>> List<SortField> collectSortFields(Map<T, SortOrder> sortsMap) {

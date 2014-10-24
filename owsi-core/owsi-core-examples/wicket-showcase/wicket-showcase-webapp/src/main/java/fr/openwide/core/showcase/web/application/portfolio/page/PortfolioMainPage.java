@@ -16,14 +16,11 @@ import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfolioPanel;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserSearchPanel;
 import fr.openwide.core.showcase.web.application.portfolio.model.UserDataProvider;
-import fr.openwide.core.showcase.web.application.util.binding.WebappBindings;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
-import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
-import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class PortfolioMainPage extends MainTemplate {
 	private static final long serialVersionUID = 6572019030268485555L;
@@ -50,10 +47,8 @@ public class PortfolioMainPage extends MainTemplate {
 		
 		UserDataProvider userDataProvider = new UserDataProvider(searchTermModel, activeModel);
 		
-		add(new CountLabel("countLabel", "user.portfolio.userCount", BindingModel.of(userDataProvider, WebappBindings.iBindableDataProvider().size())));
-		
 		// Porfolio
-		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", userDataProvider, showcaseConfigurer.getPortfolioItemsPerPage());
+		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", userDataProvider, showcaseConfigurer.getPortfolioItemsPerPageUser());
 		add(portfolioPanel);
 		
 		// Search

@@ -8,8 +8,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.QueryParser.Operator;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
 import org.hibernate.search.Environment;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -21,16 +19,18 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.more.business.task.model.QQueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSearchQueryParameters;
+import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSort;
+import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -60,13 +60,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 			}
 
 			// Sort
-			List<SortField> sortFields = Lists.newArrayList();
-
-			sortFields.add(new SortField(QUEUED_TASK_HOLDER_BINDING.endDate().getPath(), SortField.STRING, true));
-			sortFields.add(new SortField(QueuedTaskHolder.NAME_SORT_FIELD_NAME, SortField.STRING));
-			sortFields.add(new SortField(QUEUED_TASK_HOLDER_BINDING.id().getPath(), SortField.LONG));
-
-			fullTextQuery.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
+			fullTextQuery.setSort(SortUtils.getLuceneSortWithDefaults(null, QueuedTaskHolderSort.CREATION_DATE, QueuedTaskHolderSort.NAME, QueuedTaskHolderSort.ID));
 			fullTextQuery.initializeObjectsWith(ObjectLookupMethod.SECOND_LEVEL_CACHE, DatabaseRetrievalMethod.QUERY);
 
 			return fullTextQuery.getResultList();
@@ -117,6 +111,18 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 			for (TaskStatus status : statuses) {
 				subJunction.should(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.status().getPath())
 						.matching(status).createQuery());
+			}
+
+			booleanJunction.must(subJunction.createQuery());
+		}
+
+		List<TaskResult> results = searchParams.getResults();
+		if (results != null && !results.isEmpty()) {
+			BooleanJunction<?> subJunction = queryBuilder.bool();
+
+			for (TaskResult result : results) {
+				subJunction.should(queryBuilder.keyword().onField(QUEUED_TASK_HOLDER_BINDING.result().getPath())
+						.matching(result).createQuery());
 			}
 
 			booleanJunction.must(subJunction.createQuery());

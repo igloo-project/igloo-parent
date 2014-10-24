@@ -13,6 +13,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
+import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
@@ -78,5 +79,9 @@ public class TaskFilterPanel extends Panel {
 		FormComponent<Collection<TaskStatus>> statuses = new TaskStatusListMultipleChoice("statuses",
 				queuedTaskHolderDataProvider.getStatusesModel());
 		filterForm.add(statuses);
+
+		FormComponent<Collection<TaskResult>> results = new TaskResultListMultipleChoice("results",
+				queuedTaskHolderDataProvider.getResultsModel());
+		filterForm.add(results);
 	}
 }

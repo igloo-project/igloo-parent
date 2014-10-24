@@ -1,0 +1,26 @@
+/* Colorisation des icônes */
+.fa {
+	&.info {
+		color: @brand-info;
+	}
+	&.success {
+		color: @brand-success;
+	}
+	&.warning {
+		color: @brand-warning;
+	}
+	&.danger {
+		color: @brand-danger;
+	}
+	&.fail {
+		color: @gray-darker;
+	}
+	&.link {
+		color: @link-hover-color;
+		cursor: pointer;
+		
+		&:hover {
+			color: @link-color;
+		}
+	}
+}

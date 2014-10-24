@@ -14,6 +14,7 @@ import fr.openwide.core.jpa.security.business.authority.service.IAuthorityServic
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.wicket.markup.html.form.PageableSearchForm;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -24,15 +25,11 @@ public class UserSearchPanel extends Panel {
 	@SpringBean
 	private IAuthorityService authorityService;
 	
-	private IPageable pageable;
-	
 	private IModel<String> searchTermModel;
 	private IModel<Boolean> activeModel;
 	
 	public UserSearchPanel(String id, IPageable pageable, IModel<String> searchTermModel, IModel<Boolean> activeModel) {
 		super(id);
-		
-		this.pageable = pageable;
 		
 		this.searchTermModel = searchTermModel;
 		this.activeModel = activeModel;
@@ -54,15 +51,7 @@ public class UserSearchPanel extends Panel {
 		add(userQuickSearch);
 		
 		// Search form
-		Form<Void> form = new Form<Void>("form") {
-			private static final long serialVersionUID = 3070604877946816317L;
-			@Override
-			protected void onSubmit() {
-				// Lors de la soumission d'un formulaire de recherche, on retourne sur la première page
-				UserSearchPanel.this.pageable.setCurrentPage(0);
-				super.onSubmit();
-			}
-		};
+		Form<Void> form = new PageableSearchForm<Void>("form", pageable);
 		
 		TextField<String> searchInput = new TextField<String>("searchInput", this.searchTermModel);
 		searchInput.setLabel(new ResourceModel("user.portfolio.search.name"));

@@ -21,7 +21,7 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBinding;
+import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<EhCacheCacheInformation> {
 
@@ -43,7 +43,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, BindingModel.of(getModel(), CoreWicketMoreBinding.ehCacheCacheInformation().name()));
+		return new Label(wicketId, BindingModel.of(getModel(), CoreWicketMoreBindings.ehCacheCacheInformation().name()));
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 		
 		cacheForm = new Form<Cache>("cacheForm");
 		maxSizeField = new TextField<Long>("maxSize", BindingModel.of(getModel(),
-				CoreWicketMoreBinding.ehCacheCacheInformation().maxElementsInMemory()));
+				CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory()));
 		maxSizeField.setLabel(new ResourceModel("console.maintenance.ehcache.portfolio.max"));
 		cacheForm.add(maxSizeField);
 		body.add(cacheForm);

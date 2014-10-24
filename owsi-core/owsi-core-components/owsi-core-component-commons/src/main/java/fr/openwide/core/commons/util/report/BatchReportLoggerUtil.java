@@ -13,7 +13,7 @@ public final class BatchReportLoggerUtil {
 	public static final String MDC_CONTEXT_KEY = "BatchReportContext";
 
 	public static void log(Logger logger, BatchReport batchReport) {
-		Map<String, List<BatchReportItem>> items = batchReport.getAllItems();
+		Map<String, List<BatchReportItem>> items = batchReport.getItems();
 		Set<Entry<String, List<BatchReportItem>>> entries = items.entrySet();
 
 		for (Entry<String, List<BatchReportItem>> entry : entries) {
