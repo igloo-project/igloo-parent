@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.util.binding;
 
+import org.bindgen.java.util.ListBinding;
+
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationBinding;
 import fr.openwide.core.wicket.more.model.IBindableDataProviderBinding;
 
@@ -9,12 +11,18 @@ public final class CoreWicketMoreBindings {
 	
 	private static final IBindableDataProviderBinding IBINDABLE_DATA_PROVIDER = new IBindableDataProviderBinding();
 	
+	private static final ListBinding<?> LIST = new ListBinding<Void>();
+	
 	public static EhCacheCacheInformationBinding ehCacheCacheInformation() {
 		return EH_CACHE_CACHE_INFORMATION;
 	}
 	
 	public static IBindableDataProviderBinding iBindableDataProvider() {
 		return IBINDABLE_DATA_PROVIDER;
+	}
+	
+	public static ListBinding<?> list() {
+		return LIST;
 	}
 	
 	private CoreWicketMoreBindings() {

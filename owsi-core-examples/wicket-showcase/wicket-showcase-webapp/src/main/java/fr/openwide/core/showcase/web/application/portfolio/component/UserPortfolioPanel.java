@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +15,13 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
-import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
-import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
-import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
+import fr.openwide.core.wicket.more.markup.html.list.PageablePortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
-import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
-public class UserPortfolioPanel extends AbstractGenericItemListPanel<User> {
+public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
+	
 	private static final long serialVersionUID = 6906542421342609922L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserPortfolioPanel.class);
@@ -32,25 +29,9 @@ public class UserPortfolioPanel extends AbstractGenericItemListPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	private final IModel<Integer> countModel;
-	
 	public UserPortfolioPanel(String id, IDataProvider<User> dataProvider, int itemsPerPage) {
-		super(id, dataProvider, itemsPerPage);
+		super(id, dataProvider, itemsPerPage, "user.portfolio.userCount");
 		setOutputMarkupId(true);
-		countModel = new PropertyModel<Integer>(dataProvider,
-				CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
-	}
-	
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-		
-		// Count
-		add(new CountLabel("topCount", "tasks.count", countModel));
-		
-		// Pagers
-		add(new HideablePagingNavigator("topPager", getDataView()));
-		add(new HideablePagingNavigator("bottomPager", getDataView()));
 	}
 
 	@Override
