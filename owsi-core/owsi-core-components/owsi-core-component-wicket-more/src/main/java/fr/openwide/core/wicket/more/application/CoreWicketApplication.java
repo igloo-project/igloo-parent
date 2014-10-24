@@ -106,11 +106,17 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 		// configuration des ressources
 		// depuis Wicket 1.5, il faut ajouter les patterns sur les ressources qu'on souhaite rendre accessible
-		// on ajoute globalement l'accès aux ressources less.
-		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.less");
+		// on ajoute globalement l'accès aux ressources less et aux joyeusetés liés aux polices.
+		SecurePackageResourceGuard packageResourceGuard = (SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard();
+		packageResourceGuard.addPattern("+*.less");
+		packageResourceGuard.addPattern("+*.woff");
+		packageResourceGuard.addPattern("+*.eot");
+		packageResourceGuard.addPattern("+*.svg");
+		packageResourceGuard.addPattern("+*.ttf");
+		packageResourceGuard.addPattern("+*.css.map");
 		
 		// on autorise l'accès aux .htc pour CSS3PIE
-		((SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard()).addPattern("+*.htc");
+		packageResourceGuard.addPattern("+*.htc");
 		
 		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
 		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
