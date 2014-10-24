@@ -249,6 +249,14 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	 */
 	protected abstract TaskExecutionResult doTask() throws Exception;
 
+	protected TransactionTemplate getTaskManagementTransactionTemplate() {
+		return taskManagementTransactionTemplate;
+	}
+
+	protected TransactionTemplate getTaskExecutionTransactionTemplate() {
+		return taskExecutionTransactionTemplate;
+	}
+
 	public Long getQueuedTaskHolderId() {
 		return queuedTaskHolderId;
 	}
