@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -76,6 +77,34 @@ public final class Predicates2 {
 		
 		@SuppressWarnings("unchecked") // these Collection predicates work for any T that extends Collection<?>
 		<T extends Collection<?>> Predicate<T> withNarrowedType() {
+			return (Predicate<T>) this;
+		}
+	}
+	
+	public static <T extends Map<?, ?>> Predicate<T> mapIsEmpty() {
+		return MapPredicate.IS_EMPTY.withNarrowedType();
+	}
+	
+	public static <T extends Map<?, ?>> Predicate<T> mapNotEmpty() {
+		return MapPredicate.NOT_EMPTY.withNarrowedType();
+	}
+
+	private enum MapPredicate implements Predicate<Map<?, ?>>, Serializable {
+		IS_EMPTY {
+			@Override
+			public boolean apply(Map<?, ?> input) {
+				return input == null || input.isEmpty();
+			}
+		},
+		NOT_EMPTY {
+			@Override
+			public boolean apply(Map<?, ?> input) {
+				return input != null && !input.isEmpty();
+			}
+		};
+		
+		@SuppressWarnings("unchecked") // these Map predicates work for any T that extends Map<?, ?>
+		<T extends Map<?, ?>> Predicate<T> withNarrowedType() {
 			return (Predicate<T>) this;
 		}
 	}
