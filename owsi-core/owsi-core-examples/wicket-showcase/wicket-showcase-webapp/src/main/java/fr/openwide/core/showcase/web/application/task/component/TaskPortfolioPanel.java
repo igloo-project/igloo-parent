@@ -15,7 +15,7 @@ import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskResultPanel;
 import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskStatusPanel;
-import fr.openwide.core.wicket.more.console.maintenance.task.model.GenericBatchReportBeanModel;
+import fr.openwide.core.wicket.more.console.maintenance.task.model.TaskBatchReportBeanModel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
@@ -64,7 +64,7 @@ public class TaskPortfolioPanel extends AbstractGenericItemListPanel<QueuedTaskH
 		TaskResultPanel result = new TaskResultPanel("result", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result())).hideIfEmpty();
 		
 		NotTreatedObjectsPanel notTreatedObjectsPanel = new NotTreatedObjectsPanel("notTreatedObjectsPanel",
-				new GenericBatchReportBeanModel<>(ShowcaseBatchReportBean.class, queuedTaskHolderModel));
+				new TaskBatchReportBeanModel<>(ShowcaseBatchReportBean.class, queuedTaskHolderModel));
 		EnclosureContainer notTreatedObjects = new EnclosureContainer("notTreatedObjects").component(notTreatedObjectsPanel);
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
 		popoverOptions.setTitleModel(new ResourceModel("tasks.list.notTreatedObjects"));
