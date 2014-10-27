@@ -1,0 +1,30 @@
+/* Colorisation des icônes */
+.fa {
+	&.success {
+		color: @successText;
+	}
+	&.warning {
+		color: @orange;
+	}
+	&.error {
+		color: @errorText;
+	}
+	&.danger {
+		color: @errorText;
+	}
+	&.info {
+		color: @infoText;
+	}
+	&.fail {
+		color: @grayDarker;
+	}
+	
+	&.link {
+		color: @linkColorHover;
+		cursor: pointer;
+		
+		&:hover {
+			color: @linkColor;
+		}
+	}
+}
