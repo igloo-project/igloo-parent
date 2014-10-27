@@ -25,6 +25,7 @@ import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileS
 import fr.openwide.core.showcase.web.application.widgets.resource.FileUploadResource;
 import fr.openwide.core.wicket.more.fileapi.behavior.FileUploadBehavior;
 import fr.openwide.core.wicket.more.fileapi.model.FileApiFile;
+import fr.openwide.core.wicket.more.fileapi.model.FileUploadFailType;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
 public class FileUploadPanel extends Panel {
@@ -116,7 +117,7 @@ public class FileUploadPanel extends Panel {
 			}
 
 			@Override
-			protected void onFileUploadFails(AjaxRequestTarget target, String errorMessage) {
+			protected void onFileUploadFails(AjaxRequestTarget target, FileUploadFailType failType, String errorMessage) {
 				error(getString(errorMessage));
 				for (FileApiFile file : fileListModel.getObject()) {
 					ShowcaseFile showcaseFile = showcaseFileService.getById(Long.valueOf(file.getIdentifier()));
