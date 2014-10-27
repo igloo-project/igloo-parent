@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.openwide.core.wicket.more.fileapi.model.FileApiFile;
+import fr.openwide.core.wicket.more.fileapi.model.FileUploadFailType;
 import fr.openwide.core.wicket.more.fileapi.model.FileUploadMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fileuploadglue.FileUploadGlueJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.JsScopeFunction;
@@ -69,7 +70,10 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	 * paramètre qui stocke le mode (permet de dispatcher les appels ajax)
 	 */
 	private static final String PARAMETERS_MODE = "mode";
-
+	/**
+	 * paramètre qui stocke le le type d'échec
+	 */
+	private static final String PARAMETERS_FAIL_TYPE = "failType";
 	/**
 	 * nom de l'option qui stocke le nom de paramètre POST utilisé pour transmettre les fichiers
 	 */
@@ -219,7 +223,8 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		IRequestParameters req = RequestCycle.get().getRequest().getRequestParameters();
 		try {
 			String errorMessage = req.getParameterValue(PARAMETERS_UPLOAD_FAILS_ERROR_MESSAGE).toString("");
-			onFileUploadFails(target, errorMessage);
+			FileUploadFailType failType = FileUploadFailType.fromName(req.getParameterValue(PARAMETERS_FAIL_TYPE).toString(""));
+			onFileUploadFails(target, failType, errorMessage);
 		} catch (Exception e) {
 			logReadFileListParameterError(e);
 			onError(FileUploadMode.UPLOAD_FAILS, target, e);
@@ -229,7 +234,7 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 
 	protected abstract void onFileUploadDone(AjaxRequestTarget target, List<FileApiFile> successFileList, List<FileApiFile> errorFileList);
 
-	protected abstract void onFileUploadFails(AjaxRequestTarget target, String errorMessage);
+	protected abstract void onFileUploadFails(AjaxRequestTarget target, FileUploadFailType failType, String errorMessage);
 
 	/**
 	 * change wicket callback.
@@ -283,12 +288,14 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		CallbackParameter callbackParameterMode = CallbackParameter.resolved(PARAMETERS_MODE, JsUtils.quotes(FileUploadMode.UPLOAD_FAILS.name()));
 		// installation dans le scope des callbacks d'échec et de succès
 		// réutilisés par les IAjaxCallListener
+		CallbackParameter callbackParameterUploadFailType = CallbackParameter.explicit(PARAMETERS_FAIL_TYPE);
 		CallbackParameter callbackParameterErrorMessage = CallbackParameter.explicit(PARAMETERS_UPLOAD_FAILS_ERROR_MESSAGE);
 		CallbackParameter callbackParameterDataVariableName = CallbackParameter.explicit(PARAMETERS_DATA_VARIABLE_NAME);
 		CallbackParameter callbackParameterOnSuccess = CallbackParameter.context("onSuccess");
 		CallbackParameter callbackParameterOnFailure = CallbackParameter.context("onFailure");
 		return getCallbackFunction(callbackParameterMode, // mode
 				callbackParameterDataVariableName, // variable d'échange
+				callbackParameterUploadFailType, // type d'échec
 				callbackParameterErrorMessage, // message d'erreur
 				callbackParameterOnSuccess, callbackParameterOnFailure);
 	}

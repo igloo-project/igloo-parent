@@ -19,11 +19,11 @@
 		$.fileuploadglue = {};
 	};
 	
-	$.fileuploadglue.onUploadFails = function(data, textState, jqXHR) {
+	$.fileuploadglue.onUploadFails = function(data, textState, errorThrown) {
 		console.log('uploadFails event', data);
 		var onUploadFailsCallback = $(this).fileupload('option', 'onUploadFailsCallback');
 		var dataVariableName = globalVariableName();
-		onUploadFailsCallback(dataVariableName, data.uploadFailsErrorMessage,
+		onUploadFailsCallback(dataVariableName, errorThrown === 'abort' ? "cancel" : "generic", data.uploadFailsErrorMessage,
 				function() { console.log('uploadFails ajax send success'); },
 				function(event, data) { console.log('uploadFails ajax send error', data) }
 		);
@@ -76,7 +76,7 @@
 			dataSend.formData["fileList"] = JSON.stringify(window[dataVariableName]);
 			dataSend.files = toSendFiles;
 			if (dataSend.files.length > 0) {
-				$that.fileupload('send', dataSend).success($.proxy($.fileuploadglue.onUploadDone, that)).error($.proxy($.fileuploadglue.onUploadFails, that));
+				$.fileuploadglue.jqXHR = $that.fileupload('send', dataSend).success($.proxy($.fileuploadglue.onUploadDone, that)).error($.proxy($.fileuploadglue.onUploadFails, that));
 			} else {
 				console.log('No files to upload ; send ignored');
 			}
@@ -96,5 +96,10 @@
 				progress + '%'
 			);
 		};
+	};
+	
+	$.fileuploadglue.cancel = function() {
+		console.log('cancel event');
+		$.fileuploadglue.jqXHR.abort();
 	};
 }(window.jQuery, window, document)
