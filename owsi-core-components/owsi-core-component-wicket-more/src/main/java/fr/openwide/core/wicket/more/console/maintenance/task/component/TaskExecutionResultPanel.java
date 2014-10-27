@@ -38,7 +38,7 @@ public class TaskExecutionResultPanel extends GenericPanel<QueuedTaskHolder> {
 		super(id, queuedTaskHolderModel);
 		
 		// Batch report
-		batchReportBeanModel = new BatchReportBeanModel(queuedTaskHolderModel);
+		batchReportBeanModel = BatchReportBeanModel.fromTask(queuedTaskHolderModel);
 		
 		IModel<List<Entry<String, List<BatchReportItem>>>> contexteItemsListModel = new LoadableDetachableModel<List<Entry<String, List<BatchReportItem>>>>() {
 			private static final long serialVersionUID = 1L;
