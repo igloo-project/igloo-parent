@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -33,6 +32,7 @@ import fr.openwide.core.showcase.web.application.util.template.styles.StylesLess
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -130,7 +130,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		if (isBreadCrumbDisplayed()) {
 			breadCrumb = createBodyBreadCrumb("breadCrumb");
 		} else {
-			breadCrumb = new EmptyPanel("breadCrumb");
+			breadCrumb = new InvisiblePanel("breadCrumb");
 		}
 		add(breadCrumb);
 		
