@@ -27,6 +27,7 @@
 						} else {
 							$panel.delay(autohideDelay).animate({ top: -$panel.outerHeight() });
 						}
+						$panel.hide(0);
 					}
 				}
 			}
@@ -57,6 +58,7 @@
 				} else {
 					$panel.stop(true).animate({ top: -$panel.outerHeight() });
 				}
+				$panel.hide(0);
 			}
 			event.preventDefault();
 		}
