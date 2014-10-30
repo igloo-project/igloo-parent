@@ -1,23 +1,21 @@
 /* Compléments aux styles bootstraps */
 
 .alert-global-panel {
-	.border-bottom-right-radius(@border-radius-base);
-	
-	padding: 20px;
-	top: -40px;
+	padding: 8px;
+	top: -10px;
 	
 	background: fade(#434343, 80%);
 	
 	z-index: @zindex-alert-global;
 	position: fixed;
-	width: 60%;
+	width: 100%;
 	font-weight: bold;
 	
 	overflow: hidden;
 	display: none;
 	
 	.alert {
-		padding: 15px 42px;
+		padding: 8px 25px;
 		
 		margin: 0 auto;
 		position: relative;
@@ -27,8 +25,8 @@
 			display: inline-block;
 			font-size: 15px;
 			position: absolute;
-			top: 16px;
-			left: 16px;
+			top: 10px;
+			left: 5px;
 		}
 		
 		&:first-of-type {
@@ -46,12 +44,12 @@
 	
 	.close {
 		color: #888;
-	
+		
 		z-index: @zindex-alert-global-close;
 		position: absolute;
-		padding: 8px;
-		right: 30px;
-		top: 25px;
+		padding: 6px 8px;
+		right: 8px;
+		top: 5px;
 		
 		font-size: 20px;
 		.opacity(100);
@@ -60,7 +58,35 @@
 
 .animated-global-feedback[data-placement="bottom"] .alert-global-panel {
 	top: auto;
-	bottom: -40px;
-	.border-bottom-right-radius(0);
-	.border-top-right-radius(@border-radius-base);
+	bottom: -10px;
+}
+
+@media (min-width: @screen-sm-min) {
+	.alert-global-panel {
+		padding: 20px;
+		top: -40px;
+		width: 60%;
+		.border-bottom-right-radius(@border-radius-base);
+		
+		.alert {
+			padding: 15px 42px;
+			
+			.icon-alert-type {
+				top: 16px;
+				left: 16px;
+			}
+		}
+		
+		.close {
+			padding: 8px;
+			right: 30px;
+			top: 25px;
+		}
+	}
+	
+	.animated-global-feedback[data-placement="bottom"] .alert-global-panel {
+		bottom: -40px;
+		.border-bottom-right-radius(0);
+		.border-top-right-radius(@border-radius-base);
+	}
 }
