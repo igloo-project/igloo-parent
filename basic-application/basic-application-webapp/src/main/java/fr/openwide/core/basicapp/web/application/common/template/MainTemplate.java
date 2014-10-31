@@ -2,6 +2,7 @@ package fr.openwide.core.basicapp.web.application.common.template;
 
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -29,6 +30,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
@@ -43,6 +45,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -107,42 +110,42 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				}
 				
 				item.add(navLink);
-			}
-			
-			@Override
-			protected void onDetach() {
-				super.onDetach();
-				for (NavigationMenuItem item : getModelObject()) {
-					item.detach();
-				}
-			}
-		});
-		
-		// Second level navigation bar
-		add(new ListView<NavigationMenuItem>("subNav", getSubNav()) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void populateItem(ListItem<NavigationMenuItem> item) {
-				NavigationMenuItem navItem = item.getModelObject();
 				
-				AbstractLink navLink = navItem.link("navLink")
-						.setBody(navItem.getLabelModel());
-				navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-				
-				item.setVisibilityAllowed(navItem.isAccessible());
-				if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
-					item.add(new ClassAttributeAppender("active"));
+				List<NavigationMenuItem> subMenuItems = navItem.getSubMenuItems();
+				if (!subMenuItems.isEmpty()) {
+					item.add(new ClassAttributeAppender("dropdown"));
+					navLink.add(new ClassAttributeAppender("dropdown-toggle"));
+					navLink.add(new AttributeModifier("data-toggle", "dropdown"));
+					navLink.add(new AttributeModifier("data-hover", "dropdown"));
 				}
 				
-				item.add(navLink);
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				List<NavigationMenuItem> navigationMenuItems = getModelObject();
-				setVisible(navigationMenuItems != null && !navigationMenuItems.isEmpty());
+				item.add(new ListView<NavigationMenuItem>("subNav", subMenuItems) {
+					private static final long serialVersionUID = -2257358650754295013L;
+					
+					@Override
+					protected void populateItem(ListItem<NavigationMenuItem> item) {
+						NavigationMenuItem navItem = item.getModelObject();
+						
+						AbstractLink navLink = navItem.link("navLink")
+								.setBody(navItem.getLabelModel());
+						navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+						
+						item.setVisibilityAllowed(navItem.isAccessible());
+						if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
+							item.add(new ClassAttributeAppender("active"));
+						}
+						
+						item.add(navLink);
+					}
+					
+					@Override
+					protected void onDetach() {
+						super.onDetach();
+						for (NavigationMenuItem item : getModelObject()) {
+							item.detach();
+						}
+					}
+				});
 			}
 			
 			@Override
@@ -178,6 +181,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// Dropdown
 		add(new BootstrapDropdownBehavior());
+		add(new BootstrapHoverDropdownBehavior());
 		
 		// Scroll to top
 		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
@@ -189,6 +193,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						.setCssClassesModel(Model.of("home")),
 				AdministrationUserTypeDescriptor.BASIC_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
+						.setSubMenuItems(ImmutableList.of(
+								AdministrationUserTypeDescriptor.BASIC_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
+								AdministrationUserTypeDescriptor.TECHNICAL_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
+								AdministrationUserGroupPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.usergroup"))
+						))
 		);
 	}
 

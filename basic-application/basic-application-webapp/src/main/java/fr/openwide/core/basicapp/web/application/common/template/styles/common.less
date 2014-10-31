@@ -11,21 +11,16 @@ body {
 }
 
 .main-menu {
-	.navbar-nav {
-		margin-left: -15px;
-	}
-	
 	.navbar-nav > li {
-		margin-right: 15px;
-		
 		> a {
 			font-weight: bold;
 			font-size: 1.1em;
 			padding-top: 11px;
 			padding-bottom: 7px;
+			border-bottom: 4px solid transparent;
 			
 			&:hover {
-				border-bottom: 4px solid @navbar-default-link-active-color;
+				border-bottom-color: @navbar-default-link-active-color;
 			}
 			
 			&:before {
@@ -72,10 +67,9 @@ body {
 	
 	.navbar-brand {
 		float: left;
-		padding: 11px 40px 11px 11px;
+		padding: 11px 5px;
 		
 		@media (max-width: @grid-float-breakpoint) {
-			float: left;
 			padding-left: 5px;
 			padding-right: 5px;
 		}
@@ -106,6 +100,19 @@ body {
 		
 		&:hover, &:focus {
 			color: @navbar-default-link-hover-color;
+		}
+	}
+}
+
+@media (min-width: @grid-float-breakpoint) {
+	.main-menu {
+		.navbar-nav > li {
+			margin-right: 15px;
+		}
+		
+		.navbar-brand {
+			padding-left: 11px;
+			padding-left: 11px;padding-right: 25px;
 		}
 	}
 }

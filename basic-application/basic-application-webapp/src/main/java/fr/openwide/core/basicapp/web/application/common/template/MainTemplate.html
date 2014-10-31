@@ -20,42 +20,37 @@
 			<div class="navbar navbar-fixed-top navbar-default main-menu">
 				<div class="container">
 					<wicket:enclosure child="userFullName">
-						<div  class="user-menu">
+						<div class="user-menu">
 							<wicket:container wicket:id="userFullName" />
 							<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.logout">
 								<span class="fa fa-power-off" />
 							</a>
 						</div>
 					</wicket:enclosure>
+					
 					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse"
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
 							data-target="#navbar-main-collapse">
-							<span class="sr-only"><wicket:message key="navigation.toggle" /></span> <span class="fa fa-bars fa-lg" />
+							<span class="sr-only"><wicket:message key="navigation.toggle" /></span>
+							<span class="fa fa-bars fa-lg" />
 						</button>
 						<span class="navbar-brand"><wicket:message key="common.rootPageTitle" /></span>
 					</div>
+					
 					<div class="collapse navbar-collapse" id="navbar-main-collapse">
 						<ul class="nav navbar-nav">
 							<li wicket:id="mainNav">
-								<a wicket:id="navLink">navLabel</a>
+								<a wicket:id="navLink" />
+								<ul class="dropdown-menu">
+									<li wicket:id="subNav">
+										<a wicket:id="navLink" />
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
-			
-			<!-- Second level navigation bar -->
-			<wicket:enclosure child="subNav">
-				<div class="sub-menu">
-					<div class="container">
-						<ul class="nav navbar-nav">
-							<li wicket:id="subNav">
-								<a wicket:id="navLink">navLabel</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</wicket:enclosure>
 			
 			<!-- Environment -->
 			<wicket:container wicket:id="environment" />
