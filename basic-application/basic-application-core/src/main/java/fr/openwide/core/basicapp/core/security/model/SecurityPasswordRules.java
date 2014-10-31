@@ -104,8 +104,8 @@ public class SecurityPasswordRules {
 		return this;
 	}
 
-	public SecurityPasswordRules forbiddenCharacters(char... characters) {
-		rules.add(new IllegalCharacterRule(characters));
+	public SecurityPasswordRules forbiddenCharacters(String characters) {
+		rules.add(new IllegalCharacterRule(characters.toCharArray()));
 		return this;
 	}
 
