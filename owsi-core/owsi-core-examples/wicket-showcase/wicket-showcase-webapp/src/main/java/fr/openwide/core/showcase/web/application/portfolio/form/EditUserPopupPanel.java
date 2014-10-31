@@ -112,7 +112,7 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					UserDescriptionPage.linkDescriptor(EditUserPopupPanel.this.getModel()).setResponsePage();
 				} catch (Exception e) {
 					LOGGER.error("Error during user update", e);
-					getSession().error(getString("common.error"));
+					getSession().error(getString("common.error.unexpected"));
 				}
 			}
 			

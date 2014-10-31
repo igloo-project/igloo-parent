@@ -9,7 +9,7 @@ public class DefaultJpaSecurityConfig {
 	@Value("${security.runAsKey}")
 	private String runAsKey;
 
-	@Value("${security.passwordSalt}")
+	@Value("${security.password.salt}")
 	private String passwordSalt;
 
 	public String getRunAsKey() {

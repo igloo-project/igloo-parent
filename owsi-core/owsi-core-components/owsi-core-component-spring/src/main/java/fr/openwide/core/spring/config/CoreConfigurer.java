@@ -173,7 +173,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public String getSecurityPasswordSalt() {
-		return getPropertyAsString("security.passwordSalt");
+		return getPropertyAsString("security.password.salt");
 	}
 	
 	/**
