@@ -3,6 +3,7 @@ package fr.openwide.core.basicapp.core.config.spring;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
@@ -27,7 +28,7 @@ public class BasicApplicationCoreSecurityOptionsConfig {
 								.passwordUserUpdate()
 				)
 				.setOptions(
-						TechnicalUser.class,
+						BasicUser.class,
 						new SecurityOptions()
 								.passwordAdminRecovery()
 								.passwordExpires()

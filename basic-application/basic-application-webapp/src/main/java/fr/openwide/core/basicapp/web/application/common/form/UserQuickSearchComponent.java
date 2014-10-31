@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearchComponent<U> {
@@ -23,16 +23,16 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 
 	private static final UserChoiceRenderer USER_CHOICE_RENDERER = new UserChoiceRenderer();
 	
-	private final AdministrationTypeUser<U> type;
+	private final AdministrationUserTypeDescriptor<U> type;
 
 	@SpringBean
 	private IUserService userService;
 
-	public UserQuickSearchComponent(String id, AdministrationTypeUser<U> type) {
+	public UserQuickSearchComponent(String id, AdministrationUserTypeDescriptor<U> type) {
 		this(id, new GenericEntityModel<Long, U>(), type);
 	}
 
-	private UserQuickSearchComponent(String id, IModel<U> userModel, AdministrationTypeUser<U> type) {
+	private UserQuickSearchComponent(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
 		super(id, userModel, USER_CHOICE_RENDERER, type.fiche(userModel));
 		this.type = type;
 	}

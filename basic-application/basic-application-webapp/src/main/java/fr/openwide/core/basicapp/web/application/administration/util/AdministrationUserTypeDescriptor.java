@@ -23,28 +23,28 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
-public abstract class AdministrationTypeUser<U extends User> implements Serializable {
+public abstract class AdministrationUserTypeDescriptor<U extends User> implements Serializable {
 	
 	private static final long serialVersionUID = -1128901861897146296L;
 
-	private static final Collection<AdministrationTypeUser<?>> ALL = Lists.newArrayList();
+	private static final Collection<AdministrationUserTypeDescriptor<?>> ALL = Lists.newArrayList();
 	
 	@SuppressWarnings("unchecked")
-	public static final <U extends User> AdministrationTypeUser<? extends U> get(U user) {
+	public static final <U extends User> AdministrationUserTypeDescriptor<? extends U> get(U user) {
 		if (user == null) {
 			return null;
 		}
 		
-		for (AdministrationTypeUser<?> type : ALL) {
+		for (AdministrationUserTypeDescriptor<?> type : ALL) {
 			if (type.getUserClass().isInstance(user)) {
-				return (AdministrationTypeUser<? extends U>) type;
+				return (AdministrationUserTypeDescriptor<? extends U>) type;
 			}
 		}
 		
 		throw new IllegalStateException("Unknown type for user " + user);
 	}
 	
-	public static final AdministrationTypeUser<TechnicalUser> TECHNICAL_USER = new AdministrationTypeUser<TechnicalUser>(TechnicalUser.class,
+	public static final AdministrationUserTypeDescriptor<TechnicalUser> TECHNICAL_USER = new AdministrationUserTypeDescriptor<TechnicalUser>(TechnicalUser.class,
 			AdministrationTechnicalUserDescriptionPage.class, AdministrationTechnicalUserPortfolioPage.class) {
 		private static final long serialVersionUID = 1L;
 
@@ -59,7 +59,7 @@ public abstract class AdministrationTypeUser<U extends User> implements Serializ
 		}
 	};
 	
-	public static final AdministrationTypeUser<BasicUser> BASIC_USER = new AdministrationTypeUser<BasicUser>(BasicUser.class,
+	public static final AdministrationUserTypeDescriptor<BasicUser> BASIC_USER = new AdministrationUserTypeDescriptor<BasicUser>(BasicUser.class,
 			AdministrationBasicUserDescriptionPage.class, AdministrationBasicUserPortfolioPage.class) {
 		private static final long serialVersionUID = 1L;
 
@@ -81,7 +81,7 @@ public abstract class AdministrationTypeUser<U extends User> implements Serializ
 	
 	private final Class<? extends AdministrationUserPortfolioTemplate<U>> listePageClazz;
 	
-	private AdministrationTypeUser(Class<U> clazz,
+	private AdministrationUserTypeDescriptor(Class<U> clazz,
 			Class<? extends AdministrationUserDescriptionTemplate<U>> fichePageClazz,
 			Class<? extends AdministrationUserPortfolioTemplate<U>> listePageClazz) {
 		ALL.add(this);

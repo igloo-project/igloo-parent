@@ -9,7 +9,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
@@ -20,13 +20,13 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 
 	private static final long serialVersionUID = -550100874222819991L;
 	
-	protected final AdministrationTypeUser<U> type;
+	protected final AdministrationUserTypeDescriptor<U> type;
 	
 	protected final IModel<U> userModel = new GenericEntityModel<Long, U>(null);
 	
 	protected final IModel<Page> sourcePageModel = new PageModel<Page>();
 	
-	public AdministrationUserDescriptionTemplate(PageParameters parameters, AdministrationTypeUser<U> type) {
+	public AdministrationUserDescriptionTemplate(PageParameters parameters, AdministrationUserTypeDescriptor<U> type) {
 		super(parameters);
 		this.type = type;
 		

@@ -12,7 +12,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
@@ -29,9 +29,9 @@ public class UserPortfolioPanel<U extends User> extends AbstractUserPortfolioPan
 	@SpringBean
 	private IUserService userService;
 
-	private final AdministrationTypeUser<U> type;
+	private final AdministrationUserTypeDescriptor<U> type;
 
-	public UserPortfolioPanel(String id, IDataProvider<U> dataProvider, AdministrationTypeUser<U> type, int itemsPerPage) {
+	public UserPortfolioPanel(String id, IDataProvider<U> dataProvider, AdministrationUserTypeDescriptor<U> type, int itemsPerPage) {
 		super(id, dataProvider, itemsPerPage, "administration.user.count");
 		this.type = type;
 	}

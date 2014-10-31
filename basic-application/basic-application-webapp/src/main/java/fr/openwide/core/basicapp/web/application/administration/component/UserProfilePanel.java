@@ -18,7 +18,7 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -44,7 +44,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserProfilePanel(String id, final IModel<U> userModel, AdministrationTypeUser<U> type) {
+	public UserProfilePanel(String id, final IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
 		super(id, userModel);
 		
 		AbstractUserPopup<U> updatePopup = createUpdatePopup("updatePopup", getModel(), type);
@@ -131,7 +131,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 		);
 	}
 	
-	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, AdministrationTypeUser<U> type) {
+	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, AdministrationUserTypeDescriptor<U> type) {
 		return new UserPopup<U>(wicketId, getModel(), type);
 	}
 }

@@ -31,7 +31,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailUnicityValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernamePatternValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernameUnicityValidator;
@@ -67,7 +67,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final FormPanelMode mode;
 
-	private final AdministrationTypeUser<U> type;
+	private final AdministrationUserTypeDescriptor<U> type;
 
 	protected Form<?> userForm;
 
@@ -75,15 +75,15 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final IModel<String> confirmPasswordModel = Model.of();
 
-	public AbstractUserPopup(String id, IModel<U> userModel, AdministrationTypeUser<U> type) {
+	public AbstractUserPopup(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
 		this(id, userModel, FormPanelMode.EDIT, type);
 	}
 
-	public AbstractUserPopup(String id, AdministrationTypeUser<U> type) {
+	public AbstractUserPopup(String id, AdministrationUserTypeDescriptor<U> type) {
 		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, type);
 	}
 
-	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, AdministrationTypeUser<U> type) {
+	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, AdministrationUserTypeDescriptor<U> type) {
 		super(id, userModel);
 		setStatic();
 		

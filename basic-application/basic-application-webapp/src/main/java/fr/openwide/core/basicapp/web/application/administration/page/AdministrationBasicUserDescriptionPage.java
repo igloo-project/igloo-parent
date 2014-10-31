@@ -10,7 +10,7 @@ import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.component.UserMembershipsPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserProfilePanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
@@ -20,7 +20,7 @@ public class AdministrationBasicUserDescriptionPage extends AdministrationUserDe
 	private static final long serialVersionUID = 1198343613141377913L;
 
 	public AdministrationBasicUserDescriptionPage(PageParameters parameters) {
-		super(parameters, AdministrationTypeUser.BASIC_USER);
+		super(parameters, AdministrationUserTypeDescriptor.BASIC_USER);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic"), type.liste()));
 		
