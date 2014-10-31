@@ -123,11 +123,11 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				new EmailLink("email", BindingModel.of(userModel, Bindings.user().email())),
 				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
 						DatePattern.SHORT_DATETIME),
-				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
-						DatePattern.SHORT_DATETIME),
 				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
 						DatePattern.SHORT_DATETIME),
-				new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
+				new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale())),
+				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
+						DatePattern.SHORT_DATETIME)
 		);
 	}
 	
