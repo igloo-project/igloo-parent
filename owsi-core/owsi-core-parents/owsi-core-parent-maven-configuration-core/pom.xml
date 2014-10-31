@@ -132,6 +132,8 @@
 		<owsi-core.junit.version>4.11</owsi-core.junit.version>
 		<owsi-core.grizzly.version>1.9.59</owsi-core.grizzly.version>
 		
+		<owsi-core.vt-password.version>3.1.2</owsi-core.vt-password.version>
+		
 		<owsi-core.localization-properties-consistency-maven-plugin.version>1.0.0</owsi-core.localization-properties-consistency-maven-plugin.version>
 	</properties>
 	
@@ -708,6 +710,13 @@
 					<groupId>org.ocpsoft.prettytime</groupId>
 					<artifactId>prettytime</artifactId>
 					<version>${owsi-core.prettytime.version}</version>
+				</dependency>
+				
+				<!-- vt-password -->
+				<dependency>
+					<groupId>edu.vt.middleware</groupId>
+					<artifactId>vt-password</artifactId>
+					<version>${owsi-core.vt-password.version}</version>
 				</dependency>
 			
 			<!-- Exports divers -->
