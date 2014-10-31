@@ -18,11 +18,11 @@ public class UserSearchPanel<U extends User> extends Panel {
 	private static final long serialVersionUID = -6224313886789870489L;
 	
 	
-	public UserSearchPanel(String id, IPageable pageable, AdministrationUserTypeDescriptor<?> type, UserDataProvider<U> dataProvider) {
+	public UserSearchPanel(String id, IPageable pageable, AdministrationUserTypeDescriptor<?> typeDescriptor, UserDataProvider<U> dataProvider) {
 		super(id);
 		
 		// Quick search
-		UserQuickSearchComponent<?> userQuickSearch = new UserQuickSearchComponent<>("userQuickSearch", type);
+		UserQuickSearchComponent<?> userQuickSearch = new UserQuickSearchComponent<>("userQuickSearch", typeDescriptor);
 		userQuickSearch.setAutoUpdate(true);
 		userQuickSearch.getAutocompleteField().setLabel(new ResourceModel("common.quickAccess"));
 		userQuickSearch.getAutocompleteField().add(new LabelPlaceholderBehavior());

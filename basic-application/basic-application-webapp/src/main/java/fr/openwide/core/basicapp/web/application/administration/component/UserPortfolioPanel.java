@@ -29,15 +29,15 @@ public class UserPortfolioPanel<U extends User> extends AbstractUserPortfolioPan
 	@SpringBean
 	private IUserService userService;
 
-	private final AdministrationUserTypeDescriptor<U> type;
+	private final AdministrationUserTypeDescriptor<U> typeDescriptor;
 
-	public UserPortfolioPanel(String id, IDataProvider<U> dataProvider, AdministrationUserTypeDescriptor<U> type, int itemsPerPage) {
+	public UserPortfolioPanel(String id, IDataProvider<U> dataProvider, AdministrationUserTypeDescriptor<U> typeDescriptor, int itemsPerPage) {
 		super(id, dataProvider, itemsPerPage, "administration.user.count");
-		this.type = type;
+		this.typeDescriptor = typeDescriptor;
 	}
 
 	protected IPageLinkGenerator getPageLinkGenerator(IModel<U> userModel) {
-		return type.fiche(userModel, PageModel.of(getPage()));
+		return typeDescriptor.fiche(userModel, PageModel.of(getPage()));
 	}
 
 	@Override

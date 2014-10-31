@@ -23,24 +23,24 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 
 	private static final UserChoiceRenderer USER_CHOICE_RENDERER = new UserChoiceRenderer();
 	
-	private final AdministrationUserTypeDescriptor<U> type;
+	private final AdministrationUserTypeDescriptor<U> typeDescriptor;
 
 	@SpringBean
 	private IUserService userService;
 
-	public UserQuickSearchComponent(String id, AdministrationUserTypeDescriptor<U> type) {
-		this(id, new GenericEntityModel<Long, U>(), type);
+	public UserQuickSearchComponent(String id, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		this(id, new GenericEntityModel<Long, U>(), typeDescriptor);
 	}
 
-	private UserQuickSearchComponent(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
-		super(id, userModel, USER_CHOICE_RENDERER, type.fiche(userModel));
-		this.type = type;
+	private UserQuickSearchComponent(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		super(id, userModel, USER_CHOICE_RENDERER, typeDescriptor.fiche(userModel));
+		this.typeDescriptor = typeDescriptor;
 	}
 
 	@Override
 	protected List<U> searchAutocomplete(String term, int limit, int offset) {
 		try {
-			return userService.searchAutocomplete(type.getUserClass(), term, limit, offset);
+			return userService.searchAutocomplete(typeDescriptor.getUserClass(), term, limit, offset);
 		} catch (Exception e) {
 			LOGGER.error("User autocomplete search error", e);
 			return Lists.newArrayList();

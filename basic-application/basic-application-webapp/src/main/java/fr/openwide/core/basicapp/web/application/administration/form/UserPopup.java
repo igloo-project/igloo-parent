@@ -12,12 +12,12 @@ public class UserPopup<U extends User> extends AbstractUserPopup<U> {
 
 	private static final long serialVersionUID = 5977011506936352812L;
 
-	public UserPopup(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
-		super(id, userModel, type);
+	public UserPopup(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		super(id, userModel, typeDescriptor);
 	}
 	
-	public UserPopup(String id, AdministrationUserTypeDescriptor<U> type) {
-		super(id, type);
+	public UserPopup(String id, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		super(id, typeDescriptor);
 	}
 	
 	@Override

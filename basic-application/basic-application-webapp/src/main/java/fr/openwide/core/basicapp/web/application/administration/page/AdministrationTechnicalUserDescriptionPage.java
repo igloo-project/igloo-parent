@@ -22,11 +22,11 @@ public class AdministrationTechnicalUserDescriptionPage extends AdministrationUs
 	public AdministrationTechnicalUserDescriptionPage(PageParameters parameters) {
 		super(parameters, AdministrationUserTypeDescriptor.TECHNICAL_USER);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), type.liste()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), typeDescriptor.liste()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 
-		add(new UserProfilePanel<>("profile", userModel, type));
+		add(new UserProfilePanel<>("profile", userModel, typeDescriptor));
 		IModel<User> abstractUserModel = ReadOnlyModel.<User>of(userModel);
 		add(new UserMembershipsPanel("groups", abstractUserModel));
 	}

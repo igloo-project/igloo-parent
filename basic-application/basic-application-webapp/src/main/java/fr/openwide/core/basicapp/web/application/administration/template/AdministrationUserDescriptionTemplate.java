@@ -20,28 +20,28 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 
 	private static final long serialVersionUID = -550100874222819991L;
 	
-	protected final AdministrationUserTypeDescriptor<U> type;
+	protected final AdministrationUserTypeDescriptor<U> typeDescriptor;
 	
 	protected final IModel<U> userModel = new GenericEntityModel<Long, U>(null);
 	
 	protected final IModel<Page> sourcePageModel = new PageModel<Page>();
 	
-	public AdministrationUserDescriptionTemplate(PageParameters parameters, AdministrationUserTypeDescriptor<U> type) {
+	public AdministrationUserDescriptionTemplate(PageParameters parameters, AdministrationUserTypeDescriptor<U> typeDescriptor) {
 		super(parameters);
-		this.type = type;
+		this.typeDescriptor = typeDescriptor;
 		
-		type.fiche(userModel, sourcePageModel).extractSafely(parameters, type.liste(),
+		typeDescriptor.fiche(userModel, sourcePageModel).extractSafely(parameters, typeDescriptor.liste(),
 				getString("common.error.unexpected"));
 		
 		add(
 				new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
 		);
 		
-		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, type.getListeClass())
+		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, typeDescriptor.getListeClass())
 				.link("backToSourcePage").hideIfInvalid();
 		add(
 				backToSourcePage,
-				type.liste().link("backToList")
+				typeDescriptor.liste().link("backToList")
 						.add(new PlaceholderBehavior().component(backToSourcePage))
 		);
 	}
@@ -55,6 +55,6 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return type.getListeClass();
+		return typeDescriptor.getListeClass();
 	}
 }

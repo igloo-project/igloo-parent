@@ -22,11 +22,11 @@ public class AdministrationBasicUserDescriptionPage extends AdministrationUserDe
 	public AdministrationBasicUserDescriptionPage(PageParameters parameters) {
 		super(parameters, AdministrationUserTypeDescriptor.BASIC_USER);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic"), type.liste()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic"), typeDescriptor.liste()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 
-		add(new UserProfilePanel<>("profile", userModel, type));
+		add(new UserProfilePanel<>("profile", userModel, typeDescriptor));
 		IModel<User> abstractUserModel = ReadOnlyModel.<User>of(userModel);
 		add(new UserMembershipsPanel("groups", abstractUserModel));
 	}

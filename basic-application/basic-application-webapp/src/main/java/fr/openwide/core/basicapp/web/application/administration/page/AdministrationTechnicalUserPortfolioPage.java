@@ -25,13 +25,13 @@ public class AdministrationTechnicalUserPortfolioPage extends AdministrationUser
 
 	@Override
 	protected AbstractUserPopup<TechnicalUser> createAddPopup(String wicketId) {
-		return new UserPopup<>(wicketId, type);
+		return new UserPopup<>(wicketId, typeDescriptor);
 	}
 
 	@Override
 	protected AbstractUserPortfolioPanel<TechnicalUser> createPortfolioPanel(String wicketId,
 			IDataProvider<TechnicalUser> dataProvider, int itemsPerPage) {
-		return new UserPortfolioPanel<>(wicketId, dataProvider, type, itemsPerPage);
+		return new UserPortfolioPanel<>(wicketId, dataProvider, typeDescriptor, itemsPerPage);
 	}
 
 }

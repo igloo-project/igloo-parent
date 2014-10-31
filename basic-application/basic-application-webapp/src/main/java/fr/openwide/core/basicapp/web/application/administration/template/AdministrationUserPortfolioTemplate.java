@@ -24,21 +24,21 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
 	
-	protected AdministrationUserTypeDescriptor<U> type;
+	protected AdministrationUserTypeDescriptor<U> typeDescriptor;
 	
-	public AdministrationUserPortfolioTemplate(PageParameters parameters, AdministrationUserTypeDescriptor<U> type, IModel<String> pageTitleModel) {
+	public AdministrationUserPortfolioTemplate(PageParameters parameters, AdministrationUserTypeDescriptor<U> typeDescriptor, IModel<String> pageTitleModel) {
 		super(parameters);
-		this.type = type;
+		this.typeDescriptor = typeDescriptor;
 		
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
-		UserDataProvider<U> dataProvider = new UserDataProvider<>(type.getUserClass());
+		UserDataProvider<U> dataProvider = new UserDataProvider<>(typeDescriptor.getUserClass());
 		AbstractUserPortfolioPanel<U> portfolioPanel = createPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
 		
 		add(
 				new Label("title", pageTitleModel),
 				
-				new UserSearchPanel<>("searchPanel", portfolioPanel.getPageable(), type, dataProvider),
+				new UserSearchPanel<>("searchPanel", portfolioPanel.getPageable(), typeDescriptor, dataProvider),
 				
 				portfolioPanel,
 				

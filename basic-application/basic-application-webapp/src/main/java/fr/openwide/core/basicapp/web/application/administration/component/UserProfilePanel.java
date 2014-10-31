@@ -44,10 +44,10 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserProfilePanel(String id, final IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
+	public UserProfilePanel(String id, final IModel<U> userModel, AdministrationUserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		
-		AbstractUserPopup<U> updatePopup = createUpdatePopup("updatePopup", getModel(), type);
+		AbstractUserPopup<U> updatePopup = createUpdatePopup("updatePopup", getModel(), typeDescriptor);
 		
 		UserPasswordUpdatePopup<U> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", getModel());
 		
@@ -131,7 +131,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 		);
 	}
 	
-	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, AdministrationUserTypeDescriptor<U> type) {
-		return new UserPopup<U>(wicketId, getModel(), type);
+	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		return new UserPopup<U>(wicketId, getModel(), typeDescriptor);
 	}
 }

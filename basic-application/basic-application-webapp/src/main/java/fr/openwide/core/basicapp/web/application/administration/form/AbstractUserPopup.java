@@ -67,7 +67,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final FormPanelMode mode;
 
-	private final AdministrationUserTypeDescriptor<U> type;
+	private final AdministrationUserTypeDescriptor<U> typeDescriptor;
 
 	protected Form<?> userForm;
 
@@ -75,20 +75,20 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final IModel<String> confirmPasswordModel = Model.of();
 
-	public AbstractUserPopup(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> type) {
-		this(id, userModel, FormPanelMode.EDIT, type);
+	public AbstractUserPopup(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		this(id, userModel, FormPanelMode.EDIT, typeDescriptor);
 	}
 
-	public AbstractUserPopup(String id, AdministrationUserTypeDescriptor<U> type) {
-		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, type);
+	public AbstractUserPopup(String id, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, typeDescriptor);
 	}
 
-	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, AdministrationUserTypeDescriptor<U> type) {
+	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, AdministrationUserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		setStatic();
 		
 		this.mode = mode;
-		this.type = type;
+		this.typeDescriptor = typeDescriptor;
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 									userService.setPasswords(user, newPasswordValue);
 									
 									getSession().success(getString("administration.user.add.success"));
-									throw type.fiche(AbstractUserPopup.this.getModel())
+									throw typeDescriptor.fiche(AbstractUserPopup.this.getModel())
 											.newRestartResponseException();
 								} else {
 									LOGGER.warn("Password does not fit criteria.");
@@ -234,7 +234,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	protected void onShow(AjaxRequestTarget target) {
 		super.onShow(target);
 		if (isAddMode()) {
-			getModel().setObject(type.newInstance());
+			getModel().setObject(typeDescriptor.newInstance());
 		}
 	}
 	
