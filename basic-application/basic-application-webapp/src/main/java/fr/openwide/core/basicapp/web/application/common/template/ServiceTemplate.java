@@ -39,7 +39,7 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 	public ServiceTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole()) {
+		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole() && maintenanceRestriction()) {
 			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
 		}
 		
@@ -55,6 +55,10 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 	}
 
 	protected abstract IModel<String> getTitleModel();
+
+	protected boolean maintenanceRestriction() {
+		return true;
+	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {

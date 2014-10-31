@@ -22,4 +22,9 @@ public class MaintenancePage extends ServiceTemplate {
 		return new ResourceModel("maintenance.help.title");
 	}
 
+	@Override
+	protected boolean maintenanceRestriction() {
+		return false;
+	}
+
 }
