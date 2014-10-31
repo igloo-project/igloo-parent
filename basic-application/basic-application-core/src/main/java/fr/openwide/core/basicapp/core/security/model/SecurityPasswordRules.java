@@ -94,8 +94,8 @@ public class SecurityPasswordRules {
 		return this;
 	}
 
-	public SecurityPasswordRules regex(String regexString) {
-		rules.add(new RegexRule(regexString));
+	public SecurityPasswordRules forbiddenRegex(String regex) {
+		rules.add(new RegexRule(regex));
 		return this;
 	}
 
