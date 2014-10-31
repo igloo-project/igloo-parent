@@ -201,10 +201,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		);
 	}
 
-	protected List<NavigationMenuItem> getSubNav() {
-		return ImmutableList.of();
-	}
-
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return null;
