@@ -49,7 +49,7 @@ public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
 			userService.delete(itemModel.getObject());
 		} catch (ServiceException e) {
 			LOGGER.error("Erreur durant la suppression d'un utilisateur.", e);
-			getSession().error(getString("common.error"));
+			getSession().error(getString("common.error.unexpected"));
 		}
 	}
 

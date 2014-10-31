@@ -52,7 +52,7 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 							Session.get().success(getString("console.maintenance.gestion.maintenance.activer.success"));
 						} catch (Exception e) {
 							LOGGER.error("Erreur lors de l'activation du mode maintenance.", e);
-							Session.get().error(getString("common.error"));
+							Session.get().error(getString("common.error.unexpected"));
 						}
 					}
 				}
@@ -66,7 +66,7 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 							Session.get().success(getString("console.maintenance.gestion.maintenance.desactiver.success"));
 						} catch (Exception e) {
 							LOGGER.error("Erreur lors de la désactivation du mode maintenance.", e);
-							Session.get().error(getString("common.error"));
+							Session.get().error(getString("common.error.unexpected"));
 						}
 					}
 				}
