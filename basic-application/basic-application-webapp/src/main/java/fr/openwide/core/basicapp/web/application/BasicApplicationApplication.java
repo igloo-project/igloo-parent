@@ -91,7 +91,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/console/access-denied/", ConsoleAccessDeniedPage.class);
 		
 		// Maintenance
-		mountPage("/static/maintenance/", MaintenancePage.class);
+		mountPage("/maintenance/", MaintenancePage.class);
 		
 		// Administration
 		mountPage("/administration/basic-user/", AdministrationBasicUserPortfolioPage.class);
