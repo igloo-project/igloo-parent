@@ -8,9 +8,10 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.flow.RedirectToUrlException;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +21,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
-import fr.openwide.core.basicapp.web.application.common.template.styles.SignInLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
+import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
-import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
-import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
-public class SignInPage extends CoreWebPage {
+public class SignInPage extends ServiceTemplate {
+
 	private static final long serialVersionUID = 5503959273448832421L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SignInPage.class);
@@ -47,14 +49,10 @@ public class SignInPage extends CoreWebPage {
 	
 	private FormComponent<String> passwordField;
 	
-	public SignInPage() {
-		super();
+	public SignInPage(PageParameters parameters) {
+		super(parameters);
 		
-		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole()) {
-			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
-		}
-		
-		add(new AnimatedGlobalFeedbackPanel("feedback"));
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("signIn.pageTitle")));
 		
 		Form<Void> signInForm = new Form<Void>("signInForm") {
 			private static final long serialVersionUID = 1L;
@@ -104,7 +102,12 @@ public class SignInPage extends CoreWebPage {
 		super.renderHead(response);
 		
 		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
-		response.render(CssHeaderItem.forReference(SignInLessCssResourceReference.get()));
+		response.render(CssHeaderItem.forReference(ServiceLessCssResourceReference.get()));
+	}
+
+	@Override
+	protected IModel<String> getTitleModel() {
+		return new ResourceModel("signIn.welcomeText");
 	}
 
 }

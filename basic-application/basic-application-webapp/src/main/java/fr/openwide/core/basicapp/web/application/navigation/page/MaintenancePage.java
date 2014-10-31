@@ -1,23 +1,25 @@
 package fr.openwide.core.basicapp.web.application.navigation.page;
 
-import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
-import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
+import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class MaintenancePage extends CoreWebPage {
+public class MaintenancePage extends ServiceTemplate {
 
 	private static final long serialVersionUID = 7371109597310862894L;
 
-	public MaintenancePage() {
-		super();
+	public MaintenancePage(PageParameters parameters) {
+		super(parameters);
+		
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("maintenance.pageTitle")));
 	}
-	
+
 	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
+	protected IModel<String> getTitleModel() {
+		return new ResourceModel("maintenance.help.title");
 	}
 
 }
