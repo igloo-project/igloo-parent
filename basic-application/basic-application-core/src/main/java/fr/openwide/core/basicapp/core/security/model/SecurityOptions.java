@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.core.security.model;
 
+
 public class SecurityOptions {
 
 	private SecurityOptionsMode passwordExpiration = SecurityOptionsMode.DISABLE;
@@ -14,9 +15,12 @@ public class SecurityOptions {
 
 	private SecurityOptionsMode passwordAdminRecovery = SecurityOptionsMode.DISABLE;
 
+	private SecurityPasswordRules passwordRules;
+
 	public static SecurityOptions defaultOptions() {
 		return new SecurityOptions()
-				.passwordAdminRecovery();
+				.passwordAdminRecovery()
+				.passwordRules(SecurityPasswordRules.DEFAULT);
 	}
 
 	public SecurityOptions passwordExpires() {
@@ -71,6 +75,15 @@ public class SecurityOptions {
 
 	public SecurityOptionsMode getPasswordAdminRecovery() {
 		return passwordAdminRecovery;
+	}
+
+	public SecurityOptions passwordRules(SecurityPasswordRules passwordRules) {
+		this.passwordRules = passwordRules;
+		return this;
+	}
+
+	public SecurityPasswordRules getPasswordRules() {
+		return passwordRules;
 	}
 
 	private enum SecurityOptionsMode {
