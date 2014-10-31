@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -28,6 +27,5 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 		doImportItem(idsMapping, workbook, Authority.class);
 		doImportItem(idsMapping, workbook, UserGroup.class);
 		doImportItem(idsMapping, workbook, TechnicalUser.class);
-		doImportItem(idsMapping, workbook, BasicUser.class);
 	}
 }
