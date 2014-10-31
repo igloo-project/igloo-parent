@@ -33,7 +33,7 @@ public class BasicApplicationCoreSecurityOptionsConfig {
 												.mandatoryNonAlphanumericCharacters()
 												.mandatoryUpperLowerCase()
 												.forbiddenWhiteSpace()
-												.forbiddenCharacters('@', '#')
+												.forbiddenCharacters("@#")
 								)
 				)
 				.setOptions(
@@ -51,7 +51,7 @@ public class BasicApplicationCoreSecurityOptionsConfig {
 												.mandatoryNonAlphanumericCharacters()
 												.mandatoryUpperLowerCase()
 												.forbiddenWhiteSpace()
-												.forbiddenCharacters('@', '#')
+												.forbiddenCharacters("@#")
 								)
 				)
 				.setDefaultOptions(
