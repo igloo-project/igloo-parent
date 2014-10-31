@@ -27,27 +27,25 @@
 							<wicket:message key="console.maintenance.search.reindex.partial.description" />
 						</div>
 						<form wicket:id="reindexClassesForm">
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label wicket:for="classes"><wicket:label /></label>
-											<select wicket:id="classes" class="form-control" />
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label wicket:for="ids"><wicket:label /></label>
-											<textarea wicket:id="ids" class="ids form-control" />
-										</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label wicket:for="classes"><wicket:label /></label>
+										<select wicket:id="classes" class="form-control" />
 									</div>
 								</div>
-								<div class="actions">
-									<button wicket:id="reindexClassesLink" class="btn btn-primary">
-										<span class="fa fa-refresh" />
-										<wicket:message key="console.maintenance.search.reindex.action" />
-									</button>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label wicket:for="ids"><wicket:label /></label>
+										<textarea wicket:id="ids" class="ids form-control" />
+									</div>
 								</div>
+							</div>
+							<div class="actions">
+								<button wicket:id="reindexClassesLink" class="btn btn-primary">
+									<span class="fa fa-refresh" />
+									<wicket:message key="console.maintenance.search.reindex.action" />
+								</button>
 							</div>
 						</form>
 					</div>
