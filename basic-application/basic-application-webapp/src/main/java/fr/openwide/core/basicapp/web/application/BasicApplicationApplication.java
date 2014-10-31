@@ -22,7 +22,7 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.notifica
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
-import fr.openwide.core.basicapp.web.application.navigation.page.SignInPage;
+import fr.openwide.core.basicapp.web.application.security.login.page.SignInPage;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
