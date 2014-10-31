@@ -103,6 +103,11 @@ ul.itemit {
 	color: #666;
 	border: 1px solid #CCC;
 	.border-radius(2px);
+	
+	// space for scroll-to-top at bottom of the page (not for extra small devices)
+	@media (min-width: @screen-sm-min) {
+		margin-bottom: 80px;
+	}
 }
 
 // Pager
