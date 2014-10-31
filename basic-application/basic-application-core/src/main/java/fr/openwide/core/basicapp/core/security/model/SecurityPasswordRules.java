@@ -23,89 +23,89 @@ public class SecurityPasswordRules {
 			.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH);
 
 	public SecurityPasswordRules minLength(int min) {
-		rulesSet.add(new LengthRule(min, Integer.MAX_VALUE));
+		rules.add(new LengthRule(min, Integer.MAX_VALUE));
 		return this;
 	}
 
 	public SecurityPasswordRules maxLength(int max) {
-		rulesSet.add(new LengthRule(0, max));
+		rules.add(new LengthRule(0, max));
 		return this;
 	}
 
 	public SecurityPasswordRules minMaxLength(int min, int max) {
-		rulesSet.add(new LengthRule(min, max));
+		rules.add(new LengthRule(min, max));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryDigits(int min) {
-		rulesSet.add(new DigitCharacterRule(min));
+		rules.add(new DigitCharacterRule(min));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryDigits() {
-		rulesSet.add(new DigitCharacterRule());
+		rules.add(new DigitCharacterRule());
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryNonAlphanumericCharacters() {
-		rulesSet.add(new NonAlphanumericCharacterRule());
+		rules.add(new NonAlphanumericCharacterRule());
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryNonAlphanumericCharacters(int min) {
-		rulesSet.add(new NonAlphanumericCharacterRule(min));
+		rules.add(new NonAlphanumericCharacterRule(min));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperCase() {
-		rulesSet.add(new UppercaseCharacterRule());
+		rules.add(new UppercaseCharacterRule());
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperCase(int upperCase) {
-		rulesSet.add(new UppercaseCharacterRule(upperCase));
+		rules.add(new UppercaseCharacterRule(upperCase));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryLowerCase() {
-		rulesSet.add(new LowercaseCharacterRule());
+		rules.add(new LowercaseCharacterRule());
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryLowerCase(int minLowerCase) {
-		rulesSet.add(new LowercaseCharacterRule(minLowerCase));
+		rules.add(new LowercaseCharacterRule(minLowerCase));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperLowerCase() {
-		rulesSet.add(new LowercaseCharacterRule());
-		rulesSet.add(new UppercaseCharacterRule());
+		rules.add(new LowercaseCharacterRule());
+		rules.add(new UppercaseCharacterRule());
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperLowerCase(int minUpperCase, int minLowerCase) {
-		rulesSet.add(new UppercaseCharacterRule(minUpperCase));
-		rulesSet.add(new LowercaseCharacterRule(minLowerCase));
+		rules.add(new UppercaseCharacterRule(minUpperCase));
+		rules.add(new LowercaseCharacterRule(minLowerCase));
 		return this;
 	}
 
 	public SecurityPasswordRules forbiddenWhiteSpace() {
-		rulesSet.add(new WhitespaceRule());
+		rules.add(new WhitespaceRule());
 		return this;
 	}
 
 	public SecurityPasswordRules regex(String regexString) {
-		rulesSet.add(new RegexRule(regexString));
+		rules.add(new RegexRule(regexString));
 		return this;
 	}
 
 	public SecurityPasswordRules forbiddenOrderedNumericalSequence(int sequenceMaxLength, boolean wrap) {
-		rulesSet.add(new NumericalSequenceRule(sequenceMaxLength, wrap));
+		rules.add(new NumericalSequenceRule(sequenceMaxLength, wrap));
 		return this;
 	}
 
 	public SecurityPasswordRules forbiddenCharacters(char... characters) {
-		rulesSet.add(new IllegalCharacterRule(characters));
+		rules.add(new IllegalCharacterRule(characters));
 		return this;
 	}
 
