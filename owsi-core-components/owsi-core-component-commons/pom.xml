@@ -112,6 +112,12 @@
 		<dependency>
 			<groupId>edu.vt.middleware</groupId>
 			<artifactId>vt-password</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 	</dependencies>
