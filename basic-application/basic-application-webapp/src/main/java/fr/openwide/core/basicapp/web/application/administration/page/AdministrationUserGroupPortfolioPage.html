@@ -2,16 +2,17 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
+		<div wicket:id="addPopup" />
+		
 		<div class="administration usergroup-portfolio">
 			<div class="page-title">
 				<div class="container">
 					<h1 class="page-title-text pull-left"><wicket:message key="administration.usergroup.title"/></h1>
 					
-					<div wicket:id="userGroupCreatePopupPanel" />
-					<button wicket:id="createUserGroup" class="btn btn-primary pull-right" type="button">
+					<a wicket:id="addButton" class="btn btn-primary pull-right">
 						<span class="fa fa-plus"></span>
 						<wicket:message key="common.action.create" />
-					</button>
+					</a>
 				</div>
 			</div>
 			

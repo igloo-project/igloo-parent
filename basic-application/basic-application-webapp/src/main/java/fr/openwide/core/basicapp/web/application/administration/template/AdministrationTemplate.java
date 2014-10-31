@@ -9,8 +9,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
-import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -30,14 +31,15 @@ public abstract class AdministrationTemplate extends MainTemplate {
 	@Override
 	protected List<NavigationMenuItem> getSubNav() {
 		return Lists.newArrayList(
-				AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.user")),
+				AdministrationTypeUser.BASIC_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
+				AdministrationTypeUser.TECHNICAL_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
 				AdministrationUserGroupPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.usergroup"))
 		);
 	}
 
 	@Override
 	protected Class<? extends WebPage> getFirstMenuPage() {
-		return AdministrationUserPortfolioPage.class;
+		return AdministrationBasicUserPortfolioPage.class;
 	}
 
 	@Override

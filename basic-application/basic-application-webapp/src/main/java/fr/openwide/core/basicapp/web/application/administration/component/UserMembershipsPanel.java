@@ -73,7 +73,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 									Session.get().success(getString("administration.usergroup.members.delete.success"));
 								} catch (Exception e) {
 									LOGGER.error("Error occured while removing user from user group", e);
-									Session.get().error(getString("administration.usergroup.members.delete.error"));
+									Session.get().error(getString("common.error.unexpected"));
 								}
 								target.add(getPage());
 								FeedbackUtils.refreshFeedback(target, getPage());

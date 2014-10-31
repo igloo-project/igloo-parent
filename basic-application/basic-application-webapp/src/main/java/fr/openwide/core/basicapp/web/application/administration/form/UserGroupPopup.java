@@ -10,10 +10,8 @@ import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -31,6 +29,7 @@ import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.form.CheckGroup;
 import fr.openwide.core.wicket.more.link.model.PageModel;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityListView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
@@ -38,11 +37,11 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGroup> {
+public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	private static final long serialVersionUID = 5369095796078187845L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupFormPopupPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupPopup.class);
 
 	@SpringBean
 	private IUserGroupService userGroupService;
@@ -54,15 +53,15 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 
 	private FormPanelMode mode;
 
-	public UserGroupFormPopupPanel(String id, IModel<UserGroup> userGroupModel) {
+	public UserGroupPopup(String id, IModel<UserGroup> userGroupModel) {
 		this(id, userGroupModel, FormPanelMode.EDIT);
 	}
 
-	public UserGroupFormPopupPanel(String id) {
+	public UserGroupPopup(String id) {
 		this(id, new GenericEntityModel<Long, UserGroup>(new UserGroup()), FormPanelMode.ADD);
 	}
 
-	protected UserGroupFormPopupPanel(String id, IModel<UserGroup> userGroupModel, FormPanelMode mode) {
+	protected UserGroupPopup(String id, IModel<UserGroup> userGroupModel, FormPanelMode mode) {
 		super(id, userGroupModel);
 		
 		this.mode = mode;
@@ -71,58 +70,69 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 	@Override
 	protected Component createHeader(String wicketId) {
 		if (isAddMode()) {
-			return new Label(wicketId, new ResourceModel("administration.usergroup.form.addTitle"));
+			return new Label(wicketId, new ResourceModel("administration.usergroup.add.title"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.usergroup.form.editTitle", getModel()));
+			return new Label(wicketId, new StringResourceModel("administration.usergroup.update.title", getModel()));
 		}
 	}
 
 	@Override
 	protected Component createBody(String wicketId) {
-		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupFormPopupPanel.class);
+		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
 		userGroupForm = new Form<UserGroup>("form", getModel());
-		body.add(userGroupForm);
+		body.add(
+				userGroupForm
+						.add(
+								new RequiredTextField<String>("name", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().name()))
+										.setLabel(new ResourceModel("administration.usergroup.field.name")),
+								new TextArea<String>("description", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().description()))
+										.setLabel(new ResourceModel("administration.usergroup.field.description")),
+								new CheckGroup<Authority>("authoritiesGroup",
+										BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().authorities()),
+										Suppliers2.<Authority>hashSet()
+								)
+										.add(
+												new GenericEntityListView<Authority>("authorities", Model.ofList(authorityUtils.getPublicAuthorities())) {
+													private static final long serialVersionUID = 1L;
+													@Override
+													protected void populateItem(ListItem<Authority> item) {
+														item.add(
+																new Check<Authority>("authorityCheck", item.getModel())
+																		.setLabel(new ResourceModel("administration.usergroup.authority." + item.getModelObject().getName()))
+														);
+													}
+												}
+										)
+						)
+		);
 		
-		TextField<String> nameField = new RequiredTextField<String>("name", BindingModel.of(userGroupForm.getModel(),
-				Bindings.userGroup().name()));
-		nameField.setLabel(new ResourceModel("administration.usergroup.field.name"));
-		userGroupForm.add(nameField);
-		
-		TextArea<String> descriptionField = new TextArea<String>("description", BindingModel.of(userGroupForm.getModel(),
-				Bindings.userGroup().description()));
-		descriptionField.setLabel(new ResourceModel("administration.usergroup.field.description"));
-		userGroupForm.add(descriptionField);
-		
-		final CheckGroup<Authority> authorityCheckGroup = new CheckGroup<Authority>("authoritiesGroup",
-				BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().authorities()), Suppliers2.<Authority>hashSet());
-		userGroupForm.add(authorityCheckGroup);
-		
-		ListView<Authority> authoritiesListView = new ListView<Authority>("authorities",
-				Model.ofList(authorityUtils.getPublicAuthorities())) {
-			private static final long serialVersionUID = -7557232825932251026L;
-			
-			@Override
-			protected void populateItem(ListItem<Authority> item) {
-				Authority authority = item.getModelObject();
-				
-				Check<Authority> authorityCheck = new Check<Authority>("authorityCheck",
-						new GenericEntityModel<Long, Authority>(authority));
-				
-				authorityCheck.setLabel(new ResourceModel("administration.usergroup.authority." + authority.getName()));
-				
-				authorityCheckGroup.add(authorityCheck);
-				item.add(authorityCheck);
-			}
-		};
-		authorityCheckGroup.add(authoritiesListView);
+//		
+//		ListView<Authority> authoritiesListView = new ListView<Authority>("authorities",
+//				Model.ofList(authorityUtils.getPublicAuthorities())) {
+//			private static final long serialVersionUID = -7557232825932251026L;
+//			
+//			@Override
+//			protected void populateItem(ListItem<Authority> item) {
+//				Authority authority = item.getModelObject();
+//				
+//				Check<Authority> authorityCheck = new Check<Authority>("authorityCheck",
+//						new GenericEntityModel<Long, Authority>(authority));
+//				
+//				authorityCheck.setLabel();
+//				
+//				authorityCheckGroup.add(authorityCheck);
+//				item.add(authorityCheck);
+//			}
+//		};
+//		authorityCheckGroup.add(authoritiesListView);
 		
 		return body;
 	}
 
 	@Override
 	protected Component createFooter(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupFormPopupPanel.class);
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
 		// Validate button
 		AjaxButton validate = new AjaxButton("save", userGroupForm) {
@@ -130,17 +140,17 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				UserGroup userGroup = UserGroupFormPopupPanel.this.getModelObject();
+				UserGroup userGroup = UserGroupPopup.this.getModelObject();
 				
 				try {
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
-						Session.get().success(getString("administration.usergroup.form.add.success"));
-						throw AdministrationUserGroupDescriptionPage.linkDescriptor(UserGroupFormPopupPanel.this.getModel(), PageModel.of(getPage()))
+						Session.get().success(getString("administration.usergroup.add.success"));
+						throw AdministrationUserGroupDescriptionPage.linkDescriptor(UserGroupPopup.this.getModel(), PageModel.of(getPage()))
 								.newRestartResponseException();
 					} else {
 						userGroupService.update(userGroup);
-						Session.get().success(getString("administration.usergroup.form.edit.success"));
+						Session.get().success(getString("administration.usergroup.update.success"));
 					}
 					closePopup(target);
 					target.add(getPage());
@@ -149,11 +159,10 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 				} catch (Exception e) {
 					if (isAddMode()) {
 						LOGGER.error("Error occured while creating user group", e);
-						Session.get().error(getString("administration.usergroup.form.add.error"));
 					} else {
 						LOGGER.error("Error occured while updating user group", e);
-						Session.get().error(getString("administration.usergroup.form.edit.error"));
 					}
+					Session.get().error(getString("common.error.unexpected"));
 				}
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
@@ -172,7 +181,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		validate.add(validateLabel);
 		footer.add(validate);
 		
-		// Cancer button
+		// Cancel button
 		AbstractLink cancel = new AbstractLink("cancel") {
 			private static final long serialVersionUID = 1L;
 		};

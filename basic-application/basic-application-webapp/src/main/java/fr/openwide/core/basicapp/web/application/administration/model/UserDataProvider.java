@@ -30,29 +30,17 @@ public class UserDataProvider<U extends User> extends LoadableDetachableDataProv
 	
 	private final Class<U> clazz;
 
-	private final IModel<String> nameModel;
+	private final IModel<String> nameModel = Model.of();
 	
-	private final IModel<UserGroup> groupModel;
+	private final IModel<UserGroup> groupModel = new GenericEntityModel<Long, UserGroup>();
 	
-	private final IModel<Boolean> activeModel;
+	private final IModel<Boolean> activeModel = Model.of();
 	
-	public UserDataProvider(Class<U> clazz, IModel<String> searchTerm, IModel<Boolean> activeModel) {
-		this(clazz, searchTerm, new GenericEntityModel<Long, UserGroup>(), activeModel);
-	}
-	
-	public UserDataProvider(Class<U> clazz, IModel<UserGroup> groupModel) {
-		this(clazz, new Model<String>(), groupModel, new Model<Boolean>());
-	}
-	
-	public UserDataProvider(Class<U> clazz, IModel<String> nameModel, IModel<UserGroup> groupModel, IModel<Boolean> activeModel) {
+	public UserDataProvider(Class<U> clazz) {
 		super();
 		Injector.get().inject(this);
 		
 		this.clazz = clazz;
-		
-		this.nameModel = nameModel;
-		this.groupModel = groupModel;
-		this.activeModel = activeModel;
 	}
 	
 	@Override
@@ -96,6 +84,22 @@ public class UserDataProvider<U extends User> extends LoadableDetachableDataProv
 		return 0;
 	}
 	
+	public Class<U> getClazz() {
+		return clazz;
+	}
+
+	public IModel<String> getNameModel() {
+		return nameModel;
+	}
+
+	public IModel<UserGroup> getGroupModel() {
+		return groupModel;
+	}
+
+	public IModel<Boolean> getActiveModel() {
+		return activeModel;
+	}
+
 	@Override
 	public void detach() {
 		super.detach();

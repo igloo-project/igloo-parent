@@ -29,7 +29,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
+import fr.openwide.core.basicapp.web.application.administration.util.AdministrationTypeUser;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
@@ -187,7 +187,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home"))
 						.setCssClassesModel(Model.of("home")),
-				AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration"))
+				AdministrationTypeUser.BASIC_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
 		);
 	}

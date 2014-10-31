@@ -2,19 +2,18 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
+		<div wicket:id="updatePopup"></div>
+		
 		<h2>
 			<wicket:message key="administration.usergroup.information" />
 			
 			<span class="pull-right">
-				<button wicket:id="updateUserGroup" class="btn btn-primary" type="button">
+				<a wicket:id="updateButton" class="btn btn-primary">
 					<span class="fa fa-pencil"></span>
 					<wicket:message key="common.action.update" />
-				</button>
+				</a>
 			</span>
 		</h2>
-		
-		<!-- Update user group popup -->
-		<div wicket:id="userGroupUpdatePopupPanel"></div>
 		
 		<div wicket:id="lockedWarningContainer" class="alert alert-warning">
 			<span class="fa fa-lock"></span>

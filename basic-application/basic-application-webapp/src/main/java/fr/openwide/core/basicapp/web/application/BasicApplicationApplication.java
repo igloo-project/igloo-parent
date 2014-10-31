@@ -9,13 +9,15 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserDescriptionPage;
+import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
-import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
-import fr.openwide.core.basicapp.web.application.common.template.styles.SignInLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.styles.applicationservice.ApplicationServiceLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
@@ -61,7 +63,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 			preloadStyleSheets(
 					ConsoleLessCssResourceReference.get(),
 					NotificationLessCssResourceReference.get(),
-					SignInLessCssResourceReference.get(),
+					ApplicationServiceLessCssResourceReference.get(),
 					StylesLessCssResourceReference.get()
 			);
 		}
@@ -92,12 +94,12 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/static/maintenance/", MaintenancePage.class);
 		
 		// Administration
-		mountPage("/administration/user/", AdministrationUserPortfolioPage.class);
-		mountParameterizedPage("/administration/user/${" + CommonParameters.ID + "}/",
-				AdministrationUserDescriptionPage.class);
+		mountPage("/administration/basic-user/", AdministrationBasicUserPortfolioPage.class);
+		mountParameterizedPage("/administration/basic-user/${" + CommonParameters.ID + "}/", AdministrationBasicUserDescriptionPage.class);
+		mountPage("/administration/technical-user/", AdministrationTechnicalUserPortfolioPage.class);
+		mountParameterizedPage("/administration/technical-user/${" + CommonParameters.ID + "}/", AdministrationTechnicalUserDescriptionPage.class);
 		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
-		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/",
-				AdministrationUserGroupDescriptionPage.class);
+		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDescriptionPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");

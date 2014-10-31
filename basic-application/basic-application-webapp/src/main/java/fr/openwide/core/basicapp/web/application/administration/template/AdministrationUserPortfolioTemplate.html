@@ -2,13 +2,14 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="administration user-portfolio">
+		<div wicket:id="addPopup" />
+		
+		<div class="administration user-portfolio liste">
 			<div class="page-title">
 				<div class="container">
-					<h1 class="page-title-text pull-left"><wicket:message key="administration.user.title"/></h1>
+					<h1 class="page-title-text pull-left"><wicket:container wicket:id="title" /></h1>
 					
-					<div wicket:id="userCreatePopupPanel" />
-					<button wicket:id="createUser" class="btn btn-primary pull-right" type="button">
+					<button wicket:id="addButton" class="btn btn-primary pull-right" type="button">
 						<span class="fa fa-plus"></span>
 						<wicket:message key="common.action.create" />
 					</button>
@@ -17,7 +18,7 @@
 			
 			<div class="main-content">
 				<div class="container">
-					<div wicket:id="searchPanel" class="page-lead row" />
+					<div wicket:id="searchPanel" class="page-lead row with-lead-icon-cropped-top" />
 					<div wicket:id="portfolio" />
 				</div>
 			</div>

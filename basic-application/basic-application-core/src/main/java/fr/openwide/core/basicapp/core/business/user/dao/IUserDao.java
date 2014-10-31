@@ -14,4 +14,6 @@ public interface IUserDao extends IGenericUserDao<User> {
 	
 	<U extends User> int count(Class<U> clazz, UserSearchParameters searchParams) throws ParseException;
 
+	User getByEmailCaseInsensitive(String email);
+
 }

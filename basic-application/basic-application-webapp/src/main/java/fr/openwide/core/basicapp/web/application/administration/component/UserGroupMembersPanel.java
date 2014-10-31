@@ -22,8 +22,8 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
-import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.basicapp.web.application.util.binding.WebappBindings;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -51,13 +51,15 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		setOutputMarkupId(true);
 		
 		// Members list
-		UserDataProvider<User> dataProvider = new UserDataProvider<>(User.class, userGroupModel);
+		UserDataProvider<User> dataProvider = new UserDataProvider<>(User.class);
+		dataProvider.getGroupModel().setObject(userGroupModel.getObject());
+		
 		DataView<User> membersView = new DataView<User>("members", dataProvider, configurer.getPortfolioItemsPerPage()) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected void populateItem(final Item<User> item) {
-				item.add(AdministrationUserDescriptionPage.linkGenerator(item.getModel()).link("userLink")
+				item.add(LinkFactory.get().ficheUser(item.getModel()).link("userLink")
 						.setBody(BindingModel.of(item.getModel(), Bindings.user().fullName())));
 				
 				item.add(new Label("userName", BindingModel.of(item.getModel(), Bindings.user().userName())));
@@ -86,7 +88,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 									Session.get().success(getString("administration.usergroup.members.delete.success"));
 								} catch (Exception e) {
 									LOGGER.error("Error occured while removing user from user group", e);
-									Session.get().error(getString("administration.usergroup.members.delete.error"));
+									Session.get().error(getString("common.error.unexpected"));
 								}
 								target.add(getPage());
 								FeedbackUtils.refreshFeedback(target, getPage());

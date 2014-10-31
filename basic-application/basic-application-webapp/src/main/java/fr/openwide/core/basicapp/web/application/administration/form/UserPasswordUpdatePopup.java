@@ -21,11 +21,11 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 
-public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> {
+public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPopupPanel<User> {
 
 	private static final long serialVersionUID = -4580284817084080271L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ChangePasswordPopupPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordUpdatePopup.class);
 
 	@SpringBean
 	private IUserService userService;
@@ -36,29 +36,29 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 
 	private TextField<String> confirmPasswordField;
 
-	public ChangePasswordPopupPanel(String id, IModel<User> model) {
+	public UserPasswordUpdatePopup(String id, IModel<U> model) {
 		super(id, model);
 	}
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, new ResourceModel("administration.user.changePassword.title"));
+		return new Label(wicketId, new ResourceModel("administration.user.password.update.title"));
 	}
 
 	@Override
 	protected Component createBody(String wicketId) {
-		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, ChangePasswordPopupPanel.class);
+		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
 		
 		passwordForm = new Form<Void>("form");
 		body.add(passwordForm);
 		
 		newPasswordField = new PasswordTextField("newPassword", Model.of(""));
-		newPasswordField.setLabel(new ResourceModel("administration.user.field.newPassword"));
+		newPasswordField.setLabel(new ResourceModel("business.user.newPassword"));
 		newPasswordField.setRequired(true);
 		passwordForm.add(newPasswordField);
 		
 		confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
-		confirmPasswordField.setLabel(new ResourceModel("administration.user.field.confirmPassword"));
+		confirmPasswordField.setLabel(new ResourceModel("business.user.confirmPassword"));
 		confirmPasswordField.setRequired(true);
 		passwordForm.add(confirmPasswordField);
 		
@@ -67,7 +67,7 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 
 	@Override
 	protected Component createFooter(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, ChangePasswordPopupPanel.class);
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
 		
 		// Validate button
 		AjaxButton validate = new AjaxButton("save", passwordForm) {
@@ -76,7 +76,7 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					User user = ChangePasswordPopupPanel.this.getModelObject();
+					User user = UserPasswordUpdatePopup.this.getModelObject();
 					String newPasswordValue = newPasswordField.getModelObject();
 					String confirmPasswordValue = confirmPasswordField.getModelObject();
 					
@@ -86,7 +86,7 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 									newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
 								userService.setPasswords(user, newPasswordValue);
 								
-								getSession().success(getString("administration.user.changePassword.success"));
+								getSession().success(getString("administration.user.password.update.success"));
 								closePopup(target);
 							} else {
 								form.error(getString("administration.user.form.password.malformed"));
@@ -97,7 +97,7 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 					}
 				} catch (Exception e) {
 					LOGGER.error("Error occured while changing password.");
-					getSession().error(getString("administration.user.changePassword.error"));
+					getSession().error(getString("common.error.unexpected"));
 				}
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}

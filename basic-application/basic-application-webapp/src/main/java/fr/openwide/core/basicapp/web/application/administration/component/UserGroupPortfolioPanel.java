@@ -35,9 +35,11 @@ public class UserGroupPortfolioPanel extends PageablePortfolioPanel<UserGroup> {
 
 	@Override
 	protected void addItemColumns(Item<UserGroup> item, IModel<? extends UserGroup> userGroupModel) {
-		item.add(AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel), PageModel.of(getPage())).link("nameLink")
-				.setBody(BindingModel.of(userGroupModel, Bindings.userGroup().name())));
-		item.add(new Label("description", BindingModel.of(userGroupModel, Bindings.userGroup().description())));
+		item.add(
+				AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel), PageModel.of(getPage())).link("nameLink")
+						.setBody(BindingModel.of(userGroupModel, Bindings.userGroup().name())),
+				new Label("description", BindingModel.of(userGroupModel, Bindings.userGroup().description()))
+		);
 	}
 
 	@Override

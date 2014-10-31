@@ -57,18 +57,19 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userGroupModel, Bindings.userGroup().name()),
 				AdministrationUserGroupDescriptionPage.linkDescriptor(userGroupModel, sourcePageModel)));
 		
-		add(new Label("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())));
 		
 		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, AdministrationUserGroupPortfolioPage.class)
 				.link("backToSourcePage").hideIfInvalid();
 		add(
+				new Label("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())),
+				
 				backToSourcePage,
 				AdministrationUserGroupPortfolioPage.linkDescriptor().link("backToList")
-						.add(new PlaceholderBehavior().component(backToSourcePage))
+						.add(new PlaceholderBehavior().component(backToSourcePage)),
+				
+				new UserGroupDescriptionPanel("description", userGroupModel),
+				new UserGroupMembersPanel("members", userGroupModel)
 		);
-		
-		add(new UserGroupDescriptionPanel("description", userGroupModel));
-		add(new UserGroupMembersPanel("members", userGroupModel));
 	}
 
 	@Override
