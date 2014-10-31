@@ -2,7 +2,6 @@ package fr.openwide.core.basicapp.web.application.common.template;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
@@ -16,7 +15,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.common.template.styles.applicationservice.ApplicationServiceLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
@@ -60,7 +58,7 @@ public abstract class ApplicationServiceTemplate extends AbstractWebPageTemplate
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
-		response.render(CssHeaderItem.forReference(ApplicationServiceLessCssResourceReference.get()));
+//		response.render(CssHeaderItem.forReference(ApplicationServiceLessCssResourceReference.get()));
 	}
 
 	@Override
