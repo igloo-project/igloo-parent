@@ -91,9 +91,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
 		// Scroll to top
-		WebMarkupContainer scrollToTop = new WebMarkupContainer("scrollToTop");
-		scrollToTop.add(new ScrollToTopBehavior());
-		add(scrollToTop);
+		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
 	}
 	
 	private BootstrapTooltip getBootstrapTooltip() {
