@@ -19,6 +19,7 @@ import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class SignInPage extends CoreWebPage {
@@ -69,11 +70,13 @@ public class SignInPage extends CoreWebPage {
 		
 		userNameField = new RequiredTextField<String>("userName", Model.of(""));
 		userNameField.setLabel(new ResourceModel("signIn.login"));
+		userNameField.add(new LabelPlaceholderBehavior());
 		userNameField.setOutputMarkupId(true);
 		signInForm.add(userNameField);
 		
 		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
 		passwordField.setLabel(new ResourceModel("signIn.password"));
+		passwordField.add(new LabelPlaceholderBehavior());
 		signInForm.add(passwordField);
 	}
 
