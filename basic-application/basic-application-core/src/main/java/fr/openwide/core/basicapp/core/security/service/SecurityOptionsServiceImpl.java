@@ -14,7 +14,7 @@ public class SecurityOptionsServiceImpl implements ISecurityOptionsService {
 
 	private static Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> OPTIONS_BY_USER = Maps.newHashMap();
 
-	private static SecurityOptions DEFAULT_OPTIONS = SecurityOptions.defaultOptions();
+	private static SecurityOptions DEFAULT_OPTIONS = SecurityOptions.DEFAULT;
 
 	@Override
 	public SecurityOptionsServiceImpl setOptions(Class<? extends User> clazz, SecurityOptions options) {

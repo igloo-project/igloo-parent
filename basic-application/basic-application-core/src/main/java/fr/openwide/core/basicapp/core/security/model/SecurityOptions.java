@@ -17,11 +17,9 @@ public class SecurityOptions {
 
 	private SecurityPasswordRules passwordRules;
 
-	public static SecurityOptions defaultOptions() {
-		return new SecurityOptions()
+	public static SecurityOptions DEFAULT = new SecurityOptions()
 				.passwordAdminRecovery()
 				.passwordRules(SecurityPasswordRules.DEFAULT);
-	}
 
 	public SecurityOptions passwordExpires() {
 		passwordExpiration = SecurityOptionsMode.ENABLE;
