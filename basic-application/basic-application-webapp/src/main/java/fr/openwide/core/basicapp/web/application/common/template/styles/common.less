@@ -235,6 +235,11 @@ body {
 }
 
 .footer {
+	// space for scroll-to-top at bottom of the page (not for extra small devices)
+	@media (min-width: @screen-sm-min) {
+		margin-bottom: 80px;
+	}
+	
 	.container {
 		background: @footer-bg;
 		color: @footer-color;
