@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.bindgen.Bindable;
 
 import fr.openwide.core.commons.util.CloneUtils;
 
+@Bindable
 public class BatchReportItem implements Serializable {
 
 	private static final long serialVersionUID = -8250079955023459814L;

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.bindgen.Bindable;
+
 import com.google.common.collect.Maps;
 
+@Bindable
 public class BatchReport implements Serializable {
 
 	private static final long serialVersionUID = 2058290436066602760L;
