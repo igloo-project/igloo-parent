@@ -3,6 +3,7 @@ package fr.openwide.core.basicapp.core.business.user.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,12 +74,13 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		user.setPasswordRecoveryRequest(passwordRecoveryRequest);
 		update(user);
 		
+		// TODO FLA notification
+		
 		return passwordRecoveryRequest;
 	}
 	
 	private String getPasswordChangeRequestToken(User user, Date date) {
-//		return DigestUtils.sha256Hex(String.format("%1$s - %2$s - %3$s", user.getId(),
-//				configurer.getSecurityPasswordRecoveryRequestTokenSalt(), date));
-		return "";
+		return DigestUtils.sha256Hex(String.format("%1$s - %2$s - %3$s", user.getId(),
+				configurer.getSecurityPasswordRecoveryRequestTokenSalt(), date));
 	}
 }
