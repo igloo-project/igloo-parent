@@ -6,7 +6,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
 import fr.openwide.core.wicket.markup.html.basic.GenericLabel;
-import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableLocaleConverter;
+import fr.openwide.core.wicket.more.rendering.LocaleRenderer;
 
 public class LocaleLabel extends GenericLabel<Locale> {
 
@@ -20,7 +20,7 @@ public class LocaleLabel extends GenericLabel<Locale> {
 	@Override
 	public <C> IConverter<C> getConverter(Class<C> type) {
 		if (Locale.class.isAssignableFrom(type)) {
-			return (IConverter<C>) HumanReadableLocaleConverter.get();
+			return (IConverter<C>) LocaleRenderer.get();
 		} else {
 			return super.getConverter(type);
 		}
