@@ -5,13 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 
-import fr.openwide.core.basicapp.core.business.user.model.UserPasswordSecretQuestion;
 import fr.openwide.core.commons.util.CloneUtils;
 
 @Embeddable
@@ -23,12 +20,12 @@ public class UserPasswordInformation implements Serializable {
 	@Column
 	private Date lastUpdateDate;
 
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	private UserPasswordSecretQuestion secretQuestion;
+//	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+//	private UserPasswordSecretQuestion secretQuestion;
 
-	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
-	private String secretQuestionAnswerHash;
+//	@Column
+//	@Type(type = "org.hibernate.type.StringClobType")
+//	private String secretQuestionAnswerHash;
 
 	@Column
 	@Type(type = "org.hibernate.type.StringClobType")
@@ -42,21 +39,21 @@ public class UserPasswordInformation implements Serializable {
 		this.lastUpdateDate = CloneUtils.clone(lastUpdateDate);
 	}
 
-	public UserPasswordSecretQuestion getSecretQuestion() {
-		return secretQuestion;
-	}
+//	public UserPasswordSecretQuestion getSecretQuestion() {
+//		return secretQuestion;
+//	}
+//
+//	public void setSecretQuestion(UserPasswordSecretQuestion secretQuestion) {
+//		this.secretQuestion = secretQuestion;
+//	}
 
-	public void setSecretQuestion(UserPasswordSecretQuestion secretQuestion) {
-		this.secretQuestion = secretQuestion;
-	}
-
-	public String getSecretQuestionAnswerHash() {
-		return secretQuestionAnswerHash;
-	}
-
-	public void setSecretQuestionAnswerHash(String secretQuestionAnswerHash) {
-		this.secretQuestionAnswerHash = secretQuestionAnswerHash;
-	}
+//	public String getSecretQuestionAnswerHash() {
+//		return secretQuestionAnswerHash;
+//	}
+//
+//	public void setSecretQuestionAnswerHash(String secretQuestionAnswerHash) {
+//		this.secretQuestionAnswerHash = secretQuestionAnswerHash;
+//	}
 
 	public String getHistory() {
 		return history;
