@@ -14,14 +14,6 @@
 			<!-- Main navigation bar -->
 			<div class="navbar navbar-fixed-top navbar-default main-menu">
 				<div class="container">
-					<wicket:enclosure child="userFullName">
-						<div  class="user-menu">
-							<wicket:container wicket:id="userFullName" />
-							<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.top.logout.alt">
-								<span class="fa fa-power-off" />
-							</a>
-						</div>
-					</wicket:enclosure>
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse"
 							data-target="#navbar-main-collapse">
@@ -30,6 +22,14 @@
 						<a class="navbar-brand" href="#">Showcase</a>
 					</div>
 					<div class="collapse navbar-collapse" id="navbar-main-collapse">
+						<wicket:enclosure child="userFullName">
+							<div  class="user-menu">
+								<wicket:container wicket:id="userFullName" />
+								<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.top.logout.alt">
+									<span class="fa fa-power-off" />
+								</a>
+							</div>
+						</wicket:enclosure>
 						<ul class="nav navbar-nav">
 							<li wicket:id="mainNav">
 								<a wicket:id="navLink">
