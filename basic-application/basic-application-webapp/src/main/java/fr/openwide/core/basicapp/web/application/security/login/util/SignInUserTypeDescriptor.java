@@ -3,6 +3,7 @@ package fr.openwide.core.basicapp.web.application.security.login.util;
 import java.io.Serializable;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
@@ -28,6 +29,11 @@ public abstract class SignInUserTypeDescriptor<U extends User> implements Serial
 		public IPageLinkDescriptor loginSuccessPageLinkDescriptor() {
 			return LoginSuccessPage.linkDescriptor();
 		}
+
+		@Override
+		public IPageLinkDescriptor passwordRecoveryPageLinkDescriptor() {
+			return SecurityPasswordRecoveryPage.linkDescriptor();
+		}
 	};
 
 	private final Class<U> clazz;
@@ -43,6 +49,8 @@ public abstract class SignInUserTypeDescriptor<U extends User> implements Serial
 	public abstract IPageLinkDescriptor signInPageLinkDescriptor();
 
 	public abstract IPageLinkDescriptor loginSuccessPageLinkDescriptor();
+
+	public abstract IPageLinkDescriptor passwordRecoveryPageLinkDescriptor();
 
 	protected abstract Object readResolve();
 

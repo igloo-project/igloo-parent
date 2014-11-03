@@ -11,7 +11,7 @@
 					<div class="form-group">
 						<input class="form-control input-lg" wicket:id="password" type="password" id="password" />
 					</div>
-					<div class="form-actions">
+					<div class="form-actions clearfix">
 						<button class="btn btn-success btn-lg pull-right" type="submit">
 							<span class="fa fa-lock" />
 							<wicket:message key="signIn.button" />
@@ -22,7 +22,7 @@
 		</wicket:fragment>
 		
 		<wicket:fragment wicket:id="footerFragment">
-			<a href="#"><wicket:message key="signIn.forgotPassword" /></a>
+			<a wicket:id="passwordRecovery"><wicket:message key="signIn.forgotPassword" /></a>
 		</wicket:fragment>
 		
 		<script type="text/javascript">

@@ -107,6 +107,11 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 	@Override
 	protected Component getFooterComponent(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, "footerFragment", getClass());
+		
+		footer.add(
+				typeDescriptor.passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
+		);
+		
 		return footer;
 	}
 

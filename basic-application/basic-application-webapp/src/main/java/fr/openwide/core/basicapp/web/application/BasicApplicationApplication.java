@@ -23,6 +23,7 @@ import fr.openwide.core.basicapp.web.application.console.notification.demo.page.
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.security.login.page.SignInPage;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
@@ -83,6 +84,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/login/", getSignInPageClass());
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
+		
+		mountPage("/security/password/recovery/", SecurityPasswordRecoveryPage.class);
 		
 		// Console sign in
 		mountPage("/console/login/", ConsoleSignInPage.class);

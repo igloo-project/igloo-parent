@@ -54,13 +54,22 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 		add(createHeadPageTitle("headPageTitle"));
 		
 		add(new CoreLabel("title", getTitleModel()));
+	}
+	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
 		
+		add(getIntroComponent("intro"));
 		add(getContentComponent("content"));
-		
 		add(getFooterComponent("footer"));
 	}
 
 	protected abstract IModel<String> getTitleModel();
+
+	protected Component getIntroComponent(String wicketId) {
+		return new InvisiblePanel(wicketId);
+	}
 
 	protected abstract Component getContentComponent(String wicketId);
 
