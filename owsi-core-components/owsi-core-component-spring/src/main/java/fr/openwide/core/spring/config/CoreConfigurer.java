@@ -176,6 +176,22 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsString("security.password.salt");
 	}
 	
+	public Integer getSecurityPasswordExpirationDays() {
+		return getPropertyAsInteger("security.password.expiration.days", 90);
+	}
+	
+	public Integer getSecurityPasswordHistoryCount() {
+		return getPropertyAsInteger("security.password.history.count", 4);
+	}
+	
+	public String getSecurityPasswordRecoveryRequestTokenSalt() {
+		return getPropertyAsString("security.password.recovery.request.token.salt");
+	}
+	
+	public Integer getSecurityPasswordRecoveryRequestExpicationMinutes() {
+		return getPropertyAsInteger("security.password.recovery.request.expiration.minutes", 15);
+	}
+	
 	/**
 	 * Configuration of the link checker tool
 	 */
