@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="service-content">
+		<wicket:fragment wicket:id="contentFragment">
 			<form wicket:id="signInForm">
 				<fieldset>
 					<div class="form-group">
@@ -19,7 +19,11 @@
 					</div>
 				</fieldset>
 			</form>
-		</div>
+		</wicket:fragment>
+		
+		<wicket:fragment wicket:id="footerFragment">
+			<a href="#"><wicket:message key="signIn.forgotPassword" /></a>
+		</wicket:fragment>
 		
 		<script type="text/javascript">
 			var usernameField = document.getElementById('username');

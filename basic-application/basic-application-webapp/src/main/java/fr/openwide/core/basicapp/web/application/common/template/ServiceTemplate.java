@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -19,6 +20,7 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -52,9 +54,19 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 		add(createHeadPageTitle("headPageTitle"));
 		
 		add(new CoreLabel("title", getTitleModel()));
+		
+		add(getContentComponent("content"));
+		
+		add(getFooterComponent("footer"));
 	}
 
 	protected abstract IModel<String> getTitleModel();
+
+	protected abstract Component getContentComponent(String wicketId);
+
+	protected Component getFooterComponent(String wicketId) {
+		return new InvisiblePanel(wicketId);
+	}
 
 	protected boolean maintenanceRestriction() {
 		return true;

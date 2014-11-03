@@ -1,9 +1,6 @@
 package fr.openwide.core.basicapp.web.application.security.login.template;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -22,14 +19,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
-import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
-import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
-import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class SignInTemplate<U extends User> extends ServiceTemplate {
 
@@ -46,11 +41,24 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 	private FormComponent<String> userNameField;
 
 	private FormComponent<String> passwordField;
+	
+	private final SignInUserTypeDescriptor<U> typeDescriptor;
 
 	public SignInTemplate(PageParameters parameters, SignInUserTypeDescriptor<U> typeDescriptor) {
 		super(parameters);
+		this.typeDescriptor = typeDescriptor;
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("signIn.pageTitle")));
+	}
+
+	@Override
+	protected IModel<String> getTitleModel() {
+		return new ResourceModel("signIn.welcomeText");
+	}
+
+	@Override
+	protected Component getContentComponent(String wicketId) {
+		DelegatedMarkupPanel content = new DelegatedMarkupPanel(wicketId, "contentFragment", getClass());
 		
 		Form<Void> signInForm = new Form<Void>("signInForm") {
 			private static final long serialVersionUID = 1L;
@@ -74,14 +82,13 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 				}
 				
 				if (success) {
-					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+					throw typeDescriptor.loginSuccessPageLinkDescriptor().newRestartResponseException();
 				} else {
-					throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor()
-							.newRestartResponseException();
+					throw typeDescriptor.signInPageLinkDescriptor().newRestartResponseException();
 				}
 			}
 		};
-		add(signInForm);
+		content.add(signInForm);
 		
 		userNameField = new RequiredTextField<String>("userName", Model.of(""));
 		userNameField.setLabel(new ResourceModel("signIn.userName"));
@@ -93,19 +100,14 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 		passwordField.setLabel(new ResourceModel("signIn.password"));
 		passwordField.add(new LabelPlaceholderBehavior());
 		signInForm.add(passwordField);
-	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
 		
-		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
-		response.render(CssHeaderItem.forReference(ServiceLessCssResourceReference.get()));
+		return content;
 	}
 
 	@Override
-	protected IModel<String> getTitleModel() {
-		return new ResourceModel("signIn.welcomeText");
+	protected Component getFooterComponent(String wicketId) {
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, "footerFragment", getClass());
+		return footer;
 	}
 
 }
