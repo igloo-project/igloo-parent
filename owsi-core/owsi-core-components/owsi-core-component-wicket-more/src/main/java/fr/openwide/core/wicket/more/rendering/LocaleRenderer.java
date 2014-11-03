@@ -21,7 +21,8 @@ public class LocaleRenderer extends Renderer<Locale> {
 
 	@Override
 	public String render(Locale value, Locale locale) {
-		return locale != null ? locale.getDisplayName(Session.get().getLocale()) : null;
+		Locale renderLocale = locale != null ? locale : Session.get().getLocale();
+		return value != null ? value.getDisplayName(renderLocale) : null;
 	}
 
 }
