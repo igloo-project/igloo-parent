@@ -40,6 +40,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.form.LocaleDropDownChoice;
+import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -129,6 +130,8 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.add(EmailAddressValidator.getInstance())
 						.add(new EmailUnicityValidator(getModel())),
 				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
+						.setWidth(DropDownChoiceWidth.AUTO)
+						.setNullValid(true)
 						.setLabel(new ResourceModel("business.user.locale"))
 		);
 		
@@ -172,7 +175,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 							}
 						}
 					} else {
-						if (user.getLocale() != null) {
+						User authenticatedUser = BasicApplicationSession.get().getUser();
+						if (authenticatedUser != null && authenticatedUser.equals(user)
+								&& user.getLocale() != null) {
 							BasicApplicationSession.get().setLocale(user.getLocale());
 						}
 						userService.update(user);
