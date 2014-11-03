@@ -284,6 +284,11 @@ textarea.form-control {
 	margin-right: 0;
 }
 
+.form-horizontal .help-block {
+	margin-bottom: 0;
+	font-size: 85%;
+}
+
 // Table
 
 .table > tbody > tr > td {
@@ -296,4 +301,11 @@ textarea.form-control {
 	font-variant: normal;
 	text-transform: normal;
 	font-family: FontAwesome !important;
+}
+
+// Wicket debug hidden on xs screens
+@media (max-width: @screen-sm-min) {
+	#wicketDebugLink {
+		display: none;
+	}
 }
