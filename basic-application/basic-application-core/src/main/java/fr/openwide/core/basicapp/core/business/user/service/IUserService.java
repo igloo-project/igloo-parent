@@ -21,9 +21,13 @@ public interface IUserService extends IGenericUserService<User> {
 	
 	<U extends User> int count(Class<U> clazz, UserSearchParameters searchParams) throws ParseException;
 
+	void signIn(User user) throws ServiceException, SecurityServiceException;
+
 	UserPasswordRecoveryRequest initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
 			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException;
 
 	User getByEmailCaseInsensitive(String email);
+
+	User getAuthenticatedUser();
 
 }

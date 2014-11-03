@@ -1,0 +1,42 @@
+.table {
+	> thead, > tbody, > tfoot {
+		> tr {
+			> th, > td {
+				&.text {
+					width: 300px;
+					min-width: 150px;
+				}
+				&.short-text {
+					width: 150px;
+				}
+				&.date {
+					width: 100px;
+				}
+				&.datetime {
+					width: 120px;
+					text-align: center;
+				}
+				&.user {
+					width: 450px;
+				}
+				&.actions {
+					width: 50px;
+					min-width: 50px;
+					max-width: 50px;
+					
+					&.actions-2x {
+						width: 100px;
+						min-width: 100px;
+						max-width: 100px;
+					}
+					
+					&.actions-3x {
+						width: 150px;
+						min-width: 150px;
+						max-width: 150px;
+					}
+				}
+			}
+		}
+	}
+}

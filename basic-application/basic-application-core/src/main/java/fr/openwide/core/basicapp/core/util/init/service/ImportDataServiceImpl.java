@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -19,7 +20,7 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 
 	@Override
 	protected List<String> getGenericListItemPackagesToScan() {
-		return Lists.newArrayList();
+		return Lists.newArrayList(BasicApplicationCoreCommonBusinessPackage.class.getPackage().getName());
 	}
 
 	@Override

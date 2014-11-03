@@ -8,6 +8,8 @@ import org.apache.lucene.queryParser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
+import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
@@ -19,13 +21,22 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.util.StringUtils;
 
 @Service("personService")
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
+	private static final String AUDIT_SIGN_IN_METHOD_NAME = "signIn";
+	
 	@Autowired
 	private IUserDao userDao;
+	
+	@Autowired
+	private IAuthenticationService authenticationService;
+	
+	@Autowired
+	private IAuditService auditService;
 	
 	@Autowired
 	private BasicApplicationConfigurer configurer;
@@ -49,6 +60,15 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Override
 	public <U extends User> int count(Class<U> clazz, UserSearchParameters searchParameters) throws ParseException {
 		return userDao.count(clazz, searchParameters);
+	}
+	
+	private void audit(User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, object, type);
+	}
+	
+	@Override
+	public void signIn(User user) throws ServiceException, SecurityServiceException {
+		audit(user, AuditActionType.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
 	}
 	
 	@Override
@@ -82,5 +102,15 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	private String getPasswordChangeRequestToken(User user, Date date) {
 		return DigestUtils.sha256Hex(String.format("%1$s - %2$s - %3$s", user.getId(),
 				configurer.getSecurityPasswordRecoveryRequestTokenSalt(), date));
+	}
+
+	@Override
+	public User getAuthenticatedUser() {
+		String userName = authenticationService.getUserName();
+		if (userName == null) {
+			return null;
+		}
+		
+		return getByUserName(userName);
 	}
 }

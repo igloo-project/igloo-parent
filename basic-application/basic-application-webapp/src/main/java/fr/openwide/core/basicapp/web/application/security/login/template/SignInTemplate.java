@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
 import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
@@ -37,6 +38,9 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 
 	@SpringBean
 	private IAuthenticationService authenticationService;
+
+	@SpringBean
+	private IUserService userService;
 
 	private FormComponent<String> userNameField;
 
@@ -69,6 +73,7 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 				boolean success = false;
 				try {
 					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
+					userService.signIn((User) session.getUser());
 					success = true;
 				} catch (BadCredentialsException e) {
 					session.error(getString("signIn.error.authentication"));
