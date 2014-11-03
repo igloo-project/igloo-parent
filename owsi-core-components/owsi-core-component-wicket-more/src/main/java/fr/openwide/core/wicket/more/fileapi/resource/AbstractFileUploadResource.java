@@ -89,6 +89,8 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 				return resourceResponse;
 			}
 			
+			// Note: since Wicket 6.18.0 you will need to call "multiPartRequest.parseFileParts();" additionally here
+			// http://wicketinaction.com/2012/11/uploading-files-to-wicket-iresource/
 			Map<String, List<FileItem>> files = multiPartRequest.getFiles();
 			List<FileItem> fileItems = files.get(FileUploadBehavior.PARAMETERS_FILE_UPLOAD);
 			List<FileApiFile> fileApiFiles = FileUploadBehavior.readFileApiFiles(multiPartRequest.getRequestParameters());
