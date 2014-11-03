@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
+import fr.openwide.core.jpa.util.HibernateUtils;
 
 public class SecurityOptionsServiceImpl implements ISecurityOptionsService {
 
@@ -41,6 +42,14 @@ public class SecurityOptionsServiceImpl implements ISecurityOptionsService {
 			return OPTIONS_BY_USER.get(clazz);
 		}
 		return DEFAULT_OPTIONS;
+	}
+
+	@Override
+	public SecurityOptions getOptions(User user) {
+		if (user == null) {
+			return DEFAULT_OPTIONS;
+		}
+		return getOptions(HibernateUtils.unwrap(user).getClass());
 	}
 
 }

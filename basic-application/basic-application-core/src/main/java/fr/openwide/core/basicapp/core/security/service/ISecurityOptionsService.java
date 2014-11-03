@@ -11,4 +11,6 @@ public interface ISecurityOptionsService {
 
 	SecurityOptions getOptions(Class<? extends User> clazz);
 
+	SecurityOptions getOptions(User user);
+
 }

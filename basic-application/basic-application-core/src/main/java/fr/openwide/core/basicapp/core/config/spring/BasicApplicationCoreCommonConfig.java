@@ -22,6 +22,7 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @Import({
 	BasicApplicationCoreCommonJpaConfig.class,			// configuration de la persistence
 	BasicApplicationCoreSecurityConfig.class,			// configuration de la sécurité
+	BasicApplicationCoreSecurityOptionsConfig.class,	// configuration des options de sécurité
 	BasicApplicationTaskManagementConfig.class,			// configuration de la gestion des tâches
 	BasicApplicationCoreNotificationConfig.class		// configuration des notifications
 })

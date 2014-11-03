@@ -22,7 +22,7 @@ public class BasicApplicationCoreSecurityOptionsConfig {
 						new SecurityOptions()
 								.passwordAdminRecovery()
 								.passwordAdminUpdate()
-								.passwordExpires()
+								.passwordExpiration()
 								.passwordHistory()
 								.passwordUserRecovery()
 								.passwordUserUpdate()
@@ -40,7 +40,7 @@ public class BasicApplicationCoreSecurityOptionsConfig {
 						BasicUser.class,
 						new SecurityOptions()
 								.passwordAdminRecovery()
-								.passwordExpires()
+								.passwordExpiration()
 								.passwordHistory()
 								.passwordUserRecovery()
 								.passwordUserUpdate()

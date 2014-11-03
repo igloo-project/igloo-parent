@@ -3,17 +3,17 @@ package fr.openwide.core.basicapp.core.security.model;
 
 public class SecurityOptions {
 
-	private SecurityOptionsMode passwordExpiration = SecurityOptionsMode.DISABLE;
+	private SecurityOptionsMode passwordExpiration = SecurityOptionsMode.DISABLED;
 
-	private SecurityOptionsMode passwordHistory = SecurityOptionsMode.DISABLE;
+	private SecurityOptionsMode passwordHistory = SecurityOptionsMode.DISABLED;
 
-	private SecurityOptionsMode passwordUserUpdate = SecurityOptionsMode.DISABLE;
+	private SecurityOptionsMode passwordUserUpdate = SecurityOptionsMode.DISABLED;
 
-	private SecurityOptionsMode passwordAdminUpdate = SecurityOptionsMode.DISABLE;
+	private SecurityOptionsMode passwordAdminUpdate = SecurityOptionsMode.DISABLED;
 
-	private SecurityOptionsMode passwordUserRecovery = SecurityOptionsMode.DISABLE;
+	private SecurityOptionsMode passwordUserRecovery = SecurityOptionsMode.DISABLED;
 
-	private SecurityOptionsMode passwordAdminRecovery = SecurityOptionsMode.DISABLE;
+	private SecurityOptionsMode passwordAdminRecovery = SecurityOptionsMode.DISABLED;
 
 	private SecurityPasswordRules passwordRules;
 
@@ -21,8 +21,8 @@ public class SecurityOptions {
 				.passwordAdminRecovery()
 				.passwordRules(SecurityPasswordRules.DEFAULT);
 
-	public SecurityOptions passwordExpires() {
-		passwordExpiration = SecurityOptionsMode.ENABLE;
+	public SecurityOptions passwordExpiration() {
+		passwordExpiration = SecurityOptionsMode.ENABLED;
 		return this;
 	}
 
@@ -30,8 +30,12 @@ public class SecurityOptions {
 		return passwordExpiration;
 	}
 
+	public boolean isPasswordExpirationEnabled() {
+		return SecurityOptionsMode.ENABLED.equals(getPasswordExpiration());
+	}
+
 	public SecurityOptions passwordHistory() {
-		passwordHistory = SecurityOptionsMode.ENABLE;
+		passwordHistory = SecurityOptionsMode.ENABLED;
 		return this;
 	}
 
@@ -39,8 +43,12 @@ public class SecurityOptions {
 		return passwordHistory;
 	}
 
+	public boolean isPasswordHistoryEnabled() {
+		return SecurityOptionsMode.ENABLED.equals(getPasswordHistory());
+	}
+
 	public SecurityOptions passwordUserUpdate() {
-		passwordUserUpdate = SecurityOptionsMode.ENABLE;
+		passwordUserUpdate = SecurityOptionsMode.ENABLED;
 		return this;
 	}
 
@@ -48,8 +56,12 @@ public class SecurityOptions {
 		return passwordUserUpdate;
 	}
 
+	public boolean isPasswordUserUpdateEnabled() {
+		return SecurityOptionsMode.ENABLED.equals(getPasswordUserUpdate());
+	}
+
 	public SecurityOptions passwordAdminUpdate() {
-		passwordAdminUpdate = SecurityOptionsMode.ENABLE;
+		passwordAdminUpdate = SecurityOptionsMode.ENABLED;
 		return this;
 	}
 
@@ -57,8 +69,12 @@ public class SecurityOptions {
 		return passwordAdminUpdate;
 	}
 
+	public boolean isPasswordAdminUpdateEnabled() {
+		return SecurityOptionsMode.ENABLED.equals(getPasswordAdminUpdate());
+	}
+
 	public SecurityOptions passwordUserRecovery() {
-		passwordUserRecovery = SecurityOptionsMode.ENABLE;
+		passwordUserRecovery = SecurityOptionsMode.ENABLED;
 		return this;
 	}
 
@@ -66,13 +82,21 @@ public class SecurityOptions {
 		return passwordUserRecovery;
 	}
 
+	public boolean isPasswordUserRecoveryEnabled() {
+		return SecurityOptionsMode.ENABLED.equals(getPasswordUserRecovery());
+	}
+
 	public SecurityOptions passwordAdminRecovery() {
-		passwordAdminRecovery = SecurityOptionsMode.ENABLE;
+		passwordAdminRecovery = SecurityOptionsMode.ENABLED;
 		return this;
 	}
 
 	public SecurityOptionsMode getPasswordAdminRecovery() {
 		return passwordAdminRecovery;
+	}
+
+	public boolean isPasswordAdminRecoveryEnabled() {
+		return SecurityOptionsMode.ENABLED.equals(getPasswordAdminRecovery());
 	}
 
 	public SecurityOptions passwordRules(SecurityPasswordRules passwordRules) {
@@ -85,7 +109,7 @@ public class SecurityOptions {
 	}
 
 	private enum SecurityOptionsMode {
-		ENABLE,
-		DISABLE;
+		ENABLED,
+		DISABLED;
 	}
 }
