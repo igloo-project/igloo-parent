@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.bindgen.Bindable;
+
 import com.google.common.collect.Lists;
 
+@Bindable
 public enum MediaType {
 	
 	// Applications
