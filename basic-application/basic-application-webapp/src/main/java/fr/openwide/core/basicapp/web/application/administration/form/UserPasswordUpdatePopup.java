@@ -85,7 +85,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 						if (confirmPasswordValue.equals(newPasswordValue)) {
 							if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH && 
 									newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
-								userService.setPasswords(user, newPasswordValue);
+								userService.updatePassword(user, newPasswordValue);
 								
 								getSession().success(getString("administration.user.password.update.success"));
 								closePopup(target);

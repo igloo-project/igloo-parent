@@ -18,6 +18,7 @@ import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRec
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
+import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
@@ -44,6 +45,9 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	
 	@Autowired
 	private INotificationService notificationService;
+	
+	@Autowired
+	private ISecurityOptionsService securityOptionsService;
 	
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
@@ -117,4 +121,22 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		
 		return getByUserName(userName);
 	}
+
+	@Override
+	public void updatePassword(User user, String password) throws ServiceException, SecurityServiceException {
+		if (user == null || !StringUtils.hasText(password)) {
+			return;
+		}
+		
+		if (securityOptionsService.getOptions(user).isPasswordHistoryEnabled()
+				&& StringUtils.hasText(user.getPasswordHash())) {
+			// TODO FLA
+		}
+		
+		setPasswords(user, password);
+		user.getPasswordInformation().setLastUpdateDate(new Date());
+		
+		update(user);
+	}
+
 }

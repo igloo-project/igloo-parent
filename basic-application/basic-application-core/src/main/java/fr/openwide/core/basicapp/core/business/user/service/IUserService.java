@@ -30,4 +30,6 @@ public interface IUserService extends IGenericUserService<User> {
 
 	User getAuthenticatedUser();
 
+	void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
+
 }

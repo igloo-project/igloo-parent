@@ -2,20 +2,28 @@ package fr.openwide.core.basicapp.core.business.user.model.embeddable;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.commons.util.CloneUtils;
+import fr.openwide.core.spring.util.StringUtils;
 
 @Embeddable
 @Bindable
 public class UserPasswordInformation implements Serializable {
 
 	private static final long serialVersionUID = -5388035775227696038L;
+
+	private static final String HISTORY_SEPARATOR = "\n";
 
 	@Column
 	private Date lastUpdateDate;
@@ -61,6 +69,20 @@ public class UserPasswordInformation implements Serializable {
 
 	public void setHistory(String history) {
 		this.history = history;
+	}
+
+	@Transient
+	public List<String> getHistoryList() {
+		if (!StringUtils.hasText(history)) {
+			return Lists.newArrayList();
+		}
+		
+		return Lists.newLinkedList(
+				Splitter.on(HISTORY_SEPARATOR)
+						.omitEmptyStrings()
+						.trimResults()
+						.split(history)
+		);
 	}
 
 }

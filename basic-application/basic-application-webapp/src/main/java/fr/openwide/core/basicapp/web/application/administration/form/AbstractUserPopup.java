@@ -160,7 +160,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 								if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH &&
 										newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
 									userService.create(user);
-									userService.setPasswords(user, newPasswordValue);
+									userService.updatePassword(user, newPasswordValue);
 									
 									getSession().success(getString("administration.user.add.success"));
 									throw typeDescriptor.fiche(AbstractUserPopup.this.getModel())
