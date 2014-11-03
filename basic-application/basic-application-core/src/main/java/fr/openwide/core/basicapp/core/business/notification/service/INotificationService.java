@@ -5,7 +5,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 
 public interface INotificationService {
 
-	void sendExampleNotification(User user)
-			throws ServiceException;
+	void sendExampleNotification(User user) throws ServiceException;
+
+	void sendUserPasswordRecoveryRequest(User user) throws ServiceException;
 
 }

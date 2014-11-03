@@ -9,4 +9,6 @@ public interface IBasicApplicationNotificationContentDescriptorFactory<TDescript
 
 	TDescriptor example(User user, Date date);
 
+	TDescriptor userPasswordRecoveryRequest(User user);
+
 }

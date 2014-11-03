@@ -35,4 +35,9 @@ public class EmptyNotificationContentDescriptorFactoryImpl implements IBasicAppl
 		return NULL_DESCRIPTOR;
 	}
 
+	@Override
+	public INotificationContentDescriptor userPasswordRecoveryRequest(User user) {
+		return NULL_DESCRIPTOR;
+	}
+
 }

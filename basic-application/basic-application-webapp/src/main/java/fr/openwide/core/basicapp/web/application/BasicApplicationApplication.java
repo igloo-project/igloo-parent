@@ -9,12 +9,16 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
+import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
+import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
+import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
 import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
@@ -72,9 +76,13 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	
 	@Override
 	protected IConverterLocator newConverterLocator() {
-		ConverterLocator locator = new ConverterLocator();
+		ConverterLocator converterLocator = new ConverterLocator();
 		
-		return new HibernateProxyAwareConverterLocator(locator);
+		converterLocator.set(User.class, UserRenderer.get());
+		converterLocator.set(TechnicalUser.class, UserRenderer.get());
+		converterLocator.set(BasicUser.class, UserRenderer.get());
+		
+		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}
 
 	@Override

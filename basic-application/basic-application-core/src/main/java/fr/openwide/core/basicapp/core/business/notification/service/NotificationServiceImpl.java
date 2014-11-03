@@ -35,4 +35,16 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 			throw new ServiceException("Error during send mail process", e);
 		}
 	}
+	
+	@Override
+	public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
+		try {
+			builder()
+					.to(user)
+					.content(notificationPanelRendererService.userPasswordRecoveryRequest(user))
+					.send();
+		} catch (Exception e) {
+			throw new ServiceException("Error during send mail process", e);
+		}
+	}
 }

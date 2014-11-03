@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
+import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
@@ -40,6 +41,9 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	
 	@Autowired
 	private BasicApplicationConfigurer configurer;
+	
+	@Autowired
+	private INotificationService notificationService;
 	
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
@@ -94,7 +98,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		user.setPasswordRecoveryRequest(passwordRecoveryRequest);
 		update(user);
 		
-		// TODO FLA notification
+		notificationService.sendUserPasswordRecoveryRequest(user);
 		
 		return passwordRecoveryRequest;
 	}
