@@ -24,6 +24,7 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.LocaleLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -55,6 +56,8 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				"administration.user.disable.confirmation.text", null, 
 				new Object[] { userModel.getObject().getFullName() }
 		);
+		
+		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
 		add(
 				updatePopup,
@@ -120,14 +123,15 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
-				new EmailLink("email", BindingModel.of(userModel, Bindings.user().email())),
+				new EmailLink("email", emailModel),
+				new DefaultPlaceholderPanel("emailPlaceholder").model(emailModel),
 				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
-						DatePattern.SHORT_DATETIME),
+						DatePattern.SHORT_DATETIME).showPlaceholder(),
 				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
-						DatePattern.SHORT_DATETIME),
-				new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale())),
+						DatePattern.SHORT_DATETIME).showPlaceholder(),
+				new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale())).showPlaceholder(),
 				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
-						DatePattern.SHORT_DATETIME)
+						DatePattern.SHORT_DATETIME).showPlaceholder()
 		);
 	}
 	

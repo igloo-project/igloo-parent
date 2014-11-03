@@ -5,29 +5,29 @@
 		<div wicket:id="updatePopup"></div>
 		<div wicket:id="passwordUpdatePopup"></div>
 		
-		<h2>
-			<wicket:message key="administration.user.profile" />
+		<h2 class="clearfix">
 			<span class="btn-group pull-right">
 				<a wicket:id="updateButton" class="btn btn-primary">
 					<span class="fa fa-pencil"></span>
-					<wicket:message key="common.action.update" />
+					<span class="hidden-xs hidden-sm"><wicket:message key="common.action.update" /></span>
 				</a>
 				
 				<a wicket:id="passwordUpdateButton" class="btn btn-primary">
 					<span class="fa fa-key"></span>
-					<wicket:message key="administration.user.password.update" />
+					<span class="hidden-xs hidden-sm"><wicket:message key="administration.user.password.update" /></span>
 				</a>
 				
 				<a wicket:id="enable" class="btn btn-success">
 					<span class="fa fa-check"></span>
-					<wicket:message key="administration.user.enable" />
+					<span class="hidden-xs"><wicket:message key="administration.user.enable" /></span>
 				</a>
 				
 				<a wicket:id="disable" class="btn btn-danger">
 					<span class="fa fa-times"></span>
-					<wicket:message key="administration.user.disable" />
+					<span class="hidden-xs"><wicket:message key="administration.user.disable" /></span>
 				</a>
 			</span>
+			<wicket:message key="administration.user.profile" />
 		</h2>
 		
 		<div class="description-content">
@@ -45,6 +45,7 @@
 				<div class="info-label"><wicket:message key="business.user.email" /></div>
 				<div class="info-content">
 					<a wicket:id="email"></a>
+					<wicket:container wicket:id="emailPlaceholder" />
 				</div>
 			</div>
 			<div class="info-group">

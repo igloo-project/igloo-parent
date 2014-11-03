@@ -7,7 +7,7 @@
 			<label class="sr-only" wicket:for="searchInput"><wicket:label /></label>
 			<input wicket:id="searchInput" class="form-control" type="text">
 		</div>
-		<div class="checkbox">
+		<div class="checkbox hidden-xs">
 			<label wicket:for="active">
 				<input wicket:id="active" type="checkbox" /> <wicket:label />
 			</label>
@@ -17,7 +17,7 @@
 			<wicket:message key="common.applyFilters" />
 		</button>
 	</form>
-	<div class="col-sm-4 further">
+	<div class="col-sm-4 further hidden-xs">
 		<div wicket:id="userQuickSearch" class="pull-right" />
 	</div>
 </wicket:panel>

@@ -35,8 +35,8 @@ public class UserSearchPanel<U extends User> extends Panel {
 								new TextField<String>("searchInput", dataProvider.getNameModel())
 										.setLabel(new ResourceModel("administration.user.search.name"))
 										.add(new LabelPlaceholderBehavior()),
-								new CheckBox("active", dataProvider.getActiveModel())
-										.setLabel(new ResourceModel("business.user.active"))
+								new CheckBox("active", dataProvider.getIncludeInactivesModel())
+										.setLabel(new ResourceModel("administration.user.search.includeInactives"))
 						)
 		);
 	}

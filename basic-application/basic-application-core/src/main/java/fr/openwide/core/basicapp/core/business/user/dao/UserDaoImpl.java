@@ -79,9 +79,9 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 			booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().groups().getPath()).matching(group).createQuery());
 		}
 		
-		Boolean active = searchParams.getActive();
-		if (active != null) {
-			booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().active().getPath()).matching(active).createQuery());
+		Boolean includeInactives = searchParams.getIncludeInactives();
+		if (includeInactives == null || !includeInactives) {
+			booleanJunction.must(userQueryBuilder.keyword().onField(Bindings.user().active().getPath()).matching(Boolean.TRUE).createQuery());
 		}
 		
 		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), clazz);

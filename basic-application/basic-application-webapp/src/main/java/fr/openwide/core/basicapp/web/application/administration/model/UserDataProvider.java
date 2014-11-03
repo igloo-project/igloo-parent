@@ -34,7 +34,7 @@ public class UserDataProvider<U extends User> extends LoadableDetachableDataProv
 	
 	private final IModel<UserGroup> groupModel = new GenericEntityModel<Long, UserGroup>();
 	
-	private final IModel<Boolean> activeModel = Model.of();
+	private final IModel<Boolean> includeInactivesModel = Model.of(Boolean.FALSE);
 	
 	public UserDataProvider(Class<U> clazz) {
 		super();
@@ -52,16 +52,8 @@ public class UserDataProvider<U extends User> extends LoadableDetachableDataProv
 		return new UserSearchParameters(
 				nameModel.getObject(),
 				groupModel.getObject(),
-				getActiveClause(activeModel.getObject())
+				includeInactivesModel.getObject()
 		);
-	}
-	
-	protected Boolean getActiveClause(Boolean active) {
-		if (Boolean.TRUE.equals(active)) {
-			return true;
-		} else {
-			return null;
-		}
 	}
 
 	@Override
@@ -96,8 +88,8 @@ public class UserDataProvider<U extends User> extends LoadableDetachableDataProv
 		return groupModel;
 	}
 
-	public IModel<Boolean> getActiveModel() {
-		return activeModel;
+	public IModel<Boolean> getIncludeInactivesModel() {
+		return includeInactivesModel;
 	}
 
 	@Override
@@ -105,6 +97,6 @@ public class UserDataProvider<U extends User> extends LoadableDetachableDataProv
 		super.detach();
 		nameModel.detach();
 		groupModel.detach();
-		activeModel.detach();
+		includeInactivesModel.detach();
 	}
 }

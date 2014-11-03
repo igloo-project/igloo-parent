@@ -6,13 +6,13 @@ public class UserSearchParameters {
 	
 	private final UserGroup group;
 	
-	private final Boolean active;
+	private final Boolean includeInactives;
 
-	public UserSearchParameters(String name, UserGroup group, Boolean active) {
+	public UserSearchParameters(String name, UserGroup group, Boolean includeInactives) {
 		super();
 		this.name = name;
 		this.group = group;
-		this.active = active;
+		this.includeInactives = includeInactives;
 	}
 
 	public String getName() {
@@ -23,8 +23,8 @@ public class UserSearchParameters {
 		return group;
 	}
 
-	public Boolean getActive() {
-		return active;
+	public Boolean getIncludeInactives() {
+		return includeInactives;
 	}
 
 }
