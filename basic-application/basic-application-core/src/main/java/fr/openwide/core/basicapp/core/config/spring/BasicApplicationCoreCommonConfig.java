@@ -24,7 +24,8 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 	BasicApplicationCoreSecurityConfig.class,			// configuration de la sécurité
 	BasicApplicationCoreSecurityOptionsConfig.class,	// configuration des options de sécurité
 	BasicApplicationTaskManagementConfig.class,			// configuration de la gestion des tâches
-	BasicApplicationCoreNotificationConfig.class		// configuration des notifications
+	BasicApplicationCoreNotificationConfig.class,		// configuration des notifications
+	BasicApplicationCoreSchedulingConfig.class			// configuration des tâches planifiées
 })
 @ComponentScan(
 	basePackageClasses = {
