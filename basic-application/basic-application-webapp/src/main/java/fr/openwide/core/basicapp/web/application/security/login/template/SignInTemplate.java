@@ -125,7 +125,7 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 				typeDescriptor.passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
 						.add(new EnclosureBehavior()
 								.condition(predicate(
-										Model.of(securityOptionsService.getOptions(typeDescriptor.getUserClass()).isPasswordUserRecoveryEnabled()),
+										Model.of(securityOptionsService.getOptions(typeDescriptor.getEntityClass()).isPasswordUserRecoveryEnabled()),
 										isTrue()
 								))
 						)

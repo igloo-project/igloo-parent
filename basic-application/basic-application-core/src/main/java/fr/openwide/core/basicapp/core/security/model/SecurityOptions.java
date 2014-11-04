@@ -73,7 +73,7 @@ public class SecurityOptions {
 	}
 
 	public boolean isPasswordAdminUpdateEnabled() {
-		return SecurityOptionsMode.ENABLED.equals(getPasswordAdminUpdate());
+		return SecurityOptionsMode.ENABLED.equals(getPasswordAdminUpdate()) || SecurityOptionsMode.DISABLED.equals(getPasswordUserRecovery());
 	}
 
 	public SecurityOptions passwordUserRecovery() {

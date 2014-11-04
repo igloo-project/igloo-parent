@@ -1,49 +1,42 @@
 package fr.openwide.core.basicapp.web.application.security.login.util;
 
-import java.io.Serializable;
-
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.web.application.common.util.AbstractGenericEntityTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
-public abstract class SignInUserTypeDescriptor<U extends User> implements Serializable {
+public abstract class SignInUserTypeDescriptor<U extends User> extends AbstractGenericEntityTypeDescriptor<SignInUserTypeDescriptor<U>, U>{
 	
 	private static final long serialVersionUID = -1128901861897146296L;
 
-	public static final SignInUserTypeDescriptor<User> DEFAULT = new SignInUserTypeDescriptor<User>(User.class) {
+	public static final SignInUserTypeDescriptor<User> USER = new SignInUserTypeDescriptor<User>(User.class, "user") {
 		private static final long serialVersionUID = 1L;
 		
-		@Override
-		protected Object readResolve() {
-			return DEFAULT;
-		}
-
 		@Override
 		public IPageLinkDescriptor signInPageLinkDescriptor() {
 			return CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor();
 		}
-
+		
 		@Override
 		public IPageLinkDescriptor loginSuccessPageLinkDescriptor() {
 			return LoginSuccessPage.linkDescriptor();
 		}
-
+		
 		@Override
 		public IPageLinkDescriptor passwordRecoveryPageLinkDescriptor() {
 			return SecurityPasswordRecoveryPage.linkDescriptor();
 		}
+		
+		@Override
+		protected Object readResolve() {
+			return USER;
+		}
 	};
 
-	private final Class<U> clazz;
-	
-	private SignInUserTypeDescriptor(Class<U> clazz) {
-		this.clazz = clazz;
-	}
-
-	public Class<U> getUserClass() {
-		return clazz;
+	private SignInUserTypeDescriptor(Class<U> clazz, String name) {
+		super(clazz, name);
 	}
 
 	public abstract IPageLinkDescriptor signInPageLinkDescriptor();
@@ -51,7 +44,5 @@ public abstract class SignInUserTypeDescriptor<U extends User> implements Serial
 	public abstract IPageLinkDescriptor loginSuccessPageLinkDescriptor();
 
 	public abstract IPageLinkDescriptor passwordRecoveryPageLinkDescriptor();
-
-	protected abstract Object readResolve();
 
 }

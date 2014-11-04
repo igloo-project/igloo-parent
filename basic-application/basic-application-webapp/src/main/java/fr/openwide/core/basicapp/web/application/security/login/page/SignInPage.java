@@ -11,7 +11,7 @@ public class SignInPage extends SignInTemplate<User> {
 	private static final long serialVersionUID = 7361718534092594202L;
 
 	public SignInPage(PageParameters parameters) {
-		super(parameters, SignInUserTypeDescriptor.DEFAULT);
+		super(parameters, SignInUserTypeDescriptor.USER);
 	}
 
 }

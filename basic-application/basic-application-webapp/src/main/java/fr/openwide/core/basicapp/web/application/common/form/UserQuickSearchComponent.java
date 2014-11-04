@@ -40,7 +40,7 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 	@Override
 	protected List<U> searchAutocomplete(String term, int limit, int offset) {
 		try {
-			return userService.searchAutocomplete(typeDescriptor.getUserClass(), term, limit, offset);
+			return userService.searchAutocomplete(typeDescriptor.getEntityClass(), term, limit, offset);
 		} catch (Exception e) {
 			LOGGER.error("User autocomplete search error", e);
 			return Lists.newArrayList();

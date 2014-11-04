@@ -15,6 +15,8 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
 import fr.openwide.core.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
+import fr.openwide.core.basicapp.web.application.notification.util.INotificationTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.notification.util.NotificationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -24,20 +26,12 @@ import fr.openwide.core.wicket.more.notification.service.AbstractNotificationCon
 @Service("BasicApplicationNotificationPanelRendererService")
 public class BasicApplicationNotificationContentDescriptorFactoryImpl extends AbstractNotificationContentDescriptorFactory
 		implements IBasicApplicationNotificationContentDescriptorFactory<IWicketNotificationDescriptor> {
-	
-	public static enum TypeObjetMetier {
-		USER("notification.panel.user");
-		public final String messageKeyRoot;
-		private TypeObjetMetier(String messageKeyRoot1) {
-			this.messageKeyRoot = messageKeyRoot1;
-		}
-	}
-	
+
 	@Override
 	protected String getApplicationName() {
 		return BasicApplicationApplication.NAME;
 	}
-	
+
 	@Override
 	public IWicketNotificationDescriptor example(final User user, final Date date) {
 		final IModel<User> userModel = GenericEntityModel.of(user);
@@ -58,26 +52,26 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl extends Ab
 	}
 
 	protected final <T> IWicketNotificationDescriptor simpleUserActionNotification(
-			final TypeObjetMetier typeObjetMetier, final String actionMessageKeyPart,
+			final INotificationTypeDescriptor typeDescriptor, final String actionMessageKeyPart,
 			final IModel<T> objetModel, final ILinkGenerator linkGenerator) {
-		return new AbstractSimpleWicketNotificationDescriptor(typeObjetMetier.messageKeyRoot + "." + actionMessageKeyPart) {
+		return new AbstractSimpleWicketNotificationDescriptor(typeDescriptor.notificationRessourceKey(actionMessageKeyPart)) {
 			@Override
 			public IModel<?> getSubjectParameter() {
 				return objetModel;
 			}
 			@Override
 			public Component createComponent(String wicketId) {
-				return new SimpleUserActionHtmlNotificationPanel<>(wicketId, typeObjetMetier, actionMessageKeyPart,
+				return new SimpleUserActionHtmlNotificationPanel<>(wicketId, typeDescriptor, actionMessageKeyPart,
 						objetModel, BasicApplicationSession.get().getUserModel(), Model.of(new Date()), linkGenerator);
 			}
-			
 		};
 	}
-	
+
 	@Override
 	public IWicketNotificationDescriptor userPasswordRecoveryRequest(User user) {
 		IModel<User> model = GenericEntityModel.of(user);
-		return simpleUserActionNotification(TypeObjetMetier.USER, "password.recovery.request", model, SignInUserTypeDescriptor.DEFAULT.signInPageLinkDescriptor());
+		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name() + "." + user.getPasswordRecoveryRequest().getInitiator().name();
+		return simpleUserActionNotification(NotificationUserTypeDescriptor.USER, actionMessageKeyPart, model, SignInUserTypeDescriptor.USER.signInPageLinkDescriptor());
 	}
 
 }

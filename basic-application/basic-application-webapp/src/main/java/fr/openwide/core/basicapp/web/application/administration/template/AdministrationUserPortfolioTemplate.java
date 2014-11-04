@@ -32,7 +32,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
-		UserDataProvider<U> dataProvider = new UserDataProvider<>(typeDescriptor.getUserClass());
+		UserDataProvider<U> dataProvider = new UserDataProvider<>(typeDescriptor.getEntityClass());
 		AbstractUserPortfolioPanel<U> portfolioPanel = createPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
 		
 		add(

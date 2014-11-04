@@ -95,7 +95,7 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 											
 											getSession().success(getString("security.password.recovery.validate.success"));
 											
-											throw SignInUserTypeDescriptor.DEFAULT.signInPageLinkDescriptor().newRestartResponseException();
+											throw SignInUserTypeDescriptor.USER.signInPageLinkDescriptor().newRestartResponseException();
 										} catch (RestartResponseException e) {
 											throw e;
 										} catch (Exception e) {

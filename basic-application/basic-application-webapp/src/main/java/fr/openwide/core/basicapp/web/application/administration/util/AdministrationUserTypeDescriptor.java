@@ -1,13 +1,8 @@
 package fr.openwide.core.basicapp.web.application.administration.util;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
@@ -18,34 +13,19 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
+import fr.openwide.core.basicapp.web.application.common.util.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
-public abstract class AdministrationUserTypeDescriptor<U extends User> implements Serializable {
+public abstract class AdministrationUserTypeDescriptor<U extends User> extends UserTypeDescriptor<U> {
 	
 	private static final long serialVersionUID = -1128901861897146296L;
 
-	private static final Collection<AdministrationUserTypeDescriptor<?>> ALL = Lists.newArrayList();
-	
-	@SuppressWarnings("unchecked")
-	public static final <U extends User> AdministrationUserTypeDescriptor<? extends U> get(U user) {
-		if (user == null) {
-			return null;
-		}
-		
-		for (AdministrationUserTypeDescriptor<?> type : ALL) {
-			if (type.getUserClass().isInstance(user)) {
-				return (AdministrationUserTypeDescriptor<? extends U>) type;
-			}
-		}
-		
-		throw new IllegalStateException("Unknown type for user " + user);
-	}
-	
-	public static final AdministrationUserTypeDescriptor<TechnicalUser> TECHNICAL_USER = new AdministrationUserTypeDescriptor<TechnicalUser>(TechnicalUser.class,
-			AdministrationTechnicalUserDescriptionPage.class, AdministrationTechnicalUserPortfolioPage.class) {
+	public static final AdministrationUserTypeDescriptor<TechnicalUser> TECHNICAL_USER = new AdministrationUserTypeDescriptor<TechnicalUser>(
+			TechnicalUser.class, "technicalUser", AdministrationTechnicalUserDescriptionPage.class,
+			AdministrationTechnicalUserPortfolioPage.class) {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -59,8 +39,9 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> implement
 		}
 	};
 	
-	public static final AdministrationUserTypeDescriptor<BasicUser> BASIC_USER = new AdministrationUserTypeDescriptor<BasicUser>(BasicUser.class,
-			AdministrationBasicUserDescriptionPage.class, AdministrationBasicUserPortfolioPage.class) {
+	public static final AdministrationUserTypeDescriptor<BasicUser> BASIC_USER = new AdministrationUserTypeDescriptor<BasicUser>(
+			BasicUser.class, "basicUser", AdministrationBasicUserDescriptionPage.class,
+			AdministrationBasicUserPortfolioPage.class) {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -74,24 +55,16 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> implement
 		}
 	};
 
-	
-	private final Class<U> clazz;
-	
 	private final Class<? extends AdministrationUserDescriptionTemplate<U>> fichePageClazz;
 	
 	private final Class<? extends AdministrationUserPortfolioTemplate<U>> listePageClazz;
 	
-	private AdministrationUserTypeDescriptor(Class<U> clazz,
+	private AdministrationUserTypeDescriptor(Class<U> clazz, String name,
 			Class<? extends AdministrationUserDescriptionTemplate<U>> fichePageClazz,
 			Class<? extends AdministrationUserPortfolioTemplate<U>> listePageClazz) {
-		ALL.add(this);
-		this.clazz = clazz;
+		super(clazz, name);
 		this.fichePageClazz = fichePageClazz;
 		this.listePageClazz = listePageClazz;
-	}
-
-	public Class<U> getUserClass() {
-		return clazz;
 	}
 
 	public Class<? extends AdministrationUserDescriptionTemplate<U>> getFicheClass() {
@@ -107,7 +80,7 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> implement
 	}
 	
 	public IPageLinkDescriptor fiche(IModel<U> userModel, IModel<Page> sourcePageModel) {
-		return LinkFactory.get().ficheUser(fichePageClazz, userModel, clazz, sourcePageModel);
+		return LinkFactory.get().ficheUser(fichePageClazz, userModel, getEntityClass(), sourcePageModel);
 	}
 	
 	public IPageLinkDescriptor liste() {
@@ -115,7 +88,5 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> implement
 	}
 	
 	public abstract U newInstance();
-	
-	protected abstract Object readResolve();
 
 }
