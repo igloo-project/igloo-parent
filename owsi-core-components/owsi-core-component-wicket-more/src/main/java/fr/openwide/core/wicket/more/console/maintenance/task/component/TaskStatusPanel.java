@@ -28,27 +28,27 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 					@Override
 					protected void onComponentTag(ComponentTag tag) {
 						super.onComponentTag(tag);
-						String iconClass = faSize;
+						StringBuilder iconClass = new StringBuilder(faSize);
 						TaskStatus status = statusModel.getObject();
 						if (status != null) {
 							switch (status) {
 								case TO_RUN:
-									iconClass += " fa-play-circle info";
+									iconClass.append(" fa-clock-o info");
 									break;
 								case RUNNING:
-									iconClass += " fa-repeat info";
+									iconClass.append(" fa-repeat info");
 									break;
 								case COMPLETED:
-									iconClass += " fa-check-circle success";
+									iconClass.append(" fa-check-circle success");
 									break;
 								case FAILED:
-									iconClass += " fa-times-circle fail";
+									iconClass.append(" fa-times-circle fail");
 									break;
 								case INTERRUPTED:
-									iconClass += " fa-pause fail";
+									iconClass.append(" fa-pause fail");
 									break;
 								case CANCELLED:
-									iconClass += " fa-ban fail";
+									iconClass.append(" fa-ban fail");
 									break;
 							}
 							tag.append("class", iconClass, " ");
