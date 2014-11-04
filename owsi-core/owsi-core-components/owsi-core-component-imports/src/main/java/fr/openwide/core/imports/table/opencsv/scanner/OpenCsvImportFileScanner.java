@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 import au.com.bytecode.opencsv.CSVReader;
 import de.schlichtherle.truezip.file.TFileInputStream;
