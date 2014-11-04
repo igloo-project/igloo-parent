@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.web.application.notification.util;
+package fr.openwide.core.basicapp.web.application.common.typedescriptor;
 
 public interface INotificationTypeDescriptor {
 

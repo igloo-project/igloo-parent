@@ -32,10 +32,10 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
-import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
@@ -77,7 +77,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		}
 		
 		if (userService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
-			throw SecurityUserTypeDescriptor.<SecurityUserTypeDescriptor<User>, User>get(BasicApplicationSession.get().getUser())
+			throw UserTypeDescriptor.get(BasicApplicationSession.get().getUser())
+					.securityTypeDescriptor()
 					.passwordExpirationPageLinkDescriptor()
 					.newRestartResponseException();
 		}

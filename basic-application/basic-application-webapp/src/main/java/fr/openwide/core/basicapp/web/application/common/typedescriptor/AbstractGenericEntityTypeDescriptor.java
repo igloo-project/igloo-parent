@@ -1,20 +1,21 @@
-package fr.openwide.core.basicapp.web.application.common.util;
+package fr.openwide.core.basicapp.web.application.common.typedescriptor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Map;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.util.HibernateUtils;
 
 public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> implements Serializable {
 
 	private static final long serialVersionUID = 4551490933539106231L;
 
-	private static final Collection<AbstractGenericEntityTypeDescriptor<?, ?>> ALL = Lists.newArrayList();
+	private static final Map<Class<?>, AbstractGenericEntityTypeDescriptor<?, ?>> ALL = Maps.newHashMap();
 
 	@SuppressWarnings("unchecked")
 	public static final <T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> T get(E entity) {
@@ -22,9 +23,14 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 			return null;
 		}
 		
-		for (AbstractGenericEntityTypeDescriptor<?, ?> type : ALL) {
-			if (type.getEntityClass().isInstance(entity)) {
-				return (T) type;
+		AbstractGenericEntityTypeDescriptor<?, ?> specificTypeDescriptor = ALL.get(HibernateUtils.getClass(entity));
+		if (specificTypeDescriptor != null) {
+			return (T) specificTypeDescriptor;
+		}
+		
+		for (AbstractGenericEntityTypeDescriptor<?, ?> typeDescriptor : ALL.values()) {
+			if (typeDescriptor.getEntityClass().isInstance(entity)) {
+				return (T) typeDescriptor;
 			}
 		}
 		
@@ -36,7 +42,7 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 	private final String name;
 
 	protected AbstractGenericEntityTypeDescriptor(Class<E> clazz, String name) {
-		ALL.add(this);
+		ALL.put(clazz, this);
 		this.clazz = checkNotNull(clazz);
 		this.name = checkNotNull(name);
 	}

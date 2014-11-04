@@ -12,7 +12,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
@@ -29,15 +29,15 @@ public class UserPortfolioPanel<U extends User> extends AbstractUserPortfolioPan
 	@SpringBean
 	private IUserService userService;
 
-	private final AdministrationUserTypeDescriptor<U> typeDescriptor;
+	private final UserTypeDescriptor<U> typeDescriptor;
 
-	public UserPortfolioPanel(String id, IDataProvider<U> dataProvider, AdministrationUserTypeDescriptor<U> typeDescriptor, int itemsPerPage) {
+	public UserPortfolioPanel(String id, IDataProvider<U> dataProvider, UserTypeDescriptor<U> typeDescriptor, int itemsPerPage) {
 		super(id, dataProvider, itemsPerPage, "administration.user.count");
 		this.typeDescriptor = typeDescriptor;
 	}
 
 	protected IPageLinkGenerator getPageLinkGenerator(IModel<U> userModel) {
-		return typeDescriptor.fiche(userModel, PageModel.of(getPage()));
+		return typeDescriptor.administrationTypeDescriptor().fiche(userModel, PageModel.of(getPage()));
 	}
 
 	@Override

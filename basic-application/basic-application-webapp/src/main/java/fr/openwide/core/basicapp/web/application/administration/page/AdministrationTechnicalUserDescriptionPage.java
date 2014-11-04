@@ -11,7 +11,7 @@ import fr.openwide.core.basicapp.web.application.administration.component.UserAu
 import fr.openwide.core.basicapp.web.application.administration.component.UserMembershipsPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserProfilePanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
@@ -21,9 +21,9 @@ public class AdministrationTechnicalUserDescriptionPage extends AdministrationUs
 	private static final long serialVersionUID = -550100874222819991L;
 
 	public AdministrationTechnicalUserDescriptionPage(PageParameters parameters) {
-		super(parameters, AdministrationUserTypeDescriptor.TECHNICAL_USER);
+		super(parameters, UserTypeDescriptor.TECHNICAL_USER);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), typeDescriptor.liste()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), typeDescriptor.administrationTypeDescriptor().liste()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 

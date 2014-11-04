@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -36,9 +38,13 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	private TextField<String> confirmPasswordField;
 
+	private final UserTypeDescriptor<U> typeDescriptor;
+
 	public UserPasswordUpdatePopup(String id, IModel<U> model) {
 		super(id, model);
 		setStatic();
+		
+		this.typeDescriptor = UserTypeDescriptor.get(model.getObject());
 	}
 
 	@Override
@@ -57,6 +63,8 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		newPasswordField.setLabel(new ResourceModel("business.user.newPassword"));
 		newPasswordField.setRequired(true);
 		passwordForm.add(newPasswordField);
+		
+		passwordForm.add(new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))));
 		
 		confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
 		confirmPasswordField.setLabel(new ResourceModel("business.user.confirmPassword"));

@@ -18,7 +18,7 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -45,7 +45,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserProfilePanel(String id, final IModel<U> userModel, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+	public UserProfilePanel(String id, final IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		
 		AbstractUserPopup<U> updatePopup = createUpdatePopup("updatePopup", getModel(), typeDescriptor);
@@ -135,7 +135,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 		);
 	}
 	
-	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
 		return new UserPopup<U>(wicketId, getModel(), typeDescriptor);
 	}
 }

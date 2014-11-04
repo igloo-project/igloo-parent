@@ -31,7 +31,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailUnicityValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernamePatternValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernameUnicityValidator;
@@ -68,7 +68,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final FormPanelMode mode;
 
-	private final AdministrationUserTypeDescriptor<U> typeDescriptor;
+	private final UserTypeDescriptor<U> typeDescriptor;
 
 	protected Form<?> userForm;
 
@@ -76,15 +76,15 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final IModel<String> confirmPasswordModel = Model.of();
 
-	public AbstractUserPopup(String id, IModel<U> userModel, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+	public AbstractUserPopup(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		this(id, userModel, FormPanelMode.EDIT, typeDescriptor);
 	}
 
-	public AbstractUserPopup(String id, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+	public AbstractUserPopup(String id, UserTypeDescriptor<U> typeDescriptor) {
 		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, typeDescriptor);
 	}
 
-	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, AdministrationUserTypeDescriptor<U> typeDescriptor) {
+	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		setStatic();
 		
@@ -163,7 +163,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 									userService.updatePassword(user, newPasswordValue);
 									
 									getSession().success(getString("administration.user.add.success"));
-									throw typeDescriptor.fiche(AbstractUserPopup.this.getModel())
+									throw typeDescriptor.administrationTypeDescriptor().fiche(AbstractUserPopup.this.getModel())
 											.newRestartResponseException();
 								} else {
 									LOGGER.warn("Password does not fit criteria.");
@@ -239,7 +239,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	protected void onShow(AjaxRequestTarget target) {
 		super.onShow(target);
 		if (isAddMode()) {
-			getModel().setObject(typeDescriptor.newInstance());
+			getModel().setObject(typeDescriptor.administrationTypeDescriptor().newInstance());
 		}
 	}
 	

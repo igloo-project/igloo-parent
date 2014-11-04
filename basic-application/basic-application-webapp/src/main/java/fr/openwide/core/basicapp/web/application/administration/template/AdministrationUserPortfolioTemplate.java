@@ -13,7 +13,7 @@ import fr.openwide.core.basicapp.web.application.administration.component.Abstra
 import fr.openwide.core.basicapp.web.application.administration.component.UserSearchPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 
@@ -24,9 +24,9 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
 	
-	protected AdministrationUserTypeDescriptor<U> typeDescriptor;
+	protected UserTypeDescriptor<U> typeDescriptor;
 	
-	public AdministrationUserPortfolioTemplate(PageParameters parameters, AdministrationUserTypeDescriptor<U> typeDescriptor, IModel<String> pageTitleModel) {
+	public AdministrationUserPortfolioTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor, IModel<String> pageTitleModel) {
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		

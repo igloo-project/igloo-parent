@@ -6,7 +6,7 @@ import org.apache.wicket.model.IModel;
 import com.google.common.base.Function;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
@@ -35,7 +35,7 @@ public final class LinkFactory extends AbstractLinkFactory {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public Class<? extends Page> apply(User input) {
-					return input == null ? null : AdministrationUserTypeDescriptor.<AdministrationUserTypeDescriptor<User>, User>get(input).getFicheClass();
+					return input == null ? null : UserTypeDescriptor.get(input).administrationTypeDescriptor().getFicheClass();
 				}
 			};
 	

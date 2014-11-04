@@ -13,11 +13,11 @@ import fr.openwide.core.basicapp.core.business.notification.service.IBasicApplic
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
 import fr.openwide.core.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
-import fr.openwide.core.basicapp.web.application.notification.util.INotificationTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.notification.util.NotificationUserTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;

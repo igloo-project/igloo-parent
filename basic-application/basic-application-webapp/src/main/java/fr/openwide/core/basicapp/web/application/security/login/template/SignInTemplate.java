@@ -24,7 +24,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
-import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
@@ -54,9 +54,9 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 
 	private FormComponent<String> passwordField;
 	
-	private final SecurityUserTypeDescriptor<U> typeDescriptor;
+	private final UserTypeDescriptor<U> typeDescriptor;
 
-	public SignInTemplate(PageParameters parameters, SecurityUserTypeDescriptor<U> typeDescriptor) {
+	public SignInTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor) {
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		
@@ -95,9 +95,9 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 				}
 				
 				if (success) {
-					throw typeDescriptor.loginSuccessPageLinkDescriptor().newRestartResponseException();
+					throw typeDescriptor.securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 				} else {
-					throw typeDescriptor.signInPageLinkDescriptor().newRestartResponseException();
+					throw typeDescriptor.securityTypeDescriptor().signInPageLinkDescriptor().newRestartResponseException();
 				}
 			}
 		};
@@ -122,7 +122,7 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, "footerFragment", getClass());
 		
 		footer.add(
-				typeDescriptor.passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
+				typeDescriptor.securityTypeDescriptor().passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
 						.add(new EnclosureBehavior()
 								.condition(predicate(
 										Model.of(securityOptionsService.getOptions(typeDescriptor.getEntityClass()).isPasswordUserRecoveryEnabled()),

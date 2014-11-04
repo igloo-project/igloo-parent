@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.web.application.notification.util.INotificationTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 

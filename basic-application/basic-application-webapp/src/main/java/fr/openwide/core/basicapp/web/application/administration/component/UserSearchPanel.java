@@ -8,8 +8,8 @@ import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.form.UserQuickSearchComponent;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.markup.html.form.PageableSearchForm;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 
@@ -18,7 +18,7 @@ public class UserSearchPanel<U extends User> extends Panel {
 	private static final long serialVersionUID = -6224313886789870489L;
 	
 	
-	public UserSearchPanel(String id, IPageable pageable, AdministrationUserTypeDescriptor<?> typeDescriptor, UserDataProvider<U> dataProvider) {
+	public UserSearchPanel(String id, IPageable pageable, UserTypeDescriptor<U> typeDescriptor, UserDataProvider<U> dataProvider) {
 		super(id);
 		
 		// Quick search

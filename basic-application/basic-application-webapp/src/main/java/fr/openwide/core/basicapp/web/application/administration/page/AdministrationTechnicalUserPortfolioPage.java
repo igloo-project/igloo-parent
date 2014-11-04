@@ -10,7 +10,7 @@ import fr.openwide.core.basicapp.web.application.administration.component.UserPo
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
-import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AdministrationTechnicalUserPortfolioPage extends AdministrationUserPortfolioTemplate<TechnicalUser> {
@@ -18,7 +18,7 @@ public class AdministrationTechnicalUserPortfolioPage extends AdministrationUser
 	private static final long serialVersionUID = -2263140539100206080L;
 	
 	public AdministrationTechnicalUserPortfolioPage(PageParameters parameters) {
-		super(parameters, AdministrationUserTypeDescriptor.TECHNICAL_USER, new ResourceModel("administration.user.technical.title"));
+		super(parameters, UserTypeDescriptor.TECHNICAL_USER, new ResourceModel("administration.user.technical.title"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical")));
 	}
