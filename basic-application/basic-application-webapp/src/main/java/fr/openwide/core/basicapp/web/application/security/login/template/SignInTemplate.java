@@ -1,5 +1,8 @@
 package fr.openwide.core.basicapp.web.application.security.login.template;
 
+import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
+import static fr.openwide.core.wicket.more.condition.Condition.predicate;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -19,10 +22,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
 import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -41,6 +46,9 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 
 	@SpringBean
 	private IUserService userService;
+
+	@SpringBean
+	private ISecurityOptionsService securityOptionsService;
 
 	private FormComponent<String> userNameField;
 
@@ -115,6 +123,12 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 		
 		footer.add(
 				typeDescriptor.passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
+						.add(new EnclosureBehavior()
+								.condition(predicate(
+										Model.of(securityOptionsService.getOptions(typeDescriptor.getUserClass()).isPasswordUserRecoveryEnabled()),
+										isTrue()
+								))
+						)
 		);
 		
 		return footer;
