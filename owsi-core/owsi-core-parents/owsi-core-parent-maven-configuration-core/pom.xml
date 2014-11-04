@@ -77,7 +77,7 @@
 		<owsi-core.commons-validator.version>1.4.0</owsi-core.commons-validator.version>
 		
 		<owsi-core.jta.version>1.1</owsi-core.jta.version>
-		<owsi-core.javax-mail.version>1.4.5</owsi-core.javax-mail.version>
+		<owsi-core.javax-mail.version>1.4.7</owsi-core.javax-mail.version>
 		
 		<owsi-core.xml-apis.version>1.4.01</owsi-core.xml-apis.version>
 		
