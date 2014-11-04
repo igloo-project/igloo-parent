@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
@@ -72,17 +73,19 @@ public class UserPasswordInformation implements Serializable {
 	}
 
 	@Transient
+	public void setHistory(Iterable<String> historyIterable) {
+		this.history = Joiner.on(HISTORY_SEPARATOR).skipNulls().join(historyIterable);
+	}
+
+	@Transient
 	public List<String> getHistoryList() {
 		if (!StringUtils.hasText(history)) {
 			return Lists.newArrayList();
 		}
 		
-		return Lists.newLinkedList(
-				Splitter.on(HISTORY_SEPARATOR)
+		return Splitter.on(HISTORY_SEPARATOR)
 						.omitEmptyStrings()
 						.trimResults()
-						.split(history)
-		);
+						.splitToList(history);
 	}
-
 }

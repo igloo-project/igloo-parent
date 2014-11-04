@@ -4,10 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.EvictingQueue;
 
 import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
@@ -150,7 +151,14 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		
 		if (securityOptionsService.getOptions(user).isPasswordHistoryEnabled()
 				&& StringUtils.hasText(user.getPasswordHash())) {
-			// TODO FLA
+			EvictingQueue<String> historyQueue = EvictingQueue.create(configurer.getSecurityPasswordHistoryCount());
+			
+			for (String oldPassword : user.getPasswordInformation().getHistoryList()) {
+				historyQueue.offer(oldPassword);
+			}
+			historyQueue.offer(user.getPasswordHash());
+			
+			user.getPasswordInformation().setHistory(historyQueue);
 		}
 		
 		setPasswords(user, password);
