@@ -27,12 +27,6 @@
 			<artifactId>owsi-core-component-jpa</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-		<!-- JDBC driver -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
 		
 		<!-- Database pooling -->
 		<dependency>
