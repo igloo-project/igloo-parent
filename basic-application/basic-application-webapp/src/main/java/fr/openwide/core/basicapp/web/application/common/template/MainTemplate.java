@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
@@ -34,6 +35,7 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
@@ -60,6 +62,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	@SpringBean
 	private IParameterService parameterService;
+
+	@SpringBean
+	private IUserService userService;
 	
 	@SpringBean
 	private IAuthenticationService authenticationService;
@@ -69,6 +74,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole()) {
 			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
+		}
+		
+		if (userService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
+			throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
 		}
 		
 		add(new TransparentWebMarkupContainer("htmlRootElement")
