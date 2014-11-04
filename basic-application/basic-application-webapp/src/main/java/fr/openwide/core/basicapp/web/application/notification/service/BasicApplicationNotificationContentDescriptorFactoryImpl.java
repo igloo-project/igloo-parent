@@ -34,11 +34,10 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl extends Ab
 
 	@Override
 	public IWicketNotificationDescriptor example(final User user, final Date date) {
-		final IModel<User> userModel = GenericEntityModel.of(user);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.example") {
 			@Override
 			public Object getSubjectParameter() {
-				return userModel;
+				return user;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -46,23 +45,23 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl extends Ab
 			}
 			@Override
 			public Component createComponent(String wicketId) {
-				return new ExampleHtmlNotificationPanel(wicketId, userModel, Model.of(date));
+				return new ExampleHtmlNotificationPanel(wicketId, GenericEntityModel.of(user), Model.of(date));
 			}
 		};
 	}
 
 	protected final <T> IWicketNotificationDescriptor simpleUserActionNotification(
 			final INotificationTypeDescriptor typeDescriptor, final String actionMessageKeyPart,
-			final IModel<T> objetModel, final ILinkGenerator linkGenerator) {
+			final IModel<T> objectModel, final ILinkGenerator linkGenerator) {
 		return new AbstractSimpleWicketNotificationDescriptor(typeDescriptor.notificationRessourceKey(actionMessageKeyPart)) {
 			@Override
 			public IModel<?> getSubjectParameter() {
-				return objetModel;
+				return objectModel;
 			}
 			@Override
 			public Component createComponent(String wicketId) {
 				return new SimpleUserActionHtmlNotificationPanel<>(wicketId, typeDescriptor, actionMessageKeyPart,
-						objetModel, BasicApplicationSession.get().getUserModel(), Model.of(new Date()), linkGenerator);
+						objectModel, BasicApplicationSession.get().getUserModel(), Model.of(new Date()), linkGenerator);
 			}
 		};
 	}
