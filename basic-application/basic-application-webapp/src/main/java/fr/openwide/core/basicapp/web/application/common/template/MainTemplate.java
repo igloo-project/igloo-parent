@@ -22,6 +22,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.odlabs.wiquery.core.events.MouseEvent;
 
 import com.google.common.collect.ImmutableList;
 
@@ -29,8 +30,10 @@ import fr.openwide.core.basicapp.core.business.parameter.service.IParameterServi
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
+import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
@@ -41,10 +44,12 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
+import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
@@ -68,6 +73,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	
 	@SpringBean
 	private IAuthenticationService authenticationService;
+	
+	@SpringBean
+	private ISecurityOptionsService securityOptionsService;
 	
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
@@ -183,6 +191,49 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				return userFullName;
 			}
 		}).hideIfEmpty());
+		
+		UserPasswordUpdatePopup<User> passwordUpdatePopup = new UserPasswordUpdatePopup<User>("passwordUpdatePopup",
+				BasicApplicationSession.get().getUserModel()) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				User user = BasicApplicationSession.get().getUser();
+				if (BasicApplicationSession.get().hasRoleAdmin()) {
+					setVisible(securityOptionsService.getOptions(user).isPasswordAdminUpdateEnabled());
+				}
+				else if (BasicApplicationSession.get().hasRoleAuthenticated()) {
+					setVisible(securityOptionsService.getOptions(user).isPasswordUserUpdateEnabled());
+				}
+				else {
+					setVisible(false);
+				}
+			}
+		};
+		
+		BlankLink passwordUpdateButton = new BlankLink("passwordUpdateButton") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				User user = BasicApplicationSession.get().getUser();
+				if (BasicApplicationSession.get().hasRoleAdmin()) {
+					setVisible(securityOptionsService.getOptions(user).isPasswordAdminUpdateEnabled());
+				}
+				else if (BasicApplicationSession.get().hasRoleAuthenticated()) {
+					setVisible(securityOptionsService.getOptions(user).isPasswordUserUpdateEnabled());
+				}
+				else {
+					setVisible(false);
+				}
+			}
+		};
+		passwordUpdateButton.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK));
+		
+		add(passwordUpdatePopup);
+		add(passwordUpdateButton);
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 
 		// Footer
