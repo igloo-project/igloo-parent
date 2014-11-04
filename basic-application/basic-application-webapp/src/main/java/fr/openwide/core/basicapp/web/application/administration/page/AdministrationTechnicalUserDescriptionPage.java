@@ -23,7 +23,7 @@ public class AdministrationTechnicalUserDescriptionPage extends AdministrationUs
 	public AdministrationTechnicalUserDescriptionPage(PageParameters parameters) {
 		super(parameters, UserTypeDescriptor.TECHNICAL_USER);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), typeDescriptor.administrationTypeDescriptor().liste()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), typeDescriptor.administrationTypeDescriptor().portfolio()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 

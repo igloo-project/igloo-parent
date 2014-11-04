@@ -18,7 +18,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -44,7 +44,7 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 	private IUserService userService;
 
 	@SpringBean
-	private ISecurityOptionsService securityOptionsService;
+	private ISecurityManagementService securityManagementService;
 
 	private final IModel<String> emailModel = Model.of("");
 
@@ -85,13 +85,13 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 										try {
 											User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
 											
-											if (user == null || !securityOptionsService.getOptions(user).isPasswordUserRecoveryEnabled()) {
+											if (user == null || !securityManagementService.getOptions(user).isPasswordUserRecoveryEnabled()) {
 												getSession().error(getString("security.password.recovery.validate.error"));
 												FeedbackUtils.refreshFeedback(target, getPage());
 												return;
 											}
 											
-											userService.initiatePasswordRecoveryRequest(user, UserPasswordRecoveryRequestType.RESET, UserPasswordRecoveryRequestInitiator.USER);
+											securityManagementService.initiatePasswordRecoveryRequest(user, UserPasswordRecoveryRequestType.RESET, UserPasswordRecoveryRequestInitiator.USER);
 											
 											getSession().success(getString("security.password.recovery.validate.success"));
 											

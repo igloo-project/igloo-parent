@@ -11,6 +11,11 @@ public abstract class NotificationUserTypeDescriptor<U extends User> extends
 
 	public static final NotificationUserTypeDescriptor<? extends User> USER = new NotificationUserTypeDescriptor<User>(UserTypeDescriptor.USER) {
 		private static final long serialVersionUID = 1L;
+		
+		@Override
+		protected Object readResolve() {
+			return USER;
+		}
 	};
 
 	private NotificationUserTypeDescriptor(UserTypeDescriptor<U> typeDescriptor) {

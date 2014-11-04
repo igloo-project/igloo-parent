@@ -18,7 +18,7 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 	private static final Map<Class<?>, AbstractGenericEntityTypeDescriptor<?, ?>> ALL = Maps.newHashMap();
 
 	@SuppressWarnings("unchecked")
-	public static final <T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> T get(E entity) {
+	protected static final <T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> T get(E entity) {
 		if (entity == null) {
 			return null;
 		}

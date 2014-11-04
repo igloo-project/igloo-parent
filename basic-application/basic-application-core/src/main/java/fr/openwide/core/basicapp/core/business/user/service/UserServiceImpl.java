@@ -1,15 +1,10 @@
 package fr.openwide.core.basicapp.core.business.user.service;
 
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.collect.EvictingQueue;
 
 import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
@@ -17,11 +12,8 @@ import fr.openwide.core.basicapp.core.business.notification.service.INotificatio
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
-import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
-import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
-import fr.openwide.core.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
-import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
@@ -50,7 +42,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	private INotificationService notificationService;
 	
 	@Autowired
-	private ISecurityOptionsService securityOptionsService;
+	private ISecurityManagementService securityManagementService;
 	
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
@@ -78,7 +70,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 	
 	@Override
-	public void signIn(User user) throws ServiceException, SecurityServiceException {
+	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
 		audit(user, AuditActionType.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
 	}
 	
@@ -89,31 +81,6 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		}
 		return userDao.getByEmailCaseInsensitive(email);
 	}
-	
-	@Override
-	public UserPasswordRecoveryRequest initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
-			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException {
-		UserPasswordRecoveryRequest passwordRecoveryRequest = new UserPasswordRecoveryRequest();
-		
-		Date now = new Date();
-		
-		passwordRecoveryRequest.setToken(getPasswordChangeRequestToken(user, now));
-		passwordRecoveryRequest.setCreationDate(now);
-		passwordRecoveryRequest.setType(type);
-		passwordRecoveryRequest.setInitiator(initiator);
-		
-		user.setPasswordRecoveryRequest(passwordRecoveryRequest);
-		update(user);
-		
-		notificationService.sendUserPasswordRecoveryRequest(user);
-		
-		return passwordRecoveryRequest;
-	}
-	
-	private String getPasswordChangeRequestToken(User user, Date date) {
-		return DigestUtils.sha256Hex(String.format("%1$s - %2$s - %3$s", user.getId(),
-				configurer.getSecurityPasswordRecoveryRequestTokenSalt(), date));
-	}
 
 	@Override
 	public User getAuthenticatedUser() {
@@ -123,44 +90,6 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		}
 		
 		return getByUserName(userName);
-	}
-
-	@Override
-	public boolean isPasswordExpired(User user) {
-		if (user == null
-				|| user.getPasswordInformation().getLastUpdateDate() == null
-				|| !securityOptionsService.getOptions(user).isPasswordExpirationEnabled()) {
-			return false;
-		}
-		
-		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), configurer.getSecurityPasswordExpirationDays());
-		Date now = new Date();
-		
-		return now.after(expirationDate);
-	}
-
-	@Override
-	public void updatePassword(User user, String password) throws ServiceException, SecurityServiceException {
-		if (user == null || !StringUtils.hasText(password)) {
-			return;
-		}
-		
-		if (securityOptionsService.getOptions(user).isPasswordHistoryEnabled()
-				&& StringUtils.hasText(user.getPasswordHash())) {
-			EvictingQueue<String> historyQueue = EvictingQueue.create(configurer.getSecurityPasswordHistoryCount());
-			
-			for (String oldPassword : user.getPasswordInformation().getHistoryList()) {
-				historyQueue.offer(oldPassword);
-			}
-			historyQueue.offer(user.getPasswordHash());
-			
-			user.getPasswordInformation().setHistory(historyQueue);
-		}
-		
-		setPasswords(user, password);
-		user.getPasswordInformation().setLastUpdateDate(new Date());
-		
-		update(user);
 	}
 
 }

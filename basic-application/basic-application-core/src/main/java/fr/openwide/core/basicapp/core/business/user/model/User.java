@@ -44,19 +44,11 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		return passwordInformation;
 	}
 
-	public void setPasswordInformation(UserPasswordInformation passwordInformation) {
-		this.passwordInformation = passwordInformation;
-	}
-
 	public UserPasswordRecoveryRequest getPasswordRecoveryRequest() {
 		if (passwordRecoveryRequest == null) {
 			passwordRecoveryRequest = new UserPasswordRecoveryRequest();
 		}
 		return passwordRecoveryRequest;
-	}
-
-	public void setPasswordRecoveryRequest(UserPasswordRecoveryRequest passwordRecoveryRequest) {
-		this.passwordRecoveryRequest = passwordRecoveryRequest;
 	}
 
 	@Transient

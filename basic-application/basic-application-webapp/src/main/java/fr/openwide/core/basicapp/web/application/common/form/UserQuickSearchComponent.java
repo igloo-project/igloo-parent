@@ -33,7 +33,7 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 	}
 
 	private UserQuickSearchComponent(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
-		super(id, userModel, USER_CHOICE_RENDERER, typeDescriptor.administrationTypeDescriptor().fiche(userModel));
+		super(id, userModel, USER_CHOICE_RENDERER, typeDescriptor.administrationTypeDescriptor().description(userModel));
 		this.typeDescriptor = typeDescriptor;
 	}
 

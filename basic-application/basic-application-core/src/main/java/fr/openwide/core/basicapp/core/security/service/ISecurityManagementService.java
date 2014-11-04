@@ -1,0 +1,23 @@
+package fr.openwide.core.basicapp.core.security.service;
+
+import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
+import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
+
+public interface ISecurityManagementService {
+
+	SecurityOptions getOptions(Class<? extends User> clazz);
+
+	SecurityOptions getOptions(User user);
+
+	void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
+			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException;
+
+	boolean isPasswordExpired(User user);
+
+	void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
+
+}

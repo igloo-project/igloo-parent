@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
-public class AbstractGenericEntityChildTypeDescriptor<T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>>
+public abstract class AbstractGenericEntityChildTypeDescriptor<T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>>
 		implements Serializable {
 
 	private static final long serialVersionUID = -7148614000136537502L;
@@ -19,4 +19,5 @@ public class AbstractGenericEntityChildTypeDescriptor<T extends AbstractGenericE
 		return typeDescriptor;
 	}
 
+	protected abstract Object readResolve();
 }

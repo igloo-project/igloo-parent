@@ -37,7 +37,7 @@ public class UserPortfolioPanel<U extends User> extends AbstractUserPortfolioPan
 	}
 
 	protected IPageLinkGenerator getPageLinkGenerator(IModel<U> userModel) {
-		return typeDescriptor.administrationTypeDescriptor().fiche(userModel, PageModel.of(getPage()));
+		return typeDescriptor.administrationTypeDescriptor().description(userModel, PageModel.of(getPage()));
 	}
 
 	@Override

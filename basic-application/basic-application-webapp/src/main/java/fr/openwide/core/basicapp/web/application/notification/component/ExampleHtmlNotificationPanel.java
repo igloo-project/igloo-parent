@@ -32,7 +32,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		
 		// Main link
 		add(
-				LinkFactory.get().ficheUser(userModel)
+				LinkFactory.get().userDescription(userModel)
 						.link("mainLink")
 						.setAbsolute(true)
 		);
@@ -45,7 +45,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		addTopProperty(propertiesTable, "username",
 				new WebMarkupContainer("usernameValue")
 				.add(
-						LinkFactory.get().ficheUser(userModel)
+						LinkFactory.get().userDescription(userModel)
 								.link("userLink")
 								.setAbsolute(true)
 								.setBody(BindingModel.of(userModel, Bindings.user().userName()))

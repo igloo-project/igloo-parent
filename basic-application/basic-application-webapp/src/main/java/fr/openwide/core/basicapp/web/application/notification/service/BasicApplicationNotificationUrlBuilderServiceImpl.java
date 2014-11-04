@@ -31,7 +31,7 @@ public class BasicApplicationNotificationUrlBuilderServiceImpl extends AbstractN
 		Callable<IPageLinkGenerator> pageLinkGeneratorTask = new Callable<IPageLinkGenerator>() {
 			@Override
 			public IPageLinkGenerator call() {
-				return LinkFactory.get().ficheUser(GenericEntityModel.of(user));
+				return LinkFactory.get().userDescription(GenericEntityModel.of(user));
 			}
 		};
 		

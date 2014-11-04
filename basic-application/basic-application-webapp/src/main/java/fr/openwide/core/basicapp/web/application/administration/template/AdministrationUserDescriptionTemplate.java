@@ -30,18 +30,18 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		
-		typeDescriptor.administrationTypeDescriptor().fiche(userModel, sourcePageModel).extractSafely(parameters, typeDescriptor.administrationTypeDescriptor().liste(),
+		typeDescriptor.administrationTypeDescriptor().description(userModel, sourcePageModel).extractSafely(parameters, typeDescriptor.administrationTypeDescriptor().portfolio(),
 				getString("common.error.unexpected"));
 		
 		add(
 				new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
 		);
 		
-		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, typeDescriptor.administrationTypeDescriptor().getListeClass())
+		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, typeDescriptor.administrationTypeDescriptor().getPortfolioClass())
 				.link("backToSourcePage").hideIfInvalid();
 		add(
 				backToSourcePage,
-				typeDescriptor.administrationTypeDescriptor().liste().link("backToList")
+				typeDescriptor.administrationTypeDescriptor().portfolio().link("backToList")
 						.add(new PlaceholderBehavior().component(backToSourcePage))
 		);
 	}
@@ -55,6 +55,6 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return typeDescriptor.administrationTypeDescriptor().getListeClass();
+		return typeDescriptor.administrationTypeDescriptor().getPortfolioClass();
 	}
 }

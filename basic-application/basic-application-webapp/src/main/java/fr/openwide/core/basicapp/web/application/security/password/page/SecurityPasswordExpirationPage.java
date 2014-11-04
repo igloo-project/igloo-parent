@@ -16,8 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
@@ -41,16 +40,13 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 	}
 
 	@SpringBean
-	private IUserService userService;
+	private ISecurityManagementService securityManagementService;
 
 	private Form<?> passwordForm;
 
 	private TextField<String> newPasswordField;
 
 	private TextField<String> confirmPasswordField;
-
-	@SpringBean
-	private ISecurityOptionsService securityOptionsService;
 
 	public SecurityPasswordExpirationPage(PageParameters parameters) {
 		super(parameters);
@@ -108,7 +104,7 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 						if (confirmPasswordValue.equals(newPasswordValue)) {
 							if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH && 
 									newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
-								userService.updatePassword(user, newPasswordValue);
+								securityManagementService.updatePassword(user, newPasswordValue);
 								
 								getSession().success(getString("security.password.expiration.validate.success"));
 							} else {

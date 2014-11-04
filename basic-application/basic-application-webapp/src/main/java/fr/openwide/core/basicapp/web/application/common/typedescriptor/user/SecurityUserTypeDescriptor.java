@@ -17,6 +17,11 @@ public abstract class SecurityUserTypeDescriptor<U extends User> extends
 		private static final long serialVersionUID = 1L;
 		
 		@Override
+		protected Object readResolve() {
+			return USER;
+		}
+		
+		@Override
 		public IPageLinkDescriptor signInPageLinkDescriptor() {
 			return CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor();
 		}

@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -30,7 +30,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordUpdatePopup.class);
 
 	@SpringBean
-	private IUserService userService;
+	private ISecurityManagementService securityManagementService;
 
 	private Form<?> passwordForm;
 
@@ -93,7 +93,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 						if (confirmPasswordValue.equals(newPasswordValue)) {
 							if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH && 
 									newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
-								userService.updatePassword(user, newPasswordValue);
+								securityManagementService.updatePassword(user, newPasswordValue);
 								
 								getSession().success(getString("administration.user.password.update.success"));
 								closePopup(target);

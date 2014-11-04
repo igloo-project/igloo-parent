@@ -19,7 +19,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
@@ -53,7 +53,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	private IUserService userService;
 
 	@SpringBean
-	private ISecurityOptionsService securityOptionsService;
+	private ISecurityManagementService securityManagementService;
 
 	public UserProfilePanel(String id, final IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
@@ -77,7 +77,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				passwordUpdatePopup,
 				new BlankLink("passwordUpdateButton")
 						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
-						.add(new EnclosureBehavior().condition(predicate(Model.of(securityOptionsService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()), isTrue()))),
+						.add(new EnclosureBehavior().condition(predicate(Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()), isTrue()))),
 				
 				AjaxConfirmLink.build("passwordReset", userModel)
 						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
@@ -88,7 +88,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 							@Override
 							public void execute(AjaxRequestTarget target) {
 								try {
-									userService.initiatePasswordRecoveryRequest(getModelObject(),
+									securityManagementService.initiatePasswordRecoveryRequest(getModelObject(),
 											UserPasswordRecoveryRequestType.RESET,
 											UserPasswordRecoveryRequestInitiator.ADMIN);
 									getSession().success(getString("administration.user.password.recovery.reset.success"));
@@ -100,7 +100,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 							}
 						})
 						.create()
-						.add(new EnclosureBehavior().condition(predicate(Model.of(securityOptionsService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()), isTrue()))),
+						.add(new EnclosureBehavior().condition(predicate(Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()), isTrue()))),
 				
 				new Link<U>("enable", userModel) {
 					private static final long serialVersionUID = 1L;

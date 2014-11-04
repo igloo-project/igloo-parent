@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 
@@ -64,6 +65,14 @@ public class UserPasswordRecoveryRequest implements Serializable {
 
 	public void setInitiator(UserPasswordRecoveryRequestInitiator initiator) {
 		this.initiator = initiator;
+	}
+
+	@Transient
+	public void reset() {
+		setToken(null);
+		setCreationDate(null);
+		setType(null);
+		setInitiator(null);
 	}
 
 }

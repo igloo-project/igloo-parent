@@ -29,6 +29,7 @@ import com.google.common.base.Predicates;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
@@ -65,6 +66,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	@SpringBean
 	private IUserService userService;
+
+	@SpringBean
+	private ISecurityManagementService securityManagementService;
 
 	private final FormPanelMode mode;
 
@@ -160,10 +164,10 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 								if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH &&
 										newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
 									userService.create(user);
-									userService.updatePassword(user, newPasswordValue);
+									securityManagementService.updatePassword(user, newPasswordValue);
 									
 									getSession().success(getString("administration.user.add.success"));
-									throw typeDescriptor.administrationTypeDescriptor().fiche(AbstractUserPopup.this.getModel())
+									throw typeDescriptor.administrationTypeDescriptor().description(AbstractUserPopup.this.getModel())
 											.newRestartResponseException();
 								} else {
 									LOGGER.warn("Password does not fit criteria.");

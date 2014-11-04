@@ -28,9 +28,8 @@ import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
-import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
@@ -69,14 +68,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	private IParameterService parameterService;
 
 	@SpringBean
-	private IUserService userService;
-	
+	private ISecurityManagementService securityManagementService;
+
 	@SpringBean
 	private IAuthenticationService authenticationService;
-	
-	@SpringBean
-	private ISecurityOptionsService securityOptionsService;
-	
+
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
 		
@@ -84,7 +80,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
 		}
 		
-		if (userService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
+		if (securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
 			throw UserTypeDescriptor.get(BasicApplicationSession.get().getUser())
 					.securityTypeDescriptor()
 					.passwordExpirationPageLinkDescriptor()
@@ -201,10 +197,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				super.onConfigure();
 				User user = BasicApplicationSession.get().getUser();
 				if (BasicApplicationSession.get().hasRoleAdmin()) {
-					setVisible(securityOptionsService.getOptions(user).isPasswordAdminUpdateEnabled());
+					setVisible(securityManagementService.getOptions(user).isPasswordAdminUpdateEnabled());
 				}
 				else if (BasicApplicationSession.get().hasRoleAuthenticated()) {
-					setVisible(securityOptionsService.getOptions(user).isPasswordUserUpdateEnabled());
+					setVisible(securityManagementService.getOptions(user).isPasswordUserUpdateEnabled());
 				}
 				else {
 					setVisible(false);
@@ -220,10 +216,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				super.onConfigure();
 				User user = BasicApplicationSession.get().getUser();
 				if (BasicApplicationSession.get().hasRoleAdmin()) {
-					setVisible(securityOptionsService.getOptions(user).isPasswordAdminUpdateEnabled());
+					setVisible(securityManagementService.getOptions(user).isPasswordAdminUpdateEnabled());
 				}
 				else if (BasicApplicationSession.get().hasRoleAuthenticated()) {
-					setVisible(securityOptionsService.getOptions(user).isPasswordUserUpdateEnabled());
+					setVisible(securityManagementService.getOptions(user).isPasswordUserUpdateEnabled());
 				}
 				else {
 					setVisible(false);
@@ -254,11 +250,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home"))
 						.setCssClassesModel(Model.of("home")),
-				AdministrationUserTypeDescriptor.BASIC_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration"))
+				AdministrationUserTypeDescriptor.BASIC_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
 						.setSubMenuItems(ImmutableList.of(
-								AdministrationUserTypeDescriptor.BASIC_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
-								AdministrationUserTypeDescriptor.TECHNICAL_USER.liste().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
+								AdministrationUserTypeDescriptor.BASIC_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
+								AdministrationUserTypeDescriptor.TECHNICAL_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
 								AdministrationUserGroupPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.usergroup"))
 						))
 		);

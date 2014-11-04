@@ -30,6 +30,11 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 		private static final long serialVersionUID = 1L;
 		
 		@Override
+		protected Object readResolve() {
+			return TECHNICAL_USER;
+		}
+		
+		@Override
 		public TechnicalUser newInstance() {
 			return new TechnicalUser();
 		}
@@ -41,41 +46,46 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 		private static final long serialVersionUID = 1L;
 		
 		@Override
+		protected Object readResolve() {
+			return BASIC_USER;
+		}
+		
+		@Override
 		public BasicUser newInstance() {
 			return new BasicUser();
 		}
 	};
 
-	private final Class<? extends AdministrationUserDescriptionTemplate<U>> fichePageClazz;
+	private final Class<? extends AdministrationUserDescriptionTemplate<U>> descriptionPageClazz;
 
-	private final Class<? extends AdministrationUserPortfolioTemplate<U>> listePageClazz;
+	private final Class<? extends AdministrationUserPortfolioTemplate<U>> portfolioPageClazz;
 
 	private AdministrationUserTypeDescriptor(UserTypeDescriptor<U> typeDescriptor,
-			Class<? extends AdministrationUserDescriptionTemplate<U>> fichePageClazz,
-			Class<? extends AdministrationUserPortfolioTemplate<U>> listePageClazz) {
+			Class<? extends AdministrationUserDescriptionTemplate<U>> descriptionPageClazz,
+			Class<? extends AdministrationUserPortfolioTemplate<U>> portfolioPageClazz) {
 		super(typeDescriptor);
-		this.fichePageClazz = fichePageClazz;
-		this.listePageClazz = listePageClazz;
+		this.descriptionPageClazz = descriptionPageClazz;
+		this.portfolioPageClazz = portfolioPageClazz;
 	}
 
-	public Class<? extends AdministrationUserDescriptionTemplate<U>> getFicheClass() {
-		return fichePageClazz;
+	public Class<? extends AdministrationUserDescriptionTemplate<U>> getDescriptionClass() {
+		return descriptionPageClazz;
 	}
 
-	public Class<? extends AdministrationUserPortfolioTemplate<U>> getListeClass() {
-		return listePageClazz;
+	public Class<? extends AdministrationUserPortfolioTemplate<U>> getPortfolioClass() {
+		return portfolioPageClazz;
 	}
 
-	public IPageLinkGenerator fiche(IModel<U> userModel) {
-		return fiche(userModel, new Model<Page>(null));
+	public IPageLinkGenerator description(IModel<U> userModel) {
+		return description(userModel, new Model<Page>(null));
 	}
 
-	public IPageLinkDescriptor fiche(IModel<U> userModel, IModel<Page> sourcePageModel) {
-		return LinkFactory.get().ficheUser(fichePageClazz, userModel, typeDescriptor.getEntityClass(), sourcePageModel);
+	public IPageLinkDescriptor description(IModel<U> userModel, IModel<Page> sourcePageModel) {
+		return LinkFactory.get().userDescription(descriptionPageClazz, userModel, typeDescriptor.getEntityClass(), sourcePageModel);
 	}
 
-	public IPageLinkDescriptor liste() {
-		return new LinkDescriptorBuilder().page(listePageClazz).build();
+	public IPageLinkDescriptor portfolio() {
+		return new LinkDescriptorBuilder().page(portfolioPageClazz).build();
 	}
 
 	public abstract U newInstance();
