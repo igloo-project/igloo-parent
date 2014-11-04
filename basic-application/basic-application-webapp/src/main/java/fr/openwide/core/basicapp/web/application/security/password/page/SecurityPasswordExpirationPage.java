@@ -1,7 +1,5 @@
 package fr.openwide.core.basicapp.web.application.security.password.page;
 
-import java.util.Date;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -111,8 +109,6 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 							if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH && 
 									newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
 								userService.updatePassword(user, newPasswordValue);
-								user.setLastUpdateDate(new Date());
-								userService.save(user);
 								
 								getSession().success(getString("security.password.expiration.validate.success"));
 							} else {
@@ -127,7 +123,7 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 						}
 					}
 					
-					throw SignInUserTypeDescriptor.USER.signInPageLinkDescriptor().newRestartResponseException();
+					throw SignInUserTypeDescriptor.<SignInUserTypeDescriptor<User>, User>get(user).loginSuccessPageLinkDescriptor().newRestartResponseException();
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {
