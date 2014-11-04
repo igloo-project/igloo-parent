@@ -1,9 +1,13 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
+import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
+import static fr.openwide.core.wicket.more.condition.Condition.predicate;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -12,7 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
+import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
@@ -45,6 +52,9 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	@SpringBean
 	private IUserService userService;
 
+	@SpringBean
+	private ISecurityOptionsService securityOptionsService;
+
 	public UserProfilePanel(String id, final IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		
@@ -66,7 +76,31 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				
 				passwordUpdatePopup,
 				new BlankLink("passwordUpdateButton")
-						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK)),
+						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
+						.add(new EnclosureBehavior().condition(predicate(Model.of(securityOptionsService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()), isTrue()))),
+				
+				AjaxConfirmLink.build("passwordReset", userModel)
+						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
+						.content(new StringResourceModel("administration.user.password.recovery.reset.confirmation.text", userModel))
+						.confirm()
+						.onClick(new AjaxResponseAction() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute(AjaxRequestTarget target) {
+								try {
+									userService.initiatePasswordRecoveryRequest(getModelObject(),
+											UserPasswordRecoveryRequestType.RESET,
+											UserPasswordRecoveryRequestInitiator.ADMIN);
+									getSession().success(getString("administration.user.password.recovery.reset.success"));
+								} catch (Exception e) {
+									LOGGER.error("Error occured while sending a password recovery request", e);
+									getSession().error(getString("common.error.unexpected"));
+								}
+								FeedbackUtils.refreshFeedback(target, getPage());
+							}
+						})
+						.create()
+						.add(new EnclosureBehavior().condition(predicate(Model.of(securityOptionsService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()), isTrue()))),
 				
 				new Link<U>("enable", userModel) {
 					private static final long serialVersionUID = 1L;
