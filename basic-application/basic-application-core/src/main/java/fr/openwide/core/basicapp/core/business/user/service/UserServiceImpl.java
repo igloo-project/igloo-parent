@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,17 +127,16 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public boolean isPasswordExpired(User user) {
-//		if (user == null
-//				|| user.getPasswordInformation().getLastUpdateDate() == null
-//				|| !securityOptionsService.getOptions(user).isPasswordExpirationEnabled()) {
-//			return false;
-//		}
-//		
-//		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), configurer.getSecurityPasswordExpirationDays());
-//		Date now = new Date();
-//		
-//		return now.after(expirationDate);
-		return true;
+		if (user == null
+				|| user.getPasswordInformation().getLastUpdateDate() == null
+				|| !securityOptionsService.getOptions(user).isPasswordExpirationEnabled()) {
+			return false;
+		}
+		
+		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), configurer.getSecurityPasswordExpirationDays());
+		Date now = new Date();
+		
+		return now.after(expirationDate);
 	}
 
 	@Override
