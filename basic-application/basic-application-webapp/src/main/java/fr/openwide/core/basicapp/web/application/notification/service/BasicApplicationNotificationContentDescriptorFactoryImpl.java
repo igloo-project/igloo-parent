@@ -17,7 +17,7 @@ import fr.openwide.core.basicapp.web.application.notification.component.ExampleH
 import fr.openwide.core.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
 import fr.openwide.core.basicapp.web.application.notification.util.INotificationTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.notification.util.NotificationUserTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
@@ -71,7 +71,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl extends Ab
 	public IWicketNotificationDescriptor userPasswordRecoveryRequest(User user) {
 		IModel<User> model = GenericEntityModel.of(user);
 		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name() + "." + user.getPasswordRecoveryRequest().getInitiator().name();
-		return simpleUserActionNotification(NotificationUserTypeDescriptor.USER, actionMessageKeyPart, model, SignInUserTypeDescriptor.USER.signInPageLinkDescriptor());
+		return simpleUserActionNotification(NotificationUserTypeDescriptor.USER, actionMessageKeyPart, model, SecurityUserTypeDescriptor.USER.signInPageLinkDescriptor());
 	}
 
 }

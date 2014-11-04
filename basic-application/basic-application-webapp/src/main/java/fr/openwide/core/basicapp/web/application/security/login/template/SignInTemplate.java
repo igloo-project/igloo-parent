@@ -24,7 +24,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
-import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
@@ -54,9 +54,9 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 
 	private FormComponent<String> passwordField;
 	
-	private final SignInUserTypeDescriptor<U> typeDescriptor;
+	private final SecurityUserTypeDescriptor<U> typeDescriptor;
 
-	public SignInTemplate(PageParameters parameters, SignInUserTypeDescriptor<U> typeDescriptor) {
+	public SignInTemplate(PageParameters parameters, SecurityUserTypeDescriptor<U> typeDescriptor) {
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		

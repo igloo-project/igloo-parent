@@ -19,8 +19,8 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
+import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -123,7 +123,7 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 						}
 					}
 					
-					throw SignInUserTypeDescriptor.<SignInUserTypeDescriptor<User>, User>get(user).loginSuccessPageLinkDescriptor().newRestartResponseException();
+					throw SecurityUserTypeDescriptor.<SecurityUserTypeDescriptor<User>, User>get(user).loginSuccessPageLinkDescriptor().newRestartResponseException();
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {

@@ -19,8 +19,8 @@ import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRec
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityOptionsService;
-import fr.openwide.core.basicapp.web.application.security.login.util.SignInUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
+import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -95,7 +95,7 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 											
 											getSession().success(getString("security.password.recovery.validate.success"));
 											
-											throw SignInUserTypeDescriptor.USER.signInPageLinkDescriptor().newRestartResponseException();
+											throw SecurityUserTypeDescriptor.USER.signInPageLinkDescriptor().newRestartResponseException();
 										} catch (RestartResponseException e) {
 											throw e;
 										} catch (Exception e) {

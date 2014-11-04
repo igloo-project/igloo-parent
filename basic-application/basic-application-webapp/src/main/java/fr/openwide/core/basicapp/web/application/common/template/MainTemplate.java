@@ -35,7 +35,7 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.util.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
-import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
+import fr.openwide.core.basicapp.web.application.security.util.SecurityUserTypeDescriptor;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
@@ -77,7 +77,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		}
 		
 		if (userService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
-			throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
+			throw SecurityUserTypeDescriptor.<SecurityUserTypeDescriptor<User>, User>get(BasicApplicationSession.get().getUser())
+					.passwordExpirationPageLinkDescriptor()
+					.newRestartResponseException();
 		}
 		
 		add(new TransparentWebMarkupContainer("htmlRootElement")
