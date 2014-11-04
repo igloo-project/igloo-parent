@@ -139,7 +139,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		private TableContext(TTable table, ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator, ITableImportEventHandler eventHandler)
 				throws TableImportMappingException {
 			super(eventHandler);
-			Validate.notNull(table);
+			Validate.notNull(table, "table must not be null");
 			
 			this.table = table;
 			this.navigator = navigator;

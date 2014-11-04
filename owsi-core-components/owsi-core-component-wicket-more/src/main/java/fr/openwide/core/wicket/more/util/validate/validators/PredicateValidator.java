@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.util.validate.validators;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
@@ -16,8 +16,8 @@ public class PredicateValidator<T> implements IValidator<T> {
 
 	public PredicateValidator(Predicate<? super T> predicate, String errorKey) {
 		super();
-		Validate.notNull(predicate);
-		Validate.notEmpty(errorKey);
+		Validate.notNull(predicate, "predicate must not be null");
+		Validate.notEmpty(errorKey, "errorKey must not be empty");
 		
 		this.predicate = predicate;
 		this.errorKey = errorKey;

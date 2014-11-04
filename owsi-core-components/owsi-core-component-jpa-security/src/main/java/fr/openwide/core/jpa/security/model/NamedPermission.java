@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.security.model;
 
-import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.security.acls.model.Permission;
 
 public class NamedPermission implements Permission {
@@ -48,14 +49,14 @@ public class NamedPermission implements Permission {
 		}
 		if (object instanceof NamedPermission) {
 			NamedPermission permission = (NamedPermission) object;
-			return ObjectUtils.equals(name, permission.getName());
+			return new EqualsBuilder().append(name, permission.getName()).build();
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(name);
+		return new HashCodeBuilder().append(name).build();
 	}
 
 }
