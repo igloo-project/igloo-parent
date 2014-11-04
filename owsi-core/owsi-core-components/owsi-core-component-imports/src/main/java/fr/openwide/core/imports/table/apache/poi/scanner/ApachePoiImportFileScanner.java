@@ -68,8 +68,8 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 
 	@Override
 	public void scanRecursively(File file, String filename, SheetSelection selection, IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference> visitor) throws TableImportException {
-		Validate.notNull(file);
-		Validate.notNull(visitor);
+		Validate.notNull(file, "file must not be null");
+		Validate.notNull(visitor, "visitor must not be null");
 		
 		if (file.isDirectory()) {
 			// Recurse
@@ -84,8 +84,8 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 
 	@Override
 	public void scan(File file, String filename, SheetSelection selection, IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference> visitor) throws TableImportException {
-		Validate.notNull(file);
-		Validate.notNull(visitor);
+		Validate.notNull(file, "file must not be null");
+		Validate.notNull(visitor, "visitor must not be null");
 		
 		ApachePoiImportNavigator navigator = new ApachePoiImportNavigator(filename);
 		
@@ -105,8 +105,8 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 
 	@Override
 	public void scan(InputStream stream, String filename, SheetSelection selection, IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference> visitor) throws TableImportException {
-		Validate.notNull(stream);
-		Validate.notNull(visitor);
+		Validate.notNull(stream, "stream must not be null");
+		Validate.notNull(visitor, "visitor must not be null");
 		
 		ApachePoiImportNavigator navigator = new ApachePoiImportNavigator(filename);
 		try {

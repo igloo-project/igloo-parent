@@ -42,8 +42,8 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable,
 
 	@Override
 	public void scanRecursively(File file, String filename, ICsvImportFileVisitor<CsvTable, CsvRow, CsvCell, CsvCellReference> visitor) throws TableImportException {
-		Validate.notNull(file);
-		Validate.notNull(visitor);
+		Validate.notNull(file, "file must not be null");
+		Validate.notNull(visitor, "visitor must not be null");
 		
 		if (file.isDirectory()) {
 			// Recurse
@@ -66,8 +66,8 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable,
 
 	@Override
 	public void scan(File file, String filename, ICsvImportFileVisitor<CsvTable, CsvRow, CsvCell, CsvCellReference> visitor) throws TableImportException {
-		Validate.notNull(file);
-		Validate.notNull(visitor);
+		Validate.notNull(file, "file must not be null");
+		Validate.notNull(visitor, "visitor must not be null");
 		
 		OpenCsvImportNavigator navigator = new OpenCsvImportNavigator(filename);
 		
@@ -85,8 +85,8 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable,
 
 	@Override
 	public void scan(InputStream stream, String filename, ICsvImportFileVisitor<CsvTable, CsvRow, CsvCell, CsvCellReference> visitor) throws TableImportException {
-		Validate.notNull(stream);
-		Validate.notNull(visitor);
+		Validate.notNull(stream, "stream must not be null");
+		Validate.notNull(visitor, "visitor must not be null");
 
 		OpenCsvImportNavigator navigator = new OpenCsvImportNavigator(filename);
 		

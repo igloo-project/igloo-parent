@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.model.threadsafe;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.wicket.Session;
 import org.apache.wicket.injection.Injector;

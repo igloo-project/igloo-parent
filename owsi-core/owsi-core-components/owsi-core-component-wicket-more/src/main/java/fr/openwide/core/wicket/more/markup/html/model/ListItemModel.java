@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.model;
 
 import java.util.List;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

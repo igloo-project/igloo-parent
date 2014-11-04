@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.link.descriptor.impl;
 
 import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -16,6 +15,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
@@ -67,7 +67,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		if (validPageClass == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page instance '" + pageInstance + "' had unexpected type :"
 					+ " got " + pageInstance.getClass().getName() + ", "
-					+ "expected one of " + StringUtils.join(Collections2.transform(expectedPageClassModels, GET_NAME_FROM_CLASS_MODEL_FUNCTION), ", "));
+					+ "expected one of " + Joiner.on(", ").join(Collections2.transform(expectedPageClassModels, GET_NAME_FROM_CLASS_MODEL_FUNCTION)));
 		}
 		
 		return pageInstance;
