@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.core.security.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,9 @@ import edu.vt.middleware.password.UppercaseCharacterRule;
 import edu.vt.middleware.password.WhitespaceRule;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 
-public class SecurityPasswordRules {
+public class SecurityPasswordRules implements Serializable {
+
+	private static final long serialVersionUID = -2309617143631151956L;
 
 	private Set<Rule> rules = new HashSet<Rule>();
 

@@ -1,7 +1,11 @@
 package fr.openwide.core.basicapp.core.security.model;
 
+import java.io.Serializable;
 
-public class SecurityOptions {
+
+public class SecurityOptions implements Serializable {
+
+	private static final long serialVersionUID = -1091828713116815464L;
 
 	private SecurityOptionsMode passwordExpiration = SecurityOptionsMode.DISABLED;
 

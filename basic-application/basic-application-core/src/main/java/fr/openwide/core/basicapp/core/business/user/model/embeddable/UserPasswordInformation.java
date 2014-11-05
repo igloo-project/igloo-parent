@@ -12,6 +12,8 @@ import javax.persistence.OrderColumn;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.commons.util.collections.CollectionUtils;
 
@@ -27,7 +29,7 @@ public class UserPasswordInformation implements Serializable {
 	@ElementCollection
 	@OrderColumn
 	@Type(type = "org.hibernate.type.StringClobType")
-	private List<String> history;
+	private List<String> history = Lists.newArrayList();
 
 	public Date getLastUpdateDate() {
 		return CloneUtils.clone(lastUpdateDate);
