@@ -13,7 +13,7 @@ public class EmailUnicityValidator extends AbstractUnicityValidator<User, String
 
 	@SpringBean
 	private IUserService userService;
-	
+
 	public EmailUnicityValidator(IModel<? extends User> mainObjectModel) {
 		super(mainObjectModel, "common.validator.email.unicity");
 	}

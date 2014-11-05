@@ -11,6 +11,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRec
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.validator.EmailExistsValidator;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -75,6 +77,8 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 						.add(
 								new RequiredTextField<>("email", emailModel)
 										.setLabel(new ResourceModel("business.user.email"))
+										.add(EmailAddressValidator.getInstance())
+										.add(EmailExistsValidator.get())
 										.add(new LabelPlaceholderBehavior()),
 								
 								new AjaxButton("validate", form) {
