@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -26,7 +27,6 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
@@ -59,12 +59,12 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 
 	@Override
 	protected Component getIntroComponent(String wicketId) {
-		return new DelegatedMarkupPanel(wicketId, "introFragment", getClass());
+		return new Fragment(wicketId, "introFragment", this);
 	}
 
 	@Override
 	protected Component getContentComponent(String wicketId) {
-		DelegatedMarkupPanel content = new DelegatedMarkupPanel(wicketId, "contentFragment", getClass());
+		Fragment content = new Fragment(wicketId, "contentFragment", this);
 		
 		Form<?> form = new Form<Void>("form");
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);

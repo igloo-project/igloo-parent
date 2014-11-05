@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -29,7 +30,6 @@ import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class SignInTemplate<U extends User> extends ServiceTemplate {
@@ -70,7 +70,7 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 
 	@Override
 	protected Component getContentComponent(String wicketId) {
-		DelegatedMarkupPanel content = new DelegatedMarkupPanel(wicketId, "contentFragment", getClass());
+		Fragment content = new Fragment(wicketId, "contentFragment", this);
 		
 		Form<Void> signInForm = new Form<Void>("signInForm") {
 			private static final long serialVersionUID = 1L;
@@ -119,7 +119,7 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 
 	@Override
 	protected Component getFooterComponent(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, "footerFragment", getClass());
+		Fragment footer = new Fragment(wicketId, "footerFragment", this);
 		
 		footer.add(
 				typeDescriptor.securityTypeDescriptor().passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
