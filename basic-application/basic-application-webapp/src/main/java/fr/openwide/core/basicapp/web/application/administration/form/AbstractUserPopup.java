@@ -34,8 +34,10 @@ import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailUnicityValidator;
+import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernamePatternValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernameUnicityValidator;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
@@ -54,11 +56,10 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private static final UsernamePatternValidator USERNAME_PATTERN_VALIDATOR =
 			new UsernamePatternValidator() {
-				private static final long serialVersionUID = -6755079891321764827L;
-				
+				private static final long serialVersionUID = 1L;
 				@Override
 				protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
-					error.setKeys(Collections.singletonList("administration.user.form.userName.malformed"));
+					error.setKeys(Collections.singletonList("common.validator.username.pattern"));
 					return error;
 				}
 			};
@@ -75,7 +76,11 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	protected Form<?> userForm;
 
-	private final IModel<String> newPasswordModel = Model.of();
+	protected PasswordTextField passwordField;
+
+	protected PasswordTextField confirmPasswordField;
+
+	private final IModel<String> passwordModel = Model.of();
 
 	private final IModel<String> confirmPasswordModel = Model.of();
 
@@ -107,6 +112,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	protected final Component createStandardUserFields(String wicketId) {
 		DelegatedMarkupPanel standardFields = new DelegatedMarkupPanel(wicketId, "standardFields", AbstractUserPopup.class);
 		
+		passwordField = new PasswordTextField("password", passwordModel);
+		confirmPasswordField = new PasswordTextField("confirmPassword", confirmPasswordModel);
+		
 		standardFields.add(
 				new RequiredTextField<String>("firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
 						.setLabel(new ResourceModel("business.user.firstName")),
@@ -119,12 +127,17 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 				new EnclosureContainer("addContainer")
 						.model(equalTo(FormPanelMode.ADD), Model.of(mode))
 						.add(
-								new PasswordTextField("newPassword", newPasswordModel)
+								passwordField
 										.setLabel(new ResourceModel("business.user.password"))
-										.setRequired(true),
-								new PasswordTextField("confirmPassword", confirmPasswordModel)
+										.setRequired(true)
+										.add(new UserPasswordValidator<U>(getModel())),
+								
+								new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))),
+								
+								confirmPasswordField
 										.setLabel(new ResourceModel("business.user.confirmPassword"))
 										.setRequired(true),
+								
 								new CheckBox("active", BindingModel.of(getModel(), Bindings.user().active()))
 										.setLabel(new ResourceModel("business.user.active"))
 						),
@@ -155,28 +168,14 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 				
 				try {
 					if (isAddMode()) {
-						String newPasswordValue = newPasswordModel.getObject();
-						String confirmPasswordValue = confirmPasswordModel.getObject();
+						String newPasswordValue = passwordModel.getObject();
 						
-						if (newPasswordValue != null && confirmPasswordValue != null) {
-							if (confirmPasswordValue.equals(newPasswordValue)) {
-								if (newPasswordValue.length() >= User.MIN_PASSWORD_LENGTH &&
-										newPasswordValue.length() <= User.MAX_PASSWORD_LENGTH) {
-									userService.create(user);
-									securityManagementService.updatePassword(user, newPasswordValue);
-									
-									getSession().success(getString("administration.user.add.success"));
-									throw typeDescriptor.administrationTypeDescriptor().description(AbstractUserPopup.this.getModel())
-											.newRestartResponseException();
-								} else {
-									LOGGER.warn("Password does not fit criteria.");
-									form.error(getString("administration.user.form.password.malformed"));
-								}
-							} else {
-								LOGGER.warn("Password confirmation does not match.");
-								form.error(getString("administration.user.form.password.wrongConfirmation"));
-							}
-						}
+						userService.create(user);
+						securityManagementService.updatePassword(user, newPasswordValue);
+						
+						getSession().success(getString("administration.user.add.success"));
+						throw typeDescriptor.administrationTypeDescriptor().description(AbstractUserPopup.this.getModel())
+								.newRestartResponseException();
 					} else {
 						User authenticatedUser = BasicApplicationSession.get().getUser();
 						if (authenticatedUser != null && authenticatedUser.equals(user)
@@ -249,7 +248,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		newPasswordModel.detach();
+		passwordModel.detach();
 		confirmPasswordModel.detach();
 	};
 }

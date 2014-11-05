@@ -2,6 +2,7 @@ package fr.openwide.core.basicapp.web.application.administration.form;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -25,9 +26,12 @@ public class UserPopup<U extends User> extends AbstractUserPopup<U> {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
 		
 		userForm = new Form<Void>("form");
-		body.add(userForm);
 		
-		userForm.add(createStandardUserFields("fields"));
+		body.add(
+				userForm
+						.add(createStandardUserFields("fields"))
+						.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField))
+		);
 		
 		return body;
 	}

@@ -25,4 +25,7 @@ public class BasicApplicationConfigurer extends CoreConfigurer {
 		return getPropertyAsInteger("autocomplete.limit", AUTOCOMPLETE_LIMIT_DEFAULT_VALUE);
 	}
 
+	public boolean isSecurityPasswordValidatorEnabled() {
+		return getPropertyAsBoolean("security.password.validator.enabled");
+	}
 }
