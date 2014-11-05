@@ -133,6 +133,11 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 										
 										FeedbackUtils.refreshFeedback(target, getPage());
 									};
+									
+									@Override
+									protected void onError(AjaxRequestTarget target, Form<?> form) {
+										FeedbackUtils.refreshFeedback(target, getPage());
+									}
 								}
 						)
 						.add(new EqualPasswordInputValidator(newPasswordField, confirmPasswordField))
