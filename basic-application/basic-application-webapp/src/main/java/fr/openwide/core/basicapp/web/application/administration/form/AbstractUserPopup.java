@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.form;
 
+import static com.google.common.base.Predicates.equalTo;
+
 import java.util.Collections;
 
 import org.apache.wicket.Component;
@@ -25,8 +27,6 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
@@ -36,7 +36,6 @@ import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.User
 import fr.openwide.core.basicapp.web.application.common.validator.EmailUnicityValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernamePatternValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernameUnicityValidator;
-import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
@@ -118,7 +117,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.add(USERNAME_PATTERN_VALIDATOR)
 						.add(new UsernameUnicityValidator(getModel())),
 				new EnclosureContainer("addContainer")
-						.condition(Condition.predicate(Model.of(mode), Predicates.equalTo(FormPanelMode.ADD)))
+						.model(equalTo(FormPanelMode.ADD), Model.of(mode))
 						.add(
 								new PasswordTextField("newPassword", newPasswordModel)
 										.setLabel(new ResourceModel("business.user.password"))

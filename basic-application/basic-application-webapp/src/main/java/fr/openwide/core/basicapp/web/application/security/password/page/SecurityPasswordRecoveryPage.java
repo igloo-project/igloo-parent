@@ -91,7 +91,11 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 												return;
 											}
 											
-											securityManagementService.initiatePasswordRecoveryRequest(user, UserPasswordRecoveryRequestType.RESET, UserPasswordRecoveryRequestInitiator.USER);
+											securityManagementService.initiatePasswordRecoveryRequest(
+													user,
+													UserPasswordRecoveryRequestType.RESET,
+													UserPasswordRecoveryRequestInitiator.USER
+											);
 											
 											getSession().success(getString("security.password.recovery.validate.success"));
 											

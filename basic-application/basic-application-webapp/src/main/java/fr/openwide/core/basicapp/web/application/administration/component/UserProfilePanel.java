@@ -1,7 +1,6 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
 import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
-import static fr.openwide.core.wicket.more.condition.Condition.predicate;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
@@ -77,7 +76,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				passwordUpdatePopup,
 				new BlankLink("passwordUpdateButton")
 						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
-						.add(new EnclosureBehavior().condition(predicate(Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()), isTrue()))),
+						.add(new EnclosureBehavior().model(isTrue(), Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()))),
 				
 				AjaxConfirmLink.build("passwordReset", userModel)
 						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
@@ -100,7 +99,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 							}
 						})
 						.create()
-						.add(new EnclosureBehavior().condition(predicate(Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()), isTrue()))),
+						.add(new EnclosureBehavior().model(isTrue(), Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()))),
 				
 				new Link<U>("enable", userModel) {
 					private static final long serialVersionUID = 1L;
