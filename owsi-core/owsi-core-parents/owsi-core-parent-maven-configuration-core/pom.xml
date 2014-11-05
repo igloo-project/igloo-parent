@@ -40,7 +40,7 @@
 		<owsi-core.hikaricp.version>2.1.0</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.8.2</owsi-core.ehcache.version><!-- ne pas passer en 2.8.3, problème au runtime avec Hibernate -->
-		<owsi-core.querydsl.version>3.4.3</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>3.5.1</owsi-core.querydsl.version>
 		
 		
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
@@ -127,7 +127,7 @@
 		<owsi-core.wicket-select2.version>1.1.10</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>6.1.1.owsi6</owsi-core.wqplot.version>
 		
-		<owsi-core.less4j.version>1.8.3</owsi-core.less4j.version>
+		<owsi-core.less4j.version>1.8.4</owsi-core.less4j.version>
 		
 		<owsi-core.junit.version>4.11</owsi-core.junit.version>
 		<owsi-core.grizzly.version>1.9.59</owsi-core.grizzly.version>
