@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.IModel;
@@ -17,44 +18,71 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
-import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
+import fr.openwide.core.basicapp.web.application.navigation.link.LinkUtils;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
+public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
-	private static final long serialVersionUID = 547223775134254240L;
+	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordExpirationPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordResetPage.class);
 
-	public static IPageLinkDescriptor linkDescriptor() {
+	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
 		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordExpirationPage.class)
+				.page(SecurityPasswordResetPage.class)
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
+				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
 				.build();
 	}
+	
+	@SpringBean
+	private IUserService userService;
+
+	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
+
+	private final IModel<String> tokenModel = Model.of("");
+
+	private final IModel<String> emailModel = Model.of("");
+
+	private final IModel<String> newPasswordModel = Model.of("");
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
-	private final IModel<String> newPasswordModel = Model.of("");
-
-	public SecurityPasswordExpirationPage(PageParameters parameters) {
+	public SecurityPasswordResetPage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle")));
+		linkDescriptor(userModel, tokenModel).extractSafely(parameters, BasicApplicationApplication.get().getHomePageLinkDescriptor(), getString("common.error.unexpected"));
+		
+		if (!tokenModel.getObject().equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {
+			getSession().error(getString("security.password.reset.wrongToken"));
+			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
+		}
+		
+		if (securityManagementService.isPasswordRecoveryRequestExpired(userModel.getObject())) {
+			getSession().error(getString("security.password.reset.expired"));
+			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
+		}
+		
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.reset.pageTitle")));
 	}
 
 	@Override
 	protected IModel<String> getTitleModel() {
-		return new ResourceModel("security.password.expiration.pageTitle");
+		return new ResourceModel("security.password.reset.pageTitle");
 	}
 
 	@Override
@@ -73,10 +101,13 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 		content.add(
 				form
 						.add(
+								new RequiredTextField<String>("email", emailModel)
+										.setLabel(new ResourceModel("business.user.email"))
+										.add(new LabelPlaceholderBehavior()),
 								newPasswordField
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
-										.add(new UserPasswordValidator<User>(BasicApplicationSession.get().getUserModel()))
+										.add(new UserPasswordValidator<User>(userModel))
 										.add(new LabelPlaceholderBehavior()),
 								confirmPasswordField
 										.setLabel(new ResourceModel("business.user.confirmPassword"))
@@ -88,9 +119,9 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 									@Override
 									protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 										try {
-											User user = BasicApplicationSession.get().getUser();
+											User user = userModel.getObject();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
-											getSession().success(getString("security.password.expiration.validate.success"));
+											getSession().success(getString("security.password.reset.validate.success"));
 											throw UserTypeDescriptor.get(user).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 											
 										} catch (RestartResponseException e) {
@@ -113,6 +144,9 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
+		userModel.detach();
+		tokenModel.detach();
+		emailModel.detach();
 		newPasswordModel.detach();
 	}
 

@@ -109,6 +109,20 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	}
 
 	@Override
+	public boolean isPasswordRecoveryRequestExpired(User user) {
+		if (user == null
+				|| user.getPasswordRecoveryRequest().getToken() == null
+				|| user.getPasswordRecoveryRequest().getCreationDate() == null) {
+			return true;
+		}
+		
+		Date expirationDate = DateUtils.addMinutes(user.getPasswordRecoveryRequest().getCreationDate(), configurer.getSecurityPasswordRecoveryRequestExpirationMinutes());
+		Date now = new Date();
+		
+		return now.after(expirationDate);
+	}
+
+	@Override
 	public void updatePassword(User user, String password) throws ServiceException, SecurityServiceException {
 		if (user == null || !StringUtils.hasText(password)) {
 			return;

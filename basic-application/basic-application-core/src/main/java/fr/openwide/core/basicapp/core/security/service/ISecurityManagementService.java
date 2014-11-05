@@ -18,6 +18,8 @@ public interface ISecurityManagementService {
 
 	boolean isPasswordExpired(User user);
 
+	boolean isPasswordRecoveryRequestExpired(User user);
+
 	void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
 
 }

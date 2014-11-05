@@ -11,14 +11,17 @@ import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
 import fr.openwide.core.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
@@ -70,7 +73,25 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl extends Ab
 	public IWicketNotificationDescriptor userPasswordRecoveryRequest(User user) {
 		IModel<User> model = GenericEntityModel.of(user);
 		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name() + "." + user.getPasswordRecoveryRequest().getInitiator().name();
-		return simpleUserActionNotification(NotificationUserTypeDescriptor.USER, actionMessageKeyPart, model, SecurityUserTypeDescriptor.USER.signInPageLinkDescriptor());
+		
+		IPageLinkDescriptor linkDescriptor = null;
+		switch (user.getPasswordRecoveryRequest().getType()) {
+		case CREATION:
+			linkDescriptor = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordCreationPageLinkDescriptor(model, BindingModel.of(model, Bindings.user().passwordRecoveryRequest().token()));
+			break;
+		case RESET:
+			linkDescriptor = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordResetPageLinkDescriptor(model, BindingModel.of(model, Bindings.user().passwordRecoveryRequest().token()));
+			break;
+		default:
+			throw new IllegalStateException("Recovery request type unknown.");
+		}
+		
+		return simpleUserActionNotification(
+				NotificationUserTypeDescriptor.USER,
+				actionMessageKeyPart,
+				model,
+				linkDescriptor
+		);
 	}
 
 }

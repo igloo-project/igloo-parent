@@ -38,8 +38,6 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	private final IModel<String> newPasswordModel = Model.of("");
 
-	private final IModel<String> confirmPasswordModel = Model.of("");
-
 	private final UserTypeDescriptor<U> typeDescriptor;
 
 	public UserPasswordUpdatePopup(String id, IModel<U> model) {
@@ -60,7 +58,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		
 		passwordForm = new Form<Void>("form");
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
-		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", confirmPasswordModel);
+		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
 		
 		body.add(
 				passwordForm
@@ -128,7 +126,6 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	protected void onDetach() {
 		super.onDetach();
 		newPasswordModel.detach();
-		confirmPasswordModel.detach();
 	}
 
 }

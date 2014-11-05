@@ -1,9 +1,13 @@
 package fr.openwide.core.basicapp.web.application.common.typedescriptor.user;
 
+import org.apache.wicket.model.IModel;
+
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.AbstractGenericEntityChildTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
@@ -40,6 +44,16 @@ public abstract class SecurityUserTypeDescriptor<U extends User> extends
 		public IPageLinkDescriptor passwordExpirationPageLinkDescriptor() {
 			return SecurityPasswordExpirationPage.linkDescriptor();
 		}
+
+		@Override
+		public IPageLinkDescriptor passwordResetPageLinkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
+			return SecurityPasswordResetPage.linkDescriptor(userModel, tokenModel);
+		}
+	
+		@Override
+		public IPageLinkDescriptor passwordCreationPageLinkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
+			return SecurityPasswordCreationPage.linkDescriptor(userModel, tokenModel);
+		}
 	};
 
 	private SecurityUserTypeDescriptor(UserTypeDescriptor<U> typeDescriptor) {
@@ -53,6 +67,10 @@ public abstract class SecurityUserTypeDescriptor<U extends User> extends
 	public abstract IPageLinkDescriptor passwordRecoveryPageLinkDescriptor();
 
 	public abstract IPageLinkDescriptor passwordExpirationPageLinkDescriptor();
+
+	public abstract IPageLinkDescriptor passwordResetPageLinkDescriptor(IModel<User> userModel, IModel<String> tokenModel);
+
+	public abstract IPageLinkDescriptor passwordCreationPageLinkDescriptor(IModel<User> userModel, IModel<String> tokenModel);
 
 	public String securityRessourceKey(String suffix) {
 		return typeDescriptor.resourceKey("security", suffix);

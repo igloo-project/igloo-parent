@@ -84,13 +84,6 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 									protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 										try {
 											User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
-											
-											if (user == null || !securityManagementService.getOptions(user).isPasswordUserRecoveryEnabled()) {
-												getSession().error(getString("security.password.recovery.validate.error"));
-												FeedbackUtils.refreshFeedback(target, getPage());
-												return;
-											}
-											
 											securityManagementService.initiatePasswordRecoveryRequest(
 													user,
 													UserPasswordRecoveryRequestType.RESET,
