@@ -60,14 +60,16 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void validate(IValidatable<String> validatable) {
-		if (!configurer.isSecurityPasswordValidatorEnabled()) {
+		String password = validatable.getValue();
+		
+		if (!configurer.isSecurityPasswordValidatorEnabled() || !StringUtils.hasText(password)) {
 			return;
 		}
 		
 		User user = userModel.getObject();
 		
 		PasswordValidator validator = new PasswordValidator(Lists.newArrayList(securityManagementService.getOptions(user).getPasswordRules().getRules()));
-		PasswordData passwordData = new PasswordData(new Password(validatable.getValue()));
+		PasswordData passwordData = new PasswordData(new Password(password));
 		
 		if (user != null) {
 			if (StringUtils.hasText(user.getUserName())) {
@@ -91,7 +93,7 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 		}
 		
 		if (user != null) {
-			String passwordHash = passwordEncoder.encode(validatable.getValue());
+			String passwordHash = passwordEncoder.encode(password);
 			if (user.getPasswordInformation().getHistory().contains(passwordHash)) {
 				valid = false;
 				validatable.error(

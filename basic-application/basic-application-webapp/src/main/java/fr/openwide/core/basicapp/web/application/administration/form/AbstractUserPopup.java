@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.form;
 
 import static com.google.common.base.Predicates.equalTo;
+import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
 
 import java.util.Collections;
 
@@ -27,7 +28,10 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
+import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
@@ -37,6 +41,7 @@ import fr.openwide.core.basicapp.web.application.common.validator.EmailUnicityVa
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernamePatternValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UsernameUnicityValidator;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -66,6 +71,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	@SpringBean
 	private IUserService userService;
+
+	@SpringBean
+	private INotificationService notificationService;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
@@ -115,6 +123,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 		passwordField = new PasswordTextField("password", passwordModel);
 		confirmPasswordField = new PasswordTextField("confirmPassword", confirmPasswordModel);
 		
+		boolean passwordRequired = securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordAdminUpdateEnabled()
+				&& !securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordUserRecoveryEnabled();
+		
 		standardFields.add(
 				new RequiredTextField<String>("firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
 						.setLabel(new ResourceModel("business.user.firstName")),
@@ -127,16 +138,20 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 				new EnclosureContainer("addContainer")
 						.model(equalTo(FormPanelMode.ADD), Model.of(mode))
 						.add(
-								passwordField
-										.setLabel(new ResourceModel("business.user.password"))
-										.setRequired(true)
-										.add(new UserPasswordValidator<U>(getModel())),
-								
-								new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))),
-								
-								confirmPasswordField
-										.setLabel(new ResourceModel("business.user.confirmPassword"))
-										.setRequired(true),
+								new EnclosureContainer("passwordContainer")
+										.model(isTrue(), Model.of(securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordAdminUpdateEnabled()))
+										.add(
+												passwordField
+												.setLabel(new ResourceModel("business.user.password"))
+												.setRequired(passwordRequired)
+												.add(new UserPasswordValidator<U>(getModel())),
+												
+												new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))),
+												
+												confirmPasswordField
+														.setLabel(new ResourceModel("business.user.confirmPassword"))
+														.setRequired(passwordRequired)
+										),
 								
 								new CheckBox("active", BindingModel.of(getModel(), Bindings.user().active()))
 										.setLabel(new ResourceModel("business.user.active"))
@@ -168,18 +183,29 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 				
 				try {
 					if (isAddMode()) {
-						String newPasswordValue = passwordModel.getObject();
+						String password = passwordModel.getObject();
 						
 						userService.create(user);
-						securityManagementService.updatePassword(user, newPasswordValue);
+						
+						if (StringUtils.hasText(password)) {
+							securityManagementService.updatePassword(user, password);
+						} else {
+							securityManagementService.initiatePasswordRecoveryRequest(
+									user,
+									UserPasswordRecoveryRequestType.CREATION,
+									UserPasswordRecoveryRequestInitiator.ADMIN
+							);
+							
+							getSession().success(getString("administration.user.add.success.notification"));
+						}
 						
 						getSession().success(getString("administration.user.add.success"));
+						
 						throw typeDescriptor.administrationTypeDescriptor().description(AbstractUserPopup.this.getModel())
 								.newRestartResponseException();
 					} else {
 						User authenticatedUser = BasicApplicationSession.get().getUser();
-						if (authenticatedUser != null && authenticatedUser.equals(user)
-								&& user.getLocale() != null) {
+						if (authenticatedUser != null && authenticatedUser.equals(user) && user.getLocale() != null) {
 							BasicApplicationSession.get().setLocale(user.getLocale());
 						}
 						userService.update(user);
