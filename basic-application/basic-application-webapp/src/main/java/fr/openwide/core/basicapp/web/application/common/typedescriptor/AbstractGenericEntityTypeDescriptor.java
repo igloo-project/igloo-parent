@@ -4,6 +4,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import org.javatuples.Pair;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
@@ -15,22 +18,23 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 
 	private static final long serialVersionUID = 4551490933539106231L;
 
-	private static final Map<Class<?>, AbstractGenericEntityTypeDescriptor<?, ?>> ALL = Maps.newHashMap();
+	private static final Map<Pair<Class<?>, Class<?>>, AbstractGenericEntityTypeDescriptor<?, ?>> ALL = Maps.newHashMap();
 
 	@SuppressWarnings("unchecked")
-	protected static final <T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> T get(E entity) {
+	protected static final <T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> T get(Class<?> typeDescriptorClass, E entity) {
 		if (entity == null) {
 			return null;
 		}
 		
-		AbstractGenericEntityTypeDescriptor<?, ?> specificTypeDescriptor = ALL.get(HibernateUtils.getClass(entity));
+		AbstractGenericEntityTypeDescriptor<?, ?> specificTypeDescriptor = ALL.get(Pair.<Class<?>, Class<?>>with(typeDescriptorClass, HibernateUtils.getClass(entity)));
 		if (specificTypeDescriptor != null) {
 			return (T) specificTypeDescriptor;
 		}
 		
-		for (AbstractGenericEntityTypeDescriptor<?, ?> typeDescriptor : ALL.values()) {
-			if (typeDescriptor.getEntityClass().isInstance(entity)) {
-				return (T) typeDescriptor;
+		// fallback
+		for (Entry<Pair<Class<?>, Class<?>>, AbstractGenericEntityTypeDescriptor<?, ?>> entry : ALL.entrySet()) {
+			if (entry.getKey().getValue0().equals(typeDescriptorClass) && entry.getKey().getValue1().isInstance(entity)) {
+				return (T) entry.getValue();
 			}
 		}
 		
@@ -41,8 +45,8 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 
 	private final String name;
 
-	protected AbstractGenericEntityTypeDescriptor(Class<E> clazz, String name) {
-		ALL.put(clazz, this);
+	protected AbstractGenericEntityTypeDescriptor(Class<?> typeDescriptorClass, Class<E> clazz, String name) {
+		ALL.put(Pair.<Class<?>, Class<?>>with(typeDescriptorClass, clazz), this);
 		this.clazz = checkNotNull(clazz);
 		this.name = checkNotNull(name);
 	}
@@ -54,7 +58,7 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 	public String getName() {
 		return name;
 	}
-	
+
 	public String businessResourceKey(String suffix) {
 		return resourceKey("business", suffix);
 	}
