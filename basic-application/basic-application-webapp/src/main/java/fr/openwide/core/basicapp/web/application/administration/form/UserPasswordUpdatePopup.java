@@ -34,9 +34,9 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	private Form<?> passwordForm;
 
-	private TextField<String> newPasswordField;
+	private final IModel<String> newPasswordModel = Model.of("");
 
-	private TextField<String> confirmPasswordField;
+	private final IModel<String> confirmPasswordModel = Model.of("");
 
 	private final UserTypeDescriptor<U> typeDescriptor;
 
@@ -57,19 +57,21 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
 		
 		passwordForm = new Form<Void>("form");
-		body.add(passwordForm);
+		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
+		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", confirmPasswordModel);
 		
-		newPasswordField = new PasswordTextField("newPassword", Model.of(""));
-		newPasswordField.setLabel(new ResourceModel("business.user.newPassword"));
-		newPasswordField.setRequired(true);
-		passwordForm.add(newPasswordField);
-		
-		passwordForm.add(new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))));
-		
-		confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
-		confirmPasswordField.setLabel(new ResourceModel("business.user.confirmPassword"));
-		confirmPasswordField.setRequired(true);
-		passwordForm.add(confirmPasswordField);
+		body.add(
+				passwordForm
+						.add(
+								newPasswordField
+										.setLabel(new ResourceModel("business.user.newPassword"))
+										.setRequired(true),
+								new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))),
+								confirmPasswordField
+										.setLabel(new ResourceModel("business.user.confirmPassword"))
+										.setRequired(true)
+						)
+		);
 		
 		return body;
 	}
@@ -86,8 +88,8 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
 					User user = UserPasswordUpdatePopup.this.getModelObject();
-					String newPasswordValue = newPasswordField.getModelObject();
-					String confirmPasswordValue = confirmPasswordField.getModelObject();
+					String newPasswordValue = newPasswordModel.getObject();
+					String confirmPasswordValue = confirmPasswordModel.getObject();
 					
 					if (newPasswordValue != null && confirmPasswordValue != null) {
 						if (confirmPasswordValue.equals(newPasswordValue)) {
@@ -126,6 +128,13 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		footer.add(cancel);
 		
 		return footer;
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		newPasswordModel.detach();
+		confirmPasswordModel.detach();
 	}
 
 }
