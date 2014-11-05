@@ -1,5 +1,8 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
+import static com.google.common.base.Predicates.notNull;
+import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
+
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -42,6 +45,7 @@ import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -189,47 +193,18 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		}).hideIfEmpty());
 		
 		UserPasswordUpdatePopup<User> passwordUpdatePopup = new UserPasswordUpdatePopup<User>("passwordUpdatePopup",
-				BasicApplicationSession.get().getUserModel()) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				User user = BasicApplicationSession.get().getUser();
-				if (BasicApplicationSession.get().hasRoleAdmin()) {
-					setVisible(securityManagementService.getOptions(user).isPasswordAdminUpdateEnabled());
-				}
-				else if (BasicApplicationSession.get().hasRoleAuthenticated()) {
-					setVisible(securityManagementService.getOptions(user).isPasswordUserUpdateEnabled());
-				}
-				else {
-					setVisible(false);
-				}
-			}
-		};
+				BasicApplicationSession.get().getUserModel());
 		
-		BlankLink passwordUpdateButton = new BlankLink("passwordUpdateButton") {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				User user = BasicApplicationSession.get().getUser();
-				if (BasicApplicationSession.get().hasRoleAdmin()) {
-					setVisible(securityManagementService.getOptions(user).isPasswordAdminUpdateEnabled());
-				}
-				else if (BasicApplicationSession.get().hasRoleAuthenticated()) {
-					setVisible(securityManagementService.getOptions(user).isPasswordUserUpdateEnabled());
-				}
-				else {
-					setVisible(false);
-				}
-			}
-		};
-		passwordUpdateButton.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK));
+		add(
+				passwordUpdatePopup,
+				new BlankLink("passwordUpdateButton")
+						.add(
+								new EnclosureBehavior()
+										.model(notNull(), BasicApplicationSession.get().getUserModel())
+										.model(isTrue(), Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled())))
+						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
+		);
 		
-		add(passwordUpdatePopup);
-		add(passwordUpdateButton);
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 
 		// Footer
