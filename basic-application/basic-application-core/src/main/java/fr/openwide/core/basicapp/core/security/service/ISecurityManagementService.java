@@ -4,10 +4,11 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
+import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
-public interface ISecurityManagementService {
+public interface ISecurityManagementService extends ITransactionalAspectAwareService {
 
 	SecurityOptions getOptions(Class<? extends User> clazz);
 
