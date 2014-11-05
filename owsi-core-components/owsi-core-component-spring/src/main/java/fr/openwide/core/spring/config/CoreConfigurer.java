@@ -188,7 +188,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsString("security.password.recovery.request.token.salt");
 	}
 	
-	public Integer getSecurityPasswordRecoveryRequestExpicationMinutes() {
+	public Integer getSecurityPasswordRecoveryRequestExpirationMinutes() {
 		return getPropertyAsInteger("security.password.recovery.request.expiration.minutes", 15);
 	}
 	
@@ -249,5 +249,8 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public int getWicketDiskDataStoreMaxSizePerSession() {
 		return getPropertyAsInteger("wicket.diskDataStore.maxSizePerSession", 10);
 	}
-	
+
+	public File getTmpExportExcelDirectory() {
+		return getPropertyAsWritableDirectory("tmp.exportExcel.path");
+	}
 }
