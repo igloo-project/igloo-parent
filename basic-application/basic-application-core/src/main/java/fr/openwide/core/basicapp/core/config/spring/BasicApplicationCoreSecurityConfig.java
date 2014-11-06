@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
+import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.basicapp.core.security.model.SecurityPasswordRules;
 import fr.openwide.core.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
@@ -57,12 +58,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 								.passwordUserUpdate()
 								.passwordRules(
 										new SecurityPasswordRules()
-												.minMaxLength(5, 12)
-												.mandatoryDigits(2)
-												.mandatoryNonAlphanumericCharacters()
-												.mandatoryUpperLowerCase()
-												.forbiddenWhiteSpace()
-												.forbiddenCharacters("@#")
+												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 								)
 				)
 				.setOptions(
@@ -75,12 +71,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 								.passwordUserUpdate()
 								.passwordRules(
 										new SecurityPasswordRules()
-												.minMaxLength(5, 12)
-												.mandatoryDigits(2)
-												.mandatoryNonAlphanumericCharacters()
-												.mandatoryUpperLowerCase()
-												.forbiddenWhiteSpace()
-												.forbiddenCharacters("@#")
+												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 								)
 				)
 				.setDefaultOptions(
