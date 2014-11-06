@@ -177,6 +177,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			user.getPasswordInformation().setHistory(Lists.newArrayList(historyQueue));
 		}
 		
+		user.getPasswordRecoveryRequest().reset();
 		userService.update(user);
 		
 		audit(author, user, AuditActionType.PASSWORD_UPDATE, AUDIT_UPDATE_PASSWORD_METHOD_NAME);
