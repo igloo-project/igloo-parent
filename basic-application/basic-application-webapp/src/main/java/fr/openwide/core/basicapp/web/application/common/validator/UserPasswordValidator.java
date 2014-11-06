@@ -82,10 +82,6 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 		PasswordValidator validator = new PasswordValidator(Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules().getRules()));
 		PasswordData passwordData = new PasswordData(new Password(password));
 		
-		if (userModel != null && userModel.getObject() != null && StringUtils.hasText(userModel.getObject().getUserName())) {
-			passwordData.setUsername(userModel.getObject().getUserName());
-		}
-		
 		RuleResult result = validator.validate(passwordData);
 		
 		boolean valid = true;
