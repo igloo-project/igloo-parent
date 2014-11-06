@@ -17,10 +17,16 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 	void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
 			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException;
 
+	void onInitiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type) throws ServiceException, SecurityServiceException;
+
 	boolean isPasswordExpired(User user);
 
 	boolean isPasswordRecoveryRequestExpired(User user);
 
 	void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
+
+	void onUpdatePassword(User user) throws ServiceException, SecurityServiceException;
+
+	void onUpdatePassword(User user, User author) throws ServiceException, SecurityServiceException;
 
 }

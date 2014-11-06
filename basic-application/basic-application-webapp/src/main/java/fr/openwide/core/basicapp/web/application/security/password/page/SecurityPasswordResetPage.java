@@ -23,6 +23,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailExistsValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
@@ -66,6 +67,9 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
 	public SecurityPasswordResetPage(PageParameters parameters) {
 		super(parameters);
+		
+		// Ca n'a pas de sens d'être connecté sur cette page.
+		BasicApplicationSession.get().signOut();
 		
 		linkDescriptor(userModel, tokenModel).extractSafely(parameters, BasicApplicationApplication.get().getHomePageLinkDescriptor(), getString("common.error.unexpected"));
 		
@@ -128,6 +132,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 										try {
 											User user = userModel.getObject();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
+											securityManagementService.onUpdatePassword(user);
 											
 											getSession().success(getString("security.password.reset.validate.success"));
 											

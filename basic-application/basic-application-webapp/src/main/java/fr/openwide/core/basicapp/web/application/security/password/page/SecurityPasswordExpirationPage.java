@@ -49,6 +49,9 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 	public SecurityPasswordExpirationPage(PageParameters parameters) {
 		super(parameters);
 		
+		// Ca n'a pas de sens d'être connecté sur cette page.
+		BasicApplicationSession.get().signOut();
+		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle")));
 	}
 
@@ -93,6 +96,7 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 										try {
 											User user = BasicApplicationSession.get().getUser();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
+											securityManagementService.onUpdatePassword(user);
 											
 											getSession().success(getString("security.password.expiration.validate.success"));
 											

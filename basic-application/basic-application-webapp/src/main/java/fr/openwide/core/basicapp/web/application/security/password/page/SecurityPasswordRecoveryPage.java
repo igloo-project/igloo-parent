@@ -21,6 +21,7 @@ import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRec
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailExistsValidator;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
@@ -52,6 +53,9 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 
 	public SecurityPasswordRecoveryPage(PageParameters parameters) {
 		super(parameters);
+		
+		// Ca n'a pas de sens d'être connecté sur cette page.
+		BasicApplicationSession.get().signOut();
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.recovery.pageTitle")));
 	}
@@ -93,6 +97,7 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 													UserPasswordRecoveryRequestType.RESET,
 													UserPasswordRecoveryRequestInitiator.USER
 											);
+											securityManagementService.onInitiatePasswordRecoveryRequest(user, UserPasswordRecoveryRequestType.RESET);
 											
 											getSession().success(getString("security.password.recovery.validate.success"));
 											

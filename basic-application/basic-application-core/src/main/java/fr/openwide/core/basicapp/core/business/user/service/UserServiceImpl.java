@@ -25,6 +25,8 @@ import fr.openwide.core.spring.util.StringUtils;
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
 	private static final String AUDIT_SIGN_IN_METHOD_NAME = "signIn";
+
+	private static final String AUDIT_CREATE_USER_METHOD_NAME = "createUser";
 	
 	@Autowired
 	private IUserDao userDao;
@@ -72,6 +74,11 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Override
 	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
 		audit(user, AuditActionType.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
+	}
+	
+	@Override
+	public void onCreate(User user) throws ServiceException, SecurityServiceException {
+		audit(user, AuditActionType.CREATE_USER, AUDIT_CREATE_USER_METHOD_NAME);
 	}
 	
 	@Override

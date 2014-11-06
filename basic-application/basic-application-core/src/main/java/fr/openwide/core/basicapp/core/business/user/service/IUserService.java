@@ -20,6 +20,8 @@ public interface IUserService extends IGenericUserService<User> {
 
 	void onSignIn(User user) throws ServiceException, SecurityServiceException;
 
+	void onCreate(User user) throws ServiceException, SecurityServiceException;
+
 	User getByEmailCaseInsensitive(String email);
 
 	User getAuthenticatedUser();

@@ -13,6 +13,8 @@ import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
+import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
@@ -28,6 +30,10 @@ import fr.openwide.core.spring.util.StringUtils;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
+	private static final String AUDIT_PASSWORD_RESET_REQUEST_METHOD_NAME = "passwordResetRequest";
+
+	private static final String AUDIT_PASSWORD_UPDATE_METHOD_NAME = "passwordUpdate";
+
 	private static Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> OPTIONS_BY_USER = Maps.newHashMap();
 
 	private static SecurityOptions DEFAULT_OPTIONS = SecurityOptions.DEFAULT;
@@ -37,6 +43,9 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
 	@Autowired
 	private INotificationService notificationService;
+
+	@Autowired
+	private IAuditService auditService;
 
 	@Autowired
 	private BasicApplicationConfigurer configurer;
@@ -87,6 +96,20 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		userService.update(user);
 		
 		notificationService.sendUserPasswordRecoveryRequest(user);
+	}
+
+	@Override
+	public void onInitiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type) throws ServiceException, SecurityServiceException {
+		switch (type) {
+		case CREATION:
+			auditService.audit(getClass().getSimpleName(), AUDIT_PASSWORD_RESET_REQUEST_METHOD_NAME, user, AuditActionType.PASSWORD_CREATION_REQUEST);
+			break;
+		case RESET:
+			auditService.audit(getClass().getSimpleName(), AUDIT_PASSWORD_RESET_REQUEST_METHOD_NAME, user, AuditActionType.PASSWORD_RESET_REQUEST);
+			break;
+		default:
+			break;
+		}
 	}
 
 	private String getPasswordChangeRequestToken(User user, Date date) {
@@ -144,6 +167,19 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		
 		
 		userService.update(user);
+	}
+
+	@Override
+	public void onUpdatePassword(User user) throws ServiceException, SecurityServiceException {
+		onUpdatePassword(user, user);
+	}
+
+	@Override
+	public void onUpdatePassword(User user, User author) throws ServiceException, SecurityServiceException {
+		if (user == null || author == null) {
+			return;
+		}
+		auditService.audit(getClass().getSimpleName(), AUDIT_PASSWORD_UPDATE_METHOD_NAME, author, user, AuditActionType.PASSWORD_UPDATE);
 	}
 
 }
