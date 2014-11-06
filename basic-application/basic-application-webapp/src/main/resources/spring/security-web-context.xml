@@ -39,6 +39,8 @@
 		<security:intercept-url pattern="/login/failure/" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/access-denied/" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/security/password/recovery/" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/security/password/reset/" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/security/password/creation/" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/maintenance/" access="hasRole('ROLE_ANONYMOUS')" />
 		
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />

@@ -27,8 +27,10 @@ import fr.openwide.core.basicapp.web.application.console.notification.demo.page.
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.security.login.page.SignInPage;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
+import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
@@ -96,6 +98,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		mountPage("/security/password/recovery/", SecurityPasswordRecoveryPage.class);
 		mountPage("/security/password/expiration/", SecurityPasswordExpirationPage.class);
+		mountParameterizedPage("/security/password/reset/", SecurityPasswordResetPage.class);
+		mountParameterizedPage("/security/password/creation/", SecurityPasswordCreationPage.class);
 		
 		// Console sign in
 		mountPage("/console/login/", ConsoleSignInPage.class);
