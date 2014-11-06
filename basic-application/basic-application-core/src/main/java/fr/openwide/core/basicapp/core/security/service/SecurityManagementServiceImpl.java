@@ -128,8 +128,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return;
 		}
 		
-		if (getOptions(user).isPasswordHistoryEnabled()
-				&& StringUtils.hasText(user.getPasswordHash())) {
+		userService.setPasswords(user, password);
+		user.getPasswordInformation().setLastUpdateDate(new Date());
+		
+		if (getOptions(user).isPasswordHistoryEnabled()) {
 			EvictingQueue<String> historyQueue = EvictingQueue.create(configurer.getSecurityPasswordHistoryCount());
 			
 			for (String oldPassword : user.getPasswordInformation().getHistory()) {
@@ -140,8 +142,6 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			user.getPasswordInformation().setHistory(Lists.newArrayList(historyQueue));
 		}
 		
-		userService.setPasswords(user, password);
-		user.getPasswordInformation().setLastUpdateDate(new Date());
 		
 		userService.update(user);
 	}
