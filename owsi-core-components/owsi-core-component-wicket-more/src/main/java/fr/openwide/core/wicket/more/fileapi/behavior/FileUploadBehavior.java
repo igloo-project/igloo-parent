@@ -247,7 +247,7 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		try {
 			List<FileApiFile> fileList = readFileApiFiles(req);
 			List<FileApiFile> acceptedFiles = onFileChange(target, fileList);
-			target.prependJavaScript("window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + " = JSON.parse(" + JsUtils.doubleQuotes(writeFileApiFiles(acceptedFiles), true) + "); console.log(window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + ");");
+			target.prependJavaScript("window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + " = JSON.parse(" + JsUtils.doubleQuotes(writeFileApiFiles(acceptedFiles), true) + "); if (console) { console.log(window." + req.getParameterValue(PARAMETERS_DATA_VARIABLE_NAME).toString() + "); }");
 		} catch (Exception e) {
 			logReadFileListParameterError(e);
 			onError(FileUploadMode.CHANGE, target, e);
