@@ -68,9 +68,6 @@ public class FileUploadPanel extends Panel {
 			protected List<FileApiFile> onFileChange(AjaxRequestTarget target, List<FileApiFile> fileList) {
 				List<FileApiFile> acceptedFiles = Lists.newArrayList();
 				for (FileApiFile fileApiFile : fileList) {
-					if (fileList.indexOf(fileApiFile) == 0) {
-						continue;
-					}
 					ShowcaseFile file = new ShowcaseFile();
 					file.setExtension(FilenameUtils.getExtension(fileApiFile.getName()));
 					file.setName(fileApiFile.getName());
