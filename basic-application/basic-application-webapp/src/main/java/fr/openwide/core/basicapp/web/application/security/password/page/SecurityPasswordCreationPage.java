@@ -127,7 +127,6 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 										try {
 											User user = userModel.getObject();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
-											securityManagementService.onUpdatePassword(user);
 											
 											getSession().success(getString("security.password.creation.validate.success"));
 											

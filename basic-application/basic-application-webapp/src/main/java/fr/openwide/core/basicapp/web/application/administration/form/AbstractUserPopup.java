@@ -189,18 +189,17 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						String password = passwordModel.getObject();
 						
 						userService.create(user);
-						userService.onCreate(user);
+						userService.onCreate(user, BasicApplicationSession.get().getUser());
 						
 						if (StringUtils.hasText(password)) {
-							securityManagementService.updatePassword(user, password);
-							securityManagementService.onUpdatePassword(user, BasicApplicationSession.get().getUser());
+							securityManagementService.updatePassword(user, password, BasicApplicationSession.get().getUser());
 						} else {
 							securityManagementService.initiatePasswordRecoveryRequest(
 									user,
 									UserPasswordRecoveryRequestType.CREATION,
-									UserPasswordRecoveryRequestInitiator.ADMIN
+									UserPasswordRecoveryRequestInitiator.ADMIN,
+									BasicApplicationSession.get().getUser()
 							);
-							securityManagementService.onInitiatePasswordRecoveryRequest(user, UserPasswordRecoveryRequestType.CREATION);
 							
 							getSession().success(getString("administration.user.add.success.notification"));
 						}

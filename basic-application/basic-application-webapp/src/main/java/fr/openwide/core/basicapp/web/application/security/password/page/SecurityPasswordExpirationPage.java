@@ -96,7 +96,6 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 										try {
 											User user = BasicApplicationSession.get().getUser();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
-											securityManagementService.onUpdatePassword(user);
 											
 											getSession().success(getString("security.password.expiration.validate.success"));
 											

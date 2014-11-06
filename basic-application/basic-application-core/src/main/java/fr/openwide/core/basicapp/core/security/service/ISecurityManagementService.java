@@ -17,7 +17,9 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 	void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
 			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException;
 
-	void onInitiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type) throws ServiceException, SecurityServiceException;
+	void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
+			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException,
+			SecurityServiceException;
 
 	boolean isPasswordExpired(User user);
 
@@ -25,8 +27,7 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 
 	void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
 
-	void onUpdatePassword(User user) throws ServiceException, SecurityServiceException;
+	void updatePassword(User user, String password, User author) throws ServiceException, SecurityServiceException;
 
-	void onUpdatePassword(User user, User author) throws ServiceException, SecurityServiceException;
 
 }

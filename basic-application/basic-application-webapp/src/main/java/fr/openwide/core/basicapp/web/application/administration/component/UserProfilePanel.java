@@ -89,8 +89,11 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 								try {
 									securityManagementService.initiatePasswordRecoveryRequest(getModelObject(),
 											UserPasswordRecoveryRequestType.RESET,
-											UserPasswordRecoveryRequestInitiator.ADMIN);
+											UserPasswordRecoveryRequestInitiator.ADMIN,
+											BasicApplicationSession.get().getUser()
+									);
 									getSession().success(getString("administration.user.password.recovery.reset.success"));
+									target.add(getPage());
 								} catch (Exception e) {
 									LOGGER.error("Error occured while sending a password recovery request", e);
 									getSession().error(getString("common.error.unexpected"));

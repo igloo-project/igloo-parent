@@ -98,11 +98,11 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 					User user = UserPasswordUpdatePopup.this.getModelObject();
 					String newPassword = newPasswordModel.getObject();
 					
-					securityManagementService.updatePassword(user, newPassword);
-					securityManagementService.onUpdatePassword(user, BasicApplicationSession.get().getUser());
+					securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
 					
 					getSession().success(getString("administration.user.password.update.success"));
 					closePopup(target);
+					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Error occured while changing password.");
 					getSession().error(getString("common.error.unexpected"));

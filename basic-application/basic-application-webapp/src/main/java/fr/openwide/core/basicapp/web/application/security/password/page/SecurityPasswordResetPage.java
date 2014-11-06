@@ -132,7 +132,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 										try {
 											User user = userModel.getObject();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
-											securityManagementService.onUpdatePassword(user);
 											
 											getSession().success(getString("security.password.reset.validate.success"));
 											

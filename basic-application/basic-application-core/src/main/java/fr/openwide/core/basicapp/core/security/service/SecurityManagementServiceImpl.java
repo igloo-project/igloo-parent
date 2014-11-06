@@ -30,9 +30,9 @@ import fr.openwide.core.spring.util.StringUtils;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
-	private static final String AUDIT_PASSWORD_RESET_REQUEST_METHOD_NAME = "passwordResetRequest";
+	private static final String AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME = "initiatePasswordRecoveryRequest";
 
-	private static final String AUDIT_PASSWORD_UPDATE_METHOD_NAME = "passwordUpdate";
+	private static final String AUDIT_UPDATE_PASSWORD_METHOD_NAME = "updatePassword";
 
 	private static Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> OPTIONS_BY_USER = Maps.newHashMap();
 
@@ -49,6 +49,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
 	@Autowired
 	private BasicApplicationConfigurer configurer;
+
+	private void audit(User subject, User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, subject, object, type);
+	}
 
 	public SecurityManagementServiceImpl setOptions(Class<? extends User> clazz, SecurityOptions options) {
 		checkNotNull(clazz);
@@ -86,6 +90,12 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	@Override
 	public void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
 			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException {
+		initiatePasswordRecoveryRequest(user, type, initiator, user);
+	}
+
+	@Override
+	public void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
+			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException, SecurityServiceException {
 		Date now = new Date();
 		
 		user.getPasswordRecoveryRequest().setToken(getPasswordChangeRequestToken(user, now));
@@ -96,16 +106,13 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		userService.update(user);
 		
 		notificationService.sendUserPasswordRecoveryRequest(user);
-	}
-
-	@Override
-	public void onInitiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type) throws ServiceException, SecurityServiceException {
+		
 		switch (type) {
 		case CREATION:
-			auditService.audit(getClass().getSimpleName(), AUDIT_PASSWORD_RESET_REQUEST_METHOD_NAME, user, AuditActionType.PASSWORD_CREATION_REQUEST);
+			audit(author, user, AuditActionType.PASSWORD_CREATION_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
 			break;
 		case RESET:
-			auditService.audit(getClass().getSimpleName(), AUDIT_PASSWORD_RESET_REQUEST_METHOD_NAME, user, AuditActionType.PASSWORD_RESET_REQUEST);
+			audit(author, user, AuditActionType.PASSWORD_RESET_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
 			break;
 		default:
 			break;
@@ -147,6 +154,11 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
 	@Override
 	public void updatePassword(User user, String password) throws ServiceException, SecurityServiceException {
+		updatePassword(user, password, user);
+	}
+
+	@Override
+	public void updatePassword(User user, String password, User author) throws ServiceException, SecurityServiceException {
 		if (user == null || !StringUtils.hasText(password)) {
 			return;
 		}
@@ -165,21 +177,9 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			user.getPasswordInformation().setHistory(Lists.newArrayList(historyQueue));
 		}
 		
-		
 		userService.update(user);
-	}
-
-	@Override
-	public void onUpdatePassword(User user) throws ServiceException, SecurityServiceException {
-		onUpdatePassword(user, user);
-	}
-
-	@Override
-	public void onUpdatePassword(User user, User author) throws ServiceException, SecurityServiceException {
-		if (user == null || author == null) {
-			return;
-		}
-		auditService.audit(getClass().getSimpleName(), AUDIT_PASSWORD_UPDATE_METHOD_NAME, author, user, AuditActionType.PASSWORD_UPDATE);
+		
+		audit(author, user, AuditActionType.PASSWORD_UPDATE, AUDIT_UPDATE_PASSWORD_METHOD_NAME);
 	}
 
 }

@@ -26,7 +26,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	private static final String AUDIT_SIGN_IN_METHOD_NAME = "signIn";
 
-	private static final String AUDIT_CREATE_USER_METHOD_NAME = "createUser";
+	private static final String AUDIT_CREATE_METHOD_NAME = "create";
 	
 	@Autowired
 	private IUserDao userDao;
@@ -45,6 +45,14 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	
 	@Autowired
 	private ISecurityManagementService securityManagementService;
+	
+	private void audit(User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, object, type);
+	}
+	
+	private void audit(User subject, User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, subject, object, type);
+	}
 	
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
@@ -67,18 +75,14 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		return userDao.count(clazz, searchParameters);
 	}
 	
-	private void audit(User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, object, type);
-	}
-	
 	@Override
 	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
 		audit(user, AuditActionType.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
 	}
 	
 	@Override
-	public void onCreate(User user) throws ServiceException, SecurityServiceException {
-		audit(user, AuditActionType.CREATE_USER, AUDIT_CREATE_USER_METHOD_NAME);
+	public void onCreate(User user, User author) throws ServiceException, SecurityServiceException {
+		audit(author, user, AuditActionType.CREATE_USER, AUDIT_CREATE_METHOD_NAME);
 	}
 	
 	@Override
