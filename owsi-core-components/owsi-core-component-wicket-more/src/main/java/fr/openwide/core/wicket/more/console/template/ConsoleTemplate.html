@@ -25,7 +25,7 @@
 			
 			<div class="container">
 				<!-- Menu sections -->
-				<nav class="navbar navbar-default navbar-inverse">
+				<nav class="navbar navbar-default navbar-inverse main-menu">
 					<div class="container-fluid">
 						<div class="navbar-header">
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
@@ -35,6 +35,15 @@
 							<span class="navbar-brand"><wicket:message key="console.pageTitle" /></span>
 						</div>
 						<div class="collapse navbar-collapse" id="main-navbar-collapse">
+							<wicket:enclosure child="userFullName">
+								<div class="user-menu">
+									<wicket:container wicket:id="userFullName" />
+									<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.logout">
+										<span class="fa fa-power-off" />
+									</a>
+								</div>
+							</wicket:enclosure>
+							
 							<ul class="nav navbar-nav">
 								<wicket:container wicket:id="menuSectionListView">
 									<wicket:container wicket:id="menuSectionFragment" />
@@ -62,7 +71,7 @@
 				
 				<!-- Footer -->
 				<div class="footer">
-					<wicket:message key="console.footer" />
+					<wicket:message key="console.footer" /> &middot; <wicket:container wicket:id="version" />
 				</div>
 			</div>
 		</div>

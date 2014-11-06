@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -20,7 +21,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
+import fr.openwide.core.jpa.security.business.person.model.GenericUser;
+import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
@@ -33,12 +38,16 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
+import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class ConsoleTemplate extends CoreWebPage {
 	
 	private static final long serialVersionUID = -477123413708677528L;
 	
 	private static final String HEAD_PAGE_TITLE_SEPARATOR = " ‹ ";
+	
+	@SpringBean
+	protected CoreConfigurer configurer;
 	
 	@SpringBean(required = false)
 	protected IAbstractDataUpgradeService dataUpgradeService;
@@ -87,6 +96,26 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 			}
 		};
 		add(menuSectionsListView);
+		
+		// User menu
+		add(new CoreLabel("userFullName", new LoadableDetachableModel<String>() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected String load() {
+				String userFullName = null;
+				GenericUser<?, ?> user = AbstractCoreSession.get().getUser();
+				if (user != null) {
+					userFullName = user.getFullName();
+				}
+				return userFullName;
+			}
+		}).hideIfEmpty());
+		
+		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
+		
+		// Version
+		add(new Label("version", configurer.getVersion()));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		

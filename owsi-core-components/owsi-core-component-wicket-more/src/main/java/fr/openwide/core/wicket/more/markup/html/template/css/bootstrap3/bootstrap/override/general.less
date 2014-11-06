@@ -295,6 +295,15 @@ textarea.form-control {
 	vertical-align: middle;
 }
 
+// Navigation
+// On n'utilise pas les .icon-bar, on utilise la couleur de texte
+.navbar-default .navbar-toggle {
+	color: @navbar-default-toggle-icon-bar-bg;
+}
+.navbar-inverse .navbar-toggle {
+	color: @navbar-inverse-toggle-icon-bar-bg;
+}
+
 // On force le font-variant et le text-transform de .fa
 // cf https://github.com/FortAwesome/Font-Awesome/pull/2750
 .@{fa-css-prefix} {
