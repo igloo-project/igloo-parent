@@ -142,9 +142,12 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 										.model(isTrue(), Model.of(securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordAdminUpdateEnabled()))
 										.add(
 												passwordField
-												.setLabel(new ResourceModel("business.user.password"))
-												.setRequired(passwordRequired)
-												.add(new UserPasswordValidator<U>(getModel())),
+														.setLabel(new ResourceModel("business.user.password"))
+														.setRequired(passwordRequired)
+														.add(
+																new UserPasswordValidator(typeDescriptor)
+																		.userModel(getModel())
+														),
 												
 												new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))),
 												

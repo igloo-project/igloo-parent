@@ -66,7 +66,10 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 								newPasswordField
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
-										.add(new UserPasswordValidator<U>(getModel())),
+										.add(
+												new UserPasswordValidator(typeDescriptor)
+														.userModel(getModel())
+										),
 								
 								new CoreLabel("passwordHelp", new ResourceModel(typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"))),
 								

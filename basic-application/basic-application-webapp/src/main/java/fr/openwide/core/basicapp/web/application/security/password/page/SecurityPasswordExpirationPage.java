@@ -76,7 +76,10 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 								newPasswordField
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
-										.add(new UserPasswordValidator<User>(BasicApplicationSession.get().getUserModel()))
+										.add(
+												new UserPasswordValidator(UserTypeDescriptor.get(BasicApplicationSession.get().getUser()))
+														.userModel(BasicApplicationSession.get().getUserModel())
+										)
 										.add(new LabelPlaceholderBehavior()),
 								confirmPasswordField
 										.setLabel(new ResourceModel("business.user.confirmPassword"))
@@ -90,9 +93,10 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 										try {
 											User user = BasicApplicationSession.get().getUser();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
-											getSession().success(getString("security.password.expiration.validate.success"));
-											throw UserTypeDescriptor.get(user).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 											
+											getSession().success(getString("security.password.expiration.validate.success"));
+											
+											throw UserTypeDescriptor.get(user).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 										} catch (RestartResponseException e) {
 											throw e;
 										} catch (Exception e) {

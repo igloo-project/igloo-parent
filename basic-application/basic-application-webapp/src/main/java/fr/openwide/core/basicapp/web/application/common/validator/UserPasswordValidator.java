@@ -5,6 +5,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -24,9 +26,10 @@ import edu.vt.middleware.password.RuleResultDetail;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.spring.util.StringUtils;
 
-public class UserPasswordValidator<U extends User> implements IValidator<String> {
+public class UserPasswordValidator extends Behavior implements IValidator<String> {
 
 	private static final long serialVersionUID = 5619802188558408589L;
 
@@ -39,7 +42,9 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 
 	private static final String COMMON_ERROR = "COMMON_ERROR";
 
-	private final IModel<U> userModel;
+	private final UserTypeDescriptor<?> typeDescriptor;
+
+	private IModel<? extends User> userModel;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
@@ -50,11 +55,19 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
 
-	public UserPasswordValidator(IModel<U> userModel) {
+	public UserPasswordValidator(UserTypeDescriptor<?> typeDescriptor) {
 		super();
 		Injector.get().inject(this);
 		
-		this.userModel = checkNotNull(userModel);
+		this.typeDescriptor = checkNotNull(typeDescriptor);
+	}
+
+	@Override
+	public void detach(Component component) {
+		super.detach(component);
+		if (userModel != null) {
+			userModel.detach();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,15 +79,11 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 			return;
 		}
 		
-		User user = userModel.getObject();
-		
-		PasswordValidator validator = new PasswordValidator(Lists.newArrayList(securityManagementService.getOptions(user).getPasswordRules().getRules()));
+		PasswordValidator validator = new PasswordValidator(Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules().getRules()));
 		PasswordData passwordData = new PasswordData(new Password(password));
 		
-		if (user != null) {
-			if (StringUtils.hasText(user.getUserName())) {
-				passwordData.setUsername(user.getUserName());
-			}
+		if (userModel != null && userModel.getObject() != null && StringUtils.hasText(userModel.getObject().getUserName())) {
+			passwordData.setUsername(userModel.getObject().getUserName());
 		}
 		
 		RuleResult result = validator.validate(passwordData);
@@ -92,9 +101,11 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 			}
 		}
 		
-		if (user != null) {
+		if (userModel != null && userModel.getObject() != null
+				&& userModel.getObject().getPasswordInformation().getHistory() != null
+				&& userModel.getObject().getPasswordInformation().getHistory().isEmpty()) {
 			String passwordHash = passwordEncoder.encode(password);
-			if (user.getPasswordInformation().getHistory().contains(passwordHash)) {
+			if (userModel.getObject().getPasswordInformation().getHistory().contains(passwordHash)) {
 				valid = false;
 				validatable.error(
 						new ValidationError(this, HISTORY_VIOLATION)
@@ -109,4 +120,8 @@ public class UserPasswordValidator<U extends User> implements IValidator<String>
 		}
 	}
 
+	public UserPasswordValidator userModel(IModel<? extends User> userModel) {
+		this.userModel = checkNotNull(userModel);
+		return this;
+	}
 }

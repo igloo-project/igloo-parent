@@ -106,7 +106,10 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 								newPasswordField
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
-										.add(new UserPasswordValidator<User>(userModel))
+										.add(
+												new UserPasswordValidator(UserTypeDescriptor.get(userModel.getObject()))
+														.userModel(userModel)
+										)
 										.add(new LabelPlaceholderBehavior()),
 								confirmPasswordField
 										.setLabel(new ResourceModel("business.user.confirmPassword"))
@@ -120,9 +123,10 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 										try {
 											User user = userModel.getObject();
 											securityManagementService.updatePassword(user, newPasswordModel.getObject());
-											getSession().success(getString("security.password.creation.validate.success"));
-											throw UserTypeDescriptor.get(user).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 											
+											getSession().success(getString("security.password.creation.validate.success"));
+											
+											throw UserTypeDescriptor.get(user).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 										} catch (RestartResponseException e) {
 											throw e;
 										} catch (Exception e) {
@@ -148,6 +152,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
+		userModel.detach();
 		emailModel.detach();
 		newPasswordModel.detach();
 	}
