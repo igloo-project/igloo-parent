@@ -26,6 +26,7 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.notifica
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
+import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
 import fr.openwide.core.basicapp.web.application.security.login.page.SignInPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
@@ -106,6 +107,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/console/login/failure/", ConsoleLoginFailurePage.class);
 		mountPage("/console/login/success/", ConsoleLoginSuccessPage.class);
 		mountPage("/console/access-denied/", ConsoleAccessDeniedPage.class);
+		
+		// Profile
+		mountPage("/profile/", ProfilePage.class);
 		
 		// Maintenance
 		mountPage("/maintenance/", MaintenancePage.class);

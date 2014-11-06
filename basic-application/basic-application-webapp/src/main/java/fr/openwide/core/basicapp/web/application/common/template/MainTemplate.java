@@ -1,8 +1,5 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
-import static com.google.common.base.Predicates.notNull;
-import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
-
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -19,46 +16,44 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.events.MouseEvent;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
-import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
+import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
-import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
@@ -178,31 +173,16 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		});
 		
 		// User menu
-		add(new CoreLabel("userFullName", new LoadableDetachableModel<String>() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected String load() {
-				String userFullName = null;
-				User user = BasicApplicationSession.get().getUser();
-				if (user != null) {
-					userFullName = user.getFullName();
-				}
-				return userFullName;
-			}
-		}).hideIfEmpty());
-		
-		UserPasswordUpdatePopup<User> passwordUpdatePopup = new UserPasswordUpdatePopup<User>("passwordUpdatePopup",
-				BasicApplicationSession.get().getUserModel());
-		
 		add(
-				passwordUpdatePopup,
-				new BlankLink("passwordUpdateButton")
+				ProfilePage.linkDescriptor()
+						.link("profileLink")
 						.add(
-								new EnclosureBehavior()
-										.model(notNull(), BasicApplicationSession.get().getUserModel())
-										.model(isTrue(), Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled())))
-						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
+								new CoreLabel("userFullName", BindingModel.of(BasicApplicationSession.get().getUserModel(), Bindings.user().fullName()))
+										.hideIfEmpty()
+						)
+						.add(
+								new EnclosureBehavior().model(Predicates.notNull(), BasicApplicationSession.get().getUserModel())
+						)
 		);
 		
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));

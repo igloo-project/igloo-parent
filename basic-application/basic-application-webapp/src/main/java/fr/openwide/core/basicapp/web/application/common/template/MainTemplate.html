@@ -11,7 +11,6 @@
 	</head>
 	<body>
 		<div wicket:id="animatedGlobalFeedbackPanel" data-placement="bottom"></div>
-		<div wicket:id="passwordUpdatePopup"></div>
 		
 		<div class="page-container">
 			<!-- Scroll to top -->
@@ -30,10 +29,11 @@
 					</div>
 					
 					<div class="collapse navbar-collapse" id="navbar-main-collapse">
-						<wicket:enclosure child="userFullName">
+						<wicket:enclosure child="profileLink">
 							<div class="user-menu">
-								<wicket:container wicket:id="userFullName" />
-								<a wicket:id="passwordUpdateButton" class="btn btn-default btn-xs"><span class="fa fa-key" /></a>
+								<a wicket:id="profileLink" wicket:message="title:common.profile.tooltip">
+									<wicket:container wicket:id="userFullName" />
+								</a>
 								<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.logout">
 									<span class="fa fa-power-off" />
 								</a>
