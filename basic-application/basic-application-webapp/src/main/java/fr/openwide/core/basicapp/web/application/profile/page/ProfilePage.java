@@ -1,8 +1,12 @@
 package fr.openwide.core.basicapp.web.application.profile.page;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
+import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.profile.component.ProfileInformationPanel;
 import fr.openwide.core.basicapp.web.application.profile.template.ProfileTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -20,12 +24,23 @@ public class ProfilePage extends ProfileTemplate {
 				.build();
 	}
 
+	protected final IModel<User> userModel = BasicApplicationSession.get().getUserModel();
+
 	public ProfilePage(PageParameters parameters) {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 		
-		add(new ProfileInformationPanel("description", userModel));
+		add(
+				new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())),
+				new ProfileInformationPanel("description", userModel)
+		);
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		userModel.detach();
 	}
 
 }

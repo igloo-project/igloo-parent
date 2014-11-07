@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
+import static com.google.common.base.Predicates.notNull;
+
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -22,7 +24,6 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
@@ -181,7 +182,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 										.hideIfEmpty()
 						)
 						.add(
-								new EnclosureBehavior().model(Predicates.notNull(), BasicApplicationSession.get().getUserModel())
+								new EnclosureBehavior().model(notNull(), BasicApplicationSession.get().getUserModel())
 						)
 		);
 		

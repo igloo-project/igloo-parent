@@ -1,6 +1,5 @@
 package fr.openwide.core.basicapp.web.application.profile.component;
 
-import static com.google.common.base.Predicates.notNull;
 import static fr.openwide.core.commons.util.functional.Predicates2.isTrue;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -45,7 +44,6 @@ public class ProfileInformationPanel extends GenericPanel<User> {
 				new BlankLink("passwordUpdateButton")
 						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
 						.add(new EnclosureBehavior()
-								.model(notNull(), BasicApplicationSession.get().getUserModel())
 								.model(isTrue(), Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()))
 						),
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
