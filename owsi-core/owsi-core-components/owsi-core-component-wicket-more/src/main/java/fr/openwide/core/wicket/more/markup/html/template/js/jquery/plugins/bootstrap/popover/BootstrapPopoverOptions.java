@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
@@ -51,6 +52,8 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 	private Integer delay;
 
 	private String container;
+
+	private IModel<String> cssClassModel;
 
 	public BootstrapPopoverOptions() {
 		super();
@@ -108,6 +111,9 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 		}
 		if (container != null) {
 			options.put("container", JsUtils.quotes(container));
+		}
+		if (cssClassModel != null) {
+			options.put("cssClass", JsUtils.quotes(cssClassModel.getObject()));
 		}
 		
 		return super.getJavaScriptOptions(options.build());
@@ -271,6 +277,18 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 		this.container = container;
 	}
 	
+	public IModel<String> getCssClassModel() {
+		return cssClassModel;
+	}
+
+	public void setCssClass(String cssClass) {
+		setCssClass(Model.of(cssClass));
+	}
+
+	public void setCssClass(IModel<String> cssClassModel) {
+		this.cssClassModel = cssClassModel;
+	}
+
 	@Override
 	public void detach() {
 		if (contentModel != null) {
@@ -278,6 +296,9 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 		}
 		if (titleModel != null) {
 			titleModel.detach();
+		}
+		if (cssClassModel != null) {
+			cssClassModel.detach();
 		}
 	}
 
