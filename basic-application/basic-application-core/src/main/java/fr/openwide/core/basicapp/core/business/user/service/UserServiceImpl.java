@@ -26,6 +26,8 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	private static final String AUDIT_SIGN_IN_METHOD_NAME = "signIn";
 
+	private static final String AUDIT_SIGN_IN_FAIL_METHOD_NAME = "signInFail";
+
 	private static final String AUDIT_CREATE_METHOD_NAME = "create";
 	
 	@Autowired
@@ -78,6 +80,11 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Override
 	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
 		audit(user, AuditActionType.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
+	}
+	
+	@Override
+	public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+		audit(user, user, AuditActionType.SIGN_IN_FAIL, AUDIT_SIGN_IN_FAIL_METHOD_NAME);
 	}
 	
 	@Override

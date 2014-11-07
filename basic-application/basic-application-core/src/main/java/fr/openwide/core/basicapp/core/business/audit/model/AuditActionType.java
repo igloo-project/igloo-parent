@@ -4,6 +4,8 @@ public enum AuditActionType {
 	
 	SIGN_IN,
 	
+	SIGN_IN_FAIL,
+	
 	CREATE_USER,
 	
 	PASSWORD_RESET_REQUEST,

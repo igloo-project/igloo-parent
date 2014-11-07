@@ -79,26 +79,38 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 			protected void onSubmit() {
 				AbstractCoreSession<?> session = AbstractCoreSession.get();
 				boolean success = false;
+				boolean badCredentials = false;
 				try {
 					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
 					userService.onSignIn((User) session.getUser());
 					success = true;
 				} catch (BadCredentialsException e) {
+					badCredentials = true;
 					session.error(getString("signIn.error.authentication"));
 				} catch (UsernameNotFoundException e) {
 					session.error(getString("signIn.error.authentication"));
 				} catch (DisabledException e) {
 					session.error(getString("signIn.error.userDisabled"));
 				} catch (Exception e) {
-					LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
+					LOGGER.error("Unknown error during authentification", e);
 					session.error(getString("signIn.error.unknown"));
 				}
 				
 				if (success) {
 					throw typeDescriptor.securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
-				} else {
-					throw typeDescriptor.securityTypeDescriptor().signInPageLinkDescriptor().newRestartResponseException();
+				} else if (badCredentials) {
+					User user = userService.getByUserName(userNameField.getModelObject());
+					if (user != null) {
+						try {
+							userService.onSignInFail(user);
+						}
+						catch (Exception e1) {
+							LOGGER.error("Unknown error while trying to find the user associated with the username entered in the form", e1);
+							session.error(getString("signIn.error.unknown"));
+						}
+					}
 				}
+				throw typeDescriptor.securityTypeDescriptor().signInPageLinkDescriptor().newRestartResponseException();
 			}
 		};
 		content.add(signInForm);
