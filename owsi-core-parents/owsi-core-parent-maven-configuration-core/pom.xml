@@ -29,7 +29,7 @@
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
 		<owsi-core.spring.version>4.1.1.RELEASE</owsi-core.spring.version>
-		<owsi-core.aspectj.version>1.8.3</owsi-core.aspectj.version>
+		<owsi-core.aspectj.version>1.8.4</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>4.3.7.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
@@ -72,7 +72,7 @@
 		<owsi-core.commons-math3.version>3.3</owsi-core.commons-math3.version>
 		<owsi-core.commons-cli.version>1.2</owsi-core.commons-cli.version>
 		<owsi-core.commons-codec.version>1.9</owsi-core.commons-codec.version>
-		<owsi-core.commons-exec.version>1.2</owsi-core.commons-exec.version>
+		<owsi-core.commons-exec.version>1.3</owsi-core.commons-exec.version>
 		<owsi-core.commons-compress.version>1.5</owsi-core.commons-compress.version>
 		<owsi-core.commons-validator.version>1.4.0</owsi-core.commons-validator.version>
 		
@@ -104,7 +104,7 @@
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.8.1</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7R4</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.3.5</owsi-core.httpclient.version>
+		<owsi-core.httpclient.version>4.3.6</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>3.2.5.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.4</owsi-core.phloc-css.version>
 		<owsi-core.galimatias.version>0.2.0</owsi-core.galimatias.version>
