@@ -12,7 +12,6 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
-import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.EJB3NamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
@@ -40,6 +39,8 @@ import fr.openwide.core.jpa.config.spring.provider.DefaultJpaConfigurationProvid
 import fr.openwide.core.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.hibernate.cache.ehcache.EhCache285RegionFactory;
+import fr.openwide.core.jpa.hibernate.cache.ehcache.SingletonEhCache285RegionFactory;
 import fr.openwide.core.jpa.util.FixedDefaultComponentSafeNamingStrategy;
 
 public final class JpaConfigUtils {
@@ -118,9 +119,9 @@ public final class JpaConfigUtils {
 		
 		if (StringUtils.hasText(ehCacheConfiguration)) {
 			if (singletonCache) {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCache285RegionFactory.class.getName());
 			} else {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCache285RegionFactory.class.getName());
 			}
 			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
