@@ -32,6 +32,7 @@
 		<module>owsi-core-component-rest-jersey</module>
 		<module>owsi-core-component-web-security</module>
 		<module>owsi-core-component-rest-jersey2</module>
+		<module>000-owsi-core-components-jpa-hibernate-override</module>
 	</modules>
 	
 	<!-- Project information -->
