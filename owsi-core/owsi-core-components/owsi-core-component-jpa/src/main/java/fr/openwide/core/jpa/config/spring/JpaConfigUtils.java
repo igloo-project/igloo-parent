@@ -231,7 +231,6 @@ public final class JpaConfigUtils {
 		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
 		dataSource.setMinimumIdle(configurationProvider.getMinIdle());
 		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
-		dataSource.setJdbc4ConnectionTest(false);
 		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
 		dataSource.setConnectionInitSql(emptyToNull(configurationProvider.getInitSql()));
 		
