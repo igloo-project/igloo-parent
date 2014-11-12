@@ -15,7 +15,6 @@ import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.util.upload.FileItem;
-import org.apache.wicket.util.upload.FileUploadBase.IOFileUploadException;
 import org.apache.wicket.util.upload.FileUploadBase.SizeLimitExceededException;
 import org.apache.wicket.util.upload.FileUploadException;
 import org.slf4j.Logger;
@@ -77,20 +76,19 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 			MultipartServletWebRequest multiPartRequest;
 			try {
 				multiPartRequest = webRequest.newMultipartWebRequest(getMaxSize(), "ignored");
-			} catch (IOFileUploadException e) {
-				// peut arriver dans le cas du cancel
-				LOGGER.info("An error occurred while uploading a file", e);
-				prepareResponse(resourceResponse, webRequest, null);
-				return resourceResponse;
+				multiPartRequest.parseFileParts();
 			} catch (SizeLimitExceededException fileLimitException) {
 				// cas où la limite globale d'upload est dépassée
 				String responseContent = generateJsonFileSizeErrorResponse(resourceResponse, webRequest);
 				prepareResponse(resourceResponse, webRequest, responseContent);
 				return resourceResponse;
+			} catch (FileUploadException e) {
+				// peut arriver dans le cas du cancel
+				LOGGER.info("An error occurred while uploading a file", e);
+				prepareResponse(resourceResponse, webRequest, null);
+				return resourceResponse;
 			}
 			
-			// Note: since Wicket 6.18.0 you will need to call "multiPartRequest.parseFileParts();" additionally here
-			// http://wicketinaction.com/2012/11/uploading-files-to-wicket-iresource/
 			Map<String, List<FileItem>> files = multiPartRequest.getFiles();
 			List<FileItem> fileItems = files.get(FileUploadBehavior.PARAMETERS_FILE_UPLOAD);
 			List<FileApiFile> fileApiFiles = FileUploadBehavior.readFileApiFiles(multiPartRequest.getRequestParameters());
