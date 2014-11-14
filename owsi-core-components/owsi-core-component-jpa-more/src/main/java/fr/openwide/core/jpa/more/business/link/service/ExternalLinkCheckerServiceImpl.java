@@ -291,13 +291,13 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			}
 			
 			failureAuditBuilder.append(
-					new ToStringBuilder(link, ToStringStyle.SHORT_PREFIX_STYLE)
-						.append("checkDate", checkDate)
-						.append("errorType", errorType)
-						.append("consecutiveFailures", consecutiveFailures)
-						.append("statusCode", statusCode)
-						.append("status", status)
-						.build()
+					new ToStringBuilder(ToStringStyle.DEFAULT_STYLE)
+							.append("checkDate", checkDate)
+							.append("errorType", errorType)
+							.append("consecutiveFailures", consecutiveFailures)
+							.append("statusCode", statusCode)
+							.append("status", status)
+							.build()
 			);
 			link.setFailureAudit(failureAuditBuilder.toString());
 			
