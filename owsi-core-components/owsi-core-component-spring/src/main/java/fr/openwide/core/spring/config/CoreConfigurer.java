@@ -208,7 +208,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getExternalLinkCheckerRetryAttemptsLimit() {
-		return getPropertyAsInteger("externalLinkChecker.retryAttemptsNumber", 5);
+		return getPropertyAsInteger("externalLinkChecker.retryAttemptsNumber", 4);
 	}
 	
 	public int getExternalLinkCheckerThreadPoolSize() {
@@ -220,7 +220,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 	
 	public int getExternalLinkCheckerMinDelayBetweenTwoChecksInDays() {
-		return getPropertyAsInteger("externalLinkChecker.minDelayBetweenTwoChecksInDays", 3, 0, null);
+		return getPropertyAsInteger("externalLinkChecker.minDelayBetweenTwoChecksInDays", 2, 0, null);
 	}
 	
 	/**
