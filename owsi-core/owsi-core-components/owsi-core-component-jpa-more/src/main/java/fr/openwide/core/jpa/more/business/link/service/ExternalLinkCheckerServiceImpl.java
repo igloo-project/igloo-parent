@@ -289,10 +289,9 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			if (StringUtils.hasText(failureAudit)) {
 				failureAuditBuilder.append(failureAudit).append("\n");
 			}
-			// TODO RJO External links : ajouter un n° de version d'algo permettant de retrouver
-			// avec quelle version du checker on a eu l'erreur ?
+			
 			failureAuditBuilder.append(
-					new ToStringBuilder(link, ToStringStyle.DEFAULT_STYLE)
+					new ToStringBuilder(link, ToStringStyle.SHORT_PREFIX_STYLE)
 						.append("checkDate", checkDate)
 						.append("errorType", errorType)
 						.append("consecutiveFailures", consecutiveFailures)
