@@ -24,11 +24,13 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailExistsValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkUtils;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -62,6 +64,8 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
 	private final IModel<String> newPasswordModel = Model.of("");
 
+	private final UserTypeDescriptor<? extends User> typeDescriptor;
+
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
@@ -82,6 +86,8 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 			getSession().error(getString("security.password.reset.expired"));
 			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
 		}
+		
+		typeDescriptor = UserTypeDescriptor.get(userModel.getObject());
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.reset.pageTitle")));
 	}
@@ -116,10 +122,16 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
 										.add(
-												new UserPasswordValidator(UserTypeDescriptor.get(userModel.getObject()))
+												new UserPasswordValidator(typeDescriptor)
 														.userModel(userModel)
 										)
 										.add(new LabelPlaceholderBehavior()),
+								new CoreLabel("passwordHelp",
+										new ResourceModel(
+												typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
+												new ResourceModel(SecurityUserTypeDescriptor.USER.securityRessourceKey("password.help"))
+										)
+								),
 								confirmPasswordField
 										.setLabel(new ResourceModel("business.user.confirmPassword"))
 										.setRequired(true)
@@ -135,7 +147,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 											
 											getSession().success(getString("security.password.reset.validate.success"));
 											
-											throw UserTypeDescriptor.get(user).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
+											throw typeDescriptor.securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 										} catch (RestartResponseException e) {
 											throw e;
 										} catch (Exception e) {
