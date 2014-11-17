@@ -8,7 +8,7 @@ import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
@@ -27,7 +27,7 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 						typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".text"),
 						objetModel,
 						new StringResourceModel(
-								NotificationUserTypeDescriptor.USER.notificationRessourceKey(actionMessageKeyPart + ".text"),
+								UserTypeDescriptor.USER.notificationTypeDescriptor().notificationRessourceKey(actionMessageKeyPart + ".text"),
 								objetModel,
 								dateModel,
 								auteurModel
@@ -43,7 +43,7 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 					typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.intro"),
 					objetModel,
 					new StringResourceModel(
-							NotificationUserTypeDescriptor.USER.notificationRessourceKey(actionMessageKeyPart + ".link.intro"),
+							UserTypeDescriptor.USER.notificationTypeDescriptor().notificationRessourceKey(actionMessageKeyPart + ".link.intro"),
 							objetModel,
 							dateModel,
 							auteurModel
@@ -55,7 +55,7 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 					typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.label"),
 					objetModel,
 					new StringResourceModel(
-							NotificationUserTypeDescriptor.USER.notificationRessourceKey(actionMessageKeyPart + ".link.label"),
+							UserTypeDescriptor.USER.notificationTypeDescriptor().notificationRessourceKey(actionMessageKeyPart + ".link.label"),
 							objetModel,
 							dateModel,
 							auteurModel

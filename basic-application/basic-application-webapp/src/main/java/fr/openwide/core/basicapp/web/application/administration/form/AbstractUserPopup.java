@@ -36,7 +36,6 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailUnicityValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
@@ -153,7 +152,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 												new CoreLabel("passwordHelp",
 														new ResourceModel(
 																typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
-																new ResourceModel(SecurityUserTypeDescriptor.USER.securityRessourceKey("password.help"))
+																new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
 														)
 												),
 												

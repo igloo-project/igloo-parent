@@ -24,7 +24,6 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.EmailExistsValidator;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
@@ -129,7 +128,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 								new CoreLabel("passwordHelp",
 										new ResourceModel(
 												typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
-												new ResourceModel(SecurityUserTypeDescriptor.USER.securityRessourceKey("password.help"))
+												new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
 										)
 								),
 								confirmPasswordField

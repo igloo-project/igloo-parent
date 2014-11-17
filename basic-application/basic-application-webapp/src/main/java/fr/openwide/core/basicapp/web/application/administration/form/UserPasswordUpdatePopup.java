@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.SecurityUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
@@ -76,7 +75,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 								new CoreLabel("passwordHelp",
 										new ResourceModel(
 												typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
-												new ResourceModel(SecurityUserTypeDescriptor.USER.securityRessourceKey("password.help"))
+												new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
 										)
 								),
 								
