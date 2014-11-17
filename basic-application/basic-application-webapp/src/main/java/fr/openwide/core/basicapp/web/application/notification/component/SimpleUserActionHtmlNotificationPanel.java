@@ -8,6 +8,7 @@ import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
@@ -21,13 +22,47 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 		super(id, objetModel);
 		
 		// Intro
-		StringResourceModel descriptionTextModel = new StringResourceModel(typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".text"), objetModel, dateModel, auteurModel);
+		StringResourceModel descriptionTextModel = 
+				new StringResourceModel(
+						typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".text"),
+						objetModel,
+						new StringResourceModel(
+								NotificationUserTypeDescriptor.USER.notificationRessourceKey(actionMessageKeyPart + ".text"),
+								objetModel,
+								dateModel,
+								auteurModel
+						),
+						dateModel,
+						auteurModel
+				);
 		add(new Label("description", descriptionTextModel).setEscapeModelStrings(false));
 		
 		// Main link
 		if (linkGenerator != null) {
-			StringResourceModel linkIntroModel = new StringResourceModel(typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.intro"), objetModel, dateModel, auteurModel);
-			StringResourceModel linkLabelModel = new StringResourceModel(typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.label"), objetModel, dateModel, auteurModel);
+			StringResourceModel linkIntroModel = new StringResourceModel(
+					typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.intro"),
+					objetModel,
+					new StringResourceModel(
+							NotificationUserTypeDescriptor.USER.notificationRessourceKey(actionMessageKeyPart + ".link.intro"),
+							objetModel,
+							dateModel,
+							auteurModel
+					),
+					dateModel,
+					auteurModel
+			);
+			StringResourceModel linkLabelModel = new StringResourceModel(
+					typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.label"),
+					objetModel,
+					new StringResourceModel(
+							NotificationUserTypeDescriptor.USER.notificationRessourceKey(actionMessageKeyPart + ".link.label"),
+							objetModel,
+							dateModel,
+							auteurModel
+					),
+					dateModel,
+					auteurModel
+			);
 			add(
 					new Label("linkIntro", linkIntroModel),
 					linkGenerator.link("mainLink")
