@@ -51,6 +51,9 @@ public class DefaultJpaConfigurationProvider {
 	@Value("${hibernate.ejb.naming_strategy}")
 	private Class<NamingStrategy> namingStrategy;
 
+	@Value("${hibernate.create_empty_composites.enabled}")
+	private boolean createEmptyCompositesEnabled;
+
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
 		return jpaPackageScanProviders;
 	}
@@ -101,6 +104,10 @@ public class DefaultJpaConfigurationProvider {
 	
 	public Class<NamingStrategy> getNamingStrategy() {
 		return namingStrategy;
+	}
+
+	public boolean isCreateEmptyCompositesEnabled() {
+		return createEmptyCompositesEnabled;
 	}
 
 }
