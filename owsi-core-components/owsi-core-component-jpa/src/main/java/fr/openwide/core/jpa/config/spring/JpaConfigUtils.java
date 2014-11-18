@@ -54,7 +54,28 @@ public final class JpaConfigUtils {
 				provider.getHibernateSearchIndexBase(), provider.getDataSource(), 
 				provider.getEhCacheConfiguration(), provider.isEhCacheSingleton(), provider.isQueryCacheEnabled(),
 				provider.getDefaultBatchSize(), provider.getPersistenceProvider(), provider.getValidationMode(),
-				provider.getNamingStrategy());
+				provider.getNamingStrategy(),
+				provider.isCreateEmptyCompositesEnabled());
+	}
+
+	@Deprecated
+	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
+			List<JpaPackageScanProvider> jpaPackageScanProviders,
+			Class<Dialect> dialect,
+			String hibernateHbm2Ddl,
+			String hibernateHbm2DdlImportFiles,
+			String hibernateSearchIndexBase,
+			DataSource dataSource,
+			String ehCacheConfiguration,
+			boolean singletonCache,
+			boolean queryCacheEnabled,
+			Integer defaultBatchSize,
+			PersistenceProvider persistenceProvider,
+			String validationMode,
+			Class<NamingStrategy> namingStrategy) {
+		return entityManagerFactory(jpaPackageScanProviders, dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles,
+				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, singletonCache, queryCacheEnabled,
+				defaultBatchSize, persistenceProvider, validationMode, namingStrategy, false);
 	}
 
 	/**
@@ -73,14 +94,15 @@ public final class JpaConfigUtils {
 			Integer defaultBatchSize,
 			PersistenceProvider persistenceProvider,
 			String validationMode,
-			Class<NamingStrategy> namingStrategy) {
+			Class<NamingStrategy> namingStrategy,
+			boolean createEmptyCompositesEnabled) {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl,
 				hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
 				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode,
-				namingStrategy));
+				namingStrategy, createEmptyCompositesEnabled));
 		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(jpaPackageScanProviders));
 		
@@ -89,6 +111,22 @@ public final class JpaConfigUtils {
 		}
 		
 		return entityManagerFactoryBean;
+	}
+
+	@Deprecated
+	public static Properties getJpaProperties(Class<?> dialect,
+			String hibernateHbm2Ddl,
+			String hibernateHbm2DdlImportFiles,
+			String hibernateSearchIndexBase,
+			String ehCacheConfiguration,
+			boolean singletonCache,
+			boolean queryCacheEnabled,
+			Integer defaultBatchSize,
+			String validationMode,
+			Class<NamingStrategy> namingStrategy) {
+		return getJpaProperties(dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
+				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode, namingStrategy,
+				false);
 	}
 
 	public static Properties getJpaProperties(Class<?> dialect,
@@ -100,7 +138,8 @@ public final class JpaConfigUtils {
 			boolean queryCacheEnabled,
 			Integer defaultBatchSize,
 			String validationMode,
-			Class<NamingStrategy> namingStrategy) {
+			Class<NamingStrategy> namingStrategy,
+			boolean createEmptyCompositesEnabled) {
 		Properties properties = new Properties();
 		properties.setProperty(Environment.DIALECT, dialect.getName());
 		properties.setProperty(Environment.HBM2DDL_AUTO, hibernateHbm2Ddl);
@@ -108,6 +147,7 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.FORMAT_SQL, Boolean.FALSE.toString());
 		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
+		properties.setProperty(org.hibernate.cfg.AvailableSettings.CREATE_EMPTY_COMPOSITES_ENABLED, Boolean.valueOf(createEmptyCompositesEnabled).toString());
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
 			properties.setProperty(Environment.BATCH_FETCH_STYLE, BatchFetchStyle.PADDED.name());

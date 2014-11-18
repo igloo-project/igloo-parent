@@ -14,6 +14,12 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>000-owsi-core-components-jpa-hibernate-override</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- OWSI Core dependencies -->
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
