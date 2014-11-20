@@ -88,7 +88,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 		
 		if (minDelayBetweenTwoChecks > 0) {
 			DateExpression<Date> nowMinusMinDelay = DateTemplate.create(Date.class,
-					"NOW() - interval({0})", minDelayBetweenTwoChecks + " days");
+					"NOW() - interval({0}) - interval('8 hours')", minDelayBetweenTwoChecks + " days");
 			query.where(qExternalLinkWrapper.lastCheckDate.isNull()
 					.or(qExternalLinkWrapper.lastCheckDate.before(nowMinusMinDelay)));
 		}
