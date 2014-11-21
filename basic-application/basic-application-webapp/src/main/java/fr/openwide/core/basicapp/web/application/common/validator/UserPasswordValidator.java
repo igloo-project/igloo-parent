@@ -111,6 +111,7 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 		}
 		
 		if (user != null
+				&& securityManagementService.getOptions(user).isPasswordHistoryEnabled()
 				&& user.getPasswordInformation().getHistory() != null
 				&& !user.getPasswordInformation().getHistory().isEmpty()) {
 			String passwordHash = passwordEncoder.encode(password);
