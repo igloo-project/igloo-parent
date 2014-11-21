@@ -23,6 +23,7 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -44,13 +45,12 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
+	private final UserTypeDescriptor<?> typeDescriptor = UserTypeDescriptor.get(BasicApplicationSession.get().getUser());
+
 	private final IModel<String> newPasswordModel = Model.of("");
 
 	public SecurityPasswordExpirationPage(PageParameters parameters) {
 		super(parameters);
-		
-		// Ca n'a pas de sens d'être connecté sur cette page.
-		BasicApplicationSession.get().signOut();
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle")));
 	}
@@ -80,10 +80,16 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
 										.add(
-												new UserPasswordValidator(UserTypeDescriptor.get(BasicApplicationSession.get().getUser()))
+												new UserPasswordValidator(typeDescriptor)
 														.userModel(BasicApplicationSession.get().getUserModel())
 										)
 										.add(new LabelPlaceholderBehavior()),
+								new CoreLabel("passwordHelp",
+										new ResourceModel(
+												typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
+												new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
+										)
+								),
 								confirmPasswordField
 										.setLabel(new ResourceModel("business.user.confirmPassword"))
 										.setRequired(true)

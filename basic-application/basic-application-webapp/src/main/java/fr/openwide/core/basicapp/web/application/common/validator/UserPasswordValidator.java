@@ -15,14 +15,17 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import edu.vt.middleware.password.LengthRule;
 import edu.vt.middleware.password.Password;
 import edu.vt.middleware.password.PasswordData;
 import edu.vt.middleware.password.PasswordValidator;
+import edu.vt.middleware.password.Rule;
 import edu.vt.middleware.password.RuleResult;
 import edu.vt.middleware.password.RuleResultDetail;
+import edu.vt.middleware.password.UsernameRule;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
@@ -79,9 +82,19 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 			return;
 		}
 		
-		PasswordValidator validator = new PasswordValidator(Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules().getRules()));
+		User user = userModel != null ? userModel.getObject() : null;
+		
 		PasswordData passwordData = new PasswordData(new Password(password));
 		
+		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules().getRules());
+		
+		if (user != null && StringUtils.hasText(user.getUserName())) {
+			passwordData.setUsername(user.getUserName());
+		} else {
+			passwordRules.removeAll(Lists.newArrayList(Iterables.filter(passwordRules, UsernameRule.class)));
+		}
+		
+		PasswordValidator validator = new PasswordValidator(passwordRules);
 		RuleResult result = validator.validate(passwordData);
 		
 		boolean valid = true;
@@ -97,9 +110,9 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 			}
 		}
 		
-		if (userModel != null && userModel.getObject() != null
-				&& userModel.getObject().getPasswordInformation().getHistory() != null
-				&& userModel.getObject().getPasswordInformation().getHistory().isEmpty()) {
+		if (user != null
+				&& user.getPasswordInformation().getHistory() != null
+				&& !user.getPasswordInformation().getHistory().isEmpty()) {
 			String passwordHash = passwordEncoder.encode(password);
 			if (userModel.getObject().getPasswordInformation().getHistory().contains(passwordHash)) {
 				valid = false;

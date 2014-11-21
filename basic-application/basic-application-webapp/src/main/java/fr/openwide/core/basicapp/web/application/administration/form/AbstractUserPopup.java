@@ -148,14 +148,12 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 																new UserPasswordValidator(typeDescriptor)
 																		.userModel(getModel())
 														),
-												
 												new CoreLabel("passwordHelp",
 														new ResourceModel(
 																typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
 																new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
 														)
 												),
-												
 												confirmPasswordField
 														.setLabel(new ResourceModel("business.user.confirmPassword"))
 														.setRequired(passwordRequired)

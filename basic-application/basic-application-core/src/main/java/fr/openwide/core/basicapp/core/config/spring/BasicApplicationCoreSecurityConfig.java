@@ -59,6 +59,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 								.passwordRules(
 										new SecurityPasswordRules()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+												.forbiddenUsername()
 								)
 				)
 				.setOptions(
@@ -72,6 +73,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 								.passwordRules(
 										new SecurityPasswordRules()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+												.forbiddenUsername()
 								)
 				)
 				.setDefaultOptions(

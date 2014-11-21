@@ -13,6 +13,7 @@ import edu.vt.middleware.password.NumericalSequenceRule;
 import edu.vt.middleware.password.RegexRule;
 import edu.vt.middleware.password.Rule;
 import edu.vt.middleware.password.UppercaseCharacterRule;
+import edu.vt.middleware.password.UsernameRule;
 import edu.vt.middleware.password.WhitespaceRule;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 
@@ -109,6 +110,16 @@ public class SecurityPasswordRules implements Serializable {
 
 	public SecurityPasswordRules forbiddenCharacters(String characters) {
 		rules.add(new IllegalCharacterRule(characters.toCharArray()));
+		return this;
+	}
+
+	public SecurityPasswordRules forbiddenUsername() {
+		rules.add(new UsernameRule());
+		return this;
+	}
+
+	public SecurityPasswordRules forbiddenUsername(boolean matchBackwards, boolean caseInsensitive) {
+		rules.add(new UsernameRule(matchBackwards, caseInsensitive));
 		return this;
 	}
 
