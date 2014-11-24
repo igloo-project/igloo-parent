@@ -2,8 +2,12 @@ package fr.openwide.core.basicapp.core.security.model;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import edu.vt.middleware.dictionary.ArrayWordList;
+import edu.vt.middleware.dictionary.WordListDictionary;
+import edu.vt.middleware.password.DictionaryRule;
 import edu.vt.middleware.password.DigitCharacterRule;
 import edu.vt.middleware.password.IllegalCharacterRule;
 import edu.vt.middleware.password.LengthRule;
@@ -120,6 +124,18 @@ public class SecurityPasswordRules implements Serializable {
 
 	public SecurityPasswordRules forbiddenUsername(boolean matchBackwards, boolean caseInsensitive) {
 		rules.add(new UsernameRule(matchBackwards, caseInsensitive));
+		return this;
+	}
+
+	public SecurityPasswordRules forbiddenPasswords(List<String> forbiddenPasswords) {
+		return forbiddenPasswords(forbiddenPasswords, true);
+	}
+
+	public SecurityPasswordRules forbiddenPasswords(List<String> forbiddenPasswords, boolean caseInsensitive) {
+		if (forbiddenPasswords == null || forbiddenPasswords.isEmpty()) {
+			return this;
+		}
+		rules.add(new DictionaryRule(new WordListDictionary(new ArrayWordList(forbiddenPasswords.toArray(new String[forbiddenPasswords.size()]), !caseInsensitive))));
 		return this;
 	}
 

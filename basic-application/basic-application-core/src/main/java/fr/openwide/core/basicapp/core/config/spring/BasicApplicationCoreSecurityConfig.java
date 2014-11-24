@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.core.config.spring;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.basicapp.core.security.model.SecurityPasswordRules;
 import fr.openwide.core.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
@@ -19,6 +21,9 @@ import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 
 @Configuration
 public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfig {
+	
+	@Autowired
+	private BasicApplicationConfigurer configurer;
 	
 	@Override
 	@Bean
@@ -60,6 +65,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 										new SecurityPasswordRules()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 												.forbiddenUsername()
+												.forbiddenPasswords(configurer.getSecurityPasswordUserForbiddenPasswords())
 								)
 				)
 				.setOptions(
@@ -74,6 +80,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 										new SecurityPasswordRules()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 												.forbiddenUsername()
+												.forbiddenPasswords(configurer.getSecurityPasswordUserForbiddenPasswords())
 								)
 				)
 				.setDefaultOptions(
