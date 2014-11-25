@@ -24,7 +24,7 @@ public class SimpleFileStorePathGeneratorImpl implements IFileStorePathGenerator
 		thumbnailFilePath.append("-");
 		thumbnailFilePath.append(thumbnailFormat.getName());
 		if (StringUtils.hasText(extension)) {
-			thumbnailFilePath.append(FilenameUtils.EXTENSION_SEPARATOR).append(extension);
+			thumbnailFilePath.append(FilenameUtils.EXTENSION_SEPARATOR).append(thumbnailFormat.getExtension(extension));
 		}
 		
 		return thumbnailFilePath.toString();
