@@ -2,11 +2,14 @@ package fr.openwide.core.test.jpa.more.business;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.StringUtils;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -42,6 +45,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		Long id11 = null;
 		Long id12 = null;
 		Long id13 = null;
+		Long id14 = null;
 		
 		{
 			id1 = createLink("http://www.google.fr/");
@@ -69,6 +73,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			id12 = createLink("http://lacroisee26.com/");
 			
 			id13 = createLink("http://ledauphine.com/");
+			
+			id14 = createLink("https://www.myspace.com/fortenjazz ");
 		}
 		
 		Date beforeFirstBatchDate = new Date();
@@ -122,6 +128,7 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			checkStatusOK(id11, beforeFirstBatchDate);
 			checkStatusOK(id12, beforeFirstBatchDate);
 			checkStatusOK(id13, beforeFirstBatchDate);
+			checkStatusOK(id14, beforeFirstBatchDate);
 		}
 		
 		Date beforeSecondBatchDate = new Date();
@@ -178,22 +185,22 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 		return externalLink.getId();
 	}
 	
-	private void checkStatusOK(Long id8, Date beforeFirstBatchDate) {
-		checkStatus(id8, beforeFirstBatchDate,
+	private void checkStatusOK(Long id, Date beforeFirstBatchDate) {
+		checkStatus(id, beforeFirstBatchDate,
 				ExternalLinkStatus.ONLINE, 0, Integer.valueOf(HttpStatus.SC_OK), null);
 	}
 
-	private void checkStatus(Long id8, Date beforeFirstBatchDate,
+	private void checkStatus(Long id, Date beforeFirstBatchDate,
 			ExternalLinkStatus externalLinkStatus,
 			int consecutiveFailures,
 			Integer httpStatus,
 			ExternalLinkErrorType errorType) {
-		ExternalLinkWrapper externalLink8 = externalLinkWrapperService.getById(id8);
-		Assert.assertEquals(externalLinkStatus, externalLink8.getStatus());
-		Assert.assertEquals(consecutiveFailures, externalLink8.getConsecutiveFailures());
-		Assert.assertEquals(httpStatus, externalLink8.getLastStatusCode());
-		Assert.assertEquals(errorType, externalLink8.getLastErrorType());
-		Assert.assertTrue(externalLink8.getLastCheckDate().after(beforeFirstBatchDate));
+		ExternalLinkWrapper externalLink = externalLinkWrapperService.getById(id);
+		Assert.assertEquals(externalLinkStatus, externalLink.getStatus());
+		Assert.assertEquals(consecutiveFailures, externalLink.getConsecutiveFailures());
+		Assert.assertEquals(httpStatus, externalLink.getLastStatusCode());
+		Assert.assertEquals(errorType, externalLink.getLastErrorType());
+		Assert.assertTrue(externalLink.getLastCheckDate().after(beforeFirstBatchDate));
 	}
 
 }
