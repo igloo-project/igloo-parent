@@ -31,6 +31,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
@@ -163,32 +164,67 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			return;
 		}
 		
-		// Check the URL and update the links
-		try {
-			// We try a HEAD request
-			httpStatus = sendRequest(new HttpHead(uri));
-			if (httpStatus != null && httpStatus.getStatusCode() != HttpStatus.SC_OK) {
-				// If the result of the HEAD request is not OK, we try a GET request
-				// Using HttpStatus.SC_METHOD_NOT_ALLOWED looked like a clever trick but a lot of sites return
-				// 400 or 500 errors for HEAD requests
-				httpStatus = sendRequest(new HttpGet(uri));
+		boolean headIfTrueElseGet = true;
+		boolean retry = false;
+		int numAttempts = 0;
+		do {
+			// Check the URL and update the links
+			try {
+				// If we are retrying, be sure to have these variables at initial values
+				errorType = null;
+				httpStatus = null;
+				
+				// We try a HEAD request
+				if (headIfTrueElseGet) {
+					httpStatus = sendRequest(new HttpHead(uri));
+					
+					if (httpStatus != null && httpStatus.getStatusCode() != HttpStatus.SC_OK) {
+						// If the result of the HEAD request is not OK, we try a GET request
+						// Using HttpStatus.SC_METHOD_NOT_ALLOWED looked like a clever trick but a lot of sites return
+						// 400 or 500 errors for HEAD requests
+						httpStatus = sendRequest(new HttpGet(uri));
+					}
+				} else {
+					// If HEAD request didn't work, we try a GET request
+					httpStatus = sendRequest(new HttpGet(uri));
+				}
+				if (httpStatus == null) {
+					errorType = ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR;
+				} else if (httpStatus.getStatusCode() != HttpStatus.SC_OK) {
+					errorType = ExternalLinkErrorType.HTTP;
+				}
+			} catch (IllegalArgumentException e) {
+				errorType = ExternalLinkErrorType.INVALID_IDN;
+				LOGGER.debug("IllegalArgumentException while checking external link (" + uri.toString() + ").", e);
+			} catch (SocketTimeoutException e) {
+				// If HEAD request failed with socket timeout, let's try with GET request
+				if (headIfTrueElseGet) {
+					// Sample url : http://myspace.com/ (same results with https)
+					// If we try with curl or wget, it seems to give us the same waiting result.
+					// curl --head 'http://myspace.com/'
+					// wget --method=HEAD 'http://myspace.com/'
+					headIfTrueElseGet = false;
+					retry = true;
+					LOGGER.warn("HEAD request on external link (" + uri.toString() + ") resulted to timeout, we will try a GET request.");
+				} else {
+					errorType = ExternalLinkErrorType.TIMEOUT;
+				}
+			} catch (SSLHandshakeException e) {
+				// certificate not supported by Java: we ignore the links
+				markAsIgnored(links);
+				return;
+			} catch (ConnectionPoolTimeoutException e) {
+				// If we have connection pool problem, the problem is at our side, we don't affect links status.
+				LOGGER.debug("ConnectionPoolTimeoutException while checking external link (" + uri.toString() + ").", e);
+				return;
+			} catch (IOException e) {
+				errorType = ExternalLinkErrorType.IO;
 			}
-			if (httpStatus == null) {
-				errorType = ExternalLinkErrorType.UNKNOWN_HTTPCLIENT_ERROR;
-			} else if (httpStatus.getStatusCode() != HttpStatus.SC_OK) {
-				errorType = ExternalLinkErrorType.HTTP;
-			}
-		} catch (IllegalArgumentException e) {
-			errorType = ExternalLinkErrorType.INVALID_IDN;
-		} catch (SocketTimeoutException e) {
-			errorType = ExternalLinkErrorType.TIMEOUT;
-		} catch (SSLHandshakeException e) {
-			// certificate not supported by Java: we ignore the links
-			markAsIgnored(links);
-			return;
-		} catch (IOException e) {
-			errorType = ExternalLinkErrorType.IO;
-		}
+			numAttempts++;
+			
+			// If retry is needed, go back to start of do...while
+			// We never try more than 2 attempts
+		} while (numAttempts < 2 && retry);
 		
 		if (errorType == null) {
 			markAsOnline(links);
@@ -291,7 +327,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			}
 			
 			failureAuditBuilder.append(
-					new ToStringBuilder(ToStringStyle.DEFAULT_STYLE)
+					new ToStringBuilder(null, ToStringStyle.DEFAULT_STYLE)
 							.append("checkDate", checkDate)
 							.append("errorType", errorType)
 							.append("consecutiveFailures", consecutiveFailures)
