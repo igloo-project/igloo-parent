@@ -386,6 +386,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		}
 	}
 	
+	@Override
 	public void addIgnorePattern(Pattern ignorePattern) {
 		this.ignorePatterns.add(ignorePattern);
 	}
