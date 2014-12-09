@@ -285,4 +285,21 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	
 	private StringUtils() {
 	}
+	
+	/**
+	 * Convertit les bytes en données interprétables
+	 * 
+	 * source : http://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java/3758880#3758880
+	 * 
+	 * @param bytes valeur en bytes
+	 * @param si détermine le standard à utiliser (SI ou binary)
+	 * @return équivalent en unités SI ou binary
+	 */
+	public static String humanReadableByteCount(long bytes, boolean si) {
+		int unit = si ? 1000 : 1024;
+		if (bytes < unit) return bytes + " B";
+		int exp = (int) (Math.log(bytes) / Math.log(unit));
+		String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+		return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+	}
 }
