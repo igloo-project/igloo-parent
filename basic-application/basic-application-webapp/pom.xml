@@ -37,6 +37,13 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-components</artifactId>
+			<version>${owsi-core.version}</version>
+			<type>pom</type>
+		</dependency>
+		
 		<!-- Wicket debug bar -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
