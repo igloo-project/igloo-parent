@@ -3,6 +3,40 @@
 	margin-left: @width / -2;
 }
 
+.modal {
+	.modal-header {
+		min-height: 23px;
+		
+		h3 {
+			margin: 0;
+			font-weight: bold;
+			font-size: 16px;
+			line-height: 23px;
+			color: #666;
+			text-rendering: optimizelegibility; // Fix the character spacing for headings
+			margin-right: 20px;
+			border-bottom: none;
+		}
+	}
+	
+	input.hasDatepicker,
+	input.hasMonthpicker {
+		z-index: @zindex-modal-date-picker;
+		position: relative;
+	}
+}
+
+.modal-work-in-progress {
+	.close {
+		.hidden();
+	}
+	
+	.modal-footer {
+		.hidden();
+	}
+}
+
+// pour les anciennes modal basées sur fancybox
 #fancybox-wrap {
 	&.working {
 		.loadinfo {
@@ -29,30 +63,6 @@
 	}
 }
 
-.modal {
-	.modal-header {
-		min-height: 23px;
-		
-		h3 {
-			margin: 0;
-			font-weight: bold;
-			font-size: 16px;
-			line-height: 23px;
-			color: #666;
-			text-rendering: optimizelegibility; // Fix the character spacing for headings
-			margin-right: 20px;
-			border-bottom: none;
-		}
-	}
-	
-	input.hasDatepicker,
-	input.hasMonthpicker {
-		z-index: @zindex-modal-date-picker;
-		position: relative;
-	}
-}
-
-// pour les anciennes modal basées sur fancybox
 .modal.fancybox-compatibility {
 	// surcharge de bootstrap-modal.less
 	position: relative;
