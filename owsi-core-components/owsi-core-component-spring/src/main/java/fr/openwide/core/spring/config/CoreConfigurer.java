@@ -25,6 +25,8 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final int TASK_STOP_TIMEOUT_DEFAULT = 70000;
 	private static final int TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT = 1;
 	
+	private static final String MIGRATION_LOGGING_MEMORY = "migration.logging.memory";
+	
 	public String getVersion() {
 		return getPropertyAsString("version");
 	}
@@ -40,6 +42,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	
 	public boolean isConfigurationTypeDevelopment() {
 		return CONFIGURATION_TYPE_DEVELOPMENT.equals(getConfigurationType());
+	}
+	
+	public boolean isMigrationLoggingMemory() {
+		return getPropertyAsBoolean(MIGRATION_LOGGING_MEMORY);
 	}
 	
 	public File getTmpDirectory() {
