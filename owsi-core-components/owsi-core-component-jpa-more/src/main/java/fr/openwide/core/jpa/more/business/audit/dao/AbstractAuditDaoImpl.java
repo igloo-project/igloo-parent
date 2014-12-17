@@ -19,16 +19,16 @@ package fr.openwide.core.jpa.more.business.audit.dao;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 import org.hibernate.Hibernate;
+
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
-import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit_;
+import fr.openwide.core.jpa.more.business.audit.model.QAbstractAudit;
 
 /**
  * <p>
@@ -51,61 +51,48 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 		return getEntity(clazz, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> listByContextOrObject(GenericEntity<?, ?> entity) {
-		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(getObjectClass());
-		Root<T> root = cq.from(getObjectClass());
+	public List<T> listByContextOrObject(GenericEntity<Long, ?> entity) {
+		PathBuilder<? extends AbstractAudit> path = new PathBuilder<AbstractAudit>(getObjectClass(), "abstractAudit");
+		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
-		cq.select(root);
-		
-		cq.where(cb.or(
-				cb.and(
-						cb.equal(root.get(AbstractAudit_.contextClass), Hibernate.getClass(entity).getName()),
-						cb.equal(root.get(AbstractAudit_.contextId), entity.getId())
-				),
-				cb.and(
-						cb.equal(root.get(AbstractAudit_.objectClass), Hibernate.getClass(entity).getName()),
-						cb.equal(root.get(AbstractAudit_.objectId), entity.getId())
-				)
-		));
-		
-		cq.orderBy(cb.desc(root.get(AbstractAudit_.date)));
-		
-		return getEntityManager().createQuery(cq).getResultList();
+		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
+				.where(
+						(
+								qAbstractAudit.contextClass.eq(Hibernate.getClass(entity).getName())
+								.and(qAbstractAudit.contextId.eq(entity.getId()))
+						).or(
+								qAbstractAudit.objectClass.eq(Hibernate.getClass(entity).getName())
+								.and(qAbstractAudit.objectId.eq(entity.getId()))
+						)
+				).orderBy(qAbstractAudit.date.desc()).list((BeanPath<T>) qAbstractAudit);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> listBySubject(GenericEntity<?, ?> subject) {
-		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(getObjectClass());
-		Root<T> root = cq.from(getObjectClass());
+	public List<T> listBySubject(GenericEntity<Long, ?> subject) {
+		PathBuilder<? extends AbstractAudit> path = new PathBuilder<AbstractAudit>(getObjectClass(), "abstractAudit");
+		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
-		cq.select(root);
-		
-		cq.where(cb.and(
-				cb.equal(root.get(AbstractAudit_.subjectClass), Hibernate.getClass(subject).getName()),
-				cb.equal(root.get(AbstractAudit_.subjectId), subject.getId())
-		));
-		
-		cq.orderBy(cb.desc(root.get(AbstractAudit_.date)));
-		
-		return getEntityManager().createQuery(cq).getResultList();
+		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
+				.where(
+						qAbstractAudit.subjectClass.eq(Hibernate.getClass(subject).getName())
+						.and(qAbstractAudit.subjectId.eq(subject.getId()))
+				).orderBy(qAbstractAudit.date.desc()).list((BeanPath<T>) qAbstractAudit);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> listToDelete(Integer daysToKeep) {
-		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(getObjectClass());
-		Root<T> root = cq.from(getObjectClass());
+		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
+		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -daysToKeep);
 		
-		cq.select(root);
-		
-		cq.where(cb.lessThan(root.get(AbstractAudit_.date), calendar.getTime()));
-		
-		return getEntityManager().createQuery(cq).getResultList();
+		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
+				.where(qAbstractAudit.date.before(calendar.getTime()))
+				.list((BeanPath<T>) qAbstractAudit);
 	}
 }

@@ -141,12 +141,12 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit> extends 
 	}
 
 	@Override
-	public List<T> listByContextOrObject(GenericEntity<?, ?> entity) {
+	public List<T> listByContextOrObject(GenericEntity<Long, ?> entity) {
 		return auditDao.listByContextOrObject(entity);
 	}
 
 	@Override
-	public List<T> listBySubject(GenericEntity<?, ?> subject) {
+	public List<T> listBySubject(GenericEntity<Long, ?> subject) {
 		return auditDao.listBySubject(subject);
 	}
 
