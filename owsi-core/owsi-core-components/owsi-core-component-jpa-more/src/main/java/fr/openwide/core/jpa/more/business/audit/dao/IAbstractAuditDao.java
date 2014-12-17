@@ -42,7 +42,7 @@ public interface IAbstractAuditDao<T extends AbstractAudit> extends IGenericEnti
 	 * @param subject utilisateur ayant émis les Audits
 	 * @return liste des Audits correspondants
 	 */
-	List<T> listBySubject(GenericEntity<?, ?> subject);
+	List<T> listBySubject(GenericEntity<Long, ?> subject);
 
 	/**
 	 * Renvoie la liste des Audits dont le contexte ou l'objet concernent
@@ -52,7 +52,7 @@ public interface IAbstractAuditDao<T extends AbstractAudit> extends IGenericEnti
 	 *            entité concernée par les Audits
 	 * @return liste des Audits correspondants
 	 */
-	List<T> listByContextOrObject(GenericEntity<?, ?> entity);
+	List<T> listByContextOrObject(GenericEntity<Long, ?> entity);
 
 
 	/**

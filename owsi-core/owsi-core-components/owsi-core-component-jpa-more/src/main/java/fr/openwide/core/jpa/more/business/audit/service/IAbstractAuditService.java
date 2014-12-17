@@ -81,7 +81,7 @@ public interface IAbstractAuditService<T extends AbstractAudit> extends IGeneric
 	 * @param subject le sujet concerné
 	 * @return les Audits concernés
 	 */
-	List<T> listBySubject(GenericEntity<?, ?> subject);
+	List<T> listBySubject(GenericEntity<Long, ?> subject);
 
 	/**
 	 * Renvoie la liste des Audits dont le contexte ou l'objet concernent l'entité indiquée.
@@ -89,7 +89,7 @@ public interface IAbstractAuditService<T extends AbstractAudit> extends IGeneric
 	 * @param entity entité concernée par les Audits
 	 * @return liste des Audits correspondants
 	 */
-	List<T> listByContextOrObject(GenericEntity<?, ?> entity);
+	List<T> listByContextOrObject(GenericEntity<Long, ?> entity);
 
 	/**
 	 * Renvoie le contexte d'un Audit.
@@ -115,5 +115,5 @@ public interface IAbstractAuditService<T extends AbstractAudit> extends IGeneric
 	 * @return liste des lignes qu'on va supprimer
 	 */
 	List<T> listToDelete(Integer daysToKeep);
-	
+
 }
