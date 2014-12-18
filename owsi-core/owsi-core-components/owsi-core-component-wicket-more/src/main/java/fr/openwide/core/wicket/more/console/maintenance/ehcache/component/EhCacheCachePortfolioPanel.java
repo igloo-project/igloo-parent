@@ -29,6 +29,7 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCac
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import fr.openwide.core.wicket.more.markup.html.basic.PercentageValueLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
 import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardDataAttributeModifier;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -120,14 +121,14 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								CoreWicketMoreBindings.ehCacheCacheInformation().memoryStoreObjectCount())));
 						item.add(new Label("cacheEvictionCount", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().evictionCount())));
-						item.add(new PercentageValueLabel("cacheCacheFillRatio", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio())));
+						item.add(new PercentageValueLabel("cacheCacheFillRatio", PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel, 
+								CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio())), false, true));
 						item.add(new Label("cacheHits", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().cacheHits())));
 						item.add(new Label("cacheMisses", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().cacheMisses())));
-						item.add(new PercentageValueLabel("cacheHitRatio", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio())));
+						item.add(new PercentageValueLabel("cacheHitRatio", PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel, 
+								CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio())), false, true));
 						
 						WebMarkupContainer progressBarsContainer = new WebMarkupContainer("progressBarsContainer");
 						item.add(progressBarsContainer);
