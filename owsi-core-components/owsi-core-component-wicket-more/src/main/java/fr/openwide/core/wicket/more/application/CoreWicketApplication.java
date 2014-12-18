@@ -58,6 +58,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Autowired
 	protected ILessCssService lessCssService;
 	
+	/**
+	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
+	 */
+	private Locale numberFormatLocale = Locale.FRENCH;
+	
 	private static final Duration DEFAULT_TIMEOUT = Duration.minutes(10);
 	
 	public static CoreWicketApplication get() {
@@ -211,6 +216,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	public final IPageLinkDescriptor getHomePageLinkDescriptor() {
 		return new LinkDescriptorBuilder().page(getHomePage()).build();
+	}
+
+	public Locale getNumberFormatLocale() {
+		return numberFormatLocale;
 	}
 
 }
