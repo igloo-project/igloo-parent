@@ -84,6 +84,11 @@ public class PercentageBigDecimalConverter implements IConverter<BigDecimal> {
 		
 		getDecimalFormatSymbols().getDecimalSeparator();
 		
+		/*
+		 *  La vérification suivante a pour but de s'assurer que le parser envoie une exception pour des données
+		 *  commençant par des chiffres suivis d'autres caractères non valides (ex: '54?' ou '54toto') plutôt
+		 *  que de les parser silencieusement.
+		 */
 		ParsePosition pos = new ParsePosition(0);
 		BigDecimal bigDecimal = (BigDecimal) decimalFormat.parse(value, pos);
 		if (pos.getIndex() < value.length()) {
