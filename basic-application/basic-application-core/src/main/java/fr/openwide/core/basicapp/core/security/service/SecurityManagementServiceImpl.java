@@ -34,9 +34,9 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
 	private static final String AUDIT_UPDATE_PASSWORD_METHOD_NAME = "updatePassword";
 
-	private static Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> OPTIONS_BY_USER = Maps.newHashMap();
+	private Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> optionsByUser = Maps.newHashMap();
 
-	private static SecurityOptions DEFAULT_OPTIONS = SecurityOptions.DEFAULT;
+	private SecurityOptions defaultOptions = SecurityOptions.DEFAULT;
 
 	@Autowired
 	private IUserService userService;
@@ -58,7 +58,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		checkNotNull(clazz);
 		checkNotNull(options);
 		
-		OPTIONS_BY_USER.put(clazz, options);
+		optionsByUser.put(clazz, options);
 		
 		return this;
 	}
@@ -66,23 +66,23 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	public SecurityManagementServiceImpl setDefaultOptions(SecurityOptions options) {
 		checkNotNull(options);
 		
-		DEFAULT_OPTIONS = options;
+		defaultOptions = options;
 		
 		return this;
 	}
 
 	@Override
 	public SecurityOptions getOptions(Class<? extends User> clazz) {
-		if (OPTIONS_BY_USER.containsKey(clazz)) {
-			return OPTIONS_BY_USER.get(clazz);
+		if (optionsByUser.containsKey(clazz)) {
+			return optionsByUser.get(clazz);
 		}
-		return DEFAULT_OPTIONS;
+		return defaultOptions;
 	}
 
 	@Override
 	public SecurityOptions getOptions(User user) {
 		if (user == null) {
-			return DEFAULT_OPTIONS;
+			return defaultOptions;
 		}
 		return getOptions(HibernateUtils.unwrap(user).getClass());
 	}
