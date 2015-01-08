@@ -17,6 +17,9 @@ public final class BasicApplicationInitFromExcelMain {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasicApplicationInitFromExcelMain.class);
 
+	private BasicApplicationInitFromExcelMain() {
+	}
+
 	public static void main(String[] args) throws ServiceException, SecurityServiceException, IOException {
 		ConfigurableApplicationContext context = null;
 		try {
@@ -42,7 +45,5 @@ public final class BasicApplicationInitFromExcelMain {
 		}
 		System.exit(0);
 	}
-	
-	private BasicApplicationInitFromExcelMain() {
-	}
+
 }

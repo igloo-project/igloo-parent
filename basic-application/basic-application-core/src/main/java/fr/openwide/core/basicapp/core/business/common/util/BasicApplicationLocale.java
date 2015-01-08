@@ -7,9 +7,6 @@ import com.google.common.collect.ImmutableList;
 
 public final class BasicApplicationLocale {
 
-	private BasicApplicationLocale() {
-	}
-
 	public static final Locale ENGLISH = Locale.ENGLISH;
 	public static final Locale FRENCH = Locale.FRENCH;
 
@@ -21,5 +18,8 @@ public final class BasicApplicationLocale {
 	public static final Collection<Locale> ALL = ImmutableList.of(
 			FRENCH, ENGLISH
 	);
+
+	private BasicApplicationLocale() {
+	}
 
 }

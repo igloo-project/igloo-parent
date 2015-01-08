@@ -36,10 +36,6 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 				.map(CommonParameters.SOURCE_PAGE_ID, sourcePageModel, Page.class).optional()
 				.build();
 	}
-	
-	public static IPageLinkGenerator linkGenerator(IModel<UserGroup> userGroupModel) {
-		return linkDescriptor(userGroupModel, Model.of((Page)null));
-	}
 
 	public AdministrationUserGroupDescriptionPage(PageParameters parameters) {
 		super(parameters);
@@ -70,6 +66,10 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 				new UserGroupDescriptionPanel("description", userGroupModel),
 				new UserGroupMembersPanel("members", userGroupModel)
 		);
+	}
+
+	public static IPageLinkGenerator linkGenerator(IModel<UserGroup> userGroupModel) {
+		return linkDescriptor(userGroupModel, Model.of((Page)null));
 	}
 
 	@Override

@@ -37,19 +37,13 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordRecoveryPage.class);
 
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordRecoveryPage.class)
-				.build();
-	}
+	private final IModel<String> emailModel = Model.of("");
 
 	@SpringBean
 	private IUserService userService;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
-
-	private final IModel<String> emailModel = Model.of("");
 
 	public SecurityPasswordRecoveryPage(PageParameters parameters) {
 		super(parameters);
@@ -58,6 +52,12 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 		BasicApplicationSession.get().signOut();
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.recovery.pageTitle")));
+	}
+
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(SecurityPasswordRecoveryPage.class)
+				.build();
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 										}
 										
 										FeedbackUtils.refreshFeedback(target, getPage());
-									};
+									}
 									
 									@Override
 									protected void onError(AjaxRequestTarget target, Form<?> form) {

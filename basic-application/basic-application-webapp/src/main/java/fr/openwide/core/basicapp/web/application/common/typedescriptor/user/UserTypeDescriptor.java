@@ -9,10 +9,6 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 
 	private static final long serialVersionUID = -349656773642244352L;
 
-	public static <U extends User> UserTypeDescriptor<U> get(U entity) {
-		return (UserTypeDescriptor<U>) AbstractGenericEntityTypeDescriptor.<UserTypeDescriptor<U>, U>get(UserTypeDescriptor.class, entity);
-	}
-
 	public static final UserTypeDescriptor<TechnicalUser> TECHNICAL_USER = new UserTypeDescriptor<TechnicalUser>(TechnicalUser.class, "technicalUser") {
 		private static final long serialVersionUID = 1L;
 
@@ -93,6 +89,10 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 
 	protected UserTypeDescriptor(Class<U> clazz, String name) {
 		super(UserTypeDescriptor.class, clazz, name);
+	}
+
+	public static <U extends User> UserTypeDescriptor<U> get(U entity) {
+		return (UserTypeDescriptor<U>) AbstractGenericEntityTypeDescriptor.<UserTypeDescriptor<U>, U>get(UserTypeDescriptor.class, entity);
 	}
 
 	public abstract AdministrationUserTypeDescriptor<U> administrationTypeDescriptor();

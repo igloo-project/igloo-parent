@@ -20,6 +20,16 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 
 	private static final Map<Pair<Class<?>, Class<?>>, AbstractGenericEntityTypeDescriptor<?, ?>> ALL = Maps.newHashMap();
 
+	private final Class<E> clazz;
+
+	private final String name;
+
+	protected AbstractGenericEntityTypeDescriptor(Class<?> typeDescriptorClass, Class<E> clazz, String name) {
+		ALL.put(Pair.<Class<?>, Class<?>>with(typeDescriptorClass, clazz), this);
+		this.clazz = checkNotNull(clazz);
+		this.name = checkNotNull(name);
+	}
+
 	@SuppressWarnings("unchecked")
 	protected static final <T extends AbstractGenericEntityTypeDescriptor<?, E>, E extends GenericEntity<?, ?>> T get(Class<?> typeDescriptorClass, E entity) {
 		if (entity == null) {
@@ -39,16 +49,6 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 		}
 		
 		throw new IllegalStateException("Unknown type for entity " + entity);
-	}
-
-	private final Class<E> clazz;
-
-	private final String name;
-
-	protected AbstractGenericEntityTypeDescriptor(Class<?> typeDescriptorClass, Class<E> clazz, String name) {
-		ALL.put(Pair.<Class<?>, Class<?>>with(typeDescriptorClass, clazz), this);
-		this.clazz = checkNotNull(clazz);
-		this.name = checkNotNull(name);
 	}
 
 	public Class<E> getEntityClass() {

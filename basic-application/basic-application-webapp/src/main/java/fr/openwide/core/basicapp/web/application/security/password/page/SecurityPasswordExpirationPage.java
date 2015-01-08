@@ -36,23 +36,23 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordExpirationPage.class);
 
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordExpirationPage.class)
-				.build();
-	}
-
-	@SpringBean
-	private ISecurityManagementService securityManagementService;
-
 	private final UserTypeDescriptor<?> typeDescriptor = UserTypeDescriptor.get(BasicApplicationSession.get().getUser());
 
 	private final IModel<String> newPasswordModel = Model.of("");
+
+	@SpringBean
+	private ISecurityManagementService securityManagementService;
 
 	public SecurityPasswordExpirationPage(PageParameters parameters) {
 		super(parameters);
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle")));
+	}
+
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(SecurityPasswordExpirationPage.class)
+				.build();
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 										}
 										
 										FeedbackUtils.refreshFeedback(target, getPage());
-									};
+									}
 									
 									@Override
 									protected void onError(AjaxRequestTarget target, Form<?> form) {

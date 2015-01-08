@@ -21,7 +21,7 @@ public class SecurityOptions implements Serializable {
 
 	private SecurityPasswordRules passwordRules;
 
-	public static SecurityOptions DEFAULT = new SecurityOptions()
+	public static final SecurityOptions DEFAULT = new SecurityOptions()
 				.passwordAdminRecovery()
 				.passwordUserRecovery()
 				.passwordAdminUpdate()

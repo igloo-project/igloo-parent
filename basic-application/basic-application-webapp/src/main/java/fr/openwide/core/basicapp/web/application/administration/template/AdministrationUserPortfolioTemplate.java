@@ -7,6 +7,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
@@ -33,6 +35,12 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 	public AdministrationUserPortfolioTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor, IModel<String> pageTitleModel) {
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
+		
+		Logger logger = LoggerFactory.getLogger(AdministrationUserPortfolioTemplate.class);
+		logger.debug("debug");
+		logger.info("info");
+		logger.warn("warn");
+		logger.error("error");
 		
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		

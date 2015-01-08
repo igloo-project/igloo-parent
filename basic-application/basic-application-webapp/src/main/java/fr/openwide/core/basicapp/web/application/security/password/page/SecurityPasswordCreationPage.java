@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
@@ -42,17 +41,6 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordCreationPage.class);
-
-	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordCreationPage.class)
-				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
-				.build();
-	}
-	
-	@SpringBean
-	private IUserService userService;
 
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 
@@ -79,6 +67,14 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 		}
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.creation.pageTitle")));
+	}
+
+	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
+		return new LinkDescriptorBuilder()
+				.page(SecurityPasswordCreationPage.class)
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
+				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
+				.build();
 	}
 
 	@Override

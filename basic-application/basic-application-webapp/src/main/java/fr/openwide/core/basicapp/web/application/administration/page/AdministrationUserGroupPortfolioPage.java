@@ -31,12 +31,6 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 
 	@SpringBean
 	private IUserGroupService userGroupService;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(AdministrationUserGroupPortfolioPage.class)
-				.build();
-	}
 
 	public AdministrationUserGroupPortfolioPage(PageParameters parameters) {
 		super(parameters);
@@ -61,6 +55,12 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 				new BlankLink("addButton")
 						.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK))
 		);
+	}
+
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserGroupPortfolioPage.class)
+				.build();
 	}
 
 	@Override

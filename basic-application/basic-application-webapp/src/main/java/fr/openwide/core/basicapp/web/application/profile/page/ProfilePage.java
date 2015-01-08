@@ -18,12 +18,6 @@ public class ProfilePage extends ProfileTemplate {
 
 	private static final long serialVersionUID = -8757939680257114559L;
 
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ProfilePage.class)
-				.build();
-	}
-
 	protected final IModel<User> userModel = BasicApplicationSession.get().getUserModel();
 
 	public ProfilePage(PageParameters parameters) {
@@ -35,6 +29,12 @@ public class ProfilePage extends ProfileTemplate {
 				new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())),
 				new ProfileInformationPanel("description", userModel)
 		);
+	}
+
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ProfilePage.class)
+				.build();
 	}
 
 	@Override
