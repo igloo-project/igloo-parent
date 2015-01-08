@@ -30,18 +30,16 @@ import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescri
 public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTemplate {
 
 	private static final long serialVersionUID = -6767518941118385548L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleNotificationDemoIndexPage.class);
-	
+
 	public static final String DEFAULT_USERNAME = "admin";
-	
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder().page(ConsoleNotificationDemoIndexPage.class).build();
-	}
-	
+
+	private static final Range<Long> DEFAULT_ID_RANGE = Range.closed(1L, 100L);
+
 	@SpringBean
 	private INotificationService notificationService;
-	
+
 	public ConsoleNotificationDemoIndexPage(PageParameters parameters) {
 		super(parameters);
 		
@@ -85,9 +83,11 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 			}
 		});
 	}
-	
-	private static final Range<Long> DEFAULT_ID_RANGE = Range.closed(1L, 100L);
-	
+
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder().page(ConsoleNotificationDemoIndexPage.class).build();
+	}
+
 	private List<NotificationDemoEntry> createDemoEntries() {
 		return Lists.<NotificationDemoEntry>newArrayList(
 				new NotificationDemoEntry("example") {
