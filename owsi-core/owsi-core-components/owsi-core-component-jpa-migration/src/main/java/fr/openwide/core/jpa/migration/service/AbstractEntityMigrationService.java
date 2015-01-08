@@ -37,8 +37,6 @@ public abstract class AbstractEntityMigrationService {
 
 	public static final int DEFAULT_TIMEOUT = 15;
 
-	public static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.MINUTES;
-
 	public static final Logger PROGRESS_LOGGER = LoggerFactory.getLogger(ProcessorProgressLogger.class);
 
 	private static final String SQL_COUNT_ROWS = "SELECT count(*) FROM %1$s";
@@ -60,13 +58,21 @@ public abstract class AbstractEntityMigrationService {
 	private TransactionTemplate readOnlyTransactionTemplate;
 
 	private TransactionTemplate writeTransactionTemplate;
+	
+	protected int getDefaultTimeoutInMinutes() {
+		return DEFAULT_TIMEOUT;
+	}
 
 	public ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement) {
-		return createThreadedProcessor(maxLoggingIncrement, DEFAULT_TIMEOUT);
+		return createThreadedProcessor(maxLoggingIncrement, getDefaultTimeoutInMinutes());
 	}
 
 	public ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement, int timeoutInMinutes) {
-		return new ThreadedProcessor(4, timeoutInMinutes, DEFAULT_TIMEOUT_UNIT, 1, TimeUnit.MINUTES, configurer,
+		return new ThreadedProcessor(
+				4,
+				timeoutInMinutes, TimeUnit.MINUTES,
+				1, TimeUnit.MINUTES,
+				configurer,
 				2, TimeUnit.SECONDS,  // intervalle minimum pour le logging
 				30, TimeUnit.SECONDS, // intervalle de temps maxi entre deux logs
 				maxLoggingIncrement,  // intervalle de nombre d'éléments traités maxi entre deux logs
