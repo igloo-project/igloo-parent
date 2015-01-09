@@ -29,7 +29,14 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class SelectBoxPage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = -4802009584951257187L;
+
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(SelectBoxPage.class)
+				.build();
+	}
 	
 	@SpringBean
 	private IUserService userService;
@@ -40,12 +47,6 @@ public class SelectBoxPage extends WidgetsTemplate {
 	
 	private List<User> ajaxSelectedUsers = Lists.newArrayList();
 	
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SelectBoxPage.class)
-				.build();
-	}
-
 	public SelectBoxPage(PageParameters parameters) {
 		super(parameters);
 		

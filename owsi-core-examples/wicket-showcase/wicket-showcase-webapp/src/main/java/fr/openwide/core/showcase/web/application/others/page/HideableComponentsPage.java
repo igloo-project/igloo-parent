@@ -40,11 +40,11 @@ import fr.openwide.core.wicket.more.model.GenericEntityArrayListModel;
 public class HideableComponentsPage extends MainTemplate {
 
 	private static final long serialVersionUID = -1538563562722555674L;
-	
+
 	@SpringBean
 	private IUserService userService;
 	
-	public static IPageLinkDescriptor linkDescriptor() {
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(HideableComponentsPage.class)
 				.build();

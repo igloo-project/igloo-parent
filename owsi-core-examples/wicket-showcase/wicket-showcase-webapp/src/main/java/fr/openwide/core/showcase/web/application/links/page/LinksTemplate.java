@@ -29,7 +29,7 @@ public abstract class LinksTemplate extends MainTemplate {
 	
 	private static final long serialVersionUID = -2979443021509594346L;
 	
-	public static IPageLinkDescriptor linkDescriptor(IModel<? extends Class<? extends Page>> pageModel, IModel<User> userModel) {
+	public static final IPageLinkDescriptor linkDescriptor(IModel<? extends Class<? extends Page>> pageModel, IModel<User> userModel) {
 		return new LinkDescriptorBuilder()
 				.page(pageModel)
 				.map(CommonParameters.ID, userModel, User.class).mandatory()

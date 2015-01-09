@@ -25,9 +25,10 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class ListFilterPage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = 593301451585725585L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(ListFilterPage.class)
 				.build();

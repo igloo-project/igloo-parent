@@ -10,8 +10,8 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 public class FileUploadPage extends WidgetsTemplate {
 
 	private static final long serialVersionUID = 3280671690404455426L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(FileUploadPage.class)
 				.build();

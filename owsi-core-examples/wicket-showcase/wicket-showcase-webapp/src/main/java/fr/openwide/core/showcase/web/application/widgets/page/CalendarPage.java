@@ -14,9 +14,10 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class CalendarPage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = -3963117430192776716L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(CalendarPage.class)
 				.build();

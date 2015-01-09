@@ -57,18 +57,18 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL)
 			.enable(SerializationFeature.INDENT_OUTPUT);
 
-	@SpringBean
-	private IQueuedTaskHolderManager queuedTaskHolderManager;
-	
-	@SpringBean
-	private IQueuedTaskHolderService queuedTaskHolderService;
-
-	public static IPageLinkDescriptor linkDescriptor(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
+	public static final IPageLinkDescriptor linkDescriptor(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
 		return new LinkDescriptorBuilder()
 				.page(ConsoleMaintenanceTaskDescriptionPage.class)
 				.map(CommonParameters.ID, queuedTaskHolderModel, QueuedTaskHolder.class).mandatory()
 				.build();
 	}
+	
+	@SpringBean
+	private IQueuedTaskHolderManager queuedTaskHolderManager;
+	
+	@SpringBean
+	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	public ConsoleMaintenanceTaskDescriptionPage(PageParameters parameters) {
 		super(parameters);

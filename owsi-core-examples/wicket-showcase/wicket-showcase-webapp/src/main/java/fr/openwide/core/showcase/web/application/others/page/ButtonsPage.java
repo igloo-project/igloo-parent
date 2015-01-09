@@ -15,8 +15,8 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
 public class ButtonsPage extends MainTemplate {
 
 	private static final long serialVersionUID = -1538563562722555674L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(ButtonsPage.class)
 				.build();

@@ -13,9 +13,10 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AutocompletePage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = 1019469897091555748L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(AutocompletePage.class)
 				.build();

@@ -11,18 +11,18 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
 public class LinksPage2 extends LinksTemplate {
-	
+
 	private static final long serialVersionUID = 2581363150311136728L;
-	
-	@SpringBean
-	private IUserService userService;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(LinksPage2.class)
 				.build();
 	}
-
+	
+	@SpringBean
+	private IUserService userService;
+	
 	public LinksPage2(PageParameters parameters) {
 		super(parameters);
 	}

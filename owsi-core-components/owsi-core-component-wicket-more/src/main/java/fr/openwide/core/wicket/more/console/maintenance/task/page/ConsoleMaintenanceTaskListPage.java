@@ -15,7 +15,7 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
 	private static final long serialVersionUID = -4085517848301335018L;
 
-	public static IPageLinkDescriptor linkDescriptor() {
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(ConsoleMaintenanceTaskListPage.class)
 				.build();
