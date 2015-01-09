@@ -190,8 +190,8 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsInteger("security.password.history.count", 4);
 	}
 	
-	public String getSecurityPasswordRecoveryRequestTokenSalt() {
-		return getPropertyAsString("security.password.recovery.request.token.salt");
+	public Integer getSecurityPasswordRecoveryRequestTokenRandomCount() {
+		return getPropertyAsInteger("security.password.recovery.request.token.random.count", 50);
 	}
 	
 	public Integer getSecurityPasswordRecoveryRequestExpirationMinutes() {
