@@ -34,7 +34,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
 	private static final String AUDIT_UPDATE_PASSWORD_METHOD_NAME = "updatePassword";
 
-	private Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> optionsByUser = Maps.newHashMap();
+	private final Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> optionsByUser = Maps.newHashMap();
 
 	private SecurityOptions defaultOptions = SecurityOptions.DEFAULT;
 
