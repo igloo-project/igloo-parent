@@ -19,16 +19,17 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class SortableListPage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = -4802009584951257187L;
 
-	@SpringBean
-	private IUserService userService;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(SortableListPage.class)
 				.build();
 	}
+
+	@SpringBean
+	private IUserService userService;
 	
 	public SortableListPage(PageParameters parameters) {
 		super(parameters);

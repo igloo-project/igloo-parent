@@ -16,10 +16,10 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class BootstrapJsPage extends WidgetsTemplate {
-	
+
 	private static final long serialVersionUID = -187415297020105589L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(BootstrapJsPage.class)
 				.build();

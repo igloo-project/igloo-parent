@@ -7,9 +7,10 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
 public class WidgetsMainPage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = 3092941096047935122L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(WidgetsMainPage.class)
 				.build();

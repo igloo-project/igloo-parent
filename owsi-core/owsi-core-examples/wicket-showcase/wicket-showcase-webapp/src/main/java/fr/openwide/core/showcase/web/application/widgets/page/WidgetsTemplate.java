@@ -15,7 +15,7 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
 public abstract class WidgetsTemplate extends MainTemplate {
 
 	private static final long serialVersionUID = 3206542664239463727L;
-	
+
 	public WidgetsTemplate(PageParameters parameters) {
 		super(parameters);
 		

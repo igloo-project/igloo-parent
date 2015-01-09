@@ -13,9 +13,10 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.more.
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AutosizePage extends WidgetsTemplate {
+
 	private static final long serialVersionUID = -4802009584951257187L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(AutosizePage.class)
 				.build();

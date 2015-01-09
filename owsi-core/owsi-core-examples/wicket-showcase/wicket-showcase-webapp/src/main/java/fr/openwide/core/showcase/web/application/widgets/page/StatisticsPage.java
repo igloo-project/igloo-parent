@@ -29,7 +29,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 public class StatisticsPage extends WidgetsTemplate {
 
 	private static final long serialVersionUID = -2974578921366640131L;
-	
+
 	private static final List<Integer> ACTIVE_USERS_STATS = Lists.newArrayList(40,61,108,125,134,159);
 	
 	private static final List<Integer> SALES_P1_STATS = Lists.newArrayList(14,8,35,40);
@@ -43,7 +43,7 @@ public class StatisticsPage extends WidgetsTemplate {
 	private static final String Q3_TICK = "Q3";
 	private static final String Q4_TICK = "Q4";
 	
-	public static IPageLinkDescriptor linkDescriptor() {
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(StatisticsPage.class)
 				.build();

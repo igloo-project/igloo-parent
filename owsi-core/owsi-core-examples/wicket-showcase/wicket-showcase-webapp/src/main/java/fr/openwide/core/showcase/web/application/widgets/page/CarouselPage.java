@@ -12,8 +12,8 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 public class CarouselPage extends WidgetsTemplate {
 
 	private static final long serialVersionUID = -1589558461083310335L;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
+
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(CarouselPage.class)
 				.build();

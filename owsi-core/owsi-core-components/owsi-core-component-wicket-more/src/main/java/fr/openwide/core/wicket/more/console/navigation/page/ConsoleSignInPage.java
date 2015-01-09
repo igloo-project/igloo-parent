@@ -31,7 +31,7 @@ public class ConsoleSignInPage extends CoreWebPage {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleSignInPage.class);
 	
-	public static IPageLinkDescriptor linkDescriptor() {
+	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(ConsoleSignInPage.class)
 				.build();

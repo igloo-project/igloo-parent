@@ -23,19 +23,20 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public class PortfolioMainPage extends MainTemplate {
+
 	private static final long serialVersionUID = 6572019030268485555L;
+
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(PortfolioMainPage.class)
+				.build();
+	}
 	
 	@SpringBean
 	private ShowcaseConfigurer showcaseConfigurer;
 	
 	@SpringBean
 	private IUserService userService;
-	
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(PortfolioMainPage.class)
-				.build();
-	}
 	
 	public PortfolioMainPage(PageParameters parameters) {
 		super(parameters);
