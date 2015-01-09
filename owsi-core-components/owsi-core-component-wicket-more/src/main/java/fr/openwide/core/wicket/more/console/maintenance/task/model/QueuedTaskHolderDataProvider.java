@@ -124,6 +124,7 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 		statusesModel.detach();
 		resultsModel.detach();
 		taskTypesModel.detach();
+		queueIdsModel.detach();
 		creationDateModel.detach();
 		startDateModel.detach();
 		completionDateModel.detach();
