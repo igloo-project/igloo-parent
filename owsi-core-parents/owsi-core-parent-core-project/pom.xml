@@ -14,8 +14,4 @@
 	
 	<name>OWSI Core - Parent - Core project</name>
 	
-	<properties>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
-	</properties>
-	
 </project>
