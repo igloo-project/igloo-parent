@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -98,7 +98,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException, SecurityServiceException {
 		Date now = new Date();
 		
-		user.getPasswordRecoveryRequest().setToken(getPasswordChangeRequestToken(user, now));
+		user.getPasswordRecoveryRequest().setToken(RandomStringUtils.randomAlphanumeric(configurer.getSecurityPasswordRecoveryRequestTokenRandomCount()));
 		user.getPasswordRecoveryRequest().setCreationDate(now);
 		user.getPasswordRecoveryRequest().setType(type);
 		user.getPasswordRecoveryRequest().setInitiator(initiator);
@@ -117,11 +117,6 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		default:
 			break;
 		}
-	}
-
-	private String getPasswordChangeRequestToken(User user, Date date) {
-		return DigestUtils.sha256Hex(String.format("%1$s - %2$s - %3$s", user.getId(),
-				configurer.getSecurityPasswordRecoveryRequestTokenSalt(), date));
 	}
 
 	@Override
