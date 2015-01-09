@@ -42,6 +42,14 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordCreationPage.class);
 
+	public static final IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
+		return new LinkDescriptorBuilder()
+				.page(SecurityPasswordCreationPage.class)
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
+				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
+				.build();
+	}
+
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 
 	private final IModel<String> tokenModel = Model.of("");
@@ -67,14 +75,6 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 		}
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.creation.pageTitle")));
-	}
-
-	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordCreationPage.class)
-				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
-				.build();
 	}
 
 	@Override

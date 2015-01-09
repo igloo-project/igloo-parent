@@ -43,6 +43,14 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordResetPage.class);
 
+	public static final IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
+		return new LinkDescriptorBuilder()
+				.page(SecurityPasswordResetPage.class)
+				.map(CommonParameters.ID, userModel, User.class).mandatory()
+				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
+				.build();
+	}
+
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 
 	private final IModel<String> tokenModel = Model.of("");
@@ -77,14 +85,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 		typeDescriptor = UserTypeDescriptor.get(userModel.getObject());
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("security.password.reset.pageTitle")));
-	}
-
-	public static IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordResetPage.class)
-				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.map(LinkUtils.TOKEN, tokenModel, String.class).mandatory()
-				.build();
 	}
 
 	@Override

@@ -26,6 +26,12 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 
 	private static final long serialVersionUID = 2733071974944289365L;
 
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserGroupPortfolioPage.class)
+				.build();
+	}
+
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
 
@@ -55,12 +61,6 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 				new BlankLink("addButton")
 						.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK))
 		);
-	}
-
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(AdministrationUserGroupPortfolioPage.class)
-				.build();
 	}
 
 	@Override

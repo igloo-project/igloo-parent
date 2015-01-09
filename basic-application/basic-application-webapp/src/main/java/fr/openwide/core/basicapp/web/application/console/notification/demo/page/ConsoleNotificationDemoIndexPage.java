@@ -33,6 +33,10 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleNotificationDemoIndexPage.class);
 
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder().page(ConsoleNotificationDemoIndexPage.class).build();
+	}
+
 	public static final String DEFAULT_USERNAME = "admin";
 
 	private static final Range<Long> DEFAULT_ID_RANGE = Range.closed(1L, 100L);
@@ -82,10 +86,6 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 				return createDemoEntries().isEmpty();
 			}
 		});
-	}
-
-	public static IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder().page(ConsoleNotificationDemoIndexPage.class).build();
 	}
 
 	private List<NotificationDemoEntry> createDemoEntries() {

@@ -29,7 +29,7 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 
 	private static final long serialVersionUID = -5780326896837623229L;
 
-	public static IPageLinkDescriptor linkDescriptor(IModel<UserGroup> userGroupModel, IModel<Page> sourcePageModel) {
+	public static final IPageLinkDescriptor linkDescriptor(IModel<UserGroup> userGroupModel, IModel<Page> sourcePageModel) {
 		return new LinkDescriptorBuilder()
 				.page(AdministrationUserGroupDescriptionPage.class)
 				.map(CommonParameters.ID, userGroupModel, UserGroup.class).mandatory()
