@@ -1,6 +1,8 @@
 package fr.openwide.core.jpa.security.config.spring;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +24,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 
 import fr.openwide.core.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
@@ -170,14 +174,35 @@ public abstract class AbstractJpaSecurityConfig {
 	}
 
 	protected static String defaultPermissionHierarchyAsString() {
-		return CorePermissionConstants.ADMINISTRATION + " > " + CorePermissionConstants.WRITE + "\n"
-				+ CorePermissionConstants.WRITE + " > " + CorePermissionConstants.READ + "\n";
+		return hierarchyAsStringFromMap(ImmutableMultimap.<String, String>builder()
+				.put(CorePermissionConstants.ADMINISTRATION, CorePermissionConstants.WRITE)
+				.put(CorePermissionConstants.WRITE, CorePermissionConstants.READ)
+				.build()
+		);
 	}
 
 	protected static String defaultRoleHierarchyAsString() {
-		return CoreAuthorityConstants.ROLE_SYSTEM + " > " + CoreAuthorityConstants.ROLE_ADMIN + "\n"
-				+ CoreAuthorityConstants.ROLE_ADMIN + " > " + CoreAuthorityConstants.ROLE_AUTHENTICATED + "\n"
-				+ CoreAuthorityConstants.ROLE_AUTHENTICATED + " > " + CoreAuthorityConstants.ROLE_ANONYMOUS + "\n";
+		return hierarchyAsStringFromMap(ImmutableMultimap.<String, String>builder()
+				.put(CoreAuthorityConstants.ROLE_SYSTEM, CoreAuthorityConstants.ROLE_ADMIN)
+				.put(CoreAuthorityConstants.ROLE_ADMIN, CoreAuthorityConstants.ROLE_AUTHENTICATED)
+				.put(CoreAuthorityConstants.ROLE_AUTHENTICATED, CoreAuthorityConstants.ROLE_ANONYMOUS)
+				.build()
+		);
+	}
+
+	protected static String hierarchyAsStringFromMap(Multimap<String, String> multimap) {
+		return hierarchyAsStringFromMap(multimap.asMap());
+	}
+
+	protected static String hierarchyAsStringFromMap(Map<String, ? extends Collection<String>> map) {
+		StringBuilder builder = new StringBuilder();
+		for (Map.Entry<String, ? extends Collection<String>> entry : map.entrySet()) {
+			String parent = entry.getKey();
+			for (String child : entry.getValue()) {
+				builder.append(parent).append(" > ").append(child).append("\n");
+			}
+		}
+		return builder.toString();
 	}
 
 }
