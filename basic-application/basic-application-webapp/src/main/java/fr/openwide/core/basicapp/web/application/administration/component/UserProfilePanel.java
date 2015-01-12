@@ -21,9 +21,9 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
-import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
-import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
+import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopupPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopupPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.UserPopupPanel;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
@@ -57,9 +57,9 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	public UserProfilePanel(String id, final IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		
-		AbstractUserPopup<U> updatePopup = createUpdatePopup("updatePopup", getModel(), typeDescriptor);
+		AbstractUserPopupPanel<U> updatePopup = createUpdatePopupPanel("updatePopup", getModel(), typeDescriptor);
 		
-		UserPasswordUpdatePopup<U> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", getModel());
+		UserPasswordUpdatePopupPanel<U> passwordUpdatePopup = new UserPasswordUpdatePopupPanel<>("passwordUpdatePopup", getModel());
 		
 		IModel<String> confirmationTextModel = new StringResourceModel(
 				"administration.user.disable.confirmation.text", null, 
@@ -171,7 +171,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 		);
 	}
 	
-	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
-		return new UserPopup<U>(wicketId, getModel(), typeDescriptor);
+	protected AbstractUserPopupPanel<U> createUpdatePopupPanel(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
+		return new UserPopupPanel<U>(wicketId, getModel(), typeDescriptor);
 	}
 }

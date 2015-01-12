@@ -12,7 +12,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
+import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopupPanel;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
@@ -35,7 +35,7 @@ public class ProfileInformationPanel extends GenericPanel<User> {
 	public ProfileInformationPanel(String id, IModel<User> userModel) {
 		super(id, userModel);
 		
-		UserPasswordUpdatePopup<User> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", userModel);
+		UserPasswordUpdatePopupPanel<User> passwordUpdatePopup = new UserPasswordUpdatePopupPanel<>("passwordUpdatePopup", userModel);
 		
 		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		

@@ -37,11 +37,11 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
+public class UserGroupPopupPanel extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	private static final long serialVersionUID = 5369095796078187845L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupPopup.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupPopupPanel.class);
 
 	@SpringBean
 	private IUserGroupService userGroupService;
@@ -53,15 +53,15 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	private FormPanelMode mode;
 
-	public UserGroupPopup(String id, IModel<UserGroup> userGroupModel) {
+	public UserGroupPopupPanel(String id, IModel<UserGroup> userGroupModel) {
 		this(id, userGroupModel, FormPanelMode.EDIT);
 	}
 
-	public UserGroupPopup(String id) {
+	public UserGroupPopupPanel(String id) {
 		this(id, new GenericEntityModel<Long, UserGroup>(new UserGroup()), FormPanelMode.ADD);
 	}
 
-	protected UserGroupPopup(String id, IModel<UserGroup> userGroupModel, FormPanelMode mode) {
+	protected UserGroupPopupPanel(String id, IModel<UserGroup> userGroupModel, FormPanelMode mode) {
 		super(id, userGroupModel);
 		
 		this.mode = mode;
@@ -78,7 +78,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	@Override
 	protected Component createBody(String wicketId) {
-		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
+		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupPopupPanel.class);
 		
 		userGroupForm = new Form<UserGroup>("form", getModel());
 		body.add(
@@ -132,7 +132,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	@Override
 	protected Component createFooter(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupPopupPanel.class);
 		
 		// Validate button
 		AjaxButton validate = new AjaxButton("save", userGroupForm) {
@@ -140,13 +140,13 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				UserGroup userGroup = UserGroupPopup.this.getModelObject();
+				UserGroup userGroup = UserGroupPopupPanel.this.getModelObject();
 				
 				try {
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
 						Session.get().success(getString("administration.usergroup.add.success"));
-						throw AdministrationUserGroupDescriptionPage.linkDescriptor(UserGroupPopup.this.getModel(), PageModel.of(getPage()))
+						throw AdministrationUserGroupDescriptionPage.linkDescriptor(UserGroupPopupPanel.this.getModel(), PageModel.of(getPage()))
 								.newRestartResponseException();
 					} else {
 						userGroupService.update(userGroup);

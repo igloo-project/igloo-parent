@@ -26,11 +26,11 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 
-public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
+public class UserPasswordUpdatePopupPanel<U extends User> extends AbstractAjaxModalPopupPanel<U> {
 
 	private static final long serialVersionUID = -4580284817084080271L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordUpdatePopup.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordUpdatePopupPanel.class);
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
@@ -41,7 +41,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	private final UserTypeDescriptor<U> typeDescriptor;
 
-	public UserPasswordUpdatePopup(String id, IModel<U> model) {
+	public UserPasswordUpdatePopupPanel(String id, IModel<U> model) {
 		super(id, model);
 		setStatic();
 		
@@ -55,7 +55,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	@Override
 	protected Component createBody(String wicketId) {
-		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
+		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopupPanel.class);
 		
 		passwordForm = new Form<Void>("form");
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
@@ -91,7 +91,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	@Override
 	protected Component createFooter(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopupPanel.class);
 		
 		// Validate button
 		AjaxButton validate = new AjaxButton("save", passwordForm) {
@@ -100,7 +100,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					User user = UserPasswordUpdatePopup.this.getModelObject();
+					User user = UserPasswordUpdatePopupPanel.this.getModelObject();
 					String newPassword = newPasswordModel.getObject();
 					
 					securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
