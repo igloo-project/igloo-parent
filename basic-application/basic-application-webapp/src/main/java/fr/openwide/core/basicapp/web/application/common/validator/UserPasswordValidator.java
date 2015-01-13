@@ -114,12 +114,14 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 				&& securityManagementService.getOptions(user).isPasswordHistoryEnabled()
 				&& user.getPasswordInformation().getHistory() != null
 				&& !user.getPasswordInformation().getHistory().isEmpty()) {
-			String passwordHash = passwordEncoder.encode(password);
-			if (userModel.getObject().getPasswordInformation().getHistory().contains(passwordHash)) {
-				valid = false;
-				validatable.error(
-						new ValidationError(this, HISTORY_VIOLATION)
-				);
+			for (String historyPasswordHash : user.getPasswordInformation().getHistory()) {
+				if (passwordEncoder.matches(password, historyPasswordHash)) {
+					valid = false;
+					validatable.error(
+							new ValidationError(this, HISTORY_VIOLATION)
+					);
+					break;
+				}
 			}
 		}
 		
