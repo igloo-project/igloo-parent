@@ -53,11 +53,11 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public abstract class AbstractUserPopupPanel<U extends User> extends AbstractAjaxModalPopupPanel<U> {
+public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
 
 	private static final long serialVersionUID = -3575009149241618972L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUserPopupPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUserPopup.class);
 
 	private static final UsernamePatternValidator USERNAME_PATTERN_VALIDATOR =
 			new UsernamePatternValidator() {
@@ -92,15 +92,15 @@ public abstract class AbstractUserPopupPanel<U extends User> extends AbstractAja
 
 	private final IModel<String> confirmPasswordModel = Model.of();
 
-	public AbstractUserPopupPanel(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
+	public AbstractUserPopup(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		this(id, userModel, FormPanelMode.EDIT, typeDescriptor);
 	}
 
-	public AbstractUserPopupPanel(String id, UserTypeDescriptor<U> typeDescriptor) {
+	public AbstractUserPopup(String id, UserTypeDescriptor<U> typeDescriptor) {
 		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, typeDescriptor);
 	}
 
-	private AbstractUserPopupPanel(String id, IModel<U> userModel, FormPanelMode mode, UserTypeDescriptor<U> typeDescriptor) {
+	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		setStatic();
 		
@@ -118,7 +118,7 @@ public abstract class AbstractUserPopupPanel<U extends User> extends AbstractAja
 	}
 
 	protected final Component createStandardUserFields(String wicketId) {
-		DelegatedMarkupPanel standardFields = new DelegatedMarkupPanel(wicketId, "standardFields", AbstractUserPopupPanel.class);
+		DelegatedMarkupPanel standardFields = new DelegatedMarkupPanel(wicketId, "standardFields", AbstractUserPopup.class);
 		
 		passwordField = new PasswordTextField("password", passwordModel);
 		confirmPasswordField = new PasswordTextField("confirmPassword", confirmPasswordModel);
@@ -177,7 +177,7 @@ public abstract class AbstractUserPopupPanel<U extends User> extends AbstractAja
 
 	@Override
 	protected Component createFooter(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, AbstractUserPopupPanel.class);
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, AbstractUserPopup.class);
 		
 		// Validate button
 		AjaxButton validate = new AjaxButton("save", userForm) {
@@ -185,7 +185,7 @@ public abstract class AbstractUserPopupPanel<U extends User> extends AbstractAja
 			
 			@Override
 			protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
-				User user = AbstractUserPopupPanel.this.getModelObject();
+				User user = AbstractUserPopup.this.getModelObject();
 				
 				try {
 					if (isAddMode()) {
@@ -209,7 +209,7 @@ public abstract class AbstractUserPopupPanel<U extends User> extends AbstractAja
 						
 						getSession().success(getString("administration.user.add.success"));
 						
-						throw typeDescriptor.administrationTypeDescriptor().description(AbstractUserPopupPanel.this.getModel())
+						throw typeDescriptor.administrationTypeDescriptor().description(AbstractUserPopup.this.getModel())
 								.newRestartResponseException();
 					} else {
 						User authenticatedUser = BasicApplicationSession.get().getUser();

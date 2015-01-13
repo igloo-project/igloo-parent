@@ -15,7 +15,7 @@ import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigu
 import fr.openwide.core.basicapp.web.application.administration.component.AbstractUserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserSearchPanel;
 import fr.openwide.core.basicapp.web.application.administration.export.UserExcelTableExport;
-import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopupPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
@@ -42,7 +42,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		logger.warn("warn");
 		logger.error("error");
 		
-		AbstractUserPopupPanel<U> addPopup = createAddPopupPanel("addPopup");
+		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
 		final UserDataProvider<U> dataProvider = new UserDataProvider<>(typeDescriptor.getEntityClass());
 		AbstractUserPortfolioPanel<U> portfolioPanel = createPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
@@ -77,7 +77,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		);
 	}
 	
-	protected abstract AbstractUserPopupPanel<U> createAddPopupPanel(String wicketId);
+	protected abstract AbstractUserPopup<U> createAddPopup(String wicketId);
 	
 	protected abstract AbstractUserPortfolioPanel<U> createPortfolioPanel(String wicketId, IDataProvider<U> dataProvider, int itemsPerPage);
 

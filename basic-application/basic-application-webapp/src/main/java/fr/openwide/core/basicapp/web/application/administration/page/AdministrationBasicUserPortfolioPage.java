@@ -7,8 +7,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.web.application.administration.component.AbstractUserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
-import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopupPanel;
-import fr.openwide.core.basicapp.web.application.administration.form.UserPopupPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
+import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -24,8 +24,8 @@ public class AdministrationBasicUserPortfolioPage extends AdministrationUserPort
 	}
 
 	@Override
-	protected AbstractUserPopupPanel<BasicUser> createAddPopupPanel(String wicketId) {
-		return new UserPopupPanel<>(wicketId, typeDescriptor);
+	protected AbstractUserPopup<BasicUser> createAddPopup(String wicketId) {
+		return new UserPopup<>(wicketId, typeDescriptor);
 	}
 	
 	@Override

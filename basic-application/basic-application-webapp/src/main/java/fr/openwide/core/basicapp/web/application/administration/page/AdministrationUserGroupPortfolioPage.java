@@ -14,7 +14,7 @@ import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupPortfolioPanel;
-import fr.openwide.core.basicapp.web.application.administration.form.UserGroupPopupPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.UserGroupPopup;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -52,7 +52,7 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 			}
 		};
 		
-		UserGroupPopupPanel addPopup = new UserGroupPopupPanel("addPopup");
+		UserGroupPopup addPopup = new UserGroupPopup("addPopup");
 		
 		add(
 				new UserGroupPortfolioPanel("portfolio", userGroupListModel, configurer.getPortfolioItemsPerPage()),

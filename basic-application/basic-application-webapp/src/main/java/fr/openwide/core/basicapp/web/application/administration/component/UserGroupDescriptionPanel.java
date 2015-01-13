@@ -14,7 +14,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.basicapp.web.application.administration.form.UserGroupPopupPanel;
+import fr.openwide.core.basicapp.web.application.administration.form.UserGroupPopup;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityListView;
@@ -33,7 +33,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 	public UserGroupDescriptionPanel(String id, final IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
 		
-		UserGroupPopupPanel updatePopup = new UserGroupPopupPanel("updatePopup", getModel());
+		UserGroupPopup updatePopup = new UserGroupPopup("updatePopup", getModel());
 		
 		add(
 				new WebMarkupContainer("lockedWarningContainer") {

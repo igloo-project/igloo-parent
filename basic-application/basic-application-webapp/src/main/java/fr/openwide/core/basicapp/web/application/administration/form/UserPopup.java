@@ -9,15 +9,15 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 
-public class UserPopupPanel<U extends User> extends AbstractUserPopupPanel<U> {
+public class UserPopup<U extends User> extends AbstractUserPopup<U> {
 
 	private static final long serialVersionUID = 5977011506936352812L;
 
-	public UserPopupPanel(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
+	public UserPopup(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel, typeDescriptor);
 	}
 	
-	public UserPopupPanel(String id, UserTypeDescriptor<U> typeDescriptor) {
+	public UserPopup(String id, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, typeDescriptor);
 	}
 	
