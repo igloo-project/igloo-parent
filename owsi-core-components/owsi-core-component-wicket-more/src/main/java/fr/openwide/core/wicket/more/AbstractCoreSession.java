@@ -12,7 +12,9 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -20,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.collect.Lists;
@@ -27,12 +31,14 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
+import fr.openwide.core.jpa.security.config.spring.DefaultJpaSecurityConfig;
+import fr.openwide.core.jpa.security.model.NamedPermission;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
-public class AbstractCoreSession<U extends GenericUser<U, ?>> extends AuthenticatedWebSession {
+public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 2591467597835056981L;
 	
@@ -377,4 +383,68 @@ public class AbstractCoreSession<U extends GenericUser<U, ?>> extends Authentica
 		userModel.detach();
 		localeModel.detach();
 	}
+
+	public Authentication getAuthenticationOriginelle() {
+		return authenticationOriginelle;
+	}
+
+	@SpringBean
+	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
+
+	@SpringBean(name = "userDetailsService")
+	private UserDetailsService userDetailsService;
+
+	/**
+	 * Utilisé pour garder l'authentification de l'utilisateur lorsqu'il se connecte en tant qu'un autre utilisateur.
+	 */
+	private Authentication authenticationOriginelle = null;
+
+	public boolean hasSignInAsPermissions(U user) {
+		return !authenticationService.hasPermission(NamedPermission.ADMIN_SIGN_IN_AS);
+	}
+
+	/**
+	 * @see AbstractCoreSession#authenticate(String, String)
+	 */
+	public void signInAs(String username) throws UsernameNotFoundException {
+		// on charge l'utilisateur
+		// on le passe dans une méthode surchargeable -> implémentation par défaut à faire
+		// Sitra -> revoir l'implémentation par défaut
+		if (hasSignInAsPermissions(getUser())) {
+			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
+		}
+		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		RunAsUserToken token = new RunAsUserToken(defaultJpaSecurityConfig.getRunAsKey(),
+				userDetails, "runAs", userDetails.getAuthorities(), null);
+		
+		// On garde l'authentification de l'utilisateur pour pouvoir lui proposer de se reconnecter.
+		Authentication previousAuthentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(previousAuthentication instanceof AnonymousAuthenticationToken)) {
+			authenticationOriginelle = previousAuthentication;
+		}
+		
+		signOut();
+		
+		Authentication authentication = authenticationManager.authenticate(token);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		doInitializeSession();
+		bind();
+		signIn(true);
+	}
+
+	public void signInAsMe() throws BadCredentialsException, SecurityException {
+		if (authenticationOriginelle == null) {
+			throw new BadCredentialsException("Pas d'authentification originelle");
+		}
+		
+		SecurityContextHolder.getContext().setAuthentication(authenticationOriginelle);
+		if (hasSignInAsPermissions(getUser())) {
+			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
+		}
+		doInitializeSession();
+		bind();
+		signIn(true);
+		authenticationOriginelle = null;
+	}
+
 }
