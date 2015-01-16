@@ -1,11 +1,12 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
-import static com.google.common.base.Predicates.notNull;
-
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -20,9 +21,12 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 
@@ -42,7 +46,6 @@ import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
@@ -55,11 +58,14 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrol
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	private static final long serialVersionUID = -1312989780696228848L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MainTemplate.class);
 
 	@SpringBean
 	private BasicApplicationConfigurer configurer;
@@ -175,19 +181,59 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// User menu
 		add(
+				new Label(
+						"authenticationOriginelle",
+						new StringResourceModel("console.authentication.authenticationOriginelle.help", null,
+								new Object[] {
+									BasicApplicationSession.get().getAuthenticationOriginelle() != null 
+											? BasicApplicationSession.get().getAuthenticationOriginelle().getName()
+											: null
+								}
+						)
+						.getObject()
+				) {
+					
+					private static final long serialVersionUID = -5789260462449121142L;
+					
+					@Override
+					protected void onConfigure() {
+						super.onConfigure();
+						setVisible(BasicApplicationSession.get().getAuthenticationOriginelle() != null);
+					}
+				},
+				
 				ProfilePage.linkDescriptor()
 						.link("profileLink")
 						.add(
 								new CoreLabel("userFullName", BindingModel.of(BasicApplicationSession.get().getUserModel(), Bindings.user().fullName()))
 										.hideIfEmpty()
-						)
-						.add(
-								new EnclosureBehavior().model(notNull(), BasicApplicationSession.get().getUserModel())
-						)
+						),
+				
+				new AjaxLink<Void>("reconnexionLink") {
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						try {
+							BasicApplicationSession.get().signInAsMe();
+							BasicApplicationSession.get().success(getString("console.authentication.back.success"));
+						} catch (Exception e) {
+							LOGGER.error("Erreur lors de la reconnexion de l'utilisateur", e);
+							Session.get().error(getString("signIn.error.unknown"));
+						}
+						throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+					}
+					
+					@Override
+					protected void onConfigure() {
+						super.onConfigure();
+						setVisible(BasicApplicationSession.get().getAuthenticationOriginelle() != null);
+					}
+				},
+				
+				new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class)
 		);
 		
-		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
-
 		// Footer
 		add(new Label("version", configurer.getVersion()));
 		
