@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.web.application.common.validator;
 
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -16,6 +17,7 @@ public class UsernameUnicityValidator extends AbstractUnicityValidator<User, Str
 	
 	public UsernameUnicityValidator(IModel<? extends User> mainObjectModel) {
 		super(mainObjectModel, "common.validator.username.unicity");
+		Injector.get().inject(this);
 	}
 
 	@Override

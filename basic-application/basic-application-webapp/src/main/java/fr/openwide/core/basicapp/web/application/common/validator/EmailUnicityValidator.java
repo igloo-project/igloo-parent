@@ -1,5 +1,6 @@
 package fr.openwide.core.basicapp.web.application.common.validator;
 
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -16,6 +17,7 @@ public class EmailUnicityValidator extends AbstractUnicityValidator<User, String
 
 	public EmailUnicityValidator(IModel<? extends User> mainObjectModel) {
 		super(mainObjectModel, "common.validator.email.unicity");
+		Injector.get().inject(this);
 	}
 
 	@Override

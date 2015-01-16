@@ -20,13 +20,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -37,12 +35,6 @@ public class SignInTemplate<U extends User> extends ServiceTemplate {
 	private static final long serialVersionUID = 5503959273448832421L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SignInTemplate.class);
-
-	@SpringBean
-	private IParameterService parameterService;
-
-	@SpringBean
-	private IAuthenticationService authenticationService;
 
 	@SpringBean
 	private IUserService userService;

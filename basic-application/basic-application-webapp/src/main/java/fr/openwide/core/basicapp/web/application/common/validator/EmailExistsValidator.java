@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.web.application.common.validator;
 
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
@@ -19,6 +20,7 @@ public class EmailExistsValidator extends Behavior implements IValidator<String>
 	private IUserService userService;
 
 	public EmailExistsValidator() {
+		Injector.get().inject(this);
 	}
 
 	@Override
