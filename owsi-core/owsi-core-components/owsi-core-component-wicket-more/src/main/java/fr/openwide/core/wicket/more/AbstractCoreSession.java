@@ -400,7 +400,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	private Authentication authenticationOriginelle = null;
 
 	public boolean hasSignInAsPermissions(U user) {
-		return !authenticationService.hasPermission(NamedPermission.ADMIN_SIGN_IN_AS);
+		return authenticationService.hasPermission(NamedPermission.ADMIN_SIGN_IN_AS);
 	}
 
 	/**
@@ -410,7 +410,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		// on charge l'utilisateur
 		// on le passe dans une méthode surchargeable -> implémentation par défaut à faire
 		// Sitra -> revoir l'implémentation par défaut
-		if (hasSignInAsPermissions(getUser())) {
+		if (!hasSignInAsPermissions(getUser())) {
 			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
 		}
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -438,7 +438,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		}
 		
 		SecurityContextHolder.getContext().setAuthentication(authenticationOriginelle);
-		if (hasSignInAsPermissions(getUser())) {
+		if (!hasSignInAsPermissions(getUser())) {
 			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
 		}
 		doInitializeSession();
