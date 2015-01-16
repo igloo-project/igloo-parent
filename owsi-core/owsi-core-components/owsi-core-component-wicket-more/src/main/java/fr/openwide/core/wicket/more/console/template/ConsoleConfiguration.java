@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
+import fr.openwide.core.wicket.more.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import fr.openwide.core.wicket.more.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
@@ -68,7 +69,9 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceDonneesMenuItem = new ConsoleMenuItem("maintenanceDonneesMenuItem",
 					"console.maintenance.donnees", "donnees", ConsoleMaintenanceDonneesPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceDonneesMenuItem);
-			
+			ConsoleMenuItem authenticationMenuItem = new ConsoleMenuItem("signInAsMenuItem",
+					"console.maintenance.authentication", "authentication", ConsoleMaintenanceAuthenticationPage.class);
+			maintenanceMenuSection.addMenuItem(authenticationMenuItem);
 			ConsoleMenuItem maintenanceTasksMenuItem = new ConsoleMenuItem("maintenanceTasksMenuItem",
 					"console.maintenance.tasks", "tasks", ConsoleMaintenanceTaskListPage.class);
 			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage(
