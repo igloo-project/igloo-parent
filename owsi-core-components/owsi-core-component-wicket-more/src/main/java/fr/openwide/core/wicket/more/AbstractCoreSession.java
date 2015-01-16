@@ -384,10 +384,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		localeModel.detach();
 	}
 
-	public Authentication getAuthenticationOriginelle() {
-		return authenticationOriginelle;
-	}
-
 	@SpringBean
 	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
 
@@ -399,7 +395,11 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	 */
 	private Authentication authenticationOriginelle = null;
 
-	public boolean hasSignInAsPermissions(U user) {
+	public Authentication getAuthenticationOriginelle() {
+		return authenticationOriginelle;
+	}
+
+	public boolean hasSignInAsPermissions(U utilisateurConnecte, U utilisateurCible) {
 		return authenticationService.hasPermission(NamedPermission.ADMIN_SIGN_IN_AS);
 	}
 
@@ -410,7 +410,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		// on charge l'utilisateur
 		// on le passe dans une méthode surchargeable -> implémentation par défaut à faire
 		// Sitra -> revoir l'implémentation par défaut
-		if (!hasSignInAsPermissions(getUser())) {
+		if (!hasSignInAsPermissions(getUser(), userService.getByUserName(username))) {
 			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
 		}
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -438,9 +438,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		}
 		
 		SecurityContextHolder.getContext().setAuthentication(authenticationOriginelle);
-		if (!hasSignInAsPermissions(getUser())) {
-			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
-		}
 		doInitializeSession();
 		bind();
 		signIn(true);
