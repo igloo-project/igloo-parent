@@ -22,14 +22,14 @@ import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityListRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityMapRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityRowMapper;
-import fr.openwide.core.jpa.migration.util.IMigrationEntityAdvancedInformation;
+import fr.openwide.core.jpa.migration.util.IMigrationEntityBatchInformation;
 
-public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<Long, T>> extends AbstractEntityMigrationService {
+public abstract class AbstractBatchMigrationService<T extends GenericEntity<Long, T>> extends AbstractEntityMigrationService {
 
 	public void importAllEntities() {
 		Date startTime = new Date();
 		
-		Long rowCount = countRowsTable(getEntityInformation().getTableName());
+		Long rowCount = countRows(getEntityInformation().getSqlCountRows());
 		
 		List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(getEntityInformation().getSqlAllIds(), Long.class));
 		List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, getPartitionSize());
@@ -124,7 +124,7 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 	protected void prepareRowMapper(RowMapper<?> rowMapper, List<Long> entityIds) {
 	}
 
-	protected abstract IMigrationEntityAdvancedInformation<T> getEntityInformation();
+	protected abstract IMigrationEntityBatchInformation<T> getEntityInformation();
 
 	protected abstract Logger getLogger();
 
