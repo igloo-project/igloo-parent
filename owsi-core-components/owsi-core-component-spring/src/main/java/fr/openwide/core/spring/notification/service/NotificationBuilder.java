@@ -45,6 +45,7 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
+import fr.openwide.core.spring.notification.model.InactiveRecipient;
 import fr.openwide.core.spring.notification.model.NotificationRecipient;
 import fr.openwide.core.spring.notification.service.impl.ExplicitelyDefinedNotificationContentDescriptorImpl;
 import fr.openwide.core.spring.notification.service.impl.FirstNotNullNotificationContentDescriptorImpl;
@@ -184,14 +185,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState to(Collection<? extends INotificationRecipient> to) {
-		if (to != null) {
-			for (INotificationRecipient receiver : to) {
-				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					addRecipient(toByLocale, getLocale(receiver), receiver);
-				}
-			}
-		}
-		return this;
+		return buildRecipients(to, toByLocale);
 	}
 	
 	@Override
@@ -227,14 +221,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState cc(Collection<? extends INotificationRecipient> cc) {
-		if (cc != null) {
-			for (INotificationRecipient receiver : cc) {
-				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					addRecipient(ccByLocale, getLocale(receiver), receiver);
-				}
-			}
-		}
-		return this;
+		return buildRecipients(cc, ccByLocale);
 	}
 
 	
@@ -271,16 +258,26 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState bcc(Collection<? extends INotificationRecipient> bcc) {
-		if (bcc != null) {
-			for (INotificationRecipient receiver : bcc) {
-				if (receiver != null && StringUtils.hasText(receiver.getEmail())) {
-					addRecipient(bccByLocale, getLocale(receiver), receiver);
+		return buildRecipients(bcc, bccByLocale);
+	}
+	
+	protected INotificationBuilderBuildState buildRecipients(Collection<? extends INotificationRecipient> recipients,
+			Multimap<Locale, NotificationRecipient> byLocale) {
+		if (recipients != null) {
+			for (INotificationRecipient receiver : recipients) {
+				if (receiver != null) {
+					if (receiver.isNotificationEnabled() && StringUtils.hasText(receiver.getEmail())) {
+						addRecipient(byLocale, getLocale(receiver), receiver);
+					} else if (configurer.getDisabledRecipientFallback() != null) {
+						for (String redirectionEmail : configurer.getDisabledRecipientFallback()) {
+							addRecipient(byLocale, getLocale(receiver), new InactiveRecipient(receiver, redirectionEmail));
+						}
+					}
 				}
 			}
 		}
 		return this;
 	}
-	
 	
 	@Override
 	public INotificationBuilderBuildState exceptAddress(Collection<String> except) {

@@ -165,6 +165,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsStringList("notification.test.emails");
 	}
 
+	public List<String> getDisabledRecipientFallback() {
+		return getPropertyAsStringList("notification.mail.disabledRecipientFallback");
+	}
+
 	public int getTaskStopTimeout() {
 		return getPropertyAsInteger("task.stop.timeout", TASK_STOP_TIMEOUT_DEFAULT);
 	}
@@ -259,4 +263,5 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public File getTmpExportExcelDirectory() {
 		return getPropertyAsWritableDirectory("tmp.exportExcel.path");
 	}
+
 }
