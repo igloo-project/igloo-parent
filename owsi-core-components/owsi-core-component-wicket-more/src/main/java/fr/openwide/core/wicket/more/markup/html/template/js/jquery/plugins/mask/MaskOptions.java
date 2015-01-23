@@ -17,21 +17,29 @@ public class MaskOptions extends Options {
 		private final String pattern;
 		private final boolean optional;
 		private final boolean recursive;
+		
+		private final Character fallback;
 
-		public MaskTranslationOptions(String pattern, boolean optional, boolean recursive) {
+		public MaskTranslationOptions(String pattern, boolean optional, boolean recursive, Character fallback) {
 			super();
 			this.pattern = pattern;
 			this.optional = optional;
 			this.recursive = recursive;
+			this.fallback = fallback;
 		}
 
 		@Override
 		public CharSequence getJavascriptOption() {
-			return new Options()
+			Options options =  new Options()
 					.put("pattern", pattern) // No quotes
 					.put("optional", optional)
-					.put("recursive", recursive)
-					.getJavaScriptOptions();
+					.put("recursive", recursive);
+			
+			if (fallback != null) {
+				options.put("fallback", JsUtils.quotes(String.valueOf(fallback)));
+			}
+			
+			return options.getJavaScriptOptions();
 		}
 		
 	}
@@ -64,11 +72,23 @@ public class MaskOptions extends Options {
 	}
 	
 	public MaskOptions addTranslation(char character, String pattern) {
-		return addTranslation(character, pattern, false, false);
+		return addTranslation(character, new MaskTranslationOptions(pattern, false, false, null));
 	}
 	
 	public MaskOptions addTranslation(char character, String pattern, boolean optional, boolean recursive) {
-		translationOptions.put(JsUtils.quotes(String.valueOf(character)), new MaskTranslationOptions(pattern, optional, recursive));
+		return addTranslation(character, new MaskTranslationOptions(pattern, optional, recursive, null));
+	}
+	
+	public MaskOptions addTranslation(char character, String pattern, char fallback) {
+		return addTranslation(character, new MaskTranslationOptions(pattern, false, false, fallback));
+	}
+	
+	public MaskOptions addTranslation(char character, String pattern, boolean optional, boolean recursive, char fallback) {
+		return addTranslation(character, new MaskTranslationOptions(pattern, optional, recursive, fallback));
+	}
+	
+	protected MaskOptions addTranslation(char character, MaskTranslationOptions options) {
+		translationOptions.put(JsUtils.quotes(String.valueOf(character)), options);
 		return this;
 	}
 	
