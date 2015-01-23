@@ -252,5 +252,9 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public String getDisplayName() {
 		return getUserName();
 	}
-	
+
+	public boolean isNotificationEnabled() {
+		// implémentation par défaut ; dépend de l'état de l'utilisateur
+		return active;
+	}
 }
