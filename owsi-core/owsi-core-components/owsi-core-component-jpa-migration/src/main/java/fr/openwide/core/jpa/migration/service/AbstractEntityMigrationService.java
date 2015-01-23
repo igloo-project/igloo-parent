@@ -105,13 +105,17 @@ public abstract class AbstractEntityMigrationService {
 		}
 	}
 
-	protected Long countRows(String tableName) {
-		Long rowCount = getJdbcTemplate().queryForObject(String.format(SQL_COUNT_ROWS, tableName), Long.class);
+	protected Long countRows(String sqlCountRows) {
+		Long rowCount = getJdbcTemplate().queryForObject(sqlCountRows, Long.class);
 		if (rowCount != null) {
 			return rowCount;
 		} else {
 			return new Long(0);
 		}
+	}
+
+	protected Long countRowsTable(String tableName) {
+		return countRows(String.format(SQL_COUNT_ROWS, tableName));
 	}
 
 	public final <E extends GenericEntity<Long, ?>> void preloadLinkedEntities(Class<E> clazz,
