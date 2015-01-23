@@ -7,6 +7,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
@@ -27,6 +28,11 @@ import fr.openwide.core.basicapp.web.application.console.notification.demo.page.
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
+import fr.openwide.core.basicapp.web.application.resources.business.BasicApplicationBusinessResources;
+import fr.openwide.core.basicapp.web.application.resources.common.BasicApplicationCommonResources;
+import fr.openwide.core.basicapp.web.application.resources.console.BasicApplicationConsoleResources;
+import fr.openwide.core.basicapp.web.application.resources.enums.BasicApplicationEnumResources;
+import fr.openwide.core.basicapp.web.application.resources.notifications.BasicApplicationNotificationResources;
 import fr.openwide.core.basicapp.web.application.security.login.page.SignInPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
@@ -76,6 +82,12 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 					StylesLessCssResourceReference.get()
 			);
 		}
+		
+		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationBusinessResources.class));
+		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationCommonResources.class));
+		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationConsoleResources.class));
+		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationEnumResources.class));
+		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationNotificationResources.class));
 	}
 	
 	@Override
