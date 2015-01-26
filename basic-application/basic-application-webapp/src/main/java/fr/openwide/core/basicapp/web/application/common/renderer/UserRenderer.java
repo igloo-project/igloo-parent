@@ -15,7 +15,8 @@ public final class UserRenderer extends Renderer<User> {
 		return INSTANCE;
 	}
 
-	private UserRenderer() { }
+	private UserRenderer() {
+	}
 
 	@Override
 	public String render(User value, Locale locale) {

@@ -32,7 +32,8 @@ public class Audit extends AbstractAudit {
 	@Field(bridge = @FieldBridge(impl = GenericEntityIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private AuditAction action;
 
-	protected Audit() { }
+	protected Audit() {
+	}
 	
 	public Audit(Date date, String service, String method, GenericEntity<Long, ?> context, User subject,
 			GenericEntity<Long, ?> object, GenericEntity<Long, ?> secondaryObject, AuditAction action, String message) {

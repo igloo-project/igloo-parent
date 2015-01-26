@@ -109,7 +109,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 					closePopup(target);
 					target.add(getPage());
 				} catch (Exception e) {
-					LOGGER.error("Error occured while changing password.");
+					LOGGER.error("Error occured while changing password.", e);
 					getSession().error(getString("common.error.unexpected"));
 				}
 				FeedbackUtils.refreshFeedback(target, getPage());

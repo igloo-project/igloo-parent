@@ -28,7 +28,8 @@ public final class LinkFactory extends AbstractLinkFactory {
 				}
 			};
 
-	private LinkFactory() { }
+	private LinkFactory() {
+	}
 
 	public static LinkFactory get() {
 		return INSTANCE;

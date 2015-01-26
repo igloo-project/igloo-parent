@@ -12,7 +12,8 @@ public final class UserChoiceRenderer implements IChoiceRenderer<User> {
 		return INSTANCE;
 	}
 	
-	private UserChoiceRenderer() { }
+	private UserChoiceRenderer() {
+	}
 	
 	@Override
 	public Object getDisplayValue(User user) {

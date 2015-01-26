@@ -284,5 +284,5 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 		super.onDetach();
 		passwordModel.detach();
 		confirmPasswordModel.detach();
-	};
+	}
 }
