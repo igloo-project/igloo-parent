@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.lucene.search.BooleanQuery;
@@ -262,6 +263,14 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 
 	public File getTmpExportExcelDirectory() {
 		return getPropertyAsWritableDirectory("tmp.exportExcel.path");
+	}
+
+	public Integer getGlobalFeedbackAutohideDelayValue() {
+		return getPropertyAsInteger("globalFeedback.autohide.delay.value", 5);
+	}
+
+	public TimeUnit getGlobalFeedbackAutohideDelayUnit() {
+		return getPropertyAsEnum("globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
 	}
 
 }

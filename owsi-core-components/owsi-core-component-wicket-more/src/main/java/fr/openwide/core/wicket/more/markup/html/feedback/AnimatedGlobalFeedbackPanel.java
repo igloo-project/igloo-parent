@@ -11,6 +11,8 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.lang.Args;
 import org.odlabs.wiquery.core.events.Event;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -18,6 +20,7 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
+import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.alert.AlertJavascriptResourceReference;
 
@@ -25,16 +28,15 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
 	
-	private static final int DEFAULT_AUTOHIDE_DELAY_VALUE = 5;
+	@SpringBean
+	private CoreConfigurer configurer;
 	
-	private static final TimeUnit DEFAULT_AUTOHIDE_DELAY_UNIT = TimeUnit.SECONDS;
-
-	private int autohideDelayValue;
+	private Integer autohideDelayValue;
 	
 	private TimeUnit autohideDelayUnit;
 	
 	public AnimatedGlobalFeedbackPanel(String id) {
-		this(id, DEFAULT_AUTOHIDE_DELAY_VALUE, DEFAULT_AUTOHIDE_DELAY_UNIT);
+		this(id, null, null);
 	}
 	
 	/**
@@ -42,12 +44,15 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	 * @param autohideDelay Délai de fermeture automatique, en secondes.
 	 * 						Si < 0 : le feedback ne se cache pas automatiquement
 	 */
-	public AnimatedGlobalFeedbackPanel(String id, int autohideDelayValue, TimeUnit autohideDelayUnit) {
+	public AnimatedGlobalFeedbackPanel(String id, Integer autohideDelayValue, TimeUnit autohideDelayUnit) {
 		super(id);
 		setOutputMarkupId(true);
 		
-		this.autohideDelayValue = autohideDelayValue;
-		this.autohideDelayUnit = autohideDelayUnit;
+		this.autohideDelayValue = autohideDelayValue != null ? autohideDelayValue : configurer.getGlobalFeedbackAutohideDelayValue();
+		this.autohideDelayUnit = autohideDelayUnit != null ? autohideDelayUnit : configurer.getGlobalFeedbackAutohideDelayUnit();
+		
+		Args.notNull(this.autohideDelayValue, "autohideDelayValue");
+		Args.notNull(this.autohideDelayUnit, "autohideDelayUnit");
 		
 		WebMarkupContainer closeTrigger = new WebMarkupContainer("closeTrigger");
 		add(closeTrigger);
