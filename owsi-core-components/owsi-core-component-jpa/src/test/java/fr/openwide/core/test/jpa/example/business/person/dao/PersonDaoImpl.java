@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
+import com.mysema.query.types.expr.SimpleExpression;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
@@ -37,7 +37,7 @@ public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements
 
 	@Override
 	public <T extends Person, V extends Comparable<?>> T getByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue) {
+			SimpleExpression<V> field, V fieldValue) {
 		return super.getByField(entityPath, field, fieldValue);
 	}
 
@@ -48,7 +48,7 @@ public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements
 
 	@Override
 	public <T extends Person, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
+			SimpleExpression<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
 		return super.listByField(entityPath, field, fieldValue, orderSpecifier);
 	}
 
@@ -59,7 +59,7 @@ public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements
 
 	@Override
 	public <V extends Comparable<?>> Long countByField(EntityPath<? extends Person> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue) {
+			SimpleExpression<V> field, V fieldValue) {
 		return super.countByField(entityPath, field, fieldValue);
 	}
 }

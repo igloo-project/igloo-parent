@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.PathBuilder;
 
@@ -288,7 +288,7 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 
 	@Override
 	public <T extends GenericListItem<?>, V extends Comparable<?>> T getByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue) {
+			SimpleExpression<V> field, V fieldValue) {
 		return super.getByField(entityPath, field, fieldValue);
 	}
 
@@ -310,13 +310,13 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 
 	@Override
 	public <T extends GenericListItem<?>, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
+			SimpleExpression<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
 		return super.listByField(entityPath, field, fieldValue, orderSpecifier);
 	}
 
 	@Override
 	public <T extends GenericListItem<?>, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?> orderSpecifier) {
+			SimpleExpression<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?> orderSpecifier) {
 		return super.listByField(entityPath, field, fieldValue, limit, offset, orderSpecifier);
 	}
 
@@ -327,7 +327,7 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 
 	@Override
 	public <V extends Comparable<?>> Long countByField(EntityPath<? extends GenericListItem<?>> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue) {
+			SimpleExpression<V> field, V fieldValue) {
 		return super.countByField(entityPath, field, fieldValue);
 	}
 

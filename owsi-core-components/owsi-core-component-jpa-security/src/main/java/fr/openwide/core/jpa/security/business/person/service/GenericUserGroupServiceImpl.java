@@ -40,9 +40,7 @@ public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, 
 	
 	@Override
 	public G getByName(String name) {
-		PathBuilder<G> qEntity = new PathBuilder<G>(getObjectClass(), "rootAlias");
-		QGenericUserGroup qEntityAsGenericUserGroup = new QGenericUserGroup(qEntity);
-		return personGroupDao.getByField(qEntity, qEntityAsGenericUserGroup.name, name);
+		return personGroupDao.getByName(name);
 	}
 
 	@Override
