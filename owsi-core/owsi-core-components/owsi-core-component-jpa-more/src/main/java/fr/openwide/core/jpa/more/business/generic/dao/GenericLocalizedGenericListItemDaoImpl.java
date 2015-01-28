@@ -5,10 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.lucene.search.Query;
@@ -16,26 +12,27 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
 
-import fr.openwide.core.jpa.business.generic.dao.JpaDaoSupport;
+import fr.openwide.core.jpa.business.generic.dao.AbstractEntityDaoImpl;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItemBinding;
-import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem_;
 import fr.openwide.core.jpa.more.business.generic.model.QGenericLocalizedGenericListItem;
 import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericLocalizedGenericListItem<?, T>, T extends AbstractLocalizedText>
-		extends JpaDaoSupport implements IGenericLocalizedGenericListItemDao<GE, T> {
+		extends AbstractEntityDaoImpl<GE> implements IGenericLocalizedGenericListItemDao<GE, T> {
 	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
@@ -54,7 +51,7 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	}
 	
 	@Override
-	public <E extends GE> E getByNaturalId(Class<E> clazz, String naturalId) {
+	public <E extends GE> E getByNaturalId(Class<E> clazz, Object naturalId) {
 		return super.getEntityByNaturalId(clazz, naturalId);
 	}
 	
@@ -90,14 +87,18 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	
 	@Override
 	public <E extends GE> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<E> criteria = builder.createQuery(clazz);
-		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
+		PathBuilder<E> pathBuilder = new PathBuilder<E>(clazz, "rootAlias");
+		QGenericLocalizedGenericListItem entityPath = new QGenericLocalizedGenericListItem(pathBuilder);
+		
+		JPAQuery query;
 		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
-			criteria.where(builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
+			query = queryByPredicate(entityPath, entityPath.enabled.isTrue());
+		} else {
+			query = queryByPredicate(entityPath, null);
 		}
 		
-		List<E> entities = buildTypedQuery(criteria, null, null).getResultList();
+		@SuppressWarnings("unchecked")
+		List<E> entities = (List<E>) query.list(entityPath);
 		
 		Collections.sort(entities, comparator);
 		
@@ -108,113 +109,115 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	public <E extends GE> Long count(Class<E> clazz) {
 		return count(clazz, EnabledFilter.ALL);
 	}
-	
+
 	@Override
 	public <E extends GE> Long count(Class<E> clazz, EnabledFilter enabledFilter) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		
-		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
-		criteria.select(builder.count(root));
-		
-		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
-			filterCriteriaQuery(criteria, builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
-		}
-		
-		return buildTypedQuery(criteria, null, null).getSingleResult();
+		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, null, null, enabledFilter);
+		return queryItem.getValue1().distinct().count();
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE,V> E getByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
+	public <E extends GE,V extends Comparable<?>> E getByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
 		return super.getEntityByField(clazz, field, fieldValue);
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE,V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
+	public <E extends GE,V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
 		return listByField(clazz, field, fieldValue, EnabledFilter.ALL, null);
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+	public <E extends GE, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter) {
 		return listByField(clazz, field, fieldValue, enabledFilter, null);
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE, V> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+	public <E extends GE, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter, Comparator<? super E> comparator) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<E> criteria = builder.createQuery(clazz);
-		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
-		filterCriteriaQuery(criteria, builder.equal(root.get(field), fieldValue));
-		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
-			filterCriteriaQuery(criteria, builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
-		}
-		
-		List<E> entities = buildTypedQuery(criteria, null, null).getResultList();
-		
+		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
+		List<E> entities = queryItem.getValue1().list(queryItem.getValue0());
 		Collections.sort(entities, comparator);
 		
 		return entities;
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
+	public <E extends GE, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return countByField(clazz, attribute, fieldValue, EnabledFilter.ALL);
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE, V> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+	public <E extends GE, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		
-		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
-		criteria.select(builder.count(root));
-		
-		filterCriteriaQuery(criteria, builder.equal(root.get(field), fieldValue));
+		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
+		return queryItem.getValue1().distinct().count();
+	}
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
+	private <E extends GE, V extends Comparable<?>> Pair<EntityPath<E>, JPAQuery> queryByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+			EnabledFilter enabledFilter) {
+		PathBuilder<E> pathBuilder = new PathBuilder<E>(clazz, "entityAlias");
+		QGenericLocalizedGenericListItem entityPath = new QGenericLocalizedGenericListItem(pathBuilder);
+		JPAQuery query;
+		if (field != null) {
+			query = queryEntityByField(entityPath, field.getBindableJavaType(), field.getName(), fieldValue);
+		} else {
+			query = queryByPredicate(entityPath, null);
+		}
 		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
-			filterCriteriaQuery(criteria, builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true));
+			// l'appel au where ajoute la condition aux conditions précédentes
+			query = query.where(entityPath.enabled.isTrue());
 		}
 		
-		return buildTypedQuery(criteria, null, null).getSingleResult();
+		return Pair.with((EntityPath<E>) pathBuilder, query);
 	}
 
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE, V> List<E> listEnabledByField(Class<E> clazz,
+	public <E extends GE, V extends Comparable<?>> List<E> listEnabledByField(Class<E> clazz,
 			SingularAttribute<? super E, V> field, V fieldValue, Comparator<? super E> comparator) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<E> criteria = builder.createQuery(clazz);
-		
-		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
-		filterCriteriaQuery(criteria, builder.and(
-				builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true),
-				builder.equal(root.get(field), fieldValue)
-				));
-		
-		List<E> entities = buildTypedQuery(criteria, null, null).getResultList();
-		
-		Collections.sort(entities, comparator);
-		
-		return entities;
+		return listByField(clazz, field, fieldValue, EnabledFilter.ENABLED_ONLY);
 	}
 
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <E extends GE, V> Long countEnabledByField(Class<E> clazz,
+	public <E extends GE, V extends Comparable<?>> Long countEnabledByField(Class<E> clazz,
 			SingularAttribute<? super E, V> field, V fieldValue) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		
-		Root<E> root = rootCriteriaQuery(builder, criteria, clazz);
-		criteria.select(builder.count(root));
-		
-		Expression<Boolean> filter = builder.and(
-				builder.equal(root.get(GenericLocalizedGenericListItem_.enabled), true),
-				builder.equal(root.get(field), fieldValue)
-				);
-		filterCriteriaQuery(criteria, filter);
-		
-		return buildTypedQuery(criteria, null, null).getSingleResult();
+		return countByField(clazz, field, fieldValue, EnabledFilter.ENABLED_ONLY);
 	}
 
 	@Override

@@ -92,6 +92,8 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	}
 
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Retourne une entité à partir du nom d'un champ et de sa valeur. Il faut forcément que le champ fasse l'objet
 	 * d'une contrainte d'unicité. Cette méthode ne doit pas être utilisée directement et droit être wrappée (par
 	 * exemple via un getByPropriete(valeur)).
@@ -100,11 +102,12 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	 * @param fieldValue valeur du champ
 	 * @return entité
 	 */
-	protected <V> E getByField(SingularAttribute<? super E, V> fieldName, V fieldValue) {
+	@Deprecated
+	protected <V extends Comparable<?>> E getByField(SingularAttribute<? super E, V> fieldName, V fieldValue) {
 		return genericDao.getByField(fieldName, fieldValue);
 	}
 	
-	protected E getByNaturalId(String naturalId) {
+	protected E getByNaturalId(Object naturalId) {
 		return genericDao.getByNaturalId(naturalId);
 	}
 	
@@ -167,15 +170,18 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	public List<E> list() {
 		return genericDao.list();
 	}
-	
+
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Renvoie la liste des entités dont le champ donné en paramètre a la bonne valeur.
 	 * 
 	 * @param fieldName le champ sur lequel appliquer la condition
 	 * @param fieldValue valeur du champ
 	 * @return liste d'entités
 	 */
-	protected <V> List<E> listByField(SingularAttribute<? super E, V> fieldName, V fieldValue) {
+	@Deprecated
+	protected <V extends Comparable<?>> List<E> listByField(SingularAttribute<? super E, V> fieldName, V fieldValue) {
 		return genericDao.listByField(fieldName, fieldValue);
 	}
 	

@@ -36,7 +36,7 @@ import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
  * @param <T> type de l'entité
  */
 public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
-		extends JpaDaoSupport
+		extends AbstractEntityDaoImpl<E>
 		implements IGenericEntityDao<K, E> {
 	
 	protected static final String SQL_LIKE_WILDCARD = "%";
@@ -86,18 +86,26 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public E getByNaturalId(String naturalId) {
+	public E getByNaturalId(Object naturalId) {
 		return super.getEntityByNaturalId(getObjectClass(), naturalId);
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
+	public <V extends Comparable<?>> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.getEntityByField(getObjectClass(), attribute, fieldValue);
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
 	public E getByFieldIgnoreCase(SingularAttribute<? super E, String> attribute, String fieldValue) {
-		return super.getEntityByField(getObjectClass(), attribute, fieldValue);
+		return super.getEntityByFieldIgnoreCase(getObjectClass(), attribute, fieldValue);
 	}
 	
 	@Override
@@ -125,11 +133,19 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		return super.listEntity(getObjectClass());
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <V> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
+	public <V extends Comparable<?>> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.listEntityByField(getObjectClass(), attribute, fieldValue);
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
 	public <T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders) {
 		return super.listEntity(objectClass, filter, limit, offset, orders);
@@ -140,11 +156,19 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		return super.countEntity(getObjectClass());
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
-	public <V> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
+	public <V extends Comparable<?>> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.countEntityByField(getObjectClass(), attribute, fieldValue);
 	}
 	
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	@Override
 	public Long count(Expression<Boolean> filter) {
 		return super.countEntity(getObjectClass(), filter);

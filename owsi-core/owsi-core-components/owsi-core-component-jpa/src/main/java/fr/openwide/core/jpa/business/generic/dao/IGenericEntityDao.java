@@ -85,7 +85,7 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * 
 	 * @param naturalId identifiant naturel (typiquement un login)
 	 */
-	E getByNaturalId(String naturalId);
+	E getByNaturalId(Object naturalId);
 	
 	/**
 	 * Crée l'entité dans la base de données.
@@ -140,6 +140,8 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	void clear();
 
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Compte le nombre d'entités respectant la condition attribut = valeur
 	 * 
 	 * @param <V> le type de la valeur
@@ -147,9 +149,12 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @param fieldValue
 	 * @return le nombre d'entités
 	 */
-	<V> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue);
+	@Deprecated
+	<V extends Comparable<?>> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Liste les entités respectant la condition de recherche attribut = valeur
 	 * 
 	 * @param <V> le type de la valeur
@@ -157,9 +162,12 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @param fieldValue
 	 * @return
 	 */
-	<V> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue);
+	@Deprecated
+	<V extends Comparable<?>> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Obtient un objet par la condition attribut = valeur
 	 * 
 	 * @param <V>
@@ -168,9 +176,12 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @return
 	 * @throws NonUniqueResultException
 	 */
-	<V> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue);
+	@Deprecated
+	<V extends Comparable<?>> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue);
 
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Obtient un objet par la condition lower(attribut) = lower(valeur)
 	 * 
 	 * @param attribute
@@ -178,10 +189,19 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @return
 	 * @throws NonUniqueResultException
 	 */
+	@Deprecated
 	E getByFieldIgnoreCase(SingularAttribute<? super E, String> attribute, String fieldValue);
 
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
 	<T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders);
 
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
 	Long count(Expression<Boolean> filter);
 
 }
