@@ -1,11 +1,11 @@
 package fr.openwide.core.jpa.security.business.person.dao;
 
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.ComparableExpressionBase;
+import com.mysema.query.types.path.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.model.GenericUserGroup;
+import fr.openwide.core.jpa.security.business.person.model.QGenericUserGroup;
 
 public abstract class GenericUserGroupDaoImpl<G extends GenericUserGroup<G, U>, U extends GenericUser<U, G>>
 		extends GenericEntityDaoImpl<Long, G> implements IGenericUserGroupDao<G, U> {
@@ -15,9 +15,10 @@ public abstract class GenericUserGroupDaoImpl<G extends GenericUserGroup<G, U>, 
 	}
 
 	@Override
-	public <T extends G, V extends Comparable<?>> T getByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue) {
-		return super.getByField(entityPath, field, fieldValue);
+	public G getByName(String name) {
+		PathBuilder<G> qEntity = new PathBuilder<G>(getObjectClass(), "rootAlias");
+		QGenericUserGroup qEntityAsGenericUserGroup = new QGenericUserGroup(qEntity);
+		return super.getByField(qEntity, qEntityAsGenericUserGroup.name, name);
 	}
 
 }

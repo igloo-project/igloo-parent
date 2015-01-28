@@ -25,7 +25,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
 
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -124,7 +124,7 @@ public interface IGenericListItemDao {
 
 	<E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, Integer limit, Integer offset) throws ServiceException;
 
-	<T extends GenericListItem<?>, V extends Comparable<?>> T getByField(EntityPath<T> entityPath, ComparableExpressionBase<V> field, V fieldValue);
+	<T extends GenericListItem<?>, V extends Comparable<?>> T getByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue);
 
 	<T extends GenericListItem<?>> T getByFieldIgnoreCase(EntityPath<T> entityPath,
 			StringExpression field, String fieldValue);
@@ -134,14 +134,14 @@ public interface IGenericListItemDao {
 	<T extends GenericListItem<?>> List<T> list(EntityPath<T> entityPath, Long limit, Long offset);
 
 	<T extends GenericListItem<?>, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier);
+			SimpleExpression<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier);
 
 	<T extends GenericListItem<?>, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?> orderSpecifier);
+			SimpleExpression<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?> orderSpecifier);
 
 	<V extends Comparable<?>> Long count(EntityPath<? extends GenericListItem<?>> entityPath);
 
 	<V extends Comparable<?>> Long countByField(EntityPath<? extends GenericListItem<?>> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue);
+			SimpleExpression<V> field, V fieldValue);
 
 }
