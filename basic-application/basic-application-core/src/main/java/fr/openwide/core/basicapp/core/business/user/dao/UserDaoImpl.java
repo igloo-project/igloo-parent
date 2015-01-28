@@ -13,9 +13,6 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
 
 import fr.openwide.core.basicapp.core.business.user.model.QUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -99,9 +96,8 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	}
 
 	@Override
-	public <T extends User, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
-		return super.listByField(entityPath, field, fieldValue, orderSpecifier);
+	public List<User> listByUserName(String userName) {
+		return super.listByField(QUser.user, QUser.user.userName, userName, QUser.user.id.desc());
 	}
 
 }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import fr.openwide.core.basicapp.core.business.audit.dao.IAuditActionDao;
 import fr.openwide.core.basicapp.core.business.audit.model.AuditAction;
 import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
-import fr.openwide.core.basicapp.core.business.audit.model.QAuditAction;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 
 @Service("auditActionService")
@@ -23,6 +22,6 @@ public class AuditActionServiceImpl extends GenericEntityServiceImpl<Long, Audit
 
 	@Override
 	public AuditAction getByType(AuditActionType type) {
-		return auditActionDao.getByField(QAuditAction.auditAction, QAuditAction.auditAction.type, type);
+		return auditActionDao.getByType(type);
 	}
 }

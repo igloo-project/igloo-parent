@@ -6,6 +6,4 @@ import fr.openwide.core.jpa.security.business.person.dao.IGenericUserGroupDao;
 
 public interface IUserGroupDao extends IGenericUserGroupDao<UserGroup, User> {
 
-	UserGroup getByName(String name);
-
 }

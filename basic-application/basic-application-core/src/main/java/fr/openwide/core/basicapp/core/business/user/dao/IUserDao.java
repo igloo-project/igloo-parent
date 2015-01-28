@@ -4,10 +4,6 @@ import java.util.List;
 
 import org.apache.lucene.queryParser.ParseException;
 
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
-
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
 import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;
@@ -20,7 +16,6 @@ public interface IUserDao extends IGenericUserDao<User> {
 
 	User getByEmailCaseInsensitive(String email);
 
-	<T extends User, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
-			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier);
+	List<User> listByUserName(String userName);
 
 }

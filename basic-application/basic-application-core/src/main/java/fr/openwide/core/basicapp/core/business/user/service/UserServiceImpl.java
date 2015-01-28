@@ -10,7 +10,6 @@ import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
-import fr.openwide.core.basicapp.core.business.user.model.QUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
@@ -64,7 +63,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public List<User> listByUserName(String userName) {
-		return userDao.listByField(QUser.user, QUser.user.userName, userName, QUser.user.id.desc());
+		return userDao.listByUserName(userName);
 	}
 
 	@Override
