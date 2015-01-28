@@ -10,13 +10,13 @@ import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
+import fr.openwide.core.basicapp.core.business.user.model.QUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.util.StringUtils;
@@ -64,7 +64,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public List<User> listByUserName(String userName) {
-		return listByField(GenericUser_.userName, userName);
+		return userDao.listByField(QUser.user, QUser.user.userName, userName, QUser.user.id.desc());
 	}
 
 	@Override

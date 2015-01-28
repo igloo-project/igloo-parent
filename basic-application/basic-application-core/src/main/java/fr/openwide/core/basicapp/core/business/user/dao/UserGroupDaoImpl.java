@@ -2,6 +2,7 @@ package fr.openwide.core.basicapp.core.business.user.dao;
 
 import org.springframework.stereotype.Repository;
 
+import fr.openwide.core.basicapp.core.business.user.model.QUserGroup;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup_;
@@ -16,6 +17,6 @@ public class UserGroupDaoImpl extends GenericUserGroupDaoImpl<UserGroup, User> i
 
 	@Override
 	public UserGroup getByName(String name) {
-		return getByField(UserGroup_.name, name);
+		return getByField(QUserGroup.userGroup, QUserGroup.userGroup.name, name);
 	}
 }
