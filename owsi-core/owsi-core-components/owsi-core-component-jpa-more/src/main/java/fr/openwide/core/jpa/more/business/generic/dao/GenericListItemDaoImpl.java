@@ -209,7 +209,7 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 	protected <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Expression<Boolean> filter, javax.persistence.criteria.Order order, Integer limit, Integer offset) {
 		List<E> entities = super.listEntity(objectClass, filter, limit, offset, order);
 		if (order == null) {
-			Collections.sort(entities, GenericListItemComparator.INSTANCE);
+			Collections.sort(entities, GenericListItemComparator.get());
 		}
 		return entities;
 	}
