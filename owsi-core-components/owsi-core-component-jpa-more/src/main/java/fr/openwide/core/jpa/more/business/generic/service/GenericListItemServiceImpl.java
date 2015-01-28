@@ -27,11 +27,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mysema.query.types.path.PathBuilder;
+
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.dao.IGenericListItemDao;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
-import fr.openwide.core.jpa.more.business.generic.model.GenericListItem_;
+import fr.openwide.core.jpa.more.business.generic.model.QGenericListItem;
 
 @Service("genericListItemService")
 public class GenericListItemServiceImpl implements IGenericListItemService {
@@ -49,11 +51,15 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 		return genericListItemDao.getById(clazz, id);
 	}
 	
-	protected <E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, String naturalId) {
+	protected <E extends GenericListItem<?>> E getByNaturalId(Class<E> clazz, Object naturalId) {
 		return genericListItemDao.getByNaturalId(clazz, naturalId);
 	}
 	
-	protected <E extends GenericListItem<?>, V>  E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
+	protected <E extends GenericListItem<?>, V extends Comparable<?>>  E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return genericListItemDao.getByField(clazz, attribute, fieldValue);
 	}
 	
@@ -104,22 +110,30 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	
 	@Override
 	public <E extends GenericListItem<?>> E getByLabel(Class<E> clazz, String label) throws NonUniqueResultException {
-		return genericListItemDao.getByField(clazz, GenericListItem_.label, label);
+		PathBuilder<E> qEntity = new PathBuilder<E>(clazz, "rootAlias");
+		QGenericListItem qEntityAsGenericListItem = new QGenericListItem(qEntity);
+		return genericListItemDao.getByField(qEntity, qEntityAsGenericListItem.label, label);
 	}
 	
 	@Override
-	public <E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String label) throws NonUniqueResultException {
-		return genericListItemDao.getByField(clazz, GenericListItem_.shortLabel, label);
+	public <E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String shortLabel) throws NonUniqueResultException {
+		PathBuilder<E> qEntity = new PathBuilder<E>(clazz, "rootAlias");
+		QGenericListItem qEntityAsGenericListItem = new QGenericListItem(qEntity);
+		return genericListItemDao.getByField(qEntity, qEntityAsGenericListItem.shortLabel, shortLabel);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> E getByLabelIgnoreCase(Class<E> clazz, String label) throws NonUniqueResultException {
-		return genericListItemDao.getByFieldIgnoreCase(clazz, GenericListItem_.label, label);
+		PathBuilder<E> qEntity = new PathBuilder<E>(clazz, "rootAlias");
+		QGenericListItem qEntityAsGenericListItem = new QGenericListItem(qEntity);
+		return genericListItemDao.getByFieldIgnoreCase(qEntity, qEntityAsGenericListItem.label, label);
 	}
 	
 	@Override
 	public <E extends GenericListItem<?>> E getByShortLabelIgnoreCase(Class<E> clazz, String shortLabel) throws NonUniqueResultException {
-		return genericListItemDao.getByFieldIgnoreCase(clazz, GenericListItem_.shortLabel, shortLabel);
+		PathBuilder<E> qEntity = new PathBuilder<E>(clazz, "rootAlias");
+		QGenericListItem qEntityAsGenericListItem = new QGenericListItem(qEntity);
+		return genericListItemDao.getByFieldIgnoreCase(qEntity, qEntityAsGenericListItem.shortLabel, shortLabel);
 	}
 	
 	@Override

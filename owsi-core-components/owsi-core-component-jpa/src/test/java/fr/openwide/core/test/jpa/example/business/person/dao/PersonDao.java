@@ -17,9 +17,26 @@
 
 package fr.openwide.core.test.jpa.example.business.person.dao;
 
+import java.util.List;
+
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.ComparableExpressionBase;
+
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 
 public interface PersonDao extends IGenericEntityDao<Long, Person> {
+
+	<T extends Person, V extends Comparable<?>> T getByField(EntityPath<T> entityPath, ComparableExpressionBase<V> field, V fieldValue);
+
+	<T extends Person> List<T> list(EntityPath<T> entityPath);
+
+	<T extends Person, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
+			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier);
+
+	<V extends Comparable<?>> Long count(EntityPath<? extends Person> entityPath);
+
+	<V extends Comparable<?>> Long countByField(EntityPath<? extends Person> entityPath, ComparableExpressionBase<V> field, V fieldValue);
 
 }

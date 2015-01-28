@@ -17,7 +17,13 @@
 
 package fr.openwide.core.test.jpa.example.business.person.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.ComparableExpressionBase;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
@@ -27,5 +33,33 @@ public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements
 
 	public PersonDaoImpl() {
 		super();
+	}
+
+	@Override
+	public <T extends Person, V extends Comparable<?>> T getByField(EntityPath<T> entityPath,
+			ComparableExpressionBase<V> field, V fieldValue) {
+		return super.getByField(entityPath, field, fieldValue);
+	}
+
+	@Override
+	public <T extends Person> List<T> list(EntityPath<T> entityPath) {
+		return super.list(entityPath);
+	}
+
+	@Override
+	public <T extends Person, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
+			ComparableExpressionBase<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
+		return super.listByField(entityPath, field, fieldValue, orderSpecifier);
+	}
+
+	@Override
+	public <V extends Comparable<?>> Long count(EntityPath<? extends Person> entityPath) {
+		return super.count(entityPath);
+	}
+
+	@Override
+	public <V extends Comparable<?>> Long countByField(EntityPath<? extends Person> entityPath,
+			ComparableExpressionBase<V> field, V fieldValue) {
+		return super.countByField(entityPath, field, fieldValue);
 	}
 }

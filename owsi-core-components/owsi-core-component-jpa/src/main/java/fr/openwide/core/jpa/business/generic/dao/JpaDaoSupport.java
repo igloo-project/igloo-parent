@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -13,11 +12,21 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.hibernate.Session;
+
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.path.ComparableEntityPath;
+import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.StringPath;
+
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
 
 public class JpaDaoSupport {
 
@@ -25,6 +34,8 @@ public class JpaDaoSupport {
 	private EntityManager entityManager;
 	
 	/**
+	 * @deprecated Utiliser QueryDSL.
+	 * 
 	 * Crée la requête et applique les conditions de limite / offset et retourne la {@link TypedQuery}
 	 * correspondante.
 	 * 
@@ -34,6 +45,7 @@ public class JpaDaoSupport {
 	 * @param offset null si pas d'offset
 	 * @return la {@link TypedQuery} avec limite et offset le cas échéant
 	 */
+	@Deprecated
 	protected <T> TypedQuery<T> buildTypedQuery(CriteriaQuery<T> criteria, Integer limit, Integer offset) {
 		TypedQuery<T> query = getEntityManager().createQuery(criteria);
 		if (offset != null) {
@@ -45,27 +57,35 @@ public class JpaDaoSupport {
 		return query;
 		
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
 	protected void filterCriteriaQuery(CriteriaQuery<?> criteria, Expression<Boolean> filter) {
 		if (filter != null) {
-			Predicate currentFilter = criteria.getRestriction();
+			javax.persistence.criteria.Predicate currentFilter = criteria.getRestriction();
 			if (currentFilter != null) {
 				filter = getEntityManager().getCriteriaBuilder().and(currentFilter, filter);
 			}
 			criteria.where(filter);
 		}
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
 	protected <T> Root<T> rootCriteriaQuery(CriteriaBuilder builder, CriteriaQuery<?> criteria, Class<T> objectClass) {
 		return criteria.from(objectClass);
 	}
-	
-	public <T, K> T getEntity(Class<T> clazz, K id) {
+
+	protected <T, K> T getEntity(Class<T> clazz, K id) {
 		return getEntityManager().find(clazz, id);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public <T> T getEntityByNaturalId(Class<T> clazz, String naturalId) {
+	public <T> T getEntityByNaturalId(Class<T> clazz, Object naturalId) {
 		if (naturalId == null) {
 			throw new IllegalArgumentException("Natural id may not be null");
 		}
@@ -74,34 +94,32 @@ public class JpaDaoSupport {
 		
 		return (T) session.bySimpleNaturalId(clazz).load(naturalId);
 	}
-	
-	public <T, V> T getEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> criteria = builder.createQuery(clazz);
-		Root<T> root = criteria.from(clazz);
-		criteria.where(builder.equal(root.get(attribute), fieldValue));
-		
-		try {
-			return buildTypedQuery(criteria, null, null).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
+	public <T, V extends Comparable<?>> T getEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
+		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
+		return queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).uniqueResult(entityPath);
 	}
-	
-	public <T> T getEntityByFieldIgnoreCase(Class<T> clazz, SingularAttribute<? super T, String> attribute, String fieldValue) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> criteria = builder.createQuery(clazz);
-		Root<T> root = criteria.from(clazz);
-		criteria.where(builder.equal(
-				builder.lower(root.get(attribute)),
-				builder.lower(builder.literal(fieldValue))
-				));
+
+	protected <T, V extends Comparable<?>> JPAQuery queryEntityByField(EntityPath<T> entityPath, Class<V> fieldClass, String fieldName, V fieldValue) {
+		ComparableEntityPath<V> field = new ComparableEntityPath<V>(fieldClass, entityPath, fieldName);
 		
-		try {
-			return buildTypedQuery(criteria, null, null).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		return queryByPredicate(entityPath, field.eq(fieldValue));
+		
+	}
+
+	/**
+	 * @deprecated Utiliser QueryDSL.
+	 */
+	@Deprecated
+	public <T> T getEntityByFieldIgnoreCase(Class<T> clazz, SingularAttribute<? super T, String> attribute, String fieldValue) {
+		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
+		StringPath field = new StringPath(entityPath, attribute.getName());
+		
+		return queryByPredicate(entityPath, field.equalsIgnoreCase(fieldValue)).uniqueResult(entityPath);
 	}
 	
 	protected <T> void update(T entity) {
@@ -134,6 +152,10 @@ public class JpaDaoSupport {
 	}
 	
 	// TODO : à refaire : il n'est pas possible de construire un filter ou un order stateless
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(objectClass);
@@ -155,52 +177,58 @@ public class JpaDaoSupport {
 		
 		return entities;
 	}
-	
-	protected <T> List<T> listEntity(Class<T> objectClass) {
-		return listEntity(objectClass, null, null, null);
+
+	public <T> List<T> listEntity(Class<T> objectClass) {
+		PathBuilder<T> pathBuilder = new PathBuilder<T>(objectClass, "rootAlias");
+		OrderSpecifier<?> order = null;
+		if (GenericEntity.class.isAssignableFrom(objectClass)) {
+			// cast possible puisqu'on vient de vérifier le type de objectclass
+			@SuppressWarnings("unchecked")
+			QGenericEntity qGenericEntity = new QGenericEntity((PathBuilder<? extends GenericEntity<?, ?>>) (Object) pathBuilder);
+			order = qGenericEntity.id.asc();
+		}
+		
+		return queryByPredicateOrdered(pathBuilder, null, order).list(pathBuilder);
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	protected <T> List<T> listEntity(Class<T> objectClass, Expression<Boolean> filter) {
 		return listEntity(objectClass, filter, null, null);
 	}
-	
-	protected <T, V> List<T> listEntityByField(Class<T> objectClass, SingularAttribute<? super T, V> attribute, V fieldValue) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<T> criteria = builder.createQuery(objectClass);
-		
-		Root<T> root = rootCriteriaQuery(builder, criteria, objectClass);
-		criteria.where(builder.equal(root.get(attribute), fieldValue));
-		
-		List<T> entities = buildTypedQuery(criteria, null, null).getResultList();
-		
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
+	protected <T, V extends Comparable<?>> List<T> listEntityByField(Class<T> objectClass, SingularAttribute<? super T, V> attribute, V fieldValue) {
+		PathBuilder<T> entityPath = new PathBuilder<T>(objectClass, "rootAlias");
+		List<T> entities = queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).list(entityPath);
 		sort(entities);
 		
 		return entities;
 	}
-	
+
 	protected <T> Long countEntity(Class<T> clazz) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		Root<T> root = rootCriteriaQuery(builder, criteria, clazz);
-		
-		criteria.select(builder.count(root));
-		
-		return buildTypedQuery(criteria, null, null).getSingleResult();
+		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
+		return queryByPredicate(entityPath, null).distinct().count();
 	}
-	
-	protected <T, V> Long countEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		
-		Root<T> root = rootCriteriaQuery(builder, criteria, clazz);
-		criteria.select(builder.count(root));
-		
-		Expression<Boolean> filter = builder.equal(root.get(attribute), fieldValue);
-		filterCriteriaQuery(criteria, filter);
-		
-		return buildTypedQuery(criteria, null, null).getSingleResult();
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
+	protected <T, V extends Comparable<?>> Long countEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
+		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
+		return queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).distinct().count();
 	}
-	
+
+	/**
+	 * @deprecated Utiliser QueryDSL
+	 */
+	@Deprecated
 	protected <T> Long countEntity(Class<T> clazz, Expression<Boolean> filter) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
@@ -212,23 +240,7 @@ public class JpaDaoSupport {
 		
 		return buildTypedQuery(criteria, null, null).getSingleResult();
 	}
-	
-	protected <E> E getSingleResultOrNull(CriteriaQuery<E> cq) {
-		try {
-			return getEntityManager().createQuery(cq).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-	
-	protected <E> E getSingleResultOrNull(TypedQuery<E> tq) {
-		try {
-			return tq.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-	
+
 	protected EntityManager getEntityManager() {
 		return entityManager;
 	}
@@ -242,6 +254,43 @@ public class JpaDaoSupport {
 			i.next();
 			i.set((T) a[j]);
 		}
+	}
+
+	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, OrderSpecifier<?> orderSpecifier) {
+		return queryByPredicateOrdered(entityPath, predicate, null, null, orderSpecifier);
+	}
+
+	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset, OrderSpecifier<?> orderSpecifier) {
+		JPAQuery query = queryByPredicate(entityPath, predicate, limit, offset);
+		
+		if (orderSpecifier != null) {
+			query.orderBy(orderSpecifier);
+		}
+		
+		return query;
+	}
+
+	protected <T> JPAQuery queryByPredicate(EntityPath<T> entityPath, Predicate predicate) {
+		return queryByPredicate(entityPath, predicate, null, null);
+	}
+
+	protected <T> JPAQuery queryByPredicate(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset) {
+		JPAQuery query = new JPAQuery(getEntityManager());
+		query.from(entityPath);
+		
+		if (predicate != null) {
+			query.where(predicate);
+		}
+		
+		if (offset != null) {
+			query.offset(offset);
+		}
+		
+		if (limit != null) {
+			query.limit(limit);
+		}
+		
+		return query;
 	}
 
 }

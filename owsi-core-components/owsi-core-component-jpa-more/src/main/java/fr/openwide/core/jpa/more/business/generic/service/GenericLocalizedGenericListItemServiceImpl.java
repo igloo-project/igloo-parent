@@ -30,7 +30,7 @@ public abstract class GenericLocalizedGenericListItemServiceImpl<GE extends Gene
 		return dao.getById(clazz, id);
 	}
 	
-	protected <E extends GE> E getByNaturalId(Class<E> clazz, String naturalId) {
+	protected <E extends GE> E getByNaturalId(Class<E> clazz, Object naturalId) {
 		return dao.getByNaturalId(clazz, naturalId);
 	}
 	
