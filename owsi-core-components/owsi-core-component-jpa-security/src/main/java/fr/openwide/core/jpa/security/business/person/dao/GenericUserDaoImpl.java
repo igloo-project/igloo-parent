@@ -5,10 +5,10 @@ import java.util.List;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
-import fr.openwide.core.jpa.security.business.person.model.GenericUser_;
 import fr.openwide.core.jpa.security.business.person.model.QGenericUser;
 
 public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
@@ -46,7 +46,9 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	
 	@Override
 	public Long countActive() {
-		return countByField(GenericUser_.active, true);
+		PathBuilder<U> qEntity = new PathBuilder<U>(getObjectClass(), "rootAlias");
+		QGenericUser qEntityAsGenericUser = new QGenericUser(qEntity);
+		return countByField(qEntity, qEntityAsGenericUser.active, true);
 	}
 
 	@SuppressWarnings("unchecked")
