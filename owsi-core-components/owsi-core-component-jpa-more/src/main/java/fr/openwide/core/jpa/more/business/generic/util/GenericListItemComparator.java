@@ -15,6 +15,10 @@ public class GenericListItemComparator extends Ordering<GenericListItem<?>> impl
 
 	public static final Ordering<GenericListItem<?>> INSTANCE = new GenericListItemComparator().nullsFirst();
 	
+	public static final Ordering<GenericListItem<?>> get() {
+		return INSTANCE;
+	}
+	
 	@Override
 	public int compare(GenericListItem<?> o1, GenericListItem<?> o2) {
 		int order = 0;
