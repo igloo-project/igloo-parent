@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mysema.query.types.path.PathBuilder;
+
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -11,8 +13,8 @@ import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.person.dao.IGenericUserGroupDao;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.model.GenericUserGroup;
-import fr.openwide.core.jpa.security.business.person.model.GenericUserGroup_;
 import fr.openwide.core.jpa.security.business.person.model.IUserGroupBinding;
+import fr.openwide.core.jpa.security.business.person.model.QGenericUserGroup;
 
 public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, U>, U extends GenericUser<U, G>>
 		extends GenericEntityServiceImpl<Long, G> implements IGenericUserGroupService<G, U> {
@@ -38,7 +40,9 @@ public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, 
 	
 	@Override
 	public G getByName(String name) {
-		return getByField(GenericUserGroup_.name, name);
+		PathBuilder<G> qEntity = new PathBuilder<G>(getObjectClass(), "rootAlias");
+		QGenericUserGroup qEntityAsGenericUserGroup = new QGenericUserGroup(qEntity);
+		return personGroupDao.getByField(qEntity, qEntityAsGenericUserGroup.name, name);
 	}
 
 	@Override

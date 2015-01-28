@@ -93,5 +93,14 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		assertEquals(CoreAuthorityConstants.ROLE_ANONYMOUS, iterator.next().getAuthority());
 		assertEquals(CoreAuthorityConstants.ROLE_AUTHENTICATED, iterator.next().getAuthority());
 		assertEquals(ROLE_GROUP_2, iterator.next().getAuthority());
+		
+		// Test reimplemented QueryDSL methods
+		MockUser personInactive = createMockPerson("inactive", "inactive", "inactive");
+		personInactive.setActive(false);
+		mockUserService.update(personInactive);
+		
+		assertEquals(group1, mockUserGroupService.getByName("group1"));
+		assertEquals(new Long(4), mockUserService.count());
+		assertEquals(new Long(3), mockUserService.countActive());
 	}
 }

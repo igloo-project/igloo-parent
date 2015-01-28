@@ -23,6 +23,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.dao.IParameterDao;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter_;
+import fr.openwide.core.jpa.more.business.parameter.model.QParameter;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
 
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long, Parameter>
@@ -91,7 +92,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 	}
 
 	protected Parameter getByName(String name) {
-		return dao.getByField(Parameter_.name, name);
+		return dao.getByField(QParameter.parameter, QParameter.parameter.name, name);
 	}
 
 	protected boolean getBooleanValue(String name, boolean defaultValue) {
