@@ -37,11 +37,15 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 		extends ITransactionalAspectAwareService {
 
 	/**
+	 * @deprecated Si vous avez besoin de faire des sauvegardes sans passer dans le createEntity, implémenter une
+	 * méthode spécifique avec un nommage adapté. La création sans passer par le createEntity doit être l'exception.
+	 * 
 	 * Crée l'entité dans la base de données. Mis à part dans les tests pour faire des sauvegardes simples, utiliser
 	 * create() car il est possible qu'il y ait des listeners sur la création d'une entité.
 	 * 
 	 * @param entity entité
 	 */
+	@Deprecated
 	void save(@PermissionObject E entity) throws ServiceException, SecurityServiceException;
 	
 	/**
