@@ -29,6 +29,8 @@ import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.util.ArrayUtil;
 import org.apache.lucene.util.RamUsageEstimator;
 
+import com.google.common.base.CharMatcher;
+
 /**
  * <p>Utilitaire permettant de manipuler les chaînes de caractères.</p>
  * 
@@ -303,8 +305,36 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 		return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
 	}
 
-	public static String emptyTextToNull(String string) {
-		return hasText(string) ? string : null;
+	public static String emptyTextToNull(String str) {
+		return hasText(str) ? str : null;
+	}
+
+	public static String capitalizeFully(String str, CharMatcher charMatcher) {
+		if (str == null) {
+			return null;
+		}
+		
+		str = lowerCase(str);
+		return capitalize(str, charMatcher);
+	}
+
+	public static String capitalize(String str, CharMatcher charMatcher) {
+		if (str == null) {
+			return null;
+		}
+		
+		final char[] buffer = str.toCharArray();
+		boolean capitalizeNext = true;
+		for (int i = 0; i < buffer.length; i++) {
+			final char ch = buffer[i];
+			if (charMatcher.matches(ch)) {
+				capitalizeNext = true;
+			} else if (capitalizeNext) {
+				buffer[i] = Character.toTitleCase(ch);
+				capitalizeNext = false;
+			}
+		}
+		return new String(buffer);
 	}
 
 }
