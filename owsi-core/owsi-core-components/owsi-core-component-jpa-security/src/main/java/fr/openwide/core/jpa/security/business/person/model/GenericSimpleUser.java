@@ -11,6 +11,8 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
@@ -145,6 +147,7 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public boolean isNotificationEnabled() {
 		// implémentation par défaut ; dépend de l'état de l'utilisateur
 		return isActive();
