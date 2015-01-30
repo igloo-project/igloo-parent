@@ -143,4 +143,11 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 		return DEFAULT_STRING_COLLATOR.compare(this.getLastName(), user.getLastName());
 	}
 
+	@Override
+	@Transient
+	public boolean isNotificationEnabled() {
+		// implémentation par défaut ; dépend de l'état de l'utilisateur
+		return isActive();
+	}
+
 }

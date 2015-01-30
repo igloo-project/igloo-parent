@@ -1,6 +1,5 @@
 package fr.openwide.core.jpa.security.business.person.model;
 
-import java.beans.Transient;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -252,11 +251,5 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@Override
 	public String getDisplayName() {
 		return getUserName();
-	}
-
-	@Transient
-	public boolean isNotificationEnabled() {
-		// implémentation par défaut ; dépend de l'état de l'utilisateur
-		return active;
 	}
 }
