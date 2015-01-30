@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import fr.openwide.core.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
+import fr.openwide.core.basicapp.core.config.hibernate.HibernateConfigPackage;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.security.config.spring.AbstractConfiguredJpaSecurityJpaConfig;
 
@@ -18,6 +19,9 @@ public class BasicApplicationCoreCommonJpaConfig extends AbstractConfiguredJpaSe
 	@Override
 	@Bean
 	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
-		return new JpaPackageScanProvider(BasicApplicationCoreCommonBusinessPackage.class.getPackage());
+		return new JpaPackageScanProvider(
+				BasicApplicationCoreCommonBusinessPackage.class.getPackage(),
+				HibernateConfigPackage.class.getPackage() // Typedef config
+		);
 	}
 }
