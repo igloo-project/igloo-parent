@@ -12,9 +12,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
 import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.PluralAttribute;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.After;
@@ -151,7 +151,11 @@ public abstract class AbstractTestCase {
 		entityManagerUtils.getEntityManager().detach(object);
 	}
 
-	protected void testMetaModel(Class<?>... authorizedClasses) throws NoSuchFieldException, SecurityException {
+	/**
+	 * Méthode permettant de s'assurer que les attributs des classes marquées @Entity ne seront pas sérialisés en
+	 * "bytea" lors de leur écriture en base.
+	 */
+	protected void testMetaModel(Class<?>... classesAutorisees) throws NoSuchFieldException, SecurityException {
 		List<Class<?>> listeAutorisee = Lists.newArrayList();
 		listeAutorisee.add(String.class);
 		listeAutorisee.add(Long.class);
@@ -166,6 +170,9 @@ public abstract class AbstractTestCase {
 		listeAutorisee.add(double.class);
 		listeAutorisee.add(boolean.class);
 		listeAutorisee.add(float.class);
+		for (Class<?> clazz : classesAutorisees) {
+			listeAutorisee.add(clazz);
+		}
 		
 		for (EntityType<?> entityType : getEntityManager().getMetamodel().getEntities()) {
 			for (Attribute<?, ?> attribute : entityType.getDeclaredAttributes()) {
