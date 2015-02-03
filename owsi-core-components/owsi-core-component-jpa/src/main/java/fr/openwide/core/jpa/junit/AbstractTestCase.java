@@ -183,7 +183,8 @@ public abstract class AbstractTestCase {
 							"Champ \"" + attribute.getName() + "\", de type " + attribute.getJavaType().getSimpleName() + " refusé");
 				} else if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
 						&& PluralAttribute.class.isInstance(attribute)
-						&& !listeAutorisee.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())) {
+						&& !listeAutorisee.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())
+						&& attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class) == null) {
 					throw new IllegalStateException(
 							"Collection \"" + attribute.getName() + "\" de "
 							+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
