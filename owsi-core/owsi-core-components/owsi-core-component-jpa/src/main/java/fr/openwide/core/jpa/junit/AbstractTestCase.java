@@ -155,6 +155,9 @@ public abstract class AbstractTestCase {
 	/**
 	 * Méthode permettant de s'assurer que les attributs des classes marquées @Entity ne seront pas sérialisés en
 	 * "bytea" lors de leur écriture en base.
+	 * 
+	 * @param classesAutorisees : concerne uniquement des classes matérialisées. Si une enum fait péter le test, c'est
+	 * qu'il manque l'annotation @Enumerated ou que celle-ci prend EnumType.ORDINAL en paramètre
 	 */
 	protected void testMetaModel(Class<?>... classesAutorisees) throws NoSuchFieldException, SecurityException {
 		List<Class<?>> listeAutorisee = Lists.newArrayList();
