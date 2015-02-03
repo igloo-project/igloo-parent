@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -176,15 +177,16 @@ public abstract class AbstractTestCase {
 		
 		for (EntityType<?> entityType : getEntityManager().getMetamodel().getEntities()) {
 			for (Attribute<?, ?> attribute : entityType.getDeclaredAttributes()) {
+				Enumerated enumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class);
 				if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.BASIC)
 						&& !listeAutorisee.contains(attribute.getJavaType())
-						&& attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class) == null) {
+						&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
 					throw new IllegalStateException(
 							"Champ \"" + attribute.getName() + "\", de type " + attribute.getJavaType().getSimpleName() + " refusé");
 				} else if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
 						&& PluralAttribute.class.isInstance(attribute)
 						&& !listeAutorisee.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())
-						&& attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class) == null) {
+						&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
 					throw new IllegalStateException(
 							"Collection \"" + attribute.getName() + "\" de "
 							+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
