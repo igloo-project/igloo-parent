@@ -1,14 +1,19 @@
 package fr.openwide.core.jpa.junit;
 
 import java.beans.PropertyDescriptor;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.Attribute.PersistentAttributeType;
 import javax.persistence.metamodel.EntityType;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -22,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
@@ -139,9 +146,42 @@ public abstract class AbstractTestCase {
 	protected void entityManagerClear() {
 		entityManagerUtils.getEntityManager().clear();
 	}
-	
+
 	protected void entityManagerDetach(Object object) {
 		entityManagerUtils.getEntityManager().detach(object);
 	}
 
+	protected void testMetaModel(Class<?>... authorizedClasses) throws NoSuchFieldException, SecurityException {
+		List<Class<?>> listeAutorisee = Lists.newArrayList();
+		listeAutorisee.add(String.class);
+		listeAutorisee.add(Long.class);
+		listeAutorisee.add(Double.class);
+		listeAutorisee.add(Integer.class);
+		listeAutorisee.add(Float.class);
+		listeAutorisee.add(Date.class);
+		listeAutorisee.add(BigDecimal.class);
+		listeAutorisee.add(Boolean.class);
+		listeAutorisee.add(int.class);
+		listeAutorisee.add(long.class);
+		listeAutorisee.add(double.class);
+		listeAutorisee.add(boolean.class);
+		listeAutorisee.add(float.class);
+		
+		for (EntityType<?> entityType : getEntityManager().getMetamodel().getEntities()) {
+			for (Attribute<?, ?> attribute : entityType.getDeclaredAttributes()) {
+				if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.BASIC)
+						&& !listeAutorisee.contains(attribute.getJavaType())
+						&& attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class) == null) {
+					throw new IllegalStateException(
+							"Champ \"" + attribute.getName() + "\", de type " + attribute.getJavaType().getSimpleName() + " refusé");
+				} else if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
+						&& PluralAttribute.class.isInstance(attribute)
+						&& !listeAutorisee.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())) {
+					throw new IllegalStateException(
+							"Collection \"" + attribute.getName() + "\" de "
+							+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
+				}
+			}
+		}
+	}
 }
