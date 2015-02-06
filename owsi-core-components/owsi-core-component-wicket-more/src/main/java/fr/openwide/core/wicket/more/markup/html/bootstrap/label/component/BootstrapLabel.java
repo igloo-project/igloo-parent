@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.bootstrap.label.component;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -29,7 +30,8 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		
 		add(
 				BootstrapColorBehavior.label(renderer.asColorModel(model)),
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).model(Predicates2.hasText(), labelModel)
+				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).model(Predicates2.hasText(), labelModel),
+				new AttributeAppender("title", renderer.asTooltipModel(model))
 		);
 		
 	}
