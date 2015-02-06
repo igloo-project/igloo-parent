@@ -48,4 +48,23 @@ public abstract class BootstrapLabelRenderer<T> extends Renderer<T> {
 		};
 	}
 
+	public String getTooltip(T value) {
+		return null;
+	}
+
+	public final IModel<String> asTooltipModel(final IModel<? extends T> model) {
+		return new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = -3797397202441516321L;
+			@Override
+			public String getObject() {
+				return getTooltip(model.getObject());
+			}
+			@Override
+			public void detach() {
+				super.detach();
+				model.detach();
+			}
+		};
+	};
+
 }
