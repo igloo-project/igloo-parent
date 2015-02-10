@@ -25,6 +25,8 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
  * 
  * <p>ATTENTION, ces éléments sont utilisés pour de l'affichage : quand on ajoute une clé ici, il faut ajouter l'élément
  * ad hoc dans le fichier Global.properties.</p>
+ * 
+ * <p><strong>NOTE :</strong> cette classe n'est que rarement utilisée.</p>
  */
 @MappedSuperclass
 public abstract class AbstractAuditFeature extends GenericListItem<AbstractAuditFeature> {

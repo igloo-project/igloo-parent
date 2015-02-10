@@ -25,6 +25,9 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
  * 
  * <p>Il est recommandé de faire hériter un enum de cette interface mais on peut aussi envisager
  * de stocker ces éléments dans la base de données.</p>
+ * 
+ * <p><strong>NOTE :</strong> il vaut mieux utiliser un enum pour modéliser les actions, sauf raison particulière
+ * (les anciens projets utilisent toujours cette classe pour ne pas avoir à tout refactorer).</p>
  */
 @MappedSuperclass
 public abstract class AbstractAuditAction extends GenericListItem<AbstractAuditAction> {

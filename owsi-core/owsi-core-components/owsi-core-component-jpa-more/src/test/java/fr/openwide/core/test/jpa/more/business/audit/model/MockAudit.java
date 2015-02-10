@@ -7,11 +7,10 @@ import javax.persistence.ManyToOne;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
-import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditAction;
 import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditFeature;
 
 @Entity
-public class MockAudit extends AbstractAudit {
+public class MockAudit extends AbstractAudit<MockAuditAction> {
 	private static final long serialVersionUID = -8944353148532999908L;
 
 	@ManyToOne
@@ -21,13 +20,13 @@ public class MockAudit extends AbstractAudit {
 	private MockAuditFeature feature;
 
 	public MockAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			AbstractAuditFeature feature, MockAuditAction action, String message, GenericEntity<Long, ?> object,
 			GenericEntity<Long, ?> secondaryObject) {
 		this(new Date(), service, method, context, subject, feature, action, message, object, secondaryObject);
 	}
 
 	public MockAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			AbstractAuditFeature feature, MockAuditAction action, String message, GenericEntity<Long, ?> object,
 			GenericEntity<Long, ?> secondaryObject) {
 		super(date, service, method, context, subject, feature, action, message, object, secondaryObject);
 	}
@@ -37,6 +36,7 @@ public class MockAudit extends AbstractAudit {
 		return action;
 	}
 
+	@Override
 	public void setAction(MockAuditAction action) {
 		this.action = action;
 	}
@@ -48,13 +48,6 @@ public class MockAudit extends AbstractAudit {
 
 	public void setFeature(MockAuditFeature feature) {
 		this.feature = feature;
-	}
-
-	@Override
-	public void setAction(AbstractAuditAction action) {
-		if (action instanceof MockAuditAction) {
-			setAction((MockAuditAction) action);
-		}
 	}
 
 	@Override
