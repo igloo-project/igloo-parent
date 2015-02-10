@@ -24,7 +24,7 @@ public class EntityServiceImpl implements IEntityService {
 	}
 	
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference) {
+	public <E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference) {
 		return entityDao.getEntity(reference);
 	}
 	
@@ -34,10 +34,8 @@ public class EntityServiceImpl implements IEntityService {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(
-			GenericEntityCollectionReference<K, E> reference) {
-		return (List<E>) entityDao.listEntity(reference.getEntityClass(), reference.getEntityIdList());
+	public <E extends GenericEntity<?, ?>> List<E> listEntity(GenericEntityCollectionReference<?, E> reference) {
+		return entityDao.listEntity(reference);
 	}
 	
 	@Override

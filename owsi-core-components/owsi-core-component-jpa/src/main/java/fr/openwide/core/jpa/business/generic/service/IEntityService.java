@@ -12,11 +12,11 @@ public interface IEntityService extends ITransactionalAspectAwareService {
 	
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(Class<E> clazz, K id);
 	
-	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference);
+	<E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference);
 
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids);
 
-	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(GenericEntityCollectionReference<K, E> reference);
+	<E extends GenericEntity<?, ?>> List<E> listEntity(GenericEntityCollectionReference<?, E> reference);
 	
 	/**
 	 * @param entity An object representing an entity that may have been detached from the session

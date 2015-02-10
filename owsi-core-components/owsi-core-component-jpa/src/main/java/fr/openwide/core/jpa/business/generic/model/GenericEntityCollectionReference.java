@@ -42,6 +42,17 @@ public class GenericEntityCollectionReference<K extends Comparable<K> & Serializ
 		}
 		return new GenericEntityCollectionReference<>(entityClass, entityIdCollection);
 	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <E extends GenericEntity<?, ?>> GenericEntityCollectionReference<?, E> ofUnknownIdType(
+			Class<E> entityClass, Collection<? extends E> entityCollection) {
+		List<Object> entityIdCollection = Lists.newArrayListWithExpectedSize(entityCollection.size());
+		for (E entity : entityCollection) {
+			Assert.state(!entity.isNew(), "None of the referenced entities must be transient");
+			entityIdCollection.add(entity.getId());
+		}
+		return new GenericEntityCollectionReference(entityClass, entityIdCollection);
+	}
 	
 	public GenericEntityCollectionReference(E object) {
 		this(GenericEntityReference.of(object));
