@@ -19,19 +19,19 @@ import com.google.common.collect.Maps;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
-import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityListRowMapper;
-import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityMapRowMapper;
-import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityRowMapper;
-import fr.openwide.core.jpa.migration.util.IMigrationEntityAdvancedInformation;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractListResultRowMapper;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractMapResultRowMapper;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
+import fr.openwide.core.jpa.migration.util.IAdvancedEntityMigrationInformation;
 
-public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<Long, T>> extends AbstractEntityMigrationService {
+public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEntity<Long, T>> extends AbstractMigrationService {
 
 	public void importAllEntities() {
 		Date startTime = new Date();
 		
-		Long rowCount = countRowsTable(getEntityInformation().getTableName());
+		Long rowCount = countRowsTable(getMigrationInformation().getTableName());
 		
-		List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(getEntityInformation().getSqlAllIds(), Long.class));
+		List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(getMigrationInformation().getSqlAllIds(), Long.class));
 		List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, getPartitionSize());
 		List<Callable<Void>> callables = Lists.newArrayList();
 		for (final List<Long> entityPartition : entityIdsPartitions) {
@@ -45,12 +45,12 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 			callables.add(callable);
 		}
 		createThreadedProcessor(100).runWithTransaction(
-				getEntityInformation().getEntityClass().getSimpleName(),
+				getMigrationInformation().getEntityClass().getSimpleName(),
 				callables, getWriteTransactionTemplate(), rowCount.intValue());
 		
-		updateSequence(getEntityInformation().getEntityClass());
+		updateSequence(getMigrationInformation().getEntityClass());
 		
-		logMigrationEnd(getEntityInformation().getEntityClass().getSimpleName(), startTime);
+		logMigrationEnd(getMigrationInformation().getEntityClass().getSimpleName(), startTime);
 	};
 
 	private void importLotEntity(List<Long> entityIds) throws PropertyValueException {
@@ -61,15 +61,15 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 		
 		try {
 			MapSqlParameterSource entityIdsParameterSource = new MapSqlParameterSource();
-			entityIdsParameterSource.addValue(getEntityInformation().getParameterIds(), entityIds);
+			entityIdsParameterSource.addValue(getMigrationInformation().getParameterIds(), entityIds);
 			AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
 			
 			RowMapper<?> rowMapper;
-			Class<? extends AbstractEntityRowMapper<?>> rowMapperClass = getEntityInformation().getRowMapperClass();
+			Class<? extends AbstractResultRowMapper<?>> rowMapperClass = getMigrationInformation().getRowMapperClass();
 			
-			if (AbstractEntityMapRowMapper.class.isAssignableFrom(rowMapperClass)) {
+			if (AbstractMapResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
 				rowMapper = rowMapperClass.getConstructor(Map.class).newInstance(entitiesMap);
-			} else if (AbstractEntityListRowMapper.class.isAssignableFrom(rowMapperClass)) {
+			} else if (AbstractListResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
 				rowMapper = rowMapperClass.getConstructor(List.class).newInstance(entitiesList);
 			} else {
 				throw new IllegalStateException(String.format("Type de rowmapper non reconnu %1$s", rowMapperClass.getSimpleName()));
@@ -78,12 +78,12 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 			autowire.autowireBean(rowMapper);
 			autowire.initializeBean(rowMapper, rowMapper.getClass().getSimpleName());
 			prepareRowMapper(rowMapper, entityIds);
-			getNamedParameterJdbcTemplate().query(getEntityInformation().getSqlRequest(), entityIdsParameterSource, rowMapper);
+			getNamedParameterJdbcTemplate().query(getMigrationInformation().getSqlRequest(), entityIdsParameterSource, rowMapper);
 			
 			Collection<T> entities;
-			if (AbstractEntityMapRowMapper.class.isAssignableFrom(rowMapperClass)) {
+			if (AbstractMapResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
 				entities = entitiesMap.values();
-			} else if (AbstractEntityListRowMapper.class.isAssignableFrom(rowMapperClass)) {
+			} else if (AbstractListResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
 				entities = entitiesList;
 			} else {
 				throw new IllegalStateException(String.format("Type de rowmapper non reconnu %1$s", rowMapperClass.getSimpleName()));
@@ -99,14 +99,14 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 			
 		} catch (Exception e) {
 			getLogger().error("Erreur lors de la persistence d'un paquet de {}. {} créations annulées.",
-					getEntityInformation().getEntityClass().getSimpleName(), entityIds.size(), e);
+					getMigrationInformation().getEntityClass().getSimpleName(), entityIds.size(), e);
 			ProcessorMonitorContext.get().getDoneItems().addAndGet(-1 * entityIds.size());
 		}
 	};
 
 	protected void preload(List<Long> entityIds) {
-		if (getEntityInformation().getPreloadRequests() != null) {
-			Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getEntityInformation().getPreloadRequests();
+		if (getMigrationInformation().getPreloadRequests() != null) {
+			Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getMigrationInformation().getPreloadRequests();
 			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
 				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
 				if (sqlPreloadRequest == null) {
@@ -114,7 +114,7 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 				} else {
 					preloadLinkedEntities(preloadedClass,
 							sqlPreloadRequest,
-							getEntityInformation().getParameterIds(),
+							getMigrationInformation().getParameterIds(),
 							entityIds);
 				}
 			}
@@ -124,7 +124,7 @@ public abstract class AbstractAdvancedMigrationService<T extends GenericEntity<L
 	protected void prepareRowMapper(RowMapper<?> rowMapper, List<Long> entityIds) {
 	}
 
-	protected abstract IMigrationEntityAdvancedInformation<T> getEntityInformation();
+	protected abstract IAdvancedEntityMigrationInformation<T> getMigrationInformation();
 
 	protected abstract Logger getLogger();
 

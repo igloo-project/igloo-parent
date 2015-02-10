@@ -33,7 +33,7 @@ import fr.openwide.core.jpa.migration.util.ProcessorProgressLogger;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
-public abstract class AbstractEntityMigrationService {
+public abstract class AbstractMigrationService {
 
 	public static final int DEFAULT_TIMEOUT = 15;
 
@@ -63,11 +63,11 @@ public abstract class AbstractEntityMigrationService {
 		return DEFAULT_TIMEOUT;
 	}
 
-	public ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement) {
+	protected final ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement) {
 		return createThreadedProcessor(maxLoggingIncrement, getDefaultTimeoutInMinutes());
 	}
 
-	public ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement, int timeoutInMinutes) {
+	protected final ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement, int timeoutInMinutes) {
 		return new ThreadedProcessor(
 				4,
 				timeoutInMinutes, TimeUnit.MINUTES,

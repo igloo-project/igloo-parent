@@ -3,15 +3,15 @@ package fr.openwide.core.jpa.migration.util;
 import java.util.Map;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityRowMapper;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 
-public interface IMigrationEntityBatchInformation<T extends GenericEntity<Long, T>> {
+public interface IAdvancedEntityMigrationInformation<T extends GenericEntity<Long, T>> extends IMigrationInformation {
+	
+	Class<? extends AbstractResultRowMapper<?>> getRowMapperClass();
 
 	Class<T> getEntityClass();
 
-	Class<? extends AbstractEntityRowMapper<?>> getRowMapperClass();
-
-	String getSqlCountRows();
+	String getTableName();
 
 	String getSqlAllIds();
 
@@ -19,8 +19,6 @@ public interface IMigrationEntityBatchInformation<T extends GenericEntity<Long, 
 	 * Chaîne utilisée dans le IN() de la requête SQL
 	 */
 	String getParameterIds();
-
-	String getSqlRequest();
 
 	/*
 	 * Map utilisée pour le préchargement d'entités liées pour accélérer la migration.

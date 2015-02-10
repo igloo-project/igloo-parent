@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
 
-public abstract class AbstractEntityRowMapper<T> extends AbstractRowMapper<RowResult> {
+public abstract class AbstractResultRowMapper<T> extends AbstractRowMapper<RowResult> {
 
 	private final T results;
 
-	protected AbstractEntityRowMapper(T results) {
+	protected AbstractResultRowMapper(T results) {
 		this.results = results;
 	}
 
