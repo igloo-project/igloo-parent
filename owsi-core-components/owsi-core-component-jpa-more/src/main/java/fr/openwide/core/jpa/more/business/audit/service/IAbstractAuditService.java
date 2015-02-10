@@ -25,7 +25,7 @@ import fr.openwide.core.jpa.more.business.audit.model.AbstractAudit;
 /**
  * <p>Service concernant les {@link AbstractAudit}.</p>
  */
-public interface IAbstractAuditService<T extends AbstractAudit> extends IGenericEntityService<Long, T> {
+public interface IAbstractAuditService<T extends AbstractAudit<?>> extends IGenericEntityService<Long, T> {
 
 	/**
 	 * Renvoie le sujet d'un Audit.

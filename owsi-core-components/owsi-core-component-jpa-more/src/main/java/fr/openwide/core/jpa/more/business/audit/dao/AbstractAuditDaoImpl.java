@@ -37,7 +37,7 @@ import fr.openwide.core.jpa.more.business.audit.model.QAbstractAudit;
  * 
  * @author Open Wide
  */
-public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends GenericEntityDaoImpl<Long, T> 
+public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends GenericEntityDaoImpl<Long, T> 
 	implements IAbstractAuditDao<T> {
 
 	/**
@@ -54,7 +54,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> listByContextOrObject(GenericEntity<Long, ?> entity) {
-		PathBuilder<? extends AbstractAudit> path = new PathBuilder<AbstractAudit>(getObjectClass(), "abstractAudit");
+		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
 		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
@@ -72,7 +72,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit> extends Gene
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> listBySubject(GenericEntity<Long, ?> subject) {
-		PathBuilder<? extends AbstractAudit> path = new PathBuilder<AbstractAudit>(getObjectClass(), "abstractAudit");
+		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
 		return new JPAQuery(getEntityManager()).from(qAbstractAudit)

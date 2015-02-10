@@ -35,7 +35,6 @@ import org.hibernate.search.bridge.builtin.LongNumericFieldBridge;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditAction;
 import fr.openwide.core.jpa.more.business.audit.model.util.AbstractAuditFeature;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
@@ -46,7 +45,7 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
  * </p>
  */
 @MappedSuperclass
-public abstract class AbstractAudit extends GenericEntity<Long, AbstractAudit> {
+public abstract class AbstractAudit<Action> extends GenericEntity<Long, AbstractAudit<?>> {
 	private static final long serialVersionUID = 8453330231866625186L;
 
 	public static final String DATE_SORT_FIELD_NAME = "date_sort";
@@ -163,49 +162,49 @@ public abstract class AbstractAudit extends GenericEntity<Long, AbstractAudit> {
 		super();
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, Action action,
 			String message) {
 		this(new Date(), service, method, null, subject, feature, action, message, null, null);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, Action action,
 			String message, GenericEntity<Long, ?> object) {
 		this(new Date(), service, method, null, subject, feature, action, message, object, null);
 	}
 
-	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, AbstractAuditAction action,
+	public AbstractAudit(String service, String method, GenericEntity<Long, ?> subject, AbstractAuditFeature feature, Action action,
 			String message, GenericEntity<Long, ?> object, GenericEntity<Long, ?> secondaryObject) {
 		this(new Date(), service, method, null, subject, feature, action, message, object, secondaryObject);
 	}
 
 	public AbstractAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message) {
+			AbstractAuditFeature feature, Action action, String message) {
 		this(new Date(), service, method, context, subject, feature, action, message, null, null);
 	}
 
 	public AbstractAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object) {
+			AbstractAuditFeature feature, Action action, String message, GenericEntity<Long, ?> object) {
 		this(new Date(), service, method, context, subject, feature, action, message, object, null);
 	}
 
 	public AbstractAudit(String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			AbstractAuditFeature feature, Action action, String message, GenericEntity<Long, ?> object,
 			GenericEntity<Long, ?> secondaryObject) {
 		this(new Date(), service, method, context, subject, feature, action, message, object, secondaryObject);
 	}
 
 	public AbstractAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message) {
+			AbstractAuditFeature feature, Action action, String message) {
 		this(date, service, method, context, subject, feature, action, message, null, null);
 	}
 
 	public AbstractAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object) {
+			AbstractAuditFeature feature, Action action, String message, GenericEntity<Long, ?> object) {
 		this(date, service, method, context, subject, feature, action, message, object, null);
 	}
 
 	public AbstractAudit(Date date, String service, String method, GenericEntity<Long, ?> context, GenericEntity<Long, ?> subject,
-			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Long, ?> object,
+			AbstractAuditFeature feature, Action action, String message, GenericEntity<Long, ?> object,
 			GenericEntity<Long, ?> secondaryObject) {
 		super();
 
@@ -378,16 +377,20 @@ public abstract class AbstractAudit extends GenericEntity<Long, AbstractAudit> {
 	/**
 	 * Accesseurs de l'action concernée.
 	 */
-	public abstract AbstractAuditAction getAction();
+	public abstract Action getAction();
 	
-	public abstract void setAction(AbstractAuditAction action);
+	public abstract void setAction(Action action);
 
 	/**
 	 * Accesseurs de la fonction concernée.
 	 */
-	public abstract AbstractAuditFeature getFeature();
-	
-	public abstract void setFeature(AbstractAuditFeature feature);
+	public AbstractAuditFeature getFeature() {
+		return null;
+	}
+
+	public void setFeature(AbstractAuditFeature feature) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public String getNameForToString() {
