@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 
 @Repository("entityDao")
@@ -32,12 +33,22 @@ public class EntityDaoImpl implements IEntityDao {
 	}
 	
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(GenericEntityReference<K, E> reference) {
-		return getEntity(reference.getEntityClass(), reference.getEntityId());
+	public <E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference) {
+		return entityManager.find(reference.getEntityClass(), reference.getEntityId());
 	}
 	
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids) {
+		return doListEntity(clazz, ids);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <E extends GenericEntity<?, ?>> List<E> listEntity(GenericEntityCollectionReference<?, E> reference) {
+		return doListEntity((Class<E>)reference.getEntityClass(), reference.getEntityIdList());
+	}
+	
+	private <E extends GenericEntity<?, ?>> List<E> doListEntity(Class<E> clazz, Collection<?> ids) {
 		if (ids == null || ids.isEmpty()) {
 			return Lists.newArrayListWithCapacity(0);
 		}
@@ -45,7 +56,7 @@ public class EntityDaoImpl implements IEntityDao {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> criteria = builder.createQuery(clazz);
 		Root<E> root = criteria.from(clazz);
-		criteria.where(((CriteriaBuilderImpl)builder).in(root.<K>get("id"), ids));
+		criteria.where(((CriteriaBuilderImpl)builder).in(root.get("id"), ids));
 		
 		List<E> entities = entityManager.createQuery(criteria).getResultList();
 		

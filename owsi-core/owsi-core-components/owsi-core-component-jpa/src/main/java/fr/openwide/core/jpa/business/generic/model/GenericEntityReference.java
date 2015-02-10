@@ -34,6 +34,11 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 		return entity == null ? null : new GenericEntityReference<K, E>(entity);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <E extends GenericEntity<?, ?>> GenericEntityReference<?, E> ofUnknownIdType(E entity) {
+		return entity == null ? null : (GenericEntityReference<?, E>) new GenericEntityReference(entity);
+	}
+
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(
 			Class<? extends E> entityClass, K entityId) {
 		return new GenericEntityReference<K, E>(entityClass, entityId);
