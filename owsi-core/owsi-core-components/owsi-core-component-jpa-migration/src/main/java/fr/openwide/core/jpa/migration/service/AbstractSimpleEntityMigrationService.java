@@ -1,8 +1,8 @@
 package fr.openwide.core.jpa.migration.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -16,37 +16,38 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
-import fr.openwide.core.jpa.migration.util.IMigrationEntitySimpleInformation;
+import fr.openwide.core.jpa.migration.util.ISimpleEntityMigrationInformation;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
 
-public abstract class AbstractSimpleMigrationService extends AbstractEntityMigrationService {
+public abstract class AbstractSimpleEntityMigrationService extends AbstractMigrationService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSimpleMigrationService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSimpleEntityMigrationService.class);
 
 	@Autowired
 	private IGenericListItemService genericListItemService;
 
-	private List<Class<? extends GenericEntity<Long, ?>>> clazzList = new ArrayList<>();
+	private Set<Class<? extends GenericEntity<Long, ?>>> clazzSet = Sets.newLinkedHashSet();
 
 	protected <T extends GenericEntity<Long, T>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
-			final IMigrationEntitySimpleInformation<T> entityInformation) {
+			final ISimpleEntityMigrationInformation<T> entityInformation) {
 		final List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(entityInformation.getSqlAllIds(), Long.class));
 		return getEntityMigrationTask(totalItems, entityIds, entityInformation, null);
 	}
 
 	protected <T extends GenericEntity<Long, T>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
-			final IMigrationEntitySimpleInformation<T> entityInformation,
+			final ISimpleEntityMigrationInformation<T> entityInformation,
 			final IGenericEntityService<Long, T> genericEntityService) {
 		final List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(entityInformation.getSqlAllIds(), Long.class));
 		return getEntityMigrationTask(totalItems, entityIds, entityInformation, genericEntityService);
 	}
 
 	protected <T extends GenericEntity<Long, T>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
-			final List<Long> entityIds, final IMigrationEntitySimpleInformation<T> entityInformation,
+			final List<Long> entityIds, final ISimpleEntityMigrationInformation<T> entityInformation,
 			final IGenericEntityService<Long, T> genericEntityService) {
 		
 		totalItems.add(entityIds.size());
@@ -86,7 +87,7 @@ public abstract class AbstractSimpleMigrationService extends AbstractEntityMigra
 							+ entityInformation.getEntityClass().getSimpleName()
 							+ ". {} créations annulées.", entities.size(), e);
 				}
-				clazzList.add(entityInformation.getEntityClass());
+				clazzSet.add(entityInformation.getEntityClass());
 				
 				return null;
 			}
@@ -94,12 +95,12 @@ public abstract class AbstractSimpleMigrationService extends AbstractEntityMigra
 	}
 
 	protected <T extends GenericEntity<Long, T>> List<Callable<Void>> getEntityMigrationTasks(final MutableInt totalItems,
-			final IMigrationEntitySimpleInformation<T> entityInformation) {
+			final ISimpleEntityMigrationInformation<T> entityInformation) {
 		return getEntityMigrationTasks(totalItems, entityInformation, null);
 	}
 
 	protected <T extends GenericEntity<Long, T>> List<Callable<Void>> getEntityMigrationTasks(final MutableInt totalItems,
-			final IMigrationEntitySimpleInformation<T> entityInformation,
+			final ISimpleEntityMigrationInformation<T> entityInformation,
 			final IGenericEntityService<Long, T> entityService) {
 		
 		if (entityInformation.getParameterIds() == null) {
@@ -113,13 +114,13 @@ public abstract class AbstractSimpleMigrationService extends AbstractEntityMigra
 		for (final List<Long> entityIdsPartition : entityIdsPartitions) {
 			callables.add(getEntityMigrationTask(totalItems, entityIdsPartition, entityInformation, entityService));
 		}
-		clazzList.add(entityInformation.getEntityClass());
+		clazzSet.add(entityInformation.getEntityClass());
 		
 		return callables;
 	}
 
 	protected void updateReferentielSequences() {
-		for (Class<? extends GenericEntity<Long, ?>> clazz : clazzList) {
+		for (Class<? extends GenericEntity<Long, ?>> clazz : clazzSet) {
 			updateSequence(clazz);
 		}
 	}

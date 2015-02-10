@@ -1,13 +1,13 @@
 package fr.openwide.core.jpa.migration.util;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.migration.rowmapper.AbstractEntityRowMapper;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 
-public interface IMigrationEntitySimpleInformation<T extends GenericEntity<Long, T>> {
+public interface ISimpleEntityMigrationInformation<T extends GenericEntity<Long, T>> extends IMigrationInformation {
+
+	Class<? extends AbstractResultRowMapper<?>> getRowMapperClass();
 
 	Class<T> getEntityClass();
-
-	Class<? extends AbstractEntityRowMapper<?>> getRowMapperClass();
 
 	String getSqlAllIds();
 
@@ -16,7 +16,5 @@ public interface IMigrationEntitySimpleInformation<T extends GenericEntity<Long,
 	 * Dans le cas d'un import par lots, il doit obligatoirement être non null.
 	 */
 	String getParameterIds();
-
-	String getSqlRequest();
 
 }
