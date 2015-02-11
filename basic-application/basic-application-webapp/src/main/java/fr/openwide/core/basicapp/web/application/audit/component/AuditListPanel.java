@@ -7,7 +7,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.basicapp.core.business.audit.model.Audit;
-import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
+import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -42,7 +42,7 @@ public class AuditListPanel extends GenericPortfolioPanel<Audit> {
 	protected void addItemColumns(Item<Audit> item, IModel<? extends Audit> auditModel) {
 		item.add(
 				new DateLabel("date", BindingModel.of(auditModel, Bindings.audit().date()), DatePattern.SHORT_DATETIME),
-				new EnumLabel<AuditActionType>("action", BindingModel.of(auditModel, Bindings.audit().action().type())),
+				new EnumLabel<AuditAction>("action", BindingModel.of(auditModel, Bindings.audit().action())),
 				new CoreLabel("subject", BindingModel.of(auditModel, Bindings.audit().subjectDisplayName()))
 		);
 	}

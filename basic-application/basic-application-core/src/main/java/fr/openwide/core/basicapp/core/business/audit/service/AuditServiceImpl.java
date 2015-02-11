@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.core.basicapp.core.business.audit.dao.IAuditDao;
 import fr.openwide.core.basicapp.core.business.audit.model.Audit;
-import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
+import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
 import fr.openwide.core.basicapp.core.business.audit.model.search.AuditSearchParametersBean;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
@@ -22,9 +22,6 @@ import fr.openwide.core.jpa.more.business.audit.service.AbstractAuditServiceImpl
 public class AuditServiceImpl extends AbstractAuditServiceImpl<Audit> implements IAuditService {
 
 	private IAuditDao auditDao;
-
-	@Autowired
-	private IAuditActionService auditActionService;
 
 	@Autowired
 	private IUserService userService;
@@ -41,39 +38,39 @@ public class AuditServiceImpl extends AbstractAuditServiceImpl<Audit> implements
 
 	@Override
 	public Audit audit(String service, String method, GenericEntity<Long, ?> object,
-			AuditActionType type) throws ServiceException,
+			AuditAction action) throws ServiceException,
 			SecurityServiceException {
 		
-		return audit(new Date(), service, method, getAuthenticatedUser(), object, type);
+		return audit(new Date(), service, method, getAuthenticatedUser(), object, action);
 	}
 
 	@Override
 	public Audit audit(Date date, String service, String method, GenericEntity<Long, ?> object,
-			AuditActionType type) throws ServiceException,
+			AuditAction action) throws ServiceException,
 			SecurityServiceException {
 		
-		return audit(date, service, method, getAuthenticatedUser(), object, type);
+		return audit(date, service, method, getAuthenticatedUser(), object, action);
 	}
 
 	@Override
 	public Audit audit(String service, String method, User subject,
-			GenericEntity<Long, ?> object, AuditActionType type) throws ServiceException,
+			GenericEntity<Long, ?> object, AuditAction action) throws ServiceException,
 			SecurityServiceException {
 		
-		return audit(new Date(), service, method, null, subject, object, null, type, null);
+		return audit(new Date(), service, method, null, subject, object, null, action, null);
 	}
 	
 	@Override
 	public Audit audit(Date date, String service, String method, User subject,
-			GenericEntity<Long, ?> object, AuditActionType type) throws ServiceException,
+			GenericEntity<Long, ?> object, AuditAction action) throws ServiceException,
 			SecurityServiceException {
 		
-		return audit(date, service, method, null, subject, object, null, type, null);
+		return audit(date, service, method, null, subject, object, null, action, null);
 	}
 	
 	@Override
 	public Audit audit(Date date, String service, String method, GenericEntity<Long, ?> context, User subject,
-			GenericEntity<Long, ?> object, GenericEntity<Long, ?> secondaryObject, AuditActionType type,
+			GenericEntity<Long, ?> object, GenericEntity<Long, ?> secondaryObject, AuditAction action,
 			String message) throws ServiceException, SecurityServiceException {
 		Args.notNull(subject, "subject");
 		if (context == null && object == null) {
@@ -81,7 +78,7 @@ public class AuditServiceImpl extends AbstractAuditServiceImpl<Audit> implements
 		}
 		
 		Audit audit = new Audit(date, service, method, context, subject, object, secondaryObject,
-				auditActionService.getByType(type), message);
+				action, message);
 		
 		create(audit);
 		return audit;

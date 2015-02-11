@@ -6,7 +6,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
+import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
@@ -53,12 +53,12 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		this.userDao = userDao;
 	}
 
-	private void audit(User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, object, type);
+	private void audit(User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, object, action);
 	}
 
-	private void audit(User subject, User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, subject, object, type);
+	private void audit(User subject, User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, subject, object, action);
 	}
 
 	@Override
@@ -78,17 +78,17 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-		audit(user, AuditActionType.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
+		audit(user, AuditAction.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
 	}
 
 	@Override
 	public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-		audit(user, user, AuditActionType.SIGN_IN_FAIL, AUDIT_SIGN_IN_FAIL_METHOD_NAME);
+		audit(user, user, AuditAction.SIGN_IN_FAIL, AUDIT_SIGN_IN_FAIL_METHOD_NAME);
 	}
 
 	@Override
 	public void onCreate(User user, User author) throws ServiceException, SecurityServiceException {
-		audit(author, user, AuditActionType.CREATE_USER, AUDIT_CREATE_METHOD_NAME);
+		audit(author, user, AuditAction.CREATE_USER, AUDIT_CREATE_METHOD_NAME);
 	}
 
 	@Override

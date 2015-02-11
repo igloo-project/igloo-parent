@@ -13,7 +13,7 @@ import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import fr.openwide.core.basicapp.core.business.audit.model.AuditActionType;
+import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -50,8 +50,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	@Autowired
 	private BasicApplicationConfigurer configurer;
 
-	private void audit(User subject, User object, AuditActionType type, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, subject, object, type);
+	private void audit(User subject, User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
+		auditService.audit(getClass().getSimpleName(), methodName, subject, object, action);
 	}
 
 	public SecurityManagementServiceImpl setOptions(Class<? extends User> clazz, SecurityOptions options) {
@@ -109,10 +109,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		
 		switch (type) {
 		case CREATION:
-			audit(author, user, AuditActionType.PASSWORD_CREATION_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
+			audit(author, user, AuditAction.PASSWORD_CREATION_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
 			break;
 		case RESET:
-			audit(author, user, AuditActionType.PASSWORD_RESET_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
+			audit(author, user, AuditAction.PASSWORD_RESET_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
 			break;
 		default:
 			break;
@@ -175,7 +175,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		user.getPasswordRecoveryRequest().reset();
 		userService.update(user);
 		
-		audit(author, user, AuditActionType.PASSWORD_UPDATE, AUDIT_UPDATE_PASSWORD_METHOD_NAME);
+		audit(author, user, AuditAction.PASSWORD_UPDATE, AUDIT_UPDATE_PASSWORD_METHOD_NAME);
 	}
 
 }

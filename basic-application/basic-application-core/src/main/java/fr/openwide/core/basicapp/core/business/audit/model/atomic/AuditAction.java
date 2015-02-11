@@ -1,6 +1,6 @@
-package fr.openwide.core.basicapp.core.business.audit.model;
+package fr.openwide.core.basicapp.core.business.audit.model.atomic;
 
-public enum AuditActionType {
+public enum AuditAction {
 	
 	SIGN_IN,
 	
