@@ -389,7 +389,9 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	}
 
 	public void setFeature(AbstractAuditFeature feature) {
-		throw new UnsupportedOperationException();
+		if (feature != null) {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	@Override
