@@ -2,15 +2,19 @@ package fr.openwide.core.jpa.business.generic.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.springframework.util.Assert;
@@ -18,12 +22,17 @@ import org.springframework.util.Assert;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @Embeddable
+@MappedSuperclass
+@Access(AccessType.FIELD)
 public class GenericEntityReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 		implements Serializable {
 	
 	private static final long serialVersionUID = 1357434247523209721L;
+	
+	private static final String CLASS_TYPE = "org.hibernate.type.ClassType";
 
 	@Column(nullable = true)
+	@Type(type = CLASS_TYPE)
 	private /* final */ Class<? extends E> entityClass;
 	
 	@Column(nullable = true)
@@ -107,7 +116,7 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	
 	@Override
 	public String toString() {
-		return new ToStringBuilder(ToStringStyle.SHORT_PREFIX_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("class", getEntityClass())
 				.append("id", getEntityId())
 				.build();

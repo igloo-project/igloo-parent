@@ -26,8 +26,10 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
@@ -57,6 +59,28 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	 */
 	protected static String getString(String key, Locale locale, IModel<?> model) {
 		return Localizer.get().getString(key, null, model, locale, null, null);
+	}
+
+	/**
+	 * Utility method that can be used when a resource key value is needed in the render() implementation.
+	 * <p>Returns null when the key is not found.
+	 */
+	protected static Optional<String> getStringOptional(String key, Locale locale) {
+		return getStringOptional(key, locale, null);
+	}
+
+	/**
+	 * Utility method that can be used when a resource key value is needed in the render() implementation.
+	 * <p>Returns null when the key is not found.
+	 */
+	protected static Optional<String> getStringOptional(String key, Locale locale, IModel<?> model) {
+		String defaultValue = new String(); // NOSONAR
+		String result = Localizer.get().getString(key, null, model, locale, null, defaultValue);
+		if (result == defaultValue) { // NOSONAR
+			return Optional.absent();
+		} else {
+			return Optional.of(result);
+		}
 	}
 
 	/**
@@ -333,7 +357,21 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			return "constant(" + value + ")";
 		}
 	}
-
+	
+	public static <T> Renderer<Object> stringValue() {
+		return STRING_VALUE_RENDERER;
+	}
+	
+	private static final Renderer<Object> STRING_VALUE_RENDERER = new Renderer<Object>() {
+		private static final long serialVersionUID = 5711969182760960576L;
+		@Override
+		public String render(Object value, Locale locale) {
+			return String.valueOf(value);
+		}
+		private Object readResolve() {
+			return STRING_VALUE_RENDERER;
+		}
+	};
 	
 	public static <T extends Number> Renderer<T> fromNumberFormat(NumberFormat format) {
 		return fromFormat(format);
@@ -390,24 +428,31 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 	
 	public static Renderer<Iterable<?>> fromJoiner(Function<? super Locale, ? extends Joiner> joinerFunction) {
-		return new IterableJoinerRenderer(joinerFunction);
+		return fromJoiner(joinerFunction, stringValue());
 	}
 	
-	private static class IterableJoinerRenderer extends Renderer<Iterable<?>> {
+	public static <T> Renderer<Iterable<? extends T>> fromJoiner(Function<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
+		return new IterableJoinerRenderer<T>(joinerFunction, itemRenderer);
+	}
+	
+	private static class IterableJoinerRenderer<T> extends Renderer<Iterable<? extends T>> {
 		private static final long serialVersionUID = -3594965870562973846L;
 		
 		private final Function<? super Locale, ? extends Joiner> joinerFunction;
+		private final Renderer<T> itemRenderer;
 
-		public IterableJoinerRenderer(Function<? super Locale, ? extends Joiner> joinerFunction) {
+		public IterableJoinerRenderer(Function<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
 			super();
 			this.joinerFunction = checkNotNull(joinerFunction);
+			this.itemRenderer = itemRenderer;
 		}
 
 		@Override
-		public String render(Iterable<?> value, Locale locale) {
+		public String render(Iterable<? extends T> value, Locale locale) {
 			checkNotNull(locale);
 			Joiner joiner = joinerFunction.apply(locale);
-			return joiner.join(value);
+			Iterable<String> renderedItems = Iterables.transform(value, itemRenderer.asFunction(locale));
+			return joiner.join(renderedItems);
 		}
 	}
 	
