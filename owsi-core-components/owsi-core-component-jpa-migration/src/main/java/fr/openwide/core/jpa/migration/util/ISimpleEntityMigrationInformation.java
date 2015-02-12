@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.migration.util;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 
-public interface ISimpleEntityMigrationInformation<T extends GenericEntity<Long, T>> extends IMigrationInformation {
+public interface ISimpleEntityMigrationInformation<T extends GenericEntity<Long, ?>> extends IMigrationInformation {
 
 	Class<? extends AbstractResultRowMapper<?>> getRowMapperClass();
 
