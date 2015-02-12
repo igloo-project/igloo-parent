@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.migration.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +21,9 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractListResultRowMapper;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractMapResultRowMapper;
+import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 import fr.openwide.core.jpa.migration.util.ISimpleEntityMigrationInformation;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
@@ -33,20 +37,20 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
 
 	private Set<Class<? extends GenericEntity<Long, ?>>> clazzSet = Sets.newLinkedHashSet();
 
-	protected <T extends GenericEntity<Long, T>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
+	protected <T extends GenericEntity<Long, ?>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
 			final ISimpleEntityMigrationInformation<T> entityInformation) {
 		final List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(entityInformation.getSqlAllIds(), Long.class));
 		return getEntityMigrationTask(totalItems, entityIds, entityInformation, null);
 	}
 
-	protected <T extends GenericEntity<Long, T>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
+	protected <T extends GenericEntity<Long, ?>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
 			final ISimpleEntityMigrationInformation<T> entityInformation,
 			final IGenericEntityService<Long, T> genericEntityService) {
 		final List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(entityInformation.getSqlAllIds(), Long.class));
 		return getEntityMigrationTask(totalItems, entityIds, entityInformation, genericEntityService);
 	}
 
-	protected <T extends GenericEntity<Long, T>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
+	protected <T extends GenericEntity<Long, ?>> Callable<Void> getEntityMigrationTask(MutableInt totalItems,
 			final List<Long> entityIds, final ISimpleEntityMigrationInformation<T> entityInformation,
 			final IGenericEntityService<Long, T> genericEntityService) {
 		
@@ -55,12 +59,23 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
 		return new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
-				Map<Long, T> entities = Maps.newHashMapWithExpectedSize(entityIds.size());
+				List<T> entitiesList = Lists.newArrayListWithExpectedSize(entityIds.size());
+				Map<Long, T> entitiesMap = Maps.newHashMapWithExpectedSize(entityIds.size());
+
+				RowMapper<?> rowMapper;
+				Class<? extends AbstractResultRowMapper<?>> rowMapperClass = entityInformation.getRowMapperClass();
 				
-				RowMapper<?> rowMapper = entityInformation.getRowMapperClass().getConstructor(Map.class).newInstance(entities);
+				if (AbstractMapResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
+					rowMapper = rowMapperClass.getConstructor(Map.class).newInstance(entitiesMap);
+				} else if (AbstractListResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
+					rowMapper = rowMapperClass.getConstructor(List.class).newInstance(entitiesList);
+				} else {
+					throw new IllegalStateException(String.format("Type de rowmapper non reconnu %1$s", rowMapperClass.getSimpleName()));
+				}
 				AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
 				autowire.autowireBean(rowMapper);
 				autowire.initializeBean(rowMapper, rowMapper.getClass().getSimpleName());
+				prepareRowMapper(rowMapper, entityIds);
 				
 				if (entityInformation.getParameterIds() == null) {
 					getJdbcTemplate().query(entityInformation.getSqlRequest(), rowMapper);
@@ -71,8 +86,17 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
 							rowMapper);
 				}
 				
+				Collection<T> entities;
+				if (AbstractMapResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
+					entities = entitiesMap.values();
+				} else if (AbstractListResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
+					entities = entitiesList;
+				} else {
+					throw new IllegalStateException(String.format("Type de rowmapper non reconnu %1$s", rowMapperClass.getSimpleName()));
+				}
+				
 				try {
-					for (T entity : entities.values()) {
+					for (T entity : entities) {
 						if (GenericListItem.class.isAssignableFrom(entityInformation.getEntityClass())) {
 							genericListItemService.create((GenericListItem<?>)entity);
 						} else if (genericEntityService != null) {
@@ -94,12 +118,15 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
 		};
 	}
 
-	protected <T extends GenericEntity<Long, T>> List<Callable<Void>> getEntityMigrationTasks(final MutableInt totalItems,
+	protected void prepareRowMapper(RowMapper<?> rowMapper, List<Long> entityIds) {
+	}
+
+	protected <T extends GenericEntity<Long, ?>> List<Callable<Void>> getEntityMigrationTasks(final MutableInt totalItems,
 			final ISimpleEntityMigrationInformation<T> entityInformation) {
 		return getEntityMigrationTasks(totalItems, entityInformation, null);
 	}
 
-	protected <T extends GenericEntity<Long, T>> List<Callable<Void>> getEntityMigrationTasks(final MutableInt totalItems,
+	protected <T extends GenericEntity<Long, ?>> List<Callable<Void>> getEntityMigrationTasks(final MutableInt totalItems,
 			final ISimpleEntityMigrationInformation<T> entityInformation,
 			final IGenericEntityService<Long, T> entityService) {
 		

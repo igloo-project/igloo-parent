@@ -54,7 +54,7 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 	};
 
 	private void importLotEntity(List<Long> entityIds) throws PropertyValueException {
-		List<T> entitiesList = Lists.newArrayList();
+		List<T> entitiesList = Lists.newArrayListWithExpectedSize(entityIds.size());
 		Map<Long, T> entitiesMap = Maps.newHashMapWithExpectedSize(entityIds.size());
 		
 		preload(entityIds);
