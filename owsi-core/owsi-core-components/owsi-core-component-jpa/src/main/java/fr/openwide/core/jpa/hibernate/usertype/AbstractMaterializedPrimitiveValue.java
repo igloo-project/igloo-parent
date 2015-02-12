@@ -14,11 +14,11 @@ import fr.openwide.core.commons.util.functional.SerializableFunction;
  * @see AbstractImmutableMaterializedStringValueUserType
  * @see AbstractImmutableMaterializedIntegerValueUserType
  */
-public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMaterializedPrimitiveValue<P, T>> implements Serializable {
+public abstract class AbstractMaterializedPrimitiveValue<P extends Comparable<P>, T extends AbstractMaterializedPrimitiveValue<P, T>> implements Serializable, Comparable<T> {
 	
 	private static final long serialVersionUID = 1388663091843463782L;
 	
-	public static <P> Function<AbstractMaterializedPrimitiveValue<P, ?>, P> materializedToPrimitive() {
+	public static <P extends Comparable<P>> Function<AbstractMaterializedPrimitiveValue<P, ?>, P> materializedToPrimitive() {
 		return new MaterializedToPrimitiveFunction<P>();
 	}
 	
@@ -64,7 +64,7 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 		return value.toString();
 	}
 	
-	private static class MaterializedToPrimitiveFunction<P>
+	private static class MaterializedToPrimitiveFunction<P extends Comparable<P>>
 			implements SerializableFunction<AbstractMaterializedPrimitiveValue<P, ?>, P> {
 		
 		private static final long serialVersionUID = -4430088664760813685L;
@@ -73,6 +73,11 @@ public abstract class AbstractMaterializedPrimitiveValue<P, T extends AbstractMa
 		public P apply(AbstractMaterializedPrimitiveValue<P, ?> input) {
 			return input == null ? null : input.getValue();
 		}
+	}
+
+	@Override
+	public int compareTo(T other) {
+		return value.compareTo(other.getValue());
 	}
 
 }
