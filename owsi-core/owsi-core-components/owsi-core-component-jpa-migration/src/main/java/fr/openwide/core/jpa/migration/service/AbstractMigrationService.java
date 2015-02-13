@@ -6,13 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -50,7 +46,7 @@ public abstract class AbstractMigrationService {
 	protected ConfigurableApplicationContext applicationContext;
 
 	@Autowired
-	protected JdbcTemplate newDatabaseJdbcTemplate;
+	protected IMigrationUtilsService migrationUtilsService;
 
 	@Autowired
 	protected EntityManagerUtils entityManagerUtils;
@@ -93,17 +89,8 @@ public abstract class AbstractMigrationService {
 	}
 
 	protected void updateSequence(Class<? extends GenericEntity<Long, ?>> genericEntityClass) {
-		updateSequence(genericEntityClass.getSimpleName().toLowerCase());
+		migrationUtilsService.updateSequence(genericEntityClass);
 	} 
-	
-	protected void updateSequence(String tableName) {
-		if (StringUtils.contains(tableName, "user")) {
-			// Cas particulier de la table User
-			newDatabaseJdbcTemplate.execute(String.format(SQL_UPDATE_SEQUENCE, "user_"));
-		} else {
-			newDatabaseJdbcTemplate.execute(String.format(SQL_UPDATE_SEQUENCE, tableName));
-		}
-	}
 
 	protected Long countRows(String sqlCountRows) {
 		Long rowCount = getJdbcTemplate().queryForObject(sqlCountRows, Long.class);
@@ -167,8 +154,4 @@ public abstract class AbstractMigrationService {
 		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
 	}
 
-	@Autowired
-	public final void setNewDatabaseJdbcTemplate(@Value("#{dataSource}") DataSource dataSource) {
-		newDatabaseJdbcTemplate = new JdbcTemplate(dataSource);
-	}
 }
