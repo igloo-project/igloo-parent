@@ -189,6 +189,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 				
 				importDataDao.create(item);
 				
+				afterImportItem(item);
+				
 				idsMappingForClass.put(importId, item);
 				
 				for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
@@ -253,5 +255,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		DefaultConversionService.addDefaultConverters(service);
 		
 		return service;
+	}
+
+	protected <E extends GenericEntity<Long, ?>> void afterImportItem(E item) {
 	}
 }
