@@ -9,12 +9,14 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
 import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.MapAttribute;
 import javax.persistence.metamodel.PluralAttribute;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -153,6 +155,41 @@ public abstract class AbstractTestCase {
 	}
 
 	/**
+	 * Méthode utilisée à des fins de tests.
+	 */
+	protected void testMetaModel(Attribute<?, ?> attribute, List<Class<?>> classesAutorisees) throws NoSuchFieldException, SecurityException {
+		Enumerated enumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class);
+		MapKeyEnumerated mapKeyEnumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(MapKeyEnumerated.class);
+		if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.BASIC)
+				&& !classesAutorisees.contains(attribute.getJavaType())
+				&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
+			throw new IllegalStateException(
+					"Champ \"" + attribute.getName() + "\", de type " + attribute.getJavaType().getSimpleName() + " refusé");
+		} else if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
+				&& PluralAttribute.class.isInstance(attribute)
+				&& !classesAutorisees.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())
+				&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
+			throw new IllegalStateException(
+					"Collection \"" + attribute.getName() + "\" de "
+					+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
+		} else if (attribute instanceof MapAttribute) {
+			MapAttribute<?, ?, ?> mapAttribute = (MapAttribute<?, ?, ?>) attribute;
+			if (Enum.class.isAssignableFrom(mapAttribute.getKeyJavaType())
+					&& (mapKeyEnumerated == null || EnumType.ORDINAL.equals(mapKeyEnumerated))) {
+				throw new IllegalStateException(
+						"Map \"" + attribute.getName() + "\" de clés ordinales "
+						+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
+			}
+			if (Enum.class.isAssignableFrom(mapAttribute.getElementType().getJavaType())
+					&& (enumerated == null || EnumType.ORDINAL.equals(enumerated))) {
+				throw new IllegalStateException(
+						"Map \"" + attribute.getName() + "\" de valeurs ordinales "
+						+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
+			}
+		}
+	}
+
+	/**
 	 * Méthode permettant de s'assurer que les attributs des classes marquées @Entity ne seront pas sérialisés en
 	 * "bytea" lors de leur écriture en base.
 	 * 
@@ -180,20 +217,7 @@ public abstract class AbstractTestCase {
 		
 		for (EntityType<?> entityType : getEntityManager().getMetamodel().getEntities()) {
 			for (Attribute<?, ?> attribute : entityType.getDeclaredAttributes()) {
-				Enumerated enumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class);
-				if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.BASIC)
-						&& !listeAutorisee.contains(attribute.getJavaType())
-						&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
-					throw new IllegalStateException(
-							"Champ \"" + attribute.getName() + "\", de type " + attribute.getJavaType().getSimpleName() + " refusé");
-				} else if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
-						&& PluralAttribute.class.isInstance(attribute)
-						&& !listeAutorisee.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())
-						&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
-					throw new IllegalStateException(
-							"Collection \"" + attribute.getName() + "\" de "
-							+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
-				}
+				testMetaModel(attribute, listeAutorisee);
 			}
 		}
 	}
