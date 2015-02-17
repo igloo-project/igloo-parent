@@ -59,11 +59,6 @@ public class Person extends GenericEntity<Long, Person> {
 	/**
 	 * cf {@link TestMetaModel}
 	 */
-	private List<PersonSubTypeA> otherPersonList;
-
-	/**
-	 * cf {@link TestMetaModel}
-	 */
 	private TestEnumeration enumeration;
 
 	/**
