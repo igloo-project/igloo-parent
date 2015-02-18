@@ -24,6 +24,8 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
+import com.mysema.query.types.path.PathBuilder;
+
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
@@ -131,6 +133,12 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	@Override
 	public List<E> list() {
 		return super.listEntity(getObjectClass());
+	}
+	
+	@Override
+	public List<E> list(Long limit, Long offset) {
+		PathBuilder<E> pathBuilder = new PathBuilder<E>(getObjectClass(), "rootAlias");
+		return super.list(pathBuilder, limit, offset);
 	}
 	
 	/**
