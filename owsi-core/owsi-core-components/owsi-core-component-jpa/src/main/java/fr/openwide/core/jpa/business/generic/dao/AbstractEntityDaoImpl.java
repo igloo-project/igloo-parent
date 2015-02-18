@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.PathBuilder;
@@ -33,7 +34,7 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 		if (GenericEntity.class.isAssignableFrom(entityPath.getType())) {
 			// cast possible puisqu'on vient de vérifier le type de objectclass
 			@SuppressWarnings("unchecked")
-			QGenericEntity qGenericEntity = new QGenericEntity((PathBuilder<? extends GenericEntity<?, ?>>) (Object) entityPath);
+			QGenericEntity qGenericEntity = new QGenericEntity((Path<? extends GenericEntity<?, ?>>) (Object) entityPath);
 			order = qGenericEntity.id.asc();
 		}
 		return queryByPredicateOrdered(entityPath, null, limit, offset, order).list(entityPath);

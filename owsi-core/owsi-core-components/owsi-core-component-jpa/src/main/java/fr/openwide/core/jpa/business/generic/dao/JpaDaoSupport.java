@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.ComparableEntityPath;
 import com.mysema.query.types.path.PathBuilder;
@@ -184,7 +185,7 @@ public class JpaDaoSupport {
 		if (GenericEntity.class.isAssignableFrom(objectClass)) {
 			// cast possible puisqu'on vient de vérifier le type de objectclass
 			@SuppressWarnings("unchecked")
-			QGenericEntity qGenericEntity = new QGenericEntity((PathBuilder<? extends GenericEntity<?, ?>>) (Object) pathBuilder);
+			QGenericEntity qGenericEntity = new QGenericEntity((Path<? extends GenericEntity<?, ?>>) (Object) pathBuilder);
 			order = qGenericEntity.id.asc();
 		}
 		
