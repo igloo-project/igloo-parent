@@ -123,6 +123,13 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	List<E> list();
 	
 	/**
+	 * Renvoie la liste de l'ensemble des IDs d'entités de ce type.
+	 * 
+	 * @return liste d'IDs
+	 */
+	List<E> list(Long limit, Long offset);
+	
+	/**
 	 * Compte le nombre d'entités de ce type présentes dans la base.
 	 * 
 	 * @return nombre d'entités
