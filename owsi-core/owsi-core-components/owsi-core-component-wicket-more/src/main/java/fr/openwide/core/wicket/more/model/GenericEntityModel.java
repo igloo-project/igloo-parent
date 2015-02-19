@@ -27,7 +27,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.util.HibernateUtils;
 

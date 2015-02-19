@@ -22,7 +22,7 @@ import org.apache.wicket.util.convert.IConverter;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
-import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableLocalizedGenericListItemConverter;
+import fr.openwide.core.wicket.more.rendering.LocalizedGenericListItemRenderer;
 
 /**
  * Affichage sous forme de label d'un {@link GenericLocalizedGenericListItem}
@@ -39,7 +39,7 @@ public class LocalizedGenericListItemLabel extends CoreLabel {
 	@Override
 	public <C> IConverter<C> getConverter(Class<C> type) {
 		if (GenericLocalizedGenericListItem.class.isAssignableFrom(type)) {
-			return (IConverter<C>) HumanReadableLocalizedGenericListItemConverter.get();
+			return (IConverter<C>) LocalizedGenericListItemRenderer.get();
 		} else {
 			return super.getConverter(type);
 		}
