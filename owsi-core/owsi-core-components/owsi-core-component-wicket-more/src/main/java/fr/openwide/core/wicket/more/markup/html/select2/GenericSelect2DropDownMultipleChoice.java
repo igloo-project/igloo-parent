@@ -32,7 +32,7 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	
 	protected <C extends Collection<T>> GenericSelect2DropDownMultipleChoice(
 			String id, IModel<C> collectionModel, Supplier<? extends C> collectionSupplier,
-			IModel<? extends List<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
+			IModel<? extends Collection<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		
 		setModel(new ConcreteCollectionToCollectionWrapperModel<T, C>(collectionModel, collectionSupplier));

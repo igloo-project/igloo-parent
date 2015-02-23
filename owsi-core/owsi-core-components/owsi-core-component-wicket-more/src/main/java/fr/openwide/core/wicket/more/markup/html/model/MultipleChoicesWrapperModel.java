@@ -17,9 +17,9 @@ public class MultipleChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T
 	
 	private IModel<? extends Collection<? extends T>> selectedObjectCollectionModel;
 	
-	private IModel<? extends List<? extends T>> baseChoicesModel;
+	private IModel<? extends Collection<? extends T>> baseChoicesModel;
 	
-	public MultipleChoicesWrapperModel(IModel<? extends Collection<? extends T>> selectedObjectCollectionModel, IModel<? extends List<? extends T>> baseChoicesModel) {
+	public MultipleChoicesWrapperModel(IModel<? extends Collection<? extends T>> selectedObjectCollectionModel, IModel<? extends Collection<? extends T>> baseChoicesModel) {
 		Args.notNull(selectedObjectCollectionModel, "selectedObjectCollectionModel");
 		Args.notNull(baseChoicesModel, "baseChoicesModel");
 		this.selectedObjectCollectionModel = selectedObjectCollectionModel;
@@ -30,7 +30,7 @@ public class MultipleChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T
 	public List<T> getObject() {
 		List<T> choices = Lists.newArrayList();
 		
-		List<? extends T> baseChoices = baseChoicesModel.getObject();
+		Collection<? extends T> baseChoices = baseChoicesModel.getObject();
 		Collection<? extends T> selectedObjectCollection = selectedObjectCollectionModel.getObject();
 		
 		// Si on force à inclure les objets sélectionnés et qu'ils ne sont pas dans la liste de choix,
