@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.model;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -16,9 +17,9 @@ public class ChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T>> {
 	
 	private IModel<T> selectedObjectModel;
 	
-	private IModel<? extends List<? extends T>> baseChoicesModel;
+	private IModel<? extends Collection<? extends T>> baseChoicesModel;
 	
-	public ChoicesWrapperModel(IModel<T> selectedObjectModel, IModel<? extends List<? extends T>> baseChoicesModel) {
+	public ChoicesWrapperModel(IModel<T> selectedObjectModel, IModel<? extends Collection<? extends T>> baseChoicesModel) {
 		Args.notNull(selectedObjectModel, "selectedObjectModel");
 		Args.notNull(baseChoicesModel, "baseChoicesModel");
 		this.selectedObjectModel = selectedObjectModel;
@@ -29,7 +30,7 @@ public class ChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T>> {
 	public List<T> getObject() {
 		List<T> choices = Lists.newArrayList();
 		
-		List<? extends T> baseChoices = baseChoicesModel.getObject();
+		Collection<? extends T> baseChoices = baseChoicesModel.getObject();
 		T selectedObject = selectedObjectModel.getObject();
 		
 		// Si on force à inclure l'objet sélectionné et qu'il n'est pas dans la liste de choix,

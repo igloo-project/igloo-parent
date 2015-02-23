@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.select2;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -25,7 +26,7 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	
 	private final Select2Behavior<T, T> select2Behavior;
 	
-	protected GenericSelect2DropDownSingleChoice(String id, IModel<T> model, IModel<? extends List<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
+	protected GenericSelect2DropDownSingleChoice(String id, IModel<T> model, IModel<? extends Collection<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		
 		setModel(model);
