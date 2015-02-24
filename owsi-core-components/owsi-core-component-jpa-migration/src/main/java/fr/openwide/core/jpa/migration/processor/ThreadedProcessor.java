@@ -176,6 +176,8 @@ public class ThreadedProcessor {
 		@Override
 		public void run() {
 			startTime = System.currentTimeMillis();
+			lastLoggingTime = startTime;
+			lastDoneItems = 0;
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					Thread.sleep(loggingCheckIntervalTimeUnit.toMillis(loggingCheckIntervalTime));
@@ -195,24 +197,30 @@ public class ThreadedProcessor {
 			if (force
 					|| (lastLoggingTime - currentTime) > maxLoggingTimeUnit.toMillis(maxLoggingTime)
 					|| (doneItems - lastDoneItems) > maxLoggingIncrement) {
+				Float speedSinceStart = (float) doneItems / (float) (currentTime - startTime);
+				int roundedSpeedSinceStart = Math.round(speedSinceStart * 1000);
+				
+				Float speedSinceLast = (float) (doneItems - lastDoneItems) / (float) (currentTime - lastLoggingTime);
+				int roundedSpeedSinceLast = Math.round(speedSinceLast * 1000);
+				
 				lastLoggingTime = currentTime;
 				lastDoneItems = doneItems;
-				Float speed = (float) doneItems / (float) (currentTime - startTime);
-				int roundedSpeed = Math.round(speed * 1000);
 				
 				StringBuilder sb = new StringBuilder();
 				if (StringUtils.hasText(loggerContext)) {
 					sb.append(loggerContext).append(" - ");
 				}
-				sb.append("Avancement {} / {} ({} items / s.)");
+				sb.append("Avancement {} / {} ({} items / s. depuis début, {} items / s. depuis dernier log)");
 				
 				if (configurer.isMigrationLoggingMemory()) {
 					sb.append(" - Mémoire disponible {} / {}");
-					progressLogger.info(sb.toString(), doneItems, monitorContext.getTotalItems().get(), roundedSpeed,
-						StringUtils.humanReadableByteCount(Runtime.getRuntime().freeMemory(), true),
-						StringUtils.humanReadableByteCount(Runtime.getRuntime().totalMemory(), true));
+					progressLogger.info(sb.toString(), doneItems, monitorContext.getTotalItems().get(),
+							roundedSpeedSinceStart, roundedSpeedSinceLast,
+							StringUtils.humanReadableByteCount(Runtime.getRuntime().freeMemory(), true),
+							StringUtils.humanReadableByteCount(Runtime.getRuntime().totalMemory(), true));
 				} else {
-					progressLogger.info(sb.toString(), doneItems, monitorContext.getTotalItems().get(), roundedSpeed);
+					progressLogger.info(sb.toString(), doneItems, monitorContext.getTotalItems().get(),
+							roundedSpeedSinceStart, roundedSpeedSinceLast);
 				}
 			}
 		}
