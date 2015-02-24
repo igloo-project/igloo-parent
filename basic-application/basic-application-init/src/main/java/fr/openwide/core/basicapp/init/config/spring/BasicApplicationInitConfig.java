@@ -12,7 +12,13 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @Import({
 	BasicApplicationCoreCommonConfig.class
 })
-@ConfigurationLocations(locations = "classpath:configuration-init.properties")
+@ConfigurationLocations(
+		locations = {
+				"classpath:configuration-init.properties",
+				"classpath:configuration-init-${user}.properties"
+		},
+		order = 1 // Permet de surcharger la configuration du core
+)
 @ComponentScan(
 		basePackageClasses = {
 			BasicApplicationInitPackage.class
