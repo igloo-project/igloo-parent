@@ -30,7 +30,7 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Value("${lucene.index.path}")
 	private String hibernateSearchIndexBase;
 	
-	@Value("${hibernate.search.indexing_strategy}")
+	@Value("${hibernate.search.indexing_strategy:}") // Defaults to an empty string
 	private String hibernateSearchIndexingStrategy;
 
 	@Value("#{dataSource}")
