@@ -35,8 +35,10 @@ import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
-import fr.openwide.core.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
+import fr.openwide.core.jpa.config.spring.provider.ExplicitJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
+import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
+import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.hibernate.cache.ehcache.EhCache285RegionFactory;
@@ -47,65 +49,18 @@ public final class JpaConfigUtils {
 
 	private JpaConfigUtils() {}
 
-	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(DefaultJpaConfigurationProvider provider) {
-		return entityManagerFactory(
-				provider.getJpaPackageScanProviders(),
-				provider.getDialect(), provider.getHbm2Ddl(), provider.getHbm2DdlImportFiles(),
-				provider.getHibernateSearchIndexBase(), provider.getDataSource(), 
-				provider.getEhCacheConfiguration(), provider.isEhCacheSingleton(), provider.isQueryCacheEnabled(),
-				provider.getDefaultBatchSize(), provider.getPersistenceProvider(), provider.getValidationMode(),
-				provider.getNamingStrategy(),
-				provider.isCreateEmptyCompositesEnabled());
-	}
-
-	@Deprecated
-	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			List<JpaPackageScanProvider> jpaPackageScanProviders,
-			Class<Dialect> dialect,
-			String hibernateHbm2Ddl,
-			String hibernateHbm2DdlImportFiles,
-			String hibernateSearchIndexBase,
-			DataSource dataSource,
-			String ehCacheConfiguration,
-			boolean singletonCache,
-			boolean queryCacheEnabled,
-			Integer defaultBatchSize,
-			PersistenceProvider persistenceProvider,
-			String validationMode,
-			Class<NamingStrategy> namingStrategy) {
-		return entityManagerFactory(jpaPackageScanProviders, dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles,
-				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, singletonCache, queryCacheEnabled,
-				defaultBatchSize, persistenceProvider, validationMode, namingStrategy, false);
-	}
-
 	/**
 	 * Construit un {@link LocalContainerEntityManagerFactoryBean} à partir d'un ensemble d'options usuelles.
 	 */
-	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			List<JpaPackageScanProvider> jpaPackageScanProviders,
-			Class<Dialect> dialect,
-			String hibernateHbm2Ddl,
-			String hibernateHbm2DdlImportFiles,
-			String hibernateSearchIndexBase,
-			DataSource dataSource,
-			String ehCacheConfiguration,
-			boolean singletonCache,
-			boolean queryCacheEnabled,
-			Integer defaultBatchSize,
-			PersistenceProvider persistenceProvider,
-			String validationMode,
-			Class<NamingStrategy> namingStrategy,
-			boolean createEmptyCompositesEnabled) {
+	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(IJpaConfigurationProvider provider) {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		entityManagerFactoryBean.setJpaProperties(getJpaProperties(dialect, hibernateHbm2Ddl,
-				hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
-				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode,
-				namingStrategy, createEmptyCompositesEnabled));
-		entityManagerFactoryBean.setDataSource(dataSource);
-		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(jpaPackageScanProviders));
+		entityManagerFactoryBean.setJpaProperties(getJpaProperties(provider));
+		entityManagerFactoryBean.setDataSource(provider.getDataSource());
+		entityManagerFactoryBean.setPackagesToScan(getPackagesToScan(provider.getJpaPackageScanProviders()));
 		
+		PersistenceProvider persistenceProvider = provider.getPersistenceProvider();
 		if (persistenceProvider != null) {
 			entityManagerFactoryBean.setPersistenceProvider(persistenceProvider);
 		}
@@ -114,6 +69,57 @@ public final class JpaConfigUtils {
 	}
 
 	@Deprecated
+	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
+			List<JpaPackageScanProvider> jpaPackageScanProviders,
+			Class<Dialect> dialect,
+			String hibernateHbm2Ddl,
+			String hibernateHbm2DdlImportFiles,
+			String hibernateSearchIndexBase,
+			DataSource dataSource,
+			String ehCacheConfiguration,
+			boolean singletonCache,
+			boolean queryCacheEnabled,
+			Integer defaultBatchSize,
+			PersistenceProvider persistenceProvider,
+			String validationMode,
+			Class<NamingStrategy> namingStrategy) {
+		return entityManagerFactory(new ExplicitJpaConfigurationProvider(
+				jpaPackageScanProviders, dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize,
+				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, singletonCache, queryCacheEnabled,
+				persistenceProvider, validationMode, namingStrategy));
+	}
+
+	/**
+	 * Construit un {@link LocalContainerEntityManagerFactoryBean} à partir d'un ensemble d'options usuelles.
+	 * @deprecated Utiliser {@link #entityManagerFactory(IJpaConfigurationProvider)}
+	 */
+	@Deprecated
+	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
+			List<JpaPackageScanProvider> jpaPackageScanProviders,
+			Class<Dialect> dialect,
+			String hibernateHbm2Ddl,
+			String hibernateHbm2DdlImportFiles,
+			String hibernateSearchIndexBase,
+			DataSource dataSource,
+			String ehCacheConfiguration,
+			boolean singletonCache,
+			boolean queryCacheEnabled,
+			Integer defaultBatchSize,
+			PersistenceProvider persistenceProvider,
+			String validationMode,
+			Class<NamingStrategy> namingStrategy,
+			boolean createEmptyCompositesEnabled) {
+		return entityManagerFactory(new ExplicitJpaConfigurationProvider(
+				jpaPackageScanProviders, dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize,
+				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, singletonCache, queryCacheEnabled,
+				persistenceProvider, validationMode, namingStrategy, createEmptyCompositesEnabled));
+	}
+
+	/**
+	 * @deprecated Utiliser {@link #getJpaProperties(IJpaPropertiesProvider)}
+	 */
+	@Deprecated
+	@SuppressWarnings("unchecked")
 	public static Properties getJpaProperties(Class<?> dialect,
 			String hibernateHbm2Ddl,
 			String hibernateHbm2DdlImportFiles,
@@ -124,11 +130,17 @@ public final class JpaConfigUtils {
 			Integer defaultBatchSize,
 			String validationMode,
 			Class<NamingStrategy> namingStrategy) {
-		return getJpaProperties(dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, hibernateSearchIndexBase,
-				ehCacheConfiguration, singletonCache, queryCacheEnabled, defaultBatchSize, validationMode, namingStrategy,
-				false);
+		return getJpaProperties(new ExplicitJpaConfigurationProvider(
+				(Class<? extends Dialect>)dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase, 
+				ehCacheConfiguration, singletonCache, queryCacheEnabled, validationMode, namingStrategy
+		));
 	}
-
+	
+	/**
+	 * @deprecated Utiliser {@link #getJpaProperties(IJpaPropertiesProvider)}
+	 */
+	@Deprecated
+	@SuppressWarnings("unchecked")
 	public static Properties getJpaProperties(Class<?> dialect,
 			String hibernateHbm2Ddl,
 			String hibernateHbm2DdlImportFiles,
@@ -140,23 +152,37 @@ public final class JpaConfigUtils {
 			String validationMode,
 			Class<NamingStrategy> namingStrategy,
 			boolean createEmptyCompositesEnabled) {
+		return getJpaProperties(new ExplicitJpaConfigurationProvider(
+				(Class<? extends Dialect>)dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase, 
+				ehCacheConfiguration, singletonCache, queryCacheEnabled, validationMode, namingStrategy,
+				createEmptyCompositesEnabled
+		));
+	}
+	
+	public static Properties getJpaProperties(IJpaPropertiesProvider configuration) {
 		Properties properties = new Properties();
-		properties.setProperty(Environment.DIALECT, dialect.getName());
-		properties.setProperty(Environment.HBM2DDL_AUTO, hibernateHbm2Ddl);
+		properties.setProperty(Environment.DIALECT, configuration.getDialect().getName());
+		properties.setProperty(Environment.HBM2DDL_AUTO, configuration.getHbm2Ddl());
 		properties.setProperty(Environment.SHOW_SQL, Boolean.FALSE.toString());
 		properties.setProperty(Environment.FORMAT_SQL, Boolean.FALSE.toString());
 		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
-		properties.setProperty(org.hibernate.cfg.AvailableSettings.CREATE_EMPTY_COMPOSITES_ENABLED, Boolean.valueOf(createEmptyCompositesEnabled).toString());
+		properties.setProperty(org.hibernate.cfg.AvailableSettings.CREATE_EMPTY_COMPOSITES_ENABLED,
+				Boolean.valueOf(configuration.isCreateEmptyCompositesEnabled()).toString());
+		Integer defaultBatchSize = configuration.getDefaultBatchSize();
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
 			properties.setProperty(Environment.BATCH_FETCH_STYLE, BatchFetchStyle.PADDED.name());
 		}
 		
+		String hibernateHbm2DdlImportFiles = configuration.getHbm2DdlImportFiles();
 		if (StringUtils.hasText(hibernateHbm2DdlImportFiles)) {
 			properties.setProperty(Environment.HBM2DDL_IMPORT_FILES, hibernateHbm2DdlImportFiles);
 		}
-		
+
+		String ehCacheConfiguration = configuration.getEhCacheConfiguration();
+		boolean singletonCache = configuration.isEhCacheSingleton();
+		boolean queryCacheEnabled = configuration.isQueryCacheEnabled();
 		if (StringUtils.hasText(ehCacheConfiguration)) {
 			if (singletonCache) {
 				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCache285RegionFactory.class.getName());
@@ -178,7 +204,8 @@ public final class JpaConfigUtils {
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
 			properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.FALSE.toString());
 		}
-		
+
+		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
 		if (StringUtils.hasText(hibernateSearchIndexBase)) {
 			properties.setProperty("hibernate.search.default.directory_provider", FSDirectoryProvider.class.getName());
 			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
@@ -190,9 +217,17 @@ public final class JpaConfigUtils {
 			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
 		}
 		
+		String hibernateSearchIndexingStrategy = configuration.getHibernateSearchIndexingStrategy();
+		if (StringUtils.hasText(hibernateSearchIndexingStrategy)) {
+			properties.setProperty(org.hibernate.search.Environment.INDEXING_STRATEGY, hibernateSearchIndexingStrategy);
+		}
+
+		String validationMode = configuration.getValidationMode();
 		if (StringUtils.hasText(validationMode)) {
 			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
 		}
+		
+		Class<? extends NamingStrategy> namingStrategy = configuration.getNamingStrategy();
 		if (namingStrategy != null) {
 			properties.setProperty(AvailableSettings.NAMING_STRATEGY, namingStrategy.getName());
 		} else {
