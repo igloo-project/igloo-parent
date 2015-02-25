@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 import fr.openwide.core.basicapp.core.business.common.model.AdresseEmail;
 import fr.openwide.core.commons.util.validator.AnyTldEmailAddressValidator;
 
-public class AdresseEmailConverter extends AbstractConverter<AdresseEmail> {
+public final class AdresseEmailConverter extends AbstractConverter<AdresseEmail> {
 
 	private static final long serialVersionUID = -2929883038769154563L;
 

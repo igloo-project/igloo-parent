@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 import fr.openwide.core.basicapp.core.business.common.model.CodePostal;
 import fr.openwide.core.basicapp.web.application.common.validator.CodePostalValidator;
 
-public class CodePostalConverter extends AbstractConverter<CodePostal> {
+public final class CodePostalConverter extends AbstractConverter<CodePostal> {
 
 	private static final long serialVersionUID = 7575610087030468757L;
 

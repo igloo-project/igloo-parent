@@ -12,7 +12,7 @@ import com.google.common.base.Splitter;
 import fr.openwide.core.basicapp.core.business.common.model.NumeroTelephone;
 import fr.openwide.core.commons.util.validator.PermissivePhoneNumberValidator;
 
-public class NumeroTelephoneConverter extends AbstractConverter<NumeroTelephone> {
+public final class NumeroTelephoneConverter extends AbstractConverter<NumeroTelephone> {
 
 	private static final long serialVersionUID = 7575610087030468757L;
 
