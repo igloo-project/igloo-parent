@@ -1,10 +1,7 @@
 .description-section {
-	padding: 10px;
+	padding: 0;
 	width: auto;
-	
-	& + .description-section {
-		margin-top: 15px;
-	}
+	margin-bottom: 15px;
 	
 	* + .description-section {
 		margin-top: 10px;
@@ -18,78 +15,64 @@
 		padding: 0;
 	}
 	
-	.col-md-3, .col-md-4, .col-md-5 {
-		.description-section {
-			padding: 0 0 10px;
-			@media (min-width: @screen-md-min) {
-				padding: 0;
-			}
-		}
-	}
-	
 	// -----------------------------------
 	// Info groups (label/value pairs)
 	// -----------------------------------
 	.info-group {
+		line-height: @description-section-line-height;
+		
 		&+ .info-group {
 			margin-top: 7px;
 		}
 		
 		.clearfix();
 		
-		.info-label, .info-content {
-			vertical-align:	top;
-		}
-		.info-label {
-			float:		left;
-			display:	inline-block;
-			max-width:	160px;
-			
-			width:		40%;
-		}
-		.info-content {
-			display:		block;
-			overflow:		hidden; // Block Formatting Context; see http://colinaarts.com/articles/the-magic-of-overflow-hidden/
-			min-height: @line-height-computed;
-			margin-left:	2%;
-			
-			.boolean-glyphicon {
-				margin-top: 0;
+		.info-pair {
+			&.info-pair-block {
+				.info-label, .info-content {
+					float: none;
+					display: block;
+					width: auto;
+					max-width: none;
+					overflow: visible;
+					margin: 0;
+				}
 			}
-		}
-		
-		&.info-group-block {
+			
 			.info-label, .info-content {
-				float: none;
+				vertical-align:	top;
+			}
+			
+			.info-label {
+				float: left;
+				display: inline-block;
+				max-width: 160px;
+				width: 40%;
+			}
+			
+			.info-content {
 				display: block;
-				width: auto;
-				max-width: none;
-				margin: 0;
+				overflow: hidden; // Block Formatting Context; see http://colinaarts.com/articles/the-magic-of-overflow-hidden/
+				min-height: @line-height-computed;
+				margin-left: 2%;
 			}
 		}
 	}
-	&.labels-small {
-		.info-group:not(.info-group-block) {
+	
+	.add-info-pair-labels-variant(@suffix, @width, @max-width) {
+		&.labels-@{suffix} .info-pair:not(.info-pair-block),
+		.labels-@{suffix} .info-pair:not(.info-pair-block),
+		.info-pair:not(.info-pair-block).labels-@{suffix},
+		.info-pair:not(.info-pair-block) .labels-@{suffix} {
 			.info-label {
-				width:		30%;
-				max-width:	100px;
+				width: @width;
+				max-width: @max-width;
 			}
 		}
 	}
-	&.labels-large {
-		.info-group:not(.info-group-block) {
-			.info-label {
-				width:		50%;
-				max-width:	180px;
-			}
-		}
-	}
-	&.labels-xlarge {
-		.info-group:not(.info-group-block) {
-			.info-label {
-				width:		60%;
-				max-width:	200px;
-			}
-		}
-	}
+	
+	.add-info-pair-labels-variant(small, 30%, 100px);
+	.add-info-pair-labels-variant(medium, 40%, 160px);
+	.add-info-pair-labels-variant(large, 50%, 180px);
+	.add-info-pair-labels-variant(xlarge, 60%, 200px);
 }
