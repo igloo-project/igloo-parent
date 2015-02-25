@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.junit;
 
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -18,8 +19,10 @@ import javax.persistence.metamodel.Attribute.PersistentAttributeType;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.MapAttribute;
 import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.hibernate.jpa.internal.metamodel.EmbeddableTypeImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -158,8 +161,49 @@ public abstract class AbstractTestCase {
 	 * Méthode utilisée à des fins de tests.
 	 */
 	protected void testMetaModel(Attribute<?, ?> attribute, List<Class<?>> classesAutorisees) throws NoSuchFieldException, SecurityException {
+		testMetaModel(attribute, classesAutorisees, Collections.<Attribute<?, ?>>emptyList());
+	}
+
+	/**
+	 * Méthode utilisée à des fins de tests.
+	 */
+	protected void testMetaModel(Attribute<?, ?> attribute, List<Class<?>> classesAutorisees, List<Attribute<?, ?>> ignoredAttributes) throws NoSuchFieldException, SecurityException {
+		for (Attribute<?, ?> ignoredAttribute : ignoredAttributes) {
+			if (ignoredAttribute.getJavaMember().equals(attribute.getJavaMember())) {
+				// champ ignoré
+				return;
+			}
+		}
+		
 		Enumerated enumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class);
 		MapKeyEnumerated mapKeyEnumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(MapKeyEnumerated.class);
+		
+		// cas des embeddable et des collectionOfElements d'embeddable
+		if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
+				&& EmbeddableTypeImpl.class.isInstance(((PluralAttribute<?, ?, ?>) attribute).getElementType())) {
+			PluralAttribute<?, ?, ?> pluralAttribute = (PluralAttribute<?, ?, ?>) attribute;
+			if (classesAutorisees.contains(pluralAttribute.getElementType().getJavaType())) {
+				// type autorisé de manière explicite
+				return;
+			}
+			for (Attribute<?, ?> embeddedAttribute : ((EmbeddableTypeImpl<?>)pluralAttribute.getElementType()).getAttributes()) {
+				testMetaModel(embeddedAttribute, classesAutorisees, ignoredAttributes);
+			}
+			return;
+		} else if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.EMBEDDED)) {
+			SingularAttribute<?, ?> singularAttribute = (SingularAttribute<?, ?>) attribute;
+			if (classesAutorisees.contains(singularAttribute.getJavaType())) {
+				// type autorisé de manière explicite
+				return;
+			}
+			if (EmbeddableTypeImpl.class.isInstance(singularAttribute.getType())) {
+				for (Attribute<?, ?> embeddedAttribute : ((EmbeddableTypeImpl<?>)singularAttribute.getType()).getAttributes()) {
+					testMetaModel(embeddedAttribute, classesAutorisees, ignoredAttributes);
+				}
+				return;
+			}
+		}
+		
 		if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.BASIC)
 				&& !classesAutorisees.contains(attribute.getJavaType())
 				&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
@@ -169,9 +213,10 @@ public abstract class AbstractTestCase {
 				&& PluralAttribute.class.isInstance(attribute)
 				&& !classesAutorisees.contains(((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType())
 				&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
+			PluralAttribute<?, ?, ?> pluralAttribute = (PluralAttribute<?, ?, ?>) attribute;
 			throw new IllegalStateException(
 					"Collection \"" + attribute.getName() + "\" de "
-					+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
+					+ pluralAttribute.getElementType().getJavaType().getSimpleName() + " refusée");
 		} else if (attribute instanceof MapAttribute) {
 			MapAttribute<?, ?, ?> mapAttribute = (MapAttribute<?, ?, ?>) attribute;
 			if (Enum.class.isAssignableFrom(mapAttribute.getKeyJavaType())
@@ -196,7 +241,7 @@ public abstract class AbstractTestCase {
 	 * @param classesAutorisees : concerne uniquement des classes matérialisées. Si une enum fait péter le test, c'est
 	 * qu'il manque l'annotation @Enumerated ou que celle-ci prend EnumType.ORDINAL en paramètre
 	 */
-	protected void testMetaModel(Class<?>... classesAutorisees) throws NoSuchFieldException, SecurityException {
+	protected void testMetaModel(List<Attribute<?, ?>> ignoredAttributes, Class<?>... classesAutorisees) throws NoSuchFieldException, SecurityException {
 		List<Class<?>> listeAutorisee = Lists.newArrayList();
 		listeAutorisee.add(String.class);
 		listeAutorisee.add(Long.class);
@@ -217,8 +262,12 @@ public abstract class AbstractTestCase {
 		
 		for (EntityType<?> entityType : getEntityManager().getMetamodel().getEntities()) {
 			for (Attribute<?, ?> attribute : entityType.getDeclaredAttributes()) {
-				testMetaModel(attribute, listeAutorisee);
+				testMetaModel(attribute, listeAutorisee, ignoredAttributes);
 			}
 		}
+	}
+
+	protected void testMetaModel(Class<?>... classesAutorisees) throws NoSuchFieldException, SecurityException {
+		testMetaModel(Collections.<Attribute<?, ?>>emptyList(), classesAutorisees);
 	}
 }
