@@ -18,9 +18,7 @@
 	// -----------------------------------
 	// Info groups (label/value pairs)
 	// -----------------------------------
-	.info-group {
-		line-height: @description-section-line-height;
-		
+	.info-group {		
 		&+ .info-group {
 			margin-top: 7px;
 		}
@@ -29,6 +27,10 @@
 		
 		.info-pair {
 			.clearfix();
+			
+			& + .info-pair {
+				margin-top: 3px;
+			}
 			
 			&.info-pair-block {
 				.info-label, .info-content {
