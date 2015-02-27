@@ -28,13 +28,17 @@ public class BytesRenderer extends Renderer<Bytes> {
 
 	private static final List<String> DEFAULT_UNIT_KEYS = Lists.newArrayList(BYTE_UNIT_KEY, KB_UNIT_KEY, MB_UNIT_KEY, GB_UNIT_KEY, TB_UNIT_KEY);
 	
-	private static final BytesRenderer INSTANCE = new BytesRenderer(DEFAULT_UNIT_KEYS);
+	private static final BytesRenderer INSTANCE = new BytesRenderer();
 	
 	public static BytesRenderer get() {
 		return INSTANCE;
 	}
 	
 	private final List<String> unitKeys;
+
+	private BytesRenderer() {
+		this.unitKeys = ImmutableList.copyOf(DEFAULT_UNIT_KEYS);
+	};
 
 	protected BytesRenderer(Iterable<String> unitKeys) {
 		this.unitKeys = ImmutableList.copyOf(unitKeys);

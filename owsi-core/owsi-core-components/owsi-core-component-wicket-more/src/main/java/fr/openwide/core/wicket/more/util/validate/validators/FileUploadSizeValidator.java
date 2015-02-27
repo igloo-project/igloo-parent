@@ -9,8 +9,6 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
-import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableBytesConverter;
-
 /**
  * Checks that, for each uploaded file, the file size is smaller than or equal to a maximum expected size. 
  * 
@@ -22,9 +20,9 @@ import fr.openwide.core.wicket.more.util.convert.converters.HumanReadableBytesCo
  * Error Message Variables:
  * <ul>
  * <li>the default variables (see {@link FormComponent})</li>
- * <li>{@code maximum}: the maximum allowed value (as a {@link Bytes} object - see {@link HumanReadableBytesConverter} to display)</li>
+ * <li>{@code maximum}: the maximum allowed value (as a {@link Bytes} object - see {@link BytesConverter} to display)</li>
  * <li>{@code clientFileName}: the name of the invalid file</li>
- * <li>{@code size}: the size of the invalid file (as a {@link Bytes} object - see {@link HumanReadableBytesConverter} to display)</li>
+ * <li>{@code size}: the size of the invalid file (as a {@link Bytes} object - see {@link BytesConverter} to display)</li>
  * </ul>
  * </p>
  */
