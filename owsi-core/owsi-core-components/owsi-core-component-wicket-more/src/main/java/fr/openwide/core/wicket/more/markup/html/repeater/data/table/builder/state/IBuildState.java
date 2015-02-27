@@ -13,4 +13,6 @@ public interface IBuildState<T, S extends ISort<?>> {
 	
 	IDecoratedBuildState<T, S> decorate();
 	
+	IDecoratedBuildState<T, S> bootstrapPanel();
+	
 }

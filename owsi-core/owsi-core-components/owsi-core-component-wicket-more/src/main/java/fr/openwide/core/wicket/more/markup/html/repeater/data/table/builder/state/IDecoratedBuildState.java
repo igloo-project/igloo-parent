@@ -7,6 +7,8 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCor
 
 public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	
+	IDecoratedBuildState<T, S> title(String resourceKey);
+	
 	IDecoratedBuildState<T, S> count(String countResourceKey);
 	
 	IDecoratedBuildState<T, S> count(AddInPlacement placement, String countResourceKey);
@@ -19,7 +21,12 @@ public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	
 	IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement);
 	
-	IDecoratedBuildState<T, S> addIn(AddInPlacement placement, IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory);
+	IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
+			IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory);
+
+	IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
+			IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory,
+			String cssClasses);
 	
 	DecoratedCoreDataTablePanel<T, S> build(String id);
 	
