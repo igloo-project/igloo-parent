@@ -2,12 +2,11 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<h2 class="description-title">
-			<wicket:message key="administration.user.audits" />
-		</h2>
-		
-		<div class="container-fluid">
-			<div wicket:id="listPanel" />
+		<div class="panel-heading">
+			<h2 class="panel-title">
+				<wicket:message key="administration.user.audits" />
+			</h2>
 		</div>
+		<div wicket:id="listPanel" class="panel-body" />
 	</wicket:panel>
 </html>
