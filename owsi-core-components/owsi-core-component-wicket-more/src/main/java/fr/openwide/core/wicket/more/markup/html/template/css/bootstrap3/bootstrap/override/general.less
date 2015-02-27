@@ -230,6 +230,63 @@ span.popover-btn {
 	}
 }
 
+// CoreDataTable
+.decorated-data-table {
+	.add-in-container.add-in-container-top {
+		margin-bottom: 5px;
+	}
+	.table {
+		margin-bottom: 0;
+	}
+	.add-in-container.add-in-container-bottom {
+		margin-top: 5px;
+	}
+}
+.add-in-container {
+	.clearfix();
+	.add-in {
+		display: inline-block;
+		vertical-align: top;
+		
+		&.add-in-left {
+			margin-right: 10px;
+		}
+		
+		&.add-in-right {
+			margin-left: 10px;
+			.pull-right();
+		}
+		
+		&.add-in-emphasize {
+			margin: 2px 0;
+			font-size: 16px;
+			line-height: 28px;
+			color: #666;
+			font-weight: bold;
+		}
+		
+		&.add-in-pagination {
+			.pagination {
+				vertical-align: middle;
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+		
+			&.add-in-pagination-panel {
+				.pagination {
+					.pagination-size(@padding-xs-vertical, @padding-small-horizontal, @font-size-small, @border-radius-small);
+				}
+			}
+		}
+		
+		&.btn-group, .btn-group {
+			vertical-align: middle;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+}
+
 // Tables
 .table {
 	&.table-condensed {

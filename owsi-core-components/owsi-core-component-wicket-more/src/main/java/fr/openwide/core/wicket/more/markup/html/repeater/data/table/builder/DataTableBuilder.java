@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
@@ -15,12 +16,15 @@ import com.google.common.collect.Multimap;
 
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
 import fr.openwide.core.jpa.more.business.sort.ISort;
+import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.factory.BindingLinkGeneratorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.BootstrapPanelCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreBooleanLabelColumn;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreBootstrapBadgeColumn;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreBootstrapLabelColumn;
@@ -32,6 +36,7 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCor
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AjaxPagerAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.CountAddInComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.LabelAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.ICoreColumn;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBooleanLabelColumnState;
@@ -270,6 +275,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	public IDecoratedBuildState<T, S> decorate() {
 		return new DecoratedBuildState();
 	}
+	
+	@Override
+	public IDecoratedBuildState<T, S> bootstrapPanel() {
+		return new BootstrapPanelBuildState();
+	}
 
 	private abstract class DataTableBuilderWrapper implements IColumnState<T, S> {
 
@@ -357,6 +367,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDecoratedBuildState<T, S> decorate() {
 			return DataTableBuilder.this.decorate();
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> bootstrapPanel() {
+			return DataTableBuilder.this.bootstrapPanel();
 		}
 	}
 
@@ -512,10 +527,23 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 
 	private class DecoratedBuildState implements IDecoratedBuildState<T, S> {
-		private String countResourceKey = null;
+		protected String countResourceKey = null;
 		
-		private final Multimap<AddInPlacement, IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>>
+		protected final Multimap<AddInPlacement, IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>>
 				addInComponentFactories = ArrayListMultimap.create();
+		
+		protected String getTitleCssClass() {
+			return "add-in-emphasize";
+		}
+		
+		protected String getPaginationCssClass() {
+			return "add-in-pagination";
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> title(String resourceKey) {
+			return addIn(AddInPlacement.TOP_LEFT, new LabelAddInComponentFactory(new ResourceModel(resourceKey)), getTitleCssClass());
+		}
 		
 		@Override
 		public IDecoratedBuildState<T, S> count(String countResourceKey) {
@@ -525,7 +553,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDecoratedBuildState<T, S> count(AddInPlacement placement, String countResourceKey) {
 			this.countResourceKey = countResourceKey;
-			return addIn(placement, new CountAddInComponentFactory(dataProvider, countResourceKey));
+			return addIn(placement, new CountAddInComponentFactory(dataProvider, countResourceKey), getTitleCssClass());
 		}
 		
 		@Override
@@ -535,7 +563,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> pager(AddInPlacement placement) {
-			return addIn(placement, new PagerAddInComponentFactory());
+			return addIn(placement, new PagerAddInComponentFactory(), getPaginationCssClass());
 		}
 
 		@Override
@@ -545,7 +573,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement) {
-			return addIn(placement, new AjaxPagerAddInComponentFactory());
+			return addIn(placement, new AjaxPagerAddInComponentFactory(), getPaginationCssClass());
 		}
 		
 		@Override
@@ -553,6 +581,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory) {
 			addInComponentFactories.put(placement, addInComponentFactory);
 			return this;
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
+				IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory, String cssClasses) {
+			return addIn(placement, new ClassAttributeAppenderDecoratingParameterizedComponentFactory<>(addInComponentFactory, cssClasses));
 		}
 
 		@Override
@@ -570,5 +604,49 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
 			return panel;
 		}
+	}
+
+	private class BootstrapPanelBuildState extends DecoratedBuildState {
+		
+		@Override
+		protected String getTitleCssClass() {
+			return "panel-title";
+		}
+		
+		@Override
+		protected String getPaginationCssClass() {
+			return "add-in-pagination add-in-pagination-panel";
+		}
+		
+		@Override
+		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
+			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, columns, dataProvider, rowsPerPage,
+					addInComponentFactories);
+			if (noRecordsResourceKey == null && countResourceKey != null) {
+				withNoRecordsResourceKey(countResourceKey + ".zero");
+			}
+			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
+			return panel;
+		}
+	}
+	
+	private static class ClassAttributeAppenderDecoratingParameterizedComponentFactory<C extends Component, P>
+			extends AbstractDecoratingParameterizedComponentFactory<C, P> {
+		
+		private static final long serialVersionUID = 4455974327179014829L;
+		
+		private final String cssClass;
+
+		public ClassAttributeAppenderDecoratingParameterizedComponentFactory(IParameterizedComponentFactory<? extends C, ? super P> delegate, String cssClass) {
+			super(delegate);
+			this.cssClass = cssClass;
+		}
+
+		@Override
+		protected C decorate(C component, P parameter) {
+			component.add(new ClassAttributeAppender(cssClass));
+			return component;
+		}
+		
 	}
 }

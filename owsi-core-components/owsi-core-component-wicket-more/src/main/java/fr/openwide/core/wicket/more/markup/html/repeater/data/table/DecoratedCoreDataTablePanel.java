@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -103,6 +104,22 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		dataTable.setItemsPerPage(arg0);
 	}
 	
+	public static class LabelAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, Object> {
+		private static final long serialVersionUID = 7358590231263113101L;
+		
+		private final IModel<?> labelModel;
+		
+		public LabelAddInComponentFactory(IModel<?> labelModel) {
+			super();
+			this.labelModel = labelModel;
+		}
+		
+		@Override
+		public Component create(String wicketId, Object ignored) {
+			return new Label(wicketId, labelModel);
+		}
+	}
+	
 	public static class CountAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, Object> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
@@ -119,8 +136,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		public Component create(String wicketId, Object ignored) {
 			IModel<Integer> countModel = new PropertyModel<Integer>(dataProvider,
 					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
-			return new CountLabel(wicketId, countResourceKey, countModel)
-					.add(new ClassAttributeAppender("count"));
+			return new CountLabel(wicketId, countResourceKey, countModel);
 		}
 	}
 	
@@ -135,7 +151,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		public Component create(String wicketId, DecoratedCoreDataTablePanel<?, ?> dataTable) {
 			dataTable.setOutputMarkupId(true);
 			return new HideableAjaxPagingNavigator(wicketId, dataTable)
-					.add(new ClassAttributeAppender("pagination-outer"));
+					.add(new ClassAttributeAppender("add-in-pagination"));
 		}
 	}
 	
@@ -149,7 +165,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		@Override
 		public Component create(String wicketId, IPageable pageable) {
 			return new HideablePagingNavigator(wicketId, pageable)
-					.add(new ClassAttributeAppender("pagination-outer"));
+					.add(new ClassAttributeAppender("add-in-pagination"));
 		}
 	}
 }
