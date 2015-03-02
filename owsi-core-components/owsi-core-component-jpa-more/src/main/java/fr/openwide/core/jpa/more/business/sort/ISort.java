@@ -32,9 +32,44 @@ public interface ISort<S> extends Serializable {
 		}
 	}
 	
+	/**
+	 * @deprecated Use NullOrder instead.
+	 */
+	@Deprecated
 	public enum SortNull {
 		NONE,
 		NULL_FIRST,
 		NULL_LAST;
+	}
+	
+	public enum NullSortValue {
+		NONE,
+		SMALLEST {
+			@Override
+			public boolean isFirst(SortOrder order) {
+				return order == SortOrder.ASC;
+			}
+			@Override
+			public boolean isLast(SortOrder order) {
+				return order == SortOrder.DESC;
+			}
+		},
+		GREATEST {
+			@Override
+			public boolean isFirst(SortOrder order) {
+				return order == SortOrder.DESC;
+			}
+			@Override
+			public boolean isLast(SortOrder order) {
+				return order == SortOrder.ASC;
+			}
+		};
+		
+		public boolean isFirst(SortOrder order) {
+			return false;
+		}
+		public boolean isLast(SortOrder order) {
+			return false;
+		}
 	}
 }
