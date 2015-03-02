@@ -459,6 +459,17 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
+		public IAddedLabelColumnState<T, S> withTooltip(Renderer<? super T> tooltipRenderer) {
+			getColumn().setTooltipRenderer(tooltipRenderer);
+			return this;
+		}
+		
+		@Override
+		public <C> IAddedLabelColumnState<T, S> withTooltip(Function<? super T, C> function, Renderer<? super C> tooltipRenderer) {
+			return withTooltip(tooltipRenderer.onResultOf(function));
+		}
+		
+		@Override
 		public IAddedLabelColumnState<T, S> withLink(LinkGeneratorFactory<T> linkGeneratorFactory) {
 			if (getColumn().getSideLinkGeneratorFactory() != null) {
 				throw new IllegalStateException("link and side link cannot be both set.");

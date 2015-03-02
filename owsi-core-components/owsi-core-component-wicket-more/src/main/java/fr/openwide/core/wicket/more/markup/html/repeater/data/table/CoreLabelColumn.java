@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.repeater.data.table;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -12,6 +13,7 @@ import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
+import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
 
@@ -22,6 +24,8 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	private boolean showPlaceholder = false;
 	
 	private IModel<String> placeholderModel = null;
+	
+	private Renderer<? super T> tooltipRenderer;
 	
 	private LinkGeneratorFactory<T> linkGeneratorFactory;
 	
@@ -56,7 +60,7 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 					private static final long serialVersionUID = 1L;
 					@Override
 					public CoreLabel getLabel(String wicketId, IModel<T> rowModel) {
-						return decorate(newLabel(wicketId, rowModel));
+						return decorate(newLabel(wicketId, rowModel), rowModel);
 					}
 					@Override
 					public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
@@ -79,7 +83,7 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 
 	protected abstract CoreLabel newLabel(String componentId, IModel<T> rowModel);
 
-	private CoreLabel decorate(CoreLabel label) {
+	private CoreLabel decorate(CoreLabel label, IModel<T> rowModel) {
 		if (multiline) {
 			label.multiline();
 		}
@@ -89,6 +93,9 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 			} else {
 				label.showPlaceholder();
 			}
+		}
+		if (tooltipRenderer != null) {
+			label.add(new AttributeModifier("title", tooltipRenderer.asModel(rowModel)));
 		}
 		return label;
 	}
@@ -121,6 +128,14 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		this.showPlaceholder = true;
 		this.placeholderModel = placeholderModel;
 		return this;
+	}
+	
+	public Renderer<? super T> getTooltipRenderer() {
+		return tooltipRenderer;
+	}
+
+	public void setTooltipRenderer(Renderer<? super T> tooltipRenderer) {
+		this.tooltipRenderer = tooltipRenderer;
 	}
 
 	public LinkGeneratorFactory<T> getLinkGeneratorFactory() {
