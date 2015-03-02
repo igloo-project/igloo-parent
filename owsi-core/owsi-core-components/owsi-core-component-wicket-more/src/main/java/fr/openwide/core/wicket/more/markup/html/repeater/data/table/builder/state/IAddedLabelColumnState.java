@@ -2,12 +2,15 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.sta
 
 import org.apache.wicket.model.IModel;
 
+import com.google.common.base.Function;
+
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import fr.openwide.core.wicket.more.markup.html.sort.ISortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink.CycleMode;
+import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCoreColumnState<T, S> {
 
@@ -31,6 +34,10 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 	IAddedLabelColumnState<T, S> showPlaceholder();
 
 	IAddedLabelColumnState<T, S> showPlaceholder(IModel<String> placeholderModel);
+
+	IAddedLabelColumnState<T, S> withTooltip(Renderer<? super T> tooltipRenderer);
+
+	<C> IAddedLabelColumnState<T, S> withTooltip(Function<? super T, C> function, Renderer<? super C> renderer);
 
 	IAddedLabelColumnState<T, S> withLink(LinkGeneratorFactory<T> linkGeneratorFactory);
 
