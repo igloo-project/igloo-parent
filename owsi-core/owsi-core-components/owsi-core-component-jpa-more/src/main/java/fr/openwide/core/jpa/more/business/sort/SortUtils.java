@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
+import fr.openwide.core.jpa.more.business.sort.ISort.NullSortValue;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortNull;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 
@@ -46,9 +47,20 @@ public final class SortUtils {
 		return new SortField(fieldName, type, isReverse(sort, order));
 	}
 	
+	/**
+	 * @deprecated Use {@link #luceneStringSortField(ISort, SortOrder, String, NullSortValue)} instead.
+	 * This method sorts nulls in the same order independently from the given SortOrder, which probably is a bug.
+	 */
+	@Deprecated
 	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, SortNull sortNull) {
 		return Sorting.getStringSortField(fieldName, isReverse(sort, order),
 				SortNull.NULL_LAST.equals(sortNull), SortNull.NULL_FIRST.equals(sortNull));
+	}
+	
+	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, NullSortValue sortNull) {
+		SortOrder defaultedOrder = sort.getDefaultOrder().asDefaultFor(order);
+		return Sorting.getStringSortField(fieldName, isReverse(sort, order),
+				sortNull.isLast(defaultedOrder), sortNull.isFirst(defaultedOrder));
 	}
 	
 	private static boolean isReverse(ISort<SortField> sort, SortOrder order) {
