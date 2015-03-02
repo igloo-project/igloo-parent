@@ -30,6 +30,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
@@ -162,6 +163,37 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			} else {
 				return invalidValueDelegate.render(value, locale);
 			}
+		}
+	}
+	
+	@SafeVarargs
+	public final Renderer<T> append(Function<? super Locale, ? extends Joiner> joinerFunction, Renderer<? super T> ... appendedRenderers) {
+		return new JoiningRenderer<>(joinerFunction, Lists.asList(this, appendedRenderers));
+	}
+	
+	private static class JoiningRenderer<T> extends Renderer<T> {
+		private static final long serialVersionUID = 3566036942853574753L;
+		
+		private final Function<? super Locale, ? extends Joiner> joinerFunction;
+		private final Iterable<? extends Renderer<? super T>> renderers;
+
+		public JoiningRenderer(Function<? super Locale, ? extends Joiner> joinerFunction, Iterable<? extends Renderer<? super T>> renderers) {
+			super();
+			this.joinerFunction = joinerFunction;
+			this.renderers = renderers;
+		}
+
+		@Override
+		public String render(final T value, final Locale locale) {
+			checkNotNull(locale);
+			Joiner joiner = joinerFunction.apply(locale);
+			Iterable<String> renderedItems = Iterables.transform(renderers, new Function<Renderer<? super T>, String>() {
+				@Override
+				public String apply(Renderer<? super T> input) {
+					return input.render(value, locale);
+				}
+			});
+			return joiner.join(renderedItems);
 		}
 	}
 
