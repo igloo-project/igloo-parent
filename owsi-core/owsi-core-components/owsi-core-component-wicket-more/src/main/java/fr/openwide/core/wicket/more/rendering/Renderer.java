@@ -390,7 +390,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
-	public static <T> Renderer<Object> stringValue() {
+	public static Renderer<Object> stringValue() {
 		return STRING_VALUE_RENDERER;
 	}
 	
