@@ -23,6 +23,8 @@ import fr.openwide.core.wicket.more.link.descriptor.factory.BindingLinkGenerator
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
+import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.BootstrapPanelCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreBooleanLabelColumn;
@@ -585,6 +587,17 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement) {
 			return addIn(placement, new AjaxPagerAddInComponentFactory(), getPaginationCssClass());
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> addIn(AddInPlacement placement, IComponentFactory<?> addInComponentFactory) {
+			return addIn(placement, ComponentFactories.ignoreParameter(addInComponentFactory));
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> addIn(AddInPlacement placement, IComponentFactory<?> addInComponentFactory,
+				String cssClasses) {
+			return addIn(placement, ComponentFactories.ignoreParameter(addInComponentFactory), cssClasses);
 		}
 		
 		@Override
