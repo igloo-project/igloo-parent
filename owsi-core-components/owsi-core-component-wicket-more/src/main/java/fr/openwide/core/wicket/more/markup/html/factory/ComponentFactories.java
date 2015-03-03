@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.factory;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 public final class ComponentFactories {
@@ -17,6 +18,21 @@ public final class ComponentFactories {
 		for (IParameterizedComponentFactory<?, ? super P> componentFactory : factories) {
 			repeatingView.add(componentFactory.create(repeatingView.newChildId(), parameter));
 		}
+	}
+	
+	public static <C extends Component, P> IParameterizedComponentFactory<C, P> ignoreParameter(final IComponentFactory<? extends C> factory) {
+		return new AbstractParameterizedComponentFactory<C, P>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public C create(String wicketId, P parameter) {
+				return factory.create(wicketId);
+			}
+			@Override
+			public void detach() {
+				super.detach();
+				factory.detach();
+			}
+		};
 	}
 
 }

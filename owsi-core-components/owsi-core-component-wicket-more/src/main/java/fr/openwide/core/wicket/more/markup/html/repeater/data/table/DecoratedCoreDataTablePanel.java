@@ -20,6 +20,7 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
@@ -104,7 +105,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		dataTable.setItemsPerPage(arg0);
 	}
 	
-	public static class LabelAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, Object> {
+	public static class LabelAddInComponentFactory extends AbstractComponentFactory<Component> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final IModel<?> labelModel;
@@ -115,12 +116,12 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		}
 		
 		@Override
-		public Component create(String wicketId, Object ignored) {
+		public Component create(String wicketId) {
 			return new Label(wicketId, labelModel);
 		}
 	}
 	
-	public static class CountAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, Object> {
+	public static class CountAddInComponentFactory extends AbstractComponentFactory<Component> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final IDataProvider<?> dataProvider;
@@ -133,7 +134,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		}
 		
 		@Override
-		public Component create(String wicketId, Object ignored) {
+		public Component create(String wicketId) {
 			IModel<Integer> countModel = new PropertyModel<Integer>(dataProvider,
 					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
 			return new CountLabel(wicketId, countResourceKey, countModel);
