@@ -274,7 +274,10 @@ span.popover-btn {
 		
 			&.add-in-pagination-panel {
 				.pagination {
-					.pagination-size(@padding-xs-vertical, @padding-small-horizontal, @font-size-small, @border-radius-small);
+					.pagination-size(
+						@add-in-pagination-vertical-padding, @add-in-pagination-horizontal-padding,
+						@add-in-pagination-font-size, @add-in-pagination-border-radius
+					);
 				}
 			}
 		}
