@@ -35,10 +35,11 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	private final CoreDataTable<T, S> dataTable;
 	
 	public static enum AddInPlacement {
+		TOP_MAIN,
 		TOP_LEFT,
 		TOP_RIGHT,
 		BOTTOM_LEFT,
-		BOTTOM_RIGHT;
+		BOTTOM_RIGHT
 	}
 	
 	public DecoratedCoreDataTablePanel(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
@@ -49,18 +50,20 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		dataTable = newDataTable("dataTable", columns, dataProvider, rowsPerPage);
 		add(dataTable);
 		
+		RepeatingView topMainAddins = new RepeatingView("mainAddIn");
 		RepeatingView topRightAddins = new RepeatingView("rightAddIn");
 		RepeatingView topLeftAddins = new RepeatingView("leftAddIn");
 		RepeatingView bottomRightAddins = new RepeatingView("rightAddIn");
 		RepeatingView bottomLeftAddins = new RepeatingView("leftAddIn");
 		
 		add(
-				new EnclosureContainer("topAddInContainer").condition(Condition.anyChildVisible(topRightAddins).or(Condition.anyChildVisible(topLeftAddins)))
-						.add(topRightAddins, topLeftAddins),
+				new EnclosureContainer("topAddInContainer").condition(Condition.anyChildVisible(topMainAddins).or(Condition.anyChildVisible(topRightAddins).or(Condition.anyChildVisible(topLeftAddins))))
+						.add(topMainAddins, topRightAddins, topLeftAddins),
 				new EnclosureContainer("bottomAddInContainer").condition(Condition.anyChildVisible(bottomRightAddins).or(Condition.anyChildVisible(bottomLeftAddins)))
 						.add(bottomRightAddins, bottomLeftAddins)
 		);
 
+		ComponentFactories.addAll(topMainAddins, addInComponentFactories.get(AddInPlacement.TOP_MAIN), this);
 		ComponentFactories.addAll(topRightAddins, addInComponentFactories.get(AddInPlacement.TOP_RIGHT), this);
 		ComponentFactories.addAll(topLeftAddins, addInComponentFactories.get(AddInPlacement.TOP_LEFT), this);
 		ComponentFactories.addAll(bottomRightAddins, addInComponentFactories.get(AddInPlacement.BOTTOM_RIGHT), this);
