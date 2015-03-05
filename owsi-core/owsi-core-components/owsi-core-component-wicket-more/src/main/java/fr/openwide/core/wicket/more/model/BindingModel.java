@@ -45,7 +45,11 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	
 	private BindingModel(Object root, String propertyExpression) {
 		super(root);
-		this.propertyExpression = propertyExpression;
+		if ("#root".equals(propertyExpression)) {
+			this.propertyExpression = null;
+		} else {
+			this.propertyExpression = propertyExpression;
+		}
 	}
 	
 	/**
