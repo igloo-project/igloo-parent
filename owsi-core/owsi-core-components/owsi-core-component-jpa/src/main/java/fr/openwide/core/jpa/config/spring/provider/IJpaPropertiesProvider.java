@@ -1,7 +1,5 @@
 package fr.openwide.core.jpa.config.spring.provider;
 
-import javax.persistence.spi.PersistenceProvider;
-
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 
