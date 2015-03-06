@@ -5,12 +5,12 @@ import java.util.Map;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 
-public interface IBatchAssociationMigrationInformation<T1 extends GenericEntity<Long, T1>, T2>
+public interface IBatchAssociationMigrationInformation<Owning extends GenericEntity<Long, Owning>, Owned>
 		extends IBatchMigrationInformation {
 
-	AbstractResultRowMapper<? extends Map<T1, T2>> newRowMapper(int expectedKeys, int expectedValuesPerKey);
+	AbstractResultRowMapper<? extends Map<Owning, Owned>> newRowMapper(int expectedKeys, int expectedValuesPerKey);
 	
-	void addToAssociation(T1 owning, T2 owned);
+	void addToAssociation(Owning owning, Owned owned);
 
 	String getAssociationName();
 	
