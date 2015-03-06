@@ -555,12 +555,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> title(String resourceKey) {
-			return addIn(AddInPlacement.TOP_LEFT, new LabelAddInComponentFactory(new ResourceModel(resourceKey)), getTitleCssClass());
+			return addIn(AddInPlacement.HEADING_LEFT, new LabelAddInComponentFactory(new ResourceModel(resourceKey)), getTitleCssClass());
 		}
 		
 		@Override
 		public IDecoratedBuildState<T, S> count(String countResourceKey) {
-			return count(AddInPlacement.TOP_LEFT, countResourceKey);
+			return count(AddInPlacement.HEADING_LEFT, countResourceKey);
 		}
 		
 		@Override
@@ -571,7 +571,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> pagers() {
-			return pager(AddInPlacement.TOP_RIGHT).pager(AddInPlacement.BOTTOM_RIGHT);
+			return pager(AddInPlacement.HEADING_RIGHT).pager(AddInPlacement.FOOTER_RIGHT);
 		}
 		
 		@Override
@@ -581,7 +581,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 		@Override
 		public IDecoratedBuildState<T, S> ajaxPagers() {
-			return ajaxPager(AddInPlacement.TOP_RIGHT).ajaxPager(AddInPlacement.BOTTOM_RIGHT);
+			return ajaxPager(AddInPlacement.HEADING_RIGHT).ajaxPager(AddInPlacement.FOOTER_RIGHT);
 		}
 		
 		@Override
