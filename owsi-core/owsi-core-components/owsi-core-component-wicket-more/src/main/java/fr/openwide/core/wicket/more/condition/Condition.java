@@ -20,13 +20,17 @@ import org.springframework.security.acls.model.Permission;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.IBindableDataProvider;
 import fr.openwide.core.wicket.more.util.Detach;
+import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
@@ -359,6 +363,14 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	 */
 	public static Condition isFalseOrNull(IModel<Boolean> model) {
 		return predicate(model, Predicates2.isFalseOrNull());
+	}
+	
+	public static Condition isEmpty(IBindableDataProvider dataProvider) {
+		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L));
+	}
+	
+	public static Condition isNotEmpty(IBindableDataProvider dataProvider) {
+		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L)).negate();
 	}
 	
 	public static Condition visible(Component component) {
