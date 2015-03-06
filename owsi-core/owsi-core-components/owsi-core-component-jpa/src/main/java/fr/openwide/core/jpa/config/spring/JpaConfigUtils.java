@@ -11,6 +11,7 @@ import javax.persistence.SharedCacheMode;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cfg.EJB3NamingStrategy;
 import org.hibernate.cfg.Environment;
@@ -215,6 +216,11 @@ public final class JpaConfigUtils {
 					org.hibernate.search.Environment.DEFAULT_LUCENE_MATCH_VERSION.name());
 		} else {
 			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
+		}
+		
+		Class<? extends Analyzer> hibernateSearchDefaultAnalyzer = configuration.getHibernateSearchDefaultAnalyzer();
+		if (hibernateSearchDefaultAnalyzer != null) {
+			properties.setProperty(org.hibernate.search.Environment.ANALYZER_CLASS, hibernateSearchDefaultAnalyzer.getName());
 		}
 		
 		String hibernateSearchIndexingStrategy = configuration.getHibernateSearchIndexingStrategy();

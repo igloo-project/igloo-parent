@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 
@@ -131,6 +132,11 @@ public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvid
 	@Override
 	public String getHibernateSearchIndexBase() {
 		return hibernateSearchIndexBase;
+	}
+	
+	@Override
+	public Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer() {
+		return null;
 	}
 	
 	@Override

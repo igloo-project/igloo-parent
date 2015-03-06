@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${lucene.index.path}")
 	private String hibernateSearchIndexBase;
+	
+	@Value("${hibernate.search.analyzer:null}") // Defaults to null
+	private Class<? extends Analyzer> hibernateSearchDefaultAnalyzer;
 	
 	@Value("${hibernate.search.indexing_strategy:}") // Defaults to an empty string
 	private String hibernateSearchIndexingStrategy;
@@ -85,6 +89,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public String getHibernateSearchIndexBase() {
 		return hibernateSearchIndexBase;
+	}
+
+	@Override
+	public Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer() {
+		return hibernateSearchDefaultAnalyzer;
 	}
 	
 	@Override
