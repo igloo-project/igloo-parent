@@ -24,10 +24,10 @@ import fr.openwide.core.jpa.migration.util.IBatchAssociationMigrationInformation
  * An abstract base for migration services that import associations from an entity to other elements
  * (@OneToMany, @OneToOne, @ManyToOne, @ManyToMany, but also @ElementCollection)
  * 
- * @param T1 The type of the entity on the owning (non "mappedBy") side of the association
- * @param T2 The type of the owning entity association member (e.g. Collection&lt;AnotherType&gt;)
+ * @param Owning The type of the entity on the owning (non "mappedBy") side of the association
+ * @param Owned The type of the owning entity association member (e.g. Collection&lt;AnotherType&gt;)
  */
-public abstract class AbstractBatchAssociationMigrationService<T1 extends GenericEntity<Long, T1>, T2>
+public abstract class AbstractBatchAssociationMigrationService<Owning extends GenericEntity<Long, Owning>, Owned>
 		extends AbstractMigrationService {
 	
 	private static final int DEFAULT_VALUES_PER_KEY = 3;
@@ -65,15 +65,15 @@ public abstract class AbstractBatchAssociationMigrationService<T1 extends Generi
 			entityIdsParameterSource.addValue(getMigrationInformation().getParameterIds(), entityIds);
 			AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
 			
-			AbstractResultRowMapper<? extends Map<T1, T2>> rowMapper = getMigrationInformation().newRowMapper(entityIds.size(), DEFAULT_VALUES_PER_KEY);
+			AbstractResultRowMapper<? extends Map<Owning, Owned>> rowMapper = getMigrationInformation().newRowMapper(entityIds.size(), DEFAULT_VALUES_PER_KEY);
 			
 			autowire.autowireBean(rowMapper);
 			autowire.initializeBean(rowMapper, rowMapper.getClass().getSimpleName());
 			prepareRowMapper(rowMapper, entityIds);
 			getNamedParameterJdbcTemplate().query(getMigrationInformation().getSqlRequest(), entityIdsParameterSource, rowMapper);
 			
-			for (Map.Entry<T1, T2> entry : rowMapper.getResults().entrySet()) {
-				T1 entity = entry.getKey();
+			for (Map.Entry<Owning, Owned> entry : rowMapper.getResults().entrySet()) {
+				Owning entity = entry.getKey();
 				getMigrationInformation().addToAssociation(entity, entry.getValue());
 				if (getEntityService() != null) {
 					getEntityService().update(entity);
@@ -109,11 +109,11 @@ public abstract class AbstractBatchAssociationMigrationService<T1 extends Generi
 	protected void prepareRowMapper(RowMapper<?> rowMapper, List<Long> entityIds) {
 	}
 
-	protected abstract IBatchAssociationMigrationInformation<T1, T2> getMigrationInformation();
+	protected abstract IBatchAssociationMigrationInformation<Owning, Owned> getMigrationInformation();
 
 	protected abstract Logger getLogger();
 
-	protected abstract IGenericEntityService<Long, T1> getEntityService();
+	protected abstract IGenericEntityService<Long, Owning> getEntityService();
 
 	protected Integer getPartitionSize() {
 		return 100;
