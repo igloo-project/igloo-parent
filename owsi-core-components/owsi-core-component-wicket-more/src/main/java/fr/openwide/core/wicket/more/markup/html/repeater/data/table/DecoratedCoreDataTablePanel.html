@@ -3,17 +3,25 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
 		<div class="decorated-data-table">
-			<div wicket:id="topAddInContainer" class="add-in-container add-in-container-top">
+			<div wicket:id="headingAddInContainer" class="add-in-container add-in-container-top">
 				<span class="add-in add-in-main" wicket:id="mainAddIn" />
 				<span class="add-in add-in-right" wicket:id="rightAddIn" />
 				<span class="add-in add-in-left" wicket:id="leftAddIn" />
+			</div>
+			
+			<div wicket:id="bodyTopAddInContainer" class="add-in-container add-in-container-body-top">
+				<div wicket:id="bodyTopAddIn" />
 			</div>
 			
 			<div class="table-responsive">
 				<table wicket:id="dataTable" class="table table-striped table-bordered table-condensed" />
 			</div>
 			
-			<div wicket:id="bottomAddInContainer" class="add-in-container add-in-container-bottom">
+			<div wicket:id="bodyBottomAddInContainer" class="add-in-container add-in-container-body-bottom">
+				<div wicket:id="bodyBottomAddIn" />
+			</div>
+			
+			<div wicket:id="footerAddInContainer" class="add-in-container add-in-container-bottom">
 				<span class="add-in add-in-right" wicket:id="rightAddIn" />
 				<span class="add-in add-in-left" wicket:id="leftAddIn" />
 			</div>

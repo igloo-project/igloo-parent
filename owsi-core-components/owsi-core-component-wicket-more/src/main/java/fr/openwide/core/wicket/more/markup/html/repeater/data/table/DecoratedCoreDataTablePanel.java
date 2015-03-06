@@ -35,11 +35,13 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	private final CoreDataTable<T, S> dataTable;
 	
 	public static enum AddInPlacement {
-		TOP_MAIN,
-		TOP_LEFT,
-		TOP_RIGHT,
-		BOTTOM_LEFT,
-		BOTTOM_RIGHT
+		HEADING_MAIN,
+		HEADING_LEFT,
+		HEADING_RIGHT,
+		BODY_TOP,
+		BODY_BOTTOM,
+		FOOTER_LEFT,
+		FOOTER_RIGHT
 	}
 	
 	public DecoratedCoreDataTablePanel(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
@@ -50,24 +52,38 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		dataTable = newDataTable("dataTable", columns, dataProvider, rowsPerPage);
 		add(dataTable);
 		
-		RepeatingView topMainAddins = new RepeatingView("mainAddIn");
-		RepeatingView topRightAddins = new RepeatingView("rightAddIn");
-		RepeatingView topLeftAddins = new RepeatingView("leftAddIn");
-		RepeatingView bottomRightAddins = new RepeatingView("rightAddIn");
-		RepeatingView bottomLeftAddins = new RepeatingView("leftAddIn");
+		RepeatingView headingMainAddins = new RepeatingView("mainAddIn");
+		RepeatingView headingRightAddins = new RepeatingView("rightAddIn");
+		RepeatingView headingLeftAddins = new RepeatingView("leftAddIn");
+		
+		RepeatingView bodyTopAddins = new RepeatingView("bodyTopAddIn");
+		RepeatingView bodyBottomAddins = new RepeatingView("bodyBottomAddIn");
+		
+		RepeatingView footerRightAddins = new RepeatingView("rightAddIn");
+		RepeatingView footerLeftAddins = new RepeatingView("leftAddIn");
 		
 		add(
-				new EnclosureContainer("topAddInContainer").condition(Condition.anyChildVisible(topMainAddins).or(Condition.anyChildVisible(topRightAddins).or(Condition.anyChildVisible(topLeftAddins))))
-						.add(topMainAddins, topRightAddins, topLeftAddins),
-				new EnclosureContainer("bottomAddInContainer").condition(Condition.anyChildVisible(bottomRightAddins).or(Condition.anyChildVisible(bottomLeftAddins)))
-						.add(bottomRightAddins, bottomLeftAddins)
+				new EnclosureContainer("headingAddInContainer")
+						.condition(Condition.anyChildVisible(headingMainAddins).or(Condition.anyChildVisible(headingRightAddins).or(Condition.anyChildVisible(headingLeftAddins))))
+						.add(headingMainAddins, headingRightAddins, headingLeftAddins),
+				new EnclosureContainer("bodyTopAddInContainer")
+						.condition(Condition.anyChildVisible(bodyTopAddins))
+						.add(bodyTopAddins),
+				new EnclosureContainer("bodyBottomAddInContainer")
+						.condition(Condition.anyChildVisible(bodyBottomAddins))
+						.add(bodyBottomAddins),
+				new EnclosureContainer("footerAddInContainer")
+						.condition(Condition.anyChildVisible(footerRightAddins).or(Condition.anyChildVisible(footerLeftAddins)))
+						.add(footerRightAddins, footerLeftAddins)
 		);
 
-		ComponentFactories.addAll(topMainAddins, addInComponentFactories.get(AddInPlacement.TOP_MAIN), this);
-		ComponentFactories.addAll(topRightAddins, addInComponentFactories.get(AddInPlacement.TOP_RIGHT), this);
-		ComponentFactories.addAll(topLeftAddins, addInComponentFactories.get(AddInPlacement.TOP_LEFT), this);
-		ComponentFactories.addAll(bottomRightAddins, addInComponentFactories.get(AddInPlacement.BOTTOM_RIGHT), this);
-		ComponentFactories.addAll(bottomLeftAddins, addInComponentFactories.get(AddInPlacement.BOTTOM_LEFT), this);
+		ComponentFactories.addAll(headingMainAddins, addInComponentFactories.get(AddInPlacement.HEADING_MAIN), this);
+		ComponentFactories.addAll(headingRightAddins, addInComponentFactories.get(AddInPlacement.HEADING_RIGHT), this);
+		ComponentFactories.addAll(headingLeftAddins, addInComponentFactories.get(AddInPlacement.HEADING_LEFT), this);
+		ComponentFactories.addAll(bodyTopAddins, addInComponentFactories.get(AddInPlacement.BODY_TOP), this);
+		ComponentFactories.addAll(bodyBottomAddins, addInComponentFactories.get(AddInPlacement.BODY_BOTTOM), this);
+		ComponentFactories.addAll(footerRightAddins, addInComponentFactories.get(AddInPlacement.FOOTER_RIGHT), this);
+		ComponentFactories.addAll(footerLeftAddins, addInComponentFactories.get(AddInPlacement.FOOTER_LEFT), this);
 	}
 	
 	protected CoreDataTable<T, S> newDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
