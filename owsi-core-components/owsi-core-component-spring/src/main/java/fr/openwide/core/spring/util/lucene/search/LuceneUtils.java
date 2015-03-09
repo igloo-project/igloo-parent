@@ -42,6 +42,8 @@ public final class LuceneUtils {
 	
 	public static final String FUZZY_PARAMETER_SUFFIX = "~";
 	
+	public static final TermQuery NO_RESULT_QUERY = new TermQuery(new Term("id", "__NEVER_MATCHING_ID__"));
+	
 	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
 			String searchPattern, int enableWildcardMinChars) throws ParseException {
 		QueryParser queryParser = new QueryParser(LUCENE_VERSION, fieldName, analyzer);
