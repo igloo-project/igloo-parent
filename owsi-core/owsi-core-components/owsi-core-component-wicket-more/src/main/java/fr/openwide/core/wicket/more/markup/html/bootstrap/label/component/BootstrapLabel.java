@@ -21,10 +21,12 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		super(id, model);
 		
 		IModel<String> labelModel = renderer.asModel(model);
+		IModel<String> iconCssClassModel = renderer.asIconCssClassModel(model);
 		
 		add(
 				new WebMarkupContainer("icon")
-						.add(new ClassAttributeAppender(renderer.asIconCssClassModel(model))),
+						.add(new ClassAttributeAppender(iconCssClassModel))
+						.add(new EnclosureBehavior().model(iconCssClassModel)),
 				new Label("label", labelModel)
 		);
 		
