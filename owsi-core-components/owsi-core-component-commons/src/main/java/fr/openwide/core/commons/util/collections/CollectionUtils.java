@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public final class CollectionUtils {
@@ -24,7 +24,7 @@ public final class CollectionUtils {
 		if (src == null) {
 			dst.clear();
 		} else {
-			Collection<T> elements = ImmutableList.copyOf(src);
+			Collection<T> elements = Lists.newArrayList(src);
 			dst.clear();
 			dst.addAll(elements);
 		}
@@ -37,7 +37,7 @@ public final class CollectionUtils {
 		if (src == null) {
 			dst.clear();
 		} else {
-			Map<K, V> elements = ImmutableMap.copyOf(src);
+			Map<K, V> elements = Maps.newLinkedHashMap(src);
 			dst.clear();
 			dst.putAll(elements);
 		}
