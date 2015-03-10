@@ -52,6 +52,7 @@ import fr.openwide.core.wicket.more.markup.html.sort.ISortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.SortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
+import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.core.wicket.more.rendering.Renderer;
@@ -75,6 +76,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(IDataProvider<T> dataProvider, CompositeSortModel<S> sortModel) {
 		return new DataTableBuilder<T, S>(dataProvider, sortModel);
+	}
+
+	public static <T> DataTableBuilder<T, ISort<?>> start(IDataProvider<T> dataProvider) {
+		return start(dataProvider, new CompositeSortModel<>(CompositingStrategy.LAST_ONLY));
 	}
 
 	@Override
