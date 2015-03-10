@@ -78,10 +78,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		return new DataTableBuilder<T, S>(dataProvider, sortModel);
 	}
 
-	public static <T> DataTableBuilder<T, ISort<?>> start(IDataProvider<T> dataProvider) {
-		return start(dataProvider, new CompositeSortModel<>(CompositingStrategy.LAST_ONLY));
-	}
-
 	@Override
 	public IAddedColumnState<T, S> addColumn(final IColumn<T, S> column) {
 		columns.put(column, null);
