@@ -107,6 +107,8 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	private Condition forceSetUpConditon = null;
 	private Condition forceTakeDownConditon = null;
 
+	private Resetter resetter = new DefaultResetter();
+
 	public AbstractAjaxInputPrerequisiteBehavior(FormComponent<T> prerequisiteField) {
 		super();
 		Args.notNull(prerequisiteField, "prerequisiteField");
@@ -264,6 +266,16 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setRefreshParent(boolean refreshParent) {
 		this.refreshParent = refreshParent;
+		return this;
+	}
+	
+	/**
+	 * Sets attached components resetter.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetter(Resetter resetter) {
+		if (resetter != null) {
+			this.resetter = resetter;
+		}
 		return this;
 	}
 	
@@ -459,7 +471,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	private void resetFormComponents(Component attachedComponent) {
-		visit(attachedComponent, RESET_FORM_COMPONENTS_VISITOR, new ClassVisitFilter(FormComponent.class));
+		visit(attachedComponent, resetFormComponentsVisitor, new ClassVisitFilter(FormComponent.class));
 	}
 	
 	// Visits.visit is screwed: it does not accept Components, but only Iterable<Component>, on contrary to Visits.visitPostOrder
@@ -467,17 +479,25 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		return Visits.visitChildren(Collections.<Component>singleton(component), visitor, filter);
 	}
 	
-	private static final IVisitor<FormComponent<?>, Void> RESET_FORM_COMPONENTS_VISITOR = new IVisitor<FormComponent<?>, Void>() {
+	private IVisitor<FormComponent<?>, Void> resetFormComponentsVisitor = new ResetFormComponentsVisitor();
+	
+	private class ResetFormComponentsVisitor implements IVisitor<FormComponent<?>, Void>, Serializable {
+		private static final long serialVersionUID = 2038057558891912818L;
+		
 		@Override
 		public void component(FormComponent<?> object, IVisit<Void> visit) {
-			IModel<?> model = object.getDefaultModel();
-			if (model != null) {
-				model.setObject(null);
+			if (attachedComponents.contains(object)) {
+				resetter.reset(object);
+			} else {
+				IModel<?> model = object.getDefaultModel();
+				if (model != null) {
+					model.setObject(null);
+				}
 			}
 			object.clearInput();
 			visit.dontGoDeeper();
 		}
-	};
+	}
 
 	@Override
 	public void detach(Component component) {
@@ -597,12 +617,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	@Deprecated
 	protected void cleanDefaultModelObject(Component attachedComponent) {
-		IModel<?> model = attachedComponent.getDefaultModel();
-		// It is not necessary to set the model object to null if it already is.
-		// Furthermore, in case of a PropertyModel it can cause a WicketRuntimeException if its innermost object is null.
-		if (model != null && model.getObject() != null) {
-			model.setObject(null);
-		}
+		resetter.reset(attachedComponent);
 	}
 
 	protected abstract void setUpAttachedComponent(Component attachedComponent);
