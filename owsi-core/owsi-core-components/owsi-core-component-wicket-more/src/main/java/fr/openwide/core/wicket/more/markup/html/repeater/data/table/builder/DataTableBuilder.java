@@ -67,6 +67,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	private String noRecordsResourceKey;
 
+	private boolean showTopToolbar = true;
+	
+	private boolean showBottomToolbar = true;
+
 	private DataTableBuilder(IDataProvider<T> dataProvider, CompositeSortModel<S> sortModel) {
 		super();
 		this.dataProvider = dataProvider;
@@ -257,6 +261,18 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public DataTableBuilder<T, S> hideTopToolbar() {
+		showTopToolbar = false;
+		return this;
+	}
+	
+	@Override
+	public DataTableBuilder<T, S> hideBottomToolbar() {
+		showBottomToolbar = false;
+		return this;
+	}
+	
+	@Override
 	public CoreDataTable<T, S> build(String id) {
 		return build(id, Long.MAX_VALUE);
 	}
@@ -269,8 +285,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	protected void finalizeBuild(CoreDataTable<T, S> dataTable) {
-		dataTable.addTopToolbar(new CoreHeadersToolbar<S>(dataTable, sortModel));
-		dataTable.addBodyBottomToolbar(new CoreNoRecordsToolbar(dataTable, new ResourceModel(noRecordsResourceKey != null ? noRecordsResourceKey : "common.emptyList")));
+		if (showTopToolbar) {
+			dataTable.addTopToolbar(new CoreHeadersToolbar<S>(dataTable, sortModel));
+		}
+		if (showBottomToolbar) {
+			dataTable.addBodyBottomToolbar(new CoreNoRecordsToolbar(dataTable, new ResourceModel(noRecordsResourceKey != null ? noRecordsResourceKey : "common.emptyList")));
+		}
 	}
 	
 	@Override
@@ -354,6 +374,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 			return DataTableBuilder.this.withNoRecordsResourceKey(noRecordsResourceKey);
+		}
+
+		@Override
+		public IBuildState<T, S> hideTopToolbar() {
+			return DataTableBuilder.this.hideTopToolbar();
+		}
+		
+		@Override
+		public IBuildState<T, S> hideBottomToolbar() {
+			return DataTableBuilder.this.hideBottomToolbar();
 		}
 
 		@Override
