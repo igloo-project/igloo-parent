@@ -26,6 +26,7 @@ import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
+import fr.openwide.core.wicket.more.model.IErrorAwareDataProvider;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel implements IPageableItems {
@@ -33,6 +34,8 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	private static final long serialVersionUID = 3327546179785797119L;
 	
 	private final CoreDataTable<T, S> dataTable;
+	
+	private final IDataProvider<T> dataProvider;
 	
 	public static enum AddInPlacement {
 		HEADING_MAIN,
@@ -48,6 +51,8 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
 		super(id);
+		
+		this.dataProvider = dataProvider;
 		
 		dataTable = newDataTable("dataTable", columns, dataProvider, rowsPerPage);
 		add(dataTable);
@@ -186,6 +191,16 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		public Component create(String wicketId, IPageable pageable) {
 			return new HideablePagingNavigator(wicketId, pageable)
 					.add(new ClassAttributeAppender("add-in-pagination"));
+		}
+	}
+
+	@Override
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		// notification en cas d'erreur
+		if ((dataProvider instanceof IErrorAwareDataProvider) 
+				&& (((IErrorAwareDataProvider) dataProvider).hasError())) {
+			error(getString("common.error.unexpected"));
 		}
 	}
 }
