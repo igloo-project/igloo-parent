@@ -305,6 +305,12 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 				return RendererModel.this;
 			}
 		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			valueModel.detach();
+		}
 	}
 	
 	/**
