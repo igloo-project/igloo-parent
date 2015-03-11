@@ -80,13 +80,8 @@ public final class SortUtils {
 	@SafeVarargs
 	public static <T extends ISort<SortField>> Sort getLuceneSortWithDefaults(
 			Map<T, SortOrder> sortsMap, T firstDefaultSort, T ... otherDefaultSorts) {
-		return getLuceneSortWithDefaults(sortsMap, Lists.asList(firstDefaultSort, otherDefaultSorts));
-	}
-
-	public static <T extends ISort<SortField>> Sort getLuceneSortWithDefaults(
-				Map<T, SortOrder> sortsMap, List<T> list) {
 		List<SortField> sortFields = collectSortFields(sortsMap);
-		for (T defaultSort : list) {
+		for (T defaultSort : Lists.asList(firstDefaultSort, otherDefaultSorts)) {
 			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
 		}
 		return new Sort(sortFields.toArray(new SortField[sortFields.size()]));

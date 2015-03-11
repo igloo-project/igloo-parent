@@ -221,9 +221,5 @@ public abstract class CoreWicketApplication extends WebApplication {
 	public Locale getNumberFormatLocale() {
 		return numberFormatLocale;
 	}
-	
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
 
 }
