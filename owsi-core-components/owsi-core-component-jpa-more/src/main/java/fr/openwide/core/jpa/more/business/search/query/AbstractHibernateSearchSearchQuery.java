@@ -97,7 +97,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	public ISearchQuery<T, S> sort(Map<S, SortOrder> sortMap) {
 		getFullTextQuery().setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
 		return this;
-	}	
+	}
 
 	protected void must(Query query) {
 		if (query != null) {
@@ -113,7 +113,20 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
-
+	protected void should(Query query) {
+		if (query != null) {
+			junction.should(query);
+		}
+	}
+	
+	protected void shouldIfNotNull(BooleanJunction<?> junction, Query ... queries) {
+		for (Query query : queries) {
+			if (query != null) {
+				junction.should(query);
+			}
+		}
+	}
+	
 	@Override
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
@@ -134,7 +147,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	@Transactional(readOnly = true)
 	public long count() {
 		return getFullTextQuery().getResultSize();
-	}	
+	}
 	
 	protected <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
 		if (value != null) {
