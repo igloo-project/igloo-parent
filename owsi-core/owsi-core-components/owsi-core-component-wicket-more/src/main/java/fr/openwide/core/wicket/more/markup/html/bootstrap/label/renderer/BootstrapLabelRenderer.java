@@ -10,6 +10,8 @@ public abstract class BootstrapLabelRenderer<T> extends Renderer<T> {
 
 	private static final long serialVersionUID = 5966093285228006373L;
 
+	protected static final Renderer<Object> DEFAULT_TOOLTIP_RENDERER = Renderer.constant(null);
+
 	public BootstrapLabelRenderer() {
 		super();
 	}
@@ -47,24 +49,9 @@ public abstract class BootstrapLabelRenderer<T> extends Renderer<T> {
 			}
 		};
 	}
-
-	public String getTooltip(T value) {
-		return null;
+	
+	public Renderer<? super T> getTooltipRenderer() {
+		return DEFAULT_TOOLTIP_RENDERER;
 	}
-
-	public final IModel<String> asTooltipModel(final IModel<? extends T> model) {
-		return new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = -3797397202441516321L;
-			@Override
-			public String getObject() {
-				return getTooltip(model.getObject());
-			}
-			@Override
-			public void detach() {
-				super.detach();
-				model.detach();
-			}
-		};
-	};
 
 }

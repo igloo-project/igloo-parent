@@ -33,7 +33,7 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		add(
 				BootstrapColorBehavior.label(renderer.asColorModel(model)),
 				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).model(Predicates2.hasText(), labelModel),
-				new AttributeAppender("title", renderer.asTooltipModel(model))
+				new AttributeAppender("title", renderer.getTooltipRenderer().asModel(model))
 		);
 		
 	}
