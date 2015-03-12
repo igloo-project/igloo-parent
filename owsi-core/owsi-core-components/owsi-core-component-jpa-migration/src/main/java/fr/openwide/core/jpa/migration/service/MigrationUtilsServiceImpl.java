@@ -13,7 +13,6 @@ public class MigrationUtilsServiceImpl implements IMigrationUtilsService {
 
 	public static final String SQL_UPDATE_SEQUENCE = "SELECT setval('%1$s_id_seq', (SELECT max(id) FROM %1$s))";
 
-	@Autowired
 	protected JdbcTemplate newDatabaseJdbcTemplate;
 
 	@Override
@@ -28,7 +27,7 @@ public class MigrationUtilsServiceImpl implements IMigrationUtilsService {
 	} 
 
 	@Autowired
-	public final void setNewDatabaseJdbcTemplate(@Value("#{dataSource}") DataSource dataSource) {
+	public final void setDataSource(@Value("#{dataSource}") DataSource dataSource) {
 		newDatabaseJdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
