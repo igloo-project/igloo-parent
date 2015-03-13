@@ -44,6 +44,12 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>000-owsi-core-component-wicket-override</artifactId>
+			<version>${owsi-core.version}</version>
+		</dependency>
+		
 		<!-- Wicket debug bar -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
