@@ -39,7 +39,6 @@ import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.spring.util.StringUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> implements ISearchQuery<T, S> /* NOT Serializable */ {
-
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractHibernateSearchSearchQuery.class);
 	
@@ -56,7 +55,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private FullTextEntityManager fullTextEntityManager;
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
 	private List<S> defaultSorts;
-	
 	
 	@SafeVarargs
 	protected AbstractHibernateSearchSearchQuery(Class<T> clazz, S ... defaultSorts) {

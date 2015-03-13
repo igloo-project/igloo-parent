@@ -28,7 +28,8 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<SortFie
 	}
 	
 	/**
-	 * @SpringBean ne fonctionne pas avec les {@link Provider}.
+	 * {@code @SpringBean} ne fonctionne pas avec les {@link Provider}. Il est donc nécessaire de récupérer la {@link ISearchQuery}
+	 * manuellement depuis le contexte à chaque fois qu'on en veut une nouvelle.
 	 */
 	protected final <Q extends ISearchQuery<T, S>> Q createSearchQuery(Class<Q> clazz) {
 		return CoreWicketApplication.get().getApplicationContext().getBean(clazz);
