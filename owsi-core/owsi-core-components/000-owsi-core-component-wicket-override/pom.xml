@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>fr.openwide.core.components</groupId>
+		<artifactId>owsi-core-components</artifactId>
+		<version>0.9.6-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>000-owsi-core-component-wicket-override</artifactId>
+	
+	<name>000 - OWSI Core - Component - Wicket Override</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+</project>
