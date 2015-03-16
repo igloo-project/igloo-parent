@@ -87,7 +87,7 @@ public final class BasicApplicationHibernateSearchUtils {
 			try {
 				return parser.parse(QueryParser.escape(terms));
 			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
+				LOGGER.error("Erreur lors du parsing d'une chaîne échappée (a priori impossible ?)", e);
 			}
 		}
 		
@@ -109,7 +109,7 @@ public final class BasicApplicationHibernateSearchUtils {
 			try {
 				return parser.parse(QueryParser.escape(terms));
 			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
+				LOGGER.error("Erreur lors du parsing d'une chaîne échappée (a priori impossible ?)", e);
 			}
 		}
 		
