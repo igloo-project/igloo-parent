@@ -18,9 +18,15 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	private static final long serialVersionUID = -7019352590059451557L;
 	
 	private final Collection<FormComponent<?>> requiredFormComponents;
+	private OneRequiredMode mode = OneRequiredMode.ONE_OR_MORE;
 	
 	public OneRequiredFormValidator(FormComponent<?> first, FormComponent<?> second, FormComponent<?> ... rest) {
 		this.requiredFormComponents = ImmutableList.<FormComponent<?>>builder().add(first, second).add(rest).build();
+	}
+	
+	public OneRequiredFormValidator setMode(OneRequiredMode mode) {
+		this.mode = mode;
+		return this;
 	}
 	
 	@Override
@@ -38,13 +44,33 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	@Override
 	public void validate(Form<?> form) {
 		if (isEnabled(form)) {
-			for (FormComponent<?> formComponent : requiredFormComponents) {
-				if (checkRequired(formComponent)) {
-					return;
-				}
-			}
 			
-			onError(form);
+			switch (mode) {
+				case ONE_ONLY:
+					boolean oneFilled = false;
+					for (FormComponent<?> formComponent : requiredFormComponents) {
+						if (checkRequired(formComponent)) {
+							if (oneFilled) {
+								onError(form);
+								break;
+							} else {
+								oneFilled = true;
+							}
+						}
+					}
+					if (!oneFilled) {
+						onError(form);
+					}
+					break;
+				case ONE_OR_MORE: 
+					for (FormComponent<?> formComponent : requiredFormComponents) {
+						if (checkRequired(formComponent)) {
+							return;
+						}
+					}
+					onError(form);
+					break;
+			}
 		}
 	}
 	
@@ -57,7 +83,13 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 			}
 		}));
 		
-		error(requiredFormComponents.iterator().next(), "common.validator.oneRequired", ImmutableMap.of("labels", labels));
+		if (mode == OneRequiredMode.ONE_ONLY) {
+			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOnly", ImmutableMap.of("labels", labels));
+		} else if (mode == OneRequiredMode.ONE_OR_MORE) {
+			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOrMore", ImmutableMap.of("labels", labels));
+		} else {
+			error(requiredFormComponents.iterator().next(), "common.error");
+		}
 	}
 	
 	/**
@@ -80,4 +112,8 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 		return !Strings.isEmpty(input);
 	}
 
+	public enum OneRequiredMode {
+		ONE_OR_MORE,
+		ONE_ONLY
+	}
 }
