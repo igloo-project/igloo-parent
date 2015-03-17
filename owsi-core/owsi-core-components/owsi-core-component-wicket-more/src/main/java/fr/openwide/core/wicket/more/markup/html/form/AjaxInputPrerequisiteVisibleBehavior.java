@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.FormComponent;
+
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 
 /**
  * Makes sure that the attached component is hidden and that its model is null
@@ -10,23 +11,14 @@ import org.apache.wicket.markup.html.form.FormComponent;
  * <code>prerequisiteField</code>'s content, then the attached component's
  * content).
  * 
- * @see AbstractAjaxInputPrerequisiteBehavior
+ * @see AjaxInputPrerequisiteBehavior
  */
-public class AjaxInputPrerequisiteVisibleBehavior<T> extends AbstractAjaxInputPrerequisiteBehavior<T> {
+public class AjaxInputPrerequisiteVisibleBehavior<T> extends AjaxInputPrerequisiteBehavior<T> {
 
 	private static final long serialVersionUID = -745132571908314845L;
 
 	public AjaxInputPrerequisiteVisibleBehavior(FormComponent<T> prerequisiteField) {
-		super(prerequisiteField);
+		super(prerequisiteField, ComponentBooleanProperty.VISIBLE);
 	}
 
-	@Override
-	protected void setUpAttachedComponent(Component attachedComponent) {
-		attachedComponent.setVisible(true);
-	}
-
-	@Override
-	protected void takeDownAttachedComponent(Component attachedComponent) {
-		attachedComponent.setVisible(false);
-	}
 }
