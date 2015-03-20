@@ -87,9 +87,9 @@ body {	// Pour rajouter un sélecteur et être sur de surcharger les styles par 
 	// Ajustement de la position de la flèche du dropdown en fonction des variables @padding-*-vertical
 	// (au lieu de le définir statiquement)
 	@select2-arrow-height: 24px;
-	@select2-base-arrow-padding-top: ceil(((@font-size-base * @line-height-base + 2*@padding-base-vertical) - @select2-arrow-height) / 2); // Défaut : 3px
-	@select2-small-arrow-padding-top: ceil(((@font-size-small * @line-height-small + 2*@padding-small-vertical) - @select2-arrow-height) / 2); // Défaut : 1px
-	@select2-large-arrow-padding-top: ceil(((@font-size-large * @line-height-large + 2*@padding-large-vertical) - @select2-arrow-height) / 2); // Défaut : 9px
+	@select2-base-arrow-padding-top: floor(((@line-height-computed + 2*@padding-base-vertical) - @select2-arrow-height) / 2); // Défaut : 3px
+	@select2-small-arrow-padding-top: ceil(((ceil(@font-size-small * @line-height-small) + 2*@padding-small-vertical) - @select2-arrow-height) / 2); // Défaut : 1px
+	@select2-large-arrow-padding-top: floor(((floor(@font-size-large * @line-height-large) + 2*@padding-large-vertical) - @select2-arrow-height) / 2); // Défaut : 9px
 	
 	.select2-container .select2-choice .select2-arrow b,
 	.select2-container .select2-choice div b /* 1 */ {
