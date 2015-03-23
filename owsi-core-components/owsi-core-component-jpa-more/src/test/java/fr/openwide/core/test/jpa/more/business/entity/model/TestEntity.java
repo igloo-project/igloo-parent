@@ -31,6 +31,10 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 	@Column
 	private String classicInterceptorFlushDirty;
 
+	public TestEntity() {
+		super();
+	}
+
 	public TestEntity(String label) {
 		super();
 		
