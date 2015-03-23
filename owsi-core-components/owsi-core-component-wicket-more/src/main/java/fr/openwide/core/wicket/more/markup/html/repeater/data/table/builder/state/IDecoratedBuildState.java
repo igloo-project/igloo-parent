@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state;
 
+import org.apache.wicket.model.IModel;
+
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
@@ -9,6 +11,8 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCor
 public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	
 	IDecoratedBuildState<T, S> title(String resourceKey);
+	
+	IDecoratedBuildState<T, S> title(IModel<?> model);
 	
 	IDecoratedBuildState<T, S> count(String countResourceKey);
 	
