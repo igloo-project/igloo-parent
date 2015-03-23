@@ -4,6 +4,7 @@ import javax.persistence.spi.PersistenceProvider;
 
 import org.hibernate.Interceptor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
@@ -14,9 +15,11 @@ import fr.openwide.core.jpa.more.config.spring.AbstractConfiguredJpaMoreJpaConfi
 import fr.openwide.core.test.jpa.more.business.JpaMoreTestBusinessPackage;
 import fr.openwide.core.test.jpa.more.business.interceptor.TestEntityInterceptor;
 import fr.openwide.core.test.jpa.more.business.interceptor.TestEntitySimplePropertyUpdateInterceptor;
+import fr.openwide.core.test.jpa.more.business.util.transaction.service.ITestTransactionSynchronizationTaskCreatorService;
 
 @Configuration
 @EnableAspectJAutoProxy
+@ComponentScan(basePackageClasses = ITestTransactionSynchronizationTaskCreatorService.class)
 public class JpaMoreTestJpaConfig extends AbstractConfiguredJpaMoreJpaConfig {
 
 	@Override
