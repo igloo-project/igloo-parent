@@ -18,11 +18,13 @@ import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Equivalence;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
@@ -462,11 +464,20 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	}
 	
 	public static Condition role(String role) {
-		return new AnyRoleCondition(ImmutableList.of(role));
+		return AnyRoleCondition.fromStrings(ImmutableList.of(role));
 	}
 	
 	public static Condition anyRole(String role, String ... otherRoles) {
-		return new AnyRoleCondition(Lists.asList(role, otherRoles));
+		return AnyRoleCondition.fromStrings(Lists.asList(role, otherRoles));
+	}
+	
+	public static Condition role(IModel<String> roleModel) {
+		return AnyRoleCondition.fromModels(ImmutableList.of(roleModel));
+	}
+	
+	@SafeVarargs
+	public static Condition anyRole(IModel<String> roleModel, IModel<String> ... otherRoleModels) {
+		return AnyRoleCondition.fromModels(Lists.asList(roleModel, otherRoleModels));
 	}
 	
 	private static class AnyRoleCondition extends Condition {
@@ -475,18 +486,31 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		@SpringBean
 		private IAuthenticationService authenticationService;
 		
-		private final Iterable<String> roleNames;
+		private final Iterable<? extends IModel<String>> roleModels;
 		
-		public AnyRoleCondition(Iterable<String> roleNames) {
+		public static AnyRoleCondition fromStrings(Iterable<String> roles) {
+			return new AnyRoleCondition(Iterables.transform(roles, new Function<String, IModel<String>>() {
+				@Override
+				public IModel<String> apply(String input) {
+					return Model.of(input);
+				}
+			}));
+		}
+		
+		public static AnyRoleCondition fromModels(Iterable<? extends IModel<String>> roleModels) {
+			return new AnyRoleCondition(roleModels);
+		}
+		
+		private AnyRoleCondition(Iterable<? extends IModel<String>> roleModels) {
 			super();
 			Injector.get().inject(this);
-			this.roleNames = ImmutableSet.copyOf(roleNames);
+			this.roleModels = ImmutableSet.copyOf(roleModels);
 		}
 		
 		@Override
 		public boolean applies() {
-			for (String roleName : roleNames) {
-				if (authenticationService.hasRole(roleName)) {
+			for (IModel<String> roleModel : roleModels) {
+				if (authenticationService.hasRole(roleModel.getObject())) {
 					return true;
 				}
 			}
@@ -494,8 +518,16 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 		
 		@Override
+		public void detach() {
+			super.detach();
+			for (IModel<String> roleModel : roleModels) {
+				roleModel.detach();
+			}
+		}
+		
+		@Override
 		public String toString() {
-			return "anyRole(" + COMMA_JOINER.join(roleNames) + ")";
+			return "anyRole(" + COMMA_JOINER.join(roleModels) + ")";
 		}
 	}
 	
