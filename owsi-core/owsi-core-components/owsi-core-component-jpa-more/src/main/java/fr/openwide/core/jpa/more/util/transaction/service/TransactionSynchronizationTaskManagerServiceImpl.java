@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import fr.openwide.core.jpa.more.util.transaction.adapter.ITransactionSynchronizationTaskAdapter;
-import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchornizationAfterCommitTask;
-import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchornizationBeforeCommitTask;
+import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
+import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTask;
 import fr.openwide.core.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
 
@@ -34,7 +34,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl implements ITransa
 	}
 
 	@Override
-	public void push(ITransactionSynchornizationBeforeCommitTask<?> beforeCommitTask) {
+	public void push(ITransactionSynchronizationBeforeCommitTask<?> beforeCommitTask) {
 		checkTransactionActive();
 		registerTransactionSynchronization();
 		autowire(beforeCommitTask);
@@ -42,7 +42,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl implements ITransa
 	}
 	 
 	@Override
-	public void push(ITransactionSynchornizationAfterCommitTask<?> afterCommitTask) {
+	public void push(ITransactionSynchronizationAfterCommitTask<?> afterCommitTask) {
 		checkTransactionActive();
 		registerTransactionSynchronization();
 		autowire(afterCommitTask);

@@ -7,9 +7,9 @@ import com.google.common.collect.Lists;
 
 public class TransactionSynchronizationTasks {
 
-	private final List<ITransactionSynchornizationBeforeCommitTask<?>> beforeCommitTasks = Lists.newLinkedList();
+	private final List<ITransactionSynchronizationBeforeCommitTask<?>> beforeCommitTasks = Lists.newLinkedList();
 
-	private final List<ITransactionSynchornizationAfterCommitTask<?>> afterCommitTasks = Lists.newLinkedList();
+	private final List<ITransactionSynchronizationAfterCommitTask<?>> afterCommitTasks = Lists.newLinkedList();
 
 	private TransactionSynchronizationTasksStatus status = TransactionSynchronizationTasksStatus.OPEN;
 
@@ -19,14 +19,14 @@ public class TransactionSynchronizationTasks {
 		open();
 	}
 
-	public List<ITransactionSynchornizationBeforeCommitTask<?>> getBeforeCommitTasks() {
+	public List<ITransactionSynchronizationBeforeCommitTask<?>> getBeforeCommitTasks() {
 		if (isLocked()) {
 			return Collections.unmodifiableList(beforeCommitTasks);
 		}
 		return beforeCommitTasks;
 	}
 
-	public List<ITransactionSynchornizationAfterCommitTask<?>> getAfterCommitTasks() {
+	public List<ITransactionSynchronizationAfterCommitTask<?>> getAfterCommitTasks() {
 		if (isLocked()) {
 			return Collections.unmodifiableList(afterCommitTasks);
 		}

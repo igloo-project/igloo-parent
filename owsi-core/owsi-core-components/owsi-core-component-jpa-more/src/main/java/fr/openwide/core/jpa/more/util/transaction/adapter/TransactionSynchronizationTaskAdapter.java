@@ -12,8 +12,8 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 
 import com.google.common.collect.Iterables;
 
-import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchornizationAfterCommitTask;
-import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchornizationBeforeCommitTask;
+import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
+import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
 import fr.openwide.core.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
 import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
@@ -37,7 +37,7 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 		transactionSynchronizationTaskManagerService.merge();
 		
 		TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
-		for (ITransactionSynchornizationBeforeCommitTask<?> beforeCommitTask : tasks.getBeforeCommitTasks()) {
+		for (ITransactionSynchronizationBeforeCommitTask<?> beforeCommitTask : tasks.getBeforeCommitTasks()) {
 			try {
 				beforeCommitTask.run();
 			} catch (Exception e) {
@@ -49,7 +49,7 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 	@Override
 	public void afterCommit() {
 		TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
-		for (ITransactionSynchornizationAfterCommitTask<?> afterCommitTask : tasks.getAfterCommitTasks()) {
+		for (ITransactionSynchronizationAfterCommitTask<?> afterCommitTask : tasks.getAfterCommitTasks()) {
 			try {
 				afterCommitTask.run();
 			} catch (Exception e) {
@@ -62,14 +62,14 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 	public void afterCompletion(int status) {
 		if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
 			TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
-			for (ITransactionSynchornizationBeforeCommitTask<?> beforeCommitTask : Iterables.filter(tasks.getBeforeCommitTasks(), instanceOf(ITransactionSynchronizationTaskRollbackAware.class))) {
+			for (ITransactionSynchronizationBeforeCommitTask<?> beforeCommitTask : Iterables.filter(tasks.getBeforeCommitTasks(), instanceOf(ITransactionSynchronizationTaskRollbackAware.class))) {
 				try {
 					((ITransactionSynchronizationTaskRollbackAware) beforeCommitTask).afterRollback();
 				} catch (Exception e) {
 					LOGGER.error("Error while executing the rollback from a 'before commit' task.", e);
 				}
 			}
-			for (ITransactionSynchornizationAfterCommitTask<?> afterCommitTask : Iterables.filter(tasks.getAfterCommitTasks(), instanceOf(ITransactionSynchronizationTaskRollbackAware.class))) {
+			for (ITransactionSynchronizationAfterCommitTask<?> afterCommitTask : Iterables.filter(tasks.getAfterCommitTasks(), instanceOf(ITransactionSynchronizationTaskRollbackAware.class))) {
 				try {
 					((ITransactionSynchronizationTaskRollbackAware) afterCommitTask).afterRollback();
 				} catch (Exception e) {
