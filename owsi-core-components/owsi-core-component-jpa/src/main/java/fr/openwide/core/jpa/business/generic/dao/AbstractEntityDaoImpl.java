@@ -5,6 +5,7 @@ import java.util.List;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
 
@@ -17,11 +18,11 @@ import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
 public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 
 	protected <T extends E, V extends Comparable<?>> T getByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue) {
-		return queryByPredicate(entityPath, field.eq(fieldValue)).uniqueResult(entityPath);
+		return queryByPredicate(entityPath, eqOrIsNull(field, fieldValue)).uniqueResult(entityPath);
 	}
 
 	protected <T extends E> T getByFieldIgnoreCase(EntityPath<T> entityPath, StringExpression field, String fieldValue) {
-		return queryByPredicate(entityPath, field.equalsIgnoreCase(fieldValue)).uniqueResult(entityPath);
+		return queryByPredicate(entityPath, eqIgnoreCaseOrIsNull(field, fieldValue)).uniqueResult(entityPath);
 	}
 
 	protected <T extends E> List<T> list(EntityPath<T> entityPath) {
@@ -40,11 +41,11 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 	}
 
 	protected <T extends E, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
-		return queryByPredicateOrdered(entityPath, field.eq(fieldValue), orderSpecifier).list(entityPath);
+		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), orderSpecifier).list(entityPath);
 	}
 
 	protected <T extends E, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?> orderSpecifier) {
-		return queryByPredicateOrdered(entityPath, field.eq(fieldValue), limit, offset, orderSpecifier).list(entityPath);
+		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), limit, offset, orderSpecifier).list(entityPath);
 	}
 
 	protected <V extends Comparable<?>> Long count(EntityPath<? extends E> entityPath) {
@@ -52,7 +53,14 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 	}
 
 	protected <V extends Comparable<?>> Long countByField(EntityPath<? extends E> entityPath, SimpleExpression<V> field, V fieldValue) {
-		return queryByPredicate(entityPath, field.eq(fieldValue)).distinct().count();
+		return queryByPredicate(entityPath, eqOrIsNull(field, fieldValue)).distinct().count();
 	}
 
+	private static <V extends Comparable<?>> Predicate eqOrIsNull(SimpleExpression<V> field, V fieldValue) {
+		return fieldValue != null ? field.eq(fieldValue) : field.isNull() ;
+	}
+
+	private static <V extends Comparable<?>> Predicate eqIgnoreCaseOrIsNull(StringExpression field, String fieldValue) {
+		return fieldValue != null ? field.equalsIgnoreCase(fieldValue) : field.isNull();
+	}
 }
