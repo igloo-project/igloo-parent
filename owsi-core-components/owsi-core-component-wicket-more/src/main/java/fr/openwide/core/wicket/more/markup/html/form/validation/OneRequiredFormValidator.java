@@ -17,8 +17,12 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	
 	private static final long serialVersionUID = -7019352590059451557L;
 	
-	private final Collection<FormComponent<?>> requiredFormComponents;
-	private OneRequiredMode mode = OneRequiredMode.ONE_OR_MORE;
+	protected Collection<FormComponent<?>> requiredFormComponents;
+	protected OneRequiredMode mode = OneRequiredMode.ONE_OR_MORE;
+	
+	protected OneRequiredFormValidator() {
+		// Permet d'hériter de ce validator pour des cas spécifiques quand on ne dispose pas des champs tout de suite.
+	}
 	
 	public OneRequiredFormValidator(FormComponent<?> first, FormComponent<?> second, FormComponent<?> ... rest) {
 		this.requiredFormComponents = ImmutableList.<FormComponent<?>>builder().add(first, second).add(rest).build();
@@ -30,7 +34,7 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	}
 	
 	@Override
-	public final FormComponent<?>[] getDependentFormComponents() {
+	public FormComponent<?>[] getDependentFormComponents() {
 		return Iterables.toArray(
 				Iterables.concat(requiredFormComponents, getAdditionalDependentFormComponents()),
 				FormComponent.class
@@ -44,7 +48,6 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	@Override
 	public void validate(Form<?> form) {
 		if (isEnabled(form)) {
-			
 			switch (mode) {
 				case ONE_ONLY:
 					boolean oneFilled = false;
