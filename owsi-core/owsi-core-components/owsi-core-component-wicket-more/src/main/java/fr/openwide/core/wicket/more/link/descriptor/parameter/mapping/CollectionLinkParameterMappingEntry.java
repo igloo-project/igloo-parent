@@ -7,6 +7,8 @@ import java.util.Collection;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.lang.Args;
+import org.javatuples.Unit;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Function;
@@ -16,6 +18,8 @@ import com.google.common.base.Supplier;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.AbstractLinkParameterMappingEntryFactory;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryCollectionLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
@@ -25,6 +29,44 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 		extends AbstractLinkParameterMappingEntry {
 
 	private static final long serialVersionUID = 2126702467532153474L;
+	
+	public static <RawC extends Collection, C extends RawC, T> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
+			factory(final String parameterName, final Class<RawC> rawCollectionType, final Class<T> elementType) {
+		return factory(parameterName, rawCollectionType, TypeDescriptor.valueOf(elementType));
+	}
+	
+	public static <RawC extends Collection, C extends RawC> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
+			factory(final String parameterName, final Class<RawC> rawCollectionType, final TypeDescriptor elementTypeDescriptor) {
+		Args.notNull(parameterName, "parameterName");
+		Args.notNull(rawCollectionType, "rawCollectionType");
+		Args.notNull(elementTypeDescriptor, "elementTypeDescriptor");
+		
+		return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<C>>>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ILinkParameterMappingEntry create(Unit<IModel<C>> parameters) {
+				return new CollectionLinkParameterMappingEntry<RawC, C>(parameterName, parameters.getValue0(), rawCollectionType, elementTypeDescriptor);
+			}
+		};
+	}
+	
+	public static <RawC extends Collection, C extends RawC> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
+			factory(final String parameterName, final Class<RawC> rawCollectionType, final TypeDescriptor elementTypeDescriptor, final Supplier<C> emptyCollectionSupplier) {
+		Args.notNull(parameterName, "parameterName");
+		Args.notNull(rawCollectionType, "rawCollectionType");
+		Args.notNull(elementTypeDescriptor, "elementTypeDescriptor");
+		Args.notNull(emptyCollectionSupplier, "emptyCollectionSupplier");
+		
+		return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<C>>>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ILinkParameterMappingEntry create(Unit<IModel<C>> parameters) {
+				return new CollectionLinkParameterMappingEntry<RawC, C>(
+						parameterName, parameters.getValue0(), rawCollectionType, elementTypeDescriptor, emptyCollectionSupplier
+				);
+			}
+		};
+	}
 	
 	protected final String parameterName;
 	protected final IModel<C> mappedModel;
@@ -56,7 +98,7 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 				});
 	}
 	
-	private CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
+	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
 			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor, Function<? super C, ? extends C> collectionCustomizerFunction) {
 		checkNotNull(parameterName);
 		checkNotNull(mappedModel);

@@ -19,13 +19,11 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import fr.openwide.core.wicket.more.model.ClassModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
-public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor> implements IDetachable {
+public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor> implements IBuilderFactory<T>, IDetachable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private CoreLinkDescriptorBuilderFactory() { }
-
-	public abstract T create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator);
 
 	public static <P extends Page> CoreLinkDescriptorBuilderFactory<IPageLinkDescriptor> page(Class<P> pageClass) {
 		IModel<Class<P>> pageClassModel = ClassModel.of(pageClass);

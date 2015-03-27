@@ -19,8 +19,11 @@ import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.link.descriptor.factory.BindingLinkGeneratorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
@@ -501,32 +504,54 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			return withTooltip(tooltipRenderer.onResultOf(function));
 		}
 		
+		@Deprecated
 		@Override
 		public IAddedLabelColumnState<T, S> withLink(LinkGeneratorFactory<T> linkGeneratorFactory) {
-			if (getColumn().getSideLinkGeneratorFactory() != null) {
-				throw new IllegalStateException("link and side link cannot be both set.");
-			}
-			getColumn().setLinkGeneratorFactory(linkGeneratorFactory);
-			return this;
+			return withLink(new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(linkGeneratorFactory));
 		}
 
+		@Deprecated
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory) {
-			return withLink(new BindingLinkGeneratorFactory<>(binding, linkGeneratorFactory));
+			return withLink(binding, new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(linkGeneratorFactory));
 		}
 
+		@Deprecated
 		@Override
 		public IAddedLabelColumnState<T, S> withSideLink(LinkGeneratorFactory<T> sideLinkGeneratorFactory) {
-			if (getColumn().getLinkGeneratorFactory() != null) {
-				throw new IllegalStateException("link and side link cannot be both set.");
-			}
-			getColumn().setSideLinkGeneratorFactory(sideLinkGeneratorFactory);
+			return withSideLink(new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(sideLinkGeneratorFactory));
+		}
+
+		@Deprecated
+		@Override
+		public <C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory) {
+			return withSideLink(binding, new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(linkGeneratorFactory));
+		}
+		
+		@Override
+		public IAddedLabelColumnState<T, S> withLink(
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+			getColumn().setLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
 		}
 
 		@Override
-		public <C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory) {
-			return withSideLink(new BindingLinkGeneratorFactory<>(binding, linkGeneratorFactory));
+		public <C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+			return withLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
+		}
+
+		@Override
+		public IAddedLabelColumnState<T, S> withSideLink(
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+			getColumn().setSideLinkGeneratorMapper(linkGeneratorMapper);
+			return this;
+		}
+
+		@Override
+		public <C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+			return withSideLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
 		}
 
 		@Override

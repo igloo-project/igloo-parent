@@ -12,7 +12,8 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
-import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
@@ -27,9 +28,9 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	
 	private Renderer<? super T> tooltipRenderer;
 	
-	private LinkGeneratorFactory<T> linkGeneratorFactory;
+	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper;
 	
-	private LinkGeneratorFactory<T> sideLinkGeneratorFactory;
+	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorMapper;
 	
 	private boolean disableIfInvalid = false;
 	
@@ -45,11 +46,11 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		if (placeholderModel != null) {
 			placeholderModel.detach();
 		}
-		if (linkGeneratorFactory != null) {
-			linkGeneratorFactory.detach();
+		if (linkGeneratorMapper != null) {
+			linkGeneratorMapper.detach();
 		}
-		if (sideLinkGeneratorFactory != null) {
-			sideLinkGeneratorFactory.detach();
+		if (sideLinkGeneratorMapper != null) {
+			sideLinkGeneratorMapper.detach();
 		}
 	}
 
@@ -64,15 +65,15 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 					}
 					@Override
 					public MarkupContainer getLink(String wicketId, IModel<T> rowModel) {
-						if (linkGeneratorFactory != null) {
-							return decorate(linkGeneratorFactory.create(rowModel).link(wicketId));
+						if (linkGeneratorMapper != null) {
+							return decorate(linkGeneratorMapper.map(rowModel).link(wicketId));
 						}
 						return new InvisiblePanel(wicketId);
 					}
 					@Override
 					public MarkupContainer getSideLink(String wicketId, IModel<T> rowModel) {
-						if (sideLinkGeneratorFactory != null) {
-							return decorate(sideLinkGeneratorFactory.create(rowModel).link(wicketId))
+						if (sideLinkGeneratorMapper != null) {
+							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId))
 									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-share-square-o")));
 						}
 						return new InvisiblePanel(wicketId);
@@ -138,21 +139,27 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		this.tooltipRenderer = tooltipRenderer;
 	}
 
-	public LinkGeneratorFactory<T> getLinkGeneratorFactory() {
-		return linkGeneratorFactory;
+	public IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> getLinkGeneratorMapper() {
+		return linkGeneratorMapper;
 	}
 
-	public CoreLabelColumn<T, S> setLinkGeneratorFactory(LinkGeneratorFactory<T> linkGeneratorFactory) {
-		this.linkGeneratorFactory = linkGeneratorFactory;
+	public CoreLabelColumn<T, S> setLinkGeneratorMapper(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorFactory) {
+		if (sideLinkGeneratorMapper != null) {
+			throw new IllegalStateException("link and side link cannot be both set.");
+		}
+		this.linkGeneratorMapper = linkGeneratorFactory;
 		return this;
 	}
 
-	public LinkGeneratorFactory<T> getSideLinkGeneratorFactory() {
-		return sideLinkGeneratorFactory;
+	public IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> getSideLinkGeneratorMapper() {
+		return sideLinkGeneratorMapper;
 	}
 
-	public CoreLabelColumn<T, S> setSideLinkGeneratorFactory(LinkGeneratorFactory<T> sideLinkGeneratorFactory) {
-		this.sideLinkGeneratorFactory = sideLinkGeneratorFactory;
+	public CoreLabelColumn<T, S> setSideLinkGeneratorMapper(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorFactory) {
+		if (linkGeneratorMapper != null) {
+			throw new IllegalStateException("link and side link cannot be both set.");
+		}
+		this.sideLinkGeneratorMapper = sideLinkGeneratorFactory;
 		return this;
 	}
 
