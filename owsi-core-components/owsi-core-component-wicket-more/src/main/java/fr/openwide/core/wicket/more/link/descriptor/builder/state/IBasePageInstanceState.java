@@ -7,8 +7,8 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator
 
 public interface IBasePageInstanceState {
 	
-	IPageInstanceState<? extends IPageLinkGenerator> pageInstance(Page pageInstance);
+	IPageInstanceState<IPageLinkGenerator> pageInstance(Page pageInstance);
 
-	IPageInstanceState<? extends IPageLinkGenerator> pageInstance(IModel<? extends Page> pageInstanceModel);
+	IPageInstanceState<IPageLinkGenerator> pageInstance(IModel<? extends Page> pageInstanceModel);
 
 }

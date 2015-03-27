@@ -3,11 +3,15 @@ package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.lang.Args;
+import org.javatuples.Unit;
 
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.AbstractLinkParameterMappingEntryFactory;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
@@ -15,6 +19,19 @@ import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService
 public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMappingEntry {
 	
 	private static final long serialVersionUID = -8490340879965229874L;
+	
+	public static <T> ILinkParameterMappingEntryFactory<Unit<IModel<T>>> factory(final String parameterName, final Class<T> valueType) {
+		Args.notNull(parameterName, "parameterName");
+		Args.notNull(valueType, "valueType");
+		
+		return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<T>>>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ILinkParameterMappingEntry create(Unit<IModel<T>> parameters) {
+				return new SimpleLinkParameterMappingEntry<T>(parameterName, parameters.getValue0(), valueType);
+			}
+		};
+	}
 	
 	protected final String parameterName;
 	protected final IModel<T> mappedModel;

@@ -10,49 +10,48 @@ import org.springframework.core.convert.TypeDescriptor;
 import com.google.common.base.Supplier;
 
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
-public interface IParameterMappingState<L extends ILinkParametersExtractor> extends IValidatorState<L> {
+public interface IParameterMappingState<Result> extends IValidatorState<Result> {
 
-	<T> IAddedParameterMappingState<L> map(String parameterName, IModel<T> valueModel, Class<T> valueType);
+	<T> IAddedParameterMappingState<IParameterMappingState<Result>> map(String parameterName, IModel<T> valueModel, Class<T> valueType);
 
 	@SuppressWarnings("rawtypes")
-	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<L> mapCollection(
+	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<Result>> mapCollection(
 			String parameterName, IModel<C> valueModel,
 			Class<RawC> rawCollectionType, Class<T> elementType);
 
 	@SuppressWarnings("rawtypes")
-	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<L> mapCollection(
+	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<Result>> mapCollection(
 			String parameterName, IModel<C> valueModel,
 			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor);
 
 	@SuppressWarnings("rawtypes")
-	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<L> mapCollection(
+	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<Result>> mapCollection(
 			String parameterName, IModel<C> valueModel,
 			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier);
 	
-	IAddedParameterMappingState<L> map(ILinkParameterMappingEntry parameterMappingEntry);
+	IAddedParameterMappingState<IParameterMappingState<Result>> map(ILinkParameterMappingEntry parameterMappingEntry);
 	
-	<T> IAddedParameterMappingState<L> renderInUrl(String parameterName, IModel<T> valueModel);
+	<T> IAddedParameterMappingState<IParameterMappingState<Result>> renderInUrl(String parameterName, IModel<T> valueModel);
 	
-	<R, T> IAddedParameterMappingState<L> renderInUrl(String parameterName, IModel<R> rootModel, AbstractBinding<R, T> binding);
-	
-	@Override
-	IParameterMappingState<L> validator(ILinkParameterValidator validator);
+	<R, T> IAddedParameterMappingState<IParameterMappingState<Result>> renderInUrl(String parameterName, IModel<R> rootModel, AbstractBinding<R, T> binding);
 	
 	@Override
-	IParameterMappingState<L> validator(Condition condition);
+	IParameterMappingState<Result> validator(ILinkParameterValidator validator);
 	
 	@Override
-	IParameterMappingState<L> permission(IModel<?> model, String permissionName);
+	IParameterMappingState<Result> validator(Condition condition);
 	
 	@Override
-	IParameterMappingState<L> permission(IModel<?> model, String firstPermissionName, String... otherPermissionNames);
+	IParameterMappingState<Result> permission(IModel<?> model, String permissionName);
 	
 	@Override
-	<R, T> IParameterMappingState<L> permission(IModel<R> model, BindingRoot<R, T> binding,
+	IParameterMappingState<Result> permission(IModel<?> model, String firstPermissionName, String... otherPermissionNames);
+	
+	@Override
+	<R, T> IParameterMappingState<Result> permission(IModel<R> model, BindingRoot<R, T> binding,
 			String firstPermissionName, String... otherPermissionNames);
 
 }

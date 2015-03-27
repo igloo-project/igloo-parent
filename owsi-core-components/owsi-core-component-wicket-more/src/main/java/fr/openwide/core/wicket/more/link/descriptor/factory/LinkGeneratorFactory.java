@@ -3,8 +3,14 @@ package fr.openwide.core.wicket.more.link.descriptor.factory;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 
+/**
+ * @deprecated Implement {@link IOneParameterLinkDescriptorMapper} instead or build one such object using a {@link LinkDescriptorBuilder}.
+ */
+@Deprecated
 public abstract class LinkGeneratorFactory<T> implements IDetachable {
 
 	private static final long serialVersionUID = 7320937503075282012L;

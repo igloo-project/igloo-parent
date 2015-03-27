@@ -4,11 +4,12 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
 
 public interface IBasePageState {
 	
-	<P extends Page> IParameterMappingState<? extends IPageLinkDescriptor> page(Class<P> pageClass);
+	<P extends Page> INoParameterMapperState<IPageLinkDescriptor> page(Class<P> pageClass);
 	
-	IParameterMappingState<? extends IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel);
+	INoParameterMapperState<IPageLinkDescriptor> page(IModel<? extends Class<? extends Page>> pageClassModel);
 
 }

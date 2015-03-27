@@ -4,11 +4,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 
 import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
 
 public interface IBaseImageResourceState {
 	
-	IParameterMappingState<? extends IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference);
+	INoParameterMapperState<IImageResourceLinkDescriptor> imageResource(ResourceReference resourceReference);
 	
-	IParameterMappingState<? extends IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel);
+	INoParameterMapperState<IImageResourceLinkDescriptor> imageResource(IModel<? extends ResourceReference> resourceReferenceModel);
 
 }

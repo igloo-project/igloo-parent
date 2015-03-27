@@ -4,8 +4,13 @@ import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
 
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
+/**
+ * @deprecated Use {@link BindingOneParameterLinkDescriptorMapper} instead.
+ */
+@Deprecated
 public class BindingLinkGeneratorFactory<R, T> extends LinkGeneratorFactory<R> {
 	
 	private static final long serialVersionUID = -1677511112381705789L;
