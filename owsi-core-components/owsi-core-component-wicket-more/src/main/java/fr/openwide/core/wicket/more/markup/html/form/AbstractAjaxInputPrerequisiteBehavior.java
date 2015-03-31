@@ -12,13 +12,17 @@ import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
+import org.apache.wicket.ajax.attributes.AjaxAttributeName;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.json.JSONException;
+import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
 import org.apache.wicket.markup.html.form.CheckGroup;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -359,6 +363,14 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				attributes.getDynamicExtraParameters().add(
 						String.format("return OWSI.AbtractAjaxInputPrerequisiteBehavior.Choice.getInputValues('%s', attrs)", component.getInputName())
 				);
+			}
+		}
+		
+		@Override
+		protected void postprocessConfiguration(JSONObject attributesJson, Component component) throws JSONException {
+			super.postprocessConfiguration(attributesJson, component);
+			if (isChoice(component)) {
+				attributesJson.put(AjaxAttributeName.MARKUP_ID.jsonName(), component.findParent(Form.class).getMarkupId());
 			}
 		}
 		
