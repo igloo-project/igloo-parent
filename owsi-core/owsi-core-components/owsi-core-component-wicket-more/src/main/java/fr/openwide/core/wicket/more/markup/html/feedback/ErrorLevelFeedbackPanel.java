@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.feedback;
 import org.apache.wicket.feedback.ExactLevelFeedbackMessageFilter;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
-class ErrorLevelFeedbackPanel extends FeedbackPanel {
+public class ErrorLevelFeedbackPanel extends FeedbackPanel {
 	
 	private static final long serialVersionUID = -731818705093875451L;
 	protected int level;
