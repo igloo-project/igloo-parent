@@ -79,7 +79,7 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	
 	protected void onError(Form<?> form) {
 		Joiner labelJoiner = Joiner.on(form.getString("common.validator.oneRequired.labels.separator"));
-		Object labels = labelJoiner.join(Iterables.transform(requiredFormComponents, new Function<FormComponent<?>, String>() {
+		String labels = labelJoiner.join(Iterables.transform(requiredFormComponents, new Function<FormComponent<?>, String>() {
 			@Override
 			public String apply(FormComponent<?> input) {
 				return input.getLabel().getObject();
@@ -87,9 +87,9 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 		}));
 		
 		if (mode == OneRequiredMode.ONE_ONLY) {
-			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOnly", ImmutableMap.of("labels", labels));
+			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOnly", ImmutableMap.<String, Object>of("labels", labels));
 		} else if (mode == OneRequiredMode.ONE_OR_MORE) {
-			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOrMore", ImmutableMap.of("labels", labels));
+			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOrMore", ImmutableMap.<String, Object>of("labels", labels));
 		} else {
 			error(requiredFormComponents.iterator().next(), "common.error");
 		}
