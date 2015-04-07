@@ -66,10 +66,14 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 	<C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory);
 
 	IAddedLabelColumnState<T, S> withLink(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper);
+	
+	<C> IAddedLabelColumnState<T, S> withLink(Function<? super T, C> binding, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper);
 
 	<C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper);
 
 	IAddedLabelColumnState<T, S> withSideLink(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper);
+	
+	<C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> binding, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper);
 
 	<C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper);
 

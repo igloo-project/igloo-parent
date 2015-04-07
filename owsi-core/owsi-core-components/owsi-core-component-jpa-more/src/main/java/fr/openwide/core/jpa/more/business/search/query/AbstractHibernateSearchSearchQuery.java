@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.more.business.search.query;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	private final Class<T> clazz;
+	private final Class<? extends T> mainClass;
+	private final Class<? extends T>[] classes;
 	
 	private BooleanJunction<?> junction;
 	private FullTextQuery query;
@@ -56,9 +58,16 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
 	private List<S> defaultSorts;
 	
+	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	protected AbstractHibernateSearchSearchQuery(Class<T> clazz, S ... defaultSorts) {
-		this.clazz = clazz;
+	protected AbstractHibernateSearchSearchQuery(Class<? extends T> clazz, S ... defaultSorts) {
+		this(new Class[] { clazz }, defaultSorts);
+	}
+	
+	@SafeVarargs
+	protected AbstractHibernateSearchSearchQuery(Class<? extends T>[] classes, S ... defaultSorts) {
+		this.mainClass = classes[0];
+		this.classes = Arrays.copyOf(classes, classes.length);
 		this.defaultSorts = ImmutableList.copyOf(defaultSorts);
 	}
 	
@@ -67,7 +76,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		
 		defaultQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
-				.forEntity(clazz).get();
+				.forEntity(mainClass).get();
 		
 		junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
 	}
@@ -84,7 +93,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	protected Analyzer getAnalyzer() {
-		return getAnalyzer(clazz);
+		return getAnalyzer(mainClass);
 	}
 	
 	protected QueryBuilder getDefaultQueryBuilder() {
@@ -423,7 +432,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 
 	protected FullTextQuery getFullTextQuery() {
 		if (query == null) {
-			query = fullTextEntityManager.createFullTextQuery(junction.createQuery(), clazz);
+			query = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
 		}
 		return query;
 	}
