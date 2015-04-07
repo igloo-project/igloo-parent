@@ -22,6 +22,7 @@ import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
@@ -539,6 +540,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			getColumn().setLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
 		}
+		
+		@Override
+		public <C> IAddedLabelColumnState<T, S> withLink(Function<? super T, C> function,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
+		}
 
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding,
@@ -551,6 +558,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
 			getColumn().setSideLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
+		}
+		
+		@Override
+		public <C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> function,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
 
 		@Override
