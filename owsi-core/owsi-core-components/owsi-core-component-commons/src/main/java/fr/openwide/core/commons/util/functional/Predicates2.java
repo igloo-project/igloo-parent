@@ -259,4 +259,8 @@ public final class Predicates2 {
 		}
 	}
 
+	public static <T> Predicate<T> notNullAndNot(Predicate<T> predicate) {
+		return Predicates.and(Predicates.notNull(), Predicates.not(predicate));
+	}
+
 }
