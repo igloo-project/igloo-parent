@@ -136,6 +136,12 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@Override
 	@Transactional(readOnly = true)
+	public List<T> fullList() {
+		return list(0L, Integer.MAX_VALUE);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<T> list(long offset, long limit) {
 		
