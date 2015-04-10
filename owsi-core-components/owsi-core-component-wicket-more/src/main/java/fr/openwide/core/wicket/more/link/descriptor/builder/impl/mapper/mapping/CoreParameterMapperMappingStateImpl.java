@@ -49,11 +49,11 @@ public class CoreParameterMapperMappingStateImpl<InitialState>
 	}
 	
 	private <TupleType extends Tuple> IAddedParameterMappingState<InitialState> doMap(ILinkParameterMappingEntryFactory<TupleType> entryFactory) {
-		LinkParameterMappingEntryBuilder<?> builder = new LinkParameterMappingEntryBuilder<>(entryFactory);
+		LinkParameterMappingEntryBuilder<TupleType> builder = new LinkParameterMappingEntryBuilder<TupleType>(entryFactory);
 		entryBuilders.putAll(builder, parameterIndices);
-		return new AbstractCoreAddedParameterMapperStateImpl<InitialState, TupleType>(entryFactory) {
+		return new AbstractCoreAddedParameterMapperStateImpl<InitialState, TupleType>(builder) {
 			@Override
-			protected InitialState toNextState(LinkParameterMappingEntryBuilder<TupleType> entryBuilder) {
+			protected InitialState toNextState(LinkParameterMappingEntryBuilder<TupleType> builder) {
 				return initialState;
 			}
 		};

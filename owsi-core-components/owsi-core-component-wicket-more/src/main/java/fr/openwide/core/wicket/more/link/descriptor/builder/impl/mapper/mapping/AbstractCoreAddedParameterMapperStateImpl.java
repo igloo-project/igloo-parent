@@ -4,14 +4,13 @@ import org.javatuples.Tuple;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 
 public abstract class AbstractCoreAddedParameterMapperStateImpl<NextState, T extends Tuple> implements IAddedParameterMappingState<NextState> {
 	
 	private final LinkParameterMappingEntryBuilder<T> parameterEntryBuilder;
 
-	public AbstractCoreAddedParameterMapperStateImpl(ILinkParameterMappingEntryFactory<T> parameterEntryFactory) {
-		this.parameterEntryBuilder = new LinkParameterMappingEntryBuilder<T>(parameterEntryFactory);
+	public AbstractCoreAddedParameterMapperStateImpl(LinkParameterMappingEntryBuilder<T> parameterEntryBuilder) {
+		this.parameterEntryBuilder = parameterEntryBuilder;
 	}
 	
 	protected abstract NextState toNextState(LinkParameterMappingEntryBuilder<T> parameterEntryBuilder);
