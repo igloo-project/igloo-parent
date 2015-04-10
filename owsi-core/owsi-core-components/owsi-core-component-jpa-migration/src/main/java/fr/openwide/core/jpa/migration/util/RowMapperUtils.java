@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.migration.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -105,6 +106,16 @@ public final class RowMapperUtils {
 		}
 	}
 	
+	public static BigDecimal getBigDecimal(ResultSet rs, String columnLabel, int scale, RoundingMode roundingMode)
+			throws SQLException, ArithmeticException {
+		BigDecimal bigDecimal = rs.getBigDecimal(columnLabel);
+		if (bigDecimal != null) {
+			return bigDecimal.setScale(scale, roundingMode);
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * Récupére une valeur issue de la base ; permet de ne pas prendre en compte certaines valeurs spéciales
 	 * présentes dans la base. Si la valeur est zéro, on remplace par null.
@@ -122,6 +133,15 @@ public final class RowMapperUtils {
 		}
 	}
 
+	public static BigDecimal getBigDecimalNotZero(ResultSet rs, String columnLabel, int scale, RoundingMode roundingMode) throws SQLException {
+		BigDecimal bigDecimal = rs.getBigDecimal(columnLabel);
+		if (bigDecimal == null || bigDecimal.compareTo(BigDecimal.ZERO) == 0) {
+			return null;
+		} else {
+			return bigDecimal.setScale(scale, roundingMode);
+		}
+	}
+
 	public static BigDecimal getBigDecimalGreaterEqualsZero(ResultSet rs, String columnLabel) throws SQLException {
 		BigDecimal bigDecimal = rs.getBigDecimal(columnLabel);
 		
@@ -132,10 +152,21 @@ public final class RowMapperUtils {
 		}
 	}
 
+	public static BigDecimal getBigDecimalGreaterEqualsZero(ResultSet rs, String columnLabel, int scale, RoundingMode roundingMode)
+			throws SQLException, ArithmeticException {
+		BigDecimal bigDecimal = rs.getBigDecimal(columnLabel);
+		
+		if (bigDecimal == null || bigDecimal.compareTo(BigDecimal.ZERO) < 0) {
+			return null;
+		} else {
+			return bigDecimal.setScale(scale, roundingMode);
+		}
+	}
+
 	public static BigDecimal getBigDecimalPercentageAsRate(ResultSet rs, String columnLabel) throws SQLException {
 		BigDecimal value = RowMapperUtils.getBigDecimalGreaterEqualsZero(rs, columnLabel);
 		if (value != null) {
-			return BigDecimal.ZERO.equals(value) ? BigDecimal.ZERO : value.divide(new BigDecimal(100));
+			return value.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO : value.divide(new BigDecimal(100));
 		} else {
 			return null;
 		}
