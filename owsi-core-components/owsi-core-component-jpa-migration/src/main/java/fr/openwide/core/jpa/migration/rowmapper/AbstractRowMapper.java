@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.migration.rowmapper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -66,12 +67,25 @@ public abstract class AbstractRowMapper<T> implements RowMapper<T> {
 		return RowMapperUtils.getBigDecimal(rs, columnLabel);
 	}
 
+	protected BigDecimal getBigDecimal(ResultSet rs, String columnLabel, int scale, RoundingMode roundingMode) throws SQLException {
+		return RowMapperUtils.getBigDecimal(rs, columnLabel, scale, roundingMode);
+	}
+
 	protected BigDecimal getBigDecimalNotZero(ResultSet rs, String columnLabel) throws SQLException {
 		return RowMapperUtils.getBigDecimalNotZero(rs, columnLabel);
 	}
 
+	protected BigDecimal getBigDecimalNotZero(ResultSet rs, String columnLabel, int scale, RoundingMode roundingMode) throws SQLException {
+		return RowMapperUtils.getBigDecimalNotZero(rs, columnLabel, scale, roundingMode);
+	}
+
 	protected BigDecimal getBigDecimalGreaterEqualsZero(ResultSet rs, String columnLabel) throws SQLException {
 		return RowMapperUtils.getBigDecimalGreaterEqualsZero(rs, columnLabel);
+	}
+
+	protected BigDecimal getBigDecimalGreaterEqualsZero(ResultSet rs, String columnLabel, int scale, RoundingMode roundingMode)
+			throws SQLException, ArithmeticException {
+		return RowMapperUtils.getBigDecimalGreaterEqualsZero(rs, columnLabel, scale, roundingMode);
 	}
 
 	protected BigDecimal getBigDecimalPercentageAsRate(ResultSet rs, String columnLabel) throws SQLException {
