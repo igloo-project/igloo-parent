@@ -313,6 +313,41 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
+	public Renderer<T> withResourceKey(String resourceKey) {
+		return new ResourceKeyWithRenderedParameterRenderer<>(resourceKey, this);
+	}
+	
+	private static class ResourceKeyWithRenderedParameterRenderer<T> extends Renderer<T> {
+		private static final long serialVersionUID = 7436587266161009083L;
+		
+		private final Renderer<T> parameterRenderer;
+		
+		private final String resourceKey;
+
+		public ResourceKeyWithRenderedParameterRenderer(String resourceKey, Renderer<T> parameterRenderer) {
+			super();
+			this.resourceKey = resourceKey;
+			this.parameterRenderer = parameterRenderer;
+		}
+
+		@Override
+		public String render(final T value, Locale locale) {
+			IModel<?> model = parameterRenderer.asModel(new AbstractReadOnlyModel<T>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public T getObject() {
+					return value;
+				}
+			});
+			return Localizer.get().getString(resourceKey, null, model, locale, null, null);
+		}
+		
+		@Override
+		public String toString() {
+			return "fromResourceKey(" + resourceKey + ")";
+		}
+	}
+	
 	/**
 	 * @deprecated There is no reason to pass a WicketRenderer to {@code from()}. Use the renderer as-is.
 	 */
@@ -396,8 +431,9 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
-	public static Renderer<Object> stringValue() {
-		return STRING_VALUE_RENDERER;
+	@SuppressWarnings("unchecked") // Works for any T
+	public static <T> Renderer<T> stringValue() {
+		return (Renderer<T>) STRING_VALUE_RENDERER;
 	}
 	
 	private static final Renderer<Object> STRING_VALUE_RENDERER = new Renderer<Object>() {
