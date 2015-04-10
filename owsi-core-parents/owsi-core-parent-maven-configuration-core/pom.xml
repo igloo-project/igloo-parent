@@ -130,6 +130,7 @@
 		<owsi-core.less4j.version>1.8.4</owsi-core.less4j.version>
 		
 		<owsi-core.junit.version>4.11</owsi-core.junit.version>
+		<owsi-core.mockito.version>1.10.19</owsi-core.mockito.version>
 		<owsi-core.grizzly.version>1.9.59</owsi-core.grizzly.version>
 		
 		<owsi-core.vt-password.version>3.1.2</owsi-core.vt-password.version>
@@ -986,6 +987,13 @@
 					<groupId>junit</groupId>
 					<artifactId>junit</artifactId>
 					<version>${owsi-core.junit.version}</version>
+					<scope>test</scope>
+				</dependency>
+			
+				<dependency>
+					<groupId>org.mockito</groupId>
+					<artifactId>mockito-all</artifactId>
+					<version>${owsi-core.mockito.version}</version>
 					<scope>test</scope>
 				</dependency>
 				
