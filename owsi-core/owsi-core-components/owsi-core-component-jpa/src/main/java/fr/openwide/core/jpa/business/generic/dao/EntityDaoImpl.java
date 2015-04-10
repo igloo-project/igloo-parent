@@ -56,7 +56,7 @@ public class EntityDaoImpl implements IEntityDao {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> criteria = builder.createQuery(clazz);
 		Root<E> root = criteria.from(clazz);
-		criteria.where(((CriteriaBuilderImpl)builder).in(root.get("id"), ids));
+		criteria.where(((CriteriaBuilderImpl)builder).in(root.get("id"), ids.toArray()));
 		
 		List<E> entities = entityManager.createQuery(criteria).getResultList();
 		
