@@ -563,7 +563,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> function,
 				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
-			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
+			return withSideLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
 
 		@Override
