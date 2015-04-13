@@ -64,7 +64,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 
 	/**
 	 * Utility method that can be used when a resource key value is needed in the render() implementation.
-	 * <p>Returns null when the key is not found.
+	 * <p>Returns Optional.absent() when the key is not found.
 	 */
 	protected static Optional<String> getStringOptional(String key, Locale locale) {
 		return getStringOptional(key, locale, null);
@@ -72,7 +72,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 
 	/**
 	 * Utility method that can be used when a resource key value is needed in the render() implementation.
-	 * <p>Returns null when the key is not found.
+	 * <p>Returns Optional.absent() when the key is not found.
 	 */
 	protected static Optional<String> getStringOptional(String key, Locale locale, IModel<?> model) {
 		String defaultValue = new String(); // NOSONAR
