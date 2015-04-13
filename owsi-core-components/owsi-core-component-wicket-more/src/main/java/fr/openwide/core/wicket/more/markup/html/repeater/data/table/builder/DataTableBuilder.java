@@ -637,6 +637,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
+		public IDecoratedBuildState<T, S> title(IComponentFactory<?> addInComponentFactory) {
+			return addIn(AddInPlacement.HEADING_LEFT, ComponentFactories.ignoreParameter(addInComponentFactory), getTitleCssClass());
+		}
+		
+		@Override
 		public IDecoratedBuildState<T, S> count(String countResourceKey) {
 			return count(AddInPlacement.HEADING_LEFT, countResourceKey);
 		}

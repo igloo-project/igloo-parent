@@ -14,6 +14,8 @@ public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	
 	IDecoratedBuildState<T, S> title(IModel<?> model);
 	
+	IDecoratedBuildState<T, S> title(IComponentFactory<?> addInComponentFactory);
+	
 	IDecoratedBuildState<T, S> count(String countResourceKey);
 	
 	IDecoratedBuildState<T, S> count(AddInPlacement placement, String countResourceKey);
