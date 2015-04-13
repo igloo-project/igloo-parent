@@ -43,7 +43,6 @@ public final class BasicApplicationInitFromExcelMain {
 				context.close();
 			}
 		}
-		System.exit(0);
 	}
 
 }
