@@ -25,7 +25,7 @@ import fr.openwide.core.spring.util.StringUtils;
 @Repository("personDao")
 public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 
-	private static final QUser qUser = QUser.user; // NOSONAR
+	private final QUser qUser = QUser.user;
 
 	public UserDaoImpl() {
 		super();

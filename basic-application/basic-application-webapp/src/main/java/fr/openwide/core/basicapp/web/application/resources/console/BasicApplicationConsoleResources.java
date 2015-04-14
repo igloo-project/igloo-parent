@@ -1,7 +1,7 @@
 package fr.openwide.core.basicapp.web.application.resources.console;
 
-public class BasicApplicationConsoleResources { // NOSONAR
+public class BasicApplicationConsoleResources {
 
-	private BasicApplicationConsoleResources() { // NOSONAR
+	private BasicApplicationConsoleResources() {
 	}
 }

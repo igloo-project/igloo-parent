@@ -27,7 +27,7 @@ import fr.openwide.core.jpa.util.HibernateUtils;
 @Repository("auditDao")
 public class AuditDaoImpl extends AbstractAuditDaoImpl<Audit> implements IAuditDao {
 
-//	private static final QAudit qAudit = QAudit.audit; // NOSONAR
+//	private static final QAudit qAudit = QAudit.audit;
 
 	private static final Sort SORT = new Sort(
 			new SortField(Audit.DATE_SORT_FIELD_NAME, SortField.STRING, true),

@@ -1,7 +1,7 @@
 package fr.openwide.core.basicapp.web.application.resources.enums;
 
-public class BasicApplicationEnumResources { // NOSONAR
+public class BasicApplicationEnumResources {
 
-	private BasicApplicationEnumResources() { // NOSONAR
+	private BasicApplicationEnumResources() {
 	}
 }

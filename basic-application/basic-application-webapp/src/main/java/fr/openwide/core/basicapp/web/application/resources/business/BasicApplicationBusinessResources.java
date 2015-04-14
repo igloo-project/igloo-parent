@@ -1,7 +1,7 @@
 package fr.openwide.core.basicapp.web.application.resources.business;
 
-public class BasicApplicationBusinessResources { // NOSONAR
+public class BasicApplicationBusinessResources {
 
-	private BasicApplicationBusinessResources() { // NOSONAR
+	private BasicApplicationBusinessResources() {
 	}
 }
