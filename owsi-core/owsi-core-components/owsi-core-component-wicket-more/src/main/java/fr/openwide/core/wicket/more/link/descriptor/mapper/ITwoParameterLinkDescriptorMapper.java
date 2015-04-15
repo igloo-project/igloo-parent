@@ -18,6 +18,10 @@ public interface ITwoParameterLinkDescriptorMapper<L, T1, T2> extends IDetachabl
 
 	IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final IModel<T1> model1);
 
+	IOneParameterLinkDescriptorMapper<L, T2> ignoreParameter1();
+
 	IOneParameterLinkDescriptorMapper<L, T1> setParameter2(final IModel<T2> model2);
+
+	IOneParameterLinkDescriptorMapper<L, T1> ignoreParameter2();
 
 }
