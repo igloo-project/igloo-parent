@@ -6,6 +6,8 @@ import java.util.Collection;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
+import com.google.common.collect.ImmutableList;
+
 
 public final class LinkParameterValidators {
 
@@ -82,7 +84,7 @@ public final class LinkParameterValidators {
 	 * @return A validator chaining the given validators. If empty, no validation will be performed and no {@link ILinkParameterValidationErrorDescription error} will ever be reported.
 	 * @throws NullPointerException if <code>validators</code> is null.
 	 */
-	public static ILinkParameterValidator chain(Iterable<ILinkParameterValidator> validators) {
+	public static ILinkParameterValidator chain(Iterable<? extends ILinkParameterValidator> validators) {
 		Args.notNull(validators, "validators");
 		return new ChainedParameterValidator(validators);
 	}
@@ -90,11 +92,11 @@ public final class LinkParameterValidators {
 	private static class ChainedParameterValidator implements ILinkParameterValidator {
 		private static final long serialVersionUID = 1L;
 		
-		private final Iterable<ILinkParameterValidator> validators;
+		private final Iterable<? extends ILinkParameterValidator> validators;
 		
-		public ChainedParameterValidator(Iterable<ILinkParameterValidator> validators) {
+		public ChainedParameterValidator(Iterable<? extends ILinkParameterValidator> validators) {
 			super();
-			this.validators = validators;
+			this.validators = ImmutableList.copyOf(validators);
 		}
 		
 		@Override

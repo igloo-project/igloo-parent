@@ -10,7 +10,7 @@ import org.javatuples.Triplet;
 import org.javatuples.Tuple;
 import org.javatuples.Unit;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
@@ -19,26 +19,25 @@ import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
 public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescriptor> implements IDetachable {
 
 	private static final long serialVersionUID = 4728523709380372544L;
 	
 	private final CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory;
-	private final LinkParametersMapping parametersMapping;
-	private final ILinkParameterValidator validator;
+	private final Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries;
+	private final Iterable<? extends ILinkParameterValidator> validators;
 	private final ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders;
 
 	public CoreLinkDescriptorMapperLinkDescriptorFactory(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
-			LinkParametersMapping parametersMapping, ILinkParameterValidator validator,
+			Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
+			Iterable<? extends ILinkParameterValidator> validators,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders) {
 		super();
 		this.linkDescriptorFactory = linkDescriptorFactory;
-		this.parametersMapping = parametersMapping;
-		this.validator = validator;
+		this.parameterMappingEntries = parameterMappingEntries;
+		this.validators = validators;
 		this.entryBuilders = entryBuilders;
 	}
 
@@ -77,18 +76,21 @@ public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescri
 			addedValidators.addAll(result.getValue1());
 		}
 		
-		LinkParametersMapping newMapping = new LinkParametersMapping(parametersMapping, addedParameterMappingEntries);
-		ILinkParameterValidator newValidator = LinkParameterValidators.chain(
-				ImmutableList.<ILinkParameterValidator>builder().add(validator).addAll(addedValidators).build()
+		return linkDescriptorFactory.create(
+				Iterables.concat(parameterMappingEntries, addedParameterMappingEntries),
+				Iterables.concat(validators, addedValidators)
 		);
-		return linkDescriptorFactory.create(newMapping, newValidator);
 	}
 	
 	@Override
 	public void detach() {
 		linkDescriptorFactory.detach();
-		parametersMapping.detach();
-		validator.detach();
+		for (IDetachable detachable : parameterMappingEntries) {
+			detachable.detach();
+		}
+		for (IDetachable detachable : validators) {
+			detachable.detach();
+		}
 		for (IDetachable detachable : entryBuilders.asMap().keySet()) {
 			detachable.detach();
 		}

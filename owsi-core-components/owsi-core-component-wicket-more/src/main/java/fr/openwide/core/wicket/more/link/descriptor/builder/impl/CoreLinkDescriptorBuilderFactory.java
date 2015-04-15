@@ -14,8 +14,10 @@ import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CoreImageResourceLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CorePageLinkDescriptorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CoreResourceLinkDescriptorImpl;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 import fr.openwide.core.wicket.more.model.ClassModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
@@ -35,6 +37,16 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 		return new CorePageLinkDescriptorBuilderFactory(pageClassModel);
 	}
 	
+	@Override
+	public T create(Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
+			Iterable<? extends ILinkParameterValidator> validators) {
+		LinkParametersMapping parametersMapping = new LinkParametersMapping(parameterMappingEntries);
+		ILinkParameterValidator validator = LinkParameterValidators.chain(validators);
+		return create(parametersMapping, validator);
+	}
+	
+	protected abstract T create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator);
+
 	private static class CorePageLinkDescriptorBuilderFactory extends CoreLinkDescriptorBuilderFactory<IPageLinkDescriptor> {
 		private static final long serialVersionUID = 1L;
 		

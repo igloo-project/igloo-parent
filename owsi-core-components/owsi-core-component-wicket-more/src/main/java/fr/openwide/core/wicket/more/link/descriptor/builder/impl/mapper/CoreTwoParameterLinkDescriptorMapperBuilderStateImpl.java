@@ -15,7 +15,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.ITwoPar
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.ITwoParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.ITwoParameterMapperTwoChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor, T1, T2>
@@ -32,9 +32,13 @@ public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILin
 	protected IBuilderFactory<ITwoParameterLinkDescriptorMapper<L, T1, T2>> getFactory() {
 		return new IBuilderFactory<ITwoParameterLinkDescriptorMapper<L, T1, T2>>() {
 			@Override
-			public ITwoParameterLinkDescriptorMapper<L, T1, T2> create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator) {
+			public ITwoParameterLinkDescriptorMapper<L, T1, T2> create(
+					Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
+					Iterable<? extends ILinkParameterValidator> validators) {
 				return new CoreTwoParameterLinkDescriptorMapperImpl<L, T1, T2>(
-						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(linkDescriptorFactory, parametersMapping, validator, entryBuilders)
+						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(
+								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders
+						)
 				);
 			}
 		};

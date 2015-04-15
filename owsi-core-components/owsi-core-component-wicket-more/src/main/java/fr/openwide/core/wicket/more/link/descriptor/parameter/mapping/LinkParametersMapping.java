@@ -41,19 +41,10 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 	@SpringBean
 	private ILinkParameterConversionService conversionService;
 
-	public LinkParametersMapping(Collection<? extends ILinkParameterMappingEntry> parameterMappingEntries) {
+	public LinkParametersMapping(Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries) {
 		super();
 		Injector.get().inject(this);
 		this.parameterMappingEntries = ImmutableList.copyOf(parameterMappingEntries);
-	}
-
-	public LinkParametersMapping(LinkParametersMapping mapping, Collection<? extends ILinkParameterMappingEntry> addedParameterMappingEntries) {
-		super();
-		Injector.get().inject(this);
-		this.parameterMappingEntries = ImmutableList.<ILinkParameterMappingEntry>builder()
-				.addAll(mapping.parameterMappingEntries)
-				.addAll(addedParameterMappingEntries)
-				.build();
 	}
 	
 	@Override
