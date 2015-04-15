@@ -20,8 +20,14 @@ public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> extends IDet
 
 	ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(final IModel<T1> model1);
 
+	ITwoParameterLinkDescriptorMapper<L, T2, T3> ignoreParameter1();
+
 	ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(final IModel<T2> model2);
 
+	ITwoParameterLinkDescriptorMapper<L, T1, T3> ignoreParameter2();
+
 	ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(final IModel<T3> model3);
+
+	ITwoParameterLinkDescriptorMapper<L, T1, T2> ignoreParameter3();
 
 }
