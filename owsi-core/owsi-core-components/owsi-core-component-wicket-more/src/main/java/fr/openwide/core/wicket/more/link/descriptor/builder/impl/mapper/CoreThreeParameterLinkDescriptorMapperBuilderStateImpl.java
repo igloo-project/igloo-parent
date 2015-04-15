@@ -16,7 +16,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IThreeParameterMapperThreeChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IThreeParameterMapperTwoChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
 public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor, T1, T2, T3>
@@ -33,9 +33,13 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 	protected IBuilderFactory<IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>> getFactory() {
 		return new IBuilderFactory<IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>>() {
 			@Override
-			public IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator) {
+			public IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> create(
+					Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
+					Iterable<? extends ILinkParameterValidator> validators) {
 				return new CoreThreeParameterLinkDescriptorMapperImpl<L, T1, T2, T3>(
-						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(linkDescriptorFactory, parametersMapping, validator, entryBuilders)
+						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(
+								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders
+						)
 				);
 			}
 		};

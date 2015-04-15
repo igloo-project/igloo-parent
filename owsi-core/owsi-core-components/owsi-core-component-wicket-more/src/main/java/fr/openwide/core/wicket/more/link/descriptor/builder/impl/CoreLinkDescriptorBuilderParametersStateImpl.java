@@ -19,11 +19,9 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMapp
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.CollectionLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.InjectOnlyLinkParameterMappingEntry;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class CoreLinkDescriptorBuilderParametersStateImpl<Result>
@@ -140,9 +138,7 @@ public class CoreLinkDescriptorBuilderParametersStateImpl<Result>
 	
 	@Override
 	public final Result build() {
-		LinkParametersMapping parametersMapping = new LinkParametersMapping(parameterMappingEntries);
-		ILinkParameterValidator validator = LinkParameterValidators.chain(parameterValidators);
-		return factory.create(parametersMapping, validator);
+		return factory.create(parameterMappingEntries, parameterValidators);
 	}
 
 }
