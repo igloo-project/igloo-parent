@@ -138,7 +138,7 @@ ol.unstyled {
 
 .modal-backdrop,
 .modal-backdrop.fade.in {
-  .opacity(40);
+	.opacity(40);
 }
 
 #fancybox-wrap {	// Barre de chargement cachée par défaut, à supprimer quand on aura une nouvelle Modal
@@ -278,6 +278,12 @@ span.popover-btn {
 		
 			&.add-in-pagination-panel {
 				.pagination {
+					> li {
+						> a,
+						> span {
+							line-height: @add-in-pagination-line-height;
+						}
+					}
 					.pagination-size(
 						@add-in-pagination-vertical-padding, @add-in-pagination-horizontal-padding,
 						@add-in-pagination-font-size, @add-in-pagination-border-radius
