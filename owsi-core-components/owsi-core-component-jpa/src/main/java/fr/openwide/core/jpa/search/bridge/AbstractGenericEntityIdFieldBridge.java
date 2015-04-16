@@ -18,7 +18,7 @@ public abstract class AbstractGenericEntityIdFieldBridge implements FieldBridge,
 		GenericEntity<?, ?> entity = (GenericEntity<?, ?>) object;
 		Object id = entity.getId();
 		// The ID may be null if the FieldBridge is being used while building a query.
-		return id == null ? null : id.toString();
+		return id == null ? "" : id.toString();
 	}
 	
 }
