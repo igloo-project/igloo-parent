@@ -25,6 +25,7 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.BindingOneParameterLi
 import fr.openwide.core.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
+import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
@@ -581,6 +582,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IAddedLabelColumnState<T, S> hideIfInvalid() {
 			getColumn().hideIfInvalid();
+			return this;
+		}
+		
+		@Override
+		public IAddedLabelColumnState<T, S> targetBlank() {
+			getColumn().addLinkBehavior(new TargetBlankBehavior());
 			return this;
 		}
 	}
