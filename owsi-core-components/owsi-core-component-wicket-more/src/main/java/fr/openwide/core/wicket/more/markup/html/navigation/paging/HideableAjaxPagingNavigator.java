@@ -12,14 +12,27 @@ public class HideableAjaxPagingNavigator extends HideablePagingNavigator {
 	private static final long serialVersionUID = -4406782762372796027L;
 	
 	public HideableAjaxPagingNavigator(String id, IPageable pageable) {
-		this(id, pageable, null);
+		super(id, pageable, null);
 	}
 	
 	public HideableAjaxPagingNavigator(String id, IPageable pageable, IPagingLabelProvider labelProvider) {
 		super(id, pageable, labelProvider);
-		setOutputMarkupId(true);
 	}
 	
+	public HideableAjaxPagingNavigator(String id, IPageable pageable, int viewSize) {
+		super(id, pageable, viewSize);
+	}
+
+	public HideableAjaxPagingNavigator(String id, IPageable pageable, IPagingLabelProvider labelProvider, int viewSize) {
+		super(id, pageable, labelProvider, viewSize);
+	}
+	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		setOutputMarkupId(true);
+	}
+
 	@Override
 	protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageNumber) {
 		return new AjaxBootstrapPagingNavigationLink(id, pageable, pageNumber);

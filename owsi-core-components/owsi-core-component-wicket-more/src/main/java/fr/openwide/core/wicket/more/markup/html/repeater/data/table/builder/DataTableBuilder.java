@@ -620,6 +620,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 
 	private class DecoratedBuildState implements IDecoratedBuildState<T, S> {
+		private static final int DEFAULT_PAGER_VIEW_SIZE = 11;
+		
 		protected String countResourceKey = null;
 		
 		protected final Multimap<AddInPlacement, IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>>
@@ -661,22 +663,42 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> pagers() {
-			return pager(AddInPlacement.HEADING_RIGHT).pager(AddInPlacement.FOOTER_RIGHT);
+			return pagers(DEFAULT_PAGER_VIEW_SIZE);
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> pagers(int viewSize) {
+			return pager(AddInPlacement.HEADING_RIGHT, viewSize).pager(AddInPlacement.FOOTER_RIGHT, viewSize);
 		}
 		
 		@Override
 		public IDecoratedBuildState<T, S> pager(AddInPlacement placement) {
-			return addIn(placement, new PagerAddInComponentFactory(), getPaginationCssClass());
+			return pager(placement, DEFAULT_PAGER_VIEW_SIZE);
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> pager(AddInPlacement placement, int viewSize) {
+			return addIn(placement, new PagerAddInComponentFactory(viewSize), getPaginationCssClass());
 		}
 
 		@Override
 		public IDecoratedBuildState<T, S> ajaxPagers() {
-			return ajaxPager(AddInPlacement.HEADING_RIGHT).ajaxPager(AddInPlacement.FOOTER_RIGHT);
+			return ajaxPagers(DEFAULT_PAGER_VIEW_SIZE);
+		}
+
+		@Override
+		public IDecoratedBuildState<T, S> ajaxPagers(int viewSize) {
+			return ajaxPager(AddInPlacement.HEADING_RIGHT, viewSize).ajaxPager(AddInPlacement.FOOTER_RIGHT, viewSize);
 		}
 		
 		@Override
 		public IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement) {
-			return addIn(placement, new AjaxPagerAddInComponentFactory(), getPaginationCssClass());
+			return ajaxPager(placement, DEFAULT_PAGER_VIEW_SIZE);
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement, int viewSize) {
+			return addIn(placement, new AjaxPagerAddInComponentFactory(viewSize), getPaginationCssClass());
 		}
 		
 		@Override

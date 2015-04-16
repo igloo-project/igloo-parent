@@ -22,11 +22,19 @@ public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	
 	IDecoratedBuildState<T, S> pagers();
 	
+	IDecoratedBuildState<T, S> pagers(int viewSize);
+	
 	IDecoratedBuildState<T, S> pager(AddInPlacement placement);
+	
+	IDecoratedBuildState<T, S> pager(AddInPlacement placement, int viewSize);
 	
 	IDecoratedBuildState<T, S> ajaxPagers();
 	
+	IDecoratedBuildState<T, S> ajaxPagers(int viewSize);
+	
 	IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement);
+	
+	IDecoratedBuildState<T, S> ajaxPager(AddInPlacement placement, int viewSize);
 	
 	IDecoratedBuildState<T, S> addIn(AddInPlacement placement, IComponentFactory<?> addInComponentFactory);
 
