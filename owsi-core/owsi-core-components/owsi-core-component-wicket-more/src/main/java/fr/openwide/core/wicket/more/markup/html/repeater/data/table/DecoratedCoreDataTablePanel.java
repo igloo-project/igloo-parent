@@ -168,14 +168,17 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	public static class AjaxPagerAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<?, ?>> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
-		public AjaxPagerAddInComponentFactory() {
+		private final int viewSize;
+		
+		public AjaxPagerAddInComponentFactory(int viewSize) {
 			super();
+			this.viewSize = viewSize;
 		}
 		
 		@Override
 		public Component create(String wicketId, DecoratedCoreDataTablePanel<?, ?> dataTable) {
 			dataTable.setOutputMarkupId(true);
-			return new HideableAjaxPagingNavigator(wicketId, dataTable)
+			return new HideableAjaxPagingNavigator(wicketId, dataTable, viewSize)
 					.add(new ClassAttributeAppender("add-in-pagination"));
 		}
 	}
@@ -183,13 +186,16 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	public static class PagerAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, IPageable> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
-		public PagerAddInComponentFactory() {
+		private final int viewSize;
+		
+		public PagerAddInComponentFactory(int viewSize) {
 			super();
+			this.viewSize = viewSize;
 		}
 		
 		@Override
 		public Component create(String wicketId, IPageable pageable) {
-			return new HideablePagingNavigator(wicketId, pageable)
+			return new HideablePagingNavigator(wicketId, pageable, viewSize)
 					.add(new ClassAttributeAppender("add-in-pagination"));
 		}
 	}
