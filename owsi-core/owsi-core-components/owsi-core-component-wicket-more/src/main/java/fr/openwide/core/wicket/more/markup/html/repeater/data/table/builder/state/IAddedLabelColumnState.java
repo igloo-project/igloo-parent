@@ -81,4 +81,6 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 
 	IAddedLabelColumnState<T, S> hideIfInvalid();
 
+	IAddedLabelColumnState<T, S> targetBlank();
+
 }

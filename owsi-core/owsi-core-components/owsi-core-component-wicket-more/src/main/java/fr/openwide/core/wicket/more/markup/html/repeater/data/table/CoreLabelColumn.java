@@ -1,11 +1,16 @@
 package fr.openwide.core.wicket.more.markup.html.repeater.data.table;
 
+import java.util.List;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
@@ -14,6 +19,7 @@ import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
@@ -35,6 +41,8 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	private boolean disableIfInvalid = false;
 	
 	private boolean hideIfInvalid = false;
+	
+	private List<Behavior> linkBehaviors = Lists.newArrayList();
 	
 	public CoreLabelColumn(IModel<String> displayModel) {
 		super(displayModel);
@@ -108,6 +116,9 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		if (hideIfInvalid) {
 			link.hideIfInvalid();
 		}
+		for (Behavior linkBehavior : linkBehaviors) {
+			link.add(linkBehavior);
+		}
 		return link;
 	}
 
@@ -171,6 +182,10 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	public CoreLabelColumn<T, S> hideIfInvalid() {
 		this.hideIfInvalid = true;
 		return this;
+	}
+
+	public void addLinkBehavior(TargetBlankBehavior targetBlankBehavior) {
+		linkBehaviors.add(targetBlankBehavior);
 	}
 
 }
