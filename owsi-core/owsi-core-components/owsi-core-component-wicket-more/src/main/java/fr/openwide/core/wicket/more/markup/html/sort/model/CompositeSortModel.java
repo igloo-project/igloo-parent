@@ -1,14 +1,16 @@
 package fr.openwide.core.wicket.more.markup.html.sort.model;
 
-import static com.google.common.base.Predicates.in;
-import static com.google.common.base.Predicates.not;
-
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
@@ -27,7 +29,10 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	
 	private final Map<T, SortOrder> stabilizationSort;
 	
-	private LoadableDetachableModel<Map<T, SortOrder>> moreSortsModel;
+	private List<IModel<? extends Map<? extends T, SortOrder>>> beforeSortModels = Lists.newArrayList();
+	private List<IModel<? extends Map<? extends T, SortOrder>>> beforeDefaultSortModels = Lists.newArrayList();
+	private List<IModel<? extends Map<? extends T, SortOrder>>> afterDefaultSortModels = Lists.newArrayList();
+	private List<IModel<? extends Map<? extends T, SortOrder>>> afterSortModels = Lists.newArrayList();
 	
 	private static final <T extends ISort<?>> ImmutableMap<T, SortOrder> toMap(T item) {
 		return item == null ? ImmutableMap.<T, SortOrder>of() : ImmutableMap.of(item, item.getDefaultOrder());
@@ -62,30 +67,49 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 		this.stabilizationSort = ImmutableMap.copyOf(stabilizationSort);
 	}
 	
-	public CompositeSortModel(CompositingStrategy compositingStrategy, Map<T, SortOrder> defaultSort, Map<T, SortOrder> stabilizationSort,
-			LoadableDetachableModel<Map<T, SortOrder>> moreSortsModel) {
-		this.moreSortsModel = moreSortsModel;
-		this.compositingStrategy = compositingStrategy;
-		this.defaultSort = ImmutableMap.copyOf(defaultSort);
-		this.stabilizationSort = ImmutableMap.copyOf(stabilizationSort);
+	public CompositeSortModel<T> addBefore(IModel<? extends Map<? extends T, SortOrder>> sortModel) {
+		beforeSortModels.add(sortModel);
+		return this;
 	}
-
+	
+	public CompositeSortModel<T> addBeforeDefault(IModel<? extends Map<? extends T, SortOrder>> sortModel) {
+		beforeDefaultSortModels.add(sortModel);
+		return this;
+	}
+	
+	public CompositeSortModel<T> addAfterDefault(IModel<? extends Map<? extends T, SortOrder>> sortModel) {
+		afterDefaultSortModels.add(sortModel);
+		return this;
+	}
+	
+	public CompositeSortModel<T> addAfter(IModel<? extends Map<? extends T, SortOrder>> sortModel) {
+		afterSortModels.add(sortModel);
+		return this;
+	}
+	
+	private void putAll(Map<T, SortOrder> map, Iterable<IModel<? extends Map<? extends T, SortOrder>>> models) {
+		for (IModel<? extends Map<? extends T, SortOrder>> sortModel : models) {
+			map.putAll(sortModel.getObject());
+		}
+	}
+	
 	@Override
 	public Map<T, SortOrder> getObject() {
-		Map<T, SortOrder> selectedSort = getSelectedSort();
-		ImmutableMap.Builder<T, SortOrder> builder = ImmutableMap.builder();
-		builder.putAll(selectedSort);
-		if (this.moreSortsModel != null) {
-			builder.putAll(moreSortsModel.getObject());
-		}
-		return builder
-				.putAll(Maps.filterKeys(stabilizationSort, not(in(selectedSort.keySet()))))
-				.build();
+		Map<T, SortOrder> map = new LinkedHashMap<>();
+		putAll(map, beforeSortModels);
+		map.putAll(getSelectedSort());
+		putAll(map, afterSortModels);
+		map.putAll(stabilizationSort);
+		return map;
 	}
 
 	public Map<T, SortOrder> getSelectedSort() {
 		if (map.isEmpty()) {
-			return defaultSort;
+			Map<T, SortOrder> map = new LinkedHashMap<>();
+			putAll(map, beforeDefaultSortModels);
+			map.putAll(defaultSort);
+			putAll(map, afterDefaultSortModels);
+			return map;
 		} else {
 			return map;
 		}
@@ -153,8 +177,8 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	
 	@Override
 	public void detach() {
-		if (this.moreSortsModel != null) {
-			this.moreSortsModel.detach();
+		for (IDetachable detachable : Iterables.concat(beforeSortModels, beforeDefaultSortModels, afterDefaultSortModels, afterSortModels)) {
+			detachable.detach();
 		}
-	};
+	}
 }
