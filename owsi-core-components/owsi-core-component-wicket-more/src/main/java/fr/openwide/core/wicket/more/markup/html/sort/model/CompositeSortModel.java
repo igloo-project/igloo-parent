@@ -6,6 +6,8 @@ import static com.google.common.base.Predicates.not;
 import java.util.Map;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -25,6 +27,8 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	private final Map<T, SortOrder> defaultSort;
 	
 	private final Map<T, SortOrder> stabilizationSort;
+	
+	private LoadableDetachableModel<Map<T, SortOrder>> moreSortsModel;
 	
 	private static final <T extends ISort<?>> ImmutableMap<T, SortOrder> toMap(T item) {
 		return item == null ? ImmutableMap.<T, SortOrder>of() : ImmutableMap.of(item, item.getDefaultOrder());
@@ -58,16 +62,32 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 		this.defaultSort = ImmutableMap.copyOf(defaultSort);
 		this.stabilizationSort = ImmutableMap.copyOf(stabilizationSort);
 	}
+	
+	public CompositeSortModel(CompositingStrategy compositingStrategy, Map<T, SortOrder> defaultSort, Map<T, SortOrder> stabilizationSort, LoadableDetachableModel<Map<T, SortOrder>> moreSortsModel) {
+		this.moreSortsModel = moreSortsModel;
+		this.compositingStrategy = compositingStrategy;
+		this.defaultSort = ImmutableMap.copyOf(defaultSort);
+		this.stabilizationSort = ImmutableMap.copyOf(stabilizationSort);
+	}
 
 	@Override
 	public Map<T, SortOrder> getObject() {
 		Map<T, SortOrder> selectedSort = getSelectedSort();
-		return ImmutableMap.<T, SortOrder>builder()
-				.putAll(selectedSort)
-				.putAll(Maps.filterKeys(stabilizationSort, not(in(selectedSort.keySet()))))
-				.build();
+		if (this.moreSortsModel != null) {
+			return ImmutableMap.<T, SortOrder>builder()
+					.putAll(selectedSort)
+					.putAll(moreSortsModel.getObject())
+					.putAll(Maps.filterKeys(stabilizationSort, not(in(selectedSort.keySet()))))
+					.build();
+		} else {
+			return ImmutableMap.<T, SortOrder>builder()
+					.putAll(selectedSort)
+					.putAll(Maps.filterKeys(stabilizationSort, not(in(selectedSort.keySet()))))
+					.build();
+		}
+		
 	}
-	
+
 	public Map<T, SortOrder> getSelectedSort() {
 		if (map.isEmpty()) {
 			return defaultSort;
@@ -135,5 +155,11 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 		protected abstract <T extends ISort<?>>
 				void setOrder(Map<T, SortOrder> map, T sort, SortOrder order);
 	}
-
+	
+	@Override
+	public void detach() {
+		if (this.moreSortsModel != null) {
+			this.moreSortsModel.detach();
+		}
+	};
 }
