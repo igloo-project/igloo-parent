@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.affix;
 
+import org.apache.wicket.Component;
+import org.odlabs.wiquery.core.javascript.JsScope;
+import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.IComplexOption;
 import org.odlabs.wiquery.core.options.Options;
 
@@ -7,64 +10,118 @@ public class BootstrapAffixOptions extends Options {
 
 	private static final long serialVersionUID = 8139302328021897144L;
 
-	// Bootstrap affix options
+	@Deprecated
 	private Integer top;
 
+	@Deprecated
 	private Integer bottom;
 
 	public BootstrapAffixOptions() {
 		super();
 	}
 
-	@Override
-	public CharSequence getJavaScriptOptions() {
-		if (top != null || bottom != null) {
-			put("offset", new BootstrapAffixOffsetOptions(top, bottom));
+	public BootstrapAffixOffsetOptions getOffsetOptions() {
+		BootstrapAffixOffsetOptions options = (BootstrapAffixOffsetOptions) getComplexOption("offset");
+		if (options == null) {
+			options = new BootstrapAffixOffsetOptions();
+			put("offset", options);
 		}
-		
-		return super.getJavaScriptOptions();
+		return options;
 	}
 
+	@Deprecated
 	public Integer getTop() {
 		return top;
 	}
 
-	public void setTop(Integer top) {
+	public BootstrapAffixOptions setTop(Integer top) {
 		this.top = top;
+		getOffsetOptions().setTop(top);
+		return this;
 	}
 
+	public BootstrapAffixOptions setTop(JsScope scope) {
+		this.top = null;
+		getOffsetOptions().setTop(scope);
+		return this;
+	}
+
+	public BootstrapAffixOptions setEnclosing(Component enclosingComponent) {
+		return setEnclosing(enclosingComponent, 0);
+	}
+
+	public BootstrapAffixOptions setEnclosing(Component enclosingComponent, int offset) {
+		this.top = null;
+		setTop(JsScope.quickScope(new JsStatement()
+				.append("return ").$(enclosingComponent).chain("offset").append(".top").append(" - ").append(String.valueOf(offset))
+		));
+		setBottom(JsScope.quickScope(new JsStatement()
+				.append("return ").append("$(document)").chain("height")
+				.append(" - ").$(enclosingComponent).chain("position").append(".top")
+				.append(" - ").$(enclosingComponent).chain("outerHeight")
+				.append(" - ").append(String.valueOf(offset))
+		));
+		return this;
+	}
+
+	@Deprecated
 	public Integer getBottom() {
 		return bottom;
 	}
 
-	public void setBottom(Integer bottom) {
+	public BootstrapAffixOptions setBottom(Integer bottom) {
 		this.bottom = bottom;
+		getOffsetOptions().setBottom(bottom);
+		return this;
+	}
+
+	public BootstrapAffixOptions setBottom(JsScope scope) {
+		this.bottom = null;
+		getOffsetOptions().setBottom(scope);
+		return this;
+	}
+	
+	public BootstrapAffixOptions setTarget(Component target) {
+		put("target", new JsStatement().$(target).render(false).toString());
+		return this;
 	}
 
 	private static class BootstrapAffixOffsetOptions implements IComplexOption {
 
 		private static final long serialVersionUID = 3993624725774828933L;
+		private final Options options = new Options();
 
-		private Integer top;
-
-		private Integer bottom;
-
-		public BootstrapAffixOffsetOptions(Integer top, Integer bottom) {
+		public BootstrapAffixOffsetOptions() {
 			super();
-			this.top = top;
-			this.bottom = bottom;
+		}
+
+		public void setTop(Integer top) {
+			if (top != null) {
+				options.put("top", top);
+			}
+		}
+
+		public void setTop(JsScope scope) {
+			if (scope != null) {
+				options.put("top", scope);
+			}
+		}
+
+		public void setBottom(Integer bottom) {
+			if (bottom != null) {
+				options.put("bottom", bottom);
+			}
+		}
+
+		public void setBottom(JsScope scope) {
+			if (scope != null) {
+				options.put("bottom", scope);
+			}
 		}
 
 		@Override
 		public CharSequence getJavascriptOption() {
-			Options options = new Options();
-			if (top != null) {
-				options.put("top", top);
-			}
 			
-			if (bottom != null) {
-				options.put("bottom", bottom);
-			}
 			return options.getJavaScriptOptions();
 		}
 	}
