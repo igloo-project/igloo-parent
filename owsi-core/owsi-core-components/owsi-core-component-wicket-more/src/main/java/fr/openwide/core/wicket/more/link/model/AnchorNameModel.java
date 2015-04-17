@@ -10,6 +10,22 @@ public class AnchorNameModel extends LoadableDetachableModel<String> {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public static IModel<String> id(String unencodedAnchorName) {
+		return new AnchorNameModel(unencodedAnchorName, AnchorType.ID);
+	}
+	
+	public static IModel<String> id(IModel<String> unencodedAnchorNameModel) {
+		return new AnchorNameModel(unencodedAnchorNameModel, AnchorType.ID);
+	}
+	
+	public static IModel<String> href(String unencodedAnchorName) {
+		return new AnchorNameModel(unencodedAnchorName, AnchorType.HREF);
+	}
+	
+	public static IModel<String> href(IModel<String> unencodedAnchorNameModel) {
+		return new AnchorNameModel(unencodedAnchorNameModel, AnchorType.HREF);
+	}
+	
 	public static enum AnchorType {
 		HREF,
 		ID;
