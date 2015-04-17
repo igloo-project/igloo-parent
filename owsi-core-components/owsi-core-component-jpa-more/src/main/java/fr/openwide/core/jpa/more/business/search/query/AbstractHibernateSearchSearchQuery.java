@@ -435,9 +435,14 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 			return input.getPath();
 		}
 	}
+	
+	protected void addFilterBeforeCreateQuery() {
+		// Nothing
+	}
 
 	protected FullTextQuery getFullTextQuery() {
 		if (query == null) {
+			addFilterBeforeCreateQuery();
 			query = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
 		}
 		return query;
