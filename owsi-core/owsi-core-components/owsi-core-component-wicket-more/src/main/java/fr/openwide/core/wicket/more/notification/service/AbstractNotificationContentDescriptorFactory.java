@@ -62,16 +62,24 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		public final String renderSubject(Locale locale) {
 			return AbstractNotificationContentDescriptorFactory.this.renderString(
 					getSubjectMessageKey(), locale,
-					getSubjectParameter(),
-					(Object[]) Iterables.toArray(getSubjectPositionalParameters(), Object.class)
+					getSubjectParameter(locale),
+					(Object[]) Iterables.toArray(getSubjectPositionalParameters(locale), Object.class)
 			);
 		}
 		
 		protected Object getSubjectParameter() {
+			return getSubjectParameter(null);
+		}
+		
+		protected Object getSubjectParameter(Locale locale) {
 			return null;
 		}
 		
 		protected Iterable<?> getSubjectPositionalParameters() {
+			return getSubjectPositionalParameters(null);
+		}
+		
+		protected Iterable<?> getSubjectPositionalParameters(Locale locale) {
 			return ImmutableList.of();
 		}
 		
