@@ -110,10 +110,48 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
+	public <T> IfElseBuilder<T> then(IModel<? extends T> modelIfTrue) {
+		return new IfElseBuilder<>(this, modelIfTrue);
+	}
+	
+	public <T extends Serializable> ValueIfElseBuilder<T> then(T valueIfTrue) {
+		return new ValueIfElseBuilder<>(this, Model.of(valueIfTrue));
+	}
+	
+	public static class IfElseBuilder<T> {
+		private final Condition condition;
+		private final IModel<? extends T> modelIfTrue;
+		public IfElseBuilder(Condition condition, IModel<? extends T> modelIfTrue) {
+			super();
+			this.condition = condition;
+			this.modelIfTrue = modelIfTrue;
+		}
+		public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
+			return condition.asValue(modelIfTrue, modelIfFalse);
+		}
+	}
+	
+	public static class ValueIfElseBuilder<T extends Serializable> extends IfElseBuilder<T> {
+		public ValueIfElseBuilder(Condition condition, IModel<? extends T> modelIfTrue) {
+			super(condition, modelIfTrue);
+		}
+		public IModel<T> otherwise(T valueIfFalse) {
+			return otherwise(Model.of(valueIfFalse));
+		}
+	}
+	
+	/**
+	 * @deprecated Use .then(...).otherwise(...) instead.
+	 */
+	@Deprecated
 	public <T> IModel<T> asValue(IModel<? extends T> modelIfTrue, IModel<? extends T> modelIfFalse) {
 		return new ConditionalModel<>(this, modelIfTrue, modelIfFalse);
 	}
-	
+
+	/**
+	 * @deprecated Use .then(...).otherwise(...) instead.
+	 */
+	@Deprecated
 	public <T extends Serializable> IModel<T> asValue(T valueIfTrue, T valueIfFalse) {
 		return new ConditionalModel<>(this, Model.of(valueIfTrue), Model.of(valueIfFalse));
 	}
