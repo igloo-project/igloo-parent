@@ -10,8 +10,6 @@ import org.bindgen.binding.AbstractBinding;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -24,29 +22,24 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParamete
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
-public abstract class AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L extends ILinkDescriptor> implements IParameterMappingState<Result> {
+public abstract class AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L extends ILinkDescriptor>
+		implements IParameterMappingState<Result> {
 	
 	protected final CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory;
-	
-	protected final List<Class<?>> dynamicParameterTypes;
-	
-	protected final ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders;
 	
 	public AbstractCoreLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory) {
 		super();
 		this.linkDescriptorFactory = linkDescriptorFactory;
-		this.entryBuilders = LinkedListMultimap.create();
-		this.dynamicParameterTypes = ImmutableList.<Class<?>>of();
 	}
 	
 	public AbstractCoreLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
+			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType, int expectedNumberOfParameters) {
 		super();
 		this.linkDescriptorFactory = linkDescriptorFactory;
-		this.entryBuilders = LinkedListMultimap.create(entryBuilders);
-		this.dynamicParameterTypes = ImmutableList.<Class<?>>builder().addAll(dynamicParameterTypes).add(addedParameterType).build();
 		Args.withinRange(expectedNumberOfParameters-1, expectedNumberOfParameters-1, dynamicParameterTypes.size(), "dynamicParameterTypes.size()");
 	}
 	

@@ -16,6 +16,12 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
  */
 public interface INoParameterMapperState<L> extends IParameterMappingState<L> {
 
+	/**
+	 * @deprecated Use {@link #model(Class)} instead;
+	 */
+	@Deprecated
 	<T1> IOneParameterMapperState<L, T1> addDynamicParameter(Class<? super T1> clazz);
+
+	<T1> IOneParameterMapperState<L, T1> model(Class<? super T1> clazz);
 
 }

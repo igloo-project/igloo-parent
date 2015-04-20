@@ -577,6 +577,10 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		return new AnyGlobalPermissionCondition(Lists.asList(permissionName, otherPermissionNames));
 	}
 	
+	public static Condition anyPermission(Iterable<String> permissionNames) {
+		return new AnyGlobalPermissionCondition(permissionNames);
+	}
+	
 	public static Condition permission(Permission permission) {
 		return new AnyGlobalPermissionCondition(permission);
 	}
@@ -626,6 +630,10 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	public static Condition anyPermission(IModel<?> securedObjectModel, String permissionName, String ... otherPermissionNames) {
 		return new AnyObjectPermissionCondition(securedObjectModel, Lists.asList(permissionName, otherPermissionNames));
+	}
+	
+	public static Condition anyPermission(IModel<?> securedObjectModel, Iterable<String> permissionNames) {
+		return new AnyObjectPermissionCondition(securedObjectModel, permissionNames);
 	}
 	
 	public static Condition permission(IModel<?> securedObjectModel, Permission permission) {
@@ -678,7 +686,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		
 		@Override
 		public String toString() {
-			return "anyPermission(" + securedObjectModel + "," + COMMA_JOINER.join(permissions) + ")";
+			return "anyObjectPermission(" + securedObjectModel + "," + COMMA_JOINER.join(permissions) + ")";
 		}
 	}
 }

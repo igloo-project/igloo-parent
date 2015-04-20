@@ -18,15 +18,19 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
 public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor, T1, T2, T3>
-		extends AbstractCoreLinkDescriptorMapperBuilderStateImpl<IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>, L>
+		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl<
+				IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>, L, IThreeParameterMapperState<L, T1, T2, T3>, T3
+		>
 		implements IThreeParameterMapperState<L, T1, T2, T3> {
 	
 	public CoreThreeParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
+			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType) {
-		super(linkDescriptorFactory, entryBuilders, dynamicParameterTypes, addedParameterType, 2);
+		super(linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, addedParameterType, 2);
 	}
 	
 	@Override
@@ -38,7 +42,7 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 					Iterable<? extends ILinkParameterValidator> validators) {
 				return new CoreThreeParameterLinkDescriptorMapperImpl<L, T1, T2, T3>(
 						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(
-								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders
+								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders, validatorFactories
 						)
 				);
 			}
@@ -52,7 +56,10 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 					IThreeParameterMapperTwoChosenParameterMappingState,
 					IThreeParameterMapperThreeChosenParameterMappingState {
 		public ThreeParameterMapperMappingStateImpl(int firstChosenIndex) {
-			super(CoreThreeParameterLinkDescriptorMapperBuilderStateImpl.this, dynamicParameterTypes, firstChosenIndex, entryBuilders);
+			super(
+					CoreThreeParameterLinkDescriptorMapperBuilderStateImpl.this,
+					dynamicParameterTypes, firstChosenIndex, entryBuilders, validatorFactories
+			);
 		}
 
 		@Override
@@ -72,6 +79,11 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 			addDynamicParameter(1);
 			return this;
 		}
+	}
+
+	@Override
+	protected ThreeParameterMapperMappingStateImpl pickLast() {
+		return pickThird();
 	}
 	
 	@Override

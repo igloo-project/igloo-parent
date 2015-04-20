@@ -20,6 +20,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescrip
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
 public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescriptor> implements IDetachable {
 
@@ -29,16 +30,19 @@ public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescri
 	private final Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries;
 	private final Iterable<? extends ILinkParameterValidator> validators;
 	private final ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders;
+	private final ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories;
 
 	public CoreLinkDescriptorMapperLinkDescriptorFactory(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
 			Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
 			Iterable<? extends ILinkParameterValidator> validators,
-			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders) {
+			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
+			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories) {
 		super();
 		this.linkDescriptorFactory = linkDescriptorFactory;
 		this.parameterMappingEntries = parameterMappingEntries;
 		this.validators = validators;
 		this.entryBuilders = entryBuilders;
+		this.validatorFactories = validatorFactories;
 	}
 
 	private Tuple extractParameters(Tuple parameters, List<Integer> indices) {
@@ -74,6 +78,15 @@ public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescri
 			Pair<ILinkParameterMappingEntry, Collection<ILinkParameterValidator>> result = builder.build(builderParameters);
 			addedParameterMappingEntries.add(result.getValue0());
 			addedValidators.addAll(result.getValue1());
+		}
+		
+		for (Map.Entry<ILinkParameterValidatorFactory<?>, List<Integer>> entry : Multimaps.asMap(validatorFactories).entrySet()) {
+			List<Integer> indices = entry.getValue();
+			Tuple builderParameters = extractParameters(parameters, indices);
+			@SuppressWarnings("unchecked")
+			ILinkParameterValidatorFactory<Tuple> factory = ((ILinkParameterValidatorFactory<Tuple>)entry.getKey());
+			ILinkParameterValidator result = factory.create(builderParameters);
+			addedValidators.add(result);
 		}
 		
 		return linkDescriptorFactory.create(
