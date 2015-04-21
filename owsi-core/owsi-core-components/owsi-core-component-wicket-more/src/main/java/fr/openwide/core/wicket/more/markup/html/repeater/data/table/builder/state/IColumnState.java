@@ -34,7 +34,7 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
 	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
 
-	<C> IAddedCoreColumnState<T, S> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapLabelRenderer<? super C> renderer);
+	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapLabelRenderer<? super C> renderer);
 
 	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapLabelRenderer<? super C> renderer);
 

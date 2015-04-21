@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state;
 
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Function;
@@ -80,6 +81,8 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 	IAddedLabelColumnState<T, S> disableIfInvalid();
 
 	IAddedLabelColumnState<T, S> hideIfInvalid();
+
+	IAddedLabelColumnState<T, S> linkBehavior(Behavior linkBehavior);
 
 	IAddedLabelColumnState<T, S> targetBlank();
 
