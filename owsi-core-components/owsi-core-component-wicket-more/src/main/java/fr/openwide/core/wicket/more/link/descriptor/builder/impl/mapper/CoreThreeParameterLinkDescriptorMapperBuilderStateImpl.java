@@ -30,7 +30,7 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
 			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType) {
-		super(linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, addedParameterType, 2);
+		super(linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, addedParameterType, 3);
 	}
 	
 	@Override
