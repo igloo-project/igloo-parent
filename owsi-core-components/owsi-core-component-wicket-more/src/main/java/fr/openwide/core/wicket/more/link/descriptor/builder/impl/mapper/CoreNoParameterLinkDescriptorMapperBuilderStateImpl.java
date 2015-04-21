@@ -18,11 +18,6 @@ public class CoreNoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILink
 	protected IBuilderFactory<L> getFactory() {
 		return linkDescriptorFactory;
 	}
-	
-	@Override
-	public <T1> IOneParameterMapperState<L, T1> addDynamicParameter(Class<? super T1> clazz) {
-		return model(clazz);
-	}
 
 	@Override
 	public <T1> IOneParameterMapperState<L, T1> model(Class<? super T1> clazz) {

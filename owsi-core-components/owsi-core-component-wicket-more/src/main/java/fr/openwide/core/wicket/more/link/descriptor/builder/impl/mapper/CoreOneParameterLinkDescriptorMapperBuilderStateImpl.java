@@ -59,12 +59,6 @@ public class CoreOneParameterLinkDescriptorMapperBuilderStateImpl<L extends ILin
 	}
 
 	@Override
-	public <T2> ITwoParameterMapperState<L, T1, T2> addDynamicParameter(Class<? super T2> clazz) {
-		return new CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L, T1, T2>(
-				linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, clazz);
-	}
-	
-	@Override
 	public <T2> ITwoParameterMapperState<L, T1, T2> model(Class<? super T2> clazz) {
 		return new CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L, T1, T2>(
 				linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, clazz);

@@ -9,18 +9,12 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
  * <ul>
  *  <li> build a LinkDescriptor directly, by calling any of the {@link IParameterMappingState} methods.
  *  <li> build a LinkDescriptorMapper (for example {@link IOneParameterLinkDescriptorMapper} or {@link ITwoParameterLinkDescriptorMapper}),
- *  by calling the {@link #addDynamicParameter(Class)} method.
+ *  by calling the {@link #model(Class)} method.
  * </ul>
  *
  * @param <L>
  */
 public interface INoParameterMapperState<L> extends IParameterMappingState<L> {
-
-	/**
-	 * @deprecated Use {@link #model(Class)} instead;
-	 */
-	@Deprecated
-	<T1> IOneParameterMapperState<L, T1> addDynamicParameter(Class<? super T1> clazz);
 
 	<T1> IOneParameterMapperState<L, T1> model(Class<? super T1> clazz);
 
