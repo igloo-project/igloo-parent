@@ -1,28 +1,23 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl.mapper;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
 import org.bindgen.binding.AbstractBinding;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Supplier;
-import com.google.common.collect.ListMultimap;
 
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderParametersStateImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.IBuilderFactory;
-import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
 public abstract class AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L extends ILinkDescriptor>
 		implements IParameterMappingState<Result> {
@@ -32,15 +27,6 @@ public abstract class AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L
 	public AbstractCoreLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory) {
 		super();
 		this.linkDescriptorFactory = linkDescriptorFactory;
-	}
-	
-	public AbstractCoreLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
-			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
-			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
-			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType, int expectedNumberOfParameters) {
-		super();
-		this.linkDescriptorFactory = linkDescriptorFactory;
-		Args.withinRange(expectedNumberOfParameters-1, expectedNumberOfParameters-1, dynamicParameterTypes.size(), "dynamicParameterTypes.size()");
 	}
 	
 	protected abstract IBuilderFactory<Result> getFactory();
