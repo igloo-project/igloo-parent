@@ -19,7 +19,6 @@ import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
-import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
@@ -184,8 +183,8 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		return this;
 	}
 
-	public void addLinkBehavior(TargetBlankBehavior targetBlankBehavior) {
-		linkBehaviors.add(targetBlankBehavior);
+	public void addLinkBehavior(Behavior behavior) {
+		linkBehaviors.add(behavior);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
@@ -47,6 +48,7 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCor
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.ICoreColumn;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBooleanLabelColumnState;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBootstrapBadgeColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedCoreColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedLabelColumnState;
@@ -251,9 +253,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapBadgeColumn(IModel<String> headerModel,
+	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			final AbstractCoreBinding<? super T, C> binding, final BootstrapLabelRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer));
+		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
+		columns.put(column, null);
+		return new AddedBootstrapBadgeColumnState<C>(column);
 	}
 	
 	@Override
@@ -370,7 +374,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
-		public <C> IAddedCoreColumnState<T, S> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
+		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
 				BootstrapLabelRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, binding, renderer);
 		}
@@ -586,9 +590,95 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public IAddedLabelColumnState<T, S> targetBlank() {
-			getColumn().addLinkBehavior(new TargetBlankBehavior());
+		public IAddedLabelColumnState<T, S> linkBehavior(Behavior linkBehavior) {
+			getColumn().addLinkBehavior(linkBehavior);
 			return this;
+		}
+		
+		@Override
+		public IAddedLabelColumnState<T, S> targetBlank() {
+			return linkBehavior(new TargetBlankBehavior());
+		}
+	}
+
+	private class AddedBootstrapBadgeColumnState<C> extends AddedCoreColumnState<IAddedBootstrapBadgeColumnState<T, S, C>> implements IAddedBootstrapBadgeColumnState<T, S, C> {
+		
+		private final CoreBootstrapBadgeColumn<T, S, C> column;
+		
+		public AddedBootstrapBadgeColumnState(CoreBootstrapBadgeColumn<T, S, C> column) {
+			super();
+			this.column = column;
+		}
+
+		@Override
+		protected CoreBootstrapBadgeColumn<T, S, C> getColumn() {
+			return column;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> getNextState() {
+			return this;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> withLink(
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+			getColumn().setLinkGeneratorMapper(linkGeneratorMapper);
+			return this;
+		}
+		
+		@Override
+		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(Function<? super T, E> function,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
+		}
+
+		@Override
+		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(AbstractCoreBinding<? super T, E> binding,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+			return withLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
+		}
+
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+			getColumn().setSideLinkGeneratorMapper(linkGeneratorMapper);
+			return this;
+		}
+		
+		@Override
+		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(Function<? super T, E> function,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+			return withSideLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
+		}
+
+		@Override
+		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(AbstractCoreBinding<? super T, E> binding,
+				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+			return withSideLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
+		}
+
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> disableIfInvalid() {
+			getColumn().disableIfInvalid();
+			return this;
+		}
+
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> hideIfInvalid() {
+			getColumn().hideIfInvalid();
+			return this;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> linkBehavior(Behavior linkBehavior) {
+			getColumn().addLinkBehavior(linkBehavior);
+			return this;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> targetBlank() {
+			return linkBehavior(new TargetBlankBehavior());
 		}
 	}
 
