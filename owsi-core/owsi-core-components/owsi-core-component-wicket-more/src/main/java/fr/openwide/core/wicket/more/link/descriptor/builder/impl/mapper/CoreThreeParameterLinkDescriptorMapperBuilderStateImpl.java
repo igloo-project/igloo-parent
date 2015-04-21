@@ -76,7 +76,7 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 
 		@Override
 		public ThreeParameterMapperMappingStateImpl andThird() {
-			addDynamicParameter(1);
+			addDynamicParameter(2);
 			return this;
 		}
 	}
