@@ -27,6 +27,8 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 
+import com.google.common.collect.Ordering;
+
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
@@ -36,6 +38,9 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		implements IGenericListItemBindingInterface {
 	
 	private static final long serialVersionUID = -6270832991786371463L;
+	
+	@SuppressWarnings("rawtypes")
+	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
 	
 	public static final String LABEL_SORT_FIELD_NAME = "labelSort";
 	
@@ -168,26 +173,36 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	}
 
 	@Override
-	public int compareTo(E o) {
-		if (this == o) {
+	public int compareTo(E right) {
+		if (this == right) {
 			return 0;
 		}
 		
 		int result = 0;
 		if (this.getPosition() != null) {
-			if (o.getPosition() != null) {
-				result = this.getPosition().compareTo(o.getPosition());
+			if (right.getPosition() != null) {
+				result = this.getPosition().compareTo(right.getPosition());
 			} else {
 				result = 1;
 			}
-		} else if (o.getPosition() != null) {
+		} else if (right.getPosition() != null) {
 			result = -1;
 		} else {
 			result = 0;
 		}
 		
-		if (result == 0 && this.getLabel() != null && o.getLabel() != null) {
-			result = DEFAULT_STRING_COLLATOR.compare(this.getLabel(), o.getLabel());
+		if (result == 0 && this.getLabel() != null && right.getLabel() != null) {
+			result = DEFAULT_STRING_COLLATOR.compare(this.getLabel(), right.getLabel());
+		}
+		
+		if (result == 0) {
+			Long leftId = getId();
+			Long rightId = right.getId();
+			// Pas d'exception si les deux IDs sont null, pour conserver un comportement relativement proche
+			// de ce qu'on avait quand on ne comparait pas les IDs
+			if (leftId != null || rightId != null) {
+				result = DEFAULT_KEY_ORDERING.compare(leftId, rightId);
+			}
 		}
 		
 		return result;
