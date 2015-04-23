@@ -54,4 +54,9 @@ public class EntityServiceImpl implements IEntityService {
 		entityDao.clear();
 	}
 
+	@Override
+	public <E extends GenericEntity<?, ?>> List<Class<? extends E>> listAssignableEntityTypes(Class<E> superclass) {
+		return entityDao.listAssignableEntityTypes(superclass);
+	}
+
 }
