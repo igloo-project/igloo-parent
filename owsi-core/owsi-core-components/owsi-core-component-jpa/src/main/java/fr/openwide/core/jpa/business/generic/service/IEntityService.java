@@ -27,5 +27,7 @@ public interface IEntityService extends ITransactionalAspectAwareService {
 	void flush();
 	
 	void clear();
+	
+	<E extends GenericEntity<?, ?>> List<Class<? extends E>> listAssignableEntityTypes(Class<E> superclass);
 
 }

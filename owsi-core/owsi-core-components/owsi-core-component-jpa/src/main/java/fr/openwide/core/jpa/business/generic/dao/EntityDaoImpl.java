@@ -10,6 +10,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 
 import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 import org.springframework.stereotype.Repository;
@@ -73,6 +75,20 @@ public class EntityDaoImpl implements IEntityDao {
 	@Override
 	public void clear() {
 		entityManager.clear();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <E extends GenericEntity<?, ?>> List<Class<? extends E>> listAssignableEntityTypes(Class<E> superclass) {
+		List<Class<? extends E>> classes = Lists.newLinkedList();
+		Metamodel metamodel = entityManager.getMetamodel();
+		for (EntityType<?> entity : metamodel.getEntities()) {
+			Class<?> clazz = entity.getBindableJavaType();
+			if (superclass.isAssignableFrom(clazz)) {
+				classes.add((Class<? extends E>) clazz);
+			}
+		}
+		return classes;
 	}
 
 }
