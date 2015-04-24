@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.config.spring;
 
-import static com.impossibl.postgres.utils.guava.Strings.emptyToNull;
+import static com.google.common.base.Strings.emptyToNull;
 
 import java.util.HashSet;
 import java.util.List;
