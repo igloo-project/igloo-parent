@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.javatuples.Pair;
 import org.javatuples.valueintf.IValue0;
 import org.javatuples.valueintf.IValue1;
 
@@ -16,13 +17,90 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
 
 public final class Functions2 {
 
 	private Functions2() { }
+	
+	public static <T1, T2> Function<Iterable<? extends T1>, Iterable<T2>> transformedIterable(Function<? super T1, T2> function) {
+		return new TransformedIterableFunction<>(function);
+	}
+	
+	private static final class TransformedIterableFunction<T1, T2> implements Function<Iterable<? extends T1>, Iterable<T2>>, Serializable {
+		private static final long serialVersionUID = -3456570157416618375L;
+		
+		private final Function<? super T1, T2> function;
+		
+		public TransformedIterableFunction(Function<? super T1, T2> function) {
+			super();
+			this.function = function;
+		}
+
+		@Override
+		public Iterable<T2> apply(Iterable<? extends T1> input) {
+			return input == null ? null : Iterables.transform(input, function);
+		}
+		
+		@Override
+		public String toString() {
+			return "transform(" + function + ")";
+		}
+	}
+	
+	public static <T1, T2> Function<Collection<? extends T1>, Collection<T2>> transformedCollection(Function<? super T1, T2> function) {
+		return new TransformedCollectionFunction<>(function);
+	}
+	
+	private static final class TransformedCollectionFunction<T1, T2> implements Function<Collection<? extends T1>, Collection<T2>>, Serializable {
+		private static final long serialVersionUID = -3456570157416618375L;
+		
+		private final Function<? super T1, T2> function;
+		
+		public TransformedCollectionFunction(Function<? super T1, T2> function) {
+			super();
+			this.function = function;
+		}
+
+		@Override
+		public Collection<T2> apply(Collection<? extends T1> input) {
+			return input == null ? null : Collections2.transform(input, function);
+		}
+		
+		@Override
+		public String toString() {
+			return "transform(" + function + ")";
+		}
+	}
+	
+	public static <T1, T2> Function<List<? extends T1>, List<T2>> transformedList(Function<? super T1, T2> function) {
+		return new TransformedListFunction<>(function);
+	}
+	
+	private static final class TransformedListFunction<T1, T2> implements Function<List<? extends T1>, List<T2>>, Serializable {
+		private static final long serialVersionUID = -3456570157416618375L;
+		
+		private final Function<? super T1, T2> function;
+		
+		public TransformedListFunction(Function<? super T1, T2> function) {
+			super();
+			this.function = function;
+		}
+
+		@Override
+		public List<T2> apply(List<? extends T1> input) {
+			return input == null ? null : Lists.transform(input, function);
+		}
+		
+		@Override
+		public String toString() {
+			return "transform(" + function + ")";
+		}
+	}
 	
 	public static <T> Function<Collection<? extends T>, Collection<T>> unmodifiableCollection() {
 		return new UnmodifiableCollectionFunction<T>();
@@ -252,6 +330,24 @@ public final class Functions2 {
 			@Override
 			public String toString() {
 				return "value";
+			}
+		};
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // Works for any K and V, since it is read-only and Pair is immutable
+	public static <K, V> Function<Entry<? extends K, ? extends V>, Pair<K, V>> entryToPair() {
+		return (Function) EntryToJavaTuplesPairFunction.INSTANCE;
+	}
+	
+	private enum EntryToJavaTuplesPairFunction implements Function<Entry<?, ?>, Pair<?, ?>> {
+		INSTANCE {
+			@Override
+			public Pair<?, ?> apply(Entry<?, ?> entry) {
+				return Pair.with(entry.getKey(), entry.getValue());
+			}
+			@Override
+			public String toString() {
+				return "entryToPair";
 			}
 		};
 	}
