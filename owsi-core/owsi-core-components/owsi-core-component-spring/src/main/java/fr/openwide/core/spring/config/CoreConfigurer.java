@@ -31,6 +31,10 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public String getVersion() {
 		return getPropertyAsString("version");
 	}
+	
+	public String getOwsiCoreVersion() {
+		return getPropertyAsString("owsi-core.version");
+	}
 
 	public String getConfigurationType() {
 		String configurationType = getPropertyAsString("configurationType");
