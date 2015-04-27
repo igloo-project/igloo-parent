@@ -9,7 +9,7 @@ import com.google.common.collect.Multimap;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 
 public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends DecoratedCoreDataTablePanel<T, S> {
 
@@ -20,7 +20,7 @@ public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends Dec
 			Map<IColumn<T, S>, Condition> columns,
 			IDataProvider<T> dataProvider,
 			long rowsPerPage,
-			Multimap<AddInPlacement, ? extends IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
+			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
 		super(id, columns, dataProvider, rowsPerPage, addInComponentFactories);
 	}
 	

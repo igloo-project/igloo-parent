@@ -4,7 +4,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AddInPlacement;
 
@@ -42,10 +42,10 @@ public interface IDecoratedBuildState<T, S extends ISort<?>> {
 			String cssClasses);
 	
 	IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
-			IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory);
+			IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory);
 
 	IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
-			IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory,
+			IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory,
 			String cssClasses);
 	
 	DecoratedCoreDataTablePanel<T, S> build(String id);

@@ -23,7 +23,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
-import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import fr.openwide.core.wicket.more.model.IErrorAwareDataProvider;
@@ -49,7 +49,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	
 	public DecoratedCoreDataTablePanel(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
 			long rowsPerPage,
-			Multimap<AddInPlacement, ? extends IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
+			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
 		super(id);
 		
 		this.dataProvider = dataProvider;
