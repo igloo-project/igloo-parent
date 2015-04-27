@@ -426,6 +426,42 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
+	protected <P> Query matchRangeMin(AbstractBinding<?, P> binding, P min) {
+		return matchRangeMin(getDefaultQueryBuilder(), binding, min);
+	}
+	
+	protected <P> Query matchRangeMin(QueryBuilder builder, AbstractBinding<?, P> binding, P min) {
+		return matchRangeMin(builder, binding.getPath(), min);
+	}
+	
+	protected <P> Query matchRangeMin(QueryBuilder builder, String fieldPath, P min) {
+		if (min != null) {
+			return builder.range()
+					.onField(fieldPath)
+					.above(min)
+					.createQuery();
+		}
+		return null;
+	}
+	
+	protected <P> Query matchRangeMax(AbstractBinding<?, P> binding, P max) {
+		return matchRangeMax(getDefaultQueryBuilder(), binding, max);
+	}
+	
+	protected <P> Query matchRangeMax(QueryBuilder builder, AbstractBinding<?, P> binding, P max) {
+		return matchRangeMax(builder, binding.getPath(), max);
+	}
+	
+	protected <P> Query matchRangeMax(QueryBuilder builder, String fieldPath, P max) {
+		if (max != null) {
+			return builder.range()
+					.onField(fieldPath)
+					.below(max)
+					.createQuery();
+		}
+		return null;
+	}
+	
 	private static class BindingToPathFunction implements Function<AbstractBinding<?, String>, String> {
 		@Override
 		public String apply(AbstractBinding<?, String> input) {
