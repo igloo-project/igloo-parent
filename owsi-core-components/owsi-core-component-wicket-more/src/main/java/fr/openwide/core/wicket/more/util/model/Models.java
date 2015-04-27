@@ -1,10 +1,35 @@
 package fr.openwide.core.wicket.more.util.model;
 
+import java.util.Map;
+
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.StringResourceModel;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 public final class Models {
-	
+
 	private Models() {
+	}
+	
+	@SuppressWarnings("rawtypes") // ModelGetObjectFunction works for any T
+	private enum ModelGetObjectFunction implements Function<IModel, Object> {
+		INSTANCE;
+		
+		@Override
+		public Object apply(IModel input) {
+			return input == null ? null : input.getObject();
+		}
+		
+		@SuppressWarnings("unchecked") // ModelGetObjectFunction works for any T
+		public static <T> Function<? super IModel<? extends T>, T> get() {
+			return (Function<? super IModel<? extends T>, T>) INSTANCE;
+		}
 	}
 
 	/**
@@ -37,4 +62,76 @@ public final class Models {
 			// Does nothing
 		}
 	};
+	
+	/**
+	 * A static model of <code>Map<String, Object></code>. Useful as a data model for {@link StringResourceModel}.
+	 */
+	public static MapModelBuilder<String, Object> dataMap() {
+		return new MapModelBuilder<String, Object>();
+	}
+	
+	public static class MapModelBuilder<K, V> {
+		private ImmutableMap.Builder<K, IModel<? extends V>> delegate = ImmutableMap.builder();
+		public MapModelBuilder<K, V> put(K key, V value) {
+			delegate.put(key, transientModel(value));
+			return this;
+		}
+		public MapModelBuilder<K, V> put(K key, IModel<V> valueModel) {
+			delegate.put(key, valueModel);
+			return this;
+		}
+		public IModel<Map<K, V>> build() {
+			return new MapModelBuilderMap<>(delegate.build());
+		}
+
+		private static class MapModelBuilderMap<K, V> extends LoadableDetachableModel<Map<K, V>> {
+			private static final long serialVersionUID = 1L;
+			
+			private Map<K, IModel<? extends V>> source;
+			
+			public MapModelBuilderMap(Map<K, IModel<? extends V>> source) {
+				super();
+				this.source = source;
+			}
+			
+			@Override
+			protected Map<K, V> load() {
+				return Maps.transformValues(source, ModelGetObjectFunction.<V>get());
+			}
+			
+			@Override
+			protected void onDetach() {
+				super.onDetach();
+				for (IDetachable detachable : source.values()) {
+					detachable.detach();
+				}
+			}
+		}
+	}
+
+	/**
+	 * A constant, non-serializable model.
+	 * <p>Useful when calling 
+	 */
+	public static <T> IModel<T> transientModel(T value) {
+		return new TransientModel<>(value);
+	}
+	
+	private static class TransientModel<T> extends AbstractReadOnlyModel<T> {
+		
+		private static final long serialVersionUID = -2160512073899616819L;
+		
+		private final T value;
+		
+		public TransientModel(T value) {
+			super();
+			this.value = value;
+		}
+		
+		@Override
+		public T getObject() {
+			return value;
+		}
+		
+	}
 }
