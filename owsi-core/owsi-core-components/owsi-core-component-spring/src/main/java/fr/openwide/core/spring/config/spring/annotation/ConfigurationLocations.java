@@ -13,6 +13,7 @@ public @interface ConfigurationLocations {
 	 * La liste des « locations » à utiliser pour le chargement des ressources.
 	 */
 	String[] locations() default {
+		"classpath:owsi-core-component-spring.properties",
 		"classpath:owsi-core-component-jpa.properties",
 		"classpath:configuration-private.properties",
 		"classpath:configuration.properties",
