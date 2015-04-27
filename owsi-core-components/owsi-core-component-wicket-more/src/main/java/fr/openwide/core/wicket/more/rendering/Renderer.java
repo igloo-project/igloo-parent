@@ -36,6 +36,7 @@ import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.wicket.more.util.IDatePattern;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 /**
  * A one-way wicket converter: converts an object to a String.
@@ -568,13 +569,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 
 		@Override
 		public String render(final Object value, Locale locale) {
-			IModel<?> model = new AbstractReadOnlyModel<Object>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Object getObject() {
-					return value;
-				}
-			};
+			IModel<?> model = Models.transientModel(value);
 			return Localizer.get().getString(resourceKey, null, model, locale, null, null);
 		}
 		

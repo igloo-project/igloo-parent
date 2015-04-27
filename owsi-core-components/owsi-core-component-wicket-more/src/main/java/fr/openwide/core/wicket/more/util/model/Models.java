@@ -76,7 +76,7 @@ public final class Models {
 			delegate.put(key, transientModel(value));
 			return this;
 		}
-		public MapModelBuilder<K, V> put(K key, IModel<V> valueModel) {
+		public MapModelBuilder<K, V> put(K key, IModel<? extends V> valueModel) {
 			delegate.put(key, valueModel);
 			return this;
 		}
