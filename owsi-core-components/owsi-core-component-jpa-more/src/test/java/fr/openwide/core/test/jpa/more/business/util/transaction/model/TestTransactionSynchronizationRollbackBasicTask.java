@@ -3,11 +3,8 @@ package fr.openwide.core.test.jpa.more.business.util.transaction.model;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
 
-public class TestTransactionSynchronizationRollbackBasicTask extends
-		TestAbstractTransactionSynchronizationTask<TestTransactionSynchronizationRollbackBasicTask>
-		implements
-		ITransactionSynchronizationAfterCommitTask<TestTransactionSynchronizationRollbackBasicTask>,
-		ITransactionSynchronizationTaskRollbackAware {
+public class TestTransactionSynchronizationRollbackBasicTask extends TestAbstractTransactionSynchronizationTask
+		implements ITransactionSynchronizationAfterCommitTask, ITransactionSynchronizationTaskRollbackAware {
 
 	private static final long serialVersionUID = 20642307623916853L;
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.test.jpa.more.business.util.transaction.service.ITestTransactionSynchronizationTaskService;
 
-public class TestAbstractTransactionSynchronizationTask<T> implements Serializable {
+public class TestAbstractTransactionSynchronizationTask implements Serializable {
 
 	private static final long serialVersionUID = -1235254300180063058L;
 

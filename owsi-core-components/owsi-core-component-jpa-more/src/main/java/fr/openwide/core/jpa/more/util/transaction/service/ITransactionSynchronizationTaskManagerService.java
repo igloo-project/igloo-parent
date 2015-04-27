@@ -8,9 +8,9 @@ public interface ITransactionSynchronizationTaskManagerService {
 
 	TransactionSynchronizationTasks getTasks();
 
-	void push(ITransactionSynchronizationBeforeCommitTask<?> beforeCommitTask);
+	void push(ITransactionSynchronizationBeforeCommitTask beforeCommitTask);
 
-	void push(ITransactionSynchronizationAfterCommitTask<?> afterCommitTask);
+	void push(ITransactionSynchronizationAfterCommitTask afterCommitTask);
 
 	void clean();
 
