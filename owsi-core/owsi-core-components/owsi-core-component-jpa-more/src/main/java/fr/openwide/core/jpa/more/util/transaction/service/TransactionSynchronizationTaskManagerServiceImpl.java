@@ -34,7 +34,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl implements ITransa
 	}
 
 	@Override
-	public void push(ITransactionSynchronizationBeforeCommitTask<?> beforeCommitTask) {
+	public void push(ITransactionSynchronizationBeforeCommitTask beforeCommitTask) {
 		checkTransactionActive();
 		registerTransactionSynchronization();
 		autowire(beforeCommitTask);
@@ -42,7 +42,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl implements ITransa
 	}
 	 
 	@Override
-	public void push(ITransactionSynchronizationAfterCommitTask<?> afterCommitTask) {
+	public void push(ITransactionSynchronizationAfterCommitTask afterCommitTask) {
 		checkTransactionActive();
 		registerTransactionSynchronization();
 		autowire(afterCommitTask);
@@ -55,7 +55,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl implements ITransa
 		}
 	}
 
-	protected void autowire(ITransactionSynchronizationTask<?> beforeCommitTask) {
+	protected void autowire(ITransactionSynchronizationTask beforeCommitTask) {
 		AutowireCapableBeanFactory autowireCapableBeanFactory = configurableApplicationContext.getAutowireCapableBeanFactory();
 		autowireCapableBeanFactory.autowireBean(beforeCommitTask);
 		autowireCapableBeanFactory.initializeBean(beforeCommitTask, beforeCommitTask.getClass().getName());
