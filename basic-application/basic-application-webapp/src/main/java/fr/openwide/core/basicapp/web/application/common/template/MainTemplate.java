@@ -235,7 +235,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		);
 		
 		// Footer
-		add(new Label("version", configurer.getVersion()));
+		add(
+				new Label("version", configurer.getVersion())
+						.add(new AttributeModifier("title", new StringResourceModel("common.version.full", null,
+								new Object[] { configurer.getVersion(), configurer.getOwsiCoreVersion() }
+						)))
+		);
 		
 		// Tooltip
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
