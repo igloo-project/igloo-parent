@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
  * @see ApplicationConfigurerBeanFactoryPostProcessor
  */
 @Configuration
+@ConfigurationLocations(locations = {
+		"classpath:owsi-core-component-spring.properties"
+})
 public class CoreConfigurationLocationsAnnotationConfig {
 
 	@Bean
