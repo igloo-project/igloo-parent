@@ -31,7 +31,7 @@ import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.Bootstr
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IParameterizedComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.BootstrapPanelCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreBooleanLabelColumn;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreBootstrapBadgeColumn;
@@ -714,7 +714,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		protected String countResourceKey = null;
 		
-		protected final Multimap<AddInPlacement, IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>>
+		protected final Multimap<AddInPlacement, IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>>
 				addInComponentFactories = ArrayListMultimap.create();
 		
 		protected String getTitleCssClass() {
@@ -804,14 +804,14 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
-				IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory) {
+				IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory) {
 			addInComponentFactories.put(placement, addInComponentFactory);
 			return this;
 		}
 		
 		@Override
 		public IDecoratedBuildState<T, S> addIn(AddInPlacement placement,
-				IParameterizedComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory, String cssClasses) {
+				IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>> addInComponentFactory, String cssClasses) {
 			return addIn(placement, new ClassAttributeAppenderDecoratingParameterizedComponentFactory<>(addInComponentFactory, cssClasses));
 		}
 
@@ -863,7 +863,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		private final String cssClass;
 
-		public ClassAttributeAppenderDecoratingParameterizedComponentFactory(IParameterizedComponentFactory<? extends C, ? super P> delegate, String cssClass) {
+		public ClassAttributeAppenderDecoratingParameterizedComponentFactory(IOneParameterComponentFactory<? extends C, ? super P> delegate, String cssClass) {
 			super(delegate);
 			this.cssClass = cssClass;
 		}

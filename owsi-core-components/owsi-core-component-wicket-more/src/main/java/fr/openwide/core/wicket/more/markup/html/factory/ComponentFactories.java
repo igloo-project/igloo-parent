@@ -14,13 +14,13 @@ public final class ComponentFactories {
 		}
 	}
 	
-	public static <P> void addAll(RepeatingView repeatingView, Iterable<? extends IParameterizedComponentFactory<?, ? super P>> factories, P parameter) {
-		for (IParameterizedComponentFactory<?, ? super P> componentFactory : factories) {
+	public static <P> void addAll(RepeatingView repeatingView, Iterable<? extends IOneParameterComponentFactory<?, ? super P>> factories, P parameter) {
+		for (IOneParameterComponentFactory<?, ? super P> componentFactory : factories) {
 			repeatingView.add(componentFactory.create(repeatingView.newChildId(), parameter));
 		}
 	}
 	
-	public static <C extends Component, P> IParameterizedComponentFactory<C, P> ignoreParameter(final IComponentFactory<? extends C> factory) {
+	public static <C extends Component, P> IOneParameterComponentFactory<C, P> ignoreParameter(final IComponentFactory<? extends C> factory) {
 		return new AbstractParameterizedComponentFactory<C, P>() {
 			private static final long serialVersionUID = 1L;
 			@Override
