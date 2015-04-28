@@ -219,6 +219,13 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			return delegate.render(function.apply(value), locale);
 		}
 	}
+	
+	/**
+	 * Returns an empty string whenever the rendered value is null.
+	 */
+	public Renderer<T> orBlank() {
+		return compose(Functions2.defaultValue(""));
+	}
 
 	public Renderer<T> compose(Function<? super String, ? extends String> function) {
 		return new ComposeRenderer<T>(function, this);
