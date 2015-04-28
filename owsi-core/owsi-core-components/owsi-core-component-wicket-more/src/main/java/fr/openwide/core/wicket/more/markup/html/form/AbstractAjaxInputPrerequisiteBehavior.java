@@ -273,6 +273,12 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		return this;
 	}
 	
+	
+	public AbstractAjaxInputPrerequisiteBehavior<T> onChange(Collection<AbstractListener> listeners) {
+		this.onChangeListeners.addAll(listeners);
+		return this;
+	}
+	
 	@Override
 	public final void bind(Component component) {
 		if (attachedComponents.isEmpty()) {
