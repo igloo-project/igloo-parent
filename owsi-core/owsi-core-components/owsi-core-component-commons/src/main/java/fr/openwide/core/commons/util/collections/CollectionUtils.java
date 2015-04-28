@@ -2,13 +2,18 @@ package fr.openwide.core.commons.util.collections;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Equivalence;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public final class CollectionUtils {
+	
+	private CollectionUtils() { }
 	
 	/**
 	 * Replaces all elements in <code>dst</code> by those in <code>src</code>.
@@ -43,6 +48,42 @@ public final class CollectionUtils {
 		}
 	}
 	
-	private CollectionUtils() { }
+	/**
+	 * <strong>WARNING:</strong> very low efficiency (O(N*N))
+	 * @return A list containing the elements of source that are not in filter, using <code>equivalence</code> to distinguish different elements.
+	 */
+	public static <T> List<T> difference(Iterable<? extends T> source, Iterable<? extends T> filter, Equivalence<? super T> equivalence) {
+		final List<T> result = new LinkedList<T>();
+		if (source != null && filter != null) {
+			sourceLoop: for (T sourceElement : source) {
+				for (T filterElement : filter) {
+					if (equivalence.equivalent(sourceElement, filterElement)) {
+						continue sourceLoop;
+					}
+				}
+				result.add(sourceElement);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * <strong>WARNING:</strong> very low efficiency (O(N*N))
+	 * @return A list containing the elements of source that are also in filter, using <code>equivalence</code> to distinguish different elements.
+	 */
+	public static <T> List<T> intersection(Iterable<? extends T> source, Iterable<? extends T> filter, Equivalence<? super T> equivalence) {
+		final List<T> result = new LinkedList<T>();
+		if (source != null && filter != null) {
+			sourceLoop: for (T sourceElement : source) {
+				for (T filterElement : filter) {
+					if (equivalence.equivalent(sourceElement, filterElement)) {
+						result.add(sourceElement);
+						continue sourceLoop;
+					}
+				}
+			}
+		}
+		return result;
+	}
 
 }
