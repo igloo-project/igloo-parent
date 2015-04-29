@@ -277,4 +277,12 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 		return getPropertyAsEnum("globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
 	}
 
+	public Integer getConsoleGlobalFeedbackAutohideDelayValue() {
+		return getPropertyAsInteger("console.globalFeedback.autohide.delay.value", 5);
+	}
+
+	public TimeUnit getConsoleGlobalFeedbackAutohideDelayUnit() {
+		return getPropertyAsEnum("console.globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
+	}
+
 }
