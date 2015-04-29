@@ -10,6 +10,7 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 
 import com.google.common.collect.Iterables;
 
+import fr.openwide.core.jpa.more.util.transaction.exception.TransactionSynchronizationException;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
@@ -39,7 +40,9 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 			try {
 				beforeCommitTask.run();
 			} catch (Exception e) {
-				LOGGER.error("Error while executing a 'before commit' task .", e);
+				// This exception MUST be thrown, as we want to rollback if anything goes wrong.
+				// We better ignore other tasks, as they will have no effect on the transaction.
+				throw new TransactionSynchronizationException("Error while executing a 'before commit' task.", e);
 			}
 		}
 	}
@@ -47,32 +50,56 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 	@Override
 	public void afterCommit() {
 		TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
+		Exception firstException = null;
 		for (ITransactionSynchronizationAfterCommitTask afterCommitTask : tasks.getAfterCommitTasks()) {
 			try {
 				afterCommitTask.run();
 			} catch (Exception e) {
-				LOGGER.error("Error while executing an 'after commit' task.", e);
+				if (firstException == null) {
+					firstException = e;
+				} else {
+					LOGGER.error("Multiple exceptions while executing 'after commit' tasks. Only the first exception has been propagated.", e);
+				}
 			}
+		}
+		if (firstException != null) {
+			// We better throw an exception here, as we want the caller to know something went awry.
+			throw new TransactionSynchronizationException("Error while executing an 'after commit' task.", firstException);
 		}
 	}
 
 	@Override
 	public void afterCompletion(int status) {
 		if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
+			Exception firstException = null;
 			TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
 			for (ITransactionSynchronizationTaskRollbackAware beforeCommitTask : Iterables.filter(tasks.getBeforeCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
 				try {
 					((ITransactionSynchronizationTaskRollbackAware) beforeCommitTask).afterRollback();
 				} catch (Exception e) {
-					LOGGER.error("Error while executing the rollback from a 'before commit' task.", e);
+					if (firstException == null) {
+						firstException = e;
+					} else {
+						LOGGER.error("Multiple exceptions while executing afterRollback() on synchronization tasks. Only the first exception has been propagated.", e);
+					}
 				}
 			}
 			for (ITransactionSynchronizationTaskRollbackAware afterCommitTask : Iterables.filter(tasks.getAfterCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
 				try {
 					((ITransactionSynchronizationTaskRollbackAware) afterCommitTask).afterRollback();
 				} catch (Exception e) {
-					LOGGER.error("Error while executing the rollback from an 'after commit' task.", e);
+					if (firstException == null) {
+						firstException = e;
+					} else {
+						LOGGER.error("Multiple exceptions while executing afterRollback() on synchronization tasks. Only the first exception has been propagated.", e);
+					}
 				}
+			}
+			if (firstException != null) {
+				// We better throw an exception here, as we want the caller to know something went awry.
+				throw new TransactionSynchronizationException(
+						"Error while executing afterRollback() on a synchronization task.", firstException
+				);
 			}
 		}
 		transactionSynchronizationTaskManagerService.clean();
