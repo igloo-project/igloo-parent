@@ -68,19 +68,19 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		}
 		
 		protected Object getSubjectParameter() {
-			return getSubjectParameter(null);
-		}
-		
-		protected Object getSubjectParameter(Locale locale) {
 			return null;
 		}
 		
+		protected Object getSubjectParameter(Locale locale) {
+			return getSubjectParameter();
+		}
+		
 		protected Iterable<?> getSubjectPositionalParameters() {
-			return getSubjectPositionalParameters(null);
+			return ImmutableList.of();
 		}
 		
 		protected Iterable<?> getSubjectPositionalParameters(Locale locale) {
-			return ImmutableList.of();
+			return getSubjectPositionalParameters();
 		}
 		
 		protected String getSubjectMessageKey() {
