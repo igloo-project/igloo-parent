@@ -79,7 +79,9 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 			}
 		});
 		
-		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
+		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel",
+				configurer.getConsoleGlobalFeedbackAutohideDelayValue(), configurer.getConsoleGlobalFeedbackAutohideDelayUnit())
+		);
 		
 		// Menu sections
 		ListView<ConsoleMenuSection> menuSectionsListView = new ListView<ConsoleMenuSection>("menuSectionListView", 
