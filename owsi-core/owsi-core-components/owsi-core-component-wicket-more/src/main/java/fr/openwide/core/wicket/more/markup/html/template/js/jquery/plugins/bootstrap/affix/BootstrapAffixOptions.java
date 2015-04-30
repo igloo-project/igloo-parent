@@ -51,15 +51,19 @@ public class BootstrapAffixOptions extends Options {
 	}
 
 	public BootstrapAffixOptions setEnclosing(Component enclosingComponent, int offset) {
+		return setEnclosing(enclosingComponent, offset, offset);
+	}
+
+	public BootstrapAffixOptions setEnclosing(Component enclosingComponent, int topOffset, int bottomOffset) {
 		this.top = null;
 		setTop(JsScope.quickScope(new JsStatement()
-				.append("return ").$(enclosingComponent).chain("offset").append(".top").append(" - ").append(String.valueOf(offset))
+				.append("return ").$(enclosingComponent).chain("offset").append(".top").append(" + ").append(String.valueOf(topOffset))
 		));
 		setBottom(JsScope.quickScope(new JsStatement()
 				.append("return ").append("$(document)").chain("height")
-				.append(" - ").$(enclosingComponent).chain("position").append(".top")
+				.append(" - ").$(enclosingComponent).chain("offset").append(".top")
 				.append(" - ").$(enclosingComponent).chain("outerHeight")
-				.append(" - ").append(String.valueOf(offset))
+				.append(" + ").append(String.valueOf(bottomOffset))
 		));
 		return this;
 	}
