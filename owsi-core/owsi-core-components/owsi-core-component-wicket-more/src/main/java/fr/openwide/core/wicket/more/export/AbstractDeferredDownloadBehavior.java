@@ -33,17 +33,19 @@ import org.odlabs.wiquery.core.javascript.JsUtils;
  * @author Yoann Rodière
  * @see <a href="https://cwiki.apache.org/confluence/display/WICKET/AJAX+update+and+file+download+in+one+blow">AJAX update and file download in one blow</a>
  */
-public abstract class AbstractDeferredDownloadBehavior extends Behavior implements IBehaviorListener {
+public abstract class AbstractDeferredDownloadBehavior extends Behavior {
 
 	private static final long serialVersionUID = -4484163101766083913L;
-
-	private Component component;
 	
+	private Component component;
+
 	protected final IModel<File> tempFileModel;
 	
 	protected final IModel<String> extensionModel;
 	
 	private final boolean addAntiCache;
+	
+	private final ResourceDownloadBehavior resourceDownloadBehavior;
 	
 	public AbstractDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<String> extensionModel) {
 		this(tempFileModel, extensionModel, true);
@@ -55,6 +57,28 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior implemen
 		this.tempFileModel = checkNotNull(tempFileModel);
 		this.extensionModel = checkNotNull(extensionModel);
 		this.addAntiCache = addAntiCache;
+		this.resourceDownloadBehavior = new ResourceDownloadBehavior();
+	}
+	
+	
+	private class ResourceDownloadBehavior extends Behavior implements IBehaviorListener {
+		private static final long serialVersionUID = -7831306343846345227L;
+		
+		@Override
+		public void onRequest() {
+			ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(getResourceStream(), getFileDisplayName());
+			handler.setContentDisposition(ContentDisposition.ATTACHMENT);
+			getComponent().getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+		}
+	}
+	
+	@Override
+	public void onConfigure(Component component) {
+		super.onConfigure(component);
+		Page page = component.getPage();
+		if (!page.getBehaviors().contains(resourceDownloadBehavior)) {
+			page.add(resourceDownloadBehavior);
+		}
 	}
 	
 	@Override
@@ -83,7 +107,7 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior implemen
 	}
 	
 	private String getUrl(boolean fullUrl) {
-		String url = getComponent().urlFor(this, IBehaviorListener.INTERFACE, new PageParameters()).toString();
+		String url = getComponent().getPage().urlFor(resourceDownloadBehavior, IBehaviorListener.INTERFACE, new PageParameters()).toString();
 		if (fullUrl) {
 			url = RequestCycle.get().getUrlRenderer()
 					.renderFullUrl(
@@ -132,13 +156,6 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior implemen
 		public void renderHead(Component component, IHeaderResponse response) {
 			response.render(OnDomReadyHeaderItem.forScript(statement));
 		}
-	}
-	
-	@Override
-	public void onRequest() {
-		ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(getResourceStream(), getFileDisplayName());
-		handler.setContentDisposition(ContentDisposition.ATTACHMENT);
-		getComponent().getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
 	}
 	
 	protected abstract String getFileDisplayName();
