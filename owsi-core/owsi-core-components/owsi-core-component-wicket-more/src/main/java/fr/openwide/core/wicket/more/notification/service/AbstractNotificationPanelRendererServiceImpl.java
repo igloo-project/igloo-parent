@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Session;
 import org.apache.wicket.core.util.string.ComponentRenderer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -42,73 +41,54 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 		);
 	}
 	
-	protected String renderComponent(Supplier<Component> componentSupplier, Locale locale) {
+	protected String renderComponent(final Supplier<Component> componentSupplier, Locale locale) {
 		Args.notNull(componentSupplier, "componentTask");
-		
-		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
-		
 		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
-			
-			Session session = Session.get();
-			
-			Locale oldLocale = session.getLocale();
-			if (locale != null) {
-				session.setLocale(configurer.toAvailableLocale(locale));
-			}
-			
-			Component component = componentSupplier.get();
-			Args.notNull(component, "component");
-			
-			String panel = ComponentRenderer.renderComponent(component).toString();
-			
-			session.setLocale(oldLocale);
-			
-			return panel;
-		} finally {
-			if (requestCycleStatus != null) {
-				detachRequestCycleIfNeeded(requestCycleStatus);
-			}
+			return runWithContext(
+					new Callable<String>() {
+						@Override
+						public String call() {
+							Component component = componentSupplier.get();
+							Args.notNull(component, "component");
+							
+							String panel = ComponentRenderer.renderComponent(component).toString();
+							return panel;
+						}
+					},
+					locale
+			);
+		} catch (Exception e) {
+			throw new IllegalStateException("Error rendering a panel with locale '" + locale + "'", e);
 		}
 	}
 	
-	protected String renderString(String messageKey, Locale locale, final Object parameter, Object ... positionalParameters) {
-		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
-		
+	protected String renderString(final String messageKey, Locale locale, final Object parameter, final Object ... positionalParameters) {
 		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
-			
-			Session session = Session.get();
-			
-			Locale oldLocale = session.getLocale();
-			if (locale != null) {
-				session.setLocale(configurer.toAvailableLocale(locale));
-			}
-			
-			IModel<?> modelParameter;
-			if (parameter instanceof IModel) {
-				modelParameter = (IModel<?>) parameter;
-			} else {
-				modelParameter = new AbstractReadOnlyModel<Object>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Object getObject() {
-						return parameter;
-					}
-				};
-			}
-			
-			String result = new StringResourceModel(messageKey, null, modelParameter, (Object[]) positionalParameters).getObject();
-			
-			session.setLocale(oldLocale);
-			
-			return result;
+			return runWithContext(
+					new Callable<String>() {
+						@Override
+						public String call() {
+								IModel<?> modelParameter;
+								if (parameter instanceof IModel) {
+									modelParameter = (IModel<?>) parameter;
+								} else {
+									modelParameter = new AbstractReadOnlyModel<Object>() {
+										private static final long serialVersionUID = 1L;
+										@Override
+										public Object getObject() {
+											return parameter;
+										}
+									};
+								}
+								
+								String result = new StringResourceModel(messageKey, null, modelParameter, (Object[]) positionalParameters).getObject();
+								return result;
+						}
+					},
+					locale
+			);
 		} catch (Exception e) {
 			throw new IllegalStateException("Error rendering string for key '" + messageKey + "' and locale '" + locale + "'", e);
-		} finally {
-			if (requestCycleStatus != null) {
-				detachRequestCycleIfNeeded(requestCycleStatus);
-			}
 		}
 	}
 }
