@@ -10,6 +10,7 @@
 			var $panel = $(".alert-global-panel", $selector);
 			$panel.off("click.alert");
 			if ($(".alert-info, .alert-warning, .alert-error, .alert-success" , $panel).size() > 0) {
+				$panel.show();
 				if (placement == "bottom") {
 					$panel.animate({ bottom: 0 }, 500);
 				} else {
@@ -42,11 +43,11 @@
 				} else {
 					$panel.css({ top: -$panel.outerHeight() });
 				}
+				$panel.hide(0);
 			}
 		},
 		reset: function(selector, autohideDelay) {
 			$.fn.alert.hide(selector);
-			$(".alert-global-panel", $(selector)).show();
 			$.fn.alert.show(selector, autohideDelay);
 		},
 		close: function(event) {
