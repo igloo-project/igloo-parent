@@ -13,6 +13,9 @@
 	<security:http pattern="/favicon.ico" security="none" />
 	
 	<security:http pattern="^/console/.*" authentication-manager-ref="authenticationManager" auto-config="false" request-matcher="regex">
+		<security:headers disabled="true"/>
+		<security:csrf disabled="true"/>
+	
 		<security:form-login login-page="/console/login/" default-target-url="/console/login/success/" always-use-default-target="true"
 				authentication-failure-url="/console/login/failure/" />
 		
@@ -20,13 +23,16 @@
 		
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
 		
-		<security:intercept-url pattern="^/console/login/.*" access="ROLE_ANONYMOUS" />
-		<security:intercept-url pattern="^/console/access-denied/.*" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="^/console/login/.*" access="permitAll" />
+		<security:intercept-url pattern="^/console/access-denied/.*" access="permitAll" />
 		
-		<security:intercept-url pattern="^/console/.*" access="ROLE_ADMIN" />
+		<security:intercept-url pattern="^/console/.*" access="hasRole('ROLE_ADMIN')" />
 	</security:http>
 	
-	<security:http authentication-manager-ref="authenticationManager" auto-config="false" use-expressions="true">
+	<security:http authentication-manager-ref="authenticationManager" auto-config="false">
+		<security:headers disabled="true"/>
+		<security:csrf disabled="true"/>
+		
 		<security:expression-handler ref="webSecurityExpressionHandler" />
 		<security:form-login login-page="/login/" default-target-url="/login/success/" always-use-default-target="true"
 				authentication-failure-url="/login/failure/" />
@@ -35,13 +41,13 @@
 		
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
 		
-		<security:intercept-url pattern="/login/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/login/failure/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/access-denied/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/security/password/recovery/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/security/password/reset/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/security/password/creation/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/maintenance/" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/login/" access="permitAll" />
+		<security:intercept-url pattern="/login/failure/" access="permitAll" />
+		<security:intercept-url pattern="/access-denied/" access="permitAll" />
+		<security:intercept-url pattern="/security/password/recovery/" access="permitAll" />
+		<security:intercept-url pattern="/security/password/reset/" access="permitAll" />
+		<security:intercept-url pattern="/security/password/creation/" access="permitAll" />
+		<security:intercept-url pattern="/maintenance/" access="permitAll" />
 		
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />
 	</security:http>
