@@ -21,7 +21,7 @@ public final class MonthPickerJavaScriptResourceReference extends AbstractCoreJQ
 	}
 	
 	@Override
-	protected Iterable<? extends HeaderItem> getPluginDependencies() {
+	protected List<HeaderItem> getPluginDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayList();
 		dependencies.add(JavaScriptHeaderItem.forReference(DatePickerJavaScriptResourceReference.get()));
 		return dependencies;

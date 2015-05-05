@@ -110,10 +110,4 @@ public class PageParameterAwareMountedMapper extends MountedMapper {
 		return handler;
 	}
 
-	@Override
-	protected PageParameters getPageParametersForListener(PageInfo pageInfo, PageParameters pageParameters) {
-		// we keep the page parameters for listeners
-		return pageParameters;
-	}
-
 }

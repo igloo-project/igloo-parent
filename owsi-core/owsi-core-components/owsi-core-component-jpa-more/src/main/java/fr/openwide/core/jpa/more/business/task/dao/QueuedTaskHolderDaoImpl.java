@@ -5,10 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.QueryParser.Operator;
-import org.hibernate.search.Environment;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -92,7 +91,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 
 		String name = searchParams.getName();
 		if (StringUtils.hasText(name)) {
-			QueryParser parser = new QueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
+			QueryParser parser = new QueryParser(
 					QUEUED_TASK_HOLDER_BINDING.name().getPath(),
 					analyzer
 					);

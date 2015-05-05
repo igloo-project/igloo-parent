@@ -37,13 +37,13 @@ public final class SortUtils {
 		return map;
 	}
 	
-	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, int type, Binding<?> binding, String ... otherFieldParts) {
+	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, SortField.Type type, Binding<?> binding, String ... otherFieldParts) {
 		List<String> fieldParts = Lists.asList(binding.getPath(), otherFieldParts);
 		String fieldName = Joiner.on(".").join(fieldParts);
 		return luceneSortField(sort, order, type, fieldName);
 	}
 	
-	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, int type, String fieldName) {
+	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, SortField.Type type, String fieldName) {
 		return new SortField(fieldName, type, isReverse(sort, order));
 	}
 	

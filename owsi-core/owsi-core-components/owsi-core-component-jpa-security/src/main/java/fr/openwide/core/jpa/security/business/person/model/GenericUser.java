@@ -66,35 +66,29 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	private String userName;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	private String passwordHash = "*NO PASSWORD*";
 	
 	@Field
 	private boolean active = true;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@Column(nullable = false)
 	private Date creationDate = new Date();
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@Column(nullable = false)
 	private Date lastUpdateDate = new Date();
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	private Date lastLoginDate;
 	
 	/**
 	 * preferred locale for user, can be null
 	 */
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	private Locale locale;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();

@@ -212,20 +212,20 @@ public final class JpaConfigUtils {
 			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
 			properties.setProperty("hibernate.search.default.exclusive_index_use", Boolean.TRUE.toString());
 			properties.setProperty("hibernate.search.default.locking_strategy", "native");
-			properties.setProperty(org.hibernate.search.Environment.LUCENE_MATCH_VERSION,
-					org.hibernate.search.Environment.DEFAULT_LUCENE_MATCH_VERSION.name());
+			properties.setProperty(org.hibernate.search.cfg.Environment.LUCENE_MATCH_VERSION,
+					org.hibernate.search.cfg.Environment.DEFAULT_LUCENE_MATCH_VERSION.toString());
 		} else {
 			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
 		}
 		
 		Class<? extends Analyzer> hibernateSearchDefaultAnalyzer = configuration.getHibernateSearchDefaultAnalyzer();
 		if (hibernateSearchDefaultAnalyzer != null) {
-			properties.setProperty(org.hibernate.search.Environment.ANALYZER_CLASS, hibernateSearchDefaultAnalyzer.getName());
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_CLASS, hibernateSearchDefaultAnalyzer.getName());
 		}
 		
 		String hibernateSearchIndexingStrategy = configuration.getHibernateSearchIndexingStrategy();
 		if (StringUtils.hasText(hibernateSearchIndexingStrategy)) {
-			properties.setProperty(org.hibernate.search.Environment.INDEXING_STRATEGY, hibernateSearchIndexingStrategy);
+			properties.setProperty(org.hibernate.search.cfg.Environment.INDEXING_STRATEGY, hibernateSearchIndexingStrategy);
 		}
 
 		String validationMode = configuration.getValidationMode();

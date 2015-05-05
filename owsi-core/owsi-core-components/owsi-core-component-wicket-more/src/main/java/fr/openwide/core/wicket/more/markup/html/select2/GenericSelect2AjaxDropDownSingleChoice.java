@@ -97,7 +97,7 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2SingleChoi
 	 * That's why we have to force the use of {@link #convertValue(String[])}.
 	 */
 	@Override
-	protected void convertInput() {
+	public void convertInput() {
 		String[] value = getInputAsArray();
 		String tmp = value != null && value.length > 0 ? value[0] : null;
 		if (getConvertEmptyInputStringToNull() && !StringUtils.hasText(tmp)) {

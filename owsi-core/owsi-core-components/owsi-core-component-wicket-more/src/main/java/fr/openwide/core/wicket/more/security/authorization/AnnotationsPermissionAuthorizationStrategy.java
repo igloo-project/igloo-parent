@@ -4,6 +4,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.request.component.IRequestableComponent;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.IResource;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
@@ -83,6 +85,12 @@ public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizatio
 			return false;
 		}
 
+		return true;
+	}
+
+	@Override
+	public boolean isResourceAuthorized(IResource resource, PageParameters parameters) {
+		// TODO 0.10 : implémenter un truc intelligent là-dessus
 		return true;
 	}
 

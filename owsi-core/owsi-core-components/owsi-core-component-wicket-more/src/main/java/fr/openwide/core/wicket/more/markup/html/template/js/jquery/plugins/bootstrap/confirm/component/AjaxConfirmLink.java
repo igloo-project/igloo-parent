@@ -51,7 +51,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isEnabled(Component component) {
-				return AjaxConfirmLink.this.isLinkEnabled();
+				return AjaxConfirmLink.this.isEnabledInHierarchy();
 			}
 		});
 	}
@@ -75,7 +75,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 			@Override
 			public boolean isEnabled(Component component) {
 				// On ajoute le handler seulement si le lien est activé
-				return AjaxConfirmLink.this.isLinkEnabled();
+				return AjaxConfirmLink.this.isEnabledInHierarchy();
 			}
 			
 			@Override

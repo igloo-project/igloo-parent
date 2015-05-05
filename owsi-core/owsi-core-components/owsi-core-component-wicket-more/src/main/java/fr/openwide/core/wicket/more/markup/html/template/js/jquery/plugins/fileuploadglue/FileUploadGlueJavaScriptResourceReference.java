@@ -1,12 +1,13 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fileuploadglue;
 
+import java.util.List;
+
 import org.apache.wicket.markup.head.HeaderItem;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fileupload.FileUploadJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class FileUploadGlueJavaScriptResourceReference extends JavaScriptResourceReference {
+public final class FileUploadGlueJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -4906439533938126355L;
 
@@ -21,8 +22,8 @@ public final class FileUploadGlueJavaScriptResourceReference extends JavaScriptR
 	}
 
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies() {
-		return JavaScriptHeaderItems.forReferences(FileUploadJavaScriptResourceReference.get());
+	public List<HeaderItem> getPluginDependencies() {
+		return forReferences(FileUploadJavaScriptResourceReference.get());
 	}
 
 }

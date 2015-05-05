@@ -19,7 +19,7 @@ public final class BootstrapModalJavaScriptResourceReference extends AbstractCor
 	}
 	
 	@Override
-	protected Iterable<? extends HeaderItem> getPluginDependencies() {
+	protected List<HeaderItem> getPluginDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayList();
 		dependencies.add(JavaScriptHeaderItem.forReference(BootstrapModalManagerJavaScriptResourceReference.get()));
 		return dependencies;

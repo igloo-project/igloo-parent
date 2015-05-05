@@ -30,7 +30,7 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 	
 	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
 	
-	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericUser.USER_NAME_SORT_FIELD_NAME, SortField.STRING));
+	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericUser.USER_NAME_SORT_FIELD_NAME, SortField.Type.STRING));
 
 	@Autowired
 	private IAuthorityService authorityService;

@@ -282,7 +282,7 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 				LuceneUtils.getAutocompleteQuery(searchPattern),
 				luceneQuery,
 				limit, offset,
-				new Sort(new SortField(GenericListItem.LABEL_SORT_FIELD_NAME, SortField.STRING))
+				new Sort(new SortField(GenericListItem.LABEL_SORT_FIELD_NAME, SortField.Type.STRING))
 		);
 	}
 

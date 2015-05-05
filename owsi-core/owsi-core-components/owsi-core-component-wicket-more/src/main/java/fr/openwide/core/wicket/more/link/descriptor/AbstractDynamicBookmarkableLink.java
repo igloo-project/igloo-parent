@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor;
 
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.Url;
 
@@ -92,33 +91,6 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	public AbstractDynamicBookmarkableLink disableIfInvalid() {
 		this.behaviorIfInvalid = BehaviorIfInvalid.DISABLE;
 		return this;
-	}
-	
-	/*
-	 * TODO YRO Delete this once the Wicket team cleaned the AbstractLink class (will happen in Wicket 7, it seems)
-	 */
-	@Override
-	protected void disableLink(ComponentTag tag) {
-		setBeforeDisabledLink("");
-		setAfterDisabledLink("");
-		// if the tag is an anchor proper
-		if (tag.getName().equalsIgnoreCase("a") || tag.getName().equalsIgnoreCase("link") ||
-			tag.getName().equalsIgnoreCase("area"))
-		{
-			// Do NOT change anchor link to span tag (difference with super implementation)
-//			tag.setName("span");
-
-			// Remove any href from the old link
-			tag.remove("href");
-
-			tag.remove("onclick");
-		}
-		// if the tag is a button or input
-		else if ("button".equalsIgnoreCase(tag.getName()) ||
-			"input".equalsIgnoreCase(tag.getName()))
-		{
-			tag.put("disabled", "disabled");
-		}
 	}
 	
 	public boolean isAbsolute() {

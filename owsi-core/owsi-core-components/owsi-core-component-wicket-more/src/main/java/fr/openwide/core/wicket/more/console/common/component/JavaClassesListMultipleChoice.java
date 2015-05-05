@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 
@@ -26,7 +26,7 @@ public class JavaClassesListMultipleChoice extends ListMultipleChoice<Class<?>> 
 		super(id, classListModel, choicesModel, JAVA_CLASS_CHOICE_RENDERER);
 	}
 
-	private static class JavaClassChoiceRenderer implements IChoiceRenderer<Class<?>> {
+	private static class JavaClassChoiceRenderer extends ChoiceRenderer<Class<?>> {
 		private static final long serialVersionUID = 1L;
 		
 		@Override

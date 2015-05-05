@@ -48,14 +48,12 @@ public class PersonReference extends GenericEntity<Long, PersonReference> {
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return null;
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return toString();
 	}

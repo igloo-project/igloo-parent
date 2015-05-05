@@ -1,14 +1,15 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.fileupload;
 
+import java.util.List;
+
 import org.apache.wicket.markup.head.HeaderItem;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 import org.odlabs.wiquery.ui.core.CoreUIJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.json.JsonJavascriptResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
-public final class FileUploadJavaScriptResourceReference extends JavaScriptResourceReference {
+public final class FileUploadJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -670753780950526435L;
 
@@ -23,8 +24,8 @@ public final class FileUploadJavaScriptResourceReference extends JavaScriptResou
 	}
 
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies() {
-		return JavaScriptHeaderItems.forReferences(
+	public List<HeaderItem> getPluginDependencies() {
+		return forReferences(
 				CoreUIJavaScriptResourceReference.get(),
 				WidgetJavaScriptResourceReference.get(),
 				JsonJavascriptResourceReference.get()

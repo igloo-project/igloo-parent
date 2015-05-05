@@ -2,12 +2,12 @@ package fr.openwide.core.wicket.more.markup.html.form;
 
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Bytes;
-import org.apache.wicket.util.upload.FileUploadException;
-import org.apache.wicket.util.upload.FileUploadBase.SizeLimitExceededException;
 
 /**
  * A form with a decent resource key for the file upload error message:

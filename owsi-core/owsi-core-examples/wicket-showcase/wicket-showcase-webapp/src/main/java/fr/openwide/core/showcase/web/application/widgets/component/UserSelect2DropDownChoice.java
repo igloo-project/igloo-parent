@@ -2,8 +2,8 @@ package fr.openwide.core.showcase.web.application.widgets.component;
 
 import java.util.List;
 
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
@@ -72,7 +72,7 @@ public class UserSelect2DropDownChoice extends DropDownChoice<User> {
 		last = choice;
 	}
 	
-	private static class UserChoiceRenderer implements IChoiceRenderer<User> {
+	private static class UserChoiceRenderer extends ChoiceRenderer<User> {
 		private static final long serialVersionUID = 1L;
 		
 		@Override

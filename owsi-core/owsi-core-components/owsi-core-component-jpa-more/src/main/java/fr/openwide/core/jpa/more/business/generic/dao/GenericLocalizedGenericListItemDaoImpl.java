@@ -261,7 +261,7 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 				LuceneUtils.getAutocompleteQuery(searchPattern),
 				luceneQuery,
 				limit, offset,
-				new Sort(new SortField(localizedLabelBindingPath + "." + labelTextSortFieldName(locale), SortField.STRING))
+				new Sort(new SortField(localizedLabelBindingPath + "." + labelTextSortFieldName(locale), SortField.Type.STRING))
 		);
 	}
 	

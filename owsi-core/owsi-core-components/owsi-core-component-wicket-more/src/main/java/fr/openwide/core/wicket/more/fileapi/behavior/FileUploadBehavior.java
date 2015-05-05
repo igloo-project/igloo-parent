@@ -350,15 +350,15 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 	}
 
 	public static List<FileApiFile> readSuccessFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
-		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_UPLOAD_DONE_SUCCESS_FILE_LIST).toString());
+		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametrizedType(List.class, List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_UPLOAD_DONE_SUCCESS_FILE_LIST).toString());
 	}
 
 	public static List<FileApiFile> readErrorFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
-		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_UPLOAD_DONE_ERROR_FILE_LIST).toString());
+		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametrizedType(List.class, List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_UPLOAD_DONE_ERROR_FILE_LIST).toString());
 	}
 
 	public static List<FileApiFile> readFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {
-		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_FILE_LIST).toString());
+		return OBJECT_MAPPER.reader(OBJECT_MAPPER.getTypeFactory().constructParametrizedType(List.class, List.class, FileApiFile.class)).readValue(parameters.getParameterValue(PARAMETERS_FILE_LIST).toString());
 	}
 
 	public static String writeFileApiFiles(List<FileApiFile> files) throws JsonProcessingException, IOException {

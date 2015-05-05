@@ -19,7 +19,7 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 			return ImmutableList.of(
 					SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.END_DATE_SORT_FIELD_NAME, NullSortValue.GREATEST),
 					SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.START_DATE_SORT_FIELD_NAME, NullSortValue.GREATEST),
-					SortUtils.luceneSortField(this, sortOrder, SortField.STRING, QueuedTaskHolder.CREATION_DATE_SORT_FIELD_NAME)
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.CREATION_DATE_SORT_FIELD_NAME)
 			);
 		}
 		
@@ -32,7 +32,7 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.STRING, QueuedTaskHolder.NAME_SORT_FIELD_NAME)
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT_FIELD_NAME)
 			);
 		}
 		
@@ -45,7 +45,7 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.LONG, CoreJpaMoreBindings.queuedTaskHolder().id())
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, CoreJpaMoreBindings.queuedTaskHolder().id())
 			);
 		}
 		

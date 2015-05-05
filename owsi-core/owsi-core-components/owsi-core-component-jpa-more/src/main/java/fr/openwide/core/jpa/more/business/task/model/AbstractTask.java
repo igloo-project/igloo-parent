@@ -44,15 +44,12 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	private ObjectMapper queuedTaskHolderObjectMapper;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	private TransactionTemplate taskManagementTransactionTemplate;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	private TransactionTemplate taskExecutionTransactionTemplate;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	protected Long queuedTaskHolderId;
 
 	protected Date triggeringDate;
@@ -62,7 +59,6 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	protected String taskType;
 
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	private TaskExecutionResult taskExecutionResult;
 
 	protected AbstractTask() { }
@@ -297,7 +293,6 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	 * (ex : CANCELLED si exception métier, FAILED si exception autre).
 	 */
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public TaskStatus onFailStatus(TaskExecutionResult executionResult) {
 		return TaskStatus.FAILED;
 	}

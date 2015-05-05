@@ -358,10 +358,11 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	
 	/**
 	 * <p>Override to provide locale mapping to available application locales.</p>
+	 * @return 
 	 */
 	@Override
-	public void setLocale(Locale locale) {
-		super.setLocale(configurer.toAvailableLocale(locale));
+	public Session setLocale(Locale locale) {
+		return super.setLocale(configurer.toAvailableLocale(locale));
 	}
 	
 	public IModel<Locale> getLocaleModel() {

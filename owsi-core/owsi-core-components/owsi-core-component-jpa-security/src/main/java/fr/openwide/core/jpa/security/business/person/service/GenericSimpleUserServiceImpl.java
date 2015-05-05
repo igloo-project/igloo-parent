@@ -21,8 +21,8 @@ public abstract class GenericSimpleUserServiceImpl<U extends GenericSimpleUser<U
 	
 	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath(), BINDING.firstName().getPath(), BINDING.lastName().getPath() };
 	
-	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericSimpleUser.LAST_NAME_SORT_FIELD_NAME, SortField.STRING),
-			new SortField(GenericSimpleUser.FIRST_NAME_SORT_FIELD_NAME, SortField.STRING));
+	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericSimpleUser.LAST_NAME_SORT_FIELD_NAME, SortField.Type.STRING),
+			new SortField(GenericSimpleUser.FIRST_NAME_SORT_FIELD_NAME, SortField.Type.STRING));
 	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;

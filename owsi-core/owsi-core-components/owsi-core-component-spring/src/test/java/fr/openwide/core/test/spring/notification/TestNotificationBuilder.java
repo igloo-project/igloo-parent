@@ -22,7 +22,7 @@ public class TestNotificationBuilder {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-//	@Test
+	@Test
 	public void testToCcBccExcept() throws ServiceException {
 		INotificationBuilderBaseState builder = NotificationBuilder.create().init(applicationContext);
 		

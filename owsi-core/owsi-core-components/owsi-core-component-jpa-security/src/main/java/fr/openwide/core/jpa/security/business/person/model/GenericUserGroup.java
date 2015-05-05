@@ -59,13 +59,11 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	 * </ol>
 	 */
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany(mappedBy = "groups")
 	@SortComparator(AbstractUserComparator.class)
 	private Set<P> persons = Sets.newTreeSet(AbstractUserComparator.get());
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@ManyToMany
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("name")

@@ -1,9 +1,18 @@
 package fr.openwide.core.jpa.search.analysis.fr;
 
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.solr.analysis.BaseTokenFilterFactory;
+import java.util.Map;
 
-public class CoreFrenchMinimalStemFilterFactory extends BaseTokenFilterFactory {
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.util.TokenFilterFactory;
+
+public class CoreFrenchMinimalStemFilterFactory extends TokenFilterFactory {
+
+	public CoreFrenchMinimalStemFilterFactory(Map<String, String> args) {
+		super(args);
+		if (!args.isEmpty()) {
+			throw new IllegalArgumentException("Unknown parameters: " + args);
+		}
+	}
 
 	@Override
 	public TokenStream create(TokenStream input) {

@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemit;
 
+import java.util.List;
+
 import org.apache.wicket.markup.head.HeaderItem;
-import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 import org.odlabs.wiquery.ui.effects.BlindEffectJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
@@ -20,12 +21,13 @@ public final class ItemItJavascriptResourceReference extends AbstractCoreJQueryP
 	}
 
 	@Override
-	protected Iterable<? extends HeaderItem> getPluginDependencies() {
-		return JavaScriptHeaderItems.forReferences(
+	protected List<HeaderItem> getPluginDependencies() {
+		return forReferences(
 				ItemAutocompleteJavascriptResourceReference.get(),
 				JsonJavascriptResourceReference.get(),
 				EasingJavaScriptResourceReference.get(),
-				BlindEffectJavaScriptResourceReference.get());
+				BlindEffectJavaScriptResourceReference.get()
+		);
 	}
 
 	public static ItemItJavascriptResourceReference get() {

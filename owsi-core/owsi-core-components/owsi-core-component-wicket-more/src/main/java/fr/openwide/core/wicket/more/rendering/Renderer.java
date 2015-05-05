@@ -60,7 +60,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	 * Utility method that can be used when a resource key value is needed in the render() implementation.
 	 */
 	protected static String getString(String key, Locale locale, IModel<?> model) {
-		return Localizer.get().getString(key, null, model, locale, null, null);
+		return Localizer.get().getString(key, null, model, locale, null, (IModel<String>) null);
 	}
 
 	/**
@@ -347,7 +347,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 					return value;
 				}
 			});
-			return Localizer.get().getString(resourceKey, null, model, locale, null, null);
+			return Localizer.get().getString(resourceKey, null, model, locale, null, (IModel<String>) null);
 		}
 		
 		@Override
@@ -577,7 +577,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		@Override
 		public String render(final Object value, Locale locale) {
 			IModel<?> model = Models.transientModel(value);
-			return Localizer.get().getString(resourceKey, null, model, locale, null, null);
+			return Localizer.get().getString(resourceKey, null, model, locale, null, (IModel<String>) null);
 		}
 		
 		@Override
@@ -591,7 +591,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public DateFormat apply(Locale locale) {
-				return new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, null), locale);
+				return new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null), locale);
 			}
 		});
 		if (datePattern.capitalize()) {

@@ -104,7 +104,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				List<NavigationMenuItem> navigationMenuItems = getModelObject();
+				List<? extends NavigationMenuItem> navigationMenuItems = getModelObject();
 				setVisible(navigationMenuItems != null && !navigationMenuItems.isEmpty());
 			}
 		});

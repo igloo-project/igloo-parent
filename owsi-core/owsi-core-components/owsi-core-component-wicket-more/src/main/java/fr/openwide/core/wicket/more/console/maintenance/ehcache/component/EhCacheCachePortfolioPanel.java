@@ -65,9 +65,8 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 				item.add(new Label("cacheManagerName", item.getModelObject().getName()));
 				
 				IModel<String> purgerCacheTextModel = new StringResourceModel(
-						"console.maintenance.ehcache.cacheManager.purge.confirm", this,
-							Model.of(item.getModelObject().getName()),
-							Model.of(item.getModelObject().getName()));
+						"console.maintenance.ehcache.cacheManager.purge.confirm", null,
+							new Object[] { Model.of(item.getModelObject().getName()) });
 				
 				AjaxConfirmLink<CacheManager> purgerCache = AjaxConfirmLink.build("cacheManagerPurgeLink", item.getModel())
 						.title(new ResourceModel("common.confirmTitle")).content(purgerCacheTextModel)
@@ -145,9 +144,8 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						progressBarsContainer.add(progressBarHit);
 						
 						IModel<String> viderCacheTextModel = new StringResourceModel(
-								"console.maintenance.ehcache.portfolio.viderCache.confirm", this, 
-								BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()),
-								BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()));
+								"console.maintenance.ehcache.portfolio.viderCache.confirm", null,
+								new Object[] { BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()) });
 						
 						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.build("viderCache", item.getModel())
 								.title(new ResourceModel("common.confirmTitle")).content(viderCacheTextModel)

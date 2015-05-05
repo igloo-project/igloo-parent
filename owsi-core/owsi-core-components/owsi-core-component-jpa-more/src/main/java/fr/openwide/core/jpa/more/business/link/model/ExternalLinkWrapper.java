@@ -146,14 +146,12 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return url;
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return url;
 	}

@@ -14,24 +14,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.hibernate.CacheMode;
-import org.hibernate.search.Environment;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
-import org.hibernate.search.engine.spi.SearchFactoryImplementor;
-import org.hibernate.search.impl.MassIndexerImpl;
+import org.hibernate.search.batchindexing.impl.MassIndexerImpl;
+import org.hibernate.search.engine.integration.impl.ExtendedSearchIntegrator;
+import org.hibernate.search.hcore.util.impl.HibernateHelper;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
-import org.hibernate.search.util.impl.HibernateHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -255,54 +254,50 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	 * @see MassIndexerImpl#toRootEntities
 	 */
 	protected Set<Class<?>> getIndexedRootEntities(SearchFactory searchFactory, Class<?>... selection) {
-		if (searchFactory instanceof SearchFactoryImplementor) {
-			SearchFactoryImplementor searchFactoryImplementor = (SearchFactoryImplementor) searchFactory;
-			
-			Set<Class<?>> entities = new HashSet<Class<?>>();
-			
-			// first build the "entities" set containing all indexed subtypes of "selection".
-			for (Class<?> entityType : selection) {
-				Set<Class<?>> targetedClasses = searchFactoryImplementor.getIndexedTypesPolymorphic(new Class[] { entityType });
-				if (targetedClasses.isEmpty()) {
-					String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
-					throw new IllegalArgumentException(msg);
-				}
-				entities.addAll(targetedClasses);
+		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
+		
+		Set<Class<?>> entities = new HashSet<Class<?>>();
+		
+		// first build the "entities" set containing all indexed subtypes of "selection".
+		for (Class<?> entityType : selection) {
+			Set<Class<?>> targetedClasses = searchIntegrator.getIndexedTypesPolymorphic(new Class[] { entityType });
+			if (targetedClasses.isEmpty()) {
+				String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
+				throw new IllegalArgumentException(msg);
 			}
-			
-			Set<Class<?>> cleaned = new HashSet<Class<?>>();
-			Set<Class<?>> toRemove = new HashSet<Class<?>>();
-			
-			//now remove all repeated types to avoid duplicate loading by polymorphic query loading
-			for (Class<?> type : entities) {
-				boolean typeIsOk = true;
-				for (Class<?> existing : cleaned) {
-					if (existing.isAssignableFrom(type)) {
-						typeIsOk = false;
-						break;
-					}
-					if (type.isAssignableFrom(existing)) {
-						toRemove.add(existing);
-					}
-				}
-				if (typeIsOk) {
-					cleaned.add(type);
-				}
-			}
-			cleaned.removeAll(toRemove);
-			
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("Targets for indexing job: {}", cleaned);
-			}
-	
-			return cleaned;
-		} else {
-			throw new IllegalArgumentException("searchFactory should be a SearchFactoryImplementor");
+			entities.addAll(targetedClasses);
 		}
+		
+		Set<Class<?>> cleaned = new HashSet<Class<?>>();
+		Set<Class<?>> toRemove = new HashSet<Class<?>>();
+		
+		//now remove all repeated types to avoid duplicate loading by polymorphic query loading
+		for (Class<?> type : entities) {
+			boolean typeIsOk = true;
+			for (Class<?> existing : cleaned) {
+				if (existing.isAssignableFrom(type)) {
+					typeIsOk = false;
+					break;
+				}
+				if (type.isAssignableFrom(existing)) {
+					toRemove.add(existing);
+				}
+			}
+			if (typeIsOk) {
+				cleaned.add(type);
+			}
+		}
+		cleaned.removeAll(toRemove);
+		
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Targets for indexing job: {}", cleaned);
+		}
+
+		return cleaned;
 	}
 	
 	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextEntityManager fullTextEntityManager, String[] fields, Operator defaultOperator, Analyzer analyzer) {
-		MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION, fields, analyzer);
+		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 		parser.setDefaultOperator(defaultOperator);
 		
 		return parser;

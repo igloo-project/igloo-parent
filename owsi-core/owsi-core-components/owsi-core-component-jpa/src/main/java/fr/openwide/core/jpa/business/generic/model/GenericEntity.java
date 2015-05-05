@@ -72,7 +72,6 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * @return vrai si l'objet n'a pas encore été persisté
 	 */
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public boolean isNew() {
 		return getId() == null;
 	}
@@ -147,7 +146,6 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * @return chaîne à injecter dans le toString()
 	 */
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public abstract String getNameForToString();
 
 	/**
@@ -156,7 +154,6 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * @return nom à afficher
 	 */
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public abstract String getDisplayName();
 
 }

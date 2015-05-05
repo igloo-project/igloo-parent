@@ -26,12 +26,9 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.bridge.builtin.LongNumericFieldBridge;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -78,8 +75,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	/**
 	 * Identifiant de l'objet contexte.
 	 */
-	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
-			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field
 	private Long contextId;
 
 	/**
@@ -96,8 +92,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	/**
 	 * Identifiant du sujet ayant effectué l'action.
 	 */
-	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
-			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field
 	private Long subjectId;
 
 	/**
@@ -114,8 +109,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	/**
 	 * Identifiant de l'objet.
 	 */
-	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
-			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field
 	private Long objectId;
 
 	/**
@@ -132,8 +126,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	/**
 	 * Identifiant de l'objet secondaire.
 	 */
-	@Field(bridge = @FieldBridge(impl = LongNumericFieldBridge.class), analyze = Analyze.NO,
-			analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field
 	private Long secondaryObjectId;
 
 	/**

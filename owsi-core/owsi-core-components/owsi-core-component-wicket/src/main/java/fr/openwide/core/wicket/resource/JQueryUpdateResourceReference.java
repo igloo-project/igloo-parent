@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.resource;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.apache.wicket.settings.IJavaScriptLibrarySettings;
 
 public class JQueryUpdateResourceReference extends JavaScriptResourceReference {
 	private static final long serialVersionUID = 1L;

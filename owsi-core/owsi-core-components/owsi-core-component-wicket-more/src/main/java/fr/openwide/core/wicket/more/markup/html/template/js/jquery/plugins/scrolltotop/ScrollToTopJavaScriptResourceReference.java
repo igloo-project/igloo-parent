@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop;
 
+import java.util.List;
+
 import org.apache.wicket.markup.head.HeaderItem;
-import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
@@ -17,8 +18,8 @@ public final class ScrollToTopJavaScriptResourceReference extends AbstractCoreJQ
 	}
 
 	@Override
-	protected Iterable<? extends HeaderItem> getPluginDependencies() {
-		return JavaScriptHeaderItems.forReferences(EasingJavaScriptResourceReference.get());
+	protected List<HeaderItem> getPluginDependencies() {
+		return forReferences(EasingJavaScriptResourceReference.get());
 	}
 
 	public static ScrollToTopJavaScriptResourceReference get() {

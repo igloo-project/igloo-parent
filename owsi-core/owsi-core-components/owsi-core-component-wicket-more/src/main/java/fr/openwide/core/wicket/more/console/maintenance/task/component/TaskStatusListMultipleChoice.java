@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -30,7 +30,7 @@ public class TaskStatusListMultipleChoice extends ListMultipleChoice<TaskStatus>
 		setChoiceRenderer(new TaskStatusChoiceRenderer());
 	}
 
-	private class TaskStatusChoiceRenderer implements IChoiceRenderer<TaskStatus> {
+	private class TaskStatusChoiceRenderer  extends ChoiceRenderer<TaskStatus> {
 		private static final long serialVersionUID = 1L;
 
 		@Override

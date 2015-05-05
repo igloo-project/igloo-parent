@@ -237,7 +237,6 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	}
 
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public void resetExecutionInformation() {
 		setResult(null);
 		setStackTrace(null);
@@ -245,7 +244,6 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	}
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public void updateExecutionInformation(TaskExecutionResult executionResult, ObjectMapper objectMapper)
 			throws JsonProcessingException {
 		if (executionResult != null) {

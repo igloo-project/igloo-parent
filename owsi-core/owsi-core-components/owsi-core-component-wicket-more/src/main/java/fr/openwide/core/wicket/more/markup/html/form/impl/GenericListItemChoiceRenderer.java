@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.form.impl;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
-public final class GenericListItemChoiceRenderer implements IChoiceRenderer<GenericListItem<?>> {
+public final class GenericListItemChoiceRenderer extends ChoiceRenderer<GenericListItem<?>> {
 	
 	private static final long serialVersionUID = 7703341197679633131L;
 	

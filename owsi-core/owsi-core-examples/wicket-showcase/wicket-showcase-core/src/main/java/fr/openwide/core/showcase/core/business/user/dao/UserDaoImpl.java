@@ -2,7 +2,7 @@ package fr.openwide.core.showcase.core.business.user.dao;
 
 import java.util.List;
 
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -69,7 +69,7 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	public List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset)
 			throws ParseException {
 		FullTextQuery fullTextQuery = getSearchByNameActiveQuery(name, active);
-		fullTextQuery.setSort(new Sort(new SortField(USER.sortName().getPath(), SortField.STRING)));
+		fullTextQuery.setSort(new Sort(new SortField(USER.sortName().getPath(), SortField.Type.STRING)));
 		
 		if (offset != null) {
 			fullTextQuery.setFirstResult(offset);

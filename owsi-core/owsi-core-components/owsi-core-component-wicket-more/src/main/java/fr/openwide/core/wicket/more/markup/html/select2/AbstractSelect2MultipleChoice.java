@@ -71,7 +71,7 @@ public abstract class AbstractSelect2MultipleChoice<C extends Collection<T>, T> 
 	 * That's why we have to force the use of {@link #convertValue(String[])}.
 	 */
 	@Override
-	protected void convertInput() {
+	public void convertInput() {
 		try {
 			setConvertedInput(convertValue(getInputAsArray()));
 		} catch (ConversionException e) {

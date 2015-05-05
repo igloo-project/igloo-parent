@@ -19,7 +19,7 @@ public class BlankLink extends AbstractLink {
 	{
 		super.onComponentTag(tag);
 
-		if (isLinkEnabled())
+		if (isEnabledInHierarchy())
 		{
 			if (tag.getName().equalsIgnoreCase("a"))
 			{

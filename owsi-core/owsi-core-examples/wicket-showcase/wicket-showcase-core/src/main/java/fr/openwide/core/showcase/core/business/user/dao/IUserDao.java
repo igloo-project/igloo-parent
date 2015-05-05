@@ -2,7 +2,7 @@ package fr.openwide.core.showcase.core.business.user.dao;
 
 import java.util.List;
 
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;

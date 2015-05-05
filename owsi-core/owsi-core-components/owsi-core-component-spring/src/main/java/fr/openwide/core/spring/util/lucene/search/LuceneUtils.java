@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -18,7 +18,6 @@ import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
-import org.apache.lucene.util.Version;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
@@ -28,9 +27,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.spring.util.StringUtils;
 
 public final class LuceneUtils {
-	
-	@SuppressWarnings("deprecation")
-	public static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
 	
 	private static final int DEFAULT_ENABLE_WILDCARD_MIN_CHARS = 2;
 	
@@ -46,7 +42,7 @@ public final class LuceneUtils {
 	
 	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
 			String searchPattern, int enableWildcardMinChars) throws ParseException {
-		QueryParser queryParser = new QueryParser(LUCENE_VERSION, fieldName, analyzer);
+		QueryParser queryParser = new QueryParser(fieldName, analyzer);
 		queryParser.setDefaultOperator(Operator.AND);
 		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
 	}
@@ -57,7 +53,7 @@ public final class LuceneUtils {
 	
 	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer,
 			String searchPattern, int enableWildcardMinChars) throws ParseException {
-		QueryParser queryParser = new MultiFieldQueryParser(LUCENE_VERSION, Iterables.toArray(fieldNames, String.class), analyzer);
+		QueryParser queryParser = new MultiFieldQueryParser(Iterables.toArray(fieldNames, String.class), analyzer);
 		queryParser.setDefaultOperator(Operator.AND);
 		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
 	}
@@ -114,7 +110,7 @@ public final class LuceneUtils {
 			throw new IllegalArgumentException("minSimilarity may not be null");
 		}
 		
-		QueryParser queryParser = new QueryParser(LUCENE_VERSION, fieldName, analyzer);
+		QueryParser queryParser = new QueryParser(fieldName, analyzer);
 		queryParser.setDefaultOperator(Operator.AND);
 		return queryParser.parse(getSimilarityQuery(searchPattern, minSimilarity));
 	}
@@ -326,7 +322,7 @@ public final class LuceneUtils {
 		}
 		sb.append(QueryParser.escape(term.text()))
 			.append(FUZZY_PARAMETER_SUFFIX)
-			.append(Float.toString(fuzzyQuery.getMinSimilarity()));
+			.append(fuzzyQuery.getMaxEdits());
 		return sb.toString();
 	}
 	

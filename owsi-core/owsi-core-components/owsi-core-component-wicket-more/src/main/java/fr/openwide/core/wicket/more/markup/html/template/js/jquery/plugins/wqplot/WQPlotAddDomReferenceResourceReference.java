@@ -25,7 +25,7 @@ public final class WQPlotAddDomReferenceResourceReference extends AbstractCoreJQ
 	}
 	
 	@Override
-	protected Iterable<? extends HeaderItem> getPluginDependencies() {
+	protected List<HeaderItem> getPluginDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayList();
 		dependencies.add(JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference.get()));
 		return dependencies;

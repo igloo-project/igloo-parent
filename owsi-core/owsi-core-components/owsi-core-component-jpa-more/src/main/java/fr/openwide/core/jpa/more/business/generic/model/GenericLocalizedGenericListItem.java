@@ -95,7 +95,6 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		T text = getLabel();
 		return text == null ? "" : text.toString(); // NOSONAR
@@ -103,7 +102,6 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return toString();
 	}

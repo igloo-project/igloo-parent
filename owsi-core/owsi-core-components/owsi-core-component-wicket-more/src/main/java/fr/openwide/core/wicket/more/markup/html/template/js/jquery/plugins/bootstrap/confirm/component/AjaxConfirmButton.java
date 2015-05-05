@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
@@ -99,11 +98,12 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
 			}
 
-			@SuppressWarnings("deprecation")
-			@Override
-			protected AjaxChannel getChannel() {
-				return AjaxConfirmButton.this.getChannel();
-			}
+			// TODO 0.10 : checker avec LAL ou YRO
+//			@SuppressWarnings("deprecation")
+//			@Override
+//			protected AjaxChannel getChannel() {
+//				return AjaxConfirmButton.this.getChannel();
+//			}
 
 			@Override
 			protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {

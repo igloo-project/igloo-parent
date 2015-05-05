@@ -3,11 +3,11 @@ package fr.openwide.core.wicket.more.markup.html.select2;
 import java.util.Locale;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
 
-public class DefaultLocalizedGenericListItemChoiceRenderer implements IChoiceRenderer<GenericLocalizedGenericListItem<?, ?>> {
+public class DefaultLocalizedGenericListItemChoiceRenderer extends ChoiceRenderer<GenericLocalizedGenericListItem<?, ?>> {
 
 	private static final long serialVersionUID = -324543602711731900L;
 	

@@ -23,7 +23,7 @@ public class EmailLink extends AbstractLink {
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
 		
-		if (isLinkEnabled() == false) {
+		if (isEnabledInHierarchy() == false) {
 			disableLink(tag);
 		} else if (getDefaultModel() != null) {
 			Object hrefValue = getDefaultModelObject();

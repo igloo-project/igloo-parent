@@ -25,7 +25,7 @@ public abstract class GenericBlankLink<T> extends AbstractLink implements IGener
 	{
 		super.onComponentTag(tag);
 
-		if (isLinkEnabled())
+		if (isEnabledInHierarchy())
 		{
 			if (tag.getName().equalsIgnoreCase("a"))
 			{

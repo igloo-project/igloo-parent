@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNull;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
@@ -88,8 +88,8 @@ public class TestLuceneUtils {
 		bq1.add(new TermQuery(new Term("field2", "text2")), Occur.MUST_NOT);
 		
 		BooleanQuery bq2 = new BooleanQuery();
-		bq2.add(new FuzzyQuery(new Term("field3", "text3"), 0.8f), Occur.MUST);
-		bq2.add(new FuzzyQuery(new Term("field4", "text4"), 0.7f), Occur.SHOULD);
+		bq2.add(new FuzzyQuery(new Term("field3", "text3"), 1), Occur.MUST);
+		bq2.add(new FuzzyQuery(new Term("field4", "text4"), 2), Occur.SHOULD);
 		bq2.add(new TermQuery(new Term("field4", "text4")), Occur.SHOULD);
 		bq2.add(new WildcardQuery(new Term("field8", "t*t?")), Occur.MUST);
 		
@@ -120,7 +120,7 @@ public class TestLuceneUtils {
 		
 		String stringQuery = LuceneUtils.queryToString(finalQuery);
 		
-		QueryParser parser = new QueryParser(LuceneUtils.LUCENE_VERSION, "", new StandardAnalyzer(LuceneUtils.LUCENE_VERSION));
+		QueryParser parser = new QueryParser("", new StandardAnalyzer());
 		Query parsedQuery = parser.parse(stringQuery);
 		assertEquals(finalQuery, parsedQuery);
 	}
@@ -135,7 +135,7 @@ public class TestLuceneUtils {
 		
 		String stringQuery = LuceneUtils.queryToString(finalQuery);
 		
-		QueryParser parser = new QueryParser(LuceneUtils.LUCENE_VERSION, "", new StandardAnalyzer(LuceneUtils.LUCENE_VERSION));
+		QueryParser parser = new QueryParser("", new StandardAnalyzer());
 		Query parsedQuery = parser.parse(stringQuery);
 		
 		assertEquals(stringQuery, LuceneUtils.queryToString(parsedQuery));
@@ -148,8 +148,8 @@ public class TestLuceneUtils {
 	
 	@Test
 	public void testFuzzyQueryToString() {
-		assertEquals("field1:text1~0.8", LuceneUtils.queryToString(new FuzzyQuery(new Term("field1", "text1"), 0.8f)));
-		assertEquals("text2~0.8", LuceneUtils.queryToString(new FuzzyQuery(new Term("", "text2"), 0.8f)));
+		assertEquals("field1:text1~1", LuceneUtils.queryToString(new FuzzyQuery(new Term("field1", "text1"), 1)));
+		assertEquals("text2~1", LuceneUtils.queryToString(new FuzzyQuery(new Term("", "text2"), 1)));
 	}
 	
 	@Test

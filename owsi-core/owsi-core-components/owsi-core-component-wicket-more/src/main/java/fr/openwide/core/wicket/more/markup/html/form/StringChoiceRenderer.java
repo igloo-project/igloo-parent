@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
-public class StringChoiceRenderer implements IChoiceRenderer<String> {
+public class StringChoiceRenderer extends ChoiceRenderer<String> {
 	private static final long serialVersionUID = 1L;
 
 	@Override

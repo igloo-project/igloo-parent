@@ -11,15 +11,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SortField;
-import org.apache.lucene.util.Version;
 import org.bindgen.binding.AbstractBinding;
-import org.hibernate.search.Environment;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -254,7 +252,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected Query matchAllTermsIfGiven(Analyzer analyzer, String fieldPath, String terms) {
 		if (StringUtils.hasText(terms)) {
-			QueryParser parser = new QueryParser(Version.LUCENE_36, fieldPath, analyzer);
+			QueryParser parser = new QueryParser(fieldPath, analyzer);
 			parser.setDefaultOperator(Operator.AND);
 			try {
 				return parser.parse(QueryParser.escape(terms));
@@ -268,7 +266,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected Query matchAllTermsIfGiven(String fieldPath, String terms) {
 		if (StringUtils.hasText(terms)) {
-			QueryParser parser = new QueryParser(Version.LUCENE_36, fieldPath, getAnalyzer());
+			QueryParser parser = new QueryParser(fieldPath, getAnalyzer());
 			parser.setDefaultOperator(Operator.AND);
 			try {
 				return parser.parse(QueryParser.escape(terms));
@@ -292,7 +290,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected Query matchAllTermsMultifieldIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
 		if (StringUtils.hasText(terms)) {
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
+			MultiFieldQueryParser parser = new MultiFieldQueryParser(
 					Iterables.toArray(fieldPaths, String.class),
 					analyzer
 			);
@@ -309,7 +307,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected Query matchAllTermsMultifieldIfGiven(String terms, Iterable<String> fieldPaths) {
 		if (StringUtils.hasText(terms)) {
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
+			MultiFieldQueryParser parser = new MultiFieldQueryParser(
 					Iterables.toArray(fieldPaths, String.class),
 					getAnalyzer()
 			);

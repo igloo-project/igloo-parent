@@ -54,7 +54,7 @@ public abstract class AjaxItemItBehavior<I, J> extends AbstractAjaxBehavior {
 				// polymorphiques de J ne seront pas appliqués.
 				CollectionType collectionType = OBJECT_MAPPER.getTypeFactory()
 						.constructCollectionType(List.class, getJsonType());
-				OBJECT_MAPPER.writerWithType(collectionType).writeValue(sw, toSerializeObjects);
+				OBJECT_MAPPER.writerFor(collectionType).writeValue(sw, toSerializeObjects);
 			} catch (IOException e) {
 				throw new WicketRuntimeException(e);
 			}

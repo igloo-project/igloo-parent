@@ -39,13 +39,16 @@ import org.bindgen.BindingRoot;
  *            type of object returned by the expression
  */
 public class BindingModel<R, T> extends AbstractPropertyModel<T> {
+
 	private static final long serialVersionUID = -4018038300151228083L;
+
+	private static final String ROOT = "#root";
 
 	private final String propertyExpression;
 	
 	private BindingModel(Object root, String propertyExpression) {
 		super(root);
-		if ("#root".equals(propertyExpression)) {
+		if (ROOT.equals(propertyExpression)) {
 			this.propertyExpression = null;
 		} else {
 			this.propertyExpression = propertyExpression;
