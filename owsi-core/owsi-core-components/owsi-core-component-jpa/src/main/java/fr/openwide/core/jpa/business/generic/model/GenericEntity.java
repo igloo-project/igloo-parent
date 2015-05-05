@@ -21,6 +21,9 @@ import java.io.Serializable;
 import java.text.Collator;
 import java.util.Locale;
 
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +38,7 @@ import fr.openwide.core.commons.util.ordering.SerializableCollator;
  *
  * @param <E> type de l'entité
  */
+@MappedSuperclass
 public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		implements Serializable, Comparable<E> {
 
@@ -72,6 +76,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * @return vrai si l'objet n'a pas encore été persisté
 	 */
 	@JsonIgnore
+	@Transient
 	public boolean isNew() {
 		return getId() == null;
 	}
