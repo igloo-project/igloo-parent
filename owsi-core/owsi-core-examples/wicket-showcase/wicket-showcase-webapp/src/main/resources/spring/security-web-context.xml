@@ -21,13 +21,16 @@
 	<security:http pattern="/monitoring/**" security="none" />
 	<security:http pattern="/favicon.ico" security="none" />
 	
-	<security:http authentication-manager-ref="authenticationManager" auto-config="false" use-expressions="true">
+	<security:http authentication-manager-ref="authenticationManager" auto-config="false">
+		<security:headers disabled="true"/>
+		<security:csrf disabled="true"/>
+		
 		<security:expression-handler ref="webSecurityExpressionHandler" />
 		<security:form-login login-page="/login/" default-target-url="/login/success/" always-use-default-target="true"
 				authentication-failure-url="/login/failure/" />
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
-		<security:intercept-url pattern="/login/" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/login/failure/" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/login/" access="permitAll" />
+		<security:intercept-url pattern="/login/failure/" access="permitAll" />
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />
 	</security:http>
 </beans>
