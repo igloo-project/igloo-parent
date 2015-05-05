@@ -164,23 +164,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
-		<repository>
-			<id>com.asual.maven.public</id>
-			<name>Asual Public Repository</name>
-			<url>http://www.asual.com/maven/content/groups/public</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>phloc.com</id>
-			<url>http://repo.phloc.com/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 	
 </project>
