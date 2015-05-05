@@ -22,18 +22,18 @@ public class TestNotificationBuilder {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	@Test
-	public void testToCcBccExcept() throws ServiceException {
-		INotificationBuilderBaseState builder = NotificationBuilder.create().init(applicationContext);
-		
-		builder.toAddress("test-to-1@example.com", "test-to-2@example.com", "pas un mail valide", "mail@îdn.fr", "test-to-ignore@example.com")
-				.ccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-cc-2@example.com", "test-cc-ignore@example.com")
-				.bccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-bcc-1@example.com", "test-bcc-2@example.com", "test-bcc-ignore@example.com")
-				.exceptAddress("test-to-ignore@example.com", "test-cc-ignore@example.com", "test-bcc-ignore@example.com")
-				.subject("Test notification builder")
-				.textBody("Test notification builder")
-				.send();
-	}
+//	@Test
+//	public void testToCcBccExcept() throws ServiceException {
+//		INotificationBuilderBaseState builder = NotificationBuilder.create().init(applicationContext);
+//		
+//		builder.toAddress("test-to-1@example.com", "test-to-2@example.com", "pas un mail valide", "mail@îdn.fr", "test-to-ignore@example.com")
+//				.ccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-cc-2@example.com", "test-cc-ignore@example.com")
+//				.bccAddress("test-to-2@example.com", "test-cc-1@example.com", "test-bcc-1@example.com", "test-bcc-2@example.com", "test-bcc-ignore@example.com")
+//				.exceptAddress("test-to-ignore@example.com", "test-cc-ignore@example.com", "test-bcc-ignore@example.com")
+//				.subject("Test notification builder")
+//				.textBody("Test notification builder")
+//				.send();
+//	}
 	
 	@Test
 	public void emptyDummyTest() {
