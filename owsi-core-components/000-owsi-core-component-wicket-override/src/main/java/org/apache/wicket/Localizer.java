@@ -46,9 +46,9 @@ import org.slf4j.LoggerFactory;
  * strategy for the properties. E.g. string resource loaders which load the properties from a
  * database. There should be hardly any need to extend Localizer.
  * 
- * @see org.apache.wicket.settings.IResourceSettings#getLocalizer()
+ * @see org.apache.wicket.settings.ResourceSettings#getLocalizer()
  * @see org.apache.wicket.resource.loader.IStringResourceLoader
- * @see org.apache.wicket.settings.IResourceSettings#getStringResourceLoaders()
+ * @see org.apache.wicket.settings.ResourceSettings#getStringResourceLoaders()
  * 
  * @author Chris Turner
  * @author Juergen Donnerstag
@@ -255,13 +255,13 @@ public class Localizer
 		{
 			AppendingStringBuffer message = new AppendingStringBuffer("Unable to find property: '");
 			message.append(key);
-			message.append("'");
+			message.append('\'');
 
 			if (component != null)
 			{
 				message.append(" for component: ");
 				message.append(component.getPageRelativePath());
-				message.append(" [class=").append(component.getClass().getName()).append("]");
+				message.append(" [class=").append(component.getClass().getName()).append(']');
 			}
 			message.append(". Locale: ").append(locale).append(", style: ").append(style);
 
@@ -339,7 +339,7 @@ public class Localizer
 		}
 
 		String cacheKey = null;
-		String value = null;
+		String value;
 
 		// Make sure locale, style and variation have the right values
 		String variation = (component != null ? component.getVariation() : null);
@@ -617,7 +617,7 @@ public class Localizer
 	 */
 	protected Map<String, String> newCache()
 	{
-		return new ConcurrentHashMap<String, String>();
+		return new ConcurrentHashMap<>();
 	}
 
 	/**
