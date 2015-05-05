@@ -2,7 +2,7 @@ package fr.openwide.core.basicapp.web.application.common.form;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class UserGroupAutocompleteAjaxComponent extends AutocompleteAjaxComponen
 		return null;
 	}
 
-	private static final class UserGroupChoiceRenderer implements IChoiceRenderer<UserGroup> {
+	private static final class UserGroupChoiceRenderer extends ChoiceRenderer<UserGroup> {
 		private static final long serialVersionUID = 1L;
 		
 		@Override

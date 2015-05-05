@@ -22,7 +22,7 @@ public final class StylesLessCssResourceReference extends LessCssResourceReferen
 	}
 	
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies() {
+	public List<HeaderItem> getDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayListWithExpectedSize(2);
 		dependencies.add(CssHeaderItem.forReference(JQueryUiCssResourceReference.get()));
 		dependencies.add(CssHeaderItem.forReference(Select2CssResourceReference.get()));

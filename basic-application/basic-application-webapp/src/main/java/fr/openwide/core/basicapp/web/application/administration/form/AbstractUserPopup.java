@@ -23,6 +23,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
@@ -63,8 +64,8 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 			new UsernamePatternValidator() {
 				private static final long serialVersionUID = 1L;
 				@Override
-				protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
-					error.setKeys(Collections.singletonList("common.validator.username.pattern"));
+				protected IValidationError decorate(IValidationError error, IValidatable<String> validatable) {
+					((ValidationError) error).setKeys(Collections.singletonList("common.validator.username.pattern"));
 					return error;
 				}
 			};

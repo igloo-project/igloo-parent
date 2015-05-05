@@ -1,10 +1,10 @@
 package fr.openwide.core.basicapp.web.application.common.form.impl;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 
-public final class UserChoiceRenderer implements IChoiceRenderer<User> {
+public final class UserChoiceRenderer extends ChoiceRenderer<User> {
 	private static final long serialVersionUID = 1L;
 	
 	private static final UserChoiceRenderer INSTANCE = new UserChoiceRenderer();

@@ -30,8 +30,8 @@ public class AuditDaoImpl extends AbstractAuditDaoImpl<Audit> implements IAuditD
 //	private static final QAudit qAudit = QAudit.audit;
 
 	private static final Sort SORT = new Sort(
-			new SortField(Audit.DATE_SORT_FIELD_NAME, SortField.STRING, true),
-			new SortField(Bindings.audit().id().getPath(), SortField.LONG, true)
+			new SortField(Audit.DATE_SORT_FIELD_NAME, SortField.Type.STRING, true),
+			new SortField(Bindings.audit().id().getPath(), SortField.Type.LONG, true)
 	);
 	
 	@SuppressWarnings("unchecked")

@@ -2,7 +2,7 @@ package fr.openwide.core.basicapp.web.application.common.form;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 		}
 	}
 
-	private static final class UserChoiceRenderer implements IChoiceRenderer<User> {
+	private static final class UserChoiceRenderer extends ChoiceRenderer<User> {
 		private static final long serialVersionUID = 1L;
 		
 		@Override

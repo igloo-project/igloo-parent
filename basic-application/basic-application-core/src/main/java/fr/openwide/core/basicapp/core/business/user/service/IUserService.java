@@ -2,7 +2,7 @@ package fr.openwide.core.basicapp.core.business.user.service;
 
 import java.util.List;
 
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;

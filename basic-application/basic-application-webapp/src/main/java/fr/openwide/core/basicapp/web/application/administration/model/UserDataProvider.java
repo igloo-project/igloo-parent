@@ -2,7 +2,7 @@ package fr.openwide.core.basicapp.web.application.administration.model;
 
 import java.util.List;
 
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

@@ -3,14 +3,12 @@ package fr.openwide.core.basicapp.core.util.search;
 import java.util.Collection;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.util.Version;
 import org.bindgen.binding.AbstractBinding;
-import org.hibernate.search.Environment;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.slf4j.Logger;
@@ -82,7 +80,7 @@ public final class BasicApplicationHibernateSearchUtils {
 	
 	public static Query matchAllTermsIfGiven(Analyzer analyzer, String fieldPath, String terms) {
 		if (StringUtils.hasText(terms)) {
-			QueryParser parser = new QueryParser(Version.LUCENE_36, fieldPath, analyzer);
+			QueryParser parser = new QueryParser(fieldPath, analyzer);
 			parser.setDefaultOperator(Operator.AND);
 			try {
 				return parser.parse(QueryParser.escape(terms));
@@ -101,7 +99,7 @@ public final class BasicApplicationHibernateSearchUtils {
 	
 	public static Query matchAllTermsMultifieldIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
 		if (StringUtils.hasText(terms)) {
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
+			MultiFieldQueryParser parser = new MultiFieldQueryParser(
 					Iterables.toArray(fieldPaths, String.class),
 					analyzer
 			);
