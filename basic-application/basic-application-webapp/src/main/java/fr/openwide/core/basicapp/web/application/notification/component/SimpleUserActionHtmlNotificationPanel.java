@@ -31,7 +31,7 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 								objetModel,
 								dateModel,
 								auteurModel
-						),
+						).getObject(), // Default value
 						dateModel,
 						auteurModel
 				);
