@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.apache.solr.search.Sorting;
 import org.bindgen.Binding;
 
 import com.google.common.base.Joiner;
@@ -19,6 +18,7 @@ import com.google.common.collect.Ordering;
 import fr.openwide.core.jpa.more.business.sort.ISort.NullSortValue;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortNull;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
+import fr.openwide.core.jpa.more.business.sort.solr.Sorting;
 
 public final class SortUtils {
 	
