@@ -89,8 +89,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			ExternalLinkWrapper externalLink2 = externalLinkWrapperService.getById(id2);
 			Assert.assertEquals(ExternalLinkStatus.OFFLINE, externalLink2.getStatus());
 			Assert.assertEquals(1, externalLink2.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_NOT_FOUND), externalLink2.getLastStatusCode());
-			Assert.assertEquals(ExternalLinkErrorType.HTTP, externalLink2.getLastErrorType());
+			Assert.assertNull(externalLink2.getLastStatusCode());
+			Assert.assertEquals(ExternalLinkErrorType.IO, externalLink2.getLastErrorType());
 			Assert.assertTrue(externalLink2.getLastCheckDate().after(beforeFirstBatchDate));
 			
 			ExternalLinkWrapper externalLink3 = externalLinkWrapperService.getById(id3);
@@ -143,8 +143,8 @@ public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
 			ExternalLinkWrapper externalLink2 = externalLinkWrapperService.getById(id2);
 			Assert.assertEquals(ExternalLinkStatus.OFFLINE, externalLink2.getStatus());
 			Assert.assertEquals(2, externalLink2.getConsecutiveFailures());
-			Assert.assertEquals(Integer.valueOf(HttpStatus.SC_NOT_FOUND), externalLink2.getLastStatusCode());
-			Assert.assertEquals(ExternalLinkErrorType.HTTP, externalLink2.getLastErrorType());
+			Assert.assertNull(externalLink2.getLastStatusCode());
+			Assert.assertEquals(ExternalLinkErrorType.IO, externalLink2.getLastErrorType());
 			Assert.assertTrue(externalLink2.getLastCheckDate().after(beforeSecondBatchDate));
 			
 			ExternalLinkWrapper externalLink3 = externalLinkWrapperService.getById(id3);
