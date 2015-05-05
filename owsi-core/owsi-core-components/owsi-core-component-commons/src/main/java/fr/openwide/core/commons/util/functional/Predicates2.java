@@ -270,7 +270,7 @@ public final class Predicates2 {
 	}
 
 	@SafeVarargs
-	public static <T, U> Predicate<T> notNullAndComposeIn(Function<T, U> function, U firstValue, U ... otherValues) {
+	public static <T, U> Predicate<T> notNullAndIn(Function<T, U> function, U firstValue, U ... otherValues) {
 		return notNullAnd(Predicates.compose(Predicates.in(Lists.asList(firstValue, otherValues)), function));
 	}
 
