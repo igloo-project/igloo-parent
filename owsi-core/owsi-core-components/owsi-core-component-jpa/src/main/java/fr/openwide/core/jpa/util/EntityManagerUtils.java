@@ -30,7 +30,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * <p>Classe permettant de manipuler le EntityManager.</p>
  * 
- * <p>Utilisée dans les tests pour ouvrir la session au début d'un test et la fermet à la fin</p>
+ * <p>Utilisée dans les tests pour ouvrir la session au début d'un test et la fermer à la fin</p>
  * 
  * @author Open Wide
  */
