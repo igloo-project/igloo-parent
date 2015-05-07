@@ -1,0 +1,88 @@
+package fr.openwide.core.wicket.more.markup.html.bootstrap.popover.component;
+
+import static fr.openwide.core.wicket.more.condition.Condition.anyChildVisible;
+
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
+import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.PopoverPlacement;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.PopoverTrigger;
+
+public abstract class AbstractPopoverContentLinkPanel<T> extends GenericPanel<T> {
+
+	private static final long serialVersionUID = 8844418022863220927L;
+
+	private final IModel<Boolean> showLabelModel = Model.of(Boolean.TRUE);
+
+	private final IModel<String> iconCssClassModel = Model.of();
+
+	private final IModel<String> linkCssClassModel = Model.of();
+	
+	private final BootstrapPopoverOptions options;
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		showLabelModel.detach();
+		iconCssClassModel.detach();
+		linkCssClassModel.detach();
+	}
+	
+	public AbstractPopoverContentLinkPanel(String id, IModel<T> model) {
+		super(id, model);
+		
+		Component titleComponent = getTitleComponent("titleComponent");
+		Component contentComponent = getContentComponent("contentComponent");
+		Component content = getContent("content");
+		
+		options = new BootstrapPopoverOptions();
+		options.setTitleComponent(titleComponent);
+		options.setAddCloseButton(true);
+		options.setContentComponent(contentComponent);
+		options.setPlacement(PopoverPlacement.RIGHT);
+		options.setTrigger(PopoverTrigger.CLICK);
+		options.setContainer("body");
+		options.setHtml(true);
+		
+		// Ne PAS utiliser BlankLink ici, on ne veut pas de href qui entraînerait un retour en haut de page
+		WebMarkupContainer link = new WebMarkupContainer("link");
+		
+		add(
+				titleComponent,
+				contentComponent,
+				link
+						.add(
+								content
+						)
+						.add(
+								new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(anyChildVisible(link)),
+								new AttributeModifier("class", linkCssClassModel),
+								new BootstrapPopoverBehavior(options)
+						)
+		);
+		
+		add(
+				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).component(contentComponent)
+		);
+	}
+
+	protected abstract Component getTitleComponent(String wicketId);
+	
+	protected abstract Component getContentComponent(String wicketId);
+	
+	protected abstract Component getContent(String wicketId);
+	
+	public AbstractPopoverContentLinkPanel<T> popoverPlacement(PopoverPlacement placement) {
+		options.setPlacement(placement);
+		return this;
+	}
+	
+}
