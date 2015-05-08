@@ -124,7 +124,7 @@
 		
 		<owsi-core.wicket.version>7.0.0-M5</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>7.0.0-SNAPSHOT</owsi-core.wiquery.version>
-		<owsi-core.wicket-select2.version>1.1.10</owsi-core.wicket-select2.version>
+		<owsi-core.wicket-select2.version>1.2.0-SNAPSHOT</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>7.0.0.owsi1-SNAPSHOT</owsi-core.wqplot.version>
 		
 		<owsi-core.less4j.version>1.11.0</owsi-core.less4j.version>
