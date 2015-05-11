@@ -144,7 +144,14 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	public static String leftPad(String str, int size, char padChar) {
 		return org.apache.commons.lang3.StringUtils.leftPad(str, size, padChar);
 	}
-	
+
+	/**
+	 * @see org.apache.commons.lang3.StringUtils#abbreviate(String, int)
+	 */
+	public static String abbreviate(String str, int maxWidth) {
+		return org.apache.commons.lang3.StringUtils.abbreviate(str, maxWidth);
+	}
+
 	/**
 	 * Supprime les caractères spéciaux d'une chaîne de caractères et retourne une chaîne utilisable dans une URL.
 	 * 

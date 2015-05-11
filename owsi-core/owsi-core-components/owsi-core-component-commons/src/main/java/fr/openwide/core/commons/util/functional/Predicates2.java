@@ -10,11 +10,9 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public final class Predicates2 {
@@ -267,11 +265,6 @@ public final class Predicates2 {
 
 	public static <T> Predicate<T> notNullAndNot(Predicate<T> predicate) {
 		return notNullAnd(Predicates.not(predicate));
-	}
-
-	@SafeVarargs
-	public static <T, U> Predicate<T> notNullAndIn(Function<T, U> function, U firstValue, U ... otherValues) {
-		return notNullAnd(Predicates.compose(Predicates.in(Lists.asList(firstValue, otherValues)), function));
 	}
 
 }
