@@ -16,6 +16,11 @@ public final class Models {
 
 	private Models() {
 	}
+
+	@SuppressWarnings("unchecked") // ModelGetObjectFunction works for any T
+	public static <T> Function<? super IModel<? extends T>, T> getObject() {
+		return (Function<? super IModel<? extends T>, T>) ModelGetObjectFunction.INSTANCE;
+	}
 	
 	@SuppressWarnings("rawtypes") // ModelGetObjectFunction works for any T
 	private enum ModelGetObjectFunction implements Function<IModel, Object> {
@@ -24,11 +29,6 @@ public final class Models {
 		@Override
 		public Object apply(IModel input) {
 			return input == null ? null : input.getObject();
-		}
-		
-		@SuppressWarnings("unchecked") // ModelGetObjectFunction works for any T
-		public static <T> Function<? super IModel<? extends T>, T> get() {
-			return (Function<? super IModel<? extends T>, T>) INSTANCE;
 		}
 	}
 
@@ -96,7 +96,7 @@ public final class Models {
 			
 			@Override
 			protected Map<K, V> load() {
-				return Maps.transformValues(source, ModelGetObjectFunction.<V>get());
+				return Maps.transformValues(source, Models.<V>getObject());
 			}
 			
 			@Override
