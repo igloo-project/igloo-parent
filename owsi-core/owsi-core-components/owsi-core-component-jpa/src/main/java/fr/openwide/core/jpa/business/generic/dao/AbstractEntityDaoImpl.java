@@ -40,12 +40,12 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 		return queryByPredicateOrdered(entityPath, null, limit, offset, order).list(entityPath);
 	}
 
-	protected <T extends E, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier) {
-		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), orderSpecifier).list(entityPath);
+	protected <T extends E, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue, OrderSpecifier<?>... orderSpecifiers) {
+		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), orderSpecifiers).list(entityPath);
 	}
 
-	protected <T extends E, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?> orderSpecifier) {
-		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), limit, offset, orderSpecifier).list(entityPath);
+	protected <T extends E, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue, Long limit, Long offset, OrderSpecifier<?>... orderSpecifiers) {
+		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), limit, offset, orderSpecifiers).list(entityPath);
 	}
 
 	protected <V extends Comparable<?>> Long count(EntityPath<? extends E> entityPath) {

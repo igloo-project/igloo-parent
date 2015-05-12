@@ -257,15 +257,15 @@ public class JpaDaoSupport {
 		}
 	}
 
-	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, OrderSpecifier<?> orderSpecifier) {
-		return queryByPredicateOrdered(entityPath, predicate, null, null, orderSpecifier);
+	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, OrderSpecifier<?>... orderSpecifiers) {
+		return queryByPredicateOrdered(entityPath, predicate, null, null, orderSpecifiers);
 	}
 
-	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset, OrderSpecifier<?> orderSpecifier) {
+	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset, OrderSpecifier<?>... orderSpecifiers) {
 		JPAQuery query = queryByPredicate(entityPath, predicate, limit, offset);
 		
-		if (orderSpecifier != null) {
-			query.orderBy(orderSpecifier);
+		if (orderSpecifiers != null && orderSpecifiers.length > 0) {
+			query.orderBy(orderSpecifiers);
 		}
 		
 		return query;
