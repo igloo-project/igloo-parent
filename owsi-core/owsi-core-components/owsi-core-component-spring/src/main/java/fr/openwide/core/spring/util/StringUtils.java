@@ -146,13 +146,6 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * @see org.apache.commons.lang3.StringUtils#abbreviate(String, int)
-	 */
-	public static String abbreviate(String str, int maxWidth) {
-		return org.apache.commons.lang3.StringUtils.abbreviate(str, maxWidth);
-	}
-
-	/**
 	 * Supprime les caractères spéciaux d'une chaîne de caractères et retourne une chaîne utilisable dans une URL.
 	 * 
 	 * @param strToClean chaîne à nettoyer
