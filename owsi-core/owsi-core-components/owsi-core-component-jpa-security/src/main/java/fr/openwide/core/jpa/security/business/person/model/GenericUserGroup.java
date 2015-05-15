@@ -21,6 +21,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Fields;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,12 +43,17 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 
 	private static final long serialVersionUID = 2156717229285615454L;
 	
+	public static final String NAME_SORT = "nameSort";
+	
 	@Id
 	@DocumentId
 	@GeneratedValue
 	private Long id;
 
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Fields({
+		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = NAME_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+	})
 	private String name;
 
 	/**
