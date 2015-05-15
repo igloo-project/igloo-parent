@@ -7,6 +7,8 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.validation.validator.DateValidator;
+import org.odlabs.wiquery.ui.datepicker.DateOption;
 
 import fr.openwide.core.wicket.more.util.IDatePattern;
 import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter;
@@ -36,6 +38,17 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		
 		// Options par défaut
 		setShowButtonPanel(true);
+	}
+	
+	public DatePicker setRange(Date minDate, Date maxDate) {
+		if (minDate != null) {
+			setMinDate(new DateOption(minDate));
+		}
+		if (maxDate != null) {
+			setMaxDate(new DateOption(maxDate));
+		}
+		add(new DateValidator(minDate, maxDate));
+		return this;
 	}
 	
 	@Override
