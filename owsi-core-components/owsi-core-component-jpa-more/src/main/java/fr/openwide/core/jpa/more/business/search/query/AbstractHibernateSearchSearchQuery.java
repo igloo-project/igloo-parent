@@ -106,6 +106,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return this;
 	}
 
+	// Junction appender
+	// 	>	Must
 	protected void must(Query query) {
 		if (query != null) {
 			junction.must(query);
@@ -120,6 +122,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	// 	>	Should
 	protected void should(Query query) {
 		if (query != null) {
 			junction.should(query);
@@ -134,6 +137,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	// List and count
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> fullList() {
@@ -162,18 +166,18 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return getFullTextQuery().getResultSize();
 	}
 	
-	protected <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
-		if (value != null) {
-			return builder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		return null;
-	}
-
+	// Query factory
+	// 	>	Match if given
 	protected <P> Query matchIfGiven(AbstractBinding<?, P> binding, P value) {
 		return matchIfGiven(defaultQueryBuilder, binding, value);
+	}
+	
+	protected <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
+		return matchIfGiven(builder, binding.getPath(), value);
+	}
+	
+	protected <P> Query matchIfGiven(String fieldPath, P value) {
+		return matchIfGiven(defaultQueryBuilder, fieldPath, value);
 	}
 	
 	protected <P> Query matchIfGiven(QueryBuilder builder, String fieldPath, P value) {
@@ -187,39 +191,33 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected <P> Query matchIfGiven(String fieldPath, P value) {
-		if (value != null) {
-			return defaultQueryBuilder.keyword()
-					.onField(fieldPath)
-					.matching(value)
-					.createQuery();
-		}
-		
-		return null;
+	protected Query matchIfGiven(AbstractBinding<?, String> binding, String terms) {
+		return matchIfGiven(defaultQueryBuilder, binding.getPath(), terms);
 	}
 	
 	protected Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, String> binding, String terms) {
 		return matchIfGiven(builder, binding.getPath(), terms);
 	}
 	
-	protected Query matchIfGiven(AbstractBinding<?, String> binding, String terms) {
-		return matchIfGiven(defaultQueryBuilder, binding.getPath(), terms);
+	protected Query matchIfGiven(String fieldPath, String terms) {
+		return matchOneTermIfGiven(defaultQueryBuilder, fieldPath, terms);
 	}
 	
 	protected Query matchIfGiven(QueryBuilder builder, String fieldPath, String terms) {
 		return matchOneTermIfGiven(builder, fieldPath, terms);
 	}
 	
-	protected Query matchIfGiven(String fieldPath, String terms) {
-		return matchOneTermIfGiven(defaultQueryBuilder, fieldPath, terms);
+	// 	>	Match one term if given
+	protected Query matchOneTermIfGiven(AbstractBinding<?, String> binding, String terms) {
+		return matchOneTermIfGiven(defaultQueryBuilder, binding.getPath(), terms);
 	}
 	
 	protected Query matchOneTermIfGiven(QueryBuilder builder, AbstractBinding<?, String> binding, String terms) {
 		return matchOneTermIfGiven(builder, binding.getPath(), terms);
 	}
 	
-	protected Query matchOneTermIfGiven(AbstractBinding<?, String> binding, String terms) {
-		return matchOneTermIfGiven(defaultQueryBuilder, binding.getPath(), terms);
+	protected Query matchOneTermIfGiven(String fieldPath, String terms) {
+		return matchOneTermIfGiven(defaultQueryBuilder, fieldPath, terms);
 	}
 	
 	protected Query matchOneTermIfGiven(QueryBuilder builder, String fieldPath, String terms) {
@@ -233,17 +231,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected Query matchOneTermIfGiven(String fieldPath, String terms) {
-		if (StringUtils.hasText(terms)) {
-			return defaultQueryBuilder.keyword()
-					.onField(fieldPath)
-					.matching(terms)
-					.createQuery();
-		}
-		
-		return null;
-	}
-	
+	// 	>	Match all terms if given
 	protected Query matchAllTermsIfGiven(Analyzer analyzer, AbstractBinding<?, String> binding, String terms) {
 		return matchAllTermsIfGiven(analyzer, binding.getPath(), terms);
 	}
@@ -252,23 +240,13 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return matchAllTermsIfGiven(getAnalyzer(), binding.getPath(), terms);
 	}
 	
+	protected Query matchAllTermsIfGiven(String fieldPath, String terms) {
+		return matchAllTermsIfGiven(getAnalyzer(), fieldPath, terms);
+	}
+	
 	protected Query matchAllTermsIfGiven(Analyzer analyzer, String fieldPath, String terms) {
 		if (StringUtils.hasText(terms)) {
 			QueryParser parser = new QueryParser(Version.LUCENE_36, fieldPath, analyzer);
-			parser.setDefaultOperator(Operator.AND);
-			try {
-				return parser.parse(QueryParser.escape(terms));
-			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
-			}
-		}
-		
-		return null;
-	}
-	
-	protected Query matchAllTermsIfGiven(String fieldPath, String terms) {
-		if (StringUtils.hasText(terms)) {
-			QueryParser parser = new QueryParser(Version.LUCENE_36, fieldPath, getAnalyzer());
 			parser.setDefaultOperator(Operator.AND);
 			try {
 				return parser.parse(QueryParser.escape(terms));
@@ -290,6 +268,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return matchAllTermsMultifieldIfGiven(getAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 	
+	protected Query matchAllTermsMultifieldIfGiven(String terms, Iterable<String> fieldPaths) {
+		return matchAllTermsMultifieldIfGiven(getAnalyzer(), terms, fieldPaths);
+	}
+	
 	protected Query matchAllTermsMultifieldIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
 		if (StringUtils.hasText(terms)) {
 			MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
@@ -307,27 +289,23 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected Query matchAllTermsMultifieldIfGiven(String terms, Iterable<String> fieldPaths) {
-		if (StringUtils.hasText(terms)) {
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(Environment.DEFAULT_LUCENE_MATCH_VERSION,
-					Iterables.toArray(fieldPaths, String.class),
-					getAnalyzer()
-			);
-			parser.setDefaultOperator(Operator.AND);
-			try {
-				return parser.parse(QueryParser.escape(terms));
-			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
-			}
-		}
-		
-		return null;
+	// 	>	Be included if given
+	protected <P> Query beIncludedIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, P value) {
+		return beIncludedIfGiven(defaultQueryBuilder, binding, value);
 	}
 	
 	protected <P> Query beIncludedIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding, P value) {
+		return beIncludedIfGiven(builder, binding.getPath(), value);
+	}
+	
+	protected <P> Query beIncludedIfGiven(String fieldPath, P value) {
+		return beIncludedIfGiven(defaultQueryBuilder, fieldPath, value);
+	}
+	
+	protected <P> Query beIncludedIfGiven(QueryBuilder builder, String fieldPath, P value) {
 		if (value != null) {
 			return builder.keyword()
-					.onField(binding.getPath())
+					.onField(fieldPath)
 					.matching(value)
 					.createQuery();
 		}
@@ -335,23 +313,25 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected <P> Query beIncludedIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, P value) {
-		if (value != null) {
-			return defaultQueryBuilder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		
-		return null;
+	// 	>	Match one if given
+	protected <P> Query matchOneIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+		return matchOneIfGiven(defaultQueryBuilder, binding, possibleValues);
 	}
 	
 	protected <P> Query matchOneIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+		return matchOneIfGiven(builder, binding.getPath(), possibleValues);
+	}
+	
+	protected <P> Query matchOneIfGiven(String fieldPath, Collection<? extends P> possibleValues) {
+		return matchOneIfGiven(defaultQueryBuilder, fieldPath, possibleValues);
+	}
+	
+	protected <P> Query matchOneIfGiven(QueryBuilder builder, String fieldPath, Collection<? extends P> possibleValues) {
 		if (possibleValues != null && !possibleValues.isEmpty()) {
 			BooleanJunction<?> subJunction = builder.bool();
 			for (P possibleValue : possibleValues) {
 				subJunction.should(builder.keyword()
-						.onField(binding.getPath())
+						.onField(fieldPath)
 						.matching(possibleValue)
 						.createQuery());
 			}
@@ -361,21 +341,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected <P> Query matchOneIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
-		if (possibleValues != null && !possibleValues.isEmpty()) {
-			BooleanJunction<?> subJunction = defaultQueryBuilder.bool();
-			for (P possibleValue : possibleValues) {
-				subJunction.should(defaultQueryBuilder.keyword()
-						.onField(binding.getPath())
-						.matching(possibleValue)
-						.createQuery());
-			}
-			return subJunction.createQuery();
-		}
-		
-		return null;
+	// 	>	Match all if given
+	protected <P> Query matchAllIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> values) {
+		return matchAllIfGiven(defaultQueryBuilder, binding, values);
 	}
-
+	
 	protected <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> values) {
 		if (values != null && !values.isEmpty()) {
 			BooleanJunction<?> subJunction = builder.bool();
@@ -391,19 +361,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected <P> Query matchAllIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> values) {
-		if (values != null && !values.isEmpty()) {
-			BooleanJunction<?> subJunction = defaultQueryBuilder.bool();
-			for (P possibleValue : values) {
-				subJunction.must(defaultQueryBuilder.keyword()
-						.onField(binding.getPath())
-						.matching(possibleValue)
-						.createQuery());
-			}
-			return subJunction.createQuery();
-		}
-		
-		return null;
+	// 	>	Match if true
+	
+	protected Query matchIfTrue(AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
+		return matchIfTrue(defaultQueryBuilder, binding, value, mustMatch);
 	}
 	
 	protected Query matchIfTrue(QueryBuilder builder, AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
@@ -416,16 +377,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
-	protected Query matchIfTrue(AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
-		if (mustMatch != null && mustMatch) {
-			return defaultQueryBuilder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		return null;
-	}
-	
+	// 	>	Match range (min, max, both)
 	protected <P> Query matchRangeMin(AbstractBinding<?, P> binding, P min) {
 		return matchRangeMin(getDefaultQueryBuilder(), binding, min);
 	}
@@ -462,6 +414,32 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return null;
 	}
 	
+	protected <P> Query matchRange(AbstractBinding<?, P> binding, P min, P max) {
+		return matchRange(defaultQueryBuilder, binding.getPath(), min, max);
+	}
+	
+	protected <P> Query matchRange(QueryBuilder builder, AbstractBinding<?, P> binding, P min, P max) {
+		return matchRange(builder, binding.getPath(), min, max);
+	}
+	
+	protected <P> Query matchRange(String fieldPath, P min, P max) {
+		return matchRange(defaultQueryBuilder, fieldPath, min, max);
+	}
+	
+	protected <P> Query matchRange(QueryBuilder builder, String fieldPath, P min, P max) {
+		if (max != null && min != null) {
+			return builder.range()
+					.onField(fieldPath)
+					.from(min).to(max)
+					.createQuery();
+		} else if (min != null) {
+			matchRangeMin(builder, fieldPath, min);
+		} else if (max != null) {
+			matchRangeMax(builder, fieldPath, max);
+		}
+		return null;
+	}
+	
 	private static class BindingToPathFunction implements Function<AbstractBinding<?, String>, String> {
 		@Override
 		public String apply(AbstractBinding<?, String> input) {
@@ -472,10 +450,13 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	/**
+	 * Allow to add filter before generating the full text query.
+	 */
 	protected void addFilterBeforeCreateQuery() {
 		// Nothing
 	}
-
+	
 	protected FullTextQuery getFullTextQuery() {
 		if (query == null) {
 			addFilterBeforeCreateQuery();
