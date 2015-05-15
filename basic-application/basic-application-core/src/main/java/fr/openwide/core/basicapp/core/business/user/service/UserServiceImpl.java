@@ -2,7 +2,6 @@ package fr.openwide.core.basicapp.core.business.user.service;
 
 import java.util.List;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,6 @@ import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.model.UserSearchParameters;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -64,16 +62,6 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Override
 	public List<User> listByUserName(String userName) {
 		return userDao.listByUserName(userName);
-	}
-
-	@Override
-	public <U extends User> List<U> search(Class<U> clazz, UserSearchParameters searchParameters, Integer limit, Integer offset) throws ParseException {
-		return userDao.search(clazz, searchParameters, limit, offset);
-	}
-
-	@Override
-	public <U extends User> int count(Class<U> clazz, UserSearchParameters searchParameters) throws ParseException {
-		return userDao.count(clazz, searchParameters);
 	}
 
 	@Override

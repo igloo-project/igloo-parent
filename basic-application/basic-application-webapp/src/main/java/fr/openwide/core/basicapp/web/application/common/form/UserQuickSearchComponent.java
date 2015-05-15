@@ -4,14 +4,8 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -19,14 +13,9 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 
 	private static final long serialVersionUID = -7717935272455937918L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserQuickSearchComponent.class);
-
 	private static final UserChoiceRenderer USER_CHOICE_RENDERER = new UserChoiceRenderer();
 	
 	private final UserTypeDescriptor<U> typeDescriptor;
-
-	@SpringBean
-	private IUserService userService;
 
 	public UserQuickSearchComponent(String id, UserTypeDescriptor<U> typeDescriptor) {
 		this(id, new GenericEntityModel<Long, U>(), typeDescriptor);
@@ -39,12 +28,7 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 
 	@Override
 	protected List<U> searchAutocomplete(String term, int limit, int offset) {
-		try {
-			return userService.searchAutocomplete(typeDescriptor.getEntityClass(), term, limit, offset);
-		} catch (Exception e) {
-			LOGGER.error("User autocomplete search error", e);
-			return Lists.newArrayList();
-		}
+		return typeDescriptor.newSearchQuery().nameAutocomplete(term).list(offset, limit);
 	}
 
 	private static final class UserChoiceRenderer extends ChoiceRenderer<User> {

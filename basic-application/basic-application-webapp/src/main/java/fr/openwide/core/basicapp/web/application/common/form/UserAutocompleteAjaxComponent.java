@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.business.user.search.IUserSearchQuery;
 import fr.openwide.core.basicapp.web.application.common.form.impl.UserChoiceRenderer;
 import fr.openwide.core.wicket.more.markup.html.form.AutocompleteAjaxComponent;
 
@@ -21,7 +21,7 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserAutocompleteAjaxComponent.class);
 
 	@SpringBean
-	private IUserService userService;
+	private IUserSearchQuery userSearchQuery;
 
 	public UserAutocompleteAjaxComponent(String id, IModel<User> userModel) {
 		super(id, userModel);
@@ -31,7 +31,7 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 	@Override
 	public List<User> getValues(String term) {
 		try {
-			return userService.searchAutocomplete(term);
+			return userSearchQuery.nameAutocomplete(term).fullList();
 		} catch (Exception e) {
 			LOGGER.error("User autocomplete search error", e);
 			return Lists.newArrayList();

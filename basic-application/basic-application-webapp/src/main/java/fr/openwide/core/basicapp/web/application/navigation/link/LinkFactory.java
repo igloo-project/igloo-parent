@@ -9,6 +9,8 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.factory.AbstractLinkFactory;
@@ -55,5 +57,16 @@ public final class LinkFactory extends AbstractLinkFactory {
 				.map(CommonParameters.SOURCE_PAGE_ID, sourcePageModel, Page.class).optional()
 				.build();
 	}
+	
+	public static final LinkGeneratorFactory<User> userDescriptionLinkGeneratorFactory() {
+		return new LinkGeneratorFactory<User>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ILinkGenerator create(IModel<User> model) {
+				return LinkFactory.get().userDescription(model);
+			}
+		};
+	}
+
 
 }

@@ -3,7 +3,12 @@ package fr.openwide.core.basicapp.web.application.common.typedescriptor.user;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.search.IBasicUserSearchQuery;
+import fr.openwide.core.basicapp.core.business.user.search.IGenericUserSearchQuery;
+import fr.openwide.core.basicapp.core.business.user.search.ITechnicalUserSearchQuery;
+import fr.openwide.core.basicapp.core.business.user.search.IUserSearchQuery;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.AbstractGenericEntityTypeDescriptor;
+import fr.openwide.core.wicket.more.application.CoreWicketApplication;
 
 public abstract class UserTypeDescriptor<U extends User> extends AbstractGenericEntityTypeDescriptor<UserTypeDescriptor<U>, U> {
 
@@ -33,6 +38,11 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 		public NotificationUserTypeDescriptor<TechnicalUser> notificationTypeDescriptor() {
 			return (NotificationUserTypeDescriptor<TechnicalUser>) NotificationUserTypeDescriptor.USER;
 		}
+		
+		@Override
+		public IGenericUserSearchQuery<TechnicalUser> newSearchQuery() {
+			return CoreWicketApplication.get().getApplicationContext().getBean(ITechnicalUserSearchQuery.class);
+		}
 	};
 
 	public static final UserTypeDescriptor<BasicUser> BASIC_USER = new UserTypeDescriptor<BasicUser>(BasicUser.class, "basicUser") {
@@ -58,6 +68,11 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 		@Override
 		public NotificationUserTypeDescriptor<BasicUser> notificationTypeDescriptor() {
 			return (NotificationUserTypeDescriptor<BasicUser>) NotificationUserTypeDescriptor.USER;
+		}
+		
+		@Override
+		public IGenericUserSearchQuery<BasicUser> newSearchQuery() {
+			return CoreWicketApplication.get().getApplicationContext().getBean(IBasicUserSearchQuery.class);
 		}
 	};
 
@@ -85,6 +100,11 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 		public NotificationUserTypeDescriptor<User> notificationTypeDescriptor() {
 			return (NotificationUserTypeDescriptor<User>) NotificationUserTypeDescriptor.USER;
 		}
+
+		@Override
+		public IGenericUserSearchQuery<User> newSearchQuery() {
+			return CoreWicketApplication.get().getApplicationContext().getBean(IUserSearchQuery.class);
+		}
 	};
 
 	protected UserTypeDescriptor(Class<U> clazz, String name) {
@@ -100,5 +120,7 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 	public abstract SecurityUserTypeDescriptor<U> securityTypeDescriptor();
 
 	public abstract NotificationUserTypeDescriptor<U> notificationTypeDescriptor();
+	
+	public abstract IGenericUserSearchQuery<U> newSearchQuery();
 
 }

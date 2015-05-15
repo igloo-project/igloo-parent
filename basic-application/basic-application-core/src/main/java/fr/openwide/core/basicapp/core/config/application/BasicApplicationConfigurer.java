@@ -14,6 +14,10 @@ public class BasicApplicationConfigurer extends CoreConfigurer {
 	public int getPortfolioItemsPerPage() {
 		return getPropertyAsInteger("portfolio.itemsPerPage", PORTFOLIO_ITEMS_PER_PAGE_DEFAULT_VALUE);
 	}
+	
+	public int getPortfolioItemsPerPageDescription() {
+		return getPropertyAsInteger("portfolio.itemsPerPage.description", PORTFOLIO_ITEMS_PER_PAGE_DEFAULT_VALUE);
+	}
 
 	public Environment getEnvironment() {
 		return getPropertyAsEnum("environment", Environment.class, Environment.production);

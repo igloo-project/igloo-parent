@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
+import fr.openwide.core.basicapp.web.application.common.renderer.UserGroupRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
 import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
@@ -49,6 +51,7 @@ import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
+import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 import fr.openwide.core.wicket.more.util.convert.HibernateProxyAwareConverterLocator;
@@ -97,6 +100,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(User.class, UserRenderer.get());
 		converterLocator.set(TechnicalUser.class, UserRenderer.get());
 		converterLocator.set(BasicUser.class, UserRenderer.get());
+		converterLocator.set(UserGroup.class, UserGroupRenderer.get());
+		
+		converterLocator.set(Boolean.class, BooleanRenderer.withPrefix("common.boolean.yesNo"));
 		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}

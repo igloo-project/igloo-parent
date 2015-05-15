@@ -18,6 +18,8 @@ import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
@@ -29,12 +31,19 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 
 	private static final long serialVersionUID = -5780326896837623229L;
 
+	public static final IOneParameterLinkDescriptorMapper<IPageLinkDescriptor, UserGroup> MAPPER =
+			new LinkDescriptorBuilder().page(AdministrationUserGroupDescriptionPage.class)
+					.model(UserGroup.class).map(CommonParameters.ID).mandatory()
+					.build();
+	
+	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, UserGroup, Page> MAPPER_SOURCE =
+			new LinkDescriptorBuilder().page(AdministrationUserGroupDescriptionPage.class)
+					.model(UserGroup.class).map(CommonParameters.ID).mandatory()
+					.model(Page.class).pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
+					.build();
+	
 	public static final IPageLinkDescriptor linkDescriptor(IModel<UserGroup> userGroupModel, IModel<Page> sourcePageModel) {
-		return new LinkDescriptorBuilder()
-				.page(AdministrationUserGroupDescriptionPage.class)
-				.map(CommonParameters.ID, userGroupModel, UserGroup.class).mandatory()
-				.map(CommonParameters.SOURCE_PAGE_ID, sourcePageModel, Page.class).optional()
-				.build();
+		return MAPPER_SOURCE.map(userGroupModel, sourcePageModel);
 	}
 
 	public AdministrationUserGroupDescriptionPage(PageParameters parameters) {

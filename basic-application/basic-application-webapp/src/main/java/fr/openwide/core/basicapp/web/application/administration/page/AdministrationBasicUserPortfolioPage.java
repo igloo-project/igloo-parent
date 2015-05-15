@@ -9,6 +9,8 @@ import fr.openwide.core.basicapp.web.application.administration.component.Abstra
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
+import fr.openwide.core.basicapp.web.application.administration.model.BasicUserDataProvider;
+import fr.openwide.core.basicapp.web.application.administration.model.GenericUserDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -21,6 +23,11 @@ public class AdministrationBasicUserPortfolioPage extends AdministrationUserPort
 		super(parameters, UserTypeDescriptor.BASIC_USER, new ResourceModel("administration.user.basic.title"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic")));
+	}
+	
+	@Override
+	protected GenericUserDataProvider<BasicUser> newDataProvider() {
+		return new BasicUserDataProvider();
 	}
 
 	@Override
