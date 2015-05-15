@@ -44,17 +44,17 @@ public class TestLuceneUtils {
 	
 	@Test
 	public void testGetSimilarityQuery() {
-		assertEquals("alfresc~0.7", LuceneUtils.getSimilarityQuery("alfresc", 0.7f));
-		assertEquals("alfresco~0.7 sha~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha", 0.7f));
-		assertEquals("alfresco~0.7 sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha1", 0.7f));
-		assertEquals("alfresco~0.7 sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco sha1", 0.7f));
-		assertEquals("t~0.7 es~0.7 t~0.7", LuceneUtils.getSimilarityQuery("t' -_es**t", 0.7f));
+		assertEquals("alfresc~2", LuceneUtils.getSimilarityQuery("alfresc", 2));
+		assertEquals("alfresco~2 sha~2", LuceneUtils.getSimilarityQuery("alfresco-sha", 2));
+		assertEquals("alfresco~2 sha1~2", LuceneUtils.getSimilarityQuery("alfresco-sha1", 2));
+		assertEquals("alfresco~2 sha1~2", LuceneUtils.getSimilarityQuery("alfresco sha1", 2));
+		assertEquals("t~2 es~2 t~2", LuceneUtils.getSimilarityQuery("t' -_es**t", 2));
 		
-		assertEquals("alfresc~0.7", LuceneUtils.getSimilarityQuery("alfresc", 0.7f, Operator.AND));
-		assertEquals("alfresco~0.7 AND sha~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha", 0.7f, Operator.AND));
-		assertEquals("alfresco~0.7 AND sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco-sha1", 0.7f, Operator.AND));
-		assertEquals("alfresco~0.7 AND sha1~0.7", LuceneUtils.getSimilarityQuery("alfresco sha1", 0.7f, Operator.AND));
-		assertEquals("t~0.7 AND es~0.7 AND t~0.7", LuceneUtils.getSimilarityQuery("t' -_es**t", 0.7f, Operator.AND));
+		assertEquals("alfresc~2", LuceneUtils.getSimilarityQuery("alfresc", 2, Operator.AND));
+		assertEquals("alfresco~2 AND sha~2", LuceneUtils.getSimilarityQuery("alfresco-sha", 2, Operator.AND));
+		assertEquals("alfresco~2 AND sha1~2", LuceneUtils.getSimilarityQuery("alfresco-sha1", 2, Operator.AND));
+		assertEquals("alfresco~2 AND sha1~2", LuceneUtils.getSimilarityQuery("alfresco sha1", 2, Operator.AND));
+		assertEquals("t~2 AND es~2 AND t~2", LuceneUtils.getSimilarityQuery("t' -_es**t", 2, Operator.AND));
 	}
 	
 	@Test

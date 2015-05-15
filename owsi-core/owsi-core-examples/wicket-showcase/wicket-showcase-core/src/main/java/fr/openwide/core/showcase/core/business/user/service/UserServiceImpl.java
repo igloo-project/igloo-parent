@@ -2,7 +2,6 @@ package fr.openwide.core.showcase.core.business.user.service;
 
 import java.util.List;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,27 +14,9 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 @Service("personService")
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
-	private IUserDao userDao;
-
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
 		super(userDao);
-		this.userDao = userDao;
-	}
-
-	@Override
-	public List<User> searchAutocomplete(String searchPattern) throws ServiceException {
-		return userDao.searchAutocomplete(searchPattern);
-	}
-	
-	@Override
-	public List<User> searchByNameActive(String name, Boolean active, Integer limit, Integer offset) throws ParseException {
-		return userDao.searchByNameActive(name, active, limit, offset);
-	}
-	
-	@Override
-	public int countByNameActive(String name, Boolean active) throws ParseException {
-		return userDao.countByNameActive(name, active);
 	}
 	
 	@Override

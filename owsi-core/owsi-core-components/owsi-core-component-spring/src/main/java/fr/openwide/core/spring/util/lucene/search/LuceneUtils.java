@@ -2,13 +2,13 @@ package fr.openwide.core.spring.util.lucene.search;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
+import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -21,8 +21,9 @@ import org.apache.lucene.search.WildcardQuery;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -41,24 +42,26 @@ public final class LuceneUtils {
 	public static final TermQuery NO_RESULT_QUERY = new TermQuery(new Term("id", "__NEVER_MATCHING_ID__"));
 	
 	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer,
-			String searchPattern, int enableWildcardMinChars) throws ParseException {
-		QueryParser queryParser = new QueryParser(fieldName, analyzer);
-		queryParser.setDefaultOperator(Operator.AND);
-		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
+			String searchPattern, int enableWildcardMinChars) {
+		return getAutocompleteQuery(ImmutableList.of(fieldName), analyzer, searchPattern, enableWildcardMinChars);
 	}
 	
-	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer, String searchPattern) throws ParseException {
+	public static Query getAutocompleteQuery(String fieldName, Analyzer analyzer, String searchPattern) {
 		return getAutocompleteQuery(fieldName, analyzer, searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
 	}
 	
 	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer,
-			String searchPattern, int enableWildcardMinChars) throws ParseException {
-		QueryParser queryParser = new MultiFieldQueryParser(Iterables.toArray(fieldNames, String.class), analyzer);
-		queryParser.setDefaultOperator(Operator.AND);
+			String searchPattern, int enableWildcardMinChars) {
+		Map<String, Float> fields = Maps.newHashMap();
+		for(String fieldName : fieldNames) {
+			fields.put(fieldName, 1.0f);
+		}
+		SimpleQueryParser queryParser = new SimpleQueryParser(analyzer, fields);
+		queryParser.setDefaultOperator(BooleanClause.Occur.MUST);
 		return queryParser.parse(getAutocompleteQuery(searchPattern, enableWildcardMinChars));
 	}
 	
-	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer, String searchPattern) throws ParseException {
+	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer, String searchPattern) {
 		return getAutocompleteQuery(fieldNames, analyzer, searchPattern, DEFAULT_ENABLE_WILDCARD_MIN_CHARS);
 	}
 	
@@ -104,24 +107,35 @@ public final class LuceneUtils {
 		return cleanSearchPattern;
 	}
 	
+	public static Query getSimilarityQuery(Iterable<String> fieldNames, Analyzer analyzer, String searchPattern, 
+			Integer maxEditDistance) {
+		Map<String, Float> fields = Maps.newHashMap();
+		for(String fieldName : fieldNames) {
+			fields.put(fieldName, 1.0f);
+		}
+		SimpleQueryParser queryParser = new SimpleQueryParser(analyzer, fields);
+		queryParser.setDefaultOperator(BooleanClause.Occur.MUST);
+		return queryParser.parse(getSimilarityQuery(searchPattern, maxEditDistance));
+	}
+	
 	public static Query getSimilarityQuery(String fieldName, Analyzer analyzer,
-			String searchPattern, Float minSimilarity) throws ParseException {
-		if (minSimilarity == null) {
-			throw new IllegalArgumentException("minSimilarity may not be null");
+			String searchPattern, Integer maxEditDistance) {
+		if (maxEditDistance == null) {
+			throw new IllegalArgumentException("maxEditDistance may not be null");
 		}
 		
-		QueryParser queryParser = new QueryParser(fieldName, analyzer);
-		queryParser.setDefaultOperator(Operator.AND);
-		return queryParser.parse(getSimilarityQuery(searchPattern, minSimilarity));
+		SimpleQueryParser queryParser = new SimpleQueryParser(analyzer, fieldName);
+		queryParser.setDefaultOperator(BooleanClause.Occur.MUST);
+		return queryParser.parse(getSimilarityQuery(searchPattern, maxEditDistance));
 	}
 	
-	public static String getSimilarityQuery(String searchPattern, Float minSimilarity) {
-		return getSimilarityQuery(searchPattern, minSimilarity, null);
+	public static String getSimilarityQuery(String searchPattern, Integer maxEditDistance) {
+		return getSimilarityQuery(searchPattern, maxEditDistance, null);
 	}
 	
-	public static String getSimilarityQuery(String searchPattern, Float minSimilarity, Operator operator) {
-		if (minSimilarity == null) {
-			throw new IllegalArgumentException("minSimilarity may not be null");
+	public static String getSimilarityQuery(String searchPattern, Integer maxEditDistance, Operator operator) {
+		if (maxEditDistance == null) {
+			throw new IllegalArgumentException("maxEditDistance may not be null");
 		}
 		
 		String cleanSearchPattern = StringUtils.clean(searchPattern);
@@ -140,7 +154,7 @@ public final class LuceneUtils {
 					similarityQuery.append(operator).append(" ");
 				}
 			}
-			similarityQuery.append(searchPatternFragment).append(FUZZY_PARAMETER_SUFFIX).append(minSimilarity.toString());
+			similarityQuery.append(searchPatternFragment).append(FUZZY_PARAMETER_SUFFIX).append(maxEditDistance.toString());
 		}
 		
 		return similarityQuery.toString().trim();

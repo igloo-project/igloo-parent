@@ -11,10 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.classic.QueryParser.Operator;
+import org.apache.lucene.queryparser.simple.SimpleQueryParser;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SortField;
 import org.bindgen.binding.AbstractBinding;
@@ -23,23 +21,20 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> implements ISearchQuery<T, S> /* NOT Serializable */ {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractHibernateSearchSearchQuery.class);
 	
 	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION = new BindingToPathFunction();
 	
@@ -104,6 +99,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return this;
 	}
 
+	// Junction appender
+	// 	>	Must
 	protected void must(Query query) {
 		if (query != null) {
 			junction.must(query);
@@ -118,6 +115,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	// 	>	Should
 	protected void should(Query query) {
 		if (query != null) {
 			junction.should(query);
@@ -132,6 +130,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	// List and count
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> fullList() {
@@ -160,302 +159,300 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return getFullTextQuery().getResultSize();
 	}
 	
-	protected <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
-		if (value != null) {
-			return builder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		return null;
-	}
-
+	// Query factory
+	// 	>	Match if given
 	protected <P> Query matchIfGiven(AbstractBinding<?, P> binding, P value) {
 		return matchIfGiven(defaultQueryBuilder, binding, value);
 	}
 	
-	protected <P> Query matchIfGiven(QueryBuilder builder, String fieldPath, P value) {
-		if (value != null) {
-			return builder.keyword()
-					.onField(fieldPath)
-					.matching(value)
-					.createQuery();
-		}
-		
-		return null;
+	protected <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
+		return matchIfGiven(builder, binding.getPath(), value);
 	}
 	
 	protected <P> Query matchIfGiven(String fieldPath, P value) {
-		if (value != null) {
-			return defaultQueryBuilder.keyword()
-					.onField(fieldPath)
-					.matching(value)
-					.createQuery();
+		return matchIfGiven(defaultQueryBuilder, fieldPath, value);
+	}
+	
+	protected <P> Query matchIfGiven(QueryBuilder builder, String fieldPath, P value) {
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof String) {
+			throw new IllegalArgumentException("If you want to match a String, use matchOneTermIfGiven or matchAllTermIfGiven instead.");
 		}
 		
-		return null;
+		return builder.keyword()
+				.onField(fieldPath)
+				.matching(value)
+				.createQuery();
 	}
 	
-	protected Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, String> binding, String terms) {
-		return matchIfGiven(builder, binding.getPath(), terms);
-	}
-	
-	protected Query matchIfGiven(AbstractBinding<?, String> binding, String terms) {
-		return matchIfGiven(defaultQueryBuilder, binding.getPath(), terms);
-	}
-	
-	protected Query matchIfGiven(QueryBuilder builder, String fieldPath, String terms) {
-		return matchOneTermIfGiven(builder, fieldPath, terms);
-	}
-	
-	protected Query matchIfGiven(String fieldPath, String terms) {
-		return matchOneTermIfGiven(defaultQueryBuilder, fieldPath, terms);
+	// 	>	Match one term if given
+	protected Query matchOneTermIfGiven(AbstractBinding<?, String> binding, String terms) {
+		return matchOneTermIfGiven(defaultQueryBuilder, binding.getPath(), terms);
 	}
 	
 	protected Query matchOneTermIfGiven(QueryBuilder builder, AbstractBinding<?, String> binding, String terms) {
 		return matchOneTermIfGiven(builder, binding.getPath(), terms);
 	}
 	
-	protected Query matchOneTermIfGiven(AbstractBinding<?, String> binding, String terms) {
-		return matchOneTermIfGiven(defaultQueryBuilder, binding.getPath(), terms);
+	protected Query matchOneTermIfGiven(String fieldPath, String terms) {
+		return matchOneTermIfGiven(defaultQueryBuilder, fieldPath, terms);
 	}
 	
 	protected Query matchOneTermIfGiven(QueryBuilder builder, String fieldPath, String terms) {
-		if (StringUtils.hasText(terms)) {
-			return builder.keyword()
-					.onField(fieldPath)
-					.matching(terms)
-					.createQuery();
+		if (!StringUtils.hasText(terms)) {
+			return null;
 		}
-		
-		return null;
+		return builder.keyword()
+				.onField(fieldPath)
+				.matching(terms)
+				.createQuery();
 	}
 	
-	protected Query matchOneTermIfGiven(String fieldPath, String terms) {
-		if (StringUtils.hasText(terms)) {
-			return defaultQueryBuilder.keyword()
-					.onField(fieldPath)
-					.matching(terms)
-					.createQuery();
+	// 	>	Match all terms if given
+	@SafeVarargs
+	protected final Query matchAllTermsIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+		return matchAllTermsIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+	}
+	
+	@SafeVarargs
+	protected final Query matchAllTermsIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+		return matchAllTermsIfGiven(getAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+	}
+
+	protected Query matchAllTermsIfGiven(String terms, Iterable<String> fieldPaths) {
+		return matchAllTermsIfGiven(getAnalyzer(), terms, fieldPaths);
+	}
+	
+	protected Query matchAllTermsIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
+		if (!StringUtils.hasText(terms)) {
+			return null;
 		}
-		
-		return null;
-	}
-	
-	protected Query matchAllTermsIfGiven(Analyzer analyzer, AbstractBinding<?, String> binding, String terms) {
-		return matchAllTermsIfGiven(analyzer, binding.getPath(), terms);
-	}
-	
-	protected Query matchAllTermsIfGiven(AbstractBinding<?, String> binding, String terms) {
-		return matchAllTermsIfGiven(getAnalyzer(), binding.getPath(), terms);
-	}
-	
-	protected Query matchAllTermsIfGiven(Analyzer analyzer, String fieldPath, String terms) {
-		if (StringUtils.hasText(terms)) {
-			QueryParser parser = new QueryParser(fieldPath, analyzer);
-			parser.setDefaultOperator(Operator.AND);
-			try {
-				return parser.parse(QueryParser.escape(terms));
-			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
-			}
+		Map<String, Float> fields = Maps.newHashMap();
+		for (String fieldPath : fieldPaths) {
+			fields.put(fieldPath, 1.0f);
 		}
-		
-		return null;
+		SimpleQueryParser parser = new SimpleQueryParser(analyzer, fields);
+		parser.setDefaultOperator(BooleanClause.Occur.MUST);
+		return parser.parse(terms);
 	}
 	
-	protected Query matchAllTermsIfGiven(String fieldPath, String terms) {
-		if (StringUtils.hasText(terms)) {
-			QueryParser parser = new QueryParser(fieldPath, getAnalyzer());
-			parser.setDefaultOperator(Operator.AND);
-			try {
-				return parser.parse(QueryParser.escape(terms));
-			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
-			}
+	// 	>	Match autocomplete
+	@SafeVarargs
+	protected final Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+		return matchAutocompleteIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+	}
+	
+	@SafeVarargs
+	protected final Query matchAutocompleteIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+		return matchAutocompleteIfGiven(getAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+	}
+
+	protected Query matchAutocompleteIfGiven(String terms, Iterable<String> fieldPaths) {
+		return matchAutocompleteIfGiven(getAnalyzer(), terms, fieldPaths);
+	}
+	
+	protected Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
+		if (!StringUtils.hasText(terms)) {
+			return null;
 		}
-		
-		return null;
+		return LuceneUtils.getAutocompleteQuery(fieldPaths, analyzer, terms);
+	}
+
+	// 	>	Match fuzzy
+	@SafeVarargs
+	protected final Query matchFuzzyIfGiven(Analyzer analyzer, String terms, Integer maxEditDistance,
+			AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+		return matchFuzzyIfGiven(analyzer, terms, maxEditDistance, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected Query matchAllTermsMultifieldIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchAllTermsMultifieldIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+	@SafeVarargs
+	protected final Query matchFuzzyIfGiven(String terms, Integer maxEditDistance,
+			AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+		return matchFuzzyIfGiven(getAnalyzer(), terms, maxEditDistance, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+	}
+
+	protected Query matchFuzzyIfGiven(String terms, Integer maxEditDistance, Iterable<String> fieldPaths) {
+		return matchFuzzyIfGiven(getAnalyzer(), terms, maxEditDistance, fieldPaths);
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected Query matchAllTermsMultifieldIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchAllTermsMultifieldIfGiven(getAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
-	}
-	
-	protected Query matchAllTermsMultifieldIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
-		if (StringUtils.hasText(terms)) {
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(
-					Iterables.toArray(fieldPaths, String.class),
-					analyzer
-			);
-			parser.setDefaultOperator(Operator.AND);
-			try {
-				return parser.parse(QueryParser.escape(terms));
-			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
-			}
+	protected Query matchFuzzyIfGiven(Analyzer analyzer, String terms, Integer maxEditDistance, Iterable<String> fieldPaths) {
+		if (!StringUtils.hasText(terms)) {
+			return null;
 		}
-		
-		return null;
+		return LuceneUtils.getSimilarityQuery(fieldPaths, analyzer, terms, maxEditDistance);
 	}
 	
-	protected Query matchAllTermsMultifieldIfGiven(String terms, Iterable<String> fieldPaths) {
-		if (StringUtils.hasText(terms)) {
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(
-					Iterables.toArray(fieldPaths, String.class),
-					getAnalyzer()
-			);
-			parser.setDefaultOperator(Operator.AND);
-			try {
-				return parser.parse(QueryParser.escape(terms));
-			} catch (ParseException e) {
-				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
-			}
-		}
-		
-		return null;
+	// 	>	Be included if given
+	protected <P> Query beIncludedIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, P value) {
+		return beIncludedIfGiven(defaultQueryBuilder, binding, value);
 	}
 	
 	protected <P> Query beIncludedIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding, P value) {
-		if (value != null) {
-			return builder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		
-		return null;
+		return beIncludedIfGiven(builder, binding.getPath(), value);
 	}
 	
-	protected <P> Query beIncludedIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, P value) {
-		if (value != null) {
-			return defaultQueryBuilder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
+	protected <P> Query beIncludedIfGiven(String fieldPath, P value) {
+		return beIncludedIfGiven(defaultQueryBuilder, fieldPath, value);
+	}
+	
+	protected <P> Query beIncludedIfGiven(QueryBuilder builder, String fieldPath, P value) {
+		if (value == null) {
+			return null;
 		}
+		return builder.keyword()
+				.onField(fieldPath)
+				.matching(value)
+				.createQuery();
 		
-		return null;
+	}
+	
+	// 	>	Match one if given
+	protected <P> Query matchOneIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+		return matchOneIfGiven(defaultQueryBuilder, binding, possibleValues);
 	}
 	
 	protected <P> Query matchOneIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
-		if (possibleValues != null && !possibleValues.isEmpty()) {
-			BooleanJunction<?> subJunction = builder.bool();
-			for (P possibleValue : possibleValues) {
-				subJunction.should(builder.keyword()
-						.onField(binding.getPath())
-						.matching(possibleValue)
-						.createQuery());
-			}
-			return subJunction.createQuery();
-		}
-		
-		return null;
+		return matchOneIfGiven(builder, binding.getPath(), possibleValues);
 	}
 	
-	protected <P> Query matchOneIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
-		if (possibleValues != null && !possibleValues.isEmpty()) {
-			BooleanJunction<?> subJunction = defaultQueryBuilder.bool();
-			for (P possibleValue : possibleValues) {
-				subJunction.should(defaultQueryBuilder.keyword()
-						.onField(binding.getPath())
-						.matching(possibleValue)
-						.createQuery());
-			}
-			return subJunction.createQuery();
+	protected <P> Query matchOneIfGiven(String fieldPath, Collection<? extends P> possibleValues) {
+		return matchOneIfGiven(defaultQueryBuilder, fieldPath, possibleValues);
+	}
+	
+	protected <P> Query matchOneIfGiven(QueryBuilder builder, String fieldPath, Collection<? extends P> possibleValues) {
+		if (possibleValues == null || possibleValues.isEmpty()) {
+			return null;
 		}
-		
-		return null;
+		BooleanJunction<?> subJunction = builder.bool();
+		for (P possibleValue : possibleValues) {
+			subJunction.should(builder.keyword()
+					.onField(fieldPath)
+					.matching(possibleValue)
+					.createQuery());
+		}
+		return subJunction.createQuery();
+	}
+	
+	// 	>	Match all if given
+	protected <P> Query matchAllIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+		return matchAllIfGiven(defaultQueryBuilder, binding, possibleValues);
 	}
 
-	protected <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> values) {
-		if (values != null && !values.isEmpty()) {
-			BooleanJunction<?> subJunction = builder.bool();
-			for (P possibleValue : values) {
-				subJunction.must(builder.keyword()
-						.onField(binding.getPath())
-						.matching(possibleValue)
-						.createQuery());
-			}
-			return subJunction.createQuery();
-		}
-		
-		return null;
+	protected <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding,
+			Collection<? extends P> possibleValues) {
+		return matchAllIfGiven(builder, binding.getPath(), possibleValues);
+	}
+
+	protected <P> Query matchAllIfGiven(String fieldPath, Collection<? extends P> possibleValues) {
+		return matchAllIfGiven(defaultQueryBuilder, fieldPath, possibleValues);
 	}
 	
-	protected <P> Query matchAllIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> values) {
-		if (values != null && !values.isEmpty()) {
-			BooleanJunction<?> subJunction = defaultQueryBuilder.bool();
-			for (P possibleValue : values) {
-				subJunction.must(defaultQueryBuilder.keyword()
-						.onField(binding.getPath())
-						.matching(possibleValue)
-						.createQuery());
-			}
-			return subJunction.createQuery();
+	protected <P> Query matchAllIfGiven(QueryBuilder builder, String fieldPath, Collection<? extends P> values) {
+		if (values == null || values.isEmpty()) {
+			return null;
 		}
-		
-		return null;
+		BooleanJunction<?> subJunction = builder.bool();
+		for (P possibleValue : values) {
+			subJunction.must(builder.keyword()
+					.onField(fieldPath)
+					.matching(possibleValue)
+					.createQuery());
+		}
+		return subJunction.createQuery();
+	}
+	
+	// 	>	Match if true
+	protected Query matchIfTrue(AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
+		return matchIfTrue(defaultQueryBuilder, binding, value, mustMatch);
 	}
 	
 	protected Query matchIfTrue(QueryBuilder builder, AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
-		if (mustMatch != null && mustMatch) {
-			return builder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		return null;
+		return matchIfTrue(builder, binding.getPath(), value, mustMatch);
 	}
 	
-	protected Query matchIfTrue(AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
-		if (mustMatch != null && mustMatch) {
-			return defaultQueryBuilder.keyword()
-					.onField(binding.getPath())
-					.matching(value)
-					.createQuery();
-		}
-		return null;
+	protected <P> Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch) {
+		return matchIfTrue(defaultQueryBuilder, fieldPath, value, mustMatch);
 	}
 	
+	protected Query matchIfTrue(QueryBuilder builder, String fieldPath, boolean value, Boolean mustMatch) {
+		if (mustMatch == null || !mustMatch) {
+			return null;
+		}
+		return builder.keyword()
+				.onField(fieldPath)
+				.matching(value)
+				.createQuery();
+	}
+	
+	// 	>	Match range (min, max, both)
 	protected <P> Query matchRangeMin(AbstractBinding<?, P> binding, P min) {
-		return matchRangeMin(getDefaultQueryBuilder(), binding, min);
+		return matchRangeMin(defaultQueryBuilder, binding, min);
 	}
 	
 	protected <P> Query matchRangeMin(QueryBuilder builder, AbstractBinding<?, P> binding, P min) {
 		return matchRangeMin(builder, binding.getPath(), min);
 	}
 	
+	protected <P> Query matchRangeMin(String fieldPath, P min) {
+		return matchRangeMin(defaultQueryBuilder, fieldPath, min);
+	}
+	
 	protected <P> Query matchRangeMin(QueryBuilder builder, String fieldPath, P min) {
-		if (min != null) {
-			return builder.range()
-					.onField(fieldPath)
-					.above(min)
-					.createQuery();
+		if (min == null) {
+			return null;
 		}
-		return null;
+		return builder.range()
+				.onField(fieldPath)
+				.above(min)
+				.createQuery();
 	}
 	
 	protected <P> Query matchRangeMax(AbstractBinding<?, P> binding, P max) {
-		return matchRangeMax(getDefaultQueryBuilder(), binding, max);
+		return matchRangeMax(defaultQueryBuilder, binding, max);
 	}
 	
 	protected <P> Query matchRangeMax(QueryBuilder builder, AbstractBinding<?, P> binding, P max) {
 		return matchRangeMax(builder, binding.getPath(), max);
 	}
 	
+	protected <P> Query matchRangeMax(String fieldPath, P max) {
+		return matchRangeMax(defaultQueryBuilder, fieldPath, max);
+	}
+	
 	protected <P> Query matchRangeMax(QueryBuilder builder, String fieldPath, P max) {
-		if (max != null) {
+		if (max == null) {
+			return null;
+		}
+		return builder.range()
+				.onField(fieldPath)
+				.below(max)
+				.createQuery();
+	}
+	
+	protected <P> Query matchRange(AbstractBinding<?, P> binding, P min, P max) {
+		return matchRange(defaultQueryBuilder, binding.getPath(), min, max);
+	}
+	
+	protected <P> Query matchRange(QueryBuilder builder, AbstractBinding<?, P> binding, P min, P max) {
+		return matchRange(builder, binding.getPath(), min, max);
+	}
+	
+	protected <P> Query matchRange(String fieldPath, P min, P max) {
+		return matchRange(defaultQueryBuilder, fieldPath, min, max);
+	}
+	
+	protected <P> Query matchRange(QueryBuilder builder, String fieldPath, P min, P max) {
+		if (max != null && min != null) {
 			return builder.range()
 					.onField(fieldPath)
-					.below(max)
+					.from(min).to(max)
 					.createQuery();
+		} else if (min != null) {
+			matchRangeMin(builder, fieldPath, min);
+		} else if (max != null) {
+			matchRangeMax(builder, fieldPath, max);
 		}
 		return null;
 	}
@@ -470,10 +467,13 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	/**
+	 * Allow to add filter before generating the full text query.
+	 */
 	protected void addFilterBeforeCreateQuery() {
 		// Nothing
 	}
-
+	
 	protected FullTextQuery getFullTextQuery() {
 		if (query == null) {
 			addFilterBeforeCreateQuery();

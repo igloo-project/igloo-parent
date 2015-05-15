@@ -1,42 +1,26 @@
 package fr.openwide.core.jpa.security.business.person.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.dao.IGenericUserDao;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
-import fr.openwide.core.jpa.security.business.person.model.IUserBinding;
 
 public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 		extends GenericEntityServiceImpl<Long, U>
 		implements IGenericUserService<U> {
 	
-	private static final IUserBinding BINDING = new IUserBinding();
-	
-	private static final String[] SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
-	
-	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
-	
-	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericUser.USER_NAME_SORT_FIELD_NAME, SortField.Type.STRING));
-
 	@Autowired
 	private IAuthorityService authorityService;
-	
-	@Autowired
-	private IHibernateSearchService hibernateSearchService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -57,32 +41,6 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 	@Override
 	public U getByUserNameCaseInsensitive(String userName) {
 		return personDao.getByUserNameCaseInsensitive(userName);
-	}
-	
-	@Override
-	public List<U> search(String searchPattern) throws ServiceException, SecurityServiceException {
-		return hibernateSearchService.search(getObjectClass(), SEARCH_FIELDS, searchPattern);
-	}
-	
-	@Override
-	public List<U> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
-		return searchAutocomplete(searchPattern, null, null);
-	}
-	
-	@Override
-	public <U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern) throws ServiceException, SecurityServiceException {
-		return searchAutocomplete(clazz, searchPattern, null, null);
-	}
-	
-	@Override
-	public List<U> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
-		return searchAutocomplete(getObjectClass(), searchPattern, limit, offset);
-	}
-	
-	@Override
-	public <U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern, Integer limit, Integer offset) throws ServiceException, SecurityServiceException {
-		return hibernateSearchService.searchAutocomplete(clazz, AUTOCOMPLETE_SEARCH_FIELDS, searchPattern,
-				limit, offset, AUTOCOMPLETE_SORT);
 	}
 	
 	@Override
