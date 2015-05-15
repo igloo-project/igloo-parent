@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.bindgen.Bindable;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
+import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 
 @MappedSuperclass
 @Bindable
@@ -29,6 +31,10 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 	public abstract void setLabel(T label);
 
 	public abstract T getLabel();
+	
+	@Column(nullable = false)
+	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	private Integer position;
 
 	@Field
 	@Column(nullable = false)
@@ -55,6 +61,14 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 	@Override
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public void setPosition(Integer order) {
+		this.position = order;
+	}
+
+	public Integer getPosition() {
+		return position;
 	}
 
 	public boolean isEnabled() {
