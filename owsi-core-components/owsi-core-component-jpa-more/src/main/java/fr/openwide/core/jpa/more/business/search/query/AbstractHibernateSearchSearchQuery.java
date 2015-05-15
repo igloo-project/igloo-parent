@@ -37,6 +37,8 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
+import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
+import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
 import fr.openwide.core.spring.util.StringUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> implements ISearchQuery<T, S> /* NOT Serializable */ {
@@ -167,6 +169,30 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	// Query factory
+	// 	> Match null
+	/**
+	 * <strong>Be careful</strong>: using this method needs null values to be indexed.
+	 * You can use {@link NullEncodingGenericEntityIdFieldBridge} instead of the classical {@link GenericEntityIdFieldBridge} for example.
+	 */
+	protected Query matchNull(AbstractBinding<?, ?> binding) {
+		return matchNull(defaultQueryBuilder, binding);
+	}
+	
+	protected Query matchNull(QueryBuilder builder, AbstractBinding<?, ?> binding) {
+		return matchNull(builder, binding.getPath());
+	}
+	
+	protected Query matchNull(String fieldPath) {
+		return matchNull(defaultQueryBuilder, fieldPath);
+	}
+	
+	protected Query matchNull(QueryBuilder builder, String fieldPath) {
+		return builder.keyword()
+				.onField(fieldPath)
+				.matching(null)
+				.createQuery();
+	}
+	
 	// 	>	Match if given
 	protected <P> Query matchIfGiven(AbstractBinding<?, P> binding, P value) {
 		return matchIfGiven(defaultQueryBuilder, binding, value);
