@@ -6,12 +6,12 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.showcase.core.business.user.model.User;
+import fr.openwide.core.showcase.web.application.portfolio.model.AbstractUserDataProvider;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.form.PageableSearchForm;
@@ -25,14 +25,8 @@ public class UserSearchPanel extends Panel {
 	@SpringBean
 	private IAuthorityService authorityService;
 	
-	private IModel<String> searchTermModel;
-	private IModel<Boolean> activeModel;
-	
-	public UserSearchPanel(String id, IPageable pageable, IModel<String> searchTermModel, IModel<Boolean> activeModel) {
+	public UserSearchPanel(String id, IPageable pageable, AbstractUserDataProvider<User> dataProvider) {
 		super(id);
-		
-		this.searchTermModel = searchTermModel;
-		this.activeModel = activeModel;
 		
 		// Quick search
 		UserAutocompleteAjaxComponent userQuickSearch = new UserAutocompleteAjaxComponent("userQuickSearch",
@@ -53,26 +47,16 @@ public class UserSearchPanel extends Panel {
 		// Search form
 		Form<Void> form = new PageableSearchForm<Void>("form", pageable);
 		
-		TextField<String> searchInput = new TextField<String>("searchInput", this.searchTermModel);
+		TextField<String> searchInput = new TextField<String>("searchInput", dataProvider.getNameModel());
 		searchInput.setLabel(new ResourceModel("user.portfolio.search.name"));
 		searchInput.add(new LabelPlaceholderBehavior());
 		form.add(searchInput);
 		
-		CheckBox active = new CheckBox("active", this.activeModel);
-		active.setLabel(new ResourceModel("user.portfolio.header.active"));
+		CheckBox active = new CheckBox("includeInactive", dataProvider.getIncludeInactivesModel());
+		active.setLabel(new ResourceModel("user.portfolio.search.includeInactive"));
 		form.add(active);
 		
 		add(form);
 	}
 
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		if (this.searchTermModel != null) {
-			this.searchTermModel.detach();
-		}
-		if (this.activeModel != null) {
-			this.activeModel.detach();
-		}
-	}
 }

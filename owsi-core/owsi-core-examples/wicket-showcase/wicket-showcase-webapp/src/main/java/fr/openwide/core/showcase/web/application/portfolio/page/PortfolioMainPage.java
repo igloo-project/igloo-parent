@@ -3,8 +3,6 @@ package fr.openwide.core.showcase.web.application.portfolio.page;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -43,17 +41,14 @@ public class PortfolioMainPage extends MainTemplate {
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("portfolio.pageTitle"), PortfolioMainPage.linkDescriptor()));
 		
-		IModel<String> searchTermModel = Model.of("");
-		IModel<Boolean> activeModel = Model.of(true);
-		
-		UserDataProvider userDataProvider = new UserDataProvider(searchTermModel, activeModel);
+		UserDataProvider userDataProvider = new UserDataProvider();
 		
 		// Porfolio
 		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", userDataProvider, showcaseConfigurer.getPortfolioItemsPerPageUser());
 		add(portfolioPanel);
 		
 		// Search
-		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getPageable(), searchTermModel, activeModel));
+		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getPageable(), userDataProvider));
 	}
 	
 	@Override

@@ -8,10 +8,8 @@ import org.retzlaff.select2.ISelect2AjaxAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
+import fr.openwide.core.showcase.core.business.user.search.IUserSearchQuery;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 
 public class UserSelect2AjaxAdapter implements ISelect2AjaxAdapter<User> {
@@ -22,6 +20,9 @@ public class UserSelect2AjaxAdapter implements ISelect2AjaxAdapter<User> {
 	
 	@SpringBean
 	private IUserService userService;
+	
+	@SpringBean
+	private IUserSearchQuery userSearchQuery;
 	
 	public UserSelect2AjaxAdapter() {
 		Injector.get().inject(this);
@@ -39,12 +40,7 @@ public class UserSelect2AjaxAdapter implements ISelect2AjaxAdapter<User> {
 
 	@Override
 	public List<User> getChoices(int start, int count, String term) {
-		try {
-			return userService.searchAutocomplete(term);
-		} catch (ServiceException e) {
-			LOGGER.error("Error while searching for users");
-			return Lists.newArrayListWithExpectedSize(0);
-		}
+		return userSearchQuery.nameAutocomplete(term).fullList();
 	}
 
 	@Override

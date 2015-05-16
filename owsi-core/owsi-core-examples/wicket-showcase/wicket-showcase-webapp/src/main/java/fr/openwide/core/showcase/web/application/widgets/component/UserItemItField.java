@@ -1,23 +1,25 @@
 package fr.openwide.core.showcase.web.application.widgets.component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
+import fr.openwide.core.showcase.core.business.user.search.IUserSearchQuery;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemit.ItemItField;
 
 public class UserItemItField extends ItemItField<User, UserJson> {
 
 	private static final long serialVersionUID = -7720627499673417965L;
-
+	
 	@SpringBean
 	private IUserService userService;
+
+	@SpringBean
+	private IUserSearchQuery userSearchQuery;
 
 	public UserItemItField(String id, IModel<List<User>> selectedItemListModel) {
 		super(id, selectedItemListModel);
@@ -25,11 +27,7 @@ public class UserItemItField extends ItemItField<User, UserJson> {
 
 	@Override
 	public List<User> getValues(String term) {
-		try {
-			return userService.searchAutocomplete(term);
-		} catch (ServiceException e) {
-			return Collections.emptyList();
-		}
+		return userSearchQuery.nameAutocomplete(term).fullList();
 	}
 
 	@Override

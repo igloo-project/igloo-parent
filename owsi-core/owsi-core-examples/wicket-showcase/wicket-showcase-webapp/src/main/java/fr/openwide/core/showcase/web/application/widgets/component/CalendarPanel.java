@@ -49,7 +49,7 @@ public class CalendarPanel extends Panel {
 		beginDateLabel.setOutputMarkupId(true);
 		form.add(beginDateLabel);
 		
-		beginDatePicker.add(new AjaxFormSubmitBehavior(form, "onchange") {
+		beginDatePicker.add(new AjaxFormSubmitBehavior(form, "change") {
 			private static final long serialVersionUID = -5972628703079302821L;
 			
 			@Override
@@ -70,7 +70,7 @@ public class CalendarPanel extends Panel {
 		endDateLabel.setOutputMarkupId(true);
 		form.add(endDateLabel);
 		
-		endDatePicker.add(new AjaxFormSubmitBehavior(form, "onchange") {
+		endDatePicker.add(new AjaxFormSubmitBehavior(form, "change") {
 			private static final long serialVersionUID = 1L;
 			
 			@Override

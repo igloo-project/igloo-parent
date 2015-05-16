@@ -1,15 +1,13 @@
 package fr.openwide.core.showcase.web.application.widgets.component;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
+import fr.openwide.core.showcase.core.business.user.search.IUserSearchQuery;
 import fr.openwide.core.wicket.more.markup.html.form.AutocompleteAjaxComponent;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -20,7 +18,7 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 	private static final UserChoiceRenderer USER_CHOICE_RENDERER = new UserChoiceRenderer();
 
 	@SpringBean
-	private IUserService userService;
+	private IUserSearchQuery userSearchQuery;
 
 	public UserAutocompleteAjaxComponent(String id) {
 		this(id, new GenericEntityModel<Long, User>(new User()));
@@ -32,11 +30,7 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 
 	@Override
 	public List<User> getValues(String term) {
-		try {
-			return userService.searchAutocomplete(term);
-		} catch (ServiceException e) {
-			return Collections.emptyList();
-		}
+		return userSearchQuery.nameAutocomplete(term).fullList();
 	}
 
 	@Override
