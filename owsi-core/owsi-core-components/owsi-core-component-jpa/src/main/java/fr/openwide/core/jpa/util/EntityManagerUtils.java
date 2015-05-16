@@ -66,6 +66,22 @@ public class EntityManagerUtils {
 		}
 	}
 	
+	/**
+	 * Retourne l'EntityManager courant.
+	 * 
+	 * Renvoie une exception si l'EntityManager n'est pas présent.
+	 */
+	public EntityManager getCurrentEntityManager() {
+		if (TransactionSynchronizationManager.hasResource(entityManagerFactory)) {
+			return ((EntityManagerHolder) TransactionSynchronizationManager.getResource(entityManagerFactory)).getEntityManager();
+		} else {
+			throw new IllegalStateException("No EntityManager in the TransactionSynchronizationManager");
+		}
+	}
+	
+	/**
+	 * Retourne l'EntityManager injecté.
+	 */
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}

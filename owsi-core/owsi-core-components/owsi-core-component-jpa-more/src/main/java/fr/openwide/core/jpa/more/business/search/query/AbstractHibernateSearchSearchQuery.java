@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.simple.SimpleQueryParser;
@@ -21,6 +19,7 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
@@ -31,6 +30,7 @@ import com.google.common.collect.Maps;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
+import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
@@ -38,16 +38,21 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION = new BindingToPathFunction();
 	
-	@PersistenceContext
-	private EntityManager entityManager;
+	@Autowired
+	private EntityManagerUtils entityManagerUtils;
 	
 	private final Class<? extends T> mainClass;
 	private final Class<? extends T>[] classes;
 	
+	/**
+	 * Use only during the builder phase: you need a fresh EntityManager (ie not the one which might have been injected
+	 * in another request) to execute the query.
+	 */
+	private FullTextEntityManager builderFullTextEntityManager;
+	
 	private BooleanJunction<?> junction;
 	private FullTextQuery query;
 	private QueryBuilder defaultQueryBuilder;
-	private FullTextEntityManager fullTextEntityManager;
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
 	private List<S> defaultSorts;
 	
@@ -66,20 +71,23 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@PostConstruct
 	private void init() {
-		fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		builderFullTextEntityManager = getFullTextEntityManager();
 		
-		defaultQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
+		defaultQueryBuilder = builderFullTextEntityManager.getSearchFactory().buildQueryBuilder()
 				.forEntity(mainClass).get();
 		
 		junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
 	}
 	
+	protected FullTextEntityManager getFullTextEntityManager() {
+		return Search.getFullTextEntityManager(entityManagerUtils.getCurrentEntityManager());
+	}
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
 		if (analyzerCache.containsKey(clazz)) {
 			return analyzerCache.get(clazz);
 		} else {
-			Analyzer analyzer = fullTextEntityManager.getSearchFactory().getAnalyzer(clazz);
+			Analyzer analyzer = builderFullTextEntityManager.getSearchFactory().getAnalyzer(clazz);
 			analyzerCache.put(clazz, analyzer);
 			return analyzer;
 		}
@@ -133,24 +141,26 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	// List and count
 	@Override
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<T> fullList() {
-		return list(0L, Integer.MAX_VALUE);
+		return getFullTextQuery().getResultList();
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<T> list(long offset, long limit) {
+		FullTextQuery fullTextQuery = getFullTextQuery();
 		
 		if (Long.valueOf(offset) != null) {
-			getFullTextQuery().setFirstResult((int) offset);
+			fullTextQuery.setFirstResult((int) offset);
 		}
 		
 		if (Long.valueOf(limit) != null) {
-			getFullTextQuery().setMaxResults((int) limit);
+			fullTextQuery.setMaxResults((int) limit);
 		}
 		
-		return getFullTextQuery().getResultList();
+		return fullTextQuery.getResultList();
 	}
 	
 	@Override
@@ -476,6 +486,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected FullTextQuery getFullTextQuery() {
 		if (query == null) {
+			FullTextEntityManager fullTextEntityManager = getFullTextEntityManager();
 			addFilterBeforeCreateQuery();
 			query = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
 		}
