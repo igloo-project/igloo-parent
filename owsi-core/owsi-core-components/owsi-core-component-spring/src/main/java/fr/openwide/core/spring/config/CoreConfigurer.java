@@ -284,5 +284,9 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public TimeUnit getConsoleGlobalFeedbackAutohideDelayUnit() {
 		return getPropertyAsEnum("console.globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
 	}
+	
+	public int getAutocompleteLimit() {
+		return getPropertyAsInteger("autocomplete.limit", 20);
+	}
 
 }
