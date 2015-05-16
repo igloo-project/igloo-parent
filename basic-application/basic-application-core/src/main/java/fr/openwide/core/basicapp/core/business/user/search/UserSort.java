@@ -16,8 +16,8 @@ public enum UserSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, User.FIRST_NAME_SORT_FIELD_NAME),
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, User.LAST_NAME_SORT_FIELD_NAME)
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, User.LAST_NAME_SORT_FIELD_NAME),
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, User.FIRST_NAME_SORT_FIELD_NAME)
 			);
 		}
 		
