@@ -7,6 +7,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.wicket.more.markup.html.form.AbstractQuickSearchComponent;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearchComponent<U> {
