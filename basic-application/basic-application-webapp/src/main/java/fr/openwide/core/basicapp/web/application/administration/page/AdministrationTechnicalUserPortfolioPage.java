@@ -9,7 +9,7 @@ import fr.openwide.core.basicapp.web.application.administration.component.Abstra
 import fr.openwide.core.basicapp.web.application.administration.component.UserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
-import fr.openwide.core.basicapp.web.application.administration.model.GenericUserDataProvider;
+import fr.openwide.core.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.model.TechnicalUserDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
@@ -26,7 +26,7 @@ public class AdministrationTechnicalUserPortfolioPage extends AdministrationUser
 	}
 	
 	@Override
-	protected GenericUserDataProvider<TechnicalUser> newDataProvider() {
+	protected AbstractUserDataProvider<TechnicalUser> newDataProvider() {
 		return new TechnicalUserDataProvider();
 	}
 

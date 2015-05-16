@@ -3,7 +3,7 @@ package fr.openwide.core.basicapp.web.application.administration.model;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.search.IUserSearchQuery;
 
-public class UserDataProvider extends GenericUserDataProvider<User> {
+public class UserDataProvider extends AbstractUserDataProvider<User> {
 	
 	private static final long serialVersionUID = -8540890431031886412L;
 	

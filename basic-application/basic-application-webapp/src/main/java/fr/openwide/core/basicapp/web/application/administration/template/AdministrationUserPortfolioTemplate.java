@@ -14,7 +14,7 @@ import fr.openwide.core.basicapp.web.application.administration.component.Abstra
 import fr.openwide.core.basicapp.web.application.administration.component.UserSearchPanel;
 import fr.openwide.core.basicapp.web.application.administration.export.UserExcelTableExport;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
-import fr.openwide.core.basicapp.web.application.administration.model.GenericUserDataProvider;
+import fr.openwide.core.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
 import fr.openwide.core.wicket.more.export.excel.component.ExcelExportWorkInProgressModalPopupPanel;
@@ -36,7 +36,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
-		final GenericUserDataProvider<U> dataProvider = newDataProvider();
+		final AbstractUserDataProvider<U> dataProvider = newDataProvider();
 		AbstractUserPortfolioPanel<U> portfolioPanel = createPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
 		
 		add(
@@ -69,7 +69,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		);
 	}
 	
-	protected abstract GenericUserDataProvider<U> newDataProvider();
+	protected abstract AbstractUserDataProvider<U> newDataProvider();
 	
 	protected abstract AbstractUserPopup<U> createAddPopup(String wicketId);
 	
