@@ -68,7 +68,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	
 	@Column(nullable = false)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private Integer position;
+	private Integer position = 0;
 
 	@Field
 	@Column(nullable = false)
@@ -82,17 +82,19 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	
 	@Column(nullable = false)
 	private boolean deleteable = false;
-	
+
 	protected GenericListItem() {
 	}
-	
+
+	public GenericListItem(String label) {
+		this(label, 0);
+	}
+
 	public GenericListItem(String label, Integer position) {
-		super();
-		
-		this.label= label;
+		this.label = label;
 		this.position = position;
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;

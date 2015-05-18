@@ -34,7 +34,7 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 	
 	@Column(nullable = false)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private Integer position;
+	private Integer position = 0;
 
 	@Field
 	@Column(nullable = false)
@@ -49,8 +49,16 @@ public abstract class GenericLocalizedGenericListItem<E extends GenericLocalized
 	@Column(nullable = false)
 	private boolean deleteable = false;
 
-	public GenericLocalizedGenericListItem() {
-		super();
+	protected GenericLocalizedGenericListItem() {
+	}
+
+	public GenericLocalizedGenericListItem(T label) {
+		this(label, 0);
+	}
+
+	public GenericLocalizedGenericListItem(T label, Integer position) {
+		setLabel(label);
+		this.position = position;
 	}
 
 	@Override
