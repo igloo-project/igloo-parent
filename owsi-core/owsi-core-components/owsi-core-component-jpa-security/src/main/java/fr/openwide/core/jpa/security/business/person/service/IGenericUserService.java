@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.service;
 
+import java.util.List;
 import java.util.Locale;
 
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
@@ -12,6 +13,37 @@ public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGener
 	
 	U getByUserName(String userName);
 	
+	/**
+	 * @deprecated use the ISearchQuery pattern instead.
+	 */
+	@Deprecated
+	List<U> search(String searchPattern) throws ServiceException, SecurityServiceException;
+	
+	/**
+	 * @deprecated use the ISearchQuery pattern instead.
+	 */
+	@Deprecated
+	List<U> searchAutocomplete(String string) throws ServiceException, SecurityServiceException;
+	
+	/**
+	 * @deprecated use the ISearchQuery pattern instead.
+	 */
+	@Deprecated
+	<U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern) throws ServiceException, SecurityServiceException;
+	
+	/**
+	 * @deprecated use the ISearchQuery pattern instead.
+	 */
+	@Deprecated
+	List<U> searchAutocomplete(String string, Integer limit, Integer offset) throws ServiceException, SecurityServiceException;
+
+	/**
+	 * @deprecated use the ISearchQuery pattern instead.
+	 */
+	@Deprecated
+	<U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern, Integer limit, Integer offset)
+			throws ServiceException, SecurityServiceException;
+
 	void setActive(U person, boolean active) throws ServiceException, SecurityServiceException;
 
 	Long countActive();
