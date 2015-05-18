@@ -30,7 +30,7 @@ public class AuditListPanel extends GenericPortfolioPanel<Audit> {
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		// Ce panel est destiné à être utilisé sur la fiche d'un utilisateur.
+		// Ce panel est destiné à être utilisé sur la fiche d'un objet.
 		// C'est pourquoi on remplace le pager existant par une version Ajax.
 		Component originalPager = get("pager");
 		if (originalPager != null) {
