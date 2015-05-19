@@ -394,10 +394,10 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	/**
 	 * Utilisé pour garder l'authentification de l'utilisateur lorsqu'il se connecte en tant qu'un autre utilisateur.
 	 */
-	private Authentication authenticationOriginelle = null;
+	private Authentication originalAuthentication = null;
 
-	public Authentication getAuthenticationOriginelle() {
-		return authenticationOriginelle;
+	public Authentication getOriginalAuthentication() {
+		return originalAuthentication;
 	}
 
 	public boolean hasSignInAsPermissions(U utilisateurConnecte, U utilisateurCible) {
@@ -421,7 +421,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		// On garde l'authentification de l'utilisateur pour pouvoir lui proposer de se reconnecter.
 		Authentication previousAuthentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(previousAuthentication instanceof AnonymousAuthenticationToken)) {
-			authenticationOriginelle = previousAuthentication;
+			originalAuthentication = previousAuthentication;
 		}
 		
 		signOut();
@@ -434,15 +434,15 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 
 	public void signInAsMe() throws BadCredentialsException, SecurityException {
-		if (authenticationOriginelle == null) {
+		if (originalAuthentication == null) {
 			throw new BadCredentialsException("Pas d'authentification originelle");
 		}
 		
-		SecurityContextHolder.getContext().setAuthentication(authenticationOriginelle);
+		SecurityContextHolder.getContext().setAuthentication(originalAuthentication);
 		doInitializeSession();
 		bind();
 		signIn(true);
-		authenticationOriginelle = null;
+		originalAuthentication = null;
 	}
 
 }

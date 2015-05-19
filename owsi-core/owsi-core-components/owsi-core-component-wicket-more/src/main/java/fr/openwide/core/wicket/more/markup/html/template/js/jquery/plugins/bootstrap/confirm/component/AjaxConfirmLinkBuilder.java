@@ -66,7 +66,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 		this.titleModel = new ResourceModel("common.confirmTitle");
 		if (model != null && model.getObject() instanceof GenericEntity<?, ?>) {
 			GenericEntity<?, ?> genericEntity = (GenericEntity<?, ?>) model.getObject();
-			this.contentModel = new StringResourceModel("common.deleteConfirmation.object", null, new Object[] { genericEntity.getDisplayName() });
+			this.contentModel = new StringResourceModel("common.deleteConfirmation.object").setParameters(genericEntity.getDisplayName());
 		} else {
 			this.contentModel = new ResourceModel("common.deleteConfirmation");
 		}

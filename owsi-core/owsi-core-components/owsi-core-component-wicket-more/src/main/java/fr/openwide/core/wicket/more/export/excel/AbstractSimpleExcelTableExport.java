@@ -67,7 +67,7 @@ public abstract class AbstractSimpleExcelTableExport extends AbstractExcelTableE
 	}
 	
 	protected String localize(String resourceKey, IModel<?> model, Object ... positionalParameters) {
-		return new StringResourceModel(resourceKey, component, model, positionalParameters).getObject();
+		return new StringResourceModel(resourceKey, component, model).setParameters(positionalParameters).getObject();
 	}
 
 	protected String localize(Enum<?> enumValue) {
