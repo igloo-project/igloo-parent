@@ -182,14 +182,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		// User menu
 		add(
 				new Label(
-						"authenticationOriginelle",
-						new StringResourceModel("console.authentication.authenticationOriginelle.help", null,
-								new Object[] {
-									BasicApplicationSession.get().getAuthenticationOriginelle() != null 
-											? BasicApplicationSession.get().getAuthenticationOriginelle().getName()
-											: null
-								}
-						)
+						"originalAuthentication",
+						new StringResourceModel("console.authentication.originalAuthentication.help")
+								.setParameters(BasicApplicationSession.get().getOriginalAuthentication() != null 
+											? BasicApplicationSession.get().getOriginalAuthentication().getName()
+											: null)
 						.getObject()
 				) {
 					
@@ -198,7 +195,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					@Override
 					protected void onConfigure() {
 						super.onConfigure();
-						setVisible(BasicApplicationSession.get().getAuthenticationOriginelle() != null);
+						setVisible(BasicApplicationSession.get().getOriginalAuthentication() != null);
 					}
 				},
 				
@@ -227,7 +224,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					@Override
 					protected void onConfigure() {
 						super.onConfigure();
-						setVisible(BasicApplicationSession.get().getAuthenticationOriginelle() != null);
+						setVisible(BasicApplicationSession.get().getOriginalAuthentication() != null);
 					}
 				},
 				
@@ -237,9 +234,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		// Footer
 		add(
 				new Label("version", configurer.getVersion())
-						.add(new AttributeModifier("title", new StringResourceModel("common.version.full", null,
-								new Object[] { configurer.getVersion(), configurer.getOwsiCoreVersion() }
-						)))
+						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
+								.setParameters(configurer.getVersion(), configurer.getOwsiCoreVersion())
+						))
 		);
 		
 		// Tooltip

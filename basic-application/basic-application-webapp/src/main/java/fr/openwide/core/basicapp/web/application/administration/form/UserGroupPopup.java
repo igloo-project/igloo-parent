@@ -72,7 +72,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 		if (isAddMode()) {
 			return new Label(wicketId, new ResourceModel("administration.usergroup.add.title"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.usergroup.update.title", getModel()));
+			return new Label(wicketId, new StringResourceModel("administration.usergroup.update.title").setModel(getModel()));
 		}
 	}
 

@@ -101,13 +101,8 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 			
 			this.userModel = model;
 					
-			IModel<String> confirmationTextModel = new StringResourceModel(
-			"administration.usergroup.members.delete.confirmation.text",
-			null, new Object[] {
-					userModel.getObject().getFullName(),
-					UserGroupMembersPanel.this.getModelObject().getName()
-				}
-			);
+			IModel<String> confirmationTextModel = new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
+					.setParameters(userModel.getObject().getFullName(), UserGroupMembersPanel.this.getModelObject().getName());
 			
 			add(
 					AjaxConfirmLink.build("deleteLink", userModel)

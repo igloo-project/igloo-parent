@@ -114,7 +114,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 		if (isAddMode()) {
 			return new Label(wicketId, new ResourceModel("administration.user.add.title"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.user.update.title", getModel()));
+			return new Label(wicketId, new StringResourceModel("administration.user.update.title").setModel(getModel()));
 		}
 	}
 
