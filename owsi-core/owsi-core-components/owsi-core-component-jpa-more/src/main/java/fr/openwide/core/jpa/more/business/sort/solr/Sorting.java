@@ -39,12 +39,12 @@ public class Sorting {
   * @param nullFirst   true if null should come first, regardless of sort order
   * @return SortField
   */
- public static SortField getStringSortField(String fieldName, boolean reverse, boolean nullLast, boolean nullFirst) {
+ public static SortField getSortField(String fieldName, SortField.Type type, boolean reverse, boolean nullLast, boolean nullFirst) {
    if (nullFirst && nullLast) {
      throw new IllegalArgumentException("Cannot specify missing values as both first and last");
    }
 
-   SortField sortField = new SortField(fieldName, SortField.Type.STRING, reverse);
+   SortField sortField = new SortField(fieldName, type, reverse);
 
    // 4 cases:
    // missingFirst / forward: default lucene behavior
@@ -59,6 +59,10 @@ public class Sorting {
    }
 
    return sortField;
+ }
+
+ public static SortField getStringSortField(String fieldName, boolean reverse, boolean nullLast, boolean nullFirst) {
+   return getSortField(fieldName, SortField.Type.STRING, reverse, nullLast, nullFirst);
  }
 }
 

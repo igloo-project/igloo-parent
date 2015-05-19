@@ -47,6 +47,12 @@ public final class SortUtils {
 		return new SortField(fieldName, type, isReverse(sort, order));
 	}
 	
+	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, SortField.Type type, String fieldName, NullSortValue sortNull) {
+		SortOrder defaultedOrder = sort.getDefaultOrder().asDefaultFor(order);
+		return Sorting.getSortField(fieldName, type, isReverse(sort, order),
+				sortNull.isLast(defaultedOrder), sortNull.isFirst(defaultedOrder));
+	}
+	
 	/**
 	 * @deprecated Use {@link #luceneStringSortField(ISort, SortOrder, String, NullSortValue)} instead.
 	 * This method sorts nulls in the same order independently from the given SortOrder, which probably is a bug.
