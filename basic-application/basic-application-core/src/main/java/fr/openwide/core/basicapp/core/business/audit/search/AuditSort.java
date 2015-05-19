@@ -16,7 +16,7 @@ public enum AuditSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, Audit.DATE_SORT_FIELD_NAME),
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, Audit.DATE_SORT_FIELD_NAME),
 					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, Bindings.audit().id().getPath())
 			);
 		}
