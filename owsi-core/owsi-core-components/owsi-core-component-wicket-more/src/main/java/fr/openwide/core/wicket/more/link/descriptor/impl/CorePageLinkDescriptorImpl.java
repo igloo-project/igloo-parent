@@ -7,6 +7,7 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -195,4 +196,9 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		}
 	}
 
+	@Override
+	public PageProvider newPageProvider() {
+		return new PageProvider(getNonNullPageClass(), getValidatedParameters());
+	}
+	
 }
