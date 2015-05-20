@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -118,5 +119,7 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	 * @return
 	 */
 	boolean isActive(Class<? extends Page> selectedPage);
+
+	PageProvider newPageProvider();
 
 }

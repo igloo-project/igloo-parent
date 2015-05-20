@@ -180,4 +180,9 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		}
 	}
 
+	@Override
+	public PageProvider newPageProvider() {
+		return new PageProvider(getValidPageInstance());
+	}
+
 }
