@@ -125,6 +125,9 @@ public class ThreadedProcessor {
 				if (this.monitorContext.getFailedItems().get() > 0) {
 					LOGGER.error("{} - {} élément(s) en erreur", loggerContext, this.monitorContext.getFailedItems().get());
 				}
+				if (this.monitorContext.getIgnoredItems().get() > 0) {
+					LOGGER.info("{} - {} élément(s) ignoré(s)", loggerContext, this.monitorContext.getIgnoredItems().get());
+				}
 				
 				for (Future<T> future : futures) {
 					try {
@@ -193,7 +196,9 @@ public class ThreadedProcessor {
 		
 		public void log(boolean force) {
 			long currentTime = System.currentTimeMillis();
+			int totalItems = monitorContext.getTotalItems().get();
 			int doneItems = monitorContext.getDoneItems().get();
+			int ignoredItems = monitorContext.getIgnoredItems().get();
 			if (force
 					|| (lastLoggingTime - currentTime) > maxLoggingTimeUnit.toMillis(maxLoggingTime)
 					|| (doneItems - lastDoneItems) > maxLoggingIncrement) {
@@ -210,16 +215,16 @@ public class ThreadedProcessor {
 				if (StringUtils.hasText(loggerContext)) {
 					sb.append(loggerContext).append(" - ");
 				}
-				sb.append("Avancement {} / {} ({} items / s. depuis début, {} items / s. depuis dernier log)");
+				sb.append("Avancement {} / {} ({} ignorés, {} items / s. depuis début, {} items / s. depuis dernier log)");
 				
 				if (configurer.isMigrationLoggingMemory()) {
 					sb.append(" - Mémoire disponible {} / {}");
-					progressLogger.info(sb.toString(), doneItems, monitorContext.getTotalItems().get(),
+					progressLogger.info(sb.toString(), doneItems, totalItems - ignoredItems, ignoredItems,
 							roundedSpeedSinceStart, roundedSpeedSinceLast,
 							StringUtils.humanReadableByteCount(Runtime.getRuntime().freeMemory(), true),
 							StringUtils.humanReadableByteCount(Runtime.getRuntime().totalMemory(), true));
 				} else {
-					progressLogger.info(sb.toString(), doneItems, monitorContext.getTotalItems().get(),
+					progressLogger.info(sb.toString(), doneItems, totalItems - ignoredItems, ignoredItems,
 							roundedSpeedSinceStart, roundedSpeedSinceLast);
 				}
 			}

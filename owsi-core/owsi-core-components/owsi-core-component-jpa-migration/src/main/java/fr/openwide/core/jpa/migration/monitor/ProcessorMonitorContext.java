@@ -12,6 +12,8 @@ public class ProcessorMonitorContext {
 
 	private final AtomicInteger failedItems = new AtomicInteger(0);
 
+	private final AtomicInteger ignoredItems = new AtomicInteger(0);
+
 	public static void unset() {
 		THREAD_LOCAL.remove();
 	}
@@ -42,6 +44,10 @@ public class ProcessorMonitorContext {
 
 	public AtomicInteger getFailedItems() {
 		return failedItems;
+	}
+
+	public AtomicInteger getIgnoredItems() {
+		return ignoredItems;
 	}
 
 }

@@ -26,6 +26,9 @@ public abstract class AbstractResultRowMapper<T> extends AbstractRowMapper<RowRe
 		case FAILED:
 			ProcessorMonitorContext.get().getFailedItems().incrementAndGet();
 			break;
+		case NOT_APPLICABLE:
+			ProcessorMonitorContext.get().getIgnoredItems().incrementAndGet();
+			break;
 		default:
 			break;
 		}
