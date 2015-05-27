@@ -10,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Classes;
 
@@ -17,6 +18,7 @@ import com.google.common.base.Joiner;
 
 import fr.openwide.core.export.excel.AbstractExcelTableExport;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.markup.html.model.CountMessageModel;
 
 /**
  * Apporte quelques configurations de style ainsi que le support de l'extraction de traduction via wicket.
