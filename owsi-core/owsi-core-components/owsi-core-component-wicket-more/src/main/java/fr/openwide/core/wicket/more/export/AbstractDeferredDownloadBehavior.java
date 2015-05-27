@@ -162,7 +162,7 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior {
 	
 	protected IResourceStream getResourceStream() {
 		File file = tempFileModel.getObject();
-		if (file.exists() && file.canRead() && file.isFile()) {
+		if (file != null && file.exists() && file.canRead() && file.isFile()) {
 			return new FileResourceStream(file);
 		}
 		
