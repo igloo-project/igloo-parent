@@ -37,9 +37,6 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private static final long serialVersionUID = 3926959721176678607L;
 
 	public static final String NAME_SORT_FIELD_NAME = "nameSort";
-	public static final String CREATION_DATE_SORT_FIELD_NAME = "creationDateSort";
-	public static final String START_DATE_SORT_FIELD_NAME = "startDateSort";
-	public static final String END_DATE_SORT_FIELD_NAME = "endDateSort";
 
 	@Id
 	@GeneratedValue
@@ -63,25 +60,16 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private String taskType;
 
 	@Column(nullable = false)
-	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = CREATION_DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
-	})
+	@Field
 	private Date creationDate;
 
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field
 	private Date triggeringDate = null;
 
-	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = START_DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
-	})
+	@Field
 	private Date startDate = null;
 
-	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = END_DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
-	})
+	@Field
 	private Date endDate = null;
 
 	@Version

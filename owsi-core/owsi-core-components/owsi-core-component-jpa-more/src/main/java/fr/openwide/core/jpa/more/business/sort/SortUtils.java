@@ -18,7 +18,6 @@ import com.google.common.collect.Ordering;
 import fr.openwide.core.jpa.more.business.sort.ISort.NullSortValue;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortNull;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
-import fr.openwide.core.jpa.more.business.sort.solr.Sorting;
 
 public final class SortUtils {
 	
@@ -47,25 +46,25 @@ public final class SortUtils {
 		return new SortField(fieldName, type, isReverse(sort, order));
 	}
 	
-	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, SortField.Type type, String fieldName, NullSortValue sortNull) {
-		SortOrder defaultedOrder = sort.getDefaultOrder().asDefaultFor(order);
-		return Sorting.getSortField(fieldName, type, isReverse(sort, order),
-				sortNull.isLast(defaultedOrder), sortNull.isFirst(defaultedOrder));
-	}
-	
 	/**
 	 * @deprecated Use {@link #luceneStringSortField(ISort, SortOrder, String, NullSortValue)} instead.
 	 * This method sorts nulls in the same order independently from the given SortOrder, which probably is a bug.
 	 */
 	@Deprecated
 	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, SortNull sortNull) {
-		return Sorting.getStringSortField(fieldName, isReverse(sort, order),
+		return getStringSortField(fieldName, isReverse(sort, order),
 				SortNull.NULL_LAST.equals(sortNull), SortNull.NULL_FIRST.equals(sortNull));
 	}
 	
 	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, NullSortValue sortNull) {
 		SortOrder defaultedOrder = sort.getDefaultOrder().asDefaultFor(order);
-		return Sorting.getStringSortField(fieldName, isReverse(sort, order),
+		return getStringSortField(fieldName, isReverse(sort, order),
+				sortNull.isLast(defaultedOrder), sortNull.isFirst(defaultedOrder));
+	}
+	
+	public static SortField luceneLongSortField(ISort<SortField> sort, SortOrder order, String fieldName, NullSortValue sortNull) {
+		SortOrder defaultedOrder = sort.getDefaultOrder().asDefaultFor(order);
+		return getLongSortField(fieldName, isReverse(sort, order),
 				sortNull.isLast(defaultedOrder), sortNull.isFirst(defaultedOrder));
 	}
 	
@@ -116,6 +115,63 @@ public final class SortUtils {
 			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
 		}
 		return Ordering.compound(sortFields);
+	}
+	
+	/**
+	 * Comes from Sorting of Solr
+	 * 
+	 * Returns a {@link SortField} for a string field.
+	 *  If nullLast and nullFirst are both false, then default lucene string sorting is used where
+	 *  null strings sort first in an ascending sort, and last in a descending sort.
+	 *
+	 * @param fieldName   the name of the field to sort on
+	 * @param reverse     true for a reverse (desc) sort
+	 * @param nullLast    true if null should come last, regardless of sort order
+	 * @param nullFirst   true if null should come first, regardless of sort order
+	 * @return SortField
+	 */
+	public static SortField getStringSortField(String fieldName, boolean reverse, boolean nullLast, boolean nullFirst) {
+		if (nullFirst && nullLast) {
+			throw new IllegalArgumentException("Cannot specify missing values as both first and last");
+		}
+
+		SortField sortField = new SortField(fieldName, SortField.Type.STRING, reverse);
+
+		// 4 cases:
+		// missingFirst / forward: default lucene behavior
+		// missingFirst / reverse: set sortMissingLast
+		// missingLast / forward: set sortMissingLast
+		// missingLast / reverse: default lucene behavior
+
+		if (nullFirst && reverse) {
+			sortField.setMissingValue(SortField.STRING_LAST);
+		} else if (nullLast && !reverse) {
+			sortField.setMissingValue(SortField.STRING_LAST);
+		}
+
+		return sortField;
+	}
+	
+	public static SortField getLongSortField(String fieldName, boolean reverse, boolean nullLast, boolean nullFirst) {
+		if (nullFirst && nullLast) {
+			throw new IllegalArgumentException("Cannot specify missing values as both first and last");
+		}
+
+		SortField sortField = new SortField(fieldName, SortField.Type.LONG, reverse);
+
+		// 4 cases:
+		// missingFirst / forward: default lucene behavior
+		// missingFirst / reverse: set sortMissingLast
+		// missingLast / forward: set sortMissingLast
+		// missingLast / reverse: default lucene behavior
+
+		if (nullFirst && reverse) {
+			sortField.setMissingValue(Long.MAX_VALUE);
+		} else if (nullLast && !reverse) {
+			sortField.setMissingValue(Long.MAX_VALUE);
+		}
+
+		return sortField;
 	}
 
 }

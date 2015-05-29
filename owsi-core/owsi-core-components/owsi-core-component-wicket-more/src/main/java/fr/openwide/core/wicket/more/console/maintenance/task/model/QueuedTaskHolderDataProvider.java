@@ -2,31 +2,28 @@ package fr.openwide.core.wicket.more.console.maintenance.task.model;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
+import fr.openwide.core.jpa.more.business.search.query.ISearchQuery;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
-import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSearchQueryParameters;
+import fr.openwide.core.jpa.more.business.task.search.IQueuedTaskHolderSearchQuery;
+import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSort;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
-import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataProvider;
+import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
+import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
+import fr.openwide.core.wicket.more.model.AbstractSearchQueryDataProvider;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
-public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider<QueuedTaskHolder> {
+public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvider<QueuedTaskHolder, QueuedTaskHolderSort> {
 
 	private static final long serialVersionUID = -1886156254057416250L;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderDataProvider.class);
 
 	private final IModel<String> nameModel = new Model<String>();
 
@@ -42,7 +39,12 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 
 	private final IModel<Date> startDateModel = new Model<Date>();
 
-	private final IModel<Date> completionDateModel = new Model<Date>();
+	private final IModel<Date> endDateModel = new Model<Date>();
+	
+	private final CompositeSortModel<QueuedTaskHolderSort> sortModel = new CompositeSortModel<>(
+			CompositingStrategy.LAST_ONLY,
+			QueuedTaskHolderSort.CREATION_DATE
+	);
 
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
@@ -50,33 +52,6 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 	public QueuedTaskHolderDataProvider() {
 		super();
 		Injector.get().inject(this);
-	}
-
-	public QueuedTaskHolderSearchQueryParameters getSearchParameters() {
-		return new QueuedTaskHolderSearchQueryParameters(nameModel.getObject(),
-				statusesModel.getObject(), resultsModel.getObject(),
-				taskTypesModel.getObject(), queueIdsModel.getObject(),
-				creationDateModel.getObject(), startDateModel.getObject(), completionDateModel.getObject());
-	}
-
-	@Override
-	protected List<QueuedTaskHolder> loadList(long first, long count) {
-		try {
-			return queuedTaskHolderService.search(getSearchParameters(), count, first);
-		} catch (Exception e) {
-			LOGGER.error("Error while searching tasks.", e);
-			return Lists.newArrayList();
-		}
-	}
-
-	@Override
-	protected long loadSize() {
-		try {
-			return queuedTaskHolderService.count(getSearchParameters());
-		} catch (Exception e) {
-			LOGGER.error("Error while counting tasks.", e);
-			return 0;
-		}
 	}
 
 	public IModel<String> getNameModel() {
@@ -108,7 +83,7 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 	}
 
 	public IModel<Date> getCompletionDateModel() {
-		return completionDateModel;
+		return endDateModel;
 	}
 
 	@Override
@@ -127,6 +102,20 @@ public class QueuedTaskHolderDataProvider extends LoadableDetachableDataProvider
 		queueIdsModel.detach();
 		creationDateModel.detach();
 		startDateModel.detach();
-		completionDateModel.detach();
+		endDateModel.detach();
+	}
+
+	@Override
+	protected ISearchQuery<QueuedTaskHolder, QueuedTaskHolderSort> getSearchQuery() {
+		return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
+				.name(nameModel.getObject())
+				.statuses(statusesModel.getObject())
+				.results(resultsModel.getObject())
+				.types(taskTypesModel.getObject())
+				.queueIds(queueIdsModel.getObject())
+				.creationDate(creationDateModel.getObject())
+				.startDate(startDateModel.getObject())
+				.endDate(endDateModel.getObject())
+				.sort(sortModel.getObject());
 	}
 }

@@ -12,7 +12,6 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
-import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSearchQueryParameters;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 
 public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, QueuedTaskHolder> implements
@@ -30,17 +29,6 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 	protected void createEntity(QueuedTaskHolder queuedTaskHolder) throws ServiceException, SecurityServiceException {
 		queuedTaskHolder.setCreationDate(new Date());
 		super.createEntity(queuedTaskHolder);
-	}
-
-	@Override
-	public List<QueuedTaskHolder> search(QueuedTaskHolderSearchQueryParameters searchParams, Long limit, Long offset)
-			throws ServiceException {
-		return queuedTaskHolderDao.search(searchParams, limit, offset);
-	}
-
-	@Override
-	public int count(QueuedTaskHolderSearchQueryParameters searchParams) throws ServiceException {
-		return queuedTaskHolderDao.count(searchParams);
 	}
 
 	@Override
