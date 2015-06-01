@@ -18,6 +18,7 @@
 package fr.openwide.core.spring.config;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -173,6 +174,54 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 			return maxValue;
 		}
 		return integerProperty;
+	}
+	
+	/**
+	 * Retourne une propriété sous la forme d'un BigDecimal.
+	 * 
+	 * @param key la clé
+	 * @param defaultValue valeur par défaut
+	 * @return valeur de la propriété sous la forme d'un BigDecimal
+	 *         ou defaultValue si la valeur de la propriété n'est pas un BigDecimal valide
+	 */
+	protected BigDecimal getPropertyAsBigDecimal(String key, BigDecimal defaultValue) {
+		return getPropertyAsBigDecimal(key, defaultValue, null, null);
+	}
+	
+	/**
+	 * Retourne une propriété sous la forme d'un BigDecimal.
+	 * 
+	 * @param key la clé
+	 * @param defaultValue valeur par défaut
+	 * @param minValue valeur minimale
+	 * @param maxValue valeur maximale
+	 * @return valeur de la propriété sous la forme d'un BigDecimal
+	 *         ou defaultValue si la valeur de la propriété n'est pas un BigDecimal valide
+	 *         ou minValue si la valeur est inférieure à la valeur minimale
+	 *         ou maxValue si la valeur est supérieure à la valeur maximale
+	 */
+	protected BigDecimal getPropertyAsBigDecimal(String key, BigDecimal defaultValue, BigDecimal minValue, BigDecimal maxValue) {
+		BigDecimal bigDecimalProperty = defaultValue;
+		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
+		
+		if (!StringUtils.hasText(stringProperty)) {
+			LOGGER.warn("La propriété " + key + " n'est pas définie : utilisation de la valeur par défaut.");
+			return bigDecimalProperty;
+		}
+		try {
+			bigDecimalProperty = new BigDecimal(stringProperty);
+		} catch(Exception e) {
+			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas un bigDecimalProperty valide : utilisation de la valeur par défaut.", e);
+		}
+		
+		if (minValue != null && bigDecimalProperty.compareTo(minValue) < 0) {
+			LOGGER.warn("La propriété " + key + " est inférieure à la valeur minimale : utilisation de cette valeur minimale.");
+			return minValue;
+		} else if (maxValue != null && bigDecimalProperty.compareTo(maxValue) > 0) {
+			LOGGER.warn("La propriété " + key + " est supérieure à la valeur maximale : utilisation de cette valeur maximale.");
+			return maxValue;
+		}
+		return bigDecimalProperty;
 	}
 	
 	/**
