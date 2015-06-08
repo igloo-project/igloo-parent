@@ -17,4 +17,10 @@ public interface IGenericListItemBindingInterface {
 	
 	boolean isEnabled();
 	
+	boolean isEditable();
+	
+	boolean isDisableable();
+	
+	boolean isDeleteable();
+	
 }
