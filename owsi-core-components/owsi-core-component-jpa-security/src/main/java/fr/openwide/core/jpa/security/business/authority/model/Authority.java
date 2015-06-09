@@ -1,12 +1,19 @@
 package fr.openwide.core.jpa.security.business.authority.model;
 
+import java.util.Collections;
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.bindgen.Bindable;
 
+import com.google.common.collect.Sets;
+
+import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
 @Entity
@@ -21,6 +28,9 @@ public class Authority extends GenericEntity<Long, Authority> {
 
 	@Column
 	private String name;
+
+	@ElementCollection
+	private Set<String> customPermissionNames = Sets.newHashSet();
 
 	public Authority() {
 	}
@@ -45,6 +55,22 @@ public class Authority extends GenericEntity<Long, Authority> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<String> getCustomPermissionNames() {
+		return Collections.unmodifiableSet(customPermissionNames);
+	}
+
+	public void setCustomPermissionNames(Set<String> customPermissionNames) {
+		CollectionUtils.replaceAll(this.customPermissionNames, customPermissionNames);
+	}
+
+	public boolean addCustonPermissionName(String customPermissionName) {
+		return customPermissionNames.add(customPermissionName);
+	}
+
+	public boolean removeCustonPermissionName(String customPermissionName) {
+		return customPermissionNames.remove(customPermissionName);
 	}
 
 	@Override
