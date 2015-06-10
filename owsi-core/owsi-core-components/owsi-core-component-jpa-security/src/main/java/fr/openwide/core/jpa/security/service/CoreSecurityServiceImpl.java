@@ -177,7 +177,19 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 			AuthenticationUtil.setAuthentication(originalAuthentication);
 		}
 	}
-	
+
+	@Override
+	public <T> T runAs(Callable<T> task, String userName, String... additionalAuthorities) {
+		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
+		authenticateAs(userName, additionalAuthorities);
+		try {
+			return task.call();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			AuthenticationUtil.setAuthentication(originalAuthentication);
+		}
+	}
 
 	protected Authentication getAuthentication(IUser person) {
 		return getAuthentication(person.getUserName());
