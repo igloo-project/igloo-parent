@@ -51,10 +51,11 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- vt-password -->
+		<!-- Security -->
 		<dependency>
-			<groupId>edu.vt.middleware</groupId>
-			<artifactId>vt-password</artifactId>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>${owsi-core.passay.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
