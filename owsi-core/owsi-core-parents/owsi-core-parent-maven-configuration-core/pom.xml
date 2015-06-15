@@ -725,7 +725,7 @@
 					<groupId>com.lowagie</groupId>
 					<artifactId>itext</artifactId>
 					<version>${owsi-core.itext.version}</version>
-					<!-- il peut du coup être nécessaire de les ajouter en version jdk16 si on utilise des fichiers pdf protégés -->
+					<!-- il peut du coup être nécessaire de les ajouter en version jdk15 si on utilise des fichiers pdf protégés -->
 					<exclusions>
 						<exclusion>
 							<groupId>bouncycastle</groupId>
