@@ -135,7 +135,7 @@
 		<owsi-core.grizzly.version>1.9.63</owsi-core.grizzly.version>
 		<owsi-core.findbugs-annotations.version>3.0.0</owsi-core.findbugs-annotations.version>
 		
-		<owsi-core.vt-password.version>3.1.2</owsi-core.vt-password.version>
+		<owsi-core.passay.version>1.0</owsi-core.passay.version>
 		
 		<owsi-core.localization-properties-consistency-maven-plugin.version>1.0.0</owsi-core.localization-properties-consistency-maven-plugin.version>
 	</properties>
@@ -738,13 +738,6 @@
 					<artifactId>prettytime</artifactId>
 					<version>${owsi-core.prettytime.version}</version>
 				</dependency>
-				
-				<!-- vt-password -->
-				<dependency>
-					<groupId>edu.vt.middleware</groupId>
-					<artifactId>vt-password</artifactId>
-					<version>${owsi-core.vt-password.version}</version>
-				</dependency>
 			
 			<!-- Exports divers -->
 			
@@ -758,7 +751,7 @@
 					<groupId>com.lowagie</groupId>
 					<artifactId>itext</artifactId>
 					<version>${owsi-core.itext.version}</version>
-					<!-- il peut du coup être nécessaire de les ajouter en version jdk16 si on utilise des fichiers pdf protégés -->
+					<!-- il peut du coup être nécessaire de les ajouter en version jdk15 si on utilise des fichiers pdf protégés -->
 					<exclusions>
 						<exclusion>
 							<groupId>bouncycastle</groupId>

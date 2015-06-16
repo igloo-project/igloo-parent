@@ -51,6 +51,8 @@ public interface ISecurityService {
 	
 	<T> T runAsSystem(Callable<T> task);
 
+	<T> T runAs(Callable<T> task, String userName, String... additionalAuthorities);
+
 	Collection<? extends Permission> getPermissions(Authentication authentication);
 
 	boolean isSuperUser(Authentication authentication);

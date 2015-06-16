@@ -149,7 +149,8 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
+	@Override
 	public boolean isEditable() {
 		return editable;
 	}
@@ -158,6 +159,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		this.editable = editable;
 	}
 
+	@Override
 	public boolean isDisableable() {
 		return disableable;
 	}
@@ -166,6 +168,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		this.disableable = disableable;
 	}
 
+	@Override
 	public boolean isDeleteable() {
 		return deleteable;
 	}

@@ -51,14 +51,20 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- vt-password -->
+		<!-- Security -->
 		<dependency>
-			<groupId>edu.vt.middleware</groupId>
-			<artifactId>vt-password</artifactId>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>${owsi-core.passay.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<!-- il peut du coup être nécessaire de les ajouter en version jdk15 si on veut utiliser bouncycastle -->
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

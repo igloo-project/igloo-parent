@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.person.model.IGroupedUser;
 import fr.openwide.core.jpa.security.business.person.model.IUserGroup;
 import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
@@ -42,7 +43,10 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
 	private PermissionFactory permissionFactory;
-
+	
+	@Autowired
+	private IAuthorityService authorityService;
+	
 	private AuthenticationUserNameComparison authenticationUserNameComparison = AuthenticationUserNameComparison.CASE_SENSITIVE;
 
 	public void setAuthenticationUserNameComparison(AuthenticationUserNameComparison authenticationUserNameComparison) {
@@ -62,10 +66,9 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		}
 		
 		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(user);
-		
 		Collection<? extends GrantedAuthority> expandedGrantedAuthorities = roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft());
+		addCustomPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
 		addPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
-		
 		Collection<Permission> expandedReachablePermissions = permissionHierarchy.getReachablePermissions(authoritiesAndPermissions.getRight());
 		
 		// In any case, we can't pass an empty password hash to the CoreUserDetails
@@ -86,6 +89,16 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			user = userService.getByUserName(userName);
 		}
 		return user;
+	}
+	
+	protected void addCustomPermissionsFromAuthorities(Collection<? extends GrantedAuthority> expandedGrantedAuthorities, Set<Permission> permissions) {
+		for (GrantedAuthority grantedAuthority : expandedGrantedAuthorities) {
+			Authority authority = authorityService.getByName(grantedAuthority.getAuthority());
+			if (authority == null) {
+				continue;
+			}
+			addPermissions(permissions, authority.getCustomPermissionNames());
+		}
 	}
 	
 	/**
