@@ -31,7 +31,7 @@
 		<owsi-core.spring.version>4.1.6.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.8.6</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>4.3.9.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-core.version>4.3.10.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.hibernate-commons-annotations.version>4.0.5.Final</owsi-core.hibernate-commons-annotations.version>
