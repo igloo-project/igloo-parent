@@ -5,20 +5,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.vt.middleware.dictionary.ArrayWordList;
-import edu.vt.middleware.dictionary.WordListDictionary;
-import edu.vt.middleware.password.DictionaryRule;
-import edu.vt.middleware.password.DigitCharacterRule;
-import edu.vt.middleware.password.IllegalCharacterRule;
-import edu.vt.middleware.password.LengthRule;
-import edu.vt.middleware.password.LowercaseCharacterRule;
-import edu.vt.middleware.password.NonAlphanumericCharacterRule;
-import edu.vt.middleware.password.NumericalSequenceRule;
-import edu.vt.middleware.password.RegexRule;
-import edu.vt.middleware.password.Rule;
-import edu.vt.middleware.password.UppercaseCharacterRule;
-import edu.vt.middleware.password.UsernameRule;
-import edu.vt.middleware.password.WhitespaceRule;
+import org.passay.DictionaryRule;
+import org.passay.DigitCharacterRule;
+import org.passay.IllegalCharacterRule;
+import org.passay.IllegalRegexRule;
+import org.passay.LengthRule;
+import org.passay.LowercaseCharacterRule;
+import org.passay.NumericalSequenceRule;
+import org.passay.Rule;
+import org.passay.SpecialCharacterRule;
+import org.passay.UppercaseCharacterRule;
+import org.passay.UsernameRule;
+import org.passay.WhitespaceRule;
+import org.passay.dictionary.ArrayWordList;
+import org.passay.dictionary.WordListDictionary;
+
 import fr.openwide.core.basicapp.core.business.user.model.User;
 
 public class SecurityPasswordRules implements Serializable {
@@ -56,12 +57,12 @@ public class SecurityPasswordRules implements Serializable {
 	}
 
 	public SecurityPasswordRules mandatoryNonAlphanumericCharacters() {
-		rules.add(new NonAlphanumericCharacterRule());
+		rules.add(new SpecialCharacterRule());
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryNonAlphanumericCharacters(int min) {
-		rules.add(new NonAlphanumericCharacterRule(min));
+		rules.add(new SpecialCharacterRule(min));
 		return this;
 	}
 
@@ -103,7 +104,7 @@ public class SecurityPasswordRules implements Serializable {
 	}
 
 	public SecurityPasswordRules forbiddenRegex(String regex) {
-		rules.add(new RegexRule(regex));
+		rules.add(new IllegalRegexRule(regex));
 		return this;
 	}
 
