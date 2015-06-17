@@ -79,8 +79,8 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 		return securityService.isSuperUser(AuthenticationUtil.getAuthentication());
 	}
 	
-	protected Authentication getAuthentication() {
+	@Override
+	public Authentication getAuthentication() {
 		return AuthenticationUtil.getAuthentication();
 	}
-
 }
