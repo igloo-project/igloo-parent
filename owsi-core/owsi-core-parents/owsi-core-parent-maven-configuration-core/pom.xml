@@ -29,7 +29,7 @@
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
 		<owsi-core.spring.version>4.1.6.RELEASE</owsi-core.spring.version>
-		<owsi-core.aspectj.version>1.8.5</owsi-core.aspectj.version>
+		<owsi-core.aspectj.version>1.8.6</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>4.3.9.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
@@ -94,7 +94,7 @@
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.13</owsi-core.jackson.version>
-		<owsi-core.jackson2-core.version>2.5.3</owsi-core.jackson2-core.version>
+		<owsi-core.jackson2-core.version>2.5.4</owsi-core.jackson2-core.version>
 		<owsi-core.jackson2-annotations.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
@@ -105,13 +105,13 @@
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.8.2</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7.6</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.4.1</owsi-core.httpclient.version>
+		<owsi-core.httpclient.version>4.5</owsi-core.httpclient.version>
 		<owsi-core.prettytime.version>4.0.0.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.7</owsi-core.phloc-css.version>
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.19</owsi-core.jersey.version>
-		<owsi-core.jersey2.version>2.17</owsi-core.jersey2.version>
+		<owsi-core.jersey2.version>2.18</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
@@ -128,7 +128,7 @@
 		<owsi-core.wicket-select2.version>1.2.0-SNAPSHOT</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>7.0.0.owsi1-SNAPSHOT</owsi-core.wqplot.version>
 		
-		<owsi-core.less4j.version>1.11.0</owsi-core.less4j.version>
+		<owsi-core.less4j.version>1.12.0</owsi-core.less4j.version>
 		
 		<owsi-core.junit.version>4.12</owsi-core.junit.version>
 		<owsi-core.mockito.version>1.10.19</owsi-core.mockito.version>
