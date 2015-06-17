@@ -13,19 +13,18 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.passay.LengthRule;
+import org.passay.PasswordData;
+import org.passay.PasswordValidator;
+import org.passay.Rule;
+import org.passay.RuleResult;
+import org.passay.RuleResultDetail;
+import org.passay.UsernameRule;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import edu.vt.middleware.password.LengthRule;
-import edu.vt.middleware.password.Password;
-import edu.vt.middleware.password.PasswordData;
-import edu.vt.middleware.password.PasswordValidator;
-import edu.vt.middleware.password.Rule;
-import edu.vt.middleware.password.RuleResult;
-import edu.vt.middleware.password.RuleResultDetail;
-import edu.vt.middleware.password.UsernameRule;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
@@ -73,7 +72,6 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void validate(IValidatable<String> validatable) {
 		String password = validatable.getValue();
@@ -84,7 +82,7 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 		
 		User user = userModel != null ? userModel.getObject() : null;
 		
-		PasswordData passwordData = new PasswordData(new Password(password));
+		PasswordData passwordData = new PasswordData(password);
 		
 		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules().getRules());
 		
