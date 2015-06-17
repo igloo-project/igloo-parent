@@ -3,6 +3,7 @@ package fr.openwide.core.jpa.security.service;
 import java.util.Collection;
 
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 public interface IAuthenticationService {
@@ -33,4 +34,5 @@ public interface IAuthenticationService {
 
 	boolean isSuperUser();
 	
+	Authentication getAuthentication();
 }

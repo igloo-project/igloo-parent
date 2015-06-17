@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -47,6 +48,9 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	@Autowired
 	protected RoleHierarchy roleHierarchy;
 
+	@Autowired
+	private IAuthenticationService authenticationService;
+	
 	@Override
 	public boolean hasRole(Authentication authentication, String role) {
 		if (authentication != null && role != null) {
@@ -196,10 +200,21 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	protected Authentication getAuthentication(String userName) {
+		// Si on demande la personne actuellement loggée, on retourne directement l'authentication de la session
+		Authentication authentication = authenticationService.getAuthentication();
+		
+		if (authentication != null && (authentication.getPrincipal() instanceof UserDetails)) {
+			UserDetails details = (UserDetails)authentication.getPrincipal();
+			
+			if (Objects.equal(details.getUsername(), userName)) {
+				return authentication;
+			}
+		}
+		
 		try {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 			
-			Authentication authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
+			authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
 					"no-credentials", userDetails.getAuthorities(), UsernamePasswordAuthenticationToken.class);
 			
 			return authentication;
