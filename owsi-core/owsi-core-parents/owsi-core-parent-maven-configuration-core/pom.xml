@@ -70,7 +70,7 @@
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
 		<owsi-core.commons-lang3.version>3.4</owsi-core.commons-lang3.version>
 		<owsi-core.commons-math3.version>3.5</owsi-core.commons-math3.version>
-		<owsi-core.commons-cli.version>1.3</owsi-core.commons-cli.version>
+		<owsi-core.commons-cli.version>1.3.1</owsi-core.commons-cli.version>
 		<owsi-core.commons-codec.version>1.10</owsi-core.commons-codec.version>
 		<owsi-core.commons-exec.version>1.3</owsi-core.commons-exec.version>
 		<owsi-core.commons-compress.version>1.9</owsi-core.commons-compress.version>
@@ -104,7 +104,7 @@
 		<owsi-core.jfreechart.version>1.0.19</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.8.2</owsi-core.jsoup.version>
-		<owsi-core.rhino.version>1.7.6</owsi-core.rhino.version>
+		<owsi-core.rhino.version>1.7.7</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.5</owsi-core.httpclient.version>
 		<owsi-core.httpcore.version>4.4.1</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.0.Final</owsi-core.prettytime.version>
