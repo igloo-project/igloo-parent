@@ -106,6 +106,7 @@
 		<owsi-core.jsoup.version>1.8.2</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7.6</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.5</owsi-core.httpclient.version>
+		<owsi-core.httpcore.version>4.4.1</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.0.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.7</owsi-core.phloc-css.version>
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
@@ -718,7 +719,7 @@
 				<dependency>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpcore</artifactId>
-					<version>${owsi-core.httpclient.version}</version>
+					<version>${owsi-core.httpcore.version}</version>
 					<exclusions>
 						<exclusion>
 							<artifactId>commons-logging</artifactId>
