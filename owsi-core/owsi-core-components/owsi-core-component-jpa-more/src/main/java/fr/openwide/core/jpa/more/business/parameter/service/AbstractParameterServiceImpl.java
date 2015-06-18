@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.more.business.parameter.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -147,6 +148,24 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	protected BigDecimal getBigDecimalValue(String name) {
+		return getBigDecimalValue(name, null);
+	}
+
+	protected BigDecimal getBigDecimalValue(String name, BigDecimal defaultValue) {
+		Parameter parameter = getByName(name);
+		if (parameter != null) {
+			try {
+				return new BigDecimal(parameter.getStringValue());
+			} catch (Exception e) {
+				LOGGER.error("Error while retrieving BigDecimal from String", e);
+				return null;
+			}
+		} else {
+			return defaultValue;
+		}
+	}
+
 	@Override
 	public final void onApplicationEvent(ContextRefreshedEvent event) {
 		// si l'événement est un refresh et que la source de l'événement est un application context SANS
@@ -226,6 +245,17 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			update(parameter);
 		} else {
 			create(new Parameter(name, dateValue));
+		}
+	}
+
+	protected final void updateBigDecimalValue(String name, BigDecimal bigDecimalValue)
+			throws ServiceException, SecurityServiceException {
+		Parameter parameter = getByName(name);
+		if (parameter != null) {
+			parameter.setStringValue(bigDecimalValue != null ? bigDecimalValue.toString() : null);
+			update(parameter);
+		} else {
+			create(new Parameter(name, bigDecimalValue != null ? bigDecimalValue.toString() : null));
 		}
 	}
 
