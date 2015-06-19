@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.link.descriptor;
 
-import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.Url;
@@ -16,9 +15,8 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
  * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
  * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target is invalid, then a
  * {@link LinkInvalidTargetRuntimeException} will be thrown.
- * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden or disabled when they are not.
- * The latter can be obtained by either using {@link #hideIfInvalid()} or {@link #disableIfInvalid()}, or adding custom {@link Behavior behaviors}
- * using the {@link #setVisibilityAllowed(boolean)} or the {@link #setEnabled(boolean)} methods.
+ * By default, this should not happen as the link will be disabled unless it is completely valid. See
+ * {@link #disableIfInvalid()} (the default), {@link #hideIfInvalid()} and {@link #throwExceptionIfInvalid()} for more information. 
  * @see LinkInvalidTargetRuntimeException
  * @see LinkParameterSerializedFormValidationException
  * @see LinkDescriptorBuilder
@@ -53,7 +51,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		protected abstract void onConfigure(AbstractDynamicBookmarkableLink link);
 	}
 	
-	private BehaviorIfInvalid behaviorIfInvalid = BehaviorIfInvalid.THROW_EXCEPTION;
+	private BehaviorIfInvalid behaviorIfInvalid = BehaviorIfInvalid.DISABLE;
 	
 	private boolean absolute = false;
 
@@ -76,8 +74,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 
 	/**
 	 * Sets the link up so that it will automatically hide (using {@link #setVisible(boolean)}) when its target or parameters are invalid.
-	 * <p>Default behavior is throwing a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
-	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 * <p>Default behavior is to automatically disable the link.
 	 */
 	public AbstractDynamicBookmarkableLink hideIfInvalid() {
 		this.behaviorIfInvalid = BehaviorIfInvalid.HIDE;
@@ -86,11 +83,22 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 
 	/**
 	 * Sets the link up so that it will automatically be disabled when its target or parameters are invalid.
-	 * <p>Default behavior is throwing a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
-	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 * @deprecated This is the default behavior, so calling this method is generally useless. The method is here for
+	 * compatibility reasons.
 	 */
+	@Deprecated
 	public AbstractDynamicBookmarkableLink disableIfInvalid() {
 		this.behaviorIfInvalid = BehaviorIfInvalid.DISABLE;
+		return this;
+	}
+
+	/**
+	 * Sets the link up so that it will throw a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
+	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
+	 * <p>Default behavior is to automatically disable the link.
+	 */
+	public AbstractDynamicBookmarkableLink throwExceptionIfInvalid() {
+		this.behaviorIfInvalid = BehaviorIfInvalid.THROW_EXCEPTION;
 		return this;
 	}
 	
