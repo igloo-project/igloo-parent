@@ -361,6 +361,23 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	}
 
 	/**
+	 * Ajoute une cellule formule.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param formula formule à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addFormulaCell(Row row, int columnIndex, String formula) {
+		Cell cell = row.createCell(columnIndex);
+		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
+		cell.setCellType(Cell.CELL_TYPE_FORMULA);
+		cell.setCellFormula(formula);
+
+		return cell;
+	}
+	
+	/**
 	 * Ajoute une cellule d'en-tête.
 	 * 
 	 * @param row ligne
