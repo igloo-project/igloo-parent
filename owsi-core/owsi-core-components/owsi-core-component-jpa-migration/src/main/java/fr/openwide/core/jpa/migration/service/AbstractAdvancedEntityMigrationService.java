@@ -128,7 +128,15 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 
 	protected abstract Logger getLogger();
 
-	protected abstract IGenericEntityService<Long, T> getEntityService();
+	/**
+	 * Override this if you want to use a GenericEntityService when creating entities.
+	 * <p><strong>Note:</strong>This is not recommended, since these services generally assume that they are really
+	 * creating a brand new row, not importing it. They may, for instance, set the "creationdate" attribute of an
+	 * entity to the current time, which is probably wrong when migrating.
+	 */
+	protected IGenericEntityService<Long, T> getEntityService() {
+		return null;
+	}
 
 	protected Integer getPartitionSize() {
 		return 100;
