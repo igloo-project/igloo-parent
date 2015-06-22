@@ -320,12 +320,20 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		return predicate(model, Detach.YES, predicate);
 	}
 	
+	public static <T1, T2> Condition predicate(IModel<? extends T2> model, Function<? super T2, ? extends T1> function, Predicate<? super T1> predicate) {
+		return predicate(model, Detach.YES, function, predicate);
+	}
+	
 	public static <T> Condition predicate(IModel<? extends T> model, Detach detachModel, Predicate<? super T> predicate) {
 		return new PredicateCondition<>(model, detachModel, predicate);
 	}
 	
 	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Predicate<? super T> predicate) {
 		return convertedInputPredicate(formComponent, Detach.YES, predicate);
+	}
+	
+	public static <T1, T2> Condition predicate(IModel<? extends T2> model, Detach detachModel, Function<? super T2, ? extends T1> function, Predicate<? super T1> predicate) {
+		return predicate(model, detachModel, Predicates.compose(predicate, function));
 	}
 	
 	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Detach detachModel, Predicate<? super T> predicate) {
