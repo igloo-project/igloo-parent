@@ -669,6 +669,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			getColumn().hideIfInvalid();
 			return this;
 		}
+
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> throwExceptionIfInvalid() {
+			getColumn().throwExceptionIfInvalid();
+			return this;
+		}
 		
 		@Override
 		public IAddedBootstrapBadgeColumnState<T, S, C> linkBehavior(Behavior linkBehavior) {

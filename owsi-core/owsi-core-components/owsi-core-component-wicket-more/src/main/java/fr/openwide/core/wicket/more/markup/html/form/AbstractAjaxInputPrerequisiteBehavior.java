@@ -120,7 +120,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * <p><strong>WARNING:</strong> The wicket validation relies solely on input, and not on the model object. Thus any wicket validation
 	 * will systematically deem a field invalid when there is no input. In particular, this means that the prerequisite field will systematically be deemed invalid on
 	 * the first page rendering, which means this feature is not suitable for "editing" forms, where the form is filled before the first rendering.
+	 * @deprecated Avoid using this, for the reasons mentioned above.
 	 */
+	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setUseWicketValidation(boolean validatePrerequisiteInput) {
 		this.useWicketValidation = validatePrerequisiteInput;
 		return this;
@@ -422,7 +424,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 					// Clearing the input seems useless here, and may harm if the input is used when rendering the form component.
 	//				prerequisiteField.clearInput();
 				} else {
-					prerequisiteField.validate(); // Performs input conversion
+					if (useWicketValidation) {
+						// TODO YRO : see if anyone is still using this, and drop it if not. This is dangerous since [...]
+						// it may result in using wicket to validate input even though the form was not submitted.  
+						prerequisiteField.validate(); // Performs input conversion
+					}
 					
 					if (isCurrentModelSatisfyingRequirements(prerequisiteField, prerequisiteField.getModel())) {
 						setUpAttachedComponent(component);
@@ -433,9 +439,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 						takeDownAttachedComponent(component);
 					}
 				}
-				
-				// We need to clear the message that may have been added during the validation, since they are not relevant to the user (no form was submitted)
-				prerequisiteField.getFeedbackMessages().clear();
+
+				if (useWicketValidation) {
+					// We need to clear the message that may have been added during the validation, since they are not relevant to the user (no form was submitted)
+					prerequisiteField.getFeedbackMessages().clear();
+				}
 			}
 		} else {
 			if (defaultWhenPrerequisiteInvisible) {

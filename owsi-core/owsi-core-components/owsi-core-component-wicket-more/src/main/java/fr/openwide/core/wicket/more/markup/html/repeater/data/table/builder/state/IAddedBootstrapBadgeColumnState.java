@@ -41,9 +41,16 @@ public interface IAddedBootstrapBadgeColumnState<T, S extends ISort<?>, C> exten
 
 	<E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(AbstractCoreBinding<? super T, E> binding, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper);
 
+	/**
+	 * @deprecated This is the default behavior, so calling this method is generally useless. The method is here for
+	 * compatibility reasons.
+	 */
+	@Deprecated
 	IAddedBootstrapBadgeColumnState<T, S, C> disableIfInvalid();
 
 	IAddedBootstrapBadgeColumnState<T, S, C> hideIfInvalid();
+
+	IAddedBootstrapBadgeColumnState<T, S, C> throwExceptionIfInvalid();
 
 	IAddedBootstrapBadgeColumnState<T, S, C> linkBehavior(Behavior linkBehavior);
 
