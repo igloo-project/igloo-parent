@@ -38,6 +38,8 @@
 
 // pour les anciennes modal basées sur fancybox
 #fancybox-wrap {
+	z-index: @zindex-modal !important;
+	
 	&.working {
 		.loadinfo {
 			background: #FFFFFF;
@@ -65,6 +67,8 @@
 
 .modal.fancybox-compatibility {
 	// surcharge de bootstrap-modal.less
+	display: block;
+	
 	position: relative;
 	margin: 0;
 	top: auto;
