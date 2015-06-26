@@ -119,9 +119,9 @@ public class ThreadedProcessor {
 			try {
 				boolean terminated = executor.awaitTermination(maxTotalDuration, maxTotalDurationTimeUnit);
 				if (!terminated) {
-					LOGGER.warn("Les tâches n'ont pas été terminées avant expiration du timeout de {} {}", maxTotalDuration, maxTotalDurationTimeUnit.name());
+					LOGGER.error("Les tâches n'ont pas été terminées avant expiration du timeout de {} {}", maxTotalDuration, maxTotalDurationTimeUnit.name());
 				}
-				LOGGER.warn("{} - {} éléments importés", loggerContext, this.monitorContext.getDoneItems());
+				LOGGER.info("{} - {} éléments importés", loggerContext, this.monitorContext.getDoneItems());
 				if (this.monitorContext.getFailedItems().get() > 0) {
 					LOGGER.error("{} - {} élément(s) en erreur", loggerContext, this.monitorContext.getFailedItems().get());
 				}
