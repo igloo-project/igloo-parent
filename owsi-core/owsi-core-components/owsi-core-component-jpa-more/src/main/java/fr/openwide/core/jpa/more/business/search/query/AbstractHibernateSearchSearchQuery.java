@@ -83,7 +83,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
 	}
 	
-	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
 		if (analyzerCache.containsKey(clazz)) {
 			return analyzerCache.get(clazz);
@@ -113,6 +112,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	protected void must(Query query) {
 		if (query != null) {
 			junction.must(query);
+		}
+	}
+	protected void mustNot(Query query) {
+		if (query != null) {
+			junction.must(query).not();
 		}
 	}
 	
