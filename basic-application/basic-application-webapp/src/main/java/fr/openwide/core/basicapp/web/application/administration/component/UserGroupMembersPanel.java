@@ -78,7 +78,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component create(String wicketId, final Component table ) {
-							return new UserGroupAddUserFragment(wicketId, dataProvider, table)
+							return new UserGroupAddUserFragment(wicketId)
 								.add(new ClassAttributeAppender("add-in-quick-add"));
 						}
 					})
@@ -146,10 +146,10 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		
 		private static final long serialVersionUID = 1L;
 		
-		public UserGroupAddUserFragment(String id, UserDataProvider dataProvider, final Component table) {
+		public UserGroupAddUserFragment(String id) {
 			super(id, "addUser", UserGroupMembersPanel.this);
 			// Add member form
-			IModel<User> emptyUserModel = new GenericEntityModel<Long, User>(null);
+			IModel<User> emptyUserModel = new GenericEntityModel<Long, User>();
 			
 			final UserAutocompleteAjaxComponent userAutocomplete = new UserAutocompleteAjaxComponent("userAutocomplete",
 					emptyUserModel);

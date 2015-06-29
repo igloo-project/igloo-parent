@@ -7,11 +7,8 @@ import org.springframework.stereotype.Service;
 
 import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
 import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
-import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
-import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
@@ -35,15 +32,6 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Autowired
 	private IAuditService auditService;
-
-	@Autowired
-	private BasicApplicationConfigurer configurer;
-
-	@Autowired
-	private INotificationService notificationService;
-
-	@Autowired
-	private ISecurityManagementService securityManagementService;
 
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {

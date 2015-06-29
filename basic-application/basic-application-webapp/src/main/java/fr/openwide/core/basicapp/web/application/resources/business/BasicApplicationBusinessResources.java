@@ -1,6 +1,6 @@
 package fr.openwide.core.basicapp.web.application.resources.business;
 
-public class BasicApplicationBusinessResources {
+public final class BasicApplicationBusinessResources {
 
 	private BasicApplicationBusinessResources() {
 	}

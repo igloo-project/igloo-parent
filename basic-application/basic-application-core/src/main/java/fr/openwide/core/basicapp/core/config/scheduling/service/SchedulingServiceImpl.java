@@ -6,19 +6,14 @@ import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.commons.util.FileUtils;
 
 @Service("schedulingService")
 public class SchedulingServiceImpl implements ISchedulingService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SchedulingServiceImpl.class);
-
-	@Autowired
-	private BasicApplicationConfigurer configurer;
 
 	@Override
 	public void temporaryFilesCleaning() {

@@ -29,7 +29,6 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -72,9 +71,6 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	@SpringBean
 	private IUserService userService;
-
-	@SpringBean
-	private INotificationService notificationService;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;

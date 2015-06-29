@@ -1,6 +1,6 @@
 package fr.openwide.core.basicapp.web.application.resources.common;
 
-public class BasicApplicationCommonResources {
+public final class BasicApplicationCommonResources {
 
 	private BasicApplicationCommonResources() {
 	}
