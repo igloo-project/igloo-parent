@@ -20,19 +20,19 @@ import fr.openwide.core.commons.util.mime.MediaType;
 public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>> {
 
 	private static final long serialVersionUID = 1507793945782623835L;
-	
-	private final String errorResourceKey;
 
 	private final List<MediaType> mediaTypes;
-	
+
+	private String errorResourceKey = null;
+
 	public FileUploadMediaTypeValidator(Collection<MediaType> mediaTypes) {
-		this(null, mediaTypes);
+		this.mediaTypes = ImmutableList.copyOf(Args.notNull(mediaTypes, "mediaTypes"));
 	}
 	
+	@Deprecated
 	public FileUploadMediaTypeValidator(String errorResourceKey, Collection<MediaType> mediaTypes) {
-		Args.notNull(mediaTypes, "mediaTypes");
+		this(mediaTypes);
 		this.errorResourceKey = errorResourceKey;
-		this.mediaTypes = ImmutableList.copyOf(mediaTypes);
 	}
 	
 	@Override
@@ -57,6 +57,11 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 				validatable.error(error);
 			}
 		}
+	}
+
+	public FileUploadMediaTypeValidator setErrorResourceKey(String errorResourceKey) {
+		this.errorResourceKey = errorResourceKey;
+		return this;
 	}
 
 }
