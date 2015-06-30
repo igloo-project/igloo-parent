@@ -31,7 +31,9 @@ public class FileUploadSizeValidator implements IValidator<List<FileUpload>> {
 	private static final long serialVersionUID = 3922765020138195477L;
 	
 	protected final Bytes maximum;
-
+	
+	private String errorResourceKey;
+	
 	public FileUploadSizeValidator(Bytes maximum) {
 		this.maximum = maximum;
 	}
@@ -52,13 +54,22 @@ public class FileUploadSizeValidator implements IValidator<List<FileUpload>> {
 		for (FileUpload fileUpload : validatable.getValue()) {
 			Bytes fileSize = Bytes.bytes(fileUpload.getSize());
 			if (fileSize.greaterThan(maximum)) {
-				ValidationError error = new ValidationError(this);
+				ValidationError error = new ValidationError();
+				if (errorResourceKey != null) {
+					error.addKey(errorResourceKey);
+				}
+				error.addKey(this);
 				error.setVariable("maximum", maximum);
 				error.setVariable("clientFileName", fileUpload.getClientFileName());
 				error.setVariable("size", fileSize);
 				validatable.error(error);
 			}
 		}
+	}
+
+	public FileUploadSizeValidator setErrorResourceKey(String errorResourceKey) {
+		this.errorResourceKey = errorResourceKey;
+		return this;
 	}
 
 }
