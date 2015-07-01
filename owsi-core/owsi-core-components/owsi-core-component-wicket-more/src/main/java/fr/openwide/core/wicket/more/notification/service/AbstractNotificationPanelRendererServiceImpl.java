@@ -81,7 +81,7 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 									};
 								}
 								
-								String result = new StringResourceModel(messageKey).setModel(modelParameter).setParameters(positionalParameters).getObject();
+								String result = new StringResourceModel(messageKey, null, modelParameter, (Object[]) positionalParameters).getObject();
 								return result;
 						}
 					},

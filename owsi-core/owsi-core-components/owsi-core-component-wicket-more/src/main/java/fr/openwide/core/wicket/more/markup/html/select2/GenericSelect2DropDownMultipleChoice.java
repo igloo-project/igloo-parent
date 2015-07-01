@@ -84,7 +84,6 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		return select2Behavior.getSettings();
 	}
 	
-	@Override
 	public IModel<? extends List<? extends T>> getChoicesModel() {
 		return choicesWrapperModel;
 	}

@@ -361,8 +361,8 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	 * @return 
 	 */
 	@Override
-	public Session setLocale(Locale locale) {
-		return super.setLocale(configurer.toAvailableLocale(locale));
+	public void setLocale(Locale locale) {
+		super.setLocale(configurer.toAvailableLocale(locale));
 	}
 	
 	public IModel<Locale> getLocaleModel() {

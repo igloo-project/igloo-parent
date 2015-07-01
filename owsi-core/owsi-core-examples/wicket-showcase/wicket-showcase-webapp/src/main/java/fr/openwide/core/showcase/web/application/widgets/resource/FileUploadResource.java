@@ -3,11 +3,11 @@ package fr.openwide.core.showcase.web.application.widgets.resource;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
+import org.apache.wicket.util.upload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -88,10 +88,4 @@ public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizatio
 		return true;
 	}
 
-	@Override
-	public boolean isResourceAuthorized(IResource resource, PageParameters parameters) {
-		// TODO 0.10 : implémenter un truc intelligent là-dessus
-		return true;
-	}
-
 }

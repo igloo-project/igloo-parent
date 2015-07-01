@@ -9,8 +9,8 @@ public class JavascriptEventConfirmationBehavior extends AttributeModifier {
 	private static final long serialVersionUID = 3850346788108610792L;
 
 	public JavascriptEventConfirmationBehavior(ResourceModel detailedMessage) {
-		super("onclick", new StringResourceModel("javascript.confirmation")
-				.setParameters(detailedMessage));
+		super("onclick", new StringResourceModel("javascript.confirmation", null,
+				(Object[]) new ResourceModel[] { detailedMessage }));
 	}
 
 }
