@@ -114,6 +114,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 			junction.must(query);
 		}
 	}
+	protected void mustNot(Query query) {
+		if (query != null) {
+			junction.must(query).not();
+		}
+	}
 	
 	protected void mustIfNotNull(BooleanJunction<?> junction, Query ... queries) {
 		for (Query query : queries) {

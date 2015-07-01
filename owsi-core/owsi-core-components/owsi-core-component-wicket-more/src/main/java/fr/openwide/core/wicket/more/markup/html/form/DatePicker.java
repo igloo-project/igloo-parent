@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -10,7 +11,11 @@ import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.validator.DateValidator;
 import org.odlabs.wiquery.ui.datepicker.DateOption;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.wicket.more.util.IDatePattern;
+import fr.openwide.core.wicket.more.util.convert.converters.CascadingConverter;
 import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter;
 
 public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date> {
@@ -24,6 +29,9 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 	private IConverter<Date> converter;
 
 	private IDatePattern datePattern;
+
+	private List<IDatePattern> datePatternsToTryBefore = Lists.newArrayList();
+	private List<IDatePattern> datePatternsToTryAfter = Lists.newArrayList();
 	
 	private boolean isAutocompleteActive;
 
@@ -38,6 +46,16 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		
 		// Options par défaut
 		setShowButtonPanel(true);
+	}
+	
+	public DatePicker addDatePatternToTryBefore(IDatePattern datePatternToTryBefore) {
+		datePatternsToTryBefore.add(datePatternToTryBefore);
+		return this;
+	}
+	
+	public DatePicker addDatePatternToTryAfter(IDatePattern datePatternToTryAfter) {
+		datePatternsToTryAfter.add(datePatternToTryAfter);
+		return this;
 	}
 	
 	public DatePicker setRange(Date minDate, Date maxDate) {
@@ -62,7 +80,7 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 	public <C> IConverter<C> getConverter(Class<C> type) {
 		if (Date.class.isAssignableFrom(type)) {
 			if (converter == null) {
-				converter = new PatternDateConverter(datePattern, getString(datePattern.getJavaPatternKey()));
+				converter = createConverter();
 			}
 			return (IConverter<C>) converter;
 		} else {
@@ -70,6 +88,23 @@ public class DatePicker extends org.odlabs.wiquery.ui.datepicker.DatePicker<Date
 		}
 	}
 	
+	private IConverter<Date> createConverter() {
+		IConverter<Date> mainConverter = new PatternDateConverter(datePattern, getString(datePattern.getJavaPatternKey()));
+		if (datePatternsToTryAfter.isEmpty() && datePatternsToTryBefore.isEmpty()) {
+			return mainConverter;
+		} else {
+			ImmutableList.Builder<IConverter<Date>> preemptiveConverters = ImmutableList.builder();
+			for (IDatePattern datePatternToTryBefore : datePatternsToTryBefore) {
+				preemptiveConverters.add(new PatternDateConverter(datePatternToTryBefore, getString(datePatternToTryBefore.getJavaPatternKey())));
+			}
+			ImmutableList.Builder<IConverter<Date>> alternativeConverters = ImmutableList.builder();
+			for (IDatePattern datePatternToTryAfter : datePatternsToTryAfter) {
+				alternativeConverters.add(new PatternDateConverter(datePatternToTryAfter, getString(datePatternToTryAfter.getJavaPatternKey())));
+			}
+			return new CascadingConverter<>(mainConverter, preemptiveConverters.build(), alternativeConverters.build());
+		}
+	}
+
 	@Override
 	protected void detachModel() {
 		super.detachModel();
