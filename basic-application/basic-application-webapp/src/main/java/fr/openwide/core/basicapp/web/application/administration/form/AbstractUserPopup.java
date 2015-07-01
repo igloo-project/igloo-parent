@@ -23,12 +23,12 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -63,14 +63,17 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 			new UsernamePatternValidator() {
 				private static final long serialVersionUID = 1L;
 				@Override
-				protected IValidationError decorate(IValidationError error, IValidatable<String> validatable) {
-					((ValidationError) error).setKeys(Collections.singletonList("common.validator.username.pattern"));
+				protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
+					error.setKeys(Collections.singletonList("common.validator.username.pattern"));
 					return error;
 				}
 			};
 
 	@SpringBean
 	private IUserService userService;
+
+	@SpringBean
+	private INotificationService notificationService;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
@@ -110,7 +113,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 		if (isAddMode()) {
 			return new Label(wicketId, new ResourceModel("administration.user.add.title"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.user.update.title").setModel(getModel()));
+			return new Label(wicketId, new StringResourceModel("administration.user.update.title", getModel()));
 		}
 	}
 

@@ -23,8 +23,11 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		super(id, userModel);
 		
 		// Intro
-		StringResourceModel introModel = new StringResourceModel("notification.panel.example.intro")
-				.setParameters(BindingModel.of(userModel, Bindings.user().fullName()), dateModel);
+		StringResourceModel introModel = new StringResourceModel("notification.panel.example.intro", null,
+				new Object[] {
+					BindingModel.of(userModel, Bindings.user().fullName()),
+					dateModel
+		});
 		add(new Label("intro", introModel));
 		
 		// Main link

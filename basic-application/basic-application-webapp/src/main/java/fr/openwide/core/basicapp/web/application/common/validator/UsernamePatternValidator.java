@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.regex.Pattern;
 
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -23,10 +22,10 @@ public class UsernamePatternValidator extends PatternValidator {
 	}
 
 	@Override
-	protected IValidationError decorate(IValidationError error, IValidatable<String> validatable) {
+	protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
 		super.decorate(error, validatable);
 		
-		((ValidationError) error).setKeys(Collections.singletonList("common.validator.username.pattern"));
+		error.setKeys(Collections.singletonList("common.validator.username.pattern"));
 		return error;
 	}
 	

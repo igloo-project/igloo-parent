@@ -78,7 +78,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public Component create(String wicketId, final Component table ) {
-								return new UserGroupAddFragment(wicketId)
+								return new UserGroupAddFragment(wicketId, dataProvider, table)
 									.add(new ClassAttributeAppender("add-in-quick-add"));
 							}
 						})
@@ -109,8 +109,13 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 			
 			this.userGroupModel = groupModel;
 					
-			IModel<String> confirmationTextModel = new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
-					.setParameters(UserMembershipsPanel.this.getModelObject().getFullName(), userGroupModel.getObject().getName());
+			IModel<String> confirmationTextModel = new StringResourceModel(
+					"administration.usergroup.members.delete.confirmation.text",
+					null, new Object[] {
+							UserMembershipsPanel.this.getModelObject().getFullName(),
+							userGroupModel.getObject().getName()
+					}
+			);
 			
 			add(
 					AjaxConfirmLink.build("deleteLink", userGroupModel)
@@ -154,10 +159,10 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		
 		private static final long serialVersionUID = 1L;
 		
-		public UserGroupAddFragment(String id) {
+		public UserGroupAddFragment(String id, UserGroupDataProvider dataProvider, final Component table) {
 			super(id, "addGroup", UserMembershipsPanel.this);
 			// Add group form
-			IModel<UserGroup> emptyUserGroupModel = new GenericEntityModel<Long, UserGroup>();
+			IModel<UserGroup> emptyUserGroupModel = new GenericEntityModel<Long, UserGroup>(null);
 			
 			final UserGroupAutocompleteAjaxComponent userGroupAutocomplete = new UserGroupAutocompleteAjaxComponent(
 					"userGroupAutocomplete", emptyUserGroupModel);
