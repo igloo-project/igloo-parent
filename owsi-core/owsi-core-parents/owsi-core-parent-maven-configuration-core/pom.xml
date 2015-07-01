@@ -28,7 +28,7 @@
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>4.1.6.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>4.1.7.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.8.6</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>4.3.10.Final</owsi-core.hibernate-core.version>
@@ -40,7 +40,7 @@
 		<owsi-core.hikaricp.version>2.3.8</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.0</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>3.6.3</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>3.6.5</owsi-core.querydsl.version>
 		
 		
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
