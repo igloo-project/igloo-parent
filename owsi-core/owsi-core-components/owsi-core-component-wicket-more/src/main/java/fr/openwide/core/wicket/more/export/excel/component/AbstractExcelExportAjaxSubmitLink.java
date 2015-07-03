@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -48,7 +50,16 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	}
 	
 	protected MediaType getMediaType(Workbook workbook) {
-		return workbook instanceof XSSFWorkbook ? MediaType.APPLICATION_OPENXML_EXCEL : MediaType.APPLICATION_MS_EXCEL;
+		if (workbook instanceof HSSFWorkbook) {
+			return MediaType.APPLICATION_MS_EXCEL;
+		} else if (workbook instanceof XSSFWorkbook) {
+			return MediaType.APPLICATION_OPENXML_EXCEL;
+		} else if (workbook instanceof SXSSFWorkbook) {
+			return MediaType.APPLICATION_OPENXML_EXCEL;
+		} else {
+			// Default
+			return MediaType.APPLICATION_MS_EXCEL;
+		}
 	}
 	
 	@Override
