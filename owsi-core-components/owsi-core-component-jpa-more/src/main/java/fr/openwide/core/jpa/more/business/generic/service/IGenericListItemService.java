@@ -24,6 +24,10 @@ import javax.persistence.NonUniqueResultException;
 
 import org.hibernate.search.annotations.Indexed;
 
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.StringExpression;
+
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
@@ -57,7 +61,7 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 	<E extends GenericListItem<?>> E getByLabel(Class<E> clazz, String label) throws NonUniqueResultException;
 	
 	/**
-	 * WARNING: only use this if unique constraints were set on the label column of {@code source}.
+	 * WARNING: only use this if unique constraints were set on the short label column of {@code source}.
 	 */
 	<E extends GenericListItem<?>> E getByShortLabel(Class<E> clazz, String shortLabel) throws NonUniqueResultException;
 
@@ -70,6 +74,16 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 	 * WARNING: only use this if unique constraints were set on {@code lower(shortLabel)} in the {@code source} table.
 	 */
 	<E extends GenericListItem<?>> E getByShortLabelIgnoreCase(Class<E> clazz, String shortLabel) throws NonUniqueResultException;
+
+	/**
+	 * WARNING: only use this if unique constraints were set on the field of {@code source}.
+	 */
+	<E extends GenericListItem<?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) throws NonUniqueResultException;
+
+	/**
+	 * WARNING: only use this if unique constraints were set on {@code lower(field)} in the {@code source} table.
+	 */
+	<E extends GenericListItem<?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue) throws NonUniqueResultException;
 
 	/**
 	 * WARNING: only works on classes that were annotated with {@link Indexed}.
