@@ -149,7 +149,7 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 			
 			// Copied from AjaxFormChoiceComponentUpdatingBehavior
 			attributes.getDynamicExtraParameters().add(
-					String.format("return OWSI.FormComponentChangeAjaxEventBehavior.Choice.getInputValues('%s', attrs)", getFormComponent().getInputName())
+					String.format("return OWSI.FormComponentChangeAjaxEventBehavior.Choice.getInputValues('%s', attrs);", getFormComponent().getInputName())
 			);
 		}
 	}
