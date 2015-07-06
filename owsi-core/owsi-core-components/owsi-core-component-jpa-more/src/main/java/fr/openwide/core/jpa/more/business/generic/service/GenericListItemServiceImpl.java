@@ -27,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.PathBuilder;
 
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -134,6 +137,18 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 		PathBuilder<E> qEntity = new PathBuilder<E>(clazz, "rootAlias");
 		QGenericListItem qEntityAsGenericListItem = new QGenericListItem(qEntity);
 		return genericListItemDao.getByFieldIgnoreCase(qEntity, qEntityAsGenericListItem.shortLabel, shortLabel);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath,
+			SimpleExpression<V> field, V fieldValue) throws NonUniqueResultException {
+		return genericListItemDao.getByField(entityPath, field, fieldValue);
+	}
+	
+	@Override
+	public <E extends GenericListItem<?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field,
+			String fieldValue) throws NonUniqueResultException {
+		return genericListItemDao.getByFieldIgnoreCase(entityPath, field, fieldValue);
 	}
 	
 	@Override
