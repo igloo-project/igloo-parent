@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -30,35 +28,29 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
-import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
 import fr.openwide.core.spring.util.StringUtils;
 
-public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> implements ISearchQuery<T, S> /* NOT Serializable */ {
+public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractHibernateSearchSearchQuery.class);
 	
 	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION = new BindingToPathFunction();
 	
-	@PersistenceContext
-	private EntityManager entityManager;
-	
 	private final Class<? extends T> mainClass;
 	private final Class<? extends T>[] classes;
 	
 	private BooleanJunction<?> junction;
-	private FullTextQuery query;
+	private FullTextQuery fullTextQuery;
 	private QueryBuilder defaultQueryBuilder;
 	private FullTextEntityManager fullTextEntityManager;
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
-	private List<S> defaultSorts;
 	
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
@@ -68,9 +60,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@SafeVarargs
 	protected AbstractHibernateSearchSearchQuery(Class<? extends T>[] classes, S ... defaultSorts) {
+		super(defaultSorts);
 		this.mainClass = classes[0];
 		this.classes = Arrays.copyOf(classes, classes.length);
-		this.defaultSorts = ImmutableList.copyOf(defaultSorts);
 	}
 	
 	@PostConstruct
@@ -100,11 +92,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	protected QueryBuilder getDefaultQueryBuilder() {
 		return defaultQueryBuilder;
 	}
-
-	@Override
-	public ISearchQuery<T, S> sort(Map<S, SortOrder> sortMap) {
-		getFullTextQuery().setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
-		return this;
+	
+	protected FullTextEntityManager getFullTextEntityManager() {
+		return fullTextEntityManager;
 	}
 
 	// Junction appender
@@ -144,26 +134,43 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	// List and count
-	@Override
-	@Transactional(readOnly = true)
-	public List<T> fullList() {
-		return list(0L, Integer.MAX_VALUE);
+	/**
+	 * Allow to add filter before generating the full text query.<br />
+	 * Sample:
+	 * <ul>
+	 * 	<li><code>must(matchIfGiven(Bindings.company().manager().organization(), organization))</code></li>
+	 * 	<li><code>must(matchIfGiven(Bindings.company().status(), CompanyStatus.ACTIVE))</code></li>
+	 * </ul>
+	 */
+	protected void addFilterBeforeCreateQuery() {
+		// Nothing
+	}
+	
+	private FullTextQuery getFullTextQuery() {
+		if (fullTextQuery == null) {
+			addFilterBeforeCreateQuery();
+			fullTextQuery = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
+		}
+		return fullTextQuery;
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<T> list(long offset, long limit) {
+		FullTextQuery fullTextQuery = getFullTextQuery();
 		
 		if (Long.valueOf(offset) != null) {
-			getFullTextQuery().setFirstResult((int) offset);
+			fullTextQuery.setFirstResult((int) offset);
 		}
 		
 		if (Long.valueOf(limit) != null) {
-			getFullTextQuery().setMaxResults((int) limit);
+			fullTextQuery.setMaxResults((int) limit);
 		}
 		
-		return getFullTextQuery().getResultList();
+		fullTextQuery.setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
+		
+		return fullTextQuery.getResultList();
 	}
 	
 	@Override
@@ -478,20 +485,5 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 			}
 			return input.getPath();
 		}
-	}
-	
-	/**
-	 * Allow to add filter before generating the full text query.
-	 */
-	protected void addFilterBeforeCreateQuery() {
-		// Nothing
-	}
-	
-	protected FullTextQuery getFullTextQuery() {
-		if (query == null) {
-			addFilterBeforeCreateQuery();
-			query = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
-		}
-		return query;
 	}
 }
