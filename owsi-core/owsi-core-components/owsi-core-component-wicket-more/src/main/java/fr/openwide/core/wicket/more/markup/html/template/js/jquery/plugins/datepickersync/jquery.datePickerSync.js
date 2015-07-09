@@ -23,6 +23,57 @@
 				datePickerCourant.datepicker('option', 'minDate', thisElement._getMinDate());
 				datePickerCourant.datepicker('option', 'maxDate', thisElement._getMaxDate());
 			});
+			var actionOnUpdate = this.options.actionOnUpdate;
+			if (actionOnUpdate && "NOTHING" != actionOnUpdate) {
+				if (this.options.precedents) {
+					$.each(this.options.precedents, function(index, value) {
+						// on vérifie que le precedent est un élément de la page
+						if (value && $(value)) {
+							$(value).on('change', function(event) {
+								// si la date n'est pas paramétrée, on ne touche à rien
+								var currentDate = datePickerCourant.datepicker("getDate");
+								var $this = $(this);
+								if ($this.datepicker) {
+									var precedentDate = $this.datepicker("getDate");
+									if (precedentDate && currentDate && precedentDate > currentDate) {
+										if ("UPDATE" == actionOnUpdate) {
+											// on remplace la date
+											datePickerCourant.val($this.val());
+										} else {
+											// on vide
+											datePickerCourant.val("");
+										}
+									}
+								}
+							});
+						}
+					});
+				}
+				if (this.options.suivants) {
+					$.each(this.options.suivants, function(index, value) {
+						// on vérifie que le suivant est un élément de la page
+						if (value && $(value)) {
+							$(value).on('change', function(event) {
+								// si la date n'est pas paramétrée, on ne touche à rien
+								var currentDate = datePickerCourant.datepicker("getDate");
+								var $this = $(this);
+								if ($this.datepicker) {
+									var suivantDate = $this.datepicker("getDate");
+									if (suivantDate && currentDate && suivantDate < currentDate) {
+										if ("UPDATE" == actionOnUpdate) {
+											// on remplace la date
+											datePickerCourant.val($this.val());
+										} else {
+											// on vide
+											datePickerCourant.val("");
+										}
+									}
+								}
+							});
+						}
+					});
+				}
+			}
 		},
 		
 		_getMinDate: function() {

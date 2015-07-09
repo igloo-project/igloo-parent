@@ -38,11 +38,23 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	private final List<DatePicker> suivants = Lists.newArrayList();
 	private final List<IModel<? extends Date>> suivantsModels = Lists.newArrayList();
 
+	private final DatePickerSyncActionOnUpdate actionOnUpdate;
+
 	public DatePickerSync() {
 		this.courant = null;
+		this.actionOnUpdate = DatePickerSyncActionOnUpdate.NOTHING;
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #DatePickerSync(DatePicker, DatePicker, DatePickerSyncActionOnUpdate)} instead with
+	 * {@link DatePickerSyncActionOnUpdate#NOTHING}
+	 * @param courant
+	 */
 	public DatePickerSync(DatePicker precedent, DatePicker suivant) {
+		this(precedent, suivant, DatePickerSyncActionOnUpdate.NOTHING);
+	}
+
+	public DatePickerSync(DatePicker precedent, DatePicker suivant, DatePickerSyncActionOnUpdate actionOnUpdate) {
 		this.courant = null;
 		if (precedent != null) {
 			addPrecedents(precedent);
@@ -50,6 +62,7 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		if (suivant != null) {
 			addSuivants(suivant);
 		}
+		this.actionOnUpdate = actionOnUpdate;
 	}
 	
 	/**
@@ -58,11 +71,12 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	 */
 	@Deprecated
 	public DatePickerSync(DatePicker courant) {
-		this(courant, null, null);
+		this(courant, (DatePicker) null, (DatePicker) null);
 	}
 
 	/**
-	 * @deprecated Use {@link #DatePickerSync(DatePicker, DatePicker)} instead.
+	 * @deprecated Use {@link #DatePickerSync(DatePicker, DatePicker, DatePickerSyncActionOnUpdateS)} instead with
+	 * {@link DatePickerSyncActionOnUpdate#NOTHING}
 	 * @param courant
 	 */
 	public DatePickerSync(DatePicker courant, DatePicker precedent, DatePicker suivant) {
@@ -77,6 +91,7 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		if (suivant != null) {
 			addSuivants(suivant);
 		}
+		this.actionOnUpdate = DatePickerSyncActionOnUpdate.NOTHING;
 	}
 	
 	@Override
@@ -104,6 +119,12 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		Collection<Date> suivantsModelsDates = getDates(suivantsModels);
 		if (!suivantsModelsDates.isEmpty()) {
 			options.put("suivantsModelsMinDate", new DateOption(Ordering.<Date>natural().min(suivantsModelsDates)));
+		}
+		
+		if (actionOnUpdate != null) {
+			options.putLiteral("actionOnUpdate", actionOnUpdate.name());
+		} else {
+			options.putLiteral("actionOnUpdate", DatePickerSyncActionOnUpdate.NOTHING.name());
 		}
 		
 		return new CharSequence[] { options.getJavaScriptOptions() };
