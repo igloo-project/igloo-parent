@@ -6,9 +6,21 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTabl
 public interface IBuildState<T, S extends ISort<?>> {
 	
 	IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
+
+	IBuildState<T, S> hideHeadersToolbar();
 	
+	/**
+	 * @deprecated Use {@link #hideHeadersToolbar()} instead.
+	 */
+	@Deprecated
 	IBuildState<T, S> hideTopToolbar();
 	
+	IBuildState<T, S> hideNoRecordsToolbar();
+
+	/**
+	 * @deprecated Use {@link #hideNoRecordsToolbar()} instead.
+	 */
+	@Deprecated
 	IBuildState<T, S> hideBottomToolbar();
 	
 	CoreDataTable<T, S> build(String id);
