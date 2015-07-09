@@ -11,6 +11,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.CoreLin
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.CoreThreeParameterLinkDescriptorMapperImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.mapper.mapping.CoreParameterMapperMappingStateImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IFourParameterMapperState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IThreeParameterMapperState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IThreeParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IThreeParameterMapperThreeChosenParameterMappingState;
@@ -99,6 +100,13 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 	@Override
 	public ThreeParameterMapperMappingStateImpl pickThird() {
 		return new ThreeParameterMapperMappingStateImpl(2);
+	}
+
+	@Override
+	public <T4> IFourParameterMapperState<L, T1, T2, T3, T4> model(Class<? super T4> clazz) {
+		return new CoreFourParameterLinkDescriptorMapperBuilderStateImpl<L, T1, T2, T3, T4>(
+				linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, clazz
+		);
 	}
 
 }
