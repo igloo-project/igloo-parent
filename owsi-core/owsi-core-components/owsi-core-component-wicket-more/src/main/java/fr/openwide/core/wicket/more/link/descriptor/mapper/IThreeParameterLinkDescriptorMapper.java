@@ -2,6 +2,9 @@ package fr.openwide.core.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.javatuples.Pair;
+
+import com.google.common.base.Function;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IOneParameterMapperState;
@@ -20,13 +23,19 @@ public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> extends IDet
 
 	ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(final IModel<T1> model1);
 
+	ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(Function<Pair<T2, T3>, T1> function);
+
 	ITwoParameterLinkDescriptorMapper<L, T2, T3> ignoreParameter1();
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(final IModel<T2> model2);
 
+	ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(Function<Pair<T1, T3>, T2> function);
+
 	ITwoParameterLinkDescriptorMapper<L, T1, T3> ignoreParameter2();
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(final IModel<T3> model3);
+
+	ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(Function<Pair<T1, T2>, T3> function);
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T2> ignoreParameter3();
 

@@ -3,6 +3,8 @@ package fr.openwide.core.wicket.more.link.descriptor.mapper;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 
+import com.google.common.base.Function;
+
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IOneParameterMapperState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
@@ -18,9 +20,13 @@ public interface ITwoParameterLinkDescriptorMapper<L, T1, T2> extends IDetachabl
 
 	IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final IModel<T1> model1);
 
+	IOneParameterLinkDescriptorMapper<L, T2> setParameter1(Function<T2, T1> function);
+
 	IOneParameterLinkDescriptorMapper<L, T2> ignoreParameter1();
 
 	IOneParameterLinkDescriptorMapper<L, T1> setParameter2(final IModel<T2> model2);
+
+	IOneParameterLinkDescriptorMapper<L, T1> setParameter2(Function<T1, T2> function);
 
 	IOneParameterLinkDescriptorMapper<L, T1> ignoreParameter2();
 
