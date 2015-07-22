@@ -26,6 +26,7 @@ import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.IDataTableFactory;
 import fr.openwide.core.wicket.more.model.IErrorAwareDataProvider;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
@@ -47,14 +48,18 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		FOOTER_RIGHT
 	}
 	
-	public DecoratedCoreDataTablePanel(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
+	public DecoratedCoreDataTablePanel(
+			String id,
+			IDataTableFactory<T, S> factory,
+			Map<IColumn<T, S>, Condition> columns,
+			IDataProvider<T> dataProvider,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
 		super(id);
 		
 		this.dataProvider = dataProvider;
 		
-		dataTable = newDataTable("dataTable", columns, dataProvider, rowsPerPage);
+		dataTable = newDataTable("dataTable", factory, columns, dataProvider, rowsPerPage);
 		add(dataTable);
 		
 		RepeatingView headingMainAddins = new RepeatingView("mainAddIn");
@@ -91,8 +96,9 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		ComponentFactories.addAll(footerLeftAddins, addInComponentFactories.get(AddInPlacement.FOOTER_LEFT), this);
 	}
 	
-	protected CoreDataTable<T, S> newDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
-		return new CoreDataTable<T, S>(id, columns, dataProvider, rowsPerPage);
+	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
+			Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
+		return factory.build(id, columns, dataProvider, rowsPerPage);
 	}
 	
 	public CoreDataTable<T, S> getDataTable() {

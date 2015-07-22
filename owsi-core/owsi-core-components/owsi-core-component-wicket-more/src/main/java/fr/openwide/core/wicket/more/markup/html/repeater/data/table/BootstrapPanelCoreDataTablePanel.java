@@ -10,6 +10,7 @@ import com.google.common.collect.Multimap;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.IDataTableFactory;
 
 public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends DecoratedCoreDataTablePanel<T, S> {
 
@@ -17,11 +18,12 @@ public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends Dec
 
 	public BootstrapPanelCoreDataTablePanel(
 			String id,
+			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,
 			IDataProvider<T> dataProvider,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
-		super(id, columns, dataProvider, rowsPerPage, addInComponentFactories);
+		super(id, factory, columns, dataProvider, rowsPerPage, addInComponentFactories);
 	}
 	
 }
