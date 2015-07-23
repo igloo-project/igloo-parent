@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.sta
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTable;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.IDataTableFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 
 public interface IBuildState<T, S extends ISort<?>> {
 	
