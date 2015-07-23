@@ -12,6 +12,6 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTabl
 
 public interface IDataTableFactory<T, S extends ISort<?>> extends IClusterable {
 
-	public CoreDataTable<T, S> build(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage);
+	CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage);
 
 }

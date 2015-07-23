@@ -83,7 +83,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	private IDataTableFactory<T, S> factory = new IDataTableFactory<T, S>() {
 		private static final long serialVersionUID = 1L;
 		@Override
-		public CoreDataTable<T, S> build(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
+		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
 			return new CoreDataTable<T, S>(id, columns, dataProvider, rowsPerPage);
 		}
 	};
@@ -320,7 +320,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	@Override
 	public CoreDataTable<T, S> build(String id, long rowsPerPage) {
-		CoreDataTable<T, S> dataTable = factory.build(id, columns, dataProvider, rowsPerPage);
+		CoreDataTable<T, S> dataTable = factory.create(id, columns, dataProvider, rowsPerPage);
 		finalizeBuild(dataTable);
 		return dataTable;
 	}
