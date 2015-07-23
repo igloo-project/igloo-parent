@@ -98,7 +98,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	
 	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
-		return factory.build(id, columns, dataProvider, rowsPerPage);
+		return factory.create(id, columns, dataProvider, rowsPerPage);
 	}
 	
 	public CoreDataTable<T, S> getDataTable() {
