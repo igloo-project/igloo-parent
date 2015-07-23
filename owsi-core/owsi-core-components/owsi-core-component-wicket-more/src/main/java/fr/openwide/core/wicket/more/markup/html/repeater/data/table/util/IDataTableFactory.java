@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder;
+package fr.openwide.core.wicket.more.markup.html.repeater.data.table.util;
 
 import java.util.Map;
 

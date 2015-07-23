@@ -26,7 +26,7 @@ import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.IDataTableFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 import fr.openwide.core.wicket.more.model.IErrorAwareDataProvider;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 

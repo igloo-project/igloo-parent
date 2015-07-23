@@ -10,7 +10,7 @@ import com.google.common.collect.Multimap;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.IDataTableFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 
 public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends DecoratedCoreDataTablePanel<T, S> {
 

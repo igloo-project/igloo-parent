@@ -55,6 +55,7 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.stat
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IBuildState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IDecoratedBuildState;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 import fr.openwide.core.wicket.more.markup.html.sort.ISortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.SortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink.CycleMode;
