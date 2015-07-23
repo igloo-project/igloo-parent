@@ -80,6 +80,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	private boolean showBottomToolbar = true;
 
 	private IDataTableFactory<T, S> factory = new IDataTableFactory<T, S>() {
+		private static final long serialVersionUID = 1L;
 		@Override
 		public CoreDataTable<T, S> build(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
 			return new CoreDataTable<T, S>(id, columns, dataProvider, rowsPerPage);
