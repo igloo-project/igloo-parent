@@ -223,9 +223,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.onField(fieldPath)
 					.matching(value)
 					.createQuery();
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	protected Query matchIfGiven(AbstractBinding<?, String> binding, String terms) {
@@ -263,9 +263,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.onField(fieldPath)
 					.matching(terms)
 					.createQuery();
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	// 	>	Match all terms if given
@@ -289,10 +289,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 				return parser.parse(QueryParser.escape(terms));
 			} catch (ParseException e) {
 				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
+				return null;
 			}
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -320,10 +321,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 				return parser.parse(QueryParser.escape(terms));
 			} catch (ParseException e) {
 				LOGGER.error("Erreur lors du parsing d'une chaîne échapée (a priori impossible ?)", e);
+				return null;
 			}
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	// 	>	Be included if given
@@ -345,9 +347,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.onField(fieldPath)
 					.matching(value)
 					.createQuery();
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	// 	>	Match one if given
@@ -373,9 +375,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 						.createQuery());
 			}
 			return subJunction.createQuery();
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	// 	>	Match all if given
@@ -393,9 +395,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 						.createQuery());
 			}
 			return subJunction.createQuery();
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	// 	>	Match if true
@@ -410,8 +412,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.onField(binding.getPath())
 					.matching(value)
 					.createQuery();
+		} else {
+			return null;
 		}
-		return null;
 	}
 	
 	// 	>	Match range (min, max, both)
@@ -429,8 +432,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.onField(fieldPath)
 					.above(min)
 					.createQuery();
+		} else {
+			return null;
 		}
-		return null;
 	}
 	
 	protected <P> Query matchRangeMax(AbstractBinding<?, P> binding, P max) {
@@ -447,8 +451,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.onField(fieldPath)
 					.below(max)
 					.createQuery();
+		} else {
+			return null;
 		}
-		return null;
 	}
 	
 	protected <P> Query matchRange(AbstractBinding<?, P> binding, P min, P max) {
@@ -470,11 +475,12 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.from(min).to(max)
 					.createQuery();
 		} else if (min != null) {
-			matchRangeMin(builder, fieldPath, min);
+			return matchRangeMin(builder, fieldPath, min);
 		} else if (max != null) {
-			matchRangeMax(builder, fieldPath, max);
+			return matchRangeMax(builder, fieldPath, max);
+		} else {
+			return null;
 		}
-		return null;
 	}
 	
 	private static class BindingToPathFunction implements Function<AbstractBinding<?, String>, String> {
