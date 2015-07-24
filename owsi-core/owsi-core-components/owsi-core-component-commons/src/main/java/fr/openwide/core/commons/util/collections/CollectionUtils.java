@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Equivalence;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -63,6 +64,8 @@ public final class CollectionUtils {
 				}
 				result.add(sourceElement);
 			}
+		} else if (source != null && filter == null) {
+			Iterables.addAll(result, source);
 		}
 		return result;
 	}
