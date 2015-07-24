@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -12,6 +13,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
@@ -55,6 +57,7 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.stat
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IBuildState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IDecoratedBuildState;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.builder.CustomizableToolbarBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 import fr.openwide.core.wicket.more.markup.html.sort.ISortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.SortIconStyle;
@@ -75,6 +78,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	private final Map<IColumn<T, S>, Condition> columns = Maps.newLinkedHashMap();
 
 	private String noRecordsResourceKey;
+
+	private final List<CustomizableToolbarBuilder<T, S>> topToolbarBuilders = Lists.newArrayList();
+
+	private final List<CustomizableToolbarBuilder<T, S>> bottomToolbarBuilders = Lists.newArrayList();
 
 	private boolean showTopToolbar = true;
 	
@@ -278,10 +285,25 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public CustomizableToolbarBuilder<T, S> addTopToolbar() {
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		topToolbarBuilders.add(builder);
+		return builder;
+	}
+	
+	@Override
+	public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		bottomToolbarBuilders.add(builder);
+		return builder;
+	}
+	
+	@Override
 	public DataTableBuilder<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 		this.noRecordsResourceKey = noRecordsResourceKey;
 		return this;
 	}
+	
 	
 	@Override
 	public DataTableBuilder<T, S> hideHeadersToolbar() {
@@ -327,10 +349,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	protected void finalizeBuild(CoreDataTable<T, S> dataTable) {
 		if (showTopToolbar) {
+			for (CustomizableToolbarBuilder<T, S> builder : topToolbarBuilders) {
+				dataTable.addTopToolbar(builder.build(dataTable));
+			}
 			dataTable.addTopToolbar(new CoreHeadersToolbar<S>(dataTable, sortModel));
 		}
 		if (showBottomToolbar) {
 			dataTable.addBodyBottomToolbar(new CoreNoRecordsToolbar(dataTable, new ResourceModel(noRecordsResourceKey != null ? noRecordsResourceKey : "common.emptyList")));
+			for (CustomizableToolbarBuilder<T, S> builder : bottomToolbarBuilders) {
+				dataTable.addBottomToolbar(builder.build(dataTable));
+			}
 		}
 	}
 	
@@ -410,6 +438,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		public <C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 				final AbstractCoreBinding<? super T, Boolean> binding) {
 			return DataTableBuilder.this.addBooleanLabelColumn(headerModel, binding);
+		}
+
+		@Override
+		public CustomizableToolbarBuilder<T, S> addTopToolbar() {
+			return DataTableBuilder.this.addTopToolbar();
+		}
+
+		@Override
+		public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
+			return DataTableBuilder.this.addBottomToolbar();
 		}
 
 		@Override
