@@ -14,4 +14,6 @@ public interface IToolbarElementState<T, S extends ISort<?>> extends IToolbarBui
 
 	IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory);
 
+	IToolbarElementState<T, S> hideIfEmpty();
+
 }

@@ -12,7 +12,7 @@ public interface IAddedToolbarLabelElementState<T, S extends ISort<?>> extends I
 	IAddedToolbarLabelElementState<T, S> withClass(String cssClass);
 
 	@Override
-	IAddedToolbarLabelElementState<T, S> colspan(long colspan);
+	IAddedToolbarLabelElementState<T, S> colspan(Integer colspan);
 
 	@Override
 	IAddedToolbarLabelElementState<T, S> full();

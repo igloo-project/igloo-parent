@@ -84,4 +84,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 		return rowItem;
 	}
 
+	public Map<IColumn<T, S>, Condition> getColumnsConditions() {
+		return columns;
+	}
+
 }

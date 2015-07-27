@@ -9,7 +9,7 @@ public interface IAddedToolbarElementState<T, S extends ISort<?>> extends IToolb
 
 	IAddedToolbarElementState<T, S> withClass(String cssClass);
 
-	IAddedToolbarElementState<T, S> colspan(long colspan);
+	IAddedToolbarElementState<T, S> colspan(Integer colspan);
 
 	IAddedToolbarElementState<T, S> full();
 
