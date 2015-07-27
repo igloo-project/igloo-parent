@@ -5,10 +5,12 @@ import fr.openwide.core.wicket.more.condition.Condition;
 
 public interface IAddedToolbarElementState<T, S extends ISort<?>> extends IToolbarElementState<T, S> {
 
+	IAddedToolbarElementState<T, S> when(Condition condition);
+
+	IAddedToolbarElementState<T, S> withClass(String cssClass);
+
 	IAddedToolbarElementState<T, S> colspan(long colspan);
 
 	IAddedToolbarElementState<T, S> full();
-
-	IAddedToolbarElementState<T, S> when(Condition condition);
 
 }
