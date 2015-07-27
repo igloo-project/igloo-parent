@@ -9,6 +9,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
@@ -30,7 +31,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.model.IBindableDataProvider;
 import fr.openwide.core.wicket.more.util.Detach;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
@@ -413,11 +413,11 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		return predicate(model, Predicates2.isFalseOrNull());
 	}
 	
-	public static Condition isEmpty(IBindableDataProvider dataProvider) {
+	public static Condition isEmpty(IDataProvider<?> dataProvider) {
 		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L));
 	}
 	
-	public static Condition isNotEmpty(IBindableDataProvider dataProvider) {
+	public static Condition isNotEmpty(IDataProvider<?> dataProvider) {
 		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L)).negate();
 	}
 	
