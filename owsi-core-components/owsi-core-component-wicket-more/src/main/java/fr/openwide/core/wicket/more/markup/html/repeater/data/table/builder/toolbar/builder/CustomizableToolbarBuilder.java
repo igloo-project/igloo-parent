@@ -4,12 +4,16 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTable;
@@ -28,6 +32,8 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	private final List<CustomizableToolbarElementFactory<T, S>> factories = Lists.newArrayList();
 
+	private boolean hideIfEmpty = false;
+
 	public CustomizableToolbarBuilder(DataTableBuilder<T, S> dataTableBuilder) {
 		super();
 		this.dataTableBuilder = dataTableBuilder;
@@ -41,6 +47,10 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		@Override
 		public IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory) {
 			return CustomizableToolbarBuilder.this.addComponent(delegateFactory);
+		}
+		@Override
+		public IToolbarElementState<T, S> hideIfEmpty() {
+			return CustomizableToolbarBuilder.this.hideIfEmpty();
 		}
 		@Override
 		public DataTableBuilder<T, S> end() {
@@ -67,7 +77,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		}
 		
 		@Override
-		public NextState colspan(long colspan) {
+		public NextState colspan(Integer colspan) {
 			getFactory().colspan(colspan);
 			return getNextState();
 		}
@@ -122,6 +132,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	@Override
 	public IAddedToolbarLabelElementState<T, S> addLabel(final IModel<String> model) {
 		CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(
+				getPreviousColspan(factories.size()),
 				new CustomizableToolbarLabelElementDelegateFactory<T, S>(model)
 		);
 		factories.add(factory);
@@ -152,9 +163,15 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	@Override
 	public IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory) {
-		final CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(delegateFactory);
+		CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(getPreviousColspan(factories.size()), delegateFactory);
 		factories.add(factory);
 		return new AddedToolbarLabelCoreElementState(factory);
+	}
+
+	@Override
+	public IToolbarElementState<T, S> hideIfEmpty() {
+		this.hideIfEmpty = true;
+		return this;
 	}
 
 	@Override
@@ -163,7 +180,28 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	}
 
 	public CoreCustomizableToolbar<T, S> build(CoreDataTable<T, S> dataTable) {
-		return new CoreCustomizableToolbar<T, S>(dataTable, factories);
+		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(dataTable, factories);
+		if (hideIfEmpty) {
+				component
+						.add(
+								new EnclosureBehavior().condition(Condition.predicate(Model.of(dataTable.getRowCount()), Range.atLeast(1L)))
+						);
+		}
+		return component;
 	}
 
+	private Integer getPreviousColspan(final int currentIndex) {
+		Integer previousColspan = 0;
+		if (factories.isEmpty()) {
+			return previousColspan;
+		}
+		for (CustomizableToolbarElementFactory<T, S> factory : FluentIterable.from(factories).limit(currentIndex)) {
+			if (factory.getColspan() == null) {
+				previousColspan = null;
+				break;
+			}
+			previousColspan = previousColspan + factory.getColspan();
+		}
+		return previousColspan;
+	}
 }
