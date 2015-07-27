@@ -3,8 +3,8 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.too
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
@@ -179,12 +179,18 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		return dataTableBuilder;
 	}
 
-	public CoreCustomizableToolbar<T, S> build(CoreDataTable<T, S> dataTable) {
+	public CoreCustomizableToolbar<T, S> build(final CoreDataTable<T, S> dataTable) {
 		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(dataTable, factories);
 		if (hideIfEmpty) {
 				component
 						.add(
-								new EnclosureBehavior().condition(Condition.predicate(Model.of(dataTable.getRowCount()), Range.atLeast(1L)))
+								new EnclosureBehavior().condition(Condition.predicate(new AbstractReadOnlyModel<Long>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public Long getObject() {
+										return dataTable.getRowCount();
+									}
+								}, Range.atLeast(1L)))
 						);
 		}
 		return component;
