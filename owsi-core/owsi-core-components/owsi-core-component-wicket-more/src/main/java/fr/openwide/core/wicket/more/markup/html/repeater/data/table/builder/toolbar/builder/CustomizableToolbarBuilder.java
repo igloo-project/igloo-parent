@@ -3,12 +3,10 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.too
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
@@ -184,13 +182,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		if (hideIfEmpty) {
 				component
 						.add(
-								new EnclosureBehavior().condition(Condition.predicate(new AbstractReadOnlyModel<Long>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public Long getObject() {
-										return dataTable.getRowCount();
-									}
-								}, Range.atLeast(1L)))
+								new EnclosureBehavior().condition(Condition.isNotEmpty(dataTable.getDataProvider()))
 						);
 		}
 		return component;
