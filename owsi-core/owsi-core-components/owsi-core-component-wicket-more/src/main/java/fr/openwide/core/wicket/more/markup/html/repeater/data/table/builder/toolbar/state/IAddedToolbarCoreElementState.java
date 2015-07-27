@@ -8,6 +8,13 @@ public interface IAddedToolbarCoreElementState<T, S extends ISort<?>> extends IA
 	@Override
 	IAddedToolbarCoreElementState<T, S> when(Condition condition);
 
+	@Override
 	IAddedToolbarCoreElementState<T, S> withClass(String cssClass);
+
+	@Override
+	IAddedToolbarCoreElementState<T, S> colspan(long colspan);
+
+	@Override
+	IAddedToolbarCoreElementState<T, S> full();
 
 }

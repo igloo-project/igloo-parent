@@ -55,6 +55,18 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		protected abstract NextState getNextState();
 		
 		@Override
+		public NextState when(Condition condition) {
+			getFactory().when(condition);
+			return getNextState();
+		}
+		
+		@Override
+		public NextState withClass(String cssClass) {
+			getFactory().withClass(cssClass);
+			return getNextState();
+		}
+		
+		@Override
 		public NextState colspan(long colspan) {
 			getFactory().colspan(colspan);
 			return getNextState();
@@ -65,24 +77,9 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 			getFactory().full();
 			return getNextState();
 		}
-		
-		@Override
-		public NextState when(Condition condition) {
-			getFactory().when(condition);
-			return getNextState();
-		}
 	}
 
-	private abstract class AddedToolbarCoreElementState<NextState extends IAddedToolbarCoreElementState<T, S>> extends AddedToolbarElementState<NextState>
-			implements IAddedToolbarCoreElementState<T, S> {
-		@Override
-		public NextState withClass(String cssClass) {
-			getFactory().withClass(cssClass);
-			return getNextState();
-		}
-	}
-	
-	private class AddedToolbarLabelElementState extends AddedToolbarCoreElementState<IAddedToolbarLabelElementState<T, S>> implements IAddedToolbarLabelElementState<T, S> {
+	private class AddedToolbarLabelElementState extends AddedToolbarElementState<IAddedToolbarLabelElementState<T, S>> implements IAddedToolbarLabelElementState<T, S> {
 		
 		private final CustomizableToolbarElementFactory<T, S> factory;
 		
@@ -102,6 +99,26 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		}
 	}
 	
+	private class AddedToolbarLabelCoreElementState extends AddedToolbarElementState<IAddedToolbarCoreElementState<T, S>> implements IAddedToolbarCoreElementState<T, S> {
+		
+		private final CustomizableToolbarElementFactory<T, S> factory;
+		
+		public AddedToolbarLabelCoreElementState(CustomizableToolbarElementFactory<T, S> factory) {
+			super();
+			this.factory = factory;
+		}
+		
+		@Override
+		protected CustomizableToolbarElementFactory<T, S> getFactory() {
+			return factory;
+		}
+		
+		@Override
+		protected IAddedToolbarCoreElementState<T, S> getNextState() {
+			return this;
+		}
+	}
+
 	@Override
 	public IAddedToolbarLabelElementState<T, S> addLabel(final IModel<String> model) {
 		CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(
@@ -137,16 +154,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	public IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory) {
 		final CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(delegateFactory);
 		factories.add(factory);
-		return new AddedToolbarCoreElementState<IAddedToolbarCoreElementState<T, S>>() {
-			@Override
-			protected CustomizableToolbarElementFactory<T, S> getFactory() {
-				return factory;
-			}
-			@Override
-			protected IAddedToolbarCoreElementState<T, S> getNextState() {
-				return this;
-			}
-		};
+		return new AddedToolbarLabelCoreElementState(factory);
 	}
 
 	@Override
