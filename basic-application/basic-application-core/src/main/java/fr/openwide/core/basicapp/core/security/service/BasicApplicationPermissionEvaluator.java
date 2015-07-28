@@ -17,10 +17,8 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 
 	@Override
 	protected boolean hasPermission(User user, Object targetDomainObject, Permission permission) {
-		if (securityService.hasAdminRole(user)) {
-			return true;
-		}
-
+		// Déléguer ici les permissions aux différents PermissionEvaluator pour chaque objet métier
+		// Au besoin, court-circuiter les vérifications pour le super user : if(isSuperUser(user) { return true }
 		return false;
 	}
 
