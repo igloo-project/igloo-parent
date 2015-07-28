@@ -50,9 +50,11 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-		if (isSuperUser(authentication)) {
-			return true;
-		}
+		/*
+		 * On applique les vérifications même pour un superUser, contrairement à hasPermission(Authentication, Object)
+		 * En effet, il se peut que certaines permissions sur les objets soient attribuées en fonction de règles métier
+		 * qui peuvent interdire même à l'administrateur d'exécuter une action (par exemple clôturer un dossier déjà clôturé)
+		 */
 		if (authentication == null) {
 			return false;
 		}
