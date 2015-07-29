@@ -12,7 +12,7 @@ public class CoreThreeParameterLinkDescriptorMapperImpl<L extends ILinkDescripto
 		implements IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> {
 	private static final long serialVersionUID = -4881770003726056213L;
 	
-	private CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
+	private final CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
 
 	public CoreThreeParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory) {
 		this.factory = factory;
@@ -21,6 +21,12 @@ public class CoreThreeParameterLinkDescriptorMapperImpl<L extends ILinkDescripto
 	@Override
 	public L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3) {
 		return factory.create(Triplet.with(model1, model2, model3));
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		factory.detach();
 	}
 
 }

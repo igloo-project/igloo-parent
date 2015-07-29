@@ -12,7 +12,7 @@ public class CoreTwoParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor,
 		implements ITwoParameterLinkDescriptorMapper<L, T1, T2> {
 	private static final long serialVersionUID = -4881770003726056213L;
 	
-	private CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
+	private final CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
 
 	public CoreTwoParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory) {
 		this.factory = factory;
@@ -21,6 +21,12 @@ public class CoreTwoParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor,
 	@Override
 	public L map(IModel<T1> model1, IModel<T2> model2) {
 		return factory.create(Pair.with(model1, model2));
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		factory.detach();
 	}
 
 }
