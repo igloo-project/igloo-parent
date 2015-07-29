@@ -4,13 +4,13 @@ import java.util.Set;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IPageInstanceState;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.impl.CorePageInstanceLinkGenerator;
-import fr.openwide.core.wicket.more.model.ClassModel;
 
 public class CoreLinkDescriptorBuilderPageInstanceStateImpl implements IPageInstanceState<IPageLinkGenerator> {
 	
@@ -24,7 +24,7 @@ public class CoreLinkDescriptorBuilderPageInstanceStateImpl implements IPageInst
 
 	@Override
 	public <P extends Page> IPageInstanceState<IPageLinkGenerator> validate(Class<P> expectedPageClass) {
-		return validate(ClassModel.of(expectedPageClass));
+		return validate(Model.of(expectedPageClass));
 	}
 
 	@Override
