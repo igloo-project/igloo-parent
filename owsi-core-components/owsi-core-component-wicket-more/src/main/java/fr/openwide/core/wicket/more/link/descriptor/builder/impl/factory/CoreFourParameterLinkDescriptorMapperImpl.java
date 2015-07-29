@@ -12,7 +12,7 @@ public class CoreFourParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor
 		implements IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4> {
 	private static final long serialVersionUID = -4881770003726056213L;
 	
-	private CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
+	private final CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
 
 	public CoreFourParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory) {
 		this.factory = factory;
@@ -21,6 +21,12 @@ public class CoreFourParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor
 	@Override
 	public L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3, IModel<T4> model4) {
 		return factory.create(Quartet.with(model1, model2, model3, model4));
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		factory.detach();
 	}
 
 }

@@ -12,7 +12,7 @@ public class CoreOneParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor,
 		implements IOneParameterLinkDescriptorMapper<L, T1> {
 	private static final long serialVersionUID = 4229547587275320914L;
 	
-	private CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
+	private final CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
 
 	public CoreOneParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory) {
 		this.factory = factory;
@@ -21,6 +21,12 @@ public class CoreOneParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor,
 	@Override
 	public L map(IModel<T1> model) {
 		return factory.create(Unit.with(model));
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		factory.detach();
 	}
 
 }
