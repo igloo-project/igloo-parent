@@ -24,7 +24,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
-public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescriptor> implements IDetachable {
+public final class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescriptor> implements IDetachable {
 
 	private static final long serialVersionUID = 4728523709380372544L;
 	
