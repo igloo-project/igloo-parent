@@ -1,12 +1,11 @@
 package fr.openwide.core.jpa.more.business.file.model.path;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
-
-import fr.openwide.core.jpa.more.business.file.model.path.SimpleFileStorePathGeneratorImpl;
 
 
 public class HashTableFileStorePathGeneratorImpl extends SimpleFileStorePathGeneratorImpl {
@@ -26,7 +25,7 @@ public class HashTableFileStorePathGeneratorImpl extends SimpleFileStorePathGene
 	
 	@Override
 	protected String getFileKeyPath(String fileKey) {
-		byte[] digest = DigestUtils.md5(fileKey.getBytes());
+		byte[] digest = DigestUtils.md5(fileKey.getBytes(StandardCharsets.UTF_8));
 		String partialDigestString = Hex.encodeHexString(Arrays.copyOf(digest, hashSizeInBytes));
 		
 		return FilenameUtils.concat(partialDigestString, super.getFileKeyPath(fileKey));
