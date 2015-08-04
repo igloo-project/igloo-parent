@@ -141,4 +141,29 @@ public final class SortUtils {
 		return sortFields;
 	}
 
+	// SQL
+	public static String orderSpecifier(ISort<String> sort,
+			SortOrder order, String expression) {
+		if (isReverse(sort, order)) {
+			return new StringBuilder().append(expression).append(" DESC").toString();
+		} else {
+			return new StringBuilder().append(expression).append(" ASC").toString();
+		}
+	}
+
+	@SafeVarargs
+	public static <T extends ISort<String>> List<String> getSQLOrderSpecifierWithDefaults(
+			Map<T, SortOrder> sortsMap, T firstDefaultSort, T ... otherDefaultSorts) {
+		return getSQLOrderSpecifierWithDefaults(sortsMap, Lists.asList(firstDefaultSort, otherDefaultSorts));
+	}
+
+	public static <T extends ISort<String>> List<String> getSQLOrderSpecifierWithDefaults(
+				Map<T, SortOrder> sortsMap, List<T> list) {
+		List<String> sortFields = collectSortFields(sortsMap);
+		for (T defaultSort : list) {
+			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
+		}
+		return sortFields;
+	}
+
 }
