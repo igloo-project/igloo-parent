@@ -605,5 +605,52 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 		return renderer;
 	}
+	
+	public static <T extends Number> Renderer<T> count(String resourceKeyPrefix) {
+		return count(resourceKeyPrefix, null);
+	}
+	
+	public static <T extends Number> Renderer<T> count(String resourceKeyPrefix, Renderer<? super T> numberRenderer) {
+		return new CountRenderer<>(resourceKeyPrefix, numberRenderer).nullsAsNull();
+	}
+	
+	private static class CountRenderer<T extends Number> extends Renderer<T> {
+		private static final long serialVersionUID = 7436587266161009083L;
+		
+		private final String resourceKeyPrefix;
+		
+		private final Renderer<? super T> numberRenderer;
+
+		public CountRenderer(String resourceKeyPrefix, Renderer<? super T> numberRenderer) {
+			super();
+			this.resourceKeyPrefix = resourceKeyPrefix;
+			this.numberRenderer = numberRenderer;
+		}
+
+		@Override
+		public String render(final T value, Locale locale) {
+			IModel<T> model = Models.transientModel(value);
+			IModel<Map<String, Object>> mapModel;
+			
+			if (numberRenderer  != null) {
+				mapModel = Models.dataMap().put("count", numberRenderer.asModel(model)).build();
+			} else {
+				mapModel = Models.dataMap().put("count", value).build();
+			}
+			
+			StringBuilder resourceKeyBuilder = new StringBuilder(resourceKeyPrefix);
+			double doubleValue = value.doubleValue();
+			
+			if (doubleValue == 0) {
+				resourceKeyBuilder.append(".zero");
+			} else if (-1 <= doubleValue && doubleValue <= 1) {
+				resourceKeyBuilder.append(".one");
+			} else {
+				resourceKeyBuilder.append(".many");
+			}
+			
+			return Localizer.get().getString(resourceKeyBuilder.toString(), null, mapModel, locale, null, null);
+		}
+	}
 
 }
