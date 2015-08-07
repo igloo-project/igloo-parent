@@ -105,8 +105,8 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 	};
 
 	protected void preload(List<Long> entityIds) {
-		if (getMigrationInformation().getPreloadRequests() != null) {
-			Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getMigrationInformation().getPreloadRequests();
+		Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getMigrationInformation().getPreloadRequests();
+		if (preloadRequests != null) {
 			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
 				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
 				if (sqlPreloadRequest == null) {
