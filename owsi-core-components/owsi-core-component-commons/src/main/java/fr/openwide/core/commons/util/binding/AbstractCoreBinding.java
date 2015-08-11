@@ -3,6 +3,8 @@ package fr.openwide.core.commons.util.binding;
 import org.bindgen.binding.AbstractBinding;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 public abstract class AbstractCoreBinding<R, T> extends AbstractBinding<R, T> implements Function<R, T> {
 
@@ -11,6 +13,10 @@ public abstract class AbstractCoreBinding<R, T> extends AbstractBinding<R, T> im
 	@Override
 	public T apply(R input) {
 		return getSafelyWithRoot(input);
+	}
+	
+	public Predicate<R> compose(Predicate<? super T> predicate) {
+		return Predicates.compose(predicate, this);
 	}
 	
 }
