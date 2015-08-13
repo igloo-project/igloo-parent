@@ -147,6 +147,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	 * @deprecated This is the default behavior, so calling this method is generally useless. The method is here for
 	 * compatibility reasons.
 	 */
+	// TODO RJO YRO : vraiment besoin de garder ça ? Peut-être utillisé sur Rosy, mais même pas sûr
 	@Deprecated
 	public CoreBootstrapBadgeColumn<T, S, C> disableIfInvalid() {
 		this.linkBehaviorIfInvalid = LinkBehaviorIfInvalid.DISABLE;
