@@ -37,6 +37,8 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	
 	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorMapper;
 	
+	// TODO RJO YRO : on ne pourrait pas shooter ça ?
+	@Deprecated
 	private boolean disableIfInvalid = false;
 	
 	private boolean hideIfInvalid = false;
