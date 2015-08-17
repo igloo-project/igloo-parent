@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Provider;
 
-import org.apache.lucene.search.SortField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,7 @@ import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.application.CoreWicketApplication;
 import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataProvider;
 
-public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<SortField>> extends LoadableDetachableDataProvider<T>
+public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>> extends LoadableDetachableDataProvider<T>
 		implements IErrorAwareDataProvider {
 
 	private static final long serialVersionUID = 8767962077258633492L;

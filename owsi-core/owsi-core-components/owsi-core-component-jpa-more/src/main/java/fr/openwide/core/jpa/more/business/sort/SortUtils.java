@@ -14,6 +14,8 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.ComparableExpressionBase;
 
 import fr.openwide.core.jpa.more.business.sort.ISort.NullSortValue;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortNull;
@@ -23,6 +25,22 @@ public final class SortUtils {
 	
 	private SortUtils() { }
 	
+	// Common
+	private static boolean isReverse(ISort<?> sort, SortOrder order) {
+		return SortOrder.DESC == sort.getDefaultOrder().asDefaultFor(order);
+	}
+
+	public static <S, T extends ISort<S>> List<S> collectSortFields(Map<T, SortOrder> sortsMap) {
+		List<S> sortFields = Lists.newArrayList();
+		if (sortsMap != null) {
+			for (Entry<T, SortOrder> sortOrderEntry : sortsMap.entrySet()) {
+				sortFields.addAll(sortOrderEntry.getKey().getSortFields(sortOrderEntry.getValue()));
+			}
+		}
+		return sortFields;
+	}
+	
+	// Hibernate Search
 	@SafeVarargs
 	public static <T extends ISort<?>> Map<T, SortOrder> composite(T first, T ... rest) {
 		return composite(Lists.asList(first, rest));
@@ -66,20 +84,6 @@ public final class SortUtils {
 		SortOrder defaultedOrder = sort.getDefaultOrder().asDefaultFor(order);
 		return getLongSortField(fieldName, isReverse(sort, order),
 				sortNull.isLast(defaultedOrder), sortNull.isFirst(defaultedOrder));
-	}
-	
-	private static boolean isReverse(ISort<SortField> sort, SortOrder order) {
-		return SortOrder.DESC == sort.getDefaultOrder().asDefaultFor(order);
-	}
-
-	public static <T extends ISort<SortField>> List<SortField> collectSortFields(Map<T, SortOrder> sortsMap) {
-		List<SortField> sortFields = Lists.newArrayList();
-		if (sortsMap != null) {
-			for (Entry<T, SortOrder> sortOrderEntry : sortsMap.entrySet()) {
-				sortFields.addAll(sortOrderEntry.getKey().getSortFields(sortOrderEntry.getValue()));
-			}
-		}
-		return sortFields;
 	}
 
 	@SafeVarargs
@@ -172,6 +176,32 @@ public final class SortUtils {
 		}
 
 		return sortField;
+	}
+
+	
+	// JPA
+	public static <T extends Comparable<?>> OrderSpecifier<T> orderSpecifier(ISort<OrderSpecifier<?>> sort,
+			SortOrder order, ComparableExpressionBase<T> expressionBase) {
+		if (isReverse(sort, order)) {
+			return expressionBase.desc();
+		} else {
+			return expressionBase.asc();
+		}
+	}
+	
+	@SafeVarargs
+	public static <T extends ISort<OrderSpecifier<?>>> List<OrderSpecifier<?>> getOrderSpecifierWithDefaults(
+			Map<T, SortOrder> sortsMap, T firstDefaultSort, T ... otherDefaultSorts) {
+		return getOrderSpecifierWithDefaults(sortsMap, Lists.asList(firstDefaultSort, otherDefaultSorts));
+	}
+
+	public static <T extends ISort<OrderSpecifier<?>>> List<OrderSpecifier<?>> getOrderSpecifierWithDefaults(
+				Map<T, SortOrder> sortsMap, List<T> list) {
+		List<OrderSpecifier<?>> sortFields = collectSortFields(sortsMap);
+		for (T defaultSort : list) {
+			sortFields.addAll(defaultSort.getSortFields(defaultSort.getDefaultOrder()));
+		}
+		return sortFields;
 	}
 
 }

@@ -23,18 +23,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
-import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
-public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> implements ISearchQuery<T, S> /* NOT Serializable */ {
+public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 	
 	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION = new BindingToPathFunction();
 	
@@ -51,10 +49,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private FullTextEntityManager builderFullTextEntityManager;
 	
 	private BooleanJunction<?> junction;
-	private FullTextQuery query;
+	private FullTextQuery fullTextQuery;
 	private QueryBuilder defaultQueryBuilder;
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
-	private List<S> defaultSorts;
 	
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
@@ -64,9 +61,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@SafeVarargs
 	protected AbstractHibernateSearchSearchQuery(Class<? extends T>[] classes, S ... defaultSorts) {
+		super(defaultSorts);
 		this.mainClass = classes[0];
 		this.classes = Arrays.copyOf(classes, classes.length);
-		this.defaultSorts = ImmutableList.copyOf(defaultSorts);
 	}
 	
 	@PostConstruct
@@ -99,12 +96,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected QueryBuilder getDefaultQueryBuilder() {
 		return defaultQueryBuilder;
-	}
-
-	@Override
-	public ISearchQuery<T, S> sort(Map<S, SortOrder> sortMap) {
-		getFullTextQuery().setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
-		return this;
 	}
 
 	// Junction appender
@@ -144,11 +135,24 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	// List and count
-	@Override
-	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
-	public List<T> fullList() {
-		return getFullTextQuery().getResultList();
+	/**
+	 * Allow to add filter before generating the full text query.<br />
+	 * Sample:
+	 * <ul>
+	 * 	<li><code>must(matchIfGiven(Bindings.company().manager().organization(), organization))</code></li>
+	 * 	<li><code>must(matchIfGiven(Bindings.company().status(), CompanyStatus.ACTIVE))</code></li>
+	 * </ul>
+	 */
+	protected void addFilterBeforeCreateQuery() {
+		// Nothing
+	}
+	
+	private FullTextQuery getFullTextQuery() {
+		if (fullTextQuery == null) {
+			addFilterBeforeCreateQuery();
+			fullTextQuery = getFullTextEntityManager().createFullTextQuery(junction.createQuery(), classes);
+		}
+		return fullTextQuery;
 	}
 	
 	@Override
@@ -164,6 +168,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		if (Long.valueOf(limit) != null) {
 			fullTextQuery.setMaxResults((int) limit);
 		}
+		
+		fullTextQuery.setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
 		
 		return fullTextQuery.getResultList();
 	}
@@ -481,20 +487,5 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 			return input.getPath();
 		}
 	}
-	
-	/**
-	 * Allow to add filter before generating the full text query.
-	 */
-	protected void addFilterBeforeCreateQuery() {
-		// Nothing
-	}
-	
-	protected FullTextQuery getFullTextQuery() {
-		if (query == null) {
-			FullTextEntityManager fullTextEntityManager = getFullTextEntityManager();
-			addFilterBeforeCreateQuery();
-			query = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
-		}
-		return query;
-	}
+
 }
