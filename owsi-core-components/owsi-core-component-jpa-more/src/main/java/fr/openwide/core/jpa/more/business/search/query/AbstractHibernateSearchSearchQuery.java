@@ -14,6 +14,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
 import org.bindgen.binding.AbstractBinding;
@@ -168,7 +169,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 			fullTextQuery.setMaxResults((int) limit);
 		}
 		
-		fullTextQuery.setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
+		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
+		if (sort != null && sort.getSort().length > 0) {
+			fullTextQuery.setSort(sort);
+		}
 		
 		return fullTextQuery.getResultList();
 	}

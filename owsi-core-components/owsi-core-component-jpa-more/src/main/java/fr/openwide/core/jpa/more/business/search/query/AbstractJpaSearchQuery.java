@@ -2,7 +2,6 @@ package fr.openwide.core.jpa.more.business.search.query;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
@@ -19,7 +18,6 @@ import com.mysema.query.types.path.CollectionPath;
 import com.mysema.query.types.path.ComparablePath;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
-import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 
 public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?>>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
@@ -92,12 +90,6 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	private JPAQuery getFinalQuery() {
 		if (finalJpaQuery == null) {
 			addFilterBeforeFinalizeQuery();
-			
-			for (Entry<S, SortOrder> sortEntry : sortMap.entrySet()) {
-				for (OrderSpecifier<?> orderSpecifier : sortEntry.getKey().getSortFields(sortEntry.getValue())) {
-					jpaQuery.orderBy(orderSpecifier);
-				}
-			}
 			
 			for (OrderSpecifier<?> orderSpecifier : SortUtils.getOrderSpecifierWithDefaults(sortMap, defaultSorts)) {
 				jpaQuery.orderBy(orderSpecifier);
