@@ -16,6 +16,7 @@
  */
 package fr.openwide.core.wicket.more.model;
 
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
@@ -75,7 +76,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	 * @param binding
 	 * @return binding model for {@code binding}
 	 */
-	public static <R, T> BindingModel<R, T> of(IBindableDataProvider root, BindingRoot<R, T> binding) {
+	public static <R, T> BindingModel<R, T> of(IDataProvider<?> root, BindingRoot<R, T> binding) {
 		return new BindingModel<R, T>(root, binding.getPath());
 	}
 

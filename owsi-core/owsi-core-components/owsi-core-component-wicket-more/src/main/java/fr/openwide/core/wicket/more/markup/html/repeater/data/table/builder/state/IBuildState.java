@@ -2,8 +2,14 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.sta
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTable;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.builder.CustomizableToolbarBuilder;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 
 public interface IBuildState<T, S extends ISort<?>> {
+	
+	CustomizableToolbarBuilder<T, S> addTopToolbar();
+	
+	CustomizableToolbarBuilder<T, S> addBottomToolbar();
 	
 	IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
 
@@ -23,6 +29,8 @@ public interface IBuildState<T, S extends ISort<?>> {
 	@Deprecated
 	IBuildState<T, S> hideBottomToolbar();
 	
+	IBuildState<T, S> withFactory(IDataTableFactory<T, S> factory);
+	
 	CoreDataTable<T, S> build(String id);
 	
 	CoreDataTable<T, S> build(String id, long rowsPerPage);
@@ -30,5 +38,5 @@ public interface IBuildState<T, S extends ISort<?>> {
 	IDecoratedBuildState<T, S> decorate();
 	
 	IDecoratedBuildState<T, S> bootstrapPanel();
-	
+
 }

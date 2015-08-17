@@ -39,5 +39,45 @@ public interface ILinkGenerator extends IDetachable {
 	 * @return The full URL for this link generator.
 	 */
 	String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException;
+	
+	ILinkGenerator INVALID = new ILinkGenerator() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public AbstractDynamicBookmarkableLink link(String wicketId) {
+			return new AbstractDynamicBookmarkableLink(wicketId) {
+				private static final long serialVersionUID = 1L;
+				@Override
+				protected boolean isValid() {
+					return false;
+				}
+				@Override
+				protected CharSequence getRelativeURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException {
+					throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
+				}
+			};
+		}
+
+		@Override
+		public String fullUrl() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
+				LinkParameterValidationRuntimeException {
+			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
+		}
+
+		@Override
+		public String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
+				LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
+			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
+		}
+
+		@Override
+		public void detach() {
+			// Nothing to do
+		}
+		
+		private Object readResolve() {
+			return INVALID;
+		}
+	};
 
 }

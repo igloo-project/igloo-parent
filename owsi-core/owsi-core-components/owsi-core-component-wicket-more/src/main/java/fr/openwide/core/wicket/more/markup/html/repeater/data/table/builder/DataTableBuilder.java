@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -12,6 +13,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
@@ -55,6 +57,8 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.stat
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IBuildState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IDecoratedBuildState;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.builder.CustomizableToolbarBuilder;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
 import fr.openwide.core.wicket.more.markup.html.sort.ISortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.SortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink.CycleMode;
@@ -75,9 +79,21 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	private String noRecordsResourceKey;
 
+	private final List<CustomizableToolbarBuilder<T, S>> topToolbarBuilders = Lists.newArrayList();
+
+	private final List<CustomizableToolbarBuilder<T, S>> bottomToolbarBuilders = Lists.newArrayList();
+
 	private boolean showTopToolbar = true;
 	
 	private boolean showBottomToolbar = true;
+
+	private IDataTableFactory<T, S> factory = new IDataTableFactory<T, S>() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
+			return new CoreDataTable<T, S>(id, columns, dataProvider, rowsPerPage);
+		}
+	};
 
 	private DataTableBuilder(IDataProvider<T> dataProvider, CompositeSortModel<S> sortModel) {
 		super();
@@ -269,10 +285,25 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public CustomizableToolbarBuilder<T, S> addTopToolbar() {
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		topToolbarBuilders.add(builder);
+		return builder;
+	}
+	
+	@Override
+	public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		bottomToolbarBuilders.add(builder);
+		return builder;
+	}
+	
+	@Override
 	public DataTableBuilder<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 		this.noRecordsResourceKey = noRecordsResourceKey;
 		return this;
 	}
+	
 	
 	@Override
 	public DataTableBuilder<T, S> hideHeadersToolbar() {
@@ -299,23 +330,35 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public IBuildState<T, S> withFactory(IDataTableFactory<T, S> factory) {
+		this.factory = factory;
+		return this;
+	}
+	
+	@Override
 	public CoreDataTable<T, S> build(String id) {
 		return build(id, Long.MAX_VALUE);
 	}
 
 	@Override
 	public CoreDataTable<T, S> build(String id, long rowsPerPage) {
-		CoreDataTable<T, S> dataTable = new CoreDataTable<T, S>(id, columns, dataProvider, rowsPerPage);
+		CoreDataTable<T, S> dataTable = factory.create(id, columns, dataProvider, rowsPerPage);
 		finalizeBuild(dataTable);
 		return dataTable;
 	}
 	
 	protected void finalizeBuild(CoreDataTable<T, S> dataTable) {
 		if (showTopToolbar) {
+			for (CustomizableToolbarBuilder<T, S> builder : topToolbarBuilders) {
+				dataTable.addTopToolbar(builder.build(dataTable));
+			}
 			dataTable.addTopToolbar(new CoreHeadersToolbar<S>(dataTable, sortModel));
 		}
 		if (showBottomToolbar) {
 			dataTable.addBodyBottomToolbar(new CoreNoRecordsToolbar(dataTable, new ResourceModel(noRecordsResourceKey != null ? noRecordsResourceKey : "common.emptyList")));
+			for (CustomizableToolbarBuilder<T, S> builder : bottomToolbarBuilders) {
+				dataTable.addBottomToolbar(builder.build(dataTable));
+			}
 		}
 	}
 	
@@ -398,6 +441,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
+		public CustomizableToolbarBuilder<T, S> addTopToolbar() {
+			return DataTableBuilder.this.addTopToolbar();
+		}
+
+		@Override
+		public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
+			return DataTableBuilder.this.addBottomToolbar();
+		}
+
+		@Override
 		public IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 			return DataTableBuilder.this.withNoRecordsResourceKey(noRecordsResourceKey);
 		}
@@ -423,12 +476,17 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		public IBuildState<T, S> hideBottomToolbar() {
 			return DataTableBuilder.this.hideBottomToolbar();
 		}
-
+		
+		@Override
+		public IBuildState<T, S> withFactory(IDataTableFactory<T, S> factory) {
+			return DataTableBuilder.this.withFactory(factory);
+		}
+		
 		@Override
 		public CoreDataTable<T, S> build(String id) {
 			return DataTableBuilder.this.build(id);
 		}
-
+		
 		@Override
 		public CoreDataTable<T, S> build(String id, long rowsPerPage) {
 			return DataTableBuilder.this.build(id, rowsPerPage);
@@ -852,8 +910,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<T, S>(id, columns, dataProvider, rowsPerPage,
-					addInComponentFactories);
+			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<T, S>(id, factory, columns,
+					dataProvider, rowsPerPage, addInComponentFactories);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}
@@ -876,8 +934,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, columns, dataProvider, rowsPerPage,
-					addInComponentFactories);
+			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, factory,
+					columns, dataProvider, rowsPerPage, addInComponentFactories);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}

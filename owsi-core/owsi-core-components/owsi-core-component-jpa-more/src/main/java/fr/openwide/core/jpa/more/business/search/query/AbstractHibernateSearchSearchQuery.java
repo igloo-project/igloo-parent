@@ -471,11 +471,12 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 					.from(min).to(max)
 					.createQuery();
 		} else if (min != null) {
-			matchRangeMin(builder, fieldPath, min);
+			return matchRangeMin(builder, fieldPath, min);
 		} else if (max != null) {
-			matchRangeMax(builder, fieldPath, max);
+			return matchRangeMax(builder, fieldPath, max);
+		} else {
+			return null;
 		}
-		return null;
 	}
 	
 	private static class BindingToPathFunction implements Function<AbstractBinding<?, String>, String> {

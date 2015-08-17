@@ -51,6 +51,11 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityModel<K, E> of(E entity) {
 		return new GenericEntityModel<K, E>(entity);
 	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <E extends GenericEntity<?, ?>> GenericEntityModel<?, E> ofUnknownIdType(E entity) {
+		return (GenericEntityModel<?, E>)new GenericEntityModel(entity);
+	}
 	
 	/**
 	 * Construit un GenericEntityModel dont l'objet est <code>null</code> et qui n'est pas attaché.
