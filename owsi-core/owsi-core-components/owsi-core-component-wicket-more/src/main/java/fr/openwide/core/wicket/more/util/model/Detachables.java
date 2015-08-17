@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.util.model;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.wicket.model.IDetachable;
 
 import com.google.common.collect.Lists;
@@ -23,6 +26,14 @@ public final class Detachables {
 		for (IDetachable detachable : detachables) {
 			if (detachable != null) {
 				detachable.detach();
+			}
+		}
+	}
+	
+	public static void detach(Map<? extends IDetachable, ? extends IDetachable> detachablesMap) {
+		for (Entry<? extends IDetachable, ? extends IDetachable> entry : detachablesMap.entrySet()) {
+			if (entry != null) {
+				Detachables.detach(entry.getKey(), entry.getValue());
 			}
 		}
 	}

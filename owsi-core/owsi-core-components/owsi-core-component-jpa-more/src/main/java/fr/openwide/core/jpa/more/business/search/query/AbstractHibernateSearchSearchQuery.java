@@ -12,6 +12,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.bindgen.binding.AbstractBinding;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -169,7 +170,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 			fullTextQuery.setMaxResults((int) limit);
 		}
 		
-		fullTextQuery.setSort(SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts));
+		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
+		if (sort != null && sort.getSort().length > 0) {
+			fullTextQuery.setSort(sort);
+		}
 		
 		return fullTextQuery.getResultList();
 	}

@@ -13,6 +13,8 @@ import fr.openwide.core.commons.util.CloneUtils;
 
 public abstract class AbstractUnicityFormValidator<T> extends AbstractFormValidator {
 	
+	private static final long serialVersionUID = 3673024433333068895L;
+
 	private final FormComponent<?>[] components;
 
 	private final IModel<? extends T> mainObjectModel;
