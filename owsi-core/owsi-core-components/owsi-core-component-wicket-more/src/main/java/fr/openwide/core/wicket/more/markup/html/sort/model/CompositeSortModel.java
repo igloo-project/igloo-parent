@@ -87,28 +87,38 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 		return this;
 	}
 	
-	private void putAll(Map<T, SortOrder> map, Iterable<IModel<? extends Map<? extends T, SortOrder>>> models) {
+	private void putNewKeys(Map<T, SortOrder> map, Iterable<IModel<? extends Map<? extends T, SortOrder>>> models) {
 		for (IModel<? extends Map<? extends T, SortOrder>> sortModel : models) {
-			map.putAll(sortModel.getObject());
+			putNewKeys(map, sortModel.getObject());
+		}
+	}
+	
+	private void putNewKeys(Map<T, SortOrder> map, Map<? extends T, SortOrder> addedMap) {
+		for (Map.Entry<? extends T, SortOrder> addedEntry : addedMap.entrySet()) {
+			T sort = addedEntry.getKey();
+			if (!map.containsKey(sort)) {
+				SortOrder sortOrder = addedEntry.getValue();
+				map.put(sort, sortOrder);
+			}
 		}
 	}
 	
 	@Override
 	public Map<T, SortOrder> getObject() {
 		Map<T, SortOrder> map = new LinkedHashMap<>();
-		putAll(map, beforeSortModels);
-		map.putAll(getSelectedSort());
-		putAll(map, afterSortModels);
-		map.putAll(stabilizationSort);
+		putNewKeys(map, beforeSortModels);
+		putNewKeys(map, getSelectedSort());
+		putNewKeys(map, afterSortModels);
+		putNewKeys(map, stabilizationSort);
 		return map;
 	}
 
 	public Map<T, SortOrder> getSelectedSort() {
 		if (map.isEmpty()) {
 			Map<T, SortOrder> map = new LinkedHashMap<>();
-			putAll(map, beforeDefaultSortModels);
-			map.putAll(defaultSort);
-			putAll(map, afterDefaultSortModels);
+			putNewKeys(map, beforeDefaultSortModels);
+			putNewKeys(map, defaultSort);
+			putNewKeys(map, afterDefaultSortModels);
 			return map;
 		} else {
 			return map;
