@@ -200,7 +200,7 @@ public class ThreadedProcessor {
 			int doneItems = monitorContext.getDoneItems().get();
 			int ignoredItems = monitorContext.getIgnoredItems().get();
 			if (force
-					|| (lastLoggingTime - currentTime) > maxLoggingTimeUnit.toMillis(maxLoggingTime)
+					|| (currentTime - lastLoggingTime) > maxLoggingTimeUnit.toMillis(maxLoggingTime)
 					|| (doneItems - lastDoneItems) > maxLoggingIncrement) {
 				Float speedSinceStart = (float) doneItems / (float) (currentTime - startTime);
 				int roundedSpeedSinceStart = Math.round(speedSinceStart * 1000);

@@ -314,6 +314,13 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			leftModel.detach();
 			rightModel.detach();
 		}
+		
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append(equivalence).append("(").append(COMMA_JOINER.join(leftModel, rightModel)).append(")");
+			return builder.toString();
+		}
 	}
 	
 	public static <T> Condition predicate(IModel<? extends T> model, Predicate<? super T> predicate) {
@@ -382,6 +389,13 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			if (Detach.YES.equals(detachModel)) {
 				model.detach();
 			}
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append(predicate).append("(").append(model).append(")");
+			return builder.toString();
 		}
 	}
 	

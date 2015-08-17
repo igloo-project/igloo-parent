@@ -17,6 +17,7 @@ import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedP
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
+import fr.openwide.core.wicket.more.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import fr.openwide.core.wicket.more.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
@@ -77,9 +78,11 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage(
 					"${" + CommonParameters.ID + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
 			maintenanceTasksMenuItem.addRelatedPage(maintenanceTaskDetailsPage);
-
 			maintenanceMenuSection.addMenuItem(maintenanceTasksMenuItem);
-
+			ConsoleMenuItem fileMenuItem = new ConsoleMenuItem("fileMenuItem",
+					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
+			maintenanceMenuSection.addMenuItem(fileMenuItem);
+			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 			INSTANCE.addLessCssResourceReference(ConsoleLessCssResourceReference.get());
 		}

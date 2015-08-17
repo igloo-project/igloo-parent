@@ -18,7 +18,6 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
-import fr.openwide.core.wicket.more.model.ClassModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor> implements IBuilderFactory<T>, IDetachable {
@@ -28,7 +27,7 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 	private CoreLinkDescriptorBuilderFactory() { }
 
 	public static <P extends Page> CoreLinkDescriptorBuilderFactory<IPageLinkDescriptor> page(Class<P> pageClass) {
-		IModel<Class<P>> pageClassModel = ClassModel.of(pageClass);
+		IModel<Class<P>> pageClassModel = Model.of(pageClass);
 
 		return new CorePageLinkDescriptorBuilderFactory(pageClassModel);
 	}
