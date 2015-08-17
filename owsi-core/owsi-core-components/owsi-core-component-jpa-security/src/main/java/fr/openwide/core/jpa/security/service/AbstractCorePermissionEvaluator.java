@@ -13,7 +13,6 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 import fr.openwide.core.jpa.security.hierarchy.IPermissionHierarchy;
@@ -29,6 +28,9 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	
 	@Autowired
 	private IGenericUserService<T> personService;
+	
+	@Autowired
+	private ISecurityService securityService;
 	
 	/**
 	 * Vérifie qu'un utilisateur possède la permission souhaitée
@@ -57,6 +59,15 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 		 */
 		if (authentication == null) {
 			return false;
+		}
+		
+		/*
+		 * On donne une dérogation à l'utilisateur system car on risque sinon d'avoir des soucis dans les permission evaluator
+		 * car on n'a alors pas de IUser associé et on ne peut pas déterminer le périmètre autorisé.
+		 * Dans l'idéal, il faudrait utiliser l'objet Authentication jusque dans les *PermissionEvaluator.
+		 */
+		if (securityService.hasSystemRole(authentication)) {
+			return true;
 		}
 		
 		T user = getUser(authentication);
@@ -115,8 +126,8 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	@Override
 	public boolean isSuperUser(Authentication authentication) {
 		if (authentication != null) {
-			return authentication.getAuthorities().contains(CoreAuthorityConstants.AUTHORITY_SYSTEM)
-					|| authentication.getAuthorities().contains(CoreAuthorityConstants.AUTHORITY_ADMIN);
+			return securityService.hasSystemRole(authentication)
+					|| securityService.hasAdminRole(authentication);
 		}
 		return false;
 	}
