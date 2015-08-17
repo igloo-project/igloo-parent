@@ -18,6 +18,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.form.DatePicker;
 import fr.openwide.core.wicket.more.markup.html.form.MonthPicker;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync.DatePickerSync;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync.DatePickerSyncActionOnUpdate;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.datepickersync.DatePickerSyncBehavior;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
@@ -89,11 +90,11 @@ public class CalendarPanel extends Panel {
 		Calendar absoluteMinDate = GregorianCalendar.getInstance();
 		absoluteMinDate.add(Calendar.MONTH, -3);
 		beginDatePicker.add(new DatePickerSyncBehavior(
-				new DatePickerSync(null, endDatePicker)
+				new DatePickerSync(null, endDatePicker, DatePickerSyncActionOnUpdate.NOTHING)
 						.addPrecedentsModels(Model.of(absoluteMinDate.getTime()))
 		));
 		endDatePicker.add(
-				new DatePickerSyncBehavior(new DatePickerSync(beginDatePicker, null)
+				new DatePickerSyncBehavior(new DatePickerSync(beginDatePicker, null, DatePickerSyncActionOnUpdate.NOTHING)
 						.addSuivantsModels(Model.of(absoluteMaxDate.getTime()))
 		));
 		

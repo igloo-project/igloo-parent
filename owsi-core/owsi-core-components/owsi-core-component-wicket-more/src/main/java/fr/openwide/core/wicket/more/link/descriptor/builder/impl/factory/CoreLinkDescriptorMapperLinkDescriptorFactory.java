@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.wicket.model.IDetachable;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.javatuples.Tuple;
 import org.javatuples.Unit;
@@ -61,8 +62,15 @@ public class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescri
 					parameters.getValue(indices.get(1)),
 					parameters.getValue(indices.get(2))
 			);
+		case 4:
+			return Quartet.with(
+					parameters.getValue(indices.get(0)),
+					parameters.getValue(indices.get(1)),
+					parameters.getValue(indices.get(2)),
+					parameters.getValue(indices.get(3))
+			);
 		default:
-			throw new IllegalStateException("Only Unit, Pair, and Triplet parameters are supported for ILinkParameterMappingEntryFactory");
+			throw new IllegalStateException("Only Unit, Pair, Triplet and Quartet parameters are supported for ILinkParameterMappingEntryFactory");
 		}
 	}
 

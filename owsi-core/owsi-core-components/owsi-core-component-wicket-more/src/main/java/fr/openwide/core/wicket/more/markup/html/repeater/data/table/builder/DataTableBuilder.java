@@ -275,15 +275,27 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public DataTableBuilder<T, S> hideTopToolbar() {
+	public DataTableBuilder<T, S> hideHeadersToolbar() {
 		showTopToolbar = false;
 		return this;
 	}
 	
 	@Override
-	public DataTableBuilder<T, S> hideBottomToolbar() {
+	@Deprecated
+	public DataTableBuilder<T, S> hideTopToolbar() {
+		return hideHeadersToolbar();
+	}
+	
+	@Override
+	public DataTableBuilder<T, S> hideNoRecordsToolbar() {
 		showBottomToolbar = false;
 		return this;
+	}
+	
+	@Override
+	@Deprecated
+	public DataTableBuilder<T, S> hideBottomToolbar() {
+		return hideNoRecordsToolbar();
 	}
 	
 	@Override
@@ -389,13 +401,25 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		public IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 			return DataTableBuilder.this.withNoRecordsResourceKey(noRecordsResourceKey);
 		}
+		
+		@Override
+		public IBuildState<T, S> hideHeadersToolbar() {
+			return DataTableBuilder.this.hideHeadersToolbar();
+		}
 
 		@Override
+		@Deprecated
 		public IBuildState<T, S> hideTopToolbar() {
 			return DataTableBuilder.this.hideTopToolbar();
 		}
 		
 		@Override
+		public IBuildState<T, S> hideNoRecordsToolbar() {
+			return DataTableBuilder.this.hideNoRecordsToolbar();
+		}
+		
+		@Override
+		@Deprecated
 		public IBuildState<T, S> hideBottomToolbar() {
 			return DataTableBuilder.this.hideBottomToolbar();
 		}

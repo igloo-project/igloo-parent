@@ -40,12 +40,12 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	private /* final */ K entityId;
 
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(E entity) {
-		return entity == null ? null : new GenericEntityReference<K, E>(entity);
+		return entity == null || entity.isNew() ? null : new GenericEntityReference<K, E>(entity);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <E extends GenericEntity<?, ?>> GenericEntityReference<?, E> ofUnknownIdType(E entity) {
-		return entity == null ? null : (GenericEntityReference<?, E>) new GenericEntityReference(entity);
+		return entity == null || entity.isNew() ? null : (GenericEntityReference<?, E>) new GenericEntityReference(entity);
 	}
 
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(
