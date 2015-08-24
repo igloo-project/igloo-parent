@@ -182,8 +182,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		// User menu
 		add(
 				new Label(
-						"authenticationOriginelle",
-						new StringResourceModel("console.authentication.authenticationOriginelle.help", null,
+						"originalAuthentication",
+						new StringResourceModel("console.authentication.originalAuthentication.help", null,
 								new Object[] {
 									BasicApplicationSession.get().getOriginalAuthentication() != null 
 											? BasicApplicationSession.get().getOriginalAuthentication().getName()
