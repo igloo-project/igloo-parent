@@ -50,7 +50,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private FullTextEntityManager builderFullTextEntityManager;
 	
 	private BooleanJunction<?> junction;
-	private FullTextQuery fullTextQuery;
 	private QueryBuilder defaultQueryBuilder;
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
 	
@@ -135,25 +134,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
-	// List and count
-	/**
-	 * Allow to add filter before generating the full text query.<br />
-	 * Sample:
-	 * <ul>
-	 * 	<li><code>must(matchIfGiven(Bindings.company().manager().organization(), organization))</code></li>
-	 * 	<li><code>must(matchIfGiven(Bindings.company().status(), CompanyStatus.ACTIVE))</code></li>
-	 * </ul>
-	 */
-	protected void addFilterBeforeCreateQuery() {
-		// Nothing
-	}
-	
 	private FullTextQuery getFullTextQuery() {
-		if (fullTextQuery == null) {
-			addFilterBeforeCreateQuery();
-			fullTextQuery = getFullTextEntityManager().createFullTextQuery(junction.createQuery(), classes);
-		}
-		return fullTextQuery;
+		return getFullTextEntityManager().createFullTextQuery(junction.createQuery(), classes);
 	}
 	
 	@Override
