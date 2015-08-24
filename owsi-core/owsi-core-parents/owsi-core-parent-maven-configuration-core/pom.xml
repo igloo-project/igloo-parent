@@ -28,7 +28,7 @@
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>4.1.7.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>4.2.0.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.8.6</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>4.3.11.Final</owsi-core.hibernate-core.version>
@@ -55,7 +55,7 @@
 		
 		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
 		
-		<owsi-core.spring-security.version>4.0.1.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>4.0.2.RELEASE</owsi-core.spring-security.version>
 		
 		<owsi-core.spring-ldap.version>2.0.3.RELEASE</owsi-core.spring-ldap.version>
 		
