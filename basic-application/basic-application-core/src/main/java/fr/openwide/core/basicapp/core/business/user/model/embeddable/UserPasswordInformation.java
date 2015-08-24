@@ -28,7 +28,7 @@ public class UserPasswordInformation implements Serializable {
 
 	@ElementCollection
 	@OrderColumn
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private List<String> history = Lists.newArrayList();
 
 	public Date getLastUpdateDate() {

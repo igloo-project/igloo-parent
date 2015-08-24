@@ -4,7 +4,6 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-import org.hibernate.type.StringClobType;
 
 import fr.openwide.core.basicapp.core.business.common.model.AdresseEmail;
 import fr.openwide.core.basicapp.core.business.common.model.CodePostal;
@@ -12,6 +11,7 @@ import fr.openwide.core.basicapp.core.business.common.model.NumeroTelephone;
 import fr.openwide.core.basicapp.core.config.hibernate.type.AdresseEmailType;
 import fr.openwide.core.basicapp.core.config.hibernate.type.CodePostalType;
 import fr.openwide.core.basicapp.core.config.hibernate.type.NumeroTelephoneType;
+import fr.openwide.core.jpa.hibernate.usertype.StringClobType;
 
 /**
  * Classe utilisée pour définir des types via des annotations. Aucun autre intérêt.
