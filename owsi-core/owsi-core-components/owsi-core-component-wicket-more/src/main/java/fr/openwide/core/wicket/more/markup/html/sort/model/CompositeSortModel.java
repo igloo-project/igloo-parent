@@ -15,6 +15,7 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
+import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink;
 
 public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyModel<Map<T, SortOrder>> {
@@ -94,13 +95,7 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	}
 	
 	private void putNewKeys(Map<T, SortOrder> map, Map<? extends T, SortOrder> addedMap) {
-		for (Map.Entry<? extends T, SortOrder> addedEntry : addedMap.entrySet()) {
-			T sort = addedEntry.getKey();
-			if (!map.containsKey(sort)) {
-				SortOrder sortOrder = addedEntry.getValue();
-				map.put(sort, sortOrder);
-			}
-		}
+		SortUtils.appendTo(map, addedMap);
 	}
 	
 	@Override
