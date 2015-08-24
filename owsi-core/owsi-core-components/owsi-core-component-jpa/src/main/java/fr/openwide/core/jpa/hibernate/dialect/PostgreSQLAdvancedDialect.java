@@ -21,7 +21,7 @@ import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.id.IdentifierGenerator;
 
 import fr.openwide.core.jpa.hibernate.dialect.function.PostgreSQLIntervalFunction;
-import fr.openwide.core.jpa.util.PostgreSQLSequenceGenerator;
+import fr.openwide.core.jpa.util.PostgreSQLSequenceStyleGenerator;
 
 /**
  * <p>Surcharge du dialecte PostgreSQL qui permet de gérer les séquences par table plutôt que d'avoir une seule séquence
@@ -44,7 +44,7 @@ public class PostgreSQLAdvancedDialect extends PostgreSQL82Dialect {
 
 	@Override
 	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {
-		return PostgreSQLSequenceGenerator.class;
+		return PostgreSQLSequenceStyleGenerator.class;
 	}
 
 }

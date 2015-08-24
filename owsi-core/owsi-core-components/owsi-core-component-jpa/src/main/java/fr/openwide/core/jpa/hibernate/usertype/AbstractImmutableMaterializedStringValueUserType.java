@@ -9,7 +9,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.type.StringClobType;
 import org.hibernate.usertype.UserType;
 
 /**

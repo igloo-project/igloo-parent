@@ -6,7 +6,8 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,8 +56,14 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Value("${javax.persistence.validation.mode}")
 	private String validationMode;
 	
-	@Value("${hibernate.ejb.naming_strategy}")
-	private Class<NamingStrategy> namingStrategy;
+	@Value("${hibernate.implicit_naming_strategy}")
+	private Class<ImplicitNamingStrategy> implicitNamingStrategy;
+
+	@Value("${hibernate.physical_naming_strategy}")
+	private Class<PhysicalNamingStrategy> physicalNamingStrategy;
+	
+	@Value("${hibernate.id.new_generator_mappings}")
+	private Boolean isNewGeneratorMappingsEnabled;
 
 	@Value("${hibernate.create_empty_composites.enabled}")
 	private boolean createEmptyCompositesEnabled;
@@ -130,10 +137,20 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	public String getValidationMode() {
 		return validationMode;
 	}
-	
+
 	@Override
-	public Class<NamingStrategy> getNamingStrategy() {
-		return namingStrategy;
+	public Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy() {
+		return implicitNamingStrategy;
+	}
+
+	@Override
+	public Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy() {
+		return physicalNamingStrategy;
+	}
+
+	@Override
+	public Boolean isNewGeneratorMappingsEnabled() {
+		return isNewGeneratorMappingsEnabled;
 	}
 
 	@Override

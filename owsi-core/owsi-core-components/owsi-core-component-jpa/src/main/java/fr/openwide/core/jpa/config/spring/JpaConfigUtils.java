@@ -12,11 +12,13 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
-import org.hibernate.cfg.EJB3NamingStrategy;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.jpa.AvailableSettings;
 import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
@@ -36,7 +38,6 @@ import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
-import fr.openwide.core.jpa.config.spring.provider.ExplicitJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
@@ -44,7 +45,7 @@ import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.hibernate.cache.ehcache.EhCache285RegionFactory;
 import fr.openwide.core.jpa.hibernate.cache.ehcache.SingletonEhCache285RegionFactory;
-import fr.openwide.core.jpa.util.FixedDefaultComponentSafeNamingStrategy;
+import fr.openwide.core.jpa.util.PostgreSQLPhysicalNamingStrategy;
 
 public final class JpaConfigUtils {
 
@@ -69,97 +70,6 @@ public final class JpaConfigUtils {
 		return entityManagerFactoryBean;
 	}
 
-	@Deprecated
-	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			List<JpaPackageScanProvider> jpaPackageScanProviders,
-			Class<Dialect> dialect,
-			String hibernateHbm2Ddl,
-			String hibernateHbm2DdlImportFiles,
-			String hibernateSearchIndexBase,
-			DataSource dataSource,
-			String ehCacheConfiguration,
-			boolean singletonCache,
-			boolean queryCacheEnabled,
-			Integer defaultBatchSize,
-			PersistenceProvider persistenceProvider,
-			String validationMode,
-			Class<NamingStrategy> namingStrategy) {
-		return entityManagerFactory(new ExplicitJpaConfigurationProvider(
-				jpaPackageScanProviders, dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize,
-				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, singletonCache, queryCacheEnabled,
-				persistenceProvider, validationMode, namingStrategy));
-	}
-
-	/**
-	 * Construit un {@link LocalContainerEntityManagerFactoryBean} à partir d'un ensemble d'options usuelles.
-	 * @deprecated Utiliser {@link #entityManagerFactory(IJpaConfigurationProvider)}
-	 */
-	@Deprecated
-	public static LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			List<JpaPackageScanProvider> jpaPackageScanProviders,
-			Class<Dialect> dialect,
-			String hibernateHbm2Ddl,
-			String hibernateHbm2DdlImportFiles,
-			String hibernateSearchIndexBase,
-			DataSource dataSource,
-			String ehCacheConfiguration,
-			boolean singletonCache,
-			boolean queryCacheEnabled,
-			Integer defaultBatchSize,
-			PersistenceProvider persistenceProvider,
-			String validationMode,
-			Class<NamingStrategy> namingStrategy,
-			boolean createEmptyCompositesEnabled) {
-		return entityManagerFactory(new ExplicitJpaConfigurationProvider(
-				jpaPackageScanProviders, dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize,
-				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, singletonCache, queryCacheEnabled,
-				persistenceProvider, validationMode, namingStrategy, createEmptyCompositesEnabled));
-	}
-
-	/**
-	 * @deprecated Utiliser {@link #getJpaProperties(IJpaPropertiesProvider)}
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public static Properties getJpaProperties(Class<?> dialect,
-			String hibernateHbm2Ddl,
-			String hibernateHbm2DdlImportFiles,
-			String hibernateSearchIndexBase,
-			String ehCacheConfiguration,
-			boolean singletonCache,
-			boolean queryCacheEnabled,
-			Integer defaultBatchSize,
-			String validationMode,
-			Class<NamingStrategy> namingStrategy) {
-		return getJpaProperties(new ExplicitJpaConfigurationProvider(
-				(Class<? extends Dialect>)dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase, 
-				ehCacheConfiguration, singletonCache, queryCacheEnabled, validationMode, namingStrategy
-		));
-	}
-	
-	/**
-	 * @deprecated Utiliser {@link #getJpaProperties(IJpaPropertiesProvider)}
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public static Properties getJpaProperties(Class<?> dialect,
-			String hibernateHbm2Ddl,
-			String hibernateHbm2DdlImportFiles,
-			String hibernateSearchIndexBase,
-			String ehCacheConfiguration,
-			boolean singletonCache,
-			boolean queryCacheEnabled,
-			Integer defaultBatchSize,
-			String validationMode,
-			Class<NamingStrategy> namingStrategy,
-			boolean createEmptyCompositesEnabled) {
-		return getJpaProperties(new ExplicitJpaConfigurationProvider(
-				(Class<? extends Dialect>)dialect, hibernateHbm2Ddl, hibernateHbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase, 
-				ehCacheConfiguration, singletonCache, queryCacheEnabled, validationMode, namingStrategy,
-				createEmptyCompositesEnabled
-		));
-	}
-	
 	public static Properties getJpaProperties(IJpaPropertiesProvider configuration) {
 		Properties properties = new Properties();
 		properties.setProperty(Environment.DIALECT, configuration.getDialect().getName());
@@ -168,7 +78,7 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.FORMAT_SQL, Boolean.FALSE.toString());
 		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
-		properties.setProperty(org.hibernate.cfg.AvailableSettings.CREATE_EMPTY_COMPOSITES_ENABLED,
+		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED,
 				Boolean.valueOf(configuration.isCreateEmptyCompositesEnabled()).toString());
 		Integer defaultBatchSize = configuration.getDefaultBatchSize();
 		if (defaultBatchSize != null) {
@@ -233,13 +143,27 @@ public final class JpaConfigUtils {
 			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
 		}
 		
-		Class<? extends NamingStrategy> namingStrategy = configuration.getNamingStrategy();
-		if (namingStrategy != null) {
-			properties.setProperty(AvailableSettings.NAMING_STRATEGY, namingStrategy.getName());
+		Class<? extends ImplicitNamingStrategy> implicitNamingStrategy = configuration.getImplicitNamingStrategy();
+		if (implicitNamingStrategy != null) {
+			properties.setProperty(Environment.IMPLICIT_NAMING_STRATEGY, implicitNamingStrategy.getName());
 		} else {
-			throw new IllegalStateException(AvailableSettings.NAMING_STRATEGY + " may not be null: sensible values are "
-					+ EJB3NamingStrategy.class.getName() + " for OWSI-Core <= 0.7 or "
-					+ FixedDefaultComponentSafeNamingStrategy.class.getName() + " for OWSI-Core >= 0.8");
+			throw new IllegalStateException(Environment.IMPLICIT_NAMING_STRATEGY + " may not be null: sensible values are "
+					+ ImplicitNamingStrategyJpaCompliantImpl.class.getName() + " for OWSI-Core <= 0.7 or "
+					+ ImplicitNamingStrategyComponentPathImpl.class.getName() + " for OWSI-Core >= 0.8");
+		}
+		
+		Class<? extends PhysicalNamingStrategy> physicalNamingStrategy = configuration.getPhysicalNamingStrategy();
+		if (physicalNamingStrategy != null) {
+			properties.setProperty(Environment.PHYSICAL_NAMING_STRATEGY, physicalNamingStrategy.getName());
+		} else {
+			throw new IllegalStateException(Environment.PHYSICAL_NAMING_STRATEGY + " may not be null: sensible values are "
+					+ PhysicalNamingStrategyStandardImpl.class.getName() + " for no filtering of the name "
+					+ PostgreSQLPhysicalNamingStrategy.class.getName() + " to truncate the name to conform with PostgreSQL identifier max length");
+		}
+		
+		Boolean isNewGeneratorMappingsEnabled = configuration.isNewGeneratorMappingsEnabled();
+		if (isNewGeneratorMappingsEnabled != null) {
+			properties.setProperty(org.hibernate.cfg.AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
 		}
 		
 		return properties;

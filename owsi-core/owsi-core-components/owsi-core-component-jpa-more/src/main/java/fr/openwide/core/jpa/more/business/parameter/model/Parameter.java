@@ -116,7 +116,7 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	private Float floatValue;
 
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String stringValue;
 
 	@Column

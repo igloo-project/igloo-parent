@@ -1,7 +1,8 @@
 package fr.openwide.core.jpa.config.spring.provider;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.dialect.Dialect;
 
 public interface IJpaPropertiesProvider {
@@ -28,8 +29,12 @@ public interface IJpaPropertiesProvider {
 
 	String getValidationMode();
 
-	Class<? extends NamingStrategy> getNamingStrategy();
-
 	boolean isCreateEmptyCompositesEnabled();
+
+	Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy();
+
+	Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy();
+
+	Boolean isNewGeneratorMappingsEnabled();
 
 }

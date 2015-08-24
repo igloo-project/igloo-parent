@@ -6,14 +6,18 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
- * @deprecated Présent pour compatibilité ascendante uniquement.
- * ATTENTION : en cas d'ajout de propriétés dans {@link IJpaConfigurationProvider}, ne pas rajouter
- * d'attributs dans cette classe, mais simplement renvoyer une valeur par défaut. Le but est
- * vraiment de faire disparaître cette classe à terme.
+ * @deprecated Présent pour compatibilité ascendante uniquement. ATTENTION : en
+ *             cas d'ajout de propriétés dans {@link IJpaConfigurationProvider},
+ *             ne pas rajouter d'attributs dans cette classe, mais simplement
+ *             renvoyer une valeur par défaut. Le but est vraiment de faire
+ *             disparaître cette classe à terme.
  */
 @Deprecated
 public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvider {
@@ -40,53 +44,49 @@ public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvid
 	private PersistenceProvider persistenceProvider;
 
 	private String validationMode;
-	
-	private Class<? extends NamingStrategy> namingStrategy;
+
+	private Class<ImplicitNamingStrategy> implicitNamingStrategy;
+
+	private Class<PhysicalNamingStrategy> physicalNamingStrategy;
 
 	private boolean createEmptyCompositesEnabled;
 
-	public ExplicitJpaConfigurationProvider(Class<? extends Dialect> dialect, String hbm2Ddl, String hbm2DdlImportFiles, Integer defaultBatchSize,
-			String hibernateSearchIndexBase, String ehCacheConfiguration,
-			boolean ehCacheSingleton, boolean queryCacheEnabled,
-			String validationMode, Class<NamingStrategy> namingStrategy) {
-		this(
-				null, dialect, hbm2Ddl, hbm2DdlImportFiles, defaultBatchSize,
-				hibernateSearchIndexBase, null, ehCacheConfiguration, ehCacheSingleton, queryCacheEnabled,
-				null, validationMode, namingStrategy,
-				false
-		);
+	public ExplicitJpaConfigurationProvider(Class<? extends Dialect> dialect, String hbm2Ddl,
+			String hbm2DdlImportFiles, Integer defaultBatchSize, String hibernateSearchIndexBase,
+			String ehCacheConfiguration, boolean ehCacheSingleton, boolean queryCacheEnabled, String validationMode,
+			Class<ImplicitNamingStrategy> implicitNamingStrategy, Class<PhysicalNamingStrategy> physicalNamingStrategy) {
+		this(null, dialect, hbm2Ddl, hbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase, null,
+				ehCacheConfiguration, ehCacheSingleton, queryCacheEnabled, null, validationMode,
+				implicitNamingStrategy, physicalNamingStrategy, false);
 	}
 
-	public ExplicitJpaConfigurationProvider(Class<? extends Dialect> dialect, String hbm2Ddl, String hbm2DdlImportFiles, Integer defaultBatchSize,
-			String hibernateSearchIndexBase, String ehCacheConfiguration,
-			boolean ehCacheSingleton, boolean queryCacheEnabled,
-			String validationMode, Class<NamingStrategy> namingStrategy, boolean createEmptyCompositesEnabled) {
-		this(
-				null, dialect, hbm2Ddl, hbm2DdlImportFiles, defaultBatchSize,
-				hibernateSearchIndexBase, null, ehCacheConfiguration, ehCacheSingleton, queryCacheEnabled,
-				null, validationMode, namingStrategy,
-				createEmptyCompositesEnabled
-		);
+	public ExplicitJpaConfigurationProvider(Class<? extends Dialect> dialect, String hbm2Ddl,
+			String hbm2DdlImportFiles, Integer defaultBatchSize, String hibernateSearchIndexBase,
+			String ehCacheConfiguration, boolean ehCacheSingleton, boolean queryCacheEnabled, String validationMode,
+			Class<ImplicitNamingStrategy> implicitNamingStrategy, Class<PhysicalNamingStrategy> physicalNamingStrategy,
+			boolean createEmptyCompositesEnabled) {
+		this(null, dialect, hbm2Ddl, hbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase, null,
+				ehCacheConfiguration, ehCacheSingleton, queryCacheEnabled, null, validationMode,
+				implicitNamingStrategy, physicalNamingStrategy, createEmptyCompositesEnabled);
 	}
 
 	public ExplicitJpaConfigurationProvider(List<JpaPackageScanProvider> jpaPackageScanProviders,
 			Class<? extends Dialect> dialect, String hbm2Ddl, String hbm2DdlImportFiles, Integer defaultBatchSize,
 			String hibernateSearchIndexBase, DataSource dataSource, String ehCacheConfiguration,
 			boolean ehCacheSingleton, boolean queryCacheEnabled, PersistenceProvider persistenceProvider,
-			String validationMode, Class<NamingStrategy> namingStrategy) {
-		this(
-				jpaPackageScanProviders, dialect, hbm2Ddl, hbm2DdlImportFiles, defaultBatchSize,
-				hibernateSearchIndexBase, dataSource, ehCacheConfiguration, ehCacheSingleton, queryCacheEnabled,
-				persistenceProvider, validationMode, namingStrategy,
-				false
-		);
+			String validationMode, Class<ImplicitNamingStrategy> implicitNamingStrategy,
+			Class<PhysicalNamingStrategy> physicalNamingStrategy) {
+		this(jpaPackageScanProviders, dialect, hbm2Ddl, hbm2DdlImportFiles, defaultBatchSize, hibernateSearchIndexBase,
+				dataSource, ehCacheConfiguration, ehCacheSingleton, queryCacheEnabled, persistenceProvider,
+				validationMode, implicitNamingStrategy, physicalNamingStrategy, false);
 	}
 
 	public ExplicitJpaConfigurationProvider(List<JpaPackageScanProvider> jpaPackageScanProviders,
 			Class<? extends Dialect> dialect, String hbm2Ddl, String hbm2DdlImportFiles, Integer defaultBatchSize,
 			String hibernateSearchIndexBase, DataSource dataSource, String ehCacheConfiguration,
 			boolean ehCacheSingleton, boolean queryCacheEnabled, PersistenceProvider persistenceProvider,
-			String validationMode, Class<NamingStrategy> namingStrategy, boolean createEmptyCompositesEnabled) {
+			String validationMode, Class<ImplicitNamingStrategy> implicitNamingStrategy,
+			Class<PhysicalNamingStrategy> physicalNamingStrategy, boolean createEmptyCompositesEnabled) {
 		super();
 		this.jpaPackageScanProviders = jpaPackageScanProviders;
 		this.dialect = dialect;
@@ -100,7 +100,8 @@ public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvid
 		this.queryCacheEnabled = queryCacheEnabled;
 		this.persistenceProvider = persistenceProvider;
 		this.validationMode = validationMode;
-		this.namingStrategy = namingStrategy;
+		this.implicitNamingStrategy = implicitNamingStrategy;
+		this.physicalNamingStrategy = physicalNamingStrategy;
 		this.createEmptyCompositesEnabled = createEmptyCompositesEnabled;
 	}
 
@@ -133,12 +134,12 @@ public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvid
 	public String getHibernateSearchIndexBase() {
 		return hibernateSearchIndexBase;
 	}
-	
+
 	@Override
 	public Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer() {
 		return null;
 	}
-	
+
 	@Override
 	public String getHibernateSearchIndexingStrategy() {
 		return null;
@@ -175,12 +176,22 @@ public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvid
 	}
 
 	@Override
-	public Class<? extends NamingStrategy> getNamingStrategy() {
-		return namingStrategy;
+	public Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy() {
+		return implicitNamingStrategy;
+	}
+
+	@Override
+	public Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy() {
+		return physicalNamingStrategy;
 	}
 
 	@Override
 	public boolean isCreateEmptyCompositesEnabled() {
 		return createEmptyCompositesEnabled;
+	}
+
+	@Override
+	public Boolean isNewGeneratorMappingsEnabled() {
+		return false;
 	}
 }

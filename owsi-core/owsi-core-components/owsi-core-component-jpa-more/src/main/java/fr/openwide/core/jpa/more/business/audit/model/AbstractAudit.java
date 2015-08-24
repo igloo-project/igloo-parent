@@ -138,7 +138,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	 * Message contenant des informations complémentaires à mémoriser.
 	 */
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String message;
 
 	/**

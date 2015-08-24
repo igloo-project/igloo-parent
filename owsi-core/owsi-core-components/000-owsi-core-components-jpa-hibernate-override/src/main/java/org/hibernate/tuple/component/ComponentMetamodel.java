@@ -31,7 +31,9 @@ import java.util.Map;
 
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
+import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.Environment;
+import org.hibernate.engine.config.spi.ConfigurationService;
 import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
@@ -61,7 +63,7 @@ public class ComponentMetamodel implements Serializable {
 	private final boolean createEmptyCompositesEnabled;
 
 //	public ComponentMetamodel(Component component, SessionFactoryImplementor sessionFactory) {
-	public ComponentMetamodel(Component component) {
+	public ComponentMetamodel(Component component, MetadataBuildingOptions metadataBuildingOptions) {
 //		this.sessionFactory = sessionFactory;
 		this.role = component.getRoleName();
 		this.isKey = component.isKey();
@@ -79,16 +81,19 @@ public class ComponentMetamodel implements Serializable {
 		entityMode = component.hasPojoRepresentation() ? EntityMode.POJO : EntityMode.MAP;
 
 		// todo : move this to SF per HHH-3517; also see HHH-1907 and ComponentMetamodel
-		final ComponentTuplizerFactory componentTuplizerFactory = new ComponentTuplizerFactory();
+		final ComponentTuplizerFactory componentTuplizerFactory = new ComponentTuplizerFactory( metadataBuildingOptions );
 		final String tuplizerClassName = component.getTuplizerImplClassName( entityMode );
 		this.componentTuplizer = tuplizerClassName == null ? componentTuplizerFactory.constructDefaultTuplizer(
 				entityMode,
 				component
 		) : componentTuplizerFactory.constructTuplizer( tuplizerClassName, component );
-		
+
+		final ConfigurationService cs = component.getMetadata().getMetadataBuildingOptions().getServiceRegistry()
+				.getService(ConfigurationService.class);
+
 		this.createEmptyCompositesEnabled = ConfigurationHelper.getBoolean(
 				Environment.CREATE_EMPTY_COMPOSITES_ENABLED,
-				component.getMappings().getConfigurationProperties(),
+				cs.getSettings(),
 				false
 		);
 	}

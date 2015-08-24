@@ -33,18 +33,18 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 	public EntityManagerFactoryBuilder getEntityManagerFactoryBuilder(
 			PersistenceUnitDescriptor persistenceUnitDescriptor, Map integration, ClassLoader providedClassLoader) {
 		return new EntityManagerFactoryBuilderImpl(persistenceUnitDescriptor, integration, providedClassLoader) {
-			@Override
-			public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
-				Configuration configuration = super.buildHibernateConfiguration(serviceRegistry);
-				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
-					if (configuration.getInterceptor() != null
-							&& !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
-						LOGGER.error("The persistence provider was already configured with an interceptor: we override it.");
-					}
-					configuration.setInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
-				}
-				return configuration;
-			}
+//			@Override
+//			public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
+//				Configuration configuration = super.buildHibernateConfiguration(serviceRegistry);
+//				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
+//					if (configuration.getInterceptor() != null
+//							&& !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
+//						LOGGER.error("The persistence provider was already configured with an interceptor: we override it.");
+//					}
+//					configuration.setInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
+//				}
+//				return configuration;
+//			}
 		};
 	}
 

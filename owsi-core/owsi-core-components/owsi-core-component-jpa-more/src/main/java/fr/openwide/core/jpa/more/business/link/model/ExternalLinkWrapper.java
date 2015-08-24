@@ -37,7 +37,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	private Long id;
 	
 	@Column(nullable = false)
-	@Type(type = "org.hibernate.type.StringClobType") // SQL type "text" (unknown size)
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType") // SQL type "text" (unknown size)
 	private String url;
 	
 	@Column(nullable = false)
@@ -58,7 +58,7 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	private Date lastCheckDate;
 	
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType") // SQL type "text" (unknown size)
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType") // SQL type "text" (unknown size)
 	private String failureAudit;
 	
 	protected ExternalLinkWrapper() {

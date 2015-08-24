@@ -37,7 +37,7 @@ public class PostgreSQLSerialDialect extends PostgreSQLAdvancedDialect {
 
 	@Override
 	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {
-		return PostgreSQLSequenceGenerator.class;
+		return PostgreSQLSequenceStyleGenerator.class;
 	}
 
 }

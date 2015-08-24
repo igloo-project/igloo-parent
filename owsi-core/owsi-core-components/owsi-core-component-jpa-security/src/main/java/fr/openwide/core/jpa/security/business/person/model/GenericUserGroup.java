@@ -76,7 +76,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Authority> authorities = new LinkedHashSet<Authority>();
 	
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String description;
 	
 	@Column(nullable = false)

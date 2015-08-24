@@ -31,11 +31,11 @@ public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET ext
 	private String name;
 	
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String description;
 	
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String logOutput;
 	
 	@Column(nullable = false)

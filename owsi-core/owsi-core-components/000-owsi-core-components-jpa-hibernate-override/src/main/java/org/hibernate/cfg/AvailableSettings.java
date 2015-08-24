@@ -28,18 +28,31 @@ package org.hibernate.cfg;
  */
 public interface AvailableSettings {
 	/**
-	 * Defines a name for the {@link org.hibernate.SessionFactory}.  Useful both to<ul>
-	 *     <li>allow serialization and deserialization to work across different jvms</li>
-	 *     <li>optionally allow the SessionFactory to be bound into JNDI</li>
-	 * </ul>
+	 * Setting used to name the Hibernate {@link org.hibernate.SessionFactory}.
+	 *
+	 * Naming the SessionFactory allows for it to be properly serialized across JVMs as
+	 * long as the same name is used on each JVM.
+	 *
+	 * If {@link #SESSION_FACTORY_NAME_IS_JNDI} is set to {@code true}, this is also the
+	 * name under which the SessionFactory is bound into JNDI on startup and from which
+	 * it can be obtained from JNDI.
 	 *
 	 * @see #SESSION_FACTORY_NAME_IS_JNDI
+	 * @see org.hibernate.internal.SessionFactoryRegistry
 	 */
 	 String SESSION_FACTORY_NAME = "hibernate.session_factory_name";
 
 	/**
-	 * Does the value defined by {@link #SESSION_FACTORY_NAME} represent a {@literal JNDI} namespace into which
-	 * the {@link org.hibernate.SessionFactory} should be bound?
+	 * Does the value defined by {@link #SESSION_FACTORY_NAME} represent a JNDI namespace into which
+	 * the {@link org.hibernate.SessionFactory} should be bound and made accessible?
+	 *
+	 * Defaults to {@code true} for backwards compatibility.
+	 *
+	 * Set this to {@code false} if naming a SessionFactory is needed for serialization purposes, but
+	 * no writable JNDI context exists in the runtime environment or if the user simply does not want
+	 * JNDI to be used.
+	 *
+	 * @see #SESSION_FACTORY_NAME
 	 */
 	String SESSION_FACTORY_NAME_IS_JNDI = "hibernate.session_factory_name_is_jndi";
 
@@ -269,18 +282,36 @@ public interface AvailableSettings {
 	String CURRENT_SESSION_CONTEXT_CLASS = "hibernate.current_session_context_class";
 
 	/**
-	 * Names the implementation of {@link org.hibernate.engine.transaction.spi.TransactionFactory} to use for
-	 * creating {@link org.hibernate.Transaction} instances
+	 * Names the implementation of {@link org.hibernate.resource.transaction.TransactionCoordinatorBuilder} to use for
+	 * creating {@link org.hibernate.resource.transaction.TransactionCoordinator} instances.
+	 * <p/>
+	 * Can be<ul>
+	 *     <li>TransactionCoordinatorBuilder instance</li>
+	 *     <li>TransactionCoordinatorBuilder implementation {@link Class} reference</li>
+	 *     <li>TransactionCoordinatorBuilder implementation class name (FQN)</li>
+	 * </ul>
+	 *
+	 * @since 5.0
 	 */
-	String TRANSACTION_STRATEGY = "hibernate.transaction.factory_class";
+	String TRANSACTION_COORDINATOR_STRATEGY = "hibernate.transaction.coordinator_class";
 
 	/**
 	 * Names the {@link org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform} implementation to use for integrating
 	 * with {@literal JTA} systems.  Can reference either a {@link org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform}
 	 * instance or the name of the {@link org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform} implementation class
+	 *
 	 * @since 4.0
 	 */
 	String JTA_PLATFORM = "hibernate.transaction.jta.platform";
+
+	/**
+	 * Used to specify if using {@link javax.transaction.UserTransaction}  class to use for JTA transaction management.
+	 *
+	 * Default is <code>false</code>
+	 *
+	 * @since 5.0
+	 */
+	String PREFER_USER_TRANSACTION = "hibernate.jta.prefer_user_transaction";
 
 	/**
 	 * Names the {@link org.hibernate.engine.transaction.jta.platform.spi.JtaPlatformResolver} implementation to use.
@@ -636,6 +667,30 @@ public interface AvailableSettings {
 	 */
 	String IGNORE_EXPLICIT_DISCRIMINATOR_COLUMNS_FOR_JOINED_SUBCLASS = "hibernate.discriminator.ignore_explicit_for_joined";
 
+	/**
+	 * Names a {@link org.hibernate.Interceptor} implementation to be applied to the {@link org.hibernate.SessionFactory}
+	 * Can reference<ul>
+	 *     <li>Interceptor instance</li>
+	 *     <li>Interceptor implementation {@link Class} reference</li>
+	 *     <li>Interceptor implementation class name</li>
+	 * </ul>
+	 *
+	 * @since 5.0
+	 */
+	String INTERCEPTOR = "hibernate.session_factory.interceptor";
+
+	/**
+	 * Names a {@link org.hibernate.resource.jdbc.spi.StatementInspector} implementation to be applied to
+	 * the {@link org.hibernate.SessionFactory}.  Can reference<ul>
+	 *     <li>StatementInspector instance</li>
+	 *     <li>StatementInspector implementation {@link Class} reference</li>
+	 *     <li>StatementInspector implementation class name (FQN)</li>
+	 * </ul>
+	 *
+	 * @since 5.0
+	 */
+	String STATEMENT_INSPECTOR = "hibernate.session_factory.statement_inspector";
+
     String ENABLE_LAZY_LOAD_NO_TRANS = "hibernate.enable_lazy_load_no_trans";
 
 	String HQL_BULK_ID_STRATEGY = "hibernate.hql.bulk_id_strategy";
@@ -676,9 +731,8 @@ public interface AvailableSettings {
 	String JACC_ENABLED = "hibernate.jacc.enabled";
 
 	/**
-	 * If enabled, allows {@link org.hibernate.tool.hbm2ddl.DatabaseMetadata} to
-	 * support synonyms during schema update and validations.  Due to the
-	 * possibility that this would return duplicate tables (especially in
+	 * If enabled, allows schema update and validation to support synonyms.  Due
+	 * to the possibility that this would return duplicate tables (especially in
 	 * Oracle), this is disabled by default.
 	 */
 	String ENABLE_SYNONYMS = "hibernate.synonyms";
@@ -710,6 +764,79 @@ public interface AvailableSettings {
 	String LOG_SESSION_METRICS = "hibernate.session.events.log";
 
 	String AUTO_SESSION_EVENTS_LISTENER = "hibernate.session.events.auto";
+
+
+	/**
+	 * The deprecated name.  Use {@link #SCANNER} or {@link #SCANNER_ARCHIVE_INTERPRETER} instead.
+	 */
+	String SCANNER_DEPRECATED = "hibernate.ejb.resource_scanner";
+
+	/**
+	 * Pass an implementation of {@link org.hibernate.boot.archive.scan.spi.Scanner}.
+	 * Accepts either:<ul>
+	 *     <li>an actual instance</li>
+	 *     <li>a reference to a Class that implements Scanner</li>
+	 *     <li>a fully qualified name (String) of a Class that implements Scanner</li>
+	 * </ul>
+	 */
+	String SCANNER = "hibernate.archive.scanner";
+
+	/**
+	 * Pass {@link org.hibernate.boot.archive.spi.ArchiveDescriptorFactory} to use
+	 * in the scanning process.  Accepts either:<ul>
+	 *     <li>an ArchiveDescriptorFactory instance</li>
+	 *     <li>a reference to a Class that implements ArchiveDescriptorFactory</li>
+	 *     <li>a fully qualified name (String) of a Class that implements ArchiveDescriptorFactory</li>
+	 * </ul>
+	 * <p/>
+	 * See information on {@link org.hibernate.boot.archive.scan.spi.Scanner}
+	 * about expected constructor forms.
+	 *
+	 * @see #SCANNER
+	 * @see org.hibernate.boot.archive.scan.spi.Scanner
+	 * @see org.hibernate.boot.archive.scan.spi.AbstractScannerImpl
+	 */
+	String SCANNER_ARCHIVE_INTERPRETER = "hibernate.archive.interpreter";
+
+	/**
+	 * Identifies a comma-separate list of values indicating the types of
+	 * things we should auto-detect during scanning.  Allowable values include:<ul>
+	 *     <li>"class" - discover classes - .class files are discovered as managed classes</li>
+	 *     <li>"hbm" - discover hbm mapping files - hbm.xml files are discovered as mapping files</li>
+	 * </ul>
+	 */
+	String SCANNER_DISCOVERY = "hibernate.archive.autodetection";
+
+	/**
+	 * Used to specify the {@link org.hibernate.tool.schema.spi.SchemaManagementTool} to use for performing
+	 * schema management.  The default is to use {@link org.hibernate.tool.schema.internal.HibernateSchemaManagementTool}
+	 *
+	 * @since 5.0
+	 */
+	String SCHEMA_MANAGEMENT_TOOL = "hibernate.schema_management_tool";
+
+	/**
+	 * Used to specify the {@link org.hibernate.boot.model.naming.ImplicitNamingStrategy} class to use.
+	 *
+	 * @since 5.0
+	 */
+	String IMPLICIT_NAMING_STRATEGY = "hibernate.implicit_naming_strategy";
+
+	/**
+	 * Used to specify the {@link org.hibernate.boot.model.naming.PhysicalNamingStrategy} class to use.
+	 *
+	 * @since 5.0
+	 */
+	String PHYSICAL_NAMING_STRATEGY = "hibernate.physical_naming_strategy";
+
+	/**
+	 * Used to specify the order in which metadata sources should be processed.  Value
+	 * is a delimited-list whose elements are defined by {@link org.hibernate.cfg.MetadataSourceType}.
+	 * <p/>
+	 * Default is {@code "hbm,class"} which indicates to process {@code hbm.xml} files followed by
+	 * annotations (combined with {@code orm.xml} mappings).
+	 */
+	String ARTIFACT_PROCESSING_ORDER = "hibernate.mapping.precedence";
 
 	/**
 	 * Enable instantiation of composite/embedded objects when all of its attribute values are {@code null}.

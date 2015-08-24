@@ -48,7 +48,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String name;
 
 	@Column(nullable = true)
@@ -77,7 +77,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private int version;
 
 	@Column(nullable = false)
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String serializedTask;
 
 	@Column(nullable = false)
@@ -91,11 +91,11 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private TaskResult result;
 
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String stackTrace;
 
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String report;
 
 	protected QueuedTaskHolder() {
