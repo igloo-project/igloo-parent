@@ -649,7 +649,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 				resourceKeyBuilder.append(".many");
 			}
 			
-			return Localizer.get().getString(resourceKeyBuilder.toString(), null, mapModel, locale, null, null);
+			return Localizer.get().getString(resourceKeyBuilder.toString(), null, mapModel, locale, null, (String) null);
 		}
 	}
 
