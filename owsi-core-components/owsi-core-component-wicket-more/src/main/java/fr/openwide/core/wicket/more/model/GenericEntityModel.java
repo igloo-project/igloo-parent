@@ -93,7 +93,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		E persistentObject = HibernateUtils.unwrap(entity);
 		super.setObject(persistentObject);
 		attached = true;
-		updateSerializableData(); // Useless ; for compatibility with old applications only
+		updateSerializableData(); // Useful to keep equals() up-to-date and for compatibility with old applications
 	}
 	
 	protected K getId() {
