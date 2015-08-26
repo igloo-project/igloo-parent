@@ -19,8 +19,12 @@
 	
 	<dependencies>
 		<dependency>
-			<artifactId>hibernate-core</artifactId>
 			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
 	</dependencies>
 </project>

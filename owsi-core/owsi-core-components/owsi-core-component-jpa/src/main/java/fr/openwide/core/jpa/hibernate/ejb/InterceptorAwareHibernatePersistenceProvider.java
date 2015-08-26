@@ -2,14 +2,13 @@ package fr.openwide.core.jpa.hibernate.ejb;
 
 import java.util.Map;
 
-import org.hibernate.EmptyInterceptor;
 import org.hibernate.Interceptor;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.SessionFactoryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
-import org.hibernate.service.ServiceRegistry;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,18 +32,15 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 	public EntityManagerFactoryBuilder getEntityManagerFactoryBuilder(
 			PersistenceUnitDescriptor persistenceUnitDescriptor, Map integration, ClassLoader providedClassLoader) {
 		return new EntityManagerFactoryBuilderImpl(persistenceUnitDescriptor, integration, providedClassLoader) {
-//			@Override
-//			public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
-//				Configuration configuration = super.buildHibernateConfiguration(serviceRegistry);
-//				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
-//					if (configuration.getInterceptor() != null
-//							&& !EmptyInterceptor.class.equals(configuration.getInterceptor().getClass())) {
-//						LOGGER.error("The persistence provider was already configured with an interceptor: we override it.");
-//					}
-//					configuration.setInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
-//				}
-//				return configuration;
-//			}
+			@Override
+			protected void populate(SessionFactoryBuilder sfBuilder, StandardServiceRegistry ssr) {
+				super.populate(sfBuilder, ssr);
+				
+				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
+					LOGGER.warn("Installing our Spring managed interceptor.");
+					sfBuilder.applyInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
+				}
+			}
 		};
 	}
 
