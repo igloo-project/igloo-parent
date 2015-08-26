@@ -129,13 +129,13 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 	}
 
 	@Test
-	public void testSaveDelete() {
+	public void testSaveDelete() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
-		personDao.save(person);
+		personService.save(person);
 		personService.flush();
 		Assert.assertTrue(personService.list().contains(person));
 
-		personDao.delete(person);
+		personService.delete(person);
 		personService.flush();
 		Assert.assertFalse(personService.list().contains(person));
 	}
@@ -159,13 +159,13 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		person.setFirstName("AAAAA");
 		Assert.assertEquals("AAAAA", person.getFirstName());
 
-		personDao.refresh(person);
+		personService.refresh(person);
 		Assert.assertEquals("Firstname", person.getFirstName());
 
 		Person person1 = new Person("Firstname", "Lastname");
 
 		try {
-			personDao.refresh(person1);
+			personService.refresh(person1);
 			Assert.fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
@@ -174,7 +174,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		personService.delete(person1);
 
 		try {
-			personDao.refresh(person1);
+			personService.refresh(person1);
 			Assert.fail("Faire un refresh sur un objet non persisté doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
