@@ -95,6 +95,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected static final String STYLE_DATE_NAME = "date";
 	protected static final String STYLE_DATE_TIME_NAME = "datetime";
 	protected static final String STYLE_PERCENT_NAME = "percent";
+	protected static final String STYLE_PERCENT_RELATIVE_NAME = "percentRelative";
 	protected static final String STYLE_LINK_NAME = "link";
 	protected static final String STYLE_FILE_SIZE_NAME = "fileSize";
 
@@ -162,6 +163,11 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * Format des pourcentages
 	 */
 	private String percentDataFormat = "0.00%";
+	
+	/**
+	 * Format des pourcentages avec signe +/-
+	 */
+	private String percentRelativeDataFormat = "+0.00%;-0.00%";
 	
 	/**
 	 * Format de taille de fichier
@@ -321,6 +327,16 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		CellStyle styleEvenPercent = cloneStyle(styleEven);
 		styleEvenPercent.setDataFormat(percentFormatIndex);
 		registerStyle(STYLE_PERCENT_NAME + ROW_EVEN_NAME, styleEvenPercent);
+		
+		short percentRelativeFormatIndex = dataFormat.getFormat(percentRelativeDataFormat);
+
+		CellStyle styleOddPercentRelative = cloneStyle(styleOdd);
+		styleOddPercentRelative.setDataFormat(percentRelativeFormatIndex);
+		registerStyle(STYLE_PERCENT_RELATIVE_NAME + ROW_ODD_NAME, styleOddPercentRelative);
+
+		CellStyle styleEvenPercentRelative = cloneStyle(styleEven);
+		styleEvenPercentRelative.setDataFormat(percentRelativeFormatIndex);
+		registerStyle(STYLE_PERCENT_RELATIVE_NAME + ROW_EVEN_NAME, styleEvenPercentRelative);
 		
 		// styles pour les liens
 		CellStyle styleOddLink = cloneStyle(styleOdd);
@@ -492,6 +508,26 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_PERCENT_NAME, row.getRowNum()));
+		
+		if (number != null) {
+			cell.setCellValue(number.doubleValue());
+		}
+
+		return cell;
+	}
+
+	/**
+	 * Ajoute une cellule contenant un pourcentage avec signe +/-.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param number nombre à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addPercentRelativeCell(Row row, int columnIndex, Number number) {
+		Cell cell = row.createCell(columnIndex);
+		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellStyle(getRowStyle(STYLE_PERCENT_RELATIVE_NAME, row.getRowNum()));
 		
 		if (number != null) {
 			cell.setCellValue(number.doubleValue());
