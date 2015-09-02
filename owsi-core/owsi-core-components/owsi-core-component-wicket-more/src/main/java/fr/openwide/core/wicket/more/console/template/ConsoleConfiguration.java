@@ -24,7 +24,7 @@ import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMainten
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 

@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.lesscss;
+package fr.openwide.core.wicket.more.css.lesscss;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -15,8 +15,9 @@ import org.apache.wicket.util.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.wicket.more.lesscss.model.LessCssStylesheetInformation;
-import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
+import fr.openwide.core.wicket.more.css.WicketCssPrecompilationException;
+import fr.openwide.core.wicket.more.css.lesscss.model.LessCssStylesheetInformation;
+import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
 
 public class LessCssResource extends PackageResource {
 
@@ -88,7 +89,7 @@ public class LessCssResource extends PackageResource {
 			
 			return lessCssResourceStream;
 		} catch (Exception e) {
-			throw new WicketLessCssException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)",
+			throw new WicketCssPrecompilationException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);
 		} finally {
 			if (resourceStream != null) {

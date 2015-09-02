@@ -11,8 +11,8 @@ import org.springframework.core.io.ClassPathResource;
 import fr.openwide.core.test.wicket.more.AbstractWicketMoreTestCase;
 import fr.openwide.core.test.wicket.more.lesscss.service.resource.TestLessCssServiceResourceScope;
 import fr.openwide.core.test.wicket.more.lesscss.service.resource.other.scope.TestLessCssServiceOtherResourceScope;
-import fr.openwide.core.wicket.more.lesscss.model.LessCssStylesheetInformation;
-import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
+import fr.openwide.core.wicket.more.css.lesscss.model.LessCssStylesheetInformation;
+import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
 
 public class TestLessCssService extends AbstractWicketMoreTestCase {
 	

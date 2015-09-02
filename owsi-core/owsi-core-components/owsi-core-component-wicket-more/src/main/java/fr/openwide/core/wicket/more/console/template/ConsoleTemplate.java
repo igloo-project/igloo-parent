@@ -29,7 +29,7 @@ import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;

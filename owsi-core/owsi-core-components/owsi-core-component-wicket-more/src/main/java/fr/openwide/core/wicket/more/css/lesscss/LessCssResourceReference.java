@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.lesscss;
+package fr.openwide.core.wicket.more.css.lesscss;
 
 import java.util.Locale;
 

@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.lesscss.model;
+package fr.openwide.core.wicket.more.css.lesscss.model;
 
 import java.io.IOException;
 import java.io.Serializable;

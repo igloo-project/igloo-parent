@@ -8,7 +8,7 @@ import org.retzlaff.select2.resource.Select2CssResourceReference;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 
 public final class ConsoleLessCssResourceReference extends LessCssResourceReference {

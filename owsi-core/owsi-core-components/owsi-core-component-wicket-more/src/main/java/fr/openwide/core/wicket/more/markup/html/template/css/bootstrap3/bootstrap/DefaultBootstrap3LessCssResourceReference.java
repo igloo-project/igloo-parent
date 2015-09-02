@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.bootstrap;
 
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 
 public final class DefaultBootstrap3LessCssResourceReference extends LessCssResourceReference {
 

@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.lesscss.service;
+package fr.openwide.core.wicket.more.css.lesscss.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +29,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.config.spring.WicketMoreServiceConfig;
-import fr.openwide.core.wicket.more.lesscss.model.LessCssStylesheetInformation;
+import fr.openwide.core.wicket.more.css.lesscss.model.LessCssStylesheetInformation;
 
 /**
  * @see WicketMoreServiceConfig

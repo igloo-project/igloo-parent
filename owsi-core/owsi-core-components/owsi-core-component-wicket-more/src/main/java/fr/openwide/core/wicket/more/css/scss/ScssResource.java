@@ -8,7 +8,6 @@ import org.apache.wicket.Application;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.apache.wicket.util.time.Time;
@@ -16,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.css.WicketCssPrecompilationException;
-import fr.openwide.core.wicket.more.lesscss.model.LessCssStylesheetInformation;
-import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
+import fr.openwide.core.wicket.more.css.scss.model.ScssStylesheetInformation;
+import fr.openwide.core.wicket.more.css.scss.service.IScssService;
 
 public class ScssResource extends PackageResource {
 
@@ -32,7 +31,7 @@ public class ScssResource extends PackageResource {
 	private String variation;
 	
 	@SpringBean
-	private ILessCssService scssService;
+	private IScssService scssService;
 
 	public ScssResource(Class<?> scope, String name) {
 		this(scope, name, null, null, null);
@@ -75,19 +74,16 @@ public class ScssResource extends PackageResource {
 		try {
 			resourceStream = super.getCacheableResourceStream();
 			
-			String scssSource = IOUtils.toString(resourceStream.getInputStream(), "UTF-8");
-			long lastModifiedTime = resourceStream.lastModifiedTime().getMilliseconds();
-			
-			LessCssStylesheetInformation cssInformation = scssService.getCompiledStylesheet(
-					new LessCssStylesheetInformation(getScope(), getName(), scssSource, lastModifiedTime),
+			ScssStylesheetInformation cssInformation = scssService.getCompiledStylesheet(
+					getScope(), getName(),
 					Application.get().usesDevelopmentConfig()
 			);
 			
-			StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css");
-			lessCssResourceStream.setCharset(Charset.forName("UTF-8"));
-			lessCssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
+			StringResourceStream scssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css");
+			scssResourceStream.setCharset(Charset.forName("UTF-8"));
+			scssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
 			
-			return lessCssResourceStream;
+			return scssResourceStream;
 		} catch (Exception e) {
 			throw new WicketCssPrecompilationException(String.format("Error reading SCSS source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);

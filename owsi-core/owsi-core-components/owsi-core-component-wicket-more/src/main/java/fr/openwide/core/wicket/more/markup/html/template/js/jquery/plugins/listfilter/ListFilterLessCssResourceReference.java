@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter;
 
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 
 public final class ListFilterLessCssResourceReference extends LessCssResourceReference {
 

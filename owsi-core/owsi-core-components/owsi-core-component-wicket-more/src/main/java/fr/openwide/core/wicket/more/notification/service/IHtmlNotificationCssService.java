@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.notification.service;
 import org.apache.wicket.markup.ComponentTag;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 
 public interface IHtmlNotificationCssService {
 	

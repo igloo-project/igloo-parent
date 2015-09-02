@@ -1,6 +1,6 @@
 package fr.openwide.core.showcase.web.application.util.template.styles;
 
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 
 public class SignInLessCssResourceReference extends LessCssResourceReference {
 

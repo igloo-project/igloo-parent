@@ -22,7 +22,7 @@ import com.phloc.css.decl.CascadingStyleSheet;
 import com.phloc.css.reader.CSSReader;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.notification.service.impl.SimplePhlocCssHtmlNotificationCssRegistry;
 
 public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotificationCssService {
