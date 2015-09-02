@@ -29,7 +29,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.config.spring.WicketMoreServiceConfig;
-import fr.openwide.core.wicket.more.lesscss.model.CssStylesheetInformation;
+import fr.openwide.core.wicket.more.lesscss.model.LessCssStylesheetInformation;
 
 /**
  * @see WicketMoreServiceConfig
@@ -65,7 +65,7 @@ public class LessCssServiceImpl implements ILessCssService {
 	// THEN, we check if a cached value exists. If it does, it is returned ; if not, the method is called. 
 	@Cacheable(value = "lessCssService.compiledStylesheets",
 			key = "T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)")
-	public CssStylesheetInformation getCompiledStylesheet(CssStylesheetInformation lessInformation, boolean checkCacheEntryUpToDate)
+	public LessCssStylesheetInformation getCompiledStylesheet(LessCssStylesheetInformation lessInformation, boolean checkCacheEntryUpToDate)
 			throws ServiceException {
 		prepareRawStylesheet(lessInformation);
 		try {
@@ -80,7 +80,7 @@ public class LessCssServiceImpl implements ILessCssService {
 			}
 			CompilationResult compilationResult = new ThreadUnsafeLessCompiler().compile(lessInformation.getSource(), configuration);
 			
-			CssStylesheetInformation compiledStylesheet = new CssStylesheetInformation(
+			LessCssStylesheetInformation compiledStylesheet = new LessCssStylesheetInformation(
 					lessInformation, compilationResult.getCss()
 			);
 			
@@ -105,7 +105,7 @@ public class LessCssServiceImpl implements ILessCssService {
 		}
 	}
 	
-	private void prepareRawStylesheet(CssStylesheetInformation lessSource) throws ServiceException {
+	private void prepareRawStylesheet(LessCssStylesheetInformation lessSource) throws ServiceException {
 		Matcher matcher = LESSCSS_IMPORT_PATTERN.matcher(lessSource.getSource());
 		
 		ClassPathResource importedResource;
@@ -135,7 +135,7 @@ public class LessCssServiceImpl implements ILessCssService {
 				importedResource = new ClassPathResource(importedResourceFilename, scope);
 				inputStream = importedResource.getURL().openStream();
 				
-				CssStylesheetInformation importedStylesheet = new CssStylesheetInformation(scope, importedResourceFilename, IOUtils.toString(inputStream), importedResource.lastModified());
+				LessCssStylesheetInformation importedStylesheet = new LessCssStylesheetInformation(scope, importedResourceFilename, IOUtils.toString(inputStream), importedResource.lastModified());
 				prepareRawStylesheet(importedStylesheet);
 				
 				lessSource.addImportedStylesheet(importedStylesheet);
@@ -183,7 +183,7 @@ public class LessCssServiceImpl implements ILessCssService {
 		SCOPES.put(scopeName, scope);
 	}
 	
-	public static String getCacheKey(CssStylesheetInformation resourceInformation) {
+	public static String getCacheKey(LessCssStylesheetInformation resourceInformation) {
 		StringBuilder cacheKeyBuilder = new StringBuilder();
 		cacheKeyBuilder.append(resourceInformation.getScope().getName());
 		cacheKeyBuilder.append("-");

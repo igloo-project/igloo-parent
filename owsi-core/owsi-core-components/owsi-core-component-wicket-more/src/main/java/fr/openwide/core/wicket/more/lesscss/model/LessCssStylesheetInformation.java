@@ -11,11 +11,11 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.google.common.collect.Lists;
 
-public class CssStylesheetInformation implements Serializable {
+public class LessCssStylesheetInformation implements Serializable {
 	
 	private static final long serialVersionUID = 5751644157529838224L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CssStylesheetInformation.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LessCssStylesheetInformation.class);
 	
 	private final Class<?> scope;
 	
@@ -27,7 +27,7 @@ public class CssStylesheetInformation implements Serializable {
 	
 	private Collection<Pair<? extends Class<?>, String>> referencedResources = Lists.newArrayList();
 	
-	public CssStylesheetInformation(CssStylesheetInformation reference, String newSource) {
+	public LessCssStylesheetInformation(LessCssStylesheetInformation reference, String newSource) {
 		this.scope = reference.scope;
 		this.name = reference.name;
 		this.referencedResources.addAll(reference.referencedResources);
@@ -35,7 +35,7 @@ public class CssStylesheetInformation implements Serializable {
 		this.lastModifiedTime = reference.lastModifiedTime;
 	}
 	
-	public CssStylesheetInformation(Class<?> scope, String name, String source, long lastModifiedTime) {
+	public LessCssStylesheetInformation(Class<?> scope, String name, String source, long lastModifiedTime) {
 		this.scope = scope;
 		this.name = name;
 		this.referencedResources.add(Pair.of(scope, name));
@@ -59,7 +59,7 @@ public class CssStylesheetInformation implements Serializable {
 		this.source = source;
 	}
 	
-	public void addImportedStylesheet(CssStylesheetInformation importedStylesheet) {
+	public void addImportedStylesheet(LessCssStylesheetInformation importedStylesheet) {
 		if (importedStylesheet.lastModifiedTime > this.lastModifiedTime) {
 			this.lastModifiedTime = importedStylesheet.lastModifiedTime;
 		}

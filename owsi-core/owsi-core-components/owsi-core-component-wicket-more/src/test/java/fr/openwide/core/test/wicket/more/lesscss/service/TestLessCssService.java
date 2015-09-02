@@ -11,7 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import fr.openwide.core.test.wicket.more.AbstractWicketMoreTestCase;
 import fr.openwide.core.test.wicket.more.lesscss.service.resource.TestLessCssServiceResourceScope;
 import fr.openwide.core.test.wicket.more.lesscss.service.resource.other.scope.TestLessCssServiceOtherResourceScope;
-import fr.openwide.core.wicket.more.lesscss.model.CssStylesheetInformation;
+import fr.openwide.core.wicket.more.lesscss.model.LessCssStylesheetInformation;
 import fr.openwide.core.wicket.more.lesscss.service.ILessCssService;
 
 public class TestLessCssService extends AbstractWicketMoreTestCase {
@@ -28,8 +28,8 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 			
 			String rawSource = IOUtils.toString(is);
 			
-			CssStylesheetInformation compiledStylesheet = lessCssService.getCompiledStylesheet(
-					new CssStylesheetInformation(
+			LessCssStylesheetInformation compiledStylesheet = lessCssService.getCompiledStylesheet(
+					new LessCssStylesheetInformation(
 							TestLessCssServiceResourceScope.class,
 							"style.less",
 							rawSource,
@@ -58,8 +58,8 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 			
 			String rawSource = IOUtils.toString(is);
 			
-			CssStylesheetInformation compiledStylesheet = lessCssService.getCompiledStylesheet(
-					new CssStylesheetInformation(
+			LessCssStylesheetInformation compiledStylesheet = lessCssService.getCompiledStylesheet(
+					new LessCssStylesheetInformation(
 							TestLessCssServiceResourceScope.class,
 							"style-scope.less",
 							rawSource,

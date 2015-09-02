@@ -75,6 +75,14 @@
 			<artifactId>less4j</artifactId>
 		</dependency>
 		
+		<!-- SCSS -->
+		
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-sass-compiler</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
 		<!-- Phloc CSS (pour les styles des notifications mail) -->
 		<dependency>
 			<groupId>com.phloc</groupId>
