@@ -1,6 +1,6 @@
 package fr.openwide.core.basicapp.web.application.common.template.styles.notification;
 
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 
 public final class NotificationLessCssResourceReference extends LessCssResourceReference {
 
