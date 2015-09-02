@@ -58,13 +58,13 @@ public class LessCssServiceImpl implements ILessCssService {
 	@Override
 	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 
 	@CacheEvict(value = "lessCssService.compiledStylesheets", 
-			key = "T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)",
+			key = "T(fr.openwide.core.wicket.more.css.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)",
 			beforeInvocation = true,
-			condition= "#checkCacheEntryUpToDate && !(caches.?[name=='lessCssService.compiledStylesheets'][0]?.get(T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation))?.get()?.isUpToDate() ?: false)"
+			condition= "#checkCacheEntryUpToDate && !(caches.?[name=='lessCssService.compiledStylesheets'][0]?.get(T(fr.openwide.core.wicket.more.css.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation))?.get()?.isUpToDate() ?: false)"
 			)
 	// THEN, we check if a cached value exists. If it does, it is returned ; if not, the method is called. 
 	@Cacheable(value = "lessCssService.compiledStylesheets",
-			key = "T(fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)")
+			key = "T(fr.openwide.core.wicket.more.css.lesscss.service.LessCssServiceImpl).getCacheKey(#lessInformation)")
 	public LessCssStylesheetInformation getCompiledStylesheet(LessCssStylesheetInformation lessInformation, boolean checkCacheEntryUpToDate)
 			throws ServiceException {
 		prepareRawStylesheet(lessInformation);
