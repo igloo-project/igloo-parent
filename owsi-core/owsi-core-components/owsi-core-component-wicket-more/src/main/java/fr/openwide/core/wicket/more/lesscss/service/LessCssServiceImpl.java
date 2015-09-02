@@ -47,7 +47,7 @@ public class LessCssServiceImpl implements ILessCssService {
 	
 	private static final Pattern SCOPE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
 	
-	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
+	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(10);
 	
 	/**
 	 * required = false pour les tests unitaires
