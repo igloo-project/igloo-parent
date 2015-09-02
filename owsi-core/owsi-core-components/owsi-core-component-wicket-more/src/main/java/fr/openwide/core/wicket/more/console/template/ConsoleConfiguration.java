@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.UrlUtils;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -24,7 +25,6 @@ import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMainten
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourceReference;
-import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
@@ -38,7 +38,7 @@ public final class ConsoleConfiguration {
 	
 	private String consolePageTitleKey;
 	
-	private Set<LessCssResourceReference> lessCssResourcesReferences = Sets.newLinkedHashSet();
+	private Set<ResourceReference> cssResourcesReferences = Sets.newLinkedHashSet();
 	
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
@@ -84,7 +84,7 @@ public final class ConsoleConfiguration {
 			maintenanceMenuSection.addMenuItem(fileMenuItem);
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
-			INSTANCE.addLessCssResourceReference(ConsoleLessCssResourceReference.get());
+			INSTANCE.addCssResourceReference(ConsoleLessCssResourceReference.get());
 		}
 		
 		return INSTANCE;
@@ -146,12 +146,12 @@ public final class ConsoleConfiguration {
 		this.consolePageTitleKey = consolePageTitleKey;
 	}
 
-	public Set<LessCssResourceReference> getLessCssResourcesReferences() {
-		return lessCssResourcesReferences;
+	public Set<ResourceReference> getCssResourcesReferences() {
+		return cssResourcesReferences;
 	}
 
-	public boolean addLessCssResourceReference(LessCssResourceReference lessCssResourceReference) {
-		return lessCssResourcesReferences.add(lessCssResourceReference);
+	public boolean addCssResourceReference(ResourceReference cssResourceReference) {
+		return cssResourcesReferences.add(cssResourceReference);
 	}
 
 	private ConsoleConfiguration() {

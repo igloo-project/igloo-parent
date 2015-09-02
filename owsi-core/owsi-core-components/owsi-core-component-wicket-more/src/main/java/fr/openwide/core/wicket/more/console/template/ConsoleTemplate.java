@@ -16,6 +16,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
@@ -29,7 +30,6 @@ import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
-import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -144,8 +144,8 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		for (LessCssResourceReference lessCssResourceReference : ConsoleConfiguration.get().getLessCssResourcesReferences()) {
-			response.render(CssHeaderItem.forReference(lessCssResourceReference));
+		for (ResourceReference cssResourceReference : ConsoleConfiguration.get().getCssResourcesReferences()) {
+			response.render(CssHeaderItem.forReference(cssResourceReference));
 		}
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
