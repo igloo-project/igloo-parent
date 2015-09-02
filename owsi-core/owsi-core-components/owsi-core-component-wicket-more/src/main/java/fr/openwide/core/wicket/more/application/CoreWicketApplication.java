@@ -13,6 +13,8 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.head.PriorityFirstComparator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.resource.PackageResource;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
@@ -29,8 +31,8 @@ import org.springframework.context.ApplicationContext;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
-import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
+import fr.openwide.core.wicket.more.css.scss.service.IScssService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -38,6 +40,7 @@ import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.CoreBoot
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap4.CoreBootstrap4CssScope;
 import fr.openwide.core.wicket.more.notification.listener.HtmlNotificationComponentCssClassHandler;
 import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWithHtmlNotificationSupport;
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
@@ -57,6 +60,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	@Autowired
 	protected ILessCssService lessCssService;
+	
+	@Autowired
+	protected IScssService scssService;
 	
 	/**
 	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
@@ -100,6 +106,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// on ajoute globalement l'accès aux ressources less et aux joyeusetés liés aux polices.
 		SecurePackageResourceGuard packageResourceGuard = (SecurePackageResourceGuard) getResourceSettings().getPackageResourceGuard();
 		packageResourceGuard.addPattern("+*.less");
+		packageResourceGuard.addPattern("+*.scss");
 		packageResourceGuard.addPattern("+*.woff");
 		packageResourceGuard.addPattern("+*.eot");
 		packageResourceGuard.addPattern("+*.svg");
@@ -150,6 +157,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationPages();
 		
 		registerLessImportScopes();
+		registerScssImportScopes();
 		
 		BooleanQuery.setMaxClauseCount(configurer.getLuceneBooleanQueryMaxClauseCount());
 	}
@@ -159,6 +167,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
 		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);
+	}
+	
+	protected void registerScssImportScopes() {
+		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
 	}
 	
 	protected void mountCommonPages() {
@@ -185,14 +197,14 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mount(new PageParameterAwareMountedMapper(path, pageClass));
 	}
 
-	protected void preloadStyleSheets(LessCssResourceReference... lessCssResourcesReferences) {
-		for (LessCssResourceReference resourceReference : lessCssResourcesReferences) {
+	protected void preloadStyleSheets(ResourceReference... resourcesReferences) {
+		for (ResourceReference resourceReference : resourcesReferences) {
 			LOGGER.info("Preloading stylesheet '{}/{}'...", resourceReference.getScope().getName(),
 					resourceReference.getName());
 			IResourceStream resourceStream = null;
 			try {
 				// Just initialize the underlying cache, whatever the content is.
-				resourceStream = resourceReference.getResource().getResourceStream();
+				resourceStream = ((PackageResource) resourceReference.getResource()).getResourceStream();
 			} finally {
 				if (resourceStream != null) {
 					try {

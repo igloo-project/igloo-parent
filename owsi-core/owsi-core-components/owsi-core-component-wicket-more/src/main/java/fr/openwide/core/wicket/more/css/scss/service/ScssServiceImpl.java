@@ -43,7 +43,7 @@ public class ScssServiceImpl implements IScssService {
 	@Override
 	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 
 	@CacheEvict(value = "scssService.compiledStylesheets", 
-			key = "T(fr.openwide.core.wicket.more.css.scss.service.ScssServiceImpl).getCacheKey(#lessInformation)",
+			key = "T(fr.openwide.core.wicket.more.css.scss.service.ScssServiceImpl).getCacheKey(#scope, #path)",
 			beforeInvocation = true,
 			condition= "#checkCacheEntryUpToDate && !(caches.?[name=='scssService.compiledStylesheets'][0]?.get(T(fr.openwide.core.wicket.more.css.scss.service.ScssServiceImpl).getCacheKey(#scope, #path))?.get()?.isUpToDate() ?: false)"
 			)

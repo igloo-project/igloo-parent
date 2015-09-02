@@ -61,15 +61,15 @@ public class ScssResource extends PackageResource {
 
 	@Override
 	public IResourceStream getCacheableResourceStream() {
-		return getLessResourceStream();
+		return getScssResourceStream();
 	}
 
 	@Override
 	public IResourceStream getResourceStream() {
-		return getLessResourceStream();
+		return getScssResourceStream();
 	}
 
-	protected IResourceStream getLessResourceStream() {
+	protected IResourceStream getScssResourceStream() {
 		IResourceStream resourceStream = null;
 		try {
 			resourceStream = super.getCacheableResourceStream();
