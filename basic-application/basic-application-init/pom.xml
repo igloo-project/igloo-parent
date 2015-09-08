@@ -43,7 +43,7 @@
 				<configuration>
 				<archive>
 					<manifest>
-						<mainClass>fr.openwide.core.basicapp.init.BasicApplicationInitFromExcelMain</mainClass>
+						<mainClass>${packageName}.${archetypeApplicationNamePrefix}InitFromExcelMain</mainClass>
 						<addClasspath>true</addClasspath>
 						<classpathPrefix>lib/</classpathPrefix>
 						<useUniqueVersions>false</useUniqueVersions><!-- For snapshots -->
