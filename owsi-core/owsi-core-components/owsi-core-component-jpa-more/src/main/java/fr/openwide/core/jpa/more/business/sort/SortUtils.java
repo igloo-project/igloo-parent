@@ -54,6 +54,16 @@ public final class SortUtils {
 		return map;
 	}
 	
+	public static <T extends ISort<?>> void appendTo(Map<T, SortOrder> dst, Map<? extends T, SortOrder> addedMap) {
+		for (Map.Entry<? extends T, SortOrder> addedEntry : addedMap.entrySet()) {
+			T sort = addedEntry.getKey();
+			if (!dst.containsKey(sort)) {
+				SortOrder sortOrder = addedEntry.getValue();
+				dst.put(sort, sortOrder);
+			}
+		}
+	}
+	
 	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, SortField.Type type, Binding<?> binding, String ... otherFieldParts) {
 		List<String> fieldParts = Lists.asList(binding.getPath(), otherFieldParts);
 		String fieldName = Joiner.on(".").join(fieldParts);

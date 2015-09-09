@@ -17,6 +17,8 @@
 
 package fr.openwide.core.wicket.more.model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -24,6 +26,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
@@ -34,6 +38,8 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		extends LoadableDetachableModel<E> {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntityModel.class);
 
 	@SpringBean
 	private IEntityService entityService;
@@ -87,7 +93,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		E persistentObject = HibernateUtils.unwrap(entity);
 		super.setObject(persistentObject);
 		attached = true;
-		updateSerializableData(); // Useless ; for compatibility with old applications only
+		updateSerializableData(); // Useful to keep equals() up-to-date and for compatibility with old applications
 	}
 	
 	protected K getId() {
@@ -148,6 +154,16 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 				.append(persistedEntityReference)
 				.append(notYetPersistedEntity)
 				.toHashCode();
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		if (attached) {
+			LOGGER.warn(
+					"Serializing an attached GenericEntityModel with persistedEntityReference={} and notYetPersistedEntity={}",
+					persistedEntityReference, notYetPersistedEntity
+			);
+		}
+		out.defaultWriteObject();
 	}
 
 }
