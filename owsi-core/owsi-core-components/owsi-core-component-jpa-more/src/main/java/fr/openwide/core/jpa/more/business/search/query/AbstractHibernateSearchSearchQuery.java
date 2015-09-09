@@ -20,7 +20,6 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
@@ -29,7 +28,8 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
-import fr.openwide.core.jpa.util.EntityManagerUtils;
+import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
+import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
@@ -37,20 +37,13 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION = new BindingToPathFunction();
 	
-	@Autowired
-	private EntityManagerUtils entityManagerUtils;
-	
 	private final Class<? extends T> mainClass;
 	private final Class<? extends T>[] classes;
 	
-	/**
-	 * Use only during the builder phase: you need a fresh EntityManager (ie not the one which might have been injected
-	 * in another request) to execute the query.
-	 */
-	private FullTextEntityManager builderFullTextEntityManager;
-	
 	private BooleanJunction<?> junction;
+	private FullTextQuery fullTextQuery;
 	private QueryBuilder defaultQueryBuilder;
+	private FullTextEntityManager fullTextEntityManager;
 	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
 	
 	@SuppressWarnings("unchecked")
@@ -68,23 +61,19 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@PostConstruct
 	private void init() {
-		builderFullTextEntityManager = getFullTextEntityManager();
+		fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		
-		defaultQueryBuilder = builderFullTextEntityManager.getSearchFactory().buildQueryBuilder()
+		defaultQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 				.forEntity(mainClass).get();
 		
 		junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
-	}
-	
-	protected FullTextEntityManager getFullTextEntityManager() {
-		return Search.getFullTextEntityManager(entityManagerUtils.getCurrentEntityManager());
 	}
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
 		if (analyzerCache.containsKey(clazz)) {
 			return analyzerCache.get(clazz);
 		} else {
-			Analyzer analyzer = builderFullTextEntityManager.getSearchFactory().getAnalyzer(clazz);
+			Analyzer analyzer = fullTextEntityManager.getSearchFactory().getAnalyzer(clazz);
 			analyzerCache.put(clazz, analyzer);
 			return analyzer;
 		}
@@ -96,6 +85,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected QueryBuilder getDefaultQueryBuilder() {
 		return defaultQueryBuilder;
+	}
+	
+	protected FullTextEntityManager getFullTextEntityManager() {
+		return fullTextEntityManager;
 	}
 
 	// Junction appender
@@ -134,8 +127,25 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 	}
 	
+	// List and count
+	/**
+	 * Allow to add filter before generating the full text query.<br />
+	 * Sample:
+	 * <ul>
+	 * 	<li><code>must(matchIfGiven(Bindings.company().manager().organization(), organization))</code></li>
+	 * 	<li><code>must(matchIfGiven(Bindings.company().status(), CompanyStatus.ACTIVE))</code></li>
+	 * </ul>
+	 */
+	protected void addFilterBeforeCreateQuery() {
+		// Nothing
+	}
+	
 	private FullTextQuery getFullTextQuery() {
-		return getFullTextEntityManager().createFullTextQuery(junction.createQuery(), classes);
+		if (fullTextQuery == null) {
+			addFilterBeforeCreateQuery();
+			fullTextQuery = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
+		}
+		return fullTextQuery;
 	}
 	
 	@Override
@@ -167,6 +177,30 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	// Query factory
+	// 	> Match null
+	/**
+	 * <strong>Be careful</strong>: using this method needs null values to be indexed.
+	 * You can use {@link NullEncodingGenericEntityIdFieldBridge} instead of the classical {@link GenericEntityIdFieldBridge} for example.
+	 */
+	protected Query matchNull(AbstractBinding<?, ?> binding) {
+		return matchNull(defaultQueryBuilder, binding);
+	}
+	
+	protected Query matchNull(QueryBuilder builder, AbstractBinding<?, ?> binding) {
+		return matchNull(builder, binding.getPath());
+	}
+	
+	protected Query matchNull(String fieldPath) {
+		return matchNull(defaultQueryBuilder, fieldPath);
+	}
+	
+	protected Query matchNull(QueryBuilder builder, String fieldPath) {
+		return builder.keyword()
+				.onField(fieldPath)
+				.matching(null)
+				.createQuery();
+	}
+	
 	// 	>	Match if given
 	protected <P> Query matchIfGiven(AbstractBinding<?, P> binding, P value) {
 		return matchIfGiven(defaultQueryBuilder, binding, value);
@@ -183,9 +217,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	protected <P> Query matchIfGiven(QueryBuilder builder, String fieldPath, P value) {
 		if (value == null) {
 			return null;
-		}
-		if (value instanceof String) {
-			throw new IllegalArgumentException("If you want to match a String, use matchOneTermIfGiven or matchAllTermIfGiven instead.");
 		}
 		
 		return builder.keyword()
