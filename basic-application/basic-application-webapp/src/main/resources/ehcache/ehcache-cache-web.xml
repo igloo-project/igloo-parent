@@ -9,5 +9,9 @@
 	<cache name="lessCssService.compiledStylesheets" maxElementsInMemory="10"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true">
 	</cache>
+	
+	<cache name="scssService.compiledStylesheets" maxElementsInMemory="10"
+		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true">
+	</cache>
 		
 </ehcache>
