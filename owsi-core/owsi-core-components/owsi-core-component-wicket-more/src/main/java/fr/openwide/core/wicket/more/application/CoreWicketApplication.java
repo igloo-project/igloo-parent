@@ -32,7 +32,6 @@ import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
-import fr.openwide.core.wicket.more.css.scss.service.IScssService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -40,7 +39,6 @@ import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.CoreBoot
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
-import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap4.CoreBootstrap4CssScope;
 import fr.openwide.core.wicket.more.notification.listener.HtmlNotificationComponentCssClassHandler;
 import fr.openwide.core.wicket.more.notification.markup.parser.MarkupFactoryWithHtmlNotificationSupport;
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
@@ -61,8 +59,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Autowired
 	protected ILessCssService lessCssService;
 	
-	@Autowired
-	protected IScssService scssService;
+	// TODO SCSS
+	// @Autowired
+	// protected IScssService scssService;
 	
 	/**
 	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
@@ -157,7 +156,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationPages();
 		
 		registerLessImportScopes();
-		registerScssImportScopes();
+		// TODO SCSS
+//		registerScssImportScopes();
 		
 		BooleanQuery.setMaxClauseCount(configurer.getLuceneBooleanQueryMaxClauseCount());
 	}
@@ -169,9 +169,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);
 	}
 	
-	protected void registerScssImportScopes() {
-		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
-	}
+	// TODO SCSS
+//	protected void registerScssImportScopes() {
+//		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
+//	}
 	
 	protected void mountCommonPages() {
 	}
