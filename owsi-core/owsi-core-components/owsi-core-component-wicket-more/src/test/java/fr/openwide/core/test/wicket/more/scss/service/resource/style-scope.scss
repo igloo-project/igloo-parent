@@ -1,6 +1,6 @@
 @import "include";
 @import "test";
-@import "${scope-test}/test3";
+@import "$(scope-test)/test3";
 
 test {
 }

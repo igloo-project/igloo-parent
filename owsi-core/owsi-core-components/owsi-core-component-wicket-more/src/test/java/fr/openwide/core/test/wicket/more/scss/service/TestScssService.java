@@ -26,7 +26,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 					false
 			);
 			
-			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}", compiledStylesheet.getSource());
+			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n", compiledStylesheet.getSource());
 			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 		} finally {
 		}
@@ -44,7 +44,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 					false
 			);
 			
-			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}", compiledStylesheet.getSource());
+			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n", compiledStylesheet.getSource());
 			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 		} finally {
 			if (is != null) {

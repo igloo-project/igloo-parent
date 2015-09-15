@@ -130,6 +130,7 @@
 		<owsi-core.wqplot.version>6.1.1.owsi6</owsi-core.wqplot.version>
 		
 		<owsi-core.less4j.version>1.14.0</owsi-core.less4j.version>
+		<owsi-core.jsass.version>3.3.0</owsi-core.jsass.version>
 		
 		<owsi-core.junit.version>4.12</owsi-core.junit.version>
 		<owsi-core.mockito.version>1.10.19</owsi-core.mockito.version>
@@ -666,6 +667,12 @@
 							<artifactId>commons-logging</artifactId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>io.bit3</groupId>
+					<artifactId>jsass</artifactId>
+					<version>${owsi-core.jsass.version}</version>
 				</dependency>
 				
 				<dependency>

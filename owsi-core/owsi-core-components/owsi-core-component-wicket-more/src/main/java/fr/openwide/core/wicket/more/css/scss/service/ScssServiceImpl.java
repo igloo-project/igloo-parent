@@ -1,9 +1,18 @@
 package fr.openwide.core.wicket.more.css.scss.service;
 
+import io.bit3.jsass.Compiler;
+import io.bit3.jsass.Options;
+import io.bit3.jsass.Output;
+import io.bit3.jsass.OutputStyle;
+import io.bit3.jsass.context.Context;
+import io.bit3.jsass.context.StringContext;
+
+import java.net.URI;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.wicket.util.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +22,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
-import com.vaadin.sass.internal.ScssStylesheet;
-import com.vaadin.sass.internal.handler.SCSSDocumentHandlerImpl;
-import com.vaadin.sass.internal.handler.SCSSErrorHandler;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.CoreConfigurer;
@@ -54,29 +60,24 @@ public class ScssServiceImpl implements IScssService {
 			throws ServiceException {
 		String scssPath = getFullPath(scope, path);
 		
-		SCSSErrorHandler errorHandler = new SCSSErrorHandler();
-		errorHandler.setWarningsAreErrors(false);
 		try {
-			// Parse stylesheet
-			ScssStylesheet scss = ScssStylesheet.get(scssPath, null, new SCSSDocumentHandlerImpl(),
-					errorHandler);
-			if (scss == null) {
-				throw new ServiceException(String.format("The SCSS file %1$s could not be found", scssPath));
-			}
+			JSassScopeAwareImporter importer = new JSassScopeAwareImporter(SCOPES);
+			importer.addSourceUri(scssPath);
 			
-			scss.addResolver(new ScopeAwareScssStylesheetResolver(SCOPES));
-
-			// Compile scss -> css
-			scss.compile();
+			Compiler compiler = new Compiler();
+			Options options = new Options();
+			options.setOutputStyle(OutputStyle.EXPANDED);
+			options.setIndent("\t");
+			options.getImporters().add(importer);
 			
-			if (errorHandler.isErrorsDetected()) {
-				throw new ServiceException(String.format("Error compiling %1$s: see errors above", scssPath));
-			}
-
+			ClassPathResource scssCpr = new ClassPathResource(scssPath);
+			
+			Context fileContext = new StringContext(IOUtils.toString(scssCpr.getInputStream()), new URI("classpath", "/" + scssPath, null), null, options);
+			Output output = compiler.compile(fileContext);
 			// Write result
-			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(scssPath, scss.printState());
+			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(scssPath, output.getCss());
 			
-			for (String sourceUri : scss.getSourceUris()) {
+			for (String sourceUri : importer.getSourceUris()) {
 				ClassPathResource cpr = new ClassPathResource(sourceUri);
 				compiledStylesheet.addImportedStylesheet(new ScssStylesheetInformation(sourceUri, cpr.lastModified()));
 			}

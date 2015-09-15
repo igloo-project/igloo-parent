@@ -78,9 +78,8 @@
 		<!-- SCSS -->
 		
 		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-sass-compiler</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<groupId>io.bit3</groupId>
+			<artifactId>jsass</artifactId>
 		</dependency>
 		
 		<!-- Phloc CSS (pour les styles des notifications mail) -->
