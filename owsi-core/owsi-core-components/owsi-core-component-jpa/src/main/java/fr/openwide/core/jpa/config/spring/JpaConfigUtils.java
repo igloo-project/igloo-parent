@@ -18,6 +18,7 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
+import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.AvailableSettings;
 import org.hibernate.loader.BatchFetchStyle;
@@ -43,9 +44,7 @@ import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.hibernate.cache.ehcache.EhCache285RegionFactory;
-import fr.openwide.core.jpa.hibernate.cache.ehcache.SingletonEhCache285RegionFactory;
-import fr.openwide.core.jpa.util.PostgreSQLPhysicalNamingStrategy;
+import fr.openwide.core.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 
 public final class JpaConfigUtils {
 
@@ -96,9 +95,9 @@ public final class JpaConfigUtils {
 		boolean queryCacheEnabled = configuration.isQueryCacheEnabled();
 		if (StringUtils.hasText(ehCacheConfiguration)) {
 			if (singletonCache) {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCache285RegionFactory.class.getName());
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
 			} else {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCache285RegionFactory.class.getName());
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
 			}
 			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
@@ -158,7 +157,7 @@ public final class JpaConfigUtils {
 		} else {
 			throw new IllegalStateException(Environment.PHYSICAL_NAMING_STRATEGY + " may not be null: sensible values are "
 					+ PhysicalNamingStrategyStandardImpl.class.getName() + " for no filtering of the name "
-					+ PostgreSQLPhysicalNamingStrategy.class.getName() + " to truncate the name to conform with PostgreSQL identifier max length");
+					+ PostgreSQLPhysicalNamingStrategyImpl.class.getName() + " to truncate the name to conform with PostgreSQL identifier max length");
 		}
 		
 		Boolean isNewGeneratorMappingsEnabled = configuration.isNewGeneratorMappingsEnabled();
