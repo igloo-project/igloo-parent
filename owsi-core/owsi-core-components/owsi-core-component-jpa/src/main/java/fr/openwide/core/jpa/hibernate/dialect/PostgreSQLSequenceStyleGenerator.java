@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.util;
+package fr.openwide.core.jpa.hibernate.dialect;
 
 import java.util.Properties;
 

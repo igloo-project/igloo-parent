@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.engine.spi.SessionImplementor;
 
-import fr.openwide.core.jpa.util.PostgreSQLSequenceStyleGenerator;
+import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLSequenceStyleGenerator;
 
 /**
  * Sequence generator used to define the new id from the id used in an old application.

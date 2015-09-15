@@ -1,10 +1,10 @@
-package fr.openwide.core.jpa.util;
+package fr.openwide.core.jpa.hibernate.model.naming;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
-public class PostgreSQLPhysicalNamingStrategy implements PhysicalNamingStrategy {
+public class PostgreSQLPhysicalNamingStrategyImpl implements PhysicalNamingStrategy {
 
 	private static final int IDENTIFIER_MAX_LENGTH = 63;
 
