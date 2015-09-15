@@ -3,6 +3,7 @@ package fr.openwide.core.test.wicket.more.scss.service;
 import java.io.InputStream;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,9 +13,10 @@ import fr.openwide.core.test.wicket.more.scss.service.resource.other.scope.TestS
 import fr.openwide.core.wicket.more.css.scss.model.ScssStylesheetInformation;
 import fr.openwide.core.wicket.more.css.scss.service.IScssService;
 
+@Ignore
 public class TestScssService extends AbstractWicketMoreTestCase {
 	
-	@Autowired
+	// TODO SCSS @Autowired
 	private IScssService scssService;
 	
 	@Test

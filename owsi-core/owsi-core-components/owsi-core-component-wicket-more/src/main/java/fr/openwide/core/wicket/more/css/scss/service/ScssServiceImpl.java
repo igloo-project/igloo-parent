@@ -31,7 +31,7 @@ import fr.openwide.core.wicket.more.css.scss.model.ScssStylesheetInformation;
 /**
  * @see WicketMoreServiceConfig
  */
-@Service("scssService")
+// TODO SCSS : @Service("scssService")
 public class ScssServiceImpl implements IScssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScssServiceImpl.class);
