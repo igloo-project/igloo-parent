@@ -43,7 +43,7 @@ public abstract class GenericEntityListView<T extends GenericEntity<?, ?>> exten
 
 	@SuppressWarnings({ "rawtypes", "unchecked" }) // Works around restrictions on GenericEntityModel that seem too strong.
 	protected IModel<T> getItemModel(T object) {
-		return GenericEntityModel.of((GenericEntity)object);
+		return (IModel<T>) GenericEntityModel.of((GenericEntity) object);
 	}
 
 }

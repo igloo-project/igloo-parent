@@ -611,7 +611,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 	
 	public static <T extends Number> Renderer<T> count(String resourceKeyPrefix, Renderer<? super T> numberRenderer) {
-		return new CountRenderer<>(resourceKeyPrefix, numberRenderer).nullsAsNull();
+		return new CountRenderer<T>(resourceKeyPrefix, numberRenderer).nullsAsNull();
 	}
 	
 	private static class CountRenderer<T extends Number> extends Renderer<T> {
