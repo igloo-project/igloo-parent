@@ -55,8 +55,8 @@
 		
 		<owsi-core.spring-ldap.version>2.0.4.RELEASE</owsi-core.spring-ldap.version>
 		
-		<owsi-core.hibernate-search.version>5.4.0.Final</owsi-core.hibernate-search.version>
-		<owsi-core.lucene.version>4.10.4</owsi-core.lucene.version>
+		<owsi-core.hibernate-search.version>5.5.0.Final</owsi-core.hibernate-search.version>
+		<owsi-core.lucene.version>5.3.0</owsi-core.lucene.version>
 		
 		<owsi-core.quartz.version>2.2.1</owsi-core.quartz.version>
 		
@@ -90,7 +90,7 @@
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.13</owsi-core.jackson.version>
-		<owsi-core.jackson2-core.version>2.6.1</owsi-core.jackson2-core.version>
+		<owsi-core.jackson2-core.version>2.6.2</owsi-core.jackson2-core.version>
 		<owsi-core.jackson2-annotations.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
@@ -101,7 +101,7 @@
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.8.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7.7</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.5</owsi-core.httpclient.version>
+		<owsi-core.httpclient.version>4.5.1</owsi-core.httpclient.version>
 		<owsi-core.httpcore.version>4.4.3</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.0.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.7</owsi-core.phloc-css.version>
