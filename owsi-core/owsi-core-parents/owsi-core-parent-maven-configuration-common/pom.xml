@@ -31,7 +31,7 @@
 		<owsi-core.maven-jar-plugin.version>2.4</owsi-core.maven-jar-plugin.version>
 		<owsi-core.maven-deploy-plugin.version>2.8.1</owsi-core.maven-deploy-plugin.version>
 		<owsi-core.maven-source-plugin.version>2.3</owsi-core.maven-source-plugin.version>
-		<owsi-core.maven-javadoc-plugin.version>2.10.1</owsi-core.maven-javadoc-plugin.version>
+		<owsi-core.maven-javadoc-plugin.version>2.10.3</owsi-core.maven-javadoc-plugin.version>
 		<owsi-core.maven-enforcer-plugin.version>1.4.1</owsi-core.maven-enforcer-plugin.version>
 		<owsi-core.maven-dependency-plugin.version>2.8</owsi-core.maven-dependency-plugin.version>
 		
@@ -184,6 +184,7 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${owsi-core.maven-javadoc-plugin.version}</version>
 					<configuration>
+						<additionalparam>-Xdoclint:none</additionalparam>
 						<skip>true</skip>
 					</configuration>
 				</plugin>
