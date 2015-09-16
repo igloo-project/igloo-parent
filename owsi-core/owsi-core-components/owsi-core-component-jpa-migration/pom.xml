@@ -9,7 +9,7 @@
 	
 	<artifactId>owsi-core-component-jpa-migration</artifactId>
 	
-	<name>Jpa migration helpers</name>
+	<name>OWSI Core - Component - JPA - Migration helpers</name>
 	<description>Capitalisation des outils de migration pour la technologie JPA</description>
 	
 	<dependencies>
