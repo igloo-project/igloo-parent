@@ -19,10 +19,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
-		<jdk.version>1.7</jdk.version>
-		
-		<minimal.maven.version>3.1.1</minimal.maven.version>
-		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
 		
@@ -53,7 +49,7 @@
 		<owsi-core.cglib.version>3.1</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.20.0-GA</owsi-core.javassist.version>
 		
-		<owsi-core.bindgen.version>2.23</owsi-core.bindgen.version>
+		<owsi-core.bindgen.version>2.27-ow</owsi-core.bindgen.version>
 		
 		<owsi-core.spring-security.version>4.0.2.RELEASE</owsi-core.spring-security.version>
 		
