@@ -28,6 +28,8 @@ import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Ordering;
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
 
 import fr.openwide.core.commons.util.ordering.SerializableCollator;
 
@@ -39,7 +41,7 @@ import fr.openwide.core.commons.util.ordering.SerializableCollator;
  * @param <E> type de l'entité
  */
 @MappedSuperclass
-public abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+public abstract class GenericEntity<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 		implements Serializable, Comparable<E> {
 
 	private static final long serialVersionUID = -3988499137919577054L;
@@ -61,6 +63,7 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	 * 
 	 * @return id
 	 */
+	@QueryType(PropertyType.COMPARABLE)
 	public abstract K getId();
 
 	/**
