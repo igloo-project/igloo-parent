@@ -177,6 +177,7 @@ public abstract class AbstractTestCase {
 		
 		Enumerated enumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(Enumerated.class);
 		MapKeyEnumerated mapKeyEnumerated = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(MapKeyEnumerated.class);
+		MapKey mapKey = attribute.getJavaMember().getDeclaringClass().getDeclaredField(attribute.getName()).getAnnotation(MapKey.class);
 		
 		// cas des embeddable et des collectionOfElements d'embeddable
 		if (attribute.getPersistentAttributeType().equals(PersistentAttributeType.ELEMENT_COLLECTION)
@@ -220,7 +221,8 @@ public abstract class AbstractTestCase {
 		} else if (attribute instanceof MapAttribute) {
 			MapAttribute<?, ?, ?> mapAttribute = (MapAttribute<?, ?, ?>) attribute;
 			if (Enum.class.isAssignableFrom(mapAttribute.getKeyJavaType())
-					&& (mapKeyEnumerated == null || EnumType.ORDINAL.equals(mapKeyEnumerated))) {
+					&& (mapKeyEnumerated == null || EnumType.ORDINAL.equals(mapKeyEnumerated))
+					&& mapKey == null /* if @MapKey present, then field format is defined elsewhere and check is useless */) {
 				throw new IllegalStateException(
 						"Map \"" + attribute.getName() + "\" de clés ordinales "
 						+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
