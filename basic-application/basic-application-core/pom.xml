@@ -79,6 +79,18 @@
 				<profile.filter.file>src/main/filters/production.properties</profile.filter.file>
 			</properties>
 		</profile>
+		<profile>
+			<id>owsi-core-release</id>
+			<activation>
+				<property>
+					<name>distribution</name>
+					<value>owsi-core-release</value>
+				</property>
+			</activation>
+			<properties>
+				<profile.filter.file>src/main/filters/release.properties</profile.filter.file>
+			</properties>
+		</profile>
 	</profiles>
 	
 	<build>
