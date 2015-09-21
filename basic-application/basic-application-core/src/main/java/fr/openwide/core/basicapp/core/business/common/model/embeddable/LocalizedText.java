@@ -10,6 +10,7 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.SortableField;
 
 import fr.openwide.core.basicapp.core.business.common.util.BasicApplicationLocale;
 import fr.openwide.core.jpa.more.business.localization.model.AbstractLocalizedText;
@@ -33,6 +34,7 @@ public class LocalizedText extends AbstractLocalizedText {
 		@Field(name = FR_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT)),
 		@Field(name = FR_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
+	@SortableField(forField = FR_SORT)
 	private String fr;
 
 	@Column
@@ -41,6 +43,7 @@ public class LocalizedText extends AbstractLocalizedText {
 		@Field(name = EN_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT)),
 		@Field(name = EN_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
+	@SortableField(forField = EN_SORT)
 	private String en;
 
 	public LocalizedText() {
