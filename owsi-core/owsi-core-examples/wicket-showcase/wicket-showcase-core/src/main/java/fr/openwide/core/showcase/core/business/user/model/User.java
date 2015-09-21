@@ -32,7 +32,7 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	}
 	
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
-	@SortableField(forField = "sortName")
+	@SortableField
 	public String getSortName() {
 		StringBuilder builder = new StringBuilder();
 		if(getLastName() != null) {
