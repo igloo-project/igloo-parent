@@ -26,6 +26,7 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.SortableField;
 
 import com.google.common.collect.Ordering;
 
@@ -57,6 +58,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = LABEL_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = LABEL_SORT_FIELD_NAME)
 	private String label;
 	
 	@Column
@@ -64,6 +66,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = SHORT_LABEL_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = SHORT_LABEL_SORT_FIELD_NAME)
 	private String shortLabel;
 	
 	@Column(nullable = false)

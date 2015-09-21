@@ -29,6 +29,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.SortableField;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -149,6 +150,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = DATE_SORT_FIELD_NAME)
 	private Date date;
 
 	public AbstractAudit() {

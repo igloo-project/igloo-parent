@@ -18,6 +18,7 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.SortableField;
 import org.springframework.core.style.ToStringCreator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,6 +49,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = NAME_SORT_FIELD_NAME)
 	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String name;
 

@@ -14,6 +14,7 @@ import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.SortableField;
 
 import com.google.common.base.Objects;
 
@@ -33,6 +34,7 @@ public abstract class AbstractAuditableProperty<T> implements Serializable {
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
 		@Field(name = LAST_EDIT_DATE_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = LAST_EDIT_DATE_SORT)
 	private Date lastEditDate;
 
 	public abstract T getValue();

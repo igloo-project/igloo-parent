@@ -10,6 +10,7 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.SortableField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,6 +33,7 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 			@Field(name = FIRST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = FIRST_NAME_SORT_FIELD_NAME)
 	private String firstName;
 	
 	@Column(nullable = false)
@@ -39,6 +41,7 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 			@Field(name = LAST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = LAST_NAME_SORT_FIELD_NAME)
 	private String lastName;
 	
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
