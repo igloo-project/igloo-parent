@@ -36,6 +36,9 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 		transactionSynchronizationTaskManagerService.merge();
 		
 		TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
+		if (tasks == null) {
+			return;
+		}
 		for (ITransactionSynchronizationBeforeCommitTask beforeCommitTask : tasks.getBeforeCommitTasks()) {
 			try {
 				beforeCommitTask.run();
@@ -50,6 +53,9 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 	@Override
 	public void afterCommit() {
 		TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
+		if (tasks == null) {
+			return;
+		}
 		Exception firstException = null;
 		for (ITransactionSynchronizationAfterCommitTask afterCommitTask : tasks.getAfterCommitTasks()) {
 			try {
@@ -73,6 +79,9 @@ public class TransactionSynchronizationTaskAdapter extends TransactionSynchroniz
 		if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
 			Exception firstException = null;
 			TransactionSynchronizationTasks tasks = transactionSynchronizationTaskManagerService.getTasks();
+			if (tasks == null) {
+				return;
+			}
 			for (ITransactionSynchronizationTaskRollbackAware beforeCommitTask : Iterables.filter(tasks.getBeforeCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
 				try {
 					((ITransactionSynchronizationTaskRollbackAware) beforeCommitTask).afterRollback();
