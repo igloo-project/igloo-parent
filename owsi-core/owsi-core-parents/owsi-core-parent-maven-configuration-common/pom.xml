@@ -16,7 +16,7 @@
 		
 		<jdk.version>1.8</jdk.version>
 		
-		<minimal.maven.version>3.3.3</minimal.maven.version>
+		<minimal.maven.version>3.2.5</minimal.maven.version>
 		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
