@@ -61,19 +61,10 @@ public class LessCssResource extends PackageResource {
 	}
 
 	@Override
-	public IResourceStream getCacheableResourceStream() {
-		return getLessResourceStream();
-	}
-
-	@Override
 	public IResourceStream getResourceStream() {
-		return getLessResourceStream();
-	}
-
-	protected IResourceStream getLessResourceStream() {
 		IResourceStream resourceStream = null;
 		try {
-			resourceStream = super.getCacheableResourceStream();
+			resourceStream = super.getResourceStream();
 			
 			String lessSource = IOUtils.toString(resourceStream.getInputStream(), "UTF-8");
 			long lastModifiedTime = resourceStream.lastModifiedTime().getMilliseconds();

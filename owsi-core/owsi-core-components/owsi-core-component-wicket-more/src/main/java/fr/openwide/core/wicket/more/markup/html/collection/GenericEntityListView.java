@@ -17,20 +17,20 @@ public abstract class GenericEntityListView<T extends GenericEntity<?, ?>> exten
 
 	private static final long serialVersionUID = 1L;
 
-	public GenericEntityListView(String id, IModel<? extends List<? extends T>> model) {
+	public GenericEntityListView(String id, IModel<? extends List<T>> model) {
 		this(id, model, Long.MAX_VALUE);
 	}
 	
-	public GenericEntityListView(String id, IModel<? extends List<? extends T>> model, long itemsPerPage) {
+	public GenericEntityListView(String id, IModel<? extends List<T>> model, long itemsPerPage) {
 		super(id, model, Integer.MAX_VALUE /* The constructor asks for an int, so we use the setter instead */);
 		setItemsPerPage(itemsPerPage);
 	}
 
-	public GenericEntityListView(String id, List<? extends T> list) {
+	public GenericEntityListView(String id, List<T> list) {
 		this(id, list, Long.MAX_VALUE);
 	}
 
-	public GenericEntityListView(String id, List<? extends T> list, long itemsPerPage) {
+	public GenericEntityListView(String id, List<T> list, long itemsPerPage) {
 		super(id, list, Integer.MAX_VALUE /* The constructor asks for an int, so we use the setter instead */);
 		setItemsPerPage(itemsPerPage);
 	}

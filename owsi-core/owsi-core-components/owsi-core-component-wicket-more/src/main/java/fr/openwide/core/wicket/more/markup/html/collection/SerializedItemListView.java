@@ -16,20 +16,20 @@ public abstract class SerializedItemListView<T extends Serializable> extends Pag
 
 	private static final long serialVersionUID = -8621785529210100553L;
 
-	public SerializedItemListView(String id, IModel<? extends List<? extends T>> model) {
+	public SerializedItemListView(String id, IModel<? extends List<T>> model) {
 		this(id, model, Long.MAX_VALUE);
 	}
 
-	public SerializedItemListView(String id, IModel<? extends List<? extends T>> model, long itemsPerPage) {
+	public SerializedItemListView(String id, IModel<? extends List<T>> model, long itemsPerPage) {
 		super(id, model, Integer.MAX_VALUE /* The constructor asks for an int, so we use the setter instead */);
 		setItemsPerPage(itemsPerPage);
 	}
 
-	public SerializedItemListView(String id, List<? extends T> list) {
+	public SerializedItemListView(String id, List<T> list) {
 		this(id, list, Long.MAX_VALUE);
 	}
 
-	public SerializedItemListView(String id, List<? extends T> list, long itemsPerPage) {
+	public SerializedItemListView(String id, List<T> list, long itemsPerPage) {
 		super(id, list, Integer.MAX_VALUE /* The constructor asks for an int, so we use the setter instead */);
 		setItemsPerPage(itemsPerPage);
 	}

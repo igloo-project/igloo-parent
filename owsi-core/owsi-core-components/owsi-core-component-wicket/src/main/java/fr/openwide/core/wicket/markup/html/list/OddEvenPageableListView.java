@@ -10,7 +10,7 @@ public abstract class OddEvenPageableListView<T> extends PageableListView<T> {
 
 	private static final long serialVersionUID = 1195268737114390619L;
 
-	public OddEvenPageableListView(final String id, final IModel<? extends List<? extends T>> model, int rowsPerPage) {
+	public OddEvenPageableListView(final String id, final IModel<? extends List<T>> model, int rowsPerPage) {
 		super(id, model, rowsPerPage);
 	}
 
