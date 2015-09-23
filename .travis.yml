@@ -8,7 +8,7 @@ addons:
       - oracle-java8-installer
 install:
   - mvn -v
-  - mvn -B -q install -DskipTests=true
+  - mvn -B -Ptest install -DskipTests=true
 before_script: 
   - psql -U postgres -f travis/postgresql.sql
 script: mvn -U -Ptest clean package

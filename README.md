@@ -1,6 +1,8 @@
 OWSI-Core framework
 ===================
 
+[![Build Status](https://img.shields.io/travis/openwide-java/owsi-core-parent/master.svg?style=flat-square)](https://travis-ci.org/openwide-java/owsi-core-parent)
+
 About
 -----
 
