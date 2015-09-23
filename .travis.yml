@@ -4,6 +4,7 @@ jdk:
 addons:
   postgresql: "9.4"
 install:
+  - mvn -v
   - mvn -B -q install -DskipTests=true
 before_script: 
   - psql -U postgres -f travis/postgresql.sql
