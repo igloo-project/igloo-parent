@@ -22,6 +22,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.ComparableEntityPath;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -106,7 +107,7 @@ public class JpaDaoSupport {
 	}
 
 	protected <T, V extends Comparable<?>> JPAQuery<T> queryEntityByField(EntityPath<T> entityPath, Class<V> fieldClass, String fieldName, V fieldValue) {
-		ComparableEntityPath<V> field = new ComparableEntityPath<V>(fieldClass, entityPath, fieldName);
+		ComparableEntityPath<V> field = Expressions.comparableEntityPath(fieldClass, entityPath, fieldName);
 		
 		return queryByPredicate(entityPath, field.eq(fieldValue));
 		
@@ -118,7 +119,7 @@ public class JpaDaoSupport {
 	@Deprecated
 	public <T> T getEntityByFieldIgnoreCase(Class<T> clazz, SingularAttribute<? super T, String> attribute, String fieldValue) {
 		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
-		StringPath field = new StringPath(entityPath, attribute.getName());
+		StringPath field = Expressions.stringPath(entityPath, attribute.getName());
 		
 		return queryByPredicate(entityPath, field.equalsIgnoreCase(fieldValue)).fetchOne();
 	}

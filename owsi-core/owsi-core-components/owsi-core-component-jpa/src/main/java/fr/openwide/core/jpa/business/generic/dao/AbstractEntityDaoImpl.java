@@ -49,11 +49,11 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 	}
 
 	protected <V extends Comparable<?>> Long count(EntityPath<? extends E> entityPath) {
-		return queryByPredicate(entityPath, null).distinct().count();
+		return queryByPredicate(entityPath, null).distinct().fetchCount();
 	}
 
 	protected <V extends Comparable<?>> Long countByField(EntityPath<? extends E> entityPath, SimpleExpression<V> field, V fieldValue) {
-		return queryByPredicate(entityPath, eqOrIsNull(field, fieldValue)).distinct().count();
+		return queryByPredicate(entityPath, eqOrIsNull(field, fieldValue)).distinct().fetchCount();
 	}
 
 	private static <V extends Comparable<?>> Predicate eqOrIsNull(SimpleExpression<V> field, V fieldValue) {

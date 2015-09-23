@@ -132,7 +132,7 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		PathBuilder<GenericListItem<?>> pathBuilder = new PathBuilder<GenericListItem<?>>(clazz, "rootAlias");
 		QGenericListItem entityPath = new QGenericListItem(pathBuilder);
 		
-		JPAQuery query;
+		JPAQuery<GenericListItem<?>> query;
 		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
 			query = queryByPredicate(entityPath, entityPath.enabled.isTrue());
 		} else {
@@ -173,7 +173,7 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter, Comparator<? super E> comparator) {
-		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
+		Pair<EntityPath<E>, JPAQuery<GenericListItem<?>>> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
 		List<E> entities = queryItem.getValue1().list(queryItem.getValue0());
 		Collections.sort(entities, comparator);
 		
@@ -184,11 +184,11 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 	 * @deprecated Utiliser QueryDSL
 	 */
 	@Deprecated
-	private <E extends GenericListItem<?>, V extends Comparable<?>> Pair<EntityPath<E>, JPAQuery> queryByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+	private <E extends GenericListItem<?>, V extends Comparable<?>> Pair<EntityPath<E>, JPAQuery<GenericListItem<?>>> queryByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter) {
 		PathBuilder<E> pathBuilder = new PathBuilder<E>(clazz, "entityAlias");
 		QGenericListItem entityPath = new QGenericListItem(pathBuilder);
-		JPAQuery query;
+		JPAQuery<GenericListItem<?>> query;
 		if (field != null) {
 			query = queryEntityByField(entityPath, field.getBindableJavaType(), field.getName(), fieldValue);
 		} else {
@@ -222,8 +222,8 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 
 	@Override
 	public <E extends GenericListItem<?>> Long count(Class<E> clazz, EnabledFilter enabledFilter) {
-		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, null, null, enabledFilter);
-		return queryItem.getValue1().distinct().count();
+		Pair<EntityPath<E>, JPAQuery<GenericListItem<?>>> queryItem = queryByField(clazz, null, null, enabledFilter);
+		return queryItem.getValue1().distinct().fetchCount();
 	}
 
 	/**
@@ -241,8 +241,8 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue, EnabledFilter enabledFilter) {
-		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, attribute, fieldValue, enabledFilter);
-		return queryItem.getValue1().distinct().count();
+		Pair<EntityPath<E>, JPAQuery<GenericListItem<?>>> queryItem = queryByField(clazz, attribute, fieldValue, enabledFilter);
+		return queryItem.getValue1().distinct().fetchCount();
 	}
 
 	/**

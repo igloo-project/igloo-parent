@@ -24,8 +24,8 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	private final EntityPath<T> entityPath;
 	
-	private JPAQuery jpaQuery;
-	private JPAQuery finalJpaQuery;
+	private JPAQuery<T> jpaQuery;
+	private JPAQuery<T> finalJpaQuery;
 	
 	@SafeVarargs
 	protected AbstractJpaSearchQuery(EntityPath<T> entityPath, S ... defaultSorts) {
@@ -35,8 +35,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	@PostConstruct
 	private void init() {
-		jpaQuery = new JPAQuery(entityManager)
-				.from(entityPath);
+		jpaQuery = new JPAQuery<T>(entityManager).from(entityPath);
 	}
 	
 	public <P> void innerJoin(CollectionExpression<?,P> target, Path<P> alias) {
@@ -51,7 +50,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 		}
 	}
 	
-	protected void mustIfNotNull(JPAQuery jpaQuery, BooleanExpression ... booleanExpressions) {
+	protected void mustIfNotNull(JPAQuery<T> jpaQuery, BooleanExpression ... booleanExpressions) {
 		for (BooleanExpression booleanExpression : booleanExpressions) {
 			if (booleanExpressions != null) {
 				jpaQuery.where(booleanExpression);
@@ -87,7 +86,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 		// Nothing
 	}
 	
-	private JPAQuery getFinalQuery() {
+	private JPAQuery<T> getFinalQuery() {
 		if (finalJpaQuery == null) {
 			addFilterBeforeFinalizeQuery();
 			
@@ -109,7 +108,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	@Override
 	@Transactional(readOnly = true)
 	public long count() {
-		return getFinalQuery().count();
+		return getFinalQuery().fetchCount();
 	}
 	
 	// Query factory

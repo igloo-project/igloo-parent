@@ -72,7 +72,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	}
 	
 	private List<String> listNextCheckingBatchUrls(int batchSize, int minDelayBetweenTwoChecks) {
-		JPQLQuery<ExternalLinkWrapper> query = new JPAQuery(getEntityManager());
+		JPQLQuery<ExternalLinkWrapper> query = new JPAQuery<ExternalLinkWrapper>(getEntityManager());
 		
 		StringExpression url = qExternalLinkWrapper.url.lower();
 		
