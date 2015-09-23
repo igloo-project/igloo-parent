@@ -91,7 +91,6 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				.setConnectionRequestTimeout(configurer.getExternalLinkCheckerTimeout())
 				.setConnectTimeout(configurer.getExternalLinkCheckerTimeout())
 				.setStaleConnectionCheckEnabled(true)
-				.setCookieSpec(CookieSpecs.BROWSER_COMPATIBILITY) // contournement d'un bug JVM. Cf https://code.google.com/p/crawler4j/issues/detail?id=136
 				.build();
 		
 		httpClient = HttpClientBuilder.create()
