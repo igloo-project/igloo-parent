@@ -2,10 +2,10 @@ package fr.openwide.core.jpa.security.business.person.dao;
 
 import java.util.List;
 
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
@@ -60,9 +60,9 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
-		JPQLQuery query = new JPAQuery(getEntityManager()).from(qUser);
+		JPQLQuery<U> query = new JPAQuery<U>(getEntityManager()).from(qUser);
 		query.where(qUser.userName.lower().eq(userName.toLowerCase()));
-		return (U) query.singleResult(qUser);
+		return query.fetchOne();
 	}
 
 }

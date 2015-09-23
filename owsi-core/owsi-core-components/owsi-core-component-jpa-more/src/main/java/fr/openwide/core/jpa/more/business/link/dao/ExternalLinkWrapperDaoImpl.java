@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.DateExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.template.DateTemplate;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.DateTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
@@ -31,26 +32,26 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 			return Lists.newArrayList();
 		}
 		
-		return new JPAQuery(getEntityManager()).from(qExternalLinkWrapper)
+		return new JPAQuery<ExternalLinkWrapper>(getEntityManager()).from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.id.in(ids))
 				.orderBy(qExternalLinkWrapper.id.asc())
-				.list(qExternalLinkWrapper);
+				.fetch();
 	}
 
 	@Override
 	public List<ExternalLinkWrapper> listActive() {
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<ExternalLinkWrapper> query = new JPAQuery<>(getEntityManager());
 		
 		query.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.INACTIVES))
 				.orderBy(qExternalLinkWrapper.url.lower().asc());
 		
-		return query.list(qExternalLinkWrapper);
+		return query.fetch();
 	}
 
 	@Override
 	public List<ExternalLinkWrapper> listNextCheckingBatch(int batchSize, int minDelayBetweenTwoChecks) {
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<ExternalLinkWrapper> query = new JPAQuery<>(getEntityManager());
 		
 		// Query to list the next <batchsize> URLs
 		// Must be a separate query, not a subquery, since JPQL doesn't support limit in subqueries
@@ -67,11 +68,11 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.INACTIVES))
 				.orderBy(qExternalLinkWrapper.id.asc());
 		
-		return query.list(qExternalLinkWrapper);
+		return query.fetch();
 	}
 	
 	private List<String> listNextCheckingBatchUrls(int batchSize, int minDelayBetweenTwoChecks) {
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<ExternalLinkWrapper> query = new JPAQuery(getEntityManager());
 		
 		StringExpression url = qExternalLinkWrapper.url.lower();
 		
@@ -87,7 +88,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 				);
 		
 		if (minDelayBetweenTwoChecks > 0) {
-			DateExpression<Date> nowMinusMinDelay = DateTemplate.create(Date.class,
+			DateExpression<Date> nowMinusMinDelay = Expressions.dateTemplate(Date.class,
 					"NOW() - interval({0}) - interval('8 hours')", minDelayBetweenTwoChecks + " days");
 			query.where(qExternalLinkWrapper.lastCheckDate.isNull()
 					.or(qExternalLinkWrapper.lastCheckDate.before(nowMinusMinDelay)));
@@ -123,11 +124,11 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 			lowerUrls.add(StringUtils.lowerCase(url));
 		}
 		
-		return new JPAQuery(getEntityManager())
+		return new JPAQuery<ExternalLinkWrapper>(getEntityManager())
 				.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.url.lower().in(lowerUrls))
 				.orderBy(qExternalLinkWrapper.id.asc())
-				.list(qExternalLinkWrapper);
+				.fetch();
 	}
 
 }

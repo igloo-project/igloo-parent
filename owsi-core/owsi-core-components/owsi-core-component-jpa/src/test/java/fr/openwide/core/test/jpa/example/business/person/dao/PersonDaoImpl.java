@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.test.jpa.example.business.person.model.Person;

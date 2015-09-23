@@ -28,8 +28,8 @@ import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Ordering;
-import com.mysema.query.annotations.PropertyType;
-import com.mysema.query.annotations.QueryType;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryType;
 
 import fr.openwide.core.commons.util.ordering.SerializableCollator;
 

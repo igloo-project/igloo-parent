@@ -6,7 +6,7 @@ import javax.persistence.MappedSuperclass;
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
-import com.mysema.query.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryInit;
 
 import fr.openwide.core.basicapp.core.business.common.model.embeddable.LocalizedText;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;

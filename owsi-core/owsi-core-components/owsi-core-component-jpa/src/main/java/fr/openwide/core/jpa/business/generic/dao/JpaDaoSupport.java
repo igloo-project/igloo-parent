@@ -17,14 +17,14 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.hibernate.Session;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.ComparableEntityPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.ComparableEntityPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
@@ -102,10 +102,10 @@ public class JpaDaoSupport {
 	@Deprecated
 	public <T, V extends Comparable<?>> T getEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
 		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
-		return queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).uniqueResult(entityPath);
+		return queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).fetchOne();
 	}
 
-	protected <T, V extends Comparable<?>> JPAQuery queryEntityByField(EntityPath<T> entityPath, Class<V> fieldClass, String fieldName, V fieldValue) {
+	protected <T, V extends Comparable<?>> JPAQuery<T> queryEntityByField(EntityPath<T> entityPath, Class<V> fieldClass, String fieldName, V fieldValue) {
 		ComparableEntityPath<V> field = new ComparableEntityPath<V>(fieldClass, entityPath, fieldName);
 		
 		return queryByPredicate(entityPath, field.eq(fieldValue));
@@ -120,7 +120,7 @@ public class JpaDaoSupport {
 		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
 		StringPath field = new StringPath(entityPath, attribute.getName());
 		
-		return queryByPredicate(entityPath, field.equalsIgnoreCase(fieldValue)).uniqueResult(entityPath);
+		return queryByPredicate(entityPath, field.equalsIgnoreCase(fieldValue)).fetchOne();
 	}
 	
 	protected <T> void update(T entity) {
@@ -214,7 +214,7 @@ public class JpaDaoSupport {
 
 	protected <T> Long countEntity(Class<T> clazz) {
 		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
-		return queryByPredicate(entityPath, null).distinct().count();
+		return queryByPredicate(entityPath, null).distinct().fetchCount();
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class JpaDaoSupport {
 	@Deprecated
 	protected <T, V extends Comparable<?>> Long countEntityByField(Class<T> clazz, SingularAttribute<? super T, V> attribute, V fieldValue) {
 		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
-		return queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).distinct().count();
+		return queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).distinct().fetchCount();
 	}
 
 	/**
@@ -257,12 +257,12 @@ public class JpaDaoSupport {
 		}
 	}
 
-	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, OrderSpecifier<?>... orderSpecifiers) {
+	protected <T> JPAQuery<T> queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, OrderSpecifier<?>... orderSpecifiers) {
 		return queryByPredicateOrdered(entityPath, predicate, null, null, orderSpecifiers);
 	}
 
-	protected <T> JPAQuery queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset, OrderSpecifier<?>... orderSpecifiers) {
-		JPAQuery query = queryByPredicate(entityPath, predicate, limit, offset);
+	protected <T> JPAQuery<T> queryByPredicateOrdered(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset, OrderSpecifier<?>... orderSpecifiers) {
+		JPAQuery<T> query = queryByPredicate(entityPath, predicate, limit, offset);
 		
 		if (orderSpecifiers != null && orderSpecifiers.length > 0) {
 			query.orderBy(orderSpecifiers);
@@ -271,12 +271,12 @@ public class JpaDaoSupport {
 		return query;
 	}
 
-	protected <T> JPAQuery queryByPredicate(EntityPath<T> entityPath, Predicate predicate) {
+	protected <T> JPAQuery<T> queryByPredicate(EntityPath<T> entityPath, Predicate predicate) {
 		return queryByPredicate(entityPath, predicate, null, null);
 	}
 
-	protected <T> JPAQuery queryByPredicate(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+	protected <T> JPAQuery<T> queryByPredicate(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset) {
+		JPAQuery<T> query = new JPAQuery<>(getEntityManager());
 		query.from(entityPath);
 		
 		if (predicate != null) {

@@ -3,10 +3,10 @@ package fr.openwide.core.jpa.more.business.execution.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.EntityPathBase;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.more.business.execution.model.AbstractExecution;

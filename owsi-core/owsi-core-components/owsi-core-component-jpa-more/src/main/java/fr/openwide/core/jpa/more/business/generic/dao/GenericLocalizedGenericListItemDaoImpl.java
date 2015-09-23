@@ -15,11 +15,11 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.AbstractEntityDaoImpl;
 import fr.openwide.core.jpa.exception.ServiceException;

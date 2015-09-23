@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -20,11 +20,11 @@ public class MockUserGroupDaoImpl extends GenericUserGroupDaoImpl<MockUserGroup,
 	
 	@Override
 	public List<MockUser> listUsersByUserGroup(MockUserGroup group) throws ServiceException, SecurityServiceException {
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<MockUser> query = new JPAQuery<>(getEntityManager());
 		
 		query.from(QMockUser.mockUser).join(QMockUser.mockUser.groups, QMockUserGroup.mockUserGroup)
 				.where(QMockUserGroup.mockUserGroup.eq(group));
-		List<MockUser> result = query.distinct().list(QMockUser.mockUser);
+		List<MockUser> result = query.distinct().fetch();
 		sort(result);
 		return result;
 	}

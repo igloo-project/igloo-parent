@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -57,7 +57,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
-		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
+		return new JPAQuery<T>(getEntityManager()).from(qAbstractAudit)
 				.where(
 						(
 								qAbstractAudit.contextClass.eq(Hibernate.getClass(entity).getName())

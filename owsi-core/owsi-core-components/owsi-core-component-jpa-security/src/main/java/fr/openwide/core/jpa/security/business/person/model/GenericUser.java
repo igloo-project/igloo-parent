@@ -30,8 +30,8 @@ import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
-import com.mysema.query.annotations.PropertyType;
-import com.mysema.query.annotations.QueryType;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryType;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.commons.util.collections.CollectionUtils;
