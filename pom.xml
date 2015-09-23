@@ -16,11 +16,9 @@
 		<owsi-core.maven-release-plugin.version>2.5.2</owsi-core.maven-release-plugin.version>
 	</properties>
 	
-	<profiles>
-		<modules>
-			<module>owsi-core</module>
-		</modules>
-	</profiles>
+	<modules>
+		<module>owsi-core</module>
+	</modules>
 	
 	<build>
 		<pluginManagement>

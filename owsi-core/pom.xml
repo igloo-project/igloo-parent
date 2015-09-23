@@ -2,9 +2,13 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>fr.openwide.core</groupId>
+	<parent>
+		<groupId>fr.openwide.core</groupId>
+		<artifactId>owsi-core-parent</artifactId>
+		<version>0.9.11-SNAPSHOT</version>
+	</parent>
+	
 	<artifactId>owsi-core</artifactId>
-	<version>0.9.11-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core</name>
