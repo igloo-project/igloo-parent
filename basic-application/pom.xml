@@ -10,7 +10,6 @@
 	
 	<groupId>fr.openwide.core.archetype</groupId>
 	<artifactId>basic-application</artifactId>
-	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>${archetypeFullApplicationName}</name>
@@ -88,8 +87,8 @@
 	</repositories>
 	
 	<issueManagement>
-		<system>Trac</system>
-		<url>https://projects.openwide.fr/services/svn/trac/${wombatProjectName}/report</url>
+		<system>GitLab</system>
+		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/issues</url>
 	</issueManagement>
 
 	<ciManagement>
@@ -98,8 +97,9 @@
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/${wombatProjectName}/trunk/${artifactId}</developerConnection>
-		<url>https://projects.openwide.fr/services/svn/trac/${wombatProjectName}/browser/trunk/${artifactId}</url>
+		<developerConnection>scm:git:git@git.projects.openwide.fr:open-wide/${wombatProjectName}.git</developerConnection>
+		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/tree/master</url>
+		<tag>HEAD</tag>
 	</scm>
 	
 </project>

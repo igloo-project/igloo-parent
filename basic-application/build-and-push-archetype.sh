@@ -16,6 +16,9 @@ if [ "${basic_application_directory}" == "" ] || [ ! -d "${basic_application_dir
 	usage
 fi
 
+pushd "${basic_application_directory}"
+branch=$(git rev-parse --abbrev-ref HEAD)
+
 deploy_environment="$2"
 if [ "${deploy_environment}" != "local" ] && [ "${deploy_environment}" != "snapshot" ]  && [ "${deploy_environment}" != "release" ]; then
 	usage
@@ -23,14 +26,20 @@ fi
 
 temp_directory=$(mktemp --suffix=-archetype -d)
 
-pushd ${temp_directory} &> /dev/null
+mkdir ${temp_directory}/basic_application
 
-svn export ${basic_application_directory} ./basic_application
+#git archive ${branch} | tar -x -C ${temp_directory}/basic_application
+tar -c --exclude-vcs . | tar -x -C ${temp_directory}/basic_application
+
 if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-pushd basic_application &> /dev/null
+pushd "${temp_directory}/basic_application"
+
+# fix the version in the archetype.properties file
+version=$(grep -m 1 'version' pom.xml | sed -r 's/.*>(.*)<.*/\1/')
+sed -i "s/^archetype.version=.*$/archetype.version=${version}/" archetype.properties
 
 # construction de l'archetype à partir du projet
 	mvn -U -Pdevelopment -DskipTests=true clean package install archetype:create-from-project -Darchetype.properties=${script_directory}/archetype.properties

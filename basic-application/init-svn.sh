@@ -43,7 +43,10 @@ svn propset -q svn:ignore "target
 .classpath
 .project
 .settings
-init-*.sh" .
+init-*.sh
+archetype.properties
+build-and-push-archetype.sh
+README.md" .
 
 find . -maxdepth 1 ! -name init-\*.sh ! -name .svn -exec svn add -q {} \;
 svn propset -q svn:ignore "target
