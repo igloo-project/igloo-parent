@@ -160,14 +160,14 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			
 			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextSession, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
 			
-			BooleanQuery booleanQuery = new BooleanQuery();
-			booleanQuery.add(parser.parse(searchPattern), BooleanClause.Occur.MUST);
+			BooleanQuery.Builder bqBuilder = new BooleanQuery.Builder();
+			bqBuilder.add(parser.parse(searchPattern), BooleanClause.Occur.MUST);
 			
 			if (additionalLuceneQuery != null) {
-				booleanQuery.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
+				bqBuilder.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
 			}
 			
-			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(booleanQuery, Iterables.toArray(classes, Class.class));
+			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(bqBuilder.build(), Iterables.toArray(classes, Class.class));
 			if (offset != null) {
 				hibernateQuery.setFirstResult(offset);
 			}
