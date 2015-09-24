@@ -101,6 +101,24 @@
 			<email>yoann.rodiere@openwide.fr</email>
 			<organization>Open Wide</organization>
 		</developer>
+		<developer>
+			<id>flacreuse</id>
+			<name>Florian Lacreuse</name>
+			<email>florian.lacreuse@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>nbarithel</id>
+			<name>Nicolas Barithel</name>
+			<email>nicolas.barithel@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>jbenichou</id>
+			<name>Julien Bénichou</name>
+			<email>julien.benichou@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
 	</developers>
 	
 	<distributionManagement>
