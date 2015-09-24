@@ -226,6 +226,7 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 		QGenericLocalizedGenericListItem qLocalizedGenericListItem = new QGenericLocalizedGenericListItem(source);
 		
 		query.select(source)
+				.from(qLocalizedGenericListItem)
 				.where(qLabelTextPath(qLocalizedGenericListItem, locale).eq(label));
 		
 		return query.fetch();

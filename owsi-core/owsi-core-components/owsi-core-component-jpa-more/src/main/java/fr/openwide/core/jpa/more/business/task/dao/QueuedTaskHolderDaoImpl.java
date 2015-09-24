@@ -115,7 +115,10 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	public List<String> listTypes() {
 		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
 
-		query.select(qQueuedTaskHolder.taskType).orderBy(qQueuedTaskHolder.taskType.asc()).distinct();
+		query.select(qQueuedTaskHolder.taskType)
+				.from(qQueuedTaskHolder)
+				.orderBy(qQueuedTaskHolder.taskType.asc())
+				.distinct();
 
 		return query.fetch();
 	}

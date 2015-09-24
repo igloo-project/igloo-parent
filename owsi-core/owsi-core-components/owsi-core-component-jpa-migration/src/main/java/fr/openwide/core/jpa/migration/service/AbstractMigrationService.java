@@ -125,6 +125,7 @@ public abstract class AbstractMigrationService {
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
 		return new JPAQuery<E>(entityManagerUtils.getEntityManager()).select(path)
+				.from(path)
 				.where(qGenericEntity.id.in(entityIds))
 				.fetch();
 	}

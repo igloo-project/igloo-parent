@@ -57,7 +57,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
-		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit)
+		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit).from(qAbstractAudit)
 				.where(
 						(
 								qAbstractAudit.contextClass.eq(Hibernate.getClass(entity).getName())
@@ -76,6 +76,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
 		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit)
+				.from(qAbstractAudit)
 				.where(
 						qAbstractAudit.subjectClass.eq(Hibernate.getClass(subject).getName())
 						.and(qAbstractAudit.subjectId.eq(subject.getId()))
@@ -92,6 +93,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		calendar.add(Calendar.DAY_OF_YEAR, -daysToKeep);
 		
 		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit)
+				.from(qAbstractAudit)
 				.where(qAbstractAudit.date.before(calendar.getTime()))
 				.fetch();
 	}

@@ -24,6 +24,7 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 		
 		return new JPAQuery<E>(getEntityManager())
 			.select(path)
+			.from(qAbstractExecution)
 			.orderBy(qAbstractExecution.startDate.desc())
 			.fetch();
 	}
@@ -50,6 +51,7 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 		
 		JPAQuery<E> jpaQuery = new JPAQuery<>(getEntityManager())
 			.select(path)
+			.from(qAbstractExecution)
 			.orderBy(qAbstractExecution.startDate.desc());
 		if (limit != null) {
 			jpaQuery.limit(limit);

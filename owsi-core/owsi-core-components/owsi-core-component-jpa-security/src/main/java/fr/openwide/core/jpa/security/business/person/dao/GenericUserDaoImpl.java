@@ -38,6 +38,7 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
 		
 		query.select(qUser.userName)
+				.from(qUser)
 				.where(qUser.active.isTrue())
 				.orderBy(qUser.userName.asc());
 		

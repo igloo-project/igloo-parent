@@ -277,7 +277,8 @@ public class JpaDaoSupport {
 
 	protected <T> JPAQuery<T> queryByPredicate(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset) {
 		JPAQuery<T> query = new JPAQuery<>(getEntityManager());
-		query.select(entityPath);
+		query.select(entityPath)
+				.from(entityPath);
 		
 		if (predicate != null) {
 			query.where(predicate);

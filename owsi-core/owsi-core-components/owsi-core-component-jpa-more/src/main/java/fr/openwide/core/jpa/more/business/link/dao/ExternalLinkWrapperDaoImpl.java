@@ -72,7 +72,8 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	
 	private List<String> listNextCheckingBatchUrls(int batchSize, int minDelayBetweenTwoChecks) {
 		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager())
-				.select(qExternalLinkWrapper.url.lower());
+				.select(qExternalLinkWrapper.url.lower())
+				.from(qExternalLinkWrapper);
 		
 		StringExpression url = qExternalLinkWrapper.url.lower();
 		
@@ -101,6 +102,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	public List<String> listUrlsFromIds(Collection<Long> ids) {
 		return new JPAQuery<String>(getEntityManager())
 				.select(qExternalLinkWrapper.url)
+				.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.id.in(ids))
 				.orderBy(qExternalLinkWrapper.url.asc())
 				.distinct()
@@ -111,6 +113,7 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	public List<String> listUrlsFromStatuses(Collection<ExternalLinkStatus> statuses) {
 		return new JPAQuery<String>(getEntityManager())
 				.select(qExternalLinkWrapper.url)
+				.from(qExternalLinkWrapper)
 				.where(qExternalLinkWrapper.status.in(statuses))
 				.orderBy(qExternalLinkWrapper.url.asc())
 				.distinct()

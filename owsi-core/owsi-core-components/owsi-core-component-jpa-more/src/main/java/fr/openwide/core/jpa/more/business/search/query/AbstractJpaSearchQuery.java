@@ -35,7 +35,9 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	@PostConstruct
 	private void init() {
-		jpaQuery = new JPAQuery<T>(entityManager).select(entityPath);
+		jpaQuery = new JPAQuery<T>(entityManager)
+				.select(entityPath)
+				.from(entityPath);
 	}
 	
 	public <P> void innerJoin(CollectionExpression<?,P> target, Path<P> alias) {
