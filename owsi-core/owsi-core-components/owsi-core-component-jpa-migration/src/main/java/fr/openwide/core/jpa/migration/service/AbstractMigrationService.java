@@ -124,9 +124,9 @@ public abstract class AbstractMigrationService {
 		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
-		return new JPAQuery(entityManagerUtils.getEntityManager()).from(path)
+		return new JPAQuery<E>(entityManagerUtils.getEntityManager()).select(path)
 				.where(qGenericEntity.id.in(entityIds))
-				.list(path);
+				.fetch();
 	}
 
 	protected void logMigrationEnd(String context, Date startTime) {

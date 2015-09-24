@@ -35,7 +35,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	@PostConstruct
 	private void init() {
-		jpaQuery = new JPAQuery<T>(entityManager).from(entityPath);
+		jpaQuery = new JPAQuery<T>(entityManager).select(entityPath);
 	}
 	
 	public <P> void innerJoin(CollectionExpression<?,P> target, Path<P> alias) {
@@ -102,7 +102,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> list(long offset, long limit) {
-		return getFinalQuery().offset(offset).limit(limit).list(entityPath);
+		return getFinalQuery().offset(offset).limit(limit).fetch();
 	}
 	
 	@Override

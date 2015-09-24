@@ -90,15 +90,14 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 		PathBuilder<E> pathBuilder = new PathBuilder<E>(clazz, "rootAlias");
 		QGenericLocalizedGenericListItem entityPath = new QGenericLocalizedGenericListItem(pathBuilder);
 		
-		JPAQuery query;
+		JPAQuery<E> query;
 		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
-			query = queryByPredicate(entityPath, entityPath.enabled.isTrue());
+			query = queryByPredicate(pathBuilder, entityPath.enabled.isTrue());
 		} else {
-			query = queryByPredicate(entityPath, null);
+			query = queryByPredicate(pathBuilder, null);
 		}
 		
-		@SuppressWarnings("unchecked")
-		List<E> entities = (List<E>) query.list(entityPath);
+		List<E> entities = (List<E>) query.fetch();
 		
 		Collections.sort(entities, comparator);
 		
@@ -112,8 +111,8 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 
 	@Override
 	public <E extends GE> Long count(Class<E> clazz, EnabledFilter enabledFilter) {
-		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, null, null, enabledFilter);
-		return queryItem.getValue1().distinct().count();
+		Pair<EntityPath<E>, JPAQuery<E>> queryItem = queryByField(clazz, null, null, enabledFilter);
+		return queryItem.getValue1().distinct().fetchCount();
 	}
 	
 	/**
@@ -151,8 +150,8 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	@Override
 	public <E extends GE, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter, Comparator<? super E> comparator) {
-		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
-		List<E> entities = queryItem.getValue1().list(queryItem.getValue0());
+		Pair<EntityPath<E>, JPAQuery<E>> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
+		List<E> entities = queryItem.getValue1().fetch();
 		Collections.sort(entities, comparator);
 		
 		return entities;
@@ -174,23 +173,23 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	@Override
 	public <E extends GE, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter) {
-		Pair<EntityPath<E>, JPAQuery> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
-		return queryItem.getValue1().distinct().count();
+		Pair<EntityPath<E>, JPAQuery<E>> queryItem = queryByField(clazz, field, fieldValue, enabledFilter);
+		return queryItem.getValue1().distinct().fetchCount();
 	}
 
 	/**
 	 * @deprecated Utiliser QueryDSL
 	 */
 	@Deprecated
-	private <E extends GE, V extends Comparable<?>> Pair<EntityPath<E>, JPAQuery> queryByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
+	private <E extends GE, V extends Comparable<?>> Pair<EntityPath<E>, JPAQuery<E>> queryByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter) {
 		PathBuilder<E> pathBuilder = new PathBuilder<E>(clazz, "entityAlias");
 		QGenericLocalizedGenericListItem entityPath = new QGenericLocalizedGenericListItem(pathBuilder);
-		JPAQuery query;
+		JPAQuery<E> query;
 		if (field != null) {
-			query = queryEntityByField(entityPath, field.getBindableJavaType(), field.getName(), fieldValue);
+			query = queryEntityByField(pathBuilder, field.getBindableJavaType(), field.getName(), fieldValue);
 		} else {
-			query = queryByPredicate(entityPath, null);
+			query = queryByPredicate(pathBuilder, null);
 		}
 		if (EnabledFilter.ENABLED_ONLY.equals(enabledFilter)) {
 			// l'appel au where ajoute la condition aux conditions précédentes
@@ -222,14 +221,14 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 
 	@Override
 	public <E extends GE> List<E> listByLocalizedLabel(EntityPath<E> source, Locale locale, String label) {
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<E> query = new JPAQuery<E>(getEntityManager());
 		
 		QGenericLocalizedGenericListItem qLocalizedGenericListItem = new QGenericLocalizedGenericListItem(source);
 		
-		query.from(qLocalizedGenericListItem)
-			.where(qLabelTextPath(qLocalizedGenericListItem, locale).eq(label));
+		query.select(source)
+				.where(qLabelTextPath(qLocalizedGenericListItem, locale).eq(label));
 		
-		return query.list(source);
+		return query.fetch();
 	}
 
 	@Override

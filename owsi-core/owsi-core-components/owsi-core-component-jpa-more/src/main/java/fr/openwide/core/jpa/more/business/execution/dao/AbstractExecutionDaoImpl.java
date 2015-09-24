@@ -22,10 +22,10 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 		Path<E> path = new EntityPathBase<E>(getObjectClass(), QAbstractExecution.abstractExecution.getMetadata());
 		QAbstractExecution qAbstractExecution = new QAbstractExecution(path);
 		
-		return new JPAQuery(getEntityManager())
-			.from(qAbstractExecution)
+		return new JPAQuery<E>(getEntityManager())
+			.select(path)
 			.orderBy(qAbstractExecution.startDate.desc())
-			.list(path);
+			.fetch();
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 			builder.and(qAbstractExecution.executionStatus.eq(executionStatus));
 		}
 		
-		JPAQuery jpaQuery = new JPAQuery(getEntityManager())
-			.from(qAbstractExecution)
+		JPAQuery<E> jpaQuery = new JPAQuery<>(getEntityManager())
+			.select(path)
 			.orderBy(qAbstractExecution.startDate.desc());
 		if (limit != null) {
 			jpaQuery.limit(limit);
@@ -57,6 +57,6 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 		if (offset != null) {
 			jpaQuery.offset(offset);
 		}
-		return jpaQuery.list(path);
+		return jpaQuery.fetch();
 	}
 }

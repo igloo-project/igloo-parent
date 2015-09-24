@@ -35,13 +35,13 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	public List<String> listActiveUserNames() {
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
 		
-		query.from(qUser)
+		query.select(qUser.userName)
 				.where(qUser.active.isTrue())
 				.orderBy(qUser.userName.asc());
 		
-		return query.list(qUser.userName);
+		return query.fetch();
 	}
 	
 	@Override
@@ -51,7 +51,6 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		return countByField(qEntity, qEntityAsGenericUser.active, true);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public U getByUserNameCaseInsensitive(String userName) {
 		if (userName == null) {

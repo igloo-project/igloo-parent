@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.querydsl.core.types.dsl.DateExpression;
-import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.JPQLQuery;
@@ -72,11 +71,12 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 	}
 	
 	private List<String> listNextCheckingBatchUrls(int batchSize, int minDelayBetweenTwoChecks) {
-		JPQLQuery<ExternalLinkWrapper> query = new JPAQuery<ExternalLinkWrapper>(getEntityManager());
+		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager())
+				.select(qExternalLinkWrapper.url.lower());
 		
 		StringExpression url = qExternalLinkWrapper.url.lower();
 		
-		query.from(qExternalLinkWrapper)
+		query
 				// Only links with the following statuses are to be checked
 				.where(qExternalLinkWrapper.status.notIn(ExternalLinkStatus.INACTIVES))
 				.groupBy(url)
@@ -94,27 +94,27 @@ public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, Exter
 					.or(qExternalLinkWrapper.lastCheckDate.before(nowMinusMinDelay)));
 		}
 		
-		return query.limit(batchSize).list(url);
+		return query.limit(batchSize).fetch();
 	}
 
 	@Override
 	public List<String> listUrlsFromIds(Collection<Long> ids) {
-		return new JPAQuery(getEntityManager())
-				.from(qExternalLinkWrapper)
+		return new JPAQuery<String>(getEntityManager())
+				.select(qExternalLinkWrapper.url)
 				.where(qExternalLinkWrapper.id.in(ids))
 				.orderBy(qExternalLinkWrapper.url.asc())
 				.distinct()
-				.list(qExternalLinkWrapper.url);
+				.fetch();
 	}
 
 	@Override
 	public List<String> listUrlsFromStatuses(Collection<ExternalLinkStatus> statuses) {
-		return new JPAQuery(getEntityManager())
-				.from(qExternalLinkWrapper)
+		return new JPAQuery<String>(getEntityManager())
+				.select(qExternalLinkWrapper.url)
 				.where(qExternalLinkWrapper.status.in(statuses))
 				.orderBy(qExternalLinkWrapper.url.asc())
 				.distinct()
-				.list(qExternalLinkWrapper.url);
+				.fetch();
 	}
 
 	@Override

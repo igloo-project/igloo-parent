@@ -86,7 +86,6 @@ public class JpaDaoSupport {
 		return getEntityManager().find(clazz, id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T getEntityByNaturalId(Class<T> clazz, Object naturalId) {
 		if (naturalId == null) {
 			throw new IllegalArgumentException("Natural id may not be null");
@@ -190,7 +189,7 @@ public class JpaDaoSupport {
 			order = qGenericEntity.id.asc();
 		}
 		
-		return queryByPredicateOrdered(pathBuilder, null, order).list(pathBuilder);
+		return queryByPredicateOrdered(pathBuilder, null, order).fetch();
 	}
 
 	/**
@@ -207,7 +206,7 @@ public class JpaDaoSupport {
 	@Deprecated
 	protected <T, V extends Comparable<?>> List<T> listEntityByField(Class<T> objectClass, SingularAttribute<? super T, V> attribute, V fieldValue) {
 		PathBuilder<T> entityPath = new PathBuilder<T>(objectClass, "rootAlias");
-		List<T> entities = queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).list(entityPath);
+		List<T> entities = queryEntityByField(entityPath, attribute.getBindableJavaType(), attribute.getName(), fieldValue).fetch();
 		sort(entities);
 		
 		return entities;
@@ -278,7 +277,7 @@ public class JpaDaoSupport {
 
 	protected <T> JPAQuery<T> queryByPredicate(EntityPath<T> entityPath, Predicate predicate, Long limit, Long offset) {
 		JPAQuery<T> query = new JPAQuery<>(getEntityManager());
-		query.from(entityPath);
+		query.select(entityPath);
 		
 		if (predicate != null) {
 			query.where(predicate);

@@ -57,7 +57,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
-		return new JPAQuery<T>(getEntityManager()).from(qAbstractAudit)
+		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit)
 				.where(
 						(
 								qAbstractAudit.contextClass.eq(Hibernate.getClass(entity).getName())
@@ -66,7 +66,7 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 								qAbstractAudit.objectClass.eq(Hibernate.getClass(entity).getName())
 								.and(qAbstractAudit.objectId.eq(entity.getId()))
 						)
-				).orderBy(qAbstractAudit.date.desc()).list((BeanPath<T>) qAbstractAudit);
+				).orderBy(qAbstractAudit.date.desc()).fetch();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -75,11 +75,11 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		PathBuilder<T> path = new PathBuilder<T>(getObjectClass(), "abstractAudit");
 		QAbstractAudit qAbstractAudit = new QAbstractAudit(path);
 		
-		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
+		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit)
 				.where(
 						qAbstractAudit.subjectClass.eq(Hibernate.getClass(subject).getName())
 						.and(qAbstractAudit.subjectId.eq(subject.getId()))
-				).orderBy(qAbstractAudit.date.desc()).list((BeanPath<T>) qAbstractAudit);
+				).orderBy(qAbstractAudit.date.desc()).fetch();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,8 +91,8 @@ public abstract class AbstractAuditDaoImpl<T extends AbstractAudit<?>> extends G
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -daysToKeep);
 		
-		return new JPAQuery(getEntityManager()).from(qAbstractAudit)
+		return new JPAQuery<T>(getEntityManager()).select((BeanPath<T>) qAbstractAudit)
 				.where(qAbstractAudit.date.before(calendar.getTime()))
-				.list((BeanPath<T>) qAbstractAudit);
+				.fetch();
 	}
 }
