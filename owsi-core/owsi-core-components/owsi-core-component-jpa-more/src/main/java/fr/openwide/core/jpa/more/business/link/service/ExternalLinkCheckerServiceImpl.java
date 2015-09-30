@@ -25,7 +25,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -196,7 +196,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			} catch (IllegalArgumentException e) {
 				errorType = ExternalLinkErrorType.INVALID_IDN;
 				LOGGER.debug("IllegalArgumentException while checking external link (" + uri.toString() + ").", e);
-			} catch (SocketTimeoutException e) {
+			} catch (SocketTimeoutException | ClientProtocolException e) {
 				// If HEAD request failed with socket timeout, let's try with GET request
 				if (headIfTrueElseGet) {
 					// Sample url : http://myspace.com/ (same results with https)
@@ -205,9 +205,10 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 					// wget --method=HEAD 'http://myspace.com/'
 					headIfTrueElseGet = false;
 					retry = true;
-					LOGGER.warn("HEAD request on external link (" + uri.toString() + ") resulted to timeout, we will try a GET request.");
+					LOGGER.warn("HEAD request on external link (" + uri.toString() + ") resulted in a timeout"
+							+ " or another weird exception, we will try a GET request.", e);
 				} else {
-					errorType = ExternalLinkErrorType.TIMEOUT;
+					errorType = ExternalLinkErrorType.fromException(e);
 				}
 			} catch (SSLHandshakeException e) {
 				// certificate not supported by Java: we ignore the links
@@ -218,7 +219,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				LOGGER.debug("ConnectionPoolTimeoutException while checking external link (" + uri.toString() + ").", e);
 				return;
 			} catch (IOException e) {
-				errorType = ExternalLinkErrorType.IO;
+				errorType = ExternalLinkErrorType.fromException(e);
 			}
 			numAttempts++;
 			
