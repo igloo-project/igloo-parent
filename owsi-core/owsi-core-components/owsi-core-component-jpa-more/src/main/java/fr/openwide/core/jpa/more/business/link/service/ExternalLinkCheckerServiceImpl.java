@@ -90,7 +90,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				.setSocketTimeout(configurer.getExternalLinkCheckerTimeout())
 				.setConnectionRequestTimeout(configurer.getExternalLinkCheckerTimeout())
 				.setConnectTimeout(configurer.getExternalLinkCheckerTimeout())
-				.setStaleConnectionCheckEnabled(true)
+				.setStaleConnectionCheckEnabled(true) // waiting for this to be resolved: https://issues.apache.org/jira/browse/HTTPCLIENT-1656
 				.build();
 		
 		httpClient = HttpClientBuilder.create()
