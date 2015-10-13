@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.lucene.search.SortField;
 
-import com.mysema.query.types.OrderSpecifier;
+import com.querydsl.core.types.OrderSpecifier;
 
 /**
  * @param <S> The sort field type (@see {@link SortField}, {@link OrderSpecifier}, etc.).

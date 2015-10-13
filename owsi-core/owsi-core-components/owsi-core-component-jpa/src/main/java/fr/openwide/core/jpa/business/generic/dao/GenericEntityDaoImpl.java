@@ -24,7 +24,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;

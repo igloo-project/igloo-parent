@@ -14,8 +14,8 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ComparableExpressionBase;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
 
 import fr.openwide.core.jpa.more.business.sort.ISort.NullSortValue;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortNull;

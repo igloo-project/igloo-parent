@@ -2,10 +2,10 @@ package fr.openwide.core.jpa.security.business.person.dao;
 
 import java.util.List;
 
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
@@ -35,13 +35,14 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	public List<String> listActiveUserNames() {
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
-		JPQLQuery query = new JPAQuery(getEntityManager());
+		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
 		
-		query.from(qUser)
+		query.select(qUser.userName)
+				.from(qUser)
 				.where(qUser.active.isTrue())
 				.orderBy(qUser.userName.asc());
 		
-		return query.list(qUser.userName);
+		return query.fetch();
 	}
 	
 	@Override
@@ -51,7 +52,6 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		return countByField(qEntity, qEntityAsGenericUser.active, true);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public U getByUserNameCaseInsensitive(String userName) {
 		if (userName == null) {
@@ -60,9 +60,9 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
-		JPQLQuery query = new JPAQuery(getEntityManager()).from(qUser);
+		JPQLQuery<U> query = new JPAQuery<U>(getEntityManager()).from(qUser);
 		query.where(qUser.userName.lower().eq(userName.toLowerCase()));
-		return (U) query.singleResult(qUser);
+		return query.fetchOne();
 	}
 
 }

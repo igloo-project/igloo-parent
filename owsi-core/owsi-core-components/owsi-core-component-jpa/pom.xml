@@ -68,7 +68,7 @@
 		
 		<!-- QueryDSL dependencies -->
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 			<exclusions>
 				<exclusion>

@@ -24,9 +24,9 @@ import javax.persistence.NonUniqueResultException;
 
 import org.hibernate.search.annotations.Indexed;
 
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.StringExpression;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.ServiceException;

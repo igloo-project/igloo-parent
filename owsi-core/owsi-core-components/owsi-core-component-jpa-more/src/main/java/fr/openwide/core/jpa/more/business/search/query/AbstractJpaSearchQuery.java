@@ -7,15 +7,15 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.CollectionExpression;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.path.CollectionPath;
-import com.mysema.query.types.path.ComparablePath;
+import com.querydsl.core.types.CollectionExpression;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CollectionPath;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
@@ -24,8 +24,8 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	private final EntityPath<T> entityPath;
 	
-	private JPAQuery jpaQuery;
-	private JPAQuery finalJpaQuery;
+	private JPAQuery<T> jpaQuery;
+	private JPAQuery<T> finalJpaQuery;
 	
 	@SafeVarargs
 	protected AbstractJpaSearchQuery(EntityPath<T> entityPath, S ... defaultSorts) {
@@ -35,7 +35,8 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	@PostConstruct
 	private void init() {
-		jpaQuery = new JPAQuery(entityManager)
+		jpaQuery = new JPAQuery<T>(entityManager)
+				.select(entityPath)
 				.from(entityPath);
 	}
 	
@@ -51,7 +52,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 		}
 	}
 	
-	protected void mustIfNotNull(JPAQuery jpaQuery, BooleanExpression ... booleanExpressions) {
+	protected void mustIfNotNull(JPAQuery<T> jpaQuery, BooleanExpression ... booleanExpressions) {
 		for (BooleanExpression booleanExpression : booleanExpressions) {
 			if (booleanExpressions != null) {
 				jpaQuery.where(booleanExpression);
@@ -87,7 +88,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 		// Nothing
 	}
 	
-	private JPAQuery getFinalQuery() {
+	private JPAQuery<T> getFinalQuery() {
 		if (finalJpaQuery == null) {
 			addFilterBeforeFinalizeQuery();
 			
@@ -103,13 +104,13 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> list(long offset, long limit) {
-		return getFinalQuery().offset(offset).limit(limit).list(entityPath);
+		return getFinalQuery().offset(offset).limit(limit).fetch();
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public long count() {
-		return getFinalQuery().count();
+		return getFinalQuery().fetchCount();
 	}
 	
 	// Query factory

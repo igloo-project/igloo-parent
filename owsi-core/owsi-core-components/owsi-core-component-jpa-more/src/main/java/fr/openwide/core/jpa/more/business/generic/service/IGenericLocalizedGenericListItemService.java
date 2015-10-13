@@ -8,7 +8,7 @@ import javax.persistence.NonUniqueResultException;
 
 import org.hibernate.search.annotations.Indexed;
 
-import com.mysema.query.types.EntityPath;
+import com.querydsl.core.types.EntityPath;
 
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 import fr.openwide.core.jpa.exception.ServiceException;

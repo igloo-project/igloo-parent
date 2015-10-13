@@ -36,8 +36,7 @@
 		<owsi-core.hikaricp.version>2.4.1</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.0</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>3.6.8</owsi-core.querydsl.version>
-		
+		<owsi-core.querydsl.version>4.0.4</owsi-core.querydsl.version>
 		
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
 		
@@ -497,7 +496,7 @@
 				<!-- QueryDSL -->
 				
 					<dependency>
-						<groupId>com.mysema.querydsl</groupId>
+						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-jpa</artifactId>
 						<version>${owsi-core.querydsl.version}</version>
 						<exclusions>
@@ -1166,7 +1165,7 @@
 							<version>${owsi-core.hibernate-jpamodelgen.version}</version>
 						</dependency>
 						<dependency>
-							<groupId>com.mysema.querydsl</groupId>
+							<groupId>com.querydsl</groupId>
 							<artifactId>querydsl-apt</artifactId>
 							<version>${owsi-core.querydsl.version}</version>
 						</dependency>
@@ -1184,7 +1183,7 @@
 						</options>
 						<processors>
 							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 							<processor>org.bindgen.processor.Processor</processor>
 						</processors>
 					</configuration>

@@ -3,10 +3,10 @@ package fr.openwide.core.jpa.more.business.execution.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.EntityPathBase;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.more.business.execution.model.AbstractExecution;
@@ -22,10 +22,11 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 		Path<E> path = new EntityPathBase<E>(getObjectClass(), QAbstractExecution.abstractExecution.getMetadata());
 		QAbstractExecution qAbstractExecution = new QAbstractExecution(path);
 		
-		return new JPAQuery(getEntityManager())
+		return new JPAQuery<E>(getEntityManager())
+			.select(path)
 			.from(qAbstractExecution)
 			.orderBy(qAbstractExecution.startDate.desc())
-			.list(path);
+			.fetch();
 	}
 
 	@Override
@@ -48,7 +49,8 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 			builder.and(qAbstractExecution.executionStatus.eq(executionStatus));
 		}
 		
-		JPAQuery jpaQuery = new JPAQuery(getEntityManager())
+		JPAQuery<E> jpaQuery = new JPAQuery<>(getEntityManager())
+			.select(path)
 			.from(qAbstractExecution)
 			.orderBy(qAbstractExecution.startDate.desc());
 		if (limit != null) {
@@ -57,6 +59,6 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 		if (offset != null) {
 			jpaQuery.offset(offset);
 		}
-		return jpaQuery.list(path);
+		return jpaQuery.fetch();
 	}
 }

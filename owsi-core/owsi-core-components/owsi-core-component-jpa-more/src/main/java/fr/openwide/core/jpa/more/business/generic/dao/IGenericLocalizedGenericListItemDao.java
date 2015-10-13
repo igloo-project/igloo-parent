@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.mysema.query.types.EntityPath;
+import com.querydsl.core.types.EntityPath;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;

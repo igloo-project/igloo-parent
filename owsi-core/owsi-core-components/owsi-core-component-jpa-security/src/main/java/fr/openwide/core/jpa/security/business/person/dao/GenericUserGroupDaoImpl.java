@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.security.business.person.dao;
 
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;

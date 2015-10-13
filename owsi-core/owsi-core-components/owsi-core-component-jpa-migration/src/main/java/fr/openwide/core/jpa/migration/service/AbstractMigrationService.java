@@ -19,8 +19,8 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
@@ -124,9 +124,10 @@ public abstract class AbstractMigrationService {
 		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
-		return new JPAQuery(entityManagerUtils.getEntityManager()).from(path)
+		return new JPAQuery<E>(entityManagerUtils.getEntityManager()).select(path)
+				.from(path)
 				.where(qGenericEntity.id.in(entityIds))
-				.list(path);
+				.fetch();
 	}
 
 	protected void logMigrationEnd(String context, Date startTime) {
