@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-maven-configuration-common</artifactId>
-		<version>0.10.0-SNAPSHOT</version>
+		<version>0.11.0-SNAPSHOT</version>
 		<relativePath>../owsi-core-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 	
@@ -27,7 +27,7 @@
 		<owsi-core.spring.version>4.2.1.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.8.7</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>5.0.1.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-core.version>5.0.2.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.hibernate-commons-annotations.version>5.0.0.Final</owsi-core.hibernate-commons-annotations.version>
@@ -37,7 +37,6 @@
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.0</owsi-core.ehcache.version>
 		<owsi-core.querydsl.version>4.0.4</owsi-core.querydsl.version>
-		
 		
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
 		
@@ -85,7 +84,7 @@
 		<owsi-core.freemarker.version>2.3.22</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		
-		<owsi-core.poi.version>3.12</owsi-core.poi.version>
+		<owsi-core.poi.version>3.13</owsi-core.poi.version>
 		
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
@@ -108,7 +107,7 @@
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.19</owsi-core.jersey.version>
-		<owsi-core.jersey2.version>2.21</owsi-core.jersey2.version>
+		<owsi-core.jersey2.version>2.22</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
