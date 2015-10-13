@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-core-project</artifactId>
-		<version>0.10.0-SNAPSHOT</version>
+		<version>0.11.0-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.archetype</groupId>
@@ -99,7 +99,7 @@
 	<scm>
 		<developerConnection>scm:git:git@git.projects.openwide.fr:open-wide/${wombatProjectName}.git</developerConnection>
 		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/tree/master</url>
-		<tag>owsi-core-0.10-MAINTENANCE</tag>
+		<tag>HEAD</tag>
 	</scm>
 	
 </project>
