@@ -99,7 +99,7 @@
 	<scm>
 		<developerConnection>scm:git:git@git.projects.openwide.fr:open-wide/${wombatProjectName}.git</developerConnection>
 		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/tree/master</url>
-		<tag>HEAD</tag>
+		<tag>owsi-core-0.10-MAINTENANCE</tag>
 	</scm>
 	
 </project>
