@@ -183,13 +183,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(
 				new Label(
 						"originalAuthentication",
-						new StringResourceModel("console.authentication.originalAuthentication.help", null,
-								new Object[] {
-									BasicApplicationSession.get().getOriginalAuthentication() != null 
+						new StringResourceModel("console.authentication.originalAuthentication.help")
+								.setParameters(BasicApplicationSession.get().getOriginalAuthentication() != null 
 											? BasicApplicationSession.get().getOriginalAuthentication().getName()
-											: null
-								}
-						)
+											: null)
 						.getObject()
 				) {
 					
@@ -237,9 +234,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		// Footer
 		add(
 				new Label("version", configurer.getVersion())
-						.add(new AttributeModifier("title", new StringResourceModel("common.version.full", null,
-								new Object[] { configurer.getVersion(), configurer.getOwsiCoreVersion() }
-						)))
+						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
+								.setParameters(configurer.getVersion(), configurer.getOwsiCoreVersion())
+						))
 		);
 		
 		// Tooltip

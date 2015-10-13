@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.settings.def;
 
-import org.apache.wicket.settings.def.RequestCycleSettings;
+import org.apache.wicket.settings.RequestCycleSettings;
 import org.apache.wicket.util.time.Duration;
 
 public class AdaptativeTimeoutRequestCycleSettings extends RequestCycleSettings {

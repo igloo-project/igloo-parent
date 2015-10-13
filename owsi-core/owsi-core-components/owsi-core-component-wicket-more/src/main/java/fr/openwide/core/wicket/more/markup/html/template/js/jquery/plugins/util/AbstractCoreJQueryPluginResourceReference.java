@@ -9,7 +9,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.JQueryPluginResourceReference;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.owsi.OwsiUtilsJavaScriptResourceReference;
@@ -23,10 +22,11 @@ public abstract class AbstractCoreJQueryPluginResourceReference extends JQueryPl
 	}
 
 	@Override
-	public final Iterable<HeaderItem> getDependencies() {
-		return Iterables.concat(super.getDependencies(),
-				Lists.newArrayList(JavaScriptHeaderItem.forReference(OwsiUtilsJavaScriptResourceReference.get())),
-				getPluginDependencies());
+	public final List<HeaderItem> getDependencies() {
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.add(JavaScriptHeaderItem.forReference(OwsiUtilsJavaScriptResourceReference.get()));
+		dependencies.addAll(getPluginDependencies());
+		return dependencies;
 	}
 
 	protected List<HeaderItem> getPluginDependencies() {

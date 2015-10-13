@@ -60,8 +60,8 @@ public class TaskManagerInformationPanel extends Panel {
 			}
 		};
 
-		statusContainer.add(new Label("status", new StringResourceModel("console.maintenance.task.manager.status.${}",
-				queueStatusStringModel)));
+		statusContainer.add(new Label("status", new StringResourceModel("console.maintenance.task.manager.status.${}")
+						.setModel(queueStatusStringModel)));
 
 		add(new CountLabel("queueSize", "console.maintenance.task.manager.queueSize", new Model<Integer>() {
 			private static final long serialVersionUID = 1L;

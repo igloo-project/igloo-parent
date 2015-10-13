@@ -61,10 +61,8 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 		
 		UserPasswordUpdatePopup<U> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", getModel());
 		
-		IModel<String> confirmationTextModel = new StringResourceModel(
-				"administration.user.disable.confirmation.text", null, 
-				new Object[] { userModel.getObject().getFullName() }
-		);
+		IModel<String> confirmationTextModel = new StringResourceModel("administration.user.disable.confirmation.text")
+				.setParameters(userModel.getObject().getFullName());
 		
 		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
@@ -80,7 +78,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				
 				AjaxConfirmLink.build("passwordReset", userModel)
 						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
-						.content(new StringResourceModel("administration.user.password.recovery.reset.confirmation.text", userModel))
+						.content(new StringResourceModel("administration.user.password.recovery.reset.confirmation.text").setModel(userModel))
 						.confirm()
 						.onClick(new AjaxResponseAction() {
 							private static final long serialVersionUID = 1L;
