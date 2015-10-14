@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -319,6 +320,44 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(equivalence).append("(").append(COMMA_JOINER.join(leftModel, rightModel)).append(")");
+			return builder.toString();
+		}
+	}
+	
+	public static <T> Condition contains(IModel<? extends Collection<? super T>> collectionModel, IModel<? extends T> elementModel) {
+		return new ContainsCondition<>(collectionModel, elementModel);
+	}
+	
+	private static class ContainsCondition<T> extends Condition {
+		private static final long serialVersionUID = 1L;
+
+		private final IModel<? extends Collection<? super T>> collectionModel;
+		private final IModel<? extends T> elementModel;
+		
+		public ContainsCondition(IModel<? extends Collection<? super T>> collectionModel, IModel<? extends T> elementModel) {
+			super();
+			this.collectionModel = collectionModel;
+			this.elementModel = elementModel;
+		}
+		
+		@Override
+		public boolean applies() {
+			Collection<? super T> collection = collectionModel.getObject();
+			T element = elementModel.getObject();
+			return collection != null && collection.contains(element);
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			collectionModel.detach();
+			elementModel.detach();
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("contains(").append(COMMA_JOINER.join(collectionModel, elementModel)).append(")");
 			return builder.toString();
 		}
 	}
