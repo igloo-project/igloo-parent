@@ -41,9 +41,9 @@ public interface ISecurityService {
 	
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 
-	List<? extends GrantedAuthority> getAuthorities(Authentication authentication);
+	List<GrantedAuthority> getAuthorities(Authentication authentication);
 	
-	List<? extends GrantedAuthority> getAuthorities(IUser person);
+	List<GrantedAuthority> getAuthorities(IUser person);
 	
 	SecurityContext buildSecureContext(String userName);
 	
