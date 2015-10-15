@@ -78,6 +78,14 @@ public class NavigationMenuItem implements IDetachable {
 			return new BlankLink(wicketId);
 		}
 	}
+
+	public AbstractLink linkHidingIfInvalid(String wicketId) {
+		if (pageLinkGenerator != null) {
+			return pageLinkGenerator.link(wicketId).hideIfInvalid();
+		} else {
+			return new BlankLink(wicketId);
+		}
+	}
 	
 	public boolean isActive(Class<? extends Page> selectedPage) {
 		if (pageLinkGenerator != null) {
@@ -86,7 +94,12 @@ public class NavigationMenuItem implements IDetachable {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * @deprecated Use the {@link #linkHidingIfInvalid(String)} to create a link that will be hidden when it is invalid,
+	 * or a {@link BlankLink} when this {@link NavigationMenuItem} does not have any LinkGenerator.
+	 */
+	@Deprecated
 	public boolean isAccessible() {
 		if (pageLinkGenerator != null) {
 			return pageLinkGenerator.isAccessible();
