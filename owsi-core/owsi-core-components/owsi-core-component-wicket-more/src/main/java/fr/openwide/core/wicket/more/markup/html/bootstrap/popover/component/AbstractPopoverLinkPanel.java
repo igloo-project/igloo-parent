@@ -100,6 +100,11 @@ public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> {
 		return this;
 	}
 	
+	public AbstractPopoverLinkPanel<T> popoverTrigger(PopoverTrigger trigger) {
+		options.setTrigger(trigger);
+		return this;
+	}
+	
 	public AbstractPopoverLinkPanel<T> popoverPlacement(PopoverPlacement placement) {
 		options.setPlacement(placement);
 		return this;
