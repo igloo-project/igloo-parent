@@ -5,16 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.passay.CharacterRule;
 import org.passay.DictionaryRule;
-import org.passay.DigitCharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.EnglishSequenceData;
 import org.passay.IllegalCharacterRule;
 import org.passay.IllegalRegexRule;
+import org.passay.IllegalSequenceRule;
 import org.passay.LengthRule;
-import org.passay.LowercaseCharacterRule;
-import org.passay.NumericalSequenceRule;
 import org.passay.Rule;
-import org.passay.SpecialCharacterRule;
-import org.passay.UppercaseCharacterRule;
 import org.passay.UsernameRule;
 import org.passay.WhitespaceRule;
 import org.passay.dictionary.ArrayWordList;
@@ -47,54 +46,54 @@ public class SecurityPasswordRules implements Serializable {
 	}
 
 	public SecurityPasswordRules mandatoryDigits(int min) {
-		rules.add(new DigitCharacterRule(min));
+		rules.add(new CharacterRule(EnglishCharacterData.Digit, min));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryDigits() {
-		rules.add(new DigitCharacterRule());
+		rules.add(new CharacterRule(EnglishCharacterData.Digit));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryNonAlphanumericCharacters() {
-		rules.add(new SpecialCharacterRule());
+		rules.add(new CharacterRule(EnglishCharacterData.Special));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryNonAlphanumericCharacters(int min) {
-		rules.add(new SpecialCharacterRule(min));
+		rules.add(new CharacterRule(EnglishCharacterData.Special, min));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperCase() {
-		rules.add(new UppercaseCharacterRule());
+		rules.add(new CharacterRule(EnglishCharacterData.UpperCase));
 		return this;
 	}
 
-	public SecurityPasswordRules mandatoryUpperCase(int upperCase) {
-		rules.add(new UppercaseCharacterRule(upperCase));
+	public SecurityPasswordRules mandatoryUpperCase(int minUpperCase) {
+		rules.add(new CharacterRule(EnglishCharacterData.UpperCase, minUpperCase));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryLowerCase() {
-		rules.add(new LowercaseCharacterRule());
+		rules.add(new CharacterRule(EnglishCharacterData.LowerCase));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryLowerCase(int minLowerCase) {
-		rules.add(new LowercaseCharacterRule(minLowerCase));
+		rules.add(new CharacterRule(EnglishCharacterData.LowerCase, minLowerCase));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperLowerCase() {
-		rules.add(new LowercaseCharacterRule());
-		rules.add(new UppercaseCharacterRule());
+		rules.add(new CharacterRule(EnglishCharacterData.LowerCase));
+		rules.add(new CharacterRule(EnglishCharacterData.UpperCase));
 		return this;
 	}
 
 	public SecurityPasswordRules mandatoryUpperLowerCase(int minUpperCase, int minLowerCase) {
-		rules.add(new UppercaseCharacterRule(minUpperCase));
-		rules.add(new LowercaseCharacterRule(minLowerCase));
+		rules.add(new CharacterRule(EnglishCharacterData.UpperCase, minUpperCase));
+		rules.add(new CharacterRule(EnglishCharacterData.LowerCase, minLowerCase));
 		return this;
 	}
 
@@ -109,7 +108,7 @@ public class SecurityPasswordRules implements Serializable {
 	}
 
 	public SecurityPasswordRules forbiddenOrderedNumericalSequence(int sequenceMaxLength, boolean wrap) {
-		rules.add(new NumericalSequenceRule(sequenceMaxLength, wrap));
+		rules.add(new IllegalSequenceRule(EnglishSequenceData.Numerical, sequenceMaxLength, wrap));
 		return this;
 	}
 
