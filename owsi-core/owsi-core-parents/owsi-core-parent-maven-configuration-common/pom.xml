@@ -35,7 +35,7 @@
 		<owsi-core.maven-enforcer-plugin.version>1.4.1</owsi-core.maven-enforcer-plugin.version>
 		<owsi-core.maven-dependency-plugin.version>2.8</owsi-core.maven-dependency-plugin.version>
 		
-		<owsi-core.wagon-maven-plugin.version>1.0-beta-4</owsi-core.wagon-maven-plugin.version>
+		<owsi-core.wagon-maven-plugin.version>1.0</owsi-core.wagon-maven-plugin.version>
 		<owsi-core.wagon-ssh-external-plugin.version>2.10</owsi-core.wagon-ssh-external-plugin.version>
 		
 		<owsi-core.maven-processor-plugin.version>2.2.4</owsi-core.maven-processor-plugin.version>
