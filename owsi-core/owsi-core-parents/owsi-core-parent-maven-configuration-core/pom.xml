@@ -41,7 +41,7 @@
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.3-1101-jdbc41</owsi-core.postgresql.version>
-		<owsi-core.pgjdbc-ng.version>0.4</owsi-core.pgjdbc-ng.version>
+		<owsi-core.pgjdbc-ng.version>0.6</owsi-core.pgjdbc-ng.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
