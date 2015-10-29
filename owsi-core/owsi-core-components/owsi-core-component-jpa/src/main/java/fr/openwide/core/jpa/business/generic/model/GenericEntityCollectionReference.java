@@ -102,7 +102,7 @@ public class GenericEntityCollectionReference<K extends Comparable<K> & Serializ
 		if (!(obj instanceof GenericEntityCollectionReference)) {
 			return false;
 		}
-		GenericEntityCollectionReference<?, ?> other = (GenericEntityCollectionReference<?, ?>) obj;
+		GenericEntityCollectionReference<?, ? extends GenericEntity<?, ?>> other = (GenericEntityCollectionReference<?, ?>) obj;
 		return new EqualsBuilder()
 				.append(getEntityIdList(), other.getEntityIdList())
 				.append(getUpperEntityClass(getEntityClass()), getUpperEntityClass(other.getEntityClass()))
