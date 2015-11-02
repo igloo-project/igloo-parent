@@ -27,7 +27,7 @@
 		<owsi-core.spring.version>4.2.2.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.8.7</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>5.0.2.Final</owsi-core.hibernate-core.version>
+		<owsi-core.hibernate-core.version>5.0.3.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
 		<owsi-core.hibernate-jpamodelgen.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.hibernate-commons-annotations.version>5.0.0.Final</owsi-core.hibernate-commons-annotations.version>
@@ -36,7 +36,7 @@
 		<owsi-core.hikaricp.version>2.4.1</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.1</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>4.0.4</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>4.0.6</owsi-core.querydsl.version>
 		
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
 		
@@ -45,12 +45,12 @@
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
-		<owsi-core.cglib.version>3.1</owsi-core.cglib.version>
+		<owsi-core.cglib.version>3.2.0</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.20.0-GA</owsi-core.javassist.version>
 		
 		<owsi-core.bindgen.version>2.27-ow</owsi-core.bindgen.version>
 		
-		<owsi-core.spring-security.version>4.0.2.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>4.0.3.RELEASE</owsi-core.spring-security.version>
 		
 		<owsi-core.spring-ldap.version>2.0.4.RELEASE</owsi-core.spring-ldap.version>
 		
@@ -101,7 +101,7 @@
 		<owsi-core.jsoup.version>1.8.3</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7.7</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.5.1</owsi-core.httpclient.version>
-		<owsi-core.httpcore.version>4.4.3</owsi-core.httpcore.version>
+		<owsi-core.httpcore.version>4.4.4</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.0.Final</owsi-core.prettytime.version>
 		<owsi-core.phloc-css.version>3.7.7</owsi-core.phloc-css.version>
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
