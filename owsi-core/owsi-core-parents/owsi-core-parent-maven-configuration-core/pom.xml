@@ -24,7 +24,7 @@
 		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
-		<owsi-core.spring.version>4.2.2.RELEASE</owsi-core.spring.version>
+		<owsi-core.spring.version>4.2.3.RELEASE</owsi-core.spring.version>
 		<owsi-core.aspectj.version>1.8.7</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>5.0.3.Final</owsi-core.hibernate-core.version>
@@ -33,7 +33,7 @@
 		<owsi-core.hibernate-commons-annotations.version>5.0.0.Final</owsi-core.hibernate-commons-annotations.version>
 		<owsi-core.jboss-logging.version>3.2.1.Final</owsi-core.jboss-logging.version>
 		<owsi-core.tomcat-jdbc.version>7.0.47</owsi-core.tomcat-jdbc.version>
-		<owsi-core.hikaricp.version>2.4.1</owsi-core.hikaricp.version>
+		<owsi-core.hikaricp.version>2.4.2</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.1</owsi-core.ehcache.version>
 		<owsi-core.querydsl.version>4.0.6</owsi-core.querydsl.version>
@@ -77,7 +77,7 @@
 		
 		<owsi-core.xml-apis.version>1.4.01</owsi-core.xml-apis.version>
 		
-		<owsi-core.slf4j.version>1.7.12</owsi-core.slf4j.version>
+		<owsi-core.slf4j.version>1.7.13</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
 		<owsi-core.opencsv.version>2.3</owsi-core.opencsv.version>
