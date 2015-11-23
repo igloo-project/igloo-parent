@@ -1,18 +1,24 @@
 // jQuery UI
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	color: @main-color;
+.ui-state-default {
+	&, .ui-widget-content &, .ui-widget-header & {
+		color: @main-color;
+	}
 }
 
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-	background: @main-color;
-	border-color: @main-color-highlight;
-	color: #FFFFFF;
+.ui-state-hover, .ui-state-focus {
+	&, .ui-widget-content &, .ui-widget-header & {
+		background: @main-color;
+		border-color: @main-color-highlight;
+		color: #FFFFFF;
+	}
 }
 
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-datepicker-today .ui-state-active {
-	background: @main-color-highlight;
-	border-color: @main-color;
-	color: #FFFFFF;
+.ui-state-active {
+	&, .ui-widget-content &, .ui-widget-header &, .ui-datepicker-today & {
+		background: @main-color-highlight;
+		border-color: @main-color;
+		color: #FFFFFF;
+	}
 }
 
 .ui-datepicker-next.ui-state-hover, .ui-datepicker-prev.ui-state-hover {
