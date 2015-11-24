@@ -11,7 +11,13 @@ import org.apache.wicket.util.lang.Classes;
  * 
  * This model needs to be wrapped by component to be used.
  * 
- * @deprecated Use fr.openwide.core.wicket.more.rendering.EnumRenderer and Renderer.asModel() instead.
+ * @deprecated Use fr.openwide.core.wicket.more.rendering.EnumRenderer instead.<ul>
+ * <li>{@code new EnumLabelModel(enumValueModel)} should become {@code EnumRenderer.get().asModel(enumValueModel)}
+ * <li>{@code new EnumLabelModel(enumValueModel, nullKeyValue)} should become
+ * 	{@code EnumRenderer.get().nullsAsResourceKey(nullKeyValue).asModel(enumValueModel)}
+ * <li>{@code new EnumLabelModel(enumValue)} should become {@code EnumRenderer.get().asModel(new Model<>(enumValue))}
+ * <li>{@code new EnumLabelModel(enumValue, nullKeyValue)} should become
+ * 	{@code EnumRenderer.get().nullsAsResourceKey(nullKeyValue).asModel(new Model<>(enumValue))}
  */
 @Deprecated
 public class EnumLabelModel<E extends Enum<?>> extends ComponentModel<String> {
