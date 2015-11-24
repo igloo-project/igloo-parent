@@ -7,10 +7,13 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Classes;
 
 /**
- * Give translation for a given enum. Reosurce key is built as in EnumLabel.
+ * Give translation for a given enum. Resource key is built as in EnumLabel.
  * 
  * This model needs to be wrapped by component to be used.
+ * 
+ * @deprecated Use fr.openwide.core.wicket.more.rendering.EnumRenderer and Renderer.asModel() instead.
  */
+@Deprecated
 public class EnumLabelModel<E extends Enum<?>> extends ComponentModel<String> {
 
 	private static final long serialVersionUID = -7290192562513833670L;
