@@ -130,6 +130,14 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		return withDefault(Predicates.notNull(), defaultValue);
 	}
 	
+	public Renderer<T> nullsAs(IRenderer<? super T> defaultRenderer) {
+		return withDefault(Predicates.notNull(), defaultRenderer);
+	}
+	
+	public Renderer<T> nullsAsResourceKey(String resourceKey) {
+		return withDefault(Predicates.notNull(), withResourceKey(resourceKey));
+	}
+	
 	public Renderer<T> nullsAsConstant(String defaultRendering) {
 		return withDefault(Predicates.notNull(), constant(defaultRendering));
 	}
