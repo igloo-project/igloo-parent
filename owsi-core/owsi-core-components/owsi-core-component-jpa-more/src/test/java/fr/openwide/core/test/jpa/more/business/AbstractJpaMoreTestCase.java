@@ -2,7 +2,6 @@ package fr.openwide.core.test.jpa.more.business;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +38,6 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 	
 	@Rule
 	public MockitoRule rule = MockitoJUnit.rule();
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
