@@ -16,7 +16,7 @@ import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.model.PropertyId;
 
 @Service("propertyService")
-public class PropertyServiceImpl implements IPropertyService {
+public class PropertyServiceImpl implements IConfigurablePropertyService {
 
 	private final Map<PropertyId<?>, Converter<String, ?>> converterMap = Maps.newHashMap();
 
@@ -49,14 +49,14 @@ public class PropertyServiceImpl implements IPropertyService {
 	}
 
 	@Override
-	public <T, P extends PropertyId<T>> T get(P propertyId) {
+	public <T> T get(PropertyId<T> propertyId) {
 		Preconditions.checkNotNull(propertyId);
 		
 		@SuppressWarnings("unchecked")
 		Converter<String, T> converter = (Converter<String, T>) converterMap.get(propertyId);
 		
 		if (converter == null) {
-			throw new IllegalStateException("Aucun converter renseigné pour la propriété. Propriété non définie.");
+			throw new IllegalStateException("No converter found for the property. Undefined property.");
 		}
 		
 		String valueAsString = null;
@@ -65,7 +65,7 @@ public class PropertyServiceImpl implements IPropertyService {
 		} else if (propertyId instanceof MutablePropertyId) {
 			valueAsString = mutablePropertyDao.get(propertyId.getKey());
 		} else {
-			throw new IllegalStateException("Type de propriété inconnu.");
+			throw new IllegalStateException("Unknown type of property.");
 		}
 		
 		return converter.convert(valueAsString);
@@ -79,7 +79,7 @@ public class PropertyServiceImpl implements IPropertyService {
 		Converter<String, T> converter = (Converter<String, T>) converterMap.get(propertyId);
 		
 		if (converter == null) {
-			throw new IllegalStateException("Aucun converter renseigné pour la propriété. Propriété non définie.");
+			throw new IllegalStateException("No converter found for the property. Undefined property.");
 		}
 		
 		mutablePropertyDao.set(propertyId.getKey(), converter.reverse().convert(value));
