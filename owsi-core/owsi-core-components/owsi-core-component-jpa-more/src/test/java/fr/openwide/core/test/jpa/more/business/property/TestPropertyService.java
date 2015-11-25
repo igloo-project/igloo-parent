@@ -6,8 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.google.common.primitives.Longs;
-
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
@@ -38,9 +36,9 @@ public class TestPropertyService extends AbstractJpaMoreTestCase {
 		Mockito.when(mutablePropertyDao.get("mutable.property.long")).thenReturn("1");
 		Mockito.when(mutablePropertyDao.get("mutable.property.string.default")).thenReturn(null);
 		
-		propertyService.register(mutablePropertyString);
-		propertyService.register(mutablePropertyLong, Longs.stringConverter());
-		propertyService.register(mutablePropertyStringDefault, "MyDefaultValue");
+		propertyService.registerString(mutablePropertyString);
+		propertyService.registerLong(mutablePropertyLong);
+		propertyService.registerString(mutablePropertyStringDefault, "MyDefaultValue");
 		
 		Assert.assertEquals("MyValue", propertyService.get(mutablePropertyString));
 		Assert.assertEquals((Long) 1L, propertyService.get(mutablePropertyLong));
@@ -66,8 +64,8 @@ public class TestPropertyService extends AbstractJpaMoreTestCase {
 		Mockito.when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
 		Mockito.when(immutablePropertyDao.get("immutable.property.long")).thenReturn("1");
 		
-		propertyService.register(immutablePropertyString);
-		propertyService.register(immutablePropertyLong, Longs.stringConverter());
+		propertyService.registerString(immutablePropertyString);
+		propertyService.registerLong(immutablePropertyLong);
 		
 		Assert.assertEquals("MyValue", propertyService.get(immutablePropertyString));
 		Assert.assertEquals((Long) 1L, propertyService.get(immutablePropertyLong));
