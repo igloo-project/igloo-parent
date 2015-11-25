@@ -19,7 +19,7 @@ public class TestProperty extends AbstractJpaMoreTestCase {
 	@Test
 	public void mutableProperty() throws ServiceException, SecurityServiceException {
 		MutablePropertyId<String> mutablePropertyString = new MutablePropertyId<>("mutable.property.string");
-		propertyService.register(mutablePropertyString, "MyDefaultValue");
+		propertyService.registerString(mutablePropertyString, "MyDefaultValue");
 		Assert.assertEquals("MyDefaultValue", propertyService.get(mutablePropertyString));
 		propertyService.set(mutablePropertyString, "MyValue");
 		Assert.assertEquals("MyValue", propertyService.get(mutablePropertyString));
@@ -28,7 +28,7 @@ public class TestProperty extends AbstractJpaMoreTestCase {
 	@Test
 	public void immutableProperty() {
 		ImmutablePropertyId<String> immutablePropertyString = new ImmutablePropertyId<>("property.string.value");
-		propertyService.register(immutablePropertyString);
+		propertyService.registerString(immutablePropertyString);
 		Assert.assertEquals("MyValue", propertyService.get(immutablePropertyString));
 	}
 
