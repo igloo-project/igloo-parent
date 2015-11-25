@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 
 import com.google.common.primitives.Longs;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
@@ -27,73 +29,55 @@ public class TestPropertyService extends AbstractJpaMoreTestCase {
 	private PropertyServiceImpl propertyService;
 
 	@Test
-	public void mutableProperty() {
-		String MUTABLE_PROPERTY_STRING_KEY = "mutable.property.string";
-		String MUTABLE_PROPERTY_STRING_VALUE = "MUTABLE_PROPERTY_STRING_VALUE";
-		String MUTABLE_PROPERTY_STRING_VALUE_AS_STRING = MUTABLE_PROPERTY_STRING_VALUE;
-		MutablePropertyId<String> MUTABLE_PROPERTY_STRING = new MutablePropertyId<>(MUTABLE_PROPERTY_STRING_KEY);
+	public void mutablePropertyMock() throws ServiceException, SecurityServiceException {
+		MutablePropertyId<String> mutablePropertyString = new MutablePropertyId<>("mutable.property.string");
+		MutablePropertyId<Long> mutablePropertyLong = new MutablePropertyId<>("mutable.property.long");
+		MutablePropertyId<String> mutablePropertyStringDefault = new MutablePropertyId<>("mutable.property.string.default");
 		
-		String MUTABLE_PROPERTY_LONG_KEY = "mutable.property.long";
-		Long MUTABLE_PROPERTY_LONG_VALUE = 1L;
-		String MUTABLE_PROPERTY_LONG_VALUE_AS_STRING = "1";
-		MutablePropertyId<Long> MUTABLE_PROPERTY_LONG = new MutablePropertyId<>(MUTABLE_PROPERTY_LONG_KEY);
+		Mockito.when(mutablePropertyDao.get("mutable.property.string")).thenReturn("MyValue");
+		Mockito.when(mutablePropertyDao.get("mutable.property.long")).thenReturn("1");
+		Mockito.when(mutablePropertyDao.get("mutable.property.string.default")).thenReturn(null);
 		
-		Mockito.when(mutablePropertyDao.get(MUTABLE_PROPERTY_STRING_KEY)).thenReturn(MUTABLE_PROPERTY_STRING_VALUE_AS_STRING);
-		Mockito.when(mutablePropertyDao.get(MUTABLE_PROPERTY_LONG_KEY)).thenReturn(MUTABLE_PROPERTY_LONG_VALUE_AS_STRING);
+		propertyService.register(mutablePropertyString);
+		propertyService.register(mutablePropertyLong, Longs.stringConverter());
+		propertyService.register(mutablePropertyStringDefault, "MyDefaultValue");
 		
-		propertyService.register(MUTABLE_PROPERTY_STRING);
-		propertyService.register(MUTABLE_PROPERTY_LONG, Longs.stringConverter());
+		Assert.assertEquals("MyValue", propertyService.get(mutablePropertyString));
+		Assert.assertEquals((Long) 1L, propertyService.get(mutablePropertyLong));
+		Assert.assertEquals("MyDefaultValue", propertyService.get(mutablePropertyStringDefault));
 		
-		Assert.assertEquals(MUTABLE_PROPERTY_STRING_VALUE, propertyService.get(MUTABLE_PROPERTY_STRING));
-		Assert.assertEquals(MUTABLE_PROPERTY_LONG_VALUE, propertyService.get(MUTABLE_PROPERTY_LONG));
-		
-		propertyService.set(MUTABLE_PROPERTY_STRING, MUTABLE_PROPERTY_STRING_VALUE + "_test");
-		propertyService.set(MUTABLE_PROPERTY_LONG, MUTABLE_PROPERTY_LONG_VALUE + 1);
+		propertyService.set(mutablePropertyString, "MyValue2");
+		propertyService.set(mutablePropertyLong, 2L);
+		propertyService.set(mutablePropertyStringDefault, "MyValue3");
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void mutablePropertyUnregistered() {
-		String MUTABLE_PROPERTY_UNREGISTERED_STRING_KEY = "mutable.property.unregistered.string";
-		String MUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE = "MUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE";
-		String MUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE_AS_STRING = MUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE;
-		MutablePropertyId<String> MUTABLE_PROPERTY_UNREGISTERED_STRING = new MutablePropertyId<>(MUTABLE_PROPERTY_UNREGISTERED_STRING_KEY);
-		
-		Mockito.when(mutablePropertyDao.get(MUTABLE_PROPERTY_UNREGISTERED_STRING_KEY)).thenReturn(MUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE_AS_STRING);
-		propertyService.get(MUTABLE_PROPERTY_UNREGISTERED_STRING);
+		MutablePropertyId<String> mutablePropertyUnregisteredString = new MutablePropertyId<>("mutable.property.unregistered.string");
+		Mockito.when(mutablePropertyDao.get("mutable.property.unregistered.string")).thenReturn("MyValue");
+		propertyService.get(mutablePropertyUnregisteredString);
 	}
 
 	@Test
-	public void immutableProperty() {
-		String IMMUTABLE_PROPERTY_STRING_KEY = "immutable.property.string";
-		String IMMUTABLE_PROPERTY_STRING_VALUE = "IMMUTABLE_PROPERTY_STRING_VALUE";
-		String IMMUTABLE_PROPERTY_STRING_VALUE_AS_STRING = IMMUTABLE_PROPERTY_STRING_VALUE;
-		ImmutablePropertyId<String> IMMUTABLE_PROPERTY_STRING = new ImmutablePropertyId<>(IMMUTABLE_PROPERTY_STRING_KEY);
+	public void immutablePropertyMock() {
+		ImmutablePropertyId<String> immutablePropertyString = new ImmutablePropertyId<>("immutable.property.string");
+		ImmutablePropertyId<Long> immutablePropertyLong = new ImmutablePropertyId<>("immutable.property.long");
 		
-		String IMMUTABLE_PROPERTY_LONG_KEY = "immutable.property.long";
-		Long IMMUTABLE_PROPERTY_LONG_VALUE = 1L;
-		String IMMUTABLE_PROPERTY_LONG_VALUE_AS_STRING = "1";
-		ImmutablePropertyId<Long> IMMUTABLE_PROPERTY_LONG = new ImmutablePropertyId<>(IMMUTABLE_PROPERTY_LONG_KEY);
+		Mockito.when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
+		Mockito.when(immutablePropertyDao.get("immutable.property.long")).thenReturn("1");
 		
-		Mockito.when(immutablePropertyDao.get(IMMUTABLE_PROPERTY_STRING_KEY)).thenReturn(IMMUTABLE_PROPERTY_STRING_VALUE_AS_STRING);
-		Mockito.when(immutablePropertyDao.get(IMMUTABLE_PROPERTY_LONG_KEY)).thenReturn(IMMUTABLE_PROPERTY_LONG_VALUE_AS_STRING);
+		propertyService.register(immutablePropertyString);
+		propertyService.register(immutablePropertyLong, Longs.stringConverter());
 		
-		propertyService.register(IMMUTABLE_PROPERTY_STRING);
-		propertyService.register(IMMUTABLE_PROPERTY_LONG, Longs.stringConverter());
-		
-		Assert.assertEquals(IMMUTABLE_PROPERTY_STRING_VALUE, propertyService.get(IMMUTABLE_PROPERTY_STRING));
-		Assert.assertEquals(IMMUTABLE_PROPERTY_LONG_VALUE, propertyService.get(IMMUTABLE_PROPERTY_LONG));
+		Assert.assertEquals("MyValue", propertyService.get(immutablePropertyString));
+		Assert.assertEquals((Long) 1L, propertyService.get(immutablePropertyLong));
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void immutablePropertyUnregistered() {
-		String IMMUTABLE_PROPERTY_UNREGISTERED_STRING_KEY = "immutable.property.unregistered.string";
-		String IMMUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE = "IMMUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE";
-		String IMMUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE_AS_STRING = IMMUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE;
-		ImmutablePropertyId<String> IMMUTABLE_PROPERTY_UNREGISTERED_STRING = new ImmutablePropertyId<>(IMMUTABLE_PROPERTY_UNREGISTERED_STRING_KEY);
-		
-		Mockito.when(immutablePropertyDao.get(IMMUTABLE_PROPERTY_UNREGISTERED_STRING_KEY)).thenReturn(IMMUTABLE_PROPERTY_UNREGISTERED_STRING_VALUE_AS_STRING);
-		
-		propertyService.get(IMMUTABLE_PROPERTY_UNREGISTERED_STRING);
+		ImmutablePropertyId<String> immutablePropertyUnregisteredString = new ImmutablePropertyId<>("immutable.property.unregistered.string");
+		Mockito.when(immutablePropertyDao.get("immutable.property.unregistered.string")).thenReturn("MyValue");
+		propertyService.get(immutablePropertyUnregisteredString);
 	}
 
 }

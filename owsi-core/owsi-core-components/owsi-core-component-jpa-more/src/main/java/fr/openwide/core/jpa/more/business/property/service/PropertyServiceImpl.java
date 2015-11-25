@@ -2,13 +2,17 @@ package fr.openwide.core.jpa.more.business.property.service;
 
 import java.util.Map;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Converter;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
@@ -18,7 +22,7 @@ import fr.openwide.core.jpa.more.business.property.model.PropertyId;
 @Service("propertyService")
 public class PropertyServiceImpl implements IConfigurablePropertyService {
 
-	private final Map<PropertyId<?>, Converter<String, ?>> converterMap = Maps.newHashMap();
+	private final Map<PropertyId<?>, Pair<? extends Converter<String, ?>, ?>> propertyInformationMap = Maps.newHashMap();
 
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
@@ -27,25 +31,25 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	private IImmutablePropertyDao immutablePropertyDao;
 
 	@Override
-	public void register(PropertyId<String> propertyId, String defaultValueAsString) {
-		register(propertyId, Converter.<String>identity(), defaultValueAsString);
-	}
-
-	@Override
 	public void register(PropertyId<String> propertyId) {
 		register(propertyId, Converter.<String>identity());
 	}
 
 	@Override
-	public <T> void register(PropertyId<T> propertyId, Converter<String, T> converter, String defaultValueAsString) {
-		register(propertyId, converter);
+	public void register(PropertyId<String> propertyId, String defaultValue) {
+		register(propertyId, Converter.<String>identity(), defaultValue);
 	}
 
 	@Override
 	public <T> void register(PropertyId<T> propertyId, Converter<String, T> converter) {
+		register(propertyId, converter, null);
+	}
+
+	@Override
+	public <T> void register(PropertyId<T> propertyId, Converter<String, T> converter, final T defaultValue) {
 		Preconditions.checkNotNull(propertyId);
 		Preconditions.checkNotNull(converter);
-		converterMap.put(propertyId, converter);
+		propertyInformationMap.put(propertyId, Pair.with(converter, defaultValue));
 	}
 
 	@Override
@@ -53,9 +57,9 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 		Preconditions.checkNotNull(propertyId);
 		
 		@SuppressWarnings("unchecked")
-		Converter<String, T> converter = (Converter<String, T>) converterMap.get(propertyId);
+		Pair<Converter<String, T>, T> information = (Pair<Converter<String, T>, T>) propertyInformationMap.get(propertyId);
 		
-		if (converter == null) {
+		if (information == null || information.getValue0() == null) {
 			throw new IllegalStateException("No converter found for the property. Undefined property.");
 		}
 		
@@ -68,21 +72,21 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 			throw new IllegalStateException("Unknown type of property.");
 		}
 		
-		return converter.convert(valueAsString);
+		return Optional.fromNullable(information.getValue0().convert(valueAsString)).or(Optional.fromNullable(information.getValue1())).orNull();
 	}
 
 	@Override
-	public <T> void set(MutablePropertyId<T> propertyId, T value) {
+	public <T> void set(MutablePropertyId<T> propertyId, T value) throws ServiceException, SecurityServiceException {
 		Preconditions.checkNotNull(propertyId);
 		
 		@SuppressWarnings("unchecked")
-		Converter<String, T> converter = (Converter<String, T>) converterMap.get(propertyId);
+		Pair<Converter<String, T>, T> information = (Pair<Converter<String, T>, T>) propertyInformationMap.get(propertyId);
 		
-		if (converter == null) {
+		if (information == null || information.getValue0() == null) {
 			throw new IllegalStateException("No converter found for the property. Undefined property.");
 		}
 		
-		mutablePropertyDao.set(propertyId.getKey(), converter.reverse().convert(value));
+		mutablePropertyDao.set(propertyId.getKey(), information.getValue0().reverse().convert(value));
 	}
 
 }
