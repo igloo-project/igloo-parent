@@ -6,12 +6,12 @@ import fr.openwide.core.jpa.more.business.property.model.PropertyId;
 
 public interface IPropertyRegistry {
 
-	<T> void register(PropertyId<T> propertyId, Converter<String, T> converter, String defaultValue);
+	void register(PropertyId<String> propertyId, String defaultValue);
+
+	void register(PropertyId<String> propertyId);
 
 	<T> void register(PropertyId<T> propertyId, Converter<String, T> converter);
 
-	void register(PropertyId<String> propertyId, String defaultValueAsString);
-
-	void register(PropertyId<String> propertyId);
+	<T> void register(PropertyId<T> propertyId, Converter<String, T> converter, T defaultValue);
 
 }
