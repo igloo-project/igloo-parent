@@ -2,12 +2,18 @@ package fr.openwide.core.jpa.more.business.property.service;
 
 import java.util.Date;
 
+import org.javatuples.Pair;
+
 import com.google.common.base.Converter;
+import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.jpa.more.business.property.model.CompositeProperty;
 import fr.openwide.core.jpa.more.business.property.model.PropertyId;
 
 public interface IPropertyRegistry {
+
+	<T, A, B> void register(CompositeProperty<T, A, B> compositeProperty, Function<Pair<A, B>, T> function);
 
 	<T> void register(PropertyId<T> propertyId, Converter<String, T> converter);
 
