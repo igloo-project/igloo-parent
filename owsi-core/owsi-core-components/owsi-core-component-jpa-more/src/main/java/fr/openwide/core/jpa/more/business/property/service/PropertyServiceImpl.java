@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Converter;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
@@ -24,6 +25,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
+import fr.openwide.core.jpa.more.business.property.model.CompositeProperty;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.model.PropertyId;
@@ -33,11 +35,20 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
 	private final Map<PropertyId<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap = Maps.newHashMap();
 
+	private final Map<CompositeProperty<?, ?, ?>, Function<? extends Pair<?, ?>, ?>> compositePropertyFunctionMap = Maps.newHashMap();
+
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
 
 	@Autowired
 	private IImmutablePropertyDao immutablePropertyDao;
+
+	@Override
+	public <T, A, B> void register(CompositeProperty<T, A, B> compositeProperty, Function<Pair<A, B>, T> function) {
+		Preconditions.checkNotNull(compositeProperty);
+		Preconditions.checkNotNull(function);
+		compositePropertyFunctionMap.put(compositeProperty, function);
+	}
 
 	@Override
 	public <T> void register(PropertyId<T> propertyId, Converter<String, T> converter) {
@@ -168,6 +179,18 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 		}
 		
 		mutablePropertyDao.set(propertyId.getKey(), information.getValue0().reverse().convert(value));
+	}
+
+	@Override
+	public <T, A, B> T get(CompositeProperty<T, A, B> compositeProperty) {
+		@SuppressWarnings("unchecked")
+		Function<Pair<A, B>, T> function = (Function<Pair<A, B>, T>) compositePropertyFunctionMap.get(compositeProperty);
+		
+		if (function == null) {
+			throw new IllegalStateException("No converter found for the composite property. Undefined composite property.");
+		}
+		
+		return function.apply(Pair.with(get(compositeProperty.getFirstPropertyId()), get(compositeProperty.getSecondPropertyId())));
 	}
 
 }
