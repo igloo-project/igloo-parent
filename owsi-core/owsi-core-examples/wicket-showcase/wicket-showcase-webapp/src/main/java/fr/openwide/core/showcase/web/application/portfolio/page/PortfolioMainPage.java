@@ -16,11 +16,13 @@ import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfolioPanel;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserSearchPanel;
 import fr.openwide.core.showcase.web.application.portfolio.model.UserDataProvider;
+import fr.openwide.core.showcase.web.application.util.property.ShowcaseWebappPropertyIds;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.model.ApplicationPropertyModel;
 
 public class PortfolioMainPage extends MainTemplate {
 
@@ -49,7 +51,7 @@ public class PortfolioMainPage extends MainTemplate {
 		UserDataProvider userDataProvider = new UserDataProvider(searchTermModel, activeModel);
 		
 		// Porfolio
-		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", userDataProvider, showcaseConfigurer.getPortfolioItemsPerPageUser());
+		UserPortfolioPanel portfolioPanel = new UserPortfolioPanel("userPortfolio", userDataProvider, ApplicationPropertyModel.of(ShowcaseWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_USER).getObject());
 		add(portfolioPanel);
 		
 		// Search
