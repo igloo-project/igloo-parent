@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 
 @Repository("immutablePropertyDao")
-public class ImmutablePropertyDao implements IImmutablePropertyDao {
+public class ImmutablePropertyDaoImpl implements IImmutablePropertyDao {
 
 	@Autowired
 	private CorePropertyPlaceholderConfigurer configurer;

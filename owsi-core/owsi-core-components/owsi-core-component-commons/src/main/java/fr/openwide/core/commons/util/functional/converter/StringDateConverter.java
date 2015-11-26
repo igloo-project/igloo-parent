@@ -1,8 +1,9 @@
-package fr.openwide.core.commons.util.converter;
+package fr.openwide.core.commons.util.functional.converter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -12,7 +13,7 @@ public class StringDateConverter extends Converter<String, Date> {
 
 	private static final StringDateConverter INSTANCE = new StringDateConverter();
 
-	private static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
+	private static final String PATTERN = "yyyy-MM-dd";
 
 	public static StringDateConverter get() {
 		return INSTANCE;
@@ -24,7 +25,7 @@ public class StringDateConverter extends Converter<String, Date> {
 	@Override
 	protected Date doForward(String a) {
 		try {
-			return DateUtils.parseDate(a, PATTERN);
+			return DateUtils.parseDate(a, Locale.ROOT, PATTERN);
 		} catch (ParseException e) {
 			throw new IllegalArgumentException("Invalid date value '" + a + "'", e);
 		}
@@ -32,7 +33,7 @@ public class StringDateConverter extends Converter<String, Date> {
 
 	@Override
 	protected String doBackward(Date b) {
-		return new SimpleDateFormat(PATTERN).format(b);
+		return new SimpleDateFormat(PATTERN, Locale.ROOT).format(b);
 	}
 
 }

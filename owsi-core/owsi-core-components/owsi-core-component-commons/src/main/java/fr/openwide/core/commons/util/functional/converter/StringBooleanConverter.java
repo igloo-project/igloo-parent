@@ -1,4 +1,4 @@
-package fr.openwide.core.commons.util.converter;
+package fr.openwide.core.commons.util.functional.converter;
 
 import java.util.HashSet;
 import java.util.Set;

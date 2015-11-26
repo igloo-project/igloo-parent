@@ -1,17 +1,17 @@
 package fr.openwide.core.test.jpa.more.business.property;
 
-import org.javatuples.Pair;
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Function;
-
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.property.model.CompositeProperty;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
+import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyIdTemplate;
 import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
+import fr.openwide.core.jpa.more.business.property.model.MutablePropertyIdTemplate;
 import fr.openwide.core.jpa.more.business.property.service.IConfigurablePropertyService;
 import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 
@@ -37,21 +37,41 @@ public class TestProperty extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void compositeProperty() {
-		ImmutablePropertyId<String> property1 = new ImmutablePropertyId<>("property.string.value");
-		propertyService.registerString(property1);
-		ImmutablePropertyId<String> property2 = new ImmutablePropertyId<>("property.string.value");
-		propertyService.registerString(property2);
+	public void immutablePropertyTemplate() {
+		ImmutablePropertyIdTemplate<String> immutablePropertyTemplate = new ImmutablePropertyIdTemplate<>("property.string.%1s");
+		propertyService.registerString(immutablePropertyTemplate);
+		Assert.assertEquals("MyValue", propertyService.get(immutablePropertyTemplate.create("value")));
+	}
+
+	@Test
+	public void mutablePropertyTemplate() throws ServiceException, SecurityServiceException {
+		MutablePropertyIdTemplate<Long> mutablePropertyTemplate = new MutablePropertyIdTemplate<>("property.long.%1s");
+		propertyService.registerLong(mutablePropertyTemplate);
+		MutablePropertyId<Long> mutableProperty = mutablePropertyTemplate.create("value");
+		propertyService.set(mutableProperty, (Long) 1L);
+		Assert.assertEquals((Long) 1L, propertyService.get(mutableProperty));
+	}
+
+	@Test
+	public void immutablePropertyDate() throws ServiceException, SecurityServiceException {
+		ImmutablePropertyId<Date> immutablePropertyIdDate = new ImmutablePropertyId<>("property.date.value");
+		propertyService.registerDate(immutablePropertyIdDate);
+		propertyService.get(immutablePropertyIdDate);
 		
-		CompositeProperty<String, String, String> compositeProperty = new CompositeProperty<>(property1, property2);
-		propertyService.register(compositeProperty, new Function<Pair<String, String>, String>() {
-			@Override
-			public String apply(Pair<String, String> input) {
-				return input == null ? null : new StringBuilder().append(input.getValue0()).append("_").append(input.getValue1()).toString();
-			}
-		});
+		ImmutablePropertyId<Date> immutablePropertyIdDateTime1 = new ImmutablePropertyId<>("property.dateTime.value");
+		propertyService.registerDateTime(immutablePropertyIdDateTime1);
+		propertyService.get(immutablePropertyIdDateTime1);
 		
-		Assert.assertEquals(new StringBuilder().append("MyValue").append("_").append("MyValue").toString(), propertyService.get(compositeProperty));
+		ImmutablePropertyId<Date> immutablePropertyIdDateTime2 = new ImmutablePropertyId<>("property.dateTime.value2");
+		propertyService.registerDateTime(immutablePropertyIdDateTime2, new Date());
+		propertyService.get(immutablePropertyIdDateTime2);
+		
+		MutablePropertyIdTemplate<Date> mutablePropertyTemplateDate = new MutablePropertyIdTemplate<>("property.date.%1s");
+		propertyService.registerDateTime(mutablePropertyTemplateDate, new Date());
+		MutablePropertyId<Date> mutablePropertyDate = mutablePropertyTemplateDate.create("value");
+		propertyService.get(mutablePropertyDate);
+		propertyService.set(mutablePropertyDate, new Date());
+		propertyService.get(mutablePropertyDate);
 	}
 
 }
