@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.business.property.service;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,11 +25,14 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
 import fr.openwide.core.commons.util.functional.SerializableSupplier;
+import fr.openwide.core.commons.util.functional.converter.StringBigDecimalConverter;
 import fr.openwide.core.commons.util.functional.converter.StringBooleanConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateTimeConverter;
+import fr.openwide.core.commons.util.functional.converter.StringFileConverter;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.parameter.service.IAbstractParameterService;
 import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
@@ -166,6 +171,16 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	@Override
+	public void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId) {
+		registerBigDecimal(propertyId, null);
+	}
+
+	@Override
+	public void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue) {
+		register(propertyId, StringBigDecimalConverter.get(), defaultValue);
+	}
+
+	@Override
 	public void registerBoolean(PropertyRegistryKey<Boolean> propertyId) {
 		registerBoolean(propertyId, null);
 	}
@@ -193,6 +208,16 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	@Override
 	public void registerDateTime(PropertyRegistryKey<Date> propertyId, Date defaultValue) {
 		register(propertyId, StringDateTimeConverter.get(), defaultValue);
+	}
+
+	@Override
+	public void registerFile(PropertyRegistryKey<File> propertyId) {
+		registerFile(propertyId, null);
+	}
+
+	@Override
+	public void registerFile(PropertyRegistryKey<File> propertyId, File defaultValue) {
+		register(propertyId, StringFileConverter.get(), defaultValue);
 	}
 
 	@Override
