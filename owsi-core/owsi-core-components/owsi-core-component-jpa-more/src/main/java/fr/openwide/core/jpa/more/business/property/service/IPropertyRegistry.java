@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.business.property.service;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.common.base.Converter;
@@ -69,6 +71,16 @@ public interface IPropertyRegistry {
 	void registerDouble(PropertyRegistryKey<Double> propertyId, Double defaultValue);
 
 	/**
+	 * Property must use the following format : {@link BigDecimal#BigDecimal(String)}
+	 */
+	void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId);
+
+	/**
+	 * Property must use the following format : {@link BigDecimal#BigDecimal(String)}
+	 */
+	void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue);
+
+	/**
 	 * Property must use the following format : true/false, 1/0, yes/no, on/off
 	 * @see StringBooleanConverter
 	 */
@@ -103,5 +115,16 @@ public interface IPropertyRegistry {
 	 * @see StringDateTimeConverter
 	 */
 	void registerDateTime(PropertyRegistryKey<Date> propertyId, Date defaultValue);
+
+	/**
+	 * Property must use the following format : 
+	 * @see StringDateTimeConverter
+	 */
+	void registerFile(PropertyRegistryKey<File> propertyId);
+
+	/**
+	 * Property must use the following format : 
+	 */
+	void registerFile(PropertyRegistryKey<File> propertyId, File defaultValue);
 
 }
