@@ -7,15 +7,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Converter;
 
-public class StringFileConverter extends Converter<String, File> {
+public class StringDirectoryFileConverter extends Converter<String, File> {
 
-	private static final StringFileConverter INSTANCE = new StringFileConverter();
+	private static final StringDirectoryFileConverter INSTANCE = new StringDirectoryFileConverter();
 
-	public static StringFileConverter get() {
+	public static StringDirectoryFileConverter get() {
 		return INSTANCE;
 	}
 
-	protected StringFileConverter() {
+	protected StringDirectoryFileConverter() {
 	}
 
 	@Override

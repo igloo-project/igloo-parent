@@ -1,9 +1,6 @@
 package fr.openwide.core.test.jpa.more.business;
 
 import org.junit.Before;
-import org.junit.Rule;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -43,9 +40,6 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 
 	@Autowired
 	protected IMockParameterService parameterService;
-
-	@Rule
-	public MockitoRule rule = MockitoJUnit.rule();
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {

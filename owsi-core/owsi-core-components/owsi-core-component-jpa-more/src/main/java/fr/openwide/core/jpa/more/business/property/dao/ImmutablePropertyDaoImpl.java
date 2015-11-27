@@ -13,7 +13,7 @@ public class ImmutablePropertyDaoImpl implements IImmutablePropertyDao {
 
 	@Override
 	public String get(String key) {
-		return configurer.getPropertyAsString(key);
+		return configurer.getProperty(key);
 	}
 
 }

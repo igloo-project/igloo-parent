@@ -53,7 +53,7 @@ public class TestProperty extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void immutablePropertyDate() throws ServiceException, SecurityServiceException {
+	public void propertyDate() throws ServiceException, SecurityServiceException {
 		ImmutablePropertyId<Date> immutablePropertyIdDate = new ImmutablePropertyId<>("property.date.value");
 		propertyService.registerDate(immutablePropertyIdDate);
 		propertyService.get(immutablePropertyIdDate);
@@ -72,6 +72,16 @@ public class TestProperty extends AbstractJpaMoreTestCase {
 		propertyService.get(mutablePropertyDate);
 		propertyService.set(mutablePropertyDate, new Date());
 		propertyService.get(mutablePropertyDate);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void propertyAlreadyRegistered() {
+		ImmutablePropertyId<String> propertyId1 = new ImmutablePropertyId<>("property1");
+		ImmutablePropertyId<String> propertyId2 = new ImmutablePropertyId<>("property2");
+		ImmutablePropertyId<String> propertyId3 = new ImmutablePropertyId<>("property1");
+		propertyService.registerString(propertyId1);
+		propertyService.registerString(propertyId2);
+		propertyService.registerString(propertyId3);
 	}
 
 }

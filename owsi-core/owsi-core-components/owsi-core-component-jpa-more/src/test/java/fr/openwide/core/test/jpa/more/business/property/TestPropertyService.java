@@ -1,10 +1,13 @@
 package fr.openwide.core.test.jpa.more.business.property;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -13,9 +16,8 @@ import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.service.PropertyServiceImpl;
-import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 
-public class TestPropertyService extends AbstractJpaMoreTestCase {
+public class TestPropertyService {
 
 	@Mock
 	private IImmutablePropertyDao immutablePropertyDao;
@@ -26,7 +28,10 @@ public class TestPropertyService extends AbstractJpaMoreTestCase {
 	@InjectMocks
 	private PropertyServiceImpl propertyService;
 
-	@Test
+	@Rule
+	public MockitoRule rule = MockitoJUnit.rule();
+
+//	@Test
 	public void mutablePropertyMock() throws ServiceException, SecurityServiceException {
 		MutablePropertyId<String> mutablePropertyString = new MutablePropertyId<>("mutable.property.string");
 		MutablePropertyId<Long> mutablePropertyLong = new MutablePropertyId<>("mutable.property.long");

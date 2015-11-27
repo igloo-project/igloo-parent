@@ -73,7 +73,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key la clé
 	 * @return chaîne de la propriété
 	 */
-	public String getPropertyAsString(String key) {
+	protected String getPropertyAsString(String key) {
 		return getPropertyAsString(key, null);
 	}
 	
@@ -282,7 +282,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key la clé
 	 * @return l'objet propriété
 	 */
-	private Object getProperty(String key) {
+	public String getProperty(String key) {
 		String rawValue = propertyResolver.getProperty(key);
 		
 		if (rawValue != null) {
