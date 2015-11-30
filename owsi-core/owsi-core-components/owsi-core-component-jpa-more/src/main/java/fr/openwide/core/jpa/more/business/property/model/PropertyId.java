@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.base.Preconditions;
 
+import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
+
 /**
  * Object wrapping a key matching a property from a resource file or a {@link Parameter}.
  */
@@ -48,6 +50,7 @@ public abstract class PropertyId<T> implements PropertyRegistryKey<T> {
 		}
 		PropertyId<?> other = (PropertyId<?>) obj;
 		return new EqualsBuilder()
+				.append(getClass(), obj.getClass())
 				.append(key, other.key)
 				.append(template, other.template)
 				.isEquals();
@@ -56,6 +59,7 @@ public abstract class PropertyId<T> implements PropertyRegistryKey<T> {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.append(getClass())
 				.append(key)
 				.append(template)
 				.build();
@@ -64,6 +68,7 @@ public abstract class PropertyId<T> implements PropertyRegistryKey<T> {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
+				.append(getClass())
 				.append(key)
 				.append(template)
 				.build();

@@ -11,4 +11,6 @@ public interface IPropertyService {
 
 	<T> void set(MutablePropertyId<T> propertyId, T value) throws ServiceException, SecurityServiceException;
 
+	void clean();
+
 }

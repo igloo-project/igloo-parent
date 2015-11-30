@@ -9,4 +9,6 @@ public interface IMutablePropertyDao {
 
 	void set(String key, String value) throws ServiceException, SecurityServiceException;
 
+	void clean();
+
 }
