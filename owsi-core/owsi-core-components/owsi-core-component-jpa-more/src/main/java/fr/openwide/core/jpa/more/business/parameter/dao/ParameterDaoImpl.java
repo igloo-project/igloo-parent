@@ -38,4 +38,11 @@ public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter>
 		return super.getByField(QParameter.parameter, QParameter.parameter.name, name);
 	}
 
+	@Override
+	public void clean() {
+		for (Parameter parameter : list()) {
+			delete(parameter);
+		}
+	}
+
 }

@@ -320,6 +320,18 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 		);
 	}
 
+	@Override
+	public void clean() {
+		writeTransactionTemplate.execute(
+				new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus status) {
+						mutablePropertyDao.clean();
+					}
+				}
+		);
+	}
+
 	@Autowired
 	public void setPlatformTransactionManager(PlatformTransactionManager transactionManager) {
 		DefaultTransactionAttribute readOnlyTransactionAttribute = new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
