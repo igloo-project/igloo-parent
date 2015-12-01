@@ -398,11 +398,11 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	// 	>	Match all if given
-	protected <P> Query matchAllIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+	protected <P> Query matchAllIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> possibleValues) {
 		return matchAllIfGiven(defaultQueryBuilder, binding, possibleValues);
 	}
 
-	protected <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding,
+	protected <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding,
 			Collection<? extends P> possibleValues) {
 		return matchAllIfGiven(builder, binding.getPath(), possibleValues);
 	}
