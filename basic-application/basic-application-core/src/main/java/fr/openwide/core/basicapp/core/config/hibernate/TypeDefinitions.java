@@ -14,13 +14,13 @@ import fr.openwide.core.basicapp.core.config.hibernate.type.NumeroTelephoneType;
 import fr.openwide.core.jpa.hibernate.usertype.StringClobType;
 
 /**
- * Classe utilisée pour définir des types via des annotations. Aucun autre intérêt.
+ * Class used to define types with annotations.
  */
 @SuppressWarnings("deprecation")
 @TypeDefs({
-	// On utilise "text" plutôt que "varchar" pour les colonnes de type String
+	// We use "text" instead of "varchar" for String columns
 	@TypeDef(defaultForType = String.class, typeClass = StringClobType.class),
-	// On stocke certains types comme des chaines de caractères, sinon ils sont stockés en format binaire
+	// We declare here the types we want to store as String instead of binary
 	@TypeDef(defaultForType = AdresseEmail.class, typeClass = AdresseEmailType.class),
 	@TypeDef(defaultForType = NumeroTelephone.class, typeClass = NumeroTelephoneType.class),
 	@TypeDef(defaultForType = CodePostal.class, typeClass = CodePostalType.class)
@@ -29,7 +29,17 @@ import fr.openwide.core.jpa.hibernate.usertype.StringClobType;
 public final class TypeDefinitions {
 	
 	/**
-	 * Utilisation:
+	 * Usage:
+	 * <pre>
+	 *	&#064;Column
+	 *	&#064;Type(type = TypeDefinitions.STRING_CLOB)
+	 *	private String myStringClobField;
+	 * </pre>
+	 */
+	public static final String STRING_CLOB = "fr.openwide.core.jpa.hibernate.usertype.StringClobType";
+	
+	/**
+	 * Usage:
 	 * <pre>
 	 *	&#064;Column(length = 4)
 	 *	&#064;Type(type = TypeDefinitions.STRING_VARCHAR)

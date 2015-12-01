@@ -14,6 +14,7 @@ import org.hibernate.annotations.Type;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.basicapp.core.config.hibernate.TypeDefinitions;
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.commons.util.collections.CollectionUtils;
 
@@ -28,7 +29,7 @@ public class UserPasswordInformation implements Serializable {
 
 	@ElementCollection
 	@OrderColumn
-	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
+	@Type(type = TypeDefinitions.STRING_CLOB)
 	private List<String> history = Lists.newArrayList();
 
 	public Date getLastUpdateDate() {
