@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.model;
 
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -19,7 +18,7 @@ public class ApplicationPropertyModel<T> extends LoadableDetachableModel<T> {
 
 	private final PropertyId<T> propertyId;
 
-	public static <T> IModel<T> of(PropertyId<T> propertyId) {
+	public static <T> ApplicationPropertyModel<T> of(PropertyId<T> propertyId) {
 		Preconditions.checkNotNull(propertyId);
 		return new ApplicationPropertyModel<T>(propertyId);
 	}
@@ -34,6 +33,10 @@ public class ApplicationPropertyModel<T> extends LoadableDetachableModel<T> {
 	@Override
 	protected T load() {
 		return propertyService.get(propertyId);
+	}
+
+	public PropertyId<T> getPropertyId() {
+		return propertyId;
 	}
 
 }
