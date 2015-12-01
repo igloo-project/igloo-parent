@@ -47,6 +47,16 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-spring3</artifactId>
+			<exclusions>
+				<exclusion>
+					<!-- Contains an outdated version of org.jboss.logging.Logger that messes up with the classpath
+						and makes Hibernate cry because it doesn't find
+						org.jboss.logging.Logger.debugf(Ljava/lang/String;I)V
+					 -->
+					<groupId>org.glassfish.hk2.external</groupId>
+					<artifactId>bean-validator</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<dependency>
