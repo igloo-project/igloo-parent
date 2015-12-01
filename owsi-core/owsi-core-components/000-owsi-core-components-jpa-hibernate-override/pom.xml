@@ -26,5 +26,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
+		
+		<!-- Hibernate does not provide jta as a transitive dependency anymore.  -->
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+		</dependency>
 	</dependencies>
 </project>
