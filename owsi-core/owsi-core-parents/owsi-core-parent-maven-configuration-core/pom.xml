@@ -36,7 +36,7 @@
 		<owsi-core.hikaricp.version>2.4.2</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.1</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>4.0.6</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>4.0.7</owsi-core.querydsl.version>
 		
 		<owsi-core.guava.version>18.0</owsi-core.guava.version>
 		
