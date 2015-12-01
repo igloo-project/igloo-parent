@@ -15,6 +15,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.bindgen.binding.AbstractBinding;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -148,10 +149,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return fullTextQuery;
 	}
 	
-	@Override
-	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
-	public List<T> list(long offset, long limit) {
+	private FullTextQuery getFullTextQueryList(long offset, long limit) {
 		FullTextQuery fullTextQuery = getFullTextQuery();
 		
 		if (Long.valueOf(offset) != null) {
@@ -166,8 +164,34 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		if (sort != null && sort.getSort().length > 0) {
 			fullTextQuery.setSort(sort);
 		}
+		return fullTextQuery;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<T> list(long offset, long limit) {
+		return getFullTextQueryList(offset, limit).getResultList();
+	}
+	
+	/**
+	 * <b>Warning : </b>To be projected, the field should be stored in the document.<br>
+	 * You can store the field in the document with the following method : {@link Field#store()}.
+	 * @param offset
+	 * @param limit
+	 * @param field The field path
+	 */
+	protected <Q> List<Q> listProjection(long offset, long limit, String field) {
+		@SuppressWarnings("unchecked")
+		List<Object[]> projections = getFullTextQueryList(offset, limit).setProjection(field).getResultList();
 		
-		return fullTextQuery.getResultList();
+		return Lists.transform(projections, new Function<Object[], Q>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Q apply(Object[] input) {
+				return (Q) input[0];
+			}
+		});
 	}
 	
 	@Override
