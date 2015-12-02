@@ -5,7 +5,6 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
@@ -19,9 +18,6 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 	private static final long serialVersionUID = 2543997784221712556L;
 
 	private WebMarkupContainer cleanLink;
-	
-	@SpringBean
-	private ApplicationContext applicationContext;
 
 	public AutocompleteAjaxComponent(String id, IModel<T> model, IChoiceRenderer<? super T> choiceRenderer) {
 		super(id, model, choiceRenderer);
