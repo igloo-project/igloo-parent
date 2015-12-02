@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -25,30 +28,36 @@ public class TestPropertyService {
 	@Mock
 	private IMutablePropertyDao mutablePropertyDao;
 
+	@Mock
+	private TransactionTemplate readOnlyTransactionTemplate;
+
+	@Mock
+	private TransactionTemplate writeTransactionTemplate;
+
 	@InjectMocks
 	private PropertyServiceImpl propertyService;
 
 	@Rule
 	public MockitoRule rule = MockitoJUnit.rule();
 
-//	@Test
+	@Test
 	public void mutablePropertyMock() throws ServiceException, SecurityServiceException {
 		MutablePropertyId<String> mutablePropertyString = new MutablePropertyId<>("mutable.property.string");
 		MutablePropertyId<Long> mutablePropertyLong = new MutablePropertyId<>("mutable.property.long");
 		MutablePropertyId<String> mutablePropertyStringDefault = new MutablePropertyId<>("mutable.property.string.default");
 		
-		Mockito.when(mutablePropertyDao.get("mutable.property.string")).thenReturn("MyValue");
-		Mockito.when(mutablePropertyDao.get("mutable.property.long")).thenReturn("1");
-		Mockito.when(mutablePropertyDao.get("mutable.property.string.default")).thenReturn(null);
-		
 		propertyService.registerString(mutablePropertyString);
 		propertyService.registerLong(mutablePropertyLong);
 		propertyService.registerString(mutablePropertyStringDefault, "MyDefaultValue");
 		
+		Mockito.when(readOnlyTransactionTemplate.execute(Mockito.<TransactionCallback<String>>any())).thenReturn("MyValue");
 		Assert.assertEquals("MyValue", propertyService.get(mutablePropertyString));
+		Mockito.when(readOnlyTransactionTemplate.execute(Mockito.<TransactionCallback<String>>any())).thenReturn("1");
 		Assert.assertEquals((Long) 1L, propertyService.get(mutablePropertyLong));
+		Mockito.when(readOnlyTransactionTemplate.execute(Mockito.<TransactionCallback<String>>any())).thenReturn("MyDefaultValue");
 		Assert.assertEquals("MyDefaultValue", propertyService.get(mutablePropertyStringDefault));
 		
+		Mockito.when(writeTransactionTemplate.execute(Mockito.<TransactionCallbackWithoutResult>any())).thenReturn(null);
 		propertyService.set(mutablePropertyString, "MyValue2");
 		propertyService.set(mutablePropertyLong, 2L);
 		propertyService.set(mutablePropertyStringDefault, "MyValue3");

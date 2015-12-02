@@ -314,7 +314,6 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 						} catch (Exception e) {
 							throw new IllegalStateException(String.format("Error while updating property '%1s'.", propertyId), e);
 						}
-						
 					}
 				}
 		);
