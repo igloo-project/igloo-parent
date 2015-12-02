@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.search.IUserSearchQuery;
@@ -17,9 +16,6 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 
 	private static final UserChoiceRenderer USER_CHOICE_RENDERER = new UserChoiceRenderer();
 
-	@SpringBean
-	private IUserSearchQuery userSearchQuery;
-
 	public UserAutocompleteAjaxComponent(String id) {
 		this(id, new GenericEntityModel<Long, User>(new User()));
 	}
@@ -30,7 +26,7 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 
 	@Override
 	public List<User> getValues(String term) {
-		return userSearchQuery.nameAutocomplete(term).fullList();
+		return getBean(IUserSearchQuery.class).nameAutocomplete(term).fullList();
 	}
 
 	@Override

@@ -5,16 +5,23 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.springframework.context.ApplicationContext;
+
+import fr.openwide.core.wicket.more.application.CoreWicketApplication;
 
 public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent<T> {
 
 	private static final long serialVersionUID = 2543997784221712556L;
 
 	private WebMarkupContainer cleanLink;
+	
+	@SpringBean
+	private ApplicationContext applicationContext;
 
 	public AutocompleteAjaxComponent(String id, IModel<T> model, IChoiceRenderer<? super T> choiceRenderer) {
 		super(id, model, choiceRenderer);
@@ -63,6 +70,18 @@ public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui
 		
 		jsStatement.append(";").$(getAutocompleteField()).chain("bind", "'change'", clearHiddenField.render());
 		return jsStatement.render();
+	}
+
+	protected <SQ> SQ getBean(Class<SQ> clazz) {
+		return getContext().getBean(clazz);
+	}
+
+	protected <SQ> SQ getBean(Class<SQ> clazz, Object... args) {
+		return getContext().getBean(clazz, args);
+	}
+
+	private ApplicationContext getContext() {
+		return CoreWicketApplication.get().getApplicationContext();
 	}
 
 }

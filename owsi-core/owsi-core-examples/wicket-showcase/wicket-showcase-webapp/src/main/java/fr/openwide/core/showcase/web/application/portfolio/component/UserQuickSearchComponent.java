@@ -9,7 +9,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.search.IUserSearchQuery;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
-import fr.openwide.core.wicket.more.application.CoreWicketApplication;
 import fr.openwide.core.wicket.more.markup.html.form.AbstractQuickSearchComponent;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -32,8 +31,7 @@ public class UserQuickSearchComponent extends AbstractQuickSearchComponent<User>
 
 	@Override
 	protected List<User> searchAutocomplete(String term, int limit, int offset) {
-		return CoreWicketApplication.get().getApplicationContext().getBean(IUserSearchQuery.class)
-				.nameAutocomplete(term).list(offset, limit);
+		return getBean(IUserSearchQuery.class).nameAutocomplete(term).list(offset, limit);
 	}
 
 	private static final class UserChoiceRenderer extends ChoiceRenderer<User> {
