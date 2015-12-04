@@ -82,7 +82,7 @@ public class ComponentType extends AbstractType implements CompositeType, Proced
 		this.componentTuplizer = metamodel.getComponentTuplizer();
 		this.createEmptyCompositesEnabled = metamodel.isCreateEmptyCompositesEnabled();
 		if (!logged) {
-			log.errorv("Hibernate override (empty embedded workaround) enabled", metamodel.getComponentTuplizer().getMappedClass().getSimpleName());
+			log.warnv("Hibernate override (empty embedded workaround) enabled", metamodel.getComponentTuplizer().getMappedClass().getSimpleName());
 			logged = true;
 		}
 	}
