@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Ints;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
@@ -152,13 +153,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private FullTextQuery getFullTextQueryList(long offset, long limit) {
 		FullTextQuery fullTextQuery = getFullTextQuery();
 		
-		if (Long.valueOf(offset) != null) {
-			fullTextQuery.setFirstResult((int) offset);
-		}
-		
-		if (Long.valueOf(limit) != null) {
-			fullTextQuery.setMaxResults((int) limit);
-		}
+		fullTextQuery.setFirstResult(Ints.saturatedCast(offset));
+		fullTextQuery.setMaxResults(Ints.saturatedCast(limit));
 		
 		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
 		if (sort != null && sort.getSort().length > 0) {
