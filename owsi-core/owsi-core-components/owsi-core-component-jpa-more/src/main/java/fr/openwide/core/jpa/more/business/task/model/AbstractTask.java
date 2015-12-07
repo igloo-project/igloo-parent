@@ -2,8 +2,8 @@ package fr.openwide.core.jpa.more.business.task.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-import org.apache.http.util.Asserts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,7 +175,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 					// Le résultat peut contenir une exception métier, interceptée dans doTask. On n'est pas obligé
 					// de la propager, la tâche passera en erreur et dans onFailStatus().
 					TaskExecutionResult executionResult = doTask();
-					Asserts.notNull(executionResult, "executionResult");
+					Objects.requireNonNull(executionResult, "executionResult must not be null");
 					
 					// Si l'execution de la tâche a intercepté une exception métier dans doTask sans la propager
 					// pour conserver le rapport, on fait un rollback sur la transaction.
