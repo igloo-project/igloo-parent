@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.http.util.Args;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;

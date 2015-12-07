@@ -3,11 +3,11 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.http.util.Args;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.JQueryPluginResourceReference;
+import org.apache.wicket.util.lang.Args;
 
 import com.google.common.collect.Lists;
 

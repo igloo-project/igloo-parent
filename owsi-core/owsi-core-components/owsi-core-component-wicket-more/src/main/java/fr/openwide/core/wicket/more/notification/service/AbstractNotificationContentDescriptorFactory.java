@@ -2,8 +2,8 @@ package fr.openwide.core.wicket.more.notification.service;
 
 import java.util.Locale;
 
-import org.apache.http.util.Args;
 import org.apache.wicket.Component;
+import org.apache.wicket.util.lang.Args;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
@@ -50,7 +50,7 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		
 		public AbstractSimpleWicketNotificationDescriptor(String messageKeyRoot) {
 			super();
-			Args.notBlank("messageKeyRoot", messageKeyRoot);
+			Args.notEmpty(messageKeyRoot, "messageKeyRoot");
 			this.messageKeyRoot = messageKeyRoot;
 		}
 
