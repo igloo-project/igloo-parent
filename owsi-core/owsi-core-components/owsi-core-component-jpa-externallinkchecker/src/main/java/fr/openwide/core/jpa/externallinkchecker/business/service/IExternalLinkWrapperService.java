@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.business.link.service;
+package fr.openwide.core.jpa.externallinkchecker.business.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkStatus;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 
 public interface IExternalLinkWrapperService extends IGenericEntityService<Long, ExternalLinkWrapper> {
 	

@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.business.link.model;
+package fr.openwide.core.jpa.externallinkchecker.business.model;
 
 import java.util.Date;
 import java.util.Map;

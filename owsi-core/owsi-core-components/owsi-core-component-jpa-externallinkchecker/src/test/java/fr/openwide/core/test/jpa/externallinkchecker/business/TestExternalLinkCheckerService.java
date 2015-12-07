@@ -1,4 +1,4 @@
-package fr.openwide.core.test.jpa.more.business;
+package fr.openwide.core.test.jpa.externallinkchecker.business;
 
 import java.util.Date;
 
@@ -10,21 +10,35 @@ import org.springframework.test.context.ContextConfiguration;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkErrorType;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
-import fr.openwide.core.jpa.more.business.link.service.IExternalLinkCheckerService;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkErrorType;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkStatus;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.service.IExternalLinkCheckerService;
+import fr.openwide.core.jpa.externallinkchecker.business.service.IExternalLinkWrapperService;
+import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
-import fr.openwide.core.test.jpa.more.config.spring.ExternalLinkCheckerTestConfig;
+import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.test.jpa.externallinkchecker.config.spring.ExternalLinkCheckerTestConfig;
 
 @ContextConfiguration(classes = ExternalLinkCheckerTestConfig.class)
-public class TestExternalLinkCheckerService extends AbstractJpaMoreTestCase {
+public class TestExternalLinkCheckerService extends AbstractTestCase {
+
+	@Autowired
+	protected CoreConfigurer configurer;
 	
 	@Autowired
 	private IExternalLinkCheckerService externalLinkCheckerService;
 	
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
+	
+	@Autowired
+	protected IExternalLinkWrapperService externalLinkWrapperService;
+
+	@Override
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanEntities(externalLinkWrapperService);
+	}
 	
 	@Test
 	public void testExternalLinkCheckerService() throws Exception {

@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.business.link.service;
+package fr.openwide.core.jpa.externallinkchecker.business.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.link.dao.IExternalLinkWrapperDao;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.dao.IExternalLinkWrapperDao;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkStatus;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 
 @Service("externalLinkWrapperService")
 public class ExternalLinkWrapperServiceImpl extends GenericEntityServiceImpl<Long, ExternalLinkWrapper> implements IExternalLinkWrapperService {

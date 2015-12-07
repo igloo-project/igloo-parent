@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.business.link.service;
+package fr.openwide.core.jpa.externallinkchecker.business.service;
 
 import io.mola.galimatias.GalimatiasParseException;
 
@@ -51,9 +51,9 @@ import com.google.common.collect.Multimap;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkErrorType;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkErrorType;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkStatus;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
 @Service("externalLinkCheckerService")

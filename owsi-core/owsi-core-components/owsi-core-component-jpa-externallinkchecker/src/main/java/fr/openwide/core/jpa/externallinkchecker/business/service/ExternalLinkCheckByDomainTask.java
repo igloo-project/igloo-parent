@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.business.link.service;
+package fr.openwide.core.jpa.externallinkchecker.business.service;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +15,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 

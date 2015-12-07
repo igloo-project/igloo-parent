@@ -1,10 +1,10 @@
-package fr.openwide.core.jpa.more.business.link.interceptor;
+package fr.openwide.core.jpa.externallinkchecker.business.interceptor;
 
 import org.hibernate.type.Type;
 
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapperBinding;
 import fr.openwide.core.jpa.hibernate.interceptor.AbstractSimplePropertyUpdateInterceptor;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapperBinding;
 
 public class ExternalLinkWrapperInterceptor extends AbstractSimplePropertyUpdateInterceptor<ExternalLinkWrapper> {
 	

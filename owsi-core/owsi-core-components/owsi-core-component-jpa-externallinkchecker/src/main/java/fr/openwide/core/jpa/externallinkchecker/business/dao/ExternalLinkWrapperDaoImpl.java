@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.business.link.dao;
+package fr.openwide.core.jpa.externallinkchecker.business.dao;
 
 import java.util.Collection;
 import java.util.Date;
@@ -17,9 +17,9 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkStatus;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
-import fr.openwide.core.jpa.more.business.link.model.QExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkStatus;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.QExternalLinkWrapper;
 
 @Service("externalLinkWrapperDao")
 public class ExternalLinkWrapperDaoImpl extends GenericEntityDaoImpl<Long, ExternalLinkWrapper> implements IExternalLinkWrapperDao {
