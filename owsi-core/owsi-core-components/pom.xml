@@ -22,6 +22,7 @@
 		<module>owsi-core-component-jpa</module>
 		<module>owsi-core-component-jpa-more</module>
 		<module>owsi-core-component-jpa-security</module>
+		<module>owsi-core-component-jpa-externallinkchecker</module>
 		
 		<module>owsi-core-component-export</module>
 		<module>owsi-core-component-imports</module>

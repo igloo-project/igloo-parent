@@ -1,8 +1,8 @@
 package fr.openwide.core.basicapp.core.business.audit.service;
 
 import java.util.Date;
+import java.util.Objects;
 
-import org.apache.http.util.Args;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +67,7 @@ public class AuditServiceImpl extends AbstractAuditServiceImpl<Audit> implements
 	public Audit audit(Date date, String service, String method, GenericEntity<Long, ?> context, User subject,
 			GenericEntity<Long, ?> object, GenericEntity<Long, ?> secondaryObject, AuditAction action,
 			String message) throws ServiceException, SecurityServiceException {
-		Args.notNull(subject, "subject");
+		Objects.requireNonNull(subject, "subject must not be null");
 		if (context == null && object == null) {
 			throw new IllegalArgumentException("Context and object audit are both null");
 		}

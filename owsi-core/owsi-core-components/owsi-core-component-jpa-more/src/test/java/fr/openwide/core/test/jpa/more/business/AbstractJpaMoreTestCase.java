@@ -9,7 +9,6 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
-import fr.openwide.core.jpa.more.business.link.service.IExternalLinkWrapperService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
@@ -34,15 +33,11 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 	@Autowired
 	protected ITestEntityService testEntityService;
 	
-	@Autowired
-	protected IExternalLinkWrapperService externalLinkWrapperService;
-
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanEntities(auditService);
 		cleanEntities(testEntityService);
 		cleanFeaturesAndActions();
-		cleanEntities(externalLinkWrapperService);
 	}
 
 	private void cleanFeaturesAndActions() throws ServiceException, SecurityServiceException {
