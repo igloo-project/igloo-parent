@@ -107,4 +107,24 @@ public final class Suppliers2 {
 		}
 	}
 
+	public static <T> Supplier<T> constant(T value) {
+		return new ConstantSupplier<T>(value);
+	}
+	
+	private static class ConstantSupplier<T> implements Supplier<T>, Serializable {
+		private static final long serialVersionUID = 6476238745119640079L;
+		
+		private final T value;
+		
+		public ConstantSupplier(T value) {
+			super();
+			this.value = value;
+		}
+
+		@Override
+		public T get() {
+			return value;
+		}
+	}
+
 }
