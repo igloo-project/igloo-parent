@@ -3,8 +3,6 @@ package fr.openwide.core.jpa.more.business.task.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Embeddable;
-
 import org.bindgen.Bindable;
 
 import com.google.common.base.Throwables;
@@ -12,7 +10,6 @@ import com.google.common.base.Throwables;
 import fr.openwide.core.commons.util.report.BatchReportItem;
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 
-@Embeddable
 @Bindable
 public class TaskExecutionResult implements Serializable {
 	
