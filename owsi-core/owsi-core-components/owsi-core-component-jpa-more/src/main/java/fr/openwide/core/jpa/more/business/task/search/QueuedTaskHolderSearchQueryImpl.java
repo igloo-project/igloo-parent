@@ -23,49 +23,49 @@ public class QueuedTaskHolderSearchQueryImpl extends AbstractHibernateSearchSear
 
 	@Override
 	public IQueuedTaskHolderSearchQuery name(String name) {
-		matchAllTermsIfGiven(name, CoreJpaMoreBindings.queuedTaskHolder().name());
+		must(matchAllTermsIfGiven(name, CoreJpaMoreBindings.queuedTaskHolder().name()));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery statuses(Collection<TaskStatus> statuses) {
-		matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().status(), statuses);
+		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().status(), statuses));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery results(Collection<TaskResult> results) {
-		matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().result(), results);
+		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().result(), results));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery types(Collection<String> types) {
-		matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().taskType(), types);
+		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().taskType(), types));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery queueIds(Collection<String> queueIds) {
-		matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().queueId(), queueIds);
+		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().queueId(), queueIds));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery creationDate(Date creationDate) {
-		matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().creationDate(), creationDate);
+		must(matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().creationDate(), creationDate));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery startDate(Date startDate) {
-		matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().startDate(), startDate);
+		must(matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().startDate(), startDate));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery endDate(Date endDate) {
-		matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().endDate(), endDate);
+		must(matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().endDate(), endDate));
 		return this;
 	}
 
