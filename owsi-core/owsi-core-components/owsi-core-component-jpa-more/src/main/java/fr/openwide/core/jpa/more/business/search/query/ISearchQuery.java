@@ -10,7 +10,7 @@ public interface ISearchQuery<T, S extends ISort<?>> {
 	
 	List<T> fullList();
 	
-	List<T> list(long offset, long limit);
+	List<T> list(Long offset, Long limit);
 
 	long count();
 

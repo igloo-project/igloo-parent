@@ -38,6 +38,6 @@ public abstract class AbstractSearchQuery<T, S extends ISort<?>> implements ISea
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> fullList() {
-		return list(0L, Integer.MAX_VALUE);
+		return list(null, null);
 	}
 }

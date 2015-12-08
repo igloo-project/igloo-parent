@@ -150,11 +150,15 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return fullTextQuery;
 	}
 	
-	private FullTextQuery getFullTextQueryList(long offset, long limit) {
+	private FullTextQuery getFullTextQueryList(Long offset, Long limit) {
 		FullTextQuery fullTextQuery = getFullTextQuery();
 		
-		fullTextQuery.setFirstResult(Ints.saturatedCast(offset));
-		fullTextQuery.setMaxResults(Ints.saturatedCast(limit));
+		if (offset != null) {
+			fullTextQuery.setFirstResult(Ints.saturatedCast(offset));
+		}
+		if (limit != null) {
+			fullTextQuery.setMaxResults(Ints.saturatedCast(limit));
+		}
 		
 		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
 		if (sort != null && sort.getSort().length > 0) {
@@ -166,7 +170,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	@Override
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
-	public List<T> list(long offset, long limit) {
+	public List<T> list(Long offset, Long limit) {
 		return getFullTextQueryList(offset, limit).getResultList();
 	}
 	
@@ -177,7 +181,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	 * @param limit
 	 * @param field The field path
 	 */
-	protected <Q> List<Q> listProjection(long offset, long limit, String field) {
+	protected <Q> List<Q> listProjection(Long offset, Long limit, String field) {
 		@SuppressWarnings("unchecked")
 		List<Object[]> projections = getFullTextQueryList(offset, limit).setProjection(field).getResultList();
 		
