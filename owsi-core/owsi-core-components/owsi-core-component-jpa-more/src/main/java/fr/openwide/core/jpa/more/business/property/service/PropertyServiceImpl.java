@@ -92,7 +92,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	@Override
-	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, final T defaultValue) {
+	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue) {
 		register(propertyId, converter, Suppliers2.constant(defaultValue));
 	}
 
@@ -107,7 +107,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	@Override
-	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, final T defaultValue) {
+	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue) {
 		register(propertyId, function, Suppliers2.constant(defaultValue));
 	}
 
@@ -129,7 +129,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 		registerProperty(propertyId, converter, (T) null);
 	}
 
-	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, final T defaultValue) {
+	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, T defaultValue) {
 		registerProperty(propertyId, converter, Suppliers2.constant(defaultValue));
 	}
 
