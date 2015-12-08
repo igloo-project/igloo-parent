@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -32,12 +30,5 @@ public abstract class AbstractSearchQuery<T, S extends ISort<?>> implements ISea
 	public ISearchQuery<T, S> sort(Map<S, SortOrder> sortMap) {
 		this.sortMap = ImmutableMap.copyOf(sortMap);
 		return this;
-	}
-	
-	// May be overridden for performance purposes
-	@Override
-	@Transactional(readOnly = true)
-	public List<T> fullList() {
-		return list(0, Long.MAX_VALUE);
 	}
 }
