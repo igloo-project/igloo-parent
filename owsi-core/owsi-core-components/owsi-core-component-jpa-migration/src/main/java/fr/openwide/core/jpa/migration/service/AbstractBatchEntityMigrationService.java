@@ -57,7 +57,7 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 		List<T> entitiesList = Lists.newArrayList();
 		Map<Long, T> entitiesMap = Maps.newHashMapWithExpectedSize(entityIds.size());
 		
-		preload(entityIds);
+		preload(entityIds, getMigrationInformation());
 		
 		try {
 			MapSqlParameterSource entityIdsParameterSource = new MapSqlParameterSource();
@@ -101,23 +101,6 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 			getLogger().error("Erreur lors de la persistence d'un paquet de {}. {} créations annulées.",
 					getMigrationInformation().getEntityClass().getSimpleName(), entityIds.size(), e);
 			ProcessorMonitorContext.get().getDoneItems().addAndGet(-1 * entityIds.size());
-		}
-	}
-
-	protected void preload(List<Long> entityIds) {
-		if (getMigrationInformation().getPreloadRequests() != null) {
-			Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getMigrationInformation().getPreloadRequests();
-			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
-				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
-				if (sqlPreloadRequest == null) {
-					listEntitiesByIds(preloadedClass, entityIds);
-				} else {
-					preloadLinkedEntities(preloadedClass,
-							sqlPreloadRequest,
-							getMigrationInformation().getParameterIds(),
-							entityIds);
-				}
-			}
 		}
 	}
 

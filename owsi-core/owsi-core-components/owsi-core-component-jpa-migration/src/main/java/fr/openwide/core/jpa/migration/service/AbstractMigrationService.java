@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
 import fr.openwide.core.jpa.migration.processor.ThreadedProcessor;
+import fr.openwide.core.jpa.migration.util.IPreloadAwareMigrationInformation;
 import fr.openwide.core.jpa.migration.util.ProcessorProgressLogger;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.config.CoreConfigurer;
@@ -97,12 +99,29 @@ public abstract class AbstractMigrationService {
 		if (rowCount != null) {
 			return rowCount;
 		} else {
-			return new Long(0);
+			return 0L;
 		}
 	}
 
 	protected Long countRowsTable(String tableName) {
 		return countRows(String.format(SQL_COUNT_ROWS, tableName));
+	}
+	
+	protected void preload(List<Long> entityIds, IPreloadAwareMigrationInformation migrationInformation) {
+		Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = migrationInformation.getPreloadRequests();
+		if (preloadRequests != null) {
+			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
+				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
+				if (sqlPreloadRequest == null) {
+					listEntitiesByIds(preloadedClass, entityIds);
+				} else {
+					preloadLinkedEntities(preloadedClass,
+							sqlPreloadRequest,
+							migrationInformation.getParameterIds(),
+							entityIds);
+				}
+			}
+		}
 	}
 
 	public final <E extends GenericEntity<Long, ?>> void preloadLinkedEntities(Class<E> clazz,
@@ -133,7 +152,7 @@ public abstract class AbstractMigrationService {
 	protected void logMigrationEnd(String context, Date startTime) {
 		long duration = new Date().getTime() - startTime.getTime();
 		
-		StringBuilder sb = new StringBuilder(String.format("%1$s - Eléments migrés ", context));
+		StringBuilder sb = new StringBuilder(String.format("%1$s - Migrated items ", context));
 		if (duration < 1000) {
 			sb.append(String.format("en %1$s ms", duration));
 		} else if (duration < 60000){

@@ -16,9 +16,4 @@ public interface IBatchAssociationMigrationInformation<Owning extends GenericEnt
 	
 	String getSqlAllIds();
 
-	/*
-	 * Chaîne utilisée dans le IN() de la requête SQL
-	 */
-	String getParameterIds();
-
 }

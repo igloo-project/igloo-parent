@@ -58,7 +58,7 @@ public abstract class AbstractBatchAssociationMigrationService<Owning extends Ge
 	}
 
 	private void importBatch(List<Long> entityIds) throws PropertyValueException {
-		preload(entityIds);
+		preload(entityIds, getMigrationInformation());
 		
 		try {
 			MapSqlParameterSource entityIdsParameterSource = new MapSqlParameterSource();
@@ -83,26 +83,9 @@ public abstract class AbstractBatchAssociationMigrationService<Owning extends Ge
 			}
 			
 		} catch (Exception e) {
-			getLogger().error("Erreur lors de la persistence d'un paquet de {}. {} créations annulées.",
+			getLogger().error("Error during the persistence of {} items. {} cancelled creations.",
 					getMigrationInformation().getAssociationName(), entityIds.size(), e);
 			ProcessorMonitorContext.get().getDoneItems().addAndGet(-1 * entityIds.size());
-		}
-	}
-
-	protected void preload(List<Long> entityIds) {
-		if (getMigrationInformation().getPreloadRequests() != null) {
-			Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getMigrationInformation().getPreloadRequests();
-			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
-				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
-				if (sqlPreloadRequest == null) {
-					listEntitiesByIds(preloadedClass, entityIds);
-				} else {
-					preloadLinkedEntities(preloadedClass,
-							sqlPreloadRequest,
-							getMigrationInformation().getParameterIds(),
-							entityIds);
-				}
-			}
 		}
 	}
 

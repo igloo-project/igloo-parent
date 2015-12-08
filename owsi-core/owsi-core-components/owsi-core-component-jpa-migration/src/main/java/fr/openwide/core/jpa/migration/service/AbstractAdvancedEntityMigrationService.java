@@ -57,7 +57,7 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 		List<T> entitiesList = Lists.newArrayListWithExpectedSize(entityIds.size());
 		Map<Long, T> entitiesMap = Maps.newHashMapWithExpectedSize(entityIds.size());
 		
-		preload(entityIds);
+		preload(entityIds, getMigrationInformation());
 		
 		try {
 			MapSqlParameterSource entityIdsParameterSource = new MapSqlParameterSource();
@@ -72,7 +72,7 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 			} else if (AbstractListResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
 				rowMapper = rowMapperClass.getConstructor(List.class).newInstance(entitiesList);
 			} else {
-				throw new IllegalStateException(String.format("Type de rowmapper non reconnu %1$s", rowMapperClass.getSimpleName()));
+				throw new IllegalStateException(String.format("Unmatched RowMapper type %1$s", rowMapperClass.getSimpleName()));
 			}
 			
 			autowire.autowireBean(rowMapper);
@@ -86,7 +86,7 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 			} else if (AbstractListResultRowMapper.class.isAssignableFrom(rowMapperClass)) {
 				entities = entitiesList;
 			} else {
-				throw new IllegalStateException(String.format("Type de rowmapper non reconnu %1$s", rowMapperClass.getSimpleName()));
+				throw new IllegalStateException(String.format("Unmatched RowMapper type %1$s", rowMapperClass.getSimpleName()));
 			}
 			
 			for (T entity : entities) {
@@ -98,28 +98,11 @@ public abstract class AbstractAdvancedEntityMigrationService<T extends GenericEn
 			}
 			
 		} catch (Exception e) {
-			getLogger().error("Erreur lors de la persistence d'un paquet de {}. {} créations annulées.",
+			getLogger().error("Error during the persistence of {} items. {} cancelled creations.",
 					getMigrationInformation().getEntityClass().getSimpleName(), entityIds.size(), e);
 			ProcessorMonitorContext.get().getDoneItems().addAndGet(-1 * entityIds.size());
 		}
 	};
-
-	protected void preload(List<Long> entityIds) {
-		Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = getMigrationInformation().getPreloadRequests();
-		if (preloadRequests != null) {
-			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
-				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
-				if (sqlPreloadRequest == null) {
-					listEntitiesByIds(preloadedClass, entityIds);
-				} else {
-					preloadLinkedEntities(preloadedClass,
-							sqlPreloadRequest,
-							getMigrationInformation().getParameterIds(),
-							entityIds);
-				}
-			}
-		}
-	}
 
 	protected void prepareRowMapper(RowMapper<?> rowMapper, List<Long> entityIds) {
 	}
