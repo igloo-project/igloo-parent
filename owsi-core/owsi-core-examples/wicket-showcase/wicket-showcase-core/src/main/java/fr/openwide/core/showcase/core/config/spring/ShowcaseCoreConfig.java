@@ -25,7 +25,6 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 	ShowcaseCoreSecurityConfig.class,					// configuration de la sécurité
 	ShowcaseCoreJpaMoreTaskManagementConfig.class,		// configuration des tâches
 	ShowcaseCoreApplicationPropertyConfig.class,		// configuration des propriétés de l'application
-	ShowcaseCoreApplicationPropertyRegisterConfig.class	// configuration de l'enregistrement des propriétés de l'application
 })
 @ComponentScan(
 		basePackageClasses = {
