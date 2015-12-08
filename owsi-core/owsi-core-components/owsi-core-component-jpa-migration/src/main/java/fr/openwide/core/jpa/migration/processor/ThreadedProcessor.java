@@ -28,7 +28,7 @@ public class ThreadedProcessor {
 
 	private final int threadPoolSize;
 	private final int keepAliveTime;
-	private final TimeUnit unit;
+	private final TimeUnit keepAliveTimeUnit;
 	private final int maxTotalDuration;
 	private final TimeUnit maxTotalDurationTimeUnit;
 	private final Integer loggingCheckIntervalTime;
@@ -45,14 +45,14 @@ public class ThreadedProcessor {
 
 	public ThreadedProcessor(int threadPoolSize,
 			int maxTotalDuration, TimeUnit maxTotalDurationUnit,
-			int keepAliveTime, TimeUnit unit, CoreConfigurer configurer) {
-		this(threadPoolSize, maxTotalDuration, maxTotalDurationUnit, keepAliveTime, maxTotalDurationUnit, configurer,
+			int keepAliveTime, TimeUnit keepAliveTimeUnit, CoreConfigurer configurer) {
+		this(threadPoolSize, maxTotalDuration, maxTotalDurationUnit, keepAliveTime, keepAliveTimeUnit, configurer,
 				null, null, null, null, null, null);
 	}
 
 	public ThreadedProcessor(int threadPoolSize,
 			int maxTotalDuration, TimeUnit maxTotalDurationUnit,
-			int keepAliveTime, TimeUnit unit,
+			int keepAliveTime, TimeUnit keepAliveTimeUnit,
 			CoreConfigurer configurer,
 			Integer loggingCheckIntervalTime, TimeUnit loggingCheckIntervalTimeUnit,
 			Integer maxLoggingTime, TimeUnit maxLoggingTimeUnit,
@@ -61,7 +61,7 @@ public class ThreadedProcessor {
 		super();
 		this.threadPoolSize = threadPoolSize;
 		this.keepAliveTime = keepAliveTime;
-		this.unit = unit;
+		this.keepAliveTimeUnit = keepAliveTimeUnit;
 		this.maxTotalDuration = maxTotalDuration;
 		this.maxTotalDurationTimeUnit = maxTotalDurationUnit;
 		this.loggingCheckIntervalTime = loggingCheckIntervalTime;
@@ -86,7 +86,7 @@ public class ThreadedProcessor {
 		
 		List<Future<T>> futures = Lists.newArrayList();
 		BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(threadPoolSize, threadPoolSize, keepAliveTime, unit, workQueue);
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(threadPoolSize, threadPoolSize, keepAliveTime, keepAliveTimeUnit, workQueue);
 		executor.prestartAllCoreThreads();
 		
 		Thread loggingThread = null;
