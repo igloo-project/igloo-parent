@@ -21,19 +21,22 @@ import fr.openwide.core.commons.util.functional.converter.StringDateTimeConverte
 import fr.openwide.core.commons.util.functional.converter.StringDirectoryFileConverter;
 import fr.openwide.core.commons.util.functional.converter.StringURIConverter;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyRegistryKey;
+import fr.openwide.core.jpa.more.business.property.model.MutablePropertyRegistryKey;
 import fr.openwide.core.jpa.more.business.property.model.PropertyRegistryKey;
 
 public interface IPropertyRegistry {
 
-	<T> void register(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter);
+	<T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter);
 
-	<T> void register(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, T defaultValue);
+	<T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue);
 
-	<T> void register(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier);
+	<T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier<? extends T> defaultValueSupplier);
 
-	<T> void registerImmutable(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function);
+	<T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function);
 
-	<T> void registerImmutable(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue);
+	<T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue);
+
+	<T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, Supplier<? extends T> defaultValueSupplier);
 
 	void registerString(PropertyRegistryKey<String> propertyId);
 

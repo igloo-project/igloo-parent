@@ -19,7 +19,10 @@ import fr.openwide.core.test.jpa.more.business.JpaMoreTestBusinessPackage;
 		"classpath:jpa-more-test.properties",
 		"classpath:property-test.properties"
 })
-@Import(JpaMoreTestJpaConfig.class)
+@Import({
+		JpaMoreTestJpaConfig.class,
+		JpaMoreTestApplicationPropertyConfig.class
+})
 @ComponentScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
 @EnableAspectJAutoProxy
 public class JpaMoreTestConfig extends AbstractApplicationConfig {
