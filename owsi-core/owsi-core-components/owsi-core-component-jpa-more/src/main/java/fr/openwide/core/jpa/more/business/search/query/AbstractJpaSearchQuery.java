@@ -103,7 +103,17 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<T> list(Long offset, Long limit) {
+	public final List<T> fullList() {
+		return getQueryList(null, null).fetch();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public final List<T> list(long offset, long limit) {
+		return getQueryList(offset, limit).fetch();
+	}
+
+	protected JPAQuery<T> getQueryList(Long offset, Long limit) {
 		JPAQuery<T> finalQuery = getFinalQuery();
 		if (offset != null) {
 			finalQuery.offset(offset);
@@ -111,7 +121,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 		if (limit != null) {
 			finalQuery.limit(limit);
 		}
-		return finalQuery.fetch();
+		return finalQuery;
 	}
 	
 	@Override

@@ -166,11 +166,19 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 		return fullTextQuery;
 	}
+
 	
 	@Override
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
-	public List<T> list(Long offset, Long limit) {
+	public final List<T> fullList() {
+		return getFullTextQueryList(null, null).getResultList();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public final List<T> list(long offset, long limit) {
 		return getFullTextQueryList(offset, limit).getResultList();
 	}
 	

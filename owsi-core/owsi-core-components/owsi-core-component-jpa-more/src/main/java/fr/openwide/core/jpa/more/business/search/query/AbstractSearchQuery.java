@@ -34,10 +34,10 @@ public abstract class AbstractSearchQuery<T, S extends ISort<?>> implements ISea
 		return this;
 	}
 	
-	// List and count
+	// May be overridden for performance purposes
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> fullList() {
-		return list(null, null);
+		return list(0, Long.MAX_VALUE);
 	}
 }
