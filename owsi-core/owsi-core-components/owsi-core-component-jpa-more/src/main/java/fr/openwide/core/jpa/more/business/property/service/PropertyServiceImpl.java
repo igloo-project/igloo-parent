@@ -126,7 +126,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter) {
-		registerProperty(propertyId, converter, null);
+		registerProperty(propertyId, converter, (T) null);
 	}
 
 	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, final T defaultValue) {
