@@ -16,7 +16,7 @@ public class AnyTldUrlValidator extends UrlValidator implements SerializablePred
 
 	private static final long serialVersionUID = 5254830905190414225L;
 	
-	private static AnyTldUrlValidator INSTANCE = new AnyTldUrlValidator();
+	private static final AnyTldUrlValidator INSTANCE = new AnyTldUrlValidator();
 
 	/** Copy from UrlValidator. */
 	private static final String URL_REGEX = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";

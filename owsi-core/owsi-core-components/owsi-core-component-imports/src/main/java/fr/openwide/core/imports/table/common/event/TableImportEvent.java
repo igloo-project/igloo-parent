@@ -2,11 +2,11 @@ package fr.openwide.core.imports.table.common.event;
 
 public class TableImportEvent {
 	
-	public static ExcelImportErrorEvent FATAL = new ExcelImportErrorEvent("FATAL", TableImportErrorSeverity.FATAL);
-	public static ExcelImportErrorEvent ERROR = new ExcelImportErrorEvent("ERROR", TableImportErrorSeverity.NON_FATAL);
-	public static ExcelImportInfoEvent WARNING = new ExcelImportInfoEvent("WARNING");
-	public static ExcelImportInfoEvent INFO = new ExcelImportInfoEvent("INFO");
-	public static ExcelImportInfoEvent DEBUG = new ExcelImportInfoEvent("DEBUG");
+	public static final ExcelImportErrorEvent FATAL = new ExcelImportErrorEvent("FATAL", TableImportErrorSeverity.FATAL);
+	public static final ExcelImportErrorEvent ERROR = new ExcelImportErrorEvent("ERROR", TableImportErrorSeverity.NON_FATAL);
+	public static final ExcelImportInfoEvent WARNING = new ExcelImportInfoEvent("WARNING");
+	public static final ExcelImportInfoEvent INFO = new ExcelImportInfoEvent("INFO");
+	public static final ExcelImportInfoEvent DEBUG = new ExcelImportInfoEvent("DEBUG");
 	
 	private final String name;
 	
