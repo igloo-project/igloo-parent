@@ -12,7 +12,6 @@ import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
@@ -33,7 +32,7 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
-import fr.openwide.core.commons.util.functional.SerializableSupplier;
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.commons.util.functional.converter.StringBigDecimalConverter;
 import fr.openwide.core.commons.util.functional.converter.StringBooleanConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateConverter;
@@ -49,6 +48,7 @@ import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyRegistryKey;
 import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
+import fr.openwide.core.jpa.more.business.property.model.MutablePropertyRegistryKey;
 import fr.openwide.core.jpa.more.business.property.model.PropertyId;
 import fr.openwide.core.jpa.more.business.property.model.PropertyRegistryKey;
 import fr.openwide.core.jpa.more.config.spring.event.PropertyServiceInitEvent;
@@ -60,7 +60,6 @@ import fr.openwide.core.spring.config.CoreConfigurer;
  * ({@link IImmutablePropertyDao}) and mutable properties are related to {@link Parameter} ({@link IMutablePropertyDao}).
  * @see {@link IPropertyRegistry} to register application properties.
  */
-@Service("propertyService")
 public class PropertyServiceImpl implements IConfigurablePropertyService, ApplicationEventPublisherAware {
 
 	private final Map<PropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap = Maps.newHashMap();
@@ -88,46 +87,53 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	@Override
-	public <T> void register(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter) {
+	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter) {
 		register(propertyId, converter, (T) null);
 	}
 
 	@Override
-	public <T> void register(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, final T defaultValue) {
-		register(propertyId, converter, new SerializableSupplier<T>() {
-			private static final long serialVersionUID = 1L;
+	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, final T defaultValue) {
+		register(propertyId, converter, Suppliers2.constant(defaultValue));
+	}
+
+	@Override
+	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier<? extends T> defaultValueSupplier) {
+		registerProperty(propertyId, converter, defaultValueSupplier);
+	}
+
+	@Override
+	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function) {
+		register(propertyId, function, (T) null);
+	}
+
+	@Override
+	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, final T defaultValue) {
+		register(propertyId, function, Suppliers2.constant(defaultValue));
+	}
+
+	@Override
+	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, final Function<String, ? extends T> function, Supplier<? extends T> defaultValueSupplier) {
+		registerProperty(propertyId, new Converter<String, T>() {
 			@Override
-			public T get() {
-				return defaultValue;
+			protected T doForward(String a) {
+				return function.apply(a);
 			}
-		});
+			@Override
+			protected String doBackward(T b) {
+				throw new IllegalStateException("Unable to update immutable property.");
+			}
+		}, defaultValueSupplier);
 	}
 
-	@Override
-	public <T> void registerImmutable(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function) {
-		registerImmutable(propertyId, function, null);
+	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter) {
+		registerProperty(propertyId, converter, null);
 	}
 
-	@Override
-	public <T> void registerImmutable(ImmutablePropertyRegistryKey<T> propertyId, final Function<String, ? extends T> function, final T defaultValue) {
-		register(
-				propertyId,
-				new Converter<String, T>() {
-					@Override
-					protected T doForward(String a) {
-						return function.apply(a);
-					}
-					@Override
-					protected String doBackward(T b) {
-						throw new IllegalStateException("Unable to update immutable property.");
-					}
-				},
-				defaultValue
-		);
+	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, final T defaultValue) {
+		registerProperty(propertyId, converter, Suppliers2.constant(defaultValue));
 	}
 
-	@Override
-	public <T> void register(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier) {
+	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier) {
 		Preconditions.checkNotNull(propertyId);
 		Preconditions.checkNotNull(converter);
 		Preconditions.checkNotNull(defaultValueSupplier);
@@ -146,7 +152,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerString(PropertyRegistryKey<String> propertyId, String defaultValue) {
-		register(propertyId, Converter.<String>identity(), defaultValue);
+		registerProperty(propertyId, Converter.<String>identity(), defaultValue);
 	}
 
 	@Override
@@ -156,7 +162,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerLong(PropertyRegistryKey<Long> propertyId, Long defaultValue) {
-		register(propertyId, Longs.stringConverter(), defaultValue);
+		registerProperty(propertyId, Longs.stringConverter(), defaultValue);
 	}
 
 	@Override
@@ -166,7 +172,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerInteger(PropertyRegistryKey<Integer> propertyId, Integer defaultValue) {
-		register(propertyId, Ints.stringConverter(), defaultValue);
+		registerProperty(propertyId, Ints.stringConverter(), defaultValue);
 	}
 
 	@Override
@@ -176,7 +182,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerFloat(PropertyRegistryKey<Float> propertyId, Float defaultValue) {
-		register(propertyId, Floats.stringConverter(), defaultValue);
+		registerProperty(propertyId, Floats.stringConverter(), defaultValue);
 	}
 
 	@Override
@@ -186,7 +192,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerDouble(PropertyRegistryKey<Double> propertyId, Double defaultValue) {
-		register(propertyId, Doubles.stringConverter(), defaultValue);
+		registerProperty(propertyId, Doubles.stringConverter(), defaultValue);
 	}
 
 	@Override
@@ -196,7 +202,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue) {
-		register(propertyId, StringBigDecimalConverter.get(), defaultValue);
+		registerProperty(propertyId, StringBigDecimalConverter.get(), defaultValue);
 	}
 
 	@Override
@@ -206,7 +212,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerBoolean(PropertyRegistryKey<Boolean> propertyId, Boolean defaultValue) {
-		register(propertyId, StringBooleanConverter.get(), defaultValue);
+		registerProperty(propertyId, StringBooleanConverter.get(), defaultValue);
 	}
 
 	@Override
@@ -216,7 +222,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public <E extends Enum<E>> void registerEnum(PropertyRegistryKey<E> propertyId, Class<E> clazz, E defaultValue) {
-		register(propertyId, Enums.stringConverter(clazz), defaultValue);
+		registerProperty(propertyId, Enums.stringConverter(clazz), defaultValue);
 	}
 
 	@Override
@@ -231,7 +237,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerDate(PropertyRegistryKey<Date> propertyId, Date defaultValue) {
-		register(propertyId, StringDateConverter.get(), defaultValue);
+		registerProperty(propertyId, StringDateConverter.get(), defaultValue);
 	}
 
 	@Override
@@ -241,7 +247,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerDateTime(PropertyRegistryKey<Date> propertyId, Date defaultValue) {
-		register(propertyId, StringDateTimeConverter.get(), defaultValue);
+		registerProperty(propertyId, StringDateTimeConverter.get(), defaultValue);
 	}
 
 	@Override
@@ -251,7 +257,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerDirectoryFile(PropertyRegistryKey<File> propertyId, File defaultValue) {
-		register(propertyId, StringDirectoryFileConverter.get(), defaultValue);
+		registerProperty(propertyId, StringDirectoryFileConverter.get(), defaultValue);
 	}
 
 	@Override
@@ -261,7 +267,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void registerURI(PropertyRegistryKey<URI> propertyId, URI defaultValue) {
-		register(propertyId, StringURIConverter.get(), defaultValue);
+		registerProperty(propertyId, StringURIConverter.get(), defaultValue);
 	}
 
 	@Override
