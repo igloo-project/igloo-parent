@@ -46,25 +46,19 @@ public class BytesRenderer extends Renderer<Bytes> {
 
 	@Override
 	public String render(Bytes value, Locale locale) {
-		Long sizeInByte = value.bytes();
+		double humanReadableSize = Long.valueOf(value.bytes()).doubleValue();
+		int unitKeyIndex = 0;
 		
-		if (sizeInByte != null) {
-			double humanReadableSize = sizeInByte.doubleValue();
-			int unitKeyIndex = 0;
-			
-			while (humanReadableSize > DISPLAY_LIMIT && unitKeyIndex < unitKeys.size() - 1) {
-				humanReadableSize = humanReadableSize / BYTES_IN_KB;
-				unitKeyIndex++;
-			}
-			
-			DecimalFormat twoDecimalsFormat = new DecimalFormat(OUTPUT_DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(locale));
-			
-			return new StringBuilder(twoDecimalsFormat.format(humanReadableSize)).append(" ")
-					.append(getString(unitKeys.get(unitKeyIndex), locale))
-					.toString();
+		while (humanReadableSize > DISPLAY_LIMIT && unitKeyIndex < unitKeys.size() - 1) {
+			humanReadableSize = humanReadableSize / BYTES_IN_KB;
+			unitKeyIndex++;
 		}
 		
-		return null;
+		DecimalFormat twoDecimalsFormat = new DecimalFormat(OUTPUT_DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(locale));
+		
+		return new StringBuilder(twoDecimalsFormat.format(humanReadableSize)).append(" ")
+				.append(getString(unitKeys.get(unitKeyIndex), locale))
+				.toString();
 	}
 
 }
