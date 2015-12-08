@@ -2,9 +2,6 @@ package fr.openwide.core.wicket.more.console.maintenance.ehcache.component;
 
 import java.util.List;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -13,7 +10,6 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.odlabs.wiquery.core.events.MouseEvent;
@@ -38,6 +34,8 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listf
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 
 public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>> {
 	private static final long serialVersionUID = -7588751914016782042L;

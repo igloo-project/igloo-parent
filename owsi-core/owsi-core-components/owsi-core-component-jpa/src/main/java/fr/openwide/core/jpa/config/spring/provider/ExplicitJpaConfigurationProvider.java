@@ -8,9 +8,7 @@ import javax.sql.DataSource;
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @deprecated Présent pour compatibilité ascendante uniquement. ATTENTION : en
