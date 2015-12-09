@@ -17,6 +17,7 @@ import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
 import fr.openwide.core.test.jpa.more.business.audit.service.IMockAuditService;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
+import fr.openwide.core.test.jpa.more.business.parameter.service.IMockParameterService;
 import fr.openwide.core.test.jpa.more.config.spring.JpaMoreTestConfig;
 
 @ContextConfiguration(classes = JpaMoreTestConfig.class)
@@ -37,12 +38,16 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 	@Autowired
 	protected IExternalLinkWrapperService externalLinkWrapperService;
 
+	@Autowired
+	protected IMockParameterService parameterService;
+
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanEntities(auditService);
 		cleanEntities(testEntityService);
 		cleanFeaturesAndActions();
 		cleanEntities(externalLinkWrapperService);
+		cleanEntities(parameterService);
 	}
 
 	private void cleanFeaturesAndActions() throws ServiceException, SecurityServiceException {
