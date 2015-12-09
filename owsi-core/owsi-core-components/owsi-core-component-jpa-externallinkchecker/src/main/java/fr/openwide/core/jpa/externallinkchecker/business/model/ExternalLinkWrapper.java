@@ -21,6 +21,7 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.externallinkchecker.util.binding.CoreJpaExternalLinkCheckerBindings;
 
 @Bindable
 @Cacheable
@@ -28,8 +29,6 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper> {
 
 	private static final long serialVersionUID = -4558332826839419557L;
-	
-	private static final ExternalLinkWrapperBinding BINDING = new ExternalLinkWrapperBinding();
 	
 	@Id
 	@GeneratedValue
@@ -177,12 +176,12 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	@Transient
 	public Map<String, Object> getResetStatusPropertyValues() {
 		Map<String, Object> changes = Maps.newHashMap();
-		changes.put(BINDING.status().getPath(), ExternalLinkStatus.ONLINE);
-		changes.put(BINDING.consecutiveFailures().getPath(), 0);
-		changes.put(BINDING.lastStatusCode().getPath(), null);
-		changes.put(BINDING.lastCheckDate().getPath(), null);
-		changes.put(BINDING.lastErrorType().getPath(), null);
-		changes.put(BINDING.failureAudit().getPath(), null);
+		changes.put(CoreJpaExternalLinkCheckerBindings.externalLinkWrapper().status().getPath(), ExternalLinkStatus.ONLINE);
+		changes.put(CoreJpaExternalLinkCheckerBindings.externalLinkWrapper().consecutiveFailures().getPath(), 0);
+		changes.put(CoreJpaExternalLinkCheckerBindings.externalLinkWrapper().lastStatusCode().getPath(), null);
+		changes.put(CoreJpaExternalLinkCheckerBindings.externalLinkWrapper().lastCheckDate().getPath(), null);
+		changes.put(CoreJpaExternalLinkCheckerBindings.externalLinkWrapper().lastErrorType().getPath(), null);
+		changes.put(CoreJpaExternalLinkCheckerBindings.externalLinkWrapper().failureAudit().getPath(), null);
 		
 		return changes;
 	}
