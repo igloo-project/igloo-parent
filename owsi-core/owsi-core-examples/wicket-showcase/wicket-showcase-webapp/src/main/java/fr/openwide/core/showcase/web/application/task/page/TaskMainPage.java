@@ -37,7 +37,6 @@ import fr.openwide.core.showcase.web.application.task.component.ShowcaseTaskQueu
 import fr.openwide.core.showcase.web.application.task.component.TaskPortfolioPanel;
 import fr.openwide.core.showcase.web.application.task.component.TaskSearchPanel;
 import fr.openwide.core.showcase.web.application.task.model.TaskDataProvider;
-import fr.openwide.core.showcase.web.application.util.property.ShowcaseWebappPropertyIds;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -46,7 +45,6 @@ import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
-import fr.openwide.core.wicket.more.model.ApplicationPropertyModel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class TaskMainPage extends MainTemplate {
@@ -288,7 +286,7 @@ public class TaskMainPage extends MainTemplate {
 		// Search & porfolio
 		TaskDataProvider dataProvider = new TaskDataProvider();
 		
-		TaskPortfolioPanel portfolio = new TaskPortfolioPanel("portfolio", dataProvider, ApplicationPropertyModel.of(ShowcaseWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE).getObject());
+		TaskPortfolioPanel portfolio = new TaskPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
 		add(
 				new TaskSearchPanel("search", portfolio.getPageable(), dataProvider),
 				portfolio

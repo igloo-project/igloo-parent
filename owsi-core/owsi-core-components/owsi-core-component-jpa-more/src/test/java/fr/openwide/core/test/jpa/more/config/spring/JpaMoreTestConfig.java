@@ -16,13 +16,9 @@ import fr.openwide.core.test.jpa.more.business.JpaMoreTestBusinessPackage;
 @ApplicationDescription(name = "owsi-component-jpa-more")
 @ConfigurationLocations(locations = {
 		"classpath:owsi-core-component-jpa.properties",
-		"classpath:jpa-more-test.properties",
-		"classpath:property-test.properties"
+		"classpath:jpa-more-test.properties"
 })
-@Import({
-		JpaMoreTestJpaConfig.class,
-		JpaMoreTestApplicationPropertyConfig.class
-})
+@Import(JpaMoreTestJpaConfig.class)
 @ComponentScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
 @EnableAspectJAutoProxy
 public class JpaMoreTestConfig extends AbstractApplicationConfig {
