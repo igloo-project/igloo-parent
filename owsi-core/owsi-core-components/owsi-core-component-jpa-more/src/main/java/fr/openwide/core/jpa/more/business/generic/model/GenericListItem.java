@@ -131,6 +131,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 		@Field(name = CODE_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 		// A priori, pas besoin d'un champ spécifique pour le tri ici... ?
 	})
+	@SortableField(forField = CODE_FIELD_NAME)
 	public String getCode() {
 		return null;
 	}
