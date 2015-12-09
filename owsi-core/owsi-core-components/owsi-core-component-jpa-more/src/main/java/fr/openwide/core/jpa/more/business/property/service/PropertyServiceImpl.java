@@ -51,7 +51,7 @@ import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
 import fr.openwide.core.jpa.more.business.property.model.MutablePropertyRegistryKey;
 import fr.openwide.core.jpa.more.business.property.model.PropertyId;
 import fr.openwide.core.jpa.more.business.property.model.PropertyRegistryKey;
-import fr.openwide.core.jpa.more.config.spring.event.PropertyServiceInitEvent;
+import fr.openwide.core.jpa.more.config.spring.event.PropertyRegistryInitEvent;
 import fr.openwide.core.spring.config.CoreConfigurer;
 
 /**
@@ -78,7 +78,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@PostConstruct
 	public void init() {
-		applicationEventPublisher.publishEvent(new PropertyServiceInitEvent(this));
+		applicationEventPublisher.publishEvent(new PropertyRegistryInitEvent(this));
 	}
 
 	@Override

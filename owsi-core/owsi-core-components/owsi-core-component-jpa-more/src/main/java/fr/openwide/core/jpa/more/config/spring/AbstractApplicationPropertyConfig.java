@@ -7,7 +7,7 @@ import fr.openwide.core.jpa.more.business.property.dao.ImmutablePropertyDaoImpl;
 import fr.openwide.core.jpa.more.business.property.service.IConfigurablePropertyService;
 import fr.openwide.core.jpa.more.business.property.service.PropertyServiceImpl;
 
-public abstract class AbstractApplicationPropertyConfig extends AbstractApplicationPropertyRegisterConfig {
+public abstract class AbstractApplicationPropertyConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Bean
 	public IImmutablePropertyDao immutablePropertyDao() {
