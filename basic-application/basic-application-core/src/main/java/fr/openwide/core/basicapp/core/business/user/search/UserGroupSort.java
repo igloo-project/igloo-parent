@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 
@@ -29,7 +28,7 @@ public enum UserGroupSort implements ISort<SortField> {
 	ID {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT));
+			return ImmutableList.of(SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, Bindings.userGroup().id()));
 		}
 
 		@Override
