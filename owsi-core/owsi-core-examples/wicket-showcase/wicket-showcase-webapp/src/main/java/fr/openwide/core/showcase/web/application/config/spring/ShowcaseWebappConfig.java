@@ -15,7 +15,8 @@ import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 @Configuration
 @Import({
 	ShowcaseCoreConfig.class,
-	ShowcaseWebappSecurityConfig.class
+	ShowcaseWebappSecurityConfig.class,
+	ShowcaseWebappApplicationPropertyRegisterConfig.class
 })
 @ComponentScan(
 		basePackageClasses = {

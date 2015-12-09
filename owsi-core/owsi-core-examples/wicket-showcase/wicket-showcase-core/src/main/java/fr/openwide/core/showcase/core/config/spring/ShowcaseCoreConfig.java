@@ -23,7 +23,8 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @Import({
 	ShowcaseCoreJpaConfig.class,						// configuration de la persistence
 	ShowcaseCoreSecurityConfig.class,					// configuration de la sécurité
-	ShowcaseCoreJpaMoreTaskManagementConfig.class		// configuration des tâches
+	ShowcaseCoreJpaMoreTaskManagementConfig.class,		// configuration des tâches
+	ShowcaseCoreApplicationPropertyConfig.class,		// configuration des propriétés de l'application
 })
 @ComponentScan(
 		basePackageClasses = {
