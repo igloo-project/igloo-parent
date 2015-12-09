@@ -25,6 +25,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.hibernate.Hibernate;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.NumericField;
+import org.hibernate.search.annotations.SortableField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Ordering;
@@ -46,6 +50,8 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
+	public static final String ID_SORT = "idSort";
+	
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
 	
@@ -64,6 +70,9 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	 * @return id
 	 */
 	@QueryType(PropertyType.COMPARABLE)
+	@Field(name = ID_SORT, analyze = Analyze.NO)
+	@NumericField(forField = ID_SORT)
+	@SortableField(forField = ID_SORT)
 	public abstract K getId();
 
 	/**

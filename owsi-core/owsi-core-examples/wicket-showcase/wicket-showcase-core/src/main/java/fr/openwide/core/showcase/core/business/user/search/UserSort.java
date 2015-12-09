@@ -6,6 +6,7 @@ import org.apache.lucene.search.SortField;
 
 import com.google.common.collect.ImmutableList;
 
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.showcase.core.business.user.model.User;
@@ -29,7 +30,7 @@ public enum UserSort implements ISort<SortField> {
 	ID {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, Bindings.user().id()));
+			return ImmutableList.of(SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT));
 		}
 
 		@Override
