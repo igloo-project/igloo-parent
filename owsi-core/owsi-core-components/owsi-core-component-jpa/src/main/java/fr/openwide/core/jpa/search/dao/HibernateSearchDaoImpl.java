@@ -210,6 +210,10 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		int batchSize = configurer.getHibernateSearchReindexBatchSize();
 		int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
 		
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Targets for indexing job: {}", entityClasses);
+		}
+		
 		for (Class<?> clazz : entityClasses) {
 			LOGGER.info(String.format("Reindexing %1$s.", clazz));
 			ProgressMonitor progressMonitor = new ProgressMonitor();
@@ -288,10 +292,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			}
 		}
 		cleaned.removeAll(toRemove);
-		
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Targets for indexing job: {}", cleaned);
-		}
 
 		return cleaned;
 	}
