@@ -38,7 +38,7 @@
 		<owsi-core.ehcache.version>2.10.1</owsi-core.ehcache.version>
 		<owsi-core.querydsl.version>4.0.7</owsi-core.querydsl.version>
 		
-		<owsi-core.guava.version>18.0</owsi-core.guava.version>
+		<owsi-core.guava.version>19.0</owsi-core.guava.version>
 		
 		<owsi-core.postgresql.version>9.3-1101-jdbc41</owsi-core.postgresql.version>
 		<owsi-core.pgjdbc-ng.version>0.6</owsi-core.pgjdbc-ng.version>
