@@ -15,15 +15,12 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes.Method;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
 import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.odlabs.wiquery.core.events.MouseEvent;
 import org.odlabs.wiquery.core.events.StateEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
@@ -56,11 +53,6 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 			return ajaxEventBehaviors.iterator().next();
 		}
 	}
-	
-	static final ResourceReference CHOICE_JS = new JQueryPluginResourceReference(
-			FormComponentChangeAjaxEventBehavior.class,
-			"jquery.FormComponentChangeAjaxEventBehavior.Choice.js"
-	);
 	
 	private static final MetaDataKey<Boolean> IS_SUBMITTED_USING_THIS_BEHAVIOR = new MetaDataKey<Boolean>() {
 		private static final long serialVersionUID = 1L;
@@ -106,9 +98,6 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		super.renderHead(component, response);
-		if (choice) {
-			response.render(JavaScriptHeaderItem.forReference(FormComponentChangeAjaxEventBehavior.CHOICE_JS));
-		}
 	}
 
 	// Due to the fact that, for choice components, events are attached to the form and not to the component itself,
@@ -141,16 +130,14 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 		// Allows all sort of things to work properly:
 		//  * allows clicks on labels to work properly
 		//  * makes the radio/check buttons properly change their visual aspect on IE.
-		attributes.setAllowDefault(true);
+		attributes.setPreventDefault(false);
 		
 		if (choice) {
 			// For explanations, see: getUniqueEventName(), getCallbackScript(), postprocessConfiguration()
 			attributes.setEventNames(getUniqueEventName());
 			
-			// Copied from AjaxFormChoiceComponentUpdatingBehavior
-			attributes.getDynamicExtraParameters().add(
-					String.format("return OWSI.FormComponentChangeAjaxEventBehavior.Choice.getInputValues('%s', attrs);", getFormComponent().getInputName())
-			);
+			// Note: from Wicket 7 on, choice (radio/checkbox) values are correctly submitted by Wicket.
+			// No need to add an extra DynamicParameter like we used to.
 		}
 	}
 	
