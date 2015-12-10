@@ -211,7 +211,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
 		
 		for (Class<?> clazz : entityClasses) {
-			LOGGER.debug(String.format("Reindexing %1$s.", clazz));
+			LOGGER.info(String.format("Reindexing %1$s.", clazz));
 			ProgressMonitor progressMonitor = new ProgressMonitor();
 			Thread t = new Thread(progressMonitor);
 			t.start();
@@ -223,7 +223,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 					.startAndWait();
 			progressMonitor.stop();
 			t.interrupt();
-			LOGGER.debug(String.format("Reindexing %1$s done.", clazz));
+			LOGGER.info(String.format("Reindexing %1$s done.", clazz));
 		}
 	}
 	
