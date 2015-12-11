@@ -23,6 +23,10 @@
 	input.hasMonthpicker {
 		z-index: @zindex-modal-date-picker;
 		position: relative;
+		&:focus {
+			// Override z-index:3 for ".input-group .form-control:focus" (bootstrap rule)
+			z-index: @zindex-modal-date-picker;
+		}
 	}
 }
 
