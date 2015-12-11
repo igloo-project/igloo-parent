@@ -14,7 +14,6 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes.Method;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
-import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
 import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
@@ -95,11 +94,6 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 		return (FormComponent<?>)getComponent();
 	}
 	
-	@Override
-	public void renderHead(Component component, IHeaderResponse response) {
-		super.renderHead(component, response);
-	}
-
 	// Due to the fact that, for choice components, events are attached to the form and not to the component itself,
 	// we must remove the handlers on ajax refreshes.
 	// Thus we need a unique event name, so that we can call $('#formId').off('click.my.unique.namespace')
