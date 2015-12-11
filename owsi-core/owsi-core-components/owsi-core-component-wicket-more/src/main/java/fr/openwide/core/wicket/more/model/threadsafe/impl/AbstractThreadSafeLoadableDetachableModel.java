@@ -89,12 +89,20 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 			TThreadContext threadContext = threadLocal.get();
 			if (threadContext.isAttached()) {
 				onDetach(threadContext);
+			} else {
+				normalizeDetached(threadContext);
 			}
 		} finally {
 			threadLocal.remove();
 		}
 	}
-	
+
 	protected abstract void onDetach(TThreadContext threadContext);
+	
+	/**
+	 * Check that the thread context is still valid when detach() is called, but the model is already detached.
+	 * <p>Perform any necessary adjustment.
+	 */
+	protected abstract void normalizeDetached(TThreadContext threadContext);
 
 }

@@ -140,5 +140,22 @@ public abstract class AbstractTestGenericEntityModel extends AbstractWicketMoreJ
 		model = serializeAndDeserialize(model);
 		assertNull(model.getObject()); // Tries to load an entity whose id no longer exists => null
 	}
+	
+	@Test
+	public void testAttachedWhenTransientAndDetachedWhenTransientAndRedetachedWhenPersisted() throws Exception {
+		Person person = new Person("John", "Doe");
+		IModel<Person> model = createModel(person);
+		
+		model.detach(); // First detach()
+		
+		// Simulate work on the same object obtained from another model
+		personService.create(person);
+		assertThat(person, attachedToSession());
+		
+		model = serializeAndDeserialize(model); // Includes a second detach()
+		assertEquals(person, model.getObject());
+		assertThat(person, attachedToSession());
+		assertThat(model.getObject(), attachedToSession());
+	}
 
 }

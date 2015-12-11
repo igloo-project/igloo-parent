@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -96,6 +96,12 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	@Override
 	protected SerializableState makeSerializable(C currentObject) {
 		return new SerializableState(currentObject);
+	}
+	
+	@Override
+	protected SerializableState normalizeDetached(SerializableState current) {
+		// TODO implement this correctly (see SessionThreadSafeGenericEntityModel)
+		return super.normalizeDetached(current);
 	}
 	
 	protected class SerializableState implements Serializable {
