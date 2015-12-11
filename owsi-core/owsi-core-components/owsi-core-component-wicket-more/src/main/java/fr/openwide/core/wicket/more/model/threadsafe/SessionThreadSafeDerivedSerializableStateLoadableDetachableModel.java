@@ -103,13 +103,33 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	
 	@Override
 	protected final void onDetach(ThreadContextImpl threadContext) {
+		S attachedObjectSerializableContext = makeSerializable(threadContext.getTransientModelObject());
 		// Write to the shared context ONLY if a change occurred in this thread.
 		// This prevents the model to overwrite a serializable object that has been set in another thread if there was no change in this thread.
-		S attachedObjectSerializableContext = makeSerializable(threadContext.getTransientModelObject());
 		if (!Objects.equal(attachedObjectSerializableContext, threadContext.sharedSerializableStateOnLastLoad)) {
+			threadContext.sharedSerializableStateOnLastLoad = attachedObjectSerializableContext;
 			sharedSerializableState.set(attachedObjectSerializableContext);
 		}
 		onDetach();
+	}
+	
+	@Override
+	protected final void normalizeDetached(ThreadContextImpl threadContext) {
+		S attachedObjectSerializableContext = normalizeDetached(threadContext.sharedSerializableStateOnLastLoad);
+		// Write to the shared context ONLY if a change occurred in this thread.
+		// This prevents the model to overwrite a serializable object that has been set in another thread if there was no change in this thread.
+		if (!Objects.equal(attachedObjectSerializableContext, threadContext.sharedSerializableStateOnLastLoad)) {
+			threadContext.sharedSerializableStateOnLastLoad = attachedObjectSerializableContext;
+			sharedSerializableState.set(attachedObjectSerializableContext);
+		}
+	}
+
+	/**
+	 * Normalize the detached thread, optionnally replacing it.
+	 * <p>This method is called whenever {@code detach()} is called, but the model is already detached.
+	 */
+	protected S normalizeDetached(S current) {
+		return current;
 	}
 	
 	protected void onDetach() {

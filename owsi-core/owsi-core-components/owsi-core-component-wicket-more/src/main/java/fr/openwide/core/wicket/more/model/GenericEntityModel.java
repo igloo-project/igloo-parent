@@ -103,6 +103,12 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@Override
 	public void detach() {
 		if (!attached) {
+			// If the entity has been persisted since this model has been detached, then fix the serializable data
+			// (this may happen if two models reference the same non-persisted entity, for instance)
+			if (notYetPersistedEntity != null && notYetPersistedEntity.getId() != null) {
+				persistedEntityReference = GenericEntityReference.of(notYetPersistedEntity);
+				notYetPersistedEntity = null;
+			}
 			return;
 		}
 		updateSerializableData();
