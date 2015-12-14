@@ -67,7 +67,7 @@ public abstract class AbstractGenericEntityCollectionModel
 			if (id != null) {
 				entityCollection.add(toEntity(id));
 			} else {
-				assert unsavedEntityList.size() < unsavedEntityIndex;
+				assert unsavedEntityList.size() > unsavedEntityIndex;
 				E unsavedEntity = unsavedEntityList.get(unsavedEntityIndex);
 				assert unsavedEntity != null;
 				entityCollection.add(unsavedEntity);

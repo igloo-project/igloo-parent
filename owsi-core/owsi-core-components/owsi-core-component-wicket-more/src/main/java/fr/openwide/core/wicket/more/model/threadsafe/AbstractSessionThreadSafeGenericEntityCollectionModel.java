@@ -151,7 +151,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 				K id = normalized.idList.get(i);
 				
 				if (id == null) {
-					assert normalized.unsavedEntityList.size() < unsavedEntityIndex;
+					assert normalized.unsavedEntityList.size() > unsavedEntityIndex;
 					E unsavedEntity = normalized.unsavedEntityList.get(unsavedEntityIndex);
 					assert unsavedEntity != null;
 					if (unsavedEntity.isNew()) {
