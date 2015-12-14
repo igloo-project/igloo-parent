@@ -61,6 +61,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		dataTable = newDataTable("dataTable", factory, columns, dataProvider, rowsPerPage);
 		add(dataTable);
+		dataTable.setComponentToRefresh(this);
 		
 		RepeatingView headingMainAddins = new RepeatingView("mainAddIn");
 		RepeatingView headingRightAddins = new RepeatingView("rightAddIn");
