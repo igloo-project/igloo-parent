@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -26,6 +27,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 	private final List<IColumn<T, S>> columnList;
 	
 	private final CoreToolbarsContainer bodyBottomToolbars;
+
+	private MarkupContainer componentToRefresh = this;
 	
 	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
 		this(id, columns, Lists.newArrayList(columns.keySet()), dataProvider, rowsPerPage);
@@ -86,6 +89,19 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 
 	public Map<IColumn<T, S>, Condition> getColumnsConditions() {
 		return columns;
+	}
+
+	public MarkupContainer getComponentToRefresh() {
+		return componentToRefresh;
+	}
+	
+	public void setComponentToRefresh(MarkupContainer component) {
+		Args.isTrue(
+				component.contains(this, true),
+				"The component to refresh in stead of a DataTable must contain the DataTable. {} does not contain {}",
+				component, this
+		);
+		this.componentToRefresh = component;
 	}
 
 }

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractToolbar;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IStyledColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -23,11 +22,11 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractToolbar {
 
 	private static final long serialVersionUID = 5382092664865344556L;
 	
-	private final DataTable<?, S> table;
+	private final CoreDataTable<?, S> table;
 	
 	private final CompositeSortModel<S> sortModel;
 
-	public <T> CoreHeadersToolbar(final DataTable<T, S> table, CompositeSortModel<S> sortModel) {
+	public <T> CoreHeadersToolbar(final CoreDataTable<T, S> table, CompositeSortModel<S> sortModel) {
 		super(table);
 		this.table = table;
 		this.sortModel = sortModel;
