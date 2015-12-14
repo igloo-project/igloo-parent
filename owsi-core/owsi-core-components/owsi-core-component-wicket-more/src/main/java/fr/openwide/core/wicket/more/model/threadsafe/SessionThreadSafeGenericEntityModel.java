@@ -63,6 +63,9 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 		return current == null ? null : current.normalize();
 	}
 
+	/**
+	 * Immutable, serializable state for detached models.
+	 */
 	protected static class SerializableState<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		

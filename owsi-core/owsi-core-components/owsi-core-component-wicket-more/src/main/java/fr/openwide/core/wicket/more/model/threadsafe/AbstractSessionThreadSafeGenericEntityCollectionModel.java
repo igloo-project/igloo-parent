@@ -12,6 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.commons.util.clone.ICloneable;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.util.HibernateUtils;
@@ -62,17 +63,17 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 		List<K> idList = serializableState.idList;
 		List<E> unsavedEntityList = serializableState.unsavedEntityList;
 		
-		for (int i = 0 ; i < serializableState.idList.size() ; ++i) {
+		for (int i = 0, unsavedEntityIndex = 0 ; i < serializableState.idList.size() ; ++i) {
 			K id = idList.get(i);
-			E unsavedEntity = unsavedEntityList.get(i);
 			
-			assert id != null || unsavedEntity != null;
-			assert id == null || unsavedEntity == null;
-			
-			if (unsavedEntity != null) {
-				entityCollection.add(unsavedEntity);
-			} else {
+			if (id != null) {
 				entityCollection.add(toEntity(id));
+			} else {
+				assert unsavedEntityList.size() < unsavedEntityIndex;
+				E unsavedEntity = unsavedEntityList.get(unsavedEntityIndex);
+				assert unsavedEntity != null;
+				entityCollection.add(unsavedEntity);
+				++unsavedEntityIndex;
 			}
 		}
 		
@@ -100,15 +101,21 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	
 	@Override
 	protected SerializableState normalizeDetached(SerializableState current) {
-		// TODO implement this correctly (see SessionThreadSafeGenericEntityModel)
-		return super.normalizeDetached(current);
+		return current == null ? null : current.normalize();
 	}
 	
-	protected class SerializableState implements Serializable {
+	/**
+	 * Immutable, serializable state for detached models.
+	 */
+	protected final class SerializableState implements Serializable, ICloneable<SerializableState> {
 		private static final long serialVersionUID = 1L;
 		
 		private final List<K> idList = Lists.newArrayList();
 		private final List<E> unsavedEntityList = Lists.newArrayList();
+		
+		private SerializableState() {
+			// For clone() only.
+		}
 		
 		public SerializableState(Collection<? extends E> entityCollection) {
 			if (entityCollection != null) {
@@ -121,13 +128,45 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 						unsavedEntityList.add(HibernateUtils.unwrap(entity));
 						idList.add(null);
 					} else {
-						unsavedEntityList.add(null);
+						// Do nothing with unsavedEntityList here (on purpose)
 						idList.add(toId(entity));
 					}
 				}
 			}
 		}
+
+		public SerializableState normalize() {
+			for (E unsavedEntity : unsavedEntityList) {
+				if (!unsavedEntity.isNew()) {
+					// Abnormal state => normalize
+					return doNormalize();
+				}
+			}
+			return this;
+		}
 		
+		private SerializableState doNormalize() {
+			SerializableState normalized = clone();
+			for (int i = 0, unsavedEntityIndex = 0 ; i < normalized.idList.size() ; ++i) {
+				K id = normalized.idList.get(i);
+				
+				if (id == null) {
+					assert normalized.unsavedEntityList.size() < unsavedEntityIndex;
+					E unsavedEntity = normalized.unsavedEntityList.get(unsavedEntityIndex);
+					assert unsavedEntity != null;
+					if (unsavedEntity.isNew()) {
+						// Do nothing
+						++unsavedEntityIndex;
+					} else {
+						// Fix serializable data
+						normalized.idList.set(i, toId(unsavedEntity));
+						normalized.unsavedEntityList.remove(unsavedEntityIndex);
+					}
+				}
+			}
+			return normalized;
+		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object obj) {
@@ -154,6 +193,15 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 					.append(idList)
 					.append(unsavedEntityList)
 					.toHashCode();
+		}
+		
+		@Override
+		public SerializableState clone() {
+			// Can't use super.clone() since idList and co. are final.
+			SerializableState clone = new SerializableState();
+			clone.idList.addAll(idList);
+			clone.unsavedEntityList.addAll(unsavedEntityList);
+			return clone;
 		}
 	}
 

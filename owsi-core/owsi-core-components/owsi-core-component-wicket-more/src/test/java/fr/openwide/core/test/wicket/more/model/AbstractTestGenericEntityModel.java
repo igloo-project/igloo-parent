@@ -142,7 +142,7 @@ public abstract class AbstractTestGenericEntityModel extends AbstractWicketMoreJ
 	}
 	
 	@Test
-	public void testAttachedWhenTransientAndDetachedWhenTransientAndRedetachedWhenPersisted() throws Exception {
+	public void testDetachedWhenTransientThenDetachedWhenPersisted() throws Exception {
 		Person person = new Person("John", "Doe");
 		IModel<Person> model = createModel(person);
 		
