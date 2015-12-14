@@ -5,7 +5,6 @@ import java.io.InputStream;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.test.wicket.more.AbstractWicketMoreTestCase;
 import fr.openwide.core.test.wicket.more.scss.service.resource.TestScssServiceResourceScope;

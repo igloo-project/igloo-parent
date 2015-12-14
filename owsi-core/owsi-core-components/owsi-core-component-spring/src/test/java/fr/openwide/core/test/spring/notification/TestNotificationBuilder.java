@@ -9,9 +9,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.notification.service.INotificationBuilderBaseState;
-import fr.openwide.core.spring.notification.service.NotificationBuilder;
 import fr.openwide.core.test.spring.notification.spring.config.TestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
