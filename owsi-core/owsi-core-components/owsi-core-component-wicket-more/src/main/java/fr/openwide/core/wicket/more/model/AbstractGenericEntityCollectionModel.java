@@ -136,7 +136,7 @@ public abstract class AbstractGenericEntityCollectionModel
 			K id = idList.get(i);
 			
 			if (id == null) {
-				assert unsavedEntityList.size() < unsavedEntityIndex;
+				assert unsavedEntityList.size() > unsavedEntityIndex;
 				E unsavedEntity = unsavedEntityList.get(unsavedEntityIndex);
 				assert unsavedEntity != null;
 				if (unsavedEntity.isNew()) {
