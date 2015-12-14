@@ -38,7 +38,7 @@ import fr.openwide.core.wicket.more.model.threadsafe.impl.LoadableDetachableMode
  * after the last call to {@link #setObject(Object)}. It also ensures that threads that do <em>not</em> change the model object won't write it to the shared context. 
  *
  * @param <T> The type of the model object.
- * @param <S> The type of the object that is serialized in stead of the model object.
+ * @param <S> The type of the object that is serialized in stead of the model object. This type must be immutable.
  */
 public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<T, S extends Serializable>
 		extends AbstractThreadSafeLoadableDetachableModel<T, SessionThreadSafeDerivedSerializableStateLoadableDetachableModel<T,S>.ThreadContextImpl> {
@@ -46,7 +46,10 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	private static final long serialVersionUID = 6859907414385876596L;
 
 	protected class ThreadContextImpl extends LoadableDetachableModelThreadContext<T> {
-		private S sharedSerializableStateOnLastLoad = null;
+		/**
+		 * The last value of the shared serializable state, either when loading or when setting it.
+		 */
+		private S lastSharedSerializableState = null;
 	}
 	
 	/**
@@ -71,8 +74,8 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	
 	@Override
 	protected final T load(ThreadContextImpl threadContext) {
-		threadContext.sharedSerializableStateOnLastLoad = sharedSerializableState.get();
-		return load(threadContext.sharedSerializableStateOnLastLoad);
+		threadContext.lastSharedSerializableState = sharedSerializableState.get();
+		return load(threadContext.lastSharedSerializableState);
 	}
 
 	/**
@@ -84,9 +87,9 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	
 	@Override
 	protected final void onSetObject(ThreadContextImpl threadContext) {
-		S serializableObject = makeSerializable(threadContext.getTransientModelObject());
-		sharedSerializableState.set(serializableObject);
-		threadContext.sharedSerializableStateOnLastLoad = serializableObject;
+		S serializableState = makeSerializable(threadContext.getTransientModelObject());
+		sharedSerializableState.set(serializableState);
+		threadContext.lastSharedSerializableState = serializableState;
 		save(threadContext.getTransientModelObject());
 	}
 	
@@ -103,30 +106,33 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	
 	@Override
 	protected final void onDetach(ThreadContextImpl threadContext) {
-		S attachedObjectSerializableContext = makeSerializable(threadContext.getTransientModelObject());
+		S attachedObjectSerializableState = makeSerializable(threadContext.getTransientModelObject());
 		// Write to the shared context ONLY if a change occurred in this thread.
 		// This prevents the model to overwrite a serializable object that has been set in another thread if there was no change in this thread.
-		if (!Objects.equal(attachedObjectSerializableContext, threadContext.sharedSerializableStateOnLastLoad)) {
-			threadContext.sharedSerializableStateOnLastLoad = attachedObjectSerializableContext;
-			sharedSerializableState.set(attachedObjectSerializableContext);
+		if (!Objects.equal(attachedObjectSerializableState, threadContext.lastSharedSerializableState)) {
+			threadContext.lastSharedSerializableState = attachedObjectSerializableState;
+			sharedSerializableState.set(attachedObjectSerializableState);
 		}
 		onDetach();
 	}
 	
 	@Override
-	protected final void normalizeDetached(ThreadContextImpl threadContext) {
-		S attachedObjectSerializableContext = normalizeDetached(threadContext.sharedSerializableStateOnLastLoad);
+	protected final void onDetachDetached() {
+		S sharedState = sharedSerializableState.get();
+		S normalizedState = normalizeDetached(sharedState);
 		// Write to the shared context ONLY if a change occurred in this thread.
 		// This prevents the model to overwrite a serializable object that has been set in another thread if there was no change in this thread.
-		if (!Objects.equal(attachedObjectSerializableContext, threadContext.sharedSerializableStateOnLastLoad)) {
-			threadContext.sharedSerializableStateOnLastLoad = attachedObjectSerializableContext;
-			sharedSerializableState.set(attachedObjectSerializableContext);
+		if (!Objects.equal(normalizedState, sharedState)) {
+			sharedSerializableState.set(normalizedState);
+			// No need to update the threadContext here: we're in detached state.
 		}
 	}
 
 	/**
-	 * Normalize the detached thread, optionnally replacing it.
-	 * <p>This method is called whenever {@code detach()} is called, but the model is already detached.
+	 * Normalize the serializable state, optionnally replacing it.
+	 * <p>This method is called whenever {@code detach()} is called, but the model is already detached. This enables
+	 * performing additional checks whenever another object <strong>in the same thread</strong> might have altered
+	 * the serializable state.
 	 */
 	protected S normalizeDetached(S current) {
 		return current;

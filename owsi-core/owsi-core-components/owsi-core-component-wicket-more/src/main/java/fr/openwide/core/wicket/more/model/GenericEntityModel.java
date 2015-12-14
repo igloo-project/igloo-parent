@@ -93,7 +93,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		E persistentObject = HibernateUtils.unwrap(entity);
 		super.setObject(persistentObject);
 		attached = true;
-		updateSerializableData(); // Useful to keep equals() up-to-date and for compatibility with old applications
+		updateSerializableData(); // Useful to keep equals() and getId() up-to-date and for compatibility with old applications
 	}
 	
 	protected K getId() {
@@ -103,12 +103,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	@Override
 	public void detach() {
 		if (!attached) {
-			// If the entity has been persisted since this model has been detached, then fix the serializable data
-			// (this may happen if two models reference the same non-persisted entity, for instance)
-			if (notYetPersistedEntity != null && notYetPersistedEntity.getId() != null) {
-				persistedEntityReference = GenericEntityReference.of(notYetPersistedEntity);
-				notYetPersistedEntity = null;
-			}
+			fixSerializableData();
 			return;
 		}
 		updateSerializableData();
@@ -132,6 +127,17 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 			}
 		} else {
 			persistedEntityReference = null;
+			notYetPersistedEntity = null;
+		}
+	}
+
+	/**
+	 * If the entity has been persisted since this model has been detached, then fix the serializable data
+	 * (this may happen if two models reference the same non-persisted entity, for instance)
+	 */
+	private void fixSerializableData() {
+		if (notYetPersistedEntity != null && notYetPersistedEntity.getId() != null) {
+			persistedEntityReference = GenericEntityReference.of(notYetPersistedEntity);
 			notYetPersistedEntity = null;
 		}
 	}
