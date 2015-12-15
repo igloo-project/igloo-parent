@@ -63,5 +63,10 @@ public abstract class SessionThreadSafeSimpleLoadableDetachableModel<T>
 	protected void onDetach() {
 		// Does nothing by default
 	}
+	
+	@Override
+	protected void onDetachDetached() {
+		// Does nothing by default
+	}
 
 }
