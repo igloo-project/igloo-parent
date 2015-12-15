@@ -78,6 +78,11 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 			public void describeTo(Description description) {
 				description.appendText("an entity already in the session");
 			}
+			
+			@Override
+			protected void describeMismatchSafely(Person item, Description mismatchDescription) {
+				mismatchDescription.appendText("was detached entity ").appendValue(item);
+			}
 
 			@Override
 			protected boolean matchesSafely(Person item) {
@@ -239,6 +244,33 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		Person person3 = new Person("John3", "Doe3");
 		collectionSetOnModel.add(person3);
 		assertThat(model.getObject(), equals(collection));
+	}
+	
+	@Test
+	public void testDetachedWhenTransientThenDetachedWhenPersisted() throws Exception {
+		Person person1 = new Person("John", "Doe");
+		Person person2 = new Person("John2", "Doe2");
+		C collection = createCollection(person1, person2);
+		
+		IModel<C> model = createModel();
+		model.setObject(clone(collection));
+		assertThat(model.getObject(), equals(collection));
+		
+		personService.create(person1);
+		assertThat(person1, attachedToSession());
+		model.detach(); // First detach()
+
+		// Simulate work on the same object obtained from another model
+		personService.create(person2);
+		assertThat(person2, attachedToSession());
+
+		model = serializeAndDeserialize(model); // Includes a second detach()
+		C modelObject = model.getObject();
+		assertThat(modelObject, equals(collection));
+		
+		for (Person p : modelObject) {
+			assertThat(p, attachedToSession());
+		}
 	}
 
 }
