@@ -23,6 +23,8 @@ public abstract class AbstractGenericEntityCollectionModel
 
 	@SpringBean
 	private IEntityService entityService;
+	
+	private transient boolean attached = false;
 
 	private final List<K> idList = Lists.newArrayList();
 
@@ -59,19 +61,21 @@ public abstract class AbstractGenericEntityCollectionModel
 	protected C load() {
 		entityCollection = createEntityCollection();
 		
-		for (int i = 0 ; i < idList.size() ; ++i) {
+		for (int i = 0, unsavedEntityIndex = 0 ; i < idList.size() ; ++i) {
 			K id = idList.get(i);
-			E unsavedEntity = unsavedEntityList.get(i);
 			
-			assert id != null || unsavedEntity != null;
-			assert id == null || unsavedEntity == null;
-			
-			if (unsavedEntity != null) {
-				entityCollection.add(unsavedEntity);
-			} else {
+			if (id != null) {
 				entityCollection.add(toEntity(id));
+			} else {
+				assert unsavedEntityList.size() > unsavedEntityIndex;
+				E unsavedEntity = unsavedEntityList.get(unsavedEntityIndex);
+				assert unsavedEntity != null;
+				entityCollection.add(unsavedEntity);
+				++unsavedEntityIndex;
 			}
 		}
+		
+		attached = true;
 		
 		return entityCollection;
 	}
@@ -86,27 +90,64 @@ public abstract class AbstractGenericEntityCollectionModel
 		if (object != null) {
 			entityCollection.addAll(object);
 		}
+		attached = true;
 		super.setObject(entityCollection);
-	};
-	
+	}
+
 	@Override
-	protected void onDetach() {
-		if (entityCollection != null) {
-			// Saves the possible modifications applied to entityCollection
-			idList.clear();
-			unsavedEntityList.clear();
+	public void detach() {
+		if (!attached) {
+			fixSerializableData();
+			return;
+		}
+		updateSerializableData();
+		super.detach();
+		attached = false;
+	}
+	
+	private void updateSerializableData() {
+		assert entityCollection != null;
+		
+		// Saves the possible modifications applied to entityCollection
+		idList.clear();
+		unsavedEntityList.clear();
+		
+		for (E entity : entityCollection) {
+			if (entity.isNew()) {
+				unsavedEntityList.add(entity);
+				idList.add(null);
+			} else {
+				// Do nothing with unsavedEntityList here (on purpose)
+				K id = toId(entity);
+				assert id != null;
+				idList.add(id);
+			}
+		}
+		
+		entityCollection.clear();
+	}
+
+	/**
+	 * If an entity has been persisted since this model has been detached, then fix the serializable data
+	 * (this may happen if two models reference the same non-persisted entity, for instance)
+	 */
+	private void fixSerializableData() {
+		for (int i = 0, unsavedEntityIndex = 0 ; i < idList.size() ; ++i) {
+			K id = idList.get(i);
 			
-			for (E entity : entityCollection) {
-				if (entity.isNew()) {
-					unsavedEntityList.add(entity);
-					idList.add(null);
+			if (id == null) {
+				assert unsavedEntityList.size() > unsavedEntityIndex;
+				E unsavedEntity = unsavedEntityList.get(unsavedEntityIndex);
+				assert unsavedEntity != null;
+				if (unsavedEntity.isNew()) {
+					// Do nothing
+					++unsavedEntityIndex;
 				} else {
-					unsavedEntityList.add(null);
-					idList.add(toId(entity));
+					// Fix serializable data
+					idList.set(i, toId(unsavedEntity));
+					unsavedEntityList.remove(unsavedEntityIndex);
 				}
 			}
-			
-			entityCollection.clear();
 		}
 	}
 

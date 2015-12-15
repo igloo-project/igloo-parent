@@ -22,17 +22,11 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	
 	private static final long serialVersionUID = 6859907414385876596L;
 
-	private class ThreadContextThreadLocal extends ThreadLocal<TThreadContext> {
-		@Override
-		protected TThreadContext initialValue() {
-			return newThreadContext();
-		}
-	}
-
 	/**
 	 * The loading context, local to each thread.
+	 * <p>Will be null if the model is not currently attached.
 	 */
-	private transient ThreadLocal<TThreadContext> threadLocal = new ThreadContextThreadLocal();
+	private transient ThreadLocal<TThreadContext> threadLocal = new ThreadLocal<TThreadContext>();
 	
 	public AbstractThreadSafeLoadableDetachableModel() { }
 
@@ -42,7 +36,7 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		threadLocal = new ThreadContextThreadLocal();
+		threadLocal = new ThreadLocal<>();
 	}
 	
 	protected abstract TThreadContext newThreadContext();
@@ -50,9 +44,10 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	@Override
 	public final T getObject() {
 		TThreadContext threadContext = threadLocal.get();
-		if (!threadContext.isAttached()) {
-			threadContext.setTransientModelObject(load(threadContext));
-			threadContext.setAttached(true);
+		if (threadContext == null) { // If not attached yet
+			threadContext = newThreadContext();
+			threadLocal.set(threadContext); // Attach model
+			threadContext.setTransientModelObject(load(threadContext)); // Populate model value
 		}
 		return threadContext.getTransientModelObject();
 	}
@@ -60,8 +55,11 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	@Override
 	public final void setObject(T object) {
 		TThreadContext threadContext = threadLocal.get();
-		threadContext.setTransientModelObject(wrap(object));
-		threadContext.setAttached(true);
+		if (threadContext == null) { // If not attached yet
+			threadContext = newThreadContext();
+			threadLocal.set(threadContext); // Attach model
+		}
+		threadContext.setTransientModelObject(wrap(object)); // Populate model value
 		onSetObject(threadContext);
 	}
 	
@@ -87,14 +85,22 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	public final void detach() {
 		try {
 			TThreadContext threadContext = threadLocal.get();
-			if (threadContext.isAttached()) {
+			if (threadContext != null) { // If attached
 				onDetach(threadContext);
+			} else {
+				onDetachDetached();
 			}
 		} finally {
 			threadLocal.remove();
 		}
 	}
-	
+
 	protected abstract void onDetach(TThreadContext threadContext);
+	
+	/**
+	 * Perform any necessary adjustment on implementation-defined detached data when detach() is called, but the
+	 * model is already detached.
+	 */
+	protected abstract void onDetachDetached();
 
 }

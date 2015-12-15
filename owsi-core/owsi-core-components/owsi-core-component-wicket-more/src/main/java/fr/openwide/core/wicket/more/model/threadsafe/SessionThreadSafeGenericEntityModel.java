@@ -57,14 +57,22 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 	protected SerializableState<K, E> makeSerializable(E currentObject) {
 		return new SerializableState<K, E>(currentObject);
 	}
+	
+	@Override
+	protected SerializableState<K, E> normalizeDetached(SerializableState<K, E> current) {
+		return current == null ? null : current.normalize();
+	}
 
+	/**
+	 * Immutable, serializable state for detached models.
+	 */
 	protected static class SerializableState<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private final GenericEntityReference<K, E> persistedEntityReference;
 		/**
-		 * L'objectif est ici de stocker les entités qui n'ont pas encore été persistées en base (typiquement, quand
-		 * on fait la création).
+		 * Here we want to serialize entities that haven't been persisted to the database yet.
+		 * <p>This typically happens when the user is in the process of creating the entity.
 		 */
 		private final E notYetPersistedEntity;
 		
@@ -81,6 +89,14 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 			} else {
 				persistedEntityReference = null;
 				notYetPersistedEntity = null;
+			}
+		}
+		
+		public SerializableState<K, E> normalize() {
+			if (notYetPersistedEntity == null || notYetPersistedEntity.getId() == null) {
+				return this;
+			} else {
+				return new SerializableState<>(notYetPersistedEntity);
 			}
 		}
 		
