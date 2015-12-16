@@ -18,7 +18,10 @@ import fr.openwide.jpa.example.business.CoreJpaExampleBusinessPackage;
 		"classpath:owsi-core-component-jpa.properties",
 		"classpath:owsi-hibernate.properties"
 })
-@Import(CoreJpaExampleJpaConfig.class)
+@Import({
+	CoreJpaExampleJpaConfig.class,
+	CoreJpaExampleApplicationPropertyConfig.class
+})
 @ComponentScan(
 		basePackageClasses = CoreJpaExampleBusinessPackage.class,
 		excludeFilters = @Filter(Configuration.class)
