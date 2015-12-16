@@ -24,6 +24,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.SortableField;
@@ -50,6 +51,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	public static final String CODE_FIELD_NAME = "code";
 
 	@Id
+	@DocumentId
 	@GeneratedValue
 	private Long id;
 	
