@@ -8,7 +8,7 @@ About
 
 OWSI-Core is a versatile Java framework used to build business applications... and have fun doing it.
 
-It is an ongoing effort and we continuously improve it and add new features. It is used in production for several years now.
+It is an ongoing effort and we continuously improve it and add new features. It has been used in production for several years now.
 
 Apart from the framework, we also released a Maven archetype to start a new application: it's called the "Basic application".
 
