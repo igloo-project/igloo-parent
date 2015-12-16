@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.console.maintenance.upgrade.component;
 
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.dataUpgrade;
+
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -16,9 +18,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.jpa.more.business.parameter.service.IAbstractParameterService;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
 import fr.openwide.core.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 
 public class DataUpgradePanel extends Panel {
@@ -28,7 +30,7 @@ public class DataUpgradePanel extends Panel {
 	private static final long serialVersionUID = -414549819686746010L;
 
 	@SpringBean
-	private IAbstractParameterService parameterService;
+	private IPropertyService propertyService;
 
 	@SpringBean
 	private IAbstractDataUpgradeService dataUpgradeService;
@@ -49,7 +51,7 @@ public class DataUpgradePanel extends Panel {
 			
 			@Override
 			protected void populateItem(ListItem<IDataUpgrade> item) {
-				final boolean executee = parameterService.isDataUpgradeDone(item.getModelObject());
+				final boolean executee = propertyService.get(dataUpgrade(item.getModelObject()));
 				
 				item.add(new Label("upgradeName", new PropertyModel<String>(item.getModel(), "name")));
 				

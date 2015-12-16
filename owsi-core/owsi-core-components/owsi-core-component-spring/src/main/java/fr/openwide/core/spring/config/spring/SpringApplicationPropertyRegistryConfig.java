@@ -135,7 +135,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		registry.registerString(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
 		registry.registerString(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
 		registry.registerInteger(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);
-		registry.registerString(WICKET_DISK_DATA_STORE_PATH);
+		registry.registerString(WICKET_DISK_DATA_STORE_PATH, "");
 		registry.registerInteger(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE, 40);
 		registry.registerInteger(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION, 10);
 		
