@@ -27,7 +27,6 @@ import javax.persistence.Transient;
 import org.hibernate.Hibernate;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.NumericField;
 import org.hibernate.search.annotations.SortableField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,7 +70,6 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	 */
 	@QueryType(PropertyType.COMPARABLE)
 	@Field(name = ID_SORT, analyze = Analyze.NO)
-	@NumericField(forField = ID_SORT)
 	@SortableField(forField = ID_SORT)
 	public abstract K getId();
 
