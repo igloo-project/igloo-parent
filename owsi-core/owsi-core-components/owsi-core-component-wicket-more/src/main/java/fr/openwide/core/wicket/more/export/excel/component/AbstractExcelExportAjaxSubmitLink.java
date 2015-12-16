@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.export.excel.component;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -20,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.export.excel.behavior.ExcelExportDeferredDownloadBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
@@ -31,7 +33,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExcelExportAjaxSubmitLink.class);
 	
 	@SpringBean
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	private final ExcelExportWorkInProgressModalPopupPanel loadingPopup;
 	
@@ -80,7 +82,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 			} else {
 				mediaTypeModel.setObject(getMediaType(workbook));
 				
-				tmp = File.createTempFile("export-", "", configurer.getTmpExportExcelDirectory());
+				tmp = File.createTempFile("export-", "", propertyService.get(TMP_EXPORT_EXCEL_PATH));
 				tempFileModel.setObject(tmp);
 				FileOutputStream output = new FileOutputStream(tmp);
 				workbook.write(output);

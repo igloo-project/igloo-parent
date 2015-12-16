@@ -18,7 +18,10 @@ import fr.openwide.core.spring.util.ConfigurationLogger;
  * @see ApplicationDescription
  * @see ConfigurationLocations
  */
-@Import(CoreConfigurationLocationsAnnotationConfig.class)
+@Import({
+	CoreConfigurationLocationsAnnotationConfig.class,
+	SpringApplicationPropertyRegistryConfig.class
+})
 public abstract class AbstractApplicationConfig {
 
 	@Bean

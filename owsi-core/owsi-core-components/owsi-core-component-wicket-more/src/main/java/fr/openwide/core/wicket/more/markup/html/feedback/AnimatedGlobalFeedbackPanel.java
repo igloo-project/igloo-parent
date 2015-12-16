@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.feedback;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+
 import java.util.concurrent.TimeUnit;
 
 import org.apache.wicket.Component;
@@ -20,7 +23,7 @@ import org.odlabs.wiquery.core.javascript.JsScope;
 import org.odlabs.wiquery.core.javascript.JsScopeEvent;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.alert.AlertJavascriptResourceReference;
 
@@ -29,7 +32,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	private static final long serialVersionUID = 2213180445046166086L;
 	
 	@SpringBean
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	private Integer autohideDelayValue;
 	
@@ -48,8 +51,8 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 		super(id);
 		setOutputMarkupId(true);
 		
-		this.autohideDelayValue = autohideDelayValue != null ? autohideDelayValue : configurer.getGlobalFeedbackAutohideDelayValue();
-		this.autohideDelayUnit = autohideDelayUnit != null ? autohideDelayUnit : configurer.getGlobalFeedbackAutohideDelayUnit();
+		this.autohideDelayValue = autohideDelayValue != null ? autohideDelayValue : propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
+		this.autohideDelayUnit = autohideDelayUnit != null ? autohideDelayUnit : propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT);
 		
 		Args.notNull(this.autohideDelayValue, "autohideDelayValue");
 		Args.notNull(this.autohideDelayUnit, "autohideDelayUnit");

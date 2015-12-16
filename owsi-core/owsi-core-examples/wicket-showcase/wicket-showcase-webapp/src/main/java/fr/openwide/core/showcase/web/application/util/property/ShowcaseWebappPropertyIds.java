@@ -1,6 +1,6 @@
 package fr.openwide.core.showcase.web.application.util.property;
 
-import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
+import fr.openwide.core.spring.property.model.ImmutablePropertyId;
 
 public final class ShowcaseWebappPropertyIds {
 

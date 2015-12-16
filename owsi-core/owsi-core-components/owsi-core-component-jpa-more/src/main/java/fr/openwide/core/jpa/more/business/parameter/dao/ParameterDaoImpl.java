@@ -6,8 +6,7 @@ import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
-import fr.openwide.core.jpa.more.business.parameter.model.QParameter;
-import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 
 @Repository("parameterDao")
 public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter>
@@ -35,7 +34,7 @@ public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter>
 
 	@Override
 	public Parameter getByName(String name) {
-		return super.getByField(QParameter.parameter, QParameter.parameter.name, name);
+		return super.getByNaturalId(name);
 	}
 
 	@Override

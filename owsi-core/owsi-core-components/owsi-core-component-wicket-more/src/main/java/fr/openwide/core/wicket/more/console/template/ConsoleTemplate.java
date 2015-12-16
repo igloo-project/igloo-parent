@@ -1,5 +1,9 @@
 package fr.openwide.core.wicket.more.console.template;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.VERSION;
+
 import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -23,7 +27,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
@@ -47,7 +51,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 	private static final String HEAD_PAGE_TITLE_SEPARATOR = " ‹ ";
 	
 	@SpringBean
-	protected CoreConfigurer configurer;
+	protected IPropertyService propertyService;
 	
 	@SpringBean(required = false)
 	protected IAbstractDataUpgradeService dataUpgradeService;
@@ -80,7 +84,8 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		});
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel",
-				configurer.getConsoleGlobalFeedbackAutohideDelayValue(), configurer.getConsoleGlobalFeedbackAutohideDelayUnit())
+				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE),
+				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
 		);
 		
 		// Menu sections
@@ -117,7 +122,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
 		// Version
-		add(new Label("version", configurer.getVersion()));
+		add(new Label("version", propertyService.get(VERSION)));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		

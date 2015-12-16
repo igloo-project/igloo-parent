@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 import org.apache.wicket.util.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
@@ -23,7 +22,6 @@ import org.springframework.core.io.ClassPathResource;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.config.spring.WicketMoreServiceConfig;
 import fr.openwide.core.wicket.more.css.scss.model.ScssStylesheetInformation;
 
@@ -38,12 +36,6 @@ public class ScssServiceImpl implements IScssService {
 	private static final Pattern SCOPE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
 	
 	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
-	
-	/**
-	 * required = false pour les tests unitaires
-	 */
-	@Autowired(required = false)
-	private CoreConfigurer configurer;
 	
 	@Override
 	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 

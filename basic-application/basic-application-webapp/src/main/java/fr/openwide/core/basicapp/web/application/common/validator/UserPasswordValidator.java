@@ -26,9 +26,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
+import fr.openwide.core.basicapp.core.property.BasicApplicationCorePropertyIds;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
 
 public class UserPasswordValidator extends Behavior implements IValidator<String> {
@@ -55,7 +56,7 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 	private PasswordEncoder passwordEncoder;
 
 	@SpringBean
-	private BasicApplicationConfigurer configurer;
+	private IPropertyService propertyService;
 
 	public UserPasswordValidator(UserTypeDescriptor<?> typeDescriptor) {
 		super();
@@ -76,7 +77,7 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 	public void validate(IValidatable<String> validatable) {
 		String password = validatable.getValue();
 		
-		if (!configurer.isSecurityPasswordValidatorEnabled() || !StringUtils.hasText(password)) {
+		if (Boolean.FALSE.equals(propertyService.get(BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED)) || !StringUtils.hasText(password)) {
 			return;
 		}
 		

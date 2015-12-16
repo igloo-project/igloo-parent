@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.migration.processor;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.MIGRATION_LOGGING_MEMORY;
+
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -19,7 +21,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.migration.monitor.ThreadLocalInitializingCallable;
 import fr.openwide.core.jpa.migration.transaction.TransactionWrapperCallable;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
 
 public class ThreadedProcessor {
@@ -37,7 +39,7 @@ public class ThreadedProcessor {
 	private final TimeUnit maxLoggingTimeUnit;
 	private final Integer maxLoggingIncrement;
 	private final Logger progressLogger;
-	private final CoreConfigurer configurer;
+	private final IPropertyService propertyService;
 	
 	private String loggerContext;
 
@@ -45,15 +47,15 @@ public class ThreadedProcessor {
 
 	public ThreadedProcessor(int threadPoolSize,
 			int maxTotalDuration, TimeUnit maxTotalDurationUnit,
-			int keepAliveTime, TimeUnit keepAliveTimeUnit, CoreConfigurer configurer) {
-		this(threadPoolSize, maxTotalDuration, maxTotalDurationUnit, keepAliveTime, keepAliveTimeUnit, configurer,
+			int keepAliveTime, TimeUnit keepAliveTimeUnit, IPropertyService propertyService) {
+		this(threadPoolSize, maxTotalDuration, maxTotalDurationUnit, keepAliveTime, keepAliveTimeUnit, propertyService,
 				null, null, null, null, null, null);
 	}
 
 	public ThreadedProcessor(int threadPoolSize,
 			int maxTotalDuration, TimeUnit maxTotalDurationUnit,
 			int keepAliveTime, TimeUnit keepAliveTimeUnit,
-			CoreConfigurer configurer,
+			IPropertyService propertyService,
 			Integer loggingCheckIntervalTime, TimeUnit loggingCheckIntervalTimeUnit,
 			Integer maxLoggingTime, TimeUnit maxLoggingTimeUnit,
 			Integer maxLoggingIncrement,
@@ -70,7 +72,7 @@ public class ThreadedProcessor {
 		this.maxLoggingTimeUnit = maxLoggingTimeUnit;
 		this.maxLoggingIncrement = maxLoggingIncrement;
 		this.progressLogger = progressLogger;
-		this.configurer = configurer;
+		this.propertyService = propertyService;
 	}
 
 	public <T> List<Future<T>> runWithoutTransaction(String loggerContext, List<Callable<T>> callables) {
@@ -217,7 +219,7 @@ public class ThreadedProcessor {
 				}
 				sb.append("Avancement {} / {} ({} ignorés, {} items / s. depuis début, {} items / s. depuis dernier log)");
 				
-				if (configurer.isMigrationLoggingMemory()) {
+				if (propertyService.get(MIGRATION_LOGGING_MEMORY)) {
 					sb.append(" - Mémoire disponible {} / {}");
 					progressLogger.info(sb.toString(), doneItems, totalItems - ignoredItems, ignoredItems,
 							roundedSpeedSinceStart, roundedSpeedSinceLast,

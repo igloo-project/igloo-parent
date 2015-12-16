@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
-import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyIdTemplate;
-import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
-import fr.openwide.core.jpa.more.business.property.model.MutablePropertyIdTemplate;
-import fr.openwide.core.jpa.more.business.property.service.IConfigurablePropertyService;
+import fr.openwide.core.spring.property.model.ImmutablePropertyId;
+import fr.openwide.core.spring.property.model.ImmutablePropertyIdTemplate;
+import fr.openwide.core.spring.property.model.MutablePropertyId;
+import fr.openwide.core.spring.property.model.MutablePropertyIdTemplate;
+import fr.openwide.core.spring.property.service.IConfigurablePropertyService;
 import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 
 public class TestProperty extends AbstractJpaMoreTestCase {

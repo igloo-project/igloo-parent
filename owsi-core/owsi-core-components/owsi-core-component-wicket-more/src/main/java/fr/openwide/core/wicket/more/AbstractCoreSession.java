@@ -34,7 +34,7 @@ import fr.openwide.core.jpa.security.business.person.service.IGenericUserService
 import fr.openwide.core.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import fr.openwide.core.jpa.security.model.NamedPermission;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
@@ -57,8 +57,8 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	@SpringBean(name="authenticationManager")
 	protected AuthenticationManager authenticationManager;
 	
-	@SpringBean(name="configurer")
-	protected CoreConfigurer configurer;
+	@SpringBean(name="propertyService")
+	protected IPropertyService propertyService;
 	
 	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<Long, U>();
 	
@@ -362,7 +362,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	 */
 	@Override
 	public Session setLocale(Locale locale) {
-		return super.setLocale(configurer.toAvailableLocale(locale));
+		return super.setLocale(propertyService.toAvailableLocale(locale));
 	}
 	
 	public IModel<Locale> getLocaleModel() {

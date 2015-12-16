@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.security.config.spring;
 
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_SALT;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,7 @@ import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 import fr.openwide.core.jpa.security.service.NamedPermissionFactory;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Configuration
 @Import(DefaultJpaSecurityConfig.class)
@@ -54,7 +56,7 @@ public abstract class AbstractJpaSecurityConfig {
 	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
 	
 	@Autowired
-	protected CoreConfigurer configurer;
+	protected IPropertyService propertyService;
 
 	/**
 	 * N'est pas basculé en configuration car on n'est pas censé basculer d'un
@@ -72,7 +74,7 @@ public abstract class AbstractJpaSecurityConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		CoreShaPasswordEncoder passwordEncoder = new CoreShaPasswordEncoder(256);
-		passwordEncoder.setSalt(configurer.getSecurityPasswordSalt());
+		passwordEncoder.setSalt(propertyService.get(PASSWORD_SALT));
 		
 		return passwordEncoder;
 	}

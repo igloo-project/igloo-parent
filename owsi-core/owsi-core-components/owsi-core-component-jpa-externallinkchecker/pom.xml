@@ -22,6 +22,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa-more</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- Http Client -->
 		
 		<dependency>

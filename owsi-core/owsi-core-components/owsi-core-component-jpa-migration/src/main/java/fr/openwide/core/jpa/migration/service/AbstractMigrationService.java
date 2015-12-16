@@ -29,7 +29,7 @@ import fr.openwide.core.jpa.migration.processor.ThreadedProcessor;
 import fr.openwide.core.jpa.migration.util.IPreloadAwareMigrationInformation;
 import fr.openwide.core.jpa.migration.util.ProcessorProgressLogger;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 public abstract class AbstractMigrationService {
 
@@ -42,7 +42,7 @@ public abstract class AbstractMigrationService {
 	public static final String SQL_UPDATE_SEQUENCE = "SELECT setval('%1$s_id_seq', (SELECT max(id) FROM %1$s))";
 
 	@Autowired
-	protected CoreConfigurer configurer;
+	protected IPropertyService propertyService;
 
 	@Autowired
 	protected ConfigurableApplicationContext applicationContext;
@@ -70,7 +70,7 @@ public abstract class AbstractMigrationService {
 				4,
 				timeoutInMinutes, TimeUnit.MINUTES,
 				1, TimeUnit.MINUTES,
-				configurer,
+				propertyService,
 				2, TimeUnit.SECONDS,  // intervalle minimum pour le logging
 				30, TimeUnit.SECONDS, // intervalle de temps maxi entre deux logs
 				maxLoggingIncrement,  // intervalle de nombre d'éléments traités maxi entre deux logs

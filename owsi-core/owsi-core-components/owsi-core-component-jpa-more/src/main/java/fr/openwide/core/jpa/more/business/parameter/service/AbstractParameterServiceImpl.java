@@ -1,9 +1,11 @@
 package fr.openwide.core.jpa.more.business.parameter.service;
 
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.dataUpgrade;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -24,76 +20,87 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.dao.IParameterDao;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long, Parameter>
 		implements ApplicationListener<ContextRefreshedEvent>, IAbstractParameterService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterServiceImpl.class);
 
-	private static final String DATABASE_INITIALIZED = "databaseInitialized";
-
+	@Deprecated
 	public static final String PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT = "dataUpgrade.";
-
-	private static final String PARAMETER_MAINTENANCE = "maintenance";
-
-	private Boolean isInMaintenance;
 
 	private IParameterDao dao;
 
 	@Autowired
-	private PlatformTransactionManager transactionManager;
-	
+	private IPropertyService propertyService;
+
 	public AbstractParameterServiceImpl(IParameterDao dao) {
 		super(dao);
 		this.dao = dao;
 	}
 
-	@PostConstruct
-	public void init() throws ServiceException, SecurityServiceException {
-		DefaultTransactionAttribute transactionAttributes = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		transactionAttributes.setReadOnly(false);
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager, transactionAttributes);
-		
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				try {
-					if (getByName(PARAMETER_MAINTENANCE) == null) {
-						setParameterMaintenance(false);
-					}
-					isInMaintenance = getParameterMaintenance();
-				} catch (Exception e) {
-					LOGGER.error("Erreur lors de l'initialisation de la variable maintenance", e);
-				}
-			}
-		});
-	}
-
+	/**
+	 * @deprecated Use propertyService.get(JpaMorePropertyIds.DATABASE_INITIALIZED)
+	 */
+	@Deprecated
 	@Override
 	public boolean isDatabaseInitialized() {
-		return getBooleanValue(DATABASE_INITIALIZED, false);
+		return propertyService.get(DATABASE_INITIALIZED);
 	}
 
+	/**
+	 * @deprecated Use propertyService.set(JpaMorePropertyIds.DATABASE_INITIALIZED, value)
+	 */
+	@Deprecated
 	@Override
 	public void setDatabaseInitialized(boolean databaseInitialized) throws ServiceException, SecurityServiceException {
-		updateBooleanValue(DATABASE_INITIALIZED, databaseInitialized);
+		propertyService.set(DATABASE_INITIALIZED, databaseInitialized);
 	}
 
+	/**
+	 * @deprecated Use propertyService.get(JpaMorePropertyIds.dataUpgrade(upgrade))
+	 */
+	@Deprecated
 	@Override
 	public boolean isDataUpgradeDone(IDataUpgrade upgrade) {
-		return getBooleanValue(getDataUpgradeParameterPrefix() + upgrade.getName(), false);
+		return propertyService.get(dataUpgrade(upgrade));
 	}
 
+	/**
+	 * @deprecated Use propertyService.set(JpaMorePropertyIds.dataUpgrade(upgrade), value)
+	 */
+	@Deprecated
 	@Override
-	public void setDataUpgradeDone(IDataUpgrade upgrade, boolean dateUpgradeDone)
+	public void setDataUpgradeDone(IDataUpgrade upgrade, boolean dataUpgradeDone)
 			throws ServiceException, SecurityServiceException {
-		updateBooleanValue(getDataUpgradeParameterPrefix() + upgrade.getName(), dateUpgradeDone);
+		propertyService.set(dataUpgrade(upgrade), dataUpgradeDone);
 	}
 
+	/**
+	 * @deprecated Use propertyService.get(JpaMorePropertyIds.MAINTENANCE)
+	 */
+	@Deprecated
+	@Override
+	public boolean isInMaintenance() {
+		return propertyService.get(MAINTENANCE);
+	}
+
+	/**
+	 * @deprecated Use propertyService.set(JpaMorePropertyIds.MAINTENANCE, value)
+	 */
+	@Deprecated
+	@Override
+	public void setParameterMaintenance(boolean value) throws ServiceException, SecurityServiceException {
+		propertyService.set(MAINTENANCE, value);
+	}
+
+	@Deprecated
 	protected Parameter getByName(String name) {
 		return dao.getByName(name);
 	}
 
+	@Deprecated
 	protected boolean getBooleanValue(String name, boolean defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getBooleanValue() != null) {
@@ -103,6 +110,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected String getStringValue(String name, String defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getStringValue() != null) {
@@ -112,6 +120,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected String getStringValue(String name) {
 		Parameter parameter = getByName(name);
 		if (parameter != null) {
@@ -121,6 +130,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected int getIntegerValue(String name, int defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getIntegerValue() != null) {
@@ -130,6 +140,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected float getFloatValue(String name, float defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null && parameter.getFloatValue() != null) {
@@ -139,6 +150,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected Date getDateValue(String name) {
 		Parameter parameter = getByName(name);
 		if (parameter != null) {
@@ -148,10 +160,12 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected BigDecimal getBigDecimalValue(String name) {
 		return getBigDecimalValue(name, null);
 	}
 
+	@Deprecated
 	protected BigDecimal getBigDecimalValue(String name, BigDecimal defaultValue) {
 		Parameter parameter = getByName(name);
 		if (parameter != null) {
@@ -167,6 +181,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 	}
 
 	@Override
+	@Deprecated
 	public final void onApplicationEvent(ContextRefreshedEvent event) {
 		// si l'événement est un refresh et que la source de l'événement est un application context SANS
 		// parent alors on lance l'import de la configuration dans la base
@@ -190,9 +205,11 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected void doOnApplicationEvent() throws ServiceException, SecurityServiceException {
 	}
 
+	@Deprecated
 	protected final void updateBooleanValue(String name, Boolean booleanValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -204,6 +221,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected final void updateIntegerValue(String name, Integer integerValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -215,6 +233,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected final void updateIntegerValue(String name, Float floatValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -226,6 +245,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected final void updateStringValue(String name, String stringValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -237,6 +257,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected final void updateDateValue(String name, Date dateValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -248,6 +269,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected final void updateBigDecimalValue(String name, BigDecimal bigDecimalValue)
 			throws ServiceException, SecurityServiceException {
 		Parameter parameter = getByName(name);
@@ -259,23 +281,10 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		}
 	}
 
+	@Deprecated
 	protected String getDataUpgradeParameterPrefix() {
 		// On permet la surcharge pour les applications pré-existantes.
 		return PARAMETER_DATA_UPGRADE_PREFIX_DEFAULT;
 	}
 
-	private boolean getParameterMaintenance() {
-		return getBooleanValue(PARAMETER_MAINTENANCE, false);
-	}
-	
-	@Override
-	public boolean isInMaintenance() {
-		return isInMaintenance;
-	}
-
-	@Override
-	public void setParameterMaintenance(boolean value) throws ServiceException, SecurityServiceException {
-		updateBooleanValue(PARAMETER_MAINTENANCE, value);
-		isInMaintenance = value;
-	}
 }

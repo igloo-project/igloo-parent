@@ -15,6 +15,7 @@ import org.apache.lucene.analysis.miscellaneous.TrimFilterFactory;
 import org.apache.lucene.analysis.miscellaneous.WordDelimiterFilterFactory;
 import org.apache.lucene.analysis.pattern.PatternReplaceFilterFactory;
 import org.bindgen.Bindable;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.AnalyzerDefs;
@@ -103,6 +104,7 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	@GeneratedValue
 	private Long id;
 
+	@NaturalId
 	@Column(nullable = false, unique = true)
 	private String name;
 

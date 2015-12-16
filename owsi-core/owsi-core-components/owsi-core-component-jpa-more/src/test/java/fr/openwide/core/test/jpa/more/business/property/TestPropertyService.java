@@ -14,11 +14,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
-import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
-import fr.openwide.core.jpa.more.business.property.model.ImmutablePropertyId;
-import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
-import fr.openwide.core.jpa.more.business.property.service.PropertyServiceImpl;
+import fr.openwide.core.spring.property.dao.IImmutablePropertyDao;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
+import fr.openwide.core.spring.property.model.ImmutablePropertyId;
+import fr.openwide.core.spring.property.model.MutablePropertyId;
+import fr.openwide.core.spring.property.service.PropertyServiceImpl;
 
 public class TestPropertyService {
 

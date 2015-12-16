@@ -1,5 +1,11 @@
 package fr.openwide.core.wicket.more.application;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_PATH;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -28,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
@@ -51,7 +57,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreWicketApplication.class);
 	
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -133,10 +139,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 		getJavaScriptLibrarySettings().setJQueryReference(JQueryUpdateResourceReference.get());
 			
 		// configuration du disk data store de Wicket
-		getStoreSettings().setInmemoryCacheSize(configurer.getWicketDiskDataStoreInMemoryCacheSize());
-		getStoreSettings().setMaxSizePerSession(Bytes.megabytes(configurer.getWicketDiskDataStoreMaxSizePerSession()));
+		getStoreSettings().setInmemoryCacheSize(propertyService.get(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE));
+		getStoreSettings().setMaxSizePerSession(Bytes.megabytes(propertyService.get(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION)));
 		
-		String wicketDiskDataStorePath = configurer.getWicketDiskDataStorePath();
+		String wicketDiskDataStorePath = propertyService.get(WICKET_DISK_DATA_STORE_PATH);
 		if (StringUtils.hasText(wicketDiskDataStorePath)) {
 			try {
 				File wicketDiskDataStoreFolder = new File(wicketDiskDataStorePath);
@@ -159,7 +165,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// TODO SCSS
 //		registerScssImportScopes();
 		
-		BooleanQuery.setMaxClauseCount(configurer.getLuceneBooleanQueryMaxClauseCount());
+		BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
 	}
 	
 	protected void registerLessImportScopes() {
@@ -224,7 +230,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	 */
 	@Override
 	public RuntimeConfigurationType getConfigurationType() {
-		return RuntimeConfigurationType.valueOf(configurer.getConfigurationType().toUpperCase(Locale.ROOT));
+		return RuntimeConfigurationType.valueOf(propertyService.get(CONFIGURATION_TYPE).toUpperCase(Locale.ROOT));
 	}
 	
 	public final IPageLinkDescriptor getHomePageLinkDescriptor() {

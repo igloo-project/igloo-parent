@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.page;
 
+import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
@@ -12,10 +14,10 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.component.UserGroupPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.form.UserGroupPopup;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationTemplate;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
@@ -33,7 +35,7 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 	}
 
 	@SpringBean
-	private BasicApplicationConfigurer configurer;
+	private IPropertyService propertyService;
 
 	@SpringBean
 	private IUserGroupService userGroupService;
@@ -55,7 +57,7 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 		UserGroupPopup addPopup = new UserGroupPopup("addPopup");
 		
 		add(
-				new UserGroupPortfolioPanel("portfolio", userGroupListModel, configurer.getPortfolioItemsPerPage()),
+				new UserGroupPortfolioPanel("portfolio", userGroupListModel, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE)),
 				
 				addPopup,
 				new BlankLink("addButton")

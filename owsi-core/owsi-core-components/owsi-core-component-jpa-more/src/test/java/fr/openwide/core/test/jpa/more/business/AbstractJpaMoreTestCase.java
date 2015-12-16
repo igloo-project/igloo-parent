@@ -9,7 +9,6 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
@@ -21,9 +20,6 @@ import fr.openwide.core.test.jpa.more.config.spring.JpaMoreTestConfig;
 
 @ContextConfiguration(classes = JpaMoreTestConfig.class)
 public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
-
-	@Autowired
-	protected CoreConfigurer configurer;
 
 	@Autowired
 	protected IGenericListItemService genericListItemService;

@@ -1,21 +1,18 @@
 package fr.openwide.core.spring.util;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.util.MethodInvoker;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import com.google.common.collect.Lists;
+
+import fr.openwide.core.spring.property.model.PropertyId;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 /**
  * <p>Ce listener Spring permet de logguer la configuration Spring lors de l'émission
@@ -42,16 +39,12 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLogger.class);
 	
-	private static final String FORCE_LOG_METHOD = "getPropertyAsString";
-	
-	private static final String GET_PROPERTY_AS_PREFIX = "propertyAs";
-	
 	private String logPattern = "%1$30s : %2$s";
 	
-	private List<String> propertyNamesForInfoLogLevel = new ArrayList<String>();
+	private List<String> propertyIdsKeysForInfoLogLevel = Lists.newArrayList();
 	
-	public void setPropertyNamesForInfoLogLevel(String names) {
-		propertyNamesForInfoLogLevel.addAll(StringUtils.splitAsList(names, ","));
+	public void setPropertyNamesForInfoLogLevel(String propertyIds) {
+		propertyIdsKeysForInfoLogLevel.addAll(StringUtils.splitAsList(propertyIds, ","));
 	}
 	
 	public void setLogPattern(String logPattern) {
@@ -66,83 +59,56 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			LOGGER.info("Configuration logging");
 			
 			ApplicationContext context = refresh.getApplicationContext();
-			String[] configurerNames = context.getBeanNamesForType(CoreConfigurer.class);
+			String[] propertyServiceNames = context.getBeanNamesForType(IPropertyService.class);
 			
-			if (configurerNames.length > 0) {
-				String configurerName = configurerNames[0];
+			if (propertyServiceNames.length > 0) {
+				String propertyServiceName = propertyServiceNames[0];
 				
-				if (configurerNames.length > 1) {
-					LOGGER.warn(String.format("Multiple %1$s found. We only log the configuration of the first instance.", CoreConfigurer.class.getSimpleName()));
+				if (propertyServiceNames.length > 1) {
+					LOGGER.warn(String.format("Multiple %1$s found. We only log the configuration of the first instance.", IPropertyService.class.getSimpleName()));
 				}
 				
 				LOGGER.info("Configuration found, start logging");
 				
-				CoreConfigurer configurer = (CoreConfigurer) context.getBean(configurerName);
-				BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(configurer);
-				List<String> loggedProperties = new ArrayList<String>();
+				IPropertyService propertyService = (IPropertyService) context.getBean(propertyServiceName);
+				
+				List<String> loggedProperties = Lists.newArrayList();
 				
 				/* On logge les informations qu'on a configurées dans le contexte Spring */
-				for (String name : propertyNamesForInfoLogLevel) {
-					if (!loggedProperties.contains(name)) {
-						if (wrapper.isReadableProperty(name)) {
-							loggedProperties.add(name);
-							logPropertyAsInfo(wrapper, name);
-						} else {
-							try {
-								loggedProperties.add(name);
-								logPropertyStringValueAsInfo(configurer, name);
-							} catch (Exception e) {
-								LOGGER.error(String.format("Error accessing %1$s property", name), e);
-							}
+				for (String propertyIdKey : propertyIdsKeysForInfoLogLevel) {
+					if (loggedProperties.contains(propertyServiceName)) {
+						continue;
+					}
+					
+					for (PropertyId<?> propertyId : propertyService.listRegisteredPropertyIds()) {
+						if (propertyId.getKey().equals(propertyIdKey) && !loggedProperties.contains(propertyIdKey)) {
+							logPropertyAsInfo(propertyIdKey, propertyService.get(propertyId));
+							loggedProperties.add(propertyIdKey);
+							break;
 						}
 					}
 				}
 				
 				/* Si jamais on est en mode TRACE, on logge aussi les autres propriétés */
 				if (LOGGER.isTraceEnabled()) {
-					for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
-						String name = descriptor.getName();
-						
-						if (!propertyNamesForInfoLogLevel.contains(name)
-								&& !loggedProperties.contains(name)
-								&& wrapper.isReadableProperty(name)
-								&& !descriptor.isHidden() && !name.startsWith(GET_PROPERTY_AS_PREFIX)) {
-							loggedProperties.add(name);
-							logPropertyAsTrace(wrapper, name);
+					for (PropertyId<?> propertyId : propertyService.listRegisteredPropertyIds()) {
+						if (!loggedProperties.contains(propertyId.getKey())) {
+							logPropertyAsTrace(propertyId.getKey(), propertyService.get(propertyId));
+							loggedProperties.add(propertyId.getKey());
+							break;
 						}
 					}
 				}
 			} else {
-				LOGGER.warn(String.format("No %1$s found. Unable to log the configuration.", CoreConfigurer.class.getSimpleName()));
+				LOGGER.warn(String.format("No %1$s found. Unable to log the configuration.", IPropertyService.class.getSimpleName()));
 			}
 			
 			LOGGER.info("Configuration logging end");
 		}
 	}
 	
-	private void logPropertyAsInfo(BeanWrapper wrapper, String propertyName) {
-		logPropertyAsInfo(propertyName, wrapper.getPropertyValue(propertyName));
-	}
-	
 	private void logPropertyAsInfo(String propertyName, Object value) {
 		LOGGER.info(String.format(logPattern, propertyName, value));
-	}
-	
-	private void logPropertyStringValueAsInfo(CoreConfigurer configurer, String name)
-			throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		MethodInvoker invoker = new MethodInvoker();
-		invoker.setTargetObject(configurer);
-		invoker.setTargetMethod(FORCE_LOG_METHOD);
-		invoker.setArguments(new String[] { name });
-		Object value;
-		invoker.prepare();
-		value = invoker.invoke();
-		
-		logPropertyAsInfo(name, value);
-	}
-	
-	private void logPropertyAsTrace(BeanWrapper wrapper, String propertyName) {
-		logPropertyAsTrace(propertyName, wrapper.getPropertyValue(propertyName));
 	}
 	
 	private void logPropertyAsTrace(String propertyName, Object value) {

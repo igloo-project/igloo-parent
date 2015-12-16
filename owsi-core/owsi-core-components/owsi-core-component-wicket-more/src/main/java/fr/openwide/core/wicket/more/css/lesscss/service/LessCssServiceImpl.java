@@ -26,7 +26,7 @@ import com.github.sommeri.less4j.core.ThreadUnsafeLessCompiler;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.config.spring.WicketMoreServiceConfig;
 import fr.openwide.core.wicket.more.css.lesscss.model.LessCssStylesheetInformation;
@@ -53,7 +53,7 @@ public class LessCssServiceImpl implements ILessCssService {
 	 * required = false pour les tests unitaires
 	 */
 	@Autowired(required = false)
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	@Override
 	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 
@@ -70,7 +70,7 @@ public class LessCssServiceImpl implements ILessCssService {
 		prepareRawStylesheet(lessInformation);
 		try {
 			Configuration configuration = new Configuration();
-			if (configurer != null && configurer.isConfigurationTypeDevelopment()) {
+			if (propertyService != null && propertyService.isConfigurationTypeDevelopment()) {
 				// on insère inline une source map
 				// -> utile seulement si on a les outils adéquats pour l'exploiter
 				configuration.getSourceMapConfiguration().setInline(true);

@@ -40,7 +40,7 @@ import fr.openwide.core.basicapp.web.application.security.password.page.Security
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.navigation.page.ConsoleAccessDeniedPage;
@@ -61,7 +61,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	public static final String NAME = "BasicApplicationApplication";
 	
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	public static BasicApplicationApplication get() {
 		final Application application = Application.get();
@@ -77,7 +77,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		super.init();
 		
 		// si on n'est pas en développement, on précharge les feuilles de styles pour éviter la ruée et permettre le remplissage du cache
-		if (!configurer.isConfigurationTypeDevelopment()) {
+		if (!propertyService.isConfigurationTypeDevelopment()) {
 			preloadStyleSheets(
 					ConsoleLessCssResourceReference.get(),
 					NotificationLessCssResourceReference.get(),

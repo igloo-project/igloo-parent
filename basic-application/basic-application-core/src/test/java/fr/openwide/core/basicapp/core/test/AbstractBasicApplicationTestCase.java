@@ -3,7 +3,6 @@ package fr.openwide.core.basicapp.core.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.test.config.spring.BasicApplicationCoreTestCommonConfig;
@@ -13,6 +12,7 @@ import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @ContextConfiguration(classes = BasicApplicationCoreTestCommonConfig.class)
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
@@ -27,7 +27,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	protected IAuthorityService authorityService;
 	
 	@Autowired
-	protected IParameterService parameterService;
+	protected IPropertyService propertyService;
 	
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
@@ -40,7 +40,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 		cleanEntities(userService);
 		cleanEntities(userGroupService);
 		cleanEntities(authorityService);
-		cleanEntities(parameterService);
+		propertyService.clean();
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {

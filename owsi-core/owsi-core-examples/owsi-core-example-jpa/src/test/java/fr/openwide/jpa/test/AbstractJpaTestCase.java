@@ -6,7 +6,6 @@ import org.springframework.test.context.ContextConfiguration;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.jpa.example.business.company.model.Company;
 import fr.openwide.jpa.example.business.company.service.CompanyService;
 import fr.openwide.jpa.example.business.person.model.Person;
@@ -17,9 +16,6 @@ import fr.openwide.jpa.example.config.spring.CoreJpaExampleConfig;
 
 @ContextConfiguration(classes = { CoreJpaExampleConfig.class })
 public abstract class AbstractJpaTestCase extends AbstractTestCase {
-	
-	@Autowired
-	protected CoreConfigurer configurer;
 	
 	@Autowired
 	protected CompanyService companyService;

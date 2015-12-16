@@ -1,5 +1,8 @@
 package fr.openwide.core.jpa.search.dao;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +44,7 @@ import com.google.common.collect.Iterables;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
@@ -49,7 +52,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateSearchDaoImpl.class);
 	
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -207,8 +210,8 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
 			throws Exception {
-		int batchSize = configurer.getHibernateSearchReindexBatchSize();
-		int loadThreads = configurer.getHibernateSearchReindexLoadThreads();
+		int batchSize = propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
+		int loadThreads = propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
 		
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("Targets for indexing job: {}", entityClasses);

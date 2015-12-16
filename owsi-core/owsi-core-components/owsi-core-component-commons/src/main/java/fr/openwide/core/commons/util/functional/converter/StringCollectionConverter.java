@@ -47,8 +47,11 @@ public class StringCollectionConverter<T, C extends Collection<T>> extends Conve
 	@Override
 	protected C doForward(String a) {
 		C collection = supplier.get();
-		for (String value : splitter.split(a)) {
-			collection.add(converter.convert(value));
+		for (String valueAsString : splitter.split(a)) {
+			T value = converter.convert(valueAsString);
+			if (value != null) {
+				collection.add(value);
+			}
 		}
 		return collection;
 	}

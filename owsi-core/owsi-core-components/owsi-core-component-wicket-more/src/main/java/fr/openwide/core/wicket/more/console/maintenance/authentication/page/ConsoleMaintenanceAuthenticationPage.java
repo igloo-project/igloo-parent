@@ -15,7 +15,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
@@ -32,9 +31,6 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 
 	@SpringBean
 	private IGenericUserService<U> genericUserService;
-
-	@SpringBean
-	private CoreConfigurer configurer;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()

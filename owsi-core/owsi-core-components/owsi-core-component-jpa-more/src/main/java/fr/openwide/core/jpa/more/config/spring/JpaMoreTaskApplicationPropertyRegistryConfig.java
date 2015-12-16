@@ -1,0 +1,19 @@
+package fr.openwide.core.jpa.more.config.spring;
+
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_NUMBER_OF_THREADS_TEMPLATE;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
+import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import fr.openwide.core.spring.config.util.TaskQueueStartMode;
+import fr.openwide.core.spring.property.service.IPropertyRegistry;
+
+public final class JpaMoreTaskApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+
+	@Override
+	protected void register(IPropertyRegistry registry) {
+		registry.registerInteger(STOP_TIMEOUT, 70000);
+		registry.registerEnum(START_MODE, TaskQueueStartMode.class, TaskQueueStartMode.manual);
+		registry.registerInteger(QUEUE_NUMBER_OF_THREADS_TEMPLATE, 1);
+	}
+
+}

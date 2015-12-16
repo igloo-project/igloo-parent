@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.util.image.service;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY;
+
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -37,7 +39,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.util.image.exception.ImageThumbnailGenerationException;
 import fr.openwide.core.jpa.more.util.image.model.ImageInformation;
 import fr.openwide.core.jpa.more.util.image.model.ImageThumbnailFormat;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Service("imageService")
 public class ImageServiceImpl implements IImageService {
@@ -49,11 +51,11 @@ public class ImageServiceImpl implements IImageService {
 	private File imageMagickConvertBinary;
 	
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	@PostConstruct
 	private void init() {
-		imageMagickConvertBinary = getImageMagickConvertBinary(configurer.getImageMagickConvertBinary());
+		imageMagickConvertBinary = getImageMagickConvertBinary(propertyService.get(IMAGE_MAGICK_CONVERT_BINARY));
 	}
 	
 	@Override

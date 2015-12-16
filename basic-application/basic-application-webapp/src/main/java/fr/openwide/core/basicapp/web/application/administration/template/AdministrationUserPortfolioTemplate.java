@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.template;
 
+import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -9,13 +11,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.component.AbstractUserPortfolioPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserSearchPanel;
 import fr.openwide.core.basicapp.web.application.administration.export.UserExcelTableExport;
 import fr.openwide.core.basicapp.web.application.administration.form.AbstractUserPopup;
 import fr.openwide.core.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
 import fr.openwide.core.wicket.more.export.excel.component.ExcelExportWorkInProgressModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
@@ -26,7 +28,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 	private static final long serialVersionUID = 1824247169136460059L;
 
 	@SpringBean
-	private BasicApplicationConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	protected UserTypeDescriptor<U> typeDescriptor;
 	
@@ -37,7 +39,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
 		final AbstractUserDataProvider<U> dataProvider = newDataProvider();
-		AbstractUserPortfolioPanel<U> portfolioPanel = createPortfolioPanel("portfolio", dataProvider, configurer.getPortfolioItemsPerPage());
+		AbstractUserPortfolioPanel<U> portfolioPanel = createPortfolioPanel("portfolio", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
 				new Label("title", pageTitleModel),

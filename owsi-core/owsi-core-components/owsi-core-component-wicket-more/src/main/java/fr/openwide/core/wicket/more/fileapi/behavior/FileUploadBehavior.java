@@ -12,10 +12,12 @@ import org.apache.wicket.ajax.attributes.CallbackParameter;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.javascript.JsUtils;
+import org.odlabs.wiquery.core.javascript.helper.EventsHelper;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.core.options.Options;
 import org.slf4j.Logger;
@@ -347,6 +349,17 @@ public abstract class FileUploadBehavior extends AbstractDefaultAjaxBehavior {
 		super.renderHead(component, response);
 		response.render(JavaScriptHeaderItem.forReference(FileUploadGlueJavaScriptResourceReference.get()));
 		response.render(OnDomReadyHeaderItem.forScript(statement(component).render()));
+		
+		Component adresse = new WebMarkupContainer("adresse");
+		Component complement = new WebMarkupContainer("complement");
+		int ADRESSE_MAXIMUM_LENGTH = 36;
+		
+		response.render(OnDomReadyHeaderItem.forScript(
+				new JsStatement().$(null).chain(
+						EventsHelper.keyup().chainLabel(),
+						new JsStatement().append("suivant(" + adresse.getMarkupId() + "," + complement.getMarkupId() + "," + ADRESSE_MAXIMUM_LENGTH + ")").render()
+				).render()
+		));
 	}
 
 	public static List<FileApiFile> readSuccessFileApiFiles(IRequestParameters parameters) throws JsonProcessingException, IOException {

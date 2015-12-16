@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.core.config.spring;
 
+import static fr.openwide.core.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +11,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.basicapp.core.security.model.SecurityPasswordRules;
 import fr.openwide.core.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
@@ -18,12 +19,13 @@ import fr.openwide.core.basicapp.core.security.service.SecurityManagementService
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecurityConfig;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
 import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Configuration
 public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfig {
 	
 	@Autowired
-	private BasicApplicationConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	@Override
 	@Bean
@@ -65,7 +67,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 										new SecurityPasswordRules()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 												.forbiddenUsername()
-												.forbiddenPasswords(configurer.getSecurityPasswordUserForbiddenPasswords())
+												.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
 								)
 				)
 				.setOptions(
@@ -80,7 +82,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 										new SecurityPasswordRules()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 												.forbiddenUsername()
-												.forbiddenPasswords(configurer.getSecurityPasswordUserForbiddenPasswords())
+												.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
 								)
 				)
 				.setDefaultOptions(

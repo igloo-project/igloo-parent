@@ -17,15 +17,11 @@ import fr.openwide.core.jpa.externallinkchecker.business.service.IExternalLinkCh
 import fr.openwide.core.jpa.externallinkchecker.business.service.IExternalLinkWrapperService;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
-import fr.openwide.core.spring.config.CoreConfigurer;
-import fr.openwide.core.test.jpa.externallinkchecker.config.spring.ExternalLinkCheckerTestConfig;
+import fr.openwide.core.test.jpa.externallinkchecker.config.spring.JpaExternalLinkCheckerTestConfig;
 
-@ContextConfiguration(classes = ExternalLinkCheckerTestConfig.class)
+@ContextConfiguration(classes = JpaExternalLinkCheckerTestConfig.class)
 public class TestExternalLinkCheckerService extends AbstractTestCase {
 
-	@Autowired
-	protected CoreConfigurer configurer;
-	
 	@Autowired
 	private IExternalLinkCheckerService externalLinkCheckerService;
 	

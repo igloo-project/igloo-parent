@@ -1,5 +1,12 @@
 package fr.openwide.core.jpa.externallinkchecker.business.service;
 
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.BATCH_SIZE;
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.MAX_REDIRECTS;
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.MIN_DELAY_BETWEEN_TWO_CHECKS_IN_DAYS;
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.RETRY_ATTEMPTS_NUMBER;
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.THREAD_POOL_SIZE;
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.TIMEOUT;
+import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.USER_AGENT;
 import io.mola.galimatias.GalimatiasParseException;
 
 import java.io.IOException;
@@ -54,7 +61,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkErrorType;
 import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkStatus;
 import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Service("externalLinkCheckerService")
 public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerService {
@@ -68,7 +75,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	private ConfigurableApplicationContext applicationContext;
 	
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	private CloseableHttpClient httpClient = null;
 	
@@ -86,15 +93,15 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	@PostConstruct
 	private void initialize() {
 		RequestConfig requestConfig = RequestConfig.custom()
-				.setMaxRedirects(configurer.getExternalLinkCheckerMaxRedirects())
-				.setSocketTimeout(configurer.getExternalLinkCheckerTimeout())
-				.setConnectionRequestTimeout(configurer.getExternalLinkCheckerTimeout())
-				.setConnectTimeout(configurer.getExternalLinkCheckerTimeout())
+				.setMaxRedirects(propertyService.get(MAX_REDIRECTS))
+				.setSocketTimeout(propertyService.get(TIMEOUT))
+				.setConnectionRequestTimeout(propertyService.get(TIMEOUT))
+				.setConnectTimeout(propertyService.get(TIMEOUT))
 				.setStaleConnectionCheckEnabled(true) // waiting for this to be resolved: https://issues.apache.org/jira/browse/HTTPCLIENT-1656
 				.build();
 		
 		httpClient = HttpClientBuilder.create()
-				.setUserAgent(configurer.getExternalLinkCheckerUserAgent())
+				.setUserAgent(propertyService.get(USER_AGENT))
 				.setDefaultRequestConfig(requestConfig)
 				.setDefaultHeaders(Lists.newArrayList(
 						new BasicHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE),
@@ -103,8 +110,8 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				))
 				.build();
 		
-		batchSize = configurer.getExternalLinkCheckerBatchSize();
-		minDelayBetweenTwoChecks = configurer.getExternalLinkCheckerMinDelayBetweenTwoChecksInDays();
+		batchSize = propertyService.get(BATCH_SIZE);
+		minDelayBetweenTwoChecks = propertyService.get(MIN_DELAY_BETWEEN_TWO_CHECKS_IN_DAYS);
 	}
 	
 	@PreDestroy
@@ -312,7 +319,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			link.setLastStatusCode(statusCode);
 			
 			ExternalLinkStatus status;
-			if (link.getConsecutiveFailures() >= configurer.getExternalLinkCheckerRetryAttemptsLimit()) {
+			if (link.getConsecutiveFailures() >= propertyService.get(RETRY_ATTEMPTS_NUMBER)) {
 				status = ExternalLinkStatus.DEAD_LINK;
 			} else {
 				status = ExternalLinkStatus.OFFLINE;
@@ -362,7 +369,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	}
 	
 	private void runTasksInParallel(Collection<? extends Callable<Void>> tasks, long timeout, TimeUnit timeoutUnit) throws ServiceException {
-		final int threadPoolSize = configurer.getExternalLinkCheckerThreadPoolSize();
+		final int threadPoolSize = propertyService.get(THREAD_POOL_SIZE);
 		final ThreadPoolExecutor executor = new ThreadPoolExecutor(
 				threadPoolSize, threadPoolSize,
 				100, TimeUnit.SECONDS,
