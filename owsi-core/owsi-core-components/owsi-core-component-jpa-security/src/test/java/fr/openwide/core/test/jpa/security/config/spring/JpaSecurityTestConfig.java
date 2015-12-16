@@ -20,7 +20,11 @@ import fr.openwide.core.test.jpa.security.business.JpaSecurityTestBusinessPackag
 @ComponentScan(basePackageClasses = {
 		JpaSecurityTestBusinessPackage.class
 })
-@Import({ JpaSecurityTestJpaConfig.class, JpaSecurityTestSecurityConfig.class })
+@Import({
+	JpaSecurityTestJpaConfig.class,
+	JpaSecurityTestSecurityConfig.class,
+	JpaSecurityTestApplicationPropertyConfig.class
+})
 public class JpaSecurityTestConfig extends AbstractApplicationConfig {
 
 	@Bean
