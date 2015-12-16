@@ -8,6 +8,8 @@ import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkC
 import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.TIMEOUT;
 import static fr.openwide.core.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.USER_AGENT;
 
+import org.springframework.context.annotation.Configuration;
+
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.primitives.Ints;
@@ -15,8 +17,8 @@ import com.google.common.primitives.Ints;
 import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
-
-public final class JpaExternalLinkCheckerApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+@Configuration
+public class JpaExternalLinkCheckerApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
 	protected void register(IPropertyRegistry registry) {

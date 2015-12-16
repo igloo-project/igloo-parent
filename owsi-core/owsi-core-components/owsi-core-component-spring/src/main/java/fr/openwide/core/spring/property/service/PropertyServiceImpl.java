@@ -15,6 +15,8 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.javatuples.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -29,7 +31,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.google.common.base.Converter;
 import com.google.common.base.Enums;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
@@ -68,6 +69,8 @@ import fr.openwide.core.spring.property.model.PropertyRegistryKey;
  * @see {@link IPropertyRegistry} to register application properties.
  */
 public class PropertyServiceImpl implements IConfigurablePropertyService, ApplicationEventPublisherAware {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
 	private final Map<PropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap = Maps.newHashMap();
 
@@ -298,7 +301,19 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 			throw new IllegalStateException(String.format("No converter found for the property '%1s'. Undefined property.", propertyId));
 		}
 		
-		return Optional.fromNullable(information.getValue0().convert(getAsString(propertyId))).or(Optional.fromNullable(information.getValue1().get())).orNull();
+		T value = information.getValue0().convert(getAsString(propertyId));
+		if (value == null) {
+			T defaultValue = information.getValue1().get();
+			
+			if (defaultValue != null) {
+				value = defaultValue;
+				LOGGER.debug(String.format("Property '%1s' has no value, fallback on default value.", propertyId));
+			} else {
+				LOGGER.info(String.format("Property '%1s' has no value and default value is undefined.", propertyId));
+			}
+		}
+		
+		return value;
 	}
 
 	@Override

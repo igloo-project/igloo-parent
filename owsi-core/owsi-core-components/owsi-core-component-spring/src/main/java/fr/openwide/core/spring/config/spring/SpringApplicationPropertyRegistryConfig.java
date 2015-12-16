@@ -40,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.lucene.search.BooleanQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.google.common.base.Converter;
@@ -55,7 +56,8 @@ import fr.openwide.core.spring.property.service.IPropertyRegistry;
 import fr.openwide.core.spring.util.StringUtils;
 
 @Import(SpringSecurityApplicationPropertyRegistryConfig.class)
-public final class SpringApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+@Configuration
+public class SpringApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringApplicationPropertyRegistryConfig.class);
 

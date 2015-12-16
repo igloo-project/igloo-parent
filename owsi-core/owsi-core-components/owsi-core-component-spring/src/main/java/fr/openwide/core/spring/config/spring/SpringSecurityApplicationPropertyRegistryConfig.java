@@ -5,9 +5,13 @@ import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWOR
 import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
 import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
 import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_SALT;
+
+import org.springframework.context.annotation.Configuration;
+
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
-public final class SpringSecurityApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+@Configuration
+public class SpringSecurityApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
 	protected void register(IPropertyRegistry registry) {

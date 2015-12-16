@@ -4,12 +4,14 @@ import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.DATABASE_INI
 import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.DATA_UPGRADE_DONE_TEMPLATE;
 import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
 @Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
+@Configuration
 public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override

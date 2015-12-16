@@ -4,6 +4,8 @@ import static fr.openwide.core.basicapp.core.property.BasicApplicationCoreProper
 import static fr.openwide.core.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 import static fr.openwide.core.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED;
 
+import org.springframework.context.annotation.Configuration;
+
 import com.google.common.base.Converter;
 
 import fr.openwide.core.basicapp.core.config.util.Environment;
@@ -12,7 +14,8 @@ import fr.openwide.core.commons.util.functional.converter.StringCollectionConver
 import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyConfig;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
-public final class BasicApplicationCoreApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
+@Configuration
+public class BasicApplicationCoreApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
 	@Override
 	protected void register(IPropertyRegistry registry) {

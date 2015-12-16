@@ -6,7 +6,7 @@ import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyConfig;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
 @Configuration
-public final class JpaMoreTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
+public class JpaMoreTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
 	@Override
 	protected void register(IPropertyRegistry registry) {
