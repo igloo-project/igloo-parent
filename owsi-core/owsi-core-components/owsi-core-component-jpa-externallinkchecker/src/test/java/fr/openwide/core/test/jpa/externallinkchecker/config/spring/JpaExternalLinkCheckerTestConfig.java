@@ -19,7 +19,10 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 		"classpath:jpa-externallinkchecker-test.properties",
 		"classpath:externallinkchecker-test.properties"
 })
-@Import(JpaExternalLinkCheckerTestJpaConfig.class)
+@Import({
+	JpaExternalLinkCheckerTestJpaConfig.class,
+	JpaExternalLinkCheckerTestApplicationPropertyConfig.class
+})
 @ComponentScan(basePackageClasses = { JpaExternalLinkCheckerBusinessPackage.class })
 @EnableAspectJAutoProxy
 public class JpaExternalLinkCheckerTestConfig extends AbstractApplicationConfig {

@@ -11,7 +11,9 @@ import com.google.common.base.Converter;
 import fr.openwide.core.basicapp.core.config.util.Environment;
 import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.commons.util.functional.converter.StringCollectionConverter;
+import fr.openwide.core.jpa.more.business.parameter.dao.ParameterDaoImpl;
 import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyConfig;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
 @Configuration
@@ -23,6 +25,11 @@ public class BasicApplicationCoreApplicationPropertyConfig extends AbstractAppli
 		
 		registry.registerBoolean(SECURITY_PASSWORD_VALIDATOR_ENABLED, true);
 		registry.register(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS, new StringCollectionConverter<>(Converter.<String>identity(), Suppliers2.<String>arrayList()));
+	}
+
+	@Override
+	public IMutablePropertyDao mutablePropertyDao() {
+		return new ParameterDaoImpl();
 	}
 
 }

@@ -19,7 +19,10 @@ import fr.openwide.core.test.jpa.example.business.JpaTestBusinessPackage;
 		"classpath:configuration-private.properties",
 		"classpath:owsi-hibernate.properties"
 })
-@Import(JpaTestJpaConfig.class)
+@Import({
+	JpaTestJpaConfig.class,
+	JpaTestApplicationPropertyConfig.class
+})
 @ComponentScan(
 		basePackageClasses = JpaTestBusinessPackage.class,
 		excludeFilters = @Filter(Configuration.class)

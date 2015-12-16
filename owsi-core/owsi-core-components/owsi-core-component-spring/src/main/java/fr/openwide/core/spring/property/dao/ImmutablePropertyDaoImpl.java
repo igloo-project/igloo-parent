@@ -1,11 +1,9 @@
 package fr.openwide.core.spring.property.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 
-@Repository("immutablePropertyDao")
 public class ImmutablePropertyDaoImpl implements IImmutablePropertyDao {
 
 	@Autowired
