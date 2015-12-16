@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core</groupId>
 		<artifactId>owsi-core-parent</artifactId>
-		<version>0.9.12</version>
+		<version>0.9.13-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>owsi-core</artifactId>
@@ -135,7 +135,7 @@
 	<scm>
 		<developerConnection>scm:svn:svn+ssh://svn.projects.openwide.fr/svnroot/owsi-tools/branches/owsi-core-0.9-MAINTENANCE</developerConnection>
 		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/browser/branches/owsi-core-0.9-MAINTENANCE</url>
-	  <tag>owsi-core-parent-0.9.12</tag>
+	  <tag>HEAD</tag>
   </scm>
 	
 </project>
