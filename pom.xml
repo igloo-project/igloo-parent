@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>0.9.13</version>
+	<version>0.9-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent</name>
@@ -106,7 +106,7 @@
 	<scm>
 		<developerConnection>scm:git:git@github.com:openwide-java/owsi-core-parent.git</developerConnection>
 		<url>https://github.com/openwide-java/owsi-core-parent</url>
-		<tag>owsi-core-parent-0.9.13</tag>
+		<tag>owsi-core-0.9-MAINTENANCE</tag>
 	</scm>
 	
 </project>
