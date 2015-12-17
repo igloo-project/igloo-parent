@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.passay.Rule;
 
+import com.google.common.collect.Sets;
+
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRules;
@@ -27,7 +29,7 @@ public class SecurityOptions implements Serializable {
 
 	private SecurityOptionsMode passwordAdminRecovery = SecurityOptionsMode.DISABLED;
 
-	private Set<Rule> passwordRules;
+	private Set<Rule> passwordRules = Sets.newHashSet();
 
 	public static final SecurityOptions DEFAULT = new SecurityOptions()
 				.passwordAdminRecovery()
