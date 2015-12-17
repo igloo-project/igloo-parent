@@ -2,6 +2,9 @@ package fr.openwide.core.basicapp.core.security.model;
 
 import java.io.Serializable;
 
+import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRules;
+
 
 public class SecurityOptions implements Serializable {
 
@@ -26,7 +29,11 @@ public class SecurityOptions implements Serializable {
 				.passwordUserRecovery()
 				.passwordAdminUpdate()
 				.passwordUserUpdate()
-				.passwordRules(SecurityPasswordRules.DEFAULT);
+				.passwordRules(
+						SecurityPasswordRules.builder()
+								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+								.build()
+				);
 
 	public SecurityOptions passwordExpiration() {
 		passwordExpiration = SecurityOptionsMode.ENABLED;
