@@ -10,7 +10,6 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.showcase.core.business.user.model.User;
-import fr.openwide.core.showcase.core.util.binding.Bindings;
 
 public enum UserSort implements ISort<SortField> {
 	FULL_NAME {

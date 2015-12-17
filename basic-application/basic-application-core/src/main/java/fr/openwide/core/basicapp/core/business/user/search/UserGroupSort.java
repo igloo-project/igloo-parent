@@ -7,7 +7,6 @@ import org.apache.lucene.search.SortField;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
-import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
