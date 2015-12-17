@@ -87,10 +87,8 @@ public class SimpleFileStoreImpl implements IFileStore {
 		OutputStream outputStream = null;
 		File outputFile = null;
 		
-		String cleanExtension = extension == null ? null : extension.toLowerCase(Locale.ROOT);
-		
 		try {
-			String filePath = getFilePath(fileKey, cleanExtension);
+			String filePath = getFilePath(fileKey, extension);
 			String dirPath = FilenameUtils.getFullPathNoEndSeparator(filePath);
 			if (StringUtils.hasLength(dirPath)) {
 				File dir = new File(dirPath);
@@ -122,6 +120,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 			}
 		}
 		
+		String cleanExtension = extension == null ? null : extension.toLowerCase(Locale.ROOT);
 		FileInformation fileInformation = new FileInformation(outputFile, cleanExtension);
 		
 		return fileInformation;
@@ -170,7 +169,8 @@ public class SimpleFileStoreImpl implements IFileStore {
 	}
 	
 	protected String getFilePath(String fileKey, String extension) {
-		return FilenameUtils.concat(rootDirectoryPath, pathGenerator.getFilePath(fileKey, extension));
+		String cleanExtension = extension == null ? null : extension.toLowerCase(Locale.ROOT);
+		return FilenameUtils.concat(rootDirectoryPath, pathGenerator.getFilePath(fileKey, cleanExtension));
 	}
 	
 	protected String getRootDirectoryPath() {
