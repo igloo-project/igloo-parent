@@ -23,21 +23,12 @@ import org.passay.dictionary.WordListDictionary;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.commons.util.collections.CollectionUtils;
-
 public class SecurityPasswordRules implements Serializable {
 
 	private static final long serialVersionUID = -2309617143631151956L;
 
-	private final Set<Rule> rules = new HashSet<Rule>();
-
-	protected SecurityPasswordRules(Collection<? extends Rule> rules) {
+	private SecurityPasswordRules() {
 		super();
-		CollectionUtils.replaceAll(this.rules, rules);
-	}
-
-	public Set<Rule> getRules() {
-		return rules;
 	}
 
 	public static final Builder builder() {
@@ -175,8 +166,8 @@ public class SecurityPasswordRules implements Serializable {
 			return this;
 		}
 		
-		public SecurityPasswordRules build() {
-			return new SecurityPasswordRules(rules);
+		public Set<Rule> build() {
+			return rules;
 		}
 	}
 
