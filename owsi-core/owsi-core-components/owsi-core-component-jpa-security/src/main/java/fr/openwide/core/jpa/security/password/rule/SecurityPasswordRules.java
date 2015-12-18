@@ -2,7 +2,6 @@ package fr.openwide.core.jpa.security.password.rule;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,6 +20,7 @@ import org.passay.WhitespaceRule;
 import org.passay.dictionary.ArrayWordList;
 import org.passay.dictionary.WordListDictionary;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 public class SecurityPasswordRules implements Serializable {
@@ -37,7 +37,7 @@ public class SecurityPasswordRules implements Serializable {
 
 	public static final class Builder {
 		
-		private Set<Rule> rules = new HashSet<Rule>();
+		private ImmutableSet.Builder<Rule> rules = ImmutableSet.builder();
 		
 		public Builder minLength(int min) {
 			rules.add(new LengthRule(min, Integer.MAX_VALUE));
@@ -167,7 +167,7 @@ public class SecurityPasswordRules implements Serializable {
 		}
 		
 		public Set<Rule> build() {
-			return rules;
+			return rules.build();
 		}
 	}
 
