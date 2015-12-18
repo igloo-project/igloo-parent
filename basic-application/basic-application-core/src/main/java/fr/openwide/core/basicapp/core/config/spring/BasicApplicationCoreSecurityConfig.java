@@ -16,7 +16,7 @@ import fr.openwide.core.basicapp.core.security.service.BasicApplicationPermissio
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.security.service.SecurityManagementServiceImpl;
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecurityConfig;
-import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRules;
+import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRulesBuilder;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
 import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 import fr.openwide.core.spring.property.service.IPropertyService;
@@ -64,7 +64,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 								.passwordUserRecovery()
 								.passwordUserUpdate()
 								.passwordRules(
-										SecurityPasswordRules.builder()
+										SecurityPasswordRulesBuilder.start()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 												.forbiddenUsername()
 												.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
@@ -80,7 +80,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 								.passwordUserRecovery()
 								.passwordUserUpdate()
 								.passwordRules(
-										SecurityPasswordRules.builder()
+										SecurityPasswordRulesBuilder.start()
 												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 												.forbiddenUsername()
 												.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))

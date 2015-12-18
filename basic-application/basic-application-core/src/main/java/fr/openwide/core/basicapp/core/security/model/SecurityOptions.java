@@ -10,7 +10,7 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.commons.util.collections.CollectionUtils;
-import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRules;
+import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRulesBuilder;
 
 
 public class SecurityOptions implements Serializable {
@@ -37,7 +37,7 @@ public class SecurityOptions implements Serializable {
 				.passwordAdminUpdate()
 				.passwordUserUpdate()
 				.passwordRules(
-						SecurityPasswordRules.builder()
+						SecurityPasswordRulesBuilder.start()
 								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
 								.build()
 				);
