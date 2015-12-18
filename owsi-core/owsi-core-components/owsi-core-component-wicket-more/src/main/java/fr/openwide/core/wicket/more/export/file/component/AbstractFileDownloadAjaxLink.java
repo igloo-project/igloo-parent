@@ -1,40 +1,35 @@
-package fr.openwide.core.wicket.more.export.excel.component;
-
-import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
+package fr.openwide.core.wicket.more.export.file.component;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.property.service.IPropertyService;
+import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.wicket.more.common.WorkInProgressPopup;
 import fr.openwide.core.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
-public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
+public abstract class AbstractFileDownloadAjaxLink extends AjaxLink<Void> {
 	
-	private static final long serialVersionUID = 4532792944573585105L;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExcelExportAjaxLink.class);
+	private static final long serialVersionUID = -9035539414848139111L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFileDownloadAjaxLink.class);
 	
 	@SpringBean
-	private IPropertyService propertyService;
+	private CoreConfigurer configurer;
 	
-	private final ExcelExportWorkInProgressModalPopupPanel loadingPopup;
+	private final WorkInProgressPopup loadingPopup;
 	
 	private final FileDeferredDownloadBehavior ajaxDownload;
 	
@@ -42,7 +37,7 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 	
 	private final IModel<MediaType> mediaTypeModel = new Model<MediaType>();
 	
-	public AbstractExcelExportAjaxLink(String id, ExcelExportWorkInProgressModalPopupPanel loadingPopup, String fileNamePrefix) {
+	public AbstractFileDownloadAjaxLink(String id, WorkInProgressPopup loadingPopup, String fileNamePrefix) {
 		super(id);
 		this.loadingPopup = loadingPopup;
 		this.ajaxDownload = new FileDeferredDownloadBehavior(tempFileModel, mediaTypeModel, fileNamePrefix);
@@ -50,17 +45,8 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 		add(ajaxDownload);
 	}
 	
-	protected MediaType getMediaType(Workbook workbook) {
-		if (workbook instanceof HSSFWorkbook) {
-			return MediaType.APPLICATION_MS_EXCEL;
-		} else if (workbook instanceof XSSFWorkbook) {
-			return MediaType.APPLICATION_OPENXML_EXCEL;
-		} else if (workbook instanceof SXSSFWorkbook) {
-			return MediaType.APPLICATION_OPENXML_EXCEL;
-		} else {
-			// Default
-			return MediaType.APPLICATION_MS_EXCEL;
-		}
+	protected MediaType getMediaType() {
+		return MediaType.APPLICATION_ZIP;
 	}
 	
 	@Override
@@ -72,23 +58,28 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 	@Override
 	public void onClick(AjaxRequestTarget target) {
 		boolean hasError = false;
+		Pair<File, MediaType> pairTemp;
 		File tmp = null;
+		
 		try {
-			Workbook workbook = generateWorkbook();
-			if (workbook.getNumberOfSheets() == 0) {
-				onEmptyExport(workbook);
+			pairTemp = generateFile();
+			
+			if (pairTemp == null) {
+				onEmptyExport();
 				hasError = true;
 			} else {
-				mediaTypeModel.setObject(getMediaType(workbook));
+				tmp = pairTemp.getValue0();
 				
-				tmp = File.createTempFile("export-", "", propertyService.get(TMP_EXPORT_EXCEL_PATH));
-				tempFileModel.setObject(tmp);
-				FileOutputStream output = new FileOutputStream(tmp);
-				workbook.write(output);
-				output.close();
+				if (tmp == null) {
+					onEmptyExport();
+					hasError = true;
+				} else {
+					mediaTypeModel.setObject(pairTemp.getValue1());
+					tempFileModel.setObject(tmp);
+				}
 			}
 		} catch (Exception e) {
-			LOGGER.error("Erreur en générant un fichier Excel.", e);
+			LOGGER.error("Erreur en générant un Fichier.", e);
 			
 			hasError = true;
 			FileUtils.deleteQuietly(tmp);
@@ -105,11 +96,11 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 		}
 	}
 	
-	protected void onEmptyExport(Workbook workbook) {
+	protected void onEmptyExport() {
 		error(getString("common.error.export.empty"));
 	}
 	
-	protected abstract Workbook generateWorkbook() throws ServiceException;
+	protected abstract Pair<File, MediaType> generateFile() throws ServiceException;
 	
 	@Override
 	protected void onDetach() {
