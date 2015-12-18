@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.more.util.image.service;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY;
+import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -55,7 +55,7 @@ public class ImageServiceImpl implements IImageService {
 	
 	@PostConstruct
 	private void init() {
-		imageMagickConvertBinary = getImageMagickConvertBinary(propertyService.get(IMAGE_MAGICK_CONVERT_BINARY));
+		imageMagickConvertBinary = getImageMagickConvertBinary(propertyService.get(IMAGE_MAGICK_CONVERT_BINARY_PATH));
 	}
 	
 	@Override

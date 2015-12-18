@@ -38,7 +38,7 @@ public final class SpringPropertyIds {
 	
 	public static final ImmutablePropertyId<Integer> LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT = new ImmutablePropertyId<>("lucene.booleanQuery.maxClauseCount");
 	
-	public static final ImmutablePropertyId<File> IMAGE_MAGICK_CONVERT_BINARY = new ImmutablePropertyId<>("imageMagick.convertBinary.path");
+	public static final ImmutablePropertyId<File> IMAGE_MAGICK_CONVERT_BINARY_PATH = new ImmutablePropertyId<>("imageMagick.convertBinary.path");
 	
 	public static final ImmutablePropertyId<Set<Locale>> AVAILABLE_LOCALES = new ImmutablePropertyId<>("locale.availableLocales");
 	public static final ImmutablePropertyId<Locale> DEFAULT_LOCALE = new ImmutablePropertyId<>("locale.default");

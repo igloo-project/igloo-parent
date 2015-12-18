@@ -42,6 +42,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
+import fr.openwide.core.wicket.more.model.ApplicationPropertyModel;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 
 public abstract class ConsoleTemplate extends CoreWebPage {
@@ -122,7 +123,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
 		// Version
-		add(new Label("version", propertyService.get(VERSION)));
+		add(new Label("version", ApplicationPropertyModel.of(VERSION)));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		

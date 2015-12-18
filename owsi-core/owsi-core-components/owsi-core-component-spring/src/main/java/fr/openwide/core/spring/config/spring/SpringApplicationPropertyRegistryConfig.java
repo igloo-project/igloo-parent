@@ -12,7 +12,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK
 import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
-import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY;
+import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
 import static fr.openwide.core.spring.property.SpringPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 import static fr.openwide.core.spring.property.SpringPropertyIds.MIGRATION_LOGGING_MEMORY;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
@@ -90,7 +90,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		registry.registerInteger(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT, BooleanQuery.getMaxClauseCount());
 		
 		registry.register(
-				IMAGE_MAGICK_CONVERT_BINARY,
+				IMAGE_MAGICK_CONVERT_BINARY_PATH,
 				new Function<String, File>() {
 					@Override
 					public File apply(String input) {

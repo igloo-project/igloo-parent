@@ -61,6 +61,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.model.ApplicationPropertyModel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
@@ -236,7 +237,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(
 				new Label("version", propertyService.get(VERSION))
 						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
-								.setParameters(propertyService.get(VERSION), propertyService.get(OWSI_CORE_VERSION))
+								.setParameters(ApplicationPropertyModel.of(VERSION), ApplicationPropertyModel.of(OWSI_CORE_VERSION))
 						))
 		);
 		

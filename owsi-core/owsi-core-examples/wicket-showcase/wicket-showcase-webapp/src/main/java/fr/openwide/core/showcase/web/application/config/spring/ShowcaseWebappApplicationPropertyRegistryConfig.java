@@ -9,7 +9,7 @@ import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistry
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
 @Configuration
-public class ShowcaseWebappApplicationPropertyRegisterConfig extends AbstractApplicationPropertyRegistryConfig {
+public class ShowcaseWebappApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {

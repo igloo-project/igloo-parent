@@ -10,7 +10,7 @@ import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistry
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
 @Configuration
-public class BasicApplicationWebappApplicationPropertyRegisterConfig extends AbstractApplicationPropertyRegistryConfig {
+public class BasicApplicationWebappApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
 	protected void register(IPropertyRegistry registry) {

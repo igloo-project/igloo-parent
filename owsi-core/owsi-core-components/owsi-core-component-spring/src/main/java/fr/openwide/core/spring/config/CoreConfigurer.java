@@ -10,7 +10,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK
 import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
-import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY;
+import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
 import static fr.openwide.core.spring.property.SpringPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 import static fr.openwide.core.spring.property.SpringPropertyIds.MIGRATION_LOGGING_MEMORY;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
@@ -108,11 +108,11 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	}
 
 	/**
-	 * @deprecated Use propertyService.get(CorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY)
+	 * @deprecated Use propertyService.get(CorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH)
 	 */
 	@Deprecated
 	public File getImageMagickConvertBinary() {
-		return propertyService.get(IMAGE_MAGICK_CONVERT_BINARY);
+		return propertyService.get(IMAGE_MAGICK_CONVERT_BINARY_PATH);
 	}
 
 	/**
