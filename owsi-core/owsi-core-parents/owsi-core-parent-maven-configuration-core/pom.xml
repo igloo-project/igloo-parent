@@ -133,6 +133,7 @@
 		<owsi-core.findbugs-annotations.version>3.0.0</owsi-core.findbugs-annotations.version>
 		
 		<owsi-core.passay.version>1.1.0</owsi-core.passay.version>
+		<owsi-core.java-object-diff.version>0.92</owsi-core.java-object-diff.version>
 		
 		<owsi-core.localization-properties-consistency-maven-plugin.version>1.0.0</owsi-core.localization-properties-consistency-maven-plugin.version>
 	</properties>
@@ -763,6 +764,12 @@
 							<artifactId>bcprov-jdk15on</artifactId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>de.danielbechler</groupId>
+					<artifactId>java-object-diff</artifactId>
+					<version>${owsi-core.java-object-diff.version}</version>
 				</dependency>
 			
 			<!-- Exports divers -->

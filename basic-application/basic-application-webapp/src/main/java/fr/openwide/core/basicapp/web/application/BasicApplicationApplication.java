@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -27,6 +28,7 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceL
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
+import fr.openwide.core.basicapp.web.application.history.renderer.HistoryValueRenderer;
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
@@ -40,6 +42,7 @@ import fr.openwide.core.basicapp.web.application.security.password.page.Security
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
+import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
@@ -52,6 +55,7 @@ import fr.openwide.core.wicket.more.console.template.style.ConsoleLessCssResourc
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
+import fr.openwide.core.wicket.more.rendering.EnumRenderer;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 import fr.openwide.core.wicket.more.util.convert.HibernateProxyAwareConverterLocator;
@@ -103,6 +107,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(UserGroup.class, UserGroupRenderer.get());
 		
 		converterLocator.set(Boolean.class, BooleanRenderer.withPrefix("common.boolean.yesNo"));
+		
+		converterLocator.set(HistoryValue.class, HistoryValueRenderer.get());
+		converterLocator.set(HistoryEventType.class, EnumRenderer.get());
 		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}

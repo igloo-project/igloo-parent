@@ -7,7 +7,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.basicapp.web.application.administration.component.UserAuditsPanel;
+import fr.openwide.core.basicapp.web.application.administration.component.UserHistoryLogPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserMembershipsPanel;
 import fr.openwide.core.basicapp.web.application.administration.component.UserProfilePanel;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
@@ -30,6 +30,6 @@ public class AdministrationBasicUserDescriptionPage extends AdministrationUserDe
 		add(new UserProfilePanel<>("profile", userModel, typeDescriptor));
 		IModel<User> abstractUserModel = ReadOnlyModel.<User>of(userModel);
 		add(new UserMembershipsPanel("groups", abstractUserModel));
-		add(new UserAuditsPanel("audits", userModel));
+		add(new UserHistoryLogPanel("audits", userModel));
 	}
 }

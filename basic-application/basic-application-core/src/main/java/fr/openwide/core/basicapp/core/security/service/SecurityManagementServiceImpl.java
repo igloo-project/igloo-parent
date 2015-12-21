@@ -17,8 +17,9 @@ import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
-import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
+import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
+import fr.openwide.core.basicapp.core.business.history.model.bean.HistoryLogObjectsBean;
+import fr.openwide.core.basicapp.core.business.history.service.IHistoryLogService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
@@ -34,10 +35,6 @@ import fr.openwide.core.spring.util.StringUtils;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
-	private static final String AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME = "initiatePasswordRecoveryRequest";
-
-	private static final String AUDIT_UPDATE_PASSWORD_METHOD_NAME = "updatePassword";
-
 	private final Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> optionsByUser = Maps.newHashMap();
 
 	private SecurityOptions defaultOptions = SecurityOptions.DEFAULT;
@@ -49,14 +46,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	private INotificationService notificationService;
 
 	@Autowired
-	private IAuditService auditService;
-
-	@Autowired
 	private IPropertyService propertyService;
-
-	private void audit(User subject, User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, subject, object, action);
-	}
+	
+	@Autowired
+	private IHistoryLogService historyLogService;
 
 	public SecurityManagementServiceImpl setOptions(Class<? extends User> clazz, SecurityOptions options) {
 		checkNotNull(clazz);
@@ -113,10 +106,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		
 		switch (type) {
 		case CREATION:
-			audit(author, user, AuditAction.PASSWORD_CREATION_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
+			historyLogService.log(HistoryEventType.PASSWORD_CREATION_REQUEST, HistoryLogObjectsBean.of(user));
 			break;
 		case RESET:
-			audit(author, user, AuditAction.PASSWORD_RESET_REQUEST, AUDIT_INITIATE_PASSWORD_RECOVERY_REQUEST_METHOD_NAME);
+			historyLogService.log(HistoryEventType.PASSWORD_RESET_REQUEST, HistoryLogObjectsBean.of(user));
 			break;
 		default:
 			break;
@@ -179,7 +172,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		user.getPasswordRecoveryRequest().reset();
 		userService.update(user);
 		
-		audit(author, user, AuditAction.PASSWORD_UPDATE, AUDIT_UPDATE_PASSWORD_METHOD_NAME);
+		historyLogService.log(HistoryEventType.PASSWORD_UPDATE, HistoryLogObjectsBean.of(user));
 	}
 
 }

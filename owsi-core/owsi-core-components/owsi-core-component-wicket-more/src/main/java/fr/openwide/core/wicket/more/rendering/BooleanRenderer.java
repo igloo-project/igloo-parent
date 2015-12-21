@@ -11,7 +11,7 @@ public class BooleanRenderer extends Renderer<Boolean> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static BooleanRenderer INSTANCE = new BooleanRenderer("common.boolean", null);
+	private static BooleanRenderer INSTANCE = BooleanRenderer.withPrefix("common.boolean");
 	
 	public static BooleanRenderer get() {
 		return INSTANCE;

@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.core.util.binding;
 
-import fr.openwide.core.basicapp.core.business.audit.model.AuditBinding;
+import fr.openwide.core.basicapp.core.business.history.model.HistoryDifferenceBinding;
+import fr.openwide.core.basicapp.core.business.history.model.HistoryLogBinding;
 import fr.openwide.core.basicapp.core.business.user.model.UserBinding;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroupBinding;
 
@@ -10,7 +11,9 @@ public final class Bindings {
 
 	private static final UserGroupBinding USER_GROUP = new UserGroupBinding();
 
-	private static final AuditBinding AUDIT = new AuditBinding();
+	private static final HistoryLogBinding HISTORY_LOG = new HistoryLogBinding();
+	
+	private static final HistoryDifferenceBinding HISTORY_DIFFERENCE = new HistoryDifferenceBinding();
 
 	public static UserBinding user() {
 		return USER;
@@ -20,8 +23,12 @@ public final class Bindings {
 		return USER_GROUP;
 	}
 
-	public static AuditBinding audit() {
-		return AUDIT;
+	public static HistoryLogBinding historyLog() {
+		return HISTORY_LOG;
+	}
+	
+	public static HistoryDifferenceBinding historyDifference() {
+		return HISTORY_DIFFERENCE;
 	}
 
 	private Bindings() {

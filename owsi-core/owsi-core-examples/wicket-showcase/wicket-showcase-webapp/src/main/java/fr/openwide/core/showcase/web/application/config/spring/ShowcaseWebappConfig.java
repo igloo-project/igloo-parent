@@ -7,9 +7,11 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.showcase.core.config.spring.ShowcaseCoreConfig;
 import fr.openwide.core.showcase.web.ShowcaseWebPackage;
 import fr.openwide.core.showcase.web.application.ShowcaseApplication;
+import fr.openwide.core.showcase.web.application.renderer.service.RendererServiceImpl;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 
 @Configuration
@@ -30,6 +32,11 @@ public class ShowcaseWebappConfig extends AbstractWebappConfig {
 	@Bean(name = { "showcaseApplication", "application" })
 	public WebApplication application() {
 		return new ShowcaseApplication();
+	}
+
+	@Override
+	public IRendererService rendererService() {
+		return new RendererServiceImpl();
 	}
 
 }

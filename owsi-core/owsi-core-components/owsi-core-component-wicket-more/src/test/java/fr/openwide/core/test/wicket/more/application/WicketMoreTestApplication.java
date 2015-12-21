@@ -9,6 +9,8 @@ import fr.openwide.core.wicket.more.application.CoreWicketApplication;
  */
 public class WicketMoreTestApplication extends CoreWicketApplication {
 	
+	public static final String NAME = "WicketMoreTestApplication";
+	
 	public WicketMoreTestApplication() {
 		// TODO Auto-generated constructor stub
 	}
