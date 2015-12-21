@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 /**
  * <p>Initialise le schéma de la base.</p>
@@ -44,7 +44,7 @@ public class DatabaseInitializationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInitializationService.class);
 
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -68,7 +68,7 @@ public class DatabaseInitializationService {
 	 */
 	@PostConstruct
 	protected void initDatabaseSchema() throws IOException {
-		if (configurer.isConfigurationTypeDevelopment()) {
+		if (propertyService.isConfigurationTypeDevelopment()) {
 			LOGGER.warn("Initialisation de la base de données");
 
 			InputStream sqlDropFile = new ClassPathResource("sql/drop_tables.sql").getInputStream();

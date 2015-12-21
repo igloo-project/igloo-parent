@@ -37,7 +37,7 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 	@Test
 	public void testGenericEntity() throws ServiceException, SecurityServiceException {
 		Person person = new Person("FirstName", "LastName");
-
+		
 		Assert.assertNull(person.getId());
 		Assert.assertTrue(person.isNew());
 

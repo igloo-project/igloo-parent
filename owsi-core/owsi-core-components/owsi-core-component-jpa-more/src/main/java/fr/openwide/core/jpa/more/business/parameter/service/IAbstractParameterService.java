@@ -6,18 +6,44 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
 
+@Deprecated
 public interface IAbstractParameterService extends IGenericEntityService<Long, Parameter>{
 
+	/**
+	 * @deprecated Use propertyService.get(JpaMorePropertyIds.DATABASE_INITIALIZED)
+	 */
+	@Deprecated
 	boolean isDatabaseInitialized();
 
+	/**
+	 * @deprecated Use propertyService.set(JpaMorePropertyIds.DATABASE_INITIALIZED, value)
+	 */
+	@Deprecated
 	void setDatabaseInitialized(boolean databaseInitialized) throws ServiceException, SecurityServiceException;
 
+	/**
+	 * @deprecated Use propertyService.get(JpaMorePropertyIds.dataUpgrade(upgrade))
+	 */
+	@Deprecated
 	boolean isDataUpgradeDone(IDataUpgrade upgrade);
 
-	void setDataUpgradeDone(IDataUpgrade upgrade, boolean dateUpgradeDone) throws ServiceException,
+	/**
+	 * @deprecated Use propertyService.set(JpaMorePropertyIds.dataUpgrade(upgrade), value)
+	 */
+	@Deprecated
+	void setDataUpgradeDone(IDataUpgrade upgrade, boolean dataUpgradeDone) throws ServiceException,
 			SecurityServiceException;
 
+	/**
+	 * @deprecated Use propertyService.set(JpaMorePropertyIds.MAINTENANCE, value)
+	 */
+	@Deprecated
 	void setParameterMaintenance(boolean value) throws ServiceException, SecurityServiceException;
 
+	/**
+	 * @deprecated Use propertyService.get(JpaMorePropertyIds.MAINTENANCE)
+	 */
+	@Deprecated
 	boolean isInMaintenance();
+
 }

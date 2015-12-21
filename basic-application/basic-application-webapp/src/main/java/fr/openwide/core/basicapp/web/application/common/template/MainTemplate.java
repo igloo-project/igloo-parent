@@ -1,5 +1,10 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
+import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.MAINTENANCE_URL;
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.OWSI_CORE_VERSION;
+import static fr.openwide.core.spring.property.SpringPropertyIds.VERSION;
+
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -30,8 +35,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
@@ -43,6 +46,7 @@ import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.Admi
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
@@ -57,6 +61,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.model.ApplicationPropertyModel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
@@ -68,10 +73,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MainTemplate.class);
 
 	@SpringBean
-	private BasicApplicationConfigurer configurer;
-
-	@SpringBean
-	private IParameterService parameterService;
+	private IPropertyService propertyService;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
@@ -82,8 +84,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole()) {
-			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
+		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole()) {
+			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
 		if (securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
@@ -233,9 +235,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		// Footer
 		add(
-				new Label("version", configurer.getVersion())
+				new Label("version", propertyService.get(VERSION))
 						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
-								.setParameters(configurer.getVersion(), configurer.getOwsiCoreVersion())
+								.setParameters(ApplicationPropertyModel.of(VERSION), ApplicationPropertyModel.of(OWSI_CORE_VERSION))
 						))
 		);
 		

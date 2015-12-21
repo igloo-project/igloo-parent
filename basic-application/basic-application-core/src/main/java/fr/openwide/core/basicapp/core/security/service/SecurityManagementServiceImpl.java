@@ -1,6 +1,10 @@
 package fr.openwide.core.basicapp.core.security.service;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_EXPIRATION_DAYS;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_HISTORY_COUNT;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
 
 import java.util.Date;
 import java.util.Map;
@@ -20,12 +24,12 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.util.HibernateUtils;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
@@ -48,7 +52,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	private IAuditService auditService;
 
 	@Autowired
-	private BasicApplicationConfigurer configurer;
+	private IPropertyService propertyService;
 
 	private void audit(User subject, User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
 		auditService.audit(getClass().getSimpleName(), methodName, subject, object, action);
@@ -98,7 +102,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException, SecurityServiceException {
 		Date now = new Date();
 		
-		user.getPasswordRecoveryRequest().setToken(RandomStringUtils.randomAlphanumeric(configurer.getSecurityPasswordRecoveryRequestTokenRandomCount()));
+		user.getPasswordRecoveryRequest().setToken(RandomStringUtils.randomAlphanumeric(propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
 		user.getPasswordRecoveryRequest().setCreationDate(now);
 		user.getPasswordRecoveryRequest().setType(type);
 		user.getPasswordRecoveryRequest().setInitiator(initiator);
@@ -127,7 +131,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return false;
 		}
 		
-		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), configurer.getSecurityPasswordExpirationDays());
+		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), propertyService.get(PASSWORD_EXPIRATION_DAYS));
 		Date now = new Date();
 		
 		return now.after(expirationDate);
@@ -141,7 +145,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return true;
 		}
 		
-		Date expirationDate = DateUtils.addMinutes(user.getPasswordRecoveryRequest().getCreationDate(), configurer.getSecurityPasswordRecoveryRequestExpirationMinutes());
+		Date expirationDate = DateUtils.addMinutes(user.getPasswordRecoveryRequest().getCreationDate(), propertyService.get(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES));
 		Date now = new Date();
 		
 		return now.after(expirationDate);
@@ -162,7 +166,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		user.getPasswordInformation().setLastUpdateDate(new Date());
 		
 		if (getOptions(user).isPasswordHistoryEnabled()) {
-			EvictingQueue<String> historyQueue = EvictingQueue.create(configurer.getSecurityPasswordHistoryCount());
+			EvictingQueue<String> historyQueue = EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));
 			
 			for (String oldPassword : user.getPasswordInformation().getHistory()) {
 				historyQueue.offer(oldPassword);

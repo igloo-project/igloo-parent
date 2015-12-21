@@ -1,5 +1,7 @@
 package fr.openwide.core.showcase.core.business.fileupload.service;
 
+import static fr.openwide.core.showcase.core.util.property.ShowcaseCorePropertyIds.SHOWCASE_FILE_ROOT_DIRECTORY;
+
 import java.io.File;
 import java.io.InputStream;
 
@@ -13,9 +15,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.file.model.FileInformation;
 import fr.openwide.core.jpa.more.business.file.model.SimpleFileStoreImpl;
 import fr.openwide.core.jpa.more.business.file.service.AbstractFileStoreServiceImpl;
-import fr.openwide.core.jpa.more.business.property.service.IPropertyService;
 import fr.openwide.core.showcase.core.business.fileupload.model.ShowcaseFile;
-import fr.openwide.core.showcase.core.util.property.ShowcaseCorePropertyIds;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Service("showcaseFileFileStoreService")
 public class ShowcaseFileFileStoreServiceImpl extends AbstractFileStoreServiceImpl implements IShowcaseFileFileStoreService {
@@ -27,7 +28,7 @@ public class ShowcaseFileFileStoreServiceImpl extends AbstractFileStoreServiceIm
 
 	@PostConstruct
 	private void init() { // NOSONAR (@PostConstruct)
-		registerFileStore(new SimpleFileStoreImpl(SHOWCASE_FILE_FILESTORE_KEY, propertyService.get(ShowcaseCorePropertyIds.SHOWCASE_FILE_ROOT_DIRECTORY), true));
+		registerFileStore(new SimpleFileStoreImpl(SHOWCASE_FILE_FILESTORE_KEY, propertyService.get(SHOWCASE_FILE_ROOT_DIRECTORY), true));
 	}
 
 	@Override

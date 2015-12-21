@@ -10,7 +10,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
-import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfolioPanel;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserSearchPanel;
 import fr.openwide.core.showcase.web.application.portfolio.model.UserDataProvider;
@@ -31,9 +30,6 @@ public class PortfolioMainPage extends MainTemplate {
 				.page(PortfolioMainPage.class)
 				.build();
 	}
-	
-	@SpringBean
-	private ShowcaseConfigurer showcaseConfigurer;
 	
 	@SpringBean
 	private IUserService userService;

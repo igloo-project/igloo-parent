@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.more.business.property.dao.IMutablePropertyDao;
-import fr.openwide.core.jpa.more.business.property.model.MutablePropertyId;
-import fr.openwide.core.jpa.more.business.property.service.IConfigurablePropertyService;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
+import fr.openwide.core.spring.property.model.MutablePropertyId;
+import fr.openwide.core.spring.property.service.IConfigurablePropertyService;
 import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 
 public class TestMutablePropertyDao extends AbstractJpaMoreTestCase {

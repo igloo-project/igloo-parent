@@ -32,7 +32,6 @@ import fr.openwide.core.showcase.core.business.task.model.ShowcaseTaskQueueId;
 import fr.openwide.core.showcase.core.business.task.model.SuccessTask;
 import fr.openwide.core.showcase.core.business.task.model.SuccessWithAlertTask;
 import fr.openwide.core.showcase.core.business.task.model.SuccessWithErrorTask;
-import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.showcase.web.application.task.component.ShowcaseTaskQueueIdDropDownChoice;
 import fr.openwide.core.showcase.web.application.task.component.TaskPortfolioPanel;
 import fr.openwide.core.showcase.web.application.task.component.TaskSearchPanel;
@@ -67,9 +66,6 @@ public class TaskMainPage extends MainTemplate {
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
-	@SpringBean
-	private ShowcaseConfigurer configurer;
-	
 	public TaskMainPage(PageParameters parameters) {
 		super(parameters);
 		

@@ -48,6 +48,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	/**
 	 * Espace séparant deux valeurs dans une liste.
 	 */
+	@Deprecated
 	public static final String SEPARATOR = " ";
 	
 	/**
@@ -62,6 +63,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key
 	 * @return booléen de la propriété
 	 */
+	@Deprecated
 	protected Boolean getPropertyAsBoolean(String key) {
 		return Boolean.valueOf(StringUtils.trimWhitespace(getPropertyAsString(key)));
 	}
@@ -73,6 +75,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key la clé
 	 * @return chaîne de la propriété
 	 */
+	@Deprecated
 	protected String getPropertyAsString(String key) {
 		return getPropertyAsString(key, null);
 	}
@@ -88,6 +91,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param defaultValue la valeur par défaut
 	 * @return chaîne de la propriété
 	 */
+	@Deprecated
 	protected String getPropertyAsString(String key, String defaultValue) {
 		Object property = getProperty(key);
 		if(property == null) {
@@ -104,6 +108,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key la clé
 	 * @return liste de chaînes
 	 */
+	@Deprecated
 	protected List<String> getPropertyAsStringList(String key) {
 		String property = getPropertyAsString(key);
 		if(property == null) {
@@ -120,6 +125,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key la clé
 	 * @return liste de chaînes
 	 */
+	@Deprecated
 	protected String[] getPropertyAsStringArray(String key) {
 		String property = getPropertyAsString(key);
 		if(property == null) {
@@ -137,6 +143,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @return valeur de la propriété sous la forme d'un entier ou defaultValue
 	 *         si la valeur de la propriété n'est pas un entier valide
 	 */
+	@Deprecated
 	protected Integer getPropertyAsInteger(String key, Integer defaultValue) {
 		return getPropertyAsInteger(key, defaultValue, null, null);
 	}
@@ -153,6 +160,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 *         ou minValue si la valeur est inférieure à la valeur minimale
 	 *         ou maxValue si la valeur est supérieure à la valeur maximale
 	 */
+	@Deprecated
 	protected Integer getPropertyAsInteger(String key, Integer defaultValue, Integer minValue, Integer maxValue) {
 		Integer integerProperty = defaultValue;
 		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
@@ -184,6 +192,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @return valeur de la propriété sous la forme d'un BigDecimal
 	 *         ou defaultValue si la valeur de la propriété n'est pas un BigDecimal valide
 	 */
+	@Deprecated
 	protected BigDecimal getPropertyAsBigDecimal(String key, BigDecimal defaultValue) {
 		return getPropertyAsBigDecimal(key, defaultValue, null, null);
 	}
@@ -200,6 +209,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 *         ou minValue si la valeur est inférieure à la valeur minimale
 	 *         ou maxValue si la valeur est supérieure à la valeur maximale
 	 */
+	@Deprecated
 	protected BigDecimal getPropertyAsBigDecimal(String key, BigDecimal defaultValue, BigDecimal minValue, BigDecimal maxValue) {
 		BigDecimal bigDecimalProperty = defaultValue;
 		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
@@ -232,6 +242,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @return valeur de la propriété sous la forme d'une enum ou defaultValue
 	 *         si la valeur de la propriété ne correspond pas à une instance de l'enum
 	 */
+	@Deprecated
 	protected <E extends Enum<E>> E getPropertyAsEnum(String key, Class<E> enumType, E defaultValue) {
 		E enumProperty = defaultValue;
 		String stringProperty = StringUtils.trimWhitespace(getPropertyAsString(key));
@@ -254,6 +265,7 @@ public class CorePropertyPlaceholderConfigurer extends PropertySourcesPlaceholde
 	 * @param key la clé
 	 * @return un répertoire dans lequel on est sûr de pouvoir écrire
 	 */
+	@Deprecated
 	protected File getPropertyAsWritableDirectory(String key) {
 		String path = StringUtils.trimWhitespace(getPropertyAsString(key));
 		

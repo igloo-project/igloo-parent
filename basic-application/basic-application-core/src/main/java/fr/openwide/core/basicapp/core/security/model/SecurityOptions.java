@@ -1,6 +1,16 @@
 package fr.openwide.core.basicapp.core.security.model;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Set;
+
+import org.passay.Rule;
+
+import com.google.common.collect.Sets;
+
+import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.commons.util.collections.CollectionUtils;
+import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRulesBuilder;
 
 
 public class SecurityOptions implements Serializable {
@@ -19,14 +29,18 @@ public class SecurityOptions implements Serializable {
 
 	private SecurityOptionsMode passwordAdminRecovery = SecurityOptionsMode.DISABLED;
 
-	private SecurityPasswordRules passwordRules;
+	private Set<Rule> passwordRules = Sets.newHashSet();
 
 	public static final SecurityOptions DEFAULT = new SecurityOptions()
 				.passwordAdminRecovery()
 				.passwordUserRecovery()
 				.passwordAdminUpdate()
 				.passwordUserUpdate()
-				.passwordRules(SecurityPasswordRules.DEFAULT);
+				.passwordRules(
+						SecurityPasswordRulesBuilder.start()
+								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+								.build()
+				);
 
 	public SecurityOptions passwordExpiration() {
 		passwordExpiration = SecurityOptionsMode.ENABLED;
@@ -106,13 +120,13 @@ public class SecurityOptions implements Serializable {
 		return SecurityOptionsMode.ENABLED.equals(getPasswordAdminRecovery());
 	}
 
-	public SecurityOptions passwordRules(SecurityPasswordRules passwordRules) {
-		this.passwordRules = passwordRules;
+	public SecurityOptions passwordRules(Set<Rule> passwordRules) {
+		CollectionUtils.replaceAll(this.passwordRules, passwordRules);
 		return this;
 	}
 
-	public SecurityPasswordRules getPasswordRules() {
-		return passwordRules;
+	public Set<Rule> getPasswordRules() {
+		return Collections.unmodifiableSet(passwordRules);
 	}
 
 	private enum SecurityOptionsMode {

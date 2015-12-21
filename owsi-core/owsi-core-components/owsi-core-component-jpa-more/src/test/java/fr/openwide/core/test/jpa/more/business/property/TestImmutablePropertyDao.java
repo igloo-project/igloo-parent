@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.openwide.core.jpa.more.business.property.dao.IImmutablePropertyDao;
+import fr.openwide.core.spring.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 
 public class TestImmutablePropertyDao extends AbstractJpaMoreTestCase {

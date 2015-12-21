@@ -17,12 +17,12 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 @ConfigurationLocations(locations = {"classpath:notification-test.properties", "classpath:notification-test-${user}.properties"})
 @Import({ NotificationTestConfig.class })
 public class TestConfig {
-	
+
 	@Bean(name = { "configurer" })
 	public static CoreConfigurer environment(ConfigurableApplicationContext context) throws MalformedURLException {
 		return new CoreConfigurer();
 	}
-	
+
 	@Bean
 	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
 		return new ApplicationConfigurerBeanFactoryPostProcessor();

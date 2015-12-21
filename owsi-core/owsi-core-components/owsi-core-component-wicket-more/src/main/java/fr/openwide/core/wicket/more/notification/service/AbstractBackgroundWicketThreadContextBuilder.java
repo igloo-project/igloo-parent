@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.notification.service;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
+
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
@@ -21,12 +24,13 @@ import org.apache.wicket.request.http.WebResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.context.IContextualService;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.SpringPropertyIds;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 public abstract class AbstractBackgroundWicketThreadContextBuilder implements IContextualService {
 	
 	@Autowired
-	protected CoreConfigurer configurer;
+	protected IPropertyService propertyService;
 	
 	protected abstract String getApplicationName();
 	
@@ -46,7 +50,7 @@ public abstract class AbstractBackgroundWicketThreadContextBuilder implements IC
 			Locale oldLocale = session.getLocale();
 			try {
 				if (locale != null) {
-					session.setLocale(configurer.toAvailableLocale(locale));
+					session.setLocale(propertyService.toAvailableLocale(locale));
 				}
 				return callable.call();
 			} finally {
@@ -120,17 +124,17 @@ public abstract class AbstractBackgroundWicketThreadContextBuilder implements IC
 		
 		@Override
 		public String getServerName() {
-			return configurer.getWicketBackgroundRequestCycleBuilderUrlServerName();
+			return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME);
 		}
 		
 		@Override
 		public int getServerPort() {
-			return configurer.getWicketBackgroundRequestCycleBuilderUrlServerPort();
+			return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT);
 		}
 
 		@Override
 		public String getScheme() {
-			return configurer.getWicketBackgroundRequestCycleBuilderUrlScheme();
+			return propertyService.get(SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME);
 		}
 		
 		@Override

@@ -17,7 +17,8 @@ import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssSer
 @Import({
 	BasicApplicationCoreCommonConfig.class,
 	BasicApplicationWebappSecurityConfig.class,
-	BasicApplicationWebappCacheConfig.class
+	BasicApplicationWebappCacheConfig.class,
+	BasicApplicationWebappApplicationPropertyRegistryConfig.class
 })
 @ComponentScan(
 		basePackageClasses = {

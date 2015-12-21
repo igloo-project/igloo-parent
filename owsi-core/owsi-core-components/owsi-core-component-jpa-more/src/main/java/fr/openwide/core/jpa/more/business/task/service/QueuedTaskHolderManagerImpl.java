@@ -1,5 +1,9 @@
 package fr.openwide.core.jpa.more.business.task.service;
 
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.queueNumberOfThreads;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,8 +41,8 @@ import fr.openwide.core.jpa.more.business.task.service.impl.TaskConsumer;
 import fr.openwide.core.jpa.more.business.task.service.impl.TaskQueue;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
@@ -55,7 +59,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	@Resource
 	private Collection<? extends IQueueId> queueIds;
@@ -80,11 +84,11 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	@PostConstruct
 	private void init() {
-		stopTimeout = configurer.getTaskStopTimeout();
+		stopTimeout = propertyService.get(STOP_TIMEOUT);
 		
 		initQueues();
 		
-		if (TaskQueueStartMode.auto.equals(configurer.getTaskQueueStartMode())) {
+		if (TaskQueueStartMode.auto.equals(propertyService.get(START_MODE))) {
 			start();
 		} else {
 			LOGGER.warn("Task queue start configured in \"manual\" mode.");
@@ -105,7 +109,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 		defaultQueue = initQueue(IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING, 1);
 		for (String queueIdAsString : queueIdsAsStrings) {
-			int numberOfThreads = configurer.getTaskQueueNumberOfThreads(queueIdAsString);
+			int numberOfThreads = propertyService.get(queueNumberOfThreads(queueIdAsString));
 			if (numberOfThreads < 1) {
 				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueIdAsString, numberOfThreads);
 				numberOfThreads = 1;

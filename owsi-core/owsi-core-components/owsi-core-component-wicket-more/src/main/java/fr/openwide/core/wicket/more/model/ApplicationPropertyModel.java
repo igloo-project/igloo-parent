@@ -6,8 +6,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.base.Preconditions;
 
-import fr.openwide.core.jpa.more.business.property.model.PropertyId;
-import fr.openwide.core.jpa.more.business.property.service.IPropertyService;
+import fr.openwide.core.spring.property.model.PropertyId;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 public class ApplicationPropertyModel<T> extends LoadableDetachableModel<T> {
 

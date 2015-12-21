@@ -1,5 +1,8 @@
 package fr.openwide.core.basicapp.web.application.common.template;
 
+import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.MAINTENANCE_URL;
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -14,11 +17,10 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.basicapp.core.business.parameter.service.IParameterService;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
@@ -30,10 +32,7 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 	private static final long serialVersionUID = 3342562716259012460L;
 
 	@SpringBean
-	private BasicApplicationConfigurer configurer;
-
-	@SpringBean
-	private IParameterService parameterService;
+	private IPropertyService propertyService;
 
 	@SpringBean
 	private IAuthenticationService authenticationService;
@@ -41,8 +40,8 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 	public ServiceTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		if (parameterService.isInMaintenance() && !authenticationService.hasAdminRole() && maintenanceRestriction()) {
-			throw new RedirectToUrlException(configurer.getMaintenanceUrl());
+		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole() && maintenanceRestriction()) {
+			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));

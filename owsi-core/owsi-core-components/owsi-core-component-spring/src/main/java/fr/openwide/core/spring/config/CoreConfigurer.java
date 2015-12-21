@@ -1,99 +1,134 @@
 package fr.openwide.core.spring.config;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.AUTOCOMPLETE_LIMIT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.AVAILABLE_LOCALES;
+import static fr.openwide.core.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.DEFAULT_LOCALE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
+import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
+import static fr.openwide.core.spring.property.SpringPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.MIGRATION_LOGGING_MEMORY;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
+import static fr.openwide.core.spring.property.SpringPropertyIds.OWSI_CORE_VERSION;
+import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
+import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_PATH;
+import static fr.openwide.core.spring.property.SpringPropertyIds.VERSION;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
+import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_PATH;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_EXPIRATION_DAYS;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_HISTORY_COUNT;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
+import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_SALT;
+
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.LocaleUtils;
-import org.apache.lucene.search.BooleanQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
-import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CoreConfigurer.class);
 
-	private static final String CONFIGURATION_TYPE_DEVELOPMENT = "development";
-	private static final String CONFIGURATION_TYPE_DEPLOYMENT = "deployment";
+	@Autowired
+	private IPropertyService propertyService;
 	
-	private static final int TASK_STOP_TIMEOUT_DEFAULT = 70000;
-	private static final int TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT = 1;
-	
-	private static final String MIGRATION_LOGGING_MEMORY = "migration.logging.memory";
-	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.VERSION)
+	 */
+	@Deprecated
 	public String getVersion() {
-		return getPropertyAsString("version");
+		return propertyService.get(VERSION);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.OWSI_CORE_VERSION)
+	 */
+	@Deprecated
 	public String getOwsiCoreVersion() {
-		return getPropertyAsString("owsi-core.version");
+		return propertyService.get(OWSI_CORE_VERSION);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.CONFIGURATION_TYPE)
+	 */
+	@Deprecated
+	public String getConfigurationType() {
+		return propertyService.get(CONFIGURATION_TYPE);
 	}
 
-	public String getConfigurationType() {
-		String configurationType = getPropertyAsString("configurationType");
-		if (CONFIGURATION_TYPE_DEVELOPMENT.equals(configurationType) || CONFIGURATION_TYPE_DEPLOYMENT.equals(configurationType)) {
-			return configurationType;
-		} else {
-			throw new IllegalStateException("Configuration type should be either development or deployment");
-		}
-	}
-	
+	/**
+	 * @deprecated Use propertyService.isConfigurationTypeDevelopment()
+	 */
+	@Deprecated
 	public boolean isConfigurationTypeDevelopment() {
-		return CONFIGURATION_TYPE_DEVELOPMENT.equals(getConfigurationType());
+		return propertyService.isConfigurationTypeDevelopment();
 	}
-	
+
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.MIGRATION_LOGGING_MEMORY)
+	 */
+	@Deprecated
 	public boolean isMigrationLoggingMemory() {
-		return getPropertyAsBoolean(MIGRATION_LOGGING_MEMORY);
+		return propertyService.get(MIGRATION_LOGGING_MEMORY);
 	}
-	
+
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.TMP_PATH)
+	 */
+	@Deprecated
 	public File getTmpDirectory() {
-		return getPropertyAsWritableDirectory("tmp.path");
+		return propertyService.get(TMP_PATH);
 	}
-	
+
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.LUCENE_BOOLEANQUERY_MAX_CLAUSE_COUNT)
+	 */
+	@Deprecated
 	public int getLuceneBooleanQueryMaxClauseCount() {
-		return getPropertyAsInteger("lucene.booleanQuery.maxClauseCount", BooleanQuery.getMaxClauseCount());
+		return propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT);
 	}
-	
+
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH)
+	 */
+	@Deprecated
 	public File getImageMagickConvertBinary() {
-		String imageMagickConvertBinary = getPropertyAsString("imageMagick.convertBinary.path", "/usr/bin/convert");
-		
-		if (StringUtils.hasText(imageMagickConvertBinary)) {
-			return new File(imageMagickConvertBinary);
-		} else {
-			return null;
-		}
+		return propertyService.get(IMAGE_MAGICK_CONVERT_BINARY_PATH);
 	}
-	
+
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.AVAILABLE_LOCALES)
+	 */
+	@Deprecated
 	public Set<Locale> getAvailableLocales() {
-		List<String> localesAsString = getPropertyAsStringList("locale.availableLocales");
-		Set<Locale> locales = new HashSet<Locale>(localesAsString.size());
-		
-		for (String localeAsString : localesAsString) {
-			try {
-				locales.add(LocaleUtils.toLocale(localeAsString));
-			} catch (Exception e) {
-				LOGGER.error(String.format(
-						"%1$s string from locale.availableLocales cannot be mapped to Locale, ignored",
-						localeAsString
-				));
-			}
-		}
-		return locales;
+		return propertyService.get(AVAILABLE_LOCALES);
 	}
-	
+
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.DEFAULT_LOCALE)
+	 */
+	@Deprecated
 	public Locale getDefaultLocale() {
-		Locale defaultLocale = LocaleUtils.toLocale(getPropertyAsString("locale.default"));
-		if (defaultLocale == null) {
-			defaultLocale = Locale.US;
-		}
-		return defaultLocale;
+		return propertyService.get(DEFAULT_LOCALE);
 	}
 	
 	/**
@@ -127,166 +162,286 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	 *
 	 * @param locale
 	 * @return locale, not null, from locale.availableLocales
+	 * @deprecated Use propertyService.toAvailableLocale(locale);
 	 */
+	@Deprecated
 	public Locale toAvailableLocale(Locale locale) {
-		if (locale != null) {
-			Set<Locale> availableLocales = getAvailableLocales();
-			if (availableLocales.contains(locale)) {
-				return locale;
-			} else {
-				for (Locale availableLocale : availableLocales) {
-					if (availableLocale.getLanguage().equals(locale.getLanguage())) {
-						return availableLocale;
-					}
-				}
-			}
-		}
-		
-		// default locale from configuration
-		return getDefaultLocale();
+		return propertyService.toAvailableLocale(locale);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE)
+	 */
+	@Deprecated
 	public int getHibernateSearchReindexBatchSize() {
-		return getPropertyAsInteger("hibernate.search.reindex.batchSize", 25);
+		return propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS)
+	 */
+	@Deprecated
 	public int getHibernateSearchReindexLoadThreads() {
-		return getPropertyAsInteger("hibernate.search.reindex.loadThreads", 8);
+		return propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.NOTIFICATION_MAIL_FROM)
+	 */
+	@Deprecated
 	public String getNotificationMailFrom() {
-		return getPropertyAsString("notification.mail.from");
+		return propertyService.get(NOTIFICATION_MAIL_FROM);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX)
+	 */
+	@Deprecated
 	public String getNotificationMailSubjectPrefix() {
-		return getPropertyAsString("notification.mail.subjectPrefix");
+		return propertyService.get(NOTIFICATION_MAIL_SUBJECT_PREFIX);
 	}
 	
+	/**
+	 * @deprecated Use (propertyService.isConfigurationTypeDevelopment() || propertyService.get(CorePropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED))
+	 */
+	@Deprecated
 	public boolean isNotificationMailRecipientsFiltered() {
-		return isConfigurationTypeDevelopment() || getPropertyAsBoolean("notification.mail.recipientsFiltered");
+		return propertyService.isConfigurationTypeDevelopment() || propertyService.get(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.NOTIFICATION_TEST_EMAILS)
+	 */
+	@Deprecated
 	public List<String> getNotificationTestEmails() {
-		return getPropertyAsStringList("notification.test.emails");
-	}
-
-	public List<String> getDisabledRecipientFallback() {
-		return getPropertyAsStringList("notification.mail.disabledRecipientFallback");
-	}
-
-	public int getTaskStopTimeout() {
-		return getPropertyAsInteger("task.stop.timeout", TASK_STOP_TIMEOUT_DEFAULT);
+		return propertyService.get(NOTIFICATION_TEST_EMAILS);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK)
+	 */
+	@Deprecated
+	public List<String> getDisabledRecipientFallback() {
+		return propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(JpaMoreTaskPropertyIds.STOP_TIMEOUT)
+	 */
+	@Deprecated
+	public int getTaskStopTimeout() {
+		return getPropertyAsInteger("task.stop.timeout", 70000);
+	}
+	
+
+	/**
+	 * @deprecated Use propertyService.get(JpaMoreTaskPropertyIds.START_MODE)
+	 */
+	@Deprecated
 	public TaskQueueStartMode getTaskQueueStartMode() {
 		return getPropertyAsEnum("task.startMode", TaskQueueStartMode.class, TaskQueueStartMode.manual);
 	}
 	
+
+	/**
+	 * @deprecated Use propertyService.get(JpaMoreTaskPropertyIds.queueNumberOfThreads(queueId))
+	 */
+	@Deprecated
 	public int getTaskQueueNumberOfThreads(String queueId) {
 		Assert.notNull(queueId);
-		return getPropertyAsInteger("task.queues.config." + queueId + ".threads", TASK_QUEUE_NUMBER_OF_THREADS_DEFAULT);
-	}
-	
-	public String getSecurityPasswordSalt() {
-		return getPropertyAsString("security.passwordSalt");
-	}
-	
-	public Integer getSecurityPasswordExpirationDays() {
-		return getPropertyAsInteger("security.password.expiration.days", 90);
-	}
-	
-	public Integer getSecurityPasswordHistoryCount() {
-		return getPropertyAsInteger("security.password.history.count", 4);
-	}
-	
-	public Integer getSecurityPasswordRecoveryRequestTokenRandomCount() {
-		return getPropertyAsInteger("security.password.recovery.request.token.random.count", 50);
-	}
-	
-	public Integer getSecurityPasswordRecoveryRequestExpirationMinutes() {
-		return getPropertyAsInteger("security.password.recovery.request.expiration.minutes", 15);
+		return getPropertyAsInteger("task.queues.config." + queueId + ".threads", 1);
 	}
 	
 	/**
-	 * Configuration of the link checker tool
+	 * @deprecated Use propertyService.get(SpringSecurityPropertyIds.PASSWORD_SALT)
 	 */
+	@Deprecated
+	public String getSecurityPasswordSalt() {
+		return propertyService.get(PASSWORD_SALT);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(SpringSecurityPropertyIds.PASSWORD_EXPIRATION_DAYS)
+	 */
+	@Deprecated
+	public Integer getSecurityPasswordExpirationDays() {
+		return propertyService.get(PASSWORD_EXPIRATION_DAYS);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(SpringSecurityPropertyIds.PASSWORD_HISTORY_COUNT)
+	 */
+	@Deprecated
+	public Integer getSecurityPasswordHistoryCount() {
+		return propertyService.get(PASSWORD_HISTORY_COUNT);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)
+	 */
+	@Deprecated
+	public Integer getSecurityPasswordRecoveryRequestTokenRandomCount() {
+		return propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES)
+	 */
+	@Deprecated
+	public Integer getSecurityPasswordRecoveryRequestExpirationMinutes() {
+		return propertyService.get(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.USER_AGENT)
+	 */
+	@Deprecated
 	public String getExternalLinkCheckerUserAgent() {
 		return getPropertyAsString("externalLinkChecker.userAgent", "Core External Link Checker");
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.MAX_REDIRECTS)
+	 */
+	@Deprecated
 	public int getExternalLinkCheckerMaxRedirects() {
 		return getPropertyAsInteger("externalLinkChecker.maxRedirects", 5);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.TIMEOUT)
+	 */
+	@Deprecated
 	public int getExternalLinkCheckerTimeout() {
 		return getPropertyAsInteger("externalLinkChecker.timeout", 10000);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.RETRY_ATTEMPTS_NUMBER)
+	 */
+	@Deprecated
 	public int getExternalLinkCheckerRetryAttemptsLimit() {
 		return getPropertyAsInteger("externalLinkChecker.retryAttemptsNumber", 4);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.THREAD_POOL_SIZE)
+	 */
+	@Deprecated
 	public int getExternalLinkCheckerThreadPoolSize() {
 		return getPropertyAsInteger("externalLinkChecker.threadPoolSize", Runtime.getRuntime().availableProcessors());
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.BATCH_SIZE)
+	 */
+	@Deprecated
 	public int getExternalLinkCheckerBatchSize() {
 		return getPropertyAsInteger("externalLinkChecker.batchSize", 500);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(JpaExternalLinkCheckerPropertyIds.MIN_DELAY_BETWEEN_TWO_CHECKS_IN_DAYS)
+	 */
+	@Deprecated
 	public int getExternalLinkCheckerMinDelayBetweenTwoChecksInDays() {
 		return getPropertyAsInteger("externalLinkChecker.minDelayBetweenTwoChecksInDays", 2, 0, null);
 	}
 	
 	/**
-	 * Configuration of the RequestCycle builder for background threads
+	 * @deprecated Use propertyService.get(CorePropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME)
 	 */
+	@Deprecated
 	public String getWicketBackgroundRequestCycleBuilderUrlScheme() {
-		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.scheme", "http");
+		return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME)
+	 */
+	@Deprecated
 	public String getWicketBackgroundRequestCycleBuilderUrlServerName() {
-		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.serverName", "localhost");
+		return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT)
+	 */
+	@Deprecated
 	public int getWicketBackgroundRequestCycleBuilderUrlServerPort() {
-		return getPropertyAsInteger("wicket.backgroundThreadContextBuilder.url.serverPort", 8080);
+		return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.WICKET_DISK_DATA_STORE_PATH)
+	 */
+	@Deprecated
 	public String getWicketDiskDataStorePath() {
-		return getPropertyAsString("wicket.diskDataStore.path", null);
+		return propertyService.get(WICKET_DISK_DATA_STORE_PATH);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE)
+	 */
+	@Deprecated
 	public int getWicketDiskDataStoreInMemoryCacheSize() {
-		return getPropertyAsInteger("wicket.diskDataStore.inMemoryCacheSize", 40);
+		return propertyService.get(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION)
+	 */
+	@Deprecated
 	public int getWicketDiskDataStoreMaxSizePerSession() {
-		return getPropertyAsInteger("wicket.diskDataStore.maxSizePerSession", 10);
-	}
-
-	public File getTmpExportExcelDirectory() {
-		return getPropertyAsWritableDirectory("tmp.exportExcel.path");
-	}
-
-	public Integer getGlobalFeedbackAutohideDelayValue() {
-		return getPropertyAsInteger("globalFeedback.autohide.delay.value", 5);
-	}
-
-	public TimeUnit getGlobalFeedbackAutohideDelayUnit() {
-		return getPropertyAsEnum("globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
-	}
-
-	public Integer getConsoleGlobalFeedbackAutohideDelayValue() {
-		return getPropertyAsInteger("console.globalFeedback.autohide.delay.value", 5);
-	}
-
-	public TimeUnit getConsoleGlobalFeedbackAutohideDelayUnit() {
-		return getPropertyAsEnum("console.globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
+		return propertyService.get(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION);
 	}
 	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.TMP_EXPORT_EXCEL_PATH)
+	 */
+	@Deprecated
+	public File getTmpExportExcelDirectory() {
+		return propertyService.get(TMP_EXPORT_EXCEL_PATH);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.)
+	 */
+	@Deprecated
+	public Integer getGlobalFeedbackAutohideDelayValue() {
+		return propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.)
+	 */
+	@Deprecated
+	public TimeUnit getGlobalFeedbackAutohideDelayUnit() {
+		return propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE)
+	 */
+	@Deprecated
+	public Integer getConsoleGlobalFeedbackAutohideDelayValue() {
+		return propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT)
+	 */
+	@Deprecated
+	public TimeUnit getConsoleGlobalFeedbackAutohideDelayUnit() {
+		return propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT);
+	}
+	
+	/**
+	 * @deprecated Use propertyService.get(CorePropertyIds.AUTOCOMPLETE_LIMIT)
+	 */
+	@Deprecated
 	public int getAutocompleteLimit() {
-		return getPropertyAsInteger("autocomplete.limit", 20);
+		return propertyService.get(AUTOCOMPLETE_LIMIT);
 	}
 
 }

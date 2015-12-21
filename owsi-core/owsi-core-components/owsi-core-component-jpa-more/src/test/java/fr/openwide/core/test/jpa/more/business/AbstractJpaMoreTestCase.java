@@ -9,21 +9,17 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.service.IGenericListItemService;
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IConfigurablePropertyService;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
 import fr.openwide.core.test.jpa.more.business.audit.service.IMockAuditService;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
-import fr.openwide.core.test.jpa.more.business.parameter.service.IMockParameterService;
 import fr.openwide.core.test.jpa.more.config.spring.JpaMoreTestConfig;
 
 @ContextConfiguration(classes = JpaMoreTestConfig.class)
 public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
-
-	@Autowired
-	protected CoreConfigurer configurer;
 
 	@Autowired
 	protected IGenericListItemService genericListItemService;
@@ -33,16 +29,16 @@ public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 
 	@Autowired
 	protected ITestEntityService testEntityService;
-	
+
 	@Autowired
-	protected IMockParameterService parameterService;
+	protected IConfigurablePropertyService propertyService;
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanEntities(auditService);
 		cleanEntities(testEntityService);
 		cleanFeaturesAndActions();
-		cleanEntities(parameterService);
+		propertyService.clean();
 	}
 
 	private void cleanFeaturesAndActions() throws ServiceException, SecurityServiceException {

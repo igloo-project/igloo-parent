@@ -1,6 +1,12 @@
 package fr.openwide.core.spring.notification.service;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static fr.openwide.core.spring.property.SpringPropertyIds.DEFAULT_LOCALE;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -41,7 +47,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
@@ -81,7 +86,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	private CoreConfigurer configurer;
+	private fr.openwide.core.spring.property.service.IPropertyService propertyService;
 	
 	@Autowired
 	@Qualifier(value = "freemarkerMailConfiguration")
@@ -140,7 +145,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	public INotificationBuilderBaseState init(ApplicationContext applicationContext) {
 		SpringBeanUtils.autowireBean(applicationContext, this);
 		
-		this.subjectPrefix = configurer.getNotificationMailSubjectPrefix();
+		this.subjectPrefix = propertyService.get(NOTIFICATION_MAIL_SUBJECT_PREFIX);
 		
 		return this;
 	}
@@ -268,8 +273,8 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 				if (receiver != null) {
 					if (receiver.isNotificationEnabled() && StringUtils.hasText(receiver.getEmail())) {
 						addRecipient(byLocale, getLocale(receiver), receiver);
-					} else if (configurer.getDisabledRecipientFallback() != null) {
-						for (String redirectionEmail : configurer.getDisabledRecipientFallback()) {
+					} else if (propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) != null) {
+						for (String redirectionEmail : propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) ) {
 							addRecipient(byLocale, getLocale(receiver), new InactiveRecipient(receiver, redirectionEmail));
 						}
 					}
@@ -614,7 +619,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (StringUtils.hasText(subjectPrefix)) {
 			builder.append(subjectPrefix);
 		}
-		if (configurer.isConfigurationTypeDevelopment()) {
+		if (propertyService.isConfigurationTypeDevelopment()) {
 			builder.append(DEV_SUBJECT_PREFIX);
 		}
 		if (builder.length() > 0) {
@@ -630,19 +635,19 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	private String getDefaultFrom() {
-		return configurer.getNotificationMailFrom();
+		return propertyService.get(NOTIFICATION_MAIL_FROM);
 	}
 	
 	private Locale getDefaultLocale() {
-		return configurer.getDefaultLocale();
+		return propertyService.get(DEFAULT_LOCALE);
 	}
 	
 	private Locale getLocale(INotificationRecipient recipient) {
-		return configurer.toAvailableLocale(recipient.getLocale());
+		return propertyService.toAvailableLocale(recipient.getLocale());
 	}
 	
 	protected boolean isMailRecipientsFiltered() {
-		return configurer.isNotificationMailRecipientsFiltered();
+		return propertyService.isConfigurationTypeDevelopment() && propertyService.get(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
 	}
 	
 	private Collection<NotificationRecipient> filterTo(Collection<NotificationRecipient> emails) {
@@ -653,7 +658,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	protected Collection<NotificationRecipient> getNotificationTestEmails() {
-		return NotificationRecipient.of(configurer.getNotificationTestEmails());
+		return NotificationRecipient.of(propertyService.get(NOTIFICATION_TEST_EMAILS));
 	}
 	
 	private Collection<NotificationRecipient> filterCcBcc(Collection<NotificationRecipient> emails) {

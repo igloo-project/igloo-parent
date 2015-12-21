@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.util.init.service;
 
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,10 +37,10 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
-import fr.openwide.core.jpa.more.business.parameter.service.IAbstractParameterService;
 import fr.openwide.core.jpa.more.util.init.dao.IImportDataDao;
 import fr.openwide.core.jpa.more.util.init.util.GenericEntityConverter;
 import fr.openwide.core.jpa.more.util.init.util.WorkbookUtils;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.ReflectionUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 import fr.openwide.core.spring.util.StringUtils;
@@ -69,7 +71,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	private IImportDataDao importDataDao;
 	
 	@Autowired
-	private IAbstractParameterService parameterService;
+	private IPropertyService propertyService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -98,7 +100,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		
 		importFiles(directory, idsMapping);
 		
-		parameterService.setDatabaseInitialized(true);
+		propertyService.set(DATABASE_INITIALIZED, true);
 		
 		LOGGER.info("Import complete");
 	}

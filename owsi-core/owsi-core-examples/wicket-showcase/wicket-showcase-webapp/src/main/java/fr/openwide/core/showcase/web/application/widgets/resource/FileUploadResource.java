@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.showcase.core.business.fileupload.model.ShowcaseFile;
 import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileService;
-import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.wicket.more.fileapi.model.FileApiFile;
 import fr.openwide.core.wicket.more.fileapi.resource.AbstractFileUploadResource;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
@@ -42,9 +41,6 @@ public class FileUploadResource extends AbstractFileUploadResource {
 
 	@SpringBean
 	private IShowcaseFileService showcaseFileService;
-
-	@SpringBean
-	private ShowcaseConfigurer configurer;
 
 	public FileUploadResource() {
 		super();

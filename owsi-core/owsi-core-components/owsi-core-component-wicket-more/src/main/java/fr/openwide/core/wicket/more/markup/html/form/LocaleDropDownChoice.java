@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.AVAILABLE_LOCALES;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -13,7 +15,7 @@ import org.retzlaff.select2.Select2Settings;
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 
@@ -57,7 +59,7 @@ public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Loc
 		private static final long serialVersionUID = 4991853466150310164L;
 
 		@SpringBean
-		private CoreConfigurer configurer;
+		private IPropertyService propertyService;
 		
 		public LocaleChoiceList() {
 			Injector.get().inject(this);
@@ -65,7 +67,7 @@ public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Loc
 		
 		@Override
 		protected List<Locale> load() {
-			return ImmutableList.copyOf(configurer.getAvailableLocales());
+			return ImmutableList.copyOf(propertyService.get(AVAILABLE_LOCALES));
 		}
 	}
 }

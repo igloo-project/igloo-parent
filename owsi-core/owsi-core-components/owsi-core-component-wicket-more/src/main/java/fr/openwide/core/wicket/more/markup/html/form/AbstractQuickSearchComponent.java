@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
+import static fr.openwide.core.spring.property.SpringPropertyIds.AUTOCOMPLETE_LIMIT;
+
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -8,7 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 public abstract class AbstractQuickSearchComponent<T> extends AutocompleteAjaxComponent<T> {
@@ -16,7 +18,7 @@ public abstract class AbstractQuickSearchComponent<T> extends AutocompleteAjaxCo
 	private static final long serialVersionUID = -2026928290852503475L;
 	
 	@SpringBean
-	private CoreConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	private final IPageLinkGenerator ficheLinkGenerator;
 	
@@ -57,7 +59,7 @@ public abstract class AbstractQuickSearchComponent<T> extends AutocompleteAjaxCo
 	
 	@Override
 	public List<T> getValues(String term) {
-		return searchAutocomplete(term, configurer.getAutocompleteLimit(), 0);
+		return searchAutocomplete(term, propertyService.get(AUTOCOMPLETE_LIMIT), 0);
 	}
 	
 	protected abstract List<T> searchAutocomplete(String term, int limit, int offset);

@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.web.application.administration.component;
 
+import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -21,11 +23,11 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.search.UserSort;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
@@ -48,7 +50,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 	private IUserGroupService userGroupService;
 	
 	@SpringBean
-	private BasicApplicationConfigurer configurer;
+	private IPropertyService propertyService;
 	
 	private final UserDataProvider dataProvider;
 	
@@ -84,7 +86,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 					})
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)
 					.count("administration.usergroup.members.count")
-					.build("groupMemberships", configurer.getPortfolioItemsPerPageDescription());
+					.build("groupMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION));
 		add(
 				groupMemberships
 		);
