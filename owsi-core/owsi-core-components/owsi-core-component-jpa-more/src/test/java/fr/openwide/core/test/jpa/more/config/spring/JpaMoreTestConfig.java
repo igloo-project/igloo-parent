@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.more.rendering.service.EmptyRendererServiceImpl;
+import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
@@ -30,6 +32,11 @@ public class JpaMoreTestConfig extends AbstractApplicationConfig {
 	@Bean
 	public static CoreConfigurer configurer() {
 		return new CoreConfigurer();
+	}
+	
+	@Bean
+	public IRendererService rendererService() {
+		return new EmptyRendererServiceImpl();
 	}
 
 }

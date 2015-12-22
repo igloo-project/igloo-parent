@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.test.config.spring.JpaTestConfig;
 import fr.openwide.core.test.wicket.more.application.WicketMoreTestApplication;
-import fr.openwide.core.test.wicket.more.renderer.service.RendererServiceImpl;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 
 /**
@@ -29,7 +29,7 @@ public class WicketMoreTestWebappConfig extends AbstractWebappConfig {
 
 	@Override
 	public IRendererService rendererService() {
-		return new RendererServiceImpl();
+		return new EmptyRendererServiceImpl();
 	}
 
 }
