@@ -1,7 +1,5 @@
 package fr.openwide.core.basicapp.core.config.spring;
 
-import java.net.MalformedURLException;
-
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,6 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.basicapp.core.BasicApplicationCorePackage;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
+import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
@@ -48,7 +47,12 @@ public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig 
 	 * L'obtention du configurer doit être statique.
 	 */
 	@Bean(name = { "configurer" })
-	public static BasicApplicationConfigurer environment(ConfigurableApplicationContext context) throws MalformedURLException {
+	public BasicApplicationConfigurer configurer() {
 		return new BasicApplicationConfigurer();
+	}
+	
+	@Bean
+	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
+		return new CorePropertyPlaceholderConfigurer();
 	}
 }

@@ -46,8 +46,8 @@ import org.springframework.util.Assert;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
-public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
-
+public class CoreConfigurer extends AbstractConfigurer {
+	
 	@Autowired
 	private IPropertyService propertyService;
 	
@@ -443,5 +443,7 @@ public class CoreConfigurer extends CorePropertyPlaceholderConfigurer {
 	public int getAutocompleteLimit() {
 		return propertyService.get(AUTOCOMPLETE_LIMIT);
 	}
+	
+	
 
 }

@@ -1,12 +1,8 @@
 package fr.openwide.core.test.spring.config;
 
-import java.io.IOException;
+import fr.openwide.core.spring.config.AbstractConfigurer;
 
-import org.springframework.core.io.ClassPathResource;
-
-import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
-
-public class OwsiCoreTestConfigurer extends CorePropertyPlaceholderConfigurer {
+public class OwsiCoreTestConfigurer extends AbstractConfigurer {
 
 	private static final String PROPERTY1 = "property1";
 	private static final String PROPERTY2 = "property2";
@@ -15,10 +11,7 @@ public class OwsiCoreTestConfigurer extends CorePropertyPlaceholderConfigurer {
 	private static final String PROPERTY6 = "property6";
 	public static final String PROPERTY6_DEFAULT = "default_value_6";
 	
-	public OwsiCoreTestConfigurer() throws IOException {
-		super();
-		setLocation(new ClassPathResource("test/testOwPropertyPlaceholderConfigurer.properties"));
-		mergeProperties();
+	public OwsiCoreTestConfigurer() {
 	}
 	
 	public String getProperty1() {

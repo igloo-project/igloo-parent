@@ -1,7 +1,5 @@
 package fr.openwide.core.showcase.core.config.spring;
 
-import java.net.MalformedURLException;
-
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import fr.openwide.core.showcase.core.ShowcaseCorePackage;
 import fr.openwide.core.showcase.core.init.BootstrapApplicationServiceImpl;
 import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
+import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
@@ -40,16 +39,18 @@ public class ShowcaseCoreConfig extends AbstractApplicationConfig {
 	
 	public static final String PROFILE_TEST = "test";
 	
-	/**
-	 * L'obtention du configurer doit être statique.
-	 */
 	@Bean(name = {"showcaseConfigurer", "configurer"})
-	public static ShowcaseConfigurer environment(ConfigurableApplicationContext context) throws MalformedURLException {
+	public static ShowcaseConfigurer configurer() {
 		return new ShowcaseConfigurer();
 	}
 	
 	@Bean
 	public BootstrapApplicationServiceImpl bootstrapApplicationService() {
 		return new BootstrapApplicationServiceImpl();
+	}
+	
+	@Bean
+	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
+		return new CorePropertyPlaceholderConfigurer();
 	}
 }
