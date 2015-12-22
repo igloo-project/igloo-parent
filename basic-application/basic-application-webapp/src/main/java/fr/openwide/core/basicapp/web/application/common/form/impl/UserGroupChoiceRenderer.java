@@ -3,8 +3,8 @@ package fr.openwide.core.basicapp.web.application.common.form.impl;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
-import fr.openwide.core.basicapp.web.application.common.renderer.GenericEntityIdStringRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserGroupRenderer;
+import fr.openwide.core.wicket.more.rendering.GenericEntityIdStringRenderer;
 
 public final class UserGroupChoiceRenderer extends ChoiceRenderer<UserGroup> {
 	

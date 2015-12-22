@@ -3,8 +3,8 @@ package fr.openwide.core.basicapp.web.application.common.form.impl;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.web.application.common.renderer.GenericEntityIdStringRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
+import fr.openwide.core.wicket.more.rendering.GenericEntityIdStringRenderer;
 
 public final class UserChoiceRenderer extends ChoiceRenderer<User> {
 	private static final long serialVersionUID = 1L;

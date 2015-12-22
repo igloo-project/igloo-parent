@@ -1,48 +1,80 @@
-/*
- * Copyright (C) 2009-2011 Open Wide
- * Contact: contact@openwide.fr
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package fr.openwide.core.wicket.more.rendering;
+
+import static fr.openwide.core.spring.util.StringUtils.emptyTextToNull;
 
 import java.util.Locale;
 
+import com.google.common.base.Optional;
+
+import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.more.rendering.Renderer;
 
-public class GenericListItemRenderer extends Renderer<GenericListItem<?>> {
+public abstract class GenericListItemRenderer extends Renderer<GenericListItem<?>> {
 
-	private static final long serialVersionUID = -4595938276377495743L;
-	
-	private static GenericListItemRenderer INSTANCE = new GenericListItemRenderer();
-	public static GenericListItemRenderer get() {
+	private static final long serialVersionUID = -3042035624376063917L;
+
+	private static final Renderer<GenericListItem<?>> INSTANCE = new GenericListItemRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(GenericListItem<?> value, Locale locale) {
+			return value.getLabel();
+		}
+	}.nullsAsNull();
+
+	private static final Renderer<GenericListItem<?>> CODE = new GenericListItemRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(GenericListItem<?> value, Locale locale) {
+			return value.getCode();
+		}
+	}.nullsAsNull();
+
+	private static final Renderer<GenericListItem<?>> CODE_LABEL = new GenericListItemRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(GenericListItem<?> value, Locale locale) {
+			return Joiners.onHyphenSpace()
+					.join(
+							emptyTextToNull(value.getCode()),
+							emptyTextToNull(value.getLabel())
+					);
+		}
+	}.nullsAsNull();
+
+	private static final Renderer<GenericListItem<?>> SHORT_LABEL = new GenericListItemRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(GenericListItem<?> value, Locale locale) {
+			return Optional.fromNullable(StringUtils.emptyTextToNull(value.getShortLabel()))
+					.or(Optional.fromNullable(StringUtils.emptyTextToNull(value.getLabel())))
+					.orNull();
+		}
+	}.nullsAsNull();
+
+	public static final Renderer<GenericListItem<?>> get() {
 		return INSTANCE;
 	}
+
+	public static final Renderer<GenericListItem<?>> code() {
+		return CODE;
+	}
 	
+	public static final Renderer<GenericListItem<?>> codeLabel() {
+		return CODE_LABEL;
+	}
+
+	public static final Renderer<GenericListItem<?>> shortLabel() {
+		return SHORT_LABEL;
+	}
+
 	/**
 	 * @deprecated Use {@link #get()} instead.
 	 */
 	@Deprecated
-	protected GenericListItemRenderer() { }
-
-	@Override
-	public String render(GenericListItem<?> value, Locale locale) {
-		if (value == null) {
-			return null;
-		} else {
-			return value.getLabel();
-		}
+	protected GenericListItemRenderer() {
 	}
 
 }
+

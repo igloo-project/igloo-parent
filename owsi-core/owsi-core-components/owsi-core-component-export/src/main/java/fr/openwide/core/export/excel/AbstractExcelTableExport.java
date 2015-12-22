@@ -40,6 +40,8 @@ import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
 
+import fr.openwide.core.commons.util.functional.Joiners;
+
 /**
  * <p>Classe abstraite permettant de construire des tableaux Excel.</p>
  *
@@ -244,6 +246,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		defaultStyle.setBorderTop(CellStyle.BORDER_THIN);
 		setStyleTopBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
 		defaultStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		defaultStyle.setWrapText(true);
 		registerStyle(STYLE_DEFAULT_NAME, defaultStyle);
 
 		CellStyle styleHeader = workbook.createCellStyle();
@@ -260,6 +263,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		styleHeader.setBorderTop(CellStyle.BORDER_THIN);
 		setStyleTopBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
 		styleHeader.setDataFormat((short) 0);
+		styleHeader.setWrapText(true);
 		registerStyle(STYLE_HEADER_NAME, styleHeader);
 
 		CellStyle styleOdd = cloneStyle(defaultStyle);
@@ -594,6 +598,10 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		return addTextCell(row, startColumnIndex, null);
 	}
 	
+	protected void addIterableTextCell(Row row, int columnIndex, Iterable<String> iterable) {
+		addTextCell(row, columnIndex, Joiners.onNewLine().join(iterable));
+	}
+	
 	/**
 	 * Retourne le style de la ligne en tenant compte des alternances de
 	 * couleurs pour les lignes paires/impaires.
@@ -826,6 +834,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	
 	protected void finalizeSheet(Sheet sheet, boolean landscapePrintSetup) {
 		sheet.getPrintSetup().setLandscape(landscapePrintSetup);
+		sheet.setAutobreaks(true);
+		sheet.getPrintSetup().setFitWidth((short) 1);
+		sheet.getPrintSetup().setFitHeight((short) 10000);
 	}
 	
 	/**

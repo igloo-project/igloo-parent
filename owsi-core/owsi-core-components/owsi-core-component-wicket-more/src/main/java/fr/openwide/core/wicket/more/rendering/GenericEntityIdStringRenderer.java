@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.web.application.common.renderer;
+package fr.openwide.core.wicket.more.rendering;
 
 import java.util.Locale;
 
