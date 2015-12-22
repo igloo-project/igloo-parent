@@ -1,10 +1,12 @@
 package fr.openwide.core.spring.config.spring;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
+import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 import fr.openwide.core.spring.config.spring.annotation.CoreConfigurationLocationsAnnotationConfig;
@@ -31,6 +33,11 @@ public abstract class AbstractApplicationConfig {
 		configurationLogger.setPropertyNamesForInfoLogLevel(propertyNamesForInfoLogLevel);
 		
 		return configurationLogger;
+	}
+	
+	@Bean
+	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
+		return new CorePropertyPlaceholderConfigurer();
 	}
 
 }

@@ -51,8 +51,4 @@ public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig 
 		return new BasicApplicationConfigurer();
 	}
 	
-	@Bean
-	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
-		return new CorePropertyPlaceholderConfigurer();
-	}
 }

@@ -2,7 +2,6 @@ package fr.openwide.core.test.wicket.more.config.spring;
 
 import java.net.MalformedURLException;
 
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,7 +19,7 @@ public class WicketMoreTestCoreCommonConfig {
 	 * L'obtention du configurer doit être statique.
 	 */
 	@Bean(name = { "configurer" })
-	public WicketMoreTestConfigurer environment(ConfigurableApplicationContext context) throws MalformedURLException {
+	public WicketMoreTestConfigurer configurer() throws MalformedURLException {
 		return new WicketMoreTestConfigurer();
 	}
 	
