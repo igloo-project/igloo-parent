@@ -9,7 +9,6 @@ import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEvent
 import fr.openwide.core.basicapp.core.business.history.model.bean.HistoryLogObjectsBean;
 import fr.openwide.core.basicapp.core.business.history.service.IHistoryLogService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
-import fr.openwide.core.basicapp.core.business.user.difference.service.IUserDifferenceService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -30,8 +29,8 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Autowired
 	private IHistoryLogService historyLogService;
 	
-	@Autowired
-	private IUserDifferenceService userDifferenceService;
+//	@Autowired
+//	private IUserDifferenceService userDifferenceService;
 
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
@@ -69,9 +68,9 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	protected void updateEntity(User person) throws ServiceException, SecurityServiceException {
 		super.updateEntity(person);
 		
-		historyLogService.logWithDifferences(HistoryEventType.UPDATE, HistoryLogObjectsBean.of(person),
-				userDifferenceService.getMinimalDifferenceGenerator(),
-				userDifferenceService);
+//		historyLogService.logWithDifferences(HistoryEventType.UPDATE, HistoryLogObjectsBean.of(person),
+//				userDifferenceService.getMinimalDifferenceGenerator(),
+//				userDifferenceService);
 	}
 
 	@Override
