@@ -23,9 +23,9 @@ public class TestMutablePropertyDao extends AbstractJpaMoreTestCase {
 	public void mutableProperty() throws ServiceException, SecurityServiceException {
 		MutablePropertyId<String> mutableProperty = new MutablePropertyId<>("test.property.string.value");
 		configurablePropertyService.registerString(mutableProperty, "MyDefaultValue");
-		Assert.assertEquals(null, mutablePropertyDao.get("test.property.string.value"));
+		Assert.assertEquals(null, mutablePropertyDao.getInTransaction("test.property.string.value"));
 		configurablePropertyService.set(mutableProperty, "MyValue");
-		Assert.assertEquals("MyValue", mutablePropertyDao.get("test.property.string.value"));
+		Assert.assertEquals("MyValue", mutablePropertyDao.getInTransaction("test.property.string.value"));
 	}
 
 }

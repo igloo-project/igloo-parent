@@ -66,7 +66,7 @@ public class TestPropertyService {
 	@Test(expected = IllegalStateException.class)
 	public void mutablePropertyUnregistered() {
 		MutablePropertyId<String> mutablePropertyUnregisteredString = new MutablePropertyId<>("mutable.property.unregistered.string");
-		Mockito.when(mutablePropertyDao.get("mutable.property.unregistered.string")).thenReturn("MyValue");
+		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.unregistered.string")).thenReturn("MyValue");
 		propertyService.get(mutablePropertyUnregisteredString);
 	}
 

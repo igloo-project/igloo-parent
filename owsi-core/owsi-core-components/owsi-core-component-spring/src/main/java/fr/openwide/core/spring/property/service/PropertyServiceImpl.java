@@ -20,13 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.base.Converter;
 import com.google.common.base.Enums;
@@ -81,10 +74,6 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	private IImmutablePropertyDao immutablePropertyDao;
 
 	private ApplicationEventPublisher applicationEventPublisher;
-
-	private TransactionTemplate readOnlyTransactionTemplate;
-
-	private TransactionTemplate writeTransactionTemplate;
 
 	@PostConstruct
 	public void init() {
@@ -322,12 +311,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 		if (propertyId instanceof ImmutablePropertyId) {
 			valueAsString = immutablePropertyDao.get(propertyId.getKey());
 		} else if (propertyId instanceof MutablePropertyId) {
-			valueAsString = readOnlyTransactionTemplate.execute(new TransactionCallback<String>() {
-				@Override
-				public String doInTransaction(TransactionStatus status) {
-					return mutablePropertyDao.get(propertyId.getKey());
-				}
-			});
+			valueAsString = mutablePropertyDao.getInTransaction(propertyId.getKey());
 		} else {
 			throw new IllegalStateException(String.format("Unknown type of property : '%1s'.", propertyId));
 		}
@@ -346,19 +330,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 			throw new IllegalStateException("No converter found for the property. Undefined property.");
 		}
 		
-		writeTransactionTemplate.execute(
-				new TransactionCallbackWithoutResult() {
-					@Override
-					protected void doInTransactionWithoutResult(TransactionStatus status) {
-						try {
-							mutablePropertyDao.set(propertyId.getKey(), information.getValue0().reverse().convert(value));
-							return;
-						} catch (Exception e) {
-							throw new IllegalStateException(String.format("Error while updating property '%1s'.", propertyId), e);
-						}
-					}
-				}
-		);
+		mutablePropertyDao.setInTransaction(propertyId.getKey(), information.getValue0().reverse().convert(value));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -369,25 +341,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public void clean() {
-		writeTransactionTemplate.execute(
-				new TransactionCallbackWithoutResult() {
-					@Override
-					protected void doInTransactionWithoutResult(TransactionStatus status) {
-						mutablePropertyDao.clean();
-					}
-				}
-		);
-	}
-
-	@Autowired
-	public void setPlatformTransactionManager(PlatformTransactionManager transactionManager) {
-		DefaultTransactionAttribute readOnlyTransactionAttribute = new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
-		readOnlyTransactionAttribute.setReadOnly(true);
-		readOnlyTransactionTemplate = new TransactionTemplate(transactionManager, readOnlyTransactionAttribute);
-		
-		DefaultTransactionAttribute writeTransactionAttribute = new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
-		writeTransactionAttribute.setReadOnly(false);
-		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
+		mutablePropertyDao.cleanInTransaction();
 	}
 
 	// TODO PropertyService : remove this method from service

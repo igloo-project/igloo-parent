@@ -5,10 +5,10 @@ import fr.openwide.core.jpa.exception.ServiceException;
 
 public interface IMutablePropertyDao {
 
-	String get(String key);
+	String getInTransaction(String key);
 
-	void set(String key, String value) throws ServiceException, SecurityServiceException;
+	void setInTransaction(String key, String value) throws ServiceException, SecurityServiceException;
 
-	void clean();
+	void cleanInTransaction();
 
 }

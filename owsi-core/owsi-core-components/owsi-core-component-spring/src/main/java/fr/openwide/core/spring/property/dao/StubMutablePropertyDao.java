@@ -11,17 +11,17 @@ public class StubMutablePropertyDao implements IMutablePropertyDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StubMutablePropertyDao.class);
 
 	@Override
-	public void set(String key, String value) throws ServiceException, SecurityServiceException {
+	public void setInTransaction(String key, String value) throws ServiceException, SecurityServiceException {
 		LOGGER.warn(String.format("Call set(%1s, %1s) from mutablePropertyDao stub.", key, value));
 	}
 
 	@Override
-	public String get(String key) {
+	public String getInTransaction(String key) {
 		return null;
 	}
 
 	@Override
-	public void clean() {
+	public void cleanInTransaction() {
 		LOGGER.warn("Call clean() from mutablePropertyDao stub.");
 	}
 
