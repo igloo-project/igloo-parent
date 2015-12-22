@@ -40,8 +40,6 @@ public class UserHistoryLogPanel extends GenericPanel<User> {
 								.withClass("date date-lg")
 						.addLabelColumn(new ResourceModel("business.history.subject"), Bindings.historyLog().subject())
 								.withClass("text text-sm")
-						.addLabelColumn(new ResourceModel("business.history.action"), Bindings.historyLog().eventType())
-								.withClass("text text-sm")
 						.addColumn(new HistoryLogDetailColumn())
 								.withClass("text")
 						.bootstrapPanel()
