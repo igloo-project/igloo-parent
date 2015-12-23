@@ -9,6 +9,7 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 import com.google.common.base.Function;
@@ -49,6 +50,8 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCor
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.LabelAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.ICoreColumn;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.CoreActionColumn;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.ActionColumnBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBooleanLabelColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBootstrapBadgeColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedColumnState;
@@ -299,6 +302,31 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public ActionColumnBuilder<T, S> addActionColumn() {
+		return addActionColumn(Model.of(""));
+	}
+	
+	@Override
+	public ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel) {
+		ActionColumnBuilder<T, S> builder = new ActionColumnBuilder<T, S>(this, headerLabelModel);
+		return builder;
+	}
+	
+	public IAddedCoreColumnState<T, S> addActionColumn(final CoreActionColumn<T, S> column) {
+		columns.put(column, null);
+		return new AddedCoreColumnState<IAddedCoreColumnState<T, S>>() {
+			@Override
+			protected ICoreColumn<T, S> getColumn() {
+				return column;
+			}
+			@Override
+			protected IAddedCoreColumnState<T, S> getNextState() {
+				return this;
+			}
+		};
+	}
+	
+	@Override
 	public DataTableBuilder<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 		this.noRecordsResourceKey = noRecordsResourceKey;
 		return this;
@@ -448,6 +476,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
 			return DataTableBuilder.this.addBottomToolbar();
+		}
+
+		@Override
+		public ActionColumnBuilder<T, S> addActionColumn() {
+			return DataTableBuilder.this.addActionColumn();
+		}
+
+		@Override
+		public ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel) {
+			return DataTableBuilder.this.addActionColumn(headerLabelModel);
 		}
 
 		@Override
