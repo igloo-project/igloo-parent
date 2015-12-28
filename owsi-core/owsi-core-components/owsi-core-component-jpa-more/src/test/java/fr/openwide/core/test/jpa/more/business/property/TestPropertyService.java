@@ -8,8 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -50,14 +48,13 @@ public class TestPropertyService {
 		propertyService.registerLong(mutablePropertyLong);
 		propertyService.registerString(mutablePropertyStringDefault, "MyDefaultValue");
 		
-		Mockito.when(readOnlyTransactionTemplate.execute(Mockito.<TransactionCallback<String>>any())).thenReturn("MyValue");
+		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.string")).thenReturn("MyValue");
 		Assert.assertEquals("MyValue", propertyService.get(mutablePropertyString));
-		Mockito.when(readOnlyTransactionTemplate.execute(Mockito.<TransactionCallback<String>>any())).thenReturn("1");
+		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.long")).thenReturn("1");
 		Assert.assertEquals((Long) 1L, propertyService.get(mutablePropertyLong));
-		Mockito.when(readOnlyTransactionTemplate.execute(Mockito.<TransactionCallback<String>>any())).thenReturn("MyDefaultValue");
+		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.string.default")).thenReturn("MyDefaultValue");
 		Assert.assertEquals("MyDefaultValue", propertyService.get(mutablePropertyStringDefault));
 		
-		Mockito.when(writeTransactionTemplate.execute(Mockito.<TransactionCallbackWithoutResult>any())).thenReturn(null);
 		propertyService.set(mutablePropertyString, "MyValue2");
 		propertyService.set(mutablePropertyLong, 2L);
 		propertyService.set(mutablePropertyStringDefault, "MyValue3");
