@@ -10,6 +10,7 @@
 						<th><wicket:message key="user.portfolio.header.firstName" /></th>
 						<th><wicket:message key="user.portfolio.header.userName" /></th>
 						<th><wicket:message key="user.portfolio.header.email" /></th>
+						<th><wicket:message key="user.portfolio.header.tags" /></th>
 						<th style="width: 5%; text-align: center;"><wicket:message key="user.portfolio.header.active" /></th>
 						<th style="width: 10%; text-align: center;"><wicket:message key="common.portfolio.header.actions" /></th>
 					</tr>
@@ -20,13 +21,18 @@
 						<td wicket:id="firstName"></td>
 						<td wicket:id="userName"></td>
 						<td wicket:id="email"></td>
+						<td wicket:id="tagsContainer" class="multivalued">
+							<div wicket:id="tags" class="multivalued-item">
+								<wicket:container wicket:id="tag" />
+							</div>
+						</td>
 						<td style="text-align: center;">
 							<span wicket:id="active" />
 						</td>
 						<td wicket:id="actionButtons" style="text-align: center;" class="table-column"></td>
 					</tr>
 					<tr class="empty-list" wicket:id="emptyList">
-						<td colspan="6"><wicket:message key="common.emptyList" /></td>
+						<td colspan="7"><wicket:message key="common.emptyList" /></td>
 					</tr>
 				</tbody>
 			</table>
