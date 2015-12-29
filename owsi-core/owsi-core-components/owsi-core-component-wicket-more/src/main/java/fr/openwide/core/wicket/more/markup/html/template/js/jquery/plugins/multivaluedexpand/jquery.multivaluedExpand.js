@@ -20,12 +20,12 @@
 			var items = $(".multivalued-item", multivaluedContainer);
 			
 			if (items.length > 1) {
-				var toogleButton = $(this.options.toggleButtonHtml).addClass('expand-toggle');
-				toogleButton.on('click', function() {
+				var toggleButton = $(this.options.toggleButtonHtml).addClass('expand-toggle');
+				toggleButton.on('click', function() {
 					multivaluedContainer.toggleClass('closed');
 				});
 				
-				elementContainer.prepend(toogleButton);
+				elementContainer.prepend(toggleButton);
 				multivaluedContainer.addClass('closed');
 			}
 		},
