@@ -20,8 +20,6 @@ public class JpaMorePropertyIds extends AbstractPropertyIds {
 	}
 	public static final MutablePropertyId<Boolean> MAINTENANCE = mutable("maintenance");
 	
-	public static final ImmutablePropertyId<Boolean> MIGRATION_LOGGING_MEMORY = immutable("migration.logging.memory");
-	
 	public static final ImmutablePropertyId<File> IMAGE_MAGICK_CONVERT_BINARY_PATH = immutable("imageMagick.convertBinary.path");
 
 }

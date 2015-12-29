@@ -1,59 +1,40 @@
-package fr.openwide.core.jpa.util.batch;
+package fr.openwide.core.jpa.batch.executor;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.Lists;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 
+import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
-import fr.openwide.core.jpa.business.generic.service.IEntityService;
-import fr.openwide.core.jpa.search.service.IHibernateSearchService;
-import fr.openwide.core.jpa.util.EntityManagerUtils;
+import fr.openwide.core.jpa.exception.ServiceException;
 
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class HibernateBatch {
+public class SimpleHibernateBatch extends AbstractBatch<SimpleHibernateBatch> {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateBatch.class);
-
-	private int batchSize;
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHibernateBatch.class);
 
 	private boolean flushToIndexes;
 	
-	@Autowired
-	private IHibernateSearchService hibernateSearchService;
+	private List<Class<?>> classesToReindex = Lists.newArrayListWithCapacity(0);
 	
-	@Autowired
-	private IEntityService entityService;
-	
-	@Autowired
-	private EntityManagerUtils entityManagerUtils;
-	
-	private TransactionTemplate readOnlyTransactionTemplate;
-
-	private TransactionTemplate writeTransactionTemplate;
-
-	public HibernateBatch batchSize(int batchSize) {
-		this.batchSize = batchSize;
+	public SimpleHibernateBatch flushToIndexes(boolean flushToIndexes) {
+		this.flushToIndexes = flushToIndexes;
 		return this;
 	}
-
-	public HibernateBatch flushToIndexes(boolean flushToIndexes) {
-		this.flushToIndexes = flushToIndexes;
+	
+	public SimpleHibernateBatch reindexClasses(Class<?> clazz, Class<?>... classes) {
+		classesToReindex = Lists.asList(clazz, classes);
 		return this;
 	}
 
@@ -63,7 +44,7 @@ public class HibernateBatch {
 		
 		LOGGER.info("    preExecute start");
 		
-		readOnlyTransactionTemplate.execute(new TransactionCallback<Void>() {
+		writeTransactionTemplate.execute(new TransactionCallback<Void>() {
 			@Override
 			public Void doInTransaction(TransactionStatus status) {
 				batchRunnable.preExecute(entityIds);
@@ -83,13 +64,7 @@ public class HibernateBatch {
 				public Void doInTransaction(TransactionStatus status) {
 					List<E> entities = listEntitiesByIds(clazz, entityIdsPartition);
 					
-					batchRunnable.preExecutePartition(entities);
-					
-					for (E entity : entities) {
-						batchRunnable.run(entity);
-					}
-					
-					batchRunnable.postExecutePartition(entities);
+					batchRunnable.executePartition(entities);
 					
 					entityService.flush();
 					if (flushToIndexes) {
@@ -109,7 +84,7 @@ public class HibernateBatch {
 
 		LOGGER.info("    postExecute start");
 		
-		readOnlyTransactionTemplate.execute(new TransactionCallback<Void>() {
+		writeTransactionTemplate.execute(new TransactionCallback<Void>() {
 			@Override
 			public Void doInTransaction(TransactionStatus status) {
 				batchRunnable.postExecute(entityIds);
@@ -119,9 +94,19 @@ public class HibernateBatch {
 		
 		LOGGER.info("    postExecute end");
 		
+		if (classesToReindex.size() > 0) {
+			LOGGER.info("    reindexing classes %1$s", Joiners.onComma().join(classesToReindex));
+			try {
+				hibernateSearchService.reindexClasses(classesToReindex);
+			} catch (ServiceException e) {
+				
+			}
+			LOGGER.info("    end of reindexing");
+		}
+		
 		LOGGER.info("End of batch for class %1$s: %2$d objects treated", clazz, entityIds.size());
 	}
-	
+
 	public final <E extends GenericEntity<Long, ?>> List<E> listEntitiesByIds(Class<E> clazz, Collection<Long> entityIds) {
 		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
@@ -132,16 +117,10 @@ public class HibernateBatch {
 				.orderBy(qGenericEntity.id.asc())
 				.fetch();
 	}
-	
-	@Autowired
-	public void setPlatformTransactionManager(PlatformTransactionManager transactionManager) {
-		DefaultTransactionAttribute readOnlyTransactionAttribute = new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
-		readOnlyTransactionAttribute.setReadOnly(true);
-		readOnlyTransactionTemplate = new TransactionTemplate(transactionManager, readOnlyTransactionAttribute);
-		
-		DefaultTransactionAttribute writeTransactionAttribute = new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
-		writeTransactionAttribute.setReadOnly(false);
-		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
-	}
 
+	@Override
+	protected SimpleHibernateBatch thisAsT() {
+		return this;
+	}
+	
 }

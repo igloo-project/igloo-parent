@@ -1,6 +1,4 @@
-package fr.openwide.core.jpa.migration.processor;
-
-import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MIGRATION_LOGGING_MEMORY;
+package fr.openwide.core.jpa.batch.processor;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -18,10 +16,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
-import fr.openwide.core.jpa.migration.monitor.ThreadLocalInitializingCallable;
-import fr.openwide.core.jpa.migration.transaction.TransactionWrapperCallable;
-import fr.openwide.core.spring.property.service.IPropertyService;
+import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
+import fr.openwide.core.jpa.batch.monitor.ThreadLocalInitializingCallable;
+import fr.openwide.core.jpa.batch.util.TransactionWrapperCallable;
 import fr.openwide.core.spring.util.StringUtils;
 
 public class ThreadedProcessor {
@@ -39,27 +36,21 @@ public class ThreadedProcessor {
 	private final TimeUnit maxLoggingTimeUnit;
 	private final Integer maxLoggingIncrement;
 	private final Logger progressLogger;
-	private final IPropertyService propertyService;
 	
 	private String loggerContext;
 
 	private ProcessorMonitorContext monitorContext;
 
-	public ThreadedProcessor(int threadPoolSize,
-			int maxTotalDuration, TimeUnit maxTotalDurationUnit,
-			int keepAliveTime, TimeUnit keepAliveTimeUnit, IPropertyService propertyService) {
-		this(threadPoolSize, maxTotalDuration, maxTotalDurationUnit, keepAliveTime, keepAliveTimeUnit, propertyService,
+	public ThreadedProcessor(int threadPoolSize, int maxTotalDuration, TimeUnit maxTotalDurationUnit, int keepAliveTime,
+			TimeUnit keepAliveTimeUnit) {
+		this(threadPoolSize, maxTotalDuration, maxTotalDurationUnit, keepAliveTime, keepAliveTimeUnit,
 				null, null, null, null, null, null);
 	}
 
-	public ThreadedProcessor(int threadPoolSize,
-			int maxTotalDuration, TimeUnit maxTotalDurationUnit,
-			int keepAliveTime, TimeUnit keepAliveTimeUnit,
-			IPropertyService propertyService,
-			Integer loggingCheckIntervalTime, TimeUnit loggingCheckIntervalTimeUnit,
-			Integer maxLoggingTime, TimeUnit maxLoggingTimeUnit,
-			Integer maxLoggingIncrement,
-			Logger progressLogger) {
+	public ThreadedProcessor(int threadPoolSize, int maxTotalDuration, TimeUnit maxTotalDurationUnit, int keepAliveTime,
+			TimeUnit keepAliveTimeUnit,
+			Integer loggingCheckIntervalTime, TimeUnit loggingCheckIntervalTimeUnit, Integer maxLoggingTime,
+			TimeUnit maxLoggingTimeUnit, Integer maxLoggingIncrement, Logger progressLogger) {
 		super();
 		this.threadPoolSize = threadPoolSize;
 		this.keepAliveTime = keepAliveTime;
@@ -72,7 +63,6 @@ public class ThreadedProcessor {
 		this.maxLoggingTimeUnit = maxLoggingTimeUnit;
 		this.maxLoggingIncrement = maxLoggingIncrement;
 		this.progressLogger = progressLogger;
-		this.propertyService = propertyService;
 	}
 
 	public <T> List<Future<T>> runWithoutTransaction(String loggerContext, List<Callable<T>> callables) {
@@ -100,7 +90,7 @@ public class ThreadedProcessor {
 			this.monitorContext.getTotalItems().set(totalItems);
 		}
 		try {
-			// on wrappe toutes les exécutions dans des transactions
+			// all executions are wrapped in a transaction
 			for (Callable<T> callable : callables) {
 				Callable<T> wrappedCallable = new ThreadLocalInitializingCallable<>(callable, ProcessorMonitorContext.getThreadLocal(), monitorContext);
 				if (transactionTemplate != null) {
@@ -121,14 +111,14 @@ public class ThreadedProcessor {
 			try {
 				boolean terminated = executor.awaitTermination(maxTotalDuration, maxTotalDurationTimeUnit);
 				if (!terminated) {
-					LOGGER.error("Les tâches n'ont pas été terminées avant expiration du timeout de {} {}", maxTotalDuration, maxTotalDurationTimeUnit.name());
+					LOGGER.error("Tasks haven't been terminated before the timeout of {} {}", maxTotalDuration, maxTotalDurationTimeUnit.name());
 				}
-				LOGGER.info("{} - {} éléments importés", loggerContext, this.monitorContext.getDoneItems());
+				LOGGER.info("{} - {} elements treated", loggerContext, this.monitorContext.getDoneItems());
 				if (this.monitorContext.getFailedItems().get() > 0) {
-					LOGGER.error("{} - {} élément(s) en erreur", loggerContext, this.monitorContext.getFailedItems().get());
+					LOGGER.error("{} - {} elements in error", loggerContext, this.monitorContext.getFailedItems().get());
 				}
 				if (this.monitorContext.getIgnoredItems().get() > 0) {
-					LOGGER.info("{} - {} élément(s) ignoré(s)", loggerContext, this.monitorContext.getIgnoredItems().get());
+					LOGGER.info("{} - {} elements ignored", loggerContext, this.monitorContext.getIgnoredItems().get());
 				}
 				
 				for (Future<T> future : futures) {
@@ -143,17 +133,17 @@ public class ThreadedProcessor {
 						// Ne peut pas arriver car tous les callables sont wrappés dans un callable qui catche l'exception
 						throw new IllegalStateException("Une tâche d'import d'objets a échoué ; interruption de l'import.", e);
 					} catch (TimeoutException timeoutException) {
-						// déjà notifié par un warn
+						// already notified by a warn
 						future.cancel(true);
 						interrupted = true;
 					}
 				}
 			} catch (InterruptedException e) {
-				throw new IllegalStateException("Erreur d'import : timeout.", e);
+				throw new IllegalStateException("Batch error: timeout.", e);
 			}
 			
 			if (interrupted) {
-				throw new IllegalStateException("Erreur d'import : interruption d'un thread de traitement.");
+				throw new IllegalStateException("Batch error: a work thread was interrupted.");
 			}
 			
 			return terminatedFutures;
@@ -164,7 +154,7 @@ public class ThreadedProcessor {
 				try {
 					loggingThread.join();
 				} catch (InterruptedException e) {
-					LOGGER.warn("Thread interrompu pendant l'attente de la fin de l'exécution du thread de logging d'avancement.");
+					LOGGER.warn("Thread interrupted while waiting for the end of the logging thread execution.");
 				}
 			}
 		}
@@ -189,7 +179,7 @@ public class ThreadedProcessor {
 					log(false);
 				} catch (InterruptedException e) {
 					log(true);
-					LOGGER.info("Thread de logging d'avancement interrompu.");
+					LOGGER.info("Logging thread interrupted.");
 					return;
 				}
 			}
@@ -197,38 +187,40 @@ public class ThreadedProcessor {
 		}
 		
 		public void log(boolean force) {
-			long currentTime = System.currentTimeMillis();
-			int totalItems = monitorContext.getTotalItems().get();
-			int doneItems = monitorContext.getDoneItems().get();
-			int ignoredItems = monitorContext.getIgnoredItems().get();
-			if (force
-					|| (currentTime - lastLoggingTime) > maxLoggingTimeUnit.toMillis(maxLoggingTime)
-					|| (doneItems - lastDoneItems) > maxLoggingIncrement) {
-				Float speedSinceStart = (float) doneItems / (float) (currentTime - startTime);
-				int roundedSpeedSinceStart = Math.round(speedSinceStart * 1000);
-				
-				Float speedSinceLast = (float) (doneItems - lastDoneItems) / (float) (currentTime - lastLoggingTime);
-				int roundedSpeedSinceLast = Math.round(speedSinceLast * 1000);
-				
-				lastLoggingTime = currentTime;
-				lastDoneItems = doneItems;
-				
+			if (progressLogger.isInfoEnabled()) {
+				long currentTime = System.currentTimeMillis();
+				int totalItems = monitorContext.getTotalItems().get();
+				int doneItems = monitorContext.getDoneItems().get();
+				int ignoredItems = monitorContext.getIgnoredItems().get();
+				if (force || (currentTime - lastLoggingTime) > maxLoggingTimeUnit.toMillis(maxLoggingTime)
+						|| (doneItems - lastDoneItems) > maxLoggingIncrement) {
+					Float speedSinceStart = (float) doneItems / (float) (currentTime - startTime);
+					int roundedSpeedSinceStart = Math.round(speedSinceStart * 1000);
+	
+					Float speedSinceLast = (float) (doneItems - lastDoneItems) / (float) (currentTime - lastLoggingTime);
+					int roundedSpeedSinceLast = Math.round(speedSinceLast * 1000);
+	
+					lastLoggingTime = currentTime;
+					lastDoneItems = doneItems;
+	
+					StringBuilder sb = new StringBuilder();
+					if (StringUtils.hasText(loggerContext)) {
+						sb.append(loggerContext).append(" - ");
+					}
+					sb.append("In progress: {} / {} ({} ignored, {} items/s since start, {} items/s since last log)");
+					progressLogger.info(sb.toString(), doneItems, totalItems - ignoredItems, ignoredItems,
+							roundedSpeedSinceStart, roundedSpeedSinceLast);
+				}
+			}
+			if (progressLogger.isDebugEnabled()) {
 				StringBuilder sb = new StringBuilder();
 				if (StringUtils.hasText(loggerContext)) {
 					sb.append(loggerContext).append(" - ");
 				}
-				sb.append("Avancement {} / {} ({} ignorés, {} items / s. depuis début, {} items / s. depuis dernier log)");
-				
-				if (propertyService.get(MIGRATION_LOGGING_MEMORY)) {
-					sb.append(" - Mémoire disponible {} / {}");
-					progressLogger.info(sb.toString(), doneItems, totalItems - ignoredItems, ignoredItems,
-							roundedSpeedSinceStart, roundedSpeedSinceLast,
-							StringUtils.humanReadableByteCount(Runtime.getRuntime().freeMemory(), true),
-							StringUtils.humanReadableByteCount(Runtime.getRuntime().totalMemory(), true));
-				} else {
-					progressLogger.info(sb.toString(), doneItems, totalItems - ignoredItems, ignoredItems,
-							roundedSpeedSinceStart, roundedSpeedSinceLast);
-				}
+				sb.append("Available memory: {} / {}");
+				progressLogger.debug(sb.toString(),
+						StringUtils.humanReadableByteCount(Runtime.getRuntime().freeMemory(), true),
+						StringUtils.humanReadableByteCount(Runtime.getRuntime().totalMemory(), true));
 			}
 		}
 	}

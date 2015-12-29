@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.migration.util;
+package fr.openwide.core.jpa.batch.util;
 
 public final class ProcessorProgressLogger { // NOSONAR
 

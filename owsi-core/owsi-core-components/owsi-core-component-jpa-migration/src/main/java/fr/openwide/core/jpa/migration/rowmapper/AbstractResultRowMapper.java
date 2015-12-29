@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.migration.rowmapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
+import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
 
 public abstract class AbstractResultRowMapper<T> extends AbstractRowMapper<RowResult> {
 
