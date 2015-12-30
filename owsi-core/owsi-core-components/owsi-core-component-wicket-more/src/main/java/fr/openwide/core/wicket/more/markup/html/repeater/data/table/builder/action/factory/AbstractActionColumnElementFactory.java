@@ -13,7 +13,7 @@ import com.google.common.collect.Sets;
 import com.impossibl.postgres.utils.guava.Joiner;
 
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterConditionFactory;
 import fr.openwide.core.wicket.more.util.model.Detachables;
@@ -23,7 +23,7 @@ public abstract class AbstractActionColumnElementFactory<T, F extends AbstractAc
 
 	private static final long serialVersionUID = 8791565179874571105L;
 
-	private final BootstrapLabelRenderer<? super T> renderer;
+	private final BootstrapRenderer<? super T> renderer;
 
 	private Condition showLabelCondition = Condition.alwaysTrue();
 
@@ -37,11 +37,11 @@ public abstract class AbstractActionColumnElementFactory<T, F extends AbstractAc
 
 	private final Set<String> cssClasses = Sets.newHashSet();
 
-	public AbstractActionColumnElementFactory(BootstrapLabelRenderer<? super T> renderer) {
+	public AbstractActionColumnElementFactory(BootstrapRenderer<? super T> renderer) {
 		this.renderer = renderer;
 	}
 
-	public BootstrapLabelRenderer<? super T> getRenderer() {
+	public BootstrapRenderer<? super T> getRenderer() {
 		return renderer;
 	}
 

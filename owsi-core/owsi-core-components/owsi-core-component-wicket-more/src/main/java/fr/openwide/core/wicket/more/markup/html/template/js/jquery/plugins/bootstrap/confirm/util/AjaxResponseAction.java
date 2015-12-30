@@ -3,10 +3,10 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.io.IClusterable;
 
-import fr.openwide.core.wicket.more.markup.html.action.IAjaxOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 
 /**
- * @deprecated Use {@link IAjaxOneParameterAjaxAction} instead.
+ * @deprecated Use {@link IOneParameterAjaxAction} instead.
  */
 @Deprecated
 public abstract class AjaxResponseAction implements IClusterable {

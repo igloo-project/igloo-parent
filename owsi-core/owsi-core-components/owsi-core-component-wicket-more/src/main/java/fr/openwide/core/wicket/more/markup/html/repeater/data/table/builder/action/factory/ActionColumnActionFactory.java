@@ -4,17 +4,17 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.wicket.more.markup.html.action.IAjaxOneParameterAction;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAction;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
 public class ActionColumnActionFactory<T> extends AbstractActionColumnElementFactory<T, ActionColumnActionFactory<T>> {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final IAjaxOneParameterAction<IModel<T>> action;
+	private final IOneParameterAction<IModel<T>> action;
 	
-	public ActionColumnActionFactory(BootstrapLabelRenderer<? super T> renderer, IAjaxOneParameterAction<IModel<T>> action) {
+	public ActionColumnActionFactory(BootstrapRenderer<? super T> renderer, IOneParameterAction<IModel<T>> action) {
 		super(renderer);
 		this.action = action;
 	}

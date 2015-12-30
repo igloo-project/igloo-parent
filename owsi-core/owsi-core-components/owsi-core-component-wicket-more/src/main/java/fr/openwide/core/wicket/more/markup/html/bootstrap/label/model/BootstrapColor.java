@@ -21,4 +21,9 @@ public enum BootstrapColor implements IBootstrapColor {
 		return cssClassSuffix;
 	}
 
+	@Override
+	public void detach() {
+		// nothing to do
+	}
+
 }

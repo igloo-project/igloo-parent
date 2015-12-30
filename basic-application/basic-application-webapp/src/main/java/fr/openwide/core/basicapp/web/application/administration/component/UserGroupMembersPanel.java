@@ -22,13 +22,15 @@ import fr.openwide.core.basicapp.core.business.user.search.UserSort;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
-import fr.openwide.core.basicapp.web.application.common.renderer.ActionRenderers;
 import fr.openwide.core.basicapp.web.application.common.util.CssClassConstants;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxOneParameterAction;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -67,7 +69,15 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 							.withLink(LinkFactory.userDescriptionLinkGeneratorFactory())
 							.withClass("text text-md")
 					.addActionColumn()
-							.addConfirmAction(ActionRenderers.remove())
+							.addConfirmAction(
+									BootstrapRenderer.with(
+											BootstrapRendererInformation.builder()
+													.tooltip("administration.usergroup.members.delete")
+													.icon("fa fa-fw fa-trash-o")
+													.color(BootstrapColor.DANGER)
+													.build()
+									)
+							)
 									.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
 									.content(new AbstractOneParameterModelFactory<IModel<User>, String>() {
 										private static final long serialVersionUID = 1L;
@@ -78,7 +88,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 										}
 									})
 									.confirm()
-									.onClick(new AbstractAjaxOneParameterAction<IModel<User>>() {
+									.onClick(new AbstractOneParameterAjaxAction<IModel<User>>() {
 										private static final long serialVersionUID = 1L;
 										@Override
 										public void execute(AjaxRequestTarget target, IModel<User> parameter) {
@@ -98,7 +108,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 											}
 										}
 									})
-							.hideLabel()
+									.hideLabel()
 							.withClassOnElements(CssClassConstants.BTN_SM)
 							.end()
 							.withClass("actions")

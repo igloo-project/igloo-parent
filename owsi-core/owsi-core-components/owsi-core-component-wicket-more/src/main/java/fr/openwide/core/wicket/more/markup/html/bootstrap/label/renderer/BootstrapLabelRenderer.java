@@ -6,6 +6,10 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
+/**
+ * @deprecated Will be removed. Use {@link BootstrapRenderer} instead.
+ */
+@Deprecated
 public abstract class BootstrapLabelRenderer<T> extends Renderer<T> {
 
 	private static final long serialVersionUID = 5966093285228006373L;

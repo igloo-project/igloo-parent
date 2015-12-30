@@ -19,7 +19,7 @@ import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterConditionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.AbstractActionColumnElementFactory;
 
@@ -36,10 +36,10 @@ public class CoreActionColumnPanel<T> extends Panel {
 					@Override
 					protected void populateItem(ListItem<AbstractActionColumnElementFactory<T, ?>> item) {
 						AbstractActionColumnElementFactory<T, ?> factory = item.getModelObject();
-						BootstrapLabelRenderer<? super T> renderer = factory.getRenderer();
+						BootstrapRenderer<? super T> renderer = factory.getRenderer();
 						
 						
-						IModel<String> tooltipModel = renderer.getTooltipRenderer().asModel(rowModel);
+						IModel<String> tooltipModel = renderer.getTooltipRenderer(rowModel).asModel(rowModel);
 						
 						Condition actionCondition = Condition.alwaysTrue();
 						for (IOneParameterConditionFactory<IModel<T>> conditionFactory : factory.getConditionFactories()) {

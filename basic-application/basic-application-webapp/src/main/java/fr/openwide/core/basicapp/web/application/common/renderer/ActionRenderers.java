@@ -1,132 +1,64 @@
 package fr.openwide.core.basicapp.web.application.common.renderer;
 
-import java.util.Locale;
-
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
-import fr.openwide.core.wicket.more.rendering.Renderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 
 public final class ActionRenderers {
 
-	private static final class ValidateRenderer<T> extends BootstrapLabelRenderer<T> {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public IBootstrapColor getColor(T value) {
-			return BootstrapColor.SUCCESS;
-		}
-		@Override
-		public String getIconCssClass(T value) {
-			return "fa fa-fw fa-check";
-		}
-		@Override
-		public String render(T value, Locale locale) {
-			return getString("common.action.validate", locale);
-		}
-		@Override
-		public Renderer<T> getTooltipRenderer() {
-			return Renderer.fromResourceKey("common.action.validate");
-		}
+	public static <T> BootstrapRenderer<T> validate() {
+		return BootstrapRenderer.with(
+				BootstrapRendererInformation.builder()
+						.label("common.action.validate")
+						.tooltip("common.action.validate")
+						.icon("fa fa-fw fa-check")
+						.color(BootstrapColor.SUCCESS)
+						.build()
+		);
 	}
 
-	public static <T> BootstrapLabelRenderer<T> validate() {
-		return new ValidateRenderer<>();
+	public static <T> BootstrapRenderer<T> add() {
+		return BootstrapRenderer.with(
+				BootstrapRendererInformation.builder()
+						.label("common.action.add")
+						.tooltip("common.action.add")
+						.icon("fa fa-fw fa-plus")
+						.color(BootstrapColor.PRIMARY)
+						.build()
+		);
 	}
 
-	private static final class AddRenderer<T> extends BootstrapLabelRenderer<T> {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public IBootstrapColor getColor(T value) {
-			return BootstrapColor.PRIMARY;
-		}
-		@Override
-		public String getIconCssClass(T value) {
-			return "fa fa-fw fa-plus";
-		}
-		@Override
-		public String render(T value, Locale locale) {
-			return getString("common.action.add", locale);
-		}
-		@Override
-		public Renderer<T> getTooltipRenderer() {
-			return Renderer.fromResourceKey("common.action.add");
-		}
-	};
-	
-	public static <T> BootstrapLabelRenderer<T> add() {
-		return new AddRenderer<>();
+	public static <T> BootstrapRenderer<T> remove() {
+		return BootstrapRenderer.with(
+				BootstrapRendererInformation.builder()
+						.label("common.action.remove")
+						.tooltip("common.action.remove")
+						.icon("fa fa-fw fa-trash-o")
+						.color(BootstrapColor.DANGER)
+						.build()
+		);
 	}
 
-	private static final class RemoveRenderer<T> extends BootstrapLabelRenderer<T> {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public IBootstrapColor getColor(T value) {
-			return BootstrapColor.DANGER;
-		}
-		@Override
-		public String getIconCssClass(T value) {
-			return "fa fa-fw fa-trash-o";
-		}
-		@Override
-		public String render(T value, Locale locale) {
-			return getString("common.action.remove", locale);
-		}
-		@Override
-		public Renderer<Object> getTooltipRenderer() {
-			return Renderer.fromResourceKey("common.action.remove");
-		}
-	};
-	
-	public static <T> BootstrapLabelRenderer<T> remove() {
-		return new RemoveRenderer<>();
+	public static <T> BootstrapRenderer<T> enable() {
+		return BootstrapRenderer.with(
+				BootstrapRendererInformation.builder()
+						.label("common.action.enable")
+						.tooltip("common.action.enable")
+						.icon("fa fa-fw fa-toggle-on")
+						.color(BootstrapColor.SUCCESS)
+						.build()
+		);
 	}
 
-	private static final class EnableRenderer<T> extends BootstrapLabelRenderer<T> {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public IBootstrapColor getColor(T value) {
-			return BootstrapColor.SUCCESS;
-		}
-		@Override
-		public String getIconCssClass(T value) {
-			return "fa fa-fw fa-toggle-on";
-		}
-		@Override
-		public String render(T value, Locale locale) {
-			return getString("common.action.enable", locale);
-		}
-		@Override
-		public Renderer<T> getTooltipRenderer() {
-			return Renderer.fromResourceKey("common.action.enable");
-		}
-	};
-	
-	public static <T> BootstrapLabelRenderer<T> enable() {
-		return new EnableRenderer<>();
-	}
-
-	private static final class DisableRenderer<T> extends BootstrapLabelRenderer<T> {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public IBootstrapColor getColor(T value) {
-			return BootstrapColor.DANGER;
-		}
-		@Override
-		public String getIconCssClass(T value) {
-			return "fa fa-fw fa-toggle-off";
-		}
-		@Override
-		public String render(T value, Locale locale) {
-			return getString("common.action.disable", locale);
-		}
-		@Override
-		public Renderer<T> getTooltipRenderer() {
-			return Renderer.fromResourceKey("common.action.disable");
-		}
-	};
-	
-	public static <T> BootstrapLabelRenderer<T> disable() {
-		return new DisableRenderer<>();
+	public static <T> BootstrapRenderer<T> disable() {
+		return BootstrapRenderer.with(
+				BootstrapRendererInformation.builder()
+						.label("common.action.disable")
+						.tooltip("common.action.disable")
+						.icon("fa fa-fw fa-toggle-off")
+						.color(BootstrapColor.DANGER)
+						.build()
+		);
 	}
 
 }

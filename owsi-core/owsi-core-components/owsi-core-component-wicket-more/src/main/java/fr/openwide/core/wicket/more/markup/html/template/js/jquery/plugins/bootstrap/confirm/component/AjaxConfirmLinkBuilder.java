@@ -9,11 +9,9 @@ import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxOneParameterAction;
-import fr.openwide.core.wicket.more.markup.html.action.IAjaxOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.OneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepContent;
@@ -28,6 +26,8 @@ import fr.openwide.core.wicket.more.util.model.Detachables;
 public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepStart<O>, IAjaxConfirmLinkBuilderStepContent<O>,
 		IAjaxConfirmLinkBuilderStepEndContent<O>, IAjaxConfirmLinkBuilderStepNo<O>, IAjaxConfirmLinkBuilderStepOnclick<O>,
 		IAjaxConfirmLinkBuilderStepTerminal<O> {
+
+	private static final long serialVersionUID = 365949870142796149L;
 
 	@Deprecated
 	private String wicketId;
@@ -47,7 +47,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	
 	private boolean keepMarkup = false;
 	
-	private IAjaxOneParameterAjaxAction<IModel<O>> onClick;
+	private IOneParameterAjaxAction<IModel<O>> onClick;
 	
 	protected AjaxConfirmLinkBuilder() {
 	}
@@ -155,7 +155,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 
 	/**
-	 * @deprecated Use {@link #onClick(IAjaxOneParameterAjaxAction)} instead.
+	 * @deprecated Use {@link #onClick(IOneParameterAjaxAction)} instead.
 	 */
 	@Deprecated
 	@Override
@@ -165,7 +165,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 	
 	@Deprecated
-	private static final class FunctionAjaxOneParameterAction<O> extends AbstractAjaxOneParameterAction<IModel<O>> {
+	private static final class FunctionAjaxOneParameterAction<O> extends AbstractOneParameterAjaxAction<IModel<O>> {
 		private static final long serialVersionUID = 1L;
 		
 		private final SerializableFunction<AjaxRequestTarget, Void> function;
@@ -189,7 +189,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 
 	@Deprecated
-	private static final class AjaxResponseActionAjaxOneParameterAction<O> extends AbstractAjaxOneParameterAction<IModel<O>> {
+	private static final class AjaxResponseActionAjaxOneParameterAction<O> extends AbstractOneParameterAjaxAction<IModel<O>> {
 		private static final long serialVersionUID = 1L;
 		
 		private final AjaxResponseAction onClick;
@@ -212,7 +212,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 
 	@Override
-	public IAjaxConfirmLinkBuilderStepTerminal<O> onClick(IAjaxOneParameterAjaxAction<IModel<O>> onClick) {
+	public IAjaxConfirmLinkBuilderStepTerminal<O> onClick(IOneParameterAjaxAction<IModel<O>> onClick) {
 		this.onClick = onClick;
 		return this;
 	}
@@ -228,55 +228,20 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	
 	@Override
 	public AjaxConfirmLink<O> create(String wicketId, IModel<O> model) {
-		try {
-			return new FunctionalAjaxConfirmLink<O>(wicketId, model, titleModelFactory, contentModelFactory,
-					yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup, onClick);
-		} finally {
-			this.wicketId = null;
-			this.model = null;
-			titleModelFactory = null;
-			contentModelFactory = null;
-			yesLabelModel = null;
-			noLabelModel = null;
-			cssClassNamesModel = null;
-		}
-	}
-	
-	@Override
-	public IOneParameterComponentFactory<AjaxConfirmLink<O>, IModel<O>> factory() {
-		return new AjaxConfirmLinkFactory<>(this);
-	}
-	
-	private static final class AjaxConfirmLinkFactory<O> extends AbstractParameterizedComponentFactory<AjaxConfirmLink<O>, IModel<O>> {
-		
-		private static final long serialVersionUID = 1L;
-		
-		private AjaxConfirmLinkBuilder<O> builder;
-		
-		public AjaxConfirmLinkFactory(AjaxConfirmLinkBuilder<O> builder) {
-			super();
-			this.builder = builder;
-		}
-
-		@Override
-		public AjaxConfirmLink<O> create(String wicketId, IModel<O> parameter) {
-			AjaxConfirmLink<O> component = builder.create(wicketId, parameter);
-			builder = null;
-			return component;
-		}
-		
+		return new FunctionalAjaxConfirmLink<O>(wicketId, model, titleModelFactory, contentModelFactory,
+				yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup, onClick);
 	}
 	
 	private static class FunctionalAjaxConfirmLink<O> extends AjaxConfirmLink<O> {
 		private static final long serialVersionUID = -2098954474307467112L;
 		
-		private final IAjaxOneParameterAjaxAction<IModel<O>> onClick;
+		private final IOneParameterAjaxAction<IModel<O>> onClick;
 		
 		public FunctionalAjaxConfirmLink(String id, IModel<O> model,
 				IOneParameterModelFactory<IModel<O>, String> titleModelFactory,
 				IOneParameterModelFactory<IModel<O>, String> textModelFactory, IModel<String> yesLabelModel,
 				IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape,
-				IAjaxOneParameterAjaxAction<IModel<O>> onClick) {
+				IOneParameterAjaxAction<IModel<O>> onClick) {
 			super(id, model, titleModelFactory.create(model), textModelFactory.create(model), yesLabelModel,
 					noLabelModel, cssClassNamesModel, textNoEscape);
 			this.onClick = onClick;
@@ -292,7 +257,12 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 			super.onDetach();
 			Detachables.detach(onClick);
 		}
-		
+	
+	}
+
+	@Override
+	public void detach() {
+		Detachables.detach(model, titleModelFactory, contentModelFactory, yesLabelModel, noLabelModel, cssClassNamesModel, onClick);
 	}
 
 }

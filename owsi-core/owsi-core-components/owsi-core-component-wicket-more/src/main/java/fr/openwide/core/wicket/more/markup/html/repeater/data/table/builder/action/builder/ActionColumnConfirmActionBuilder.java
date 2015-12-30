@@ -3,9 +3,8 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.act
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
-import fr.openwide.core.wicket.more.markup.html.action.IAjaxOneParameterAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.fluid.IActionColumnConfirmActionBuilderStepContent;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.fluid.IActionColumnConfirmActionBuilderStepEndContent;
@@ -23,11 +22,11 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 
 	private final ActionColumnBuilder<T, S> actionColumnBuilder;
 
-	private final BootstrapLabelRenderer<? super T> renderer;
+	private final BootstrapRenderer<? super T> renderer;
 
 	private AjaxConfirmLinkBuilder<T> ajaxConfirmLinkBuilder;
 
-	public ActionColumnConfirmActionBuilder(ActionColumnBuilder<T, S> actionColumnBuilder, BootstrapLabelRenderer<? super T> renderer) {
+	public ActionColumnConfirmActionBuilder(ActionColumnBuilder<T, S> actionColumnBuilder, BootstrapRenderer<? super T> renderer) {
 		this.actionColumnBuilder = actionColumnBuilder;
 		this.renderer = renderer;
 		ajaxConfirmLinkBuilder = (AjaxConfirmLinkBuilder<T>) AjaxConfirmLink.<T>build();
@@ -112,11 +111,8 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 	}
 
 	@Override
-	public IActionColumnAddedConfirmActionState<T, S> onClick(IAjaxOneParameterAjaxAction<IModel<T>> onClick) {
-		ajaxConfirmLinkBuilder.onClick(onClick);
-		IOneParameterComponentFactory<AjaxConfirmLink<T>, IModel<T>> factory = ajaxConfirmLinkBuilder.factory();
-		ajaxConfirmLinkBuilder = null;
-		return actionColumnBuilder.addConfirmAction(renderer, factory);
+	public IActionColumnAddedConfirmActionState<T, S> onClick(IOneParameterAjaxAction<IModel<T>> onClick) {
+		return actionColumnBuilder.addConfirmAction(renderer, ajaxConfirmLinkBuilder.onClick(onClick));
 	}
 
 }

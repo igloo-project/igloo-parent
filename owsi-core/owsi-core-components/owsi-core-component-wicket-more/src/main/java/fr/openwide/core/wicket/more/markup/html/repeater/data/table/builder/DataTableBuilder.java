@@ -30,7 +30,7 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.FunctionOneParameterL
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
@@ -267,13 +267,13 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			final AbstractCoreBinding<? super T, C> binding, final BootstrapLabelRenderer<? super C> renderer) {
+			final AbstractCoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
 		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, binding, renderer));
 	}
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			final AbstractCoreBinding<? super T, C> binding, final BootstrapLabelRenderer<? super C> renderer) {
+			final AbstractCoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<C>(column);
@@ -452,13 +452,13 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 		@Override
 		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
-				BootstrapLabelRenderer<? super C> renderer) {
+				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, binding, renderer);
 		}
 
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
-				BootstrapLabelRenderer<? super C> renderer) {
+				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, binding, renderer);
 		}
 		
