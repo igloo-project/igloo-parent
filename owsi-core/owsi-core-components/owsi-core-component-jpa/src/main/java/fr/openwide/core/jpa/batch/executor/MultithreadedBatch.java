@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -20,10 +21,11 @@ import fr.openwide.core.jpa.batch.processor.ThreadedProcessor;
 import fr.openwide.core.jpa.batch.util.ProcessorProgressLogger;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
+@Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class MultithreadedBatch extends AbstractBatch<MultithreadedBatch> {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHibernateBatch.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MultithreadedBatch.class);
 	
 	private static final Logger PROGRESS_LOGGER = LoggerFactory.getLogger(ProcessorProgressLogger.class);
 	

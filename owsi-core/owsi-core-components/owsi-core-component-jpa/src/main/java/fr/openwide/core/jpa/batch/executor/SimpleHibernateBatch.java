@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -19,6 +20,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
 import fr.openwide.core.jpa.exception.ServiceException;
 
+@Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimpleHibernateBatch extends AbstractBatch<SimpleHibernateBatch> {
 	
@@ -107,7 +109,7 @@ public class SimpleHibernateBatch extends AbstractBatch<SimpleHibernateBatch> {
 		LOGGER.info("End of batch for class %1$s: %2$d objects treated", clazz, entityIds.size());
 	}
 
-	public final <E extends GenericEntity<Long, ?>> List<E> listEntitiesByIds(Class<E> clazz, Collection<Long> entityIds) {
+	protected <E extends GenericEntity<Long, ?>> List<E> listEntitiesByIds(Class<E> clazz, Collection<Long> entityIds) {
 		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
