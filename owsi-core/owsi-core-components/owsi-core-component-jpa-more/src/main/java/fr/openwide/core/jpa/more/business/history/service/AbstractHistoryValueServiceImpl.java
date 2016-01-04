@@ -1,7 +1,6 @@
 package fr.openwide.core.jpa.more.business.history.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -14,17 +13,16 @@ import fr.openwide.core.jpa.util.HibernateUtils;
 import fr.openwide.core.spring.property.SpringPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
-@Service
-public class HistoryValueServiceImpl implements IHistoryValueService {
+public class AbstractHistoryValueServiceImpl implements IHistoryValueService {
 	
 	@Autowired
-	private IEntityService entityService;
+	protected IEntityService entityService;
 	
 	@Autowired
-	private IRendererService rendererService;
+	protected IRendererService rendererService;
 	
 	@Autowired
-	private IPropertyService propertyService;
+	protected IPropertyService propertyService;
 
 	@Override
 	public <T> HistoryValue create(T object) {
@@ -54,7 +52,7 @@ public class HistoryValueServiceImpl implements IHistoryValueService {
 		return new HistoryValue(label, serialized);
 	}
 	
-	private String serialize(Object value) {
+	protected String serialize(Object value) {
 		if (value instanceof Enum) {
 			return ((Enum<?>) value).name();
 		}
