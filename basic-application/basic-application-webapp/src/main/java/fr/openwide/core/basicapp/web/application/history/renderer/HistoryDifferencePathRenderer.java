@@ -54,7 +54,7 @@ public final class HistoryDifferencePathRenderer extends AbstractHistoryRenderer
 		if (result.isPresent()) {
 			return result.get();
 		} else {
-			LOGGER.error("Impossible de trouver la clé de traduction correspondant à une HistoryDifference (entity : '{}', path : '{}')",
+			LOGGER.error("Unable to find a localization key for the HistoryDifference (entity : '{}', path : '{}')",
 					entityResourceKeyPart, pathResourceKeyPart);
 			return pathResourceKeyPart;
 		}
