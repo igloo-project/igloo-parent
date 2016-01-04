@@ -2,6 +2,8 @@ package fr.openwide.core.basicapp.web.application.administration.component;
 
 import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
+import java.util.Locale;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -70,13 +72,17 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 							.withClass("text text-md")
 					.addActionColumn()
 							.addConfirmAction(
-									BootstrapRenderer.with(
-											BootstrapRendererInformation.builder()
-													.tooltip("administration.usergroup.members.delete")
+									new BootstrapRenderer<User>() {
+										private static final long serialVersionUID = 1L;
+										@Override
+										protected BootstrapRendererInformation doRender(User value, Locale locale) {
+											return BootstrapRendererInformation.builder()
+													.tooltip(getString("administration.usergroup.members.delete", locale))
 													.icon("fa fa-fw fa-trash-o")
 													.color(BootstrapColor.DANGER)
-													.build()
-									)
+													.build();
+										}
+									}
 							)
 									.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
 									.content(new AbstractOneParameterModelFactory<IModel<User>, String>() {

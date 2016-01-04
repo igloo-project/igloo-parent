@@ -38,8 +38,7 @@ public class CoreActionColumnPanel<T> extends Panel {
 						AbstractActionColumnElementFactory<T, ?> factory = item.getModelObject();
 						BootstrapRenderer<? super T> renderer = factory.getRenderer();
 						
-						
-						IModel<String> tooltipModel = renderer.getTooltipRenderer(rowModel).asModel(rowModel);
+						IModel<String> tooltipModel = renderer.asTooltipModel(rowModel);
 						
 						Condition actionCondition = Condition.alwaysTrue();
 						for (IOneParameterConditionFactory<IModel<T>> conditionFactory : factory.getConditionFactories()) {

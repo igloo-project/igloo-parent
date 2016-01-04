@@ -5,25 +5,24 @@ import java.util.Objects;
 
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
-import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public class BootstrapRendererInformation implements Serializable {
 
 	private static final long serialVersionUID = -6016103792390046731L;
 
-	private final Renderer<Object> labelRenderer ;
+	private final String label ;
 
 	private final String iconCssClass;
 
 	private final IBootstrapColor color;
 
-	private final Renderer<Object> tooltipRenderer;
+	private final String tooltip;
 
 	private BootstrapRendererInformation(Builder builder) {
-		this.labelRenderer = builder.getLabelRenderer();
+		this.label = builder.getLabel();
 		this.iconCssClass = builder.getIconCssClass();
 		this.color = builder.getColor();
-		this.tooltipRenderer = builder.getTooltipRenderer();
+		this.tooltip = builder.getTooltip();
 	}
 
 	public static Builder builder() {
@@ -32,25 +31,21 @@ public class BootstrapRendererInformation implements Serializable {
 
 	public static final class Builder {
 		
-		private Renderer<Object> labelRenderer = Renderer.constant(null);
+		private String label;
 		
 		private String iconCssClass;
 		
 		private IBootstrapColor color = BootstrapColor.DEFAULT;
 		
-		private Renderer<Object> tooltipRenderer = Renderer.constant(null);
+		private String tooltip;
 		
-		public Builder label(String resourceKey) {
-			return label(Renderer.fromResourceKey(resourceKey));
-		}
-		
-		public Builder label(Renderer<Object> labelRenderer) {
-			this.labelRenderer = Objects.requireNonNull(labelRenderer);
+		public Builder label(String label) {
+			this.label = label;
 			return this;
 		}
 		
-		private Renderer<Object> getLabelRenderer() {
-			return labelRenderer;
+		public String getLabel() {
+			return label;
 		}
 		
 		public Builder icon(String iconCssClass) {
@@ -71,17 +66,13 @@ public class BootstrapRendererInformation implements Serializable {
 			return color;
 		}
 		
-		public Builder tooltip(String resourceKey) {
-			return tooltip(Renderer.fromResourceKey(resourceKey));
-		}
-		
-		public Builder tooltip(Renderer<Object> tooltipRenderer) {
-			this.tooltipRenderer = Objects.requireNonNull(tooltipRenderer);
+		public Builder tooltip(String tooltip) {
+			this.tooltip = tooltip;
 			return this;
 		}
 		
-		private Renderer<Object> getTooltipRenderer() {
-			return tooltipRenderer;
+		public String getTooltip() {
+			return tooltip;
 		}
 		
 		public BootstrapRendererInformation build() {
@@ -89,8 +80,8 @@ public class BootstrapRendererInformation implements Serializable {
 		}
 	}
 
-	public Renderer<Object> getLabelRenderer() {
-		return labelRenderer;
+	public String getLabel() {
+		return label;
 	}
 
 	public String getIconCssClass() {
@@ -101,8 +92,8 @@ public class BootstrapRendererInformation implements Serializable {
 		return color;
 	}
 
-	public Renderer<Object> getTooltipRenderer() {
-		return tooltipRenderer;
+	public String getTooltip() {
+		return tooltip;
 	}
 
 }

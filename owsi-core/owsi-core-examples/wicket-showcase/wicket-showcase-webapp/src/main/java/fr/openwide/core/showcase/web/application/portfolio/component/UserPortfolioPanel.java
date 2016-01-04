@@ -1,5 +1,7 @@
 package fr.openwide.core.showcase.web.application.portfolio.component;
 
+import java.util.Locale;
+
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -49,7 +51,7 @@ public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
 		item.add(new BootstrapLabel<>("active", userModel, new BootstrapRenderer<User>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			protected BootstrapRendererInformation with(User value) {
+			protected BootstrapRendererInformation doRender(User value, Locale locale) {
 				return BootstrapRendererInformation.builder()
 						.label(value.isActive() ? "active" : "inactive")
 						.icon(value.isActive() ? "fa fa-fw fa-check" : "fa fa-fw fa-remove")

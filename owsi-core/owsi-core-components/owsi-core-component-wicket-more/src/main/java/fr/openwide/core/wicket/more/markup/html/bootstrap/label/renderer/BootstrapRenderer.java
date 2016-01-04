@@ -1,12 +1,11 @@
 package fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer;
 
 import java.util.Locale;
-import java.util.Objects;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
+import fr.openwide.core.wicket.more.model.LocaleAwareReadOnlyModel;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class BootstrapRenderer<T> extends Renderer<T> {
@@ -15,59 +14,43 @@ public abstract class BootstrapRenderer<T> extends Renderer<T> {
 
 	public BootstrapRenderer() {
 		super();
-		nullsAsNull();
 	}
 
-	public static final <T> BootstrapRenderer<T> with(final BootstrapRendererInformation informationModel) {
-		Objects.requireNonNull(informationModel);
-		return new BootstrapRenderer<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected BootstrapRendererInformation with(T value) {
-				return informationModel;
-			}
-		};
-	}
-
-	protected abstract BootstrapRendererInformation with(T value);
+	protected abstract BootstrapRendererInformation doRender(T value, Locale locale);
 
 	@Override
 	public String render(T value, Locale locale) {
-		return with(value).getLabelRenderer().render(value, locale);
+		return doRender(value, locale).getLabel();
 	}
 
 	public final IModel<String> asIconCssClassModel(final IModel<? extends T> model) {
-		return new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 4329152375254189580L;
+		return new LocaleAwareReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
 			@Override
-			public String getObject() {
-				return with(model.getObject()).getIconCssClass();
-			}
-			@Override
-			public void detach() {
-				super.detach();
-				model.detach();
+			public String getObject(Locale locale) {
+				return doRender(model.getObject(), locale).getIconCssClass();
 			}
 		};
 	}
 
 	public final IModel<IBootstrapColor> asColorModel(final IModel<? extends T> model) {
-		return new AbstractReadOnlyModel<IBootstrapColor>() {
-			private static final long serialVersionUID = 4329152375254189580L;
+		return new LocaleAwareReadOnlyModel<IBootstrapColor>() {
+			private static final long serialVersionUID = 1L;
 			@Override
-			public IBootstrapColor getObject() {
-				return with(model.getObject()).getColor();
-			}
-			@Override
-			public void detach() {
-				super.detach();
-				model.detach();
+			public IBootstrapColor getObject(Locale locale) {
+				return doRender(model.getObject(), locale).getColor();
 			}
 		};
 	}
 
-	public Renderer<? super T> getTooltipRenderer(final IModel<? extends T> model) {
-		return with(model.getObject()).getTooltipRenderer();
+	public final IModel<String> asTooltipModel(final IModel<? extends T> model) {
+		return new LocaleAwareReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getObject(Locale locale) {
+				return doRender(model.getObject(), locale).getTooltip();
+			}
+		};
 	}
 
 }

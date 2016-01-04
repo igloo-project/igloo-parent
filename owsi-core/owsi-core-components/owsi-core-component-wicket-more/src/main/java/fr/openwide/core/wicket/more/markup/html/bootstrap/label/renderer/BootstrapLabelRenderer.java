@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
+import java.util.Locale;
 
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
 import fr.openwide.core.wicket.more.rendering.Renderer;
@@ -10,7 +9,7 @@ import fr.openwide.core.wicket.more.rendering.Renderer;
  * @deprecated Will be removed. Use {@link BootstrapRenderer} instead.
  */
 @Deprecated
-public abstract class BootstrapLabelRenderer<T> extends Renderer<T> {
+public abstract class BootstrapLabelRenderer<T> extends BootstrapRenderer<T> {
 
 	private static final long serialVersionUID = 5966093285228006373L;
 
@@ -20,42 +19,25 @@ public abstract class BootstrapLabelRenderer<T> extends Renderer<T> {
 		super();
 	}
 
-	public abstract IBootstrapColor getColor(T value);
+	@Override
+	public abstract String render(T value, Locale locale);
 
-	public final IModel<IBootstrapColor> asColorModel(final IModel<? extends T> model) {
-		return new AbstractReadOnlyModel<IBootstrapColor>() {
-			private static final long serialVersionUID = 4329152375254189580L;
-			@Override
-			public IBootstrapColor getObject() {
-				return getColor(model.getObject());
-			}
-			@Override
-			public void detach() {
-				super.detach();
-				model.detach();
-			}
-		};
-	}
+	public abstract IBootstrapColor getColor(T value);
 
 	public abstract String getIconCssClass(T value);
 
-	public final IModel<String> asIconCssClassModel(final IModel<? extends T> model) {
-		return new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 4329152375254189580L;
-			@Override
-			public String getObject() {
-				return getIconCssClass(model.getObject());
-			}
-			@Override
-			public void detach() {
-				super.detach();
-				model.detach();
-			}
-		};
-	}
-	
 	public Renderer<? super T> getTooltipRenderer() {
 		return DEFAULT_TOOLTIP_RENDERER;
+	}
+
+	@Override
+	protected BootstrapRendererInformation doRender(T value, Locale locale) {
+		return BootstrapRendererInformation.builder()
+				.label(render(value, locale))
+				.color(getColor(value))
+				.icon(getIconCssClass(value))
+				.tooltip(getTooltipRenderer().render(value, locale))
+				.build();
 	}
 
 }

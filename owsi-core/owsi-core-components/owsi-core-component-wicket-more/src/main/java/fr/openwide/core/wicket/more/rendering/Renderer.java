@@ -12,13 +12,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
 
@@ -35,7 +32,9 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.commons.util.rendering.IRenderer;
+import fr.openwide.core.wicket.more.model.LocaleAwareReadOnlyModel;
 import fr.openwide.core.wicket.more.util.IDatePattern;
+import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
 
 /**
@@ -281,51 +280,25 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		return new RendererModel(valueModel);
 	}
 	
-	private class RendererModel extends AbstractReadOnlyModel<String> implements IComponentAssignedModel<String> {
+	private class RendererModel extends LocaleAwareReadOnlyModel<String> {
 		private static final long serialVersionUID = -1080017215611311157L;
 		
 		private final IModel<? extends T> valueModel;
-
+		
 		public RendererModel(IModel<? extends T> valueModel) {
 			super();
 			this.valueModel = checkNotNull(valueModel);
 		}
-
-		@Override
-		public String getObject() {
-			return Renderer.this.render(valueModel.getObject(), Session.get().getLocale());
-		}
-
-		@Override
-		public IWrapModel<String> wrapOnAssignment(Component component) {
-			return new WrapModel(component);
-		}
 		
-		private class WrapModel extends AbstractReadOnlyModel<String> implements IWrapModel<String> {
-			private static final long serialVersionUID = -1080017215611311157L;
-			
-			private final Component component;
-			
-			public WrapModel(Component component) {
-				super();
-				this.component = checkNotNull(component);
-			}
-			
-			@Override
-			public String getObject() {
-				return Renderer.this.render(valueModel.getObject(), component.getLocale());
-			}
-			
-			@Override
-			public IModel<?> getWrappedModel() {
-				return RendererModel.this;
-			}
+		@Override
+		public String getObject(Locale locale) {
+			return Renderer.this.render(valueModel.getObject(), Session.get().getLocale());
 		}
 		
 		@Override
 		public void detach() {
 			super.detach();
-			valueModel.detach();
+			Detachables.detach(valueModel);
 		}
 	}
 	
