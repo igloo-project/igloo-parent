@@ -3,6 +3,7 @@ package fr.openwide.core.showcase.web.application.portfolio.component;
 import java.util.Locale;
 
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -21,7 +22,9 @@ import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.Bootst
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.collection.SerializedItemSortedSetView;
 import fr.openwide.core.wicket.more.markup.html.list.PageablePortfolioPanel;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.multivaluedexpand.MultivaluedExpandBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
@@ -76,6 +79,20 @@ public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
 				}
 			}
 		}));
+		
+		// Multivalued expand sample: please note that the behavior could be used on a ".div" inside the "td" element,
+		// if an other information should be displayed in the same cell, for example.
+		item.add(new WebMarkupContainer("tagsContainer", userModel)
+				.add(new SerializedItemSortedSetView<String>("tags", BindingModel.of(userModel, Bindings.user().tags())) {
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void populateItem(Item<String> tagItem) {
+						tagItem.add(new Label("tag", tagItem.getModel()));
+					}
+				})
+				.add(new MultivaluedExpandBehavior())
+		);
 	}
 
 	@Override
