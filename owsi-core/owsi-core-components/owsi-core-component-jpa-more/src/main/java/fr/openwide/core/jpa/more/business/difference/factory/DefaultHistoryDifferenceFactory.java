@@ -21,18 +21,18 @@ import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathComponent;
 
 /**
- * Une HistoryDifferenceFactory qui crée un HistoryDifference pour chaque DiffNode:
+ * A HistoryDifferenceFactory which creates a HistoryDifference for each DiffNode:
  * <ul>
- * <li>qui respecte le prédicat <code>branchFilter</code>
- * <li>ET dont tous les parents respectent le prédicat <code>branchFilter</code>
- * <li>ET qui respecte le prédicat <code>nodeFilter</code>
+ * <li>which respects the predicate <code>branchFilter</code>
+ * <li>AND all the parents of which respect the predicate <code>branchFilter</code>
+ * <li>AND which respects the predicate <code>nodeFilter</code>
  * </ul>
  * 
- * <p>Par défaut, le <code>branchFilter</code> n'inclut que les noeuds modifiés (CHANGED, ADDED, REMOVED).
- * <p>Par défaut le <code>nodeFilter</code> est vrai pour tout noeud :
+ * <p>By default, the <code>branchFilter</code> only includes the modified nodes (CHANGED, ADDED, REMOVED).
+ * <p>By default, the <code>nodeFilter</code> is right for each node:
  * <ul>
- * 	<li>qui est un élément de Collection ou de Map
- * 	<li>OU qui n'a pas d'enfant
+ * 	<li>which is an element of a collection or a map
+ * 	<li>OR which does not have any children
  * </ul>
  */
 @Component

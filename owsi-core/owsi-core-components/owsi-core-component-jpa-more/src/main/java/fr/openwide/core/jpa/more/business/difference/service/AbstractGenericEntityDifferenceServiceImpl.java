@@ -102,25 +102,25 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 		
 		List<IProxyInitializer<? super T>> initializers = Lists.newArrayList();
 		
-		// Initialisation des champs simples
+		// Initialization of the simple fields
 		Iterable<? extends AbstractCoreBinding<? extends T, ?>> simpleFieldsBindingsList = getSimpleInitializationFieldsBindings();
 		initializers.add(new TypeSafeBindingProxyInitializer<T>(simpleFieldsBindingsList));
 		
-		// Initialisations personnalisées
+		// Customized initializations
 		Iterables.addAll(initializers, initializeInitializers());
 		
 		this.proxyInitializer = new CompositeProxyInitializer<T>(initializers);
 
-		// Création personnalisée des AuditDifference
+		// Customized creation of the HistoryDifference items
 		ImmutableMultimap.Builder<FieldPath, IHistoryDifferenceFactory<T>> factoriesMapBuilder = ImmutableMultimap.builder();
-		Multimap<IHistoryDifferenceFactory<T>, FieldPath> specificAuditDifferenceFactoriesToFieldPaths = getSpecificAuditDifferenceFactories();
-		for (Entry<IHistoryDifferenceFactory<T>, FieldPath> entry : specificAuditDifferenceFactoriesToFieldPaths.entries()) {
+		Multimap<IHistoryDifferenceFactory<T>, FieldPath> specificHistoryDifferenceFactoriesToFieldPaths = getSpecificHistoryDifferenceFactories();
+		for (Entry<IHistoryDifferenceFactory<T>, FieldPath> entry : specificHistoryDifferenceFactoriesToFieldPaths.entries()) {
 			factoriesMapBuilder.putAll(entry.getValue(), entry.getKey());
 		}
 		specificHistoryDifferenceFactories = factoriesMapBuilder.build();
 	}
 
-	protected Multimap<IHistoryDifferenceFactory<T>, FieldPath> getSpecificAuditDifferenceFactories() {
+	protected Multimap<IHistoryDifferenceFactory<T>, FieldPath> getSpecificHistoryDifferenceFactories() {
 		return ImmutableMultimap.<IHistoryDifferenceFactory<T>, FieldPath>of();
 	}
 	
@@ -153,23 +153,23 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	}
 	
 	protected Iterable<? extends BindingRoot<? super T, ?>> getMinimalDifferenceFieldsBindings() {
-		// Par défaut, le diff minimal n'inclut aucun noeud
+		// By default, the minimal diff does not include any nodes
 		return ImmutableList.<BindingRoot<? super T, ?>>of();
 	}
 
 	protected final ObjectDifferBuilder initializeMinimalDiffer(ObjectDifferBuilder builder) {
 		builder = initializeDiffer(builder);
 		
-		// Permet d'inclure un noeud sans que tous ses enfants soient également inclus
+		// Allows to include a node without having all its children included
 		NonInheritingNodePathInclusionResolver parentInclusionResolver = new NonInheritingNodePathInclusionResolver();
 		builder = builder.inclusion().resolveUsing(parentInclusionResolver).and();
 		
-		// On s'assure que, si aucun noeud n'a été spécifié comme inclus, les autres noeuds ne seront pas
-		// considérés comme inclus "par défaut"
+		// We make sure, that if no nodes have been specified as included, all the other nodes won't be considered
+		// as included "by default"
 		builder = builder.inclusion().resolveUsing(new InclusionResolver() {
 			@Override
 			public Inclusion getInclusion(DiffNode node) {
-				return Inclusion.DEFAULT; // Ne se prononce pas
+				return Inclusion.DEFAULT; // Don't vote
 			}
 			@Override
 			public boolean enablesStrictIncludeMode() {
@@ -181,14 +181,14 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 		for (BindingRoot<? super T, ?> binding : getMinimalDifferenceFieldsBindings()) {
 			FieldPath path = FieldPath.fromBinding(binding);
 			
-			// Le noeud, ainsi que tous ses enfants, sont inclus
+			// The node and all its children are included
 			builder = builder.inclusion().include().node(DiffUtils.toNodePath(path))
 					.and();
 			
-			// Pour que ça fonctionne, on doit également inclure les éventuels parents
-			// Cependant, on n'utilise pas le système de catégorie ici, ni le NodePathInclusionResolver,
-			// puisque ça reviendrait à inclure tous les enfants du parent (les catégories sont héritées par les enfants,
-			// et le NodePathInclusionResolver part du principe qu'on inclut tous les enfaants d'un noed inclus).
+			// For it to work, we also need to include the potential parents.
+			// However we don't use the category system here nor the NodePathInclusionResolver because it would include
+			// all the children of the parent (the categories are inherited by the children and the NodePathInclusionResolver
+			// considers that we include all the children of a node.
 			path = path.parent().get();
 			while (!path.isRoot()) {
 				parentInclusionResolver.setInclusion(DiffUtils.toNodePath(path), Inclusion.INCLUDED);
@@ -215,8 +215,8 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> toHistoryDifferences(final Supplier<HD> historyDifferenceSupplier, final Difference<T> rootDifference) {
 		final Multimap<IHistoryDifferenceFactory<T>, DiffNode> factoriesToNodes = LinkedHashMultimap.create();
 		
-		// Liste les noeud "feuilles", en attribuant au passage les noeuds à des Factory spécifiques le cas échéant.
-		// Une "feuille" est soit un noeud qui n'a pas d'enfant, soit un noeud correspondant à un élément de Collection ou de Map.
+		// Lists the leaf nodes and attributes the nodes to specific factories if needed.
+		// A "leaf" is either a node without children or a node which is an element of a Collection or a Map.
 		rootDifference.getDiffNode().visitChildren(new Visitor() {
 			private Deque<FieldPathComponent> pathComponents = new LinkedList<>();
 			@Override
@@ -248,7 +248,6 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 					for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry : factoriesToNodes.asMap().entrySet()) {
 						IHistoryDifferenceFactory<T> factory = entry.getKey();
 						Collection<DiffNode> nodes = entry.getValue();
-						// XXX HistoryLog : à corriger
 						historyDifferences.addAll(factory.create(historyDifferenceSupplier, rootDifference, nodes));
 					}
 					return null;
@@ -262,14 +261,14 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	
 	private abstract class AbstractDifferenceFromReferenceGenerator implements IDifferenceFromReferenceGenerator<T> {
 		@Override
-		public Difference<T> diff(T modifie, T reference) {
-			return new Difference<T>(reference, modifie, createDiffer().compare(modifie, reference));
+		public Difference<T> diff(T modified, T reference) {
+			return new Difference<T>(reference, modified, createDiffer().compare(modified, reference));
 		}
 
 		/**
-		 * Crée un differ.
-		 * <p>Le differ doit être instancié à chaque fois qu'on a besoin de lui, parce qu'il n'est pas thread-safe.
-		 * <p>De plus, il semble avoir un état interne qui n'est pas forcément bien nettoyé en cas d'erreur...
+		 * Creates a differ.
+		 * <p> The differ must be instantiated each time we need it, as it's not thread safe.
+		 * <p> Moreover, it looks like it has an internal state which might not be cleaned up in case of errors.
 		 */
 		protected abstract ObjectDiffer createDiffer();
 		

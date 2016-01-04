@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 import fr.openwide.core.jpa.business.generic.service.ITransactionalAspectAwareService;
 
 /**
- * Ce service doit étendre {@link ITransactionalAspectAwareService} pour que tout fonctionne correctement <strong>même</strong>
- * si aucune transaction n'est en cours.
+ * This service must inherit from {@link ITransactionalAspectAwareService} for everything to work correctly even
+ * if we are not in a transaction.
  */
 public interface ITransactionScopeIndependantRunnerService extends ITransactionalAspectAwareService {
 
