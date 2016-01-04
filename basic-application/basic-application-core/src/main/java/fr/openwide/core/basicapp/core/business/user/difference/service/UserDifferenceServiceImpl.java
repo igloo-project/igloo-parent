@@ -16,17 +16,14 @@ public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceSe
 
 	@Override
 	protected Iterable<? extends AbstractCoreBinding<? extends User, ?>> getSimpleInitializationFieldsBindings() {
+		// not used at the moment, we only use the minimal difference fields.
 		return ImmutableList.of(
-				Bindings.user().firstName(),
-				Bindings.user().lastName(),
-				Bindings.user().email(),
-				Bindings.user().locale(),
-				Bindings.user().groups()
 		);
 	}
 	
 	@Override
 	protected Iterable<? extends BindingRoot<? super User, ?>> getMinimalDifferenceFieldsBindings() {
+		// we don't use this at the moment: the usage of differences is commented.
 		return ImmutableList.of(
 				Bindings.user().firstName(),
 				Bindings.user().lastName(),
