@@ -5,8 +5,9 @@ import java.util.Date;
 import fr.openwide.core.jpa.more.business.difference.model.Difference;
 
 /**
+ * Update an object depending on the differences found on it.
  * Met à jour un objet en fonction des différences constatées sur cet objet.
- * <p>Se résume pour l'instant à simplement rafraîchir certains {@link HistoryEvent}.
+ * <p>At the moment, only refreshes {@link HistoryEvent}.
  */
 public interface IDifferenceHandler<T> {
 	

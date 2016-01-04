@@ -37,10 +37,10 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 		}
 		
 		/*
-		 * Ici on met en oeuvre le seul intérêt de cette classe : exécuter toutes les récupérations d'objets depuis la
-		 * BDD en une seule transaction, même s'il y en a des centaines. Cela permet notamment de profiter du 
-		 * "batch fetching" d'hibernate (puisqu'on récupère dans un premier temps tous les proxies, et ensuite
-		 * seulement on les initialise)
+		 * Here lies the only interest of this class: executing all the objects fetches in one transaction, even if there
+		 * are hundreds.
+		 * It allows to take benefit from Hibernate's batch fetching (as we get all the proxies at first, then we
+		 * initialize them).
 		 */
 		transactionScopeIndependantRunnerService.run(true, new Callable<Void>() {
 			@Override

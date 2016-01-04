@@ -6,13 +6,13 @@ import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGene
 public interface IDifferenceService<T> extends IHistoryDifferenceGenerator<T> {
 	
 	/**
-	 * @return Un générateur de différence à utiliser dans la plupart des cas.
+	 * @return A difference generator to be used in most cases.
 	 */
 	IDifferenceFromReferenceGenerator<T> getMainDifferenceGenerator();
 
 	/**
-	 * @return Un générateur de différence à utiliser lorsque le diff doit être réalisé sur un sous-ensemble
-	 * restreint de propriétés (par exemple à la création d'un objet).
+	 * @return A difference generator to use when the diff must be made on part of the properties (for instance for
+	 * the creation of an object).
 	 */
 	IDifferenceFromReferenceGenerator<T> getMinimalDifferenceGenerator();
 

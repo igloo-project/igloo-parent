@@ -9,18 +9,18 @@ public interface IDifferenceFromReferenceGenerator<T> extends IDifferenceGenerat
 	Difference<T> diffFromReference(T value);
 	
 	/**
-	 * Lorsqu'on doit calculer des différences sur de nombreux objets, ceci permet de factoriser la récupération des
-	 * références dans une seule et même transaction, au lieu d'ouvrir une transaction pour chaque calcul de différence.
-	 * <p>Afin d'être utilisable dans la méthode {@link #diff(Object, Object)}, la référence retournée doit passer
-	 * par la méthode {@link #initializeReference(Object)}
+	 * When we have to compute the differences for a lot of objects, this allows to get the references in only one
+	 * transaction, instead of opening a transaction for each difference computation.
+	 * <p>The returned reference, to be usable by the method {@link #diff(Object, Object)}, should be passed through
+	 * the method {@link #initializeReference(Object)}
 	 * @see #initializeReference(Object)
 	 * @see #diff(Object, Object)
 	 */
 	Callable<T> getReferenceProvider(T value);
 
 	/**
-	 * Doit être appelé sur un objet retourné par {@link #retrieveReference(Object)} afin de pouvoir le passer à la
-	 * méthode {@link #diff(Object, Object)}.
+	 * Must be called on an object returned by {@link #retrieveReference(Object)} to make it usable by the method
+	 * {@link #diff(Object, Object)}.
 	 * @see #retrieveReference(Object)
 	 * @see #diff(Object, Object)
 	 */

@@ -1,9 +1,8 @@
 package fr.openwide.core.jpa.more.business.difference.util;
 
 /**
- * Une interface pour les objets chargés d'initialiser les entités chargées depuis la base de données avant la
- * fermeture de la transaction. Permet d'utiliser par la suite des champs non chargés automatiquement, tels que
- * des collections LAZY.
+ * An interface for the objects responsible for initializing the entities loaded from the database before the
+ * transaction end. Allows to use fields which are lazily loaded.
  */
 public interface IProxyInitializer<T> {
 	void initialize(T value);

@@ -36,7 +36,7 @@ public enum HistoryLogSort implements ISort<SortField> {
 							this, sortOrder, SortField.Type.LONG,
 							AbstractHistoryLog.DATE
 					),
-					SortUtils.luceneSortField( // L'ID donne une bonne clé de substitution pour le tri par date
+					SortUtils.luceneSortField(
 							this, sortOrder, SortField.Type.LONG,
 							GenericEntity.ID_SORT
 					)

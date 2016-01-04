@@ -77,8 +77,8 @@ public abstract class AbstractRendererServiceImpl extends AbstractBackgroundWick
 	}
 	
 	/**
-	 * Wrapper qui permet de s'assurer qu'un renderer aura accès à tout ce que fournit
-	 * Wicket (en particulier le Localizer) lorsqu'il est exécuté.
+	 * Wrapper which allows to be sure that a renderer will have access to all the elements provided by Wicket
+	 * (especially the Localizer) when it's executed.
 	 */
 	private class BackgroundWicketThreadContextRenderer<T> extends Renderer<T> {
 		private static final long serialVersionUID = 3035924297487452645L;
