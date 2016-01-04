@@ -37,7 +37,7 @@ import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathComponent;
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public final class DefaultHistoryDifferenceFactory<T2> extends AbstractHistoryDifferenceFactory<T2> {
+public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDifferenceFactory<T> {
 	private Predicate<? super DiffNode> branchFilter = new Predicate<DiffNode>() {
 		@Override
 		public boolean apply(DiffNode input) {
@@ -62,7 +62,7 @@ public final class DefaultHistoryDifferenceFactory<T2> extends AbstractHistoryDi
 
 	@Override
 	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> create(Supplier<HD> historyDifferenceSupplier,
-			Difference<T2> rootDifference, Collection<DiffNode> nodes) {
+			Difference<T> rootDifference, Collection<DiffNode> nodes) {
 		final List<HD> result = Lists.newLinkedList();
 		for (DiffNode node : nodes) {
 			FieldPath path = DiffUtils.toFieldPath(node.getPath());
@@ -72,7 +72,7 @@ public final class DefaultHistoryDifferenceFactory<T2> extends AbstractHistoryDi
 	}
 	
 	public <HD extends AbstractHistoryDifference<HD, ?>> HD create(Supplier<HD> historyDifferenceSupplier,
-			Difference<T2> rootDifference, DiffNode parentNode, DiffNode currentNode, FieldPath currentNodeRelativePath) {
+			Difference<T> rootDifference, DiffNode parentNode, DiffNode currentNode, FieldPath currentNodeRelativePath) {
 		HD difference = newHistoryDifference(historyDifferenceSupplier, rootDifference, parentNode,
 				currentNode, currentNodeRelativePath, toHistoryDifferenceAction(currentNode));
 		List<HD> subDifferences = createChildren(historyDifferenceSupplier, rootDifference, currentNode, FieldPath.ROOT);
@@ -81,7 +81,7 @@ public final class DefaultHistoryDifferenceFactory<T2> extends AbstractHistoryDi
 	}
 	
 	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> createChildren(final Supplier<HD> historyDifferenceSupplier,
-			final Difference<T2> rootDifference, final DiffNode parentNode, final FieldPath parentRelativePath) {
+			final Difference<T> rootDifference, final DiffNode parentNode, final FieldPath parentRelativePath) {
 		final List<HD> result = Lists.newLinkedList();
 		parentNode.visitChildren(new Visitor() {
 			@Override
