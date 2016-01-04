@@ -19,9 +19,9 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
 
-public class TestHibernateCreator extends AbstractJpaCoreTestCase {
+public class TestBatchCreator extends AbstractJpaCoreTestCase {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(TestHibernateCreator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestBatchCreator.class);
 
 	@Autowired
 	private BatchCreator batchCreator;
