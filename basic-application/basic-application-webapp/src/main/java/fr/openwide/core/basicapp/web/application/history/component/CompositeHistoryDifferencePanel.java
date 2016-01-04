@@ -37,19 +37,7 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 	}
 	
 	public static IHistoryComponentFactory inline(final  IHistoryComponentFactory childFactory) {
-		return new IHistoryComponentFactory() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public Component create(String wicketId, IModel<HistoryDifference> parameter1) {
-				return new CompositeHistoryDifferencePanel(wicketId, parameter1, "history-difference-inline", childFactory);
-			}
-			
-			@Override
-			public void detach() {
-				childFactory.detach();
-			}
-		};
+		return new HistoryComponentFactory(childFactory);
 	}
 	
 	public CompositeHistoryDifferencePanel(String id, IModel<HistoryDifference> model, String cssClass,
@@ -75,5 +63,25 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 						wicketId, BindingModel.of(getModel(), Bindings.historyDifference().differences()), historyComponentFactory
 				)
 				.add(new ClassAttributeAppender(cssClass));
+	}
+	
+	private static class HistoryComponentFactory implements IHistoryComponentFactory {
+		private static final long serialVersionUID = 1L;
+		
+		private IHistoryComponentFactory childFactory;
+		
+		private HistoryComponentFactory(IHistoryComponentFactory childFactory) {
+			this.childFactory = childFactory;
+		}
+		
+		@Override
+		public Component create(String wicketId, IModel<HistoryDifference> parameter1) {
+			return new CompositeHistoryDifferencePanel(wicketId, parameter1, "history-difference-inline", childFactory);
+		}
+		
+		@Override
+		public void detach() {
+			childFactory.detach();
+		}
 	}
 }
