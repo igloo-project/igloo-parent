@@ -3,11 +3,13 @@ package fr.openwide.core.jpa.more.rendering.service;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
+import com.impossibl.postgres.utils.guava.Joiner;
+
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 
 /**
- * Implémentation bouche-trou, uniquement pour combler la dépendance.
+ * Mock implementation, only used to fill the dependency.
  */
 public class EmptyRendererServiceImpl implements IRendererService {
 	
@@ -41,17 +43,18 @@ public class EmptyRendererServiceImpl implements IRendererService {
 
 	@Override
 	public String localize(String resourceKey, Locale locale) {
-		return null;
+		return resourceKey;
 	}
 
 	@Override
 	public String localize(Enum<?> enumValue, String prefix, String suffix, Locale locale) {
-		return null;
+		// TODO GSM: move to joiners once merged
+		return Joiner.on(".").join(prefix, enumValue, suffix);
 	}
 
 	@Override
 	public <T> String localize(Class<T> clazz, T value, Locale locale) {
-		return null;
+		return clazz.getName() + " / " + value;
 	}
 	
 }
