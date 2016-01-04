@@ -21,6 +21,13 @@ import fr.openwide.core.jpa.more.business.history.service.AbstractHistoryLogServ
 public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<HistoryLog, HistoryEventType, HistoryDifference>
 		implements IHistoryLogService {
 
+	private static final Supplier<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER = new Supplier<HistoryDifference>() {
+		@Override
+		public HistoryDifference get() {
+			return new HistoryDifference();
+		}
+	};
+	
 	@Autowired
 	private IUserService userService;
 	
@@ -44,12 +51,7 @@ public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<History
 
 	@Override
 	protected Supplier<HistoryDifference> newHistoryDifferenceSupplier() {
-		return new Supplier<HistoryDifference>() {
-			@Override
-			public HistoryDifference get() {
-				return new HistoryDifference();
-			}
-		};
+		return HISTORY_DIFFERENCE_SUPPLIER;
 	}
 
 }
