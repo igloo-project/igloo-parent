@@ -19,10 +19,10 @@ public final class BootstrapRendererInformation implements Serializable {
 	private final String tooltip;
 
 	private BootstrapRendererInformation(Builder builder) {
-		this.label = builder.getLabel();
-		this.iconCssClass = builder.getIconCssClass();
-		this.color = builder.getColor();
-		this.tooltip = builder.getTooltip();
+		this.label = builder.label;
+		this.iconCssClass = builder.iconCssClass;
+		this.color = builder.color;
+		this.tooltip = builder.tooltip;
 	}
 
 	public static Builder builder() {
@@ -44,17 +44,9 @@ public final class BootstrapRendererInformation implements Serializable {
 			return this;
 		}
 		
-		public String getLabel() {
-			return label;
-		}
-		
 		public Builder icon(String iconCssClass) {
 			this.iconCssClass = iconCssClass;
 			return this;
-		}
-		
-		private String getIconCssClass() {
-			return iconCssClass;
 		}
 		
 		public Builder color(IBootstrapColor color) {
@@ -62,17 +54,9 @@ public final class BootstrapRendererInformation implements Serializable {
 			return this;
 		}
 		
-		private IBootstrapColor getColor() {
-			return color;
-		}
-		
 		public Builder tooltip(String tooltip) {
 			this.tooltip = tooltip;
 			return this;
-		}
-		
-		public String getTooltip() {
-			return tooltip;
 		}
 		
 		public BootstrapRendererInformation build() {
