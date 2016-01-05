@@ -14,7 +14,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogObjectsBean;
-import fr.openwide.core.jpa.more.business.history.service.IAbstractHistoryLogService;
+import fr.openwide.core.jpa.more.business.history.service.IGenericHistoryLogService;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 
 public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET, HD>,
@@ -29,7 +29,7 @@ public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET
 	protected final AbstractHistoryLogObjectsBean<T> logObjects;
 	
 	@Autowired
-	private IAbstractHistoryLogService<HL, HET, HD> historyLogService;
+	private IGenericHistoryLogService<HL, HET, HD> historyLogService;
 
 	public HistoryLogBeforeCommitTask(Date date, HET eventType, AbstractHistoryLogObjectsBean<T> objects) {
 		super();
@@ -47,7 +47,7 @@ public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET
 		logNow();
 	}
 	
-	protected final IAbstractHistoryLogService<HL, HET, HD> getHistoryLogService() {
+	protected final IGenericHistoryLogService<HL, HET, HD> getHistoryLogService() {
 		return historyLogService;
 	}
 

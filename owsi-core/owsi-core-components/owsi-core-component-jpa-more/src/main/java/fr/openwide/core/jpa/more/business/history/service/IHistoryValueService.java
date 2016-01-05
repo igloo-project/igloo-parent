@@ -1,8 +1,7 @@
 package fr.openwide.core.jpa.more.business.history.service;
 
-import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 import fr.openwide.core.commons.util.rendering.IRenderer;
-import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 
 public interface IHistoryValueService {
 
@@ -10,7 +9,7 @@ public interface IHistoryValueService {
 	
 	<T> HistoryValue create(T value, IRenderer<? super T> renderer);
 	
-	GenericEntity<Long, ?> retrieve(HistoryValue value);
+	Object retrieve(HistoryValue value);
 	
 	@SuppressWarnings("rawtypes")
 	String render(HistoryValue value, IRenderer renderer);

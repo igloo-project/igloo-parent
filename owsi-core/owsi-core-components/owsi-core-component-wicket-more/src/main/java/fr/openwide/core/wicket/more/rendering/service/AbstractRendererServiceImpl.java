@@ -61,7 +61,7 @@ public abstract class AbstractRendererServiceImpl extends AbstractBackgroundWick
 		return findDefaultRenderer(valueType);
 	}
 	
-	protected final <T> Renderer<? super T> findDefaultRenderer(final Class<T> valueType) {
+	private <T> Renderer<? super T> findDefaultRenderer(final Class<T> valueType) {
 		IConverter<T> converter;
 		try {
 			converter = runWithContext(new Callable<IConverter<T>>() {
@@ -77,7 +77,7 @@ public abstract class AbstractRendererServiceImpl extends AbstractBackgroundWick
 	}
 	
 	/**
-	 * Wrapper which allows to be sure that a renderer will have access to all the elements provided by Wicket
+	 * Wrapper which makes sure that a renderer will have access to all the elements provided by Wicket
 	 * (especially the Localizer) when it's executed.
 	 */
 	private class BackgroundWicketThreadContextRenderer<T> extends Renderer<T> {
@@ -152,17 +152,17 @@ public abstract class AbstractRendererServiceImpl extends AbstractBackgroundWick
 	}
 
 	@Override
-	public String localize(String resourceKey, Locale locale) {
+	public final String localize(String resourceKey, Locale locale) {
 		return Localizer.get().getString(resourceKey, null, null, locale, null, (String) null);
 	}
 
 	@Override
-	public String localize(Enum<?> enumValue, String prefix, String suffix, Locale locale) {
+	public final String localize(Enum<?> enumValue, String prefix, String suffix, Locale locale) {
 		return EnumRenderer.with(prefix, suffix).render(enumValue, locale);
 	}
 
 	@Override
-	public <T> String localize(Class<T> clazz, T value, Locale locale) {
+	public final <T> String localize(Class<T> clazz, T value, Locale locale) {
 		return Application.get().getConverterLocator().getConverter(clazz).convertToString(value, locale);
 	}
 

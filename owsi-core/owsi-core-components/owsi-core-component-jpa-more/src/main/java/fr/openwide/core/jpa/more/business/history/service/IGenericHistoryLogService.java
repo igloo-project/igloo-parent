@@ -14,7 +14,7 @@ import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifferenc
 import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogObjectsBean;
 import fr.openwide.core.jpa.more.business.history.util.IDifferenceHandler;
 
-public interface IAbstractHistoryLogService<
+public interface IGenericHistoryLogService<
 				HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
 				HD extends AbstractHistoryDifference<HD, HL>>
@@ -32,8 +32,9 @@ public interface IAbstractHistoryLogService<
 			throws ServiceException, SecurityServiceException;
 	
 	/*
-	 * L'utilisation d'interfaces plus génériques que IDifference service ici permet d'utiliser des
-	 * objets calculant les différences de manière paramétrable (par exemple pour ignorer certains champs ponctuellement).
+	 * Using interfaces more generic than IDifferenceService here allows the caller to use
+	 * objects that compute differences in a customizable way (for instance in order to occasionally
+	 * ignore some fields).
 	 */
 	@SuppressWarnings("unchecked")
 	<T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects,

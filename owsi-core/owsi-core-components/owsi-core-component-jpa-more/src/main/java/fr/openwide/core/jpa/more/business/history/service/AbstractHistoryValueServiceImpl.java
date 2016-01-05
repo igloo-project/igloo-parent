@@ -24,19 +24,28 @@ public class AbstractHistoryValueServiceImpl implements IHistoryValueService {
 	@Autowired
 	protected IPropertyService propertyService;
 
+	/*
+	 * Even if object.getClass() is a subtype of T (say T2), this will work.
+	 * 
+	 * The returned renderer will actually be of type IRenderer<? super T2>.
+	 * This is enough to allow calling renderer.render(object) at runtime, even though at
+	 * compile time, it's a bit dodgy. Maybe we could write something like object.getClass().cast(object)
+	 * just to get the right type, but it would seem a little dumb...
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> HistoryValue create(T object) {
+	public final <T> HistoryValue create(T object) {
 		if (object == null) {
 			return new HistoryValue();
 		} else {
-			@SuppressWarnings("unchecked")
-			IRenderer<? super T> renderer = rendererService.findRenderer((Class<T>)object.getClass());
+			@SuppressWarnings("rawtypes")
+			IRenderer renderer = rendererService.findRenderer(object.getClass());
 			return create(object, renderer);
 		}
 	}
 
 	@Override
-	public <T> HistoryValue create(T value, IRenderer<? super T> renderer) {
+	public final <T> HistoryValue create(T value, IRenderer<? super T> renderer) {
 		String label = renderer.render(value, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
 		
 		if (value instanceof GenericEntity) {
@@ -59,31 +68,35 @@ public class AbstractHistoryValueServiceImpl implements IHistoryValueService {
 		return null;
 	}
 	
+	protected Object deserialize(String value) {
+		return null; // Can't do a thing with the default implementation of serialize(Object)
+	}
+	
 	@Override
-	public GenericEntity<Long, ?> retrieve(HistoryValue value) {
+	public final Object retrieve(HistoryValue value) {
 		if (value == null) {
 			return null;
 		}
 		
 		HistoryEntityReference reference = value.getEntityReference();
-		if (reference == null || reference.getEntityClass() == null || reference.getEntityId() == null) {
-			return null;
+		if (reference != null && reference.getEntityClass() != null && reference.getEntityId() != null) {
+			return entityService.getEntity(reference);
 		}
 		
-		return entityService.getEntity(reference);
+		return deserialize(value.getSerialized());
 	}
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String render(HistoryValue value, IRenderer renderer) {
+	public final String render(HistoryValue value, IRenderer renderer) {
 		if (value == null) {
 			return null;
 		}
 		
 		if (renderer != null) {
-			GenericEntity<Long, ?> entity = retrieve(value);
-			if (entity != null) {
-				return renderer.render(entity, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+			Object retrieved = retrieve(value);
+			if (retrieved != null) {
+				return renderer.render(retrieved, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
 			}
 		}
 		
@@ -92,15 +105,15 @@ public class AbstractHistoryValueServiceImpl implements IHistoryValueService {
 	
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String render(HistoryValue value) {
+	public final String render(HistoryValue value) {
 		if (value == null) {
 			return null;
 		}
 
-		GenericEntity<Long, ?> entity = retrieve(value);
-		if (entity != null) {
-			IRenderer renderer = rendererService.findRenderer(HibernateUtils.getClass(entity));
-			return renderer.render(entity, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+		Object retrieved = retrieve(value);
+		if (retrieved != null) {
+			IRenderer renderer = rendererService.findRenderer(HibernateUtils.getClass(retrieved));
+			return renderer.render(retrieved, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
 		}
 		
 		return value.getLabel();

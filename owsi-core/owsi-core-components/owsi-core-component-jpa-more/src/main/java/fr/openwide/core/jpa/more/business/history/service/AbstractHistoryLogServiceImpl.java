@@ -25,7 +25,7 @@ import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchroniz
 public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
 				HD extends AbstractHistoryDifference<HD, HL>>
-		extends GenericEntityServiceImpl<Long, HL> implements IAbstractHistoryLogService<HL, HET, HD> {
+		extends GenericEntityServiceImpl<Long, HL> implements IGenericHistoryLogService<HL, HET, HD> {
 
 	@Autowired
 	protected ITransactionSynchronizationTaskManagerService transactionSynchronizationTaskManagerService;
