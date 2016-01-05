@@ -17,6 +17,13 @@ import de.schlichtherle.truezip.file.TFile;
 import de.schlichtherle.truezip.file.TVFS;
 import de.schlichtherle.truezip.fs.FsSyncOptions;
 
+/**
+ * A registry responsible for keeping track of open {@link TFile TFiles} and for cleaning them up upon closing it.
+ * <p>This should generally be used as a factory for creating TFiles (see the <code>create</code> methods), and the
+ * calling of {@link #open()} and {@link #close()} should be done in some generic code (such as a servlet filter).
+ * <p>Please note that this registry is using a {@link ThreadLocal}. Opening and closing the registry must therefore
+ * be done in the same thread, and each TFile-creating thread should use its own registry.
+ */
 public final class TFileRegistry {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TFileRegistry.class);
@@ -26,8 +33,8 @@ public final class TFileRegistry {
 	private TFileRegistry() { }
 	
 	/**
-	 * Enables the (thread-local) TFileRegistry, so that every call to the createXX() or register() static methods will result in the relevant TFile to be
-	 * stored for further cleaning of TrueZip internal resources.
+	 * Enables the (thread-local) TFileRegistry, so that every call to the createXX() or register() static methods
+	 * will result in the relevant TFile to be stored for further cleaning of TrueZip internal resources.
 	 * <p>The actual cleaning must be performed by calling the {@link #close()} static method on TFileRegistry.
 	 */
 	public static void open() {
@@ -40,8 +47,8 @@ public final class TFileRegistry {
 	}
 	
 	/**
-	 * {@link TVFS#sync(de.schlichtherle.truezip.fs.FsMountPoint, de.schlichtherle.truezip.util.BitField) Synchronize} the TrueZip virtual filesystem
-	 * for every registered file, and clears the registry.
+	 * {@link TVFS#sync(de.schlichtherle.truezip.fs.FsMountPoint, de.schlichtherle.truezip.util.BitField) Synchronize}
+	 * the TrueZip virtual filesystem for every registered file, and clears the registry.
 	 * <p><strong>WARNING :</strong> If some {@link InputStream InputStreams} or {@link OutputStream OutputStreams}
 	 * managed by the current thread have not been closed yet, they will be ignored.
 	 */
