@@ -20,6 +20,11 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDifference> {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Displays a composite difference as a block: first a line for the composite field,
+	 * then one line for each sub-field.
+	 * <p>Sub-field lines are prefixed with paths by default. This can be overridden using CSS.
+	 */
 	public static IHistoryComponentFactory block(final IHistoryComponentFactory childFactory) {
 		return new IHistoryComponentFactory() {
 			private static final long serialVersionUID = 1L;
@@ -35,9 +40,25 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 			}
 		};
 	}
-	
-	public static IHistoryComponentFactory inline(final  IHistoryComponentFactory childFactory) {
-		return new HistoryComponentFactory(childFactory);
+
+	/**
+	 * Displays a composite difference inline: one line for both the composite field, a a list of sub-field values.
+	 * <p>Sub-field paths are not displayed by default. This can be overridden using CSS.
+	 */
+	public static IHistoryComponentFactory inline(final IHistoryComponentFactory childFactory) {
+		return new IHistoryComponentFactory() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Component create(String wicketId, IModel<HistoryDifference> parameter1) {
+				return new CompositeHistoryDifferencePanel(wicketId, parameter1, "history-difference-inline", childFactory);
+			}
+			
+			@Override
+			public void detach() {
+				childFactory.detach();
+			}
+		};
 	}
 	
 	public CompositeHistoryDifferencePanel(String id, IModel<HistoryDifference> model, String cssClass,
@@ -63,25 +84,5 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 						wicketId, BindingModel.of(getModel(), Bindings.historyDifference().differences()), historyComponentFactory
 				)
 				.add(new ClassAttributeAppender(cssClass));
-	}
-	
-	private static class HistoryComponentFactory implements IHistoryComponentFactory {
-		private static final long serialVersionUID = 1L;
-		
-		private IHistoryComponentFactory childFactory;
-		
-		private HistoryComponentFactory(IHistoryComponentFactory childFactory) {
-			this.childFactory = childFactory;
-		}
-		
-		@Override
-		public Component create(String wicketId, IModel<HistoryDifference> parameter1) {
-			return new CompositeHistoryDifferencePanel(wicketId, parameter1, "history-difference-inline", childFactory);
-		}
-		
-		@Override
-		public void detach() {
-			childFactory.detach();
-		}
 	}
 }

@@ -14,6 +14,10 @@ import fr.openwide.core.basicapp.web.application.history.component.DefaultHistor
 import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
+/**
+ * A {@link IHistoryComponentFactory} allowing the caller to customize the way some particular fields are displayed.
+ * <p>The customization is done through the <code>customXXX()</code> methods.
+ */
 public class CustomizableHistoryComponentFactory implements IHistoryComponentFactory {
 	
 	private static final long serialVersionUID = 7490592521281331323L;
@@ -54,40 +58,73 @@ public class CustomizableHistoryComponentFactory implements IHistoryComponentFac
 			return defaultFactory;
 		}
 	}
-	
+
+	/**
+	 * Use a custom {@link IHistoryComponentFactory} for the given field.
+	 */
 	public CustomizableHistoryComponentFactory customForPath(FieldPath path, IHistoryComponentFactory factory) {
 		specificComponentFactories.put(path, factory);
 		return this;
 	}
-	
+
+	/**
+	 * Use a custom {@link IHistoryComponentFactory} for the given field.
+	 */
 	public CustomizableHistoryComponentFactory customForBinding(BindingRoot<?, ?> binding, IHistoryComponentFactory factory) {
 		return customForPath(FieldPath.fromBinding(binding), factory);
 	}
-	
+
+	/**
+	 * Use a custom {@link IHistoryComponentFactory} for the given field's items.
+	 */
 	public CustomizableHistoryComponentFactory customForBindingItem(BindingRoot<?, ?> binding, IHistoryComponentFactory factory) {
 		return customForPath(FieldPath.fromBinding(binding).item(), factory);
 	}
 	
+	/**
+	 * Use the {@link CompositeHistoryDifferencePanel#block(IHistoryComponentFactory) block composite}
+	 * layout for the given field.
+	 */
 	public CustomizableHistoryComponentFactory compositeBlockForPath(FieldPath path) {
 		return customForPath(path, compositeBlockFactory);
 	}
-	
+
+	/**
+	 * Use the {@link CompositeHistoryDifferencePanel#block(IHistoryComponentFactory) block composite}
+	 * layout for the given field.
+	 */
 	public CustomizableHistoryComponentFactory compositeBlockForBinding(BindingRoot<?, ?> binding) {
 		return customForBinding(binding, compositeBlockFactory);
 	}
-	
+
+	/**
+	 * Use the {@link CompositeHistoryDifferencePanel#block(IHistoryComponentFactory) block composite}
+	 * layout for the given field's items.
+	 */
 	public CustomizableHistoryComponentFactory compositeBlockForBindingItem(BindingRoot<?, ?> binding) {
 		return customForBindingItem(binding, compositeBlockFactory);
 	}
-	
+
+	/**
+	 * Use the {@link CompositeHistoryDifferencePanel#inline(IHistoryComponentFactory) inline composite}
+	 * layout for the given field.
+	 */
 	public CustomizableHistoryComponentFactory compositeInlineForPath(FieldPath path) {
 		return customForPath(path, compositeInlineFactory);
 	}
-	
+
+	/**
+	 * Use the {@link CompositeHistoryDifferencePanel#inline(IHistoryComponentFactory) inline composite}
+	 * layout for the given field.
+	 */
 	public CustomizableHistoryComponentFactory compositeInlineForBinding(BindingRoot<?, ?> binding) {
 		return customForBinding(binding, compositeInlineFactory);
 	}
-	
+
+	/**
+	 * Use the {@link CompositeHistoryDifferencePanel#inline(IHistoryComponentFactory) inline composite}
+	 * layout for the given field's items.
+	 */
 	public CustomizableHistoryComponentFactory compositeInlineForBindingItem(BindingRoot<?, ?> binding) {
 		return customForBindingItem(binding, compositeInlineFactory);
 	}
