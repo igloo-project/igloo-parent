@@ -20,7 +20,6 @@ public class LongIdGenericEntityConverter<E extends GenericEntity<Long, ?>> exte
 	private IEntityService entityService;
 
 	public LongIdGenericEntityConverter(Class<E> targetType) {
-		Injector.get().inject(this);
 		this.targetType = targetType;
 	}
 	
@@ -36,6 +35,9 @@ public class LongIdGenericEntityConverter<E extends GenericEntity<Long, ?>> exte
 	public E convertToObject(String value, Locale locale) {
 		if (!StringUtils.hasText(value)) {
 			return null;
+		}
+		if (entityService == null) { // Late initialization, so that we can use this class for static variables
+			Injector.get().inject(this);
 		}
 		return entityService.getEntity(targetType, convertToId(value, locale));
 	}
