@@ -6,7 +6,7 @@ import java.util.Objects;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
 
-public class BootstrapRendererInformation implements Serializable {
+public final class BootstrapRendererInformation implements Serializable {
 
 	private static final long serialVersionUID = -6016103792390046731L;
 
