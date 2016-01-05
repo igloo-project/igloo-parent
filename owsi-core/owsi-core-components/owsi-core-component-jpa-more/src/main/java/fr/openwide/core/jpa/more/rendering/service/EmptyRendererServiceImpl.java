@@ -13,7 +13,7 @@ import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
  */
 public class EmptyRendererServiceImpl implements IRendererService {
 	
-	private enum DefaultRenderer implements IRenderer<Object> {
+	protected enum DefaultRenderer implements IRenderer<Object> {
 		INSTANCE;
 		@Override
 		public String render(Object value, Locale locale) {
