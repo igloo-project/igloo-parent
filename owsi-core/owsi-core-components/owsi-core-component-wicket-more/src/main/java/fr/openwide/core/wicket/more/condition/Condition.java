@@ -127,6 +127,14 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			this.condition = condition;
 			this.modelIfTrue = modelIfTrue;
 		}
+		public IfElseBuilder<T> elseIf(Condition condition, IModel<? extends T> model) {
+			return new IfElseBuilder<T>(condition, model) {
+				@Override
+				public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
+					return IfElseBuilder.this.otherwise(super.otherwise(modelIfFalse));
+				}
+			};
+		}
 		public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
 			return condition.asValue(modelIfTrue, modelIfFalse);
 		}
@@ -135,6 +143,18 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	public static class ValueIfElseBuilder<T extends Serializable> extends IfElseBuilder<T> {
 		public ValueIfElseBuilder(Condition condition, IModel<? extends T> modelIfTrue) {
 			super(condition, modelIfTrue);
+		}
+		@Override
+		public ValueIfElseBuilder<T> elseIf(Condition condition, IModel<? extends T> model) {
+			return new ValueIfElseBuilder<T>(condition, model) {
+				@Override
+				public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
+					return ValueIfElseBuilder.this.otherwise(super.otherwise(modelIfFalse));
+				}
+			};
+		}
+		public ValueIfElseBuilder<T> elseIf(Condition condition, T valueIfFalse) {
+			return elseIf(condition, Model.of(valueIfFalse));
 		}
 		public IModel<T> otherwise(T valueIfFalse) {
 			return otherwise(Model.of(valueIfFalse));
