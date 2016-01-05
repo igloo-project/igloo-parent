@@ -2,8 +2,8 @@ package fr.openwide.core.basicapp.web.application.history.renderer;
 
 import java.util.Map;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
-import com.impossibl.postgres.utils.guava.Joiner;
 
 import fr.openwide.core.basicapp.core.business.history.model.HistoryDifference;
 import fr.openwide.core.basicapp.core.business.history.model.HistoryLog;

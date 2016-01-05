@@ -7,10 +7,10 @@ import java.util.Set;
 import org.apache.wicket.model.IModel;
 import org.springframework.security.acls.model.Permission;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.impossibl.postgres.utils.guava.Joiner;
 
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
 import fr.openwide.core.jpa.more.business.sort.ISort;

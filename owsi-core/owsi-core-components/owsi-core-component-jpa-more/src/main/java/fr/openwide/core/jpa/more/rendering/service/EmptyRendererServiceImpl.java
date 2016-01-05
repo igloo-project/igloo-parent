@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.more.rendering.service;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
-import com.impossibl.postgres.utils.guava.Joiner;
+import com.google.common.base.Joiner;
 
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;

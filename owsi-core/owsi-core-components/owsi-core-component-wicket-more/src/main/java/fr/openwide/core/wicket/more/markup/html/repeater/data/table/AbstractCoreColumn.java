@@ -11,8 +11,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
-import com.impossibl.postgres.utils.guava.Joiner;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.sort.ISortIconStyle;
