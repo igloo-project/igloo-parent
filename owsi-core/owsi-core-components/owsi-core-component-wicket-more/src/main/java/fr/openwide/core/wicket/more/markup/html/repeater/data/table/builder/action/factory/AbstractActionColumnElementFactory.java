@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.impossibl.postgres.utils.guava.Joiner;
 
+import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
@@ -147,7 +148,7 @@ public abstract class AbstractActionColumnElementFactory<T, F extends AbstractAc
 	}
 
 	public String getCssClass() {
-		return Joiner.on(" ").join(cssClasses);
+		return Joiners.onSpace().join(cssClasses);
 	}
 
 	public F addCssClass(String cssClass) {
