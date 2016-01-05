@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
@@ -22,6 +21,7 @@ import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.Bootstr
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterConditionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.AbstractActionColumnElementFactory;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class CoreActionColumnPanel<T> extends Panel {
 
@@ -37,7 +37,8 @@ public class CoreActionColumnPanel<T> extends Panel {
 					protected void populateItem(ListItem<AbstractActionColumnElementFactory<T, ?>> item) {
 						AbstractActionColumnElementFactory<T, ?> factory = item.getModelObject();
 						BootstrapRenderer<? super T> renderer = factory.getRenderer();
-						
+
+						IModel<String> labelModel = renderer.asModel(rowModel);
 						IModel<String> tooltipModel = renderer.asTooltipModel(rowModel);
 						
 						Condition actionCondition = Condition.alwaysTrue();
@@ -56,10 +57,10 @@ public class CoreActionColumnPanel<T> extends Panel {
 										.add(
 												BootstrapColorBehavior.btn(renderer.asColorModel(rowModel)),
 												new AttributeModifier("title",
-														Condition.predicate(tooltipModel, Predicates2.hasText())
-																.and(factory.getShowTooltipCondition())
-																.then(tooltipModel)
-																.otherwise(Model.of((String) null))
+														factory.getShowTooltipCondition().negate()
+																.then(Models.placeholder())
+																.elseIf(Condition.predicate(tooltipModel, Predicates2.hasText()).negate(), labelModel)
+																.otherwise(tooltipModel)
 												),
 												new ClassAttributeAppender(factory.getCssClass()),
 												new EnclosureBehavior()
