@@ -21,7 +21,6 @@ import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileS
 import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.wicket.more.common.WorkInProgressPopup;
 import fr.openwide.core.wicket.more.export.file.component.AbstractFileDownloadAjaxLink;
-import fr.openwide.core.wicket.servlet.filter.TFileZipFileFilter;
 
 public class FileDownloadPanel extends Panel {
 
@@ -57,7 +56,7 @@ public class FileDownloadPanel extends Panel {
 		);
 	}
 
-	/**
+	/*
 	 * If you want to use TFileRegistry you must add {@link TFileZipFileFilter} in your web.xml file
 	 */
 	public TFile generateTFile() {

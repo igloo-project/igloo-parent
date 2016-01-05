@@ -41,8 +41,8 @@
 	</filter>
 	
 	<filter>
-		<filter-name>TFileZipFileFilter</filter-name>
-		<filter-class>fr.openwide.core.wicket.servlet.filter.TFileZipFileFilter</filter-class>
+		<filter-name>openTFileRegistryFilter</filter-name>
+		<filter-class>fr.openwide.core.wicket.servlet.filter.OpenTFileRegistryFilter</filter-class>
 	</filter>
 	
 	<filter>
@@ -78,7 +78,7 @@
 	</filter-mapping>
 	
 	<filter-mapping>
-		<filter-name>TFileZipFileFilter</filter-name>
+		<filter-name>openTFileRegistryFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	

@@ -18,9 +18,9 @@ import de.schlichtherle.truezip.util.SuffixSet;
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.commons.util.registry.TFileRegistry;
 
-public class TFileZipFileFilter implements Filter {
+public class OpenTFileRegistryFilter implements Filter {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(TFileZipFileFilter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenTFileRegistryFilter.class);
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
