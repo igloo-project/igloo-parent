@@ -27,7 +27,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	}
 	
 	/**
-	 * @deprecated User {@link #build()} instead.
+	 * @deprecated Use {@link #build()} instead.
 	 */
 	@Deprecated
 	public static <O> IAjaxConfirmLinkBuilderStepStart<O> build(String wicketId, IModel<O> model) {
@@ -35,7 +35,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	}
 	
 	/**
-	 * @deprecated User {@link #build()} instead.
+	 * @deprecated Use {@link #build()} instead.
 	 */
 	@Deprecated
 	public static IAjaxConfirmLinkBuilderStepStart<Void> build(String wicketId) {
