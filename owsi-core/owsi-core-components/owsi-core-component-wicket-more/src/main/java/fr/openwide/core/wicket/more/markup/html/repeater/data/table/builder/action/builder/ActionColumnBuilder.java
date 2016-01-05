@@ -25,11 +25,8 @@ import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFa
 import fr.openwide.core.wicket.more.markup.html.factory.OneParameterConditionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.CoreActionColumn;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.AbstractActionColumnElementFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.ActionColumnActionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.ActionColumnAjaxActionFactory;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.ActionColumnConfirmActionFactory;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.ActionColumnLinkFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.state.IActionColumnAddedActionState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.state.IActionColumnAddedAjaxActionState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.state.IActionColumnAddedConfirmActionState;
@@ -47,7 +44,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	private final Set<String> cssClassesOnElements = Sets.newHashSet();
 
-	private final List<AbstractActionColumnElementFactory<T, ?>> factories = Lists.newArrayList();
+	private final List<ActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
 
 	public ActionColumnBuilder(DataTableBuilder<T, S> dataTableBuilder, IModel<String> headerLabelModel) {
 		this.dataTableBuilder = dataTableBuilder;
@@ -128,131 +125,131 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		
 		protected abstract NextState getNextState();
 		
-		protected abstract AbstractActionColumnElementFactory<T, ?> getFactory();
+		protected abstract ActionColumnElementBuilder<T, ?, ?> getElementBuilder();
 		
 		@Override
 		public NextState showLabel() {
-			getFactory().showLabel();
+			getElementBuilder().showLabel();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showLabel(Condition showLabelCondition) {
-			getFactory().showLabel(showLabelCondition);
+			getElementBuilder().showLabel(showLabelCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hideLabel() {
-			getFactory().hideLabel();
+			getElementBuilder().hideLabel();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hideLabel(Condition hideLabelCondition) {
-			getFactory().hideLabel(hideLabelCondition);
+			getElementBuilder().hideLabel(hideLabelCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showTooltip() {
-			getFactory().showTooltip();
+			getElementBuilder().showTooltip();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showTooltip(Condition showTooltipCondition) {
-			getFactory().showTooltip(showTooltipCondition);
+			getElementBuilder().showTooltip(showTooltipCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hideTooltip() {
-			getFactory().hideTooltip();
+			getElementBuilder().hideTooltip();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hideTooltip(Condition hideTooltipCondition) {
-			getFactory().hideTooltip(hideTooltipCondition);
+			getElementBuilder().hideTooltip(hideTooltipCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showIcon() {
-			getFactory().showIcon();
+			getElementBuilder().showIcon();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showIcon(Condition showIconCondition) {
-			getFactory().showIcon(showIconCondition);
+			getElementBuilder().showIcon(showIconCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hideIcon() {
-			getFactory().hideIcon();
+			getElementBuilder().hideIcon();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hideIcon(Condition hideIconCondition) {
-			getFactory().hideIcon(hideIconCondition);
+			getElementBuilder().hideIcon(hideIconCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showPlaceholder() {
-			getFactory().showPlaceholder();
+			getElementBuilder().showPlaceholder();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState showPlaceholder(Condition showPlaceholderCondition) {
-			getFactory().showPlaceholder(showPlaceholderCondition);
+			getElementBuilder().showPlaceholder(showPlaceholderCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hidePlaceholder() {
-			getFactory().hidePlaceholder();
+			getElementBuilder().hidePlaceholder();
 			return getNextState();
 		}
 		
 		@Override
 		public NextState hidePlaceholder(Condition hidePlaceholderCondition) {
-			getFactory().hidePlaceholder(hidePlaceholderCondition);
+			getElementBuilder().hidePlaceholder(hidePlaceholderCondition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState when(final Condition condition) {
-			getFactory().addConditionFactory(OneParameterConditionFactory.<IModel<T>>identity(condition));
+			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<IModel<T>>identity(condition));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState when(final Predicate<? super T> predicate) {
-			getFactory().addConditionFactory(OneParameterConditionFactory.<T>predicate(predicate));
+			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<T>predicate(predicate));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPermission(final String permission) {
-			getFactory().addConditionFactory(OneParameterConditionFactory.<T>permission(permission));
+			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<T>permission(permission));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPermission(final Permission permission) {
-			getFactory().addConditionFactory(OneParameterConditionFactory.<T>permission(permission));
+			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<T>permission(permission));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState withClass(String cssClass) {
-			getFactory().addCssClass(cssClass);
+			getElementBuilder().addCssClass(cssClass);
 			return getNextState();
 		}
 	}
@@ -260,16 +257,16 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	private class ActionColumnAddedLinkState extends ActionColumnAddedElementState<IActionColumnAddedLinkState<T, S>>
 			implements IActionColumnAddedLinkState<T, S> {
 		
-		private final ActionColumnLinkFactory<T> factory;
+		private final ActionColumnLinkBuilder<T> elementBuilder;
 		
-		public ActionColumnAddedLinkState(ActionColumnLinkFactory<T> factory) {
+		public ActionColumnAddedLinkState(ActionColumnLinkBuilder<T> elementBuilder) {
 			super();
-			this.factory = Objects.requireNonNull(factory);
+			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnLinkFactory<T> getFactory() {
-			return factory;
+		public ActionColumnLinkBuilder<T> getElementBuilder() {
+			return elementBuilder;
 		}
 		
 		@Override
@@ -279,7 +276,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 		@Override
 		public IActionColumnAddedLinkState<T, S> hideIfInvalid() {
-			getFactory().hideIfInvalid();
+			getElementBuilder().hideIfInvalid();
 			return getNextState();
 		}
 	}
@@ -287,16 +284,16 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	private class ActionColumnAddedAjaxActionState extends ActionColumnAddedElementState<IActionColumnAddedAjaxActionState<T, S>>
 			implements IActionColumnAddedAjaxActionState<T, S> {
 		
-		private final ActionColumnAjaxActionFactory<T> factory;
+		private final ActionColumnElementBuilder<T, ?, ?> elementBuilder;
 		
-		public ActionColumnAddedAjaxActionState(ActionColumnAjaxActionFactory<T> factory) {
+		public ActionColumnAddedAjaxActionState(ActionColumnElementBuilder<T, ?, ?> elementBuilder) {
 			super();
-			this.factory = Objects.requireNonNull(factory);
+			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnAjaxActionFactory<T> getFactory() {
-			return factory;
+		public ActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+			return elementBuilder;
 		}
 		
 		@Override
@@ -308,38 +305,37 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	private class ActionColumnAddedActionState extends ActionColumnAddedElementState<IActionColumnAddedActionState<T, S>>
 			implements IActionColumnAddedActionState<T, S> {
 		
-		private final ActionColumnActionFactory<T> factory;
+		private final ActionColumnElementBuilder<T, ?, ?> elementBuilder;
 		
-		public ActionColumnAddedActionState(ActionColumnActionFactory<T> factory) {
+		public ActionColumnAddedActionState(ActionColumnElementBuilder<T, ?, ?> elementBuilder) {
 			super();
-			this.factory = Objects.requireNonNull(factory);
+			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnActionFactory<T> getFactory() {
-			return factory;
+		public ActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+			return elementBuilder;
 		}
 		
 		@Override
 		protected IActionColumnAddedActionState<T, S> getNextState() {
 			return this;
 		}
-		
 	}
 
 	private class ActionColumnAddedConfirmActionState extends ActionColumnAddedElementState<IActionColumnAddedConfirmActionState<T, S>>
 			implements IActionColumnAddedConfirmActionState<T, S> {
 		
-		private final ActionColumnConfirmActionFactory<T> factory;
+		private final ActionColumnElementBuilder<T, ?, ?> elementBuilder;
 		
-		public ActionColumnAddedConfirmActionState(ActionColumnConfirmActionFactory<T> factory) {
+		public ActionColumnAddedConfirmActionState(ActionColumnElementBuilder<T, ?, ?> elementBuilder) {
 			super();
-			this.factory = Objects.requireNonNull(factory);
+			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnConfirmActionFactory<T> getFactory() {
-			return factory;
+		public ActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+			return elementBuilder;
 		}
 		
 		@Override
@@ -364,8 +360,8 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedLinkState<T, S> addLabelledLink(BootstrapRenderer<? super T> renderer,
 			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
-		ActionColumnLinkFactory<T> factory = new ActionColumnLinkFactory<>(renderer, mapper);
-		factories.add(factory);
+		ActionColumnLinkBuilder<T> factory = new ActionColumnLinkBuilder<>(renderer, mapper);
+		builders.add(factory);
 		return new ActionColumnAddedLinkState(factory);
 	}
 
@@ -385,8 +381,9 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedAjaxActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAjaxAction<IModel<T>> action) {
-		ActionColumnAjaxActionFactory<T> factory = new ActionColumnAjaxActionFactory<>(renderer, action);
-		factories.add(factory);
+		ActionColumnElementBuilder<T, ?, ?> factory =
+				new ActionColumnElementBuilder<>(renderer, new ActionColumnAjaxActionFactory<>(action));
+		builders.add(factory);
 		return new ActionColumnAddedAjaxActionState(factory);
 	}
 
@@ -399,8 +396,9 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAction<IModel<T>> action) {
-		ActionColumnActionFactory<T> factory = new ActionColumnActionFactory<>(renderer, action);
-		factories.add(factory);
+		ActionColumnElementBuilder<T, ?, ?> factory =
+				new ActionColumnElementBuilder<>(renderer, new ActionColumnActionFactory<>(action));
+		builders.add(factory);
 		return new ActionColumnAddedActionState(factory);
 	}
 
@@ -411,8 +409,8 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	public IActionColumnAddedConfirmActionState<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<AjaxConfirmLink<T>, IModel<T>> ajaxConfirmLinkFactory) {
-		ActionColumnConfirmActionFactory<T> factory = new ActionColumnConfirmActionFactory<>(renderer, ajaxConfirmLinkFactory);
-		factories.add(factory);
+		ActionColumnElementBuilder<T, ?, ?> factory =new ActionColumnElementBuilder<>(renderer, ajaxConfirmLinkFactory);
+		builders.add(factory);
 		return new ActionColumnAddedConfirmActionState(factory);
 	}
 
@@ -428,10 +426,10 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	@Override
 	public IAddedCoreColumnState<T, S> end() {
-		for (AbstractActionColumnElementFactory<T, ?> factory : factories) {
-			factory.addCssClass(getCssClassOnElements());
+		for (ActionColumnElementBuilder<T, ?, ?> builder : builders) {
+			builder.addCssClass(getCssClassOnElements());
 		}
-		return dataTableBuilder.addActionColumn(new CoreActionColumn<T, S>(headerLabelModel, factories));
+		return dataTableBuilder.addActionColumn(new CoreActionColumn<T, S>(headerLabelModel, builders));
 	}
 
 }

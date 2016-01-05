@@ -8,20 +8,20 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.jpa.more.business.sort.ISort;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.AbstractCoreColumn;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.AbstractActionColumnElementFactory;
 
 public class CoreActionColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
 
 	private static final long serialVersionUID = -8748416651399483779L;
 
-	private final List<AbstractActionColumnElementFactory<T, ?>> factories = Lists.newArrayList();
+	private final List<IOneParameterComponentFactory<?, IModel<T>>> factories = Lists.newArrayList();
 
-	public CoreActionColumn(IModel<String> headerLabelModel, List<AbstractActionColumnElementFactory<T, ?>> factories) {
+	public CoreActionColumn(IModel<String> headerLabelModel,
+			List<? extends IOneParameterComponentFactory<?, IModel<T>>> factories) {
 		super(headerLabelModel);
-		CollectionUtils.replaceAll(this.factories, factories);
+		this.factories.addAll(factories);
 	}
 
 	@Override
