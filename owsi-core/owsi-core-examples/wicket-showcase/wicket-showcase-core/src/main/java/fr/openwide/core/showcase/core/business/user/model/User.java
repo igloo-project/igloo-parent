@@ -4,11 +4,9 @@ import java.util.Collections;
 import java.util.SortedSet;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.SortNatural;
