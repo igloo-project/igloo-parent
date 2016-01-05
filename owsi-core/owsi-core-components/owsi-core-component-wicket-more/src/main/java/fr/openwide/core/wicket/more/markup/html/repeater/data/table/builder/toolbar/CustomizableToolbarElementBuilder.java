@@ -23,12 +23,12 @@ import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFa
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTable;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
-public class CustomizableToolbarElementFactory<T, S extends ISort<?>> implements
-		IOneParameterComponentFactory<Component, CoreDataTable<T, S>> {
+public class CustomizableToolbarElementBuilder<T, S extends ISort<?>>
+		implements IOneParameterComponentFactory<Component, CoreDataTable<T, S>> {
 
 	private static final long serialVersionUID = 8327298869880437772L;
 
-	private final IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegate;
+	private final IOneParameterComponentFactory<Component, CoreDataTable<T, S>> factory;
 
 	private final Integer previousColspan;
 
@@ -38,10 +38,10 @@ public class CustomizableToolbarElementFactory<T, S extends ISort<?>> implements
 
 	private Condition condition = Condition.alwaysTrue();
 
-	public CustomizableToolbarElementFactory(Integer previousColspan, IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegate) {
+	public CustomizableToolbarElementBuilder(Integer previousColspan, IOneParameterComponentFactory<Component, CoreDataTable<T, S>> factory) {
 		super();
 		this.previousColspan = checkNotNull(previousColspan);
-		this.delegate = checkNotNull(delegate);
+		this.factory = checkNotNull(factory);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class CustomizableToolbarElementFactory<T, S extends ISort<?>> implements
 			}
 		};
 		
-		return delegate.create(wicketId, dataTable)
+		return factory.create(wicketId, dataTable)
 				.add(
 						new AttributeModifier("colspan", computedColspanModel),
 						new EnclosureBehavior().condition(
@@ -105,7 +105,7 @@ public class CustomizableToolbarElementFactory<T, S extends ISort<?>> implements
 
 	@Override
 	public void detach() {
-		Detachables.detach(delegate, condition);
+		Detachables.detach(factory, condition);
 	}
 
 }

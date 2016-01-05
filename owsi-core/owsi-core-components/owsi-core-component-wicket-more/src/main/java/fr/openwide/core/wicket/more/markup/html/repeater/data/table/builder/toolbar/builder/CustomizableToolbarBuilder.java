@@ -17,7 +17,7 @@ import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFa
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTable;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.CoreCustomizableToolbar;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.CustomizableToolbarElementFactory;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.CustomizableToolbarElementBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.state.IAddedToolbarCoreElementState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.state.IAddedToolbarElementState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.toolbar.state.IAddedToolbarLabelElementState;
@@ -28,7 +28,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	private final DataTableBuilder<T, S> dataTableBuilder;
 
-	private final List<CustomizableToolbarElementFactory<T, S>> factories = Lists.newArrayList();
+	private final List<CustomizableToolbarElementBuilder<T, S>> builders = Lists.newArrayList();
 
 	private boolean hideIfEmpty = false;
 
@@ -56,9 +56,10 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		}
 	}
 
-	private abstract class AddedToolbarElementState<NextState extends IAddedToolbarElementState<T, S>> extends CustomizableToolbarBuilderWrapper implements IAddedToolbarElementState<T, S> {
+	private abstract class AddedToolbarElementState<NextState extends IAddedToolbarElementState<T, S>>
+			extends CustomizableToolbarBuilderWrapper implements IAddedToolbarElementState<T, S> {
 		
-		protected abstract CustomizableToolbarElementFactory<T, S> getFactory();
+		protected abstract CustomizableToolbarElementBuilder<T, S> getFactory();
 		
 		protected abstract NextState getNextState();
 		
@@ -87,17 +88,18 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		}
 	}
 
-	private class AddedToolbarLabelElementState extends AddedToolbarElementState<IAddedToolbarLabelElementState<T, S>> implements IAddedToolbarLabelElementState<T, S> {
+	private class AddedToolbarLabelElementState extends AddedToolbarElementState<IAddedToolbarLabelElementState<T, S>>
+			implements IAddedToolbarLabelElementState<T, S> {
 		
-		private final CustomizableToolbarElementFactory<T, S> factory;
+		private final CustomizableToolbarElementBuilder<T, S> factory;
 		
-		public AddedToolbarLabelElementState(CustomizableToolbarElementFactory<T, S> factory) {
+		public AddedToolbarLabelElementState(CustomizableToolbarElementBuilder<T, S> factory) {
 			super();
 			this.factory = factory;
 		}
 		
 		@Override
-		protected CustomizableToolbarElementFactory<T, S> getFactory() {
+		protected CustomizableToolbarElementBuilder<T, S> getFactory() {
 			return factory;
 		}
 		
@@ -107,18 +109,19 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		}
 	}
 	
-	private class AddedToolbarLabelCoreElementState extends AddedToolbarElementState<IAddedToolbarCoreElementState<T, S>> implements IAddedToolbarCoreElementState<T, S> {
+	private class AddedToolbarLabelCoreElementState extends AddedToolbarElementState<IAddedToolbarCoreElementState<T, S>>
+			implements IAddedToolbarCoreElementState<T, S> {
 		
-		private final CustomizableToolbarElementFactory<T, S> factory;
+		private final CustomizableToolbarElementBuilder<T, S> elementBuilder;
 		
-		public AddedToolbarLabelCoreElementState(CustomizableToolbarElementFactory<T, S> factory) {
+		public AddedToolbarLabelCoreElementState(CustomizableToolbarElementBuilder<T, S> elementBuilder) {
 			super();
-			this.factory = factory;
+			this.elementBuilder = elementBuilder;
 		}
 		
 		@Override
-		protected CustomizableToolbarElementFactory<T, S> getFactory() {
-			return factory;
+		protected CustomizableToolbarElementBuilder<T, S> getFactory() {
+			return elementBuilder;
 		}
 		
 		@Override
@@ -129,15 +132,16 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	@Override
 	public IAddedToolbarLabelElementState<T, S> addLabel(final IModel<String> model) {
-		CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(
-				getPreviousColspan(factories.size()),
+		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<T, S>(
+				getPreviousColspan(builders.size()),
 				new CustomizableToolbarLabelElementDelegateFactory<T, S>(model)
 		);
-		factories.add(factory);
-		return new AddedToolbarLabelElementState(factory);
+		builders.add(elementBuilder);
+		return new AddedToolbarLabelElementState(elementBuilder);
 	}
 
-	public static class CustomizableToolbarLabelElementDelegateFactory<T, S extends ISort<?>> extends AbstractParameterizedComponentFactory<Component, CoreDataTable<T, S>> {
+	public static class CustomizableToolbarLabelElementDelegateFactory<T, S extends ISort<?>>
+			extends AbstractParameterizedComponentFactory<Component, CoreDataTable<T, S>> {
 		private static final long serialVersionUID = 1L;
 		
 		private final IModel<String> model;
@@ -161,9 +165,11 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	@Override
 	public IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory) {
-		CustomizableToolbarElementFactory<T, S> factory = new CustomizableToolbarElementFactory<T, S>(getPreviousColspan(factories.size()), delegateFactory);
-		factories.add(factory);
-		return new AddedToolbarLabelCoreElementState(factory);
+		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<T, S>(
+				getPreviousColspan(builders.size()), delegateFactory
+		);
+		builders.add(elementBuilder);
+		return new AddedToolbarLabelCoreElementState(elementBuilder);
 	}
 
 	@Override
@@ -178,7 +184,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	}
 
 	public CoreCustomizableToolbar<T, S> build(final CoreDataTable<T, S> dataTable) {
-		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(dataTable, factories);
+		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(dataTable, builders);
 		if (hideIfEmpty) {
 				component
 						.add(
@@ -190,15 +196,15 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	private Integer getPreviousColspan(final int currentIndex) {
 		Integer previousColspan = 0;
-		if (factories.isEmpty()) {
+		if (builders.isEmpty()) {
 			return previousColspan;
 		}
-		for (CustomizableToolbarElementFactory<T, S> factory : FluentIterable.from(factories).limit(currentIndex)) {
-			if (factory.getColspan() == null) {
+		for (CustomizableToolbarElementBuilder<T, S> builder : FluentIterable.from(builders).limit(currentIndex)) {
+			if (builder.getColspan() == null) {
 				previousColspan = null;
 				break;
 			}
-			previousColspan = previousColspan + factory.getColspan();
+			previousColspan = previousColspan + builder.getColspan();
 		}
 		return previousColspan;
 	}
