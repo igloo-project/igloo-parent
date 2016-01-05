@@ -2,8 +2,6 @@ package fr.openwide.core.basicapp.web.application.administration.component;
 
 import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
-import java.util.Locale;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -24,6 +22,7 @@ import fr.openwide.core.basicapp.core.business.user.search.UserSort;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.common.renderer.ActionRenderers;
 import fr.openwide.core.basicapp.web.application.common.util.CssClassConstants;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.spring.property.service.IPropertyService;
@@ -31,8 +30,6 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -71,19 +68,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 							.withLink(LinkFactory.userDescriptionLinkGeneratorFactory())
 							.withClass("text text-md")
 					.addActionColumn()
-							.addConfirmAction(
-									new BootstrapRenderer<User>() {
-										private static final long serialVersionUID = 1L;
-										@Override
-										protected BootstrapRendererInformation doRender(User value, Locale locale) {
-											return BootstrapRendererInformation.builder()
-													.tooltip(getString("administration.usergroup.members.delete", locale))
-													.icon("fa fa-fw fa-trash-o")
-													.color(BootstrapColor.DANGER)
-													.build();
-										}
-									}
-							)
+							.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))
 									.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
 									.content(new AbstractOneParameterModelFactory<IModel<User>, String>() {
 										private static final long serialVersionUID = 1L;

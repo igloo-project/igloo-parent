@@ -347,7 +347,9 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedLinkState<T, S> addLink(BootstrapRenderer<? super T> renderer,
 			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
-		return addLabelledLink(renderer, mapper).hideLabel();
+		ActionColumnLinkBuilder<T> factory = new ActionColumnLinkBuilder<>(renderer, mapper);
+		builders.add(factory);
+		return new ActionColumnAddedLinkState(factory);
 	}
 
 	@Override
@@ -360,9 +362,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedLinkState<T, S> addLabelledLink(BootstrapRenderer<? super T> renderer,
 			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
-		ActionColumnLinkBuilder<T> factory = new ActionColumnLinkBuilder<>(renderer, mapper);
-		builders.add(factory);
-		return new ActionColumnAddedLinkState(factory);
+		return addLink(renderer, mapper).showLabel();
 	}
 
 	@Override
@@ -375,12 +375,6 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedAjaxActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAjaxAction<IModel<T>> action) {
-		return addLabelledAction(renderer, action).hideLabel();
-	}
-
-	@Override
-	public IActionColumnAddedAjaxActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<IModel<T>> action) {
 		ActionColumnElementBuilder<T, ?, ?> factory =
 				new ActionColumnElementBuilder<>(renderer, new ActionColumnAjaxActionFactory<>(action));
 		builders.add(factory);
@@ -388,18 +382,24 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	}
 
 	@Override
-	public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAction<IModel<T>> action) {
-		return addLabelledAction(renderer, action).hideLabel();
+	public IActionColumnAddedAjaxActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
+			IOneParameterAjaxAction<IModel<T>> action) {
+		return addAction(renderer, action).showLabel();
 	}
 
 	@Override
-	public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
+	public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAction<IModel<T>> action) {
 		ActionColumnElementBuilder<T, ?, ?> factory =
 				new ActionColumnElementBuilder<>(renderer, new ActionColumnActionFactory<>(action));
 		builders.add(factory);
 		return new ActionColumnAddedActionState(factory);
+	}
+
+	@Override
+	public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
+			IOneParameterAction<IModel<T>> action) {
+		return addAction(renderer, action).showLabel();
 	}
 
 	@Override

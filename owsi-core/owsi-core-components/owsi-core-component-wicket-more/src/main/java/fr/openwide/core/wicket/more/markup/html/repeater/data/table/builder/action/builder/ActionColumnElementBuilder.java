@@ -36,7 +36,7 @@ public class ActionColumnElementBuilder<T, L extends AbstractLink, F extends Act
 	
 	private final IOneParameterComponentFactory<L, IModel<T>> factory;
 
-	private Condition showLabelCondition = Condition.alwaysTrue();
+	private Condition showLabelCondition = Condition.alwaysFalse();
 
 	private Condition showTooltipCondition = Condition.alwaysTrue();
 

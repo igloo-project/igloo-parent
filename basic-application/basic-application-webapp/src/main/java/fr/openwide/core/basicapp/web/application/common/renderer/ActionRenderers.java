@@ -1,86 +1,37 @@
 package fr.openwide.core.basicapp.web.application.common.renderer;
 
-import java.util.Locale;
-
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 
 public final class ActionRenderers {
 
-	public static <T> BootstrapRenderer<T> validate() {
-		return new BootstrapRenderer<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected BootstrapRendererInformation doRender(T value, Locale locale) {
-				return BootstrapRendererInformation.builder()
-						.label(getString("common.action.validate", locale))
-						.tooltip(getString("common.action.validate", locale))
-						.icon("fa fa-fw fa-check")
-						.color(BootstrapColor.SUCCESS)
-						.build();
-			}
-		};
+	public static <T> BootstrapRenderer<T> constant(final String resourceKey, final String icon, final IBootstrapColor color) {
+		return constant(resourceKey, resourceKey, icon, color);
+	}
+
+	public static <T> BootstrapRenderer<T> constant(final String labelResourceKey, final String tooltipResourceKey, final String icon, final IBootstrapColor color) {
+		return BootstrapRenderer.constant(labelResourceKey, tooltipResourceKey, icon, color);
 	}
 
 	public static <T> BootstrapRenderer<T> add() {
-		return new BootstrapRenderer<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected BootstrapRendererInformation doRender(T value, Locale locale) {
-				return BootstrapRendererInformation.builder()
-						.label(getString("common.action.add", locale))
-						.tooltip(getString("common.action.add", locale))
-						.icon("fa fa-fw fa-plus")
-						.color(BootstrapColor.PRIMARY)
-						.build();
-			}
-		};
+		return constant("common.action.add", "fa fa-fw fa-plus", BootstrapColor.PRIMARY);
 	}
 
 	public static <T> BootstrapRenderer<T> remove() {
-		return new BootstrapRenderer<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected BootstrapRendererInformation doRender(T value, Locale locale) {
-				return BootstrapRendererInformation.builder()
-						.label(getString("common.action.remove", locale))
-						.tooltip(getString("common.action.remove", locale))
-						.icon("fa fa-fw fa-trash-o")
-						.color(BootstrapColor.DANGER)
-						.build();
-			}
-		};
+		return constant("common.action.remove", "fa fa-fw fa-times", BootstrapColor.DANGER);
+	}
+
+	public static <T> BootstrapRenderer<T> delete() {
+		return constant("common.action.delete", "fa fa-fw fa-trash-o", BootstrapColor.DANGER);
 	}
 
 	public static <T> BootstrapRenderer<T> enable() {
-		return new BootstrapRenderer<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected BootstrapRendererInformation doRender(T value, Locale locale) {
-				return BootstrapRendererInformation.builder()
-						.label(getString("common.action.enable", locale))
-						.tooltip(getString("common.action.enable", locale))
-						.icon("fa fa-fw fa-toggle-on")
-						.color(BootstrapColor.SUCCESS)
-						.build();
-			}
-		};
+		return constant("common.action.enable", "fa fa-fw fa-toggle-on", BootstrapColor.SUCCESS);
 	}
 
 	public static <T> BootstrapRenderer<T> disable() {
-		return new BootstrapRenderer<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected BootstrapRendererInformation doRender(T value, Locale locale) {
-				return BootstrapRendererInformation.builder()
-						.label(getString("common.action.disable", locale))
-						.tooltip(getString("common.action.disable", locale))
-						.icon("fa fa-fw fa-toggle-off")
-						.color(BootstrapColor.DANGER)
-						.build();
-			}
-		};
+		return constant("common.action.disable", "fa fa-fw fa-toggle-off", BootstrapColor.DANGER);
 	}
 
 }
