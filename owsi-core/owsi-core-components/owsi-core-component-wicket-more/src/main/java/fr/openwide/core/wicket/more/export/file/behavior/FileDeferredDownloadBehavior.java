@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.export.excel.behavior;
+package fr.openwide.core.wicket.more.export.file.behavior;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -11,26 +11,26 @@ import fr.openwide.core.wicket.more.export.AbstractDeferredDownloadBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
-public class ExcelExportDeferredDownloadBehavior extends AbstractDeferredDownloadBehavior {
+public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavior {
 	
-	private static final long serialVersionUID = 3741099014137003780L;
-	
-	public static final String EXCEL_FILE_NAME_DATE_PATTERN_KEY = "common.action.export.excel.fileName.datePattern";
+	private static final long serialVersionUID = -2564879404137129896L;
+
+	public static final String FILE_NAME_DATE_PATTERN_KEY = "common.action.export.file.datePattern";
 	
 	private final String fileDisplayNamePrefix;
 	
-	public ExcelExportDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<MediaType> mediaTypeModel, String fileDisplayNamePrefix) {
+	public FileDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<MediaType> mediaTypeModel, String fileDisplayNamePrefix) {
 		this(tempFileModel, mediaTypeModel, fileDisplayNamePrefix, true);
 	}
 	
-	public ExcelExportDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<MediaType> mediaTypeModel, String fileDisplayNamePrefix, boolean addAntiCache) {
+	public FileDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<MediaType> mediaTypeModel, String fileDisplayNamePrefix, boolean addAntiCache) {
 		super(tempFileModel, BindingModel.of(mediaTypeModel, CoreWicketMoreBindings.mediaType().extension()), addAntiCache);
 		this.fileDisplayNamePrefix = fileDisplayNamePrefix;
 	}
 	
 	@Override
 	protected String getFileDisplayName() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(getComponent().getString(EXCEL_FILE_NAME_DATE_PATTERN_KEY));
+		SimpleDateFormat dateFormat = new SimpleDateFormat(getComponent().getString(FILE_NAME_DATE_PATTERN_KEY));
 		
 		return new StringBuilder(fileDisplayNamePrefix)
 				.append(dateFormat.format(new Date()))
@@ -38,5 +38,4 @@ public class ExcelExportDeferredDownloadBehavior extends AbstractDeferredDownloa
 				.append(extensionModel.getObject())
 				.toString();
 	}
-
 }

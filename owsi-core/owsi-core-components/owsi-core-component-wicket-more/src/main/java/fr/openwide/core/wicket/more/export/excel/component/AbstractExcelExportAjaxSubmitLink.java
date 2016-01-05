@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.property.service.IPropertyService;
-import fr.openwide.core.wicket.more.export.excel.behavior.ExcelExportDeferredDownloadBehavior;
+import fr.openwide.core.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 
 public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
@@ -37,7 +37,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	
 	private final ExcelExportWorkInProgressModalPopupPanel loadingPopup;
 	
-	private final ExcelExportDeferredDownloadBehavior ajaxDownload;
+	private final FileDeferredDownloadBehavior ajaxDownload;
 	
 	private final IModel<File> tempFileModel = new Model<File>();
 	
@@ -46,7 +46,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, ExcelExportWorkInProgressModalPopupPanel loadingPopup, String fileNamePrefix) {
 		super(id, form);
 		this.loadingPopup = loadingPopup;
-		this.ajaxDownload = new ExcelExportDeferredDownloadBehavior(tempFileModel, mediaTypeModel, fileNamePrefix);
+		this.ajaxDownload = new FileDeferredDownloadBehavior(tempFileModel, mediaTypeModel, fileNamePrefix);
 		
 		add(ajaxDownload);
 	}
