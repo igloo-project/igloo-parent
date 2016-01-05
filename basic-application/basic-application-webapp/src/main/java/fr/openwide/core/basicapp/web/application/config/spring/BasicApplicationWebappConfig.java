@@ -48,6 +48,7 @@ public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 	}
 
 	@Override
+	@Bean
 	public IRendererService rendererService() {
 		RendererServiceImpl rendererService = new RendererServiceImpl();
 

@@ -35,6 +35,7 @@ public class ShowcaseWebappConfig extends AbstractWebappConfig {
 	}
 
 	@Override
+	@Bean
 	public IRendererService rendererService() {
 		return new RendererServiceImpl();
 	}
