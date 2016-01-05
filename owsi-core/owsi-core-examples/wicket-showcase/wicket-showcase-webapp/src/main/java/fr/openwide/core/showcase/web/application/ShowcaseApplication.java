@@ -37,6 +37,8 @@ import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 
 public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
+	
+	public static final String NAME = "ShowcaseApplication";
 
 	public static ShowcaseApplication get() {
 		final Application application = Application.get();

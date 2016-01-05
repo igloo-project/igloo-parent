@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.wicket.more.link.service.DefaultLinkParameterConversionService;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
@@ -19,6 +20,9 @@ public abstract class AbstractWebappConfig {
 
 	@Bean
 	public abstract WebApplication application();
+	
+	@Bean
+	public abstract IRendererService rendererService();
 	
 	@Bean
 	public ILinkParameterConversionService linkParameterConversionService() {

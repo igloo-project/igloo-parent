@@ -5,24 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.basicapp.core.business.audit.model.atomic.AuditAction;
-import fr.openwide.core.basicapp.core.business.audit.service.IAuditService;
+import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
+import fr.openwide.core.basicapp.core.business.history.model.bean.HistoryLogObjectsBean;
+import fr.openwide.core.basicapp.core.business.history.service.IHistoryLogService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.jpa.util.HibernateUtils;
 import fr.openwide.core.spring.util.StringUtils;
 
 @Service("personService")
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
-
-	private static final String AUDIT_SIGN_IN_METHOD_NAME = "signIn";
-
-	private static final String AUDIT_SIGN_IN_FAIL_METHOD_NAME = "signInFail";
-
-	private static final String AUDIT_CREATE_METHOD_NAME = "create";
 
 	@Autowired
 	private IUserDao userDao;
@@ -31,20 +27,15 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private IAuditService auditService;
+	private IHistoryLogService historyLogService;
+	
+//	@Autowired
+//	private IUserDifferenceService userDifferenceService;
 
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
 		super(userDao);
 		this.userDao = userDao;
-	}
-
-	private void audit(User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, object, action);
-	}
-
-	private void audit(User subject, User object, AuditAction action, String methodName) throws ServiceException, SecurityServiceException {
-		auditService.audit(getClass().getSimpleName(), methodName, subject, object, action);
 	}
 
 	@Override
@@ -54,17 +45,32 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-		audit(user, AuditAction.SIGN_IN, AUDIT_SIGN_IN_METHOD_NAME);
+		historyLogService.log(HistoryEventType.SIGN_IN, HistoryLogObjectsBean.of(user));
 	}
 
 	@Override
 	public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-		audit(user, user, AuditAction.SIGN_IN_FAIL, AUDIT_SIGN_IN_FAIL_METHOD_NAME);
+		historyLogService.log(HistoryEventType.SIGN_IN_FAIL, HistoryLogObjectsBean.of(user));
 	}
 
 	@Override
 	public void onCreate(User user, User author) throws ServiceException, SecurityServiceException {
-		audit(author, user, AuditAction.CREATE_USER, AUDIT_CREATE_METHOD_NAME);
+		historyLogService.log(HistoryEventType.CREATE, HistoryLogObjectsBean.of(user));
+	}
+	
+	@Override
+	public void setActive(User person, boolean active) throws ServiceException, SecurityServiceException {
+		super.setActive(person, active);
+		historyLogService.log(active ? HistoryEventType.ENABLE : HistoryEventType.DISABLE, HistoryLogObjectsBean.of(person));
+	}
+	
+	@Override
+	protected void updateEntity(User person) throws ServiceException, SecurityServiceException {
+		super.updateEntity(person);
+		
+//		historyLogService.logWithDifferences(HistoryEventType.UPDATE, HistoryLogObjectsBean.of(person),
+//				userDifferenceService.getMinimalDifferenceGenerator(),
+//				userDifferenceService);
 	}
 
 	@Override
@@ -82,7 +88,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 			return null;
 		}
 		
-		return getByUserName(userName);
+		return HibernateUtils.unwrap(getByUserName(userName));
 	}
 
 }
