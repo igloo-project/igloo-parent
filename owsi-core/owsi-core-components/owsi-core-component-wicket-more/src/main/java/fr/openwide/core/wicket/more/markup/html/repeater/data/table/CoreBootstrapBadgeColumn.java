@@ -19,7 +19,7 @@ import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
@@ -28,7 +28,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private final BindingRoot<? super T, C> binding;
 
-	private final BootstrapLabelRenderer<? super C> renderer;
+	private final BootstrapRenderer<? super C> renderer;
 	
 	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper;
 	
@@ -45,7 +45,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
 
 	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final BindingRoot<? super T, C> binding,
-			final BootstrapLabelRenderer<? super C> renderer) {
+			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		this.binding = binding;
 		this.renderer = renderer;

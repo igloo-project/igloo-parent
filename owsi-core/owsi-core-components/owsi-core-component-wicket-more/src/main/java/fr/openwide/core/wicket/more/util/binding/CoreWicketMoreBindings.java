@@ -9,7 +9,7 @@ import fr.openwide.core.wicket.more.model.IBindableDataProviderBinding;
 public final class CoreWicketMoreBindings {
 
 	private static final EhCacheCacheInformationBinding EH_CACHE_CACHE_INFORMATION = new EhCacheCacheInformationBinding();
-	
+
 	private static final IBindableDataProviderBinding IBINDABLE_DATA_PROVIDER = new IBindableDataProviderBinding();
 	
 	private static final ListBinding<?> LIST = new ListBinding<Void>();
@@ -28,11 +28,11 @@ public final class CoreWicketMoreBindings {
 		return LIST;
 	}
 	
-	private CoreWicketMoreBindings() {
-	}
-
 	public static MediaTypeBinding mediaType() {
 		return MEDIA_TYPE;
+	}
+	
+	private CoreWicketMoreBindings() {
 	}
 
 }

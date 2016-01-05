@@ -9,13 +9,13 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 
 public class BootstrapBadge<T> extends GenericPanel<T> {
 
 	private static final long serialVersionUID = -7040646675697285281L;
 
-	public BootstrapBadge(String id, IModel<T> model, final BootstrapLabelRenderer<? super T> renderer) {
+	public BootstrapBadge(String id, IModel<T> model, final BootstrapRenderer<? super T> renderer) {
 		super(id, model);
 		
 		IModel<String> iconCssClassModel = renderer.asIconCssClassModel(model);

@@ -7,7 +7,7 @@ import org.bindgen.BindingRoot;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class CoreBootstrapLabelColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
@@ -16,10 +16,10 @@ public class CoreBootstrapLabelColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private final BindingRoot<? super T, C> binding;
 
-	private final BootstrapLabelRenderer<? super C> renderer;
+	private final BootstrapRenderer<? super C> renderer;
 
 	public CoreBootstrapLabelColumn(IModel<?> headerLabelModel, final BindingRoot<? super T, C> binding,
-			final BootstrapLabelRenderer<? super C> renderer) {
+			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		this.binding = binding;
 		this.renderer = renderer;

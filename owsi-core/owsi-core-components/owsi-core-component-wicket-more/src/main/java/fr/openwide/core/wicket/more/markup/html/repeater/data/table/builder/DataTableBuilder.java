@@ -9,6 +9,7 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 import com.google.common.base.Function;
@@ -29,7 +30,7 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.FunctionOneParameterL
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
@@ -49,6 +50,8 @@ import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCor
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.LabelAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.ICoreColumn;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.CoreActionColumn;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.ActionColumnBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBooleanLabelColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedBootstrapBadgeColumnState;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedColumnState;
@@ -264,13 +267,13 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			final AbstractCoreBinding<? super T, C> binding, final BootstrapLabelRenderer<? super C> renderer) {
+			final AbstractCoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
 		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, binding, renderer));
 	}
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			final AbstractCoreBinding<? super T, C> binding, final BootstrapLabelRenderer<? super C> renderer) {
+			final AbstractCoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<C>(column);
@@ -296,6 +299,31 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
 		bottomToolbarBuilders.add(builder);
 		return builder;
+	}
+	
+	@Override
+	public ActionColumnBuilder<T, S> addActionColumn() {
+		return addActionColumn(Model.of(""));
+	}
+	
+	@Override
+	public ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel) {
+		ActionColumnBuilder<T, S> builder = new ActionColumnBuilder<T, S>(this, headerLabelModel);
+		return builder;
+	}
+	
+	public IAddedCoreColumnState<T, S> addActionColumn(final CoreActionColumn<T, S> column) {
+		columns.put(column, null);
+		return new AddedCoreColumnState<IAddedCoreColumnState<T, S>>() {
+			@Override
+			protected ICoreColumn<T, S> getColumn() {
+				return column;
+			}
+			@Override
+			protected IAddedCoreColumnState<T, S> getNextState() {
+				return this;
+			}
+		};
 	}
 	
 	@Override
@@ -424,13 +452,13 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 		@Override
 		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
-				BootstrapLabelRenderer<? super C> renderer) {
+				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, binding, renderer);
 		}
 
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
-				BootstrapLabelRenderer<? super C> renderer) {
+				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, binding, renderer);
 		}
 		
@@ -448,6 +476,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
 			return DataTableBuilder.this.addBottomToolbar();
+		}
+
+		@Override
+		public ActionColumnBuilder<T, S> addActionColumn() {
+			return DataTableBuilder.this.addActionColumn();
+		}
+
+		@Override
+		public ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel) {
+			return DataTableBuilder.this.addActionColumn(headerLabelModel);
 		}
 
 		@Override

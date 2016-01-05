@@ -22,10 +22,22 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
 	private static final long serialVersionUID = -645345859108195615L;
 	
+	public static <O> IAjaxConfirmLinkBuilderStepStart<O> build() {
+		return new AjaxConfirmLinkBuilder<O>();
+	}
+	
+	/**
+	 * @deprecated Use {@link #build()} instead.
+	 */
+	@Deprecated
 	public static <O> IAjaxConfirmLinkBuilderStepStart<O> build(String wicketId, IModel<O> model) {
 		return new AjaxConfirmLinkBuilder<O>(wicketId, model);
 	}
 	
+	/**
+	 * @deprecated Use {@link #build()} instead.
+	 */
+	@Deprecated
 	public static IAjaxConfirmLinkBuilderStepStart<Void> build(String wicketId) {
 		return new AjaxConfirmLinkBuilder<Void>(wicketId, null);
 	}

@@ -21,6 +21,10 @@ public class BootstrapColorBehavior extends ClassAttributeAppender {
 	public static BootstrapColorBehavior bg(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("bg-", colorModel);
 	}
+	
+	public static BootstrapColorBehavior btn(IModel<IBootstrapColor> colorModel) {
+		return new BootstrapColorBehavior("btn-", colorModel);
+	}
 
 	public BootstrapColorBehavior(final String cssClassPrefix, final IModel<IBootstrapColor> colorModel) {
 		super(new AbstractReadOnlyModel<String>() {

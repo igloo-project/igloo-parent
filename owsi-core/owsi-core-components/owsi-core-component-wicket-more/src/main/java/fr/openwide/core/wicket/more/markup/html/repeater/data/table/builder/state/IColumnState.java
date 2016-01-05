@@ -9,7 +9,7 @@ import com.google.common.base.Function;
 
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
 import fr.openwide.core.jpa.more.business.sort.ISort;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.ICoreColumn;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.util.IDatePattern;
@@ -34,9 +34,9 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
 	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
 
-	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapLabelRenderer<? super C> renderer);
+	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
 
-	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapLabelRenderer<? super C> renderer);
+	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
 
 	<C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel, final AbstractCoreBinding<? super T, Boolean> binding);
 

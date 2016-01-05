@@ -11,13 +11,13 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapLabelRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 
 public class BootstrapLabel<T> extends GenericPanel<T> {
 
 	private static final long serialVersionUID = -7040646675697285281L;
 
-	public BootstrapLabel(String id, IModel<T> model, final BootstrapLabelRenderer<? super T> renderer) {
+	public BootstrapLabel(String id, IModel<T> model, final BootstrapRenderer<? super T> renderer) {
 		super(id, model);
 		
 		IModel<String> labelModel = renderer.asModel(model);
@@ -33,7 +33,7 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		add(
 				BootstrapColorBehavior.label(renderer.asColorModel(model)),
 				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).model(Predicates2.hasText(), labelModel),
-				new AttributeAppender("title", renderer.getTooltipRenderer().asModel(model))
+				new AttributeAppender("title", renderer.asTooltipModel(model))
 		);
 		
 	}

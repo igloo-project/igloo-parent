@@ -1,6 +1,5 @@
 package fr.openwide.core.basicapp.core.config.spring;
 
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.basicapp.core.BasicApplicationCorePackage;
 import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
-import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;

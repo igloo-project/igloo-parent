@@ -2,6 +2,11 @@ package fr.openwide.core.wicket.more.markup.html.factory;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+
+import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 
 public final class ComponentFactories {
 	
@@ -31,6 +36,23 @@ public final class ComponentFactories {
 			public void detach() {
 				super.detach();
 				factory.detach();
+			}
+		};
+	}
+	
+	public static <T> IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>
+			fromLinkDescriptorMapper(final IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+		return new IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public AbstractDynamicBookmarkableLink create(String wicketId, IModel<T> parameter) {
+				return mapper.map(parameter).link(wicketId);
+			}
+			
+			@Override
+			public void detach() {
+				mapper.detach();
 			}
 		};
 	}

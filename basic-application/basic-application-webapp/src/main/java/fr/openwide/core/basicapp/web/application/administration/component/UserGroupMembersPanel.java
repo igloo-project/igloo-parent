@@ -7,12 +7,9 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -25,19 +22,21 @@ import fr.openwide.core.basicapp.core.business.user.search.UserSort;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
 import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
+import fr.openwide.core.basicapp.web.application.common.renderer.ActionRenderers;
+import fr.openwide.core.basicapp.web.application.common.util.CssClassConstants;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
-import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.AbstractCoreColumn;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
@@ -66,15 +65,44 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		DecoratedCoreDataTablePanel<User, UserSort> groupMemberships = 
 				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 					.addLabelColumn(new ResourceModel("administration.usergroup.field.name"))
-						.withLink(LinkFactory.userDescriptionLinkGeneratorFactory())
-						.withClass("text text-md")
-					.addColumn(new AbstractCoreColumn<User, UserSort>(Model.of("")) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public void populateItem(Item<ICellPopulator<User>> cellItem, String componentId, IModel<User> rowModel) {
-							cellItem.add(new ActionsFragment(componentId, rowModel));
-						}
-					}).withClass("actions")
+							.withLink(LinkFactory.userDescriptionLinkGeneratorFactory())
+							.withClass("text text-md")
+					.addActionColumn()
+							.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))
+									.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
+									.content(new AbstractOneParameterModelFactory<IModel<User>, String>() {
+										private static final long serialVersionUID = 1L;
+										@Override
+										public IModel<String> create(IModel<User> userModel) {
+											return new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
+													.setParameters(userModel.getObject().getFullName(), UserGroupMembersPanel.this.getModelObject().getName());
+										}
+									})
+									.confirm()
+									.onClick(new AbstractOneParameterAjaxAction<IModel<User>>() {
+										private static final long serialVersionUID = 1L;
+										@Override
+										public void execute(AjaxRequestTarget target, IModel<User> parameter) {
+											try {
+												UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
+												User user = parameter.getObject();
+												
+												userGroupService.removeUser(userGroup, user);
+												Session.get().success(getString("administration.usergroup.members.delete.success"));
+												throw new RestartResponseException(getPage());
+											} catch (RestartResponseException e) {
+												throw e;
+											} catch (Exception e) {
+												LOGGER.error("Unknown error occured while removing a group from the user", e);
+												getSession().error(getString("common.error.unexpected"));
+												FeedbackUtils.refreshFeedback(target, getPage());
+											}
+										}
+									})
+									.hideLabel()
+							.withClassOnElements(CssClassConstants.BTN_SM)
+							.end()
+							.withClass("actions")
 					.bootstrapPanel()
 					.addIn(AddInPlacement.FOOTER_RIGHT,  new AbstractParameterizedComponentFactory<Component, Component>() {
 						private static final long serialVersionUID = 1L;
@@ -91,59 +119,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 				groupMemberships
 		);
 	}
-	
-	private class ActionsFragment extends Fragment {
 
-		private static final long serialVersionUID = 1L;
-
-		private IModel<User> userModel = new Model<User>();
-		
-		public ActionsFragment(String id, IModel<User> model) {
-			super(id, "deleteMembership", UserGroupMembersPanel.this, model);
-			
-			this.userModel = model;
-					
-			IModel<String> confirmationTextModel = new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
-					.setParameters(userModel.getObject().getFullName(), UserGroupMembersPanel.this.getModelObject().getName());
-			
-			add(
-					AjaxConfirmLink.build("deleteLink", userModel)
-					.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
-					.content(confirmationTextModel)
-					.confirm()
-					.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public Void apply(AjaxRequestTarget target) {
-							try {
-								UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
-								User user = userModel.getObject();
-								
-								userGroupService.removeUser(userGroup, user);
-								Session.get().success(getString("administration.usergroup.members.delete.success"));
-								throw new RestartResponseException(getPage());
-							} catch (RestartResponseException e) {
-								throw e;
-							} catch (Exception e) {
-								LOGGER.error("Unknown error occured while removing a group from the user", e);
-								getSession().error(getString("common.error.unexpected"));
-								FeedbackUtils.refreshFeedback(target, getPage());
-							}
-							return null;
-						}
-					})
-					.create()
-			);
-		}
-		
-		@Override
-		protected void onDetach() {
-			super.onDetach();
-			userModel.detach();
-		}
-		
-	}
-	
 	private class UserGroupAddUserFragment extends Fragment {
 		
 		private static final long serialVersionUID = 1L;
