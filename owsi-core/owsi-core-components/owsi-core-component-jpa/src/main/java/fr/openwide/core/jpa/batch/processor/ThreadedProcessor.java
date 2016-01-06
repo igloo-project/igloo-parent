@@ -162,14 +162,6 @@ public class ThreadedProcessor {
 						wrappedCallable = new TransactionWrapperCallable<>(transactionTemplate, wrappedCallable);
 					}
 
-					/*
-					 * The following call is blocking when all thread are
-					 * already executing a task, due to the use of
-					 * SynchronousQueue in the ThreadPoolExecutor. This means
-					 * that if the executor may be shut down before we finished
-					 * submitting all the tasks, which would trigger a
-					 * RejectedExecutionException.
-					 */
 					ListenableFuture<T> future = executor.submit(wrappedCallable);
 					
 					for (FutureCallback<? super T> callback : callbacks) {
