@@ -41,7 +41,7 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 	}
 
 	public <E extends GenericEntity<Long, ?>> void run(final Class<E> clazz, final List<Long> entityIds,
-			final BatchRunnable<E> batchRunnable) {
+			final IBatchRunnable<E> batchRunnable) {
 		LOGGER.info("Beginning batch for class %1$s: %2$d objects", clazz, entityIds.size());
 		
 		LOGGER.info("    preExecute start");

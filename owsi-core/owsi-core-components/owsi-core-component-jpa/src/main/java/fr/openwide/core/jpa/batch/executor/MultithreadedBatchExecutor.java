@@ -46,7 +46,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		return this;
 	}
 	
-	public void run(String context, final List<Long> entityIds, final BatchRunnable<Long> batchRunnable) {
+	public void run(String context, final List<Long> entityIds, final IBatchRunnable<Long> batchRunnable) {
 		Date startTime = new Date();
 		
 		LOGGER.info("Beginning batch for %1$s: %2$d objects", context, entityIds.size());

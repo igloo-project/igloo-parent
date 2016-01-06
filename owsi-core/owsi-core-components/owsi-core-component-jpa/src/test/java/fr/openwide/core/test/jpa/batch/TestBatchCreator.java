@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
-import fr.openwide.core.jpa.batch.executor.BatchRunnable;
+import fr.openwide.core.jpa.batch.executor.AbstractBatchRunnable;
 import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.executor.SimpleHibernateBatchExecutor;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -38,7 +38,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 		
 		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
 		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
-		executor.run(Person.class, ids, new BatchRunnable<Person>() {
+		executor.run(Person.class, ids, new AbstractBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
 				LOGGER.warn("Executing: " + unit.getDisplayName());
@@ -58,7 +58,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 		
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
-		executor.run(Person.class.getSimpleName(), ids, new BatchRunnable<Long>() {
+		executor.run(Person.class.getSimpleName(), ids, new AbstractBatchRunnable<Long>() {
 			@Override
 			public void preExecutePartition(List<Long> partition) {
 				LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));

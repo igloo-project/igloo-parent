@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
-import fr.openwide.core.jpa.batch.executor.BatchRunnable;
+import fr.openwide.core.jpa.batch.executor.AbstractBatchRunnable;
 import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -39,7 +39,7 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 		
 		MultithreadedBatchExecutor executor = batchCreator.newMultithreadedBatchExecutor();
 		executor.threads(4).batchSize(100);
-		executor.run(getMigrationInformation().getEntityClass().getSimpleName(), entityIds, new BatchRunnable<Long>() {
+		executor.run(getMigrationInformation().getEntityClass().getSimpleName(), entityIds, new AbstractBatchRunnable<Long>() {
 			@Override
 			public void executePartition(List<Long> partition) {
 				importBatch(partition);

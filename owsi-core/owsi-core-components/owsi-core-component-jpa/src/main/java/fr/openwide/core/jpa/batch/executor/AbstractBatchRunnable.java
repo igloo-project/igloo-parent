@@ -2,11 +2,13 @@ package fr.openwide.core.jpa.batch.executor;
 
 import java.util.List;
 
-public abstract class BatchRunnable<E> {
+public abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
 
+	@Override
 	public void preExecute(List<Long> allIds) {
 	}
 
+	@Override
 	public void executePartition(List<E> partition) {
 		preExecutePartition(partition);
 
@@ -17,15 +19,16 @@ public abstract class BatchRunnable<E> {
 		postExecutePartition(partition);
 	}
 
-	public void preExecutePartition(List<E> partition) {
+	protected void preExecutePartition(List<E> partition) {
 	}
 
-	public void executeUnit(E unit) {
+	protected void executeUnit(E unit) {
 	}
 
-	public void postExecutePartition(List<E> partition) {
+	protected void postExecutePartition(List<E> partition) {
 	}
 	
+	@Override
 	public void postExecute(List<Long> allIds) {
 	}
 
