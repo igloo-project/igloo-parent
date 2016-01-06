@@ -2,15 +2,11 @@ package fr.openwide.core.jpa.batch.util;
 
 import java.util.concurrent.Callable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public class TransactionWrapperCallable<T> implements Callable<T> {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionWrapperCallable.class);
 
 	private final TransactionTemplate transactionTemplate;
 
@@ -23,22 +19,35 @@ public class TransactionWrapperCallable<T> implements Callable<T> {
 	}
 
 	@Override
-	public T call() {
+	public T call() throws Exception {
 		return transactionTemplate.execute(new TransactionCallback<T>() {
 			@Override
 			public T doInTransaction(TransactionStatus transactionStatus) {
 				try {
 					return callable.call();
+				} catch (RuntimeException e) {
+					/* RuntimeException will be handled by the TransactionTemplate itself,
+					 * and will be propagated to the  caller unchanged.
+					 */
+					throw e;
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {
 						Thread.currentThread().interrupt();
 					}
-					LOGGER.error("The following error has not been caught; you *must* catch all the errors. Transaction rollback.", e);
-					transactionStatus.setRollbackOnly();
-					return null;
+					/* Hack: we just want the stack trace to be clean (without unnecessary wrappers), and the
+					 * exception to be propagated to the caller unchanged.
+					 * It's ugly, but safe: TransactionTemplate already handles the case
+					 * of an unexpected checked exception because of Spring proxies.
+					 */
+					throw TransactionWrapperCallable.<RuntimeException>checkedExceptionCastHack(e);
 				}
 			}
 		});
+	}
+
+	@SuppressWarnings("unchecked")
+	private static final <E extends Throwable> E checkedExceptionCastHack(Throwable e) throws E {
+		return (E) e;
 	}
 
 }

@@ -1,7 +1,19 @@
 package fr.openwide.core.test.jpa.batch;
 
-import java.util.List;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Joiners;
-import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
 import fr.openwide.core.jpa.batch.executor.AbstractBatchRunnable;
+import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
 import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.executor.SimpleHibernateBatchExecutor;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -20,7 +32,7 @@ import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
 
 public class TestBatchCreator extends AbstractJpaCoreTestCase {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestBatchCreator.class);
 
 	@Autowired
@@ -76,5 +88,229 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 				}
 			}
 		});
+	}
+	
+	private static class SequentialFailingRunnable<T> extends AbstractBatchRunnable<T> {
+		private final AtomicInteger taskCount = new AtomicInteger(0);
+		
+		public int getExecutedTaskCount() {
+			return taskCount.get();
+		}
+		
+		@Override
+		public void preExecutePartition(List<T> partition) {
+			LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+		}
+		
+		@Override
+		public void executePartition(List<T> partition) {
+			int taskNumber = taskCount.getAndIncrement();
+			switch (taskNumber) {
+			case 0: // First task: succeed
+				LOGGER.warn("Task#{}: Succeeding", taskNumber);
+				break;
+			case 1: // Second task: fail
+				LOGGER.warn("Task#{}: Failing", taskNumber);
+				throw new TestBatchException1();
+			default: // Should not happen
+				Assert.fail();
+			}
+		}
+	}
+	
+	private static class ConcurrentFailingRunnable<T> extends AbstractBatchRunnable<T> {
+		private final Semaphore afterFailureSemaphore = new Semaphore(0);
+		private final Semaphore beforeFailureSemaphore = new Semaphore(0);
+		private final AtomicInteger taskCount = new AtomicInteger(0);
+
+		public int getExecutedTaskCount() {
+			return taskCount.get();
+		}
+		
+		@Override
+		public void preExecutePartition(List<T> partition) {
+			LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+		}
+		
+		@Override
+		public void executePartition(List<T> partition) {
+			try {
+				int taskNumber = taskCount.getAndIncrement();
+				switch (taskNumber) {
+				case 0: // First task: succeed
+					LOGGER.warn("Task#{}: Succeeding", taskNumber);
+					break;
+				case 1: // Second task: wait for third task to start, then fail
+					LOGGER.warn("Task#{}: Waiting for next failing task to start", taskNumber);
+					beforeFailureSemaphore.acquire();
+					LOGGER.warn("Task#{}: Failing", taskNumber);
+					afterFailureSemaphore.release();
+					throw new TestBatchException1();
+				case 2: // Third task: just fail
+					LOGGER.warn("Task#{}: Allowing previous task to fail", taskNumber);
+					beforeFailureSemaphore.release();
+					LOGGER.warn("Task#{}: Failing", taskNumber);
+					afterFailureSemaphore.release();
+					throw new TestBatchException1();
+				case 3:// Fourth task: wait for failure, then last long enough for the failing thread to shut down
+					LOGGER.warn("Task#{}: Waiting for another task's failure...", taskNumber);
+					afterFailureSemaphore.acquire();
+					LOGGER.warn("Task#{}: Another task failed. Succeeding.", taskNumber);
+					Thread.sleep(1000);
+					break;
+				default: // Other tasks: just make sure there will still be tasks pending upon shutdown
+					Thread.sleep(2000);
+					LOGGER.warn("Task#{}: Succeeding (after a short wait)", taskNumber);
+					break;
+				}
+			} catch (InterruptedException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+	}
+	
+	@Test
+	public void testSimpleHibernateBatchErrorDefaultBehavior() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (int i = 1; i < 100; i++) {
+			Person person = new Person("Firstname" + i, "Lastname" + i);
+			personService.create(person);
+			ids.add(person.getId());
+		}
+		
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		
+		Exception runException = null;
+		SequentialFailingRunnable<Person> runnable = new SequentialFailingRunnable<>();
+		try {
+			executor.run(Person.class, ids, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+
+		assertThat(runException, instanceOf(IllegalStateException.class));
+		assertThat(runException.getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(2, runnable.getExecutedTaskCount());
+	}
+	
+	@Test
+	public void testSimpleHibernateBatchErrorCustomBehavior() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (int i = 1; i < 100; i++) {
+			Person person = new Person("Firstname" + i, "Lastname" + i);
+			personService.create(person);
+			ids.add(person.getId());
+		}
+		
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		
+		Exception runException = null;
+		SequentialFailingRunnable<Person> runnable = new SequentialFailingRunnable<Person>() {
+			@Override
+			public void onError(List<Long> allIds, Exception exception) {
+				throw new TestBatchException2(exception);
+			}
+		};
+		try {
+			executor.run(Person.class, ids, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		
+		assertThat(runException, instanceOf(TestBatchException2.class));
+		assertThat(runException.getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(2, runnable.getExecutedTaskCount());
+	}
+	
+	@Test
+	public void testMultithreadedBatchErrorDefaultBehavior() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (long i = 1; i < 100; i++) {
+			ids.add(i);
+		}
+		
+		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+		executor.batchSize(10).threads(4);
+
+		Exception runException = null;
+		ConcurrentFailingRunnable<Long> runnable = new ConcurrentFailingRunnable<Long>(); // Requires at least 2 threads
+		try {
+			executor.run("FailingProcess", ids, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		
+		assertThat(runException, instanceOf(IllegalStateException.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(1, runException.getCause().getSuppressed().length);
+		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
+				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
+		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedTaskCount());
+	}
+	
+	@Test
+	public void testMultithreadedBatchErrorCustomException() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (long i = 1; i < 100; i++) {
+			ids.add(i);
+		}
+		
+		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+		executor.batchSize(10).threads(4);
+
+		Exception runException = null;
+		ConcurrentFailingRunnable<Long> runnable = new ConcurrentFailingRunnable<Long>() { // Requires at least 2 threads
+			@Override
+			public void onError(List<Long> allIds, Exception exception) {
+				throw new TestBatchException2(exception);
+			}
+		};
+		try {
+			executor.run("FailingProcess", ids, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		assertThat(runException, instanceOf(TestBatchException2.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(1, runException.getCause().getSuppressed().length);
+		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
+				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
+		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedTaskCount());
+	}
+	
+	@Test
+	public void testMultithreadedBatchErrorNoAbort() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (long i = 1; i < 100; i++) {
+			ids.add(i);
+		}
+		
+		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+		executor.batchSize(10).threads(4);
+		executor.abortAllOnExecutionError(false);
+
+		Exception runException = null;
+		ConcurrentFailingRunnable<Long> runnable = new ConcurrentFailingRunnable<Long>(); // Requires at least 2 threads
+		try {
+			executor.run("FailingProcess", ids, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		assertThat(runException, instanceOf(IllegalStateException.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(1, runException.getCause().getSuppressed().length);
+		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
+				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
+		assertEquals("The executor did abort (this was unexpected)", 10, runnable.getExecutedTaskCount());
 	}
 }

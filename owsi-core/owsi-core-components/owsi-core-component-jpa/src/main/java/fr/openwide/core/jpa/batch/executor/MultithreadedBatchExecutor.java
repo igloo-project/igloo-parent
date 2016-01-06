@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.batch.executor;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -36,6 +36,8 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 	
 	private int timeoutInMinutes = 15;
 	
+	private boolean abortAllOnExecutionError = true;
+	
 	public MultithreadedBatchExecutor threads(int threads) {
 		this.threads = threads;
 		return this;
@@ -46,55 +48,71 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		return this;
 	}
 	
+	public MultithreadedBatchExecutor abortAllOnExecutionError(boolean abortAllOnExecutionError) {
+		this.abortAllOnExecutionError = abortAllOnExecutionError;
+		return this;
+	}
+	
 	public void run(String context, final List<Long> entityIds, final IBatchRunnable<Long> batchRunnable) {
 		Date startTime = new Date();
 		
 		LOGGER.info("Beginning batch for %1$s: %2$d objects", context, entityIds.size());
-		
-		LOGGER.info("    preExecute start");
-		
-		writeTransactionTemplate.execute(new TransactionCallback<Void>() {
-			@Override
-			public Void doInTransaction(TransactionStatus status) {
-				batchRunnable.preExecute(entityIds);
-				return null;
-			}
-		});
-		
-		LOGGER.info("    preExecute end");
 
-		LOGGER.info("    starting batch executions");
+		try {
+			LOGGER.info("    preExecute start");
 		
-		List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, batchSize);
-		List<Callable<Void>> callables = Lists.newArrayList();
-		for (final List<Long> entityPartition : entityIdsPartitions) {
-			Callable<Void> callable = new Callable<Void>() {
+			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
-				public Void call() throws Exception {
-					batchRunnable.executePartition(entityPartition);
+				public Void doInTransaction(TransactionStatus status) {
+					batchRunnable.preExecute(entityIds);
 					return null;
 				}
-			};
-			callables.add(callable);
-		}
-		
-		createThreadedProcessor(batchSize, timeoutInMinutes).runWithTransaction(context, callables, writeTransactionTemplate, entityIds.size());
-		
-		LOGGER.info("    end of batch executions");
-
-		LOGGER.info("    postExecute start");
-		
-		writeTransactionTemplate.execute(new TransactionCallback<Void>() {
-			@Override
-			public Void doInTransaction(TransactionStatus status) {
-				batchRunnable.postExecute(entityIds);
-				return null;
+			});
+			
+			LOGGER.info("    preExecute end");
+	
+			LOGGER.info("    starting batch executions");
+			
+			List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, batchSize);
+			List<Runnable> runnables = Lists.newArrayList();
+			for (final List<Long> entityPartition : entityIdsPartitions) {
+				Runnable runnable = new Runnable() {
+					@Override
+					public void run() {
+						batchRunnable.executePartition(entityPartition);
+					}
+				};
+				runnables.add(runnable);
 			}
-		});
-		
-		LOGGER.info("    postExecute end");
-		
-		logEnd(context, startTime);
+			
+			createThreadedProcessor(batchSize, timeoutInMinutes)
+					.runWithTransaction(context, runnables, writeTransactionTemplate, entityIds.size());
+			
+			LOGGER.info("    end of batch executions");
+	
+			LOGGER.info("    postExecute start");
+			
+			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+				@Override
+				public Void doInTransaction(TransactionStatus status) {
+					batchRunnable.postExecute(entityIds);
+					return null;
+				}
+			});
+			
+			LOGGER.info("    postExecute end");
+			
+			logEnd(context, startTime, null);
+		} catch (ExecutionException e) {
+			logEnd(context, startTime, e);
+			try {
+				LOGGER.info("    onError start");
+				batchRunnable.onError(entityIds, e);
+				LOGGER.info("    onError end (exception was NOT re-thrown)");
+			} finally {
+				LOGGER.info("    onError end (exception WAS re-thrown)");
+			}
+		}
 	}
 
 	protected final ThreadedProcessor createThreadedProcessor(int maxLoggingIncrement, int timeoutInMinutes) {
@@ -102,6 +120,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 				threads,
 				timeoutInMinutes, TimeUnit.MINUTES,
 				1, TimeUnit.MINUTES,
+				abortAllOnExecutionError,
 				2, TimeUnit.SECONDS,  // intervalle minimum pour le logging
 				30, TimeUnit.SECONDS, // intervalle de temps maxi entre deux logs
 				maxLoggingIncrement,  // intervalle de nombre d'éléments traités maxi entre deux logs
@@ -109,7 +128,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		);
 	}
 	
-	protected void logEnd(String context, Date startTime) {
+	protected void logEnd(String context, Date startTime, Exception e) {
 		long duration = new Date().getTime() - startTime.getTime();
 		
 		StringBuilder sb = new StringBuilder(String.format("%1$s - Migrated items ", context));
@@ -119,6 +138,10 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			sb.append(String.format("in %1$s s", new BigDecimal(duration / 1000f).setScale(3, BigDecimal.ROUND_HALF_UP).toString()));
 		} else {
 			sb.append(String.format("in %1$s mn", new BigDecimal(duration / 60000f).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+		}
+		if (e != null) {
+			// Log this as info anyway, since error handling is done elsewhere
+			sb.append(String.format(", but caught exception '%s'.", e));
 		}
 		PROGRESS_LOGGER.info(sb.toString());
 	}

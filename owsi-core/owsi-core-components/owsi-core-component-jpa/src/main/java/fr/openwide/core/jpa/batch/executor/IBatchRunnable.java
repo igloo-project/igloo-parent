@@ -9,5 +9,7 @@ public interface IBatchRunnable<E> {
 	void executePartition(List<E> partition);
 
 	void postExecute(List<Long> allIds);
+	
+	void onError(List<Long> allIds, Exception exception);
 
 }

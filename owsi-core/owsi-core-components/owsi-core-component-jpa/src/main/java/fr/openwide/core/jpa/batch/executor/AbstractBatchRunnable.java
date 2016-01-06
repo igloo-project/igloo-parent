@@ -3,7 +3,7 @@ package fr.openwide.core.jpa.batch.executor;
 import java.util.List;
 
 public abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
-
+	
 	@Override
 	public void preExecute(List<Long> allIds) {
 	}
@@ -30,6 +30,11 @@ public abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
 	
 	@Override
 	public void postExecute(List<Long> allIds) {
+	}
+	
+	@Override
+	public void onError(List<Long> allIds, Exception exception) {
+		throw new IllegalStateException(String.format("Unhandled error when running %s", this), exception);
 	}
 
 }
