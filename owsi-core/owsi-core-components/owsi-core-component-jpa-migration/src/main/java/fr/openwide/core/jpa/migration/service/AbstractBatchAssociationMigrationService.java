@@ -12,9 +12,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.jpa.batch.executor.BatchCreator;
+import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
 import fr.openwide.core.jpa.batch.executor.BatchRunnable;
-import fr.openwide.core.jpa.batch.executor.MultithreadedBatch;
+import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
@@ -36,14 +36,14 @@ public abstract class AbstractBatchAssociationMigrationService<Owning extends Ge
 	private static final int DEFAULT_VALUES_PER_KEY = 3;
 	
 	@Autowired
-	private BatchCreator batchCreator;
+	private BatchExecutorCreator batchCreator;
 
 	public void importAllEntities() {
 		List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(getMigrationInformation().getSqlAllIds(), Long.class));
 
-		MultithreadedBatch batch = batchCreator.newMultithreadedBatch();
-		batch.threads(4).batchSize(100);
-		batch.run(getMigrationInformation().getAssociationName(), entityIds, new BatchRunnable<Long>() {
+		MultithreadedBatchExecutor executor = batchCreator.newMultithreadedBatchExecutor();
+		executor.threads(4).batchSize(100);
+		executor.run(getMigrationInformation().getAssociationName(), entityIds, new BatchRunnable<Long>() {
 			@Override
 			public void executePartition(List<Long> partition) {
 				importBatch(partition);

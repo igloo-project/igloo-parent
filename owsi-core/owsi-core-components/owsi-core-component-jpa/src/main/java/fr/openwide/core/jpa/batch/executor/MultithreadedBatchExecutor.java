@@ -23,9 +23,9 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MultithreadedBatch extends AbstractBatch<MultithreadedBatch> {
+public class MultithreadedBatchExecutor extends AbstractBatchExecutor<MultithreadedBatchExecutor> {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MultithreadedBatch.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MultithreadedBatchExecutor.class);
 	
 	private static final Logger PROGRESS_LOGGER = LoggerFactory.getLogger(ProcessorProgressLogger.class);
 	
@@ -36,12 +36,12 @@ public class MultithreadedBatch extends AbstractBatch<MultithreadedBatch> {
 	
 	private int timeoutInMinutes = 15;
 	
-	public MultithreadedBatch threads(int threads) {
+	public MultithreadedBatchExecutor threads(int threads) {
 		this.threads = threads;
 		return this;
 	}
 	
-	public MultithreadedBatch timeoutInMinutes(int timeout) {
+	public MultithreadedBatchExecutor timeoutInMinutes(int timeout) {
 		this.timeoutInMinutes = timeout;
 		return this;
 	}
@@ -124,7 +124,7 @@ public class MultithreadedBatch extends AbstractBatch<MultithreadedBatch> {
 	}
 
 	@Override
-	protected MultithreadedBatch thisAsT() {
+	protected MultithreadedBatchExecutor thisAsT() {
 		return this;
 	}
 

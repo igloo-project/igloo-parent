@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Joiners;
-import fr.openwide.core.jpa.batch.executor.BatchCreator;
+import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
 import fr.openwide.core.jpa.batch.executor.BatchRunnable;
-import fr.openwide.core.jpa.batch.executor.MultithreadedBatch;
-import fr.openwide.core.jpa.batch.executor.SimpleHibernateBatch;
+import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
+import fr.openwide.core.jpa.batch.executor.SimpleHibernateBatchExecutor;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
@@ -24,7 +24,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestBatchCreator.class);
 
 	@Autowired
-	private BatchCreator batchCreator;
+	private BatchExecutorCreator executorCreator;
 	
 	@Test
 	public void testSimpleHibernateBatch() throws ServiceException, SecurityServiceException {
@@ -36,9 +36,9 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 			ids.add(person.getId());
 		}
 		
-		SimpleHibernateBatch batch = batchCreator.newSimpleHibernateBatch();
-		batch.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
-		batch.run(Person.class, ids, new BatchRunnable<Person>() {
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		executor.run(Person.class, ids, new BatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
 				LOGGER.warn("Executing: " + unit.getDisplayName());
@@ -56,9 +56,9 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 			ids.add(person.getId());
 		}
 		
-		MultithreadedBatch batch = batchCreator.newMultithreadedBatch();
-		batch.batchSize(10).threads(4);
-		batch.run(Person.class.getSimpleName(), ids, new BatchRunnable<Long>() {
+		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+		executor.batchSize(10).threads(4);
+		executor.run(Person.class.getSimpleName(), ids, new BatchRunnable<Long>() {
 			@Override
 			public void preExecutePartition(List<Long> partition) {
 				LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));

@@ -16,9 +16,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import fr.openwide.core.jpa.batch.executor.BatchCreator;
+import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
 import fr.openwide.core.jpa.batch.executor.BatchRunnable;
-import fr.openwide.core.jpa.batch.executor.MultithreadedBatch;
+import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
@@ -32,14 +32,14 @@ import fr.openwide.core.jpa.migration.util.IBatchEntityMigrationInformation;
 public abstract class AbstractBatchEntityMigrationService<T extends GenericEntity<Long, T>> extends AbstractMigrationService {
 	
 	@Autowired
-	private BatchCreator batchCreator;
+	private BatchExecutorCreator batchCreator;
 
 	public void importAllEntities() {
 		List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(getMigrationInformation().getSqlAllIds(), Long.class));
 		
-		MultithreadedBatch batch = batchCreator.newMultithreadedBatch();
-		batch.threads(4).batchSize(100);
-		batch.run(getMigrationInformation().getEntityClass().getSimpleName(), entityIds, new BatchRunnable<Long>() {
+		MultithreadedBatchExecutor executor = batchCreator.newMultithreadedBatchExecutor();
+		executor.threads(4).batchSize(100);
+		executor.run(getMigrationInformation().getEntityClass().getSimpleName(), entityIds, new BatchRunnable<Long>() {
 			@Override
 			public void executePartition(List<Long> partition) {
 				importBatch(partition);

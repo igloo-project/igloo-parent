@@ -10,7 +10,7 @@ import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 
-public abstract class AbstractBatch<T extends AbstractBatch<T>> {
+public abstract class AbstractBatchExecutor<T extends AbstractBatchExecutor<T>> {
 	
 	protected int batchSize;
 

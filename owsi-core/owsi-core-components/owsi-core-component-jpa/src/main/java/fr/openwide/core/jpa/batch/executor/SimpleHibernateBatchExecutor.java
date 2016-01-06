@@ -22,20 +22,20 @@ import fr.openwide.core.jpa.exception.ServiceException;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SimpleHibernateBatch extends AbstractBatch<SimpleHibernateBatch> {
+public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHibernateBatchExecutor> {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHibernateBatch.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHibernateBatchExecutor.class);
 
 	private boolean flushToIndexes;
 	
 	private List<Class<?>> classesToReindex = Lists.newArrayListWithCapacity(0);
 	
-	public SimpleHibernateBatch flushToIndexes(boolean flushToIndexes) {
+	public SimpleHibernateBatchExecutor flushToIndexes(boolean flushToIndexes) {
 		this.flushToIndexes = flushToIndexes;
 		return this;
 	}
 	
-	public SimpleHibernateBatch reindexClasses(Class<?> clazz, Class<?>... classes) {
+	public SimpleHibernateBatchExecutor reindexClasses(Class<?> clazz, Class<?>... classes) {
 		classesToReindex = Lists.asList(clazz, classes);
 		return this;
 	}
@@ -121,7 +121,7 @@ public class SimpleHibernateBatch extends AbstractBatch<SimpleHibernateBatch> {
 	}
 
 	@Override
-	protected SimpleHibernateBatch thisAsT() {
+	protected SimpleHibernateBatchExecutor thisAsT() {
 		return this;
 	}
 	
