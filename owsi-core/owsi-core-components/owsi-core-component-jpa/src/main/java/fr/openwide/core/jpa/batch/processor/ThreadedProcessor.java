@@ -90,7 +90,7 @@ public class ThreadedProcessor {
 			this.monitorContext.getTotalItems().set(totalItems);
 		}
 		try {
-			// all executions are wrapped in a transaction
+			// all executions are wrapped in a separate transaction (if the template was provided)
 			for (Callable<T> callable : callables) {
 				Callable<T> wrappedCallable = new ThreadLocalInitializingCallable<>(callable, ProcessorMonitorContext.getThreadLocal(), monitorContext);
 				if (transactionTemplate != null) {
@@ -111,7 +111,7 @@ public class ThreadedProcessor {
 			try {
 				boolean terminated = executor.awaitTermination(maxTotalDuration, maxTotalDurationTimeUnit);
 				if (!terminated) {
-					LOGGER.error("Tasks haven't been terminated before the timeout of {} {}", maxTotalDuration, maxTotalDurationTimeUnit.name());
+					LOGGER.error("Tasks haven't terminated before the timeout of {} {}", maxTotalDuration, maxTotalDurationTimeUnit.name());
 				}
 				LOGGER.info("{} - {} elements treated", loggerContext, this.monitorContext.getDoneItems());
 				if (this.monitorContext.getFailedItems().get() > 0) {
@@ -130,7 +130,7 @@ public class ThreadedProcessor {
 							interrupted = true;
 						}
 					} catch (ExecutionException e) {
-						// Ne peut pas arriver car tous les callables sont wrappés dans un callable qui catche l'exception
+						// May never happen, since every callable was wrapped so that it catches exceptions
 						throw new IllegalStateException("Une tâche d'import d'objets a échoué ; interruption de l'import.", e);
 					} catch (TimeoutException timeoutException) {
 						// already notified by a warn
