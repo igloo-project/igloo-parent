@@ -1,21 +1,24 @@
 package fr.openwide.core.jpa.batch.executor;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BatchExecutorCreator {
 	
 	@Autowired
-	private ApplicationContext applicationContext;
+	private ObjectFactory<SimpleHibernateBatchExecutor> simpleHibernateBatchExecutorFactory;
+	
+	@Autowired
+	private ObjectFactory<MultithreadedBatchExecutor> multithreadedBatchExecutorFactory;
 	
 	public SimpleHibernateBatchExecutor newSimpleHibernateBatchExecutor() {
-		return applicationContext.getBean(SimpleHibernateBatchExecutor.class);
+		return simpleHibernateBatchExecutorFactory.getObject();
 	}
 	
 	public MultithreadedBatchExecutor newMultithreadedBatchExecutor() {
-		return applicationContext.getBean(MultithreadedBatchExecutor.class);
+		return multithreadedBatchExecutorFactory.getObject();
 	}
 
 }
