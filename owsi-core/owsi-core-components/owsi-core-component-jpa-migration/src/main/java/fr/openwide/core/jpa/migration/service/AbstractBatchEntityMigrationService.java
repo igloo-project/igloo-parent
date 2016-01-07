@@ -46,7 +46,7 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 			}
 			
 			@Override
-			public void postExecute(List<Long> allIds) {
+			public void postExecute() {
 				updateSequence(getMigrationInformation().getEntityClass());
 			}
 		});

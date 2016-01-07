@@ -5,7 +5,7 @@ import java.util.List;
 public abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
 	
 	@Override
-	public void preExecute(List<Long> allIds) {
+	public void preExecute() {
 	}
 
 	@Override
@@ -29,11 +29,11 @@ public abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
 	}
 	
 	@Override
-	public void postExecute(List<Long> allIds) {
+	public void postExecute() {
 	}
 	
 	@Override
-	public void onError(List<Long> allIds, Exception exception) {
+	public void onError(Exception exception) {
 		throw new IllegalStateException(String.format("Unhandled error when running %s", this), exception);
 	}
 

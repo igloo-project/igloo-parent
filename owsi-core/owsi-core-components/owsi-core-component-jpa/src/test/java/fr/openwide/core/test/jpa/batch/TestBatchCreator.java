@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
@@ -27,7 +28,10 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.jpa.batch.executor.AbstractBatchRunnable;
@@ -36,8 +40,11 @@ import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.executor.SimpleHibernateBatchExecutor;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.query.IQuery;
+import fr.openwide.core.jpa.query.Queries;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.model.QPerson;
 
 public class TestBatchCreator extends AbstractJpaCoreTestCase {
 
@@ -75,6 +82,43 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 				LOGGER.warn("Executing: " + unit.getDisplayName());
 			}
 		});
+	}
+	
+	@Test
+	public void testSimpleHibernateBatchCustomQuery() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (int i = 1; i < 100; i++) {
+			Person person = new Person("Firstname" + i, "Lastname" + i);
+			personService.create(person);
+			ids.add(person.getId());
+		}
+		
+		List<Long> toExecute = Lists.newArrayList(Iterables.skip(ids, 50));
+		Collections.sort(toExecute);
+		
+		IQuery<Person> query = Queries.fromQueryDsl(
+				new JPAQuery<Person>(getEntityManager())
+				.from(QPerson.person)
+				.where(QPerson.person.id.in(toExecute))
+				.orderBy(QPerson.person.id.desc())
+		);
+		List<Long> expectedExecuted = Lists.newArrayList(toExecute);
+		Collections.sort(expectedExecuted, Ordering.natural().reverse());
+		
+		final List<Long> executed = Lists.newArrayList();
+		
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		executor.run("Person query", query, new AbstractBatchRunnable<Person>() {
+			@Override
+			public void executeUnit(Person unit) {
+				LOGGER.warn("Executing: " + unit.getDisplayName());
+				executed.add(unit.getId());
+			}
+		});
+		
+		assertEquals(expectedExecuted, executed);
 	}
 	
 	@Test
@@ -144,7 +188,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 					}
 					
 					@Override
-					public void postExecute(List<Long> allIds) {
+					public void postExecute() {
 						postExecuteWasRun.setTrue();
 						Person person = personService.getById(ids.get(0));
 						assertThat("An entity had not been updated from the postExecute() perspective.",
@@ -278,7 +322,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 		Exception runException = null;
 		SequentialFailingRunnable<Person> runnable = new SequentialFailingRunnable<Person>() {
 			@Override
-			public void onError(List<Long> allIds, Exception exception) {
+			public void onError(Exception exception) {
 				throw new TestBatchException2(exception);
 			}
 		};
@@ -335,7 +379,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 		Exception runException = null;
 		ConcurrentFailingRunnable<Long> runnable = new ConcurrentFailingRunnable<Long>() { // Requires at least 2 threads
 			@Override
-			public void onError(List<Long> allIds, Exception exception) {
+			public void onError(Exception exception) {
 				throw new TestBatchException2(exception);
 			}
 		};

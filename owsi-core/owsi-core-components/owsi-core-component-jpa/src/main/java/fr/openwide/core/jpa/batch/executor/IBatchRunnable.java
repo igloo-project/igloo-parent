@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface IBatchRunnable<E> {
 
-	void preExecute(List<Long> allIds);
+	void preExecute();
 
 	void executePartition(List<E> partition);
 
-	void postExecute(List<Long> allIds);
+	void postExecute();
 	
-	void onError(List<Long> allIds, Exception exception);
+	void onError(Exception exception);
 
 }

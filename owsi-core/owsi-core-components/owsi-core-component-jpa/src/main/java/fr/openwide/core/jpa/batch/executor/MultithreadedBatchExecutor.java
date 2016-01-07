@@ -64,7 +64,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			writeRequiresNewTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
-					batchRunnable.preExecute(entityIds);
+					batchRunnable.preExecute();
 					return null;
 				}
 			});
@@ -95,7 +95,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			writeRequiresNewTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
-					batchRunnable.postExecute(entityIds);
+					batchRunnable.postExecute();
 					return null;
 				}
 			});
@@ -107,7 +107,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			logEnd(context, startTime, e);
 			try {
 				LOGGER.info("    onError start");
-				batchRunnable.onError(entityIds, e);
+				batchRunnable.onError(e);
 				LOGGER.info("    onError end (exception was NOT re-thrown)");
 			} finally {
 				LOGGER.info("    onError end (exception WAS re-thrown)");
