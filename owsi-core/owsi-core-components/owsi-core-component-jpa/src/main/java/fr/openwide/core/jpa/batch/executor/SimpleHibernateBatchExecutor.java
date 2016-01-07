@@ -122,14 +122,7 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 	}
 
 	protected <E extends GenericEntity<Long, ?>> List<E> listEntitiesByIds(Class<E> clazz, Collection<Long> entityIds) {
-		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
-		QGenericEntity qGenericEntity = new QGenericEntity(path);
-		
-		return new JPAQuery<E>(entityManagerUtils.getEntityManager()).select(path)
-				.from(path)
-				.where(qGenericEntity.id.in(entityIds))
-				.orderBy(qGenericEntity.id.asc())
-				.fetch();
+		return entityService.listEntity(clazz, entityIds);
 	}
 
 	@Override
