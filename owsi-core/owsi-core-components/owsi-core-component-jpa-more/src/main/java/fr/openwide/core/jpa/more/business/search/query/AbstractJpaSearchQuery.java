@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
@@ -115,12 +116,17 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 
 	protected JPAQuery<T> getQueryList(Long offset, Long limit) {
 		JPAQuery<T> finalQuery = getFinalQuery();
+		
+		// Handle multiple calls to getQueryList()
+		finalQuery.restrict(QueryModifiers.EMPTY);
+		
 		if (offset != null) {
 			finalQuery.offset(offset);
 		}
 		if (limit != null) {
 			finalQuery.limit(limit);
 		}
+		
 		return finalQuery;
 	}
 	
