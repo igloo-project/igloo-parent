@@ -102,6 +102,50 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<executions>
+						<execution>
+							<!--
+							Clean target/generated-sources and similar before each generation, so that files
+							that will not be generated anymore won't stay in place (they may not compile anymore)
+							This execution must be attached to the initalize phase, not to the generate-sources phase,
+							in order to ensure it's executed *before*, and not after, the generation.
+							-->
+							<id>clean-generated-sources</id>
+							<phase>initialize</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+							<configuration>
+								<excludeDefaultDirectories>true</excludeDefaultDirectories>
+								<filesets>
+									<fileset>
+										<directory>${generated-sources.directory}</directory>
+									</fileset>
+								</filesets>
+							</configuration>
+						</execution>
+						<execution>
+							<!--
+							Same as clean-generated-sources, but for tests.
+							-->
+							<id>clean-generated-test-sources</id>
+							<phase>initialize</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+							<configuration>
+								<excludeDefaultDirectories>true</excludeDefaultDirectories>
+								<filesets>
+									<fileset>
+										<directory>${generated-sources-test.directory}</directory>
+									</fileset>
+								</filesets>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${owsi-core.maven-resources-plugin.version}</version>
@@ -233,7 +277,11 @@
 					</dependencies>
 				</plugin>
 				
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--
+				This plugin's configuration is used to store Eclipse m2e settings only.
+				It has no influence on the Maven build itself.
+				It has no influence when running goals explicitely (as a Run Configuration) from Eclipse, either.
+				-->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -293,6 +341,24 @@
 										<ignore />
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<!--
+										This does not mean that we prevent "cleans" on Eclipse, just that the
+										custom maven-clean-plugin executions explicitly mapped to lifecycle phases are
+										not executed on Eclipse.
+										-->
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-clean-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>clean</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -321,61 +387,6 @@
 					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
-		</profile>
-		<profile>
-			<id>eclipse</id>
-			<activation>
-				<property>
-					<name>m2e.version</name>
-				</property>
-			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<!--
-						Eclipse n'aime pas avoir une deuxième fois le même code pour les tests ; il faut
-						donc générer le code des tests en même temps.
-						De plus, pour alléger le build, on exclut les resources de la génération.
-						Il faut appeler le plugin à la main avec la property -Declipse-maven-processor-plugin.
-						-->
-						<plugin>
-							<groupId>org.bsc.maven</groupId>
-							<artifactId>maven-processor-plugin</artifactId>
-							<configuration>
-								<excludes>
-									<exclude>**/*</exclude>
-								</excludes>
-							</configuration>
-							<executions>
-								<execution>
-									<id>maven-processor-plugin-default</id>
-									<phase>generate-sources</phase>
-									<goals>
-										<goal>process</goal>
-										<goal>process-test</goal>
-									</goals>
-								</execution>
-								<execution>
-									<id>maven-processor-plugin-default-test</id>
-									<phase>none</phase>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
-		<profile>
-			<!--
-			Profil qui existe juste pour désactiver le profil eclipse actif par défaut.
-			Lancer maven avec -Declipse-maven-processor-plugin
-			-->
-			<id>eclipse-maven-processor-plugin</id>
-			<activation>
-				<property>
-					<name>eclipse-maven-processor-plugin</name>
-				</property>
-			</activation>
 		</profile>
 	</profiles>
 	
