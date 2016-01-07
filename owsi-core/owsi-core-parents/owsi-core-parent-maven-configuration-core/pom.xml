@@ -15,13 +15,6 @@
 	<name>OWSI Core - Parent - Maven configuration - Core</name>
 	
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
-		
-		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
-		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
-		
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
 		<owsi-core.spring.version>4.2.4.RELEASE</owsi-core.spring.version>
@@ -1114,6 +1107,11 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!--
+				Override maven-enforcer-plugin from owsi-core-parent-maven-configuration-common
+				so that we can enforce dependencies differently in OWSI-Core.
+				(Note that owsi-core-parent-maven-configuration-common is also used independently from OWSI-Core)
+				-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${owsi-core.maven-enforcer-plugin.version}</version>
@@ -1207,6 +1205,9 @@
 							<goals>
 								<goal>process</goal>
 							</goals>
+							<configuration>
+								<outputDirectory>${generated-sources.directory}</outputDirectory>
+							</configuration>
 						</execution>
 						<execution>
 							<id>maven-processor-plugin-default-test</id>
@@ -1220,65 +1221,11 @@
 						</execution>
 					</executions>
 				</plugin>
-				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>yuicompressor-maven-plugin</artifactId>
-					<version>${owsi-core.maven-yui-compressor-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>default</id>
-							<goals>
-								<goal>compress</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<includes>
-							<include>**/*.css</include>
-							<include>**/*.js</include>
-						</includes>
-						<suffix>.min</suffix>
-						<linebreakpos>10000</linebreakpos>
-						<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>wagon-maven-plugin</artifactId>
-					<version>${owsi-core.wagon-maven-plugin.version}</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh-external</artifactId>
-							<version>${owsi-core.wagon-ssh-external-plugin.version}</version>
-						</dependency>
-					</dependencies>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 	
 	<profiles>
-		<profile>
-			<activation>
-				<property>
-					<name>distribution</name>
-					<value>owsi-core-release</value>
-				</property>
-			</activation>
-			<distributionManagement>
-				<repository>
-					<id>nexus-owsi-core</id>
-					<name>Nexus OWSI Core</name>
-					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
-				</repository>
-				<snapshotRepository>
-					<id>nexus-owsi-core-snapshots</id>
-					<name>Nexus OWSI Core Snapshots</name>
-					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
-				</snapshotRepository>
-			</distributionManagement>
-		</profile>
 		<profile>
 			<id>eclipse-processor</id>
 			<!--
