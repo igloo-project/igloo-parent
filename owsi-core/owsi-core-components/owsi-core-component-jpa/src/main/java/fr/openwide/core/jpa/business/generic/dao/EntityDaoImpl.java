@@ -38,7 +38,8 @@ public class EntityDaoImpl implements IEntityDao {
 	}
 	
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids) {
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E>
+			listEntity(Class<E> clazz, Collection<K> ids) {
 		return listEntityUnsafe(clazz, ids);
 	}
 	
@@ -48,7 +49,7 @@ public class EntityDaoImpl implements IEntityDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <K extends Serializable & Comparable<K>, E extends GenericEntity<? extends K, ?>>
+	private <K extends Serializable & Comparable<K>, E extends GenericEntity<?, ?>>
 			List<E> listEntityUnsafe(Class<? extends E> clazz, Collection<?> ids) {
 		if (ids == null || ids.isEmpty()) {
 			return Lists.newArrayListWithCapacity(0);
