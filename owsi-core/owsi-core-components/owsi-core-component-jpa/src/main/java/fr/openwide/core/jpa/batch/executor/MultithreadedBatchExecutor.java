@@ -61,7 +61,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		try {
 			LOGGER.info("    preExecute start");
 		
-			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+			writeRequiresNewTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.preExecute(entityIds);
@@ -86,13 +86,13 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			}
 			
 			createThreadedProcessor(batchSize, timeoutInMinutes)
-					.runWithTransaction(context, runnables, writeTransactionTemplate, entityIds.size());
+					.runWithTransaction(context, runnables, writeRequiresNewTransactionTemplate, entityIds.size());
 			
 			LOGGER.info("    end of batch executions");
 	
 			LOGGER.info("    postExecute start");
 			
-			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+			writeRequiresNewTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.postExecute(entityIds);

@@ -47,7 +47,7 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 		try {
 			LOGGER.info("    preExecute start");
 			
-			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+			writeRequiredTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.preExecute(entityIds);
@@ -62,7 +62,7 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 			List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, batchSize);
 			int i = 0;
 			for (final List<Long> entityIdsPartition : entityIdsPartitions) {
-				writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+				writeRequiredTransactionTemplate.execute(new TransactionCallback<Void>() {
 					@Override
 					public Void doInTransaction(TransactionStatus status) {
 						List<E> entities = listEntitiesByIds(clazz, entityIdsPartition);
@@ -87,7 +87,7 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 	
 			LOGGER.info("    postExecute start");
 			
-			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+			writeRequiredTransactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.postExecute(entityIds);

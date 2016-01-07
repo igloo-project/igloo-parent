@@ -1,5 +1,6 @@
 package fr.openwide.core.test.jpa.batch;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
@@ -12,12 +13,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.interceptor.TransactionAttribute;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.Lists;
 
@@ -37,6 +45,17 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 
 	@Autowired
 	private BatchExecutorCreator executorCreator;
+
+	protected TransactionTemplate writeRequiredTransactionTemplate;
+	
+	@Autowired
+	public void setPlatformTransactionManager(PlatformTransactionManager transactionManager) {
+		DefaultTransactionAttribute writeRequiredTransactionAttribute =
+				new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
+		writeRequiredTransactionAttribute.setReadOnly(false);
+		writeRequiredTransactionTemplate =
+				new TransactionTemplate(transactionManager, writeRequiredTransactionAttribute);
+	}
 	
 	@Test
 	public void testSimpleHibernateBatch() throws ServiceException, SecurityServiceException {
@@ -88,6 +107,54 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 				}
 			}
 		});
+	}
+	
+	@Test
+	public void testMultithreadedBatchPostExecute() throws ServiceException, SecurityServiceException {
+		final List<Long> ids = Lists.newArrayList();
+		for (int i = 1; i < 100; i++) {
+			Person person = new Person("Firstname" + i, "Lastname" + i);
+			personService.create(person);
+			ids.add(person.getId());
+		}
+		
+		final MutableBoolean postExecuteWasRun = new MutableBoolean(false);
+		writeRequiredTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				
+				MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+				executor.batchSize(10).threads(4);
+				executor.run(Person.class.getSimpleName(), ids, new AbstractBatchRunnable<Long>() {
+					@Override
+					public void preExecutePartition(List<Long> partition) {
+						LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+					}
+					
+					@Override
+					public void executeUnit(Long unit) {
+						Person person = personService.getById(unit);
+						person.setLastName(person.getLastName() + " updated " + person.getId());
+						try {
+							personService.update(person);
+							LOGGER.warn("Updated: " + person.getDisplayName());
+						} catch (ServiceException | SecurityServiceException e) {
+							throw new IllegalStateException(e);
+						}
+					}
+					
+					@Override
+					public void postExecute(List<Long> allIds) {
+						postExecuteWasRun.setTrue();
+						Person person = personService.getById(ids.get(0));
+						assertThat("An entity had not been updated from the postExecute() perspective.",
+								person.getLastName(), containsString(" updated "));
+					}
+				});
+			}
+		});
+		
+		assertTrue("postExecute was not run.", postExecuteWasRun.booleanValue());
 	}
 	
 	private static class SequentialFailingRunnable<T> extends AbstractBatchRunnable<T> {
