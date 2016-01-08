@@ -1228,16 +1228,55 @@
 	
 	<profiles>
 		<profile>
-			<id>eclipse-processor</id>
+			<id>eclipse-build</id>
 			<!--
-			A profile for sources generation. Simply maps the maven-processor-plugin executions to the generate-sources
-			phase (even for test sources), so that we only need to run generate-sources and nothing else.
+			An automatically-set profile that disables proccessors' sources generation.
+			They are still ran in order to automatically set the generated sourcepaths on the eclipse projects. This is
+			done at the same time for both main sources and test sources, presumably because doing otherwise upsets Eclipse.
+			Detail: the processors are generally too resource-consuming to be ran as part of
+			the automatic Eclipse build, which is triggered by each file change.
 			-->
 			<activation>
 				<property>
 					<name>m2e.version</name>
 				</property>
 			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.bsc.maven</groupId>
+							<artifactId>maven-processor-plugin</artifactId>
+							<configuration>
+								<excludes>
+									<exclude>**/*</exclude><!-- Disable source generation -->
+								</excludes>
+							</configuration>
+							<executions>
+								<execution>
+									<id>maven-processor-plugin-default</id>
+									<phase>generate-sources</phase><!-- Still run the processor to update sourcepaths -->
+									<goals>
+										<goal>process</goal>
+										<goal>process-test</goal>
+									</goals>
+								</execution>
+								<execution>
+									<id>maven-processor-plugin-default-test</id>
+									<phase>none</phase> <!-- Already executed in generate-sources -->
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>eclipse-processor</id>
+			<!--
+			A profile for sources generation. Simply maps the maven-processor-plugin executions to the generate-sources
+			phase (even for test sources), so that we only need to run generate-sources and nothing else.
+			-->
 			<build>
 				<pluginManagement>
 					<plugins>
@@ -1255,7 +1294,7 @@
 								</execution>
 								<execution>
 									<id>maven-processor-plugin-default-test</id>
-									<phase>none</phase>
+									<phase>none</phase> <!-- Already executed in generate-sources -->
 								</execution>
 							</executions>
 						</plugin>
