@@ -5,7 +5,7 @@ addons:
   postgresql: "9.4"
   apt:
     packages:
-      - oracle-java8-installer
+      - oracle-java7-installer
 cache:
   directories:
     - $HOME/.m2
