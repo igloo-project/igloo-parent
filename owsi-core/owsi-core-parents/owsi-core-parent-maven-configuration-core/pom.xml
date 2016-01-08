@@ -117,7 +117,8 @@
 		<owsi-core.wicket-select2.version>1.2.0-SNAPSHOT</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>7.0.0.owsi1-SNAPSHOT</owsi-core.wqplot.version>
 		
-		<owsi-core.less4j.version>1.15.4</owsi-core.less4j.version>
+		<!-- Versions 1.15.2 and 1.15.4 seem buggy (see https://github.com/SomMeri/less4j/issues/323) -->
+		<owsi-core.less4j.version>1.8.4</owsi-core.less4j.version>
 		<owsi-core.jsass.version>3.3.0</owsi-core.jsass.version>
 		
 		<owsi-core.junit.version>4.12</owsi-core.junit.version>
