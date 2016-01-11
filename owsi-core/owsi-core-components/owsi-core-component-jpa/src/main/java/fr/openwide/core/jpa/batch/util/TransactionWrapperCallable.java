@@ -46,7 +46,7 @@ public class TransactionWrapperCallable<T> implements Callable<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static final <E extends Throwable> E checkedExceptionCastHack(Throwable e) throws E {
+	private static final <E extends Throwable> E checkedExceptionCastHack(Throwable e) {
 		return (E) e;
 	}
 
