@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
-import fr.openwide.core.basicapp.core.business.history.model.bean.HistoryLogObjectsBean;
 import fr.openwide.core.basicapp.core.business.history.service.IHistoryLogService;
 import fr.openwide.core.basicapp.core.business.user.dao.IUserDao;
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -45,23 +44,23 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-		historyLogService.log(HistoryEventType.SIGN_IN, HistoryLogObjectsBean.of(user));
+		historyLogService.log(HistoryEventType.SIGN_IN, user);
 	}
 
 	@Override
 	public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-		historyLogService.log(HistoryEventType.SIGN_IN_FAIL, HistoryLogObjectsBean.of(user));
+		historyLogService.log(HistoryEventType.SIGN_IN_FAIL, user);
 	}
 
 	@Override
 	public void onCreate(User user, User author) throws ServiceException, SecurityServiceException {
-		historyLogService.log(HistoryEventType.CREATE, HistoryLogObjectsBean.of(user));
+		historyLogService.log(HistoryEventType.CREATE, user);
 	}
 	
 	@Override
 	public void setActive(User person, boolean active) throws ServiceException, SecurityServiceException {
 		super.setActive(person, active);
-		historyLogService.log(active ? HistoryEventType.ENABLE : HistoryEventType.DISABLE, HistoryLogObjectsBean.of(person));
+		historyLogService.log(active ? HistoryEventType.ENABLE : HistoryEventType.DISABLE, person);
 	}
 	
 	@Override

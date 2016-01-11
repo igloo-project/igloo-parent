@@ -11,23 +11,27 @@ import fr.openwide.core.jpa.more.business.difference.util.IDifferenceFromReferen
 import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
-import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogObjectsBean;
+import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import fr.openwide.core.jpa.more.business.history.util.IDifferenceHandler;
 
 public interface IGenericHistoryLogService<
 				HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
-				HD extends AbstractHistoryDifference<HD, HL>>
+				HD extends AbstractHistoryDifference<HD, HL>,
+				HLAIB extends AbstractHistoryLogAdditionalInformationBean>
 		extends IGenericEntityService<Long, HL> {
 	
-	<T> void log(HET eventType, AbstractHistoryLogObjectsBean<T> objects)
+	<T> void log(HET eventType, T mainObject)
+			throws ServiceException, SecurityServiceException;
+	
+	<T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException;
 
-	<T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects, IDifferenceService<T> differenceService)
+	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation, IDifferenceService<T> differenceService)
 			throws ServiceException, SecurityServiceException;
 	
 	@SuppressWarnings("unchecked")
-	<T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects, IDifferenceService<T> differenceService,
+	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation, IDifferenceService<T> differenceService,
 			IDifferenceHandler<T> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
@@ -37,13 +41,13 @@ public interface IGenericHistoryLogService<
 	 * ignore some fields).
 	 */
 	@SuppressWarnings("unchecked")
-	<T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects,
+	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
 			IDifferenceHandler<T> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
-	HL logNow(Date date, HET eventType, List<HD> differences, AbstractHistoryLogObjectsBean<?> objects)
+	<T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException;
 
 }

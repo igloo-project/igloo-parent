@@ -13,11 +13,13 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
-import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogObjectsBean;
+import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import fr.openwide.core.jpa.more.business.history.service.IGenericHistoryLogService;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 
-public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET, HD>,
+public class HistoryLogBeforeCommitTask<T,
+				HLAIB extends AbstractHistoryLogAdditionalInformationBean,
+				HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
 				HD extends AbstractHistoryDifference<HD, HL>>
 		implements ITransactionSynchronizationBeforeCommitTask {
@@ -26,20 +28,23 @@ public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET
 	
 	protected final HET eventType;
 	
-	protected final AbstractHistoryLogObjectsBean<T> logObjects;
+	protected final T mainObject;
+	
+	protected final HLAIB additionalInformation;
 	
 	@Autowired
-	private IGenericHistoryLogService<HL, HET, HD> historyLogService;
+	private IGenericHistoryLogService<HL, HET, HD, HLAIB> historyLogService;
 
-	public HistoryLogBeforeCommitTask(Date date, HET eventType, AbstractHistoryLogObjectsBean<T> objects) {
+	public HistoryLogBeforeCommitTask(Date date, HET eventType, T mainObject, HLAIB additionalInformation) {
 		super();
 		this.date = CloneUtils.clone(date);
 		this.eventType = eventType;
-		this.logObjects = objects;
+		this.mainObject = mainObject;
+		this.additionalInformation = additionalInformation;
 	}
 	
 	public T getMainObject() {
-		return logObjects.getMainObject();
+		return mainObject;
 	}
 
 	@Override
@@ -47,21 +52,21 @@ public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET
 		logNow();
 	}
 	
-	protected final IGenericHistoryLogService<HL, HET, HD> getHistoryLogService() {
+	protected final IGenericHistoryLogService<HL, HET, HD, HLAIB> getHistoryLogService() {
 		return historyLogService;
 	}
 
 	protected void logNow() throws ServiceException, SecurityServiceException {
-		getHistoryLogService().logNow(date, eventType, ImmutableList.<HD>of(), logObjects);
+		getHistoryLogService().logNow(date, eventType, ImmutableList.<HD>of(), mainObject, additionalInformation);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof HistoryLogBeforeCommitTask) {
-			HistoryLogBeforeCommitTask<?, ?, ?, ?> other = (HistoryLogBeforeCommitTask<?, ?, ?, ?>) obj;
+			HistoryLogBeforeCommitTask<?, ?, ?, ?, ?> other = (HistoryLogBeforeCommitTask<?, ?, ?, ?, ?>) obj;
 			return new EqualsBuilder()
 					.append(eventType, other.eventType)
-					.append(logObjects, other.logObjects)
+					.append(mainObject, other.mainObject)
 					.build();
 		}
 		return false;
@@ -71,7 +76,7 @@ public class HistoryLogBeforeCommitTask<T, HL extends AbstractHistoryLog<HL, HET
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.append(eventType)
-				.append(logObjects)
+				.append(mainObject)
 				.build();
 	}
 

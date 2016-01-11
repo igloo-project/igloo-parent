@@ -18,9 +18,9 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 	@Autowired
 	private ITransactionScopeIndependantRunnerService transactionScopeIndependantRunnerService;
 	
-	private final Set<HistoryLogBeforeCommitWithDifferencesTask<?, ?, ?, ?>> tasks;
+	private final Set<HistoryLogBeforeCommitWithDifferencesTask<?, ?, ?, ?, ?>> tasks;
 
-	public FactoredHistoryLogBeforeCommitWithDifferencesTask(Set<HistoryLogBeforeCommitWithDifferencesTask<?, ?, ?, ?>> tasks) {
+	public FactoredHistoryLogBeforeCommitWithDifferencesTask(Set<HistoryLogBeforeCommitWithDifferencesTask<?, ?, ?, ?, ?>> tasks) {
 		super();
 		this.tasks = tasks;
 	}
@@ -28,7 +28,7 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 	@Override
 	public void run() throws Exception {
 		final List<HistoryLogRunner<?>> runners = Lists.newArrayList();
-		for (HistoryLogBeforeCommitWithDifferencesTask<?, ?, ?, ?> task : tasks) {
+		for (HistoryLogBeforeCommitWithDifferencesTask<?, ?, ?, ?, ?> task : tasks) {
 			runners.add(new HistoryLogRunner<>(task));
 		}
 
@@ -61,11 +61,11 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 	}
 	
 	private static class HistoryLogRunner<T> {
-		private final HistoryLogBeforeCommitWithDifferencesTask<T, ?, ?, ?> task;
+		private final HistoryLogBeforeCommitWithDifferencesTask<T, ?, ?, ?, ?> task;
 		private Callable<T> referenceProvider;
 		private T reference;
 		
-		public HistoryLogRunner(HistoryLogBeforeCommitWithDifferencesTask<T, ?, ?, ?> task) {
+		public HistoryLogRunner(HistoryLogBeforeCommitWithDifferencesTask<T, ?, ?, ?, ?> task) {
 			super();
 			this.task = task;
 		}

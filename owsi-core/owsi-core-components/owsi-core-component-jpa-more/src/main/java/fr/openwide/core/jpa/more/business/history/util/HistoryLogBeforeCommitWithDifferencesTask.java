@@ -13,12 +13,14 @@ import fr.openwide.core.jpa.more.business.difference.util.IDifferenceFromReferen
 import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
-import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogObjectsBean;
+import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 
-public class HistoryLogBeforeCommitWithDifferencesTask<T, HL extends AbstractHistoryLog<HL, HET, HD>,
+public class HistoryLogBeforeCommitWithDifferencesTask<T,
+				HLAIB extends AbstractHistoryLogAdditionalInformationBean,
+				HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
 				HD extends AbstractHistoryDifference<HD, HL>>
-		extends HistoryLogBeforeCommitTask<T, HL, HET, HD> {
+		extends HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD> {
 
 	private Supplier<HD> historyDifferenceSupplier;
 	private IDifferenceFromReferenceGenerator<T> differenceGenerator;
@@ -28,12 +30,12 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T, HL extends AbstractHis
 	@SafeVarargs
 	public HistoryLogBeforeCommitWithDifferencesTask(
 			Date date, HET eventType,
-			AbstractHistoryLogObjectsBean<T> logObjects,
+			T mainObject, HLAIB additionalInformation,
 			Supplier<HD> historyDifferenceSupplier,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
 			IDifferenceHandler<T> ... differenceHandlers) {
-		super(date, eventType, logObjects);
+		super(date, eventType, mainObject, additionalInformation);
 		this.historyDifferenceSupplier = historyDifferenceSupplier;
 		this.differenceGenerator = differenceGenerator;
 		this.historyDifferenceGenerator = historyDifferenceGenerator;
@@ -42,7 +44,6 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T, HL extends AbstractHis
 
 	@Override
 	protected void logNow() throws ServiceException, SecurityServiceException {
-		T mainObject = logObjects.getMainObject();
 		Difference<T> difference = differenceGenerator.diffFromReference(mainObject);
 		logNow(mainObject, difference);
 	}
@@ -52,14 +53,13 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T, HL extends AbstractHis
 	}
 	
 	public void logNow(T mainObjectReference) throws ServiceException, SecurityServiceException {
-		T mainObject = logObjects.getMainObject();
 		Difference<T> difference = differenceGenerator.diff(mainObject, mainObjectReference);
 		logNow(mainObject, difference);
 	}
 	
 	private void logNow(T mainObject, Difference<T> difference) throws ServiceException, SecurityServiceException {
 		List<HD> historyDifferences = historyDifferenceGenerator.toHistoryDifferences(historyDifferenceSupplier, difference);
-		getHistoryLogService().logNow(date, eventType, historyDifferences, logObjects);
+		getHistoryLogService().logNow(date, eventType, historyDifferences, mainObject, additionalInformation);
 		
 		for (IDifferenceHandler<T> handler : differenceHandlers) {
 			handler.handle(mainObject, difference, date);

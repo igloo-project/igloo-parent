@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
-import fr.openwide.core.basicapp.core.business.history.model.bean.HistoryLogObjectsBean;
 import fr.openwide.core.basicapp.core.business.history.service.IHistoryLogService;
 import fr.openwide.core.basicapp.core.business.notification.service.INotificationService;
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -106,10 +105,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		
 		switch (type) {
 		case CREATION:
-			historyLogService.log(HistoryEventType.PASSWORD_CREATION_REQUEST, HistoryLogObjectsBean.of(user));
+			historyLogService.log(HistoryEventType.PASSWORD_CREATION_REQUEST, user);
 			break;
 		case RESET:
-			historyLogService.log(HistoryEventType.PASSWORD_RESET_REQUEST, HistoryLogObjectsBean.of(user));
+			historyLogService.log(HistoryEventType.PASSWORD_RESET_REQUEST, user);
 			break;
 		default:
 			break;
@@ -172,7 +171,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		user.getPasswordRecoveryRequest().reset();
 		userService.update(user);
 		
-		historyLogService.log(HistoryEventType.PASSWORD_UPDATE, HistoryLogObjectsBean.of(user));
+		historyLogService.log(HistoryEventType.PASSWORD_UPDATE, user);
 	}
 
 }

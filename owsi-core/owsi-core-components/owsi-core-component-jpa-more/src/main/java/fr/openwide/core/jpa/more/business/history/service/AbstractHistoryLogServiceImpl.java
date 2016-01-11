@@ -16,7 +16,7 @@ import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGene
 import fr.openwide.core.jpa.more.business.history.dao.IAbstractHistoryLogDao;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
-import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogObjectsBean;
+import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import fr.openwide.core.jpa.more.business.history.util.HistoryLogBeforeCommitTask;
 import fr.openwide.core.jpa.more.business.history.util.HistoryLogBeforeCommitWithDifferencesTask;
 import fr.openwide.core.jpa.more.business.history.util.IDifferenceHandler;
@@ -24,8 +24,9 @@ import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchroniz
 
 public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
-				HD extends AbstractHistoryDifference<HD, HL>>
-		extends GenericEntityServiceImpl<Long, HL> implements IGenericHistoryLogService<HL, HET, HD> {
+				HD extends AbstractHistoryDifference<HD, HL>,
+				HLAIB extends AbstractHistoryLogAdditionalInformationBean>
+		extends GenericEntityServiceImpl<Long, HL> implements IGenericHistoryLogService<HL, HET, HD, HLAIB> {
 
 	@Autowired
 	protected ITransactionSynchronizationTaskManagerService transactionSynchronizationTaskManagerService;
@@ -39,9 +40,9 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	}
 	
 	@Override
-	public HL logNow(Date date, HET eventType, List<HD> differences, AbstractHistoryLogObjectsBean<?> objects)
+	public <T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException {
-		HL log = newHistoryLog(date, eventType, differences, objects);
+		HL log = newHistoryLog(date, eventType, differences, mainObject, additionalInformation);
 
 		log.setDifferences(differences);
 		for (HD difference : differences) {
@@ -52,15 +53,17 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 		return log;
 	}
 	
-	protected abstract HL newHistoryLog(Date date, HET eventType, List<HD> differences, AbstractHistoryLogObjectsBean<?> objects);
+	protected abstract <T> HL newHistoryLog(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
 
 	protected abstract Supplier<HD> newHistoryDifferenceSupplier();
 
-	protected void setSecondaryObjects(HL log, AbstractHistoryLogObjectsBean<?> objects) {
-		setSecondaryObjects(log, objects.getSecondaryObjects());
+	protected void setAdditionalInformation(HL log, HLAIB additionalInformation) {
+		if (additionalInformation != null) {
+			setAdditionalInformation(log, additionalInformation.getSecondaryObjects());
+		}
 	}
 
-	protected void setSecondaryObjects(HL log, Object[] objects) {
+	protected void setAdditionalInformation(HL log, Object[] objects) {
 		if (objects.length > 4) {
 			throw new IllegalArgumentException(String.format("Too many arguments (%d, expected %d or less)", objects.length, 4));
 		}
@@ -79,37 +82,44 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	}
 
 	@Override
-	public <T> void log(HET eventType, AbstractHistoryLogObjectsBean<T> objects) throws ServiceException,
+	public <T> void log(HET eventType, T mainObject) throws ServiceException,
+			SecurityServiceException {
+		log(eventType, mainObject, null);
+	}
+	
+	@Override
+	public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) throws ServiceException,
 			SecurityServiceException {
 		transactionSynchronizationTaskManagerService.push(
-				new HistoryLogBeforeCommitTask<T, HL, HET, HD>(new Date(), eventType, objects)
+				new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(new Date(), eventType, mainObject, additionalInformation)
 		);
 	}
 
 	@Override
-	public final <T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects,
+	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceService<T> differenceService) throws ServiceException, SecurityServiceException {
-		logWithDifferences(eventType, objects, differenceService.getMainDifferenceGenerator(),
+		logWithDifferences(eventType, mainObject, additionalInformation, differenceService.getMainDifferenceGenerator(),
 				differenceService);
 	}
 
 	@Override
 	@SafeVarargs
-	public final <T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects,
+	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceService<T> differenceService, IDifferenceHandler<T> ... differenceHandlers) throws ServiceException,
 			SecurityServiceException {
-		logWithDifferences(eventType, objects, differenceService.getMainDifferenceGenerator(),
+		logWithDifferences(eventType, mainObject, additionalInformation, differenceService.getMainDifferenceGenerator(),
 				differenceService, differenceHandlers);
 	}
 	
 	@Override
 	@SafeVarargs
-	public final <T> void logWithDifferences(HET eventType, AbstractHistoryLogObjectsBean<T> objects,
+	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator, IDifferenceHandler<T>... differenceHandlers) throws ServiceException, SecurityServiceException {
 		transactionSynchronizationTaskManagerService.push(
-				new HistoryLogBeforeCommitWithDifferencesTask<T, HL, HET, HD>(
-						new Date(), eventType, objects,
+				new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
+						new Date(), eventType,
+						mainObject, additionalInformation,
 						newHistoryDifferenceSupplier(),
 						differenceGenerator, historyDifferenceGenerator, differenceHandlers
 				)
