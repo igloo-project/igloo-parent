@@ -17,7 +17,6 @@
 							http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
 	<security:http pattern="/static/**" security="none" />
-	<security:http pattern="/wicket/resource/**" security="none" />
 	<security:http pattern="/monitoring/**" security="none" />
 	<security:http pattern="/favicon.ico" security="none" />
 	
@@ -28,7 +27,14 @@
 		<security:expression-handler ref="webSecurityExpressionHandler" />
 		<security:form-login login-page="/login/" default-target-url="/login/success/" always-use-default-target="true"
 				authentication-failure-url="/login/failure/" />
+		
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
+		
+		<security:intercept-url pattern="/wicket/resource/fr.openwide.core.showcase.web.application.util.template.js.*/**" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/wicket/resource/fr.openwide.core.showcase.web.application.util.template.styles.*/**" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/wicket/resource/fr.openwide.core.showcase.web.application.*/**" access="hasRole('ROLE_AUTHENTICATED')" />
+		<security:intercept-url pattern="/wicket/resource/**" access="hasRole('ROLE_ANONYMOUS')" />
+		
 		<security:intercept-url pattern="/login/" access="permitAll" />
 		<security:intercept-url pattern="/login/failure/" access="permitAll" />
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />
