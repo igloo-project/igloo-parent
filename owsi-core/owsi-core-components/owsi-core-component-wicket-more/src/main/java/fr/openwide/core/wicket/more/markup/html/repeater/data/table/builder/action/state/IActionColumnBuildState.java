@@ -9,7 +9,7 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDesc
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAction;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.ActionColumnConfirmActionBuilder;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.fluid.IActionColumnConfirmActionBuilderStepStart;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedCoreColumnState;
 
 public interface IActionColumnBuildState<T, S extends ISort<?>> {
@@ -40,7 +40,7 @@ public interface IActionColumnBuildState<T, S extends ISort<?>> {
 	IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAction<IModel<T>> action);
 
-	ActionColumnConfirmActionBuilder<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer);
+	IActionColumnConfirmActionBuilderStepStart<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer);
 
 	IActionColumnBuildState<T, S> withClassOnElements(String cssClassOnElements);
 

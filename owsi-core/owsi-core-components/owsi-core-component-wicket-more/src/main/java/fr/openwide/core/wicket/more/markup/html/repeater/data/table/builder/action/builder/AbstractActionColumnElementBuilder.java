@@ -27,14 +27,14 @@ import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
 
 
-public class ActionColumnElementBuilder<T, L extends AbstractLink, F extends ActionColumnElementBuilder<T, L, F>>
+public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLink, F extends AbstractActionColumnElementBuilder<T, L, F>>
 		implements IOneParameterComponentFactory<MarkupContainer, IModel<T>> {
 
 	private static final long serialVersionUID = 8791565179874571105L;
 
 	private final BootstrapRenderer<? super T> renderer;
 	
-	private final IOneParameterComponentFactory<L, IModel<T>> factory;
+	private final IOneParameterComponentFactory<? extends L, IModel<T>> factory;
 
 	private Condition showLabelCondition = Condition.alwaysFalse();
 
@@ -48,8 +48,8 @@ public class ActionColumnElementBuilder<T, L extends AbstractLink, F extends Act
 
 	private final StringBuilder cssClasses = new StringBuilder();
 
-	public ActionColumnElementBuilder(BootstrapRenderer<? super T> renderer,
-			IOneParameterComponentFactory<L, IModel<T>> factory) {
+	public AbstractActionColumnElementBuilder(BootstrapRenderer<? super T> renderer,
+			IOneParameterComponentFactory<? extends L, IModel<T>> factory) {
 		this.factory = factory;
 		this.renderer = renderer;
 	}

@@ -9,7 +9,7 @@ import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.Bootstr
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 
 public class ActionColumnLinkBuilder<T>
-		extends ActionColumnElementBuilder<T, AbstractDynamicBookmarkableLink, ActionColumnLinkBuilder<T>> {
+		extends AbstractActionColumnElementBuilder<T, AbstractDynamicBookmarkableLink, ActionColumnLinkBuilder<T>> {
 
 	private static final long serialVersionUID = 1L;
 	

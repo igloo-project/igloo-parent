@@ -25,6 +25,7 @@ import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFa
 import fr.openwide.core.wicket.more.markup.html.factory.OneParameterConditionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.CoreActionColumn;
+import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.builder.fluid.IActionColumnConfirmActionBuilderStepStart;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.ActionColumnActionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.factory.ActionColumnAjaxActionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.state.IActionColumnAddedActionState;
@@ -44,7 +45,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	private final Set<String> cssClassesOnElements = Sets.newHashSet();
 
-	private final List<ActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
+	private final List<AbstractActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
 
 	public ActionColumnBuilder(DataTableBuilder<T, S> dataTableBuilder, IModel<String> headerLabelModel) {
 		this.dataTableBuilder = dataTableBuilder;
@@ -104,7 +105,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		}
 		
 		@Override
-		public ActionColumnConfirmActionBuilder<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer) {
+		public IActionColumnConfirmActionBuilderStepStart<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer) {
 			return ActionColumnBuilder.this.addConfirmAction(renderer);
 		}
 		
@@ -125,7 +126,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		
 		protected abstract NextState getNextState();
 		
-		protected abstract ActionColumnElementBuilder<T, ?, ?> getElementBuilder();
+		protected abstract AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder();
 		
 		@Override
 		public NextState showLabel() {
@@ -284,15 +285,15 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	private class ActionColumnAddedAjaxActionState extends ActionColumnAddedElementState<IActionColumnAddedAjaxActionState<T, S>>
 			implements IActionColumnAddedAjaxActionState<T, S> {
 		
-		private final ActionColumnElementBuilder<T, ?, ?> elementBuilder;
+		private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
 		
-		public ActionColumnAddedAjaxActionState(ActionColumnElementBuilder<T, ?, ?> elementBuilder) {
+		public ActionColumnAddedAjaxActionState(AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
 			super();
 			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+		public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
 			return elementBuilder;
 		}
 		
@@ -305,15 +306,15 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	private class ActionColumnAddedActionState extends ActionColumnAddedElementState<IActionColumnAddedActionState<T, S>>
 			implements IActionColumnAddedActionState<T, S> {
 		
-		private final ActionColumnElementBuilder<T, ?, ?> elementBuilder;
+		private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
 		
-		public ActionColumnAddedActionState(ActionColumnElementBuilder<T, ?, ?> elementBuilder) {
+		public ActionColumnAddedActionState(AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
 			super();
 			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+		public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
 			return elementBuilder;
 		}
 		
@@ -326,15 +327,15 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	private class ActionColumnAddedConfirmActionState extends ActionColumnAddedElementState<IActionColumnAddedConfirmActionState<T, S>>
 			implements IActionColumnAddedConfirmActionState<T, S> {
 		
-		private final ActionColumnElementBuilder<T, ?, ?> elementBuilder;
+		private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
 		
-		public ActionColumnAddedConfirmActionState(ActionColumnElementBuilder<T, ?, ?> elementBuilder) {
+		public ActionColumnAddedConfirmActionState(AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
 			super();
 			this.elementBuilder = Objects.requireNonNull(elementBuilder);
 		}
 		
 		@Override
-		public ActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+		public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
 			return elementBuilder;
 		}
 		
@@ -375,10 +376,10 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedAjaxActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAjaxAction<IModel<T>> action) {
-		ActionColumnElementBuilder<T, ?, ?> factory =
-				new ActionColumnElementBuilder<>(renderer, new ActionColumnAjaxActionFactory<>(action));
-		builders.add(factory);
-		return new ActionColumnAddedAjaxActionState(factory);
+		AbstractActionColumnElementBuilder<T, ?, ?> builder =
+				new ActionColumnSimpleElementBuilder<>(renderer, new ActionColumnAjaxActionFactory<T>(action));
+		builders.add(builder);
+		return new ActionColumnAddedAjaxActionState(builder);
 	}
 
 	@Override
@@ -390,10 +391,10 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAction<IModel<T>> action) {
-		ActionColumnElementBuilder<T, ?, ?> factory =
-				new ActionColumnElementBuilder<>(renderer, new ActionColumnActionFactory<>(action));
-		builders.add(factory);
-		return new ActionColumnAddedActionState(factory);
+		AbstractActionColumnElementBuilder<T, ?, ?> builder =
+				new ActionColumnSimpleElementBuilder<>(renderer, new ActionColumnActionFactory<T>(action));
+		builders.add(builder);
+		return new ActionColumnAddedActionState(builder);
 	}
 
 	@Override
@@ -403,15 +404,15 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	}
 
 	@Override
-	public ActionColumnConfirmActionBuilder<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer) {
+	public IActionColumnConfirmActionBuilderStepStart<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer) {
 		return new ActionColumnConfirmActionBuilder<>(this, renderer);
 	}
 
 	public IActionColumnAddedConfirmActionState<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<AjaxConfirmLink<T>, IModel<T>> ajaxConfirmLinkFactory) {
-		ActionColumnElementBuilder<T, ?, ?> factory =new ActionColumnElementBuilder<>(renderer, ajaxConfirmLinkFactory);
-		builders.add(factory);
-		return new ActionColumnAddedConfirmActionState(factory);
+		AbstractActionColumnElementBuilder<T, ?, ?> builder = new ActionColumnSimpleElementBuilder<>(renderer, ajaxConfirmLinkFactory);
+		builders.add(builder);
+		return new ActionColumnAddedConfirmActionState(builder);
 	}
 
 	@Override
@@ -426,7 +427,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	@Override
 	public IAddedCoreColumnState<T, S> end() {
-		for (ActionColumnElementBuilder<T, ?, ?> builder : builders) {
+		for (AbstractActionColumnElementBuilder<T, ?, ?> builder : builders) {
 			builder.addCssClass(getCssClassOnElements());
 		}
 		return dataTableBuilder.addActionColumn(new CoreActionColumn<T, S>(headerLabelModel, builders));
