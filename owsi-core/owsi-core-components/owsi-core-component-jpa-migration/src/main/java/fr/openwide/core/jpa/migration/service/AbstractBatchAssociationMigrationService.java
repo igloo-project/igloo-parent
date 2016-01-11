@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableList;
 import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
 import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
-import fr.openwide.core.jpa.batch.runnable.AbstractBatchRunnable;
+import fr.openwide.core.jpa.batch.runnable.ReadWriteBatchRunnable;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -43,7 +43,7 @@ public abstract class AbstractBatchAssociationMigrationService<Owning extends Ge
 
 		MultithreadedBatchExecutor executor = batchCreator.newMultithreadedBatchExecutor();
 		executor.threads(4).batchSize(100);
-		executor.run(getMigrationInformation().getAssociationName(), entityIds, new AbstractBatchRunnable<Long>() {
+		executor.run(getMigrationInformation().getAssociationName(), entityIds, new ReadWriteBatchRunnable<Long>() {
 			@Override
 			public void executePartition(List<Long> partition) {
 				importBatch(partition);
