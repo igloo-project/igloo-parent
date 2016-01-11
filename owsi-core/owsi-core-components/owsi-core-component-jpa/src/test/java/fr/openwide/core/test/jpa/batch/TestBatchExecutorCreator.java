@@ -74,14 +74,21 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 			ids.add(person.getId());
 		}
 		
+		List<Long> toExecute = Lists.newArrayList(ids);
+		
+		final List<Long> executed = Lists.newArrayList();
+		
 		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
 		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
-		executor.run(Person.class, ids, new AbstractBatchRunnable<Person>() {
+		executor.run(Person.class, toExecute, new AbstractBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
 				LOGGER.warn("Executing: " + unit.getDisplayName());
+				executed.add(unit.getId());
 			}
 		});
+		
+		assertEquals(toExecute, executed);
 	}
 	
 	@Test
