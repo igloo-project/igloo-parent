@@ -50,9 +50,6 @@ public abstract class AbstractHistoryLog<
 
 	public static final String DATE = "date";
 
-	private static final String SUBJECT_ORGANIZATION = "subjectOrganization";
-	private static final String SUBJECT_ORGANIZATION_PREFIX = SUBJECT_ORGANIZATION + ".";
-
 	private static final String SUBJECT = "subject";
 	private static final String SUBJECT_PREFIX = SUBJECT + ".";
 
@@ -97,10 +94,6 @@ public abstract class AbstractHistoryLog<
 	@Embedded
 	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
 	private HistoryValue subject;
-	
-	@Embedded
-	@IndexedEmbedded(prefix = SUBJECT_ORGANIZATION_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
-	private HistoryValue subjectOrganization;
 	
 	@Embedded
 	@IndexedEmbedded(prefix = MAIN_OBJECT_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
@@ -198,14 +191,6 @@ public abstract class AbstractHistoryLog<
 
 	public void setSubject(HistoryValue subject) {
 		this.subject = subject;
-	}
-	
-	public HistoryValue getSubjectOrganization() {
-		return subjectOrganization;
-	}
-	
-	public void setSubjectOrganization(HistoryValue subjectOrganization) {
-		this.subjectOrganization = subjectOrganization;
 	}
 
 	public HistoryValue getMainObject() {
