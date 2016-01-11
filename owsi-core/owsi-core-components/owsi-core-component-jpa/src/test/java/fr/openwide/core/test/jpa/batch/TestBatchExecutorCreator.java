@@ -46,9 +46,9 @@ import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
 import fr.openwide.core.test.business.person.model.QPerson;
 
-public class TestBatchCreator extends AbstractJpaCoreTestCase {
+public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TestBatchCreator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestBatchExecutorCreator.class);
 
 	@Autowired
 	private BatchExecutorCreator executorCreator;
