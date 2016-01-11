@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
-import fr.openwide.core.jpa.batch.executor.AbstractBatchRunnable;
 import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
 import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
+import fr.openwide.core.jpa.batch.runnable.AbstractBatchRunnable;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;

@@ -8,12 +8,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Joiners;
+import fr.openwide.core.jpa.batch.runnable.IBatchRunnable;
+import fr.openwide.core.jpa.batch.runnable.Writeability;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -83,6 +88,10 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 	 */
 	public <E extends GenericEntity<Long, ?>> void runConsuming(String loggerContext, final IQuery<E> query,
 			final IBatchRunnable<E> batchRunnable) {
+		Preconditions.checkArgument(
+				Writeability.READ_WRITE.equals(batchRunnable.getWriteability()),
+				"runConsuming() must be used with a read/write runnable, but %s is read-only", batchRunnable
+		);
 		doRun(loggerContext, query, true, batchRunnable);
 	}
 
@@ -92,10 +101,16 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 		long offset = 0;
 		LOGGER.info("Beginning batch for %1$s: %2$d objects", loggerContext, totalCount);
 		
+		final Writeability writeability = batchRunnable.getWriteability();
+		final boolean isReadOnly = Writeability.READ_ONLY.equals(writeability);
+		
+		TransactionTemplate transactionTemplate =
+				newTransactionTemplate(writeability, TransactionDefinition.PROPAGATION_REQUIRED);
+		
 		try {
 			LOGGER.info("    preExecute start");
 			
-			writeRequiredTransactionTemplate.execute(new TransactionCallback<Void>() {
+			transactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.preExecute();
@@ -110,10 +125,18 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 			List<E> entityPartition = query.list(0, batchSize);
 			while (entityPartition.size() > 0) {
 				final List<E> entityPartitionToExecute = entityPartition;
-				writeRequiredTransactionTemplate.execute(new TransactionCallback<Void>() {
+				transactionTemplate.execute(new TransactionCallback<Void>() {
 					@Override
 					public Void doInTransaction(TransactionStatus status) {
-						executePartition(batchRunnable, entityPartitionToExecute);
+						batchRunnable.executePartition(entityPartitionToExecute);
+						
+						if (!isReadOnly) {
+							entityService.flush();
+							if (flushToIndexes) {
+								hibernateSearchService.flushToIndexes();
+							}
+						}
+						entityService.clear();
 						return null;
 					}
 				});
@@ -129,7 +152,7 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 	
 			LOGGER.info("    postExecute start");
 			
-			writeRequiredTransactionTemplate.execute(new TransactionCallback<Void>() {
+			transactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.postExecute();
@@ -163,16 +186,6 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 		}
 	}
 	
-	private <E> void executePartition(IBatchRunnable<E> batchRunnable, List<E> entityPartition) {
-		batchRunnable.executePartition(entityPartition);
-		
-		entityService.flush();
-		if (flushToIndexes) {
-			hibernateSearchService.flushToIndexes();
-		}
-		entityService.clear();
-	}
-
 	protected <E extends GenericEntity<Long, ?>> List<E> listEntitiesByIds(Class<E> clazz, Collection<Long> entityIds) {
 		return entityService.listEntity(clazz, entityIds);
 	}

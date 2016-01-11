@@ -1,8 +1,14 @@
-package fr.openwide.core.jpa.batch.executor;
+package fr.openwide.core.jpa.batch.runnable;
 
 import java.util.List;
 
-public abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
+/**
+ * An abstract base for batch runnables.
+ * <p>This class is package-protected: use either {@link ReadOnlyBatchRunnable} or
+ * {@link ReadWriteBatchRunnable} as as superclass for your implementation. Or,
+ * alternatively, implement {@link IBatchRunnable} directly.
+ */
+/*package-protected*/ abstract class AbstractBatchRunnable<E> implements IBatchRunnable<E> {
 	
 	@Override
 	public void preExecute() {

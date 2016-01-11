@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.batch.processor.ThreadedProcessor;
+import fr.openwide.core.jpa.batch.runnable.IBatchRunnable;
 import fr.openwide.core.jpa.batch.util.ProcessorProgressLogger;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
@@ -57,11 +60,14 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		Date startTime = new Date();
 		
 		LOGGER.info("Beginning batch for %1$s: %2$d objects", context, entityIds.size());
+		
+		TransactionTemplate transactionTemplate =
+				newTransactionTemplate(batchRunnable.getWriteability(), TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		try {
 			LOGGER.info("    preExecute start");
 		
-			writeRequiresNewTransactionTemplate.execute(new TransactionCallback<Void>() {
+			transactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.preExecute();
@@ -86,13 +92,13 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			}
 			
 			createThreadedProcessor(batchSize, timeoutInMinutes)
-					.runWithTransaction(context, runnables, writeRequiresNewTransactionTemplate, entityIds.size());
+					.runWithTransaction(context, runnables, transactionTemplate, entityIds.size());
 			
 			LOGGER.info("    end of batch executions");
 	
 			LOGGER.info("    postExecute start");
 			
-			writeRequiresNewTransactionTemplate.execute(new TransactionCallback<Void>() {
+			transactionTemplate.execute(new TransactionCallback<Void>() {
 				@Override
 				public Void doInTransaction(TransactionStatus status) {
 					batchRunnable.postExecute();
