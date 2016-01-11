@@ -124,5 +124,23 @@ public class GenericEntityCollectionReference<K extends Comparable<K> & Serializ
 				.append("id", getEntityIdList())
 				.build();
 	}
+	
+	public GenericEntityCollectionReference<K, E> subset(int offset, int limit) {
+		if (offset < 0) {
+			throw new IllegalArgumentException("offset = " + offset);
+		}
+		if (limit < 0) {
+			throw new IllegalArgumentException("limit = " + limit);
+		}
+		
+		int size = entityIdList.size();
+		if (offset >= size) {
+			return new GenericEntityCollectionReference<>(getEntityClass(), Collections.<K>emptyList());
+		} else {
+			int toIndex = Math.min(size, offset + limit);
+			List<K> sublist = entityIdList.subList(offset, toIndex);
+			return new GenericEntityCollectionReference<>(getEntityClass(), sublist);
+		}
+	}
 
 }

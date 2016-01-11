@@ -85,7 +85,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 	}
 	
 	@Test
-	public void testSimpleHibernateBatchCustomQuery() throws ServiceException, SecurityServiceException {
+	public void testSimpleHibernateBatchCustomNonConsumingQuery() throws ServiceException, SecurityServiceException {
 		List<Long> ids = Lists.newArrayList();
 		
 		for (int i = 1; i < 100; i++) {
@@ -110,7 +110,7 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 		
 		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
 		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
-		executor.run("Person query", query, new AbstractBatchRunnable<Person>() {
+		executor.runNonConsuming("Person query", query, new AbstractBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
 				LOGGER.warn("Executing: " + unit.getDisplayName());
@@ -120,6 +120,50 @@ public class TestBatchCreator extends AbstractJpaCoreTestCase {
 		
 		assertEquals(expectedExecuted, executed);
 	}
+	
+	@Test
+	public void testSimpleHibernateBatchCustomConsumingQuery() throws ServiceException, SecurityServiceException {
+		List<Long> ids = Lists.newArrayList();
+		
+		for (int i = 1; i < 100; i++) {
+			Person person = new Person("Firstname" + i, "Lastname" + i);
+			personService.create(person);
+			ids.add(person.getId());
+		}
+		
+		List<Long> toExecute = Lists.newArrayList(ids);
+		Collections.sort(toExecute);
+		
+		IQuery<Person> query = Queries.fromQueryDsl(
+				new JPAQuery<Person>(getEntityManager())
+				.from(QPerson.person)
+				.where(QPerson.person.lastName.like("Lastname%"))
+				.orderBy(QPerson.person.id.desc())
+		);
+		List<Long> expectedExecuted = Lists.newArrayList(toExecute);
+		Collections.sort(expectedExecuted, Ordering.natural().reverse());
+		
+		final List<Long> executed = Lists.newArrayList();
+		
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		executor.runConsuming("Person query", query, new AbstractBatchRunnable<Person>() {
+			@Override
+			public void executeUnit(Person unit) {
+				LOGGER.warn("Executing: " + unit.getDisplayName());
+				
+				/* Remove the "Lastname " prefix, which "consumes" this element
+				 * (e.g. it removes this element from the query's results)
+				 */
+				unit.setLastName(unit.getLastName().replace("Lastname", ""));
+				
+				executed.add(unit.getId());
+			}
+		});
+		
+		assertEquals(expectedExecuted, executed);
+	}
+	
 	
 	@Test
 	public void testMultithreadedBatch() throws ServiceException, SecurityServiceException {
