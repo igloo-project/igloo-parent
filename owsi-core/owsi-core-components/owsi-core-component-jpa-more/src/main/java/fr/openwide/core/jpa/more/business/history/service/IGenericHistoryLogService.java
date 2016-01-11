@@ -9,8 +9,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.difference.service.IDifferenceService;
 import fr.openwide.core.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
 import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
-import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
+import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import fr.openwide.core.jpa.more.business.history.util.IDifferenceHandler;
 
@@ -20,9 +20,6 @@ public interface IGenericHistoryLogService<
 				HD extends AbstractHistoryDifference<HD, HL>,
 				HLAIB extends AbstractHistoryLogAdditionalInformationBean>
 		extends IGenericEntityService<Long, HL> {
-	
-	<T> void log(HET eventType, T mainObject)
-			throws ServiceException, SecurityServiceException;
 	
 	<T> void log(HET eventType, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException;

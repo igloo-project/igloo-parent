@@ -80,12 +80,6 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 			log.setObject4(valueService.create(objects[3]));
 		}
 	}
-
-	@Override
-	public <T> void log(HET eventType, T mainObject) throws ServiceException,
-			SecurityServiceException {
-		log(eventType, mainObject, null);
-	}
 	
 	@Override
 	public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) throws ServiceException,
