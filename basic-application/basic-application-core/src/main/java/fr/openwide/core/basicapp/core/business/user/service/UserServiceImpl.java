@@ -68,7 +68,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	protected void updateEntity(User person) throws ServiceException, SecurityServiceException {
 		super.updateEntity(person);
 		
-//		historyLogService.logWithDifferences(HistoryEventType.UPDATE, HistoryLogObjectsBean.of(person),
+//		historyLogService.logWithDifferences(HistoryEventType.UPDATE, person, HistoryLogObjectsBean.of(person),
 //				userDifferenceService.getMinimalDifferenceGenerator(),
 //				userDifferenceService);
 	}
