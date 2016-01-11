@@ -46,6 +46,10 @@ import org.springframework.util.Assert;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
+/**
+ * @deprecated Use {@link IPropertyService} instead
+ */
+@Deprecated
 public class CoreConfigurer extends AbstractConfigurer {
 	
 	@Autowired
