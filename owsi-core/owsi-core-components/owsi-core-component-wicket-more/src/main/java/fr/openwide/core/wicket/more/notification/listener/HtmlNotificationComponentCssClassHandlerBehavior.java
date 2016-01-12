@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 
+@Deprecated
 public class HtmlNotificationComponentCssClassHandlerBehavior extends Behavior {
 
 	private static final long serialVersionUID = -2594977749523035835L;

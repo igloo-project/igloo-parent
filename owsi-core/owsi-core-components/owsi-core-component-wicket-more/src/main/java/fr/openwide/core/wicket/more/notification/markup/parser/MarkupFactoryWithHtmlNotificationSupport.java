@@ -12,6 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 
+@Deprecated
 public class MarkupFactoryWithHtmlNotificationSupport extends MarkupFactory {
 	
 	@SpringBean

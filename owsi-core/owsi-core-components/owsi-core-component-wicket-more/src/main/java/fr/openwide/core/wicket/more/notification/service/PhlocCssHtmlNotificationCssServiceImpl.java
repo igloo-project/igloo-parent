@@ -16,10 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
-import com.phloc.commons.io.IInputStreamProvider;
-import com.phloc.css.ECSSVersion;
-import com.phloc.css.decl.CascadingStyleSheet;
-import com.phloc.css.reader.CSSReader;
+import com.helger.commons.io.IHasInputStream;
+import com.helger.css.ECSSVersion;
+import com.helger.css.decl.CascadingStyleSheet;
+import com.helger.css.reader.CSSReader;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
@@ -85,7 +85,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 		}
 	}
 	
-	private static class WicketResourceStreamToPhlocInputStreamProviderWrapper implements IInputStreamProvider {
+	private static class WicketResourceStreamToPhlocInputStreamProviderWrapper implements IHasInputStream {
 		private final IResourceStream resourceStream;
 		
 		public WicketResourceStreamToPhlocInputStreamProviderWrapper(IResourceStream resourceStream) {

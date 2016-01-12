@@ -82,11 +82,15 @@
 			<artifactId>jsass</artifactId>
 		</dependency>
 		
-		<!-- Phloc CSS (pour les styles des notifications mail) -->
+		<!-- Ph-CSS + JSoup (used to style the HTML notifications) -->
 		<dependency>
-			<groupId>com.phloc</groupId>
-			<artifactId>phloc-css</artifactId>
-			<version>${owsi-core.phloc-css.version}</version>
+			<groupId>com.helger</groupId>
+			<artifactId>ph-css</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
 		</dependency>
 		
 		<!-- WiQuery-jqPlot -->

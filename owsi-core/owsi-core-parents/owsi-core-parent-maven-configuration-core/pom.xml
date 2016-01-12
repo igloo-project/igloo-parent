@@ -96,7 +96,7 @@
 		<owsi-core.httpclient.version>4.5.1</owsi-core.httpclient.version>
 		<owsi-core.httpcore.version>4.4.4</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.1.Final</owsi-core.prettytime.version>
-		<owsi-core.phloc-css.version>3.7.7</owsi-core.phloc-css.version>
+		<owsi-core.ph-css.version>4.0.1</owsi-core.ph-css.version>
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
 		
 		<owsi-core.jersey.version>1.19</owsi-core.jersey.version>
@@ -741,6 +741,12 @@
 					<groupId>org.ocpsoft.prettytime</groupId>
 					<artifactId>prettytime</artifactId>
 					<version>${owsi-core.prettytime.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.helger</groupId>
+					<artifactId>ph-css</artifactId>
+					<version>${owsi-core.ph-css.version}</version>
 				</dependency>
 				
 				<dependency>

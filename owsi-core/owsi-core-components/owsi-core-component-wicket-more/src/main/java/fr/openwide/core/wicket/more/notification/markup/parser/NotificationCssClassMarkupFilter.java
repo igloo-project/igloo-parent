@@ -15,6 +15,7 @@ import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssSer
  * Append css style to tags that will not be attributed to a wicket component according to a given {@link IHtmlNotificationCssService.IHtmlNotificationCssRegistry CSS registry}.
  * @see HtmlNotificationComponentCssClassHandler how the same task is performed on wicket components
  */
+@Deprecated
 public class NotificationCssClassMarkupFilter extends AbstractMarkupFilter {
 	
 	private static final String CSS_STYLE_ATTRIBUTE = "style";

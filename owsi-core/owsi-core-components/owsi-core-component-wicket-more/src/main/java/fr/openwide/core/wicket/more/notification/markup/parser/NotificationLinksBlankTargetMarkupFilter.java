@@ -7,6 +7,7 @@ import org.apache.wicket.markup.MarkupElement;
 import org.apache.wicket.markup.MarkupResourceStream;
 import org.apache.wicket.markup.parser.AbstractMarkupFilter;
 
+@Deprecated
 public class NotificationLinksBlankTargetMarkupFilter extends AbstractMarkupFilter {
 	
 	private static final String LINK_TAG = "a";

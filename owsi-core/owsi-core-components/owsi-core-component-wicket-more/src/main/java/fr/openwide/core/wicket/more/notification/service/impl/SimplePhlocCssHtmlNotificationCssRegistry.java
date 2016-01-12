@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.markup.ComponentTag;
+import org.jsoup.nodes.Node;
 import org.springframework.util.Assert;
 
 import com.google.common.base.Function;
@@ -16,16 +17,16 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-import com.phloc.css.CCSS;
-import com.phloc.css.ECSSVersion;
-import com.phloc.css.ICSSWriterSettings;
-import com.phloc.css.decl.CSSDeclaration;
-import com.phloc.css.decl.CSSSelector;
-import com.phloc.css.decl.CSSSelectorSimpleMember;
-import com.phloc.css.decl.CSSStyleRule;
-import com.phloc.css.decl.CascadingStyleSheet;
-import com.phloc.css.decl.ICSSSelectorMember;
-import com.phloc.css.writer.CSSWriterSettings;
+import com.helger.css.CCSS;
+import com.helger.css.ECSSVersion;
+import com.helger.css.ICSSWriterSettings;
+import com.helger.css.decl.CSSDeclaration;
+import com.helger.css.decl.CSSSelector;
+import com.helger.css.decl.CSSSelectorSimpleMember;
+import com.helger.css.decl.CSSStyleRule;
+import com.helger.css.decl.CascadingStyleSheet;
+import com.helger.css.decl.ICSSSelectorMember;
+import com.helger.css.writer.CSSWriterSettings;
 
 import fr.openwide.core.commons.util.ordering.SerializableCollator;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
@@ -60,13 +61,21 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 
 	@Override
 	public String getStyle(ComponentTag tag) {
-		PhlocCssMatchableComponentTag matchableTag = new PhlocCssMatchableComponentTag(tag);
+		return getStyle(new PhlocCssMatchableHtmlTag(tag.getName(), tag.getId(), tag.getAttribute("class")));
+	}
+	
+	@Override
+	public String getStyle(Node node) {
+		return getStyle(new PhlocCssMatchableHtmlTag(node.nodeName(), node.attr("id"), node.attr("class")));
+	}
+
+	private String getStyle(PhlocCssMatchableHtmlTag matchableTag) {
 		Map<CSSStyleRule, CssSelectorSpecificity> matchedRules = getMatchedRules(matchableTag);
 		Collection<CSSDeclaration> declarations = mergeRules(matchedRules);
 		return buildString(declarations);
 	}
-
-	private Map<CSSStyleRule, CssSelectorSpecificity> getMatchedRules(PhlocCssMatchableComponentTag matchableTag) {
+	
+	private Map<CSSStyleRule, CssSelectorSpecificity> getMatchedRules(PhlocCssMatchableHtmlTag matchableTag) {
 		Map<CSSStyleRule, CssSelectorSpecificity> matchedRules = Maps.newHashMap();
 		for (CSSStyleRule rule : styleSheet.getAllStyleRules()) {
 			Collection<CSSSelector> matchedSelectors = getMatchedSelectors(matchableTag, rule);
@@ -83,7 +92,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 		return matchedRules;
 	}
 
-	private Collection<CSSSelector> getMatchedSelectors(PhlocCssMatchableComponentTag matchableTag, CSSStyleRule rule) {
+	private Collection<CSSSelector> getMatchedSelectors(PhlocCssMatchableHtmlTag matchableTag, CSSStyleRule rule) {
 		List<CSSSelector> matchedSelectors = Lists.newArrayList();
 		for (CSSSelector selector : rule.getAllSelectors()) {
 			if (matchableTag.matches(selector)) {

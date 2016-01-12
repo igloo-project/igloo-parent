@@ -7,6 +7,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 
+@Deprecated
 public class HtmlNotificationComponentCssClassHandler implements IComponentInitializationListener {
 
 	@SpringBean
