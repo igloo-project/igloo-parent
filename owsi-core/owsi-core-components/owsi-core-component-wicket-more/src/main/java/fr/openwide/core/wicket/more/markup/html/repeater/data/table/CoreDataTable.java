@@ -102,6 +102,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 				component, this
 		);
 		this.componentToRefresh = component;
+		this.componentToRefresh.setOutputMarkupId(true);
 	}
 
 }
