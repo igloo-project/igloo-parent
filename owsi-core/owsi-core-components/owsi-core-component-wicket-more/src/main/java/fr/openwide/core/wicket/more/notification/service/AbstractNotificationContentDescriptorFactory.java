@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -139,10 +138,19 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		@Override
 		public void head(Node node, int depth) {
 			if (cssRegistry != null) {
-				String style = cssRegistry.getStyle(node);
+				String style = cleanAttribute(cssRegistry.getStyle(node));
+
 				if (StringUtils.hasText(style)) {
-					node.attr(STYLE_ATTRIBUTE, Joiner.on(STYLE_ATTRIBUTE_SEPARATOR).skipNulls()
-							.join(node.attr(STYLE_ATTRIBUTE), style));
+					String existingStyleAttribute = cleanAttribute(node.attr(STYLE_ATTRIBUTE));
+					
+					StringBuilder styleAttributeSb = new StringBuilder();
+					if (StringUtils.hasText(existingStyleAttribute)) {
+						styleAttributeSb.append(existingStyleAttribute);
+						styleAttributeSb.append(STYLE_ATTRIBUTE_SEPARATOR);
+					}
+					styleAttributeSb.append(style);
+					
+					node.attr(STYLE_ATTRIBUTE, styleAttributeSb.toString());
 				}
 			}
 			
@@ -153,6 +161,16 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 
 		@Override
 		public void tail(Node node, int depth) {
+		}
+		
+		private String cleanAttribute(String attribute) {
+			return StringUtils.trimTrailingCharacter(
+					StringUtils.trimLeadingCharacter(
+							StringUtils.trimWhitespace(attribute),
+							';'
+					),
+					';'
+			);
 		}
 	}
 
