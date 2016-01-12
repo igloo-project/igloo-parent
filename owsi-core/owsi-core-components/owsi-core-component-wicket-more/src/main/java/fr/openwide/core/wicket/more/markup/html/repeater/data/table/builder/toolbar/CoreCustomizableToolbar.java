@@ -19,7 +19,7 @@ public class CoreCustomizableToolbar<T, S extends ISort<?>> extends AbstractTool
 			final List<? extends IOneParameterComponentFactory<Component, CoreDataTable<T, S>>> factories) {
 		super(dataTable);
 
-		RepeatingView headers = new RepeatingView("headers");
+		RepeatingView headers = new RepeatingView("header");
 		ComponentFactories.addAll(headers, factories, dataTable);
 		add(headers);
 	}
