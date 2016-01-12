@@ -21,7 +21,7 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
@@ -29,7 +29,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private static final long serialVersionUID = -5344972073351010752L;
 
-	private final IOneParameterModelFactory<IModel<? extends T>, C> modelFactory;
+	private final IDetachableFactory<IModel<? extends T>, ? extends IModel<C>> modelFactory;
 
 	private final BootstrapRenderer<? super C> renderer;
 	

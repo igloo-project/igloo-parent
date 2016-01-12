@@ -14,8 +14,8 @@ import org.apache.wicket.model.Model;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
-import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.util.model.Models;
 
 public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
@@ -26,8 +26,8 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 	
 	private final Function<? super F, T> function;
 
-	public static final <F, T> IOneParameterModelFactory<IModel<? extends F>, T> factory(final Function<? super F, T> function) {
-		return new AbstractOneParameterModelFactory<IModel<? extends F>, T>() {
+	public static final <F, T> IDetachableFactory<IModel<? extends F>, IModel<T>> factory(final Function<? super F, T> function) {
+		return new AbstractDetachableFactory<IModel<? extends F>, IModel<T>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public IModel<T> create(IModel<? extends F> parameter) {

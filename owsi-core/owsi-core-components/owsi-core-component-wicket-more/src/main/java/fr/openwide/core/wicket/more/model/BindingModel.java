@@ -22,8 +22,8 @@ import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
 
-import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
 /**
  * An improved and simplified version of the BindingModel implementation of
@@ -51,12 +51,12 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 
 	private final String propertyExpression;
 
-	public static final <T, U> IOneParameterModelFactory<IModel<? extends T>, U> factory(BindingRoot<? super T, ? extends U> binding) {
+	public static final <T, U> IDetachableFactory<IModel<? extends T>, BindingModel<T, U>> factory(BindingRoot<? super T, ? extends U> binding) {
 		final String propertyExpression = binding.getPath();
-		return new AbstractOneParameterModelFactory<IModel<? extends T>, U>() {
+		return new AbstractDetachableFactory<IModel<? extends T>, BindingModel<T, U>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public IModel<U> create(IModel<? extends T> parameter) {
+			public BindingModel<T, U> create(IModel<? extends T> parameter) {
 				return new BindingModel<T, U>(parameter, propertyExpression);
 			}
 			@Override

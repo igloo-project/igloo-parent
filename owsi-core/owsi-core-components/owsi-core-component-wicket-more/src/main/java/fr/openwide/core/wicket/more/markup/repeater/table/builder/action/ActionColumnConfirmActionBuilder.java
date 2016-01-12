@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLinkBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedConfirmActionState;
@@ -39,7 +39,7 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 	}
 
 	@Override
-	public IActionColumnConfirmActionBuilderStepContent<T, S> title(IOneParameterModelFactory<? super IModel<T>, String> titleModelFactory) {
+	public IActionColumnConfirmActionBuilderStepContent<T, S> title(IDetachableFactory<? super IModel<T>, ? extends IModel<String>> titleModelFactory) {
 		ajaxConfirmLinkBuilder.title(titleModelFactory);
 		return this;
 	}
@@ -57,7 +57,7 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 	}
 
 	@Override
-	public IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IOneParameterModelFactory<? super IModel<T>, String> contentModelFactory) {
+	public IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IDetachableFactory<? super IModel<T>, ? extends IModel<String>> contentModelFactory) {
 		ajaxConfirmLinkBuilder.content(contentModelFactory);
 		return this;
 	}

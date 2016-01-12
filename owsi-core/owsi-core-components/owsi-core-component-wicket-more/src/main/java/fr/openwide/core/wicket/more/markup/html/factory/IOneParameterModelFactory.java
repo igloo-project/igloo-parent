@@ -1,10 +1,11 @@
 package fr.openwide.core.wicket.more.markup.html.factory;
 
-import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 
-public interface IOneParameterModelFactory<T, U> extends IDetachable {
-
-	IModel<U> create(T parameter);
+/**
+ * @deprecated Use {@link IDetachableFactory IOneParameterFactory&lt;T, IModel&lt;U&gt;&gt;} instead.
+ */
+@Deprecated
+public interface IOneParameterModelFactory<T, U> extends IDetachableFactory<T, IModel<U>> {
 
 }
