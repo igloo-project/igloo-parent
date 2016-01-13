@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
-import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 
 public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 	
@@ -26,12 +25,6 @@ public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 	
 	public AbstractHtmlNotificationPanel(String id, IModel<T> model) {
 		super(id, model);
-	}
-	
-	@Override
-	// XXX maybe we should just remove this as it's not useful anymore
-	public String getVariation() {
-		return IWicketNotificationDescriptor.DEFAULT_NOTIFICATION_VARIATION;
 	}
 	
 	protected void addTopProperty(MarkupContainer table, String headerComponentId, Component dataComponent) {
