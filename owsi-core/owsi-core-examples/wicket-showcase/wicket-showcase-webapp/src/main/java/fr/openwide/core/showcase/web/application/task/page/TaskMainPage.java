@@ -20,8 +20,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
@@ -44,7 +42,6 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.ApplicationPropertyModel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -289,11 +286,6 @@ public class TaskMainPage extends MainTemplate {
 				new TaskSearchPanel("search", portfolio.getPageable(), dataProvider),
 				portfolio
 		);
-	}
-
-	@Override
-	protected List<NavigationMenuItem> getSubNav() {
-		return Lists.newArrayList();
 	}
 
 	@Override

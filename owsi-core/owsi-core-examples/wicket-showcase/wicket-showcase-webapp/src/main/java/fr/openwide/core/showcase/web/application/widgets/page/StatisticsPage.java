@@ -4,7 +4,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.google.common.collect.Lists;
+
+import fr.openwide.core.showcase.core.business.statistic.service.IStatisticService;
+import fr.openwide.core.showcase.core.business.user.model.UserGender;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotPiePanel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.rendering.EnumRenderer;
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.BaseSeries;
 import nl.topicus.wqplot.data.SimpleNumberSeries;
@@ -15,16 +31,6 @@ import nl.topicus.wqplot.options.PlotMarkerStyle;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotPieRendererOptions;
 import nl.topicus.wqplot.options.PlotTooltipAxes;
-
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.google.common.collect.Lists;
-
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
 public class StatisticsPage extends WidgetsTemplate {
 
@@ -43,6 +49,9 @@ public class StatisticsPage extends WidgetsTemplate {
 	private static final String Q3_TICK = "Q3";
 	private static final String Q4_TICK = "Q4";
 	
+	@SpringBean
+	private IStatisticService statisticService;
+	
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(StatisticsPage.class)
@@ -51,6 +60,15 @@ public class StatisticsPage extends WidgetsTemplate {
 	
 	public StatisticsPage(PageParameters parameters) {
 		super(parameters);
+		
+		add(new JQPlotPiePanel<UserGender, Integer>("piePanel", new LoadableDetachableModel<Map<UserGender, Integer>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Map<UserGender, Integer> load() {
+				return statisticService.getUserGenderStatistics();
+			}
+		}, EnumRenderer.withPrefix("user.gender")));
 		
 		addDefaultChart();
 		

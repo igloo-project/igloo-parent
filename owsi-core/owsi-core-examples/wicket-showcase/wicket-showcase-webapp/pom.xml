@@ -30,6 +30,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-wicket-more-jqplot</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>fr.openwide.core.packages</groupId>
 			<artifactId>owsi-core-package-web-spring-security</artifactId>
 			<version>${project.version}</version>
