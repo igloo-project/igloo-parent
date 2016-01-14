@@ -46,6 +46,7 @@ import org.springframework.context.annotation.Import;
 import com.google.common.base.Converter;
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fr.openwide.core.commons.util.functional.Suppliers2;
@@ -128,8 +129,8 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		registry.registerString(NOTIFICATION_MAIL_FROM);
 		registry.registerString(NOTIFICATION_MAIL_SUBJECT_PREFIX);
 		registry.registerBoolean(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
-		registry.register(NOTIFICATION_TEST_EMAILS, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()));
-		registry.register(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()));
+		registry.register(NOTIFICATION_TEST_EMAILS, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
+		registry.register(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 		
 		
 		registry.registerString(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");

@@ -7,6 +7,7 @@ import static fr.openwide.core.basicapp.core.property.BasicApplicationCoreProper
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Converter;
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.basicapp.core.config.util.Environment;
 import fr.openwide.core.commons.util.functional.Suppliers2;
@@ -24,7 +25,7 @@ public class BasicApplicationCoreApplicationPropertyConfig extends AbstractAppli
 		registry.registerEnum(ENVIRONMENT, Environment.class, Environment.production);
 		
 		registry.registerBoolean(SECURITY_PASSWORD_VALIDATOR_ENABLED, true);
-		registry.register(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS, new StringCollectionConverter<>(Converter.<String>identity(), Suppliers2.<String>arrayList()));
+		registry.register(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS, new StringCollectionConverter<>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 	}
 
 	@Override
