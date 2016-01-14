@@ -7,18 +7,28 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.markup.repeater.FactoryRepeatingView;
 
 public final class ComponentFactories {
 	
 	private ComponentFactories() {
 	}
 	
+	
+	/**
+	 * @deprecated Use a {@link FactoryRepeatingView} instead.
+	 */
+	@Deprecated
 	public static void addAll(RepeatingView repeatingView, Iterable<? extends IComponentFactory<?>> factories) {
 		for (IComponentFactory<?> componentFactory : factories) {
 			repeatingView.add(componentFactory.create(repeatingView.newChildId()));
 		}
 	}
-	
+
+	/**
+	 * @deprecated Use a {@link FactoryRepeatingView} instead.
+	 */
+	@Deprecated
 	public static <P> void addAll(RepeatingView repeatingView, Iterable<? extends IOneParameterComponentFactory<?, ? super P>> factories, P parameter) {
 		for (IOneParameterComponentFactory<?, ? super P> componentFactory : factories) {
 			repeatingView.add(componentFactory.create(repeatingView.newChildId(), parameter));

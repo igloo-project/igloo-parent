@@ -8,7 +8,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -22,11 +21,11 @@ import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.IDataTableFactory;
+import fr.openwide.core.wicket.more.markup.repeater.FactoryRepeatingView;
 import fr.openwide.core.wicket.more.model.IErrorAwareDataProvider;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 
@@ -63,15 +62,15 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		add(dataTable);
 		dataTable.setComponentToRefresh(this);
 		
-		RepeatingView headingMainAddins = new RepeatingView("mainAddIn");
-		RepeatingView headingRightAddins = new RepeatingView("rightAddIn");
-		RepeatingView headingLeftAddins = new RepeatingView("leftAddIn");
+		FactoryRepeatingView headingMainAddins = new FactoryRepeatingView("mainAddIn");
+		FactoryRepeatingView headingRightAddins = new FactoryRepeatingView("rightAddIn");
+		FactoryRepeatingView headingLeftAddins = new FactoryRepeatingView("leftAddIn");
 		
-		RepeatingView bodyTopAddins = new RepeatingView("bodyTopAddIn");
-		RepeatingView bodyBottomAddins = new RepeatingView("bodyBottomAddIn");
+		FactoryRepeatingView bodyTopAddins = new FactoryRepeatingView("bodyTopAddIn");
+		FactoryRepeatingView bodyBottomAddins = new FactoryRepeatingView("bodyBottomAddIn");
 		
-		RepeatingView footerRightAddins = new RepeatingView("rightAddIn");
-		RepeatingView footerLeftAddins = new RepeatingView("leftAddIn");
+		FactoryRepeatingView footerRightAddins = new FactoryRepeatingView("rightAddIn");
+		FactoryRepeatingView footerLeftAddins = new FactoryRepeatingView("leftAddIn");
 		
 		add(
 				new EnclosureContainer("headingAddInContainer")
@@ -88,13 +87,13 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 						.add(footerRightAddins, footerLeftAddins)
 		);
 
-		ComponentFactories.addAll(headingMainAddins, addInComponentFactories.get(AddInPlacement.HEADING_MAIN), this);
-		ComponentFactories.addAll(headingRightAddins, addInComponentFactories.get(AddInPlacement.HEADING_RIGHT), this);
-		ComponentFactories.addAll(headingLeftAddins, addInComponentFactories.get(AddInPlacement.HEADING_LEFT), this);
-		ComponentFactories.addAll(bodyTopAddins, addInComponentFactories.get(AddInPlacement.BODY_TOP), this);
-		ComponentFactories.addAll(bodyBottomAddins, addInComponentFactories.get(AddInPlacement.BODY_BOTTOM), this);
-		ComponentFactories.addAll(footerRightAddins, addInComponentFactories.get(AddInPlacement.FOOTER_RIGHT), this);
-		ComponentFactories.addAll(footerLeftAddins, addInComponentFactories.get(AddInPlacement.FOOTER_LEFT), this);
+		headingMainAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_MAIN), this);
+		headingRightAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_RIGHT), this);
+		headingLeftAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_LEFT), this);
+		bodyTopAddins.addAll(addInComponentFactories.get(AddInPlacement.BODY_TOP), this);
+		bodyBottomAddins.addAll(addInComponentFactories.get(AddInPlacement.BODY_BOTTOM), this);
+		footerRightAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_RIGHT), this);
+		footerLeftAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_LEFT), this);
 	}
 	
 	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,

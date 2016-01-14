@@ -3,11 +3,10 @@ package fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.act
 import java.util.List;
 
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import fr.openwide.core.wicket.more.markup.repeater.FactoryRepeatingView;
 
 public class CoreActionColumnPanel<T> extends Panel {
 
@@ -17,8 +16,8 @@ public class CoreActionColumnPanel<T> extends Panel {
 			List<? extends IOneParameterComponentFactory<?, IModel<T>>> factories) {
 		super(id);
 
-		RepeatingView actions = new RepeatingView("actions");
-		ComponentFactories.addAll(actions, factories, rowModel);
+		FactoryRepeatingView actions = new FactoryRepeatingView("actions");
+		actions.addAll(factories, rowModel);
 		add(actions);
 	}
 

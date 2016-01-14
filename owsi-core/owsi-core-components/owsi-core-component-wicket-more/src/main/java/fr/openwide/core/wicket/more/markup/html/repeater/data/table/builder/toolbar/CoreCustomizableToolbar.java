@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractToolbar;
-import org.apache.wicket.markup.repeater.RepeatingView;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
-import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.CoreDataTable;
+import fr.openwide.core.wicket.more.markup.repeater.FactoryRepeatingView;
 
 public class CoreCustomizableToolbar<T, S extends ISort<?>> extends AbstractToolbar {
 
@@ -19,8 +18,8 @@ public class CoreCustomizableToolbar<T, S extends ISort<?>> extends AbstractTool
 			final List<? extends IOneParameterComponentFactory<Component, CoreDataTable<T, S>>> factories) {
 		super(dataTable);
 
-		RepeatingView headers = new RepeatingView("header");
-		ComponentFactories.addAll(headers, factories, dataTable);
+		FactoryRepeatingView headers = new FactoryRepeatingView("header");
+		headers.addAll(factories, dataTable);
 		add(headers);
 	}
 
