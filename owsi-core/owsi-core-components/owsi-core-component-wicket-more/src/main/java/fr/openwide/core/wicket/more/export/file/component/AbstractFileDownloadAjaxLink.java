@@ -8,14 +8,12 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.wicket.more.common.WorkInProgressPopup;
 import fr.openwide.core.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -25,9 +23,6 @@ public abstract class AbstractFileDownloadAjaxLink extends AjaxLink<Void> {
 	private static final long serialVersionUID = -9035539414848139111L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFileDownloadAjaxLink.class);
-	
-	@SpringBean
-	private CoreConfigurer configurer;
 	
 	private final WorkInProgressPopup loadingPopup;
 	
