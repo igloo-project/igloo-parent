@@ -2,12 +2,14 @@ package fr.openwide.core.test.wicket.more.converter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import fr.openwide.core.test.wicket.more.AbstractWicketMoreJpaTestCase;
 import fr.openwide.core.wicket.more.markup.html.basic.PercentageBigDecimalConverter;
+import fr.openwide.core.wicket.more.rendering.CoreRenderers;
 
 public class PercentageTests extends AbstractWicketMoreJpaTestCase {
 
@@ -25,6 +27,7 @@ public class PercentageTests extends AbstractWicketMoreJpaTestCase {
 			
 			String s = bigDecimalConverterWithPS2.convertToString(new BigDecimal("0.51256"), null);
 			Assert.assertEquals("51%", s);
+			Assert.assertEquals("51%", CoreRenderers.percent("#0%", RoundingMode.HALF_UP).render(new BigDecimal("0.51256"), Locale.FRENCH));
 		}
 		
 		{
@@ -33,6 +36,7 @@ public class PercentageTests extends AbstractWicketMoreJpaTestCase {
 			
 			String s = bigDecimalConverterWithPS8.convertToString(new BigDecimal("0.51256"), null);
 			Assert.assertEquals("51,256%", s);
+			Assert.assertEquals("51,256%", CoreRenderers.percent("#0.######%", RoundingMode.HALF_UP).render(new BigDecimal("0.51256"), Locale.FRENCH));
 		}
 		
 		{
@@ -41,6 +45,7 @@ public class PercentageTests extends AbstractWicketMoreJpaTestCase {
 			
 			String s = bigDecimalConverterWithoutPS2.convertToString(new BigDecimal("0.51256"), null);
 			Assert.assertEquals("51", s);
+			Assert.assertEquals("51", CoreRenderers.percent("#0", RoundingMode.HALF_UP).render(new BigDecimal("0.51256"), Locale.FRENCH));
 		}
 		
 		{
@@ -49,6 +54,7 @@ public class PercentageTests extends AbstractWicketMoreJpaTestCase {
 			
 			String s = bigDecimalConverterWithoutPS8.convertToString(new BigDecimal("0.51256"), null);
 			Assert.assertEquals("51,256", s);
+			Assert.assertEquals("51,256", CoreRenderers.percent("#0.######", RoundingMode.HALF_UP).render(new BigDecimal("0.51256"), Locale.FRENCH));
 		}
 		
 	}

@@ -7,6 +7,15 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
+import fr.openwide.core.wicket.more.rendering.CoreRenderers;
+
+/**
+ * Use {@link new CoreLabel(id, CoreRenderers.percent().asModel(model))} in most case ('#0.00 %' with a ratio value (from 0 to 1)) instead.<br />
+ * To display a non-ratio value (from 0 to 100 for instance), use your own {@link DecimalFormat} with {@code df.setMultiplier(1)}, see {@link CoreRenderers#percentDecimalFormatFunction(String, RoundingMode)}.
+ * @see {@link CoreRenderers.percent()}, {@link CoreRenderers.percentNoSign()}
+ * @deprecated
+ */
+@Deprecated
 public class PercentageValueLabel extends Label {
 
 	private static final long serialVersionUID = -3244126531472735297L;

@@ -39,7 +39,7 @@ public class EhCacheCacheInformation {
 			return null;
 		}
 		
-		return 100F * getMemoryStoreObjectCount() / (getMaxElementsInMemory() + 0F);
+		return getMemoryStoreObjectCount() / (getMaxElementsInMemory() + 0F);
 	}
 	
 	public long getCacheHits() {
@@ -55,7 +55,7 @@ public class EhCacheCacheInformation {
 			return null;
 		}
 		
-		return 100F * getCacheHits() / (getCacheHits() + getCacheMisses() + 0F);
+		return getCacheHits() / (getCacheHits() + getCacheMisses() + 0F);
 	}
 	
 	public long getEvictionCount() {

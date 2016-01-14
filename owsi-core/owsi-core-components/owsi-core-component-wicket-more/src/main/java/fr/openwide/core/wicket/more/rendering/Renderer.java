@@ -32,6 +32,8 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.commons.util.rendering.IRenderer;
+import fr.openwide.core.wicket.markup.html.basic.AbstractCoreLabel;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.model.LocaleAwareReadOnlyModel;
 import fr.openwide.core.wicket.more.util.IDatePattern;
 import fr.openwide.core.wicket.more.util.model.Detachables;
@@ -300,6 +302,10 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			super.detach();
 			Detachables.detach(valueModel);
 		}
+	}
+	
+	public AbstractCoreLabel<?> asLabel(String id, IModel<? extends T> valueModel) {
+		return new CoreLabel(id, asModel(valueModel));
 	}
 	
 	public Renderer<T> withResourceKey(String resourceKey) {

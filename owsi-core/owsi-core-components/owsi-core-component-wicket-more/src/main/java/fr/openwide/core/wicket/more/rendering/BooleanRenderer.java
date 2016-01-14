@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.rendering;
 
 import java.util.Locale;
 
-import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
 
 import fr.openwide.core.spring.util.StringUtils;
@@ -66,8 +65,7 @@ public class BooleanRenderer extends Renderer<Boolean> {
 		if (StringUtils.hasText(suffix)) {
 			key.append(".").append(suffix);
 		}
-		
-		return Localizer.get().getString(key.toString(), null, Model.of(value));
+		return getString(key.toString(), locale, Model.of(value));
 	}
 
 	/**

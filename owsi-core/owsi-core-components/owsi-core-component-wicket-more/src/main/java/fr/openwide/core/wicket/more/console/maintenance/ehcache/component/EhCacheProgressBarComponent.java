@@ -29,7 +29,7 @@ public class EhCacheProgressBarComponent extends GenericPanel<Float> {
 		double width = 0;
 		
 		if (getModelObject() != null) {
-			width = Math.ceil(getModelObject());
+			width = Math.ceil(getModelObject() * 100);
 			
 			String className;
 			if (sign) {
