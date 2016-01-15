@@ -28,7 +28,6 @@ public class CoreSortBorder<S extends ISort<?>> extends Border {
 	}
 
 	protected TableSortLink<S> newSortLink(String id, final CoreDataTable<?, S> dataTable, CompositeSortModel<S> sortModel, IColumn<?, S> sortableColumn) {
-		dataTable.setOutputMarkupId(true);
 		return new TableSortLink<S>(id, sortModel, sortableColumn.getSortProperty(), dataTable) {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -39,7 +38,6 @@ public class CoreSortBorder<S extends ISort<?>> extends Border {
 	}
 
 	protected TableSortLink<S> newSortLink(String id, final CoreDataTable<?, S> dataTable, CompositeSortModel<S> sortModel, ICoreColumn<?, S> sortableColumn) {
-		dataTable.setOutputMarkupId(true);
 		return new TableSortLink<S>(id, sortModel, sortableColumn.getSortProperty(), dataTable, sortableColumn.getSortTooltipTextModel()) {
 			private static final long serialVersionUID = 1L;
 			@Override
