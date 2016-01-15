@@ -6,7 +6,7 @@ import org.apache.wicket.model.IDetachable;
 
 public interface IOneParameterAjaxAction<T> extends IDetachable {
 
-	public void execute(AjaxRequestTarget target, T parameter);
+	void execute(AjaxRequestTarget target, T parameter);
 
 	void updateAjaxAttributes(AjaxRequestAttributes attributes, T parameter);
 

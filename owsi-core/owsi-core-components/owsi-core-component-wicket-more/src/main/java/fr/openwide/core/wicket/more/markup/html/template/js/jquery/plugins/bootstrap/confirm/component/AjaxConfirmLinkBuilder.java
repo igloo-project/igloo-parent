@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import java.util.Objects;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -250,6 +251,12 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 		@Override
 		public void onClick(AjaxRequestTarget target) {
 			this.onClick.execute(target, getModel());
+		}
+		
+		@Override
+		protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+			super.updateAjaxAttributes(attributes);
+			this.onClick.updateAjaxAttributes(attributes, getModel());
 		}
 		
 		@Override

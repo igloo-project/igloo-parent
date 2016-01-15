@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -93,6 +94,12 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
 				onClick(target);
+			}
+			
+			@Override
+			protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+				super.updateAjaxAttributes(attributes);
+				AjaxConfirmLink.this.updateAjaxAttributes(attributes);
 			}
 		};
 	}
