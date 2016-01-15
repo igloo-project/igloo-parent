@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.property;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
@@ -25,8 +24,6 @@ public final class WicketMorePropertyIds {
 	public static final ImmutablePropertyId<String> WICKET_DISK_DATA_STORE_PATH = new ImmutablePropertyId<>("wicket.diskDataStore.path");
 	public static final ImmutablePropertyId<Integer> WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE = new ImmutablePropertyId<>("wicket.diskDataStore.inMemoryCacheSize");
 	public static final ImmutablePropertyId<Integer> WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION = new ImmutablePropertyId<>("wicket.diskDataStore.maxSizePerSession");
-	
-	public static final ImmutablePropertyId<File> TMP_EXPORT_EXCEL_PATH = new ImmutablePropertyId<>("tmp.exportExcel.path");
 	
 	public static final ImmutablePropertyId<Integer> GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE = new ImmutablePropertyId<>("globalFeedback.autohide.delay.value");
 	public static final ImmutablePropertyId<TimeUnit> GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT = new ImmutablePropertyId<>("globalFeedback.autohide.delay.unit");

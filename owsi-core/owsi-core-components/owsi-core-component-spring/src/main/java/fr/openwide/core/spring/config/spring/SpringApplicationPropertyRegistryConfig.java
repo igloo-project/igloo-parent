@@ -11,6 +11,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MA
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 import static fr.openwide.core.spring.property.SpringPropertyIds.OWSI_CORE_VERSION;
+import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
 import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_PATH;
 import static fr.openwide.core.spring.property.SpringPropertyIds.VERSION;
 
@@ -64,6 +65,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		);
 		
 		registry.registerDirectoryFile(TMP_PATH);
+		registry.registerDirectoryFile(TMP_EXPORT_EXCEL_PATH);
 		
 		registry.register(AVAILABLE_LOCALES, new Function<String, Set<Locale>>() {
 			@Override

@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.export.excel.component;
 
-import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.TMP_EXPORT_EXCEL_PATH;
+import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
 
 import java.io.File;
 import java.io.FileOutputStream;

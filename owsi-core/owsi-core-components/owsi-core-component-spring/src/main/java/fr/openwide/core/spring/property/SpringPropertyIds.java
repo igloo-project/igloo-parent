@@ -32,6 +32,7 @@ public final class SpringPropertyIds {
 	public static final ImmutablePropertyId<String> CONFIGURATION_TYPE = new ImmutablePropertyId<>("configurationType");
 	
 	public static final ImmutablePropertyId<File> TMP_PATH = new ImmutablePropertyId<>("tmp.path");
+	public static final ImmutablePropertyId<File> TMP_EXPORT_EXCEL_PATH = new ImmutablePropertyId<>("tmp.exportExcel.path");
 	
 	public static final ImmutablePropertyId<Set<Locale>> AVAILABLE_LOCALES = new ImmutablePropertyId<>("locale.availableLocales");
 	public static final ImmutablePropertyId<Locale> DEFAULT_LOCALE = new ImmutablePropertyId<>("locale.default");
