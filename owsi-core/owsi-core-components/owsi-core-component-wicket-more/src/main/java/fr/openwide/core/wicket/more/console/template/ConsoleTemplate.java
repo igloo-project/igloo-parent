@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.console.template;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.VERSION;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 
 import java.util.List;
 

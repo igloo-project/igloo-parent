@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.application;
 
 import static fr.openwide.core.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_PATH;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_PATH;
 
 import java.io.File;
 import java.io.IOException;

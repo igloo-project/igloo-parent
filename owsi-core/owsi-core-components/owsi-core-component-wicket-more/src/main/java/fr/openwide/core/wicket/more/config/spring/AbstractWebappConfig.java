@@ -14,7 +14,8 @@ import fr.openwide.core.wicket.more.notification.service.PhlocCssHtmlNotificatio
 
 @Configuration
 @Import({
-	WicketMoreServiceConfig.class
+	WicketMoreServiceConfig.class,
+	WicketMoreApplicationPropertyRegistryConfig.class
 })
 public abstract class AbstractWebappConfig {
 

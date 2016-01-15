@@ -1,33 +1,16 @@
 package fr.openwide.core.spring.config;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.AUTOCOMPLETE_LIMIT;
 import static fr.openwide.core.spring.property.SpringPropertyIds.AVAILABLE_LOCALES;
 import static fr.openwide.core.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.DEFAULT_LOCALE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
-import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
-import static fr.openwide.core.spring.property.SpringPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.MIGRATION_LOGGING_MEMORY;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 import static fr.openwide.core.spring.property.SpringPropertyIds.OWSI_CORE_VERSION;
-import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
 import static fr.openwide.core.spring.property.SpringPropertyIds.TMP_PATH;
 import static fr.openwide.core.spring.property.SpringPropertyIds.VERSION;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
-import static fr.openwide.core.spring.property.SpringPropertyIds.WICKET_DISK_DATA_STORE_PATH;
 import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_EXPIRATION_DAYS;
 import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_HISTORY_COUNT;
 import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
@@ -40,11 +23,13 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.lucene.search.BooleanQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.property.service.IPropertyService;
+import fr.openwide.core.spring.util.StringUtils;
 
 /**
  * @deprecated Use {@link IPropertyService} instead
@@ -92,7 +77,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public boolean isMigrationLoggingMemory() {
-		return propertyService.get(MIGRATION_LOGGING_MEMORY);
+		return getPropertyAsBoolean("migration.logging.memory");
 	}
 
 	/**
@@ -108,7 +93,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getLuceneBooleanQueryMaxClauseCount() {
-		return propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT);
+		return getPropertyAsInteger("lucene.booleanQuery.maxClauseCount", BooleanQuery.getMaxClauseCount());
 	}
 
 	/**
@@ -116,7 +101,13 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public File getImageMagickConvertBinary() {
-		return propertyService.get(IMAGE_MAGICK_CONVERT_BINARY_PATH);
+		String imageMagickConvertBinary = getPropertyAsString("imageMagick.convertBinary.path", "/usr/bin/convert");
+		
+		if (StringUtils.hasText(imageMagickConvertBinary)) {
+			return new File(imageMagickConvertBinary);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -178,7 +169,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getHibernateSearchReindexBatchSize() {
-		return propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
+		return getPropertyAsInteger("hibernate.search.reindex.batchSize", 25);
 	}
 	
 	/**
@@ -186,7 +177,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getHibernateSearchReindexLoadThreads() {
-		return propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
+		return getPropertyAsInteger("hibernate.search.reindex.loadThreads", 8);
 	}
 	
 	/**
@@ -357,7 +348,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public String getWicketBackgroundRequestCycleBuilderUrlScheme() {
-		return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME);
+		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.scheme", "http");
 	}
 	
 	/**
@@ -365,7 +356,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public String getWicketBackgroundRequestCycleBuilderUrlServerName() {
-		return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME);
+		return getPropertyAsString("wicket.backgroundThreadContextBuilder.url.serverName", "localhost");
 	}
 	
 	/**
@@ -373,7 +364,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getWicketBackgroundRequestCycleBuilderUrlServerPort() {
-		return propertyService.get(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT);
+		return getPropertyAsInteger("wicket.backgroundThreadContextBuilder.url.serverPort", 8080);
 	}
 	
 	/**
@@ -381,7 +372,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public String getWicketDiskDataStorePath() {
-		return propertyService.get(WICKET_DISK_DATA_STORE_PATH);
+		return getPropertyAsString("wicket.diskDataStore.path", null);
 	}
 	
 	/**
@@ -389,7 +380,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getWicketDiskDataStoreInMemoryCacheSize() {
-		return propertyService.get(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE);
+		return getPropertyAsInteger("wicket.diskDataStore.inMemoryCacheSize", 40);
 	}
 	
 	/**
@@ -397,7 +388,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getWicketDiskDataStoreMaxSizePerSession() {
-		return propertyService.get(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION);
+		return getPropertyAsInteger("wicket.diskDataStore.maxSizePerSession", 10);
 	}
 	
 	/**
@@ -405,7 +396,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public File getTmpExportExcelDirectory() {
-		return propertyService.get(TMP_EXPORT_EXCEL_PATH);
+		return getPropertyAsWritableDirectory("tmp.exportExcel.path");
 	}
 	
 	/**
@@ -413,7 +404,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public Integer getGlobalFeedbackAutohideDelayValue() {
-		return propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
+		return getPropertyAsInteger("globalFeedback.autohide.delay.value", 5);
 	}
 	
 	/**
@@ -421,7 +412,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public TimeUnit getGlobalFeedbackAutohideDelayUnit() {
-		return propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT);
+		return getPropertyAsEnum("globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
 	}
 	
 	/**
@@ -429,7 +420,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public Integer getConsoleGlobalFeedbackAutohideDelayValue() {
-		return propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
+		return getPropertyAsInteger("console.globalFeedback.autohide.delay.value", 5);
 	}
 	
 	/**
@@ -437,7 +428,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public TimeUnit getConsoleGlobalFeedbackAutohideDelayUnit() {
-		return propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT);
+		return getPropertyAsEnum("console.globalFeedback.autohide.delay.unit", TimeUnit.class, TimeUnit.SECONDS);
 	}
 	
 	/**
@@ -445,7 +436,7 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getAutocompleteLimit() {
-		return propertyService.get(AUTOCOMPLETE_LIMIT);
+		return getPropertyAsInteger("autocomplete.limit", 20);
 	}
 	
 	

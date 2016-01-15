@@ -1,7 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.feedback;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
-import static fr.openwide.core.spring.property.SpringPropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 
 import java.util.concurrent.TimeUnit;
 

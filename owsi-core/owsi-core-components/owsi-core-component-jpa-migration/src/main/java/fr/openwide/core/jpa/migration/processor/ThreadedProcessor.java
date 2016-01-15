@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.migration.processor;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.MIGRATION_LOGGING_MEMORY;
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MIGRATION_LOGGING_MEMORY;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;

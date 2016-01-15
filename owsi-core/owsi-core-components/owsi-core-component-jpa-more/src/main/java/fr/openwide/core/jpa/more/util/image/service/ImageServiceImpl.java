@@ -1,6 +1,6 @@
 package fr.openwide.core.jpa.more.util.image.service;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
+import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;

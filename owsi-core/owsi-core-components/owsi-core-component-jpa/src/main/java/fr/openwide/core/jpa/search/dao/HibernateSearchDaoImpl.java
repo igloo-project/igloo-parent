@@ -1,7 +1,7 @@
 package fr.openwide.core.jpa.search.dao;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
-import static fr.openwide.core.spring.property.SpringPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
+import static fr.openwide.core.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
+import static fr.openwide.core.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
 
 import java.io.Serializable;
 import java.util.ArrayList;

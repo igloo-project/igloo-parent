@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
-import static fr.openwide.core.spring.property.SpringPropertyIds.AUTOCOMPLETE_LIMIT;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.AUTOCOMPLETE_LIMIT;
 
 import java.util.List;
 
