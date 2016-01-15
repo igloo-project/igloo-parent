@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.showcase.core.ShowcaseCorePackage;
 import fr.openwide.core.showcase.core.init.BootstrapApplicationServiceImpl;
-import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
@@ -36,11 +35,6 @@ public class ShowcaseCoreConfig extends AbstractApplicationConfig {
 	public static final String APPLICATION_NAME = "showcase";
 	
 	public static final String PROFILE_TEST = "test";
-	
-	@Bean(name = {"showcaseConfigurer", "configurer"})
-	public static ShowcaseConfigurer configurer() {
-		return new ShowcaseConfigurer();
-	}
 	
 	@Bean
 	public BootstrapApplicationServiceImpl bootstrapApplicationService() {

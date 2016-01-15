@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Import;
 
 import fr.openwide.core.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
@@ -28,11 +27,6 @@ import fr.openwide.core.test.jpa.security.business.JpaSecurityTestBusinessPackag
 	JpaSecurityTestApplicationPropertyConfig.class
 })
 public class JpaSecurityTestConfig extends AbstractApplicationConfig {
-
-	@Bean
-	public static CoreConfigurer configurer() {
-		return new CoreConfigurer();
-	}
 	
 	@Bean
 	public IRendererService rendererService() {

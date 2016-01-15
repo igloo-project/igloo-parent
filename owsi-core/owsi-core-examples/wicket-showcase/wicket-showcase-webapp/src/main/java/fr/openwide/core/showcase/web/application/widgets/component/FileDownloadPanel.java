@@ -18,7 +18,8 @@ import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.commons.util.registry.TFileRegistry;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileService;
-import fr.openwide.core.showcase.core.util.spring.ShowcaseConfigurer;
+import fr.openwide.core.spring.property.SpringPropertyIds;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.common.WorkInProgressPopup;
 import fr.openwide.core.wicket.more.export.file.component.AbstractFileDownloadAjaxLink;
 
@@ -32,7 +33,7 @@ public class FileDownloadPanel extends Panel {
 	private IShowcaseFileService showcaseFileService;
 	
 	@SpringBean
-	private ShowcaseConfigurer configurer;
+	private IPropertyService propertyService;
 
 	private Map<TFile, Map<String, Long>> doublons = new HashMap<>();
 	
@@ -62,7 +63,7 @@ public class FileDownloadPanel extends Panel {
 	public TFile generateTFile() {
 		TFile archiveFile = null;
 		try {
-			archiveFile = new TFile(configurer.getTmpDirectory() + "/mon_archive" + "." + RandomUtils.nextLong() + "." + MediaType.APPLICATION_ZIP.extension()).mkdir(true);
+			archiveFile = new TFile(propertyService.getAsString(SpringPropertyIds.TMP_PATH) + "/mon_archive" + "." + RandomUtils.nextLong() + "." + MediaType.APPLICATION_ZIP.extension()).mkdir(true);
 			
 			// ------ dossier1 ------ //
 			TFile dossier1 = TFileRegistry.create(archiveFile, "Dossier1").mkdir(true);

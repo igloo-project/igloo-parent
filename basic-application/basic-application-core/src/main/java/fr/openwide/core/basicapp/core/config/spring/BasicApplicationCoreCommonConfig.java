@@ -1,6 +1,5 @@
 package fr.openwide.core.basicapp.core.config.spring;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.basicapp.core.BasicApplicationCorePackage;
-import fr.openwide.core.basicapp.core.config.application.BasicApplicationConfigurer;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
@@ -40,13 +38,5 @@ public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig 
 	public static final String APPLICATION_NAME = "basic-application";
 
 	public static final String PROFILE_TEST = "test";
-	
-	/**
-	 * L'obtention du configurer doit être statique.
-	 */
-	@Bean(name = { "configurer" })
-	public BasicApplicationConfigurer configurer() {
-		return new BasicApplicationConfigurer();
-	}
 	
 }

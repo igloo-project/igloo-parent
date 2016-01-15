@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import fr.openwide.core.spring.config.CoreConfigurer;
 import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationConfigurerBeanFactoryPostProcessor;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
@@ -23,11 +22,6 @@ import fr.openwide.core.spring.property.service.PropertyServiceImpl;
 @Import({ NotificationTestConfig.class })
 public class TestConfig {
 
-	@Bean(name = { "configurer" })
-	public CoreConfigurer configurer() {
-		return new CoreConfigurer();
-	}
-	
 	@Bean
 	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
 		return new CorePropertyPlaceholderConfigurer();
