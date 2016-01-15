@@ -28,7 +28,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 	
 	private final CoreToolbarsContainer bodyBottomToolbars;
 
-	private MarkupContainer componentToRefresh = this;
+	private MarkupContainer componentToRefresh;
 	
 	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
 		this(id, columns, Lists.newArrayList(columns.keySet()), dataProvider, rowsPerPage);
@@ -41,6 +41,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 		this.columnList = columnsList;
 		this.bodyBottomToolbars = new CoreToolbarsContainer("bodyBottomToolbars");
 		getBody().add(bodyBottomToolbars);
+		setComponentToRefresh(this);
 	}
 	
 	@Override
@@ -97,7 +98,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends DataTable<T, S> {
 	
 	public void setComponentToRefresh(MarkupContainer component) {
 		Args.isTrue(
-				component.contains(this, true),
+				component == this || component.contains(this, true),
 				"The component to refresh in stead of a DataTable must contain the DataTable. {} does not contain {}",
 				component, this
 		);
