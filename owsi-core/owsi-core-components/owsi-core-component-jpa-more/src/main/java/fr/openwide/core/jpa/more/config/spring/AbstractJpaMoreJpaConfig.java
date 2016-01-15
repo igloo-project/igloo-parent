@@ -8,10 +8,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.config.spring.AbstractJpaConfig;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
-import fr.openwide.core.jpa.more.business.JpaMoreBusinessPackage;
+import fr.openwide.core.jpa.more.business.CoreJpaMoreBusinessPackage;
+import fr.openwide.core.jpa.more.util.CoreJpaMoreUtilPackage;
 
 @Import(JpaMoreApplicationPropertyRegistryConfig.class)
-@ComponentScan(basePackageClasses = { JpaMoreBusinessPackage.class })
+@ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class })
 public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {
 
 	@Bean
@@ -21,7 +22,7 @@ public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {
 
 	@Bean
 	public JpaPackageScanProvider jpaMorePackageScanProvider() {
-		return new JpaPackageScanProvider(JpaMoreBusinessPackage.class.getPackage());
+		return new JpaPackageScanProvider(CoreJpaMoreBusinessPackage.class.getPackage());
 	}
 
 }

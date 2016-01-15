@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
-import fr.openwide.core.jpa.more.business.JpaMoreBusinessPackage;
+import fr.openwide.core.jpa.more.business.CoreJpaMoreBusinessPackage;
 import fr.openwide.core.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import fr.openwide.core.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import fr.openwide.core.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
 
-@ComponentScan(basePackageClasses = { JpaMoreBusinessPackage.class })
+@ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class })
 public abstract class AbstractTaskManagementConfig {
 	
 	public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
