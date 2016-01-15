@@ -20,11 +20,11 @@ import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.diff.selector.MapKeyElementSelector;
 import de.danielbechler.diff.selector.RootElementSelector;
 import fr.openwide.core.commons.util.binding.BindingUtils;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
+import fr.openwide.core.commons.util.fieldpath.FieldPathPropertyComponent;
 import fr.openwide.core.jpa.more.business.difference.model.Difference;
 import fr.openwide.core.jpa.more.business.difference.selector.IKeyAwareSelector;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathComponent;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathPropertyComponent;
 
 public final class DiffUtils {
 	

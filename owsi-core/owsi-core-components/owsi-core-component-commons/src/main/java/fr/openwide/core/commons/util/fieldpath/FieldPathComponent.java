@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.util.fieldpath.model;
+package fr.openwide.core.commons.util.fieldpath;
 
 import java.io.Serializable;
 

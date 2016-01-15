@@ -12,8 +12,8 @@ import org.javatuples.Triplet;
 
 import com.google.common.collect.Maps;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 import fr.openwide.core.wicket.more.notification.service.AbstractBackgroundWicketThreadContextBuilder;
 import fr.openwide.core.wicket.more.rendering.EnumRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;

@@ -9,10 +9,10 @@ import fr.openwide.core.basicapp.core.business.history.model.HistoryDifference;
 import fr.openwide.core.basicapp.core.business.history.model.HistoryLog;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathComponent;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class AbstractHistoryRenderer<T> extends Renderer<T> {

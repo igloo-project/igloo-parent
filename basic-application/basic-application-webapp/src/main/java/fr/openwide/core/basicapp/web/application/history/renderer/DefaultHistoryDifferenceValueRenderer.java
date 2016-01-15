@@ -10,8 +10,8 @@ import com.google.common.base.Optional;
 
 import fr.openwide.core.basicapp.core.business.history.model.HistoryDifference;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.util.model.Models;
 import fr.openwide.core.wicket.more.util.model.Models.MapModelBuilder;

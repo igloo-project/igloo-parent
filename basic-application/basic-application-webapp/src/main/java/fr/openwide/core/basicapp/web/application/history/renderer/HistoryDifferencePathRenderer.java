@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import fr.openwide.core.basicapp.core.business.history.model.HistoryDifference;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.wicket.more.util.model.Models;
 
 public final class HistoryDifferencePathRenderer extends AbstractHistoryRenderer<HistoryDifference> {

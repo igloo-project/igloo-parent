@@ -11,7 +11,7 @@ import com.google.common.collect.Maps;
 import fr.openwide.core.basicapp.core.business.history.model.HistoryDifference;
 import fr.openwide.core.basicapp.web.application.history.component.CompositeHistoryDifferencePanel;
 import fr.openwide.core.basicapp.web.application.history.component.DefaultHistoryDifferencePanel;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
 /**

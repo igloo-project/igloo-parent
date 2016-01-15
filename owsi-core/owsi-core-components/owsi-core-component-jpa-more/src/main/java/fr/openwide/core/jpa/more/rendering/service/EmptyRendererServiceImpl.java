@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 
 import com.google.common.base.Joiner;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.commons.util.rendering.IRenderer;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 
 /**
  * Mock implementation, only used to fill the dependency.

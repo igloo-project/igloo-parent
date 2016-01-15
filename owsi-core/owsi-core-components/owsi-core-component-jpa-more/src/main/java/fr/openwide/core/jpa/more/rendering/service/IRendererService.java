@@ -2,9 +2,9 @@ package fr.openwide.core.jpa.more.rendering.service;
 
 import java.util.Locale;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.context.IContextualService;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 
 
 public interface IRendererService extends IContextualService {

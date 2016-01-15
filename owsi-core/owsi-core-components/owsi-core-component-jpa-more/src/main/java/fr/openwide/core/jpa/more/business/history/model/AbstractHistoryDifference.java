@@ -24,10 +24,10 @@ import org.bindgen.Bindable;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.collections.CollectionUtils;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryDifferencePath;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 
 @MappedSuperclass
 @Bindable

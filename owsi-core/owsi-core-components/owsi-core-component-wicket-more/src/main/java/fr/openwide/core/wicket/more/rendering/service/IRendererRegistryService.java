@@ -3,8 +3,8 @@ package fr.openwide.core.wicket.more.rendering.service;
 import org.apache.poi.ss.formula.functions.T;
 import org.bindgen.BindingRoot;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.context.IContextualService;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 

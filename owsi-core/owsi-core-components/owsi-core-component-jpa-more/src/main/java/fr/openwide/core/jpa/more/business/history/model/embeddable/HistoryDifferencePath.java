@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bindgen.Bindable;
 
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 
 @Embeddable
 @Bindable

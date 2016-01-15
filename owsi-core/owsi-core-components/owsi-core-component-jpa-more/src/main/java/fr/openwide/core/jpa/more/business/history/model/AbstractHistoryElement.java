@@ -3,8 +3,8 @@ package fr.openwide.core.jpa.more.business.history.model;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 
 @MappedSuperclass
 public abstract class AbstractHistoryElement<HE extends AbstractHistoryElement<HE, HL>, HL extends AbstractHistoryLog<HL, ?, ?>> extends GenericEntity<Long, HE>

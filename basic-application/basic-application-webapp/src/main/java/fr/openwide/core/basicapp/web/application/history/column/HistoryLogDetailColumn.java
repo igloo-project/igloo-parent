@@ -22,9 +22,9 @@ import fr.openwide.core.basicapp.web.application.history.component.HistoryLogDet
 import fr.openwide.core.basicapp.web.application.history.component.factory.CustomizableHistoryComponentFactory;
 import fr.openwide.core.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import fr.openwide.core.commons.util.binding.BindingUtils;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.more.business.history.search.HistoryLogSort;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.AbstractCoreColumn;
 
 /**

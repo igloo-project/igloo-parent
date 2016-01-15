@@ -35,6 +35,8 @@ import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
@@ -52,8 +54,6 @@ import fr.openwide.core.jpa.more.business.difference.util.IProxyInitializer;
 import fr.openwide.core.jpa.more.business.difference.util.TypeSafeBindingProxyInitializer;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathComponent;
 import fr.openwide.core.jpa.util.HibernateUtils;
 
 @SuppressFBWarnings("squid:S1226")

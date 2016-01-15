@@ -11,6 +11,7 @@ import de.danielbechler.diff.selector.CollectionItemElementSelector;
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.diff.selector.MapKeyElementSelector;
 import fr.openwide.core.commons.util.exception.IllegalSwitchValueException;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.jpa.more.business.difference.model.Difference;
 import fr.openwide.core.jpa.more.business.difference.selector.IKeyAwareSelector;
@@ -20,7 +21,6 @@ import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryDiffer
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 import fr.openwide.core.jpa.more.business.history.service.IHistoryValueService;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
 
 public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDifferenceFactory<T> {
 	

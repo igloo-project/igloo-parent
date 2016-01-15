@@ -1,16 +1,16 @@
-package fr.openwide.core.jpa.more.util.fieldpath.model;
+package fr.openwide.core.commons.util.fieldpath;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.text.StrMatcher;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.bindgen.Bindable;
 import org.bindgen.Binding;
-import org.springframework.util.StringUtils;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -48,7 +48,7 @@ public class FieldPath implements Iterable<FieldPathComponent>, Serializable { /
 	private static final String ITEM_TOKEN = "*";
 	
 	public static final FieldPath fromString(String string) {
-		if (!StringUtils.hasText(string)) {
+		if (StringUtils.isBlank(string)) {
 			return null;
 		} else {
 			List<FieldPathComponent> components = Lists.newLinkedList();

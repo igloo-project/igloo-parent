@@ -14,11 +14,11 @@ import com.google.common.collect.Lists;
 import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
 import fr.openwide.core.jpa.more.business.difference.model.Difference;
 import fr.openwide.core.jpa.more.business.difference.util.DiffUtils;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPath;
-import fr.openwide.core.jpa.more.util.fieldpath.model.FieldPathComponent;
 
 /**
  * A HistoryDifferenceFactory which creates a HistoryDifference for each DiffNode:

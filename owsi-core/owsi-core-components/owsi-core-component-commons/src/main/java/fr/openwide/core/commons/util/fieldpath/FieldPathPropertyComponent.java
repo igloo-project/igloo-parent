@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.more.util.fieldpath.model;
+package fr.openwide.core.commons.util.fieldpath;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
