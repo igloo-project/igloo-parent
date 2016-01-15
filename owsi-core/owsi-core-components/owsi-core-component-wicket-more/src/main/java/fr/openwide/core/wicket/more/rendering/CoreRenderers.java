@@ -32,7 +32,7 @@ public final class CoreRenderers {
 
 	private static final Function<Locale, DecimalFormat> PERCENT_NO_SIGN_FORMAT_FUNCTION = percentDecimalFormatFunction("#0.00\u00A0", RoundingMode.HALF_UP);
 
-	private static final Renderer<BigDecimal> POURCENT = Renderer.<BigDecimal>fromNumberFormat(PERCENT_FORMAT_FUNCTION);
+	private static final Renderer<BigDecimal> PERCENT = Renderer.<BigDecimal>fromNumberFormat(PERCENT_FORMAT_FUNCTION);
 
 	private static final Renderer<BigDecimal> PERCENT_NO_SIGN = Renderer.<BigDecimal>fromNumberFormat(PERCENT_NO_SIGN_FORMAT_FUNCTION);
 
@@ -56,7 +56,7 @@ public final class CoreRenderers {
 	}
 
 	public static Renderer<BigDecimal> percent() {
-		return POURCENT;
+		return PERCENT;
 	}
 
 	public static Renderer<BigDecimal> percentNoSign() {
