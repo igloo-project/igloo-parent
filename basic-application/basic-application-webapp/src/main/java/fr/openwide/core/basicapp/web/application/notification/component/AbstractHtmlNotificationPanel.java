@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.basicapp.web.application.config.spring.BasicApplicationWebappConfig;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 
 public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
@@ -26,11 +25,6 @@ public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 	
 	public AbstractHtmlNotificationPanel(String id, IModel<T> model) {
 		super(id, model);
-	}
-	
-	@Override
-	public String getVariation() {
-		return BasicApplicationWebappConfig.DEFAULT_NOTIFICATION_VARIATION;
 	}
 	
 	protected void addTopProperty(MarkupContainer table, String headerComponentId, Component dataComponent) {

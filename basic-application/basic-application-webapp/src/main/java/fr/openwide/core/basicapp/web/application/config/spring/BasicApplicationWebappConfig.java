@@ -19,6 +19,7 @@ import fr.openwide.core.basicapp.web.application.renderer.service.RendererServic
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
+import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;
@@ -38,8 +39,6 @@ import fr.openwide.core.wicket.more.util.DatePattern;
 		excludeFilters = @Filter(Configuration.class)
 )
 public class BasicApplicationWebappConfig extends AbstractWebappConfig {
-
-	public static final String DEFAULT_NOTIFICATION_VARIATION = "notification";
 
 	@Override
 	@Bean(name = { "BasicApplicationApplication", "application" })
@@ -70,7 +69,7 @@ public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 	@Bean
 	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
 		IHtmlNotificationCssService service = super.htmlNotificationCssService();
-		service.registerStyles(DEFAULT_NOTIFICATION_VARIATION, NotificationLessCssResourceReference.get());
+		service.registerStyles(IWicketNotificationDescriptor.DEFAULT_NOTIFICATION_VARIATION, NotificationLessCssResourceReference.get());
 		return service;
 	}
 
