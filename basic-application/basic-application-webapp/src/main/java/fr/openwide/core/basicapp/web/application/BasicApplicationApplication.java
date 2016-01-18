@@ -34,6 +34,7 @@ import fr.openwide.core.basicapp.web.application.history.renderer.HistoryValueRe
 import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
+import fr.openwide.core.basicapp.web.application.referential.page.ReferentialPage;
 import fr.openwide.core.basicapp.web.application.resources.business.BasicApplicationBusinessResources;
 import fr.openwide.core.basicapp.web.application.resources.common.BasicApplicationCommonResources;
 import fr.openwide.core.basicapp.web.application.resources.console.BasicApplicationConsoleResources;
@@ -150,6 +151,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountParameterizedPage("/administration/technical-user/${" + CommonParameters.ID + "}/", AdministrationTechnicalUserDescriptionPage.class);
 		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
 		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDescriptionPage.class);
+		
+		// Referential
+		mountPage("/referential/", ReferentialPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");

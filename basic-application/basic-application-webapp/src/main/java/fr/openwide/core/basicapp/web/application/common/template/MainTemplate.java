@@ -45,6 +45,7 @@ import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLe
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
+import fr.openwide.core.basicapp.web.application.referential.page.ReferentialPage;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
@@ -256,6 +257,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home"))
 						.setCssClassesModel(Model.of("home")),
+				ReferentialPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.referential"))
+						.setCssClassesModel(Model.of("referential")),
 				AdministrationUserTypeDescriptor.BASIC_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
 						.setSubMenuItems(ImmutableList.of(
