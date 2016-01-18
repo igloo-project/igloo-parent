@@ -4,7 +4,6 @@ import org.bindgen.BindingRoot;
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.commons.util.binding.BindingUtils;
 import fr.openwide.core.jpa.util.HibernateUtils;
 
 public class TypeSafeBindingProxyInitializer<R> implements IProxyInitializer<R> {
@@ -31,7 +30,7 @@ public class TypeSafeBindingProxyInitializer<R> implements IProxyInitializer<R> 
 
 	@SuppressWarnings("unchecked")
 	private <R2 extends R, T> T getTypeSafe(BindingRoot<R2, T> binding, R unwrapped) {
-		if (unwrapped != null && BindingUtils.getRootType(binding).isAssignableFrom(unwrapped.getClass())) {
+		if (unwrapped != null && binding.getRootBinding().getType().isAssignableFrom(unwrapped.getClass())) {
 			return binding.getSafelyWithRoot((R2)unwrapped);
 		} else {
 			return null;

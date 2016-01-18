@@ -19,7 +19,6 @@ import de.danielbechler.diff.selector.CollectionItemElementSelector;
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.diff.selector.MapKeyElementSelector;
 import de.danielbechler.diff.selector.RootElementSelector;
-import fr.openwide.core.commons.util.binding.BindingUtils;
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
 import fr.openwide.core.commons.util.fieldpath.FieldPathPropertyComponent;
@@ -84,7 +83,7 @@ public final class DiffUtils {
 	
 	public static Predicate<DiffNode> isField(Binding<?> binding) {
 		return Predicates.and(
-				new RootTypePredicate(BindingUtils.getRootType(binding)),
+				new RootTypePredicate(binding.getRootBinding().getType()),
 				new FieldPathPredicate(FieldPath.fromBinding(binding))
 		);
 	}

@@ -21,7 +21,6 @@ import fr.openwide.core.basicapp.web.application.history.component.DefaultHistor
 import fr.openwide.core.basicapp.web.application.history.component.HistoryLogDetailColumnPanel;
 import fr.openwide.core.basicapp.web.application.history.component.factory.CustomizableHistoryComponentFactory;
 import fr.openwide.core.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
-import fr.openwide.core.commons.util.binding.BindingUtils;
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.more.business.history.search.HistoryLogSort;
@@ -60,7 +59,7 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 	}
 	
 	public HistoryLogDetailColumn showOnly(BindingRoot<?, ?> binding) {
-		return showOnly(BindingUtils.getRootType(binding), FieldPath.fromBinding(binding));
+		return showOnly(binding.getRootBinding().getType(), FieldPath.fromBinding(binding));
 	}
 	
 	/**
@@ -70,7 +69,7 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 	 * be computed on an item-by-item basis, and not on the collection as a whole.
 	 */
 	public HistoryLogDetailColumn showOnlyItem(BindingRoot<?, ?> binding) {
-		return showOnly(BindingUtils.getRootType(binding), FieldPath.fromBinding(binding).item());
+		return showOnly(binding.getRootBinding().getType(), FieldPath.fromBinding(binding).item());
 	}
 
 	@Override
