@@ -20,6 +20,6 @@ public enum HistoryEventType {
 	
 	PASSWORD_CREATION_REQUEST,
 	
-	PASSWORD_UPDATE,
+	PASSWORD_UPDATE;
 	
 }
