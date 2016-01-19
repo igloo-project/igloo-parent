@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.rendering.service;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.bindgen.BindingRoot;
 
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
@@ -8,7 +7,7 @@ import fr.openwide.core.context.IContextualService;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 
-public interface IRendererRegistryService extends IContextualService {
+public interface IRendererRegistry extends IContextualService {
 
 	<R, T> void registerRenderer(Class<R> rootType, FieldPath path, Class<T> valueType, Renderer<? super T> renderer);
 

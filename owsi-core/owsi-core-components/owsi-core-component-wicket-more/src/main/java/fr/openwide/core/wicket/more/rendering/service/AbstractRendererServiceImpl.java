@@ -19,7 +19,7 @@ import fr.openwide.core.wicket.more.rendering.EnumRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class AbstractRendererServiceImpl extends AbstractBackgroundWicketThreadContextBuilder
-		implements IRendererService, IRendererRegistryService {
+		implements IRendererService, IRendererRegistry {
 	
 	private Map<Triplet<Class<?>, FieldPath, Class<?>>, Renderer<?>> cache = Maps.newHashMap();
 
