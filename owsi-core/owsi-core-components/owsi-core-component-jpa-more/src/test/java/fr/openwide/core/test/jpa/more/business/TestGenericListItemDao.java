@@ -9,15 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.dao.GenericListItemDaoImpl;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction_;
+import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
 import fr.openwide.core.test.jpa.more.business.audit.model.QMockAuditAction;
 
 public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private GenericListItemDaoImpl genericListItemDao;
+	
+	@Override
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditAction.class)) {
+			genericListItemService.delete(genericListItem);
+		}
+		super.cleanAll();
+	}
 
 	@SuppressWarnings("deprecation")
 	@Test
