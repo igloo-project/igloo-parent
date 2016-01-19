@@ -14,19 +14,46 @@ import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction_;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
+import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.QMockAuditAction;
 
 public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private GenericListItemDaoImpl genericListItemDao;
-	
+
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanFeaturesAndActions();
+		super.cleanAll();
+	}
+	
+	private void cleanFeaturesAndActions() throws ServiceException, SecurityServiceException {
+		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditFeature.class)) {
+			genericListItemService.delete(genericListItem);
+		}
+		
 		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditAction.class)) {
 			genericListItemService.delete(genericListItem);
 		}
-		super.cleanAll();
+	}
+
+	@Override
+	public void init() throws ServiceException, SecurityServiceException {
+		super.init();
+		initFeaturesAndActions();
+	}
+
+	private void initFeaturesAndActions() {
+		for (MockAuditFeatureEnum auditFeatureEnum : MockAuditFeatureEnum.values()) {
+			MockAuditFeature auditFeature = new MockAuditFeature(auditFeatureEnum.name(), auditFeatureEnum, 1);
+			genericListItemService.create(auditFeature);
+		}
+		
+		for (MockAuditActionEnum auditActionEnum : MockAuditActionEnum.values()) {
+			MockAuditAction auditAction = new MockAuditAction(auditActionEnum.name(), auditActionEnum, 1);
+			genericListItemService.create(auditAction);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
