@@ -6,17 +6,58 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAudit;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
+import fr.openwide.core.test.jpa.more.business.audit.service.IMockAuditService;
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 
 public class TestAuditService extends AbstractJpaMoreTestCase {
+
+	@Autowired
+	protected IMockAuditService auditService;
+
+	@Override
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanEntities(auditService);
+		cleanFeaturesAndActions();
+		super.cleanAll();
+	}
+	
+	private void cleanFeaturesAndActions() throws ServiceException, SecurityServiceException {
+		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditFeature.class)) {
+			genericListItemService.delete(genericListItem);
+		}
+		
+		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditAction.class)) {
+			genericListItemService.delete(genericListItem);
+		}
+	}
+
+	@Override
+	public void init() throws ServiceException, SecurityServiceException {
+		super.init();
+		initFeaturesAndActions();
+	}
+
+	private void initFeaturesAndActions() {
+		for (MockAuditFeatureEnum auditFeatureEnum : MockAuditFeatureEnum.values()) {
+			MockAuditFeature auditFeature = new MockAuditFeature(auditFeatureEnum.name(), auditFeatureEnum, 1);
+			genericListItemService.create(auditFeature);
+		}
+		
+		for (MockAuditActionEnum auditActionEnum : MockAuditActionEnum.values()) {
+			MockAuditAction auditAction = new MockAuditAction(auditActionEnum.name(), auditActionEnum, 1);
+			genericListItemService.create(auditAction);
+		}
+	}
 
 	@Test
 	public void testCreate() throws ServiceException, SecurityServiceException {

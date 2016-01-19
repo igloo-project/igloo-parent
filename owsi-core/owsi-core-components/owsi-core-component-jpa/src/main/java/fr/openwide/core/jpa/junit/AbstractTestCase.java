@@ -76,15 +76,15 @@ public abstract class AbstractTestCase {
 		checkEmptyDatabase();
 	}
 	
-	protected final Matcher<GenericEntity<?, ?>> isAttachedToSession() {
-		return new TypeSafeMatcher<GenericEntity<?, ?>>() {
+	protected final <T extends GenericEntity<?, ?>> Matcher<T> isAttachedToSession() {
+		return new TypeSafeMatcher<T>() {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("an entity already in the session");
 			}
 
 			@Override
-			protected boolean matchesSafely(GenericEntity<?, ?> item) {
+			protected boolean matchesSafely(T item) {
 				return entityManagerUtils.getCurrentEntityManager().contains(item);
 			}
 		};
