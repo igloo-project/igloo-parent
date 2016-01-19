@@ -9,7 +9,7 @@ import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestTransa
 
 
 /**
- * Attention, la définition transactionnelle se fait pour chaque méthode.
+ * Caution: each method opens a new transaction on purpose.
  */
 public interface ITestTransactionSynchronizationTaskService {
 

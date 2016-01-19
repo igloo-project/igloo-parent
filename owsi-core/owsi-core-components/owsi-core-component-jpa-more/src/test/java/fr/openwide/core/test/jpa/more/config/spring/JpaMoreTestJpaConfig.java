@@ -15,11 +15,11 @@ import fr.openwide.core.jpa.more.config.spring.AbstractConfiguredJpaMoreJpaConfi
 import fr.openwide.core.test.jpa.more.business.JpaMoreTestBusinessPackage;
 import fr.openwide.core.test.jpa.more.business.interceptor.TestEntityInterceptor;
 import fr.openwide.core.test.jpa.more.business.interceptor.TestEntitySimplePropertyUpdateInterceptor;
-import fr.openwide.core.test.jpa.more.business.util.transaction.service.ITestTransactionSynchronizationTaskCreatorService;
+import fr.openwide.core.test.jpa.more.business.util.transaction.service.ITestTransactionSynchronizationTaskService;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackageClasses = ITestTransactionSynchronizationTaskCreatorService.class)
+@ComponentScan(basePackageClasses = ITestTransactionSynchronizationTaskService.class)
 public class JpaMoreTestJpaConfig extends AbstractConfiguredJpaMoreJpaConfig {
 
 	@Override
