@@ -32,7 +32,7 @@ public final class HistoryValueRenderer extends Renderer<HistoryValue> {
 		if (!initialized) {
 			Injector.get().inject(this);
 		}
-		return historyValueService.render(value);
+		return historyValueService.render(value, locale);
 	}
 
 }

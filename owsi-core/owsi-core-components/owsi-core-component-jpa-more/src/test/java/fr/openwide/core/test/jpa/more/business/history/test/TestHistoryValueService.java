@@ -87,7 +87,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 		
 		when(renderer.render(testEntity, DEFAULT_LOCALE)).thenReturn(expectedRendering);
 		
-		assertEquals(expectedRendering, historyValueService.render(historyValue, renderer));
+		assertEquals(expectedRendering, historyValueService.render(historyValue, renderer, DEFAULT_LOCALE));
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 		
 		when(rendererService.findRenderer(TestEntity.class)).then(/* Bypass generics with an Answer */ new Returns(renderer));
 		
-		assertEquals(expectedRendering, historyValueService.render(historyValue));
+		assertEquals(expectedRendering, historyValueService.render(historyValue, DEFAULT_LOCALE));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 		
 		HistoryValue historyValue = new HistoryValue(expectedRendering);
 		
-		assertEquals(expectedRendering, historyValueService.render(historyValue, renderer));
+		assertEquals(expectedRendering, historyValueService.render(historyValue, renderer, DEFAULT_LOCALE));
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 		
 		HistoryValue historyValue = new HistoryValue(expectedRendering);
 		
-		assertEquals(expectedRendering, historyValueService.render(historyValue));
+		assertEquals(expectedRendering, historyValueService.render(historyValue, DEFAULT_LOCALE));
 	}
 
 	@Test

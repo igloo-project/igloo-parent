@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.business.history.service;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.commons.util.rendering.IRenderer;
@@ -88,7 +90,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public final String render(HistoryValue value, IRenderer renderer) {
+	public final String render(HistoryValue value, IRenderer renderer, Locale locale) {
 		if (value == null) {
 			return null;
 		}
@@ -96,7 +98,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 		if (renderer != null) {
 			Object retrieved = retrieve(value);
 			if (retrieved != null) {
-				return renderer.render(retrieved, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+				return renderer.render(retrieved, locale);
 			}
 		}
 		
@@ -105,7 +107,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 	
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public final String render(HistoryValue value) {
+	public final String render(HistoryValue value, Locale locale) {
 		if (value == null) {
 			return null;
 		}
@@ -113,7 +115,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 		Object retrieved = retrieve(value);
 		if (retrieved != null) {
 			IRenderer renderer = rendererService.findRenderer(HibernateUtils.getClass(retrieved));
-			return renderer.render(retrieved, propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+			return renderer.render(retrieved, locale);
 		}
 		
 		return value.getLabel();

@@ -2,8 +2,8 @@ package fr.openwide.core.basicapp.core.business.history.dao;
 
 import fr.openwide.core.basicapp.core.business.history.model.HistoryLog;
 import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
-import fr.openwide.core.jpa.more.business.history.dao.IAbstractHistoryLogDao;
+import fr.openwide.core.jpa.more.business.history.dao.IGenericHistoryLogDao;
 
-public interface IHistoryLogDao extends IAbstractHistoryLogDao<HistoryLog, HistoryEventType> {
+public interface IHistoryLogDao extends IGenericHistoryLogDao<HistoryLog, HistoryEventType> {
 
 }

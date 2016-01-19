@@ -13,7 +13,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.difference.service.IDifferenceService;
 import fr.openwide.core.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
 import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
-import fr.openwide.core.jpa.more.business.history.dao.IAbstractHistoryLogDao;
+import fr.openwide.core.jpa.more.business.history.dao.IGenericHistoryLogDao;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
@@ -35,7 +35,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	protected IHistoryValueService valueService;
 	
 	@Autowired
-	public AbstractHistoryLogServiceImpl(IAbstractHistoryLogDao<HL, HET> dao) {
+	public AbstractHistoryLogServiceImpl(IGenericHistoryLogDao<HL, HET> dao) {
 		super(dao);
 	}
 	
