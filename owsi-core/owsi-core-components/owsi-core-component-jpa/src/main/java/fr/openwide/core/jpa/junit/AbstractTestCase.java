@@ -23,6 +23,9 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.hibernate.jpa.internal.metamodel.EmbeddableTypeImpl;
 import org.junit.After;
 import org.junit.Assert;
@@ -71,6 +74,20 @@ public abstract class AbstractTestCase {
 	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		checkEmptyDatabase();
+	}
+	
+	protected final Matcher<GenericEntity<?, ?>> isAttachedToSession() {
+		return new TypeSafeMatcher<GenericEntity<?, ?>>() {
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("an entity already in the session");
+			}
+
+			@Override
+			protected boolean matchesSafely(GenericEntity<?, ?> item) {
+				return entityManagerUtils.getCurrentEntityManager().contains(item);
+			}
+		};
 	}
 	
 	protected <E extends GenericEntity<Long, E>> void testEntityStringFields(E entity, IGenericEntityService<Long, E> service)

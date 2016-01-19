@@ -57,20 +57,6 @@ public abstract class AbstractTestGenericEntityModel extends AbstractWicketMoreJ
 		}
 	}
 	
-	private Matcher<Person> attachedToSession() {
-		return new TypeSafeMatcher<Person>() {
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("an entity already in the session");
-			}
-
-			@Override
-			protected boolean matchesSafely(Person item) {
-				return entityManager.contains(item);
-			}
-		};
-	}
-	
 	protected abstract IModel<Person> createModel();
 	protected abstract IModel<Person> createModel(Person person);
 	
@@ -100,15 +86,15 @@ public abstract class AbstractTestGenericEntityModel extends AbstractWicketMoreJ
 	public void testAttachedWhenPersisted() throws Exception {
 		Person person = new Person("John", "Doe");
 		personService.create(person);
-		assertThat(person, attachedToSession());
+		assertThat(person, isAttachedToSession());
 		
 		IModel<Person> model = createModel(person);
-		assertThat(model.getObject(), attachedToSession());
+		assertThat(model.getObject(), isAttachedToSession());
 		
 		model = serializeAndDeserialize(model);
 		assertEquals(person, model.getObject());
-		assertThat(person, attachedToSession());
-		assertThat(model.getObject(), attachedToSession());
+		assertThat(person, isAttachedToSession());
+		assertThat(model.getObject(), isAttachedToSession());
 	}
 	
 	@Test
@@ -117,23 +103,23 @@ public abstract class AbstractTestGenericEntityModel extends AbstractWicketMoreJ
 		IModel<Person> model = createModel(person);
 		
 		personService.create(person);
-		assertThat(person, attachedToSession());
-		assertThat(model.getObject(), attachedToSession());
+		assertThat(person, isAttachedToSession());
+		assertThat(model.getObject(), isAttachedToSession());
 		
 		model = serializeAndDeserialize(model);
 		assertEquals(person, model.getObject());
-		assertThat(person, attachedToSession());
-		assertThat(model.getObject(), attachedToSession());
+		assertThat(person, isAttachedToSession());
+		assertThat(model.getObject(), isAttachedToSession());
 	}
 	
 	@Test
 	public void testAttachedWhenPersistedAndDetachedWhenTransient() throws Exception {
 		Person person = new Person("John", "Doe");
 		personService.create(person);
-		assertThat(person, attachedToSession());
+		assertThat(person, isAttachedToSession());
 		
 		IModel<Person> model = createModel(person);
-		assertThat(model.getObject(), attachedToSession());
+		assertThat(model.getObject(), isAttachedToSession());
 		
 		personService.delete(person);
 		
@@ -150,12 +136,12 @@ public abstract class AbstractTestGenericEntityModel extends AbstractWicketMoreJ
 		
 		// Simulate work on the same object obtained from another model
 		personService.create(person);
-		assertThat(person, attachedToSession());
+		assertThat(person, isAttachedToSession());
 		
 		model = serializeAndDeserialize(model); // Includes a second detach()
 		assertEquals(person, model.getObject());
-		assertThat(person, attachedToSession());
-		assertThat(model.getObject(), attachedToSession());
+		assertThat(person, isAttachedToSession());
+		assertThat(model.getObject(), isAttachedToSession());
 	}
 
 }
