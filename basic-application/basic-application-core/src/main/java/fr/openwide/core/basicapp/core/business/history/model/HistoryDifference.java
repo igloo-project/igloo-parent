@@ -10,6 +10,9 @@ import javax.persistence.Table;
 import org.bindgen.Bindable;
 
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
+import fr.openwide.core.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
+import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryDifferencePath;
+import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 
 @Entity
 @Bindable
@@ -25,5 +28,13 @@ public class HistoryDifference extends AbstractHistoryDifference<HistoryDifferen
 
 	private static final long serialVersionUID = -8437788725042615126L;
 
+	public HistoryDifference() {
+		super();
+	}
+
+	public HistoryDifference(HistoryDifferencePath path, HistoryDifferenceEventType action, HistoryValue before,
+			HistoryValue after) {
+		super(path, action, before, after);
+	}
 
 }

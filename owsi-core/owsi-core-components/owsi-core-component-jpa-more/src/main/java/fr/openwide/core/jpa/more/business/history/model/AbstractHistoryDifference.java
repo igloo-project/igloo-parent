@@ -64,10 +64,10 @@ public abstract class AbstractHistoryDifference<HD extends AbstractHistoryDiffer
 	@OrderColumn
 	private List<HD> differences = Lists.newArrayList();
 	
-	protected AbstractHistoryDifference() {
+	public AbstractHistoryDifference() {
 	}
 
-	protected AbstractHistoryDifference(HistoryDifferencePath path, HistoryDifferenceEventType action, HistoryValue before, HistoryValue after) {
+	public AbstractHistoryDifference(HistoryDifferencePath path, HistoryDifferenceEventType action, HistoryValue before, HistoryValue after) {
 		init(path, action, before, after);
 	}
 	
