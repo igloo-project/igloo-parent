@@ -8,6 +8,8 @@ import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
@@ -83,6 +85,28 @@ public class HistoryValue implements Serializable {
 		} else {
 			return label;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof HistoryValue)) {
+			return false;
+		}
+		HistoryValue other = (HistoryValue) obj;
+		return new EqualsBuilder()
+				.append(getLabel(), other.getLabel())
+				.append(getSerialized(), other.getSerialized())
+				.append(getEntityReference(), other.getEntityReference())
+				.isEquals();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(getLabel())
+				.append(getSerialized())
+				.append(getEntityReference())
+				.build();
 	}
 
 }

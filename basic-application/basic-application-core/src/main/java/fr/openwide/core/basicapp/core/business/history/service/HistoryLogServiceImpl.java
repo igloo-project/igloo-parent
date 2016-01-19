@@ -18,7 +18,8 @@ import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.jpa.more.business.history.service.AbstractHistoryLogServiceImpl;
 
 @Service
-public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<HistoryLog, HistoryEventType, HistoryDifference, HistoryLogAdditionalInformationBean>
+public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<HistoryLog, HistoryEventType,
+		HistoryDifference, HistoryLogAdditionalInformationBean>
 		implements IHistoryLogService {
 
 	private static final Supplier<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER = new Supplier<HistoryDifference>() {

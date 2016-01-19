@@ -6,6 +6,7 @@ import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEvent
 import fr.openwide.core.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import fr.openwide.core.jpa.more.business.history.service.IGenericHistoryLogService;
 
-public interface IHistoryLogService extends IGenericHistoryLogService<HistoryLog, HistoryEventType, HistoryDifference, HistoryLogAdditionalInformationBean> {
+public interface IHistoryLogService extends IGenericHistoryLogService<HistoryLog, HistoryEventType,
+		HistoryDifference, HistoryLogAdditionalInformationBean> {
 
 }

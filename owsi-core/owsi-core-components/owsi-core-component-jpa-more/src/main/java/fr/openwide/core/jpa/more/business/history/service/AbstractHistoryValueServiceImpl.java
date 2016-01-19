@@ -13,7 +13,7 @@ import fr.openwide.core.jpa.util.HibernateUtils;
 import fr.openwide.core.spring.property.SpringPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
-public class AbstractHistoryValueServiceImpl implements IHistoryValueService {
+public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueService {
 	
 	@Autowired
 	protected IEntityService entityService;
