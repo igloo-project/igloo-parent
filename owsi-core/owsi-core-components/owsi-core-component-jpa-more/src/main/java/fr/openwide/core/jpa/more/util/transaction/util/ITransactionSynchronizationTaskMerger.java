@@ -1,8 +1,13 @@
-package fr.openwide.core.jpa.more.util.transaction.service;
+package fr.openwide.core.jpa.more.util.transaction.util;
 
 import fr.openwide.core.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
 
-public interface ITransactionSynchronizationTaskMergerService {
+/**
+ * A component responsible for merging tasks before their execution, for optimization purposes.
+ * <p>Each merger is supposed to care only for a certain subtype of tasks, ensuring that multiple mergers won't
+ * try to merge the same tasks.
+ */
+public interface ITransactionSynchronizationTaskMerger {
 
 	/**
 	 * Merge the tasks.

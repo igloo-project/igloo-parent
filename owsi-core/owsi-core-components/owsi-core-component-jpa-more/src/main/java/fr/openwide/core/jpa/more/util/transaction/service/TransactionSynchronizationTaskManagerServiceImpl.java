@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.more.util.transaction.service;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 import fr.openwide.core.jpa.more.util.transaction.exception.TransactionSynchronizationException;
@@ -19,6 +21,7 @@ import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizat
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
 import fr.openwide.core.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
+import fr.openwide.core.jpa.more.util.transaction.util.ITransactionSynchronizationTaskMerger;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 
 @Service
@@ -30,7 +33,8 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 	public static final String EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE = "No actual transaction active.";
 
 	@Autowired(required = false)
-	private ITransactionSynchronizationTaskMergerService transactionSynchronizationTaskMergerService;
+	private Collection<ITransactionSynchronizationTaskMerger> transactionSynchronizationTaskMergers
+			= ImmutableList.of();
 
 	@Autowired
 	private ConfigurableApplicationContext configurableApplicationContext;
@@ -91,8 +95,10 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 
 	protected TransactionSynchronizationTasks merge() {
 		TransactionSynchronizationTasks tasks = getTasksIfExist();
-		if (tasks != null && transactionSynchronizationTaskMergerService != null) {
-			transactionSynchronizationTaskMergerService.merge(tasks);
+		if (tasks != null) {
+			for (ITransactionSynchronizationTaskMerger merger : transactionSynchronizationTaskMergers) {
+				merger.merge(tasks);
+			}
 		}
 		return tasks;
 	}
