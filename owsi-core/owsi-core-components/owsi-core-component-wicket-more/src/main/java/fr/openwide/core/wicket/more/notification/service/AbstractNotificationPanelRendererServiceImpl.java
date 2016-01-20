@@ -22,10 +22,10 @@ import com.google.common.base.Supplier;
 public abstract class AbstractNotificationPanelRendererServiceImpl extends AbstractBackgroundWicketThreadContextBuilder {
 	
 	/**
-	 * @deprecated Use {@link #renderComponent(Supplier, Locale)} instead. Caught exceptions (if any) should be handled by the supplier.
+	 * @deprecated Use {@link #renderComponent(Supplier, Locale, String)} instead. Caught exceptions (if any) should be handled by the supplier.
 	 */
 	@Deprecated
-	protected String renderComponent(final Callable<Component> componentTask, Locale locale) {
+	protected final String renderComponent(final Callable<Component> componentTask, Locale locale) {
 		return renderComponent(
 				new Supplier<Component>() {
 					@Override
@@ -41,7 +41,17 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 		);
 	}
 	
-	protected String renderComponent(final Supplier<Component> componentSupplier, Locale locale) {
+	protected final String renderComponent(final Supplier<Component> componentSupplier, Locale locale) {
+		return renderComponent(componentSupplier, locale, null);
+	}
+	
+	/**
+	 * @param componentSupplier A supplier for the component to be rendered.
+	 * @param locale The locale to use when rendering.
+	 * @param variation A string identifier that will be passed to {@link #postProcessHtml(Component, Locale, String, String)}.
+	 * @return The component returned by <code>componenentSupplier</code>, rendered in HTML with the given <code>locale</code>
+	 */
+	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
 		Args.notNull(componentSupplier, "componentTask");
 		try {
 			return runWithContext(
@@ -51,8 +61,9 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 							Component component = componentSupplier.get();
 							Args.notNull(component, "component");
 							
-							String panel = ComponentRenderer.renderComponent(component).toString();
-							return panel;
+							String htmlBody = ComponentRenderer.renderComponent(component).toString();
+							
+							return postProcessHtml(component, locale, variation, htmlBody);
 						}
 					},
 					locale
@@ -60,6 +71,10 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 		} catch (Exception e) {
 			throw new IllegalStateException("Error rendering a panel with locale '" + locale + "'", e);
 		}
+	}
+
+	protected String postProcessHtml(Component component, Locale locale, String variation, String htmlBodyToProcess) {
+		return htmlBodyToProcess;
 	}
 	
 	protected String renderString(final String messageKey, Locale locale, final Object parameter, final Object ... positionalParameters) {

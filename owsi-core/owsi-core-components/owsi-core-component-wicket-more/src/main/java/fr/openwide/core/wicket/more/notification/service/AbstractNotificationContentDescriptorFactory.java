@@ -55,29 +55,16 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 
 		@Override
 		public final String renderHtmlBody(Locale locale) {
-			String htmlBody = AbstractNotificationContentDescriptorFactory.this.renderComponent(
+			return AbstractNotificationContentDescriptorFactory.this.renderComponent(
 					new Supplier<Component>() {
 						@Override
 						public Component get() {
 							return createComponent("htmlComponent");
 						}
 					},
-					locale
+					locale,
+					getVariation()
 			);
-			
-			
-			IHtmlNotificationCssRegistry cssRegistry = null;
-			if (cssService.hasRegistry(getVariation())) {
-				try {
-					cssRegistry = cssService.getRegistry(getVariation());
-				} catch (ServiceException e) {
-					LOGGER.error("Unable to load the CSS file", e);
-				}
-			}
-			
-			Document doc = Jsoup.parse(htmlBody);
-			doc.traverse(new AddStyleAndTargetBlankAttributesNodeVisitor(cssRegistry));
-			return doc.html();
 		}
 		
 		@Override
@@ -126,6 +113,27 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		protected String getSubjectMessageKey() {
 			return getMessageKeyRoot() + ".subject";
 		}
+	}
+	
+	/**
+	 * Replace CSS classes by the corresponding style and add a target="_blank" attribute to links.
+	 */
+	@Override
+	@SuppressWarnings("deprecation")
+	protected String postProcessHtml(Component component, Locale locale, String variation, String htmlBodyToProcess) {
+		htmlBodyToProcess = super.postProcessHtml(component, locale, variation, htmlBodyToProcess);
+		IHtmlNotificationCssRegistry cssRegistry = null;
+		if (cssService.hasRegistry(variation)) {
+			try {
+				cssRegistry = cssService.getRegistry(variation);
+			} catch (ServiceException e) {
+				LOGGER.error("Unable to load the CSS file", e);
+			}
+		}
+		
+		Document doc = Jsoup.parse(htmlBodyToProcess);
+		doc.traverse(new AddStyleAndTargetBlankAttributesNodeVisitor(cssRegistry));
+		return doc.html();
 	}
 	
 	private class AddStyleAndTargetBlankAttributesNodeVisitor implements NodeVisitor {

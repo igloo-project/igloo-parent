@@ -20,12 +20,12 @@ public abstract class AbstractWicketRendererServiceImpl extends AbstractNotifica
 	protected abstract String getApplicationName();
 	
 	@Override
-	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale) {
+	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
 		return securityService.runAsSystem(
 			new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					return AbstractWicketRendererServiceImpl.super.renderComponent(componentSupplier, locale);
+					return AbstractWicketRendererServiceImpl.super.renderComponent(componentSupplier, locale, variation);
 				}
 			}
 		);
