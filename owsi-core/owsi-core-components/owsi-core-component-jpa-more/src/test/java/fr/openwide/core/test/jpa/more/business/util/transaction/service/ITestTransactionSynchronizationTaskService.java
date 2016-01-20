@@ -1,11 +1,9 @@
 package fr.openwide.core.test.jpa.more.business.util.transaction.service;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestTransactionSynchronizationRollbackBasicTask;
+import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 
 
 /**
@@ -13,11 +11,9 @@ import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestTransa
  */
 public interface ITestTransactionSynchronizationTaskService {
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	void basicTask() throws ServiceException, SecurityServiceException;
+	GenericEntityReference<Long, TestEntity> createInNewTransaction() throws ServiceException, SecurityServiceException;
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	void rollbackBasicTask(TestTransactionSynchronizationRollbackBasicTask rollbackBasicTask)
+	void deleteInNewTransaction(Long testEntityId)
 			throws ServiceException, SecurityServiceException;
 
 }

@@ -3,14 +3,14 @@ package fr.openwide.core.test.jpa.more.business.util.transaction.model;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
 
-public class TestTransactionSynchronizationRollbackBasicTask extends TestAbstractTransactionSynchronizationTask
+public class TestDeleteOnRollbackTask extends TestAbstractTransactionSynchronizationTask
 		implements ITransactionSynchronizationAfterCommitTask, ITransactionSynchronizationTaskRollbackAware {
 
 	private static final long serialVersionUID = 20642307623916853L;
 
 	private Long testEntityId;
 
-	public TestTransactionSynchronizationRollbackBasicTask(Long testEntityId) {
+	public TestDeleteOnRollbackTask(Long testEntityId) {
 		super();
 		this.testEntityId = testEntityId;
 	}
@@ -22,7 +22,7 @@ public class TestTransactionSynchronizationRollbackBasicTask extends TestAbstrac
 
 	@Override
 	public void afterRollback() throws Exception {
-		transactionSynchronizationTaskService.rollbackBasicTask(this);
+		transactionSynchronizationTaskService.deleteInNewTransaction(testEntityId);
 	}
 
 	public Long getTestEntityId() {

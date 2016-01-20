@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import fr.openwide.core.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
@@ -26,6 +27,7 @@ import fr.openwide.core.test.jpa.more.business.JpaMoreTestBusinessPackage;
 })
 @ComponentScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class JpaMoreTestConfig extends AbstractApplicationConfig {
 
 	@Bean

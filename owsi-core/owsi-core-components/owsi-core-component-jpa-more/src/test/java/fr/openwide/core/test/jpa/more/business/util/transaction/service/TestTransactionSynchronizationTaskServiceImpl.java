@@ -2,12 +2,14 @@ package fr.openwide.core.test.jpa.more.business.util.transaction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
-import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestTransactionSynchronizationRollbackBasicTask;
 
 @Service
 public class TestTransactionSynchronizationTaskServiceImpl implements ITestTransactionSynchronizationTaskService {
@@ -16,15 +18,18 @@ public class TestTransactionSynchronizationTaskServiceImpl implements ITestTrans
 	private ITestEntityService testEntityService;
 
 	@Override
-	public void basicTask() throws ServiceException, SecurityServiceException {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public GenericEntityReference<Long, TestEntity> createInNewTransaction() throws ServiceException, SecurityServiceException {
 		TestEntity entity = new TestEntity("entity");
 		testEntityService.create(entity);
+		return GenericEntityReference.of(entity);
 	}
 
 	@Override
-	public void rollbackBasicTask(TestTransactionSynchronizationRollbackBasicTask rollbackBasicTask)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void deleteInNewTransaction(Long testEntityId)
 			throws ServiceException, SecurityServiceException {
-		TestEntity entity = testEntityService.getById(rollbackBasicTask.getTestEntityId());
+		TestEntity entity = testEntityService.getById(testEntityId);
 		testEntityService.delete(entity);
 	}
 
