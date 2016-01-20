@@ -15,9 +15,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
