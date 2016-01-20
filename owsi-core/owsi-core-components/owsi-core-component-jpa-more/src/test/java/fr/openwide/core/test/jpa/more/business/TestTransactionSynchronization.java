@@ -40,6 +40,8 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	private TransactionTemplate writeTransactionTemplate;
 
+	private TransactionTemplate writeRequiresNewTransactionTemplate;
+
 	private TransactionTemplate readOnlyTransactionTemplate;
 	
 	@Autowired
@@ -48,10 +50,16 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 				new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
 		writeTransactionAttribute.setReadOnly(false);
 		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
+		
+		DefaultTransactionAttribute writeRequiresNewTransactionAttribute =
+				new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRES_NEW);
+		writeRequiresNewTransactionAttribute.setReadOnly(false);
+		writeRequiresNewTransactionTemplate = new TransactionTemplate(transactionManager, writeRequiresNewTransactionAttribute);
+		
 		DefaultTransactionAttribute readOnlyTransactionAttribute =
 				new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
 		readOnlyTransactionAttribute.setReadOnly(true);
-		readOnlyTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
+		readOnlyTransactionTemplate = new TransactionTemplate(transactionManager, readOnlyTransactionAttribute);
 	}
 
 	@Test
@@ -99,5 +107,40 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		entityManagerClear();
 		
 		assertNull(testEntityService.getById(testEntityId));
+	}
+
+	@Test
+	public void testNestedTransactions() throws ServiceException, SecurityServiceException {
+		TestEntity entityExpectedToBeDeleted = new TestEntity("entityExpectedToBeDeleted");
+		testEntityService.create(entityExpectedToBeDeleted);
+		final Long entityExpectedToBeDeletedId = entityExpectedToBeDeleted.getId();
+		
+		TestEntity entityNOTExpectedToBeDeleted = new TestEntity("entityNOTExpectedToBeDeleted");
+		testEntityService.create(entityNOTExpectedToBeDeleted);
+		final Long entityNOTExpectedToBeDeletedId = entityNOTExpectedToBeDeleted.getId();
+		
+		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				// Create a new transaction
+				writeRequiresNewTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus status) {
+						// Should not be executed since this transaction will execute just fine
+						transactionSynchronizationTaskManagerService.push(new TestDeleteOnRollbackTask(entityNOTExpectedToBeDeletedId));
+					}
+				});
+				
+				// Should not trigger the execution of the rollback task declared above, but only the one below
+				status.setRollbackOnly();
+				
+				transactionSynchronizationTaskManagerService.push(new TestDeleteOnRollbackTask(entityExpectedToBeDeletedId));
+			}
+		});
+		
+		entityManagerClear();
+		
+		assertNull(testEntityService.getById(entityExpectedToBeDeletedId));
+		assertNotNull(testEntityService.getById(entityNOTExpectedToBeDeletedId));
 	}
 }

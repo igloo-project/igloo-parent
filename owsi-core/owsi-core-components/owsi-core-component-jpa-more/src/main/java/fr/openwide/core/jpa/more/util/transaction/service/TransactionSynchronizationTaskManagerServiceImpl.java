@@ -36,35 +36,20 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 	@Autowired
 	private ConfigurableApplicationContext configurableApplicationContext;
 
-	private final TaskTransactionSynchronizationAdapter transactionSynchronizationTaskAdapter =
-			new TaskTransactionSynchronizationAdapter();
-
-	private TransactionSynchronizationTasks getExistingTasks() {
-		return (TransactionSynchronizationTasks) TransactionSynchronizationManager.getResource(TASKS_RESOURCE_KEY);
-	}
-
 	@Override
 	public void push(ITransactionSynchronizationBeforeCommitTask beforeCommitTask) {
-		checkTransactionActive();
-		initializeContextIfNeeded();
+		addSynchronizationIfNeeded();
 		
 		autowireAndInitialize(beforeCommitTask);
-		getExistingTasks().getBeforeCommitTasks().add(beforeCommitTask);
+		getTasksIfExist().getBeforeCommitTasks().add(beforeCommitTask);
 	}
 	 
 	@Override
 	public void push(ITransactionSynchronizationAfterCommitTask afterCommitTask) {
-		checkTransactionActive();
-		initializeContextIfNeeded();
+		addSynchronizationIfNeeded();
 		
 		autowireAndInitialize(afterCommitTask);
-		getExistingTasks().getAfterCommitTasks().add(afterCommitTask);
-	}
-
-	private void checkTransactionActive() {
-		if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-			throw new IllegalStateException(EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE);
-		}
+		getTasksIfExist().getAfterCommitTasks().add(afterCommitTask);
 	}
 
 	protected void autowireAndInitialize(ITransactionSynchronizationTask beforeCommitTask) {
@@ -73,34 +58,40 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		autowireCapableBeanFactory.initializeBean(beforeCommitTask, beforeCommitTask.getClass().getName());
 	}
 
-	protected void initializeContextIfNeeded() {
-		// Register the synchronization adapter (that will transmit events to this service)
-		if (TransactionSynchronizationManager.isSynchronizationActive()
-				&& !TransactionSynchronizationManager.getSynchronizations().contains(transactionSynchronizationTaskAdapter)) {
-			TransactionSynchronizationManager.registerSynchronization(transactionSynchronizationTaskAdapter);
+	protected void addSynchronizationIfNeeded() {
+		if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+			throw new IllegalStateException(EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE);
 		}
-		
-		// Initialize the list of tasks that will be executed later
-		TransactionSynchronizationTasks operations = getExistingTasks();
-		if (operations == null) {
-			operations = new TransactionSynchronizationTasks();
-			TransactionSynchronizationManager.bindResource(TASKS_RESOURCE_KEY, operations);
+		if (!isTaskSynchronizationActive()) {
+			// Initialize the list of tasks that will be executed later
+			bindContext(new TransactionSynchronizationTasks());
+			
+			// Register the synchronization adapter (that will transmit events to this service)
+			TransactionSynchronizationManager.registerSynchronization(new TaskTransactionSynchronizationAdapter());
 		}
 	}
 
-	protected void cleanContext() {
-		TransactionSynchronizationTasks tasks = getExistingTasks();
-		if (tasks != null) {
-			tasks.reset();
-		}
-		TransactionSynchronizationManager.unbindResourceIfPossible(TASKS_RESOURCE_KEY);
+	protected boolean isTaskSynchronizationActive() {
+		return TransactionSynchronizationManager.hasResource(TASKS_RESOURCE_KEY);
+	}
+
+	protected void bindContext(TransactionSynchronizationTasks tasks) {
+		TransactionSynchronizationManager.bindResource(TASKS_RESOURCE_KEY, tasks);
+	}
+
+	protected TransactionSynchronizationTasks unbindContext() {
+		return (TransactionSynchronizationTasks) TransactionSynchronizationManager.unbindResourceIfPossible(TASKS_RESOURCE_KEY);
+	}
+
+	private TransactionSynchronizationTasks getTasksIfExist() {
+		return (TransactionSynchronizationTasks) TransactionSynchronizationManager.getResource(TASKS_RESOURCE_KEY);
 	}
 
 	protected void merge() {
 		if (transactionSynchronizationTaskMergerService == null) {
 			return;
 		}
-		TransactionSynchronizationTasks operations = getExistingTasks();
+		TransactionSynchronizationTasks operations = getTasksIfExist();
 		transactionSynchronizationTaskMergerService.merge(operations);
 		operations.lock();
 	}
@@ -108,7 +99,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 	private void doBeforeCommit() {
 		merge();
 		
-		TransactionSynchronizationTasks tasks = getExistingTasks();
+		TransactionSynchronizationTasks tasks = getTasksIfExist();
 		if (tasks == null) {
 			return;
 		}
@@ -124,7 +115,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 	}
 	
 	private void doAfterCommit() {
-		TransactionSynchronizationTasks tasks = getExistingTasks();
+		TransactionSynchronizationTasks tasks = getTasksIfExist();
 		if (tasks == null) {
 			return;
 		}
@@ -148,7 +139,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 	
 	private void doOnRollback() {
 		Exception firstException = null;
-		TransactionSynchronizationTasks tasks = getExistingTasks();
+		TransactionSynchronizationTasks tasks = getTasksIfExist();
 		if (tasks == null) {
 			return;
 		}
@@ -184,9 +175,21 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 	
 	public class TaskTransactionSynchronizationAdapter extends TransactionSynchronizationAdapter {
 		
+		private TransactionSynchronizationTasks suspendedTasks = null;
+		
 		@Override
 		public int getOrder() {
 			return Ordered.LOWEST_PRECEDENCE;
+		}
+		
+		@Override
+		public void suspend() {
+			suspendedTasks = unbindContext();
+		}
+		
+		@Override
+		public void resume() {
+			bindContext(suspendedTasks);
 		}
 		
 		@Override
@@ -204,7 +207,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
 				doOnRollback();
 			}
-			cleanContext();
+			unbindContext();
 		}
 	}
 }

@@ -13,12 +13,6 @@ public class TransactionSynchronizationTasks {
 
 	private TransactionSynchronizationTasksStatus status = TransactionSynchronizationTasksStatus.OPEN;
 
-	public void reset() {
-		beforeCommitTasks.clear();
-		afterCommitTasks.clear();
-		open();
-	}
-
 	public List<ITransactionSynchronizationBeforeCommitTask> getBeforeCommitTasks() {
 		if (isLocked()) {
 			return Collections.unmodifiableList(beforeCommitTasks);
