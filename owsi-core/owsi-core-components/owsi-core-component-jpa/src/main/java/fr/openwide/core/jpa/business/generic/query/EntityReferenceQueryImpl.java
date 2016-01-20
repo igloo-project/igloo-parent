@@ -13,18 +13,18 @@ import com.google.common.primitives.Ints;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
-import fr.openwide.core.jpa.query.IQuery;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class EntityReferenceQuery<T extends GenericEntity<?, ?>> implements IQuery<T> {
+public class EntityReferenceQueryImpl<T extends GenericEntity<?, ?>> implements IEntityReferenceQuery<T> {
 	
 	private GenericEntityCollectionReference<?, T> reference;
 	
 	@Autowired
 	private IEntityService entityService;
 	
-	public EntityReferenceQuery<T> setReference(GenericEntityCollectionReference<?, T> reference) {
+	@Override
+	public EntityReferenceQueryImpl<T> setReference(GenericEntityCollectionReference<?, T> reference) {
 		this.reference = reference;
 		return this;
 	}

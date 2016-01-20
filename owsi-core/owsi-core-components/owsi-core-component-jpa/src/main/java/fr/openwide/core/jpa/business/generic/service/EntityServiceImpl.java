@@ -13,7 +13,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.business.generic.model.IReference;
 import fr.openwide.core.jpa.business.generic.model.IReferenceable;
-import fr.openwide.core.jpa.business.generic.query.EntityReferenceQuery;
+import fr.openwide.core.jpa.business.generic.query.IEntityReferenceQuery;
 import fr.openwide.core.jpa.query.IQuery;
 
 @Service("entityService")
@@ -24,7 +24,7 @@ public class EntityServiceImpl implements IEntityService {
 	
 	@SuppressWarnings("rawtypes")
 	@Autowired
-	private ObjectFactory<EntityReferenceQuery> entityReferenceQueryProvider;
+	private ObjectFactory<IEntityReferenceQuery> entityReferenceQueryProvider;
 
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(Class<E> clazz, K id) {
@@ -50,7 +50,7 @@ public class EntityServiceImpl implements IEntityService {
 	public <E extends GenericEntity<?, ?>> IQuery<E> getQuery(final GenericEntityCollectionReference<?, E> reference) {
 		// The query must be defined as an (external) bean so that the version of entityService it uses has been proxified
 		@SuppressWarnings("unchecked")
-		EntityReferenceQuery<E> query = entityReferenceQueryProvider.getObject();
+		IEntityReferenceQuery<E> query = entityReferenceQueryProvider.getObject();
 		query.setReference(reference);
 		return query;
 	}
