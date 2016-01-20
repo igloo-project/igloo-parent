@@ -1,7 +1,7 @@
 package fr.openwide.core.jpa.more.util.transaction.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,13 +19,12 @@ import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizat
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
 import fr.openwide.core.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
+import fr.openwide.core.jpa.util.EntityManagerUtils;
 
 @Service
 public class TransactionSynchronizationTaskManagerServiceImpl
 		implements ITransactionSynchronizationTaskManagerService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionSynchronizationTaskManagerServiceImpl.class);
-
 	private static final Class<?> TASKS_RESOURCE_KEY = TransactionSynchronizationTaskManagerServiceImpl.class;
 
 	public static final String EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE = "No actual transaction active.";
@@ -35,6 +34,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 
 	@Autowired
 	private ConfigurableApplicationContext configurableApplicationContext;
+
+	@Autowired
+	private EntityManagerUtils entityManagerUtils;
 
 	@Override
 	public void push(ITransactionSynchronizationBeforeCommitTask beforeCommitTask) {
@@ -87,28 +89,67 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		return (TransactionSynchronizationTasks) TransactionSynchronizationManager.getResource(TASKS_RESOURCE_KEY);
 	}
 
-	protected void merge() {
-		if (transactionSynchronizationTaskMergerService == null) {
+	protected TransactionSynchronizationTasks merge() {
+		TransactionSynchronizationTasks tasks = getTasksIfExist();
+		if (tasks != null && transactionSynchronizationTaskMergerService != null) {
+			transactionSynchronizationTaskMergerService.merge(tasks);
+		}
+		return tasks;
+	}
+	
+	@Override
+	public void beforeClear() {
+		TransactionSynchronizationTasks tasks = merge();
+		if (tasks == null) {
 			return;
 		}
-		TransactionSynchronizationTasks operations = getTasksIfExist();
-		transactionSynchronizationTaskMergerService.merge(operations);
-		operations.lock();
+		
+		if (tasks.isFrozen()) {
+			// If called after doBeforeCommit, there's nothing to do.
+			return;
+		}
+		
+		Iterator<ITransactionSynchronizationBeforeCommitTask> iterator = tasks.getBeforeCommitTasks().iterator();
+		while (iterator.hasNext()) {
+			ITransactionSynchronizationBeforeCommitTask beforeCommitTask = iterator.next();
+			if (beforeCommitTask.shouldRunBeforeClear()) {
+				try {
+					beforeCommitTask.run();
+					entityManagerUtils.getCurrentEntityManager().flush();
+				} catch (Exception e) {
+					// This exception MUST be thrown, as we want to rollback if anything goes wrong.
+					// We better ignore other tasks, as they will have no effect on the current transaction.
+					throw new TransactionSynchronizationException("Error while executing a 'before clear' task.", e);
+				}
+				
+				// We mustn't execute the task again before commit
+				iterator.remove();
+				// ... but we must execute afterRollback() if possible.
+				if (beforeCommitTask instanceof ITransactionSynchronizationTaskRollbackAware) {
+					ITransactionSynchronizationTaskRollbackAware rollbackAwareTask =
+							(ITransactionSynchronizationTaskRollbackAware) beforeCommitTask;
+					tasks.getAlreadyExecutedBeforeClearTasks().add(rollbackAwareTask);
+				}
+			}
+		}
 	}
 	
 	private void doBeforeCommit() {
 		merge();
 		
-		TransactionSynchronizationTasks tasks = getTasksIfExist();
+		TransactionSynchronizationTasks tasks = merge();
 		if (tasks == null) {
 			return;
 		}
+		
+		tasks.freeze();
+		
 		for (ITransactionSynchronizationBeforeCommitTask beforeCommitTask : tasks.getBeforeCommitTasks()) {
 			try {
 				beforeCommitTask.run();
 			} catch (Exception e) {
 				// This exception MUST be thrown, as we want to rollback if anything goes wrong.
-				// We better ignore other tasks, as they will have no effect on the transaction.
+				// We better ignore other tasks, as they will have no effect on the current transaction.
 				throw new TransactionSynchronizationException("Error while executing a 'before commit' task.", e);
 			}
 		}
@@ -127,7 +168,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 				if (firstException == null) {
 					firstException = e;
 				} else {
-					LOGGER.error("Multiple exceptions while executing 'after commit' tasks. Only the first exception has been propagated.", e);
+					firstException.addSuppressed(e);
 				}
 			}
 		}
@@ -143,25 +184,38 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		if (tasks == null) {
 			return;
 		}
-		for (ITransactionSynchronizationTaskRollbackAware beforeCommitTask : Iterables.filter(tasks.getBeforeCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
+		for (ITransactionSynchronizationTaskRollbackAware beforeClearTask : tasks.getAlreadyExecutedBeforeClearTasks()) {
+			try {
+				beforeClearTask.afterRollback();
+			} catch (Exception e) {
+				if (firstException == null) {
+					firstException = e;
+				} else {
+					firstException.addSuppressed(e);
+				}
+			}
+		}
+		for (ITransactionSynchronizationTaskRollbackAware beforeCommitTask
+				: Iterables.filter(tasks.getBeforeCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
 			try {
 				((ITransactionSynchronizationTaskRollbackAware) beforeCommitTask).afterRollback();
 			} catch (Exception e) {
 				if (firstException == null) {
 					firstException = e;
 				} else {
-					LOGGER.error("Multiple exceptions while executing afterRollback() on synchronization tasks. Only the first exception has been propagated.", e);
+					firstException.addSuppressed(e);
 				}
 			}
 		}
-		for (ITransactionSynchronizationTaskRollbackAware afterCommitTask : Iterables.filter(tasks.getAfterCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
+		for (ITransactionSynchronizationTaskRollbackAware afterCommitTask
+				: Iterables.filter(tasks.getAfterCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
 			try {
 				((ITransactionSynchronizationTaskRollbackAware) afterCommitTask).afterRollback();
 			} catch (Exception e) {
 				if (firstException == null) {
 					firstException = e;
 				} else {
-					LOGGER.error("Multiple exceptions while executing afterRollback() on synchronization tasks. Only the first exception has been propagated.", e);
+					firstException.addSuppressed(e);
 				}
 			}
 		}

@@ -25,6 +25,14 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 		this.tasks = tasks;
 	}
 
+	/**
+	 * @return true, because this task requires its parameters to be still attached to the session when it executes.
+	 */
+	@Override
+	public boolean shouldRunBeforeClear() {
+		return true;
+	}
+
 	@Override
 	public void run() throws Exception {
 		final List<HistoryLogRunner<?>> runners = Lists.newArrayList();

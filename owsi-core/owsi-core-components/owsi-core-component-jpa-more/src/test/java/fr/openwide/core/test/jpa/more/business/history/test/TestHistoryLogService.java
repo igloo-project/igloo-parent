@@ -7,10 +7,12 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.when;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -49,6 +51,7 @@ import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryDiffer
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 import fr.openwide.core.jpa.more.junit.difference.TestHistoryDifferenceCollectionMatcher;
 import fr.openwide.core.jpa.more.junit.difference.TestHistoryDifferenceDescription;
+import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 import fr.openwide.core.test.jpa.more.business.history.model.TestHistoryDifference;
@@ -79,6 +82,9 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	
 	@Autowired
 	private IEntityService entityService;
+	
+	@Autowired
+	private ITransactionSynchronizationTaskManagerService transactionSynchronizationService;
 
 	private TransactionTemplate writeTransactionTemplate;
 	
@@ -210,8 +216,9 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 						return createExpectedDifferences();
 					}
 				});
-		
-		final Date before = new Date();
+
+		// The value must be truncated because timestamps do not have the same precision as java.util.Date
+		final Date before = DateUtils.truncate(new Date(), Calendar.SECOND);
 		
 		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@SuppressWarnings("unchecked")
@@ -223,6 +230,82 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 					historyLogService.logWithDifferences(TestHistoryEventType.EVENT1, objectReloaded,
 							TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
 							differenceGeneratorMock, historyDifferenceGeneratorMock);
+				} catch (ServiceException|SecurityServiceException e) {
+					throw new IllegalStateException(e);
+				}
+			}
+		});
+		
+		final Date after = new Date();
+
+		List<TestHistoryLog> logs = historyLogService.list();
+		
+		assertEquals(1, logs.size());
+		
+		TestHistoryLog log = logs.iterator().next();
+
+		assertNotNull(log.getId());
+		
+		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
+			}
+
+			@Override
+			protected boolean matchesSafely(Date item) {
+				return !item.before(before) && !item.after(after);
+			}
+		});
+		assertEquals(TestHistoryEventType.EVENT1, log.getEventType());
+		assertEquals(expectedObjectHistoryValue, log.getMainObject());
+		assertEquals(expectedSecondaryObjectHistoryValue, log.getObject1());
+		assertThat(log.getDifferences(), matchesExpectedDifferences());
+	}
+
+	@Test
+	public void logBeforeClear() throws ServiceException, SecurityServiceException {
+		final TestEntity object = new TestEntity("object");
+		testEntityService.create(object);
+		
+		final TestEntity secondaryObject = new TestEntity("secondaryObject");
+		testEntityService.create(secondaryObject);
+		
+		HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
+		HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+
+		entityService.flush();
+		entityService.clear();
+		
+		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
+						Matchers.<Supplier<TestHistoryDifference>>anyObject(), Matchers.<Difference<TestEntity>>anyObject()
+				))
+				.then(new Answer<List<TestHistoryDifference>>() {
+					@Override
+					public List<TestHistoryDifference> answer(InvocationOnMock invocation) throws Throwable {
+						return createExpectedDifferences();
+					}
+				});
+
+		// The value must be truncated because timestamps do not have the same precision as java.util.Date
+		final Date before = DateUtils.truncate(new Date(), Calendar.SECOND);
+		
+		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@SuppressWarnings("unchecked")
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				TestEntity objectReloaded = entityService.getEntity(object);
+				TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
+				try {
+					historyLogService.logWithDifferences(TestHistoryEventType.EVENT1, objectReloaded,
+							TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
+							differenceGeneratorMock, historyDifferenceGeneratorMock);
+					
+					// Simulate a batch treatment, that flushes and clears the session repeatedly
+					entityService.flush();
+					transactionSynchronizationService.beforeClear();
+					entityService.clear();
+					
 				} catch (ServiceException|SecurityServiceException e) {
 					throw new IllegalStateException(e);
 				}

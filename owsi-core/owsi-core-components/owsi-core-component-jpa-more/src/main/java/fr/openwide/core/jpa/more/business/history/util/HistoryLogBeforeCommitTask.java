@@ -43,6 +43,14 @@ public class HistoryLogBeforeCommitTask<T,
 		this.additionalInformation = additionalInformation;
 	}
 	
+	/**
+	 * @return true, because this task requires its parameters to be still attached to the session when it executes.
+	 */
+	@Override
+	public boolean shouldRunBeforeClear() {
+		return true;
+	}
+	
 	public T getMainObject() {
 		return mainObject;
 	}

@@ -10,7 +10,7 @@ import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
  * Caution: each method opens a new transaction on purpose.
  */
 public interface ITestTransactionSynchronizationTaskService {
-
+	
 	GenericEntityReference<Long, TestEntity> createInNewTransaction() throws ServiceException, SecurityServiceException;
 
 	void deleteInNewTransaction(Long testEntityId)

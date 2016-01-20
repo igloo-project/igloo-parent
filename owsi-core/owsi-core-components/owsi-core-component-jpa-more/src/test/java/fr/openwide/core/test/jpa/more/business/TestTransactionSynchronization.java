@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -25,6 +26,7 @@ import fr.openwide.core.jpa.more.util.transaction.service.TransactionSynchroniza
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
 import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestCreateAfterCommitTask;
+import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestUseEntityBeforeCommitOrClearTask;
 import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestDeleteOnRollbackTask;
 
 public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
@@ -142,5 +144,70 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		assertNull(testEntityService.getById(entityExpectedToBeDeletedId));
 		assertNotNull(testEntityService.getById(entityNOTExpectedToBeDeletedId));
+	}
+
+	@Test
+	public void testBeforeCommitOrClearTask() throws ServiceException, SecurityServiceException {
+		TestEntity entity = new TestEntity("entity");
+		testEntityService.create(entity);
+		final Long entityId = entity.getId();
+		
+		final MutableObject<TestUseEntityBeforeCommitOrClearTask> taskReference = new MutableObject<>();
+		
+		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				TestEntity reloadedEntity = testEntityService.getById(entityId);
+
+				// This task will fail if executed when the entity is not in the session anymore
+				TestUseEntityBeforeCommitOrClearTask task = new TestUseEntityBeforeCommitOrClearTask(reloadedEntity);
+				taskReference.setValue(task);
+				
+				transactionSynchronizationTaskManagerService.push(task);
+				
+				// Should trigger the task's execution
+				transactionSynchronizationTaskManagerService.beforeClear();
+				
+				entityManagerClear();
+			}
+		});
+		
+		entityManagerClear();
+		
+		assertEquals(1, taskReference.getValue().getExecutionCount());
+	}
+
+	@Test
+	public void testBeforeCommitOrClearTaskWithRollback() throws ServiceException, SecurityServiceException {
+		TestEntity entity = new TestEntity("entity");
+		testEntityService.create(entity);
+		final Long entityId = entity.getId();
+		
+		final MutableObject<TestUseEntityBeforeCommitOrClearTask> taskReference = new MutableObject<>();
+		
+		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				TestEntity reloadedEntity = testEntityService.getById(entityId);
+
+				// This task will fail if executed when the entity is not in the session anymore
+				TestUseEntityBeforeCommitOrClearTask task = new TestUseEntityBeforeCommitOrClearTask(reloadedEntity);
+				taskReference.setValue(task);
+				
+				transactionSynchronizationTaskManagerService.push(task);
+				
+				// Should trigger the task's execution
+				transactionSynchronizationTaskManagerService.beforeClear();
+				
+				entityManagerClear();
+				
+				status.setRollbackOnly();
+			}
+		});
+		
+		entityManagerClear();
+		
+		assertEquals(1, taskReference.getValue().getExecutionCount());
+		assertEquals(1, taskReference.getValue().getRollbackCount());
 	}
 }
