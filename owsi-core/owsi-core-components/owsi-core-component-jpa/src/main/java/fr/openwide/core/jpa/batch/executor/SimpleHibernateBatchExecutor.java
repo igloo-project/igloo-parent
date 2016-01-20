@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,13 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.jpa.batch.runnable.IBatchRunnable;
 import fr.openwide.core.jpa.batch.runnable.Writeability;
+import fr.openwide.core.jpa.batch.util.IBeforeClearListener;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -30,6 +33,9 @@ import fr.openwide.core.jpa.query.Queries;
 public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHibernateBatchExecutor> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHibernateBatchExecutor.class);
+	
+	@Autowired(required = false)
+	private Collection<IBeforeClearListener> clearListeners = ImmutableList.of();
 
 	private boolean flushToIndexes;
 	
@@ -132,9 +138,12 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 						
 						if (!isReadOnly) {
 							entityService.flush();
-							if (flushToIndexes) {
-								hibernateSearchService.flushToIndexes();
-							}
+						}
+						for (IBeforeClearListener beforeClearListener : clearListeners) {
+							beforeClearListener.beforeClear();
+						}
+						if (!isReadOnly && flushToIndexes) {
+							hibernateSearchService.flushToIndexes();
 						}
 						entityService.clear();
 						return null;

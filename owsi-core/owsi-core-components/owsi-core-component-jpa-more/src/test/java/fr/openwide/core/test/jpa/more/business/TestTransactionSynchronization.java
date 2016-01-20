@@ -18,6 +18,11 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
+import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
+import fr.openwide.core.jpa.batch.runnable.ReadWriteBatchRunnable;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -26,8 +31,8 @@ import fr.openwide.core.jpa.more.util.transaction.service.TransactionSynchroniza
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
 import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestCreateAfterCommitTask;
-import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestUseEntityBeforeCommitOrClearTask;
 import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestDeleteOnRollbackTask;
+import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestUseEntityBeforeCommitOrClearTask;
 
 public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
@@ -39,6 +44,9 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private ITestEntityService testEntityService;
+	
+	@Autowired
+	private BatchExecutorCreator batchExecutorCreator;
 
 	private TransactionTemplate writeTransactionTemplate;
 
@@ -209,5 +217,38 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		assertEquals(1, taskReference.getValue().getExecutionCount());
 		assertEquals(1, taskReference.getValue().getRollbackCount());
+	}
+
+	@Test
+	public void testBeforeCommitOrClearTaskBatchExecutor() throws ServiceException, SecurityServiceException {
+		TestEntity entity1 = new TestEntity("entity1");
+		testEntityService.create(entity1);
+		final Long entityId1 = entity1.getId();
+		TestEntity entity2 = new TestEntity("entity2");
+		testEntityService.create(entity2);
+		final Long entityId2 = entity2.getId();
+		
+		final Collection<TestUseEntityBeforeCommitOrClearTask> tasks = Lists.newArrayList();
+		
+		batchExecutorCreator.newSimpleHibernateBatchExecutor().batchSize(1)
+				.run(TestEntity.class, ImmutableList.of(entityId1, entityId2), new ReadWriteBatchRunnable<TestEntity>() {
+					@Override
+					protected void executeUnit(TestEntity unit) {
+						// This task will fail if executed when the entity is not in the session anymore
+						TestUseEntityBeforeCommitOrClearTask task = new TestUseEntityBeforeCommitOrClearTask(unit);
+						tasks.add(task);
+						
+						transactionSynchronizationTaskManagerService.push(task);
+						
+						// The executor should trigger the task's execution just before each clear
+					}
+				});
+		
+		entityManagerClear();
+		
+		assertEquals(2, tasks.size());
+		for (TestUseEntityBeforeCommitOrClearTask task : tasks) {
+			assertEquals(1, task.getExecutionCount());
+		}
 	}
 }
