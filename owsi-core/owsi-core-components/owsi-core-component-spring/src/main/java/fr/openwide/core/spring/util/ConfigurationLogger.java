@@ -75,15 +75,18 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 				IConfigurablePropertyService propertyService = (IConfigurablePropertyService) context.getBean(propertyServiceName);
 				
 				List<String> loggedProperties = Lists.newArrayList();
+				@SuppressWarnings("unchecked")
+				Iterable<PropertyId<?>> registeredPropertyIds =
+						(Iterable<PropertyId<?>>) (Object) Iterables.filter(propertyService.listRegistered(), PropertyId.class);
 				
 				/* On logge les informations qu'on a configurées dans le contexte Spring */
 				for (String propertyIdKey : propertyIdsKeysForInfoLogLevel) {
-					if (loggedProperties.contains(propertyServiceName)) {
+					if (loggedProperties.contains(propertyIdKey)) {
 						continue;
 					}
 					
-					for (PropertyId<?> propertyId : Iterables.filter(propertyService.listRegistered(), PropertyId.class)) {
-						if (propertyId.getKey().equals(propertyIdKey) && !loggedProperties.contains(propertyIdKey)) {
+					for (PropertyId<?> propertyId : registeredPropertyIds) {
+						if (propertyId.getKey().equals(propertyIdKey)) {
 							logPropertyAsInfo(propertyIdKey, propertyService.get(propertyId));
 							loggedProperties.add(propertyIdKey);
 							break;
@@ -93,11 +96,9 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 				
 				/* Si jamais on est en mode TRACE, on logge aussi les autres propriétés */
 				if (LOGGER.isTraceEnabled()) {
-					for (PropertyId<?> propertyId : Iterables.filter(propertyService.listRegistered(), PropertyId.class)) {
-						if (!loggedProperties.contains(propertyId.getKey())) {
+					for (PropertyId<?> propertyId : registeredPropertyIds) {
+						if (!propertyIdsKeysForInfoLogLevel.contains(propertyId.getKey())) {
 							logPropertyAsTrace(propertyId.getKey(), propertyService.get(propertyId));
-							loggedProperties.add(propertyId.getKey());
-							break;
 						}
 					}
 				}
