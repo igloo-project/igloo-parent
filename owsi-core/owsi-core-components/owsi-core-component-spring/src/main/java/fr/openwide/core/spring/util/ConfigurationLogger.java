@@ -9,9 +9,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.spring.property.model.PropertyId;
+import fr.openwide.core.spring.property.service.IConfigurablePropertyService;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 /**
@@ -59,7 +61,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			LOGGER.info("Configuration logging");
 			
 			ApplicationContext context = refresh.getApplicationContext();
-			String[] propertyServiceNames = context.getBeanNamesForType(IPropertyService.class);
+			String[] propertyServiceNames = context.getBeanNamesForType(IConfigurablePropertyService.class);
 			
 			if (propertyServiceNames.length > 0) {
 				String propertyServiceName = propertyServiceNames[0];
@@ -69,19 +71,22 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 				}
 				
 				LOGGER.info("Configuration found, start logging");
-				
-				IPropertyService propertyService = (IPropertyService) context.getBean(propertyServiceName);
+
+				IConfigurablePropertyService propertyService = (IConfigurablePropertyService) context.getBean(propertyServiceName);
 				
 				List<String> loggedProperties = Lists.newArrayList();
+				@SuppressWarnings("unchecked")
+				Iterable<PropertyId<?>> registeredPropertyIds =
+						(Iterable<PropertyId<?>>) (Object) Iterables.filter(propertyService.listRegistered(), PropertyId.class);
 				
 				/* On logge les informations qu'on a configurées dans le contexte Spring */
 				for (String propertyIdKey : propertyIdsKeysForInfoLogLevel) {
-					if (loggedProperties.contains(propertyServiceName)) {
+					if (loggedProperties.contains(propertyIdKey)) {
 						continue;
 					}
 					
-					for (PropertyId<?> propertyId : propertyService.listRegisteredPropertyIds()) {
-						if (propertyId.getKey().equals(propertyIdKey) && !loggedProperties.contains(propertyIdKey)) {
+					for (PropertyId<?> propertyId : registeredPropertyIds) {
+						if (propertyId.getKey().equals(propertyIdKey)) {
 							logPropertyAsInfo(propertyIdKey, propertyService.get(propertyId));
 							loggedProperties.add(propertyIdKey);
 							break;
@@ -91,16 +96,14 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 				
 				/* Si jamais on est en mode TRACE, on logge aussi les autres propriétés */
 				if (LOGGER.isTraceEnabled()) {
-					for (PropertyId<?> propertyId : propertyService.listRegisteredPropertyIds()) {
-						if (!loggedProperties.contains(propertyId.getKey())) {
+					for (PropertyId<?> propertyId : registeredPropertyIds) {
+						if (!propertyIdsKeysForInfoLogLevel.contains(propertyId.getKey())) {
 							logPropertyAsTrace(propertyId.getKey(), propertyService.get(propertyId));
-							loggedProperties.add(propertyId.getKey());
-							break;
 						}
 					}
 				}
 			} else {
-				LOGGER.warn(String.format("No %1$s found. Unable to log the configuration.", IPropertyService.class.getSimpleName()));
+				LOGGER.warn(String.format("No %1$s found. Unable to log the configuration.", IConfigurablePropertyService.class.getSimpleName()));
 			}
 			
 			LOGGER.info("Configuration logging end");

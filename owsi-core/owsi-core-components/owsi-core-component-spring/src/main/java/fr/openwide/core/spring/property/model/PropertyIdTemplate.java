@@ -11,15 +11,29 @@ import com.google.common.base.Preconditions;
 /**
  * Object to build a {@link PropertyId} on runtime to deal with computed key.
  */
-public abstract class PropertyIdTemplate<T, P extends PropertyId<T>> implements PropertyRegistryKey<T> {
+public abstract class PropertyIdTemplate<T, P extends PropertyId<T>> implements IPropertyRegistryKey<T> {
 
 	private static final long serialVersionUID = 6470015401685025239L;
+	
+	private final IPropertyRegistryKeyDeclaration declaration;
 
 	private final String format;
 
-	public PropertyIdTemplate(String format) {
+	/**
+	 * This constructor is package-protected.
+	 * Use {@link AbstractPropertyIds#immutableTemplate(String)} or {@link AbstractPropertyIds#mutableTemplate(String)}
+	 * for building a property ID template.
+	 */
+	public PropertyIdTemplate(IPropertyRegistryKeyDeclaration declaration, String format) {
+		Preconditions.checkNotNull(declaration);
 		Preconditions.checkNotNull(format);
+		this.declaration = declaration;
 		this.format = format;
+	}
+	
+	@Override
+	public IPropertyRegistryKeyDeclaration getDeclaration() {
+		return declaration;
 	}
 
 	public String getFormat() {
@@ -59,7 +73,8 @@ public abstract class PropertyIdTemplate<T, P extends PropertyId<T>> implements 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append(format)
+				.append("declared by", declaration == null ? null : declaration.getDeclaringClass())
+				.append("format", format)
 				.build();
 	}
 

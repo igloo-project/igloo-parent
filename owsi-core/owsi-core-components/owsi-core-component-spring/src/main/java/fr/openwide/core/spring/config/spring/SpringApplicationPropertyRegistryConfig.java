@@ -64,8 +64,8 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 				}
 		);
 		
-		registry.registerDirectoryFile(TMP_PATH);
-		registry.registerDirectoryFile(TMP_EXPORT_EXCEL_PATH);
+		registry.registerWriteableDirectoryFile(TMP_PATH);
+		registry.registerWriteableDirectoryFile(TMP_EXPORT_EXCEL_PATH);
 		
 		registry.register(AVAILABLE_LOCALES, new Function<String, Set<Locale>>() {
 			@Override

@@ -1,15 +1,23 @@
 package fr.openwide.core.spring.property.model;
 
-public class ImmutablePropertyId<T> extends PropertyId<T> implements ImmutablePropertyRegistryKey<T> {
+public final class ImmutablePropertyId<T> extends PropertyId<T> implements IImmutablePropertyRegistryKey<T> {
 
 	private static final long serialVersionUID = -582080164746829767L;
 
-	public ImmutablePropertyId(String key) {
-		super(key);
+	/**
+	 * This constructor is package-protected.
+	 * Use {@link AbstractPropertyIds#immutable(String)} for building this type of property ID.
+	 */
+	/*package*/ ImmutablePropertyId(IPropertyRegistryKeyDeclaration declaration, String key) {
+		super(declaration, key);
 	}
 
-	public ImmutablePropertyId(String key, ImmutablePropertyIdTemplate<T> propertyTemplateId) {
-		super(key, propertyTemplateId);
+	/**
+	 * This constructor is package-protected.
+	 * Use {@link ImmutablePropertyIdTemplate#create(Object...)} for building this type of property ID from a template.
+	 */
+	/*package*/ ImmutablePropertyId(ImmutablePropertyIdTemplate<T> propertyIdTemplate, String key) {
+		super(propertyIdTemplate, key);
 	}
 
 }

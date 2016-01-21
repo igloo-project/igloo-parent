@@ -1,16 +1,21 @@
 package fr.openwide.core.spring.property.model;
 
-public class MutablePropertyIdTemplate<T> extends PropertyIdTemplate<T, MutablePropertyId<T>> implements MutablePropertyRegistryKey<T> {
+public final class MutablePropertyIdTemplate<T> extends PropertyIdTemplate<T, MutablePropertyId<T>>
+		implements IMutablePropertyRegistryKey<T> {
 
 	private static final long serialVersionUID = -4239136517475520257L;
 
-	public MutablePropertyIdTemplate(String format) {
-		super(format);
+	/**
+	 * This constructor is package-protected.
+	 * Use {@link AbstractPropertyIds#mutableTemplate(String)} for building this type of property ID template.
+	 */
+	/*package*/ MutablePropertyIdTemplate(IPropertyRegistryKeyDeclaration declaration, String format) {
+		super(declaration, format);
 	}
 
 	@Override
 	protected MutablePropertyId<T> create(String key) {
-		return new MutablePropertyId<T>(key, this);
+		return new MutablePropertyId<T>(this, key);
 	}
 
 }

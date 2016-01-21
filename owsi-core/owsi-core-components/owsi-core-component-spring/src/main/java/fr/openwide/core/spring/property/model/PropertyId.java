@@ -6,22 +6,45 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.base.Preconditions;
 
-public abstract class PropertyId<T> implements PropertyRegistryKey<T> {
+public abstract class PropertyId<T> implements IPropertyRegistryKey<T> {
 
 	private static final long serialVersionUID = 995641080772195895L;
+	
+	private final IPropertyRegistryKeyDeclaration declaration;
 
 	private final String key;
 
 	private final PropertyIdTemplate<T, ?> template;
 
-	protected PropertyId(String key) {
-		this(key, null);
+	/**
+	 * This constructor is package-protected.
+	 * Use {@link AbstractPropertyIds#immutable(String)} or {@link AbstractPropertyIds#mutable(String)} for building
+	 * a property ID.
+	 */
+	/*package*/ PropertyId(IPropertyRegistryKeyDeclaration declaration, String key) {
+		Preconditions.checkNotNull(declaration);
+		Preconditions.checkNotNull(key);
+		this.declaration = declaration;
+		this.key = key;
+		this.template = null;
 	}
 
-	protected PropertyId(String key, PropertyIdTemplate<T, ?> template) {
+	/**
+	 * This constructor is package-protected.
+	 * Use {@link ImmutablePropertyIdTemplate#create(Object...)} or {@link MutablePropertyIdTemplate#create(Object...)}
+	 * for building a property ID from a template.
+	 */
+	/*package*/ PropertyId(PropertyIdTemplate<T, ?> template, String key) {
+		Preconditions.checkNotNull(template);
 		Preconditions.checkNotNull(key);
+		this.declaration = null;
 		this.key = key;
 		this.template = template;
+	}
+	
+	@Override
+	public IPropertyRegistryKeyDeclaration getDeclaration() {
+		return declaration;
 	}
 
 	public String getKey() {
@@ -63,9 +86,9 @@ public abstract class PropertyId<T> implements PropertyRegistryKey<T> {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append(getClass())
-				.append(key)
-				.append(template)
+				.append("declared by", declaration == null ? null : declaration.getDeclaringClass())
+				.append("template", template)
+				.append("key", key)
 				.build();
 	}
 
