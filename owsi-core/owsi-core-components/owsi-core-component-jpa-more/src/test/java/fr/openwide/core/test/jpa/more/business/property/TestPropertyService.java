@@ -1,19 +1,30 @@
 package fr.openwide.core.test.jpa.more.business.property;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.config.spring.event.PropertyRegistryInitEvent;
 import fr.openwide.core.spring.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
+import fr.openwide.core.spring.property.exception.PropertyServiceDuplicateRegistrationException;
+import fr.openwide.core.spring.property.exception.PropertyServiceIncompleteRegistrationException;
+import fr.openwide.core.spring.property.model.AbstractPropertyIds;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
 import fr.openwide.core.spring.property.model.MutablePropertyId;
 import fr.openwide.core.spring.property.service.PropertyServiceImpl;
@@ -31,62 +42,149 @@ public class TestPropertyService {
 
 	@Mock
 	private TransactionTemplate writeTransactionTemplate;
+	
+	@Mock
+	private ApplicationEventPublisher publisher;
 
 	@InjectMocks
 	private PropertyServiceImpl propertyService;
 
 	@Rule
 	public MockitoRule rule = MockitoJUnit.rule();
-
+	
+	private static class PropertyIds extends AbstractPropertyIds {
+		static final MutablePropertyId<String> MUTABLE_STRING = mutable("mutable.property.string");
+		static final MutablePropertyId<Long> MUTABLE_LONG = mutable("mutable.property.long");
+		static final MutablePropertyId<String> MUTABLE_STRING_WITH_DEFAULT = mutable("mutable.property.string.default");
+	}
+	
+	private static class ImmutablePropertyIds extends AbstractPropertyIds {
+		static final ImmutablePropertyId<String> IMMUTABLE_STRING = immutable("immutable.property.string");
+		static final ImmutablePropertyId<Long> IMMUTABLE_LONG = immutable("immutable.property.long");
+	}
+	
+	private void initPropertyService(Answer<Void> registrationCallback) {
+		propertyService.setApplicationEventPublisher(publisher);
+		doAnswer(registrationCallback).when(publisher).publishEvent(Matchers.any(PropertyRegistryInitEvent.class));
+		propertyService.init();
+	}
+	
 	@Test
-	public void mutablePropertyMock() throws ServiceException, SecurityServiceException {
-		MutablePropertyId<String> mutablePropertyString = new MutablePropertyId<>("mutable.property.string");
-		MutablePropertyId<Long> mutablePropertyLong = new MutablePropertyId<>("mutable.property.long");
-		MutablePropertyId<String> mutablePropertyStringDefault = new MutablePropertyId<>("mutable.property.string.default");
+	public void mutablePropertyGet() throws ServiceException, SecurityServiceException {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(PropertyIds.MUTABLE_STRING);
+				propertyService.registerLong(PropertyIds.MUTABLE_LONG);
+				propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
+				return null;
+			}
+		});
 		
-		propertyService.registerString(mutablePropertyString);
-		propertyService.registerLong(mutablePropertyLong);
-		propertyService.registerString(mutablePropertyStringDefault, "MyDefaultValue");
+		when(mutablePropertyDao.getInTransaction("mutable.property.string")).thenReturn("MyValue");
+		when(mutablePropertyDao.getInTransaction("mutable.property.long")).thenReturn("1");
+		when(mutablePropertyDao.getInTransaction("mutable.property.string.default")).thenReturn("MyDefaultValue");
 		
-		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.string")).thenReturn("MyValue");
-		Assert.assertEquals("MyValue", propertyService.get(mutablePropertyString));
-		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.long")).thenReturn("1");
-		Assert.assertEquals((Long) 1L, propertyService.get(mutablePropertyLong));
-		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.string.default")).thenReturn("MyDefaultValue");
-		Assert.assertEquals("MyDefaultValue", propertyService.get(mutablePropertyStringDefault));
-		
-		propertyService.set(mutablePropertyString, "MyValue2");
-		propertyService.set(mutablePropertyLong, 2L);
-		propertyService.set(mutablePropertyStringDefault, "MyValue3");
+		assertEquals("MyValue", propertyService.get(PropertyIds.MUTABLE_STRING));
+		assertEquals((Long) 1L, propertyService.get(PropertyIds.MUTABLE_LONG));
+		assertEquals("MyDefaultValue", propertyService.get(PropertyIds.MUTABLE_STRING_WITH_DEFAULT));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
+	public void mutablePropertySet() throws ServiceException, SecurityServiceException {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(PropertyIds.MUTABLE_STRING);
+				propertyService.registerLong(PropertyIds.MUTABLE_LONG);
+				propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
+				return null;
+			}
+		});
+		
+		propertyService.set(PropertyIds.MUTABLE_STRING, "MyValue2");
+		propertyService.set(PropertyIds.MUTABLE_LONG, 2L);
+		propertyService.set(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyValue3");
+		
+		verify(mutablePropertyDao).setInTransaction("mutable.property.string", "MyValue2");
+		verify(mutablePropertyDao).setInTransaction("mutable.property.long", "2");
+		verify(mutablePropertyDao).setInTransaction("mutable.property.string.default", "MyValue3");
+	}
+
+	@Test(expected = PropertyServiceIncompleteRegistrationException.class)
+	public void partialRegistration() {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(PropertyIds.MUTABLE_STRING);
+				propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
+				// Do not register the last property
+				return null;
+			}
+		});
+	}
+
+	@Test(expected = PropertyServiceIncompleteRegistrationException.class)
 	public void mutablePropertyUnregistered() {
-		MutablePropertyId<String> mutablePropertyUnregisteredString = new MutablePropertyId<>("mutable.property.unregistered.string");
-		Mockito.when(mutablePropertyDao.getInTransaction("mutable.property.unregistered.string")).thenReturn("MyValue");
-		propertyService.get(mutablePropertyUnregisteredString);
+		// Do not register any property
+		
+		when(mutablePropertyDao.getInTransaction("mutable.property.string")).thenReturn("MyValue");
+		
+		propertyService.get(PropertyIds.MUTABLE_STRING);
 	}
 
 	@Test
-	public void immutablePropertyMock() {
-		ImmutablePropertyId<String> immutablePropertyString = new ImmutablePropertyId<>("immutable.property.string");
-		ImmutablePropertyId<Long> immutablePropertyLong = new ImmutablePropertyId<>("immutable.property.long");
+	public void immutablePropertyGet() {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
+				propertyService.registerLong(ImmutablePropertyIds.IMMUTABLE_LONG);
+				return null;
+			}
+		});
+		when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
+		when(immutablePropertyDao.get("immutable.property.long")).thenReturn("1");
 		
-		Mockito.when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
-		Mockito.when(immutablePropertyDao.get("immutable.property.long")).thenReturn("1");
-		
-		propertyService.registerString(immutablePropertyString);
-		propertyService.registerLong(immutablePropertyLong);
-		
-		Assert.assertEquals("MyValue", propertyService.get(immutablePropertyString));
-		Assert.assertEquals((Long) 1L, propertyService.get(immutablePropertyLong));
+		assertEquals("MyValue", propertyService.get(ImmutablePropertyIds.IMMUTABLE_STRING));
+		assertEquals((Long) 1L, propertyService.get(ImmutablePropertyIds.IMMUTABLE_LONG));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = PropertyServiceIncompleteRegistrationException.class)
 	public void immutablePropertyUnregistered() {
-		ImmutablePropertyId<String> immutablePropertyUnregisteredString = new ImmutablePropertyId<>("immutable.property.unregistered.string");
-		Mockito.when(immutablePropertyDao.get("immutable.property.unregistered.string")).thenReturn("MyValue");
-		propertyService.get(immutablePropertyUnregisteredString);
+		// Do not register any property
+		
+		when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
+		
+		propertyService.get(ImmutablePropertyIds.IMMUTABLE_STRING);
+	}
+	
+	private static class DuplicatePropertyIds extends AbstractPropertyIds {
+		static final MutablePropertyId<String> MUTABLE_STRING = mutable(ImmutablePropertyIds.IMMUTABLE_STRING.getKey());
+		static final ImmutablePropertyId<String> IMMUTABLE_STRING = immutable(ImmutablePropertyIds.IMMUTABLE_STRING.getKey());
+	}
+
+	@Test(expected = PropertyServiceDuplicateRegistrationException.class)
+	public void propertyAlreadyRegistered() {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
+				propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
+				return null;
+			}
+		});
+	}
+	
+	public void propertiesMutableImmutableWithSameKey() {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
+				propertyService.registerString(DuplicatePropertyIds.MUTABLE_STRING);
+				return null;
+			}
+		});
 	}
 
 }

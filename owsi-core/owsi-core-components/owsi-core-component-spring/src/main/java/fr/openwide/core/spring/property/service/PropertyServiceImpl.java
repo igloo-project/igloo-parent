@@ -26,9 +26,12 @@ import com.google.common.base.Enums;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
@@ -48,12 +51,16 @@ import fr.openwide.core.spring.config.spring.event.PropertyRegistryInitEvent;
 import fr.openwide.core.spring.property.SpringPropertyIds;
 import fr.openwide.core.spring.property.dao.IImmutablePropertyDao;
 import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
+import fr.openwide.core.spring.property.exception.PropertyServiceDuplicateRegistrationException;
+import fr.openwide.core.spring.property.exception.PropertyServiceIncompleteRegistrationException;
+import fr.openwide.core.spring.property.model.IImmutablePropertyRegistryKey;
+import fr.openwide.core.spring.property.model.IMutablePropertyRegistryKey;
+import fr.openwide.core.spring.property.model.IPropertyRegistryKey;
+import fr.openwide.core.spring.property.model.IPropertyRegistryKeyDeclaration;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
-import fr.openwide.core.spring.property.model.ImmutablePropertyRegistryKey;
 import fr.openwide.core.spring.property.model.MutablePropertyId;
-import fr.openwide.core.spring.property.model.MutablePropertyRegistryKey;
 import fr.openwide.core.spring.property.model.PropertyId;
-import fr.openwide.core.spring.property.model.PropertyRegistryKey;
+import fr.openwide.core.spring.property.model.PropertyIdTemplate;
 
 /**
  * Use this service to retrieve registered application properties.
@@ -65,7 +72,8 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
-	private final Map<PropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap = Maps.newHashMap();
+	private final Map<IPropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap =
+			Maps.newHashMap();
 
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
@@ -76,8 +84,37 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	@PostConstruct
-	public void init() {
+	public void init() throws PropertyServiceIncompleteRegistrationException {
 		applicationEventPublisher.publishEvent(new PropertyRegistryInitEvent(this));
+		checkNoIncompleteRegistration();
+	}
+	
+	private void checkNoIncompleteRegistration() throws PropertyServiceIncompleteRegistrationException {
+		SetMultimap<IPropertyRegistryKeyDeclaration, IPropertyRegistryKey<?>> declarationsToRegisteredKeys = LinkedHashMultimap.create();
+		for (IPropertyRegistryKey<?> key : propertyInformationMap.keySet()) {
+			declarationsToRegisteredKeys.put(key.getDeclaration(), key);
+		}
+
+		SetMultimap<Class<?>, IPropertyRegistryKey<?>> declaringClassToMissingKeys = LinkedHashMultimap.create();
+		for (Map.Entry<IPropertyRegistryKeyDeclaration, Set<IPropertyRegistryKey<?>>> declarationAndRegisteredKeys
+				: Multimaps.asMap(declarationsToRegisteredKeys).entrySet()) {
+			IPropertyRegistryKeyDeclaration declaration = declarationAndRegisteredKeys.getKey();
+			Set<IPropertyRegistryKey<?>> registeredKeys = declarationAndRegisteredKeys.getValue();
+			declaringClassToMissingKeys.putAll(
+					declaration.getDeclaringClass(),
+					Sets.difference(declaration.getDeclaredKeys(), registeredKeys)
+			);
+		}
+		
+		if (!declaringClassToMissingKeys.isEmpty()) {
+			throw new PropertyServiceIncompleteRegistrationException(
+					String.format(
+							"The registration of property keys is incomplete."
+							+ " Here are the missing keys for each declaring class: %s",
+							declaringClassToMissingKeys
+					)
+			);
+		}
 	}
 
 	@Override
@@ -86,32 +123,32 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	@Override
-	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter) {
+	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter) {
 		register(propertyId, converter, (T) null);
 	}
 
 	@Override
-	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue) {
+	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue) {
 		register(propertyId, converter, Suppliers2.constant(defaultValue));
 	}
 
 	@Override
-	public <T> void register(MutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier<? extends T> defaultValueSupplier) {
+	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier<? extends T> defaultValueSupplier) {
 		registerProperty(propertyId, converter, defaultValueSupplier);
 	}
 
 	@Override
-	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function) {
+	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function) {
 		register(propertyId, function, (T) null);
 	}
 
 	@Override
-	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue) {
+	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue) {
 		register(propertyId, function, Suppliers2.constant(defaultValue));
 	}
 
 	@Override
-	public <T> void register(ImmutablePropertyRegistryKey<T> propertyId, final Function<String, ? extends T> function, Supplier<? extends T> defaultValueSupplier) {
+	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, final Function<String, ? extends T> function, Supplier<? extends T> defaultValueSupplier) {
 		registerProperty(propertyId, new Converter<String, T>() {
 			@Override
 			protected T doForward(String a) {
@@ -124,158 +161,162 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 		}, defaultValueSupplier);
 	}
 
-	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter) {
+	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter) {
 		registerProperty(propertyId, converter, (T) null);
 	}
 
-	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, T defaultValue) {
+	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, T defaultValue) {
 		registerProperty(propertyId, converter, Suppliers2.constant(defaultValue));
 	}
 
-	protected <T> void registerProperty(PropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier) {
+	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier) {
 		Preconditions.checkNotNull(propertyId);
 		Preconditions.checkNotNull(converter);
 		Preconditions.checkNotNull(defaultValueSupplier);
 		
-		if (propertyInformationMap.get(propertyId) != null) {
-			throw new IllegalStateException(String.format("Property '%1s' already registered.", propertyId));
+		if (propertyInformationMap.containsKey(propertyId)) {
+			throw new PropertyServiceDuplicateRegistrationException(String.format(
+					"Property '%1s' has already been registered."
+					+ " There might be multiple property IDs in your application that use the same key.",
+					propertyId
+			));
 		}
 		
 		propertyInformationMap.put(propertyId, Pair.with(converter, defaultValueSupplier));
 	}
 
 	@Override
-	public void registerString(PropertyRegistryKey<String> propertyId) {
+	public void registerString(IPropertyRegistryKey<String> propertyId) {
 		registerString(propertyId, null);
 	}
 
 	@Override
-	public void registerString(PropertyRegistryKey<String> propertyId, String defaultValue) {
+	public void registerString(IPropertyRegistryKey<String> propertyId, String defaultValue) {
 		registerProperty(propertyId, Converter.<String>identity(), defaultValue);
 	}
 
 	@Override
-	public void registerLong(PropertyRegistryKey<Long> propertyId) {
+	public void registerLong(IPropertyRegistryKey<Long> propertyId) {
 		registerLong(propertyId, null);
 	}
 
 	@Override
-	public void registerLong(PropertyRegistryKey<Long> propertyId, Long defaultValue) {
+	public void registerLong(IPropertyRegistryKey<Long> propertyId, Long defaultValue) {
 		registerProperty(propertyId, Longs.stringConverter(), defaultValue);
 	}
 
 	@Override
-	public void registerInteger(PropertyRegistryKey<Integer> propertyId) {
+	public void registerInteger(IPropertyRegistryKey<Integer> propertyId) {
 		registerInteger(propertyId, null);
 	}
 
 	@Override
-	public void registerInteger(PropertyRegistryKey<Integer> propertyId, Integer defaultValue) {
+	public void registerInteger(IPropertyRegistryKey<Integer> propertyId, Integer defaultValue) {
 		registerProperty(propertyId, Ints.stringConverter(), defaultValue);
 	}
 
 	@Override
-	public void registerFloat(PropertyRegistryKey<Float> propertyId) {
+	public void registerFloat(IPropertyRegistryKey<Float> propertyId) {
 		registerFloat(propertyId, null);
 	}
 
 	@Override
-	public void registerFloat(PropertyRegistryKey<Float> propertyId, Float defaultValue) {
+	public void registerFloat(IPropertyRegistryKey<Float> propertyId, Float defaultValue) {
 		registerProperty(propertyId, Floats.stringConverter(), defaultValue);
 	}
 
 	@Override
-	public void registerDouble(PropertyRegistryKey<Double> propertyId) {
+	public void registerDouble(IPropertyRegistryKey<Double> propertyId) {
 		registerDouble(propertyId, null);
 	}
 
 	@Override
-	public void registerDouble(PropertyRegistryKey<Double> propertyId, Double defaultValue) {
+	public void registerDouble(IPropertyRegistryKey<Double> propertyId, Double defaultValue) {
 		registerProperty(propertyId, Doubles.stringConverter(), defaultValue);
 	}
 
 	@Override
-	public void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId) {
+	public void registerBigDecimal(IPropertyRegistryKey<BigDecimal> propertyId) {
 		registerBigDecimal(propertyId, null);
 	}
 
 	@Override
-	public void registerBigDecimal(PropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue) {
+	public void registerBigDecimal(IPropertyRegistryKey<BigDecimal> propertyId, BigDecimal defaultValue) {
 		registerProperty(propertyId, StringBigDecimalConverter.get(), defaultValue);
 	}
 
 	@Override
-	public void registerBoolean(PropertyRegistryKey<Boolean> propertyId) {
+	public void registerBoolean(IPropertyRegistryKey<Boolean> propertyId) {
 		registerBoolean(propertyId, null);
 	}
 
 	@Override
-	public void registerBoolean(PropertyRegistryKey<Boolean> propertyId, Boolean defaultValue) {
+	public void registerBoolean(IPropertyRegistryKey<Boolean> propertyId, Boolean defaultValue) {
 		registerProperty(propertyId, StringBooleanConverter.get(), defaultValue);
 	}
 
 	@Override
-	public <E extends Enum<E>> void registerEnum(PropertyRegistryKey<E> propertyId, Class<E> clazz) {
+	public <E extends Enum<E>> void registerEnum(IPropertyRegistryKey<E> propertyId, Class<E> clazz) {
 		registerEnum(propertyId, clazz, null);
 	}
 
 	@Override
-	public <E extends Enum<E>> void registerEnum(PropertyRegistryKey<E> propertyId, Class<E> clazz, E defaultValue) {
+	public <E extends Enum<E>> void registerEnum(IPropertyRegistryKey<E> propertyId, Class<E> clazz, E defaultValue) {
 		registerProperty(propertyId, Enums.stringConverter(clazz), defaultValue);
 	}
 
 	@Override
-	public void registerDate(PropertyRegistryKey<Date> propertyId) {
+	public void registerDate(IPropertyRegistryKey<Date> propertyId) {
 		registerDate(propertyId, (Date) null);
 	}
 
 	@Override
-	public void registerDate(PropertyRegistryKey<Date> propertyId, String defaultValue) {
+	public void registerDate(IPropertyRegistryKey<Date> propertyId, String defaultValue) {
 		registerDate(propertyId, StringDateConverter.get().convert(defaultValue));
 	}
 
 	@Override
-	public void registerDate(PropertyRegistryKey<Date> propertyId, Date defaultValue) {
+	public void registerDate(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
 		registerProperty(propertyId, StringDateConverter.get(), defaultValue);
 	}
 
 	@Override
-	public void registerDateTime(PropertyRegistryKey<Date> propertyId) {
+	public void registerDateTime(IPropertyRegistryKey<Date> propertyId) {
 		registerDateTime(propertyId, null);
 	}
 
 	@Override
-	public void registerDateTime(PropertyRegistryKey<Date> propertyId, Date defaultValue) {
+	public void registerDateTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
 		registerProperty(propertyId, StringDateTimeConverter.get(), defaultValue);
 	}
 
 	@Override
-	public void registerLocale(PropertyRegistryKey<Locale> propertyId) {
+	public void registerLocale(IPropertyRegistryKey<Locale> propertyId) {
 		registerLocale(propertyId, null);
 	}
 
 	@Override
-	public void registerLocale(PropertyRegistryKey<Locale> propertyId, Locale defaultValue) {
+	public void registerLocale(IPropertyRegistryKey<Locale> propertyId, Locale defaultValue) {
 		registerProperty(propertyId, StringLocaleConverter.get(), defaultValue);
 	}
 
 	@Override
-	public void registerDirectoryFile(PropertyRegistryKey<File> propertyId) {
+	public void registerDirectoryFile(IPropertyRegistryKey<File> propertyId) {
 		registerDirectoryFile(propertyId, null);
 	}
 
 	@Override
-	public void registerDirectoryFile(PropertyRegistryKey<File> propertyId, File defaultValue) {
+	public void registerDirectoryFile(IPropertyRegistryKey<File> propertyId, File defaultValue) {
 		registerProperty(propertyId, StringDirectoryFileConverter.get(), defaultValue);
 	}
 
 	@Override
-	public void registerURI(PropertyRegistryKey<URI> propertyId) {
+	public void registerURI(IPropertyRegistryKey<URI> propertyId) {
 		registerURI(propertyId, null);
 	}
 
 	@Override
-	public void registerURI(PropertyRegistryKey<URI> propertyId, URI defaultValue) {
+	public void registerURI(IPropertyRegistryKey<URI> propertyId, URI defaultValue) {
 		registerProperty(propertyId, StringURIConverter.get(), defaultValue);
 	}
 
@@ -283,14 +324,9 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	public <T> T get(final PropertyId<T> propertyId) {
 		Preconditions.checkNotNull(propertyId);
 		
-		@SuppressWarnings("unchecked")
-		Pair<Converter<String, T>, Supplier<T>> information = (Pair<Converter<String, T>, Supplier<T>>) propertyInformationMap.get(propertyId.getTemplate() != null ? propertyId.getTemplate() : propertyId);
+		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
 		
-		if (information == null || information.getValue0() == null) {
-			throw new IllegalStateException(String.format("No converter found for the property '%1s'. Undefined property.", propertyId));
-		}
-		
-		T value = information.getValue0().convert(getAsString(propertyId));
+		T value = information.getValue0().convert(getAsStringUnsafe(propertyId));
 		if (value == null) {
 			T defaultValue = information.getValue1().get();
 			
@@ -307,6 +343,11 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public <T> String getAsString(final PropertyId<T> propertyId) {
+		getRegistrationInformation(propertyId); // Just check that this property was actually registered
+		return getAsStringUnsafe(propertyId);
+	}
+	
+	private String getAsStringUnsafe(PropertyId<?> propertyId) {
 		String valueAsString = null;
 		if (propertyId instanceof ImmutablePropertyId) {
 			valueAsString = immutablePropertyDao.get(propertyId.getKey());
@@ -322,26 +363,29 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	public <T> void set(final MutablePropertyId<T> propertyId, final T value) throws ServiceException, SecurityServiceException {
 		Preconditions.checkNotNull(propertyId);
 		
-		@SuppressWarnings("unchecked")
-		final
-		Pair<Converter<String, T>, Supplier<T>> information = (Pair<Converter<String, T>, Supplier<T>>) propertyInformationMap.get(propertyId.getTemplate() != null ? propertyId.getTemplate() : propertyId);
-		
-		if (information == null || information.getValue0() == null) {
-			throw new IllegalStateException("No converter found for the property. Undefined property.");
-		}
+		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
 		
 		mutablePropertyDao.setInTransaction(propertyId.getKey(), information.getValue0().reverse().convert(value));
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<PropertyId<?>> listRegisteredPropertyIds() {
-		return (List<PropertyId<?>>) (List<?>) Lists.newArrayList(Iterables.filter(propertyInformationMap.keySet(), PropertyId.class));
+	private <T> Pair<Converter<String, T>, Supplier<T>> getRegistrationInformation(PropertyId<T> propertyId) {
+		PropertyIdTemplate<T, ?> template = propertyId.getTemplate();
+		@SuppressWarnings("unchecked")
+		Pair<Converter<String, T>, Supplier<T>> information = (Pair<Converter<String, T>, Supplier<T>>)
+				propertyInformationMap.get(template != null ? template : propertyId);
+		
+		if (information == null || information.getValue0() == null) {
+			throw new PropertyServiceIncompleteRegistrationException(
+					String.format("The following property was not properly registered: %1s", propertyId)
+			);
+		}
+		
+		return information;
 	}
 
 	@Override
-	public void clean() {
-		mutablePropertyDao.cleanInTransaction();
+	public List<IPropertyRegistryKey<?>> listRegistered() {
+		return Lists.newArrayList(propertyInformationMap.keySet());
 	}
 
 	// TODO PropertyService : remove this method from service

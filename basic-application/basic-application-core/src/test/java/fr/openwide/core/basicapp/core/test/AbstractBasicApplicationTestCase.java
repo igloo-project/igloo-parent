@@ -12,6 +12,7 @@ import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 @ContextConfiguration(classes = BasicApplicationCoreTestCommonConfig.class)
@@ -29,6 +30,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	@Autowired
 	protected IPropertyService propertyService;
 	
+	@Autowired
+	private IMutablePropertyDao mutablePropertyDao;
+	
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
@@ -40,7 +44,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 		cleanEntities(userService);
 		cleanEntities(userGroupService);
 		cleanEntities(authorityService);
-		propertyService.clean();
+		mutablePropertyDao.cleanInTransaction();
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {
