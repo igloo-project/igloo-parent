@@ -75,7 +75,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
 	private final Map<IPropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap =
-			Maps.newHashMap();
+			Maps.newLinkedHashMap();
 
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
