@@ -4,6 +4,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.AVAILABLE_LOCAL
 import static fr.openwide.core.spring.property.SpringPropertyIds.DEFAULT_LOCALE;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Date;
@@ -42,7 +43,8 @@ import fr.openwide.core.commons.util.functional.converter.StringBigDecimalConver
 import fr.openwide.core.commons.util.functional.converter.StringBooleanConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateTimeConverter;
-import fr.openwide.core.commons.util.functional.converter.StringDirectoryFileConverter;
+import fr.openwide.core.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
+import fr.openwide.core.commons.util.functional.converter.StringFileConverter;
 import fr.openwide.core.commons.util.functional.converter.StringLocaleConverter;
 import fr.openwide.core.commons.util.functional.converter.StringURIConverter;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -299,15 +301,36 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	public void registerLocale(IPropertyRegistryKey<Locale> propertyId, Locale defaultValue) {
 		registerProperty(propertyId, StringLocaleConverter.get(), defaultValue);
 	}
-
+	
 	@Override
-	public void registerDirectoryFile(IPropertyRegistryKey<File> propertyId) {
-		registerDirectoryFile(propertyId, null);
+	public void registerFile(IPropertyRegistryKey<File> propertyId, FileFilter filter) {
+		registerFile(propertyId, filter, null);
+	}
+	
+	@Override
+	public void registerFile(IPropertyRegistryKey<File> propertyId, final FileFilter filter, final File defaultValue) {
+		Preconditions.checkNotNull(filter);
+		registerProperty(propertyId, new StringFileConverter(filter), new Supplier<File>() {
+			@Override
+			public File get() {
+				// Make this check *only* if we actually use the default value.
+				Preconditions.checkState(
+						defaultValue == null || filter.accept(defaultValue),
+						"The default value " + defaultValue + " does not match the given file filter " + filter
+				);
+				return defaultValue;
+			}
+		});
 	}
 
 	@Override
-	public void registerDirectoryFile(IPropertyRegistryKey<File> propertyId, File defaultValue) {
-		registerProperty(propertyId, StringDirectoryFileConverter.get(), defaultValue);
+	public void registerWriteableDirectoryFile(IPropertyRegistryKey<File> propertyId) {
+		registerWriteableDirectoryFile(propertyId, null);
+	}
+
+	@Override
+	public void registerWriteableDirectoryFile(IPropertyRegistryKey<File> propertyId, File defaultValue) {
+		registerProperty(propertyId, StringDirectoryFileCreatingConverter.get(), defaultValue);
 	}
 
 	@Override

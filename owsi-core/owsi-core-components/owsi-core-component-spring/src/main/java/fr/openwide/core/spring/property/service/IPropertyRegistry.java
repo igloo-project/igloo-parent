@@ -1,6 +1,7 @@
 package fr.openwide.core.spring.property.service;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Date;
@@ -20,7 +21,7 @@ import fr.openwide.core.commons.util.functional.converter.StringBigDecimalConver
 import fr.openwide.core.commons.util.functional.converter.StringBooleanConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateTimeConverter;
-import fr.openwide.core.commons.util.functional.converter.StringDirectoryFileConverter;
+import fr.openwide.core.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
 import fr.openwide.core.commons.util.functional.converter.StringLocaleConverter;
 import fr.openwide.core.commons.util.functional.converter.StringURIConverter;
 import fr.openwide.core.spring.property.model.IImmutablePropertyRegistryKey;
@@ -172,16 +173,28 @@ public interface IPropertyRegistry {
 	void registerLocale(IPropertyRegistryKey<Locale> propertyId, Locale defaultValue);
 
 	/**
-	 * Property must use the following format : directory path
-	 * @see StringDirectoryFileConverter
+	 * Property must use the following format : file path
+	 * @see StringDirectoryFileCreatingConverter
 	 */
-	void registerDirectoryFile(IPropertyRegistryKey<File> propertyId);
+	void registerFile(IPropertyRegistryKey<File> propertyId, FileFilter filter);
+
+	/**
+	 * Property must use the following format : file path
+	 * @see StringDirectoryFileCreatingConverter
+	 */
+	void registerFile(IPropertyRegistryKey<File> propertyId, FileFilter filter, File defaultValue);
 
 	/**
 	 * Property must use the following format : directory path
-	 * @see StringDirectoryFileConverter
+	 * @see StringDirectoryFileCreatingConverter
 	 */
-	void registerDirectoryFile(IPropertyRegistryKey<File> propertyId, File defaultValue);
+	void registerWriteableDirectoryFile(IPropertyRegistryKey<File> propertyId);
+
+	/**
+	 * Property must use the following format : directory path
+	 * @see StringDirectoryFileCreatingConverter
+	 */
+	void registerWriteableDirectoryFile(IPropertyRegistryKey<File> propertyId, File defaultValue);
 
 	/**
 	 * Property must use the following format : {@link URI#URI(String)}
