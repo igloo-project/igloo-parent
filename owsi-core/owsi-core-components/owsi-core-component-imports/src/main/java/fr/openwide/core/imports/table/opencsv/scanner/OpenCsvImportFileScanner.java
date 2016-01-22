@@ -10,7 +10,8 @@ import java.io.Reader;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.Validate;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
+
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.imports.table.common.csv.scanner.ICsvImportFileScanner;
 import fr.openwide.core.imports.table.common.event.exception.TableImportException;

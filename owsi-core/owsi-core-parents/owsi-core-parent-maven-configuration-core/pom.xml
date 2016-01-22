@@ -76,7 +76,7 @@
 		<owsi-core.slf4j.version>1.7.13</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
-		<owsi-core.opencsv.version>2.3</owsi-core.opencsv.version>
+		<owsi-core.opencsv.version>3.6</owsi-core.opencsv.version>
 		<owsi-core.freemarker.version>2.3.23</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		
@@ -874,7 +874,7 @@
 			<!-- OpenCSV -->
 			
 				<dependency>
-					<groupId>net.sf.opencsv</groupId>
+					<groupId>com.opencsv</groupId>
 					<artifactId>opencsv</artifactId>
 					<version>${owsi-core.opencsv.version}</version>
 				</dependency>
