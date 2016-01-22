@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.monthpicker;
 
 import org.apache.wicket.Component;
-import org.odlabs.wiquery.core.options.Options;
-import org.odlabs.wiquery.ui.datepicker.DateOption;
+import org.wicketstuff.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
 public class MonthPickerOptions extends Options {
 

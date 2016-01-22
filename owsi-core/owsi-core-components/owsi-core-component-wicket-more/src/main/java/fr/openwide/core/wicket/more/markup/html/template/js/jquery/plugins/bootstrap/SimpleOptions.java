@@ -5,13 +5,13 @@ import java.util.Map.Entry;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IDetachable;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.options.DefaultOptionsRenderer;
-import org.odlabs.wiquery.core.options.ICollectionItemOptions;
-import org.odlabs.wiquery.core.options.IComplexOption;
-import org.odlabs.wiquery.core.options.IModelOption;
-import org.odlabs.wiquery.core.options.IOptionsRenderer;
-import org.odlabs.wiquery.core.options.ITypedOption;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.options.DefaultOptionsRenderer;
+import org.wicketstuff.wiquery.core.options.ICollectionItemOptions;
+import org.wicketstuff.wiquery.core.options.IComplexOption;
+import org.wicketstuff.wiquery.core.options.IModelOption;
+import org.wicketstuff.wiquery.core.options.IOptionsRenderer;
+import org.wicketstuff.wiquery.core.options.ITypedOption;
 
 public abstract class SimpleOptions implements IDetachable {
 

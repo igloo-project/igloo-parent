@@ -9,11 +9,11 @@ import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.odlabs.wiquery.core.events.Event;
-import org.odlabs.wiquery.core.events.EventLabel;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsScopeEvent;
-import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.events.Event;
+import org.wicketstuff.wiquery.core.events.EventLabel;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;

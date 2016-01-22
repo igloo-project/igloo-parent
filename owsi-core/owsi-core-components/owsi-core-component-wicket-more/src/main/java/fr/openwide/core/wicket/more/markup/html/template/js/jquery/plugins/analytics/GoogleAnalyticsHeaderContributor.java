@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.anal
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.odlabs.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 public class GoogleAnalyticsHeaderContributor implements IHeaderContributor {
 

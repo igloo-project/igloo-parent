@@ -3,8 +3,8 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.item
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
-import org.odlabs.wiquery.ui.position.PositionJavaScriptResourceReference;
-import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
+import org.wicketstuff.wiquery.ui.position.PositionJavaScriptResourceReference;
+import org.wicketstuff.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 

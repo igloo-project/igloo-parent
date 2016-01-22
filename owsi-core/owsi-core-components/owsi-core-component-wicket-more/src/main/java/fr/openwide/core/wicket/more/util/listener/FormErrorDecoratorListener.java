@@ -25,8 +25,8 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

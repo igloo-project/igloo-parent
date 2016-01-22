@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip;
 
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.options.Options;
 
 /**
  * Voir documentation sur http://twitter.github.com/bootstrap/javascript.html#tooltips

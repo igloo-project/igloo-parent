@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.affix;
 
 import org.apache.wicket.Component;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.IComplexOption;
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.options.IComplexOption;
+import org.wicketstuff.wiquery.core.options.Options;
 
 public class BootstrapAffixOptions extends Options {
 

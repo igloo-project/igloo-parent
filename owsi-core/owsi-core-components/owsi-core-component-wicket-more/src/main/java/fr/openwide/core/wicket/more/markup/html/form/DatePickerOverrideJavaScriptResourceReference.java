@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.odlabs.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
+import org.wicketstuff.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
 
 import com.google.common.collect.Lists;
 

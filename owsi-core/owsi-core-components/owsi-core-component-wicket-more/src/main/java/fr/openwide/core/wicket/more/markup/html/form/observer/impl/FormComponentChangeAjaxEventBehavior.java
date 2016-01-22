@@ -20,10 +20,10 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
-import org.odlabs.wiquery.core.events.MouseEvent;
-import org.odlabs.wiquery.core.events.StateEvent;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
+import org.wicketstuff.wiquery.core.events.StateEvent;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 import com.google.common.collect.Sets;
 

@@ -9,10 +9,10 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
-import org.odlabs.wiquery.core.javascript.ChainableStatement;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.Options;
-import org.odlabs.wiquery.ui.datepicker.DateOption;
+import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;

@@ -5,7 +5,7 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public class BootstrapTooltipBehavior extends Behavior {
 

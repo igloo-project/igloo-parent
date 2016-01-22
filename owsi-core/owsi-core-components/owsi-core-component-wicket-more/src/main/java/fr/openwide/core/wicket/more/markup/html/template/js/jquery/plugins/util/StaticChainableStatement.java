@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util;
 
-import org.odlabs.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 
 /**
  * <p>Classe permettant d'exploiter de manière statique un {@link ChainableStatement} existant. Les valeurs sont

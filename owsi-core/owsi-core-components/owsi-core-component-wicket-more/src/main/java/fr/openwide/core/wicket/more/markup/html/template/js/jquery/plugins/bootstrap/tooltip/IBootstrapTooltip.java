@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import java.io.Serializable;
 
-import org.odlabs.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 
 public interface IBootstrapTooltip extends ChainableStatement, Serializable {
 

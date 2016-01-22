@@ -1,7 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement;
 
-import org.odlabs.wiquery.core.javascript.ChainableStatement;
-import org.odlabs.wiquery.core.options.LiteralOption;
+import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.options.LiteralOption;
 
 public final class BootstrapModalManager implements ChainableStatement {
 

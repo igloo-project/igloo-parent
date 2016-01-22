@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.mont
 import java.util.Locale;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.odlabs.wiquery.ui.datepicker.DatePickerLanguageResourceReference.DatePickerLanguages;
+import org.wicketstuff.wiquery.ui.datepicker.DatePickerLanguageResourceReference.DatePickerLanguages;
 
 public final class MonthPickerLanguageResourceReference extends JavaScriptResourceReference {
 

@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemit;
 
-import org.odlabs.wiquery.core.options.ArrayItemOptions;
-import org.odlabs.wiquery.core.options.IListItemOption;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.core.options.Options;
-import org.odlabs.wiquery.core.options.StringOption;
+import org.wicketstuff.wiquery.core.options.ArrayItemOptions;
+import org.wicketstuff.wiquery.core.options.IListItemOption;
+import org.wicketstuff.wiquery.core.options.LiteralOption;
+import org.wicketstuff.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.options.StringOption;
 
 public class ItemItGroupOptions implements IListItemOption {
 

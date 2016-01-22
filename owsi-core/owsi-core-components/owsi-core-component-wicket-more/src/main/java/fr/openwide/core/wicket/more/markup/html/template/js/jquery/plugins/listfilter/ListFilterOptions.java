@@ -1,7 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter;
 
-import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.options.Options;
 
 public class ListFilterOptions extends Options {
 	private static final long serialVersionUID = 8361789161890761478L;

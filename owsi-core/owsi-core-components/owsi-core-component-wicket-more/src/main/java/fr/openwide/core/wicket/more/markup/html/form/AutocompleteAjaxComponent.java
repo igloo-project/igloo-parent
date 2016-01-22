@@ -5,15 +5,15 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsScopeContext;
-import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsQuery;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.springframework.context.ApplicationContext;
 
 import fr.openwide.core.wicket.more.application.CoreWicketApplication;
 
-public abstract class AutocompleteAjaxComponent<T> extends org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent<T> {
+public abstract class AutocompleteAjaxComponent<T> extends org.wicketstuff.wiquery.ui.autocomplete.AutocompleteAjaxComponent<T> {
 
 	private static final long serialVersionUID = 2543997784221712556L;
 

@@ -17,11 +17,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.javascript.JsScopeContext;
-import org.odlabs.wiquery.ui.core.JsScopeUiEvent;
-import org.odlabs.wiquery.ui.sortable.SortableBehavior;
-import org.odlabs.wiquery.ui.sortable.SortableBehavior.ToleranceEnum;
-import org.odlabs.wiquery.ui.sortable.SortableRevert;
+import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
+import org.wicketstuff.wiquery.ui.core.JsScopeUiEvent;
+import org.wicketstuff.wiquery.ui.sortable.SortableBehavior;
+import org.wicketstuff.wiquery.ui.sortable.SortableBehavior.ToleranceEnum;
+import org.wicketstuff.wiquery.ui.sortable.SortableRevert;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;

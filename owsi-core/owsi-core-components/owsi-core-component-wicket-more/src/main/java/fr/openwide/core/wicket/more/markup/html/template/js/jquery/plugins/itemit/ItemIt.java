@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.odlabs.wiquery.core.javascript.ChainableStatement;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.options.ArrayItemOptions;
-import org.odlabs.wiquery.core.options.ITypedOption;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.core.options.Options;
-import org.odlabs.wiquery.core.options.StringOption;
+import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.options.ArrayItemOptions;
+import org.wicketstuff.wiquery.core.options.ITypedOption;
+import org.wicketstuff.wiquery.core.options.LiteralOption;
+import org.wicketstuff.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.options.StringOption;
 
 public class ItemIt implements ChainableStatement, Serializable {
 

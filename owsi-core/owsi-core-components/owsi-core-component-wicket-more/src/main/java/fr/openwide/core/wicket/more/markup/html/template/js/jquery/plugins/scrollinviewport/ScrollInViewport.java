@@ -3,9 +3,9 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scro
 import java.io.Serializable;
 
 import org.apache.wicket.Component;
-import org.odlabs.wiquery.core.javascript.ChainableStatement;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.options.Options;
 
 public class ScrollInViewport implements ChainableStatement, Serializable {
 	

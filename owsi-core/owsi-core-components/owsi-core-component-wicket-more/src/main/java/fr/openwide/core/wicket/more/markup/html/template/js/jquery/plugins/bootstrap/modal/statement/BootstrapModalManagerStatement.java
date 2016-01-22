@@ -1,7 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement;
 
 import org.apache.wicket.Component;
-import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public final class BootstrapModalManagerStatement {
 

@@ -1,10 +1,10 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.mask;
 
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.options.IComplexOption;
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.options.IComplexOption;
+import org.wicketstuff.wiquery.core.options.Options;
 
 public class MaskOptions extends Options {
 	private static final long serialVersionUID = 8361789161890761478L;

@@ -17,7 +17,7 @@ import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.IVisitor;
 import org.apache.wicket.util.visit.Visits;
-import org.odlabs.wiquery.core.events.StateEvent;
+import org.wicketstuff.wiquery.core.events.StateEvent;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;

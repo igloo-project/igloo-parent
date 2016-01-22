@@ -3,7 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.item
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
-import org.odlabs.wiquery.ui.effects.BlindEffectJavaScriptResourceReference;
+import org.wicketstuff.wiquery.ui.effects.BlindEffectJavaScriptResourceReference;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.itemcomplete.ItemAutocompleteJavascriptResourceReference;

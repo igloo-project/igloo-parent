@@ -116,9 +116,9 @@
 		<owsi-core.javax-validation-api.version>1.1.0.Final</owsi-core.javax-validation-api.version>
 		
 		<owsi-core.wicket.version>7.1.0</owsi-core.wicket.version>
-		<owsi-core.wiquery.version>7.0.0-SNAPSHOT</owsi-core.wiquery.version>
+		<owsi-core.wiquery.version>7.0</owsi-core.wiquery.version>
 		<owsi-core.wicket-select2.version>1.2.0-SNAPSHOT</owsi-core.wicket-select2.version>
-		<owsi-core.wqplot.version>7.0.0.owsi1-SNAPSHOT</owsi-core.wqplot.version>
+		<owsi-core.wqplot.version>7.1.0.owsi1</owsi-core.wqplot.version>
 		
 		<!-- Versions 1.15.2 and 1.15.4 seem buggy (see https://github.com/SomMeri/less4j/issues/323) -->
 		<owsi-core.less4j.version>1.8.4</owsi-core.less4j.version>
@@ -965,13 +965,13 @@
 				<!-- WiQuery -->
 				
 					<dependency>
-						<groupId>org.odlabs.wiquery</groupId>
+						<groupId>org.wicketstuff.wiquery</groupId>
 						<artifactId>wiquery-core</artifactId>
 						<version>${owsi-core.wiquery.version}</version>
 					</dependency>
 					
 					<dependency>
-						<groupId>org.odlabs.wiquery</groupId>
+						<groupId>org.wicketstuff.wiquery</groupId>
 						<artifactId>wiquery-jquery-ui</artifactId>
 						<version>${owsi-core.wiquery.version}</version>
 					</dependency>

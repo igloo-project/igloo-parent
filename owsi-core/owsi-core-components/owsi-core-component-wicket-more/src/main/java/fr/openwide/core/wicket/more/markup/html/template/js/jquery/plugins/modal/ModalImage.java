@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal;
 
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.options.Options;
 
 public class ModalImage implements IModal {
 

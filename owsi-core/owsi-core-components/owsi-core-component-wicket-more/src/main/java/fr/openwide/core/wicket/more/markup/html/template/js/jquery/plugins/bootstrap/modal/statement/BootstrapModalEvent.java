@@ -1,6 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement;
 
-import org.odlabs.wiquery.core.events.EventLabel;
+import org.wicketstuff.wiquery.core.events.EventLabel;
 
 public enum BootstrapModalEvent implements EventLabel {
 

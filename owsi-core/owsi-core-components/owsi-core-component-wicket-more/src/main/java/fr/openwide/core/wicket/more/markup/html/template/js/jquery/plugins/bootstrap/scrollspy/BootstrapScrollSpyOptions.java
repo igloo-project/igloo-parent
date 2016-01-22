@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.scrollspy;
 
 import org.apache.wicket.Component;
-import org.odlabs.wiquery.core.javascript.JsUtils;
-import org.odlabs.wiquery.core.options.Options;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
+import org.wicketstuff.wiquery.core.options.Options;
 import org.springframework.util.StringUtils;
 
 public class BootstrapScrollSpyOptions extends Options {
