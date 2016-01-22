@@ -2,7 +2,13 @@ package fr.openwide.core.test.jpa.more.business.property;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertNotSame;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Set;
 
 import org.junit.Test;
@@ -29,6 +35,50 @@ public class TestPropertyIds {
 			PropertyIds.MUTABLE, PropertyIds.MUTABLE_TEMPLATE,
 			PropertyIds.IMMUTABLE, PropertyIds.IMMUTABLE_TEMPLATE
 	);
+	
+	@SuppressWarnings("unchecked")
+	private static <T> T serializeAndDeserialize(T object) {
+		byte[] array;
+		
+		try {
+			ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
+			ObjectOutputStream objectOut = new ObjectOutputStream(arrayOut);
+			objectOut.writeObject(object);
+			array = arrayOut.toByteArray();
+		} catch (Exception e) {
+			throw new RuntimeException("Error while serializing " + object, e);
+		}
+
+		try {
+			ByteArrayInputStream arrayIn = new ByteArrayInputStream(array);
+			ObjectInputStream objectIn = new ObjectInputStream(arrayIn);
+			return (T) objectIn.readObject();
+		} catch (Exception e) {
+			throw new RuntimeException("Error while deserializing " + object, e);
+		}
+	}
+
+	/**
+	 * Check that the declaration doesn't get cloned by serialization + deserialization
+	 */
+	private static void checkSerialization(IPropertyRegistryKey<?> key) {
+		IPropertyRegistryKey<?> serializedDeserialized = serializeAndDeserialize(key);
+		assertNotSame(key, serializedDeserialized);
+		assertEquals(key, serializedDeserialized);
+		assertSame(key.getDeclaration(), serializedDeserialized.getDeclaration());
+	}
+	
+	@Test
+	public void serialization() {
+		checkSerialization(PropertyIds.MUTABLE);
+		checkSerialization(PropertyIds.IMMUTABLE);
+		
+		checkSerialization(PropertyIds.MUTABLE_TEMPLATE);
+		checkSerialization(PropertyIds.IMMUTABLE_TEMPLATE);
+		
+		checkSerialization(PropertyIds.IMMUTABLE_TEMPLATE.create("TEST"));
+		checkSerialization(PropertyIds.MUTABLE_TEMPLATE.create("TEST"));
+	}
 	
 	@Test
 	public void mutableProperty() {
