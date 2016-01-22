@@ -45,6 +45,7 @@ public class CascadingConverter<T> implements IConverter<T> {
 				try {
 					return alternativeConverter.convertToObject(value, locale);
 				} catch (ConversionException ignored) {
+					e.addSuppressed(ignored);
 				}
 			}
 			// If no alternative converter managed to convert, just throw the original exception.
