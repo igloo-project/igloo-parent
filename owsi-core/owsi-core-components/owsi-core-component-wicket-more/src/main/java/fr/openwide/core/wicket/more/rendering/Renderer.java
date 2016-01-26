@@ -573,6 +573,31 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
+	public static <T> Renderer<T> fromStringFormat(String stringFormat) {
+		return new FromStringFormatRenderer<>(stringFormat);
+	}
+	
+	private static class FromStringFormatRenderer<T> extends Renderer<T> {
+		private static final long serialVersionUID = 1L;
+		
+		private final String stringFormat;
+		
+		public FromStringFormatRenderer(String stringFormat) {
+			super();
+			this.stringFormat = stringFormat;
+		}
+		
+		@Override
+		public String render(final Object value, Locale locale) {
+			return String.format(locale, stringFormat, value);
+		}
+		
+		@Override
+		public String toString() {
+			return "fromStringFormat(" + stringFormat + ")";
+		}
+	}
+	
 	public static <T extends Date> Renderer<T> fromDatePattern(final IDatePattern datePattern) {
 		Renderer<T> renderer = fromFormat(new SerializableFunction<Locale, DateFormat>() {
 			private static final long serialVersionUID = 1L;

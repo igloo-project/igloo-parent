@@ -26,9 +26,8 @@ import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
 
 /**
- * Use {@code new CoreLabel(id, model)} and register a {@code Renderer} for the specific type instead.
- * Use {@code new CoreLabel(id, MyTypeRenderer.get(...).asModel(model))} to display with a non-default renderer.
  * @deprecated
+ * Use {@code Renderer.fromStringFormat("%1$.0f").asLabel(id, model))} to get the exact same result.
  */
 @Deprecated
 public class BigDecimalToIntegerLabel extends Label {
