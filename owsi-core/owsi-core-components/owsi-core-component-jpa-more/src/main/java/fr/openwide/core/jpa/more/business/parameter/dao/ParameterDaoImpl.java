@@ -1,7 +1,6 @@
 package fr.openwide.core.jpa.more.business.parameter.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
@@ -16,7 +15,6 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 
-@Repository("parameterDao")
 public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter> implements IParameterDao, IMutablePropertyDao {
 	
 	private TransactionTemplate readOnlyTransactionTemplate;
