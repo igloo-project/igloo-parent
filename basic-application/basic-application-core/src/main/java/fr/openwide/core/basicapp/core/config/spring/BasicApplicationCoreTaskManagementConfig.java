@@ -11,7 +11,7 @@ import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
 
 @Configuration
-public class BasicApplicationTaskManagementConfig extends AbstractTaskManagementConfig {
+public class BasicApplicationCoreTaskManagementConfig extends AbstractTaskManagementConfig {
 
 	@Override
 	@Bean
