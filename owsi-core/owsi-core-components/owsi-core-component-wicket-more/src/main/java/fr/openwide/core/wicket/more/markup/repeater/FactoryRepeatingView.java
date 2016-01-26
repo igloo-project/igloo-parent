@@ -14,6 +14,18 @@ public class FactoryRepeatingView extends RepeatingView {
 		super(id);
 	}
 
+	/**
+	 * Wraps the components before adding them to the view, so the uniqueness of their ID is no longer relevant.
+	 * <p>This allows to add components to this view without worrying at all about what their ID should be.
+	 */
+	public void addWrapped(Component ... components) {
+		for (Component component : components) {
+			RepeatingView wrapper = new RepeatingView(newChildId());
+			wrapper.add(component);
+			add(wrapper);
+		}
+	}
+
 	public <T extends Component> T add(IComponentFactory<T> componentFactory) {
 		T component = componentFactory.create(newChildId());
 		add(component);
