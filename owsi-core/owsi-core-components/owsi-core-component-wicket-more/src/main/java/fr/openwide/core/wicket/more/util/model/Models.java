@@ -1,11 +1,13 @@
 package fr.openwide.core.wicket.more.util.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 import com.google.common.base.Function;
@@ -15,6 +17,21 @@ import com.google.common.collect.Maps;
 public final class Models {
 
 	private Models() {
+	}
+
+	@SuppressWarnings("unchecked") // SerializableModelFactory works for any T extending Serializable
+	public static <T extends Serializable> Function<T, Model<T>> serializableModelFactory() {
+		return (Function<T, Model<T>>) (Object) SerializableModelFactory.INSTANCE;
+	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"}) // SerializableModelFactory works for any T extending Serializable
+	private enum SerializableModelFactory implements Function<Serializable, Model> {
+		INSTANCE;
+		
+		@Override
+		public Model apply(Serializable input) {
+			return new Model(input);
+		}
 	}
 
 	@SuppressWarnings("unchecked") // ModelGetObjectFunction works for any T

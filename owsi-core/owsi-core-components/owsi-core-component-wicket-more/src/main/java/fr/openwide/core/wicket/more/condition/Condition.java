@@ -31,6 +31,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.Detach;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
@@ -492,6 +493,34 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	public static Condition isNotEmpty(IDataProvider<?> dataProvider) {
 		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L)).negate();
+	}
+	
+	public static Condition isEmpty(final ISequenceProvider<?> sequenceProvider) {
+		return new Condition() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean applies() {
+				return sequenceProvider.count() == 0;
+			}
+			@Override
+			public void detach() {
+				sequenceProvider.detach();
+			}
+		};
+	}
+	
+	public static Condition isNotEmpty(final ISequenceProvider<?> sequenceProvider) {
+		return new Condition() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean applies() {
+				return sequenceProvider.count() > 0;
+			}
+			@Override
+			public void detach() {
+				sequenceProvider.detach();
+			}
+		};
 	}
 	
 	public static Condition visible(Component component) {

@@ -30,12 +30,14 @@ import org.hibernate.jpa.internal.metamodel.EmbeddableTypeImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.common.collect.Lists;
@@ -46,12 +48,22 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class
 })
 public abstract class AbstractTestCase {
+
+	/**
+	 * Use this instead of SpringJUnit4ClassRunner, so that implementors can choose their own runner
+	 */
+	@ClassRule
+	public static final SpringClassRule SCR = new SpringClassRule();
+	/**
+	 * Use this instead of SpringJUnit4ClassRunner, so that implementors can choose their own runner
+	 */
+	@Rule
+	public final SpringMethodRule springMethodRule = new SpringMethodRule();
 	
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;

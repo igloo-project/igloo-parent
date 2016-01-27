@@ -29,6 +29,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
@@ -40,6 +42,22 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntityModel.class);
+
+	@SuppressWarnings("unchecked") // SerializableModelFactory works for any T extending GenericEntity<?, ?>
+	public static <E extends GenericEntity<?, ?>>
+			Function<E, GenericEntityModel<?, E>> factory() {
+		return (Function<E, GenericEntityModel<?, E>>) (Object) Factory.INSTANCE;
+	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"}) // SerializableModelFactory works for any T extending Serializable
+	private enum Factory implements Function<GenericEntity, GenericEntityModel> {
+		INSTANCE;
+		
+		@Override
+		public GenericEntityModel apply(GenericEntity input) {
+			return new GenericEntityModel(input);
+		}
+	}
 
 	@SpringBean
 	private IEntityService entityService;

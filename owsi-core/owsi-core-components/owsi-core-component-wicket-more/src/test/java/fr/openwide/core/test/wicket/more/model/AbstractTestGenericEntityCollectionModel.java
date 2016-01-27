@@ -5,28 +5,41 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Equivalence;
+import com.google.common.collect.Lists;
+
 import fr.openwide.core.test.jpa.example.business.person.model.Person;
 import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
-import fr.openwide.core.test.wicket.more.AbstractWicketMoreJpaTestCase;
 
-public abstract class AbstractTestGenericEntityCollectionModel<C extends Collection<Person>> extends AbstractWicketMoreJpaTestCase {
+public abstract class AbstractTestGenericEntityCollectionModel<C extends Collection<Person>>
+		extends AbstractTestCollectionModel<C> {
+	
+	protected static final Equivalence<Set<?>> ORDERED_SET_EQUIVALENCE = new Equivalence<Set<?>>() {
+		@Override
+		protected boolean doEquivalent(Set<?> a, Set<?> b) {
+			return Lists.newArrayList(a).equals(Lists.newArrayList(b)); // SortedSet.equals won't work on cloned transient instances
+		}
+
+		@Override
+		protected int doHash(Set<?> t) {
+			return Lists.newArrayList(t).hashCode();
+		}
+		
+		@Override
+		public String toString() {
+			return "ORDERED_SET_EQUIVALENCE";
+		}
+	};
 	
 	@Autowired
 	private PersonService personService;
@@ -34,78 +47,9 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	@SuppressWarnings("unchecked")
-	private static <T extends IDetachable> T serializeAndDeserialize(T object) {
-		byte[] array;
-		
-		object.detach();
-		
-		try {
-			ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
-			ObjectOutputStream objectOut = new ObjectOutputStream(arrayOut);
-			objectOut.writeObject(object);
-			array = arrayOut.toByteArray();
-		} catch (Exception e) {
-			throw new RuntimeException("Error while serializing " + object, e);
-		}
-
-		try {
-			ByteArrayInputStream arrayIn = new ByteArrayInputStream(array);
-			ObjectInputStream objectIn = new ObjectInputStream(arrayIn);
-			return (T) objectIn.readObject();
-		} catch (Exception e) {
-			throw new RuntimeException("Error while deserializing " + object, e);
-		}
+	public AbstractTestGenericEntityCollectionModel(Equivalence<? super C> equivalence) {
+		super(equivalence);
 	}
-	
-	private Matcher<C> isEmpty() {
-		return new TypeSafeMatcher<C>() {
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("an empty collection");
-			}
-
-			@Override
-			protected boolean matchesSafely(C item) {
-				return item.isEmpty();
-			}
-		};
-	}
-	
-	private Matcher<Person> attachedToSession() {
-		return new TypeSafeMatcher<Person>() {
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("an entity already in the session");
-			}
-			
-			@Override
-			protected void describeMismatchSafely(Person item, Description mismatchDescription) {
-				mismatchDescription.appendText("was detached entity ").appendValue(item);
-			}
-
-			@Override
-			protected boolean matchesSafely(Person item) {
-				return entityManager.contains(item);
-			}
-		};
-	}
-	
-	private Matcher<C> equals(final C expected) {
-		return new TypeSafeMatcher<C>() {
-			@Override
-			public void describeTo(Description description) {
-				description.appendValue(expected);
-			}
-
-			@Override
-			protected boolean matchesSafely(C item) {
-				return AbstractTestGenericEntityCollectionModel.this.equals(expected, item);
-			}
-		};
-	}
-
-	protected abstract boolean equals(C expected, C item);
 	
 	protected abstract IModel<C> createModel();
 	
@@ -138,13 +82,13 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		
 		IModel<C> model = createModel();
 		model.setObject(clone(collection));
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
 		assertNotNull(modelObject);
 		assertEquals(collection.size(), modelObject.size());
-		assertThat(modelObject, not(equals(collection)));
+		assertThat(modelObject, not(isEquivalent(collection)));
 	}
 	
 	@Test
@@ -152,25 +96,25 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
-		assertThat(person1, attachedToSession());
+		assertThat(person1, isAttachedToSession());
 		personService.create(person2);
-		assertThat(person2, attachedToSession());
+		assertThat(person2, isAttachedToSession());
 		
 		C collection = createCollection(person1, person2);
 		
 		IModel<C> model = createModel();
 		model.setObject(clone(collection));
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 		for (Person p : model.getObject()) {
-			assertThat(p, attachedToSession());
+			assertThat(p, isAttachedToSession());
 		}
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		assertThat(modelObject, equals(collection));
+		assertThat(modelObject, isEquivalent(collection));
 		
 		for (Person p : modelObject) {
-			assertThat(p, attachedToSession());
+			assertThat(p, isAttachedToSession());
 		}
 	}
 	
@@ -182,22 +126,22 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		
 		IModel<C> model = createModel();
 		model.setObject(clone(collection));
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 		
 		personService.create(person1);
-		assertThat(person1, attachedToSession());
+		assertThat(person1, isAttachedToSession());
 		personService.create(person2);
-		assertThat(person2, attachedToSession());
+		assertThat(person2, isAttachedToSession());
 		for (Person p : model.getObject()) {
-			assertThat(p, attachedToSession());
+			assertThat(p, isAttachedToSession());
 		}
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		assertThat(modelObject, equals(collection));
+		assertThat(modelObject, isEquivalent(collection));
 		
 		for (Person p : modelObject) {
-			assertThat(p, attachedToSession());
+			assertThat(p, isAttachedToSession());
 		}
 	}
 	
@@ -206,17 +150,17 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
-		assertThat(person1, attachedToSession());
+		assertThat(person1, isAttachedToSession());
 		personService.create(person2);
-		assertThat(person2, attachedToSession());
+		assertThat(person2, isAttachedToSession());
 		
 		C collection = createCollection(person1, person2);
 		
 		IModel<C> model = createModel();
 		model.setObject(clone(collection));
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 		for (Person p : model.getObject()) {
-			assertThat(p, attachedToSession());
+			assertThat(p, isAttachedToSession());
 		}
 		
 		personService.delete(person1);
@@ -224,26 +168,26 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
 		C expected = createCollection(null, person2);
-		assertThat(modelObject, equals(expected));
+		assertThat(modelObject, isEquivalent(expected));
 	}
 	
 	@Test
-	public void testCollectionChangeWithoutSetObject() throws Exception {
+	public void testCollectionCopy() throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
-		assertThat(person1, attachedToSession());
+		assertThat(person1, isAttachedToSession());
 		
 		C collection = createCollection(person1, person2);
 		
 		IModel<C> model = createModel();
 		C collectionSetOnModel = clone(collection);
 		model.setObject(collectionSetOnModel);
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 		
 		Person person3 = new Person("John3", "Doe3");
 		collectionSetOnModel.add(person3);
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 	}
 	
 	@Test
@@ -254,23 +198,67 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		
 		IModel<C> model = createModel();
 		model.setObject(clone(collection));
-		assertThat(model.getObject(), equals(collection));
+		assertThat(model.getObject(), isEquivalent(collection));
 		
 		personService.create(person1);
-		assertThat(person1, attachedToSession());
+		assertThat(person1, isAttachedToSession());
 		model.detach(); // First detach()
 
 		// Simulate work on the same object obtained from another model
 		personService.create(person2);
-		assertThat(person2, attachedToSession());
+		assertThat(person2, isAttachedToSession());
 
 		model = serializeAndDeserialize(model); // Includes a second detach()
 		C modelObject = model.getObject();
-		assertThat(modelObject, equals(collection));
+		assertThat(modelObject, isEquivalent(collection));
 		
 		for (Person p : modelObject) {
-			assertThat(p, attachedToSession());
+			assertThat(p, isAttachedToSession());
 		}
+	}
+	
+	@Test
+	public void testCollectionGetObjectAdd() throws Exception {
+		Person person1 = new Person("John", "Doe");
+		Person person2 = new Person("John2", "Doe2");
+		personService.create(person1);
+		assertThat(person1, isAttachedToSession());
+		
+		IModel<C> model = createModel();
+		C collectionSetOnModel = createCollection(person1, person2);
+		model.setObject(collectionSetOnModel);
+		C modelObject = model.getObject();
+		
+		Person person3 = new Person("John3", "Doe3");
+		modelObject.add(person3);
+		assertThat(model.getObject(), isEquivalent(createCollection(person1, person2, person3)));
+		
+		model = serializeAndDeserialize(model);
+		modelObject = model.getObject();
+		assertNotNull(modelObject);
+		assertEquals(3, modelObject.size());
+	}
+	
+	@Test
+	public void testCollectionGetObjectRemove() throws Exception {
+		Person person1 = new Person("John", "Doe");
+		Person person2 = new Person("John2", "Doe2");
+		personService.create(person1);
+		assertThat(person1, isAttachedToSession());
+		
+		IModel<C> model = createModel();
+		C collectionSetOnModel = createCollection(person1, person2);
+		model.setObject(collectionSetOnModel);
+		C modelObject = model.getObject();
+		
+		modelObject.remove(person2);
+		assertThat(model.getObject(), isEquivalent(createCollection(person1)));
+		
+		model = serializeAndDeserialize(model);
+		modelObject = model.getObject();
+		assertNotNull(modelObject);
+		assertEquals(1, modelObject.size());
+		assertThat(modelObject, isEquivalent(createCollection(person1)));
 	}
 
 }
