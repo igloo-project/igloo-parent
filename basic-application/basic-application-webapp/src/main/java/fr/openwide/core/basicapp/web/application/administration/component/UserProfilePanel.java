@@ -10,9 +10,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
@@ -28,6 +28,7 @@ import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.User
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
@@ -37,7 +38,6 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
@@ -76,16 +76,16 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
 						.add(new EnclosureBehavior().model(isTrue(), Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()))),
 				
-				AjaxConfirmLink.build("passwordReset", userModel)
+				AjaxConfirmLink.<U>build()
 						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
 						.content(new StringResourceModel("administration.user.password.recovery.reset.confirmation.text").setModel(userModel))
 						.confirm()
-						.onClick(new AjaxResponseAction() {
+						.onClick(new AbstractAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {
 								try {
-									securityManagementService.initiatePasswordRecoveryRequest(getModelObject(),
+									securityManagementService.initiatePasswordRecoveryRequest(userModel.getObject(),
 											UserPasswordRecoveryRequestType.RESET,
 											UserPasswordRecoveryRequestInitiator.ADMIN,
 											BasicApplicationSession.get().getUser()
@@ -99,7 +99,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
 						})
-						.create()
+						.create("passwordReset", userModel)
 						.add(new EnclosureBehavior().model(isTrue(), Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()))),
 				
 				new Link<U>("enable", userModel) {
@@ -121,12 +121,12 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 					}
 				},
 				
-				AjaxConfirmLink.build("disable", userModel)
+				AjaxConfirmLink.<U>build()
 						.title(new ResourceModel("administration.user.disable.confirmation.title"))
 						.content(confirmationTextModel)
 						.confirm()
 						.onClick(
-								new AjaxResponseAction() {
+								new AbstractAjaxAction() {
 									private static final long serialVersionUID = 1L;
 									@Override
 									public void execute(AjaxRequestTarget target) {
@@ -142,7 +142,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 									}
 								}
 						)
-						.create()
+						.create("disable", userModel)
 						.add(
 								new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
 									private static final long serialVersionUID = 1L;

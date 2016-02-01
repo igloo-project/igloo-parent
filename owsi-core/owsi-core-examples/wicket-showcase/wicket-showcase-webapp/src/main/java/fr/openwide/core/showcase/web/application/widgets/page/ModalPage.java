@@ -18,11 +18,11 @@ import fr.openwide.core.showcase.web.application.widgets.component.ZIndexTestMod
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
@@ -121,11 +121,11 @@ public class ModalPage extends WidgetsTemplate {
 		};
 		add(confirmLink);
 		
-		Component ajaxConfirmLink = AjaxConfirmLink.build("ajaxConfirmLink")
+		Component ajaxConfirmLink = AjaxConfirmLink.build()
 				.title(new ResourceModel("widgets.modal.ajaxConfirmLink.header"))
 				.content(new ResourceModel("widgets.modal.ajaxConfirmLink.body"))
 				.yesNo()
-				.onClick(new AjaxResponseAction() {
+				.onClick(new AbstractAjaxAction() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public void execute(AjaxRequestTarget target) {
@@ -133,14 +133,14 @@ public class ModalPage extends WidgetsTemplate {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				})
-				.create();
+				.create("ajaxConfirmLink");
 		add(ajaxConfirmLink);
 		
-		Component ajaxConfirmLinkDisabled = AjaxConfirmLink.build("ajaxConfirmLinkDisabled")
+		Component ajaxConfirmLinkDisabled = AjaxConfirmLink.build()
 				.title(new ResourceModel("widgets.modal.ajaxConfirmLink.header"))
 				.content(new ResourceModel("widgets.modal.ajaxConfirmLink.body"))
 				.yesNo()
-				.onClick(new AjaxResponseAction() {
+				.onClick(new AbstractAjaxAction() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public void execute(AjaxRequestTarget target) {
@@ -148,7 +148,7 @@ public class ModalPage extends WidgetsTemplate {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				})
-				.create();
+				.create("ajaxConfirmLinkDisabled");
 		ajaxConfirmLinkDisabled.setEnabled(false);
 		add(ajaxConfirmLinkDisabled);
 		

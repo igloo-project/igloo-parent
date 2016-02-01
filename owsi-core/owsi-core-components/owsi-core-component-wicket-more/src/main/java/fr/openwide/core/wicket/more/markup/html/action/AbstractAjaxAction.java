@@ -4,12 +4,13 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 
 import fr.openwide.core.wicket.more.condition.Condition;
 
-public abstract class AbstractOneParameterAjaxAction<T> implements IOneParameterAjaxAction<T> {
 
-	private static final long serialVersionUID = 3044339655373492663L;
+public abstract class AbstractAjaxAction implements IAjaxAction {
+
+	private static final long serialVersionUID = -8244302682768981697L;
 
 	@Override
-	public void updateAjaxAttributes(AjaxRequestAttributes attributes, T model) {
+	public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 		// nothing to do
 	}
 
@@ -19,7 +20,7 @@ public abstract class AbstractOneParameterAjaxAction<T> implements IOneParameter
 	}
 
 	@Override
-	public Condition getActionAvailableCondition(T parameter) {
+	public Condition getActionAvailableCondition() {
 		return Condition.alwaysTrue();
 	}
 
