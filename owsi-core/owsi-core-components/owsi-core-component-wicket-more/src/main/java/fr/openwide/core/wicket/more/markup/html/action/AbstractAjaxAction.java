@@ -2,6 +2,8 @@ package fr.openwide.core.wicket.more.markup.html.action;
 
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 
+import fr.openwide.core.wicket.more.condition.Condition;
+
 
 public abstract class AbstractAjaxAction implements IAjaxAction {
 
@@ -15,6 +17,11 @@ public abstract class AbstractAjaxAction implements IAjaxAction {
 	@Override
 	public void detach() {
 		// nothing to do
+	}
+
+	@Override
+	public Condition getActionAvailableCondition() {
+		return Condition.alwaysTrue();
 	}
 
 }
