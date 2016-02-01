@@ -26,22 +26,6 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	public static <O> IAjaxConfirmLinkBuilderStepStart<O> build() {
 		return new AjaxConfirmLinkBuilder<O>();
 	}
-	
-	/**
-	 * @deprecated Use {@link #build()} instead.
-	 */
-	@Deprecated
-	public static <O> IAjaxConfirmLinkBuilderStepStart<O> build(String wicketId, IModel<O> model) {
-		return new AjaxConfirmLinkBuilder<O>(wicketId, model);
-	}
-	
-	/**
-	 * @deprecated Use {@link #build()} instead.
-	 */
-	@Deprecated
-	public static IAjaxConfirmLinkBuilderStepStart<Void> build(String wicketId) {
-		return new AjaxConfirmLinkBuilder<Void>(wicketId, null);
-	}
 
 	protected AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,

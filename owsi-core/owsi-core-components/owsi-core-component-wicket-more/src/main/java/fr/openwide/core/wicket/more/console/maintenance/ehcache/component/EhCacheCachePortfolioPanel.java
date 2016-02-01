@@ -2,6 +2,9 @@ package fr.openwide.core.wicket.more.console.maintenance.ehcache.component;
 
 import java.util.List;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -12,17 +15,17 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.markup.html.list.OddEvenListView;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.console.common.component.JavaPackageLabel;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationModel;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.basic.PercentageValueLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
@@ -34,8 +37,6 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listf
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 
 public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>> {
 	private static final long serialVersionUID = -7588751914016782042L;
@@ -66,13 +67,13 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						"console.maintenance.ehcache.cacheManager.purge.confirm")
 						.setParameters(item.getModelObject().getName());
 				
-				AjaxConfirmLink<CacheManager> purgerCache = AjaxConfirmLink.build("cacheManagerPurgeLink", item.getModel())
+				AjaxConfirmLink<CacheManager> purgerCache = AjaxConfirmLink.<CacheManager>build()
 						.title(new ResourceModel("common.confirmTitle")).content(purgerCacheTextModel)
 						.yesNo()
-						.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+						.onClick(new AbstractAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
-							public Void apply(AjaxRequestTarget target) {
+							public void execute(AjaxRequestTarget target) {
 								try {
 									item.getModelObject().clearAll();
 									getSession().success(getString("console.maintenance.ehcache.cacheManager.purge.success"));
@@ -84,10 +85,9 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								cacheList.detach();
 								FeedbackUtils.refreshFeedback(target, getPage());
 								target.add(item);
-								return null;
 							}
 						})
-						.create();
+						.create("cacheManagerPurgeLink", item.getModel());
 				item.add(purgerCache);
 				
 				CacheManager cacheManager = item.getModelObject();
@@ -145,13 +145,13 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								"console.maintenance.ehcache.portfolio.viderCache.confirm")
 								.setParameters(BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()));
 						
-						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.build("viderCache", item.getModel())
+						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.<Cache>build()
 								.title(new ResourceModel("common.confirmTitle")).content(viderCacheTextModel)
 								.yesNo()
-								.onClick(new SerializableFunction<AjaxRequestTarget, Void>() {
+								.onClick(new AbstractAjaxAction() {
 									private static final long serialVersionUID = 1L;
 									@Override
-									public Void apply(AjaxRequestTarget target) {
+									public void execute(AjaxRequestTarget target) {
 										try {
 											item.getModelObject().removeAll();
 											getSession().success(getString("console.maintenance.ehcache.portfolio.viderCache.success"));
@@ -163,10 +163,9 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 										cacheList.detach();
 										FeedbackUtils.refreshFeedback(target, getPage());
 										target.add(item);
-										return null;
 									}
 								})
-								.create();
+								.create("viderCache", item.getModel());
 						
 						item.add(viderCache);
 						

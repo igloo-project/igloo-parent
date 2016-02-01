@@ -37,13 +37,13 @@ import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.util.AjaxResponseAction;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
@@ -137,19 +137,18 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		});
 		
 		statusContainer.add(
-				AjaxConfirmLink.build("reload", queuedTaskHolderModel)
+				AjaxConfirmLink.<QueuedTaskHolder>build()
 						.title(new ResourceModel("console.maintenance.task.description.mainInformation.reload.title"))
 						.content(new ResourceModel("console.maintenance.task.description.mainInformation.reload.confirmation"))
 						.keepMarkup()
 						.yesNo()
-						.onClick(new AjaxResponseAction() {
+						.onClick(new AbstractAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {
 								try {
 									queuedTaskHolderManager.reload(queuedTaskHolderModel.getObject().getId());
-									Session.get().success(
-											getString("console.maintenance.task.description.mainInformation.reload.success"));
+									Session.get().success(getString("console.maintenance.task.description.mainInformation.reload.success"));
 									throw linkDescriptor(queuedTaskHolderModel).newRestartResponseException();
 								} catch (RestartResponseException e) {
 									throw e;
@@ -160,7 +159,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
 						})
-						.create()
+						.create("reload", queuedTaskHolderModel)
 						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
 							private static final long serialVersionUID = 1L;
 							@Override
@@ -171,19 +170,18 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		);
 		
 		statusContainer.add(
-				AjaxConfirmLink.build("cancel", queuedTaskHolderModel)
+				AjaxConfirmLink.<QueuedTaskHolder>build()
 						.title(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.title"))
 						.content(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.confirmation"))
 						.keepMarkup()
 						.yesNo()
-						.onClick(new AjaxResponseAction() {
+						.onClick(new AbstractAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {
 								try {
 									queuedTaskHolderManager.cancel(queuedTaskHolderModel.getObject().getId());
-									Session.get().success(
-											getString("console.maintenance.task.description.mainInformation.cancel.success"));
+									Session.get().success(getString("console.maintenance.task.description.mainInformation.cancel.success"));
 									throw linkDescriptor(queuedTaskHolderModel).newRestartResponseException();
 								} catch (RestartResponseException e) {
 									throw e;
@@ -194,7 +192,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
 						})
-						.create()
+						.create("cancel", queuedTaskHolderModel)
 						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
 							private static final long serialVersionUID = 1L;
 							@Override
