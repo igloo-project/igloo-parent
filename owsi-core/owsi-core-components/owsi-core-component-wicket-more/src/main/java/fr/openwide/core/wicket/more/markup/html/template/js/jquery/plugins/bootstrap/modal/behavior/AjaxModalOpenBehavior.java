@@ -119,6 +119,11 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		response.render(OnDomReadyHeaderItem.forScript(onModalHideBindStatement().render()));
 	}
 
+	/**
+	 * @deprecated Should no longer be used because the JavaScript code is executed as many times as there are buttons
+	 * bound to the modal. Use {@link ModalOpenOnClickBehavior#onModalShow()} instead.
+	 */
+	@Deprecated
 	protected final JsStatement onModalShowBindStatement() {
 		Event onShow = new Event(BootstrapModalEvent.SHOW) {
 			private static final long serialVersionUID = -5947286377954553132L;
@@ -131,6 +136,11 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		return new JsStatement().$(modal.getContainer()).chain(onShow);
 	}
 
+	/**
+	 * @deprecated Should no longer be used because the JavaScript code is executed as many times as there are buttons
+	 * bound to the modal. Use {@link ModalOpenOnClickBehavior#onModalHide()} instead.
+	 */
+	@Deprecated
 	protected final JsStatement onModalHideBindStatement() {
 		Event onHide = new Event(BootstrapModalEvent.HIDE) {
 			private static final long serialVersionUID = -5947286377954553132L;
@@ -144,31 +154,37 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 	}
 
 	/**
-	 * Code appelé avant tout traitement de l'événement.
+	 * @deprecated Should no longer be used because the JavaScript code is executed as many times as there are buttons
+	 * bound to the modal. Use {@link ModalOpenOnClickBehavior#onModalStart()} instead.
 	 */
+	@Deprecated
 	protected JsStatement onModalStart() {
 		return null;
 	}
 
 	/**
-	 * Code appelé au momoent de l'affichage du popup. Dans la plupart des cas, il est plus judicieux d'utiliser le
-	 * {@link AjaxRequestTarget} du {@link AjaxModalOpenBehavior#onShow(AjaxRequestTarget)}. Cette méthode est là par
-	 * mimétisme de {@link ModalOpenOnClickBehavior}
+	 * @deprecated Should no longer be used because the JavaScript code is executed as many times as there are buttons
+	 * bound to the modal. Use {@link ModalOpenOnClickBehavior#onModalComplete()} instead.
 	 */
+	@Deprecated
 	protected JsStatement onModalComplete() {
 		return null;
 	}
 
 	/**
-	 * Code appelé au moment de l'affichage du popup.
+	 * @deprecated Should no longer be used because the JavaScript code is executed as many times as there are buttons
+	 * bound to the modal. Use {@link ModalOpenOnClickBehavior#onModalShow()} instead.
 	 */
+	@Deprecated
 	public JsStatement onModalShow() {
 		return null;
 	}
 
 	/**
-	 * Code appelé quand le popup est caché.
+	 * @deprecated Should no longer be used because the JavaScript code is executed as many times as there are buttons
+	 * bound to the modal. Use {@link ModalOpenOnClickBehavior#onModalHide()} instead.
 	 */
+	@Deprecated
 	public JsStatement onModalHide() {
 		return null;
 	}
