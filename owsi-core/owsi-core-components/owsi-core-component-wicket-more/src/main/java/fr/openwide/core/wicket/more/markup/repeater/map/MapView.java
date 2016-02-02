@@ -55,7 +55,7 @@ public abstract class MapView<K, V> extends AbstractPageableView<K> {
 	
 	@Override
 	protected long internalGetItemCount() {
-		return mapModel.count();
+		return mapModel.size();
 	}
 
 	@Override

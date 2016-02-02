@@ -41,8 +41,8 @@ public class WorkingCopyCollectionModel<T, C extends Collection<T>, M extends IM
 	}
 	
 	@Override
-	public long count() {
-		return collectionWorkingCopy.count();
+	public long size() {
+		return collectionWorkingCopy.size();
 	}
 
 	@Override

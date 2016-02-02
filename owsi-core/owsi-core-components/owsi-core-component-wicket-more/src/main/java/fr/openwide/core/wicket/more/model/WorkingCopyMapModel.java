@@ -41,8 +41,8 @@ public class WorkingCopyMapModel<K, V, M extends Map<K, V>, MK extends IModel<K>
 	}
 	
 	@Override
-	public long count() {
-		return mapWorkingCopy.count();
+	public long size() {
+		return mapWorkingCopy.size();
 	}
 	
 	@Override

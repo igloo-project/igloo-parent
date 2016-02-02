@@ -148,7 +148,7 @@ abstract class AbstractCollectionCopyModel<T, C extends Collection<T>, M extends
 	}
 	
 	@Override
-	public final long count() {
+	public final long size() {
 		updateModelsIfExternalChangeIsPossible();
 		return modelList.size();
 	}

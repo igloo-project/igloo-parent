@@ -48,7 +48,7 @@ public abstract class CollectionView<T> extends AbstractPageableView<T> {
 	
 	@Override
 	protected long internalGetItemCount() {
-		return collectionModel.count();
+		return collectionModel.size();
 	}
 	
 	@Override

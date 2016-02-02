@@ -500,7 +500,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean applies() {
-				return sequenceProvider.count() == 0;
+				return sequenceProvider.size() == 0;
 			}
 			@Override
 			public void detach() {
@@ -514,7 +514,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean applies() {
-				return sequenceProvider.count() > 0;
+				return sequenceProvider.size() > 0;
 			}
 			@Override
 			public void detach() {

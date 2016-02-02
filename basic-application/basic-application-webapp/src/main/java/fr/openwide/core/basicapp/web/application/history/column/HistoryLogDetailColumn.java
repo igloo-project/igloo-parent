@@ -24,7 +24,7 @@ import fr.openwide.core.basicapp.web.application.history.component.factory.IHist
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.more.business.history.search.HistoryLogSort;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.AbstractCoreColumn;
+import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 
 /**
  * A customizable column that displays the detail (event type, differences) of an {@link HistoryLog}.

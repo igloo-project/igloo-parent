@@ -154,7 +154,7 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 	}
 	
 	@Override
-	public final long count() {
+	public final long size() {
 		updateModelsIfExternalChangeIsPossible();
 		return modelMap.size();
 	}
@@ -187,7 +187,7 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 
 	@Override
 	public final MV getValueModelForProvidedKeyModel(final IModel<K> keyModel) {
-		updateModelsIfExternalChangeIsPossible();
+		// We don't need to update the modelMap here, as the keyModel is supposed to have been provided by this object
 		return modelMap.get(keyModel);
 	}
 

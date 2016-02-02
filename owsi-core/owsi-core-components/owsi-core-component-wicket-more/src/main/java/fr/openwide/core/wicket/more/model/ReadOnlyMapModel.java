@@ -90,7 +90,7 @@ public class ReadOnlyMapModel<K, V, M extends Map<K, V>> extends AbstractMapMode
 	}
 
 	@Override
-	public long count() {
+	public long size() {
 		M map = readModel.getObject();
 		if (map == null) {
 			return 0L;

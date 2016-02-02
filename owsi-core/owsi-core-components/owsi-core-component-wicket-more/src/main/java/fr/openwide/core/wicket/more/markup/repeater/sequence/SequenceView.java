@@ -56,7 +56,11 @@ public abstract class SequenceView<T> extends AbstractPageableView<T> {
 	
 	@Override
 	protected long internalGetItemCount() {
-		return sequenceProvider.count();
+		return sequenceProvider.size();
+	}
+	
+	public ISequenceProvider<T> getSequenceProvider() {
+		return sequenceProvider;
 	}
 
 }

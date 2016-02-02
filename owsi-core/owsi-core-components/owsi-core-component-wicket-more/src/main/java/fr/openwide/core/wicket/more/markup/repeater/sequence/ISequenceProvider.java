@@ -16,6 +16,6 @@ public interface ISequenceProvider<T> extends IDetachable {
 
 	Iterator<? extends IModel<T>> iterator(long offset, long limit);
 
-	long count();
+	long size();
 
 }
