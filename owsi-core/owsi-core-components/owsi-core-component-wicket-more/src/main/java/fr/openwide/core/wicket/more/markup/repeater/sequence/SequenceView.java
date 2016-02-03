@@ -5,9 +5,10 @@ import java.util.Iterator;
 import org.apache.wicket.markup.repeater.AbstractPageableView;
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
 import fr.openwide.core.wicket.more.markup.repeater.sequence.ISequenceProvider;
 
-public abstract class SequenceView<T> extends AbstractPageableView<T> {
+public abstract class SequenceView<T> extends AbstractPageableView<T> implements IRefreshableOnDemandRepeater {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -16,6 +17,11 @@ public abstract class SequenceView<T> extends AbstractPageableView<T> {
 	public SequenceView(String id, ISequenceProvider<T> sequenceProvider) {
 		super(id);
 		this.sequenceProvider = sequenceProvider;
+	}
+	
+	@Override
+	public void refreshItems() {
+		onPopulate();
 	}
 	
 	@Override
