@@ -8,24 +8,24 @@
 			<h2 class="panel-title">
 				<span class="btn-toolbar pull-right">
 					<span class="btn-group btn-group-sm">
-						<a wicket:id="updateButton" class="btn btn-primary "> 
+						<button type="button" wicket:id="updateButton" class="btn btn-primary "> 
 							<span class="fa fa-pencil"></span> 
 							<span class="hidden-xs hidden-sm">
 								<wicket:message key="common.action.update" />
 							</span>
-						</a> 
-						<a wicket:id="passwordUpdateButton" class="btn btn-primary">
+						</button> 
+						<button type="button" wicket:id="passwordUpdateButton" class="btn btn-primary">
 							<span class="fa fa-key"></span> 
 							<span class="hidden-xs hidden-sm">
 								<wicket:message key="administration.user.password.update" />
 							</span>
-						</a>
-						<a wicket:id="passwordReset" class="btn btn-primary"> 
+						</button>
+						<button type="button" wicket:id="passwordReset" class="btn btn-primary"> 
 							<span class="fa fa-unlock-alt"></span> 
 							<span class="hidden-xs hidden-sm">
 								<wicket:message key="administration.user.password.recovery.reset" />
 							</span>
-						</a>
+						</button>
 					</span>
 					<span class="btn-group"> 
 						<a wicket:id="enable" class="btn btn-success btn-sm"> 
@@ -34,13 +34,13 @@
 								<wicket:message key="administration.user.enable" />
 							</span>
 						</a> 
-						<a wicket:id="disable" class="btn btn-danger btn-sm"> 
+						<button type="button" wicket:id="disable" class="btn btn-danger btn-sm"> 
 							<span class="fa fa-times"></span>
 							<span class="hidden-xs">
 								<wicket:message key="administration.user.disable" />
 							</span>
-						</a>
-				</span>
+						</button>
+					</span>
 				</span>
 				<wicket:message key="administration.user.profile" />
 			</h2>
