@@ -10,20 +10,19 @@ import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxAttributeName;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes.Method;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
 import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
@@ -34,6 +33,22 @@ import com.google.common.collect.Sets;
 import fr.openwide.core.wicket.more.markup.html.form.observer.IFormComponentChangeObservable;
 import fr.openwide.core.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 
+/**
+ * A behavior for notifying observers when changes occur on a given {@link FormComponent}.
+ * 
+ * <p>This behavior differs from {@link AjaxFormComponentUpdatingBehavior} and
+ * {@link AjaxFormChoiceComponentUpdatingBehavior} in that:<ul>
+ * 	<li>It's more low-level: it does not presume of the actions to be executed on change. Only
+ * {@link FormComponent#inputChanged()} is called on change, the calls to {@link FormComponent#validate()},
+ * {@link FormComponent#valid()}, {@link FormComponent#updateModel()}, and so on being the responsibility of the
+ * observers (if they want to).
+ *  <li>It supports both choice and non-choice components
+ *  <li>It supports choice components whose markup ID was not rendered (it relies on the form's markup ID). This allows
+ *  using <code>radioGroup.setRenderBodyOnly(true)</code>, in particular.
+ *  <li>It supports binding multiple, independent observers to the same {@link FormComponent}, in which case only
+ *  one Ajax call will be made for all the observers.
+ * </ul>
+ */
 public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior implements IFormComponentChangeObservable {
 	private static final long serialVersionUID = -2099510409333557398L;
 
@@ -56,11 +71,6 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 			return ajaxEventBehaviors.iterator().next();
 		}
 	}
-	
-	static final ResourceReference CHOICE_JS = new JQueryPluginResourceReference(
-			FormComponentChangeAjaxEventBehavior.class,
-			"jquery.FormComponentChangeAjaxEventBehavior.Choice.js"
-	);
 	
 	private static final MetaDataKey<Boolean> IS_SUBMITTED_USING_THIS_BEHAVIOR = new MetaDataKey<Boolean>() {
 		private static final long serialVersionUID = 1L;
@@ -103,17 +113,10 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 		return (FormComponent<?>)getComponent();
 	}
 	
-	@Override
-	public void renderHead(Component component, IHeaderResponse response) {
-		super.renderHead(component, response);
-		if (choice) {
-			response.render(JavaScriptHeaderItem.forReference(FormComponentChangeAjaxEventBehavior.CHOICE_JS));
-		}
-	}
-
-	// Due to the fact that, for choice components, events are attached to the form and not to the component itself,
-	// we must remove the handlers on ajax refreshes.
-	// Thus we need a unique event name, so that we can call $('#formId').off('click.my.unique.namespace')
+	/* Due to the fact that, for choice components, events are attached to the form and not to the component itself,
+	 * we must remove the handlers on ajax refreshes.
+	 * Thus we need a unique event name, so that we can call $('#formId').off('click.my.unique.namespace')
+	 */
 	protected String getUniqueEventName() {
 		return getEvent() + ".formComponentChange." + getComponent().getMarkupId();
 	}
@@ -121,9 +124,10 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 	@Override
 	protected CharSequence getCallbackScript(Component component) {
 		if (choice) {
-			// Due to the fact that, for choice components, events are attached to the form and not to the component itself,
-			// we must remove the handlers on ajax refreshes.
-			// See also: getUniqueEventName(), updateAjaxAttributes(), postprocessConfiguration()
+			/* Due to the fact that, for choice components, events are attached to the form and not to the component itself,
+			 * we must remove the handlers on ajax refreshes.
+			 * See also: getUniqueEventName(), updateAjaxAttributes(), postprocessConfiguration()
+			 */
 			return new StringBuilder()
 					.append(new JsStatement().$(component.findParent(Form.class)).chain("off", JsUtils.quotes(getUniqueEventName(), true)).render(true))
 					.append(super.getCallbackScript(component));
@@ -138,9 +142,10 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 		
 		attributes.setMethod(Method.POST);
 		
-		// Allows all sort of things to work properly:
-		//  * allows clicks on labels to work properly
-		//  * makes the radio/check buttons properly change their visual aspect on IE.
+		/* Allows all sort of things to work properly:
+		 *  * allows clicks on labels to work properly
+		 *  * makes the radio/check buttons properly change their visual aspect on IE.
+		 */
 		attributes.setPreventDefault(false);
 		
 		if (choice) {
@@ -148,9 +153,15 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 			attributes.setEventNames(getUniqueEventName());
 			
 			// Copied from AjaxFormChoiceComponentUpdatingBehavior
-			attributes.getDynamicExtraParameters().add(
-					String.format("return OWSI.FormComponentChangeAjaxEventBehavior.Choice.getInputValues('%s', attrs);", getFormComponent().getInputName())
-			);
+			attributes.setSerializeRecursively(true);
+			attributes.getAjaxCallListeners().add(new AjaxCallListener() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public CharSequence getPrecondition(Component component) {
+					return String.format("return attrs.event.target.name === '%s'", getFormComponent().getInputName());
+				}
+			});
 		}
 	}
 	
@@ -158,8 +169,10 @@ public class FormComponentChangeAjaxEventBehavior extends AjaxEventBehavior impl
 	protected void postprocessConfiguration(JSONObject attributesJson, Component component) throws JSONException {
 		super.postprocessConfiguration(attributesJson, component);
 		if (choice) {
-			// RadioGroups *may* not have an ID in the resulting HTML, so we must attach the handler to each input with the correct name in the same form.
-			// See also: getUniqueEventName(), getCallbackScript(), updateAjaxAttributes()
+			/* RadioGroups *may* not have an ID in the resulting HTML, so we must attach the handler to each
+			 * input with the correct name in the same form.
+			 * See also: getUniqueEventName(), getCallbackScript(), updateAjaxAttributes()
+			 */
 			attributesJson.put(AjaxAttributeName.MARKUP_ID.jsonName(), component.findParent(Form.class).getMarkupId());
 			attributesJson.put(AjaxAttributeName.CHILD_SELECTOR.jsonName(), "input[name=\"" + ((FormComponent<?>)component).getInputName() + "\"]");
 		}
