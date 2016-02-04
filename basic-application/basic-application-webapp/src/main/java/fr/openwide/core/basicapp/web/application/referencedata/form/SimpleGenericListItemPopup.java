@@ -8,16 +8,21 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
-public abstract class SimpleGenericListItemPopup<T extends GenericListItem<T>> extends AbstractGenericListItemPopup<T> {
+public abstract class SimpleGenericListItemPopup<T extends GenericListItem<? super T>>
+		extends AbstractGenericListItemPopup<T> {
 
 	private static final long serialVersionUID = 7104161263728328834L;
+	
+	private TextField<String> label;
+	
+	private CheckBox enabled;
 
 	public SimpleGenericListItemPopup(String id) {
 		super(id);
@@ -31,20 +36,39 @@ public abstract class SimpleGenericListItemPopup<T extends GenericListItem<T>> e
 		
 		form = new Form<T>("form", model);
 		
-		TextField<String> libelle = new TextField<String>("label",BindingModel.of(model, Bindings.<T>genericListItem().label()));
+		Condition disableableCondition = Condition.isTrue(
+				BindingModel.of(model, Bindings.genericListItem().disableable())
+		);
+		
+		this.label = new TextField<String>(
+				"label", BindingModel.of(model, Bindings.genericListItem().label())
+		);
+		
+		this.enabled = new CheckBox(
+				"enabled", BindingModel.of(model, Bindings.genericListItem().enabled())
+		);
+		
 		body.add(
 				form
 						.add(
-								libelle
+								label
 										.setLabel(new ResourceModel("business.listItem.label"))
 										.setRequired(true),
-								new CheckBox("enabled", BindingModel.of(model, Bindings.<T>genericListItem().enabled()))
+								enabled
 										.setLabel(new ResourceModel("business.listItem.enabled"))
 										.add(new EnclosureBehavior(ComponentBooleanProperty.ENABLE)
-												.model(Predicates2.isTrue(), BindingModel.of(model, Bindings.<T>genericListItem().disableable())))
+												.condition(disableableCondition))
 						)
 		);
 		
 		return body;
+	}
+	
+	protected final TextField<String> getLabel() {
+		return label;
+	}
+	
+	protected final CheckBox getEnabled() {
+		return enabled;
 	}
 }

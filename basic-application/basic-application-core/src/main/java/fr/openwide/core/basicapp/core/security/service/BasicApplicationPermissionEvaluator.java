@@ -6,13 +6,9 @@ import org.springframework.security.acls.model.Permission;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.security.service.AbstractCorePermissionEvaluator;
-import fr.openwide.core.jpa.security.service.ISecurityService;
 import fr.openwide.core.jpa.util.HibernateUtils;
 
 public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionEvaluator<User> {
-
-	@Autowired
-	private ISecurityService securityService;
 
 	@Autowired
 	private IDefaultGenericListItemPermissionEvaluator defaultGenericListItemPermissionEvaluator;

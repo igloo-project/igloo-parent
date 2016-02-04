@@ -5,8 +5,7 @@ import fr.openwide.core.basicapp.core.business.history.model.HistoryLogBinding;
 import fr.openwide.core.basicapp.core.business.referencedata.model.CityBinding;
 import fr.openwide.core.basicapp.core.business.user.model.UserBinding;
 import fr.openwide.core.basicapp.core.business.user.model.UserGroupBinding;
-import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
-import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
+import fr.openwide.core.jpa.more.business.generic.model.IGenericListItemBindingInterfaceBinding;
 
 public final class Bindings {
 
@@ -19,9 +18,12 @@ public final class Bindings {
 	private static final HistoryDifferenceBinding HISTORY_DIFFERENCE = new HistoryDifferenceBinding();
 	
 	private static final CityBinding CITY = new CityBinding();
+	
+	private static final IGenericListItemBindingInterfaceBinding GENERIC_LIST_ITEM =
+			new IGenericListItemBindingInterfaceBinding();
 
-	public static <T extends GenericListItem<T>> GenericListItemBinding<T> genericListItem() {
-		return new GenericListItemBinding<T>();
+	public static IGenericListItemBindingInterfaceBinding genericListItem() {
+		return GENERIC_LIST_ITEM;
 	}
 	
 	public static UserBinding user() {

@@ -1,15 +1,26 @@
 package fr.openwide.core.jpa.more.business.generic.query;
 
-import org.hibernate.search.exception.SearchException;
+import java.util.Map;
 
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.search.query.ISearchQuery;
 import fr.openwide.core.jpa.more.business.sort.ISort;
+import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 
-public interface IGenericListItemSearchQuery<T extends GenericListItem<T>, S extends ISort<?>> extends ISearchQuery<T, S> {
+public interface IGenericListItemSearchQuery
+		<
+		T extends GenericListItem<? super T>,
+		S extends ISort<?>,
+		Q extends IGenericListItemSearchQuery<T, S, Q>
+		>
+		extends ISearchQuery<T, S> {
 	
-	IGenericListItemSearchQuery<T,S> label(String label) throws SearchException;
+	Q label(String label);
 	
-	IGenericListItemSearchQuery<T, S> enabled(EnabledFilter enabledFilter);
+	Q enabled(EnabledFilter enabledFilter);
+	
+	@Override
+	Q sort(Map<S, SortOrder> sortMap);
+	
 }
