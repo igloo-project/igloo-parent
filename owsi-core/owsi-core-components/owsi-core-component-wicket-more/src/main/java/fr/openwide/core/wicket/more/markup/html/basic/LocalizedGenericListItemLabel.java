@@ -25,8 +25,11 @@ import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.rendering.LocalizedGenericListItemRenderer;
 
 /**
- * Affichage sous forme de label d'un {@link GenericLocalizedGenericListItem}
+ * Use {@code new CoreLabel(id, model)} and register a {@code Renderer} for the specific type instead.
+ * Use {@code new CoreLabel(id, MyTypeRenderer.get(...).asModel(model))} to display with a non-default renderer.
+ * @deprecated
  */
+@Deprecated
 public class LocalizedGenericListItemLabel extends CoreLabel {
 
 	private static final long serialVersionUID = -902689514465301799L;

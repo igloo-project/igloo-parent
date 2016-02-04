@@ -25,6 +25,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
 
+/**
+ * @deprecated
+ * Use {@code Renderer.fromStringFormat("%1$.0f").asLabel(id, model))} to get the exact same result.
+ */
+@Deprecated
 public class BigDecimalToIntegerLabel extends Label {
 
 	private static final long serialVersionUID = -6830982860837635819L;

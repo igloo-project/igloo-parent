@@ -25,6 +25,7 @@ import fr.openwide.core.basicapp.web.application.administration.form.AbstractUse
 import fr.openwide.core.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
 import fr.openwide.core.basicapp.web.application.administration.form.UserPopup;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -33,7 +34,6 @@ import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
-import fr.openwide.core.wicket.more.markup.html.basic.LocaleLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
@@ -163,7 +163,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 						DatePattern.SHORT_DATETIME).showPlaceholder(),
 				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
 						DatePattern.SHORT_DATETIME).showPlaceholder(),
-				new LocaleLabel("locale", BindingModel.of(userModel, Bindings.user().locale())).showPlaceholder(),
+				new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale())).showPlaceholder(),
 				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
 						DatePattern.SHORT_DATETIME).showPlaceholder()
 		);

@@ -26,9 +26,11 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 
 /**
- * Affichage sous forme de label d'un {@link GenericListItem}
- *
+ * Use {@code new CoreLabel(id, model)} and register a {@code Renderer} for the specific type instead.
+ * Use {@code new CoreLabel(id, MyTypeRenderer.get(...).asModel(model))} to display with a non-default renderer.
+ * @deprecated
  */
+@Deprecated
 public class GenericListItemLabel extends CoreLabel {
 
 	private static final long serialVersionUID = -902689514465301799L;

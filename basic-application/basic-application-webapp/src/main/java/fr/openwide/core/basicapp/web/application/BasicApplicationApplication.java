@@ -1,5 +1,7 @@
 package fr.openwide.core.basicapp.web.application;
 
+import java.util.Locale;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -56,6 +58,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
 import fr.openwide.core.wicket.more.rendering.EnumRenderer;
+import fr.openwide.core.wicket.more.rendering.LocaleRenderer;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 import fr.openwide.core.wicket.more.util.convert.HibernateProxyAwareConverterLocator;
@@ -106,6 +109,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(BasicUser.class, UserRenderer.get());
 		converterLocator.set(UserGroup.class, UserGroupRenderer.get());
 		
+		converterLocator.set(Locale.class, LocaleRenderer.get());
 		converterLocator.set(Boolean.class, BooleanRenderer.withPrefix("common.boolean.yesNo"));
 		
 		converterLocator.set(HistoryValue.class, HistoryValueRenderer.get());

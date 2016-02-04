@@ -32,6 +32,8 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.commons.util.rendering.IRenderer;
+import fr.openwide.core.wicket.markup.html.basic.AbstractCoreLabel;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.model.LocaleAwareReadOnlyModel;
 import fr.openwide.core.wicket.more.util.IDatePattern;
 import fr.openwide.core.wicket.more.util.model.Detachables;
@@ -302,6 +304,10 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
+	public AbstractCoreLabel<?> asLabel(String id, IModel<? extends T> valueModel) {
+		return new CoreLabel(id, asModel(valueModel));
+	}
+	
 	public Renderer<T> withResourceKey(String resourceKey) {
 		return new ResourceKeyWithRenderedParameterRenderer<>(resourceKey, this);
 	}
@@ -564,6 +570,31 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		@Override
 		public String toString() {
 			return "fromResourceKey(" + resourceKey + ")";
+		}
+	}
+	
+	public static <T> Renderer<T> fromStringFormat(String stringFormat) {
+		return new FromStringFormatRenderer<>(stringFormat);
+	}
+	
+	private static class FromStringFormatRenderer<T> extends Renderer<T> {
+		private static final long serialVersionUID = 1L;
+		
+		private final String stringFormat;
+		
+		public FromStringFormatRenderer(String stringFormat) {
+			super();
+			this.stringFormat = stringFormat;
+		}
+		
+		@Override
+		public String render(final Object value, Locale locale) {
+			return String.format(locale, stringFormat, value);
+		}
+		
+		@Override
+		public String toString() {
+			return "fromStringFormat(" + stringFormat + ")";
 		}
 	}
 	

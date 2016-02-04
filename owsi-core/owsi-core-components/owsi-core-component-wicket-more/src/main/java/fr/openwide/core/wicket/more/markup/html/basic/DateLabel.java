@@ -20,36 +20,22 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 import java.util.Date;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.convert.IConverter;
 
 import fr.openwide.core.wicket.markup.html.basic.AbstractCoreLabel;
+import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.util.IDatePattern;
-import fr.openwide.core.wicket.more.util.convert.converters.PatternDateConverter;
 
 public class DateLabel extends AbstractCoreLabel<DateLabel> {
+
 	private static final long serialVersionUID = 7214422620839758144L;
-	
-	private IConverter<Date> converter;
-	
+
 	public DateLabel(String id, IModel<Date> model, IDatePattern datePattern) {
-		super(id, model);
-		
-		this.converter = new PatternDateConverter(datePattern, new ResourceModel(datePattern.getJavaPatternKey()));
+		super(id, Renderer.fromDatePattern(datePattern).asModel(model));
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public <C> IConverter<C> getConverter(Class<C> type) {
-		if (Date.class.isAssignableFrom(type)) {
-			return (IConverter<C>) converter;
-		} else {
-			return super.getConverter(type);
-		}
-	}
-	
+
 	@Override
 	protected DateLabel thisAsT() {
 		return this;
 	}
+
 }

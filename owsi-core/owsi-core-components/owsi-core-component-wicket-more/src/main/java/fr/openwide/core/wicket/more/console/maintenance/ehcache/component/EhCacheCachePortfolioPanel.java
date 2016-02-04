@@ -2,9 +2,6 @@ package fr.openwide.core.wicket.more.console.maintenance.ehcache.component;
 
 import java.util.List;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.list.OddEvenListView;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.console.common.component.JavaPackageLabel;
@@ -26,7 +24,6 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCac
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationModel;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.basic.PercentageValueLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
 import fr.openwide.core.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
@@ -36,7 +33,10 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.rendering.CoreRenderers;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 
 public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>> {
 	private static final long serialVersionUID = -7588751914016782042L;
@@ -118,14 +118,17 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								CoreWicketMoreBindings.ehCacheCacheInformation().memoryStoreObjectCount())));
 						item.add(new Label("cacheEvictionCount", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().evictionCount())));
-						item.add(new PercentageValueLabel("cacheCacheFillRatio", PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio())), false, true));
+						
+						item.add(new CoreLabel("cacheCacheFillRatio", CoreRenderers.percent().asModel(
+								PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel,
+										CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio())))));
 						item.add(new Label("cacheHits", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().cacheHits())));
 						item.add(new Label("cacheMisses", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().cacheMisses())));
-						item.add(new PercentageValueLabel("cacheHitRatio", PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio())), false, true));
+						item.add(new CoreLabel("cacheHitRatio", CoreRenderers.percent().asModel(
+								PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel,
+										CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio())))));
 						
 						WebMarkupContainer progressBarsContainer = new WebMarkupContainer("progressBarsContainer");
 						item.add(progressBarsContainer);

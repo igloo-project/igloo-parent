@@ -26,10 +26,17 @@ import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
 import org.bindgen.Binding;
 
+import fr.openwide.core.commons.util.functional.Joiners;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
+/**
+ * Use {@code new CoreLabel(id, Renderer.fromJoiner(Joiners.Functions.onComma(), MyTypeRenderer.get(...)).asModel(model))} instead.
+ * @see Joiners.Functions
+ * @deprecated
+ */
+@Deprecated
 public class GenericListItemListLabel extends Label {
 
 	private static final long serialVersionUID = -6830982860837635819L;

@@ -26,7 +26,9 @@ import fr.openwide.core.jpa.more.business.generic.model.GenericListItemBinding;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 
 /**
- * @deprecated Use {@code new GenericListItemLabel(id, listItemModel).hideIfEmpty()} instead.
+ * Use {@code new CoreLabel(id, model).hideIfEmpty()} and register a {@code Renderer} for the specific type instead.
+ * Use {@code new CoreLabel(id, MyTypeRenderer.get(...).asModel(model)).hideIfEmpty()} to display with a non-default renderer.
+ * @deprecated
  */
 @Deprecated
 public class GenericListItemHideableLabel extends HideableLabel {
