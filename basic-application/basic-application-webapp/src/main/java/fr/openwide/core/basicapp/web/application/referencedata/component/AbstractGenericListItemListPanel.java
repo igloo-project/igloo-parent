@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.events.MouseEvent;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 import fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds;
 import fr.openwide.core.basicapp.web.application.referencedata.form.AbstractGenericListItemPopup;

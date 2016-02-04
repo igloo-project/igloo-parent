@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.odlabs.wiquery.core.events.StateEvent;
+import org.wicketstuff.wiquery.core.events.StateEvent;
 
 import fr.openwide.core.basicapp.web.application.referencedata.model.AbstractGenericListItemDataProvider;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
