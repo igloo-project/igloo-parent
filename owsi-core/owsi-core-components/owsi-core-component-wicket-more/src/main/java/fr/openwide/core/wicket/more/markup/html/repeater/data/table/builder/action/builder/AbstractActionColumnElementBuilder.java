@@ -20,6 +20,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.IBootstrapRendererModel;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterConditionFactory;
 import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.action.CoreActionColumnElementPanel;
@@ -74,23 +75,23 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 	}
 
 	protected void decorateLink(L link, IModel<T> rowModel) {
-		IModel<String> labelModel = renderer.asModel(rowModel);
-		IModel<String> tooltipModel = renderer.asTooltipModel(rowModel);
+		IBootstrapRendererModel rendererModel = renderer.asModel(rowModel);
+		IModel<String> tooltipModel = rendererModel.getTooltipModel();
 		Condition actionCondition = Condition.alwaysTrue();
 		for (IOneParameterConditionFactory<IModel<T>> conditionFactory : conditionFactories) {
 			actionCondition = actionCondition.and(conditionFactory.create(rowModel));
 		}
 		link
 				.add(
-						getIconComponent("icon", rowModel),
-						getLabelComponent("label", rowModel)
+						getIconComponent("icon", rendererModel),
+						getLabelComponent("label", rendererModel)
 				)
 				.add(
-						BootstrapColorBehavior.btn(renderer.asColorModel(rowModel)),
+						BootstrapColorBehavior.btn(rendererModel.getColorModel()),
 						new AttributeModifier("title",
 								showTooltipCondition.negate()
 										.then(Models.placeholder())
-										.elseIf(Condition.predicate(tooltipModel, Predicates2.hasText()).negate(), labelModel)
+										.elseIf(Condition.predicate(tooltipModel, Predicates2.hasText()).negate(), rendererModel)
 										.otherwise(tooltipModel)
 						),
 						new ClassAttributeAppender(cssClasses.toString()),
@@ -99,16 +100,17 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 	}
 
 	protected void decoratePlaceholder(PlaceholderContainer placeholder, IModel<T> rowModel) {
+		IBootstrapRendererModel rendererModel = renderer.asModel(rowModel);
 		placeholder.condition(showPlaceholderCondition.negate())
 				.add(
-						getIconComponent("icon", rowModel),
-						getLabelComponent("label", rowModel)
+						getIconComponent("icon", rendererModel),
+						getLabelComponent("label", rendererModel)
 				)
 				.add(new ClassAttributeAppender(cssClasses.toString()));
 	}
 
-	private Component getIconComponent(String id, IModel<T> rowModel) {
-		IModel<String> iconCssClassModel = getRenderer().asIconCssClassModel(rowModel);
+	private Component getIconComponent(String id, IBootstrapRendererModel rendererModel) {
+		IModel<String> iconCssClassModel = rendererModel.getIconCssClassModel();
 		
 		return new WebMarkupContainer(id)
 				.add(new ClassAttributeAppender(iconCssClassModel))
@@ -121,14 +123,12 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 				);
 	}
 
-	private Component getLabelComponent(String id, IModel<T> rowModel) {
-		IModel<String> labelModel = renderer.asModel(rowModel);
-		
-		return new CoreLabel("label", labelModel)
+	private Component getLabelComponent(String id, IBootstrapRendererModel rendererModel) {
+		return new CoreLabel("label", rendererModel)
 				.add(
 						new EnclosureBehavior()
 								.condition(
-										Condition.predicate(labelModel, Predicates2.hasText())
+										Condition.predicate(rendererModel, Predicates2.hasText())
 												.and(showLabelCondition)
 								)
 				);

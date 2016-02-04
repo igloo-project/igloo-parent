@@ -10,6 +10,14 @@ public final class BootstrapRendererInformation implements Serializable {
 
 	private static final long serialVersionUID = -6016103792390046731L;
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static Builder builder(BootstrapRendererInformation base) {
+		return new Builder(base);
+	}
+
 	private final String label ;
 
 	private final String iconCssClass;
@@ -25,10 +33,6 @@ public final class BootstrapRendererInformation implements Serializable {
 		this.tooltip = builder.tooltip;
 	}
 
-	public static Builder builder() {
-		return new Builder();
-	}
-
 	public static final class Builder {
 		
 		private String label;
@@ -38,6 +42,18 @@ public final class BootstrapRendererInformation implements Serializable {
 		private IBootstrapColor color = BootstrapColor.DEFAULT;
 		
 		private String tooltip;
+		
+		private Builder() {
+		}
+		
+		private Builder(BootstrapRendererInformation base) {
+			if (base != null) {
+				this.label = base.label;
+				this.iconCssClass = base.iconCssClass;
+				this.color = base.color;
+				this.tooltip = base.tooltip;
+			}
+		}
 		
 		public Builder label(String label) {
 			this.label = label;

@@ -2,6 +2,8 @@ package fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer;
 
 import java.util.Locale;
 
+import org.apache.wicket.model.IModel;
+
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
@@ -22,22 +24,30 @@ public abstract class BootstrapLabelRenderer<T> extends BootstrapRenderer<T> {
 	@Override
 	public abstract String render(T value, Locale locale);
 
-	public abstract IBootstrapColor getColor(T value);
+	protected abstract IBootstrapColor getColor(T value);
 
-	public abstract String getIconCssClass(T value);
+	protected abstract String getIconCssClass(T value);
 
 	public Renderer<? super T> getTooltipRenderer() {
 		return DEFAULT_TOOLTIP_RENDERER;
 	}
 
 	@Override
-	protected BootstrapRendererInformation doRender(T value, Locale locale) {
+	protected final BootstrapRendererInformation doRender(T value, Locale locale) {
 		return BootstrapRendererInformation.builder()
 				.label(render(value, locale))
 				.color(getColor(value))
 				.icon(getIconCssClass(value))
 				.tooltip(getTooltipRenderer().render(value, locale))
 				.build();
+	}
+	
+	public IModel<String> asIconCssClassModel(IModel<? extends T> valueModel) {
+		return asModel(valueModel).getIconCssClassModel();
+	}
+	
+	public IModel<IBootstrapColor> asColorModel(IModel<? extends T> valueModel) {
+		return asModel(valueModel).getColorModel();
 	}
 
 }

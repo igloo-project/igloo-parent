@@ -12,6 +12,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.IBootstrapRendererModel;
 
 public class BootstrapLabel<T> extends GenericPanel<T> {
 
@@ -20,8 +21,8 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 	public BootstrapLabel(String id, IModel<T> model, final BootstrapRenderer<? super T> renderer) {
 		super(id, model);
 		
-		IModel<String> labelModel = renderer.asModel(model);
-		IModel<String> iconCssClassModel = renderer.asIconCssClassModel(model);
+		IBootstrapRendererModel labelModel = renderer.asModel(model);
+		IModel<String> iconCssClassModel = labelModel.getIconCssClassModel();
 		
 		add(
 				new WebMarkupContainer("icon")
@@ -31,9 +32,9 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		);
 		
 		add(
-				BootstrapColorBehavior.label(renderer.asColorModel(model)),
+				BootstrapColorBehavior.label(labelModel.getColorModel()),
 				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).model(Predicates2.hasText(), labelModel),
-				new AttributeAppender("title", renderer.asTooltipModel(model))
+				new AttributeAppender("title", labelModel.getTooltipModel())
 		);
 		
 	}
