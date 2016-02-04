@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.wicket.Localizer;
-import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
@@ -294,7 +293,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		
 		@Override
 		public String getObject(Locale locale) {
-			return Renderer.this.render(valueModel.getObject(), Session.get().getLocale());
+			return Renderer.this.render(valueModel.getObject(), locale);
 		}
 		
 		@Override
