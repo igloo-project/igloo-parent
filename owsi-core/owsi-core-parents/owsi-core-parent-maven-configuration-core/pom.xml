@@ -82,7 +82,16 @@
 		
 		<owsi-core.poi.version>3.13</owsi-core.poi.version>
 		
+		<!-- 
+		Version 3 does not exist.
+		Version 4 is not supported by XHTMLRenderer.
+		Versions 5 and above are released under the artifact id com.itextpdf:itextpdf.
+		But these are licensed under Affero GPL, which is unsuitable for use in closed-source applications,
+		so using it here would prevent closed-source applications from using OWSI-Core. 
+		See http://itextpdf.com/AGPL
+		 -->
 		<owsi-core.itext.version>2.1.7</owsi-core.itext.version>
+		
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.13</owsi-core.jackson.version>
 		<owsi-core.jackson2-core.version>2.7.0</owsi-core.jackson2-core.version>
@@ -815,11 +824,19 @@
 					<version>${owsi-core.flying-saucer.version}</version>
 				</dependency>
 				
+				<!-- 
+				The most recent versions of this artifact are released under the artifact id com.itextpdf:itextpdf.
+				But these are licensed under Affero GPL; see comments on property owsi-core.itext.version
+				for more information.
+				 -->
 				<dependency>
 					<groupId>com.lowagie</groupId>
 					<artifactId>itext</artifactId>
 					<version>${owsi-core.itext.version}</version>
-					<!-- il peut du coup être nécessaire de les ajouter en version jdk15 si on utilise des fichiers pdf protégés -->
+					<!--
+					Because of these exclusions, you may have to add dependencies to the jdk15 or jdk15on artifacts
+					if you want to deal with protected (encrypted) PDF files
+					-->
 					<exclusions>
 						<exclusion>
 							<groupId>bouncycastle</groupId>
