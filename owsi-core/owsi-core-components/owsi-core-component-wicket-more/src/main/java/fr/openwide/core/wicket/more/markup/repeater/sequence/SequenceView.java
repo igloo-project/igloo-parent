@@ -3,16 +3,21 @@ package fr.openwide.core.wicket.more.markup.repeater.sequence;
 import java.util.Iterator;
 
 import org.apache.wicket.markup.repeater.AbstractPageableView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
-import fr.openwide.core.wicket.more.markup.repeater.sequence.ISequenceProvider;
+import fr.openwide.core.wicket.more.util.model.SequenceProviders;
 
 public abstract class SequenceView<T> extends AbstractPageableView<T> implements IRefreshableOnDemandRepeater {
 
 	private static final long serialVersionUID = 1L;
 	
 	private final ISequenceProvider<T> sequenceProvider;
+	
+	public SequenceView(String id, IDataProvider<T> dataProvider) {
+		this(id, SequenceProviders.forDataProvider(dataProvider));
+	}
 	
 	public SequenceView(String id, ISequenceProvider<T> sequenceProvider) {
 		super(id);
