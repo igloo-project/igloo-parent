@@ -1,52 +1,79 @@
 package fr.openwide.core.wicket.more.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
+import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
-@SuppressWarnings("rawtypes")
-public final class CollectionCopyModel<C extends Collection>
-		implements IModel<C> {
+import fr.openwide.core.commons.util.functional.Suppliers2;
+import fr.openwide.core.wicket.more.markup.repeater.collection.ICollectionModel;
+import fr.openwide.core.wicket.more.util.model.Models;
 
-	private static final long serialVersionUID = 6790239207288306463L;
+/**
+ * A {@link ICollectionModel} whose content is to be "cloned" (i.e. copied to a new
+ * collection) each time {@link #setObject(Collection)} is called.
+ * 
+ * <p>This is typically what you want when editing a collection in a form.
+ * 
+ * <p>Instances of this class are guaranteed to always return the same model for a given element, up to this element's
+ * removal from the collection.
+ * 
+ * <p><strong>WARNING:</strong> this model is only intended to contain small collections. It is absolutely not optimized
+ * for large collections (say, more than just one or two dozens of items). Performance issues may arise when dealing
+ * with large collections.
+ * 
+ * @see AbstractCollectionCopyModel
+ */
+public final class CollectionCopyModel<T, C extends Collection<T>, M extends IModel<T>>
+		extends AbstractCollectionCopyModel<T, C, M> {
 
+	private static final long serialVersionUID = -1768835911782930879L;
+	
 	private final Supplier<? extends C> newCollectionSupplier;
 	
-	private C collection = null;
+	private final Function<? super T, ? extends M> itemModelFunction;
 	
-	public CollectionCopyModel(Supplier<? extends C> newCollectionSupplier) {
+	/**
+	 * A collection copy model suitable for elements that may be safely serialized as is, such as enums.
+	 * <p>This <strong>should not</strong> be used when your elements are database entities.
+	 * <p><strong>Be aware</strong> that you probably won't need to implement the supplier yourself,
+	 * as {@link Suppliers2} provides a wide range of collection suppliers.
+	 */
+	public static <T extends Serializable, C extends Collection<T>, M extends IModel<T>> CollectionCopyModel<T, C, Model<T>>
+			serializable(Supplier<? extends C> newCollectionSupplier) {
+		return new CollectionCopyModel<>(newCollectionSupplier, Models.<T>serializableModelFactory());
+	}
+
+	/**
+	 * A collection copy model suitable for elements that must be serialized through a custom model, such as entities.
+	 * <p><strong>Be aware</strong> that you probably won't need to implement the supplier and functions yourself,
+	 * as {@link Suppliers2} provides a wide range of collection suppliers, and several models have pre-existing
+	 * factory functions ({@link GenericEntityModel#factory()} or {@link Models#serializableModelFactory()}, most notably).
+	 */
+	public static <T, C extends Collection<T>, M extends IModel<T>> CollectionCopyModel<T, C, M>
+			custom(Supplier<? extends C> newCollectionSupplier, Function<? super T, ? extends M> itemModelFunction) {
+		return new CollectionCopyModel<>(newCollectionSupplier, itemModelFunction);
+	}
+	
+	private CollectionCopyModel(Supplier<? extends C> newCollectionSupplier, Function<? super T, ? extends M> itemModelFunction) {
 		super();
 		this.newCollectionSupplier = newCollectionSupplier;
+		this.itemModelFunction = itemModelFunction;
 		setObject(null); // Sets to an empty collection
 	}
 
+	@Override
 	protected C createCollection() {
 		return newCollectionSupplier.get();
 	}
-	
-	@Override
-	public C getObject() {
-		return collection;
-	}
-	
-	/**
-	 * WARNING: if the client calls <code>setObject(null)</code>, a subsequent call to <code>getObject()</code>
-	 * will not return <code>null</code>, but <em>an empty collection</em>.
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public void setObject(C object) {
-		collection = createCollection();
-		if (object != null) {
-			collection.addAll(object);
-		}
-	}
 
 	@Override
-	public void detach() {
-		// Rien à faire
+	protected M createModel(T item) {
+		return itemModelFunction.apply(item);
 	}
 
 }

@@ -53,24 +53,12 @@ public final class Suppliers2 {
 
 	private Suppliers2() { }
 
+	/**
+	 * @deprecated Use Suppliers.ofInstance instead
+	 */
+	@Deprecated
 	public static <T> Supplier<T> constant(T value) {
-		return new ConstantSupplier<T>(value);
-	}
-	
-	private static class ConstantSupplier<T> implements Supplier<T>, Serializable {
-		private static final long serialVersionUID = 6476238745119640079L;
-		
-		private final T value;
-		
-		public ConstantSupplier(T value) {
-			super();
-			this.value = value;
-		}
-
-		@Override
-		public T get() {
-			return value;
-		}
+		return Suppliers.ofInstance(value);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // LinkedListSupplier works for any T
@@ -88,6 +76,11 @@ public final class Suppliers2 {
 		@Override
 		public LinkedList<?> get() {
 			return Lists.newLinkedList();
+		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.linkedList()";
 		}
 	}
 	
@@ -107,6 +100,11 @@ public final class Suppliers2 {
 		public ArrayList<?> get() {
 			return Lists.newArrayList();
 		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.arrayList()";
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // HashSetSupplier works for any T
@@ -125,6 +123,11 @@ public final class Suppliers2 {
 		public HashSet<?> get() {
 			return Sets.newHashSet();
 		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.hashSet()";
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // HashSetSupplier works for any T
@@ -142,6 +145,11 @@ public final class Suppliers2 {
 		@Override
 		public LinkedHashSet<?> get() {
 			return Sets.newLinkedHashSet();
+		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.linkedHashSet()";
 		}
 	}
 	
@@ -167,6 +175,11 @@ public final class Suppliers2 {
 		@SuppressWarnings("rawtypes")
 		public TreeSet<?> get() {
 			return (TreeSet) Sets.newTreeSet();
+		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.treeSet()";
 		}
 	}
 	
@@ -196,6 +209,11 @@ public final class Suppliers2 {
 		public TreeSet<T> get() {
 			return Sets.newTreeSet(comparator);
 		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.treeSet(" + comparator + ")";
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // HashMapSupplier works for any K and V
@@ -214,6 +232,11 @@ public final class Suppliers2 {
 		public HashMap<?, ?> get() {
 			return Maps.newHashMap();
 		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.hashMap()";
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // HashMapSupplier works any K and V
@@ -231,6 +254,11 @@ public final class Suppliers2 {
 		@Override
 		public LinkedHashMap<?, ?> get() {
 			return Maps.newLinkedHashMap();
+		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.linkedHashMap()";
 		}
 	}
 	
@@ -256,6 +284,11 @@ public final class Suppliers2 {
 		@SuppressWarnings("rawtypes")
 		public TreeMap<?, ?> get() {
 			return (TreeMap) Maps.newTreeMap();
+		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.treeMap()";
 		}
 	}
 	
@@ -284,6 +317,11 @@ public final class Suppliers2 {
 		@Override
 		public TreeMap<K, V> get() {
 			return Maps.newTreeMap(comparator);
+		}
+		
+		@Override
+		public String toString() {
+			return "Suppliers2.treeMap(" + comparator + ")";
 		}
 	}
 

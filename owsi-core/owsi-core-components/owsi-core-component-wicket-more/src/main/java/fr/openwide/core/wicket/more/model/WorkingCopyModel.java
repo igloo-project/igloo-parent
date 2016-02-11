@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 
 public class WorkingCopyModel<T> implements IModel<T> {
@@ -20,6 +22,16 @@ public class WorkingCopyModel<T> implements IModel<T> {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		return new EqualsBuilder().appendSuper(super.equals(obj)).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().appendSuper(super.hashCode()).hashCode();
+	}
+
+	@Override
 	public void detach() {
 		this.reference.detach();
 		this.workingCopy.detach();
@@ -36,11 +48,27 @@ public class WorkingCopyModel<T> implements IModel<T> {
 	}
 
 	public void read() {
-		workingCopy.setObject(reference.getObject());
+		try {
+			workingCopy.setObject(reference.getObject());
+		} catch (RuntimeException e) {
+			throw new IllegalStateException("Exception while reading from " + tryToString(reference) + " to " + tryToString(workingCopy), e);
+		}
 	}
 
 	public void write() {
-		reference.setObject(workingCopy.getObject());
+		try {
+			reference.setObject(workingCopy.getObject());
+		} catch (RuntimeException e) {
+			throw new IllegalStateException("Exception while writing from " + tryToString(workingCopy) + " to " + tryToString(reference), e);
+		}
+	}
+
+	private String tryToString(IModel<?> model) {
+		try {
+			return String.valueOf(model);
+		} catch (Exception e) {
+			return "<Unexpected exception while calling String.valueOf(model)>";
+		}
 	}
 
 	public IModel<T> getReferenceModel() {

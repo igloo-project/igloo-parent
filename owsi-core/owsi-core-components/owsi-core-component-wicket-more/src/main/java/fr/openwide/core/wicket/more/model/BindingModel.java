@@ -16,6 +16,7 @@
  */
 package fr.openwide.core.wicket.more.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -83,6 +84,14 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	@Override
 	protected String propertyExpression() {
 		return propertyExpression;
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("root", getTarget())
+				.append("propertyExpression", getPropertyExpression())
+				.build();
 	}
 
 }

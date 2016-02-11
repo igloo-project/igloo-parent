@@ -32,9 +32,7 @@ public final class Detachables {
 	
 	public static void detach(Map<? extends IDetachable, ? extends IDetachable> detachablesMap) {
 		for (Entry<? extends IDetachable, ? extends IDetachable> entry : detachablesMap.entrySet()) {
-			if (entry != null) {
-				Detachables.detach(entry.getKey(), entry.getValue());
-			}
+			Detachables.detach(entry.getKey(), entry.getValue());
 		}
 	}
 }

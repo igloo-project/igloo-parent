@@ -14,8 +14,8 @@ import fr.openwide.core.basicapp.web.application.history.model.HistoryLogDataPro
 import fr.openwide.core.jpa.more.business.history.search.HistoryLogSort;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AddInPlacement;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.html.sort.SortIconStyle;
 import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import fr.openwide.core.wicket.more.util.DatePattern;

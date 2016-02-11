@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.google.common.base.Equivalence;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -35,6 +36,10 @@ import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeGenericEnt
 public class TestSuiteGenericEntityCollectionModel {
 	
 	public static class TestGenericEntityArrayListModel extends AbstractTestGenericEntityCollectionModel<List<Person>> {
+		public TestGenericEntityArrayListModel() {
+			super(Equivalence.equals());
+		}
+
 		@Override
 		protected IModel<List<Person>> createModel() {
 			return GenericEntityArrayListModel.of(Person.class);
@@ -49,14 +54,13 @@ public class TestSuiteGenericEntityCollectionModel {
 		protected List<Person> clone(List<Person> collection) {
 			return Lists.newArrayList(collection);
 		}
-		
-		@Override
-		protected boolean equals(List<Person> expected, List<Person> item) {
-			return expected.equals(item);
-		}
 	}
 	
 	public static class TestGenericEntityHashSetModel extends AbstractTestGenericEntityCollectionModel<Set<Person>> {
+		public TestGenericEntityHashSetModel() {
+			super(UNORDERED_SET_EQUIVALENCE);
+		}
+		
 		@Override
 		protected IModel<Set<Person>> createModel() {
 			return GenericEntityHashSetModel.of(Person.class);
@@ -71,14 +75,13 @@ public class TestSuiteGenericEntityCollectionModel {
 		protected Set<Person> clone(Set<Person> collection) {
 			return Sets.newHashSet(collection);
 		}
-		
-		@Override
-		protected boolean equals(Set<Person> expected, Set<Person> item) {
-			return expected.size() == item.size() && item.containsAll(expected); // No constraint on Set order
-		}
 	}
 	
 	public static class TestGenericEntityTreeSetModel extends AbstractTestGenericEntityCollectionModel<SortedSet<Person>> {
+		public TestGenericEntityTreeSetModel() {
+			super(ORDERED_SET_EQUIVALENCE);
+		}
+		
 		@Override
 		protected IModel<SortedSet<Person>> createModel() {
 			return GenericEntityTreeSetModel.of(Person.class, PersonComparator.get());
@@ -97,14 +100,13 @@ public class TestSuiteGenericEntityCollectionModel {
 			result.addAll(collection);
 			return result;
 		}
-		
-		@Override
-		protected boolean equals(SortedSet<Person> expected, SortedSet<Person> item) {
-			return Lists.newArrayList(expected).equals(Lists.newArrayList(item)); // SortedSet.equals won't work on cloned transient instances
-		}
 	}
 	
 	public static class TestGenericEntityCollectionModel extends AbstractTestGenericEntityCollectionModel<Collection<Person>> {
+		public TestGenericEntityCollectionModel() {
+			super(Equivalence.equals());
+		}
+		
 		@Override
 		protected IModel<Collection<Person>> createModel() {
 			return GenericEntityCollectionModel.of(Person.class);
@@ -119,14 +121,13 @@ public class TestSuiteGenericEntityCollectionModel {
 		protected Collection<Person> clone(Collection<Person> collection) {
 			return Lists.newArrayList(collection);
 		}
-		
-		@Override
-		protected boolean equals(Collection<Person> expected, Collection<Person> item) {
-			return expected.equals(item);
-		}
 	}
 	
 	public static class TestSessionThreadSafeGenericEntityArrayListModel extends AbstractTestGenericEntityCollectionModel<List<Person>> {
+		public TestSessionThreadSafeGenericEntityArrayListModel() {
+			super(Equivalence.equals());
+		}
+		
 		@Override
 		protected IModel<List<Person>> createModel() {
 			return SessionThreadSafeGenericEntityArrayListModel.of(Person.class);
@@ -141,14 +142,13 @@ public class TestSuiteGenericEntityCollectionModel {
 		protected List<Person> clone(List<Person> collection) {
 			return Lists.newArrayList(collection);
 		}
-		
-		@Override
-		protected boolean equals(List<Person> expected, List<Person> item) {
-			return expected.equals(item);
-		}
 	}
 	
 	public static class TestSessionThreadSafeGenericEntityHashSetModel extends AbstractTestGenericEntityCollectionModel<Set<Person>> {
+		public TestSessionThreadSafeGenericEntityHashSetModel() {
+			super(UNORDERED_SET_EQUIVALENCE);
+		}
+		
 		@Override
 		protected IModel<Set<Person>> createModel() {
 			return SessionThreadSafeGenericEntityHashSetModel.of(Person.class);
@@ -163,14 +163,13 @@ public class TestSuiteGenericEntityCollectionModel {
 		protected Set<Person> clone(Set<Person> collection) {
 			return Sets.newHashSet(collection);
 		}
-		
-		@Override
-		protected boolean equals(Set<Person> expected, Set<Person> item) {
-			return expected.size() == item.size() && item.containsAll(expected); // No constraint on Set order
-		}
 	}
 	
 	public static class TestSessionThreadSafeGenericEntityTreeSetModel extends AbstractTestGenericEntityCollectionModel<SortedSet<Person>> {
+		public TestSessionThreadSafeGenericEntityTreeSetModel() {
+			super(ORDERED_SET_EQUIVALENCE);
+		}
+		
 		@Override
 		protected IModel<SortedSet<Person>> createModel() {
 			return SessionThreadSafeGenericEntityTreeSetModel.of(Person.class, PersonComparator.get());
@@ -188,11 +187,6 @@ public class TestSuiteGenericEntityCollectionModel {
 			SortedSet<Person> result = Sets.newTreeSet(PersonComparator.get());
 			result.addAll(collection);
 			return result;
-		}
-		
-		@Override
-		protected boolean equals(SortedSet<Person> expected, SortedSet<Person> item) {
-			return Lists.newArrayList(expected).equals(Lists.newArrayList(item)); // SortedSet.equals won't work on cloned transient instances
 		}
 	}
 

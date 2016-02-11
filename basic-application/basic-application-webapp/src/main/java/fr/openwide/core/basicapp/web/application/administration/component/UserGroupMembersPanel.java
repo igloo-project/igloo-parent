@@ -34,9 +34,9 @@ import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterMode
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AddInPlacement;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
+import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
