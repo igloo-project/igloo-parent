@@ -199,6 +199,7 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 		 */
 		M map = getObject();
 		map.put(key, value);
+		updateModelsIfExternalChangeIsPossible();
 	}
 
 	@Override
@@ -209,6 +210,7 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 		 */
 		M map = getObject();
 		map.remove(key);
+		updateModelsIfExternalChangeIsPossible();
 	}
 	
 	@Override

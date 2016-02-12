@@ -167,6 +167,7 @@ abstract class AbstractCollectionCopyModel<T, C extends Collection<T>, M extends
 		 */
 		C collection = getObject();
 		collection.add(item);
+		updateModelsIfExternalChangeIsPossible();
 	}
 	
 	@Override
@@ -177,6 +178,7 @@ abstract class AbstractCollectionCopyModel<T, C extends Collection<T>, M extends
 		 */
 		C collection = getObject();
 		collection.remove(item);
+		updateModelsIfExternalChangeIsPossible();
 	}
 	
 	@Override
