@@ -11,6 +11,7 @@ public final class Joiners {
 	private static final Joiner NON_BREAKING_SPACE = Joiner.on("\u00A0").skipNulls();
 	private static final Joiner NEW_LINE = Joiner.on("\n").skipNulls();
 	private static final Joiner NEW_LINE_SEMICOLON = Joiner.on(" ;\n").skipNulls();
+	private static final Joiner HYPHEN = Joiner.on("-").skipNulls();
 	private static final Joiner HYPHEN_SPACE = Joiner.on(" - ").skipNulls();
 	private static final Joiner MIDDOT_SPACE = Joiner.on(" · ").skipNulls();
 	private static final Joiner DOT = Joiner.on(".").skipNulls();
@@ -33,6 +34,10 @@ public final class Joiners {
 		return NEW_LINE_SEMICOLON;
 	}
 
+	public static Joiner onHyphen() {
+		return HYPHEN;
+	}
+	
 	public static Joiner onHyphenSpace() {
 		return HYPHEN_SPACE;
 	}
@@ -81,6 +86,13 @@ public final class Joiners {
 			@Override
 			public Joiner apply(Object input) {
 				return Joiners.NEW_LINE_SEMICOLON;
+			}
+		};
+		private static final Function<Object, Joiner> HYPHEN = new SerializableFunction<Object, Joiner>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Joiner apply(Object input) {
+				return Joiners.HYPHEN;
 			}
 		};
 		private static final Function<Object, Joiner> HYPHEN_SPACE = new SerializableFunction<Object, Joiner>() {
@@ -135,6 +147,10 @@ public final class Joiners {
 			return NEW_LINE_SEMICOLON;
 		}
 
+		public static Function<Object, Joiner> onHyphen() {
+			return HYPHEN;
+		}
+		
 		public static Function<Object, Joiner> onHyphenSpace() {
 			return HYPHEN_SPACE;
 		}
