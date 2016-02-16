@@ -9,7 +9,7 @@ public interface IActionColumnConfirmActionBuilderStepStart<T, S extends ISort<?
 
 	IActionColumnConfirmActionBuilderStepContent<T, S> title(IModel<String> titleModel);
 
-	IActionColumnConfirmActionBuilderStepContent<T, S> title(IOneParameterModelFactory<IModel<T>, String> titleModelFactory);
+	IActionColumnConfirmActionBuilderStepContent<T, S> title(IOneParameterModelFactory<? super IModel<T>, String> titleModelFactory);
 
 	IActionColumnConfirmActionBuilderStepOnclick<T, S> deleteConfirmation();
 

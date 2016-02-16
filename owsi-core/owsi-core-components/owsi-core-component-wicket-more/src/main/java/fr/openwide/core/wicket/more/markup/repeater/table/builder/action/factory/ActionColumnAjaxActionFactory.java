@@ -14,9 +14,9 @@ public class ActionColumnAjaxActionFactory<T> implements IOneParameterComponentF
 
 	private static final long serialVersionUID = 1L;
 	
-	private final IOneParameterAjaxAction<IModel<T>> action;
+	private final IOneParameterAjaxAction<? super IModel<T>> action;
 	
-	public ActionColumnAjaxActionFactory(IOneParameterAjaxAction<IModel<T>> action) {
+	public ActionColumnAjaxActionFactory(IOneParameterAjaxAction<? super IModel<T>> action) {
 		super();
 		this.action = action;
 	}

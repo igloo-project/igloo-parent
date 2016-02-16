@@ -28,16 +28,16 @@ public interface IActionColumnBuildState<T, S extends ISort<?>> {
 			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> mapper);
 
 	IActionColumnAddedAjaxActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<IModel<T>> action);
+			IOneParameterAjaxAction<? super IModel<T>> action);
 
 	IActionColumnAddedAjaxActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<IModel<T>> action);
+			IOneParameterAjaxAction<? super IModel<T>> action);
 
 	IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAction<IModel<T>> action);
+			IOneParameterAction<? super IModel<T>> action);
 
 	IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAction<IModel<T>> action);
+			IOneParameterAction<? super IModel<T>> action);
 
 	IActionColumnConfirmActionBuilderStepStart<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer);
 

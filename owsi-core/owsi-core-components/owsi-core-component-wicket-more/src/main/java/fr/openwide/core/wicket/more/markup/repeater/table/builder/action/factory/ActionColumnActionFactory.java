@@ -10,9 +10,9 @@ public class ActionColumnActionFactory<T> implements IOneParameterComponentFacto
 
 	private static final long serialVersionUID = 1L;
 	
-	private final IOneParameterAction<IModel<T>> action;
+	private final IOneParameterAction<? super IModel<T>> action;
 	
-	public ActionColumnActionFactory(IOneParameterAction<IModel<T>> action) {
+	public ActionColumnActionFactory(IOneParameterAction<? super IModel<T>> action) {
 		super();
 		this.action = action;
 	}

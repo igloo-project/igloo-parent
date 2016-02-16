@@ -10,6 +10,7 @@ import com.google.common.base.Function;
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.column.ICoreColumn;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.util.IDatePattern;
@@ -52,5 +53,9 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
 	<C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			AbstractCoreBinding<? super T, Boolean> binding);
+	
+	ActionColumnBuilder<T, S> addActionColumn();
+	
+	ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel);
 
 }

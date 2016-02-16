@@ -39,7 +39,7 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 	}
 
 	@Override
-	public IActionColumnConfirmActionBuilderStepContent<T, S> title(IOneParameterModelFactory<IModel<T>, String> titleModelFactory) {
+	public IActionColumnConfirmActionBuilderStepContent<T, S> title(IOneParameterModelFactory<? super IModel<T>, String> titleModelFactory) {
 		ajaxConfirmLinkBuilder.title(titleModelFactory);
 		return this;
 	}
@@ -57,7 +57,7 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 	}
 
 	@Override
-	public IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IOneParameterModelFactory<IModel<T>, String> contentModelFactory) {
+	public IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IOneParameterModelFactory<? super IModel<T>, String> contentModelFactory) {
 		ajaxConfirmLinkBuilder.content(contentModelFactory);
 		return this;
 	}
@@ -111,7 +111,7 @@ public class ActionColumnConfirmActionBuilder<T, S extends ISort<?>> implements
 	}
 
 	@Override
-	public IActionColumnAddedConfirmActionState<T, S> onClick(IOneParameterAjaxAction<IModel<T>> onClick) {
+	public IActionColumnAddedConfirmActionState<T, S> onClick(IOneParameterAjaxAction<? super IModel<T>> onClick) {
 		return actionColumnBuilder.addConfirmAction(renderer, ajaxConfirmLinkBuilder.onClick(onClick));
 	}
 

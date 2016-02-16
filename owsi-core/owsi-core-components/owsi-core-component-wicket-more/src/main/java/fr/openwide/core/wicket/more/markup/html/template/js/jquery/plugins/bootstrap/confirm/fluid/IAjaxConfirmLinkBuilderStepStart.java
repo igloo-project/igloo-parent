@@ -8,7 +8,7 @@ public interface IAjaxConfirmLinkBuilderStepStart<O> {
 
 	IAjaxConfirmLinkBuilderStepContent<O> title(IModel<String> titleModel);
 
-	IAjaxConfirmLinkBuilderStepContent<O> title(IOneParameterModelFactory<IModel<O>, String> titleModelFactory);
+	IAjaxConfirmLinkBuilderStepContent<O> title(IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory);
 
 	IAjaxConfirmLinkBuilderStepOnclick<O> deleteConfirmation();
 

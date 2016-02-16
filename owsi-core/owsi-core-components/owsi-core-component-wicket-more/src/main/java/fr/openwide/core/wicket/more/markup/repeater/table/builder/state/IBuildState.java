@@ -1,11 +1,8 @@
 package fr.openwide.core.wicket.more.markup.repeater.table.builder.state;
 
-import org.apache.wicket.model.IModel;
-
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.markup.repeater.table.CoreDataTable;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.IDataTableFactory;
-import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.toolbar.CustomizableToolbarBuilder;
 
 public interface IBuildState<T, S extends ISort<?>> {
@@ -13,10 +10,6 @@ public interface IBuildState<T, S extends ISort<?>> {
 	CustomizableToolbarBuilder<T, S> addTopToolbar();
 	
 	CustomizableToolbarBuilder<T, S> addBottomToolbar();
-	
-	ActionColumnBuilder<T, S> addActionColumn();
-	
-	ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel);
 	
 	IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
 

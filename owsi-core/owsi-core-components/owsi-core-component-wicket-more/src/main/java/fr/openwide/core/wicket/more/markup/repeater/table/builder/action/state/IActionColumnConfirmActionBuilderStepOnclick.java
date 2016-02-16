@@ -7,6 +7,6 @@ import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 
 public interface IActionColumnConfirmActionBuilderStepOnclick<T, S extends ISort<?>> {
 
-	IActionColumnAddedConfirmActionState<T, S> onClick(IOneParameterAjaxAction<IModel<T>> onClick);
+	IActionColumnAddedConfirmActionState<T, S> onClick(IOneParameterAjaxAction<? super IModel<T>> onClick);
 
 }

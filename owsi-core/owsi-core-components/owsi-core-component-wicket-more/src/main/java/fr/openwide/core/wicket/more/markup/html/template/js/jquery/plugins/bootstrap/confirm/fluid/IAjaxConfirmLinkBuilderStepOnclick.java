@@ -7,7 +7,7 @@ import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 
 public interface IAjaxConfirmLinkBuilderStepOnclick<O> {
 
-	IAjaxConfirmLinkBuilderStepOneParameterTerminal<O> onClick(IOneParameterAjaxAction<IModel<O>> onClick);
+	IAjaxConfirmLinkBuilderStepOneParameterTerminal<O> onClick(IOneParameterAjaxAction<? super IModel<O>> onClick);
 
 	IAjaxConfirmLinkBuilderStepTerminal<O> onClick(IAjaxAction onClick);
 

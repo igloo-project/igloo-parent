@@ -8,6 +8,6 @@ public interface IAjaxConfirmLinkBuilderStepContent<O> {
 
 	IAjaxConfirmLinkBuilderStepEndContent<O> content(IModel<String> contentModel);
 
-	IAjaxConfirmLinkBuilderStepEndContent<O> content(IOneParameterModelFactory<IModel<O>, String> contentModelFactory);
+	IAjaxConfirmLinkBuilderStepEndContent<O> content(IOneParameterModelFactory<? super IModel<O>, String> contentModelFactory);
 
 }

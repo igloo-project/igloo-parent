@@ -82,25 +82,25 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		
 		@Override
 		public IActionColumnAddedAjaxActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-				IOneParameterAjaxAction<IModel<T>> action) {
+				IOneParameterAjaxAction<? super IModel<T>> action) {
 			return ActionColumnBuilder.this.addAction(renderer, action);
 		}
 		
 		@Override
 		public IActionColumnAddedAjaxActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-				IOneParameterAjaxAction<IModel<T>> action) {
+				IOneParameterAjaxAction<? super IModel<T>> action) {
 			return ActionColumnBuilder.this.addLabelledAction(renderer, action);
 		}
 		
 		@Override
 		public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-				IOneParameterAction<IModel<T>> action) {
+				IOneParameterAction<? super IModel<T>> action) {
 			return ActionColumnBuilder.this.addAction(renderer, action);
 		}
 		
 		@Override
 		public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-				IOneParameterAction<IModel<T>> action) {
+				IOneParameterAction<? super IModel<T>> action) {
 			return ActionColumnBuilder.this.addLabelledAction(renderer, action);
 		}
 		
@@ -375,7 +375,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	@Override
 	public IActionColumnAddedAjaxActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<IModel<T>> action) {
+			IOneParameterAjaxAction<? super IModel<T>> action) {
 		AbstractActionColumnElementBuilder<T, ?, ?> builder =
 				new ActionColumnSimpleElementBuilder<>(renderer, new ActionColumnAjaxActionFactory<T>(action));
 		builders.add(builder);
@@ -384,13 +384,13 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	@Override
 	public IActionColumnAddedAjaxActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<IModel<T>> action) {
+			IOneParameterAjaxAction<? super IModel<T>> action) {
 		return addAction(renderer, action).showLabel();
 	}
 
 	@Override
 	public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAction<IModel<T>> action) {
+			IOneParameterAction<? super IModel<T>> action) {
 		AbstractActionColumnElementBuilder<T, ?, ?> builder =
 				new ActionColumnSimpleElementBuilder<>(renderer, new ActionColumnActionFactory<T>(action));
 		builders.add(builder);
@@ -399,7 +399,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	@Override
 	public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterAction<IModel<T>> action) {
+			IOneParameterAction<? super IModel<T>> action) {
 		return addAction(renderer, action).showLabel();
 	}
 

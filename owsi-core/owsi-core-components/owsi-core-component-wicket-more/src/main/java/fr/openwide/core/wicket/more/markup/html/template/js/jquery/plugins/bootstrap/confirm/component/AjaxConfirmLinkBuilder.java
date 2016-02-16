@@ -28,9 +28,9 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 
 	private static final long serialVersionUID = 365949870142796149L;
 
-	private IOneParameterModelFactory<IModel<O>, String> titleModelFactory;
+	private IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory;
 	
-	private IOneParameterModelFactory<IModel<O>, String> contentModelFactory;
+	private IOneParameterModelFactory<? super IModel<O>, String> contentModelFactory;
 	
 	private IModel<String> yesLabelModel;
 	
@@ -40,7 +40,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	
 	private boolean keepMarkup = false;
 	
-	private IOneParameterAjaxAction<IModel<O>> onClick;
+	private IOneParameterAjaxAction<? super IModel<O>> onClick;
 	
 	protected AjaxConfirmLinkBuilder() {
 	}
@@ -51,7 +51,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 	
 	@Override
-	public IAjaxConfirmLinkBuilderStepContent<O> title(IOneParameterModelFactory<IModel<O>, String> titleModelFactory) {
+	public IAjaxConfirmLinkBuilderStepContent<O> title(IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory) {
 		this.titleModelFactory = titleModelFactory;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 	
 	@Override
-	public IAjaxConfirmLinkBuilderStepEndContent<O> content(IOneParameterModelFactory<IModel<O>, String> contentModelFactory) {
+	public IAjaxConfirmLinkBuilderStepEndContent<O> content(IOneParameterModelFactory<? super IModel<O>, String> contentModelFactory) {
 		this.contentModelFactory = contentModelFactory;
 		return this;
 	}
@@ -139,7 +139,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	}
 
 	@Override
-	public IAjaxConfirmLinkBuilderStepOneParameterTerminal<O> onClick(IOneParameterAjaxAction<IModel<O>> onClick) {
+	public IAjaxConfirmLinkBuilderStepOneParameterTerminal<O> onClick(IOneParameterAjaxAction<? super IModel<O>> onClick) {
 		this.onClick = onClick;
 		return this;
 	}
@@ -164,13 +164,13 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	private static class FunctionalAjaxConfirmLink<O> extends AjaxConfirmLink<O> {
 		private static final long serialVersionUID = -2098954474307467112L;
 		
-		private final IOneParameterAjaxAction<IModel<O>> onClick;
+		private final IOneParameterAjaxAction<? super IModel<O>> onClick;
 		
 		public FunctionalAjaxConfirmLink(String id, IModel<O> model,
-				IOneParameterModelFactory<IModel<O>, String> titleModelFactory,
-				IOneParameterModelFactory<IModel<O>, String> textModelFactory, IModel<String> yesLabelModel,
+				IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory,
+				IOneParameterModelFactory<? super IModel<O>, String> textModelFactory, IModel<String> yesLabelModel,
 				IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape,
-				IOneParameterAjaxAction<IModel<O>> onClick) {
+				IOneParameterAjaxAction<? super IModel<O>> onClick) {
 			super(id, model, titleModelFactory.create(model), textModelFactory.create(model), yesLabelModel,
 					noLabelModel, cssClassNamesModel, textNoEscape);
 			this.onClick = onClick;

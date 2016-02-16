@@ -9,6 +9,6 @@ public interface IActionColumnConfirmActionBuilderStepContent<T, S extends ISort
 
 	IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IModel<String> contentModel);
 
-	IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IOneParameterModelFactory<IModel<T>, String> contentModelFactory);
+	IActionColumnConfirmActionBuilderStepEndContent<T, S> content(IOneParameterModelFactory<? super IModel<T>, String> contentModelFactory);
 
 }
