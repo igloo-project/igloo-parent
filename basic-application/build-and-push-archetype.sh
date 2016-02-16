@@ -5,8 +5,6 @@ function usage() {
 	exit 1
 }
 
-script_directory=$(dirname $(readlink -f $0))
-
 if [ $# -ne 2 ]; then
 	usage
 fi
@@ -20,31 +18,40 @@ pushd "${basic_application_directory}"
 branch=$(git rev-parse --abbrev-ref HEAD)
 
 deploy_environment="$2"
-if [ "${deploy_environment}" != "local" ] && [ "${deploy_environment}" != "snapshot" ]  && [ "${deploy_environment}" != "release" ]; then
-	usage
-fi
+case "${deploy_environment}" in
+	"local")
+		;;
+	"snapshot")
+		;;
+	"release")
+		;;
+	*)
+		usage
+esac
 
 temp_directory=$(mktemp --suffix=-archetype -d)
 
 mkdir ${temp_directory}/basic_application
 
+# copy the original directory to a temporary one, excluding VCS files
 #git archive ${branch} | tar -x -C ${temp_directory}/basic_application
 tar -c --exclude-vcs . | tar -x -C ${temp_directory}/basic_application
 
 if [ $? -ne 0 ]; then
+	echo 1>&2 "Error while copying the basic application project to a temporary directory."
 	exit 1
 fi
 
 pushd "${temp_directory}/basic_application"
 
-# fix the version in the archetype.properties file
-version=$(grep -m 1 'version' pom.xml | sed -r 's/.*>(.*)<.*/\1/')
-sed -i "s/^archetype.version=.*$/archetype.version=${version}/" archetype.properties
+	# fix the version in the archetype.properties file
+	version=$(grep -m 1 'version' pom.xml | sed -r 's/.*>(.*)<.*/\1/')
+	sed -i "s/^archetype.version=.*$/archetype.version=${version}/" archetype.properties
 
-# construction de l'archetype à partir du projet
-	mvn -U -Pdevelopment -DskipTests=true clean package install archetype:create-from-project -Darchetype.properties=${script_directory}/archetype.properties
+	# actually build the archetype from the  project
+	mvn -U -Pdevelopment -DskipTests=true clean package install archetype:create-from-project -Darchetype.properties=archetype.properties
 	if [ $? -ne 0 ]; then
-		echo "error while building the archetype"
+		echo 1>&2 "Error while building the archetype"
 		exit 1
 	fi
 	mv target/generated-sources/archetype ${temp_directory}/
@@ -53,22 +60,24 @@ popd &> /dev/null
 
 pushd ${temp_directory}/archetype &> /dev/null
 
-# derniers ajustements manuels sur l'archetype
+	# last tweaks on archetype files
 	for path in `find . -name '*BasicApplication*'`; do
 		newPath=`echo ${path} | sed 's/BasicApplication/__archetypeApplicationNamePrefix__/'`;
 		mv ${path} ${newPath}
 	done
 
-	find . -name *.launch -exec sed -i 's/${archetypeDataDirectory}/${artifactId}/' {} \;
-
-# déploiement de l'archetype
-	if [ ${deploy_environment} == "local" ]; then
-		mvn clean install
-	elif [ ${deploy_environment} == "snapshot" ]; then
-		mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core-snapshots::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots/
-	elif [ ${deploy_environment} == "release" ]; then
-		mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/
-	fi
+	# archetype deployment
+	case "${deploy_environment}" in
+		"local")
+			mvn clean install
+			;;
+		"snapshot")
+			mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core-snapshots::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots/
+			;;
+		"release")
+			mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/
+			;;
+	esac
 
 popd &> /dev/null
 
