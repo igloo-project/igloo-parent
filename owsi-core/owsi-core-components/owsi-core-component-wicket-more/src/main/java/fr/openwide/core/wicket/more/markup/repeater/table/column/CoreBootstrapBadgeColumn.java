@@ -8,10 +8,11 @@ import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulato
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.bindgen.BindingRoot;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
@@ -20,13 +21,15 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
 
 	private static final long serialVersionUID = -5344972073351010752L;
 
-	private final BindingRoot<? super T, C> binding;
+	private final IOneParameterModelFactory<IModel<? extends T>, C> modelFactory;
 
 	private final BootstrapRenderer<? super C> renderer;
 	
@@ -44,10 +47,17 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
 
-	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final BindingRoot<? super T, C> binding,
+	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final AbstractCoreBinding<? super T, C> binding,
 			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
-		this.binding = binding;
+		this.modelFactory = BindingModel.factory(binding);
+		this.renderer = renderer;
+	}
+
+	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final Function<? super T, C> function,
+			final BootstrapRenderer<? super C> renderer) {
+		super(headerLabelModel);
+		this.modelFactory = ReadOnlyModel.factory(function);
 		this.renderer = renderer;
 	}
 	
@@ -70,7 +80,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 					
 					@Override
 					public BootstrapBadge<C> getBootstrapBadge(String wicketId, IModel<T> rowModel) {
-						return new BootstrapBadge<>(wicketId, BindingModel.of(rowModel, binding), renderer);
+						return new BootstrapBadge<>(wicketId, modelFactory.create(rowModel), renderer);
 					}
 					
 					@Override

@@ -281,9 +281,23 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
+			Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, function, renderer));
+	}
+	
+	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			final AbstractCoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
+		columns.put(column, null);
+		return new AddedBootstrapBadgeColumnState<C>(column);
+	}
+	
+	@Override
+	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
+			Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, function, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<C>(column);
 	}
@@ -464,11 +478,23 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, binding, renderer);
 		}
+		
+		@Override
+		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
+				Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, function, renderer);
+		}
 
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding,
 				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, binding, renderer);
+		}
+		
+		@Override
+		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
+				Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, function, renderer);
 		}
 		
 		@Override

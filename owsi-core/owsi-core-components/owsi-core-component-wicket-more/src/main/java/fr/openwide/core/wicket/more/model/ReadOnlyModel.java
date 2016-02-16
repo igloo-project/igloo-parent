@@ -14,13 +14,30 @@ import org.apache.wicket.model.Model;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
+
 public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
 
 	private static final long serialVersionUID = -6272545665317639093L;
 	
 	private final IModel<? extends F> readModel;
 	
-	private final Function<F, T> function;
+	private final Function<? super F, T> function;
+
+	public static final <F, T> IOneParameterModelFactory<IModel<? extends F>, T> factory(final Function<? super F, T> function) {
+		return new AbstractOneParameterModelFactory<IModel<? extends F>, T>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public IModel<T> create(IModel<? extends F> parameter) {
+				return new ReadOnlyModel<F, T>(parameter, function);
+			}
+			@Override
+			public String toString() {
+				return ReadOnlyModel.class.getSimpleName() + ".factory(" + function + ")";
+			}
+		};
+	}
 	
 	public static <T> ReadOnlyModel<T, T> of(IModel<? extends T> model) {
 		return new ReadOnlyModel<T, T>(model, Functions.<T>identity());
@@ -38,7 +55,7 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 		return new ReadOnlyModel<F, T>(Model.of(object), function);
 	}
 
-	protected ReadOnlyModel(IModel<? extends F> readModel, Function<F, T> function) {
+	protected ReadOnlyModel(IModel<? extends F> readModel, Function<? super F, T> function) {
 		super();
 		checkNotNull(readModel);
 		checkNotNull(function);

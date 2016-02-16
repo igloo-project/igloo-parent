@@ -24,20 +24,33 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
 	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Renderer<? super T> renderer);
 
-	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding);
+	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			AbstractCoreBinding<? super T, C> binding);
 	
-	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, Renderer<? super C> renderer);
+	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			AbstractCoreBinding<? super T, C> binding, Renderer<? super C> renderer);
 
 	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function);
 	
-	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function, Renderer<? super C> renderer);
+	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function,
+			Renderer<? super C> renderer);
 
-	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
+	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			AbstractCoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
 
-	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
+	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
+			AbstractCoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
+	
+	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
+			Function<? super T, C> function, BootstrapRenderer<? super C> renderer);
 
-	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, AbstractCoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
+	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
+			AbstractCoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
 
-	<C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel, final AbstractCoreBinding<? super T, Boolean> binding);
+	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
+			Function<? super T, C> function, BootstrapRenderer<? super C> renderer);
+
+	<C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
+			AbstractCoreBinding<? super T, Boolean> binding);
 
 }
