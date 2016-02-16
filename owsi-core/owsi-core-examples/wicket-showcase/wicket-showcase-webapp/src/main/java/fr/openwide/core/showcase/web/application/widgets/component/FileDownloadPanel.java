@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -63,7 +63,7 @@ public class FileDownloadPanel extends Panel {
 	public TFile generateTFile() {
 		TFile archiveFile = null;
 		try {
-			archiveFile = new TFile(propertyService.getAsString(SpringPropertyIds.TMP_PATH) + "/mon_archive" + "." + RandomUtils.nextLong() + "." + MediaType.APPLICATION_ZIP.extension()).mkdir(true);
+			archiveFile = new TFile(propertyService.getAsString(SpringPropertyIds.TMP_PATH) + "/mon_archive" + "." + RandomUtils.nextLong(0l, Long.MAX_VALUE) + "." + MediaType.APPLICATION_ZIP.extension()).mkdir(true);
 			
 			// ------ dossier1 ------ //
 			TFile dossier1 = TFileRegistry.create(archiveFile, "Dossier1").mkdir(true);

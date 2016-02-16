@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -36,7 +37,7 @@ public class TestGeocoder {
 	}
 	
 	@Test
-	public void testURL() {
+	public void testURL() throws IOException {
 		//Obtenir une réponse
 		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress("Lyon, France").setLanguage("fr").getGeocoderRequest();
 		GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
@@ -44,7 +45,7 @@ public class TestGeocoder {
 	}
 	
 	@Test
-	public void reverseGeocoding() {
+	public void reverseGeocoding() throws IOException {
 		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLocation(new LatLng("45.772216", "4.859242")).setLanguage("fr").getGeocoderRequest();
 		GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
 		assertNotNull(geocoderResponse);
@@ -55,7 +56,7 @@ public class TestGeocoder {
 	}
 	
 	@Test
-	public void testAccurateSearch() {
+	public void testAccurateSearch() throws IOException {
 		//My Home :-)
 		String myHome = "237 Avenue Jean Jaurès 69007 Lyon France";
 		
@@ -73,7 +74,7 @@ public class TestGeocoder {
 	}
 	
 	@Test 
-	public void testBoundingCity() {
+	public void testBoundingCity() throws IOException {
 		LatLng limit_southwest = new LatLng("45.434616", "4.479726");
 		LatLng limit_northeast = new LatLng("45.53778", "4.889763");
 		
@@ -100,7 +101,7 @@ public class TestGeocoder {
 	 * Gecoder API ne permet pas de rechercher des objets touristiques
 	 */
 	@Test
-	public void testSitraObject(){
+	public void testSitraObject() throws IOException{
 		String obt_domaine_skiable = "Domaines skiables";
 		String obt_patrimoine_naturel = "Patrimoine Naturel";
 		String obt_fetes_manifestations = "Fêtes et Manisfestations";
@@ -122,7 +123,7 @@ public class TestGeocoder {
 	 * Geocoder API ne permet pas de rechercher des points d'interets ormis les parcs, aéroport, réserve naturel (natural_feature)
 	 */
 	@Test
-	public void testTourismName() {
+	public void testTourismName() throws IOException {
 		String domaine_skiable = "La croix fry"; //Domaine skiable
 		String restaurant = "Mc Donalds";
 		String fete = "Fêtes des lumières";
@@ -161,7 +162,7 @@ public class TestGeocoder {
 	 * La recherche sur des noms de rue, avenue, etc se limite à 10
 	 */
 	@Test
-	public void testAutocompleteAdress() {
+	public void testAutocompleteAdress() throws IOException {
 		String adress = "place foch";
 		
 		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(adress).setRegion("fr").setLanguage("fr").getGeocoderRequest();
@@ -175,7 +176,7 @@ public class TestGeocoder {
 	}
 	
 	@Test
-	public void testCodePostal() {
+	public void testCodePostal() throws IOException {
 		String codePostal = "69007";
 		
 		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(codePostal).setRegion("fr").setLanguage("fr").getGeocoderRequest();

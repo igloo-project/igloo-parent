@@ -59,6 +59,7 @@
 					<groupId>commons-logging</groupId>
 				</exclusion>
 			</exclusions>
+			<scope>test</scope>
 		</dependency>
 		
 		<!-- Jetty -->
