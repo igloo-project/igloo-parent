@@ -47,6 +47,9 @@ pushd "${temp_directory}/basic_application"
 	# fix the version in the archetype.properties file
 	version=$(grep -m 1 'version' pom.xml | sed -r 's/.*>(.*)<.*/\1/')
 	sed -i "s/^archetype.version=.*$/archetype.version=${version}/" archetype.properties
+	
+	# remove files that are only needed to build the archetype
+	rm README.md build-and-push-archetype.sh
 
 	# actually build the archetype from the  project
 	mvn -U -Pdevelopment -DskipTests=true clean package install archetype:create-from-project -Darchetype.properties=archetype.properties
