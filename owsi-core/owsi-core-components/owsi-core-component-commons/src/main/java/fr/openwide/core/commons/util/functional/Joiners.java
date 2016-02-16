@@ -1,5 +1,7 @@
 package fr.openwide.core.commons.util.functional;
 
+import java.util.Locale;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 
@@ -58,6 +60,12 @@ public final class Joiners {
 		return COMMA;
 	}
 
+	/**
+	 * Utility functions for places where we need a serializable reference to a {@link Joiner}.
+	 * <p>These are functions, and not suppliers, because in most places a
+	 * <code>Function&lt;? super Locale, ? extends Joiner&gt;</code> is required (which would allow the function
+	 * to return a different {@link Joiner} depending on the {@link Locale}.
+	 */
 	public static final class Functions {
 
 		private static final Function<Object, Joiner> SPACE = new SerializableFunction<Object, Joiner>() {
