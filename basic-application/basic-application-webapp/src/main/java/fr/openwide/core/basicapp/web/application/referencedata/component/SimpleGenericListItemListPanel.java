@@ -13,8 +13,8 @@ import fr.openwide.core.basicapp.web.application.referencedata.model.SimpleGener
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.more.business.generic.model.search.GenericListItemSort;
 import fr.openwide.core.jpa.more.business.generic.query.IGenericListItemSearchQuery;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedCoreColumnState;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
 public class SimpleGenericListItemListPanel<T extends GenericListItem<? super T>> 
 		extends AbstractGenericListItemListPanel<T, GenericListItemSort, SimpleGenericListItemDataProvider<T>> {

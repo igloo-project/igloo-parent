@@ -10,8 +10,8 @@ import fr.openwide.core.basicapp.web.application.referencedata.form.AbstractGene
 import fr.openwide.core.basicapp.web.application.referencedata.form.CityPopup;
 import fr.openwide.core.basicapp.web.application.referencedata.model.CityDataProvider;
 import fr.openwide.core.jpa.more.business.generic.model.search.GenericListItemSort;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedCoreColumnState;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
 public class CityListPanel extends AbstractGenericListItemListPanel<City, GenericListItemSort, CityDataProvider> {
 	

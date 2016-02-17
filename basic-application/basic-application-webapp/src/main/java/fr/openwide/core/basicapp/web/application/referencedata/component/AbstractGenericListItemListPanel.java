@@ -23,15 +23,15 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.AbstractCoreColumn;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.DecoratedCoreDataTablePanel.AddInPlacement;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.DataTableBuilder;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IAddedCoreColumnState;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.builder.state.IDecoratedBuildState;
-import fr.openwide.core.wicket.more.markup.html.repeater.data.table.util.DataTableUtil;
 import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
+import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
+import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
+import fr.openwide.core.wicket.more.markup.repeater.table.util.DataTableUtil;
 import fr.openwide.core.wicket.more.model.AbstractSearchQueryDataProvider;
 
 public abstract class AbstractGenericListItemListPanel<T extends GenericListItem<? super T>, S extends ISort<?>, D extends AbstractSearchQueryDataProvider<T,S>> extends Panel {
