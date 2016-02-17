@@ -1,5 +1,8 @@
 package fr.openwide.core.basicapp.core.business.referencedata.search;
 
+import org.apache.lucene.search.Query;
+import org.hibernate.search.exception.SearchException;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -27,5 +30,24 @@ public class CitySearchQueryImpl extends AbstractGenericListItemHibernateSearchS
 				)
 		));
 		return this;
+	}
+
+	@Override
+	public ICitySearchQuery codePostal(String codePostal) throws SearchException {
+		must(matchIfGivenIgnoreFiledBridge(getDefaultQueryBuilder(), City.CODE_POSTAL, codePostal));
+		return this;
+	}
+	
+	
+	private <P> Query matchIfGivenIgnoreFiledBridge(QueryBuilder builder, String fieldPath, P value) {
+		if (value == null) {
+			return null;
+		}
+		
+		return builder.keyword()
+				.onField(fieldPath)
+				.ignoreFieldBridge()
+				.matching(value)
+				.createQuery();
 	}
 }

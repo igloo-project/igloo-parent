@@ -13,6 +13,15 @@ public final class CodePostalConverter extends AbstractConverter<CodePostal> {
 
 	private static final long serialVersionUID = 7575610087030468757L;
 
+	private static final CodePostalConverter INSTANCE = new CodePostalConverter();
+
+	public static CodePostalConverter get() {
+		return INSTANCE;
+	}
+
+	private CodePostalConverter() {
+	}
+	
 	@Override
 	public CodePostal convertToObject(String value, Locale locale) throws ConversionException {
 		String trimmedValue = StringUtils.trimAllWhitespace(value);

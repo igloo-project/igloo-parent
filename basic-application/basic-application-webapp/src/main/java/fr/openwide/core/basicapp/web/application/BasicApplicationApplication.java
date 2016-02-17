@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.openwide.core.basicapp.core.business.common.model.CodePostal;
 import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
@@ -23,6 +24,7 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
+import fr.openwide.core.basicapp.web.application.common.converter.CodePostalConverter;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserGroupRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
@@ -115,6 +117,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		converterLocator.set(HistoryValue.class, HistoryValueRenderer.get());
 		converterLocator.set(HistoryEventType.class, EnumRenderer.get());
+		
+		converterLocator.set(CodePostal.class, CodePostalConverter.get());
 		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}
