@@ -19,7 +19,7 @@ import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import fr.openwide.core.jpa.more.business.history.util.HistoryLogBeforeCommitTask;
 import fr.openwide.core.jpa.more.business.history.util.HistoryLogBeforeCommitWithDifferencesTask;
-import fr.openwide.core.jpa.more.business.history.util.IDifferenceHandler;
+import fr.openwide.core.jpa.more.business.history.util.IHistoryDifferenceHandler;
 import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 
 public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLog<HL, HET, HD>,
@@ -99,7 +99,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	@Override
 	@SafeVarargs
 	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
-			IDifferenceService<T> differenceService, IDifferenceHandler<T> ... differenceHandlers) throws ServiceException,
+			IDifferenceService<T> differenceService, IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers) throws ServiceException,
 			SecurityServiceException {
 		logWithDifferences(eventType, mainObject, additionalInformation, differenceService.getMainDifferenceGenerator(),
 				differenceService, differenceHandlers);
@@ -109,7 +109,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	@SafeVarargs
 	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
-			IHistoryDifferenceGenerator<T> historyDifferenceGenerator, IDifferenceHandler<T>... differenceHandlers) throws ServiceException, SecurityServiceException {
+			IHistoryDifferenceGenerator<T> historyDifferenceGenerator, IHistoryDifferenceHandler<T, HL, HET, HD>... differenceHandlers) throws ServiceException, SecurityServiceException {
 		transactionSynchronizationTaskManagerService.push(
 				new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
 						new Date(), eventType,

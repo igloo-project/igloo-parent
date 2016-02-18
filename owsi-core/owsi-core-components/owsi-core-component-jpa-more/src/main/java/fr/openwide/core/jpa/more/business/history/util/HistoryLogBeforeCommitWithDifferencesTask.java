@@ -25,7 +25,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 	private Supplier<HD> historyDifferenceSupplier;
 	private IDifferenceFromReferenceGenerator<T> differenceGenerator;
 	private IHistoryDifferenceGenerator<T> historyDifferenceGenerator;
-	private List<IDifferenceHandler<T>> differenceHandlers;
+	private List<IHistoryDifferenceHandler<T, HL, HET, HD>> differenceHandlers;
 	
 	@SafeVarargs
 	public HistoryLogBeforeCommitWithDifferencesTask(
@@ -34,7 +34,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 			Supplier<HD> historyDifferenceSupplier,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-			IDifferenceHandler<T> ... differenceHandlers) {
+			IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers) {
 		super(date, eventType, mainObject, additionalInformation);
 		this.historyDifferenceSupplier = historyDifferenceSupplier;
 		this.differenceGenerator = differenceGenerator;
@@ -59,13 +59,13 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 	
 	private void logNow(T mainObject, Difference<T> difference) throws ServiceException, SecurityServiceException {
 		List<HD> historyDifferences = historyDifferenceGenerator.toHistoryDifferences(historyDifferenceSupplier, difference);
-		getHistoryLogService().logNow(date, eventType, historyDifferences, mainObject, additionalInformation);
+		HL historyLog = getHistoryLogService().logNow(date, eventType, historyDifferences, mainObject, additionalInformation);
 		
-		for (IDifferenceHandler<T> handler : differenceHandlers) {
-			handler.handle(mainObject, difference, date);
+		for (IHistoryDifferenceHandler<T, HL, HET, HD> handler : differenceHandlers) {
+			handler.handle(mainObject, difference, historyLog);
 		}
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof HistoryLogBeforeCommitWithDifferencesTask) {

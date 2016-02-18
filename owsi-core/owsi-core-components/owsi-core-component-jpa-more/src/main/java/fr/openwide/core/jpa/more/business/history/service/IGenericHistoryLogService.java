@@ -12,7 +12,7 @@ import fr.openwide.core.jpa.more.business.difference.util.IHistoryDifferenceGene
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryDifference;
 import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 import fr.openwide.core.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
-import fr.openwide.core.jpa.more.business.history.util.IDifferenceHandler;
+import fr.openwide.core.jpa.more.business.history.util.IHistoryDifferenceHandler;
 
 public interface IGenericHistoryLogService<
 				HL extends AbstractHistoryLog<HL, HET, HD>,
@@ -29,7 +29,7 @@ public interface IGenericHistoryLogService<
 	
 	@SuppressWarnings("unchecked")
 	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation, IDifferenceService<T> differenceService,
-			IDifferenceHandler<T> ... differenceHandlers)
+			IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
 	/*
@@ -41,7 +41,7 @@ public interface IGenericHistoryLogService<
 	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-			IDifferenceHandler<T> ... differenceHandlers)
+			IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
 	<T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
