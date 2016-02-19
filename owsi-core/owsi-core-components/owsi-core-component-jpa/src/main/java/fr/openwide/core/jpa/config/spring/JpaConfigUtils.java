@@ -23,6 +23,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.AvailableSettings;
 import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
+import org.hibernate.search.store.impl.RAMDirectoryProvider;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -94,10 +95,14 @@ public final class JpaConfigUtils {
 		boolean singletonCache = configuration.isEhCacheSingleton();
 		boolean queryCacheEnabled = configuration.isQueryCacheEnabled();
 		if (StringUtils.hasText(ehCacheConfiguration)) {
-			if (singletonCache) {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
+			if (configuration.getEhCacheRegionFactory() != null) {
+				properties.setProperty(Environment.CACHE_REGION_FACTORY, configuration.getEhCacheRegionFactory().getName());
 			} else {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
+				if (singletonCache) {
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
+				} else {
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
+				}
 			}
 			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
@@ -117,10 +122,15 @@ public final class JpaConfigUtils {
 
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
 		if (StringUtils.hasText(hibernateSearchIndexBase)) {
-			properties.setProperty("hibernate.search.default.directory_provider", FSDirectoryProvider.class.getName());
+			if (configuration.isHibernateSearchIndexInRam()) {
+				properties.setProperty("hibernate.search.default.directory_provider", RAMDirectoryProvider.class.getName());
+			} else {
+				properties.setProperty("hibernate.search.default.directory_provider", FSDirectoryProvider.class.getName());
+				properties.setProperty("hibernate.search.default.locking_strategy", "native");
+			}
+			
 			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
 			properties.setProperty("hibernate.search.default.exclusive_index_use", Boolean.TRUE.toString());
-			properties.setProperty("hibernate.search.default.locking_strategy", "native");
 			properties.setProperty(org.hibernate.search.cfg.Environment.LUCENE_MATCH_VERSION,
 					org.hibernate.search.cfg.Environment.DEFAULT_LUCENE_MATCH_VERSION.toString());
 		} else {

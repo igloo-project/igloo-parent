@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
+import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
 
 /**
@@ -191,5 +192,15 @@ public class ExplicitJpaConfigurationProvider implements IJpaConfigurationProvid
 	@Override
 	public Boolean isNewGeneratorMappingsEnabled() {
 		return false;
+	}
+
+	@Override
+	public boolean isHibernateSearchIndexInRam() {
+		return false;
+	}
+
+	@Override
+	public Class<? extends RegionFactory> getEhCacheRegionFactory() {
+		return null;
 	}
 }

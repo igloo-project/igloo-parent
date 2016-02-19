@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
+import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Value("${lucene.index.path}")
 	private String hibernateSearchIndexBase;
 	
+	@Value("${lucene.index.inRam:false}")
+	private boolean isHibernateSearchIndexInRam;
+	
 	@Value("${hibernate.search.analyzer:}") // Defaults to null
 	private Class<? extends Analyzer> hibernateSearchDefaultAnalyzer;
 	
@@ -46,6 +50,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${hibernate.ehCache.singleton}")
 	private boolean ehCacheSingleton;
+	
+	@Value("${hibernate.ehCache.regionFactory:}")
+	private Class<? extends RegionFactory> ehCacheRegionFactory;
 
 	@Value("${hibernate.queryCache.enabled}")
 	private boolean queryCacheEnabled;
@@ -97,6 +104,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	public String getHibernateSearchIndexBase() {
 		return hibernateSearchIndexBase;
 	}
+	
+	@Override
+	public boolean isHibernateSearchIndexInRam() {
+		return isHibernateSearchIndexInRam;
+	}
 
 	@Override
 	public Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer() {
@@ -121,6 +133,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public boolean isEhCacheSingleton() {
 		return ehCacheSingleton;
+	}
+	
+	@Override
+	public Class<? extends RegionFactory> getEhCacheRegionFactory() {
+		return ehCacheRegionFactory;
 	}
 
 	@Override
