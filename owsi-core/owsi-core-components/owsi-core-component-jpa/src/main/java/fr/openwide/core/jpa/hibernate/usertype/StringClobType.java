@@ -38,12 +38,17 @@ import org.hibernate.usertype.UserType;
 
 /**
  * Map a String to a Clob
+ * Copied from the original org.hibernate.type.StringClobType.
  *
  * @author Emmanuel Bernard
- * @deprecated replaced by {@link org.hibernate.type.MaterializedClobType}
  */
-@Deprecated
 public class StringClobType implements UserType, Serializable {
+	/**
+	 * Name for use in @Type annotations:
+	 * <code>@Type(StringClobType.TYPENAME)</code>
+	 */
+	public static final String TYPENAME = "fr.openwide.core.jpa.hibernate.usertype.StringClobType";
+	
 	public int[] sqlTypes() {
 		return new int[]{Types.CLOB};
 	}
