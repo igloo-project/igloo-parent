@@ -14,7 +14,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CollectionPath;
-import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 
@@ -138,9 +138,9 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	// Query factory
 	// 	>	Match if given
-	protected <P extends Comparable<?>> BooleanExpression matchIfGiven(ComparablePath<P> comparablePath, P value) {
+	protected <P extends Comparable<?>> BooleanExpression matchIfGiven(SimpleExpression<P> simpleExpression, P value) {
 		if (value != null) {
-			return comparablePath.eq(value);
+			return simpleExpression.eq(value);
 		}
 		return null;
 	}
@@ -154,22 +154,22 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	}
 	
 	// 	>	Match one if given
-	protected <P extends Comparable<?>> BooleanExpression matchOneIfGiven(ComparablePath<P> comparablePath, Collection<? extends P> possibleValues) {
+	protected <P extends Comparable<?>> BooleanExpression matchOneIfGiven(SimpleExpression<P> simpleExpression, Collection<? extends P> possibleValues) {
 		if (possibleValues != null && !possibleValues.isEmpty()) {
-			return comparablePath.in(possibleValues);
+			return simpleExpression.in(possibleValues);
 		}
 		return null;
 	}
 	
 	// 	>	Match all if given
-	protected <P extends Comparable<?>> BooleanExpression matchAllIfGiven(ComparablePath<P> comparablePath, Collection<? extends P> possibleValues) {
+	protected <P extends Comparable<?>> BooleanExpression matchAllIfGiven(SimpleExpression<P> simpleExpression, Collection<? extends P> possibleValues) {
 		if (possibleValues != null && !possibleValues.isEmpty()) {
 			BooleanExpression rootExpression = null;
 			for (P possibleValue : possibleValues) {
 				if (rootExpression == null) {
-					rootExpression = comparablePath.eq(possibleValue);
+					rootExpression = simpleExpression.eq(possibleValue);
 				} else {
-					rootExpression = rootExpression.and(comparablePath.eq(possibleValue));
+					rootExpression = rootExpression.and(simpleExpression.eq(possibleValue));
 				}
 			}
 			return rootExpression;
@@ -178,24 +178,24 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	}
 	
 	// 	>	Match range if given
-	protected <P extends Comparable<?>> BooleanExpression matchRangeIfGiven(ComparablePath<P> comparablePath, P minValue, P maxValue) {
+	protected <P extends Comparable<?>> BooleanExpression matchRangeIfGiven(ComparableExpression<P> comparableExpression, P minValue, P maxValue) {
 		if (minValue != null && maxValue != null) {
-			return comparablePath.between(minValue, maxValue);
+			return comparableExpression.between(minValue, maxValue);
 		} else if (minValue != null) {
-			return comparablePath.goe(minValue);
+			return comparableExpression.goe(minValue);
 		} else if (maxValue != null) {
-			return comparablePath.loe(maxValue);
+			return comparableExpression.loe(maxValue);
 		}
 		return null;
 	}
 	
-	protected <P extends Comparable<?>> BooleanExpression matchExclusiveRangeIfGiven(ComparablePath<P> comparablePath, P minValue, P maxValue) {
+	protected <P extends Comparable<?>> BooleanExpression matchExclusiveRangeIfGiven(ComparableExpression<P> comparableExpression, P minValue, P maxValue) {
 		if (minValue != null && maxValue != null) {
-			return comparablePath.gt(minValue).and(comparablePath.lt(maxValue));
+			return comparableExpression.gt(minValue).and(comparableExpression.lt(maxValue));
 		} else if (minValue != null) {
-			return comparablePath.gt(minValue);
+			return comparableExpression.gt(minValue);
 		} else if (maxValue != null) {
-			return comparablePath.lt(maxValue);
+			return comparableExpression.lt(maxValue);
 		}
 		return null;
 	}
