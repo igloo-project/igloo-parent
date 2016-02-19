@@ -47,8 +47,12 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 		/*
 		 * Here lies the only interest of this class: executing all the objects fetches in one transaction, even if there
 		 * are hundreds.
-		 * It allows to take benefit from Hibernate's batch fetching (as we get all the proxies at first, then we
-		 * initialize them).
+		 * It allows to take benefit from Hibernate's batch fetching, because:
+		 * <ul>
+		 *  <li>first we fetch all the proxies
+		 *  <li>and only then we initialize them, so Hibernate will "know" there are more objects of the same class
+		 *  to be initialized, and will proceed with batch fetching.
+		 * </ul>
 		 */
 		transactionScopeIndependantRunnerService.run(true, new Callable<Void>() {
 			@Override
