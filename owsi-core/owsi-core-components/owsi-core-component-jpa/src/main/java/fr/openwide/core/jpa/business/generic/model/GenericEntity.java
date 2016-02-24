@@ -45,7 +45,7 @@ import fr.openwide.core.commons.util.ordering.SerializableCollator;
  */
 @MappedSuperclass
 public abstract class GenericEntity<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
-		implements Serializable, Comparable<E> {
+		implements Serializable, Comparable<E>, IGenericEntityBindingInterface {
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
@@ -68,6 +68,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	 * 
 	 * @return id
 	 */
+	@Override
 	@QueryType(PropertyType.COMPARABLE)
 	@Field(name = ID_SORT, analyze = Analyze.NO)
 	@SortableField(forField = ID_SORT)
@@ -85,6 +86,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	 * 
 	 * @return vrai si l'objet n'a pas encore été persisté
 	 */
+	@Override
 	@JsonIgnore
 	@Transient
 	public boolean isNew() {
