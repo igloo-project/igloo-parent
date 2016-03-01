@@ -349,7 +349,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 					return value;
 				}
 			});
-			return Localizer.get().getString(resourceKey, null, model, locale, null, null);
+			return Renderer.getString(resourceKey, locale, model);
 		}
 		
 		@Override
@@ -579,7 +579,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		@Override
 		public String render(final Object value, Locale locale) {
 			IModel<?> model = Models.transientModel(value);
-			return Localizer.get().getString(resourceKey, null, model, locale, null, null);
+			return Renderer.getString(resourceKey, locale, model);
 		}
 		
 		@Override
@@ -650,23 +650,24 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			} else {
 				resourceKeyBuilder.append(".many");
 			}
-			
-			return Localizer.get().getString(resourceKeyBuilder.toString(), null, mapModel, locale, null, null);
+			return Renderer.getString(resourceKeyBuilder.toString(), locale, mapModel);
 		}
 	}
 	
 	/**
 	 * <p>A simplified version of the {@link #range(String, Renderer, Renderer)} function.
-	 * <p>Returns a static renderer for {@link Range} elements in which values have no units.
+	 * <p>Returns a static renderer for {@link Range} elements in which every value is 
+	 * rendered the same way - either with or without units.
+	 * <p>See {@link #range(String, Renderer, Renderer)} for more information regarding the syntax, the context or 
+	 * the prerequisites of {@link Range}-rendering functions.
 	 * 
 	 * @param rangeResourceKeyPrefix
 	 *         the prefix of the translation key pointing to the range-based display text patterns
 	 * @param renderer
-	 *         a renderer used to display the plain value of a given {@link Range} bound
-	 * @see {@link #range(String, Renderer, Renderer)}
+	 *         a renderer used to display the value of a given {@link Range} bound
 	 */
 	public static <C extends Comparable<?>> Renderer<Range<C>> range(String rangeResourceKeyPrefix, Renderer<C> renderer) {
-		return range(rangeResourceKeyPrefix, renderer, renderer).nullsAsNull();
+		return range(rangeResourceKeyPrefix, renderer, renderer);
 	}
 	
 	/**
@@ -713,7 +714,8 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 				rangeResourceKey, 
 				withoutUnitValueRenderer, 
 				(withUnitValueRenderer == null) ? withoutUnitValueRenderer : withUnitValueRenderer
-				).nullsAsNull();
+		)
+				.nullsAsNull();
 	}
 	
 	private static class RangeRenderer<C extends Comparable<?>> extends Renderer<Range<C>> {
@@ -763,7 +765,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 						.put("endUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
 						.build();
 			}
-			return Localizer.get().getString(resourceKeyBuilder.toString(), null, mapModel, locale, null, null);
+			return Renderer.getString(resourceKeyBuilder.toString(), locale, mapModel);
 		}
 	}
 }
