@@ -701,6 +701,8 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	 *         a renderer used to display the plain value of a given {@link Range} bound
 	 * @param valueAndUnitRenderer 
 	 *         a renderer used to display the value and the unit associated with a given {@link Range} bound
+	 * @see {@link #count(String)}, {@link #count(String, Renderer)}
+	 *         for rendering any countable value with its unit
 	 * @see {@link #fromDatePattern(IDatePattern)}, {@link #fromDateFormat(DateFormat)}
 	 *         for fully rendering dates as without-unit-values without bothering with custom units
 	 * @throws MissingResourceException
