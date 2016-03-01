@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.cfg.SerializerFactoryConfig;
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
-import com.fasterxml.jackson.databind.type.SimpleType;
 
 public class HibernateBeanSerializerFactory extends BeanSerializerFactory {
 
@@ -35,7 +34,7 @@ public class HibernateBeanSerializerFactory extends BeanSerializerFactory {
 		
 		// as we only have the class information, we can't use Hibernate.getClass(object)
 		if (HibernateProxy.class.isAssignableFrom(clazz)) {
-			origType = SimpleType.construct(clazz.getSuperclass());
+			origType = prov.constructType(clazz.getSuperclass());
 		}
 		
 		return super.createSerializer(prov, origType);

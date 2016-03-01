@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.SimpleType;
 import com.sun.jersey.api.JResponse;
 import com.sun.jersey.api.JResponse.JResponseBuilder;
 import com.sun.jersey.multipart.FormDataBodyPart;
@@ -49,9 +46,12 @@ public abstract class AbstractRestServiceImpl {
 	protected <K, V> Map<K, V> getMapFromJsonString(String jsonString, Class<K> keyClass, Class<V> valueClass) {
 		try {
 			return OBJECT_MAPPER.readValue(jsonString,
-					MapType.construct(LinkedHashMap.class,
-							SimpleType.construct(keyClass),
-							SimpleType.construct(valueClass)));
+					OBJECT_MAPPER.getTypeFactory().constructMapType(
+							LinkedHashMap.class,
+							OBJECT_MAPPER.constructType(keyClass),
+							OBJECT_MAPPER.constructType(valueClass)
+					)
+			);
 		} catch (Exception e) {
 			LOGGER.error(CoreRemoteApiError.UNSERIALIZATION_ERROR.getMessage(), e);
 			
@@ -62,8 +62,11 @@ public abstract class AbstractRestServiceImpl {
 	protected <V> List<V> getListFromJsonString(String jsonString, Class<V> valueClass) {
 		try {
 			return OBJECT_MAPPER.readValue(jsonString,
-					CollectionType.construct(ArrayList.class,
-							SimpleType.construct(valueClass)));
+					OBJECT_MAPPER.getTypeFactory().constructCollectionType(
+							ArrayList.class,
+							OBJECT_MAPPER.constructType(valueClass)
+					)
+			);
 		} catch (Exception e) {
 			LOGGER.error(CoreRemoteApiError.UNSERIALIZATION_ERROR.getMessage(), e);
 			
