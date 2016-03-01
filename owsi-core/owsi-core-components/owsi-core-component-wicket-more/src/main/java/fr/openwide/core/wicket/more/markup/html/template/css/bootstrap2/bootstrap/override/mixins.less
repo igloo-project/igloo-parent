@@ -14,3 +14,14 @@
 	display: none !important;
 	visibility: hidden !important;
 }
+
+/*
+ * .span is declared inside the scope of some kind of parametric namespace, which Less4j does not seem to
+ * understand. So we work around this by re-declaring it.
+ * See https://github.com/SomMeri/less4j/issues/333
+ */
+#grid .core {
+	.span(@columns) {
+	  width: ((@gridColumnWidth) * @columns) + (@gridGutterWidth * (@columns - 1)) - 14;
+	}
+}
