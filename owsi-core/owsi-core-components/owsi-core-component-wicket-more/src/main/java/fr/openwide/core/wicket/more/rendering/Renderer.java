@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.wicket.Localizer;
@@ -27,6 +28,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
 
 import fr.openwide.core.commons.util.functional.Functions2;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
@@ -333,7 +335,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 					return value;
 				}
 			});
-			return Localizer.get().getString(resourceKey, null, model, locale, null, (IModel<String>) null);
+			return Renderer.getString(resourceKey, locale, model);
 		}
 		
 		@Override
@@ -563,7 +565,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		@Override
 		public String render(final Object value, Locale locale) {
 			IModel<?> model = Models.transientModel(value);
-			return Localizer.get().getString(resourceKey, null, model, locale, null, (IModel<String>) null);
+			return Renderer.getString(resourceKey, locale, model);
 		}
 		
 		@Override
@@ -659,9 +661,122 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			} else {
 				resourceKeyBuilder.append(".many");
 			}
-			
-			return Localizer.get().getString(resourceKeyBuilder.toString(), null, mapModel, locale, null, (String) null);
+			return Renderer.getString(resourceKeyBuilder.toString(), locale, mapModel);
 		}
 	}
-
+	
+	/**
+	 * <p>A simplified version of the {@link #range(String, Renderer, Renderer)} function.
+	 * <p>Returns a static renderer for {@link Range} elements in which every value is 
+	 * rendered the same way - either with or without units.
+	 * <p>See {@link #range(String, Renderer, Renderer)} for more information regarding the syntax, the context or 
+	 * the prerequisites of {@link Range}-rendering functions.
+	 * 
+	 * @param rangeResourceKeyPrefix
+	 *         the prefix of the translation key pointing to the range-based display text patterns
+	 * @param renderer
+	 *         a renderer used to display the value of a given {@link Range} bound
+	 */
+	public static <C extends Comparable<?>> Renderer<Range<C>> range(String rangeResourceKeyPrefix, Renderer<C> renderer) {
+		return range(rangeResourceKeyPrefix, renderer, renderer);
+	}
+	
+	/**
+	 * <p>Returns a static renderer for {@link Range} type elements in which values may have units.
+	 * <p>This function uses two renderers, one for the rendering of a plain value and 
+	 * another for the rendering of a value with its unit.
+	 * <p>Knowing whether to render the first or last element with or without its unit is left to the <i>resource</i>, 
+	 * as it may differ from one interval to another and may need to be determined dynamically.
+	 * <p><b>Note:</b> There are four different string variables recognised within a resource: <ul>
+	 * <li><b>${start}:</b> substituted with the lower bound rendered without a unit
+	 * <li><b>${startUnit}:</b> substituted with the lower bound rendered with its unit
+	 * <li><b>${end}:</b> substituted with the upper bound rendered without a unit
+	 * <li><b>${endUnit}:</b> substituted with the upper bound rendered with its unit
+	 * </ul>
+	 * <p><b>Note:</b> There are several resource key suffixes dynamically read: <ul>
+	 * <li><b>&#60key&#62.both:</b> read if the range possesses a lower and an upper bound
+	 * <li><b>&#60key&#62.from:</b> read if the range possesses a lower bound but no upper bound
+	 * <li><b>&#60key&#62.upto:</b> read if the range possesses an upper bound but no lower bound
+	 * <li><b>&#60key&#62.solo:</b> read if the range possesses a lower and an upper bound which have the same value
+	 * </ul>
+	 * <p><b>Example:</b> The resources:<ul>
+	 * <li><b>base.key.upto=</b><i>Up to ${endUnit}</i> may be rendered as <i>Up to 1 mile</i> or <i>Up to 3 miles</i>.
+	 * <li><b>base.key.both=</b><i>From ${start} to ${endUnit}</i> may be rendered as <i>From 10 to 15 people</i>.
+	 * <li><b>base.key.from=</b><i>Starting at ${startUnit}</i> may be rendered as <i>Starting at $4</i>.
+	 * <li><b>base.key.solo=</b><i>Exactly ${startUnit}</i> may be rendered as <i>Exactly 5 camels.</i>.
+	 * <li><b>base.key.solo=</b><i>Closing at ${end}</i> may be rendered as <i>Closing at 5:00pm</i> using a specific Date Renderer.
+	 * </ul>
+	 * 
+	 * @param rangeResourceKey
+	 *         the prefix of the translation key pointing to the range-based display text patterns
+	 * @param valueRenderer <br>
+	 *         a renderer used to display the plain value of a given {@link Range} bound
+	 * @param valueAndUnitRenderer 
+	 *         a renderer used to display the value and the unit associated with a given {@link Range} bound
+	 * @see {@link #count(String)}, {@link #count(String, Renderer)}
+	 *         for rendering any countable value with its unit
+	 * @see {@link #fromDatePattern(IDatePattern)}, {@link #fromDateFormat(DateFormat)}
+	 *         for fully rendering dates as without-unit-values without bothering with custom units
+	 * @throws MissingResourceException
+	 *         if the resource key formed by associating the base key and one of the suffixes cannot be found
+	 */
+	public static <C extends Comparable<?>> Renderer<Range<C>> range(String rangeResourceKey, Renderer<C> withUnitValueRenderer, Renderer<C> withoutUnitValueRenderer) {
+		return new RangeRenderer<C>(
+				rangeResourceKey, 
+				withoutUnitValueRenderer, 
+				(withUnitValueRenderer == null) ? withoutUnitValueRenderer : withUnitValueRenderer
+		)
+				.nullsAsNull();
+	}
+	
+	private static class RangeRenderer<C extends Comparable<?>> extends Renderer<Range<C>> {
+		private static final long serialVersionUID = -3069600849637042624L;
+		private final String resourceKeyPrefix;
+		private final Renderer<C> withUnitValueRenderer;
+		private final Renderer<C> withoutUnitValueRenderer;
+		
+		public RangeRenderer(String resourceKeyPrefix, Renderer<C> withoutUnitValueRenderer, Renderer<C> withUnitValueRenderer) {
+			this.resourceKeyPrefix = resourceKeyPrefix;
+			this.withoutUnitValueRenderer = withoutUnitValueRenderer;
+			this.withUnitValueRenderer = withUnitValueRenderer;
+		}
+		
+		@Override
+		public String render(final Range<C> value, Locale locale) {
+			IModel<Map<String, Object>> mapModel;
+			StringBuilder resourceKeyBuilder = new StringBuilder(resourceKeyPrefix);
+			if (!value.hasLowerBound() && !value.hasUpperBound()) {
+				return null;
+			} else if (!value.hasLowerBound()) {
+				resourceKeyBuilder.append(".upto");
+				mapModel = Models.dataMap()
+						.put("end", this.withoutUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
+						.put("endUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
+						.build();
+			} else if (!value.hasUpperBound()) {
+				resourceKeyBuilder.append(".from");
+				mapModel = Models.dataMap()
+						.put("start", this.withoutUnitValueRenderer.asModel(Models.transientModel(value.lowerEndpoint())))
+						.put("startUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.lowerEndpoint())))
+						.build();
+			} else if (value.lowerEndpoint().equals(value.upperEndpoint())) {
+				resourceKeyBuilder.append(".solo");
+				mapModel = Models.dataMap()
+						.put("start", this.withoutUnitValueRenderer.asModel(Models.transientModel(value.lowerEndpoint())))
+						.put("startUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.lowerEndpoint())))
+						.put("end", this.withoutUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
+						.put("endUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
+						.build();
+			} else {
+				resourceKeyBuilder.append(".both");
+				mapModel = Models.dataMap()
+						.put("start", this.withoutUnitValueRenderer.asModel(Models.transientModel(value.lowerEndpoint())))
+						.put("startUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.lowerEndpoint())))
+						.put("end", this.withoutUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
+						.put("endUnit", this.withUnitValueRenderer.asModel(Models.transientModel(value.upperEndpoint())))
+						.build();
+			}
+			return Renderer.getString(resourceKeyBuilder.toString(), locale, mapModel);
+		}
+	}
 }
