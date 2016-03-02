@@ -17,11 +17,15 @@
 
 package fr.openwide.core.jpa.business.generic.model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.Collator;
 import java.util.Locale;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Ordering;
@@ -39,6 +43,8 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 		implements Serializable, Comparable<E> {
 
 	private static final long serialVersionUID = -3988499137919577054L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntity.class);
 	
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
@@ -158,5 +164,20 @@ public abstract class GenericEntity<K extends Serializable & Comparable<K>, E ex
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
 	public abstract String getDisplayName();
+	
+	/**
+	 * Add a simple way to track unwanted entity serializations.
+	 * <p>Note that, in some cases we <strong>do</strong> want to serialize persisted entities, for instance
+	 * when they are values of attributes of an entity which is in the process of being created in a web form.
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		if (LOGGER.isDebugEnabled() && !isNew()) {
+			LOGGER.debug(
+					"Serializing a persisted entity (class = {} and id = {})",
+					getClass(), getId()
+			);
+		}
+		out.defaultWriteObject();
+	}
 
 }
