@@ -29,7 +29,7 @@
 		<owsi-core.hikaricp.version>2.4.3</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
 		<owsi-core.ehcache.version>2.10.1</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>4.0.7</owsi-core.querydsl.version>
+		<owsi-core.querydsl.version>4.0.9</owsi-core.querydsl.version>
 		
 		<owsi-core.guava.version>19.0</owsi-core.guava.version>
 		
@@ -48,7 +48,7 @@
 		<owsi-core.spring-ldap.version>2.0.4.RELEASE</owsi-core.spring-ldap.version>
 		
 		<owsi-core.hibernate-search.version>5.5.2.Final</owsi-core.hibernate-search.version>
-		<owsi-core.lucene.version>5.3.1</owsi-core.lucene.version>
+		<owsi-core.lucene.version>5.3.2</owsi-core.lucene.version>
 		
 		<owsi-core.quartz.version>2.2.2</owsi-core.quartz.version>
 		
@@ -76,7 +76,7 @@
 		<owsi-core.slf4j.version>1.7.16</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
-		<owsi-core.opencsv.version>3.6</owsi-core.opencsv.version>
+		<owsi-core.opencsv.version>3.7</owsi-core.opencsv.version>
 		<owsi-core.freemarker.version>2.3.23</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		
@@ -104,7 +104,7 @@
 		<owsi-core.jfreechart.version>1.0.19</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.8.3</owsi-core.jsoup.version>
-		<owsi-core.rhino.version>1.7.7</owsi-core.rhino.version>
+		<owsi-core.rhino.version>1.7.7.1</owsi-core.rhino.version>
 		<owsi-core.httpclient.version>4.5.1</owsi-core.httpclient.version>
 		<owsi-core.httpcore.version>4.4.4</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.1.Final</owsi-core.prettytime.version>
