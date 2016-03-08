@@ -195,15 +195,7 @@ public abstract class AbstractExcelExport {
 
 	protected final void setFontColor(Font font, Map<Short, Color> colorRegistry, short color) {
 		if (font instanceof XSSFFont && colorRegistry.containsKey(color)) {
-			Color awtColor = colorRegistry.get(color);
-			XSSFColor xssfColor = new XSSFColor(awtColor);
-			
-			// As of 2014-03-24, the fix in XSSFColor#correctRGB (which switches black and white to work around a bug in Excel) is
-			// not effective when using the constructor... So we must call setRgb() explicitely.
-			// See ticket:150
-			xssfColor.setRgb(new byte[] { (byte) awtColor.getRed(), (byte) awtColor.getGreen(), (byte) awtColor.getBlue() });
-			
-			((XSSFFont) font).setColor(xssfColor);
+			((XSSFFont) font).setColor(new XSSFColor(colorRegistry.get(color)));
 		} else {
 			font.setColor(color);
 		}
