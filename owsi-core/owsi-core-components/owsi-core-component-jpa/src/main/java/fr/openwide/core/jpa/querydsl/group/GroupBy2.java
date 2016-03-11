@@ -77,7 +77,7 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * Create a new aggregating map expression using a backing HashBasedTable
+	 * Create a new aggregating table expression using a backing HashBasedTable
 	 *
 	 * @param row
 	 *            row for the table entries
@@ -159,7 +159,7 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * Create a new aggregating map expression using a backing HashBasedRowSortedTable
+	 * Create a new aggregating table expression using a backing HashBasedRowSortedTable
 	 *
 	 * @param row
 	 *            row for the sortedTable entries
@@ -179,7 +179,7 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R, C, V>> sortedTable(
 			Expression<R> row, Expression<C> column, Expression<V> value,
@@ -188,37 +188,37 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V, R2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R2, C, V>> sortedTable(
 			GroupExpression<R, R2> row, Expression<C> column, Expression<V> value,
-			Comparator<? super R> rowComparator, Comparator<? super C> columnComparator) {
+			Comparator<? super R2> rowComparator, Comparator<? super C> columnComparator) {
 		return sortedTable(row, new GOne<C>(column), new GOne<V>(value),
 				rowComparator, columnComparator);
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V, C2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R, C2, V>> sortedTable(
 			Expression<R> row, GroupExpression<C, C2> column, Expression<V> value,
-			Comparator<? super R> rowComparator, Comparator<? super C> columnComparator) {
+			Comparator<? super R> rowComparator, Comparator<? super C2> columnComparator) {
 		return sortedTable(new GOne<R>(row), column, new GOne<V>(value),
 				rowComparator, columnComparator);
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V, R2, C2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R2, C2, V>> sortedTable(
 			GroupExpression<R, R2> row, GroupExpression<C, C2> column, Expression<V> value,
-			Comparator<? super R> rowComparator, Comparator<? super C> columnComparator) {
+			Comparator<? super R2> rowComparator, Comparator<? super C2> columnComparator) {
 		return sortedTable(row, column, new GOne<V>(value),
 				rowComparator, columnComparator);
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V, V2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R, C, V2>> sortedTable(
 			Expression<R> row, Expression<C> column, GroupExpression<V, V2> value,
@@ -228,7 +228,7 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V, R2, V2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R2, C, V2>> sortedTable(
 			GroupExpression<R, R2> row, Expression<C> column, GroupExpression<V, V2> value,
@@ -238,7 +238,7 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression)
+	 * @see #sortedTable(GroupExpression, GroupExpression, GroupExpression, Comparator, Comparator)
 	 */
 	public static <R, C, V, C2, V2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R, C2, V2>> sortedTable(
 			Expression<R> row, GroupExpression<C, C2> column, GroupExpression<V, V2> value,
@@ -248,7 +248,7 @@ public final class GroupBy2 {
 	}
 
 	/**
-	 * Create a new aggregating map expression using a backing HashBasedRowSortedTable
+	 * Create a new aggregating table expression using a backing HashBasedRowSortedTable
 	 *
 	 * @param row
 	 *            row for the sortedTable entries
