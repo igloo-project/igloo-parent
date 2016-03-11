@@ -43,7 +43,7 @@ public abstract class PartitionDiscreteDomain<T extends Comparable> extends Disc
 			if (value.hasUpperBound()) {
 				result = Range.upTo(alignNext(value.upperEndpoint()), value.upperBoundType());
 			} else {
-				result = Range.all();
+				result = Range.<T>all(); // <T> is necessary for javac to compile this...
 			}
 		}
 		
