@@ -3,6 +3,8 @@ package fr.openwide.core.wicket.more.jqplot.data.adapter;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.annotation.Nullable;
+
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
@@ -17,8 +19,8 @@ public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V> extends Ab
 
 	public AbstractMissingValuesJQPlotDataAdapter(
 			IJQPlotDataProvider<S, K, V> dataProvider,
-			IModel<? extends Collection<? extends S>> seriesModel,
-			IModel<? extends Collection<? extends K>> keysModel) {
+			@Nullable IModel<? extends Collection<? extends S>> seriesModel,
+			@Nullable IModel<? extends Collection<? extends K>> keysModel) {
 		super(dataProvider);
 		this.seriesModel = seriesModel != null ? seriesModel : new AbstractReadOnlyModel<Collection<? extends S>>() {
 			private static final long serialVersionUID = 1L;

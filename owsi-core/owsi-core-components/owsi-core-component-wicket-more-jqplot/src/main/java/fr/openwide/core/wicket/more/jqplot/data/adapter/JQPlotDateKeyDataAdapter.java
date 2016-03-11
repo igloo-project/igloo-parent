@@ -15,6 +15,7 @@ import com.google.common.collect.Table;
 import fr.openwide.core.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import fr.openwide.core.wicket.more.jqplot.data.provider.JQPlotMapDataProvider;
 import fr.openwide.core.wicket.more.jqplot.data.provider.JQPlotTableDataProvider;
+import fr.openwide.core.wicket.more.util.model.Models;
 import nl.topicus.wqplot.components.plugins.JQPlotDateAxisRenderer;
 import nl.topicus.wqplot.data.BaseSeries;
 import nl.topicus.wqplot.options.PlotOptions;
@@ -29,10 +30,12 @@ import nl.topicus.wqplot.options.PlotTick;
 public class JQPlotDateKeyDataAdapter<S, K extends Date, V extends Number> extends AbstractMissingValuesJQPlotDataAdapter<S, K, V> {
 	
 	private static final long serialVersionUID = 3961697302069579609L;
+	
+	private final IModel<V> missingValueReplacementModel;
 
 	public JQPlotDateKeyDataAdapter(
 			IModel<Table<S, K, V>> tableModel,
-			IModel<? extends Collection<? extends S>> seriesModel,
+			@Nullable IModel<? extends Collection<? extends S>> seriesModel,
 			IModel<? extends Collection<? extends K>> keysModel) {
 		this(new JQPlotTableDataProvider<>(tableModel), seriesModel, keysModel);
 	}
@@ -47,7 +50,24 @@ public class JQPlotDateKeyDataAdapter<S, K extends Date, V extends Number> exten
 			IJQPlotDataProvider<S, K, V> dataProvider,
 			IModel<? extends Collection<? extends S>> seriesModel,
 			IModel<? extends Collection<? extends K>> keysModel) {
+		this(dataProvider, seriesModel, keysModel, Models.<V>placeholder());
+	}
+
+	public JQPlotDateKeyDataAdapter(
+			IModel<Table<S, K, V>> tableModel,
+			@Nullable IModel<? extends Collection<? extends S>> seriesModel,
+			IModel<? extends Collection<? extends K>> keysModel,
+			IModel<V> missingValueReplacementModel) {
+		this(new JQPlotTableDataProvider<>(tableModel), seriesModel, keysModel, missingValueReplacementModel);
+	}
+	
+	public JQPlotDateKeyDataAdapter(
+			IJQPlotDataProvider<S, K, V> dataProvider,
+			IModel<? extends Collection<? extends S>> seriesModel,
+			IModel<? extends Collection<? extends K>> keysModel,
+			IModel<V> missingValueReplacementModel) {
 		super(dataProvider, seriesModel, keysModel);
+		this.missingValueReplacementModel = missingValueReplacementModel;
 	}
 
 	@Override
@@ -75,9 +95,13 @@ public class JQPlotDateKeyDataAdapter<S, K extends Date, V extends Number> exten
 	}
 	
 	private BaseSeries<K, V> createSeriesData(S series, Iterable<? extends K> keys) {
+		V missingValueReplacement = missingValueReplacementModel.getObject();
 		BaseSeries<K, V> seriesData = new BaseSeries<K, V>();
 		for (K key : keys) {
 			@Nullable V value = dataProvider.getValue(series, key);
+			if (value == null) {
+				value = missingValueReplacement;
+			}
 			seriesData.addEntry(key, value);
 		}
 		return seriesData;
