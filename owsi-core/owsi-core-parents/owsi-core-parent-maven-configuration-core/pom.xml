@@ -33,6 +33,8 @@
 		
 		<owsi-core.guava.version>19.0</owsi-core.guava.version>
 		
+		<owsi-core.joda-time.version>2.9.2</owsi-core.joda-time.version>
+		
 		<owsi-core.postgresql.version>9.4.1208.jre7</owsi-core.postgresql.version>
 		<owsi-core.pgjdbc-ng.version>0.6</owsi-core.pgjdbc-ng.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
@@ -659,6 +661,12 @@
 				</dependency>
 			
 			<!-- Utils -->
+			
+				<dependency>
+					<groupId>joda-time</groupId>
+					<artifactId>joda-time</artifactId>
+					<version>${owsi-core.joda-time.version}</version>
+				</dependency>
 		
 				<dependency>
 					<groupId>org.javatuples</groupId>
