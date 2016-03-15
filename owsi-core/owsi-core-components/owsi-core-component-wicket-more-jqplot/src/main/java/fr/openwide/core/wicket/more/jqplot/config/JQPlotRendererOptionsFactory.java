@@ -36,4 +36,8 @@ public class JQPlotRendererOptionsFactory {
 		return new PlotLineRendererOptions();
 	}
 	
+	public PlotLineRendererOptions newPlotStackedLineRendererOptions() {
+		return new PlotLineRendererOptions();
+	}
+	
 }

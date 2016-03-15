@@ -28,6 +28,7 @@ import fr.openwide.core.wicket.more.jqplot.component.JQPlotBarsPanel;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotLinesPanel;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotPiePanel;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotStackedBarsPanel;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotStackedLinesPanel;
 import fr.openwide.core.wicket.more.jqplot.config.JQPlotConfigurers;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotContinuousDateKeysDataAdapter;
@@ -123,7 +124,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekContinuousDataAdapter =
 				new JQPlotContinuousDateKeysDataAdapter<>(userCreationCountByGenderByWeekModel, "%d/%m/%y");
 		add(
-				new JQPlotLinesPanel<UserGender, Date, Integer>(
+				new JQPlotLinesPanel<>(
 						"linesPanel", userCreationCountByGenderByWeekContinuousDataAdapter
 				)
 						.add(
@@ -144,7 +145,7 @@ public class StatisticsPage extends WidgetsTemplate {
 						Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
 				);
 		add(
-				new JQPlotLinesPanel<UserGender, Date, Integer>(
+				new JQPlotLinesPanel<>(
 						"linesDiscreteAxisPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
 				)
 						.add(
@@ -154,14 +155,17 @@ public class StatisticsPage extends WidgetsTemplate {
 								JQPlotConfigurers.yAxisWindow(0, null),
 								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
 						),
+				new JQPlotStackedLinesPanel<>(
+						"stackedLinesPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.stackedLines.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.stackedLines.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.stackedLines.axis.y"),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						),
 				new JQPlotBarsPanel<>(
-						"barsPanel",
-						new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
-								userCreationCountByGenderByWeekModel, null,
-								timelineModel, // For unrepresented dates
-								Model.of(0), // For missing values,
-								Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
-						)
+						"barsPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
 				)
 						.add(
 								JQPlotConfigurers.title("widgets.statistics.panel.bars.title"),
@@ -170,13 +174,7 @@ public class StatisticsPage extends WidgetsTemplate {
 								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
 						),
 				new JQPlotStackedBarsPanel<>(
-						"stackedBarsPanel",
-						new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
-								userCreationCountByGenderByWeekModel, null,
-								timelineModel, // For unrepresented dates
-								Model.of(0), // For missing values
-								Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
-						)
+						"stackedBarsPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
 				)
 						.add(
 								JQPlotConfigurers.title("widgets.statistics.panel.stackedBars.title"),
