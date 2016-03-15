@@ -1,17 +1,13 @@
 package fr.openwide.core.wicket.more.jqplot.data.adapter;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.SortedSet;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-import com.google.common.collect.Sets;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.jqplot.util.LabelledSeries;
@@ -104,18 +100,22 @@ public final class JQPlotDataAdapters {
 				// jqPlot bug workaround
 				// To avoid the problems related to data too low: jqPlot duplicates the values on the Y axis when
 				// we use an integer format and that the differences are decimal.
-				if ("%'d".equals(options.getAxes().getYaxis().getTickOptions().getFormatString())) {
+				String formatString = options.getAxes().getYaxis().getTickOptions().getFormatString();
+				if ("%d".equals(formatString) || "%'d".equals(formatString)) {
 					Collection<? extends V> values = getValues();
 					double min = values.isEmpty() ? 0.0 : Ordering.natural().min(values).doubleValue();
 					double max = values.isEmpty() ? 1.0 : Ordering.natural().max(values).doubleValue();
 					Boolean fillToZero = options.getSeriesDefaults().getFillToZero();
-					if ((max - min) <= 10.0 || fillToZero != null && fillToZero && Ordering.natural().max(Math.abs(min), Math.abs(max)) <= 10.0) {
-						SortedSet<Double> ticks = Sets.newTreeSet();
-						ticks.addAll(Arrays.asList(0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0));
-						options.getAxes().getYaxis().setTicks(Iterables.toArray(ticks, Object.class));
+					if ((max - min) <= 5.0) {
+						options.getAxes().getYaxis()
+								.setMin(fillToZero != null && fillToZero ? 0 : Double.valueOf(min).intValue() - 2)
+								.setMax(Double.valueOf(max).intValue() + 2)
+								.setNumberTicks(5);
 					} else {
 						options.getAxes().getYaxis()
-								.setTicks((List<PlotTick>)null);
+								.setMin(null)
+								.setMax(null)
+								.setNumberTicks(null);
 					}
 				}
 				

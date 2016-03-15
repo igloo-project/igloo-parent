@@ -61,7 +61,7 @@ public final class DefaultLayoutJQPlotConfigurer extends AbstractJQPlotConfigure
 		options.getAxes().getYaxis()
 				.setAutoscale(true)
 				.getTickOptions().setFormatString("%d").setFontSize("10pt")
-						.setShowMark(false).setShowLabel(false);
+						.setShowMark(true).setShowLabel(true);
 		
 		// Legend
 		options.getLegend()
