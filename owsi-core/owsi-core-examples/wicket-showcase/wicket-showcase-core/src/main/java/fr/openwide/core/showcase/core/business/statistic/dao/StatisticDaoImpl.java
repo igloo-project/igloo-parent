@@ -27,6 +27,7 @@ public class StatisticDaoImpl extends JpaDaoSupport implements IStatisticDao {
 		return new JPAQuery<>(getEntityManager())
 				.from(QUser.user)
 				.groupBy(QUser.user.gender)
+				.orderBy(QUser.user.gender.asc())
 				.transform(GroupBy2.transformer(GroupBy.sortedMap(QUser.user.gender, QUser.user.count().intValue())));
 	}
 
@@ -38,6 +39,7 @@ public class StatisticDaoImpl extends JpaDaoSupport implements IStatisticDao {
 				.from(QUser.user)
 				.groupBy(QUser.user.gender, QUser.user.creationDate)
 				.where(Expressions2.inRange(QUser.user.creationDate, dateRange))
+				.orderBy(QUser.user.gender.asc(), QUser.user.creationDate.asc())
 				.transform(GroupBy2.transformer(GroupBy2.table(
 						QUser.user.gender,
 						new MappingProjection<Date>(Date.class, QUser.user.creationDate) {
