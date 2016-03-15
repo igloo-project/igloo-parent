@@ -22,7 +22,7 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotD
 	
 	private static final long serialVersionUID = 51423240690775236L;
 	
-	protected final IJQPlotDataProvider<S, K, V> dataProvider;
+	private final IJQPlotDataProvider<S, K, V> dataProvider;
 	
 	public AbstractJQPlotDataAdapter(IJQPlotDataProvider<S, K, V> dataProvider) {
 		super();
@@ -63,6 +63,16 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotD
 	@Override
 	public Collection<V> getValues() {
 		return dataProvider.getValues();
+	}
+	
+	@Override
+	public Collection<S> getSeriesTicks() {
+		return getSeries();
+	}
+	
+	@Override
+	public Collection<K> getKeysTicks() {
+		return getKeys();
 	}
 
 	@Override

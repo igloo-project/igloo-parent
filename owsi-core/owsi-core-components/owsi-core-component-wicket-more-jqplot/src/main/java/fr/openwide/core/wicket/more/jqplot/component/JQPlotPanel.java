@@ -125,21 +125,25 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 		PlotOptions options = jqPlot.getOptions();
 		
 		Map<S, PlotSeries> seriesMap = Maps.newLinkedHashMap();
-		for (S series : dataAdapter.getSeries()) {
+		for (S series : dataAdapter.getSeriesTicks()) {
 			seriesMap.put(series, new PlotSeries());
 		}
 		
 		Map<K, PlotTick> keysMap = Maps.newLinkedHashMap();
-		for (K key : dataAdapter.getKeys()) {
+		for (K key : dataAdapter.getKeysTicks()) {
 			keysMap.put(key, new PlotTick(key));
 		}
 		
 		for (IJQPlotConfigurer<? super S, ? super K> configurer : jqPlotConfigurers) {
 			configurer.configure(jqPlot.getOptions(), seriesMap, keysMap, getLocale());
 		}
-		
-		options.setSeries(Lists.newArrayList(seriesMap.values()));
-		options.getAxes().getXaxis().setTicks(Lists.newArrayList(keysMap.values()));
+
+		if (!seriesMap.isEmpty()) {
+			options.setSeries(Lists.newArrayList(seriesMap.values()));
+		}
+		if (!keysMap.isEmpty()) {
+			options.getAxes().getXaxis().setTicks(Lists.newArrayList(keysMap.values()));
+		}
 	}
 	
 	public JQPlotPanel<S, K, V> setNonEmptyDataPredicate(Predicate<Collection<V>> nonEmptyDataPredicate) {

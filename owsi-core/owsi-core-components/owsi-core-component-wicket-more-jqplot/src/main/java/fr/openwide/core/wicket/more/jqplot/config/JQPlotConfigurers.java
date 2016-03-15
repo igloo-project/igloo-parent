@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.jqplot.config;
 
 import java.awt.Color;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -14,7 +13,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.jqplot.util.ChartColors;
-import fr.openwide.core.wicket.more.util.IDatePattern;
 import nl.topicus.wqplot.options.PlotAxisRendererOptions;
 import nl.topicus.wqplot.options.PlotBarRendererOptions;
 import nl.topicus.wqplot.options.PlotOptions;
@@ -186,68 +184,6 @@ public final class JQPlotConfigurers {
 		}
 	}
 
-	public static <K> IJQPlotConfigurer<Object, K> categoryTicksLabels(IConverter<? super K> keyLabelConverter) {
-		return new CategoryTicksLabelsJQPlotConfigurer<K>(keyLabelConverter);
-	}
-	private static class CategoryTicksLabelsJQPlotConfigurer<K> extends AbstractJQPlotConfigurer<Object, K> {
-		private static final long serialVersionUID = -7455227724829756556L;
-		
-		private final IConverter<? super K> keyLabelConverter;
-		
-		public CategoryTicksLabelsJQPlotConfigurer(IConverter<? super K> keyLabelConverter) {
-			super();
-			this.keyLabelConverter = keyLabelConverter;
-		}
-
-		@Override
-		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<? extends K, PlotTick> keysMap, Locale locale) {
-			for (Map.Entry<? extends K, PlotTick> tickEntry : keysMap.entrySet()) {
-				tickEntry.getValue().setVal(keyLabelConverter.convertToString(tickEntry.getKey(), locale));
-			}
-		}
-	}
-
-	public static <K> IJQPlotConfigurer<Object, K> scalarTicksLabels(IConverter<? super K> keyLabelConverter) {
-		return new ScalarTicksLabelsJQPlotConfigurer<K>(keyLabelConverter);
-	}
-	private static class ScalarTicksLabelsJQPlotConfigurer<K> extends AbstractJQPlotConfigurer<Object, K> {
-		private static final long serialVersionUID = -7455227724829756556L;
-		
-		private final IConverter<? super K> keyLabelConverter;
-		
-		public ScalarTicksLabelsJQPlotConfigurer(IConverter<? super K> keyLabelConverter) {
-			super();
-			this.keyLabelConverter = keyLabelConverter;
-		}
-
-		@Override
-		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<? extends K, PlotTick> keysMap, Locale locale) {
-			for (Map.Entry<? extends K, PlotTick> tickEntry : keysMap.entrySet()) {
-				tickEntry.getValue().setLabel(keyLabelConverter.convertToString(tickEntry.getKey(), locale));
-			}
-		}
-	}
-
-	public static IJQPlotConfigurer<Object, Date> dateTicksFormat(IDatePattern datePattern) {
-		return new DateTicksLabelFormatJQPlotConfigurer(datePattern);
-	}
-	private static class DateTicksLabelFormatJQPlotConfigurer extends AbstractJQPlotConfigurer<Object, Date> {
-		private static final long serialVersionUID = -6029588161212764243L;
-		
-		private final IDatePattern datePattern;
-		
-		public DateTicksLabelFormatJQPlotConfigurer(IDatePattern datePattern) {
-			super();
-			this.datePattern = datePattern;
-		}
-		
-		@Override
-		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<? extends Date, PlotTick> keysMap, Locale locale) {
-			String javascriptPattern = Localizer.get().getString(datePattern.getJavascriptPatternKey(), null, null, locale, null, (String) null);
-			options.getAxes().getXaxis().getTickOptions().setFormatString(javascriptPattern);
-		}
-	}
-
 	public static IJQPlotConfigurer<Object, Object> yAxisFloatFormat() {
 		return Y_AXIS_FLOAT_FORMAT;
 	}
@@ -264,6 +200,28 @@ public final class JQPlotConfigurers {
 		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<?, PlotTick> keysMap, Locale locale) {
 			options.getAxes().getYaxis()
 					.setMax(null).setTickInterval(null);
+		}
+	};
+
+	public static <V extends Number> IJQPlotConfigurer<Object, Object> yAxisWindow(V min, V max) {
+		return new YAxisWindowJQPlotConfigurer<>(min, max);
+	}
+	private static class YAxisWindowJQPlotConfigurer<V extends Number> extends AbstractJQPlotConfigurer<Object, Object> {
+		private static final long serialVersionUID = 1L;
+		
+		private final V min;
+		private final V max;
+
+		public YAxisWindowJQPlotConfigurer(V min, V max) {
+			super();
+			this.min = min;
+			this.max = max;
+		}
+		
+		@Override
+		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<?, PlotTick> keysMap, Locale locale) {
+			options.getAxes().getYaxis()
+					.setMin(min).setMax(max);
 		}
 	};
 

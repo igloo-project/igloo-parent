@@ -30,12 +30,14 @@ import fr.openwide.core.wicket.more.jqplot.component.JQPlotPiePanel;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotStackedBarsPanel;
 import fr.openwide.core.wicket.more.jqplot.config.JQPlotConfigurers;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
-import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotDateKeyDataAdapter;
+import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotContinuousDateKeysDataAdapter;
+import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotDiscreteKeysDataAdapter;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.model.ContiguousSetModel;
 import fr.openwide.core.wicket.more.model.RangeModel;
 import fr.openwide.core.wicket.more.rendering.EnumRenderer;
+import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.BaseSeries;
@@ -117,43 +119,69 @@ public class StatisticsPage extends WidgetsTemplate {
 						timeboundsModel.detach();
 					}
 				};
+
+		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekContinuousDataAdapter =
+				new JQPlotContinuousDateKeysDataAdapter<>(userCreationCountByGenderByWeekModel, "%d/%m/%y");
+		add(
+				new JQPlotLinesPanel<UserGender, Date, Integer>(
+						"linesPanel", userCreationCountByGenderByWeekContinuousDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.lines.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.lines.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.lines.axis.y"),
+								JQPlotConfigurers.yAxisWindow(0, null),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						)
+		);
 		
 		IModel<? extends Set<Date>> timelineModel = ContiguousSetModel.create(timeboundsModel, DateDiscreteDomain.weeks());
-		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekDataAdapter =
-				new JQPlotDateKeyDataAdapter<>(
+		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekDiscreteDataAdapter =
+				new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
 						userCreationCountByGenderByWeekModel, null,
 						timelineModel, // For unrepresented dates
-						Model.of(0) // For missing values
+						Model.of(0), // For missing values,
+						Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
 				);
 		add(
 				new JQPlotLinesPanel<UserGender, Date, Integer>(
-						"linesPanel", userCreationCountByGenderByWeekDataAdapter
+						"linesDiscreteAxisPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
 				)
 						.add(
-								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.lines.axis.x"),
-								JQPlotConfigurers.dateTicksFormat(DatePattern.REALLY_SHORT_DATE),
-								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.lines.axis.y"),
-								JQPlotConfigurers.yAxisFloatFormat(),
+								JQPlotConfigurers.title("widgets.statistics.panel.linesDiscreteAdapter.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.linesDiscreteAdapter.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.linesDiscreteAdapter.axis.y"),
+								JQPlotConfigurers.yAxisWindow(0, null),
 								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
 						),
-				new JQPlotBarsPanel<UserGender, Date, Integer>(
-						"barsPanel", userCreationCountByGenderByWeekDataAdapter
+				new JQPlotBarsPanel<>(
+						"barsPanel",
+						new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
+								userCreationCountByGenderByWeekModel, null,
+								timelineModel, // For unrepresented dates
+								Model.of(0), // For missing values,
+								Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
+						)
 				)
 						.add(
-								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.lines.axis.x"),
-								JQPlotConfigurers.dateTicksFormat(DatePattern.REALLY_SHORT_DATE),
-								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.lines.axis.y"),
-								JQPlotConfigurers.yAxisFloatFormat(),
+								JQPlotConfigurers.title("widgets.statistics.panel.bars.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.bars.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.bars.axis.y"),
 								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
 						),
-				new JQPlotStackedBarsPanel<UserGender, Date, Integer>(
-						"stackedBarsPanel", userCreationCountByGenderByWeekDataAdapter
+				new JQPlotStackedBarsPanel<>(
+						"stackedBarsPanel",
+						new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
+								userCreationCountByGenderByWeekModel, null,
+								timelineModel, // For unrepresented dates
+								Model.of(0), // For missing values
+								Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
+						)
 				)
 						.add(
-								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.lines.axis.x"),
-								JQPlotConfigurers.dateTicksFormat(DatePattern.REALLY_SHORT_DATE),
-								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.lines.axis.y"),
-								JQPlotConfigurers.yAxisFloatFormat(),
+								JQPlotConfigurers.title("widgets.statistics.panel.stackedBars.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.stackedBars.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.stackedBars.axis.y"),
 								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
 						)
 		);

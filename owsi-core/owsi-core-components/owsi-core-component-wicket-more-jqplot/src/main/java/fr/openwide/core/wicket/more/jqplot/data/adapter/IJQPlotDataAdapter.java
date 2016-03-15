@@ -11,6 +11,10 @@ import nl.topicus.wqplot.data.AbstractSeries;
 public interface IJQPlotDataAdapter<S, K, V> extends IJQPlotDataProvider<S, K, V>,
 		IJQPlotConfigurer<S, K>,
 		IComponentAssignedModel<Collection<? extends AbstractSeries<?, V, ?>>> {
+
+	Collection<S> getSeriesTicks();
+	
+	Collection<K> getKeysTicks();
 	
 	@Override
 	Collection<? extends AbstractSeries<?, V, ?>> getObject();

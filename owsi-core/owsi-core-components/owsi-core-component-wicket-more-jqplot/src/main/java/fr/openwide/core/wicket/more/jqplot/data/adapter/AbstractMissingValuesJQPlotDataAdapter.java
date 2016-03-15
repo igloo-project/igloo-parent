@@ -9,6 +9,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V> extends AbstractJQPlotDataAdapter<S, K, V> {
 	
@@ -16,36 +17,41 @@ public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V> extends Ab
 	
 	private final IModel<? extends Collection<? extends S>> seriesModel;
 	private final IModel<? extends Collection<? extends K>> keysModel;
+	
+	private final IModel<? extends V> missingValueReplacementModel;
 
 	public AbstractMissingValuesJQPlotDataAdapter(
-			IJQPlotDataProvider<S, K, V> dataProvider,
+			final IJQPlotDataProvider<S, K, V> dataProvider,
 			@Nullable IModel<? extends Collection<? extends S>> seriesModel,
-			@Nullable IModel<? extends Collection<? extends K>> keysModel) {
+			@Nullable IModel<? extends Collection<? extends K>> keysModel,
+			@Nullable IModel<? extends V> missingValueReplacementModel) {
 		super(dataProvider);
 		this.seriesModel = seriesModel != null ? seriesModel : new AbstractReadOnlyModel<Collection<? extends S>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<? extends S> getObject() {
-				return AbstractMissingValuesJQPlotDataAdapter.this.dataProvider.getSeries();
+				return dataProvider.getSeries();
 			}
 			@Override
 			public void detach() {
-				AbstractMissingValuesJQPlotDataAdapter.this.dataProvider.detach();
+				dataProvider.detach();
 			}
 		};
 		this.keysModel = keysModel != null ? keysModel : new AbstractReadOnlyModel<Collection<? extends K>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<? extends K> getObject() {
-				return AbstractMissingValuesJQPlotDataAdapter.this.dataProvider.getKeys();
+				return dataProvider.getKeys();
 			}
 			@Override
 			public void detach() {
-				AbstractMissingValuesJQPlotDataAdapter.this.dataProvider.detach();
+				dataProvider.detach();
 			}
 		};
+		this.missingValueReplacementModel =
+				missingValueReplacementModel == null ? Models.<V>placeholder() : missingValueReplacementModel;
 	}
-
+	
 	@Override
 	public void detach() {
 		super.detach();
@@ -54,13 +60,23 @@ public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V> extends Ab
 	}
 
 	@Override
-	public Collection<S> getSeries() {
+	public Collection<S> getSeriesTicks() {
 		return Collections.unmodifiableCollection(seriesModel.getObject());
 	}
 
 	@Override
-	public Collection<K> getKeys() {
+	public Collection<K> getKeysTicks() {
 		return Collections.unmodifiableCollection(keysModel.getObject());
+	}
+	
+	@Override
+	public V getValue(S serie, K key) {
+		V value = super.getValue(serie, key);
+		if (value == null) {
+			return missingValueReplacementModel.getObject();
+		} else {
+			return value;
+		}
 	}
 
 }

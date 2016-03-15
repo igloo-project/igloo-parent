@@ -80,6 +80,16 @@ public abstract class ForwardingJQPlotDataAdapter<S, K, V> extends AbstractJQPlo
 	}
 	
 	@Override
+	public Collection<S> getSeriesTicks() {
+		return delegate.getSeriesTicks();
+	}
+	
+	@Override
+	public Collection<K> getKeysTicks() {
+		return delegate.getKeysTicks();
+	}
+	
+	@Override
 	public IWrapModel<Collection<? extends AbstractSeries<?, V, ?>>> wrapOnAssignment(Component component) {
 		return new WrapModel(component);
 	}
