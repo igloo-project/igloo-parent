@@ -7,13 +7,10 @@ import nl.topicus.wqplot.options.PlotPieRendererOptions;
 
 /**
  * A factory providing sensible defaults for configurations.
- * 
- * You can create your very own factory and pass it to the JQPlotPanel.
- * 
- * It is supposed to be injected in the JQPlotPanel components.
  */
-public class JQPlotRendererOptionsFactory {
+public class DefaultJQPlotRendererOptionsFactory implements IJQPlotRendererOptionsFactory {
 
+	@Override
 	public PlotPieRendererOptions newPlotPieRendererOptions() {
 		return new PlotPieRendererOptions()
 				.setShowDataLabels(true)
@@ -21,21 +18,25 @@ public class JQPlotRendererOptionsFactory {
 				.setSliceMargin(7.0);
 	}
 	
+	@Override
 	public PlotBarRendererOptions newPlotBarRendererOptions() {
 		return new PlotBarRendererOptions()
 				.setBarDirection(PlotBarDirection.vertical)
 				.setBarPadding(0.0);
 	}
 	
+	@Override
 	public PlotBarRendererOptions newPlotStackedBarRendererOptions() {
 		return new PlotBarRendererOptions()
 				.setBarDirection(PlotBarDirection.vertical);
 	}
 	
+	@Override
 	public PlotLineRendererOptions newPlotLineRendererOptions() {
 		return new PlotLineRendererOptions();
 	}
 	
+	@Override
 	public PlotLineRendererOptions newPlotStackedLineRendererOptions() {
 		return new PlotLineRendererOptions();
 	}

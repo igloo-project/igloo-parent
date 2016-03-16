@@ -22,7 +22,7 @@ import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.jqplot.config.IJQPlotConfigurer;
-import fr.openwide.core.wicket.more.jqplot.config.JQPlotRendererOptionsFactory;
+import fr.openwide.core.wicket.more.jqplot.config.DefaultJQPlotRendererOptionsFactory;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import fr.openwide.core.wicket.more.jqplot.plugin.autoresize.JQPlotAutoresizeJavascriptReference;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
@@ -39,7 +39,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 	private final IJQPlotDataAdapter<S, K, V> dataAdapter;
 	
 	@SpringBean
-	private JQPlotRendererOptionsFactory optionsFactory;
+	private DefaultJQPlotRendererOptionsFactory optionsFactory;
 	
 	@SpringBean
 	private IJQPlotConfigurer<Object, Object> defaultjqPlotConfigurer; 
@@ -151,11 +151,11 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 		return this;
 	}
 	
-	public JQPlotRendererOptionsFactory getOptionsFactory() {
+	public DefaultJQPlotRendererOptionsFactory getOptionsFactory() {
 		return optionsFactory;
 	}
 	
-	public void setOptionsFactory(JQPlotRendererOptionsFactory optionsFactory) {
+	public void setOptionsFactory(DefaultJQPlotRendererOptionsFactory optionsFactory) {
 		this.optionsFactory = optionsFactory;
 	}
 }
