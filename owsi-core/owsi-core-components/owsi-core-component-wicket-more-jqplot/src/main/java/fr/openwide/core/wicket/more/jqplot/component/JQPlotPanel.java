@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -93,10 +94,6 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 		add(jqPlot);
 		
 		add(new PlaceholderContainer("jqPlotPlaceholder").component(jqPlot));
-		
-		for (IJQPlotConfigurer<? super S, ? super K> configurer : jqPlotConfigurers) {
-			configurer.initialize(jqPlot.getOptions());
-		}
 	}
 	
 	@Override
@@ -134,10 +131,13 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 			keysMap.put(key, new PlotTick(key));
 		}
 		
+		Locale locale = getLocale();
 		for (IJQPlotConfigurer<? super S, ? super K> configurer : jqPlotConfigurers) {
-			configurer.configure(jqPlot.getOptions(), seriesMap, keysMap, getLocale());
+			configurer.configure(options, seriesMap, keysMap, locale);
 		}
-
+		
+		dataAdapter.afterConfigure(options, seriesMap, keysMap, locale);
+		
 		if (!seriesMap.isEmpty()) {
 			options.setSeries(Lists.newArrayList(seriesMap.values()));
 		}

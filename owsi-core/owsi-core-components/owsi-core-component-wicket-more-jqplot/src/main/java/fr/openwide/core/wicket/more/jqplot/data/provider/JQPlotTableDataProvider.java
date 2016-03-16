@@ -46,14 +46,4 @@ public class JQPlotTableDataProvider<S, K, V> extends AbstractJQPlotDataProvider
 		return getTable().values();
 	}
 	
-	@Override
-	public Collection<V> getSeriesValues(S series) {
-		return getTable().row(series).values();
-	}
-	
-	@Override
-	public Collection<V> getKeyValues(K key) {
-		return getTable().column(key).values();
-	}
-
 }

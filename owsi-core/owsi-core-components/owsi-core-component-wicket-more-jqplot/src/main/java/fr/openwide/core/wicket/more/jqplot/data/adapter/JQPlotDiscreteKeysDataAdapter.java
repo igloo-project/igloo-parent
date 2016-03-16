@@ -88,11 +88,6 @@ public class JQPlotDiscreteKeysDataAdapter<S, K, V extends Number> extends Abstr
 	}
 
 	@Override
-	public void initialize(PlotOptions options) {
-		// Nothing to do here
-	}
-	
-	@Override
 	public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap, Map<? extends K, PlotTick> keysMap, Locale locale) {
 		options.getAxes().getXaxis()
 				.setRenderer(JQPlotCategoryAxisRenderer.get());

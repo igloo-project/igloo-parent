@@ -26,11 +26,6 @@ public abstract class AbstractJQPlotContinuousKeysDataAdapter<S, K, V extends Nu
 	}
 
 	@Override
-	public void initialize(PlotOptions options) {
-		// Nothing to do here
-	}
-
-	@Override
 	public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap, Map<? extends K, PlotTick> keysMap, Locale locale) {
 		options.getAxes().getXaxis().getTickOptions()
 				.setFormatString(formatString)

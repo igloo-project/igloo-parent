@@ -33,8 +33,8 @@ public final class JQPlotDataAdapters {
 				return addPercentLabels(delegateObject, percentRenderer, locale);
 			}
 			@Override
-			public void initialize(PlotOptions options) {
-				super.initialize(options);
+			public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
+					Map<? extends K, PlotTick> keysMap, Locale locale) {
 				options.getHighlighter()
 						.setTooltipAxes(PlotTooltipAxes.y)
 						.setYvalues(2)
@@ -95,7 +95,7 @@ public final class JQPlotDataAdapters {
 		return new ForwardingJQPlotDataAdapter<S, K, V>(adapter) {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
+			public void afterConfigure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
 					Map<? extends K, PlotTick> keysMap, Locale locale) {
 				// jqPlot bug workaround
 				// To avoid the problems related to data too low: jqPlot duplicates the values on the Y axis when
@@ -108,7 +108,8 @@ public final class JQPlotDataAdapters {
 					Boolean fillToZero = options.getSeriesDefaults().getFillToZero();
 					if ((max - min) <= 5.0) {
 						options.getAxes().getYaxis()
-								.setMin(fillToZero != null && fillToZero ? 0 : Double.valueOf(min).intValue() - 2)
+								.setMin(0.0 <= min && max <= 5.0 || fillToZero != null && fillToZero
+										? 0 : Double.valueOf(min).intValue() - 2)
 								.setMax(Double.valueOf(max).intValue() + 2)
 								.setNumberTicks(5);
 					} else {
@@ -126,9 +127,9 @@ public final class JQPlotDataAdapters {
 			protected Collection<? extends AbstractSeries<?, V, ?>> transformOnGet(
 					Collection<? extends AbstractSeries<?, V, ?>> delegateObject, Locale locale) {
 				// jqPlot bug workaround
-				// jqPlot doesn't work if we give it an empty serie or null ("No data specified")
-				// The only way to make it accept the fact that we want to display a serie (for instance in the legend) even
-				// if there is no data is to add a null entry in this serie.
+				// jqPlot doesn't work if we give it an empty series or null ("No data specified")
+				// The only way to make it accept the fact that we want to display a series (for instance in the legend) even
+				// if there is no data is to add a null entry in this series.
 				for (AbstractSeries<?, ?, ?> series : delegateObject) {
 					if (series.getData().isEmpty()) {
 						series.addEntry(null); 

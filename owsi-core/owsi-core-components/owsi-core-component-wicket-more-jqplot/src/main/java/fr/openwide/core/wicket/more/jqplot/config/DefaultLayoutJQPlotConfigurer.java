@@ -1,5 +1,8 @@
 package fr.openwide.core.wicket.more.jqplot.config;
 
+import java.util.Locale;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 
 import fr.openwide.core.wicket.more.jqplot.util.ChartColors;
@@ -8,6 +11,8 @@ import nl.topicus.wqplot.components.plugins.JQPlotPieRenderer;
 import nl.topicus.wqplot.options.PlotCanvasAxisTickRendererOptions;
 import nl.topicus.wqplot.options.PlotLegendLocation;
 import nl.topicus.wqplot.options.PlotOptions;
+import nl.topicus.wqplot.options.PlotSeries;
+import nl.topicus.wqplot.options.PlotTick;
 import nl.topicus.wqplot.options.PlotTooltipAxes;
 
 /**
@@ -24,9 +29,10 @@ public final class DefaultLayoutJQPlotConfigurer extends AbstractJQPlotConfigure
 	}
 	
 	public DefaultLayoutJQPlotConfigurer() { }
-
+	
 	@Override
-	public void initialize(PlotOptions options) {
+	public void configure(PlotOptions options, Map<? extends Object, PlotSeries> seriesMap,
+			Map<? extends Object, PlotTick> keysMap, Locale locale) {
 		// Grid
 		options.getGrid()
 				.setBackground(ChartColors.toCssString(ChartColors.TRANSPARENT))

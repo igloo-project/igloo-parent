@@ -1,10 +1,15 @@
 package fr.openwide.core.wicket.more.jqplot.component;
 
+import java.util.Locale;
+import java.util.Map;
+
 import fr.openwide.core.wicket.more.jqplot.config.AbstractJQPlotConfigurer;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotDataAdapters;
 import nl.topicus.wqplot.components.plugins.JQPlotBarRenderer;
 import nl.topicus.wqplot.options.PlotOptions;
+import nl.topicus.wqplot.options.PlotSeries;
+import nl.topicus.wqplot.options.PlotTick;
 
 public class JQPlotStackedBarsPanel<S, K, V extends Number & Comparable<V>> extends JQPlotPanel<S, K, V> {
 
@@ -17,7 +22,8 @@ public class JQPlotStackedBarsPanel<S, K, V extends Number & Comparable<V>> exte
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void initialize(PlotOptions options) {
+			public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
+					Map<? extends K, PlotTick> keysMap, Locale locale) {
 				options.setStackSeries(true);
 				options.getSeriesDefaults()
 						.setFillToZero(true)

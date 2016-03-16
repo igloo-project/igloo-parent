@@ -76,13 +76,14 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotD
 	}
 
 	@Override
-	public void initialize(PlotOptions options) {
+	public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
+			Map<? extends K, PlotTick> keysMap, Locale locale) {
 		// Does nothing.
 		// To be overriden by subclasses.
 	}
-
+	
 	@Override
-	public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
+	public void afterConfigure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
 			Map<? extends K, PlotTick> keysMap, Locale locale) {
 		// Does nothing.
 		// To be overriden by subclasses.

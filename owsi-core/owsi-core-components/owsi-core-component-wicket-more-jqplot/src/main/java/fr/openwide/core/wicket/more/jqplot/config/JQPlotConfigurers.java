@@ -65,13 +65,9 @@ public final class JQPlotConfigurers {
 		}
 		
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<? extends K, PlotTick> keysMap, Locale locale) {
 			PlotSeriesRendererOptions rendererOptions = options.getSeriesDefaults().getRendererOptions();
 			((PlotBarRendererOptions)rendererOptions).setVaryBarColor(true);
-		}
-		
-		@Override
-		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<? extends K, PlotTick> keysMap, Locale locale) {
 			for (K key : keysMap.keySet()) {
 				Color color = seriesColorFunction.apply(key);
 				options.getSeriesColors().add(ChartColors.toCssString(color));
@@ -145,7 +141,8 @@ public final class JQPlotConfigurers {
 		}
 		
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<? extends Object, PlotSeries> seriesMap,
+				Map<? extends Object, PlotTick> keysMap, Locale locale) {
 			options.setSeriesColors(Collections.unmodifiableList(colors));
 			options.setNegativeSeriesColors(Collections.unmodifiableList(negativeColors));
 		}
@@ -156,8 +153,10 @@ public final class JQPlotConfigurers {
 	}
 	private static final IJQPlotConfigurer<Object, Object> SERIES_LABELS_DISABLED = new AbstractJQPlotConfigurer<Object, Object>() {
 		private static final long serialVersionUID = 1L;
+		
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<? extends Object, PlotSeries> seriesMap,
+				Map<? extends Object, PlotTick> keysMap, Locale locale) {
 			options.getHighlighter().setFormatString("%2$s");
 			options.getLegend().setShow(false);
 		}
@@ -191,13 +190,9 @@ public final class JQPlotConfigurers {
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<?, PlotTick> keysMap, Locale locale) {
 			options.getAxes().getYaxis()
 					.getTickOptions().setFormatString("%.1f");
-		}
-		
-		@Override
-		public void configure(PlotOptions options, Map<?, PlotSeries> seriesMap, Map<?, PlotTick> keysMap, Locale locale) {
 			options.getAxes().getYaxis()
 					.setMax(null).setTickInterval(null);
 		}
@@ -270,8 +265,10 @@ public final class JQPlotConfigurers {
 	}
 	private static final IJQPlotConfigurer<Object, Object> Y_AXIS_DISABLED = new AbstractJQPlotConfigurer<Object, Object>() {
 		private static final long serialVersionUID = 1L;
+
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<? extends Object, PlotSeries> seriesMap,
+				Map<? extends Object, PlotTick> keysMap, Locale locale) {
 			options.getAxes().getYaxis()
 					.setRendererOptions(new PlotAxisRendererOptions() {
 						private static final long serialVersionUID = 1L;
@@ -289,7 +286,8 @@ public final class JQPlotConfigurers {
 	private static final IJQPlotConfigurer<Object, Object> Y_AXIS_GRIDLINES_ONLY = new AbstractJQPlotConfigurer<Object, Object>() {
 		private static final long serialVersionUID = 1L;
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<? extends Object,PlotSeries> seriesMap,
+				Map<? extends Object,PlotTick> keysMap, Locale locale) {
 			options.getAxes().getYaxis()
 					.setRendererOptions(new PlotAxisRendererOptions() {
 						private static final long serialVersionUID = 1L;
@@ -298,9 +296,6 @@ public final class JQPlotConfigurers {
 					})
 					.setShow(false)
 					.getTickOptions().setShowMark(false);
-		}
-		@Override
-		public void configure(PlotOptions options, Map<? extends Object,PlotSeries> seriesMap, Map<? extends Object,PlotTick> keysMap, Locale locale) {
 //			options.getAxes().getYaxis()
 //					.setTicks((List<PlotTick>)null);
 		}
@@ -311,8 +306,10 @@ public final class JQPlotConfigurers {
 	}
 	private static final IJQPlotConfigurer<Object, Object> X_AXIS_DISABLED = new AbstractJQPlotConfigurer<Object, Object>() {
 		private static final long serialVersionUID = 1L;
+
 		@Override
-		public void initialize(PlotOptions options) {
+		public void configure(PlotOptions options, Map<? extends Object, PlotSeries> seriesMap,
+				Map<? extends Object, PlotTick> keysMap, Locale locale) {
 			options.getAxes().getXaxis()
 					.setShow(false)
 					.getTickOptions().setShow(false).setShowGridline(false);

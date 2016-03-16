@@ -44,11 +44,6 @@ public abstract class ForwardingJQPlotDataAdapter<S, K, V> extends AbstractJQPlo
 	}
 
 	@Override
-	public void initialize(PlotOptions options) {
-		delegate.initialize(options);
-	}
-
-	@Override
 	public void configure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
 			Map<? extends K, PlotTick> keysMap, Locale locale) {
 		delegate.configure(options, seriesMap, keysMap, locale);
@@ -57,6 +52,12 @@ public abstract class ForwardingJQPlotDataAdapter<S, K, V> extends AbstractJQPlo
 	@Override
 	public void detach() {
 		delegate.detach();
+	}
+	
+	@Override
+	public void afterConfigure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
+			Map<? extends K, PlotTick> keysMap, Locale locale) {
+		delegate.afterConfigure(options, seriesMap, keysMap, locale);
 	}
 
 	@Override
@@ -72,11 +73,6 @@ public abstract class ForwardingJQPlotDataAdapter<S, K, V> extends AbstractJQPlo
 	@Override
 	public V getValue(S serie, K key) {
 		return delegate.getValue(serie, key);
-	}
-	
-	@Override
-	public Collection<V> getValues() {
-		return delegate.getValues();
 	}
 	
 	@Override

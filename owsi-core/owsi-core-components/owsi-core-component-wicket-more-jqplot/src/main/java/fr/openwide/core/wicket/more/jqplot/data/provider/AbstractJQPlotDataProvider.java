@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.jqplot.data.provider;
 
 import java.util.AbstractCollection;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -27,28 +26,6 @@ public abstract class AbstractJQPlotDataProvider<S, K, V> implements IJQPlotData
 	@Override
 	public Collection<V> getValues() {
 		return new ValuesCollection();
-	}
-	
-	@Override
-	public Collection<V> getSeriesValues(S series) {
-		final Collection<S> seriesSingleton = Arrays.asList(series);
-		return new ValuesCollection() {
-			@Override
-			protected Collection<? extends S> getSeries() {
-				return seriesSingleton;
-			}
-		};
-	}
-	
-	@Override
-	public Collection<V> getKeyValues(K key) {
-		final Collection<K> keySingleton = Arrays.asList(key);
-		return new ValuesCollection() {
-			@Override
-			protected Collection<? extends K> getKeys() {
-				return keySingleton;
-			}
-		};
 	}
 	
 	private class ValuesCollection extends AbstractCollection<V> {

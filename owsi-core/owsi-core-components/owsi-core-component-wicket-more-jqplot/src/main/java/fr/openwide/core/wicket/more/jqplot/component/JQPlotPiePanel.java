@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.jqplot.component;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
@@ -14,6 +15,8 @@ import fr.openwide.core.wicket.more.jqplot.data.provider.JQPlotMapDataProvider;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import nl.topicus.wqplot.components.plugins.JQPlotPieRenderer;
 import nl.topicus.wqplot.options.PlotOptions;
+import nl.topicus.wqplot.options.PlotSeries;
+import nl.topicus.wqplot.options.PlotTick;
 
 public class JQPlotPiePanel<K, V extends Number & Comparable<V>> extends JQPlotPanel<Object, K, V> {
 
@@ -46,7 +49,8 @@ public class JQPlotPiePanel<K, V extends Number & Comparable<V>> extends JQPlotP
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void initialize(PlotOptions options) {
+			public void configure(PlotOptions options, Map<? extends Object, PlotSeries> seriesMap,
+					Map<? extends K, PlotTick> keysMap, Locale locale) {
 				options.getSeriesDefaults()
 						.setRenderer(JQPlotPieRenderer.get())
 						.setRendererOptions(getOptionsFactory().newPlotPieRendererOptions());
