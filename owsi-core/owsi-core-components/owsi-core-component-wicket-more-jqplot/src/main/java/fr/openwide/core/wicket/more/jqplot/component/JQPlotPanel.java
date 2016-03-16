@@ -12,7 +12,6 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.base.Predicate;
@@ -21,6 +20,7 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.jqplot.config.IJQPlotConfigurer;
 import fr.openwide.core.wicket.more.jqplot.config.JQPlotRendererOptionsFactory;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
@@ -53,8 +53,6 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 	
 	private Predicate<Collection<V>> nonEmptyDataPredicate = Predicates2.notEmpty();
 	
-	private EnclosureBehavior jqPlotEnclosureBehavior = null;
-
 	protected JQPlotPanel(String id, IJQPlotDataAdapter<S, K, V> dataAdapter) {
 		super(id, dataAdapter);
 		
@@ -94,23 +92,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 		add(jqPlot);
 		
 		add(new PlaceholderContainer("jqPlotPlaceholder").component(jqPlot));
-	}
-	
-	@Override
-	protected void onConfigure() {
-		super.onConfigure();
 		
-		if (jqPlotEnclosureBehavior != null) {
-			jqPlot.remove(jqPlotEnclosureBehavior);
-		}
-		jqPlotEnclosureBehavior = new EnclosureBehavior().model(nonEmptyDataPredicate, new AbstractReadOnlyModel<Collection<V>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Collection<V> getObject() {
-				return Collections.unmodifiableCollection(dataAdapter.getValues());
-			}
-		});
-		jqPlot.add(jqPlotEnclosureBehavior);
 		jqPlot.add(new Behavior() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -118,6 +100,24 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 				response.render(JavaScriptHeaderItem.forReference(JQPlotAutoresizeJavascriptReference.get()));
 			}
 		});
+		
+		jqPlot.add(new EnclosureBehavior().condition(new Condition() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean applies() {
+				/*
+				 *  We must implement this with a custom condition because the nonEmptyDataPredicate
+				 * might change later (and thus a call to EnclosureBehavior.model(nonEmptyDataPredicate, model)
+				 * would be incorrect).
+				 */
+				return nonEmptyDataPredicate.apply(Collections.unmodifiableCollection(dataAdapter.getValues()));
+			}
+		}));
+	}
+	
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
 		
 		PlotOptions options = jqPlot.getOptions();
 		
