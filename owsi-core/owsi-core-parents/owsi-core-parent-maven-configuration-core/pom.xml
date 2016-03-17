@@ -18,7 +18,7 @@
 		<owsi-core.version>${project.version}</owsi-core.version>
 		
 		<owsi-core.spring.version>4.2.5.RELEASE</owsi-core.spring.version>
-		<owsi-core.aspectj.version>1.8.8</owsi-core.aspectj.version>
+		<owsi-core.aspectj.version>1.8.9</owsi-core.aspectj.version>
 
 		<owsi-core.hibernate-core.version>5.1.0.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
@@ -73,7 +73,7 @@
 		<!-- Warning: versions 2.x.y seem to be an abandoned branch of development (they are older than 1.x.y) -->
 		<owsi-core.xml-apis.version>1.4.01</owsi-core.xml-apis.version>
 		
-		<owsi-core.slf4j.version>1.7.18</owsi-core.slf4j.version>
+		<owsi-core.slf4j.version>1.7.19</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
 		<owsi-core.opencsv.version>3.7</owsi-core.opencsv.version>
@@ -94,7 +94,7 @@
 		
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.13</owsi-core.jackson.version>
-		<owsi-core.jackson2-core.version>2.7.2</owsi-core.jackson2-core.version>
+		<owsi-core.jackson2-core.version>2.7.3</owsi-core.jackson2-core.version>
 		<owsi-core.jackson2-annotations.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
@@ -111,7 +111,7 @@
 		<owsi-core.ph-css.version>4.1.0</owsi-core.ph-css.version>
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
 		
-		<owsi-core.jersey.version>1.19</owsi-core.jersey.version>
+		<owsi-core.jersey.version>1.19.1</owsi-core.jersey.version>
 		<owsi-core.jersey2.version>2.22.2</owsi-core.jersey2.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
@@ -129,7 +129,7 @@
 		<owsi-core.wicket-select2.version>1.2.0</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>7.1.0.owsi1</owsi-core.wqplot.version>
 		
-		<owsi-core.less4j.version>1.17.0</owsi-core.less4j.version>
+		<owsi-core.less4j.version>1.17.2</owsi-core.less4j.version>
 		<owsi-core.jsass.version>3.3.0</owsi-core.jsass.version>
 		
 		<owsi-core.junit.version>4.12</owsi-core.junit.version>
