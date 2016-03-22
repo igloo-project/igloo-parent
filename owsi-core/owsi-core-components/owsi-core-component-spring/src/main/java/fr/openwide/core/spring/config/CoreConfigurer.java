@@ -380,7 +380,8 @@ public class CoreConfigurer extends AbstractConfigurer {
 	 */
 	@Deprecated
 	public int getWicketDiskDataStoreInMemoryCacheSize() {
-		return getPropertyAsInteger("wicket.diskDataStore.inMemoryCacheSize", 40);
+		// Default to 0, see http://markmail.org/message/lq4lkfxi5whb5clr#query:+page:1+mid:m5qzptq24kxvmefo+state:results
+		return getPropertyAsInteger("wicket.diskDataStore.inMemoryCacheSize", 0);
 	}
 	
 	/**

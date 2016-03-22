@@ -32,7 +32,10 @@ public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplica
 		registry.registerString(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
 		registry.registerInteger(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);
 		registry.registerString(WICKET_DISK_DATA_STORE_PATH, "");
-		registry.registerInteger(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE, 40);
+		
+		// Default to 0, see http://markmail.org/message/lq4lkfxi5whb5clr#query:+page:1+mid:m5qzptq24kxvmefo+state:results
+		registry.registerInteger(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE, 0);
+		
 		registry.registerInteger(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION, 10);
 		
 		registry.registerInteger(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE, 5);
