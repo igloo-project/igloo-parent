@@ -647,7 +647,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	protected boolean isMailRecipientsFiltered() {
-		return propertyService.isConfigurationTypeDevelopment() && propertyService.get(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
+		return propertyService.isConfigurationTypeDevelopment() || propertyService.get(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
 	}
 	
 	private Collection<NotificationRecipient> filterTo(Collection<NotificationRecipient> emails) {
