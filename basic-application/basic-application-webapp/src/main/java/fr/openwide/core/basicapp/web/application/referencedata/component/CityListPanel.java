@@ -46,7 +46,7 @@ public class CityListPanel extends AbstractGenericListItemListPanel<City, Generi
 		return builder
 				.addLabelColumn(new ResourceModel("business.listItem.label"), Bindings.genericListItem().label())
 						.withClass("text text-md")
-				.addLabelColumn(new ResourceModel("business.codePostal"), Bindings.city().codePostal())
+				.addLabelColumn(new ResourceModel("business.postalCode"), Bindings.city().postalCode())
 						.withClass("code code-sm");
 	}
 

@@ -46,8 +46,8 @@ public class CitySearchPanel extends Panel {
 						.add(
 								new LabelPlaceholderBehavior()
 						),
-				new TextField<String>("codePostal", dataProvider.getCodePostalModel())
-						.setLabel(new ResourceModel("business.codePostal"))
+				new TextField<String>("postalCode", dataProvider.getPostalCodeModel())
+						.setLabel(new ResourceModel("business.postalCode"))
 						.add(
 								new LabelPlaceholderBehavior()
 						),

@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-import fr.openwide.core.basicapp.core.business.common.model.CodePostal;
+import fr.openwide.core.basicapp.core.business.common.model.PostalCode;
 import fr.openwide.core.basicapp.core.business.referencedata.model.City;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -24,7 +24,7 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 	
 	private CheckBox enabled;
 
-	TextField<CodePostal> codePostal;
+	TextField<PostalCode> postalCode;
 	
 	public CityPopup(String id) {
 		super(id);
@@ -42,7 +42,7 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 				BindingModel.of(model, Bindings.genericListItem().disableable())
 		);
 		
-		this.codePostal = new TextField<CodePostal>("codePostal",BindingModel.of(model, Bindings.city().codePostal()), CodePostal.class);
+		this.postalCode = new TextField<PostalCode>("postalCode",BindingModel.of(model, Bindings.city().postalCode()), PostalCode.class);
 		
 		this.label = new TextField<String>(
 				"label", BindingModel.of(model, Bindings.genericListItem().label())
@@ -58,8 +58,8 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 								label
 										.setLabel(new ResourceModel("business.listItem.label"))
 										.setRequired(true),
-								codePostal
-										.setLabel(new ResourceModel("business.codePostal"))
+								postalCode
+										.setLabel(new ResourceModel("business.postalCode"))
 										.setRequired(true),
 								enabled
 										.setLabel(new ResourceModel("business.listItem.enabled"))

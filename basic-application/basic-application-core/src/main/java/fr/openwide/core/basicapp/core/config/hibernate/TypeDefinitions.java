@@ -6,11 +6,11 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import fr.openwide.core.basicapp.core.business.common.model.AdresseEmail;
-import fr.openwide.core.basicapp.core.business.common.model.CodePostal;
 import fr.openwide.core.basicapp.core.business.common.model.NumeroTelephone;
+import fr.openwide.core.basicapp.core.business.common.model.PostalCode;
 import fr.openwide.core.basicapp.core.config.hibernate.type.AdresseEmailType;
-import fr.openwide.core.basicapp.core.config.hibernate.type.CodePostalType;
 import fr.openwide.core.basicapp.core.config.hibernate.type.NumeroTelephoneType;
+import fr.openwide.core.basicapp.core.config.hibernate.type.PostalCodeType;
 import fr.openwide.core.jpa.hibernate.usertype.StringClobType;
 
 /**
@@ -23,7 +23,7 @@ import fr.openwide.core.jpa.hibernate.usertype.StringClobType;
 	// We declare here the types we want to store as String instead of binary
 	@TypeDef(defaultForType = AdresseEmail.class, typeClass = AdresseEmailType.class),
 	@TypeDef(defaultForType = NumeroTelephone.class, typeClass = NumeroTelephoneType.class),
-	@TypeDef(defaultForType = CodePostal.class, typeClass = CodePostalType.class)
+	@TypeDef(defaultForType = PostalCode.class, typeClass = PostalCodeType.class)
 })
 @MappedSuperclass
 public final class TypeDefinitions {

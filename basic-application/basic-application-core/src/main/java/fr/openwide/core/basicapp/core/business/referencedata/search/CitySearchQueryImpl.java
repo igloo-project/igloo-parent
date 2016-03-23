@@ -33,8 +33,8 @@ public class CitySearchQueryImpl extends AbstractGenericListItemHibernateSearchS
 	}
 
 	@Override
-	public ICitySearchQuery codePostal(String codePostal) throws SearchException {
-		must(matchIfGivenIgnoreFiledBridge(getDefaultQueryBuilder(), City.CODE_POSTAL, codePostal));
+	public ICitySearchQuery postalCode(String postalCode) throws SearchException {
+		must(matchIfGivenIgnoreFiledBridge(getDefaultQueryBuilder(), City.POSTAL_CODE, postalCode));
 		return this;
 	}
 	

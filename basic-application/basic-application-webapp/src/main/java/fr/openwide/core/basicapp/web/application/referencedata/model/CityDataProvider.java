@@ -16,7 +16,7 @@ public final class CityDataProvider extends AbstractGenericListItemDataProvider<
 
 	private static final long serialVersionUID = -2635350066114992088L;
 
-	private final IModel<String> codePostalModel = new Model<String>();
+	private final IModel<String> postalCodeModel = new Model<String>();
 	
 	public CityDataProvider() {
 		super(
@@ -32,13 +32,13 @@ public final class CityDataProvider extends AbstractGenericListItemDataProvider<
 		);
 	}
 
-	public IModel<String> getCodePostalModel() {
-		return codePostalModel;
+	public IModel<String> getPostalCodeModel() {
+		return postalCodeModel;
 	}
 
 	@Override
 	protected IGenericListItemSearchQuery<City, GenericListItemSort, ?> createSearchQuery() {
 		return createSearchQuery(ICitySearchQuery.class)
-				.codePostal(codePostalModel.getObject());
+				.postalCode(postalCodeModel.getObject());
 	}
 }

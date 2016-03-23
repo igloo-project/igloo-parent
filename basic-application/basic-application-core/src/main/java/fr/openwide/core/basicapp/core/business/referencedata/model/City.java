@@ -12,7 +12,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 
-import fr.openwide.core.basicapp.core.business.common.model.CodePostal;
+import fr.openwide.core.basicapp.core.business.common.model.PostalCode;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.jpa.search.bridge.MaterializedStringValueFieldBridge;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
@@ -22,14 +22,14 @@ import fr.openwide.core.spring.util.StringUtils;
 @Bindable
 @Indexed
 @Cacheable
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"label", "codepostal"}) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"label", "postalcode"}) })
 public class City extends GenericListItem<City> {
 
 	private static final long serialVersionUID = -5714475132350205234L;
 
 	public static final String LABEL_AUTOCOMPLETE = "labelAutocomplete";
 	
-	public static final String CODE_POSTAL = "codePostal";
+	public static final String POSTAL_CODE = "postalCode";
 	
 	public City() {
 	}
@@ -39,15 +39,15 @@ public class City extends GenericListItem<City> {
 	}
 
 	@Basic(optional = false)
-	@Field(name = CODE_POSTAL, bridge = @FieldBridge(impl = MaterializedStringValueFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD_CLEAN))
-	private CodePostal codePostal;
+	@Field(name = POSTAL_CODE, bridge = @FieldBridge(impl = MaterializedStringValueFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD_CLEAN))
+	private PostalCode postalCode;
 
-	public CodePostal getCodePostal() {
-		return codePostal;
+	public PostalCode getPostalCode() {
+		return postalCode;
 	}
 
-	public void setCodePostal(CodePostal codePostal) {
-		this.codePostal = codePostal;
+	public void setPostalCode(PostalCode postalCode) {
+		this.postalCode = postalCode;
 	}
 
 	@Override

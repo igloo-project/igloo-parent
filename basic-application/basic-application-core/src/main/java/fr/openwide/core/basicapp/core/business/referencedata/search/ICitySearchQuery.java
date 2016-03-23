@@ -8,5 +8,5 @@ import fr.openwide.core.jpa.more.business.generic.query.IGenericListItemSearchQu
 
 
 public interface ICitySearchQuery extends IGenericListItemSearchQuery<City, GenericListItemSort, ICitySearchQuery> {
-	ICitySearchQuery codePostal(String codePostal) throws SearchException;
+	ICitySearchQuery postalCode(String postalCode) throws SearchException;
 }
