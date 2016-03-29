@@ -12,8 +12,8 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 /**
- * Charge le script activant la possibilité de faire référence aux diagrammes JQPlot en javascript,
- * pour les re-dessiner par exemple ('replot').
+ * Sets a JQPlot configuration option so that plots can be referenced in Javascript.
+ * <p>This is particularly useful when we have to manually trigger a plot re-draw (using the 'replot' method).
  */
 public final class JQPlotAddDomReferenceResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;

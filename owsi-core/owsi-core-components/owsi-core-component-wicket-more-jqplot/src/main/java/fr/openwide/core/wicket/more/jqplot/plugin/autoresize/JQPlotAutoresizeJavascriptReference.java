@@ -10,6 +10,9 @@ import com.google.common.collect.ImmutableList;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import nl.topicus.wqplot.components.JQPlotJavaScriptResourceReference;
 
+/**
+ * Adds a JQPlot hook so that plots are automatically re-drawn each time the window is resized.
+ */
 public class JQPlotAutoresizeJavascriptReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -2866004739366521046L;
