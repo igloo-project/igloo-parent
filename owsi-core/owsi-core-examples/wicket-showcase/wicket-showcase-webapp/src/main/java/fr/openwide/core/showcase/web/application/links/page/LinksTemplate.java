@@ -1,17 +1,12 @@
 package fr.openwide.core.showcase.web.application.links.page;
 
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.google.common.collect.Lists;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.links.component.DynamicImageTestPanel;
@@ -22,7 +17,6 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public abstract class LinksTemplate extends MainTemplate {
@@ -58,15 +52,6 @@ public abstract class LinksTemplate extends MainTemplate {
 		add(new DynamicLinkTestPanel("linkTestPanel", userModel));
 		
 		add(new DynamicImageTestPanel("imageTestPanel"));
-	}
-
-	@Override
-	protected List<NavigationMenuItem> getSubNav() {
-		return Lists.newArrayList(
-				LinksPage1.linkDescriptor().navigationMenuItem(new ResourceModel("links.menu.page1")),
-				LinksPage2.linkDescriptor().navigationMenuItem(new ResourceModel("links.menu.page2")),
-				LinksPage3.linkDescriptor().navigationMenuItem(new ResourceModel("links.menu.page3"))
-		);
 	}
 
 	@Override

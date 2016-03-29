@@ -21,7 +21,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.showcase.core.business.user.model.User;
@@ -34,7 +33,6 @@ import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
-import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.GenericEntityArrayListModel;
 
 public class HideableComponentsPage extends MainTemplate {
@@ -122,11 +120,6 @@ public class HideableComponentsPage extends MainTemplate {
 				new EnclosureContainer("enclosuresVisibleContainer").components(enclosureContainer, enclosureBehaviorComponent),
 				new PlaceholderContainer("enclosuresInvisibleContainer").components(enclosureContainer, enclosureBehaviorComponent)
 		);
-	}
-
-	@Override
-	protected List<NavigationMenuItem> getSubNav() {
-		return Lists.newArrayList();
 	}
 
 	@Override

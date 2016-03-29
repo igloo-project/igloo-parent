@@ -101,6 +101,12 @@
 			<artifactId>bindgen</artifactId>
 		</dependency>
 		
+		<!-- Joda time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		
 		<!-- Introduced for SLF4JLoggingListener -->
 		
 		<dependency>

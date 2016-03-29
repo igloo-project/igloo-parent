@@ -10,28 +10,73 @@
 		
 		<div class="main-content">
 			<div class="container">
-				<ul style="margin-bottom: 20px; list-style-position: inside;">
-					<li><a href="#default"><wicket:message key="widgets.statistics.default.title" /></a></li>
-					<li><a href="#stacked-bars"><wicket:message key="widgets.statistics.stackedBars.title" /></a></li>
-					<li><a href="#pie"><wicket:message key="widgets.statistics.pie.title" /></a></li>
-					<li><a href="#stacked-lines"><wicket:message key="widgets.statistics.stackedLines.title" /></a></li>
-				</ul>
-				
-				<h2 id="default"><wicket:message key="widgets.statistics.default.title" /></h2>
-				
-				<div wicket:id="defaultChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
-				
-				<h2 id="stacked-bars"><wicket:message key="widgets.statistics.stackedBars.title" /></h2>
-				
-				<div wicket:id="salesChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
-				
-				<h2 id="pie"><wicket:message key="widgets.statistics.pie.title" /></h2>
-				
-				<div wicket:id="pieChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
-				
-				<h2 id="stacked-lines"><wicket:message key="widgets.statistics.stackedLines.title" /></h2>
-				
-				<div wicket:id="stackedLinesChart" style="margin: 20px auto; width: 800px; height: 500px;"></div>
+				<div wicket:id="tabContainer">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#highLevel"><wicket:message key="widgets.statistics.panel.title" /></a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#lowLevel"><wicket:message key="widgets.statistics.base.title" /></a>
+						</li>
+					</ul>
+					
+					<div class="tab-content">
+						<div id="highLevel" class="tab-pane fade in active">
+							<wicket:container wicket:id="highLevelPlotsTab">
+								<div class="row">
+									<div class="col-md-6">
+										<div wicket:id="piePanel"></div>
+									</div>
+									<div class="col-md-6">
+										<div wicket:id="linesPanel"></div>
+									</div>
+									<div class="col-md-6">
+										<div wicket:id="linesDiscreteAxisPanel"></div>
+									</div>
+									<div class="col-md-6">
+										<div wicket:id="stackedLinesPanel"></div>
+									</div>
+									<div class="col-md-6">
+										<div wicket:id="barsPanel"></div>
+									</div>
+									<div class="col-md-6">
+										<div wicket:id="stackedBarsPanel"></div>
+									</div>
+								</div>
+							</wicket:container>
+						</div>
+						<div id="lowLevel" class="tab-pane fade">
+							<wicket:container wicket:id="lowLevelPlotsTab">
+								<div class="row">
+									<div class="col-md-6">
+										<h2><wicket:message key="widgets.statistics.default.title" /></h2>
+										
+										<div wicket:id="defaultChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
+									</div>
+									<div class="col-md-6">
+										<h2><wicket:message key="widgets.statistics.stackedBars.title" /></h2>
+										
+										<div wicket:id="salesChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<h2><wicket:message key="widgets.statistics.pie.title" /></h2>
+										
+										<div wicket:id="pieChart" style="margin: 20px auto; width: 360px; height: 300px;"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<h2><wicket:message key="widgets.statistics.stackedLines.title" /></h2>
+										
+										<div wicket:id="stackedLinesChart" style="margin: 20px auto; width: 800px; height: 500px;"></div>
+									</div>
+								</div>
+							</wicket:container>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

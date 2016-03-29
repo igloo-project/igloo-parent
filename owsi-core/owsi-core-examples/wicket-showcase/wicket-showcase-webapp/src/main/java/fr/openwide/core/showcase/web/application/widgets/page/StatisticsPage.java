@@ -1,10 +1,48 @@
 package fr.openwide.core.showcase.web.application.widgets.page;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
+import com.google.common.collect.Table;
+
+import fr.openwide.core.commons.util.collections.DateDiscreteDomain;
+import fr.openwide.core.showcase.core.business.statistic.service.IStatisticService;
+import fr.openwide.core.showcase.core.business.user.model.UserGender;
+import fr.openwide.core.wicket.more.jqplot.behavior.JQPlotReplotBehavior;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotBarsPanel;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotLinesPanel;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotPiePanel;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotStackedBarsPanel;
+import fr.openwide.core.wicket.more.jqplot.component.JQPlotStackedLinesPanel;
+import fr.openwide.core.wicket.more.jqplot.config.JQPlotConfigurers;
+import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
+import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotContinuousDateKeysDataAdapter;
+import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotDiscreteKeysDataAdapter;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
+import fr.openwide.core.wicket.more.model.ContiguousSetModel;
+import fr.openwide.core.wicket.more.model.RangeModel;
+import fr.openwide.core.wicket.more.rendering.EnumRenderer;
+import fr.openwide.core.wicket.more.rendering.Renderer;
+import fr.openwide.core.wicket.more.util.DatePattern;
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.BaseSeries;
 import nl.topicus.wqplot.data.SimpleNumberSeries;
@@ -16,19 +54,20 @@ import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotPieRendererOptions;
 import nl.topicus.wqplot.options.PlotTooltipAxes;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.google.common.collect.Lists;
-
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-
 public class StatisticsPage extends WidgetsTemplate {
 
 	private static final long serialVersionUID = -2974578921366640131L;
+	
+	private static final Date START_DATE;
+	private static final Date END_DATE;
+	static {
+		try {
+			START_DATE = DateUtils.parseDate("2020-01-01", "yyyy-MM-dd");
+			END_DATE = DateUtils.parseDate("2020-03-01", "yyyy-MM-dd");
+		} catch (ParseException e) {
+			throw new IllegalStateException(e);
+		}
+	}
 
 	private static final List<Integer> ACTIVE_USERS_STATS = Lists.newArrayList(40,61,108,125,134,159);
 	
@@ -43,6 +82,9 @@ public class StatisticsPage extends WidgetsTemplate {
 	private static final String Q3_TICK = "Q3";
 	private static final String Q4_TICK = "Q4";
 	
+	@SpringBean
+	private IStatisticService statisticService;
+	
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
 				.page(StatisticsPage.class)
@@ -52,13 +94,120 @@ public class StatisticsPage extends WidgetsTemplate {
 	public StatisticsPage(PageParameters parameters) {
 		super(parameters);
 		
-		addDefaultChart();
+		WebMarkupContainer tabContainer = new WebMarkupContainer("tabContainer");
+		add(tabContainer);
+		tabContainer.add(new BootstrapTabBehavior());
 		
-		addSalesChart();
+		/* Makes sure the plots that are not on the initially active tab (and thus will not be
+		 * plotted immediately) will at least be plotted when switching tabs.
+		 */
+		tabContainer.add(new JQPlotReplotBehavior("shown.bs.tab"));
 		
-		addPieChart();
+		WebMarkupContainer highLevelPlotsTab = new WebMarkupContainer("highLevelPlotsTab");
+		tabContainer.add(highLevelPlotsTab);
 		
-		addStackedLinesChart();
+		IModel<Map<UserGender, Integer>> userCountByGenderStatisticsModel =
+				new LoadableDetachableModel<Map<UserGender, Integer>>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					protected Map<UserGender, Integer> load() {
+						return statisticService.getUserCountByGenderStatistics();
+					}
+				};
+		highLevelPlotsTab.add(new JQPlotPiePanel<UserGender, Integer>(
+				"piePanel", userCountByGenderStatisticsModel, EnumRenderer.get()
+		));
+		
+		IModel<Date> startDateModel = new Model<>(START_DATE);
+		IModel<Date> endDateModel = new Model<>(END_DATE);
+		final IModel<Range<Date>> timeboundsModel = RangeModel.closed(startDateModel, endDateModel);
+		
+		IModel<Table<UserGender, Date, Integer>> userCreationCountByGenderByWeekModel =
+				new LoadableDetachableModel<Table<UserGender, Date, Integer>>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					protected Table<UserGender, Date, Integer> load() {
+						return statisticService.getUserCreationCountByGenderByWeekStatistics(timeboundsModel.getObject());
+					}
+					@Override
+					protected void onDetach() {
+						super.onDetach();
+						timeboundsModel.detach();
+					}
+				};
+
+		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekContinuousDataAdapter =
+				new JQPlotContinuousDateKeysDataAdapter<>(userCreationCountByGenderByWeekModel, "%d/%m/%y");
+		highLevelPlotsTab.add(
+				new JQPlotLinesPanel<>(
+						"linesPanel", userCreationCountByGenderByWeekContinuousDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.lines.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.lines.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.lines.axis.y"),
+								JQPlotConfigurers.yAxisWindow(0, null),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						)
+		);
+		
+		IModel<? extends Set<Date>> timelineModel = ContiguousSetModel.create(timeboundsModel, DateDiscreteDomain.weeks());
+		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekDiscreteDataAdapter =
+				new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
+						userCreationCountByGenderByWeekModel, null,
+						timelineModel, // For unrepresented dates
+						Model.of(0), // For missing values,
+						Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
+				);
+		highLevelPlotsTab.add(
+				new JQPlotLinesPanel<>(
+						"linesDiscreteAxisPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.linesDiscreteAdapter.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.linesDiscreteAdapter.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.linesDiscreteAdapter.axis.y"),
+								JQPlotConfigurers.yAxisWindow(0, null),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						),
+				new JQPlotStackedLinesPanel<>(
+						"stackedLinesPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.stackedLines.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.stackedLines.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.stackedLines.axis.y"),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						),
+				new JQPlotBarsPanel<>(
+						"barsPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.bars.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.bars.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.bars.axis.y"),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						),
+				new JQPlotStackedBarsPanel<>(
+						"stackedBarsPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
+				)
+						.add(
+								JQPlotConfigurers.title("widgets.statistics.panel.stackedBars.title"),
+								JQPlotConfigurers.xAxisLabel("widgets.statistics.panel.stackedBars.axis.x"),
+								JQPlotConfigurers.yAxisLabel("widgets.statistics.panel.stackedBars.axis.y"),
+								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
+						)
+		);
+
+		
+		WebMarkupContainer lowLevelPlotsTab = new WebMarkupContainer("lowLevelPlotsTab");
+		tabContainer.add(lowLevelPlotsTab);
+		lowLevelPlotsTab.add(
+				createDefaultChartWithLowLevelAPI("defaultChart"),
+				createSalesChartWithLowLevelAPI("salesChart"),
+				createPieChartWithLowLevelAPI("pieChart"),
+				createStackedLinesChartWithLowLevelAPI("stackedLinesChart")
+		);
 	}
 	
 	@Override
@@ -66,7 +215,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		return StatisticsPage.class;
 	}
 	
-	private void addDefaultChart() {
+	private static JQPlot createDefaultChartWithLowLevelAPI(String wicketId) {
 		// Create series
 		SimpleNumberSeries<Integer> accountsCreated = new SimpleNumberSeries<Integer>();
 		for (Integer account : ACTIVE_USERS_STATS) {
@@ -75,7 +224,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		
 		// Build JQPlot object with given series
 		@SuppressWarnings("unchecked")
-		JQPlot defaultChart = new JQPlot("defaultChart", new ListModel<SimpleNumberSeries<Integer>>(Lists.newArrayList(accountsCreated)));
+		JQPlot defaultChart = new JQPlot(wicketId, new ListModel<SimpleNumberSeries<Integer>>(Lists.newArrayList(accountsCreated)));
 		
 		// Select few options
 		PlotOptions defaultChartOptions = defaultChart.getOptions();
@@ -83,11 +232,10 @@ public class StatisticsPage extends WidgetsTemplate {
 		defaultChartOptions.getAxes().getXaxis().setRenderer("$.jqplot.CategoryAxisRenderer");
 		defaultChartOptions.getAxes().getXaxis().setTicks("2007", "2008", "2009", "2010", "2011", "2012");
 		
-		// Add JQPlot object to the page
-		add(defaultChart);
+		return defaultChart;
 	}
 	
-	private void addSalesChart() {
+	private static JQPlot createSalesChartWithLowLevelAPI(String wicketId) {
 		// Create series
 		SimpleNumberSeries<Integer> product1series = new SimpleNumberSeries<Integer>();
 		product1series.addEntry(SALES_P1_STATS.get(0));
@@ -107,7 +255,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		
 		// Build JQPlot object with given series
 		@SuppressWarnings("unchecked")
-		JQPlot salesChart = new JQPlot("salesChart", new ListModel<SimpleNumberSeries<Integer>>(
+		JQPlot salesChart = new JQPlot(wicketId, new ListModel<SimpleNumberSeries<Integer>>(
 				Lists.newArrayList(product1series, product2series, product3series)));
 		
 		// Chart options
@@ -145,10 +293,10 @@ public class StatisticsPage extends WidgetsTemplate {
 		salesChartOptions.addNewSeries().setLabel(P2_LEGEND);
 		salesChartOptions.addNewSeries().setLabel(P3_LEGEND);
 		
-		add(salesChart);
+		return salesChart;
 	}
-	
-	private void addPieChart() {
+
+	private static JQPlot createPieChartWithLowLevelAPI(String wicketId) {
 		// Create series
 		BaseSeries<String, Double> line = new BaseSeries<String, Double>();
 		line.addEntry("frogs", 3.0);
@@ -160,7 +308,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		
 		// Build JQPlot object with given series
 		@SuppressWarnings("unchecked")
-		JQPlot pieChart = new JQPlot("pieChart", new ListModel<BaseSeries<String, Double>>(Lists.newArrayList(line)));
+		JQPlot pieChart = new JQPlot(wicketId, new ListModel<BaseSeries<String, Double>>(Lists.newArrayList(line)));
 		
 		// Chart options
 		PlotOptions pieChartOptions = pieChart.getOptions();
@@ -170,10 +318,10 @@ public class StatisticsPage extends WidgetsTemplate {
 		pieChartOptions.getSeriesDefaults().setRenderer("$.jqplot.PieRenderer").setRendererOptions(renderOptions);
 		pieChartOptions.getLegend().setShow(true).setLocation(PlotLegendLocation.nw);
 		
-		add(pieChart);
+		return pieChart;
 	}
-	
-	private void addStackedLinesChart() {
+
+	private static JQPlot createStackedLinesChartWithLowLevelAPI(String wicketId) {
 		// Create series
 		BaseSeries<Date, Double> product1series = new BaseSeries<Date, Double>();
 		
@@ -208,7 +356,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		
 		// Build JQPlot object with given series
 		@SuppressWarnings("unchecked")
-		JQPlot stackedLinesChart = new JQPlot("stackedLinesChart", new ListModel<BaseSeries<Date, Double>>(
+		JQPlot stackedLinesChart = new JQPlot(wicketId, new ListModel<BaseSeries<Date, Double>>(
 				Lists.newArrayList(product1series, product2series, product3series)));
 		
 		// Chart options
@@ -269,6 +417,6 @@ public class StatisticsPage extends WidgetsTemplate {
 		stackedLinesOptions.addNewSeries().setLabel(P2_LEGEND);
 		stackedLinesOptions.addNewSeries().setLabel(P3_LEGEND);
 		
-		add(stackedLinesChart);
+		return stackedLinesChart;
 	}
 }

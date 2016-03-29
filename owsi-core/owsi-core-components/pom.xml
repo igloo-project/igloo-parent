@@ -29,6 +29,7 @@
 		
 		<module>owsi-core-component-wicket</module>
 		<module>owsi-core-component-wicket-more</module>
+		<module>owsi-core-component-wicket-more-jqplot</module>
 		<module>000-owsi-core-component-wicket-override</module>
 		
 		<module>owsi-core-component-rest-jersey</module>

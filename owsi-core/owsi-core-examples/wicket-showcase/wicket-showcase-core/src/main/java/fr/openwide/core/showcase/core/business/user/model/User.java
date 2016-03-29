@@ -7,6 +7,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.SortNatural;
@@ -35,6 +37,9 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	@SortNatural
 	private SortedSet<String> tags = Sets.newTreeSet();
 	
+	@Enumerated(EnumType.STRING)
+	private UserGender gender;
+	
 	public Integer getPosition() {
 		return position;
 	}
@@ -49,6 +54,14 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	
 	public void setTags(SortedSet<String> tags) {
 		CollectionUtils.replaceAll(this.tags, tags);
+	}
+	
+	public UserGender getGender() {
+		return gender;
+	}
+	
+	public void setGender(UserGender gender) {
+		this.gender = gender;
 	}
 	
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
