@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -24,6 +25,7 @@ import com.google.common.collect.Table;
 import fr.openwide.core.commons.util.collections.DateDiscreteDomain;
 import fr.openwide.core.showcase.core.business.statistic.service.IStatisticService;
 import fr.openwide.core.showcase.core.business.user.model.UserGender;
+import fr.openwide.core.wicket.more.jqplot.behavior.JQPlotReplotBehavior;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotBarsPanel;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotLinesPanel;
 import fr.openwide.core.wicket.more.jqplot.component.JQPlotPiePanel;
@@ -35,6 +37,7 @@ import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotContinuousDateKeys
 import fr.openwide.core.wicket.more.jqplot.data.adapter.JQPlotDiscreteKeysDataAdapter;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
 import fr.openwide.core.wicket.more.model.ContiguousSetModel;
 import fr.openwide.core.wicket.more.model.RangeModel;
 import fr.openwide.core.wicket.more.rendering.EnumRenderer;
@@ -91,6 +94,18 @@ public class StatisticsPage extends WidgetsTemplate {
 	public StatisticsPage(PageParameters parameters) {
 		super(parameters);
 		
+		WebMarkupContainer tabContainer = new WebMarkupContainer("tabContainer");
+		add(tabContainer);
+		tabContainer.add(new BootstrapTabBehavior());
+		
+		/* Makes sure the plots that are not on the initially active tab (and thus will not be
+		 * plotted immediately) will at least be plotted when switching tabs.
+		 */
+		tabContainer.add(new JQPlotReplotBehavior("shown.bs.tab"));
+		
+		WebMarkupContainer highLevelPlotsTab = new WebMarkupContainer("highLevelPlotsTab");
+		tabContainer.add(highLevelPlotsTab);
+		
 		IModel<Map<UserGender, Integer>> userCountByGenderStatisticsModel =
 				new LoadableDetachableModel<Map<UserGender, Integer>>() {
 					private static final long serialVersionUID = 1L;
@@ -99,7 +114,7 @@ public class StatisticsPage extends WidgetsTemplate {
 						return statisticService.getUserCountByGenderStatistics();
 					}
 				};
-		add(new JQPlotPiePanel<UserGender, Integer>(
+		highLevelPlotsTab.add(new JQPlotPiePanel<UserGender, Integer>(
 				"piePanel", userCountByGenderStatisticsModel, EnumRenderer.get()
 		));
 		
@@ -123,7 +138,7 @@ public class StatisticsPage extends WidgetsTemplate {
 
 		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekContinuousDataAdapter =
 				new JQPlotContinuousDateKeysDataAdapter<>(userCreationCountByGenderByWeekModel, "%d/%m/%y");
-		add(
+		highLevelPlotsTab.add(
 				new JQPlotLinesPanel<>(
 						"linesPanel", userCreationCountByGenderByWeekContinuousDataAdapter
 				)
@@ -144,7 +159,7 @@ public class StatisticsPage extends WidgetsTemplate {
 						Model.of(0), // For missing values,
 						Renderer.fromDatePattern(DatePattern.REALLY_SHORT_DATE)
 				);
-		add(
+		highLevelPlotsTab.add(
 				new JQPlotLinesPanel<>(
 						"linesDiscreteAxisPanel", userCreationCountByGenderByWeekDiscreteDataAdapter
 				)
@@ -183,9 +198,11 @@ public class StatisticsPage extends WidgetsTemplate {
 								JQPlotConfigurers.seriesLabels(EnumRenderer.get())
 						)
 		);
+
 		
-		
-		add(
+		WebMarkupContainer lowLevelPlotsTab = new WebMarkupContainer("lowLevelPlotsTab");
+		tabContainer.add(lowLevelPlotsTab);
+		lowLevelPlotsTab.add(
 				createDefaultChartWithLowLevelAPI("defaultChart"),
 				createSalesChartWithLowLevelAPI("salesChart"),
 				createPieChartWithLowLevelAPI("pieChart"),

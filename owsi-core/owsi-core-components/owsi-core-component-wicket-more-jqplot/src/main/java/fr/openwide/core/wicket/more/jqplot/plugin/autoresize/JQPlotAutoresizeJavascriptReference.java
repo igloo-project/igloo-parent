@@ -7,6 +7,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 
 import com.google.common.collect.ImmutableList;
 
+import fr.openwide.core.wicket.more.jqplot.plugin.adddomreference.JQPlotAddDomReferenceResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import nl.topicus.wqplot.components.JQPlotJavaScriptResourceReference;
 
@@ -29,7 +30,9 @@ public class JQPlotAutoresizeJavascriptReference extends AbstractCoreJQueryPlugi
 	
 	@Override
 	protected List<HeaderItem> getPluginDependencies() {
-		return ImmutableList.<HeaderItem>of(JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference.get())
+		return ImmutableList.<HeaderItem>of(
+				JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference.get()),
+				JavaScriptHeaderItem.forReference(JQPlotAddDomReferenceResourceReference.get())
 		);
 	}
 

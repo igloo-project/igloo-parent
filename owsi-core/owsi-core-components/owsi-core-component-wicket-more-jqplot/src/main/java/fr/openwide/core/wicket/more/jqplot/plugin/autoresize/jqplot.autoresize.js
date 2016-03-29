@@ -23,7 +23,6 @@
 			$(window).on('resize', replot);
 		};
 	}
-	$.jqplot.config.addDomReference=true;
 	function postInit(target, data, options) {
 		var plot = this;
 		function replot() {
