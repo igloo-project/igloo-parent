@@ -41,12 +41,12 @@ public class CitySearchPanel extends Panel {
 		);
 		
 		searchForm.add(
-				new TextField<String>("label", dataProvider.getLabelModel())
+				new TextField<String>("label", dataProvider.getLabelModel(), String.class)
 						.setLabel(new ResourceModel("business.listItem.label"))
 						.add(
 								new LabelPlaceholderBehavior()
 						),
-				new TextField<String>("postalCode", dataProvider.getPostalCodeModel())
+				new TextField<String>("postalCode", dataProvider.getPostalCodeModel(), String.class)
 						.setLabel(new ResourceModel("business.postalCode"))
 						.add(
 								new LabelPlaceholderBehavior()

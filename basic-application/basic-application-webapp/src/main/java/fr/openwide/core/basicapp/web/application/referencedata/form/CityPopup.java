@@ -10,6 +10,7 @@ import org.apache.wicket.model.ResourceModel;
 import fr.openwide.core.basicapp.core.business.common.model.PostalCode;
 import fr.openwide.core.basicapp.core.business.referencedata.model.City;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
+import fr.openwide.core.basicapp.web.application.referencedata.validator.CityUnicityFormValidator;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
@@ -42,7 +43,8 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 				BindingModel.of(model, Bindings.genericListItem().disableable())
 		);
 		
-		this.postalCode = new TextField<PostalCode>("postalCode",BindingModel.of(model, Bindings.city().postalCode()), PostalCode.class);
+		this.postalCode = new TextField<PostalCode>(
+				"postalCode", BindingModel.of(model, Bindings.city().postalCode()), PostalCode.class);
 		
 		this.label = new TextField<String>(
 				"label", BindingModel.of(model, Bindings.genericListItem().label())
@@ -66,6 +68,7 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 										.add(new EnclosureBehavior(ComponentBooleanProperty.ENABLE)
 												.condition(disableableCondition))
 						)
+						.add(new CityUnicityFormValidator(getModel(), label, postalCode))
 		);
 		
 		return body;
