@@ -32,6 +32,22 @@ import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
 
+/**
+ * A wrapper component around {@link JQPlot} that makes it dynamic:
+ * <ul>
+ * <li>It uses a {@link IJQPlotDataAdapter} to generate JQPlot's data on each rendering
+ * <li>It uses {@link IJQPlotConfigurer}s to refresh JQPlot's options on each rendering
+ * <li>It includes a built-in placeholder for cases when there's no data to be shown (see {@link #setNonEmptyDataPredicate(Predicate)})
+ * </ul>
+ * 
+ * <strong>Note:</strong> don't use this class directly; use one of its subclasses instead.
+ * 
+ * @see JQPlotPiePanel
+ * @see JQPlotLinesPanel
+ * @see JQPlotStackedLinesPanel
+ * @see JQPlotBarsPanel
+ * @see JQPlotStackedBarsPanel
+ */
 public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extends Panel {
 
 	private static final long serialVersionUID = -138468277129057498L;
