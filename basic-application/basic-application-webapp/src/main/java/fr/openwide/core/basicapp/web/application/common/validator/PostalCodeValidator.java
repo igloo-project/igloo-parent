@@ -6,19 +6,19 @@ import com.google.common.base.Predicate;
 
 import fr.openwide.core.commons.util.functional.SerializablePredicate;
 
-public class CodePostalValidator extends RegexValidator implements SerializablePredicate<String> {
+public class PostalCodeValidator extends RegexValidator implements SerializablePredicate<String> {
 
 	private static final long serialVersionUID = 5254830905190414225L;
 	
-	private static final CodePostalValidator INSTANCE = new CodePostalValidator();
+	private static final PostalCodeValidator INSTANCE = new PostalCodeValidator();
 	
 	private static final String POSTAL_CODE_REGEX = "^[a-zA-Z0-9]*$";
 	
-	public static CodePostalValidator getInstance() {
+	public static PostalCodeValidator getInstance() {
 		return INSTANCE;
 	}
 
-	public CodePostalValidator() {
+	public PostalCodeValidator() {
 		super(POSTAL_CODE_REGEX, false);
 	}
 	
