@@ -9,28 +9,28 @@ import org.springframework.util.StringUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
-import fr.openwide.core.basicapp.core.business.common.model.NumeroTelephone;
+import fr.openwide.core.basicapp.core.business.common.model.PhoneNumber;
 import fr.openwide.core.commons.util.validator.PermissivePhoneNumberValidator;
 
-public final class NumeroTelephoneConverter extends AbstractConverter<NumeroTelephone> {
+public final class PhoneNumberConverter extends AbstractConverter<PhoneNumber> {
 
 	private static final long serialVersionUID = 7575610087030468757L;
 
 	@Override
-	public NumeroTelephone convertToObject(String value, Locale locale) throws ConversionException {
+	public PhoneNumber convertToObject(String value, Locale locale) throws ConversionException {
 		String trimmedValue = StringUtils.trimAllWhitespace(value);
 		if (StringUtils.hasText(trimmedValue)) {
 			if (!PermissivePhoneNumberValidator.getInstance().isValid(trimmedValue)) {
 				throw newConversionException("Invalid phone number format", value, locale)
-						.setResourceKey("common.validator.numeroTelephone");
+						.setResourceKey("common.validator.phoneNumber");
 			}
-			return NumeroTelephone.buildClean(trimmedValue);
+			return PhoneNumber.buildClean(trimmedValue);
 		}
 		return null;
 	}
 
 	@Override
-	public String convertToString(NumeroTelephone value, Locale locale) {
+	public String convertToString(PhoneNumber value, Locale locale) {
 		if (value == null) {
 			return null;
 		}
@@ -45,8 +45,8 @@ public final class NumeroTelephoneConverter extends AbstractConverter<NumeroTele
 	}
 	
 	@Override
-	protected Class<NumeroTelephone> getTargetType() {
-		return NumeroTelephone.class;
+	protected Class<PhoneNumber> getTargetType() {
+		return PhoneNumber.class;
 	}
 
 }

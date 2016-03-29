@@ -9,7 +9,7 @@ import com.google.common.base.CharMatcher;
 
 import fr.openwide.core.jpa.hibernate.usertype.AbstractMaterializedPrimitiveValue;
 
-public final class NumeroTelephone extends AbstractMaterializedPrimitiveValue<String, NumeroTelephone> {
+public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String, PhoneNumber> {
 
 	private static final long serialVersionUID = 7055290426664681655L;
 	
@@ -41,12 +41,12 @@ public final class NumeroTelephone extends AbstractMaterializedPrimitiveValue<St
 		}
 	}
 	
-	public static NumeroTelephone buildClean(String value) {
+	public static PhoneNumber buildClean(String value) {
 		String cleaned = clean(value);
 		if (StringUtils.isEmpty(cleaned)) {
 			return null;
 		} else {
-			return new NumeroTelephone(cleaned);
+			return new PhoneNumber(cleaned);
 		}
 	}
 	
@@ -54,11 +54,11 @@ public final class NumeroTelephone extends AbstractMaterializedPrimitiveValue<St
 	 * @deprecated Ne pas utiliser, présent uniquement pour la récupération depuis la BDD (type hibernate).
 	 */
 	@Deprecated
-	public static NumeroTelephone buildNoCleaning(String value) {
-		return new NumeroTelephone(value);
+	public static PhoneNumber buildNoCleaning(String value) {
+		return new PhoneNumber(value);
 	}
 	
-	private NumeroTelephone(String value) {
+	private PhoneNumber(String value) {
 		super(value);
 	}
 	
