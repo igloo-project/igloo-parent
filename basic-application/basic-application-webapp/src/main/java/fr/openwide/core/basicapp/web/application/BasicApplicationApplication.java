@@ -12,6 +12,8 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.ImmutableList;
+
 import fr.openwide.core.basicapp.core.business.common.model.PostalCode;
 import fr.openwide.core.basicapp.core.business.history.model.atomic.HistoryEventType;
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
@@ -37,10 +39,12 @@ import fr.openwide.core.basicapp.web.application.navigation.page.HomePage;
 import fr.openwide.core.basicapp.web.application.navigation.page.MaintenancePage;
 import fr.openwide.core.basicapp.web.application.profile.page.ProfilePage;
 import fr.openwide.core.basicapp.web.application.referencedata.page.ReferenceDataPage;
+import fr.openwide.core.basicapp.web.application.resources.application.BasicApplicationApplicationResources;
 import fr.openwide.core.basicapp.web.application.resources.business.BasicApplicationBusinessResources;
 import fr.openwide.core.basicapp.web.application.resources.common.BasicApplicationCommonResources;
 import fr.openwide.core.basicapp.web.application.resources.console.BasicApplicationConsoleResources;
 import fr.openwide.core.basicapp.web.application.resources.enums.BasicApplicationEnumResources;
+import fr.openwide.core.basicapp.web.application.resources.navigation.BasicApplicationNavigationResources;
 import fr.openwide.core.basicapp.web.application.resources.notifications.BasicApplicationNotificationResources;
 import fr.openwide.core.basicapp.web.application.security.login.page.SignInPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
@@ -95,12 +99,19 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 					StylesLessCssResourceReference.get()
 			);
 		}
-		
-		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationBusinessResources.class));
-		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationCommonResources.class));
-		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationConsoleResources.class));
-		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationEnumResources.class));
-		getResourceSettings().getStringResourceLoaders().add(0, new ClassStringResourceLoader(BasicApplicationNotificationResources.class));
+
+		getResourceSettings().getStringResourceLoaders().addAll(
+				0, // Override the keys in existing resource loaders with the following 
+				ImmutableList.of(
+						new ClassStringResourceLoader(BasicApplicationApplicationResources.class),
+						new ClassStringResourceLoader(BasicApplicationBusinessResources.class),
+						new ClassStringResourceLoader(BasicApplicationCommonResources.class),
+						new ClassStringResourceLoader(BasicApplicationConsoleResources.class),
+						new ClassStringResourceLoader(BasicApplicationEnumResources.class),
+						new ClassStringResourceLoader(BasicApplicationNavigationResources.class),
+						new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
+				)
+		);
 	}
 	
 	@Override
