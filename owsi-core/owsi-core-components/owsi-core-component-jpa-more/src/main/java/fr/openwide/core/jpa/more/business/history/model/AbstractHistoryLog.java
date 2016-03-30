@@ -153,6 +153,8 @@ public abstract class AbstractHistoryLog<
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
+	@Transient
 	public HL getRootLog() {
 		return (HL) this;
 	}

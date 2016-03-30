@@ -75,13 +75,13 @@ public class FileDownloadPanel extends Panel {
 			copyFileIfNotNull(file, dossier11);
 			
 				// ---- dossier12 ----
-			TFile dossier12 = TFileRegistry.create(dossier1, "Dossier12").mkdir(true);
+			TFileRegistry.create(dossier1, "Dossier12").mkdir(true);
 			
 			// ---- dossier2 ----
 			TFile dossier2 = TFileRegistry.create(archiveFile, "Dossier2").mkdir(true);
 			
 				// ---- dossier21 ----
-			TFile dossier21 = TFileRegistry.create(dossier2, "Dossier21").mkdir(true);
+			TFileRegistry.create(dossier2, "Dossier21").mkdir(true);
 			
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de la construction d'un Zip.", e);

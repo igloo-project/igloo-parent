@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IOneParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.common.IParameterMapperOneChosenParameterMappingState;
 
 /**

@@ -44,6 +44,8 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
 	
+	public static final String LABEL_FIELD_NAME = "label";
+	
 	public static final String LABEL_SORT_FIELD_NAME = "labelSort";
 	
 	public static final String SHORT_LABEL_SORT_FIELD_NAME = "shortLabelSort";
@@ -57,7 +59,7 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	
 	@Column
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = LABEL_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = LABEL_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
 	@SortableField(forField = LABEL_SORT_FIELD_NAME)

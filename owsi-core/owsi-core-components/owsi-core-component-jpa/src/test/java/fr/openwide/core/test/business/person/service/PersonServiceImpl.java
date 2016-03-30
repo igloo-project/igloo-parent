@@ -17,8 +17,6 @@
 
 package fr.openwide.core.test.business.person.service;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +25,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.business.person.dao.IPersonDao;
 import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.model.QPerson;
 import fr.openwide.core.test.business.project.model.Project;
 
 @Service("testPersonService")
@@ -42,8 +41,8 @@ public class PersonServiceImpl extends GenericEntityServiceImpl<Long, Person>
 	}
 	
 	@Override
-	public Long count(SingularAttribute<? super Person, String> attribute, String value) {
-		return personDao.countByField(attribute, value);
+	public Long countByLastName(String value) {
+		return personDao.countByField(QPerson.person, QPerson.person.lastName, value);
 	}
 
 	@Override

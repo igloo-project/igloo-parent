@@ -17,9 +17,16 @@
 
 package fr.openwide.core.test;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.metamodel.SingularAttribute;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
@@ -50,6 +57,19 @@ public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 	
 	@Autowired
 	protected ILabelService labelService;
+
+	@SuppressWarnings("deprecation")
+	protected static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, V extends Comparable<?>>
+			E getByFieldLegacy(IGenericEntityDao<K, E> dao, SingularAttribute<? super E, V> attribute, V value) {
+		return dao.getByField(attribute, value);
+	}
+
+
+	@SuppressWarnings("deprecation")
+	protected static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, V extends Comparable<?>>
+			List<E> listByFieldLegacy(IGenericEntityDao<K, E> dao, SingularAttribute<? super E, V> attribute, V value) {
+		return dao.listByField(attribute, value);
+	}
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {

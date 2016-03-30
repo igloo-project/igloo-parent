@@ -137,6 +137,7 @@ public abstract class AbstractSimpleExcelTableExport extends AbstractExcelTableE
 		sheet.getPrintSetup().setFitHeight((short) 10000);
 	}
 	
+	@Override
 	protected void addIterableTextCell(Row row, int columnIndex, Iterable<String> iterable) {
 		addTextCell(row, columnIndex, DEFAULT_JOINER.join(iterable));
 	}

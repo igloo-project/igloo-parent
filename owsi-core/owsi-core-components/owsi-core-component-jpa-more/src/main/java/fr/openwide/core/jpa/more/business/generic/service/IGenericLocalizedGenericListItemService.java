@@ -50,7 +50,10 @@ public interface IGenericLocalizedGenericListItemService<GE extends GenericLocal
 
 	/**
 	 * WARNING: only works on classes that were annotated with {@link Indexed}.
+	 * 
+	 * @deprecated Implement a SearchQuery akin to {@link fr.openwide.core.jpa.more.business.generic.query.IGenericListItemSearchQuery)}.
 	 */
+	@Deprecated
 	<E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, Locale locale, int limit, int offset)
 			throws ServiceException;
 

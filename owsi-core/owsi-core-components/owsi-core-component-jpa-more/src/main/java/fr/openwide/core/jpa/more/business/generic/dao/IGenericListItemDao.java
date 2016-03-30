@@ -20,7 +20,6 @@ package fr.openwide.core.jpa.more.business.generic.dao;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.metamodel.SingularAttribute;
 
 import com.querydsl.core.types.EntityPath;
@@ -32,10 +31,6 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 
-/**
- * Note : les définitions de generics n'ont pas été choisies par hasard. Elles permettent
- * de répondre à des besoins concrets sur des projets.
- */
 public interface IGenericListItemDao {
 
 	<E extends GenericListItem<?>> E getEntity(Class<E> clazz, Long id);
@@ -59,21 +54,21 @@ public interface IGenericListItemDao {
 	<E extends GenericListItem<?>> List<E> list(Class<E> clazz);
 
 	/**
-	 * @deprecated Utiliser QueryDSL.
+	 * @deprecated Use {@link #listByField(EntityPath, SimpleExpression, Comparable, OrderSpecifier)} instead.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter, Comparator<? super E> comparator);
 
 	/**
-	 * @deprecated Utiliser QueryDSL.
+	 * @deprecated Use {@link #listByField(EntityPath, SimpleExpression, Comparable, OrderSpecifier)} instead.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter);
 
 	/**
-	 * @deprecated Utiliser QueryDSL.
+	 * @deprecated Use {@link #listByField(EntityPath, SimpleExpression, Comparable, OrderSpecifier)} instead.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
@@ -83,45 +78,39 @@ public interface IGenericListItemDao {
 	<E extends GenericListItem<?>> Long count(Class<E> clazz);
 
 	/**
-	 * @deprecated Utiliser QueryDSL.
+	 * @deprecated Use {@link #countByField(EntityPath, SimpleExpression, Comparable)} instead.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue,
 			EnabledFilter enabledFilter);
 
 	/**
-	 * @deprecated Utiliser QueryDSL.
+	 * @deprecated Use {@link #countByField(EntityPath, SimpleExpression, Comparable)} instead.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue);
 
 	/**
-	 * @deprecated Utiliser QueryDSL.
-	 * Obtient un objet par la condition attribut = valeur
+	 * @deprecated Use {@link #getByField(EntityPath, SimpleExpression, Comparable)} instead.
 	 * 
-	 * @param <V>
-	 * @param clazz
-	 * @param attribute
-	 * @param fieldValue
-	 * @return
-	 * @throws NonUniqueResultException
+	 * Get an object with a "key=param" condition.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>, V extends Comparable<?>>  E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue);
 	
 	/**
-	 * @deprecated Utiliser QueryDSL.
-	 * Obtient un objet par la condition lower(attribut) = lower(valeur).
+	 * @deprecated Use {@link #getByFieldIgnoreCase(EntityPath, StringExpression, String)} instead.
 	 * 
-	 * @param clazz
-	 * @param attribute
-	 * @param fieldValue
-	 * @return
-	 * @throws NonUniqueResultException
+	 * Get an object with a "lower(value)=lower(param)" condition.
 	 */
 	@Deprecated
 	<E extends GenericListItem<?>>  E getByFieldIgnoreCase(Class<E> clazz, SingularAttribute<? super E, String> attribute, String fieldValue);
 
+	/**
+	 * @deprecated Implement a {@link fr.openwide.core.jpa.more.business.generic.query.IGenericListItemSearchQuery<T, S, Q>).
+	 * See in particular {@link fr.openwide.core.jpa.more.business.generic.query.AbstractGenericListItemHibernateSearchSearchQuery<T, S, Q>}
+	 */
+	@Deprecated
 	<E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, Integer limit, Integer offset) throws ServiceException;
 
 	<T extends GenericListItem<?>, V extends Comparable<?>> T getByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue);

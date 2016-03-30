@@ -233,11 +233,13 @@ public abstract class GenericLocalizedGenericListItemDaoImpl<GE extends GenericL
 	}
 
 	@Override
+	@Deprecated
 	public <E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
 			Locale locale, Integer limit, Integer offset) throws ServiceException {
 		return searchAutocomplete(searchPattern, clazz, null, locale, limit, offset);
 	}
-	
+
+	@Deprecated
 	protected final <E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
 			String[] fields, Locale locale, Integer limit, Integer offset) throws ServiceException {
 		GenericLocalizedGenericListItemBinding<E, T> binding = new GenericLocalizedGenericListItemBinding<E, T>();

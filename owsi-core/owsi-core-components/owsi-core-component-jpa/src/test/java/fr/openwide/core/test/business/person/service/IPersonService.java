@@ -17,8 +17,6 @@
 
 package fr.openwide.core.test.business.person.service;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -27,7 +25,7 @@ import fr.openwide.core.test.business.project.model.Project;
 
 public interface IPersonService extends IGenericEntityService<Long, Person> {
 
-	Long count(SingularAttribute<? super Person, String> attribute, String value);
+	Long countByLastName(String value);
 	
 	void addProject(Person person, Project project) throws ServiceException, SecurityServiceException;
 }

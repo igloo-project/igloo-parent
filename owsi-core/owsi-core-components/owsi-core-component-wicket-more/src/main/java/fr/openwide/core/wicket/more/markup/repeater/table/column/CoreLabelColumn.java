@@ -37,10 +37,6 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	
 	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorMapper;
 	
-	// TODO RJO YRO : on ne pourrait pas shooter ça ?
-	@Deprecated
-	private boolean disableIfInvalid = false;
-	
 	private boolean hideIfInvalid = false;
 	
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
@@ -111,9 +107,6 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	}
 	
 	private AbstractDynamicBookmarkableLink decorate(AbstractDynamicBookmarkableLink link) {
-		if (disableIfInvalid) {
-			link.disableIfInvalid();
-		}
 		if (hideIfInvalid) {
 			link.hideIfInvalid();
 		}
@@ -172,11 +165,6 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 			throw new IllegalStateException("link and side link cannot be both set.");
 		}
 		this.sideLinkGeneratorMapper = sideLinkGeneratorFactory;
-		return this;
-	}
-
-	public CoreLabelColumn<T, S> disableIfInvalid() {
-		this.disableIfInvalid = true;
 		return this;
 	}
 

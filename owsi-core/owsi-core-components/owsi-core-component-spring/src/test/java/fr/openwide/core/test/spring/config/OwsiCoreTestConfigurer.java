@@ -2,6 +2,7 @@ package fr.openwide.core.test.spring.config;
 
 import fr.openwide.core.spring.config.AbstractConfigurer;
 
+@SuppressWarnings("deprecation")
 public class OwsiCoreTestConfigurer extends AbstractConfigurer {
 
 	private static final String PROPERTY1 = "property1";

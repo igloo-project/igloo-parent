@@ -12,8 +12,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class
@@ -23,9 +21,6 @@ import fr.openwide.core.spring.config.CorePropertyPlaceholderConfigurer;
 })
 public class TestOwPropertyPlaceholderConfigurer {
 
-	@Autowired
-	private CorePropertyPlaceholderConfigurer propertySource;
-	
 	@Autowired
 	private OwsiCoreTestConfigurer configurer;
 	

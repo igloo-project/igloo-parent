@@ -733,8 +733,9 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
+		@Deprecated
 		public IAddedLabelColumnState<T, S> disableIfInvalid() {
-			getColumn().disableIfInvalid();
+			// Does nothing: this is the default behavior.
 			return this;
 		}
 
@@ -814,8 +815,9 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
+		@Deprecated
 		public IAddedBootstrapBadgeColumnState<T, S, C> disableIfInvalid() {
-			getColumn().disableIfInvalid();
+			// Does nothing: this is the default behavior.
 			return this;
 		}
 

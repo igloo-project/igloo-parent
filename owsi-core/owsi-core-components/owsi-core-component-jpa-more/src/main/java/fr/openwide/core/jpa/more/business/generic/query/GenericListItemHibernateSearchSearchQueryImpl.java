@@ -2,6 +2,8 @@ package fr.openwide.core.jpa.more.business.generic.query;
 import java.util.Map;
 
 import org.apache.lucene.search.SortField;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
@@ -10,7 +12,9 @@ import fr.openwide.core.jpa.more.business.search.query.AbstractHibernateSearchSe
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
 
-public abstract class AbstractGenericListItemHibernateSearchSearchQuery
+@Component
+@Scope("prototype")
+public class GenericListItemHibernateSearchSearchQueryImpl
 		<
 		T extends GenericListItem<? super T>,
 		S extends ISort<SortField>,
@@ -18,7 +22,7 @@ public abstract class AbstractGenericListItemHibernateSearchSearchQuery
 		>
 		extends AbstractHibernateSearchSearchQuery<T, S> implements IGenericListItemSearchQuery<T, S, Q> {
 
-	protected AbstractGenericListItemHibernateSearchSearchQuery(Class<T> clazz) {
+	protected GenericListItemHibernateSearchSearchQueryImpl(Class<T> clazz) {
 		super(clazz);
 	}
 
@@ -28,7 +32,13 @@ public abstract class AbstractGenericListItemHibernateSearchSearchQuery
 	}
 
 	@Override
-	public abstract Q label(String label);
+	public Q label(String label) {
+		must(matchIfGiven(
+				GenericListItem.LABEL_FIELD_NAME,
+				label
+		));
+		return thisAsQ();
+	}
 
 	@Override
 	public Q enabled(EnabledFilter enabledFilter) {

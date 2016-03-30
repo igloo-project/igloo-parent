@@ -269,9 +269,9 @@ public final class LuceneUtils {
 	
 	private static String formatBooleanQuery(BooleanQuery booleanQuery) {
 		StringBuilder sb = new StringBuilder();
-		if (booleanQuery.getClauses().length > 0) {
+		if (booleanQuery.clauses().size() > 0) {
 			StringBuilder booleanQuerySb = new StringBuilder();
-			for (BooleanClause clause : booleanQuery.getClauses()) {
+			for (BooleanClause clause : booleanQuery.clauses()) {
 				if (clause.getQuery() != null) {
 					String query = queryToString(clause.getQuery());
 					
@@ -290,9 +290,9 @@ public final class LuceneUtils {
 				}
 			}
 			if (booleanQuerySb.length() > 0) {
-				if (booleanQuery.getClauses().length > 1
+				if (booleanQuery.clauses().size() > 1
 						|| booleanQuerySb.charAt(0) == '-' || booleanQuerySb.charAt(0) == '+'
-						|| (booleanQuery.getClauses().length == 1 && (booleanQuery.getClauses()[0].getQuery() instanceof RawLuceneQuery))) {
+						|| (booleanQuery.clauses().size() == 1 && (booleanQuery.clauses().get(0).getQuery() instanceof RawLuceneQuery))) {
 					sb.append("(")
 						.append(booleanQuerySb.toString().trim())
 						.append(")");

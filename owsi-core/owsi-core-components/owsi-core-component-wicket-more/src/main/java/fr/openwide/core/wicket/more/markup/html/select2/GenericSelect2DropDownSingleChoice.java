@@ -77,6 +77,7 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 		return select2Behavior.getSettings();
 	}
 	
+	@Override
 	public IModel<? extends List<? extends T>> getChoicesModel() {
 		return choicesWrapperModel;
 	}

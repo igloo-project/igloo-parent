@@ -52,7 +52,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		
 		{
 			Person person1 = (Person) personDao.getById(Person.class, person.getId());
-			Person person2 = personDao.getByField(Person_.lastName, "Lastname");
+			Person person2 = getByFieldLegacy(personDao, Person_.lastName, "Lastname");
 			Person person3 = personDao.getById(person.getId());
 			
 			Assert.assertTrue(person.equals(person1));
@@ -82,7 +82,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Person personA2 = personDao.getById(Person.class, personA.getId());
 		PersonSubTypeA personA3 = personDao.getById(PersonSubTypeA.class, personA.getId());
 		PersonSubTypeB personA4 = personDao.getById(PersonSubTypeB.class, personA.getId());
-		Person personA5 = personDao.getByField(Person_.lastName, "A");
+		Person personA5 = getByFieldLegacy(personDao, Person_.lastName, "A");
 
 		Person personB1 = personDao.getById(personB.getId());
 		Person personB2 = personDao.getById(Person.class, personB.getId());
@@ -111,8 +111,8 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 	public void testPolymorphicSubTypeGet() throws ServiceException, SecurityServiceException {
 		Person person = new PersonSubTypeA("Firstname", "A", "DATA");
 		PersonReference personReference = new PersonReference(person);
-		personService.save(person);
-		personReferenceService.save(personReference);
+		personService.create(person);
+		personReferenceService.create(personReference);
 		
 		// Vidage de la session
 		personService.flush();
@@ -128,6 +128,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Assert.assertTrue(person2 instanceof PersonSubTypeA); // Chargement en session SANS proxy
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testSaveDelete() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
@@ -186,7 +187,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 			List<Person> emptyList = personDao.list();
 			Assert.assertEquals(0, emptyList.size());
 			
-			List<Person> emptyListByField = personDao.listByField(Person_.lastName, "AAAA");
+			List<Person> emptyListByField = listByFieldLegacy(personDao, Person_.lastName, "AAAA");
 			Assert.assertEquals(0, emptyListByField.size());
 		}
 		
@@ -216,7 +217,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 			Assert.assertTrue(list.contains(person3));
 			Assert.assertTrue(list.contains(person4));
 			
-			List<Person> listByField = personDao.listByField(Person_.lastName, "AAAA");
+			List<Person> listByField = listByFieldLegacy(personDao, Person_.lastName, "AAAA");
 			
 			Assert.assertEquals(2, listByField.size());
 			Assert.assertTrue(listByField.contains(person2));
@@ -240,6 +241,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testCounts() throws ServiceException, SecurityServiceException {
 		{

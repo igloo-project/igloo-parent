@@ -91,6 +91,10 @@ public interface IGenericLocalizedGenericListItemDao<GE extends GenericLocalized
 
 	<E extends GE> List<E> listByLocalizedLabel(EntityPath<E> source, Locale locale, String label);
 
+	/**
+	 * @deprecated Implement a SearchQuery akin to {@link fr.openwide.core.jpa.more.business.generic.query.IGenericListItemSearchQuery)}.
+	 */
+	@Deprecated
 	<E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, Locale locale, Integer limit, Integer offset) throws ServiceException;
 
 	void flush();

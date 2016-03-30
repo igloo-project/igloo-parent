@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 
-@Deprecated
+@SuppressWarnings("deprecation")
 public class LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<T>
 		extends AbstractOneParameterLinkDescriptorMapper<ILinkGenerator, T> {
 	private static final long serialVersionUID = -8490229055203194996L;

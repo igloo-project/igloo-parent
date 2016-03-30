@@ -33,7 +33,6 @@ import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
 import fr.openwide.core.test.business.person.model.PersonSubTypeA;
 import fr.openwide.core.test.business.person.model.PersonSubTypeB;
-import fr.openwide.core.test.business.person.model.Person_;
 import fr.openwide.core.test.business.person.service.IPersonService;
 
 public class TestGenericService extends AbstractJpaCoreTestCase {
@@ -42,6 +41,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 	IPersonService personService;
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testSaveCreate() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.save(person);
@@ -202,8 +202,8 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		
 		Assert.assertTrue(list.contains(person));
 		Assert.assertTrue(list.contains(person1));
-		Assert.assertEquals(1, (long) personService.count(Person_.lastName, "Lastname"));
-		Assert.assertEquals(1, (long) personService.count(Person_.lastName, "Lastname1"));
+		Assert.assertEquals(1, (long) personService.countByLastName("Lastname"));
+		Assert.assertEquals(1, (long) personService.countByLastName("Lastname1"));
 	}
 	
 	@Test

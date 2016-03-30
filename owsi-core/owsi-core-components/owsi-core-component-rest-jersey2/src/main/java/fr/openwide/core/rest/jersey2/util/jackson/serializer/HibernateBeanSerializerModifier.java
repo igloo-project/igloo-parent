@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ser.impl.ObjectIdWriter;
 import fr.openwide.core.jpa.util.HibernateUtils;
 
 /**
- * BeanSerializerModifier qui permet la prise en compte correcte des entités hibernate (cas des proxies)
+ * BeanSerializerModifier that correctly handles Hibernate proxies.
  */
 public class HibernateBeanSerializerModifier extends BeanSerializerModifier {
 
@@ -34,6 +34,8 @@ public class HibernateBeanSerializerModifier extends BeanSerializerModifier {
 
 	public static class BeanSerializerWrapper extends BeanSerializer {
 
+		private static final long serialVersionUID = 1L;
+		
 		private final BeanSerializer serializer;
 
 		protected BeanSerializerWrapper(BeanSerializer src) {

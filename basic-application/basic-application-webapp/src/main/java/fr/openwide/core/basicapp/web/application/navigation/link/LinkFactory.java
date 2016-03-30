@@ -2,6 +2,7 @@ package fr.openwide.core.basicapp.web.application.navigation.link;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import com.google.common.base.Function;
 
@@ -14,7 +15,6 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.factory.AbstractLinkFactory;
-import fr.openwide.core.wicket.more.model.ClassModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
 public final class LinkFactory extends AbstractLinkFactory {
@@ -39,7 +39,7 @@ public final class LinkFactory extends AbstractLinkFactory {
 
 	public <U extends User> IPageLinkDescriptor userDescription(Class<? extends Page> pageClass,
 			IModel<U> userModel, Class<U> userClass, IModel<Page> sourcePageModel) {
-		return userDescription(ClassModel.of(pageClass), userModel, userClass, sourcePageModel);
+		return userDescription(Model.of(pageClass), userModel, userClass, sourcePageModel);
 	}
 
 	public IPageLinkGenerator userDescription(IModel<User> userModel) {
