@@ -8,6 +8,12 @@ import org.retzlaff.select2.ISelect2AjaxAdapter;
 
 import com.google.common.collect.Sets;
 
+/**
+ * @deprecated Use {@link GenericSelect2DropDownMultipleChoice} instead: it's got a generic constructor that allows
+ * you to pass any kind of collection model ({@code IModel<Set<T>>},
+ * {@code IModel<SortedSet<T>>}, {@code IModel<List<T>>}, ...)
+ */
+@Deprecated
 public class Select2SortedSetMultipleChoice<T> extends AbstractSelect2MultipleChoice<SortedSet<T>, T> {
 
 	private static final long serialVersionUID = -5925283773040212147L;

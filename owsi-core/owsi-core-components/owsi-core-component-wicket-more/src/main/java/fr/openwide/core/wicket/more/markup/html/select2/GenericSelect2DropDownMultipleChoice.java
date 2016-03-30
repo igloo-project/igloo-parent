@@ -30,6 +30,13 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	
 	private final Select2Behavior<T, T> select2Behavior;
 	
+	/**
+	 * @param id The wicket ID.
+	 * @param collectionModel The model containing the selected elements.
+	 * @param collectionSupplier A factory for new, empty collections to be put in <code>collectionModel</code>
+	 * @param choicesModel The model containing the selectable elements.
+	 * @param renderer The choice renderer.
+	 */
 	protected <C extends Collection<T>> GenericSelect2DropDownMultipleChoice(
 			String id, IModel<C> collectionModel, Supplier<? extends C> collectionSupplier,
 			IModel<? extends Collection<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
