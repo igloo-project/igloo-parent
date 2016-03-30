@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import fr.openwide.core.rest.jersey2.service.AbstractRestServiceImpl;
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
+import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.service.IPersonService;
 
 @Component
 @Path("/test")
@@ -19,7 +19,7 @@ import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 public class SimpleRestServiceImpl extends AbstractRestServiceImpl {
 	
 	@Autowired
-	private PersonService personService;
+	private IPersonService personService;
 
 	@GET
 	@Path("get/{id}/")

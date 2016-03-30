@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;
 
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
+import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.service.IPersonService;
 
 public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<Person> {
 	
 	@Autowired
-	private PersonService personService;
+	private IPersonService personService;
 	
 	@PersistenceContext
 	private EntityManager entityManager;

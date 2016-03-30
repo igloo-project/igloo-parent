@@ -20,7 +20,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.Ordering;
 
 import fr.openwide.core.commons.util.functional.Suppliers2;
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
+import fr.openwide.core.test.business.person.model.Person;
 import fr.openwide.core.test.wicket.more.model.TestGenericEntityValueMapCopyModel.KeyEnum;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;

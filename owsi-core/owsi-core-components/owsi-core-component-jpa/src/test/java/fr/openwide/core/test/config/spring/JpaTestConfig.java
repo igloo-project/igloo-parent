@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
-import fr.openwide.core.test.jpa.example.business.JpaTestBusinessPackage;
+import fr.openwide.core.test.business.JpaTestBusinessPackage;
 
 @Configuration
 @ApplicationDescription(name = "jpa-test")

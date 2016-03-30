@@ -8,7 +8,7 @@ import org.junit.Test;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
-import fr.openwide.core.test.jpa.example.business.label.model.Label;
+import fr.openwide.core.test.business.label.model.Label;
 
 public class TestLabel extends AbstractJpaCoreTestCase {
 	

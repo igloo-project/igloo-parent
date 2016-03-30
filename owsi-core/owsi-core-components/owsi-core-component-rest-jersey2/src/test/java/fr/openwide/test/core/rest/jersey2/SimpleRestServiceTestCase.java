@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.rest.jersey2.test.RestServerTestResource;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
+import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.service.IPersonService;
 import fr.openwide.core.test.config.spring.JpaTestConfig;
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 import fr.openwide.test.core.rest.jersey2.client.SimpleRestServiceClientServiceImpl;
 
 public class SimpleRestServiceTestCase extends AbstractJpaCoreTestCase {
 	
 	@Autowired
-	private PersonService personService;
+	private IPersonService personService;
 	
 	@Rule
 	public final RestServerTestResource serverResource = new RestServerTestResource("http://localhost/", 9997, "/sqm-remote-api", "/rest", JpaTestConfig.class) {
