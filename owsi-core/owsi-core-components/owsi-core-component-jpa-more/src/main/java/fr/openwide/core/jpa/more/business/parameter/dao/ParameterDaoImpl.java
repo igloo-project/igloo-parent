@@ -15,6 +15,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 
+@SuppressWarnings("deprecation")
 public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter> implements IParameterDao, IMutablePropertyDao {
 	
 	private TransactionTemplate readOnlyTransactionTemplate;

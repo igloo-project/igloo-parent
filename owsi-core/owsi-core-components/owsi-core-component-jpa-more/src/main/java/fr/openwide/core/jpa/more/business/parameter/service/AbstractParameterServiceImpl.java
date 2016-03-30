@@ -22,6 +22,10 @@ import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
+/**
+ * @deprecated Parameters are deprecated in favor of properties.
+ * @see IPropertyService
+ */
 @Deprecated
 public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long, Parameter>
 		implements ApplicationListener<ContextRefreshedEvent>, IAbstractParameterService {
