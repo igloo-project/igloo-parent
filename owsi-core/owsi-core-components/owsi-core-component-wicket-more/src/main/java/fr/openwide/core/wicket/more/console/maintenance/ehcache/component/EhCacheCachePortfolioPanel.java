@@ -19,7 +19,6 @@ import org.wicketstuff.wiquery.core.events.MouseEvent;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.list.OddEvenListView;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.console.common.component.JavaPackageLabel;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationModel;
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
@@ -34,6 +33,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listf
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.rendering.CoreRenderers;
+import fr.openwide.core.wicket.more.rendering.ShortenedJavaNameRenderer;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -101,15 +101,16 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						
 						EhCacheCacheInformationModel cacheInformationModel =
 								new EhCacheCacheInformationModel(item.getModelObject());
+						IModel<String> cacheNameModel = BindingModel.of(
+								cacheInformationModel,
+								CoreWicketMoreBindings.ehCacheCacheInformation().name()
+						);
 						
-						item.add(new JavaPackageLabel("cacheName", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBindings.ehCacheCacheInformation().name())));
-						item.add(new TextField<String>("cacheNameInput", BindingModel.of(cacheInformationModel, 
-								CoreWicketMoreBindings.ehCacheCacheInformation().name())));
+						item.add(ShortenedJavaNameRenderer.get().asLabel("cacheName", cacheNameModel));
+						item.add(new TextField<String>("cacheNameInput", cacheNameModel));
 						
 						WebMarkupContainer copyToClipboard = new WebMarkupContainer("copyToClipboard");
-						copyToClipboard.add(new ZeroClipboardDataAttributeModifier(BindingModel.of(
-								cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name())));
+						copyToClipboard.add(new ZeroClipboardDataAttributeModifier(cacheNameModel));
 						item.add(copyToClipboard);
 						
 						item.add(new Label("cacheMaxElements", BindingModel.of(cacheInformationModel, 
