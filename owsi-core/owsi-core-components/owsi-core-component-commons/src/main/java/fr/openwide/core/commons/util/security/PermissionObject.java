@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.business.generic.annotation;
+package fr.openwide.core.commons.util.security;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

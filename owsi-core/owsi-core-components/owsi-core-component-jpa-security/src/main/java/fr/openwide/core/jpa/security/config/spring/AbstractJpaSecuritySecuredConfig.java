@@ -9,7 +9,7 @@ import org.springframework.security.core.parameters.DefaultSecurityParameterName
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.jpa.business.generic.annotation.PermissionObject;
+import fr.openwide.core.commons.util.security.PermissionObject;
 import fr.openwide.core.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 
