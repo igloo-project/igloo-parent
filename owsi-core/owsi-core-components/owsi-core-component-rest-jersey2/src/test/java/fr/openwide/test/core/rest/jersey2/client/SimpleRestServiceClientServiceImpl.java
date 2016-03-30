@@ -5,7 +5,7 @@ import java.net.URI;
 import javax.ws.rs.client.WebTarget;
 
 import fr.openwide.core.rest.jersey2.client.AbstractRestClientServiceImpl;
-import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.test.core.rest.jersey2.business.person.model.Person;
 
 public class SimpleRestServiceClientServiceImpl extends AbstractRestClientServiceImpl {
 	

@@ -12,9 +12,9 @@ import org.hamcrest.TypeSafeMatcher;
 
 import com.google.common.base.Equivalence;
 
-import fr.openwide.core.test.wicket.more.AbstractWicketMoreJpaTestCase;
+import fr.openwide.core.test.wicket.more.AbstractWicketMoreTestCase;
 
-public class AbstractTestModel<T> extends AbstractWicketMoreJpaTestCase {
+public class AbstractTestModel<T> extends AbstractWicketMoreTestCase {
 	
 	private final Equivalence<? super T> equivalence;
 

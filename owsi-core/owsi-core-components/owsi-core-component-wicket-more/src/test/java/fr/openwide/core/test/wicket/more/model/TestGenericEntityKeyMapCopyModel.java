@@ -19,8 +19,8 @@ import com.google.common.base.Equivalence;
 import com.google.common.base.Supplier;
 
 import fr.openwide.core.commons.util.functional.Suppliers2;
-import fr.openwide.core.test.business.person.model.Person;
-import fr.openwide.core.test.business.person.model.PersonComparator;
+import fr.openwide.core.test.wicket.more.business.person.model.Person;
+import fr.openwide.core.test.wicket.more.business.person.model.PersonComparator;
 import fr.openwide.core.test.wicket.more.model.TestGenericEntityKeyMapCopyModel.ValueEnum;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;

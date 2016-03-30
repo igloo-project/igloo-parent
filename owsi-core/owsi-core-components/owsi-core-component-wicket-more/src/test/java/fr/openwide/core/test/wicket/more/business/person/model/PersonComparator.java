@@ -1,4 +1,4 @@
-package fr.openwide.core.test.business.person.model;
+package fr.openwide.core.test.wicket.more.business.person.model;
 
 import com.google.common.collect.Ordering;
 

@@ -18,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Equivalence;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.test.business.person.model.Person;
-import fr.openwide.core.test.business.person.service.IPersonService;
+import fr.openwide.core.test.wicket.more.business.person.model.Person;
+import fr.openwide.core.test.wicket.more.business.person.service.IPersonService;
 
 public abstract class AbstractTestGenericEntityCollectionModel<C extends Collection<Person>>
 		extends AbstractTestCollectionModel<C> {

@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;
 
-import fr.openwide.core.test.business.person.model.Person;
-import fr.openwide.core.test.business.person.service.IPersonService;
+import fr.openwide.core.test.wicket.more.business.person.model.Person;
+import fr.openwide.core.test.wicket.more.business.person.service.IPersonService;
 
 public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<Person> {
 	

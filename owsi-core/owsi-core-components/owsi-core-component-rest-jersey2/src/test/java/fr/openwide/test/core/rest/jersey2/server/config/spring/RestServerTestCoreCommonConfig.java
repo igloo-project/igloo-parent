@@ -1,4 +1,4 @@
-package fr.openwide.core.test.wicket.more.config.spring;
+package fr.openwide.test.core.rest.jersey2.server.config.spring;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -9,24 +9,25 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
-import fr.openwide.core.test.wicket.more.business.WicketMoreTestBusinessPackage;
+import fr.openwide.test.core.rest.jersey2.business.RestTestBusinessPackage;
+import fr.openwide.test.core.rest.jersey2.server.RestServerPackage;
 
 @Configuration
-@ApplicationDescription(name = "wicket-more-test")
+@ApplicationDescription(name = "rest-test-server")
 @ConfigurationLocations(locations = {
 		"classpath:owsi-core-component-jpa.properties",
 		"classpath:configuration-private.properties",
-		"classpath:owsi-hibernate.properties"
+		"classpath:rest-server.properties"
 })
 @Import({
-	WicketMoreTestJpaConfig.class,
-	WicketMoreTestApplicationPropertyConfig.class
+	RestServerTestJpaConfig.class,
+	RestServerTestApplicationPropertyConfig.class
 })
 @ComponentScan(
-		basePackageClasses = WicketMoreTestBusinessPackage.class,
+		basePackageClasses = { RestTestBusinessPackage.class, RestServerPackage.class },
 		excludeFilters = @Filter(Configuration.class)
 )
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement
-public class WicketMoreTestCoreCommonConfig extends AbstractApplicationConfig {
+public class RestServerTestCoreCommonConfig extends AbstractApplicationConfig {
 }
