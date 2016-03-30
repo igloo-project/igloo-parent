@@ -44,6 +44,7 @@ public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizatio
 		}
 
 		if (Component.RENDER.equals(action)) {
+			@SuppressWarnings("deprecation")
 			final AuthorizeRenderIfPermissionOnModelObject permissionOnModelObjectAnnotation =
 					componentClass.getAnnotation(AuthorizeRenderIfPermissionOnModelObject.class);
 
@@ -54,6 +55,7 @@ public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizatio
 					@SuppressWarnings("unchecked")
 					GenericEntity<Long, ?> securedObject = (GenericEntity<Long, ?>) modelObject;
 
+					@SuppressWarnings("deprecation")
 					String[] permissionNames = permissionOnModelObjectAnnotation.permissions();
 					for (String permissionName : permissionNames) {
 						Permission permission = permissionFactory.buildFromName(permissionName);
