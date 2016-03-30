@@ -149,6 +149,24 @@ public interface IPropertyRegistry {
 	void registerDate(IPropertyRegistryKey<Date> propertyId, Date defaultValue);
 
 	/**
+	 * Property must use the following format : HH:mm or HH:mm:ss
+	 * @see StringTimeConverter
+	 */
+	void registerTime(IPropertyRegistryKey<Date> propertyId);
+
+	/**
+	 * Property and {@code defaultValue} must use the following format : HH:mm or HH:mm:ss
+	 * @see StringTimeConverter
+	 */
+	void registerTime(IPropertyRegistryKey<Date> propertyId, String defaultValue);
+
+	/**
+	 * Property must use the following format : HH:mm or HH:mm:ss
+	 * @see StringTimeConverter
+	 */
+	void registerTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue);
+
+	/**
 	 * Property must use the following format : yyyy-MM-dd HH:mm or yyyy-MM-dd HH:mm:ss
 	 * @see StringDateTimeConverter
 	 */

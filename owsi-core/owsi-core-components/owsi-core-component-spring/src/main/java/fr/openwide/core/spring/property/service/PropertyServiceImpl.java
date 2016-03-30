@@ -46,6 +46,7 @@ import fr.openwide.core.commons.util.functional.converter.StringDateTimeConverte
 import fr.openwide.core.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
 import fr.openwide.core.commons.util.functional.converter.StringFileConverter;
 import fr.openwide.core.commons.util.functional.converter.StringLocaleConverter;
+import fr.openwide.core.commons.util.functional.converter.StringTimeConverter;
 import fr.openwide.core.commons.util.functional.converter.StringURIConverter;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -280,6 +281,21 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	@Override
 	public void registerDate(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
 		registerProperty(propertyId, StringDateConverter.get(), defaultValue);
+	}
+
+	@Override
+	public void registerTime(IPropertyRegistryKey<Date> propertyId) {
+		registerTime(propertyId, (Date) null);
+	}
+
+	@Override
+	public void registerTime(IPropertyRegistryKey<Date> propertyId, String defaultValue) {
+		registerTime(propertyId, StringTimeConverter.get().convert(defaultValue));
+	}
+
+	@Override
+	public void registerTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
+		registerProperty(propertyId, StringTimeConverter.get(), defaultValue);
 	}
 
 	@Override
