@@ -70,107 +70,127 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	}
 	
 	@Override
+	public void flushToIndexes() {
+		hibernateSearchDao.flushToIndexes();
+	}
+	
+	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, analyzerName);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern));
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, additionalLuceneQuery);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, analyzerName, additionalLuceneQuery);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), additionalLuceneQuery);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName, additionalLuceneQuery);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, analyzerName, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, additionalLuceneQuery, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, searchPattern, analyzerName, additionalLuceneQuery, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), additionalLuceneQuery, limit, offset, sort);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return hibernateSearchDao.search(clazz, fields, LuceneUtils.getAutocompleteQuery(searchPattern), analyzerName, additionalLuceneQuery, limit, offset, sort);
-	}
-	
-	@Override
-	public void flushToIndexes() {
-		hibernateSearchDao.flushToIndexes();
 	}
 }
