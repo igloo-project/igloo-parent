@@ -35,10 +35,16 @@
 						
 						<ul class="nav navbar-nav">
 							<li wicket:id="mainNav">
-								<a wicket:id="navLink" />
+								<a wicket:id="navLink">
+									<span wicket:id="icon" class="fa-lg" />
+									<span wicket:id="label" />
+								</a>
 								<ul class="dropdown-menu">
 									<li wicket:id="subNav">
-										<a wicket:id="navLink" />
+										<a wicket:id="navLink">
+											<span wicket:id="icon" />
+											<span wicket:id="label" />
+										</a>
 									</li>
 								</ul>
 							</li>
