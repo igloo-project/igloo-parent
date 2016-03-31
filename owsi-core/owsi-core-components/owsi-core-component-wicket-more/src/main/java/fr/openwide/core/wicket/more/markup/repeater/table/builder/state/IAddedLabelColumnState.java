@@ -78,6 +78,9 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 
 	<C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper);
 
+	/**
+	 * @deprecated This is the default behavior, calling this method is no longer needed.
+	 */
 	IAddedLabelColumnState<T, S> disableIfInvalid();
 
 	IAddedLabelColumnState<T, S> hideIfInvalid();

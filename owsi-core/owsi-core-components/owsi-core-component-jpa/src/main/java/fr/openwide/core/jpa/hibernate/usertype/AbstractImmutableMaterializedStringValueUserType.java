@@ -21,7 +21,6 @@ import org.hibernate.usertype.UserType;
  * 
  * @see AbstractMaterializedPrimitiveValue
  */
-@SuppressWarnings("deprecation")
 public abstract class AbstractImmutableMaterializedStringValueUserType<T extends AbstractMaterializedPrimitiveValue<String, T>>
 		implements UserType {
 	

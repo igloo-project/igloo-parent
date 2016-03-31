@@ -77,9 +77,6 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return super.getEntityByNaturalId(clazz, naturalId);
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> E getByField(Class<E> clazz, SingularAttribute<? super E, V> attribute,
@@ -87,9 +84,6 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return super.getEntityByField(clazz, attribute, fieldValue);
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>> E getByFieldIgnoreCase(Class<E> clazz, SingularAttribute<? super E, String> attribute,
@@ -147,18 +141,12 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return entities;
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>,V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue) {
 		return listByField(clazz, field, fieldValue, EnabledFilter.ALL, null);
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
@@ -166,9 +154,6 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return listByField(clazz, field, fieldValue, enabledFilter, null);
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> List<E> listByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
@@ -180,9 +165,6 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return entities;
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	private <E extends GenericListItem<?>, V extends Comparable<?>> Pair<EntityPath<E>, JPAQuery<E>> queryByField(Class<E> clazz, SingularAttribute<? super E, V> field, V fieldValue,
 			EnabledFilter enabledFilter) {
@@ -202,9 +184,6 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return Pair.with((EntityPath<E>) pathBuilder, query);
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	protected <E extends GenericListItem<?>> List<E> list(Class<E> objectClass, Expression<Boolean> filter, javax.persistence.criteria.Order order, Integer limit, Integer offset) {
 		List<E> entities = super.listEntity(objectClass, filter, limit, offset, order);
@@ -226,18 +205,12 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return queryItem.getValue1().distinct().fetchCount();
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue) {
 		return super.countEntityByField(clazz, attribute, fieldValue);
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	@Override
 	public <E extends GenericListItem<?>, V extends Comparable<?>> Long countByField(Class<E> clazz, SingularAttribute<? super E, V> attribute, V fieldValue, EnabledFilter enabledFilter) {
@@ -245,20 +218,19 @@ public class GenericListItemDaoImpl extends AbstractEntityDaoImpl<GenericListIte
 		return queryItem.getValue1().distinct().fetchCount();
 	}
 
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
 	@Deprecated
 	public <E extends GenericListItem<?>> Long count(Class<E> objectClass, Expression<Boolean> filter) {
 		return super.countEntity(objectClass, filter);
 	}
 
 	@Override
+	@Deprecated
 	public <E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
 			Integer limit, Integer offset) throws ServiceException {
 		return searchAutocomplete(searchPattern, clazz, null, limit, offset);
 	}
-	
+
+	@Deprecated
 	protected final <E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz,
 			String[] fields, Integer limit, Integer offset) throws ServiceException {
 		GenericListItemBinding<E> binding = new GenericListItemBinding<E>();

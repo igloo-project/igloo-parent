@@ -92,6 +92,7 @@ public abstract class GenericLocalizedGenericListItemServiceImpl<GE extends Gene
 	}
 	
 	@Override
+	@Deprecated
 	public <E extends GE> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, Locale locale, int limit, int offset)
 			throws ServiceException {
 		return dao.searchAutocomplete(searchPattern, clazz, locale, limit, offset);

@@ -27,6 +27,7 @@ import com.google.common.base.Enums;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -38,7 +39,6 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
-import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.commons.util.functional.converter.StringBigDecimalConverter;
 import fr.openwide.core.commons.util.functional.converter.StringBooleanConverter;
 import fr.openwide.core.commons.util.functional.converter.StringDateConverter;
@@ -132,7 +132,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue) {
-		register(propertyId, converter, Suppliers2.constant(defaultValue));
+		register(propertyId, converter, Suppliers.ofInstance(defaultValue));
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue) {
-		register(propertyId, function, Suppliers2.constant(defaultValue));
+		register(propertyId, function, Suppliers.ofInstance(defaultValue));
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	}
 
 	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, T defaultValue) {
-		registerProperty(propertyId, converter, Suppliers2.constant(defaultValue));
+		registerProperty(propertyId, converter, Suppliers.ofInstance(defaultValue));
 	}
 
 	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier) {

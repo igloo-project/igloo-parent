@@ -107,14 +107,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<dependency>
-			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-component-jpa</artifactId>
-			<version>${project.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-		
 		<!-- Database pooling (tests) -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>

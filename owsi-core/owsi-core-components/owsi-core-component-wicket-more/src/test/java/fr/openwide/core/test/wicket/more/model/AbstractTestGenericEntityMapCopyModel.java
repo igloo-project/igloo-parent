@@ -18,8 +18,8 @@ import com.google.common.base.Equivalence;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
+import fr.openwide.core.test.wicket.more.business.person.model.Person;
+import fr.openwide.core.test.wicket.more.business.person.service.IPersonService;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 
 public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<K, V>>
@@ -43,7 +43,7 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 	};
 	
 	@Autowired
-	protected PersonService personService;
+	protected IPersonService personService;
 	
 	@PersistenceContext
 	protected EntityManager entityManager;

@@ -61,6 +61,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
@@ -70,11 +71,13 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
 		return search(clazz, fields, searchPattern, analyzerName, (Integer) null, (Integer) null, null);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
 		classes.add(clazz);
@@ -85,12 +88,14 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern)
 			throws ServiceException {
 		return search(clazz, fields, searchPattern, (Integer) null, (Integer) null, null);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
@@ -99,12 +104,14 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
 			String analyzerName) throws ServiceException {
 		return search(classes, fields, searchPattern, analyzerName, (Integer) null, (Integer) null, null);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
@@ -114,6 +121,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery) throws ServiceException {
 		return search(clazz, fields, searchPattern, analyzerName, additionalLuceneQuery,
@@ -121,6 +129,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
@@ -132,12 +141,14 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
+	@Deprecated
 	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery)
 			throws ServiceException {
 		return search(clazz, fields, searchPattern, additionalLuceneQuery, (Integer) null, (Integer) null, null);
 	}
 	
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
@@ -146,12 +157,14 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	@Override
+	@Deprecated
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
 			String analyzerName, Query additionalLuceneQuery) throws ServiceException {
 		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, (Integer) null, (Integer) null, null);
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	private <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		if (!StringUtils.hasText(searchPattern)) {
@@ -299,6 +312,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		return cleaned;
 	}
 	
+	@Deprecated
 	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextEntityManager fullTextEntityManager, String[] fields, Operator defaultOperator, Analyzer analyzer) {
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 		parser.setDefaultOperator(defaultOperator);

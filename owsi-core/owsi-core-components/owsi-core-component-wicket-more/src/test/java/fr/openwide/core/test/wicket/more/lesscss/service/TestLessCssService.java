@@ -3,6 +3,7 @@ package fr.openwide.core.test.wicket.more.lesscss.service;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,11 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 					false
 			);
 			
-			Assert.assertEquals(".test2 {\n  color: #eeeeee;\n}\n.test {\n  color: #cccccc;\n}\n", compiledStylesheet.getSource());
+			Assert.assertThat(
+					compiledStylesheet.getSource(),
+					CoreMatchers.startsWith(".test2 {\n  color: #eeeeee;\n}\n"
+							+ ".test {\n  color: #cccccc;\n}\n")
+			);
 			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 		} finally {
 			if (is != null) {
@@ -67,8 +72,15 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 					),
 					false
 			);
-			
-			Assert.assertEquals(".test2 {\n  color: #eeeeee;\n}\n.test {\n  color: #cccccc;\n}\n.test4 {\n  color: #cccccc;\n}\n.test5 {\n  color: #cccccc;\n}\ntest3 {\n  color: #eeeeee;\n}\n", compiledStylesheet.getSource());
+
+			Assert.assertThat(
+					compiledStylesheet.getSource(),
+					CoreMatchers.startsWith(".test2 {\n  color: #eeeeee;\n}\n"
+							+ ".test {\n  color: #cccccc;\n}\n"
+							+ ".test4 {\n  color: #cccccc;\n}\n"
+							+ ".test5 {\n  color: #cccccc;\n}\n"
+							+ "test3 {\n  color: #eeeeee;\n}\n")
+			);
 			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 		} finally {
 			if (is != null) {

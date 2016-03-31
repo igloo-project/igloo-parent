@@ -17,33 +17,91 @@
 
 package fr.openwide.core.test;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.metamodel.SingularAttribute;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
+import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
+import fr.openwide.core.test.business.company.model.Company;
+import fr.openwide.core.test.business.company.service.ICompanyService;
+import fr.openwide.core.test.business.label.service.ILabelService;
+import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.service.IPersonReferenceService;
+import fr.openwide.core.test.business.person.service.IPersonService;
+import fr.openwide.core.test.business.project.model.Project;
+import fr.openwide.core.test.business.project.service.IProjectService;
 import fr.openwide.core.test.config.spring.JpaTestConfig;
-import fr.openwide.core.test.jpa.example.business.label.service.LabelService;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonReferenceService;
-import fr.openwide.core.test.jpa.example.business.person.service.PersonService;
 
 @ContextConfiguration(classes = JpaTestConfig.class)
 public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 	
 	@Autowired
-	protected PersonService personService;
-
-	@Autowired
-	protected PersonReferenceService personReferenceService;
+	protected ICompanyService companyService;
 	
 	@Autowired
-	protected LabelService labelService;
+	protected IProjectService projectService;
+	
+	@Autowired
+	protected IPersonService personService;
+
+	@Autowired
+	protected IPersonReferenceService personReferenceService;
+	
+	@Autowired
+	protected ILabelService labelService;
+
+	@SuppressWarnings("deprecation")
+	protected static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, V extends Comparable<?>>
+			E getByFieldLegacy(IGenericEntityDao<K, E> dao, SingularAttribute<? super E, V> attribute, V value) {
+		return dao.getByField(attribute, value);
+	}
+
+
+	@SuppressWarnings("deprecation")
+	protected static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, V extends Comparable<?>>
+			List<E> listByFieldLegacy(IGenericEntityDao<K, E> dao, SingularAttribute<? super E, V> attribute, V value) {
+		return dao.listByField(attribute, value);
+	}
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanEntities(projectService);
+		cleanEntities(companyService);
 		cleanEntities(personReferenceService);
 		cleanEntities(personService);
 		cleanEntities(labelService);
 	}
+	
+	protected Company createCompany(String name) throws ServiceException, SecurityServiceException {
+		Company company = new Company(name);
+
+		companyService.create(company);
+		
+		return company;
+	}
+	
+	protected Person createPerson(String firstName, String lastName) throws ServiceException, SecurityServiceException {
+		Person person = new Person(firstName, lastName);
+		
+		personService.create(person);
+		
+		return person;
+	}
+	
+	protected Project createProject(String name) throws ServiceException, SecurityServiceException {
+		Project project = new Project(name);
+		
+		projectService.create(project);
+		
+		return project;
+	}
+
 }

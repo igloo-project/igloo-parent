@@ -20,7 +20,7 @@ package fr.openwide.core.jpa.business.generic.service;
 import java.io.Serializable;
 import java.util.List;
 
-import fr.openwide.core.jpa.business.generic.annotation.PermissionObject;
+import fr.openwide.core.commons.util.security.PermissionObject;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;

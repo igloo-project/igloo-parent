@@ -13,6 +13,12 @@ import org.retzlaff.select2.ISelect2AjaxAdapter;
 
 import fr.openwide.core.wicket.more.model.BindingModel;
 
+/**
+ * @deprecated Use {@link GenericSelect2DropDownMultipleChoice} instead: it's got a generic constructor that allows
+ * you to pass any kind of collection model ({@code IModel<Set<T>>},
+ * {@code IModel<SortedSet<T>>}, {@code IModel<List<T>>}, ...)
+ */
+@Deprecated
 public abstract class AbstractSelect2MultipleChoice<C extends Collection<T>, T> extends AbstractSelect2Choice<C, T> {
 	
 	private static final long serialVersionUID = -4183760466356487637L;

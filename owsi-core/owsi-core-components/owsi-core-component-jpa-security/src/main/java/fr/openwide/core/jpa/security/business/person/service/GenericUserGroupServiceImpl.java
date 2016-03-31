@@ -55,6 +55,7 @@ public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, 
 	}
 
 	@Override
+	@Deprecated
 	public List<G> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), SEARCH_FIELDS, searchPattern);
 	}

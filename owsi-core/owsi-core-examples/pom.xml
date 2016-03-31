@@ -16,7 +16,6 @@
 	<name>OWSI Core - Examples</name>
 	
 	<modules>
-		<module>owsi-core-example-jpa</module>
 		<module>wicket-showcase</module>
 	</modules>
 	

@@ -7,6 +7,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -48,6 +49,7 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
@@ -84,11 +86,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				AbstractLink navLink = navItem.link("navLink")
-						.setBody(navItem.getLabelModel());
+				AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
 				navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+				navLink.add(
+						new Label("label", navItem.getLabelModel()),
+						new EnclosureContainer("icon").model(navItem.getIconClassesModel())
+								.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+				);
 				
-				item.setVisibilityAllowed(navItem.isAccessible());
 				if (navItem.isActive(MainTemplate.this.getFirstMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
@@ -110,11 +115,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					protected void populateItem(ListItem<NavigationMenuItem> item) {
 						NavigationMenuItem navItem = item.getModelObject();
 						
-						AbstractLink navLink = navItem.link("navLink")
-								.setBody(navItem.getLabelModel());
+						AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
 						navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+						navLink.add(
+								new Label("label", navItem.getLabelModel()),
+								new EnclosureContainer("icon").model(navItem.getIconClassesModel())
+										.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+						);
 						
-						item.setVisibilityAllowed(navItem.isAccessible());
 						if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
 							item.add(new ClassAttributeAppender("active"));
 						}

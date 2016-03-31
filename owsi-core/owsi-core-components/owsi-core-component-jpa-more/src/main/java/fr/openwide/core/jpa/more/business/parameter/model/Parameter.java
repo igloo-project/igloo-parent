@@ -24,9 +24,12 @@ import org.hibernate.search.annotations.TokenizerDef;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.more.business.parameter.service.AbstractParameterServiceImpl;
 import fr.openwide.core.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
+@SuppressWarnings("deprecation")
 @Entity
 @Bindable
 @AnalyzerDefs({
@@ -108,12 +111,30 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	@Column(nullable = false, unique = true)
 	private String name;
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	@Column
 	private Boolean booleanValue;
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	@Column
 	private Integer integerValue;
-
+	
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	@Column
 	private Float floatValue;
 
@@ -121,6 +142,12 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	@Type(type = "fr.openwide.core.jpa.hibernate.usertype.StringClobType")
 	private String stringValue;
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	@Column
 	private Date dateValue;
 
@@ -128,6 +155,12 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 		super();
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Parameter(String name, Boolean value) {
 		super();
 
@@ -135,6 +168,12 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 		setBooleanValue(value);
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Parameter(String name, Integer value) {
 		super();
 
@@ -142,6 +181,12 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 		setIntegerValue(value);
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Parameter(String name, Float value) {
 		super();
 
@@ -156,6 +201,12 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 		setStringValue(value);
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Parameter(String name, Date value) {
 		super();
 
@@ -171,26 +222,62 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 		this.name = name;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Boolean getBooleanValue() {
 		return booleanValue;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public void setBooleanValue(Boolean booleanValue) {
 		this.booleanValue = booleanValue;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Integer getIntegerValue() {
 		return integerValue;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public void setIntegerValue(Integer integerValue) {
 		this.integerValue = integerValue;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Float getFloatValue() {
 		return floatValue;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public void setFloatValue(Float floatValue) {
 		this.floatValue = floatValue;
 	}
@@ -203,10 +290,22 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 		this.stringValue = stringValue;
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public Date getDateValue() {
 		return CloneUtils.clone(dateValue);
 	}
 
+	/**
+	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
+	 * of {@link IPropertyService}, which only uses the string value.
+	 * @see IPropertyService
+	 */
+	@Deprecated
 	public void setDateValue(Date dateValue) {
 		this.dateValue = CloneUtils.clone(dateValue);
 	}

@@ -87,7 +87,11 @@ public interface IGenericListItemService extends ITransactionalAspectAwareServic
 
 	/**
 	 * WARNING: only works on classes that were annotated with {@link Indexed}.
+	 * 
+	 * @deprecated Implement a {@link fr.openwide.core.jpa.more.business.generic.query.IGenericListItemSearchQuery<T, S, Q>).
+	 * See in particular {@link fr.openwide.core.jpa.more.business.generic.query.AbstractGenericListItemHibernateSearchSearchQuery<T, S, Q>}
 	 */
+	@Deprecated
 	<E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, int limit, int offset)
 			throws ServiceException;
 

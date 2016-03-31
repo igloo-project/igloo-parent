@@ -5,8 +5,6 @@ import java.util.List;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.retzlaff.select2.ISelect2AjaxAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.search.IUserSearchQuery;
@@ -15,8 +13,6 @@ import fr.openwide.core.showcase.core.business.user.service.IUserService;
 public class UserSelect2AjaxAdapter implements ISelect2AjaxAdapter<User> {
 
 	private static final long serialVersionUID = 4710983767659627112L;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserSelect2AjaxAdapter.class);
 	
 	@SpringBean
 	private IUserService userService;

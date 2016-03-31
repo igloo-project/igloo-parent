@@ -17,6 +17,12 @@ public interface IGenericUserGroupService<G extends GenericUserGroup<G, U>, U ex
 	
 	void removeUser(G group, U user) throws ServiceException, SecurityServiceException;
 
+	/**
+	 * @deprecated Implement your own search query instead, either through a custom DAO or
+	 * through {@link fr.openwide.core.jpa.more.business.search.query.ISearchQuery<T, S>} as defined in
+	 * owsi-core-component-jpa-more. See in particular
+	 * {@link fr.openwide.core.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery<T, S>}.
+	 */
 	List<G> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException;
 	
 }

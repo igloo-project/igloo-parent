@@ -13,8 +13,8 @@ import com.google.common.base.Equivalence;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fr.openwide.core.test.jpa.example.business.person.model.Person;
-import fr.openwide.core.test.jpa.example.business.person.model.PersonComparator;
+import fr.openwide.core.test.wicket.more.business.person.model.Person;
+import fr.openwide.core.test.wicket.more.business.person.model.PersonComparator;
 import fr.openwide.core.wicket.more.model.GenericEntityArrayListModel;
 import fr.openwide.core.wicket.more.model.GenericEntityCollectionModel;
 import fr.openwide.core.wicket.more.model.GenericEntityHashSetModel;

@@ -8,13 +8,13 @@ import org.apache.wicket.model.IModel;
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.openwide.core.test.wicket.more.AbstractWicketMoreJpaTestCase;
+import fr.openwide.core.test.wicket.more.AbstractWicketMoreTestCase;
 import fr.openwide.core.wicket.more.model.RangeModel;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.core.wicket.more.util.model.Models;
 
-public class TestRangeRenderer extends AbstractWicketMoreJpaTestCase {
+public class TestRangeRenderer extends AbstractWicketMoreTestCase {
 	
 	private static final String LOWER_TAG = "${start}";
 	private static final String UPPER_TAG = "${end}";

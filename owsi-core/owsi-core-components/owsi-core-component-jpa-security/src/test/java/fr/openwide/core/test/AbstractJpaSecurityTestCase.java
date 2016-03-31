@@ -100,7 +100,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		
 		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
-		mockUserService.save(person);
+		mockUserService.create(person);
 		mockUserService.setPasswords(person, DEFAULT_PASSWORD);
 		
 		return person;
@@ -110,7 +110,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		MockUserGroup personGroup = new MockUserGroup();
 		personGroup.setName(name);
 		
-		mockUserGroupService.save(personGroup);
+		mockUserGroupService.create(personGroup);
 		
 		return personGroup;
 	}
@@ -119,7 +119,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		Authority authority = new Authority();
 		authority.setName(name);
 		
-		authorityService.save(authority);
+		authorityService.create(authority);
 		
 		return authority;
 	}

@@ -152,6 +152,7 @@ public class GenericListItemServiceImpl implements IGenericListItemService {
 	}
 	
 	@Override
+	@Deprecated
 	public <E extends GenericListItem<?>> List<E> searchAutocomplete(String searchPattern, Class<E> clazz, int limit, int offset)
 			throws ServiceException {
 		return genericListItemDao.searchAutocomplete(searchPattern, clazz, limit, offset);
