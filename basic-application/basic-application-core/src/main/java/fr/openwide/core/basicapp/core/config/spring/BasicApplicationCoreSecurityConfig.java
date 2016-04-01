@@ -7,22 +7,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.acls.domain.PermissionFactory;
 
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.security.model.BasicApplicationPermission;
 import fr.openwide.core.basicapp.core.security.model.SecurityOptions;
 import fr.openwide.core.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.core.security.service.SecurityManagementServiceImpl;
-import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecurityConfig;
+import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
 import fr.openwide.core.jpa.security.password.rule.SecurityPasswordRulesBuilder;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
 import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
+import fr.openwide.core.jpa.security.service.NamedPermissionFactory;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Configuration
-public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfig {
+public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig {
 	
 	@Autowired
 	private IPropertyService propertyService;
@@ -48,6 +51,11 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecurityConfi
 	@Override
 	public String permissionHierarchyAsString() {
 		return defaultPermissionHierarchyAsString();
+	}
+
+	@Override
+	public PermissionFactory permissionFactory() {
+		return new NamedPermissionFactory(BasicApplicationPermission.ALL);
 	}
 
 	@Bean
