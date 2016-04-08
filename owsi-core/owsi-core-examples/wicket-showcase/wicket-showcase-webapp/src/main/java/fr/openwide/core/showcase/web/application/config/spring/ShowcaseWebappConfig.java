@@ -11,8 +11,6 @@ import fr.openwide.core.showcase.core.config.spring.ShowcaseCoreConfig;
 import fr.openwide.core.showcase.web.ShowcaseWebPackage;
 import fr.openwide.core.showcase.web.application.ShowcaseApplication;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
-import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
-import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
 
 @Configuration
 @Import({
@@ -33,11 +31,6 @@ public class ShowcaseWebappConfig extends AbstractWebappConfig {
 	@Bean(name = { "showcaseApplication", "application" })
 	public WebApplication application() {
 		return new ShowcaseApplication();
-	}
-	
-	@Override
-	public IWicketContextExecutor wicketContextExecutor() {
-		return new WicketContextExecutorImpl(ShowcaseApplication.NAME);
 	}
 
 }

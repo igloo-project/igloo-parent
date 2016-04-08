@@ -21,7 +21,7 @@ public abstract class AbstractWicketRendererServiceImpl extends AbstractNotifica
 	public AbstractWicketRendererServiceImpl(IWicketContextExecutor wicketExecutor) {
 		super(wicketExecutor);
 	}
-
+	
 	@Override
 	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
 		return securityService.runAsSystem(

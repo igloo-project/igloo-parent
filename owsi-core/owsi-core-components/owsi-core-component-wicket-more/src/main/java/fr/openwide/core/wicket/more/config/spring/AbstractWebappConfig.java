@@ -12,6 +12,7 @@ import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
 import fr.openwide.core.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
+import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
 import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
 
 @Configuration
@@ -25,7 +26,9 @@ public abstract class AbstractWebappConfig {
 	public abstract WebApplication application();
 	
 	@Bean
-	public abstract IWicketContextExecutor wicketContextExecutor();
+	public IWicketContextExecutor wicketContextExecutor(WebApplication defaultApplication) {
+		return new WicketContextExecutorImpl(defaultApplication.getName());
+	}
 	
 	@Bean
 	public IRendererService rendererService(IWicketContextExecutor wicketContextExecutor) {
