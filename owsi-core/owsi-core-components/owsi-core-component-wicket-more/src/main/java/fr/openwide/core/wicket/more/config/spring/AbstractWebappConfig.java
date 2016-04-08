@@ -10,7 +10,9 @@ import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.wicket.more.link.service.DefaultLinkParameterConversionService;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
 import fr.openwide.core.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
+import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
 
 @Configuration
 @Import({
@@ -23,7 +25,12 @@ public abstract class AbstractWebappConfig {
 	public abstract WebApplication application();
 	
 	@Bean
-	public abstract IRendererService rendererService();
+	public abstract IWicketContextExecutor wicketContextExecutor();
+	
+	@Bean
+	public IRendererService rendererService(IWicketContextExecutor wicketContextExecutor) {
+		return new RendererServiceImpl(wicketContextExecutor);
+	}
 	
 	@Bean
 	public ILinkParameterConversionService linkParameterConversionService() {

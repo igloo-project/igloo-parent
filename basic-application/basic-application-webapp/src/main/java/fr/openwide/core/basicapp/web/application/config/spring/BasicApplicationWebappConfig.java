@@ -15,14 +15,16 @@ import fr.openwide.core.basicapp.core.config.spring.BasicApplicationCoreCommonCo
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
 import fr.openwide.core.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
-import fr.openwide.core.basicapp.web.application.renderer.service.RendererServiceImpl;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
 import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;
+import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
 import fr.openwide.core.wicket.more.util.DatePattern;
 
 @Configuration
@@ -45,11 +47,15 @@ public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 	public BasicApplicationApplication application() {
 		return new BasicApplicationApplication();
 	}
-
+	
 	@Override
-	@Bean
-	public IRendererService rendererService() {
-		RendererServiceImpl rendererService = new RendererServiceImpl();
+	public IWicketContextExecutor wicketContextExecutor() {
+		return new WicketContextExecutorImpl(BasicApplicationApplication.NAME);
+	}
+	
+	@Override
+	public IRendererService rendererService(IWicketContextExecutor wicketContextExecutor) {
+		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextExecutor);
 
 		rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
 		rendererService.registerRenderer(boolean.class, BooleanRenderer.get());

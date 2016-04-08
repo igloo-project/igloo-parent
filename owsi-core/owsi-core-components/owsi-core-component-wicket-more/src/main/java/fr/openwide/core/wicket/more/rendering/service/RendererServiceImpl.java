@@ -14,16 +14,28 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
-import fr.openwide.core.wicket.more.notification.service.AbstractBackgroundWicketThreadContextBuilder;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
 import fr.openwide.core.wicket.more.rendering.EnumRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
-public abstract class AbstractRendererServiceImpl extends AbstractBackgroundWicketThreadContextBuilder
+public class RendererServiceImpl
 		implements IRendererService, IRendererRegistry {
 	
 	private Map<Triplet<Class<?>, FieldPath, Class<?>>, Renderer<?>> cache = Maps.newHashMap();
 
 	private Map<Triplet<Class<?>, FieldPath, Class<?>>, Renderer<?>> renderers = Maps.newHashMap();
+	
+	private IWicketContextExecutor wicketContextExecutor;
+	
+	public RendererServiceImpl(IWicketContextExecutor wicketContextExecutor) {
+		super();
+		this.wicketContextExecutor = wicketContextExecutor;
+	}
+
+	@Override
+	public <T> T runWithContext(Callable<T> callable) throws Exception {
+		return wicketContextExecutor.runWithContext(callable);
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")

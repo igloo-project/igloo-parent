@@ -7,12 +7,12 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.showcase.core.config.spring.ShowcaseCoreConfig;
 import fr.openwide.core.showcase.web.ShowcaseWebPackage;
 import fr.openwide.core.showcase.web.application.ShowcaseApplication;
-import fr.openwide.core.showcase.web.application.renderer.service.RendererServiceImpl;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
 
 @Configuration
 @Import({
@@ -34,11 +34,10 @@ public class ShowcaseWebappConfig extends AbstractWebappConfig {
 	public WebApplication application() {
 		return new ShowcaseApplication();
 	}
-
+	
 	@Override
-	@Bean
-	public IRendererService rendererService() {
-		return new RendererServiceImpl();
+	public IWicketContextExecutor wicketContextExecutor() {
+		return new WicketContextExecutorImpl(ShowcaseApplication.NAME);
 	}
 
 }

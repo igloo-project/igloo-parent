@@ -8,17 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.context.IContextualService;
 import fr.openwide.core.jpa.security.service.ISecurityService;
 
 @SuppressWarnings("deprecation")
-public abstract class AbstractWicketRendererServiceImpl extends AbstractNotificationPanelRendererServiceImpl {
+public abstract class AbstractWicketRendererServiceImpl extends AbstractNotificationPanelRendererServiceImpl
+		implements IContextualService {
 	
 	@Autowired
 	private ISecurityService securityService;
 
-	@Override
-	protected abstract String getApplicationName();
-	
+	public AbstractWicketRendererServiceImpl(IWicketContextExecutor wicketExecutor) {
+		super(wicketExecutor);
+	}
+
 	@Override
 	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
 		return securityService.runAsSystem(

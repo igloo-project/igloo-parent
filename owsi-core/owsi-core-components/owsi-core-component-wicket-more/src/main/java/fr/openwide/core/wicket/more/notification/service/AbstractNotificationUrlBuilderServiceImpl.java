@@ -11,40 +11,49 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
+import fr.openwide.core.context.IContextualService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
-public abstract class AbstractNotificationUrlBuilderServiceImpl extends AbstractBackgroundWicketThreadContextBuilder {
+public abstract class AbstractNotificationUrlBuilderServiceImpl implements IContextualService {
 	
 	private static final String ANCHOR_ROOT = "#";
+	
+	private IWicketContextExecutor wicketExecutor;
+	
+	public AbstractNotificationUrlBuilderServiceImpl(IWicketContextExecutor wicketExecutor) {
+		this.wicketExecutor = wicketExecutor;
+	}
+	
+	@Override
+	public <T> T runWithContext(Callable<T> callable) throws Exception {
+		return wicketExecutor.runWithContext(callable);
+	}
 	
 	protected String buildUrl(Callable<IPageLinkGenerator> pageLinkGeneratorTask) {
 		return buildUrl(pageLinkGeneratorTask, null);
 	}
 	
-	protected String buildUrl(Callable<IPageLinkGenerator> pageLinkGeneratorTask, String anchor) {
+	protected String buildUrl(final Callable<IPageLinkGenerator> pageLinkGeneratorTask, final String anchor) {
 		Args.notNull(pageLinkGeneratorTask, "pageLinkGeneratorTask");
 		
-		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
-		
 		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
-			
-			IPageLinkGenerator pageLinkGenerator = pageLinkGeneratorTask.call();
-			
-			StringBuilder url = new StringBuilder();
-			url.append(pageLinkGenerator.fullUrl());
-			if (StringUtils.hasText(anchor)) {
-				url.append(ANCHOR_ROOT).append(anchor);
-			}
-			
-			return url.toString();
+			return wicketExecutor.runWithContext(new Callable<String>() {
+				@Override
+				public String call() throws Exception {
+					IPageLinkGenerator pageLinkGenerator = pageLinkGeneratorTask.call();
+					
+					StringBuilder url = new StringBuilder();
+					url.append(pageLinkGenerator.fullUrl());
+					if (StringUtils.hasText(anchor)) {
+						url.append(ANCHOR_ROOT).append(anchor);
+					}
+					
+					return url.toString();
+				}
+			});
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} finally {
-			if (requestCycleStatus != null) {
-				detachRequestCycleIfNeeded(requestCycleStatus);
-			}
 		}
 	}
 	
@@ -55,35 +64,28 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl extends Abstract
 	
 	@Deprecated
 	protected String buildUrl(Class<? extends Page> pageClass, PageParameters parameters, String anchor) {
-		return buildUrl(getApplicationName(), new BookmarkablePageRequestHandler(new PageProvider(pageClass, parameters)), anchor);
+		return buildUrl(new BookmarkablePageRequestHandler(new PageProvider(pageClass, parameters)), anchor);
 	}
 	
 	@Deprecated
-	protected String buildUrl(String applicationName, IRequestHandler requestHandler) {
-		return buildUrl(applicationName, requestHandler, null);
-	}
-	
-	@Deprecated
-	protected String buildUrl(String applicationName, IRequestHandler requestHandler, String anchor) {
-		Args.notNull(applicationName, "applicationName");
+	protected String buildUrl(final IRequestHandler requestHandler, final String anchor) {
 		Args.notNull(requestHandler, "requestHandler");
-		
-		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
-		
+
 		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(getApplicationName());
-			
-			StringBuilder url = new StringBuilder();
-			url.append(RequestCycle.get().getUrlRenderer().renderFullUrl(Url.parse(RequestCycle.get().urlFor(requestHandler))));
-			if (StringUtils.hasText(anchor)) {
-				url.append(ANCHOR_ROOT).append(anchor);
-			}
-			
-			return url.toString();
-		} finally {
-			if (requestCycleStatus != null) {
-				detachRequestCycleIfNeeded(requestCycleStatus);
-			}
+			return wicketExecutor.runWithContext(new Callable<String>() {
+				@Override
+				public String call() throws Exception {
+					StringBuilder url = new StringBuilder();
+					url.append(RequestCycle.get().getUrlRenderer().renderFullUrl(Url.parse(RequestCycle.get().urlFor(requestHandler))));
+					if (StringUtils.hasText(anchor)) {
+						url.append(ANCHOR_ROOT).append(anchor);
+					}
+					
+					return url.toString();
+				}
+			});
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 

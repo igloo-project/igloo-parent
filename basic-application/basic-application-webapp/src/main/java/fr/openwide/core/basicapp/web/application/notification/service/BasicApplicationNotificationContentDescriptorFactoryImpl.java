@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ImmutableList;
@@ -12,7 +13,6 @@ import com.google.common.collect.ImmutableList;
 import fr.openwide.core.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
@@ -25,14 +25,16 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
 
 @Service("BasicApplicationNotificationPanelRendererService")
-public class BasicApplicationNotificationContentDescriptorFactoryImpl extends AbstractNotificationContentDescriptorFactory
+public class BasicApplicationNotificationContentDescriptorFactoryImpl
+		extends AbstractNotificationContentDescriptorFactory
 		implements IBasicApplicationNotificationContentDescriptorFactory<IWicketNotificationDescriptor> {
-
-	@Override
-	protected String getApplicationName() {
-		return BasicApplicationApplication.NAME;
+	
+	@Autowired
+	public BasicApplicationNotificationContentDescriptorFactoryImpl(IWicketContextExecutor wicketExecutor) {
+		super(wicketExecutor);
 	}
 
 	@Override

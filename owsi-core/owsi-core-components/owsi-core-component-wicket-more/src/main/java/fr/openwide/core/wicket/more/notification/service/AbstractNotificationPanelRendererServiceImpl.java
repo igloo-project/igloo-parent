@@ -12,6 +12,8 @@ import org.apache.wicket.util.lang.Args;
 
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.context.IContextualService;
+
 /**
  * @deprecated You may instead :<ul>
  *   <li>Extend {@link AbstractNotificationContentDescriptorFactory}, if you need to render e-mail notifications.
@@ -19,7 +21,19 @@ import com.google.common.base.Supplier;
  * </ul>
  */
 @Deprecated
-public abstract class AbstractNotificationPanelRendererServiceImpl extends AbstractBackgroundWicketThreadContextBuilder {
+public abstract class AbstractNotificationPanelRendererServiceImpl
+		implements IContextualService {
+	
+	private IWicketContextExecutor wicketExecutor;
+
+	public AbstractNotificationPanelRendererServiceImpl(IWicketContextExecutor wicketExecutor) {
+		this.wicketExecutor = wicketExecutor;
+	}
+	
+	@Override
+	public <T> T runWithContext(Callable<T> callable) throws Exception {
+		return wicketExecutor.runWithContext(callable);
+	}
 	
 	/**
 	 * @deprecated Use {@link #renderComponent(Supplier, Locale, String)} instead. Caught exceptions (if any) should be handled by the supplier.
@@ -54,7 +68,7 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
 		Args.notNull(componentSupplier, "componentTask");
 		try {
-			return runWithContext(
+			return wicketExecutor.runWithContext(
 					new Callable<String>() {
 						@Override
 						public String call() {
@@ -79,7 +93,7 @@ public abstract class AbstractNotificationPanelRendererServiceImpl extends Abstr
 	
 	protected String renderString(final String messageKey, Locale locale, final Object parameter, final Object ... positionalParameters) {
 		try {
-			return runWithContext(
+			return wicketExecutor.runWithContext(
 					new Callable<String>() {
 						@Override
 						public String call() {

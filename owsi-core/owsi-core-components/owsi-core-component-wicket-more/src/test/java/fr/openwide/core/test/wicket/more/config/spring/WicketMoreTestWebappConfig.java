@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import fr.openwide.core.jpa.more.rendering.service.EmptyRendererServiceImpl;
-import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.test.wicket.more.application.WicketMoreTestApplication;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
 
 /**
  * Stub.
@@ -24,10 +24,10 @@ public class WicketMoreTestWebappConfig extends AbstractWebappConfig {
 	public WebApplication application() {
 		return new WicketMoreTestApplication();
 	}
-
+	
 	@Override
-	public IRendererService rendererService() {
-		return new EmptyRendererServiceImpl();
+	public IWicketContextExecutor wicketContextExecutor() {
+		return new WicketContextExecutorImpl(WicketMoreTestApplication.NAME);
 	}
 
 }

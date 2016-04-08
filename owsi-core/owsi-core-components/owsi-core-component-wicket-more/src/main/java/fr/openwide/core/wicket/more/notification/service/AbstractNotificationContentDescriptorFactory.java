@@ -36,8 +36,9 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	@Autowired
 	private IHtmlNotificationCssService cssService;
 	
-	@Override
-	protected abstract String getApplicationName();
+	public AbstractNotificationContentDescriptorFactory(IWicketContextExecutor wicketContextExecutor) {
+		super(wicketContextExecutor);
+	}
 	
 	protected abstract class AbstractWicketNotificationDescriptor implements IWicketNotificationDescriptor {
 		
