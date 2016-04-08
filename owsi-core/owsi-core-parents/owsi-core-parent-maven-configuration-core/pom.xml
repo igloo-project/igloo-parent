@@ -102,7 +102,7 @@
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
 		<owsi-core.jackson2-dataformat-xml.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-dataformat-xml.version>
 		<owsi-core.truezip.version>7.7.9</owsi-core.truezip.version>
-		<owsi-core.flying-saucer.version>9.0.8</owsi-core.flying-saucer.version>
+		<owsi-core.flying-saucer.version>9.0.9</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.19</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
 		<owsi-core.jsoup.version>1.8.3</owsi-core.jsoup.version>
