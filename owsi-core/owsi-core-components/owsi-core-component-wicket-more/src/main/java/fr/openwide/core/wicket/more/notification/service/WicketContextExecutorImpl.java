@@ -31,47 +31,47 @@ public class WicketContextExecutorImpl implements IWicketContextExecutor {
 	@Autowired
 	private IPropertyService propertyService;
 	
-	private final String defaultApplicationName;
+	private final WebApplication defaultApplication;
 	
 	/**
 	 * @param defaultApplicationName The name given to the wicket application to be used by this executor when none is provided by clients.
 	 */
-	public WicketContextExecutorImpl(String defaultApplicationName) {
-		this.defaultApplicationName = defaultApplicationName;
+	public WicketContextExecutorImpl(WebApplication defaultApplication) {
+		this.defaultApplication = defaultApplication;
 	}
 	
 	@Override
 	public <T> T runWithContext(Callable<T> callable) throws Exception {
-		return runWithContext(defaultApplicationName, callable);
+		return runWithContext(defaultApplication, callable);
 	}
 	
 	@Override
 	public <T> T runWithContext(String applicationName, Callable<T> callable) throws Exception {
-		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
-		
-		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(applicationName);
-			
+		return runWithContext(retrieveWebApplication(applicationName), callable);
+	}
+	
+	@Override
+	public <T> T runWithContext(WebApplication application, Callable<T> callable) throws Exception {
+		try (AutoCloseable applicationCloseable = attachApplicationIfNeeded(application) ;
+				AutoCloseable requestCycleCloseable = attachRequestCycleIfNeeded()) {
 			return callable.call();
-		} finally {
-			if (requestCycleStatus != null) {
-				detachRequestCycleIfNeeded(requestCycleStatus);
-			}
 		}
 	}
 
 	@Override
 	public <T> T runWithContext(Callable<T> callable, Locale locale) throws Exception {
-		return runWithContext(defaultApplicationName, callable, locale);
+		return runWithContext(defaultApplication, callable, locale);
 	}
 
 	@Override
 	public <T> T runWithContext(String applicationName, Callable<T> callable, Locale locale) throws Exception {
-		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
-		
-		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(applicationName);
-			
+		return runWithContext(retrieveWebApplication(applicationName), callable, locale);
+	}
+
+	@Override
+	public <T> T runWithContext(WebApplication application, Callable<T> callable, Locale locale) throws Exception {
+		try (AutoCloseable applicationCloseable = attachApplicationIfNeeded(application) ;
+				AutoCloseable requestCycleCloseable = attachRequestCycleIfNeeded()) {
 			Session session = Session.get();
 			Locale oldLocale = session.getLocale();
 			try {
@@ -80,22 +80,7 @@ public class WicketContextExecutorImpl implements IWicketContextExecutor {
 			} finally {
 				session.setLocale(oldLocale);
 			}
-		} finally {
-			if (requestCycleStatus != null) {
-				detachRequestCycleIfNeeded(requestCycleStatus);
-			}
 		}
-	}
-	
-	private void detachRequestCycleIfNeeded(RequestCycleThreadAttachmentStatus status) {
-		if (RequestCycleThreadAttachmentStatus.TEMPORARY.equals(status)) {
-			ThreadContext.detach();
-		}
-	}
-	
-	private RequestCycleThreadAttachmentStatus attachRequestCycleIfNeeded(String applicationName) {
-		WebApplication webApplication = retrieveWebApplication(applicationName);
-		return attachRequestCycleIfNeeded(webApplication);
 	}
 	
 	private WebApplication retrieveWebApplication(String applicationName) {
@@ -108,15 +93,46 @@ public class WicketContextExecutorImpl implements IWicketContextExecutor {
 				throw new IllegalStateException("Application is not a WebApplication");
 			}
 			webApplication = (WebApplication) application;
-			ThreadContext.setApplication(webApplication);
 		}
 		return webApplication;
 	}
 	
-	private RequestCycleThreadAttachmentStatus attachRequestCycleIfNeeded(WebApplication application) {
-		if (RequestCycle.get() != null) {
-			return RequestCycleThreadAttachmentStatus.PERMANENT;
+	private static abstract class ClosableWicketContext implements AutoCloseable {
+		@Override
+		public abstract void close() throws Exception;
+	}
+	
+	private static class AutoCloseableStub implements AutoCloseable {
+		@Override
+		public void close() throws Exception {
+			// Do nothing
 		}
+	}
+	
+	private AutoCloseable attachApplicationIfNeeded(WebApplication application) {
+		final ThreadContext initialContext = ThreadContext.get(false);
+		if (ThreadContext.getApplication() == application) {
+			return new AutoCloseableStub();
+		}
+		
+		ThreadContext.detach();
+		ThreadContext.setApplication(application);
+		return new ClosableWicketContext() {
+			@Override
+			public void close() throws Exception {
+				ThreadContext.restore(initialContext);
+			}
+		};
+	}
+
+		
+	private AutoCloseable attachRequestCycleIfNeeded() {
+		if (RequestCycle.get() != null) {
+			return new AutoCloseableStub();
+		}
+		
+		WebApplication application = WebApplication.get();
+		
 		final ServletContext context = application.getServletContext();
 		
 		final HttpSession newHttpSession = new MockHttpSession(context);
@@ -129,14 +145,15 @@ public class WicketContextExecutorImpl implements IWicketContextExecutor {
 		final WebResponse webResponse = new BufferedWebResponse(new ServletWebResponse(webRequest, servletResponse));
 		
 		RequestCycle requestCycle = application.createRequestCycle(webRequest, webResponse);
-		ThreadContext.setRequestCycle(requestCycle);
 		
-		return RequestCycleThreadAttachmentStatus.TEMPORARY;
-	}
-	
-	private enum RequestCycleThreadAttachmentStatus {
-		PERMANENT,
-		TEMPORARY
+		ThreadContext.setRequestCycle(requestCycle);
+		return new ClosableWicketContext() {
+			@Override
+			public void close() throws Exception {
+				ThreadContext.setSession(null);
+				ThreadContext.setRequestCycle(null);
+			}
+		};
 	}
 	
 	private class ContextConfiguredMockHttpServletRequest extends MockHttpServletRequest {

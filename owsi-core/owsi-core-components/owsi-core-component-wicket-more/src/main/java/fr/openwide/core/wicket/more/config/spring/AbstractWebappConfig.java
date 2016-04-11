@@ -4,7 +4,8 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
@@ -27,9 +28,13 @@ public abstract class AbstractWebappConfig {
 	public abstract WebApplication application();
 	
 	@Bean
-	// @Lazy on defaultApplication fixes a circular dependency
-	public IWicketContextExecutor wicketContextExecutor(@Lazy WebApplication defaultApplication) {
-		return new WicketContextExecutorImpl(defaultApplication.getName());
+	/* Use a proxy to fix a circular dependency.
+	 * There's no real notion of scope here, since the bean is a singleton: we just want it to be proxyfied so that
+	 * the circular dependency is broken.
+	 */
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+	public IWicketContextExecutor wicketContextExecutor(WebApplication defaultApplication) {
+		return new WicketContextExecutorImpl(defaultApplication);
 	}
 	
 	@Bean

@@ -3,6 +3,8 @@ package fr.openwide.core.wicket.more.notification.service;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
+import org.apache.wicket.protocol.http.WebApplication;
+
 import fr.openwide.core.context.IContextualService;
 
 /**
@@ -26,6 +28,18 @@ public interface IWicketContextExecutor extends IContextualService {
 	 * Wicket application (which is implementation-dependent).
 	 */
 	<T> T runWithContext(Callable<T> callable, Locale locale) throws Exception;
+
+	/**
+	 * Executes a callable, ensuring that Wicket's threadlocal context is available during the execution.
+	 * <p>This method uses a default locale and the given Wicket application.
+	 */
+	<T> T runWithContext(WebApplication application, Callable<T> callable) throws Exception;
+
+	/**
+	 * Executes a callable, ensuring that Wicket's threadlocal context is available during the execution.
+	 * <p>This method sets the given locale on the Wicket Session and uses the given Wicket application.
+	 */
+	<T> T runWithContext(WebApplication application, Callable<T> callable, Locale locale) throws Exception;
 	
 	/**
 	 * Executes a callable, ensuring that Wicket's threadlocal context is available during the execution.
