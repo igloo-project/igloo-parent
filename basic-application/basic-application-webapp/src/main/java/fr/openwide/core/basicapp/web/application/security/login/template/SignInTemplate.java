@@ -23,14 +23,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.business.user.service.IUserService;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
-import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
+import fr.openwide.core.basicapp.web.application.common.template.ApplicationAccessTemplate;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class SignInTemplate<U extends User> extends ServiceTemplate {
+public class SignInTemplate<U extends User> extends ApplicationAccessTemplate {
 
 	private static final long serialVersionUID = 5503959273448832421L;
 

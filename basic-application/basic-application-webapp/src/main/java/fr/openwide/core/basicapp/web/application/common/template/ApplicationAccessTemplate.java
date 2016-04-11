@@ -18,7 +18,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.styles.ApplicationAccessLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
@@ -27,7 +27,7 @@ import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackP
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public abstract class ServiceTemplate extends AbstractWebPageTemplate {
+public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate {
 
 	private static final long serialVersionUID = 3342562716259012460L;
 
@@ -37,10 +37,11 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 	@SpringBean
 	private IAuthenticationService authenticationService;
 
-	public ServiceTemplate(PageParameters parameters) {
+	public ApplicationAccessTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole() && maintenanceRestriction()) {
+		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole()
+				&& hasMaintenanceRestriction()) {
 			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
@@ -76,15 +77,17 @@ public abstract class ServiceTemplate extends AbstractWebPageTemplate {
 		return new InvisiblePanel(wicketId);
 	}
 
-	protected boolean maintenanceRestriction() {
+	protected boolean hasMaintenanceRestriction() {
 		return true;
 	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
-		response.render(CssHeaderItem.forReference(ServiceLessCssResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(
+				Application.get().getJavaScriptLibrarySettings().getJQueryReference()
+		));
+		response.render(CssHeaderItem.forReference(ApplicationAccessLessCssResourceReference.get()));
 	}
 
 	@Override

@@ -6,10 +6,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.openwide.core.basicapp.web.application.common.template.ServiceTemplate;
+import fr.openwide.core.basicapp.web.application.common.template.ApplicationAccessTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class MaintenancePage extends ServiceTemplate {
+public class MaintenancePage extends ApplicationAccessTemplate {
 
 	private static final long serialVersionUID = 7371109597310862894L;
 
@@ -30,7 +30,7 @@ public class MaintenancePage extends ServiceTemplate {
 	}
 
 	@Override
-	protected boolean maintenanceRestriction() {
+	protected boolean hasMaintenanceRestriction() {
 		return false;
 	}
 

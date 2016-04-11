@@ -30,7 +30,7 @@ import fr.openwide.core.basicapp.web.application.common.converter.PostalCodeConv
 import fr.openwide.core.basicapp.web.application.common.renderer.UserGroupRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
-import fr.openwide.core.basicapp.web.application.common.template.styles.ServiceLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.styles.ApplicationAccessLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
@@ -95,7 +95,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 			preloadStyleSheets(
 					ConsoleLessCssResourceReference.get(),
 					NotificationLessCssResourceReference.get(),
-					ServiceLessCssResourceReference.get(),
+					ApplicationAccessLessCssResourceReference.get(),
 					StylesLessCssResourceReference.get()
 			);
 		}

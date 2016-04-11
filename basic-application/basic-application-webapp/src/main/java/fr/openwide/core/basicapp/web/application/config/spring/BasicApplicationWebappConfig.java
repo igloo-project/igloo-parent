@@ -21,7 +21,6 @@ import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
-import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
 import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
