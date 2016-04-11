@@ -49,11 +49,6 @@ public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 	}
 	
 	@Override
-	public IWicketContextExecutor wicketContextExecutor() {
-		return new WicketContextExecutorImpl(BasicApplicationApplication.NAME);
-	}
-	
-	@Override
 	public IRendererService rendererService(IWicketContextExecutor wicketContextExecutor) {
 		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextExecutor);
 
