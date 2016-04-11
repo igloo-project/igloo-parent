@@ -70,7 +70,7 @@ public class WicketContextExecutorImpl implements IWicketContextExecutor {
 		RequestCycleThreadAttachmentStatus requestCycleStatus = null;
 		
 		try {
-			requestCycleStatus = attachRequestCycleIfNeeded(defaultApplicationName);
+			requestCycleStatus = attachRequestCycleIfNeeded(applicationName);
 			
 			Session session = Session.get();
 			Locale oldLocale = session.getLocale();
