@@ -18,6 +18,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
+import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
 import fr.openwide.core.basicapp.web.application.common.template.styles.ApplicationAccessLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.property.service.IPropertyService;
@@ -44,6 +45,8 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 				&& hasMaintenanceRestriction()) {
 			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
+		
+		add(new EnvironmentPanel("environment"));
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
