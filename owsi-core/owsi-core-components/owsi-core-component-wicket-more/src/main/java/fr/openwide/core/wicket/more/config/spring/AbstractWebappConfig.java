@@ -4,6 +4,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
@@ -26,7 +27,8 @@ public abstract class AbstractWebappConfig {
 	public abstract WebApplication application();
 	
 	@Bean
-	public IWicketContextExecutor wicketContextExecutor(WebApplication defaultApplication) {
+	// @Lazy on defaultApplication fixes a circular dependency
+	public IWicketContextExecutor wicketContextExecutor(@Lazy WebApplication defaultApplication) {
 		return new WicketContextExecutorImpl(defaultApplication.getName());
 	}
 	
