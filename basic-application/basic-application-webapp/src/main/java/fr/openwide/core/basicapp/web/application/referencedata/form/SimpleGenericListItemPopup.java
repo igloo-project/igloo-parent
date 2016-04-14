@@ -40,8 +40,8 @@ public abstract class SimpleGenericListItemPopup<T extends GenericListItem<? sup
 				BindingModel.of(model, Bindings.genericListItem().disableable())
 		);
 		
-		this.label = new TextField<String>(
-				"label", BindingModel.of(model, Bindings.genericListItem().label())
+		this.label = new TextField<>(
+				"label", BindingModel.of(model, Bindings.genericListItem().label()), String.class
 		);
 		
 		this.enabled = new CheckBox(

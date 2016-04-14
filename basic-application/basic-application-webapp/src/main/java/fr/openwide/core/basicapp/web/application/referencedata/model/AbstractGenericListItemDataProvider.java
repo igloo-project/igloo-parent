@@ -21,6 +21,7 @@ public abstract class AbstractGenericListItemDataProvider
 	
 	private final IModel<EnabledFilter> enabledFilterModel = new Model<EnabledFilter>(EnabledFilter.ENABLED_ONLY);
 	private final IModel<String> labelModel = new Model<String>();
+	private final IModel<String> codeModel = new Model<String>();
 	
 	private final CompositeSortModel<S> sortModel;
 	
@@ -39,6 +40,7 @@ public abstract class AbstractGenericListItemDataProvider
 		super.detach();
 		enabledFilterModel.detach();
 		labelModel.detach();
+		codeModel.detach();
 		sortModel.detach();
 	}
 	
@@ -49,6 +51,10 @@ public abstract class AbstractGenericListItemDataProvider
 	public IModel<String> getLabelModel() {
 		return labelModel;
 	}
+	
+	public IModel<String> getCodeModel() {
+		return codeModel;
+	}
 
 	public CompositeSortModel<S> getSortModel() {
 		return sortModel;
@@ -58,6 +64,7 @@ public abstract class AbstractGenericListItemDataProvider
 	public final IGenericListItemSearchQuery<T, S, ?> getSearchQuery() {
 		return createSearchQuery()
 				.label(getLabelModel().getObject())
+				.code(getCodeModel().getObject())
 				.enabled(getEnabledFilterModel().getObject())
 				.sort(getSortModel().getObject());
 	}

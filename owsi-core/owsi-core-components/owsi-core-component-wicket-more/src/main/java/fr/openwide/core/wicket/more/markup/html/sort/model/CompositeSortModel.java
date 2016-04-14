@@ -102,13 +102,16 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	public Map<T, SortOrder> getObject() {
 		Map<T, SortOrder> map = new LinkedHashMap<>();
 		putNewKeys(map, beforeSortModels);
-		putNewKeys(map, getSelectedSort());
+		putNewKeys(map, getActiveSort());
 		putNewKeys(map, afterSortModels);
 		putNewKeys(map, stabilizationSort);
 		return map;
 	}
 
-	public Map<T, SortOrder> getSelectedSort() {
+	/**
+	 * Returns the currently <strong>active</code> composite sort (i.e., defaults are accounted for).
+	 */
+	public Map<T, SortOrder> getActiveSort() {
 		if (map.isEmpty()) {
 			Map<T, SortOrder> map = new LinkedHashMap<>();
 			putNewKeys(map, beforeDefaultSortModels);
@@ -119,13 +122,38 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 			return map;
 		}
 	}
+
+	/**
+	 * Returns the currently <strong>selected</code> composite sort (i.e., defaults are ignored).
+	 */
+	public Map<T, SortOrder> getSelectedSort() {
+		return map;
+	}
 	
 	/**
-	 * Used to highlight the sort links if the sort is enabled.
-	 * 
+	 * @deprecated Use either {@link #getActiveOrder(ISort)} or {@link #getSelectedOrder(ISort)}, depending on what you want
+	 * @param sort
+	 * @return
+	 */
+	@Deprecated
+	public SortOrder getOrder(T sort) {
+		return getActiveSort().get(sort);
+	}
+	
+	/**
+	 * Returns the currently <strong>active</code> order for this sort (i.e., defaults are accounted for).
+	 * <p>Used to highlight the sort links if the sort is enabled.
 	 * We only highlight the current selection (or the default sort if there is no selection). The concatenated sort is ignored here.
 	 */
-	public SortOrder getOrder(T sort) {
+	public SortOrder getActiveOrder(T sort) {
+		return getActiveSort().get(sort);
+	}
+	
+	/**
+	 * Returns the currently <strong>selected</code> order for this sort (i.e., defaults are ignored).
+	 * <p>Used to switch sort orders.
+	 */
+	public SortOrder getSelectedOrder(T sort) {
 		return getSelectedSort().get(sort);
 	}
 	

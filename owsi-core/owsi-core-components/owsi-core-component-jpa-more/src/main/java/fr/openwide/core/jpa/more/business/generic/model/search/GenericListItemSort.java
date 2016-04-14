@@ -42,6 +42,36 @@ public enum GenericListItemSort implements ISort<SortField> {
 		public SortOrder getDefaultOrder() {
 			return SortOrder.ASC;
 		}
+	},
+	CODE {
+		@Override
+		public List<SortField> getSortFields(SortOrder sortOrder) {
+			return ImmutableList.of(
+					SortUtils.luceneSortField(
+							this, sortOrder, SortField.Type.STRING,
+							GenericListItem.CODE_SORT_FIELD_NAME
+					)
+			);
+		}
+		@Override
+		public SortOrder getDefaultOrder() {
+			return SortOrder.ASC;
+		}
+	},
+	POSITION {
+		@Override
+		public List<SortField> getSortFields(SortOrder sortOrder) {
+			return ImmutableList.of(
+					SortUtils.luceneSortField(
+							this, sortOrder, SortField.Type.INT,
+							GenericListItem.POSITION_FIELD_NAME
+					)
+			);
+		}
+		@Override
+		public SortOrder getDefaultOrder() {
+			return SortOrder.ASC;
+		}
 	};
 	
 	@Override

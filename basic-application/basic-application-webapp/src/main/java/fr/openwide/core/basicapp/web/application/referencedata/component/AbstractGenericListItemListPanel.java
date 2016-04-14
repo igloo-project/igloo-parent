@@ -34,7 +34,11 @@ import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreCol
 import fr.openwide.core.wicket.more.markup.repeater.table.util.DataTableUtil;
 import fr.openwide.core.wicket.more.model.AbstractSearchQueryDataProvider;
 
-public abstract class AbstractGenericListItemListPanel<T extends GenericListItem<? super T>, S extends ISort<?>, D extends AbstractSearchQueryDataProvider<T,S>> extends Panel {
+public abstract class AbstractGenericListItemListPanel<
+		T extends GenericListItem<? super T>,
+		S extends ISort<?>,
+		D extends AbstractSearchQueryDataProvider<T,S>
+		> extends Panel {
 	
 	private static final long serialVersionUID = -8240552205613934114L;
 

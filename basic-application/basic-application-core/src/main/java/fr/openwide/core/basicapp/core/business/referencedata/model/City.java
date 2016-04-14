@@ -9,12 +9,10 @@ import javax.persistence.UniqueConstraint;
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 
 import fr.openwide.core.basicapp.core.business.common.model.PostalCode;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
-import fr.openwide.core.jpa.search.bridge.MaterializedStringValueFieldBridge;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.spring.util.StringUtils;
 
@@ -29,8 +27,6 @@ public class City extends GenericListItem<City> {
 
 	public static final String LABEL_AUTOCOMPLETE = "labelAutocomplete";
 	
-	public static final String POSTAL_CODE = "postalCode";
-	
 	public City() {
 	}
 	
@@ -39,7 +35,6 @@ public class City extends GenericListItem<City> {
 	}
 
 	@Basic(optional = false)
-	@Field(name = POSTAL_CODE, bridge = @FieldBridge(impl = MaterializedStringValueFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD_CLEAN))
 	private PostalCode postalCode;
 
 	public PostalCode getPostalCode() {
@@ -48,6 +43,11 @@ public class City extends GenericListItem<City> {
 
 	public void setPostalCode(PostalCode postalCode) {
 		this.postalCode = postalCode;
+	}
+	
+	@Override
+	public String getCode() {
+		return postalCode == null ? null : postalCode.getValue();
 	}
 
 	@Override

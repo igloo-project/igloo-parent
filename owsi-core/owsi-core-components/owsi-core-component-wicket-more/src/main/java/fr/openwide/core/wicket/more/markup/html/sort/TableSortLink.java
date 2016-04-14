@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.sort;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -10,6 +12,10 @@ import org.apache.wicket.markup.html.panel.PanelMarkupSourcingStrategy;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.ISort.SortOrder;
@@ -22,6 +28,8 @@ import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
 public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 
 	private static final long serialVersionUID = 9088886381233297454L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TableSortLink.class);
 
 	private static final String SORT_BUTTON_CSS_CLASS = "btn btn-sort";
 	
@@ -168,9 +176,28 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 	}
 	
 	protected void switchSort() {
-		final SortOrder currentOrder = compositeSortModel.getOrder(sort);
-		final SortOrder nextOrder = cycleMode.getNext(sort, currentOrder);
+		Map<?, ?> activeSortBeforeSwitch = Maps.newLinkedHashMap(compositeSortModel.getActiveSort());
+		SortOrder currentOrder = compositeSortModel.getSelectedOrder(sort);
+		SortOrder nextOrder = cycleMode.getNext(sort, currentOrder);
 		compositeSortModel.setOrder(sort, nextOrder);
+		Map<?, ?> activeSortAfterSwitch = Maps.newLinkedHashMap(compositeSortModel.getActiveSort());
+		if (activeSortBeforeSwitch.equals(activeSortAfterSwitch)) {
+			/* In some cases, switching from "no order" to the default order will result in no change at all
+			 * (for instance if the composite sort model uses this sort as the single default sort)
+			 * In those cases, we try to trigger another switch so that the composite sort will change as expected
+			 */
+			if (LOGGER.isWarnEnabled()) {
+				activeSortBeforeSwitch = Maps.newLinkedHashMap(compositeSortModel.getActiveSort());
+			}
+			nextOrder = cycleMode.getNext(sort, nextOrder);
+			compositeSortModel.setOrder(sort, nextOrder);
+			if (LOGGER.isWarnEnabled()) {
+				activeSortAfterSwitch = Maps.newLinkedHashMap(compositeSortModel.getActiveSort());
+				if (activeSortBeforeSwitch.equals(activeSortAfterSwitch)) {
+					LOGGER.warn("A switch in a TableSortLink failed to trigger any change in the CompositeSortModel even after a second try.");
+				}
+			}
+		}
 	}
 	
 	public TableSortLink<T> cycleMode(CycleMode cycleMode) {
@@ -184,11 +211,11 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 	}
 	
 	protected boolean isSortActive() {
-		return compositeSortModel.getOrder(sort) != null;
+		return compositeSortModel.getActiveOrder(sort) != null;
 	}
 	
 	protected SortOrder getDisplayedSort() {
-		final SortOrder currentOrder = compositeSortModel.getOrder(sort);
+		final SortOrder currentOrder = compositeSortModel.getActiveOrder(sort);
 		return sort.getDefaultOrder().asDefaultFor(currentOrder);
 	}
 	

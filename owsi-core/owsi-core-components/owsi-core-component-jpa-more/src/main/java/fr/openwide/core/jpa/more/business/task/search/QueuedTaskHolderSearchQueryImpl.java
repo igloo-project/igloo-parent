@@ -3,17 +3,12 @@ package fr.openwide.core.jpa.more.business.task.search;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import fr.openwide.core.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
 
-@Component
-@Scope("prototype")
 public class QueuedTaskHolderSearchQueryImpl extends AbstractHibernateSearchSearchQuery<QueuedTaskHolder, QueuedTaskHolderSort>
 		implements IQueuedTaskHolderSearchQuery {
 

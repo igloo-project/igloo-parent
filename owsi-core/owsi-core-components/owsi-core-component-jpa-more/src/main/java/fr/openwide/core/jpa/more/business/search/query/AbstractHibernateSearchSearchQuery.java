@@ -2,15 +2,11 @@ package fr.openwide.core.jpa.more.business.search.query;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryparser.simple.SimpleQueryParser;
-import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -21,32 +17,31 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
-import fr.openwide.core.spring.util.StringUtils;
-import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
-	
-	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION = new BindingToPathFunction();
 	
 	private final Class<? extends T> mainClass;
 	private final Class<? extends T>[] classes;
 	
 	private BooleanJunction<?> junction;
-	private FullTextQuery fullTextQuery;
-	private QueryBuilder defaultQueryBuilder;
+	
 	private FullTextEntityManager fullTextEntityManager;
-	private Map<Class<?>, Analyzer> analyzerCache = new HashMap<Class<?>, Analyzer>();
+	
+	@Autowired
+	private IHibernateSearchLuceneQueryFactory factory;
+	
+	private FullTextQuery fullTextQuery;
 	
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
@@ -63,32 +58,36 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@PostConstruct
 	private void init() {
-		fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		
-		defaultQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
-				.forEntity(mainClass).get();
-		
-		junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
+		this.fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		this.factory.setDefaultClass(mainClass);
+		QueryBuilder defaultQueryBuilder = this.factory.getDefaultQueryBuilder();
+		this.junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
 	}
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
-		if (analyzerCache.containsKey(clazz)) {
-			return analyzerCache.get(clazz);
-		} else {
-			Analyzer analyzer = fullTextEntityManager.getSearchFactory().getAnalyzer(clazz);
-			analyzerCache.put(clazz, analyzer);
-			return analyzer;
-		}
+		return this.factory.getAnalyzer(clazz);
 	}
 	
+	/**
+	 * @deprecated Use {@link #getDefaultAnalyzer()} instead.
+	 */
+	@Deprecated
 	protected Analyzer getAnalyzer() {
-		return getAnalyzer(mainClass);
+		return getDefaultAnalyzer();
 	}
 	
+	protected Analyzer getDefaultAnalyzer() {
+		return this.factory.getDefaultAnalyzer();
+	}
+
 	protected QueryBuilder getDefaultQueryBuilder() {
-		return defaultQueryBuilder;
+		return this.factory.getDefaultQueryBuilder();
 	}
 	
+	protected IHibernateSearchLuceneQueryFactory getFactory() {
+		return this.factory;
+	}
+
 	protected FullTextEntityManager getFullTextEntityManager() {
 		return fullTextEntityManager;
 	}
@@ -215,327 +214,230 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	 * You can use {@link NullEncodingGenericEntityIdFieldBridge} instead of the classical {@link GenericEntityIdFieldBridge} for example.
 	 */
 	protected Query matchNull(AbstractBinding<?, ?> binding) {
-		return matchNull(defaultQueryBuilder, binding);
+		return getFactory().matchNull(binding);
 	}
 	
 	protected Query matchNull(QueryBuilder builder, AbstractBinding<?, ?> binding) {
-		return matchNull(builder, binding.getPath());
+		return getFactory().matchNull(builder, binding);
 	}
 	
 	protected Query matchNull(String fieldPath) {
-		return matchNull(defaultQueryBuilder, fieldPath);
+		return getFactory().matchNull(fieldPath);
 	}
 	
 	protected Query matchNull(QueryBuilder builder, String fieldPath) {
-		return builder.keyword()
-				.onField(fieldPath)
-				.matching(null)
-				.createQuery();
+		return getFactory().matchNull(builder, fieldPath);
 	}
 	
 	// 	>	Match if given
 	protected <P> Query matchIfGiven(AbstractBinding<?, P> binding, P value) {
-		return matchIfGiven(defaultQueryBuilder, binding, value);
+		return getFactory().matchIfGiven(binding, value);
 	}
 	
 	protected <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
-		return matchIfGiven(builder, binding.getPath(), value);
+		return getFactory().matchIfGiven(builder, binding, value);
 	}
 	
 	protected <P> Query matchIfGiven(String fieldPath, P value) {
-		return matchIfGiven(defaultQueryBuilder, fieldPath, value);
+		return getFactory().matchIfGiven(fieldPath, value);
 	}
 	
 	protected <P> Query matchIfGiven(QueryBuilder builder, String fieldPath, P value) {
-		if (value == null) {
-			return null;
-		}
-		
-		return builder.keyword()
-				.onField(fieldPath)
-				.matching(value)
-				.createQuery();
+		return getFactory().matchIfGiven(builder, fieldPath, value);
 	}
 	
 	// 	>	Match one term if given
 	protected Query matchOneTermIfGiven(AbstractBinding<?, String> binding, String terms) {
-		return matchOneTermIfGiven(defaultQueryBuilder, binding.getPath(), terms);
+		return getFactory().matchOneTermIfGiven(binding, terms);
 	}
 	
 	protected Query matchOneTermIfGiven(QueryBuilder builder, AbstractBinding<?, String> binding, String terms) {
-		return matchOneTermIfGiven(builder, binding.getPath(), terms);
+		return getFactory().matchOneTermIfGiven(builder, binding, terms);
 	}
 	
 	protected Query matchOneTermIfGiven(String fieldPath, String terms) {
-		return matchOneTermIfGiven(defaultQueryBuilder, fieldPath, terms);
+		return getFactory().matchOneTermIfGiven(fieldPath, terms);
 	}
 	
 	protected Query matchOneTermIfGiven(QueryBuilder builder, String fieldPath, String terms) {
-		if (!StringUtils.hasText(terms)) {
-			return null;
-		}
-		return builder.keyword()
-				.onField(fieldPath)
-				.matching(terms)
-				.createQuery();
+		return getFactory().matchOneTermIfGiven(builder, fieldPath, terms);
 	}
 	
 	// 	>	Match all terms if given
 	@SafeVarargs
 	protected final Query matchAllTermsIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchAllTermsIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+		return getFactory().matchAllTermsIfGiven(analyzer, terms, binding, otherBindings);
 	}
 	
 	@SafeVarargs
 	protected final Query matchAllTermsIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchAllTermsIfGiven(getAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+		return getFactory().matchAllTermsIfGiven(terms, binding, otherBindings);
 	}
 
 	protected Query matchAllTermsIfGiven(String terms, Iterable<String> fieldPaths) {
-		return matchAllTermsIfGiven(getAnalyzer(), terms, fieldPaths);
+		return getFactory().matchAllTermsIfGiven(terms, fieldPaths);
 	}
 	
 	protected Query matchAllTermsIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
-		if (!StringUtils.hasText(terms)) {
-			return null;
-		}
-		Map<String, Float> fields = Maps.newHashMap();
-		for (String fieldPath : fieldPaths) {
-			fields.put(fieldPath, 1.0f);
-		}
-		SimpleQueryParser parser = new SimpleQueryParser(analyzer, fields);
-		parser.setDefaultOperator(BooleanClause.Occur.MUST);
-		return parser.parse(terms);
+		return getFactory().matchAllTermsIfGiven(analyzer, terms, fieldPaths);
 	}
 	
 	// 	>	Match autocomplete
 	@SafeVarargs
 	protected final Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchAutocompleteIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+		return getFactory().matchAutocompleteIfGiven(analyzer, terms, binding, otherBindings);
 	}
 	
 	@SafeVarargs
 	protected final Query matchAutocompleteIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchAutocompleteIfGiven(getAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+		return getFactory().matchAutocompleteIfGiven(terms, binding, otherBindings);
 	}
 
 	protected Query matchAutocompleteIfGiven(String terms, Iterable<String> fieldPaths) {
-		return matchAutocompleteIfGiven(getAnalyzer(), terms, fieldPaths);
+		return getFactory().matchAutocompleteIfGiven(terms, fieldPaths);
 	}
 	
 	protected Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {
-		if (!StringUtils.hasText(terms)) {
-			return null;
-		}
-		return LuceneUtils.getAutocompleteQuery(fieldPaths, analyzer, terms);
+		return getFactory().matchAutocompleteIfGiven(analyzer, terms, fieldPaths);
 	}
 
 	// 	>	Match fuzzy
 	@SafeVarargs
 	protected final Query matchFuzzyIfGiven(Analyzer analyzer, String terms, Integer maxEditDistance,
 			AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchFuzzyIfGiven(analyzer, terms, maxEditDistance, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+		return getFactory().matchFuzzyIfGiven(analyzer, terms, maxEditDistance, binding, otherBindings);
 	}
 	
 	@SafeVarargs
 	protected final Query matchFuzzyIfGiven(String terms, Integer maxEditDistance,
 			AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
-		return matchFuzzyIfGiven(getAnalyzer(), terms, maxEditDistance, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
+		return getFactory().matchFuzzyIfGiven(terms, maxEditDistance, binding, otherBindings);
 	}
 
 	protected Query matchFuzzyIfGiven(String terms, Integer maxEditDistance, Iterable<String> fieldPaths) {
-		return matchFuzzyIfGiven(getAnalyzer(), terms, maxEditDistance, fieldPaths);
+		return getFactory().matchFuzzyIfGiven(terms, maxEditDistance, fieldPaths);
 	}
 	
 	protected Query matchFuzzyIfGiven(Analyzer analyzer, String terms, Integer maxEditDistance, Iterable<String> fieldPaths) {
-		if (!StringUtils.hasText(terms)) {
-			return null;
-		}
-		return LuceneUtils.getSimilarityQuery(fieldPaths, analyzer, terms, maxEditDistance);
+		return getFactory().matchFuzzyIfGiven(analyzer, terms, maxEditDistance, fieldPaths);
 	}
 	
 	// 	>	Be included if given
 	protected <P> Query beIncludedIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, P value) {
-		return beIncludedIfGiven(defaultQueryBuilder, binding, value);
+		return getFactory().beIncludedIfGiven(binding, value);
 	}
 	
 	protected <P> Query beIncludedIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding, P value) {
-		return beIncludedIfGiven(builder, binding.getPath(), value);
+		return getFactory().beIncludedIfGiven(builder, binding, value);
 	}
 	
 	protected <P> Query beIncludedIfGiven(String fieldPath, P value) {
-		return beIncludedIfGiven(defaultQueryBuilder, fieldPath, value);
+		return getFactory().beIncludedIfGiven(fieldPath, value);
 	}
 	
 	protected <P> Query beIncludedIfGiven(QueryBuilder builder, String fieldPath, P value) {
-		if (value == null) {
-			return null;
-		}
-		return builder.keyword()
-				.onField(fieldPath)
-				.matching(value)
-				.createQuery();
-		
+		return getFactory().beIncludedIfGiven(builder, fieldPath, value);
 	}
 	
 	// 	>	Match one if given
 	protected <P> Query matchOneIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
-		return matchOneIfGiven(defaultQueryBuilder, binding, possibleValues);
+		return getFactory().matchOneIfGiven(binding, possibleValues);
 	}
 	
 	protected <P> Query matchOneIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
-		return matchOneIfGiven(builder, binding.getPath(), possibleValues);
+		return getFactory().matchOneIfGiven(builder, binding, possibleValues);
 	}
 	
 	protected <P> Query matchOneIfGiven(String fieldPath, Collection<? extends P> possibleValues) {
-		return matchOneIfGiven(defaultQueryBuilder, fieldPath, possibleValues);
+		return getFactory().matchOneIfGiven(fieldPath, possibleValues);
 	}
 	
 	protected <P> Query matchOneIfGiven(QueryBuilder builder, String fieldPath, Collection<? extends P> possibleValues) {
-		if (possibleValues == null || possibleValues.isEmpty()) {
-			return null;
-		}
-		BooleanJunction<?> subJunction = builder.bool();
-		for (P possibleValue : possibleValues) {
-			subJunction.should(builder.keyword()
-					.onField(fieldPath)
-					.matching(possibleValue)
-					.createQuery());
-		}
-		return subJunction.createQuery();
+		return getFactory().matchOneIfGiven(builder, fieldPath, possibleValues);
 	}
 	
 	// 	>	Match all if given
 	protected <P> Query matchAllIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> possibleValues) {
-		return matchAllIfGiven(defaultQueryBuilder, binding, possibleValues);
+		return getFactory().matchAllIfGiven(binding, possibleValues);
 	}
 
 	protected <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding,
 			Collection<? extends P> possibleValues) {
-		return matchAllIfGiven(builder, binding.getPath(), possibleValues);
+		return getFactory().matchAllIfGiven(builder, binding, possibleValues);
 	}
 
 	protected <P> Query matchAllIfGiven(String fieldPath, Collection<? extends P> possibleValues) {
-		return matchAllIfGiven(defaultQueryBuilder, fieldPath, possibleValues);
+		return getFactory().matchAllIfGiven(fieldPath, possibleValues);
 	}
 	
 	protected <P> Query matchAllIfGiven(QueryBuilder builder, String fieldPath, Collection<? extends P> values) {
-		if (values == null || values.isEmpty()) {
-			return null;
-		}
-		BooleanJunction<?> subJunction = builder.bool();
-		for (P possibleValue : values) {
-			subJunction.must(builder.keyword()
-					.onField(fieldPath)
-					.matching(possibleValue)
-					.createQuery());
-		}
-		return subJunction.createQuery();
+		return getFactory().matchAllIfGiven(builder, fieldPath, values);
 	}
 	
 	// 	>	Match if true
 	protected Query matchIfTrue(AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
-		return matchIfTrue(defaultQueryBuilder, binding, value, mustMatch);
+		return getFactory().matchIfTrue(binding, value, mustMatch);
 	}
 	
 	protected Query matchIfTrue(QueryBuilder builder, AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
-		return matchIfTrue(builder, binding.getPath(), value, mustMatch);
+		return getFactory().matchIfTrue(builder, binding, value, mustMatch);
 	}
 	
 	protected <P> Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch) {
-		return matchIfTrue(defaultQueryBuilder, fieldPath, value, mustMatch);
+		return getFactory().matchIfTrue(fieldPath, value, mustMatch);
 	}
 	
 	protected Query matchIfTrue(QueryBuilder builder, String fieldPath, boolean value, Boolean mustMatch) {
-		if (mustMatch == null || !mustMatch) {
-			return null;
-		}
-		return builder.keyword()
-				.onField(fieldPath)
-				.matching(value)
-				.createQuery();
+		return getFactory().matchIfTrue(builder, fieldPath, value, mustMatch);
 	}
 	
 	// 	>	Match range (min, max, both)
 	protected <P> Query matchRangeMin(AbstractBinding<?, P> binding, P min) {
-		return matchRangeMin(defaultQueryBuilder, binding, min);
+		return getFactory().matchRangeMin(binding, min);
 	}
 	
 	protected <P> Query matchRangeMin(QueryBuilder builder, AbstractBinding<?, P> binding, P min) {
-		return matchRangeMin(builder, binding.getPath(), min);
+		return getFactory().matchRangeMin(builder, binding, min);
 	}
 	
 	protected <P> Query matchRangeMin(String fieldPath, P min) {
-		return matchRangeMin(defaultQueryBuilder, fieldPath, min);
+		return getFactory().matchRangeMin(fieldPath, min);
 	}
 	
 	protected <P> Query matchRangeMin(QueryBuilder builder, String fieldPath, P min) {
-		if (min == null) {
-			return null;
-		}
-		return builder.range()
-				.onField(fieldPath)
-				.above(min)
-				.createQuery();
+		return getFactory().matchRangeMin(builder, fieldPath, min);
 	}
 	
 	protected <P> Query matchRangeMax(AbstractBinding<?, P> binding, P max) {
-		return matchRangeMax(defaultQueryBuilder, binding, max);
+		return getFactory().matchRangeMax(binding, max);
 	}
 	
 	protected <P> Query matchRangeMax(QueryBuilder builder, AbstractBinding<?, P> binding, P max) {
-		return matchRangeMax(builder, binding.getPath(), max);
+		return getFactory().matchRangeMax(builder, binding, max);
 	}
 	
 	protected <P> Query matchRangeMax(String fieldPath, P max) {
-		return matchRangeMax(defaultQueryBuilder, fieldPath, max);
+		return getFactory().matchRangeMax(fieldPath, max);
 	}
 	
 	protected <P> Query matchRangeMax(QueryBuilder builder, String fieldPath, P max) {
-		if (max == null) {
-			return null;
-		}
-		return builder.range()
-				.onField(fieldPath)
-				.below(max)
-				.createQuery();
+		return getFactory().matchRangeMax(builder, fieldPath, max);
 	}
 	
 	protected <P> Query matchRange(AbstractBinding<?, P> binding, P min, P max) {
-		return matchRange(defaultQueryBuilder, binding.getPath(), min, max);
+		return getFactory().matchRange(binding, min, max);
 	}
 	
 	protected <P> Query matchRange(QueryBuilder builder, AbstractBinding<?, P> binding, P min, P max) {
-		return matchRange(builder, binding.getPath(), min, max);
+		return getFactory().matchRange(builder, binding, min, max);
 	}
 	
 	protected <P> Query matchRange(String fieldPath, P min, P max) {
-		return matchRange(defaultQueryBuilder, fieldPath, min, max);
+		return getFactory().matchRange(fieldPath, min, max);
 	}
 	
 	protected <P> Query matchRange(QueryBuilder builder, String fieldPath, P min, P max) {
-		if (max != null && min != null) {
-			return builder.range()
-					.onField(fieldPath)
-					.from(min).to(max)
-					.createQuery();
-		} else if (min != null) {
-			return matchRangeMin(builder, fieldPath, min);
-		} else if (max != null) {
-			return matchRangeMax(builder, fieldPath, max);
-		} else {
-			return null;
-		}
-	}
-	
-	private static class BindingToPathFunction implements Function<AbstractBinding<?, String>, String> {
-		@Override
-		public String apply(AbstractBinding<?, String> input) {
-			if (input == null) {
-				throw new IllegalStateException("Path may not be null.");
-			}
-			return input.getPath();
-		}
+		return getFactory().matchRange(builder, fieldPath, min, max);
 	}
 
 }

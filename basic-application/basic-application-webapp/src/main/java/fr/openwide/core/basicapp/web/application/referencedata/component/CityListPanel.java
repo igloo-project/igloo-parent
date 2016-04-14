@@ -8,18 +8,21 @@ import fr.openwide.core.basicapp.core.business.referencedata.model.City;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.referencedata.form.AbstractGenericListItemPopup;
 import fr.openwide.core.basicapp.web.application.referencedata.form.CityPopup;
-import fr.openwide.core.basicapp.web.application.referencedata.model.CityDataProvider;
+import fr.openwide.core.basicapp.web.application.referencedata.model.SimpleGenericListItemDataProvider;
 import fr.openwide.core.jpa.more.business.generic.model.search.GenericListItemSort;
+import fr.openwide.core.wicket.more.markup.html.sort.SortIconStyle;
+import fr.openwide.core.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
-public class CityListPanel extends AbstractGenericListItemListPanel<City, GenericListItemSort, CityDataProvider> {
+public class CityListPanel
+		extends AbstractGenericListItemListPanel<City, GenericListItemSort, SimpleGenericListItemDataProvider<City, GenericListItemSort>> {
 	
 	public CityListPanel(String id) {
-		this(id, new CityDataProvider());
+		this(id, SimpleGenericListItemDataProvider.forItemType(City.class));
 	}
 	
-	public CityListPanel(String id, CityDataProvider dataProvider) {
+	public CityListPanel(String id, SimpleGenericListItemDataProvider<City, GenericListItemSort> dataProvider) {
 		super(id, dataProvider, dataProvider.getSortModel());
 	}
 
@@ -45,13 +48,15 @@ public class CityListPanel extends AbstractGenericListItemListPanel<City, Generi
 	protected IAddedCoreColumnState<City, GenericListItemSort> addColumns(DataTableBuilder<City, GenericListItemSort> builder) {
 		return builder
 				.addLabelColumn(new ResourceModel("business.listItem.label"), Bindings.genericListItem().label())
+						.withSort(GenericListItemSort.LABEL, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.postalCode"), Bindings.city().postalCode())
+						.withSort(GenericListItemSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 						.withClass("code code-sm");
 	}
 
 	@Override
-	protected Component createSearchForm(String wicketId, CityDataProvider dataProvider, Component table) {
+	protected Component createSearchForm(String wicketId, SimpleGenericListItemDataProvider<City, GenericListItemSort> dataProvider, Component table) {
 		return new CitySearchPanel(wicketId, dataProvider, table);
 	}
 }

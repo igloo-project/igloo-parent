@@ -51,6 +51,10 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	public static final String SHORT_LABEL_SORT_FIELD_NAME = "shortLabelSort";
 	
 	public static final String CODE_FIELD_NAME = "code";
+	
+	public static final String CODE_SORT_FIELD_NAME = "codeSort";
+	
+	public static final String POSITION_FIELD_NAME = "position";
 
 	@Id
 	@DocumentId
@@ -74,7 +78,8 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 	private String shortLabel;
 	
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = POSITION_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@SortableField(forField = POSITION_FIELD_NAME)
 	private Integer position = 0;
 
 	@Field
@@ -132,10 +137,10 @@ public abstract class GenericListItem<E extends GenericListItem<?>> extends Gene
 
 	@Override
 	@Fields({
-		@Field(name = CODE_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-		// A priori, pas besoin d'un champ spécifique pour le tri ici... ?
+		@Field(name = CODE_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = CODE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
-	@SortableField(forField = CODE_FIELD_NAME)
+	@SortableField(forField = CODE_SORT_FIELD_NAME)
 	public String getCode() {
 		return null;
 	}

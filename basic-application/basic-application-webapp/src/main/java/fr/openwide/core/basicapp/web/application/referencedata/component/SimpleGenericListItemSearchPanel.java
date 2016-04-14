@@ -42,12 +42,10 @@ public class SimpleGenericListItemSearchPanel<T extends GenericListItem<? super 
 		);
 		
 		searchForm.add(
-				new TextField<String>("label", dataProvider.getLabelModel())
+				new TextField<>("label", dataProvider.getLabelModel(), String.class)
 						.setLabel(new ResourceModel("business.listItem.label"))
-						.add(
-								new LabelPlaceholderBehavior()
-						),
-				new EnumDropDownSingleChoice<EnabledFilter>("enabledFilter",
+						.add(new LabelPlaceholderBehavior()),
+				new EnumDropDownSingleChoice<>("enabledFilter",
 						dataProvider.getEnabledFilterModel(), EnabledFilter.class)
 						.setLabel(new ResourceModel("business.listItem.enabledState"))
 		);

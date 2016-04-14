@@ -37,10 +37,10 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>> ext
 	protected abstract ISearchQuery<T, S> getSearchQuery(); 
 
 	@Override
-	protected List<T> loadList(long limit, long offset) {
+	protected List<T> loadList(long offset, long limit) {
 		try {
 			errorFlag |= false;
-			return getSearchQuery().list(limit, offset);
+			return getSearchQuery().list(offset, limit);
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de la recherche : {}", e);
 			errorFlag |= true;

@@ -18,6 +18,8 @@ public interface IGenericListItemSearchQuery
 	
 	Q label(String label);
 	
+	Q code(String code);
+	
 	Q enabled(EnabledFilter enabledFilter);
 	
 	@Override

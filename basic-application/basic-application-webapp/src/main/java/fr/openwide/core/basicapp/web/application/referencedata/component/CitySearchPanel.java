@@ -9,7 +9,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 
-import fr.openwide.core.basicapp.web.application.referencedata.model.CityDataProvider;
+import fr.openwide.core.basicapp.core.business.referencedata.model.City;
+import fr.openwide.core.basicapp.web.application.referencedata.model.AbstractGenericListItemDataProvider;
 import fr.openwide.core.jpa.more.business.generic.model.EnabledFilter;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.EnumDropDownSingleChoice;
@@ -19,7 +20,7 @@ public class CitySearchPanel extends Panel {
 	
 	private static final long serialVersionUID = -2395663840251286432L;
 
-	public CitySearchPanel(String id, final CityDataProvider dataProvider,
+	public CitySearchPanel(String id, final AbstractGenericListItemDataProvider<City, ?> dataProvider,
 			final Component table) {
 		super(id);
 		
@@ -46,7 +47,7 @@ public class CitySearchPanel extends Panel {
 						.add(
 								new LabelPlaceholderBehavior()
 						),
-				new TextField<String>("postalCode", dataProvider.getPostalCodeModel(), String.class)
+				new TextField<String>("postalCode", dataProvider.getCodeModel(), String.class)
 						.setLabel(new ResourceModel("business.postalCode"))
 						.add(
 								new LabelPlaceholderBehavior()
