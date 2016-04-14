@@ -22,8 +22,6 @@
 	</modules>
 	
 	<properties>
-		<owsi-core.version>0.11-SNAPSHOT</owsi-core.version>
-		
 		<!-- il est préférable de bien surcharger la version du pool jdbc Tomcat au niveau du projet en fonction de la version de Tomcat -->
 		<tomcat-jdbc.version>${owsi-core.tomcat-jdbc.version}</tomcat-jdbc.version>
 	</properties>
