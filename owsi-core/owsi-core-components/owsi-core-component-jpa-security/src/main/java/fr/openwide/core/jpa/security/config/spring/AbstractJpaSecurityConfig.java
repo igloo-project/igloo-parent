@@ -5,6 +5,7 @@ import static fr.openwide.core.spring.property.SpringSecurityPropertyIds.PASSWOR
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -52,6 +54,8 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 @Import(DefaultJpaSecurityConfig.class)
 public abstract class AbstractJpaSecurityConfig {
 
+	private static final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
+
 	@Autowired
 	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
 	
@@ -73,10 +77,18 @@ public abstract class AbstractJpaSecurityConfig {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		CoreShaPasswordEncoder passwordEncoder = new CoreShaPasswordEncoder(256);
-		passwordEncoder.setSalt(propertyService.get(PASSWORD_SALT));
-		
-		return passwordEncoder;
+		return new BCryptPasswordEncoder() {
+			@Override
+			public boolean matches(CharSequence rawPassword, String encodedPassword) {
+				if (BCRYPT_PATTERN.matcher(encodedPassword).matches()) {
+					return super.matches(rawPassword, encodedPassword);
+				} else {
+					CoreShaPasswordEncoder passwordEncoder = new CoreShaPasswordEncoder(256);
+					passwordEncoder.setSalt(propertyService.get(PASSWORD_SALT));
+					return passwordEncoder.matches(rawPassword, encodedPassword);
+				}
+			}
+		};
 	}
 
 	@Bean
