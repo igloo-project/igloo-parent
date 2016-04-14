@@ -147,7 +147,7 @@
 	<scm>
 		<developerConnection>scm:git:git@github.com:openwide-java/owsi-core-parent.git</developerConnection>
 		<url>https://github.com/openwide-java/owsi-core-parent</url>
-		<tag>HEAD</tag>
+		<tag>owsi-core-0.11-MAINTENANCE</tag>
 	</scm>
 	
 </project>
