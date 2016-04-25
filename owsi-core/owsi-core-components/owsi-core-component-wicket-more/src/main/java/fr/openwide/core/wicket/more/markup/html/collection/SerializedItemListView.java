@@ -9,9 +9,21 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
+import fr.openwide.core.wicket.more.util.model.Models;
+
 /**
  * A {@link ListView} akin to {@link AbstractSerializedItemCollectionView}, which is itself a {@link RefreshingView}.
+ * @deprecated use {@link CollectionView} with {@link Models} instead : 
+ * <pre>
+ * {@code 
+ * new SerializedItem*View<T>("id", model);
+ * ->
+ * new CollectionView<T>("id", model, Models.<T>serializableModelFactory());
+ * }
+ * </pre>
  */
+@Deprecated
 public abstract class SerializedItemListView<T extends Serializable> extends PageableListView<T> {
 
 	private static final long serialVersionUID = -8621785529210100553L;

@@ -7,6 +7,9 @@ import java.util.Date;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
+import fr.openwide.core.wicket.more.util.model.Models;
+
 /**
  * An {@link AbstractGenericCollectionView} that uses item models which serialize and deserialize the item object when the page is serialized/deserialized.
  * <p>This view and its subclasses are especially useful when dealing with lists of non-database objects, such as {@link Date Dates}, {@link Enum Enums}, and
@@ -17,7 +20,16 @@ import org.apache.wicket.model.Model;
  * @see SerializedItemSetView
  * @see SerializedItemSortedSetView
  * @see SerializedItemListView
+ * @deprecated use {@link CollectionView} with {@link Models} instead : 
+ * <pre>
+ * {@code 
+ * new SerializedItem*View<T>("id", model);
+ * ->
+ * new CollectionView<T>("id", model, Models.<T>serializableModelFactory());
+ * }
+ * </pre>
  */
+@Deprecated
 public abstract class AbstractSerializedItemCollectionView<T extends Serializable, C extends Collection<? extends T>> extends AbstractGenericCollectionView<T, C> {
 
 	private static final long serialVersionUID = -6717993103476751931L;

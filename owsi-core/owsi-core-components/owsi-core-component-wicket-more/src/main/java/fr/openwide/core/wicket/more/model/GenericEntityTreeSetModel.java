@@ -10,6 +10,17 @@ import com.google.common.base.Supplier;
 import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
+/**
+ * @deprecated use {@link CollectionCopyModel} with {@link Suppliers2} and {@link GenericEntityModel} instead : 
+ * <pre>
+ * {@code 
+ * GenericEntityTreeSetModel.of(Class<E>[, Comparator<E>]);
+ * ->
+ * CollectionCopyModel.custom(Suppliers2.<E>treeSet[As[Sorted]Set]([Comparator<E>]), GenericEntityModel.<E>factory());
+ * }
+ * </pre>
+ */
+@Deprecated
 public class GenericEntityTreeSetModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends AbstractGenericEntityCollectionModel<K, E, SortedSet<E>> {
 

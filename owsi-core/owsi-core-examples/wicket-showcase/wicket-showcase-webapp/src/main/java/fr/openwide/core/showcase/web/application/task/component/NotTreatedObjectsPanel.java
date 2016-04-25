@@ -11,7 +11,8 @@ import fr.openwide.core.showcase.web.application.task.model.NotTreatedObjectName
 import fr.openwide.core.showcase.web.application.task.model.NotTreatedObjectsIdsModel;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.collection.SerializedItemSetView;
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class NotTreatedObjectsPanel extends GenericPanel<ShowcaseBatchReportBean> {
 	
@@ -24,7 +25,7 @@ public class NotTreatedObjectsPanel extends GenericPanel<ShowcaseBatchReportBean
 		
 		idsModel = new NotTreatedObjectsIdsModel(reportBeanModel);
 		
-		add(new SerializedItemSetView<Long>("notTreatedObjects", idsModel) {
+		add(new CollectionView<Long>("notTreatedObjects", idsModel, Models.<Long>serializableModelFactory()) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override

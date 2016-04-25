@@ -12,7 +12,8 @@ import fr.openwide.core.basicapp.web.application.history.renderer.HistoryDiffere
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
-import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityCollectionView;
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDifference>> {
 
@@ -31,7 +32,7 @@ public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDiffere
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		add(new GenericEntityCollectionView<HistoryDifference>("item", getModel()) {
+		add(new CollectionView<HistoryDifference>("item", getModel(), GenericEntityModel.<HistoryDifference>factory()) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void populateItem(Item<HistoryDifference> item) {

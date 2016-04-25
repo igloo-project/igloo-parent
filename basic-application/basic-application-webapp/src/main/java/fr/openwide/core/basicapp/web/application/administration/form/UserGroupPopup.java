@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.AbstractLink;
-import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -29,11 +29,11 @@ import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.form.CheckGroup;
 import fr.openwide.core.wicket.more.link.model.PageModel;
-import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityListView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -93,10 +93,14 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 										Suppliers2.<Authority>hashSet()
 								)
 										.add(
-												new GenericEntityListView<Authority>("authorities", Model.ofList(authorityUtils.getPublicAuthorities())) {
+												new CollectionView<Authority>(
+														"authorities",
+														Model.ofList(authorityUtils.getPublicAuthorities()),
+														GenericEntityModel.<Authority>factory()
+												) {
 													private static final long serialVersionUID = 1L;
 													@Override
-													protected void populateItem(ListItem<Authority> item) {
+													protected void populateItem(Item<Authority> item) {
 														item.add(
 																new Check<Authority>("authorityCheck", item.getModel())
 																		.setLabel(new ResourceModel("administration.usergroup.authority." + item.getModelObject().getName()))
