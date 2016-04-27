@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -31,6 +32,9 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanPropertyBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
 import fr.openwide.core.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.Detach;
@@ -803,5 +807,28 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public String toString() {
 			return "anyObjectPermission(" + securedObjectModel + "," + COMMA_JOINER.join(permissions) + ")";
 		}
+	}
+	
+	public static <T> Condition model(IModel<? extends T> model) {
+		return predicate(model, Predicates.notNull());
+	}
+	
+	public static <C extends Collection<?>> Condition collectionModel(IModel<C> collectionModel) {
+		return predicate(collectionModel, Predicates2.notEmpty());
+	}
+	
+	public Behavior thenShow() {
+		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.VISIBILITY_ALLOWED, Operator.WHEN_ALL_TRUE)
+			.condition(this);
+	}
+	
+	public Behavior thenShowInternal() {
+		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.VISIBLE, Operator.WHEN_ALL_TRUE)
+			.condition(this);
+	}
+	
+	public Behavior thenEnable() {
+		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.ENABLE, Operator.WHEN_ALL_TRUE)
+			.condition(this);
 	}
 }
