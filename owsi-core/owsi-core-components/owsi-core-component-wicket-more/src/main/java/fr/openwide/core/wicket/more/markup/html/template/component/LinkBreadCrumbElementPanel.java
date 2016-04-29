@@ -5,8 +5,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
 
@@ -34,7 +33,7 @@ public class LinkBreadCrumbElementPanel extends GenericPanel<String> {
 		add(breadCrumbLink);
 		
 		add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).component(breadCrumbLink)
+				Condition.componentVisible(breadCrumbLink).thenShowInternal()
 		);
 	}
 

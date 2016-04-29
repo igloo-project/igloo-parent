@@ -12,8 +12,6 @@ import fr.openwide.core.basicapp.core.business.referencedata.model.City;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.referencedata.validator.CityUnicityFormValidator;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -65,8 +63,7 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 										.setRequired(true),
 								enabled
 										.setLabel(new ResourceModel("business.listItem.enabled"))
-										.add(new EnclosureBehavior(ComponentBooleanProperty.ENABLE)
-												.condition(disableableCondition))
+										.add(disableableCondition.thenEnable())
 						)
 						.add(new CityUnicityFormValidator(getModel(), label, postalCode))
 		);

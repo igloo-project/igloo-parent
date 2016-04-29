@@ -10,9 +10,7 @@ import com.google.common.base.Predicate;
 
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.AbstractComponentBooleanPropertyBehavior;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.IPlaceholderEnclosureBuilder;
-import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 
 /**
  * NE PAS RÉFÉRENCER CETTE CLASSE. Elle devrait être déplacée dans le sous-package 'impl' et être renommée
@@ -40,30 +38,50 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	 */
 	protected abstract T thisAsT();
 	
+	/**
+	 * @deprecated Use {@link Condition}.collectionModelNotEmpty instead.
+	 */
+	@Deprecated
 	@Override
 	public T collectionModel(IModel<? extends Collection<?>> model) {
 		behavior.collectionModel(model);
 		return thisAsT();
 	}
 	
+	/**
+	 * @deprecated Use {@link Condition}.modelNotNull instead.
+	 */
+	@Deprecated
 	@Override
 	public T model(IModel<?> model) {
 		behavior.model(model);
 		return thisAsT();
 	}
 	
+	/**
+	 * @deprecated Use {@link Condition}.predicate instead
+	 */
+	@Deprecated
 	@Override
 	public <T2> T model(Predicate<? super T2> predicate, IModel<? extends T2> model) {
 		behavior.model(predicate, model);
 		return thisAsT();
 	}
 	
+	/**
+	 * @deprecated Use {@link Condition}.modelsAnyNotNull instead
+	 */
+	@Deprecated
 	@Override
 	public T models(IModel<?> firstModel, IModel<?>... otherModels) {
 		behavior.models(firstModel, otherModels);
 		return thisAsT();
 	}
 	
+	/**
+	 * Use {@link Condition}.predicateAnyTrue
+	 */
+	@Deprecated
 	@Override
 	@SafeVarargs
 	public final <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel,
@@ -72,18 +90,30 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 		return thisAsT();
 	}
 	
+	/**
+	 * @deprecated Use {@link Condition}.componentVisible instead
+	 */
+	@Deprecated
 	@Override
 	public T component(Component component) {
 		behavior.component(component);
 		return thisAsT();
 	}
 	
+	/**
+	 * @deprecated Use {@link Condition}.componentsAnyVisible instead
+	 */
+	@Deprecated
 	@Override
 	public T components(Component firstComponent, Component... otherComponents) {
 		behavior.components(firstComponent, otherComponents);
 		return thisAsT();
 	}
 	
+	/**
+	 * @deprecated Use {@link Condition}.componentsAnyVisible instead
+	 */
+	@Deprecated
 	@Override
 	public T components(Collection<? extends Component> components) {
 		behavior.components(components);

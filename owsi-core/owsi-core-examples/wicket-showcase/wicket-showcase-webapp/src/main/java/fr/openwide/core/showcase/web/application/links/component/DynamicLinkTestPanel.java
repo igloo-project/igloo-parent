@@ -27,6 +27,7 @@ import fr.openwide.core.showcase.web.application.links.page.LinksPage3;
 import fr.openwide.core.showcase.web.application.links.page.LinksTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
@@ -42,7 +43,7 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 		Component lastUser = new CoreLabel("lastUser", BindingModel.of(userModel, Bindings.user().fullName())).hideIfEmpty();
 		add(
 				lastUser,
-				new PlaceholderContainer("lastUserPlaceholder").component(lastUser)
+				new PlaceholderContainer("lastUserPlaceholder").condition(Condition.componentVisible(lastUser))
 		);
 		
 		Form<?> form = new Form<Void>("form");

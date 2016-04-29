@@ -44,6 +44,7 @@ import fr.openwide.core.basicapp.web.application.common.validator.UsernamePatter
 import fr.openwide.core.basicapp.web.application.common.validator.UsernameUnicityValidator;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
@@ -134,10 +135,10 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.add(USERNAME_PATTERN_VALIDATOR)
 						.add(new UsernameUnicityValidator(getModel())),
 				new EnclosureContainer("addContainer")
-						.model(equalTo(FormPanelMode.ADD), Model.of(mode))
+						.condition(Condition.predicate(Model.of(mode), equalTo(FormPanelMode.ADD)))
 						.add(
 								new EnclosureContainer("passwordContainer")
-										.model(isTrue(), Model.of(securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordAdminUpdateEnabled()))
+										.condition(Condition.predicate(Model.of(securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordAdminUpdateEnabled()), isTrue()))
 										.add(
 												passwordField
 														.setLabel(new ResourceModel("business.user.password"))

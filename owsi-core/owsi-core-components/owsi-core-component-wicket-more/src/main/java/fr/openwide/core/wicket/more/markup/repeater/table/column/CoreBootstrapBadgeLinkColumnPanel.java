@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
 
 public abstract class CoreBootstrapBadgeLinkColumnPanel<T, S extends ISort<?>, C> extends GenericPanel<T> {
@@ -18,7 +18,7 @@ public abstract class CoreBootstrapBadgeLinkColumnPanel<T, S extends ISort<?>, C
 		MarkupContainer link = getLink("link", rowModel);
 		add(
 				link.add(getBootstrapBadge("badge", rowModel)),
-				getBootstrapBadge("badge", rowModel).add(new PlaceholderBehavior().component(link)),
+				getBootstrapBadge("badge", rowModel).add(Condition.componentVisible(link).thenHide()),
 				getSideLink("sideLink", rowModel)
 		);
 	}

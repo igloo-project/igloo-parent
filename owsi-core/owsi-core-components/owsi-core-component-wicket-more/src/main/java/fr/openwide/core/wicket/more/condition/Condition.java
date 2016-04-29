@@ -809,26 +809,79 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
-	public static <T> Condition model(IModel<? extends T> model) {
+	public static Condition modelNotNull(IModel<?> model) {
 		return predicate(model, Predicates.notNull());
 	}
 	
-	public static <C extends Collection<?>> Condition collectionModel(IModel<C> collectionModel) {
+	public static <C extends Collection<?>> Condition collectionModelNotEmpty(IModel<C> collectionModel) {
 		return predicate(collectionModel, Predicates2.notEmpty());
 	}
 	
+	public static Condition modelsAnyNotNull(IModel<?> firstModel, IModel<?>... otherModels) {
+		Condition condition = Condition.alwaysFalse();
+		
+		for (IModel<?> model : Lists.asList(firstModel, otherModels)) {
+			condition.or(modelNotNull(model));
+		}
+		return condition;
+	}
+
+	@SafeVarargs
+	public final <T> Condition predicateAnyTrue(Predicate<? super T> predicate, IModel<? extends T> firstModel,
+			IModel<? extends T>... otherModels) {
+		Condition condition = Condition.alwaysFalse();
+		
+		for (IModel<? extends T> model : Lists.asList(firstModel, otherModels)) {
+			condition.or(predicate(model, predicate));
+		}
+		
+		return condition;
+	}
+	
+	public static Condition componentVisible(Component component) {
+		return visible(component);
+	}
+	
+	public static Condition componentsAnyVisible(Component firstComponent, Component... otherComponents) {
+		return componentsAnyVisible(Lists.asList(firstComponent, otherComponents));
+	}
+	
+	public static Condition componentsAnyVisible(Collection<? extends Component> targetComponents) {
+		Condition condition = Condition.alwaysFalse();
+		
+		for (Component component : targetComponents) {
+			condition.or(visible(component));
+		}
+		
+		return condition;
+	}
+	
 	public Behavior thenShow() {
-		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.VISIBILITY_ALLOWED, Operator.WHEN_ALL_TRUE)
-			.condition(this);
+		return thenProperty(ComponentBooleanProperty.VISIBILITY_ALLOWED);
+	}
+	
+	public Behavior thenHide() {
+		return thenPropertyNegate(ComponentBooleanProperty.VISIBILITY_ALLOWED);
 	}
 	
 	public Behavior thenShowInternal() {
-		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.VISIBLE, Operator.WHEN_ALL_TRUE)
-			.condition(this);
+		return thenProperty(ComponentBooleanProperty.VISIBLE);
+	}
+	
+	public Behavior thenHideInternal() {
+		return thenPropertyNegate(ComponentBooleanProperty.VISIBLE);
 	}
 	
 	public Behavior thenEnable() {
+		return thenProperty(ComponentBooleanProperty.ENABLE);
+	}
+	
+	public Behavior thenProperty(ComponentBooleanProperty property) {
+		return thenPropertyNegate(ComponentBooleanProperty.ENABLE);
+	}
+	
+	public Behavior thenPropertyNegate(ComponentBooleanProperty property) {
 		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.ENABLE, Operator.WHEN_ALL_TRUE)
-			.condition(this);
+				.condition(this.negate());
 	}
 }

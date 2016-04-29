@@ -17,9 +17,7 @@ import fr.openwide.core.wicket.more.condition.BooleanOperator;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.AbstractComponentBooleanPropertyBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.IPlaceholderEnclosureBuilder;
-import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 
 public abstract class AbstractConfigurableComponentBooleanPropertyBehavior<T extends AbstractConfigurableComponentBooleanPropertyBehavior<T>>
 		extends AbstractComponentBooleanPropertyBehavior

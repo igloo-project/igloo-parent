@@ -10,8 +10,6 @@ import org.apache.wicket.model.ResourceModel;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -56,8 +54,7 @@ public abstract class SimpleGenericListItemPopup<T extends GenericListItem<? sup
 										.setRequired(true),
 								enabled
 										.setLabel(new ResourceModel("business.listItem.enabled"))
-										.add(new EnclosureBehavior(ComponentBooleanProperty.ENABLE)
-												.condition(disableableCondition))
+										.add(disableableCondition.thenEnable())
 						)
 		);
 		

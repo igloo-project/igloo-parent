@@ -7,6 +7,11 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
+import nl.topicus.wqplot.components.JQPlot;
+import nl.topicus.wqplot.options.PlotOptions;
+import nl.topicus.wqplot.options.PlotSeries;
+import nl.topicus.wqplot.options.PlotTick;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -21,16 +26,11 @@ import com.google.common.collect.Maps;
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.jqplot.config.IJQPlotConfigurer;
 import fr.openwide.core.wicket.more.jqplot.config.DefaultJQPlotRendererOptionsFactory;
+import fr.openwide.core.wicket.more.jqplot.config.IJQPlotConfigurer;
 import fr.openwide.core.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import fr.openwide.core.wicket.more.jqplot.plugin.autoresize.JQPlotAutoresizeJavascriptReference;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
-import nl.topicus.wqplot.components.JQPlot;
-import nl.topicus.wqplot.options.PlotOptions;
-import nl.topicus.wqplot.options.PlotSeries;
-import nl.topicus.wqplot.options.PlotTick;
 
 /**
  * A wrapper component around {@link JQPlot} that makes it dynamic:
@@ -107,7 +107,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 		this.jqPlot = new JQPlot("jqPlot", dataAdapter);
 		add(jqPlot);
 		
-		add(new PlaceholderContainer("jqPlotPlaceholder").component(jqPlot));
+		add(new PlaceholderContainer("jqPlotPlaceholder").condition(Condition.componentVisible(jqPlot)));
 		
 		jqPlot.add(new Behavior() {
 			private static final long serialVersionUID = 1L;
@@ -117,18 +117,21 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 			}
 		});
 		
-		jqPlot.add(new EnclosureBehavior().condition(new Condition() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public boolean applies() {
-				/*
-				 *  We must implement this with a custom condition because the nonEmptyDataPredicate
-				 * might change later (and thus a call to EnclosureBehavior.model(nonEmptyDataPredicate, model)
-				 * would be incorrect).
-				 */
-				return nonEmptyDataPredicate.apply(Collections.unmodifiableCollection(dataAdapter.getValues()));
-			}
-		}));
+		jqPlot.add(
+				new Condition() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public boolean applies() {
+						/*
+						 *  We must implement this with a custom condition because the nonEmptyDataPredicate
+						 * might change later (and thus a call to EnclosureBehavior.model(nonEmptyDataPredicate, model)
+						 * would be incorrect).
+						 */
+						return nonEmptyDataPredicate.apply(Collections.unmodifiableCollection(dataAdapter.getValues()));
+					}
+				}
+						.thenShow()
+		);
 	}
 	
 	@Override

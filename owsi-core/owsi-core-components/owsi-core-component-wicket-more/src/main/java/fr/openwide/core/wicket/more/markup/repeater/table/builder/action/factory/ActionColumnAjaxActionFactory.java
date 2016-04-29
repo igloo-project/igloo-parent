@@ -6,8 +6,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 
 public class ActionColumnAjaxActionFactory<T> implements IOneParameterComponentFactory<AjaxLink<T>, IModel<T>> {
@@ -37,8 +35,7 @@ public class ActionColumnAjaxActionFactory<T> implements IOneParameterComponentF
 		};
 		
 		link.add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE)
-						.condition(action.getActionAvailableCondition(parameter))
+				action.getActionAvailableCondition(parameter).thenShow()
 		);
 		
 		return link;

@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.basic;
 
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
 import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyContainer;
 
 public class EnclosureContainer extends AbstractConfigurableComponentBooleanPropertyContainer<EnclosureContainer> {
@@ -11,7 +12,7 @@ public class EnclosureContainer extends AbstractConfigurableComponentBooleanProp
 	}
 
 	public EnclosureContainer(String id, ComponentBooleanProperty property) {
-		super(id, new EnclosureBehavior(property));
+		super(id, new ComponentBooleanPropertyBehavior(property, Operator.WHEN_ANY_TRUE));
 	}
 	
 	@Override

@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
 import fr.openwide.core.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
 import fr.openwide.core.spring.property.service.IPropertyService;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 
 public class DataUpgradePanel extends Panel {
@@ -79,7 +80,7 @@ public class DataUpgradePanel extends Panel {
 				executeLink.add(new AttributeModifier("title", getString("console.maintenance.dataUpgrade.execute")));
 				item.add(executeLink);
 				
-				item.add(new PlaceholderContainer("alreadyExecutedContainer").component(executeLink));
+				item.add(new PlaceholderContainer("alreadyExecutedContainer").condition(Condition.componentVisible(executeLink)));
 			}
 			
 			@Override
@@ -90,6 +91,6 @@ public class DataUpgradePanel extends Panel {
 		};
 		add(dataUpgradeListView);
 		
-		add(new PlaceholderContainer("emptyList").component(dataUpgradeListView));
+		add(new PlaceholderContainer("emptyList").condition(Condition.componentVisible(dataUpgradeListView)));
 	}
 }

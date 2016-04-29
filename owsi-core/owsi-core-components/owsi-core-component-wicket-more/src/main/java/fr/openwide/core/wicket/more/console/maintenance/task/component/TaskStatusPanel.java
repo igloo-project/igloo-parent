@@ -8,6 +8,7 @@ import org.apache.wicket.util.lang.Classes;
 
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 
 public class TaskStatusPanel extends GenericPanel<TaskStatus> {
@@ -56,7 +57,7 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 						}
 					}
 				}
-				.add(new EnclosureBehavior().model(statusModel))
+				.add(Condition.modelNotNull(statusModel).thenShow())
 		);
 		
 		add(

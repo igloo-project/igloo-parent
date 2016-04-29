@@ -13,6 +13,7 @@ import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
 import fr.openwide.core.showcase.core.business.task.model.ShowcaseBatchReportBean;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskResultPanel;
 import fr.openwide.core.wicket.more.console.maintenance.task.component.TaskStatusPanel;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.TaskBatchReportBeanModel;
@@ -65,7 +66,8 @@ public class TaskPortfolioPanel extends AbstractGenericItemListPanel<QueuedTaskH
 		
 		NotTreatedObjectsPanel notTreatedObjectsPanel = new NotTreatedObjectsPanel("notTreatedObjectsPanel",
 				new TaskBatchReportBeanModel<>(ShowcaseBatchReportBean.class, queuedTaskHolderModel));
-		EnclosureContainer notTreatedObjects = new EnclosureContainer("notTreatedObjects").component(notTreatedObjectsPanel);
+		EnclosureContainer notTreatedObjects = new EnclosureContainer("notTreatedObjects")
+				.condition(Condition.componentVisible(notTreatedObjectsPanel));
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
 		popoverOptions.setTitleModel(new ResourceModel("tasks.list.notTreatedObjects"));
 		popoverOptions.setContentComponent(notTreatedObjectsPanel);
@@ -79,7 +81,7 @@ public class TaskPortfolioPanel extends AbstractGenericItemListPanel<QueuedTaskH
 				new CoreLabel("name", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().name())).showPlaceholder(),
 				new TaskStatusPanel("status", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())).hideIfEmpty(), //.add(new EnclosureBehavior().model(statusModel)),
 				result,
-				new DefaultPlaceholderPanel("resultPlaceholder").component(result),
+				new DefaultPlaceholderPanel("resultPlaceholder").condition(Condition.componentVisible(result)),
 				new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()), DatePattern.SHORT_DATETIME).showPlaceholder(),
 				new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()), DatePattern.SHORT_DATETIME).showPlaceholder(),
 				new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()), DatePattern.SHORT_DATETIME).showPlaceholder()

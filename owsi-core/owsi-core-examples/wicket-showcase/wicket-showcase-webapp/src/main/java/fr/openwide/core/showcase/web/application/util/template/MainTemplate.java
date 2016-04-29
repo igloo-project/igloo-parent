@@ -48,6 +48,7 @@ import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
@@ -90,7 +91,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 				navLink.add(
 						new Label("label", navItem.getLabelModel()),
-						new EnclosureContainer("icon").model(navItem.getIconClassesModel())
+						new EnclosureContainer("icon").condition(Condition.modelNotNull(navItem.getIconClassesModel()))
 								.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
 				);
 				
@@ -119,7 +120,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 						navLink.add(
 								new Label("label", navItem.getLabelModel()),
-								new EnclosureContainer("icon").model(navItem.getIconClassesModel())
+								new EnclosureContainer("icon").condition(Condition.modelNotNull(navItem.getIconClassesModel()))
 										.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
 						);
 						

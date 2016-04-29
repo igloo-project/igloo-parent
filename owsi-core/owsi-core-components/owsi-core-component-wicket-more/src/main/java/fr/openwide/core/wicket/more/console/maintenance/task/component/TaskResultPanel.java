@@ -8,6 +8,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Classes;
 
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 
 public class TaskResultPanel extends Panel {
@@ -50,7 +51,7 @@ public class TaskResultPanel extends Panel {
 						}
 					}
 				}
-				.add(new EnclosureBehavior().model(resultModel))
+				.add(Condition.modelNotNull(resultModel).thenShow())
 		);
 		
 		add(

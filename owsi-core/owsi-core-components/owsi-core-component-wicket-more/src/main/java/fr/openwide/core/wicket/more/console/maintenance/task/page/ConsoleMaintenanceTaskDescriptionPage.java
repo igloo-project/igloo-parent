@@ -38,9 +38,7 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
@@ -159,13 +157,16 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 							}
 						})
 						.create("reload", queuedTaskHolderModel)
-						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public boolean applies() {
-								return queuedTaskHolderService.isReloadable(queuedTaskHolderModel.getObject());
-							}
-						}))
+						.add(
+								new Condition() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public boolean applies() {
+										return queuedTaskHolderService.isReloadable(queuedTaskHolderModel.getObject());
+									}
+								}
+										.thenShowInternal()
+						)
 		);
 		
 		statusContainer.add(
@@ -192,13 +193,16 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 							}
 						})
 						.create("cancel", queuedTaskHolderModel)
-						.add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public boolean applies() {
-								return queuedTaskHolderService.isCancellable(queuedTaskHolderModel.getObject());
-							}
-						}))
+						.add(
+								new Condition() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public boolean applies() {
+										return queuedTaskHolderService.isCancellable(queuedTaskHolderModel.getObject());
+									}
+								}
+										.thenShowInternal()
+						)
 		);
 		
 		// Main information detail
@@ -206,7 +210,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		add(
 				new Label("name", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().name())),
 				queue,
-				new PlaceholderContainer("defaultQueue").component(queue),
+				new PlaceholderContainer("defaultQueue").condition(Condition.componentVisible(queue)),
 				new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()),
 						DatePattern.SHORT_DATETIME),
 				new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()),

@@ -30,10 +30,8 @@ import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
@@ -74,7 +72,13 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				passwordUpdatePopup,
 				new BlankLink("passwordUpdateButton")
 						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
-						.add(new EnclosureBehavior().model(isTrue(), Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()))),
+						.add(
+								Condition.predicate(
+										Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()),
+										isTrue()
+								)
+										.thenShow()
+						),
 				
 				AjaxConfirmLink.<U>build()
 						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
@@ -100,7 +104,13 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 							}
 						})
 						.create("passwordReset", userModel)
-						.add(new EnclosureBehavior().model(isTrue(), Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()))),
+						.add(
+								Condition.predicate(
+										Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()),
+										isTrue()
+								)
+										.thenShow()
+						),
 				
 				new Link<U>("enable", userModel) {
 					private static final long serialVersionUID = 1L;
@@ -144,7 +154,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 						)
 						.create("disable", userModel)
 						.add(
-								new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(new Condition() {
+								new Condition() {
 									private static final long serialVersionUID = 1L;
 									@Override
 									public boolean applies() {
@@ -152,7 +162,8 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 										User currentUser = BasicApplicationSession.get().getUser();
 										return !displayedUser.equals(currentUser) && displayedUser.isActive();
 									}
-								})
+								}
+										.thenShowInternal()
 						),
 				
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),

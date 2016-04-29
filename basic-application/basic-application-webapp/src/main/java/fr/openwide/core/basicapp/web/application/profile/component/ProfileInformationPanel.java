@@ -16,9 +16,9 @@ import fr.openwide.core.basicapp.web.application.administration.form.UserPasswor
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -43,13 +43,17 @@ public class ProfileInformationPanel extends GenericPanel<User> {
 				passwordUpdatePopup,
 				new BlankLink("passwordUpdateButton")
 						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
-						.add(new EnclosureBehavior()
-								.model(isTrue(), Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()))
+						.add(
+								Condition.predicate(
+										Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()),
+										isTrue()
+								)
+										.thenShow()
 						),
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 				new EmailLink("email", emailModel),
-				new DefaultPlaceholderPanel("emailPlaceholder").model(emailModel),
+				new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
 				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
 						DatePattern.SHORT_DATETIME).showPlaceholder(),
 				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
