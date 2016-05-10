@@ -16,9 +16,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.lang.Args;
-import org.apache.wicket.util.visit.ClassVisitFilter;
-import org.apache.wicket.util.visit.IVisit;
-import org.apache.wicket.util.visit.IVisitor;
+import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.Visits;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +30,8 @@ import com.google.common.collect.Sets;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
+import fr.openwide.core.wicket.more.util.visit.VisitFilters;
+import fr.openwide.core.wicket.more.util.visit.Visitors;
 
 public final class AjaxListeners {
 	
@@ -58,20 +58,15 @@ public final class AjaxListeners {
 		}
 	}
 	
-	public static void addChildrenIfVisible(final AjaxRequestTarget target, MarkupContainer parent, Class<?> childCriteria) {
+	public static void addChildrenIfVisible(final AjaxRequestTarget target, MarkupContainer parent,
+			Class<?> childCriteria) {
 		Args.notNull(parent, "parent");
 		Args.notNull(childCriteria, "childCriteria");
 		
-		parent.visitChildren(childCriteria, new IVisitor<Component, Void>() {
-			@Override
-			public void component(final Component component, final IVisit<Void> visit) {
-				Component parent = component.getParent();
-				if (component.isVisibleInHierarchy() || (parent == null || parent.isVisibleInHierarchy()) && component.getOutputMarkupPlaceholderTag()) {
-					target.add(component);
-				}
-				visit.dontGoDeeper();
-			}
-		});
+		Visits.visitChildren(
+				parent, Visitors.addToTarget(target),
+				VisitFilters.every(VisitFilters.including(childCriteria), VisitFilters.renderedComponents())
+		);
 	}
 	
 	public static AjaxRequestTarget.AbstractListener refreshPage() {
@@ -207,29 +202,59 @@ public final class AjaxListeners {
 	 * @return A listener that will trigger the refresh of every component in the page of the given class(es).
 	 */
 	@SafeVarargs
-	public static AjaxRequestTarget.AbstractListener refresh(Class<? extends Component> first, Class<? extends Component> ... rest) {
-		final List<Class<? extends Component>> list = Lists.asList(first, rest);
+	public static AjaxRequestTarget.AbstractListener refresh(Class<? extends Component> first,
+			Class<? extends Component> ... rest) {
+		return refresh(VisitFilters.including(first, rest));
+	}
+	
+	public static AjaxRequestTarget.AbstractListener refresh(final IVisitFilter ... additiveFilters) {
 		return new SerializableListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
-				for (Class<? extends Component> clazz : list) {
-					target.addChildren(target.getPage(), clazz);
-				}
+				Visits.visitChildren(
+						target.getPage(),
+						Visitors.addToTarget(target),
+						VisitFilters.every(additiveFilters)
+				);
 			}
 		};
 	}
 	
+	/**
+	 * @deprecated Use {@link #refreshChildren(MarkupContainer, Class, Class...)} instead.
+	 */
 	@SafeVarargs
-	public static AjaxRequestTarget.AbstractListener refresh(final MarkupContainer parent, Class<? extends Component> first, Class<? extends Component> ... rest) {
-		final List<Class<? extends Component>> list = Lists.asList(first, rest);
+	public static AjaxRequestTarget.AbstractListener refresh(final MarkupContainer parent,
+			Class<? extends Component> first, Class<? extends Component> ... rest) {
+		return refreshChildren(parent, first, rest);
+	}
+
+	@SafeVarargs
+	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
+			Class<? extends Component> first, Class<? extends Component> ... rest) {
+		final IVisitFilter filter = VisitFilters.including(first, rest);
 		return new SerializableListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
-				for (Class<? extends Component> clazz : list) {
-					target.addChildren(parent, clazz);
-				}
+				refreshChildren(parent, filter);
+			}
+		};
+	}
+	
+	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
+			IVisitFilter ... additiveFilters) {
+		final IVisitFilter filter = VisitFilters.every(additiveFilters);
+		return new SerializableListener() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
+				Visits.visitChildren(
+						parent,
+						Visitors.addToTarget(target),
+						filter
+				);
 			}
 		};
 	}
@@ -239,42 +264,16 @@ public final class AjaxListeners {
 	 * of the given class(es), <strong>except <code>self</code> and components in {@link IAjaxModalPopupPanel modals}</strong>.
 	 */
 	@SafeVarargs
-	public static <T extends Component> AjaxRequestTarget.AbstractListener refreshOthersNotInAjaxModals(final T self, Class<? extends T> first, Class<? extends T> ... rest) {
-		final List<Class<? extends T>> list = Lists.asList(first, rest);
-		return new SerializableListener() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
-				for (Class<? extends Component> clazz : list) {
-					addChildrenNotInAjaxModalsExcept(target, target.getPage(), clazz, self);
-				}
-			}
-		};
-	}
-
-	private static void addChildrenNotInAjaxModalsExcept(final AjaxRequestTarget target, MarkupContainer parent,
-			Class<?> childCriteria, final Component excepted) {
-		Args.notNull(parent, "parent");
-		Args.notNull(childCriteria, "childCriteria");
-		Visits.visitChildren(
-				parent,
-				new IVisitor<Component, Void>() {
-					@Override
-					public void component(final Component component, final IVisit<Void> visit) {
-						target.add(component);
-						visit.dontGoDeeper();
-					}
-				},
-				new ClassVisitFilter(childCriteria) {
-					@Override
-					public boolean visitChildren(Object object) {
-						return !IAjaxModalPopupPanel.class.isInstance(object);
-					}
-					@Override
-					public boolean visitObject(Object object) {
-						return super.visitObject(object) && !object.equals(excepted);
-					}
-				}
+	public static <T extends Component> AjaxRequestTarget.AbstractListener refreshOthersNotInAjaxModals(final T self,
+			Class<? extends T> first, Class<? extends T> ... rest) {
+		Args.notNull(self, "self");
+		return refresh(
+				VisitFilters.every(
+						VisitFilters.renderedComponents(),
+						VisitFilters.including(first, rest),
+						VisitFilters.downToIncluding(IAjaxModalPopupPanel.class),
+						VisitFilters.excluding(self)
+				)
 		);
 	}
 	
@@ -285,7 +284,5 @@ public final class AjaxListeners {
 	public static ImmutableMap.Builder<Collection<AjaxRequestTarget.AbstractListener>, Condition> chainCondition() {
 		return ImmutableMap.builder();
 	}
-
 	
-
 }
