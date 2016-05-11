@@ -25,7 +25,7 @@ public class BindableCollectionModel<T, C extends Collection<T>> extends Bindabl
 		this(
 				new WorkingCopyCollectionModel<>(
 						referenceModel,
-						CollectionCopyModel.custom(newCollectionSupplier, BindableModel.wrap(itemModelFunction))
+						CollectionCopyModel.custom(newCollectionSupplier, BindableModel.factory(itemModelFunction))
 				)
 		);
 	}

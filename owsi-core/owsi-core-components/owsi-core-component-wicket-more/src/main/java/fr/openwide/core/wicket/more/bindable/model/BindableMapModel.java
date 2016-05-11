@@ -28,7 +28,7 @@ public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M
 						referenceModel,
 						MapCopyModel.custom(
 								newMapSupplier,
-								BindableModel.wrap(keyModelFunction), BindableModel.wrap(valueModelFunction)
+								BindableModel.factory(keyModelFunction), BindableModel.factory(valueModelFunction)
 						)
 				)
 		);

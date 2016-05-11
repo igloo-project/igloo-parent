@@ -27,7 +27,7 @@ public class BindableModel<T> extends ModelHolder<T> implements IBindableModel<T
 		}
 	}
 	
-	/*package*/ static <T> Function<? super T, ? extends IBindableModel<T>> wrap(Function<? super T, ? extends IModel<T>> function) {
+	public static <T> Function<? super T, ? extends IBindableModel<T>> factory(Function<? super T, ? extends IModel<T>> function) {
 		return Functions.compose(BindableModelWrappingFunction.<T>get(), function);
 	}
 	
