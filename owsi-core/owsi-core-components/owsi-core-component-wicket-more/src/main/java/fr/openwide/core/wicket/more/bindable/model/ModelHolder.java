@@ -29,23 +29,32 @@ public class ModelHolder<E> implements IBindable<E> {
 	private IModel<E> initialValueModel;
 	
 	/**
-	 * Clé : propriété pointée par le {@link BindableModel} (property).
-	 * Valeur : {@link BindableModel} correspondant (peut être de type {@link BindableCollectionModel}
-	 * ou {@link BindableMapModel})
+	 * Map of bindable models for properties.
+	 * <ul>
+	 * <li>Key: the property itself, as a {@link FieldPath}.
+	 * <li>Value: the {@link BindableModel} representing the property (which might be a {@link BindableCollectionModel} or
+	 * a {@link BindableMapModel}.
 	 * 
-	 * <p>On utilise une linkedHashMap pour parcourir les propriétés (lors du writeAll() ou du readAll()) dans l'ordre
-	 * de leur déclaration, ce qui permet à l'utilisateur de déclarer ".a" puis ".a.b"<br/>
-	 * TODO YRO : corriger ça, il faudrait tout simplement créer un BindingModel pour a() dès la création du BindingModel
-	 * pour ".a.b". On s'assurerait ainsi que les writeAll et readAll tiennent bien compte de la hiérarchie.
+	 * <p>This attribute is lazily-initialized in {@link #getPropertyModels()}.
 	 * 
-	 * <p>Cette propriété est initialisée de manière paresseuse (lazy), car elle n'est pas toujours nécessaire.
+	 * <p>We use a {@link java.util.LinkedHashMap}, so that when we have to run through the properties
+	 * (in {@link #writeAll()} or {@link #readAll()} for instance), we do it in the same order they were declared.
+	 * This allows users to first declare <pre>.a</pre> and then <pre>.a.b</pre>, so that <pre>.a</pre> is
+	 * read/written <em>before</em> <pre>.a.b</pre>.
+	 * <p>TODO YRO: fix this. We should simply ensure that we create a model for a non-direct property (<pre>.a.b</pre>),
+	 * then we first (implicitely) create the model for the intermediate properties (<pre>.a</pre> in this example),
+	 * and ask <em>this</em> new model to provide the model for <pre>.a.b</pre>.
+	 * That way, {@link #writeAll()} and {@link #readAll()} would always take the hierarchical order of the properties
+	 * into account.
 	 */
-	private Map<FieldPath, BindableModel<?>> propertyModels = Maps.newLinkedHashMap();
+	private Map<FieldPath, BindableModel<?>> propertyModels;
 	
 	/**
-	 * <p>Cette propriété est initialisée de manière paresseuse (lazy), car elle n'est pas toujours nécessaire.
+	 * Map of bindable models impacted when one path is updated.
+	 * 
+	 * <p>This attribute is lazily-initialized in {@link #getPropertyModelsByImpactingPaths()}.
 	 */
-	private Multimap<FieldPath, BindableModel<?>> propertyModelsByImpactingPaths = LinkedHashMultimap.create();
+	private Multimap<FieldPath, BindableModel<?>> propertyModelsByImpactingPaths;
 
 	public ModelHolder(IModel<E> mainModel) {
 		super();
@@ -137,7 +146,9 @@ public class ModelHolder<E> implements IBindable<E> {
 					workingCopyProposal
 			);
 			
-			// Le WorkingCopyModel peut avoir été ajouté APRÈS un appel à bind(). On met à jour le DelegatingModel.
+			/* Add a cache to the property model, which may or may not have already existed before we called
+			 * getOrCreateSimpleModel().
+			 */
 			propertyModel.setMainModel(workingCopyModel);
 			
 			registerImpactingPaths(path, propertyModel);
@@ -147,9 +158,10 @@ public class ModelHolder<E> implements IBindable<E> {
 	}
 
 	/**
-	 * Enregistre les chemins impactants lors d'une modification, afin qu'on puisse effectuer des
-	 * read() intelligemment sur le workingCopyModel lors d'une modification des données à l'initiative
-	 * de LOG@RT. Cf. #readAllUnder()
+	 * Records the impacting paths, i.e. the paths such that when we read the cache on them (respectively, write),
+	 * then the given model should be read (respectively, written), too.
+	 * 
+	 * @see #readAllUnder(BindingRoot)
 	 */
 	private void registerImpactingPaths(FieldPath path, BindableModel<?> model) {
 		FieldPath currentPath = path;
@@ -165,7 +177,7 @@ public class ModelHolder<E> implements IBindable<E> {
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		@SuppressWarnings("unchecked") // On est sûr des generics, par construction
+		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		BindableModel<C> propertyModel = (BindableModel<C>) getPropertyModels().get(path);
 		if (propertyModel == null) {
 			BindableCollectionModel<T, C> collectionPropertyModel = new BindableCollectionModel<>(
@@ -178,15 +190,10 @@ public class ModelHolder<E> implements IBindable<E> {
 			
 			return collectionPropertyModel;
 		} else if (!(propertyModel instanceof IBindableCollectionModel)) {
-			// TODO YRO faire en sorte de simplement remplacer le modèle existant par celui qu'on va créer
-			// Cela nécessitera de :
-			// 1. Modifier le mainModel du BindableModel créé précédemment
-			// 2. Mettre en commun la map propriété => bindableModel du BindableModel créé précédemment et du
-			//    nouveau BindableCollectionModel. Cela pourrait se faire plus simplement si on stockait toutes ces
-			//    informations directement sur le BindingModel "racine".
+			// TODO YRO support the case when we first called bind(), then bindCollectionWithCache()
 			throw newNotCollectionModelException(path);
 		} else {
-			@SuppressWarnings("unchecked") // On fait un instanceof plus haut + on est certains des generics, par construction.
+			@SuppressWarnings("unchecked") // Generic parameters are known, by construction.
 			IBindableCollectionModel<T, C> collectionPropertyModel = (IBindableCollectionModel<T, C>) propertyModel;
 			return collectionPropertyModel;
 		}
@@ -204,14 +211,15 @@ public class ModelHolder<E> implements IBindable<E> {
 	@Override
 	public <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionAlreadyAdded(BindingRoot<? super E, C> binding) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		@SuppressWarnings("unchecked") // On est sûrs des generics, par construction
+		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		BindableModel<C> propertyModel = (BindableModel<C>) getPropertyModels().get(path);
 		if (propertyModel == null) {
-			throw new NoSuchModelException("No collection model was added for path '" + path + "'. Use bindCollectionWithCache in order to add a collection model.");
+			throw new NoSuchModelException("No collection model was added for path '" + path
+					+ "'. Use bindCollectionWithCache in order to add a collection model.");
 		} else if (!(propertyModel instanceof IBindableCollectionModel)) {
 			throw newNotCollectionModelException(path);
 		} else {
-			@SuppressWarnings("unchecked") // On fait un instanceof plus haut + on est certains des generics, par construction.
+			@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 			IBindableCollectionModel<T, C> collectionPropertyModel = (IBindableCollectionModel<T, C>) propertyModel;
 			return collectionPropertyModel;
 		}
@@ -222,7 +230,7 @@ public class ModelHolder<E> implements IBindable<E> {
 			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
 			Function<? super V, ? extends IModel<V>> valueModelFunction) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		@SuppressWarnings("unchecked") // On est sûr des generics, par construction
+		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		BindableModel<M> propertyModel = (BindableModel<M>) getPropertyModels().get(path);
 		if (propertyModel == null) {
 			BindableMapModel<K, V, M> mapPropertyModel = new BindableMapModel<>(
@@ -235,11 +243,10 @@ public class ModelHolder<E> implements IBindable<E> {
 			
 			return mapPropertyModel;
 		} else if (!(propertyModel instanceof IBindableMapModel)) {
-			// TODO YRO faire en sorte de simplement remplacer le modèle existant par celui qu'on va créer
-			// Cf bindCollectionWithCache pour plus d'information.
+			// TODO YRO support the case when we first called bind(), then bindMapWithCache()
 			throw newNotMapModelException(path);
 		} else {
-			@SuppressWarnings("unchecked") // On fait un instanceof plus haut + on est certains des generics, par construction.
+			@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 			IBindableMapModel<K, V, M> mapPropertyModel = (IBindableMapModel<K, V, M>) propertyModel;
 			return mapPropertyModel;
 		}
@@ -257,14 +264,15 @@ public class ModelHolder<E> implements IBindable<E> {
 	@Override
 	public <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapAlreadyAdded(BindingRoot<? super E, M> binding) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		@SuppressWarnings("unchecked") // On est sûrs des generics, par construction
+		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		IBindableModel<M> propertyModel = (IBindableModel<M>) getPropertyModels().get(path);
 		if (propertyModel == null) {
-			throw new NoSuchModelException("No map model was added for path '" + path + "'. Use bindMapWithCache in order to add a map model.");
+			throw new NoSuchModelException("No map model was added for path '" + path
+					+ "'. Use bindMapWithCache in order to add a map model.");
 		} else if (!(propertyModel instanceof IBindableMapModel)) {
 			throw newNotMapModelException(path);
 		} else {
-			@SuppressWarnings("unchecked") // On fait un instanceof plus haut + on est certains des generics, par construction.
+			@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 			IBindableMapModel<K, V, M> mapPropertyModel = (IBindableMapModel<K, V, M>) propertyModel;
 			return mapPropertyModel;
 		}
@@ -296,7 +304,8 @@ public class ModelHolder<E> implements IBindable<E> {
 	public final void writeAll() {
 		write();
 		if (propertyModels != null
-				&& getMainObject() != null // Wicket property resolver : Runtime exception when trying to set a value on a null object.
+				// Avoid an error in Wicket property resolver ("Runtime exception when trying to set a value on a null object.")
+				&& getMainObject() != null
 				) {
 			for (IBindableModel<?> propertyModel : propertyModels.values()) {
 				propertyModel.writeAll();
