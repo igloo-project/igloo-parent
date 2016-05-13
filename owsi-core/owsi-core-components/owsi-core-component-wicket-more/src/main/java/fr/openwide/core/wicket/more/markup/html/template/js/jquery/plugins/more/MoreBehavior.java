@@ -6,10 +6,11 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
+
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class MoreBehavior extends Behavior {
 
@@ -36,10 +37,7 @@ public class MoreBehavior extends Behavior {
 	public void onComponentTag(Component component, ComponentTag tag) {
 		super.onComponentTag(component, tag);
 		
-		IModel<String> model = moreLabelModel;
-		if (model instanceof IComponentAssignedModel) {
-			model = ((IComponentAssignedModel<String>)model).wrapOnAssignment(component);
-		}
+		IModel<String> model = Models.wrap(moreLabelModel, component);
 		
 		String moreLabel = model.getObject();
 		if (moreLabel != null) {

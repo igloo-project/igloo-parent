@@ -1,9 +1,12 @@
 package fr.openwide.core.wicket.more.util.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -11,8 +14,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
+import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 
 public final class Models {
 
@@ -150,5 +156,18 @@ public final class Models {
 			return value;
 		}
 		
+	}
+
+	/**
+	 * @param model The model to be wrapped.
+	 * @param component The component to be used as a wrapping parameter.
+	 * @return The wrapped model, or the original model if it does not implement {@link IComponentAssignedModel}.
+	 */
+	public static <T> IModel<T> wrap(IModel<T> model, Component component) {
+		if (model instanceof IComponentAssignedModel) {
+			return ((IComponentAssignedModel<T>)model).wrapOnAssignment(component);
+		} else {
+			return model;
+		}
 	}
 }
