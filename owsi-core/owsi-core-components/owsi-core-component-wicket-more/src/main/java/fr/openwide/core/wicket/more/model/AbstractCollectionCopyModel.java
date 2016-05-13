@@ -10,16 +10,13 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Ints;
 
-import fr.openwide.core.commons.util.collections.Iterators2;
 import fr.openwide.core.wicket.more.markup.repeater.collection.ICollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 /**
  * An abstract base for implementations of {@link ICollectionModel} whose content is to be "cloned" (i.e. copied to a new
@@ -128,35 +125,23 @@ abstract class AbstractCollectionCopyModel<T, C extends Collection<T>, M extends
 		
 		return collection;
 	}
+	
+	@Override
+	public Iterator<M> iterator() {
+		updateModelsIfExternalChangeIsPossible();
+		return Models.collectionModelIterator(modelList);
+	}
 
 	@Override
 	public final Iterator<M> iterator(long offset, long limit) {
 		updateModelsIfExternalChangeIsPossible();
-		Iterable<M> offsetedIterable = Iterables.skip(
-				modelList, Ints.saturatedCast(offset)
-		);
-		return Iterators.limit(iterator(offsetedIterable), Ints.saturatedCast(limit));
-	}
-	
-	private Iterator<M> iterator(Iterable<M> iterable) {
-		/* RefreshingView gets this iterator and *then* detaches its items, which may indirectly detach
-		 * this model and hence make changes to the modelList.
-		 * That's why we must use a deferred iterator here. 
-		 */
-		Iterator<M> iterator = Iterators2.deferred(iterable);
-		return Iterators.unmodifiableIterator(iterator);
+		return Models.collectionModelIterator(modelList, offset, limit);
 	}
 	
 	@Override
 	public final long size() {
 		updateModelsIfExternalChangeIsPossible();
 		return modelList.size();
-	}
-	
-	@Override
-	public final Iterator<M> iterator() {
-		updateModelsIfExternalChangeIsPossible();
-		return iterator(modelList);
 	}
 	
 	@Override
@@ -191,6 +176,5 @@ abstract class AbstractCollectionCopyModel<T, C extends Collection<T>, M extends
 	protected abstract C createCollection();
 
 	protected abstract M createModel(T item);
-
 
 }

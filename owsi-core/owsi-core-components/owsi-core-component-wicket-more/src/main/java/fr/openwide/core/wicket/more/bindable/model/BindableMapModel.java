@@ -1,7 +1,9 @@
 package fr.openwide.core.wicket.more.bindable.model;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
 import fr.openwide.core.wicket.more.model.MapCopyModel;
 import fr.openwide.core.wicket.more.model.WorkingCopyMapModel;
@@ -54,7 +57,7 @@ public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M
 		super.onWriteAll();
 		for (IBindableModel<K> itemModel : mainModel) {
 			itemModel.writeAll();
-			mainModel.getValueModelForProvidedKeyModel(itemModel).writeAll();
+			mainModel.valueModelForProvidedKeyModel(itemModel).writeAll();
 		}
 	}
 	
@@ -63,8 +66,13 @@ public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M
 		super.onReadAll();
 		for (IBindableModel<K> itemModel : mainModel) {
 			itemModel.readAll();
-			mainModel.getValueModelForProvidedKeyModel(itemModel).readAll();
+			mainModel.valueModelForProvidedKeyModel(itemModel).readAll();
 		}
+	}
+	
+	@Override
+	public Iterator<IBindableModel<K>> iterator() {
+		return mainModel.iterator();
 	}
 
 	@Override
@@ -73,23 +81,28 @@ public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M
 	}
 	
 	@Override
-	public Iterator<IBindableModel<K>> iterator() {
-		return mainModel.iterator();
-	}
-	
-	@Override
 	public long size() {
 		return mainModel.size();
 	}
 	
 	@Override
-	public IModel<V> getValueModel(IModel<? extends K> keyModel) {
-		return mainModel.getValueModel(keyModel);
+	public IItemModelAwareCollectionModel<K, Set<K>, IBindableModel<K>> keysModel() {
+		return mainModel.keysModel();
+	}
+	
+	@Override
+	public IItemModelAwareCollectionModel<V, Collection<V>, IBindableModel<V>> valuesModel() {
+		return mainModel.valuesModel();
+	}
+	
+	@Override
+	public IModel<V> valueModel(IModel<? extends K> keyModel) {
+		return mainModel.valueModel(keyModel);
 	}
 
 	@Override
-	public IBindableModel<V> getValueModelForProvidedKeyModel(IModel<K> keyModel) {
-		return mainModel.getValueModelForProvidedKeyModel(keyModel);
+	public IBindableModel<V> valueModelForProvidedKeyModel(IModel<K> keyModel) {
+		return mainModel.valueModelForProvidedKeyModel(keyModel);
 	}
 	
 	@Override

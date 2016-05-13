@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.util.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -16,9 +17,15 @@ import org.apache.wicket.model.StringResourceModel;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Ints;
 
+import fr.openwide.core.commons.util.collections.Iterators2;
+import fr.openwide.core.wicket.more.markup.repeater.collection.ICollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
+import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 
 public final class Models {
 
@@ -169,5 +176,66 @@ public final class Models {
 		} else {
 			return model;
 		}
+	}
+	
+	public static <T, C extends Collection<T>, M extends IModel<T>> IItemModelAwareCollectionModel<T, C, M> filter(
+			IItemModelAwareCollectionModel<T, C, M> unfiltered, Predicate<M> predicate) {
+		return new FilteringItemModelAwareCollectionModel<>(unfiltered, predicate);
+	}
+
+	/**
+	 * A utility method that provides a sensible default implementation of {@link IItemModelAwareCollectionModel#iterator()}.
+	 * <p>In particular, this implementation defers the call to {@code iterator} on the underlying {@link Iterable}.
+	 * This is necessary because of how RefreshingView works: it first gets the iterator and *then* detaches its items,
+	 * which may indirectly detach the {@link ICollectionModel} and thus trigger changes to the
+	 * underlying {@link Iterable}.
+	 * @param iterable The model iterable.
+	 * @return The model iterator.
+	 */
+	public static <T> Iterator<T> collectionModelIterator(Iterable<T> iterable) {
+		Iterator<T> iterator = Iterators2.deferred(iterable);
+		return Iterators.unmodifiableIterator(iterator);
+	}
+
+	/**
+	 * A utility method that provides a sensible default implementation of {@link ICollectionModel#iterator(long, long)}.
+	 * <p>In particular, this implementation defers the call to {@code iterator} on the underlying {@link Iterable}.
+	 * This is necessary because of how RefreshingView works: it first gets the iterator and *then* detaches its items,
+	 * which may indirectly detach the {@link ICollectionModel} and thus trigger changes to the
+	 * underlying {@link Iterable}.
+	 * @param iterable The model iterable.
+	 * @param offset The offset the returned iterator should start from.
+	 * @param limit The maximum number of items the returned iterator should provide.
+	 * @return The model iterator.
+	 */
+	public static <T> Iterator<T> collectionModelIterator(Iterable<T> iterable, long offset, long limit) {
+		Iterable<T> offsetedIterable = Iterables.skip(
+				iterable, Ints.saturatedCast(offset)
+		);
+		return Iterators.limit(collectionModelIterator(offsetedIterable), Ints.saturatedCast(limit));
+	}
+	
+
+	/**
+	 * A utility method that provides a sensible default implementation for {@link IMapModel#valueModel(IModel)}.
+	 */
+	public static <K, V> IModel<V> mapModelValueModel(final IMapModel<K, V, ?> mapModel, final IModel<? extends K> keyModel) {
+		return new IModel<V>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void detach() {
+				mapModel.detach();
+				keyModel.detach();
+			}
+			@Override
+			public V getObject() {
+				Map<K, V> map = mapModel.getObject();
+				return map == null ? null : map.get(keyModel.getObject());
+			}
+			@Override
+			public void setObject(V object) {
+				mapModel.put(keyModel.getObject(), object);
+			}
+		};
 	}
 }
