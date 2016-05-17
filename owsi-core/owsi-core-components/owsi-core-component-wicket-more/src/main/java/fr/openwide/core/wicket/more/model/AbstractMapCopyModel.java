@@ -50,8 +50,8 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 	@Override
 	public void detach() {
 		if (!isAttached()) {
-			/**
-			 * Make sure the models are given a change to process post-detach changes on their object.
+			/*
+			 * Make sure the models are given a chance to process post-detach changes on their object.
 			 * Useful in particular for GenericEntityModel.detach()
 			 */
 			Detachables.detach(modelMap);
