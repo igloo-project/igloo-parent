@@ -12,6 +12,7 @@ import java.util.concurrent.Callable;
 import javax.annotation.PostConstruct;
 
 import org.bindgen.BindingRoot;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Supplier;
@@ -30,6 +31,9 @@ import de.danielbechler.diff.differ.DifferDispatcher;
 import de.danielbechler.diff.differ.DifferFactory;
 import de.danielbechler.diff.inclusion.Inclusion;
 import de.danielbechler.diff.inclusion.InclusionResolver;
+import de.danielbechler.diff.instantiation.TypeInfo;
+import de.danielbechler.diff.introspection.Introspector;
+import de.danielbechler.diff.introspection.StandardIntrospector;
 import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
@@ -127,6 +131,20 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	protected abstract Iterable<? extends AbstractCoreBinding<? extends T, ?>> getSimpleInitializationFieldsBindings();
 
 	protected ObjectDifferBuilder initializeDiffer(ObjectDifferBuilder builder) {
+		// Ignore Hibernate proxies fields
+		builder = builder.introspection()
+				.setDefaultIntrospector(new Introspector() {
+					private Introspector delegate = new StandardIntrospector();
+					@Override
+					public TypeInfo introspect(Class<?> type) {
+						if (HibernateProxy.class.isAssignableFrom(type)) {
+							type = type.getSuperclass();
+						}
+						return delegate.introspect(type);
+					}
+				})
+				.and();
+
 		for (@SuppressWarnings("rawtypes") Class<? extends GenericEntity> clazz : genericEntityTypes) {
 			builder = builder.inclusion().exclude()
 					.propertyNameOfType(clazz, "new", "displayName", "id", "nameForToString")
