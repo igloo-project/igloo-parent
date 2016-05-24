@@ -13,12 +13,11 @@ import fr.openwide.core.wicket.more.bindable.exception.NoSuchModelException;
 import fr.openwide.core.wicket.more.markup.repeater.collection.ICollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 
+/**
+ * An {@link IModel} that also provides centralized access to its properties (referenced using
+ * {@link BindingRoot Bindings}), which allows it to provide value caching capabilities.
+ */
 public interface IBindableModel<T> extends IModel<T> {
-
-	/**
-	 * @return True if there is a cache on this model, i.e. if {@link #write()} and {@link #read()} have any effect.
-	 */
-	boolean hasCache();
 	
 	/**
 	 * Returns a model bound to <code>binding</code>, with an internal cache, using the <code>workingCopyProposal</code>.
@@ -85,35 +84,51 @@ public interface IBindableModel<T> extends IModel<T> {
 	<K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapAlreadyAdded(BindingRoot<? super T, M> binding);
 
 	/**
-	 * If this model is cached (i.e. if the underlying model is a WorkingCopyModel), writes the cache to the reference model.
+	 * If this model is cached, writes the cache to the reference model.
 	 */
 	void write();
 
 	/**
 	 * If this model is cached (i.e. if the underlying model is a WorkingCopyModel), writes the cache to the reference model.
-	 * <p>Also calls {@link #writeAll()} on all the models returned by {@link #bindWithCache(BindingRoot, IModel)}.
+	 * <p>Also calls {@link #writeAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
+	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
+	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
 	 */
 	void writeAll();
 
 	/**
 	 * If this model is cached (i.e. if the underlying model is a WorkingCopyModel), reads from the reference model to the cache.
-	 * <p>Also calls {@link #readAll()} on all the models returned by {@link #bindWithCache(BindingRoot, IModel)}.
+	 * <p>Also calls {@link #readAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
+	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
+	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
 	 */
 	void readAll();
 	
 	/**
-	 * <p>Calls {@link #readAll()} on all the models returned by {@link #bindWithCache(BindingRoot, IModel)}.
+	 * <p>Calls {@link #readAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
+	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
+	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
 	 */
 	void readAllExceptMainModel();
 	
 	/**
-	 * <p>Calls {@link #readAll()} on all the models returned by {@link #bindWithCache(BindingRoot, IModel)}
-	 * and pointing to the same property or a sub-property.
+	 * <p>Calls {@link #readAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
+	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
+	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
 	 */
 	<T2> void readAllUnder(BindingRoot<? super T, T2> binding);
-	
-	IModel<T> getInitialValueModel();
 
+	/**
+	 * Calls {@link IModel#setObject(Object)} on the given model with the current model object as a parameter, and keeps
+	 * a reference to the given model so that it will be returned by {@link #getInitialValueModel()}.
+	 * <p>This allows to keep the initial value of this model in a separate model so that it may be retrieved later. 
+	 */
 	void setInitialValueModel(IModel<T> initialValueModel);
+	
+	/**
+	 * @return The model previously assigned with {@link #setInitialValueModel(IModel)}, or <code>null</code> if
+	 * there is none.
+	 */
+	IModel<T> getInitialValueModel();
 
 }

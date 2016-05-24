@@ -154,8 +154,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 		return propertyModelsByImpactingPaths;
 	}
 	
-	@Override
-	public boolean hasCache() {
+	protected boolean hasCache() {
 		return mainModel instanceof WorkingCopyModel;
 	}
 	
