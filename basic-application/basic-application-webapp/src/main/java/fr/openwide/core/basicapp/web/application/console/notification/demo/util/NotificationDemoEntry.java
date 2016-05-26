@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -23,9 +24,9 @@ import fr.openwide.core.basicapp.core.business.notification.service.IBasicApplic
 import fr.openwide.core.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
-import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
+import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 
-public abstract class NotificationDemoEntry implements Serializable  {
+public abstract class NotificationDemoEntry extends AbstractReadOnlyModel<INotificationContentDescriptor> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationDemoEntry.class);
 
@@ -35,7 +36,7 @@ public abstract class NotificationDemoEntry implements Serializable  {
 	protected IEntityService entityService;
 	
 	@SpringBean
-	protected IBasicApplicationNotificationContentDescriptorFactory<IWicketNotificationDescriptor> descriptorService;
+	protected IBasicApplicationNotificationContentDescriptorFactory descriptorService;
 	
 	private final String messageKeySuffix;
 
@@ -49,7 +50,12 @@ public abstract class NotificationDemoEntry implements Serializable  {
 		return new ResourceModel("console.notifications." + messageKeySuffix, messageKeySuffix /* Default value */);
 	}
 	
-	public abstract IWicketNotificationDescriptor getDescriptor();
+	@Override
+	public final INotificationContentDescriptor getObject() {
+		return getDescriptor();
+	}
+	
+	protected abstract INotificationContentDescriptor getDescriptor();
 
 	protected final <E extends GenericEntity<Long, ?>> E getFirstInRange(Class<E> clazz, long minId, long maxId) {
 		return getFirstInRange(clazz, Range.closed(minId, maxId));

@@ -19,13 +19,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.javatuples.LabelValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -39,7 +36,7 @@ import org.springframework.util.ObjectUtils;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -50,8 +47,8 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.spring.notification.model.INotificationRecipient;
-import fr.openwide.core.spring.notification.model.InactiveRecipient;
-import fr.openwide.core.spring.notification.model.NotificationRecipient;
+import fr.openwide.core.spring.notification.model.NotificationTarget;
+import fr.openwide.core.spring.notification.model.SimpleRecipient;
 import fr.openwide.core.spring.notification.service.impl.ExplicitelyDefinedNotificationContentDescriptorImpl;
 import fr.openwide.core.spring.notification.service.impl.FirstNotNullNotificationContentDescriptorImpl;
 import fr.openwide.core.spring.notification.service.impl.FreemarkerTemplateNotificationContentDescriptorImpl;
@@ -63,8 +60,6 @@ import freemarker.template.Configuration;
 public class NotificationBuilder implements INotificationBuilderInitState, INotificationBuilderBaseState, INotificationBuilderBuildState,
 		INotificationBuilderBodyState, INotificationBuilderContentState, INotificationBuilderTemplateState, INotificationBuilderSendState {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationBuilder.class);
-	
 	private static final Charset DEFAULT_MAIL_CHARSET = Charsets.UTF_8;
 	
 	private static final String NEW_LINE_TEXT_PLAIN = StringUtils.NEW_LINE_ANTISLASH_N;
@@ -72,13 +67,23 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
 	
-	private static final Function<INotificationRecipient, String> I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION = new Function<INotificationRecipient, String>() {
+	private static final Function<String, NotificationTarget> ADDRESS_TO_TARGET_FUNCTION = new Function<String, NotificationTarget>() {
 		@Override
-		public String apply(INotificationRecipient recipient) {
+		public NotificationTarget apply(String address) {
+			if (address == null) {
+				return null;
+			}
+				return NotificationTarget.of(address);
+		}
+	};
+	
+	private static final Function<INotificationRecipient, NotificationTarget> I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION = new Function<INotificationRecipient, NotificationTarget>() {
+		@Override
+		public NotificationTarget apply(INotificationRecipient recipient) {
 			if (recipient == null) {
 				return null;
 			}
-			return recipient.getEmail();
+			return NotificationTarget.of(recipient.getEmail());
 		}
 	};
 
@@ -92,15 +97,17 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	@Qualifier(value = "freemarkerMailConfiguration")
 	private Configuration templateConfiguration;
 	
+	private ApplicationContext applicationContext;
+	
 	private String from;
 	
-	private final Multimap<Locale, NotificationRecipient> toByLocale = LinkedHashMultimap.create();
+	private final Map<NotificationTarget, INotificationRecipient> toByAddress = Maps.newLinkedHashMap();
 	
-	private final Multimap<Locale, NotificationRecipient> ccByLocale = LinkedHashMultimap.create();
+	private final Map<NotificationTarget, INotificationRecipient> ccByAddress = Maps.newLinkedHashMap();
 	
-	private final Multimap<Locale, NotificationRecipient> bccByLocale = LinkedHashMultimap.create();
+	private final Map<NotificationTarget, INotificationRecipient> bccByAddress = Maps.newLinkedHashMap();
 	
-	private final Set<NotificationRecipient> recipientsToIgnore = Sets.newHashSet();
+	private final Set<NotificationTarget> recipientsToIgnore = Sets.newHashSet();
 	
 	private String subjectPrefix;
 	
@@ -108,8 +115,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private FreemarkerTemplateNotificationContentDescriptorImpl templateContentDescriptor;
 	
-	private ExplicitelyDefinedNotificationContentDescriptorImpl explicitelyDefinedContentDescriptor =
-			new ExplicitelyDefinedNotificationContentDescriptorImpl();
+	private ExplicitelyDefinedNotificationContentDescriptorImpl explicitelyDefinedContentDescriptor;
 
 	/**
 	 * This is not a map, since duplicate filenames are allowed. This is not a multimap either, since mutliple
@@ -144,8 +150,12 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	@Override
 	public INotificationBuilderBaseState init(ApplicationContext applicationContext) {
 		SpringBeanUtils.autowireBean(applicationContext, this);
+		this.applicationContext = applicationContext;
 		
 		this.subjectPrefix = propertyService.get(NOTIFICATION_MAIL_SUBJECT_PREFIX);
+		this.explicitelyDefinedContentDescriptor =
+				new ExplicitelyDefinedNotificationContentDescriptorImpl(getDefaultLocale());
+		SpringBeanUtils.autowireBean(applicationContext, explicitelyDefinedContentDescriptor);
 		
 		return this;
 	}
@@ -176,7 +186,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (to != null) {
 			for (String email : to) {
 				if (StringUtils.hasText(email)) {
-					addRecipient(toByLocale, getDefaultLocale(), email);
+					addRecipient(toByAddress, new SimpleRecipient(getDefaultLocale(), email, null));
 				}
 			}
 		}
@@ -190,7 +200,8 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState to(Collection<? extends INotificationRecipient> to) {
-		return buildRecipients(to, toByLocale);
+		addRecipients(toByAddress, to);
+		return this;
 	}
 	
 	@Override
@@ -209,13 +220,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState ccAddress(Collection<String> cc) {
-		if (cc != null) {
-			for (String email : cc) {
-				if (StringUtils.hasText(email)) {
-					addRecipient(ccByLocale, getDefaultLocale(), email);
-				}
-			}
-		}
+		addAddresses(ccByAddress, cc);
 		return this;
 	}
 	
@@ -226,7 +231,8 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState cc(Collection<? extends INotificationRecipient> cc) {
-		return buildRecipients(cc, ccByLocale);
+		addRecipients(ccByAddress, cc);
+		return this;
 	}
 
 	
@@ -246,13 +252,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState bccAddress(Collection<String> bcc) {
-		if (bcc != null) {
-			for (String email : bcc) {
-				if (StringUtils.hasText(email)) {
-					addRecipient(bccByLocale, getDefaultLocale(), email);
-				}
-			}
-		}
+		addAddresses(bccByAddress, bcc);
 		return this;
 	}
 	
@@ -263,55 +263,41 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState bcc(Collection<? extends INotificationRecipient> bcc) {
-		return buildRecipients(bcc, bccByLocale);
-	}
-	
-	protected INotificationBuilderBuildState buildRecipients(Collection<? extends INotificationRecipient> recipients,
-			Multimap<Locale, NotificationRecipient> byLocale) {
-		if (recipients != null) {
-			for (INotificationRecipient receiver : recipients) {
-				if (receiver != null) {
-					if (receiver.isNotificationEnabled() && StringUtils.hasText(receiver.getEmail())) {
-						addRecipient(byLocale, getLocale(receiver), receiver);
-					} else if (propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) != null) {
-						for (String redirectionEmail : propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) ) {
-							addRecipient(byLocale, getLocale(receiver), new InactiveRecipient(receiver, redirectionEmail));
-						}
-					}
-				}
-			}
-		}
+		addRecipients(bccByAddress, bcc);
 		return this;
 	}
 	
 	@Override
 	public INotificationBuilderBuildState exceptAddress(Collection<String> except) {
-		recipientsToIgnore.addAll(NotificationRecipient.of(except));
+		recipientsToIgnore.addAll(Collections2.transform(except, ADDRESS_TO_TARGET_FUNCTION));
 		return this;
 	}
 	
 	@Override
 	public INotificationBuilderBuildState exceptAddress(String exceptFirst, String... exceptOthers) {
-		recipientsToIgnore.addAll(NotificationRecipient.of(Lists.asList(exceptFirst, exceptOthers)));
-		return this;
+		return exceptAddress(Lists.asList(exceptFirst, exceptOthers));
 	}
 	
 	@Override
 	public INotificationBuilderBuildState except(INotificationRecipient exceptFirst, INotificationRecipient... exceptOthers) {
-		recipientsToIgnore.addAll(NotificationRecipient.of(Lists.transform(Lists.asList(exceptFirst, exceptOthers), I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION)));
-		return this;
+		return except(Lists.asList(exceptFirst, exceptOthers));
 	}
 	
 	@Override
 	public INotificationBuilderBuildState except(Collection<? extends INotificationRecipient> except) {
-		recipientsToIgnore.addAll(NotificationRecipient.of(Lists.transform(Lists.newArrayList(except), I_NOTIFICATION_RECIPIENT_TO_ADDRESS_FUNCTION)));
+		recipientsToIgnore.addAll(Collections2.transform(except, I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION));
 		return this;
 	}
 	
 	@Override
 	public INotificationBuilderTemplateState template(String templateKey) {
 		Assert.hasText(templateKey, "Template key must contain text");
-		this.templateContentDescriptor = new FreemarkerTemplateNotificationContentDescriptorImpl(templateConfiguration, templateKey, Collections.unmodifiableCollection(attachments));
+		this.templateContentDescriptor =
+				new FreemarkerTemplateNotificationContentDescriptorImpl(
+						templateConfiguration, templateKey, Collections.unmodifiableCollection(attachments),
+						getDefaultLocale()
+				);
+		SpringBeanUtils.autowireBean(applicationContext, this.templateContentDescriptor);
 		return this;
 	}
 	
@@ -458,22 +444,15 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		
 		removeDuplicatesAndRecipientsToIgnoreBeforeSendingMessage();
 		
-		Set<Locale> allLocales = ImmutableSet.<Locale> builder()
-				.addAll(toByLocale.keySet())
-				.addAll(ccByLocale.keySet())
-				.addAll(bccByLocale.keySet())
-				.build();
-		for (Locale locale : allLocales) {
-			Collection<NotificationRecipient> to = toByLocale.get(locale);
-			Collection<NotificationRecipient> cc = ccByLocale.get(locale);
-			Collection<NotificationRecipient> bcc = bccByLocale.get(locale);
-			
-			if (to.isEmpty() && cc.isEmpty() && bcc.isEmpty()) { // Multimap.get(unknown key) returns an empty collection
+		for (Entry<INotificationContentDescriptor, Targets> entry : groupTargetsByContext()) {
+			INotificationContentDescriptor contentDescriptor = entry.getKey();
+			Targets targets = entry.getValue();
+			if (targets.to.isEmpty() && targets.cc.isEmpty() && targets.bcc.isEmpty()) { // Multimap.get(unknown key) returns an empty collection
 				continue;
 			}
 			
 			try {
-				MimeMessage message = buildMessage(to, cc, bcc, charset.name(), locale);
+				MimeMessage message = buildMessage(contentDescriptor, targets, charset.name());
 				
 				if (message == null) {
 					continue;
@@ -484,61 +463,152 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 				throw new ServiceException("Error while rendering email notification", e);
 			} catch (MessagingException e) {
 				throw new ServiceException(
-						String.format("Error building the MIME message (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
+						String.format("Error building the MIME message (to:%s, cc:%s, bcc:%s)", targets.to, targets.cc, targets.bcc),
 						e
 				);
 			} catch (MailException e) {
 				throw new ServiceException(
-						String.format("Error sending email notification (to:%s, cc:%s, bcc:%s)", to, cc, bcc),
+						String.format("Error sending email notification (to:%s, cc:%s, bcc:%s)", targets.to, targets.cc, targets.bcc),
 						e
 				);
 			}
 		}
 	}
 	
-	private void addRecipient(Multimap<Locale, NotificationRecipient> recipients, Locale locale, String email) {
-		try {
-			addRecipient(recipients, locale, NotificationRecipient.of(email));
-		} catch (AddressException e) {
-			LOGGER.warn(String.format("Ignoring recipient: %1$s", email), e);
+	private static class Targets {
+		private final Collection<NotificationTarget> to = Lists.newArrayList();
+		private final Collection<NotificationTarget> cc = Lists.newArrayList();
+		private final Collection<NotificationTarget> bcc = Lists.newArrayList();
+		
+		public void to(NotificationTarget target) {
+			to.add(target);
+		}
+		
+		public void cc(NotificationTarget target) {
+			cc.add(target);
+		}
+		
+		public void bcc(NotificationTarget target) {
+			bcc.add(target);
 		}
 	}
 	
-	private void addRecipient(Multimap<Locale, NotificationRecipient> recipients, Locale locale, INotificationRecipient iRecipient) {
-		try {
-			addRecipient(recipients, locale, NotificationRecipient.of(iRecipient, charset));
-		} catch (AddressException e) {
-			LOGGER.warn(String.format("Ignoring recipient: %1$s", iRecipient.getEmail()), e);
+	private static class TargetContextGrouper {
+		
+		private final INotificationContentDescriptor noContextContentDescriptor;
+		
+		private final Map<INotificationContentDescriptor, Targets> data = Maps.newLinkedHashMap();
+		
+		public TargetContextGrouper(INotificationContentDescriptor noContextContentDescriptor) {
+			super();
+			this.noContextContentDescriptor = noContextContentDescriptor;
+		}
+		
+		public void to(NotificationTarget target, INotificationRecipient context) {
+			get(context).to(target);
+		}
+		
+		public void cc(NotificationTarget target, INotificationRecipient context) {
+			get(context).cc(target);
+		}
+		
+		public void bcc(NotificationTarget target, INotificationRecipient context) {
+			get(context).bcc(target);
+		}
+
+		private Targets get(INotificationRecipient context) {
+			INotificationContentDescriptor contentDescriptorWithContext =
+					noContextContentDescriptor.withContext(context);
+			Targets result = data.get(contentDescriptorWithContext);
+			if (result == null) {
+				result = new Targets();
+				data.put(contentDescriptorWithContext, result);
+			}
+			return result;
+		}
+		
+		public Iterable<Map.Entry<INotificationContentDescriptor, Targets>> getAll() {
+			return data.entrySet();
 		}
 	}
 	
-	private void addRecipient(Multimap<Locale, NotificationRecipient> recipients, Locale locale, NotificationRecipient recipient) {
-		if (!recipients.containsValue(recipient)) {
-			recipients.put(locale, recipient);
+	private Iterable<Entry<INotificationContentDescriptor, Targets>> groupTargetsByContext() {
+		INotificationContentDescriptor contentDescriptor = chooseNotificationContentDescriptor();
+		TargetContextGrouper result = new TargetContextGrouper(contentDescriptor);
+		
+		for (Map.Entry<NotificationTarget, INotificationRecipient> entry : toByAddress.entrySet()) {
+			result.to(entry.getKey(), entry.getValue());
+		}
+
+		for (Map.Entry<NotificationTarget, INotificationRecipient> entry : ccByAddress.entrySet()) {
+			result.cc(entry.getKey(), entry.getValue());
+		}
+
+		for (Map.Entry<NotificationTarget, INotificationRecipient> entry : bccByAddress.entrySet()) {
+			result.bcc(entry.getKey(), entry.getValue());
+		}
+		
+		return result.getAll();
+	}
+
+	private void addAddresses(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
+			Iterable<? extends String> addresses) {
+		if (addresses != null) {
+			for (String address : addresses) {
+				addAddress(recipientsByTarget, address);
+			}
+		}
+	}
+
+	private void addRecipients(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
+			Iterable<? extends INotificationRecipient> recipients) {
+		if (recipients != null) {
+			for (INotificationRecipient recipient : recipients) {
+				addRecipient(recipientsByTarget, recipient);
+			}
+		}
+	}
+
+	private void addAddress(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
+			String address) {
+		if (StringUtils.hasText(address)) {
+			addRecipient(recipientsByTarget, new SimpleRecipient(getDefaultLocale(), address, null));
+		}
+	}
+	
+	private void addRecipient(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
+			INotificationRecipient recipient) {
+		if (recipient.isNotificationEnabled() && StringUtils.hasText(recipient.getEmail())) {
+			addRecipientUnsafe(
+					recipientsByTarget,
+					NotificationTarget.of(recipient, charset), recipient
+			);
+		} else if (propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) != null) {
+			for (String redirectionEmail : propertyService.get(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK) ) {
+				addRecipientUnsafe(
+						recipientsByTarget,
+						NotificationTarget.of(redirectionEmail), new SimpleRecipient(recipient, redirectionEmail)
+				);
+			}
+		}
+	}
+	
+	private void addRecipientUnsafe(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
+			NotificationTarget target, INotificationRecipient recipient) {
+		if (!recipientsByTarget.containsKey(target)) {
+			recipientsByTarget.put(target, recipient);
 		}
 	}
 	
 	private void removeDuplicatesAndRecipientsToIgnoreBeforeSendingMessage() {
-		Collection<NotificationRecipient> tos = ImmutableSet.copyOf(toByLocale.values());
-		Collection<NotificationRecipient> ccs = ImmutableSet.copyOf(ccByLocale.values());
+		toByAddress.keySet().removeAll(recipientsToIgnore);
 		
-		doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(toByLocale, recipientsToIgnore);
-		doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(ccByLocale, recipientsToIgnore, tos);
-		doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(bccByLocale, recipientsToIgnore, tos, ccs);
-	}
-	
-	@SafeVarargs
-	private final void doRemoveDuplicatesAndRecipientsToIgnoreBeforeSendingMessageFromList(Multimap<Locale, NotificationRecipient> candidates,
-			Collection<NotificationRecipient>... recipientListsToRemove) {
-		if (ObjectUtils.isEmpty(recipientListsToRemove)) {
-			return;
-		}
+		ccByAddress.keySet().removeAll(recipientsToIgnore);
+		ccByAddress.keySet().removeAll(toByAddress.keySet());
 		
-		for (Locale locale : candidates.keySet()) {
-			for (Collection<NotificationRecipient> recipientsToRemove : recipientListsToRemove) {
-				candidates.get(locale).removeAll(recipientsToRemove);
-			}
-		}
+		bccByAddress.keySet().removeAll(recipientsToIgnore);
+		bccByAddress.keySet().removeAll(toByAddress.keySet());
+		bccByAddress.keySet().removeAll(ccByAddress.keySet());
 	}
 	
 	private INotificationContentDescriptor chooseNotificationContentDescriptor() {
@@ -553,12 +623,11 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		return new FirstNotNullNotificationContentDescriptorImpl(descriptors);
 	}
 	
-	private MimeMessage buildMessage(Collection<NotificationRecipient> tos, Collection<NotificationRecipient> ccs, Collection<NotificationRecipient> bccs,
-			String encoding, Locale locale) throws NotificationContentRenderingException, MessagingException {
-		INotificationContentDescriptor contentDescriptor = chooseNotificationContentDescriptor();
-		String subject = buildSubject(contentDescriptor.renderSubject(locale));
-		String textBody = contentDescriptor.renderTextBody(locale);
-		String htmlBody = contentDescriptor.renderHtmlBody(locale);
+	private MimeMessage buildMessage(INotificationContentDescriptor contentDescriptor, Targets recipients,
+			String encoding) throws NotificationContentRenderingException, MessagingException {
+		String subject = buildSubject(contentDescriptor.renderSubject());
+		String textBody = contentDescriptor.renderTextBody();
+		String htmlBody = contentDescriptor.renderHtmlBody();
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(textBody, htmlBody), encoding);
@@ -566,28 +635,28 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (from == null) {
 			from = getDefaultFrom();
 		}
-		Collection<NotificationRecipient> filteredTos = filterTo(tos);
-		Collection<NotificationRecipient> filteredCcs = filterCcBcc(ccs);
-		Collection<NotificationRecipient> filteredBccs = filterCcBcc(bccs);
+		Collection<NotificationTarget> filteredTos = filterTo(recipients.to);
+		Collection<NotificationTarget> filteredCcs = filterCcBcc(recipients.cc);
+		Collection<NotificationTarget> filteredBccs = filterCcBcc(recipients.bcc);
 		if (filteredTos.isEmpty() && filteredCcs.isEmpty() && filteredBccs.isEmpty()) {
 			return null;
 		}
 		
 		helper.setFrom(from);
-		for (NotificationRecipient to : filteredTos) {
+		for (NotificationTarget to : filteredTos) {
 			helper.addTo(to.getAddress());
 		}
-		for (NotificationRecipient cc : filteredCcs) {
+		for (NotificationTarget cc : filteredCcs) {
 			helper.addCc(cc.getAddress());
 		}
-		for (NotificationRecipient bcc : filteredBccs) {
+		for (NotificationTarget bcc : filteredBccs) {
 			helper.addBcc(bcc.getAddress());
 		}
 		
 		helper.setSubject(subject);
 
-		String textBodyPrefix = getBodyPrefix(tos, ccs, bccs, encoding, locale, MailFormat.TEXT);
-		String htmlBodyPrefix = getBodyPrefix(tos, ccs, bccs, encoding, locale, MailFormat.HTML);
+		String textBodyPrefix = getBodyPrefix(recipients.to, recipients.cc, recipients.bcc, encoding, MailFormat.TEXT);
+		String htmlBodyPrefix = getBodyPrefix(recipients.to, recipients.cc, recipients.bcc, encoding, MailFormat.HTML);
 		
 		if (StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody)) {
 			helper.setText(textBodyPrefix + textBody, htmlBodyPrefix + htmlBody);
@@ -642,34 +711,30 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		return propertyService.get(DEFAULT_LOCALE);
 	}
 	
-	private Locale getLocale(INotificationRecipient recipient) {
-		return propertyService.toAvailableLocale(recipient.getLocale());
-	}
-	
 	protected boolean isMailRecipientsFiltered() {
 		return propertyService.isConfigurationTypeDevelopment() || propertyService.get(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
 	}
 	
-	private Collection<NotificationRecipient> filterTo(Collection<NotificationRecipient> emails) {
+	private Collection<NotificationTarget> filterTo(Collection<NotificationTarget> emails) {
 		if (isMailRecipientsFiltered()) {
 			return getNotificationTestEmails();
 		}
 		return emails;
 	}
 	
-	protected Collection<NotificationRecipient> getNotificationTestEmails() {
-		return NotificationRecipient.of(propertyService.get(NOTIFICATION_TEST_EMAILS));
+	protected Collection<NotificationTarget> getNotificationTestEmails() {
+		return Collections2.transform(propertyService.get(NOTIFICATION_TEST_EMAILS), ADDRESS_TO_TARGET_FUNCTION);
 	}
 	
-	private Collection<NotificationRecipient> filterCcBcc(Collection<NotificationRecipient> emails) {
+	private Collection<NotificationTarget> filterCcBcc(Collection<NotificationTarget> emails) {
 		if (isMailRecipientsFiltered()) {
 			return Sets.newHashSetWithExpectedSize(0);
 		}
 		return emails;
 	}
 	
-	private String getBodyPrefix(Collection<NotificationRecipient> to, Collection<NotificationRecipient> cc, Collection<NotificationRecipient> bcc,
-			String encoding, Locale locale, MailFormat mailFormat) {
+	private String getBodyPrefix(Collection<NotificationTarget> to, Collection<NotificationTarget> cc, Collection<NotificationTarget> bcc,
+			String encoding, MailFormat mailFormat) {
 		if (isMailRecipientsFiltered()) {
 			String newLine = MailFormat.HTML.equals(mailFormat) ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
 			
@@ -681,7 +746,6 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			newBody.append("# Bcc: ").append(renderAddressesForDebug(bcc, mailFormat)).append(newLine);
 			newBody.append("#").append(newLine);
 			newBody.append("# Encoding: ").append(encoding).append(newLine);
-			newBody.append("# Locale: ").append(locale).append(newLine);
 			newBody.append("#").append(newLine);
 			newBody.append("#############").append(newLine).append(newLine).append(newLine);
 			
@@ -690,7 +754,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		return "";
 	}
 	
-	private String renderAddressesForDebug(Collection<NotificationRecipient> addresses, MailFormat mailFormat) {
+	private String renderAddressesForDebug(Collection<NotificationTarget> addresses, MailFormat mailFormat) {
 		String debug;
 		
 		if (addresses != null && !addresses.isEmpty()) {

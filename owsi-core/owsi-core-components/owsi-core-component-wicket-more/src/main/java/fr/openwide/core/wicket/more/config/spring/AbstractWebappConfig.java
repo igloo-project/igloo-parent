@@ -13,8 +13,10 @@ import fr.openwide.core.wicket.more.link.service.DefaultLinkParameterConversionS
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
 import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextProvider;
 import fr.openwide.core.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
 import fr.openwide.core.wicket.more.notification.service.WicketContextExecutorImpl;
+import fr.openwide.core.wicket.more.notification.service.WicketContextProviderImpl;
 import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
 
 @Configuration
@@ -33,13 +35,19 @@ public abstract class AbstractWebappConfig {
 	 * the circular dependency is broken.
 	 */
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public IWicketContextExecutor wicketContextExecutor(WebApplication defaultApplication) {
-		return new WicketContextExecutorImpl(defaultApplication);
+	public IWicketContextProvider wicketContextProvider(WebApplication defaultApplication) {
+		return new WicketContextProviderImpl(defaultApplication);
 	}
 	
 	@Bean
-	public IRendererService rendererService(IWicketContextExecutor wicketContextExecutor) {
-		return new RendererServiceImpl(wicketContextExecutor);
+	@SuppressWarnings("deprecation")
+	public IWicketContextExecutor wicketContextExecutor(IWicketContextProvider contextProvider) {
+		return new WicketContextExecutorImpl(contextProvider);
+	}
+	
+	@Bean
+	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
+		return new RendererServiceImpl(wicketContextProvider);
 	}
 	
 	@Bean

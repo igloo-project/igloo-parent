@@ -1,11 +1,13 @@
 package fr.openwide.core.spring.notification.service.impl;
 
-import java.util.Locale;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
+import fr.openwide.core.spring.notification.model.INotificationRecipient;
 
 public class FirstNotNullNotificationContentDescriptorImpl implements INotificationContentDescriptor {
 	
@@ -18,9 +20,9 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 	}
 
 	@Override
-	public String renderSubject(Locale locale) throws NotificationContentRenderingException {
+	public String renderSubject() throws NotificationContentRenderingException {
 		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			String subject = descriptor.renderSubject(locale);
+			String subject = descriptor.renderSubject();
 			if (subject != null) {
 				return subject;
 			}
@@ -29,9 +31,9 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 	}
 
 	@Override
-	public String renderHtmlBody(Locale locale) throws NotificationContentRenderingException {
+	public String renderHtmlBody() throws NotificationContentRenderingException {
 		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			String body = descriptor.renderHtmlBody(locale);
+			String body = descriptor.renderHtmlBody();
 			if (body != null) {
 				return body;
 			}
@@ -40,14 +42,45 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 	}
 
 	@Override
-	public String renderTextBody(Locale locale) throws NotificationContentRenderingException {
+	public String renderTextBody() throws NotificationContentRenderingException {
 		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			String body = descriptor.renderTextBody(locale);
+			String body = descriptor.renderTextBody();
 			if (body != null) {
 				return body;
 			}
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof FirstNotNullNotificationContentDescriptorImpl) {
+			if (obj == this) {
+				return true;
+			}
+			FirstNotNullNotificationContentDescriptorImpl other = (FirstNotNullNotificationContentDescriptorImpl) obj;
+			return new EqualsBuilder()
+					.append(chainedDescriptors, other.chainedDescriptors)
+					.build();
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(chainedDescriptors)
+				.build();
+	}
 
+	@Override
+	public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+		ImmutableList.Builder<INotificationContentDescriptor> wrapped = ImmutableList.builder();
+		
+		for (INotificationContentDescriptor current : chainedDescriptors) {
+			wrapped.add(current.withContext(recipient));
+		}
+		
+		return new FirstNotNullNotificationContentDescriptorImpl(wrapped.build());
+	}
 }

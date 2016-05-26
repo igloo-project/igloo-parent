@@ -18,8 +18,19 @@ public abstract class AbstractWicketRendererServiceImpl extends AbstractNotifica
 	@Autowired
 	private ISecurityService securityService;
 
-	public AbstractWicketRendererServiceImpl(IWicketContextExecutor wicketExecutor) {
-		super(wicketExecutor);
+	public AbstractWicketRendererServiceImpl(IWicketContextProvider wicketContextProvider) {
+		super(wicketContextProvider);
+	}
+	
+	protected String renderComponent(final Supplier<Component> componentSupplier, final String variation) {
+		return securityService.runAsSystem(
+			new Callable<String>() {
+				@Override
+				public String call() throws Exception {
+					return AbstractWicketRendererServiceImpl.super.renderComponent(componentSupplier, null, variation);
+				}
+			}
+		);
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
+import fr.openwide.core.commons.util.context.IExecutionContext.ITearDownHandle;
 import fr.openwide.core.context.IContextualService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
@@ -19,15 +20,15 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl implements ICont
 	
 	private static final String ANCHOR_ROOT = "#";
 	
-	private IWicketContextExecutor wicketExecutor;
+	private IWicketContextProvider wicketContextProvider;
 	
-	public AbstractNotificationUrlBuilderServiceImpl(IWicketContextExecutor wicketExecutor) {
-		this.wicketExecutor = wicketExecutor;
+	public AbstractNotificationUrlBuilderServiceImpl(IWicketContextProvider wicketContextProvider) {
+		this.wicketContextProvider = wicketContextProvider;
 	}
 	
 	@Override
 	public <T> T runWithContext(Callable<T> callable) throws Exception {
-		return wicketExecutor.runWithContext(callable);
+		return wicketContextProvider.context().run(callable);
 	}
 	
 	protected String buildUrl(Callable<IPageLinkGenerator> pageLinkGeneratorTask) {
@@ -37,21 +38,18 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl implements ICont
 	protected String buildUrl(final Callable<IPageLinkGenerator> pageLinkGeneratorTask, final String anchor) {
 		Args.notNull(pageLinkGeneratorTask, "pageLinkGeneratorTask");
 		
-		try {
-			return wicketExecutor.runWithContext(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					IPageLinkGenerator pageLinkGenerator = pageLinkGeneratorTask.call();
-					
-					StringBuilder url = new StringBuilder();
-					url.append(pageLinkGenerator.fullUrl());
-					if (StringUtils.hasText(anchor)) {
-						url.append(ANCHOR_ROOT).append(anchor);
-					}
-					
-					return url.toString();
-				}
-			});
+		try (ITearDownHandle handle = wicketContextProvider.context().open()) {
+			IPageLinkGenerator pageLinkGenerator = pageLinkGeneratorTask.call();
+			
+			StringBuilder url = new StringBuilder();
+			url.append(pageLinkGenerator.fullUrl());
+			if (StringUtils.hasText(anchor)) {
+				url.append(ANCHOR_ROOT).append(anchor);
+			}
+			
+			return url.toString();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -71,21 +69,14 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl implements ICont
 	protected String buildUrl(final IRequestHandler requestHandler, final String anchor) {
 		Args.notNull(requestHandler, "requestHandler");
 
-		try {
-			return wicketExecutor.runWithContext(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					StringBuilder url = new StringBuilder();
-					url.append(RequestCycle.get().getUrlRenderer().renderFullUrl(Url.parse(RequestCycle.get().urlFor(requestHandler))));
-					if (StringUtils.hasText(anchor)) {
-						url.append(ANCHOR_ROOT).append(anchor);
-					}
-					
-					return url.toString();
-				}
-			});
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		try (ITearDownHandle handle = wicketContextProvider.context().open()) {
+			StringBuilder url = new StringBuilder();
+			url.append(RequestCycle.get().getUrlRenderer().renderFullUrl(Url.parse(RequestCycle.get().urlFor(requestHandler))));
+			if (StringUtils.hasText(anchor)) {
+				url.append(ANCHOR_ROOT).append(anchor);
+			}
+			
+			return url.toString();
 		}
 	}
 

@@ -5,14 +5,14 @@ import java.util.concurrent.Callable;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.core.util.string.ComponentRenderer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Args;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.commons.util.context.IExecutionContext.ITearDownHandle;
 import fr.openwide.core.context.IContextualService;
+import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 
 /**
  * @deprecated You may instead :<ul>
@@ -24,15 +24,22 @@ import fr.openwide.core.context.IContextualService;
 public abstract class AbstractNotificationPanelRendererServiceImpl
 		implements IContextualService {
 	
-	private IWicketContextExecutor wicketExecutor;
+	private IWicketContextProvider wicketContextProvider;
+	
+	@Autowired
+	private IRendererService rendererService;
 
-	public AbstractNotificationPanelRendererServiceImpl(IWicketContextExecutor wicketExecutor) {
-		this.wicketExecutor = wicketExecutor;
+	public AbstractNotificationPanelRendererServiceImpl(IWicketContextProvider wicketContextProvider) {
+		this.wicketContextProvider = wicketContextProvider;
+	}
+	
+	protected IWicketContextProvider getWicketContextProvider() {
+		return wicketContextProvider;
 	}
 	
 	@Override
 	public <T> T runWithContext(Callable<T> callable) throws Exception {
-		return wicketExecutor.runWithContext(callable);
+		return wicketContextProvider.context().run(callable);
 	}
 	
 	/**
@@ -67,23 +74,13 @@ public abstract class AbstractNotificationPanelRendererServiceImpl
 	 */
 	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
 		Args.notNull(componentSupplier, "componentTask");
-		try {
-			return wicketExecutor.runWithContext(
-					new Callable<String>() {
-						@Override
-						public String call() {
-							Component component = componentSupplier.get();
-							Args.notNull(component, "component");
-							
-							String htmlBody = ComponentRenderer.renderComponent(component).toString();
-							
-							return postProcessHtml(component, locale, variation, htmlBody);
-						}
-					},
-					locale
-			);
-		} catch (Exception e) {
-			throw new IllegalStateException("Error rendering a panel with locale '" + locale + "'", e);
+		try (ITearDownHandle handle = wicketContextProvider.context(locale).open()) {
+			Component component = componentSupplier.get();
+			Args.notNull(component, "component");
+			
+			String htmlBody = ComponentRenderer.renderComponent(component).toString();
+			
+			return postProcessHtml(component, locale, variation, htmlBody);
 		}
 	}
 
@@ -91,33 +88,11 @@ public abstract class AbstractNotificationPanelRendererServiceImpl
 		return htmlBodyToProcess;
 	}
 	
+	/**
+	 * @deprecated Use {@link IRendererService#localize(String, Locale, Object, Object...)} instead
+	 */
+	@Deprecated
 	protected String renderString(final String messageKey, Locale locale, final Object parameter, final Object ... positionalParameters) {
-		try {
-			return wicketExecutor.runWithContext(
-					new Callable<String>() {
-						@Override
-						public String call() {
-								IModel<?> modelParameter;
-								if (parameter instanceof IModel) {
-									modelParameter = (IModel<?>) parameter;
-								} else {
-									modelParameter = new AbstractReadOnlyModel<Object>() {
-										private static final long serialVersionUID = 1L;
-										@Override
-										public Object getObject() {
-											return parameter;
-										}
-									};
-								}
-								
-								String result = new StringResourceModel(messageKey).setModel(modelParameter).setParameters(positionalParameters).getObject();
-								return result;
-						}
-					},
-					locale
-			);
-		} catch (Exception e) {
-			throw new IllegalStateException("Error rendering string for key '" + messageKey + "' and locale '" + locale + "'", e);
-		}
+		return rendererService.localize(messageKey, locale, parameter, positionalParameters);
 	}
 }

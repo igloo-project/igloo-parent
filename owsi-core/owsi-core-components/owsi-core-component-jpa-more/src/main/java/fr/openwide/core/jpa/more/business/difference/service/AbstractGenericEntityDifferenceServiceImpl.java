@@ -39,6 +39,7 @@ import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fr.openwide.core.commons.util.binding.AbstractCoreBinding;
+import fr.openwide.core.commons.util.context.IExecutionContext.ITearDownHandle;
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -259,18 +260,12 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 		});
 		
 		final List<HD> historyDifferences = Lists.newLinkedList();
-		try {
-			rendererService.runWithContext(new Callable<Void>() {
-				@Override
-				public Void call() {
-					for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry : factoriesToNodes.asMap().entrySet()) {
-						IHistoryDifferenceFactory<T> factory = entry.getKey();
-						Collection<DiffNode> nodes = entry.getValue();
-						historyDifferences.addAll(factory.create(historyDifferenceSupplier, rootDifference, nodes));
-					}
-					return null;
-				}
-			});
+		try (ITearDownHandle handle = rendererService.context().open()) {
+			for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry : factoriesToNodes.asMap().entrySet()) {
+				IHistoryDifferenceFactory<T> factory = entry.getKey();
+				Collection<DiffNode> nodes = entry.getValue();
+				historyDifferences.addAll(factory.create(historyDifferenceSupplier, rootDifference, nodes));
+			}
 		} catch (Exception e) {
 			throw new IllegalStateException("Unexpected exception while computing HistoryDifferences", e);
 		}
