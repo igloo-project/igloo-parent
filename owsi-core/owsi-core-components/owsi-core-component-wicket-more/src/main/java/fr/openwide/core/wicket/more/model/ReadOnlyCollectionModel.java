@@ -12,15 +12,13 @@ import org.apache.wicket.model.IWrapModel;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.primitives.Ints;
 
-import fr.openwide.core.commons.util.collections.Iterators2;
-import fr.openwide.core.wicket.more.markup.repeater.collection.ICollectionModel;
+import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class ReadOnlyCollectionModel<T, C extends Collection<T>>
-		implements ICollectionModel<T, C>, IComponentAssignedModel<C> {
+		implements IItemModelAwareCollectionModel<T, C, IModel<T>>, IComponentAssignedModel<C> {
 	
 	private static final long serialVersionUID = -6272545665317639093L;
 	
@@ -58,32 +56,32 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 		readModel.detach();
 	}
 	
-	@Override
-	public Iterator<IModel<T>> iterator(long offset, long limit) {
-		Iterable<IModel<T>> offsetedIterable = Iterables.skip(
-				internalIterable(), Ints.saturatedCast(offset)
-		);
-		return Iterators.limit(iterator(offsetedIterable), Ints.saturatedCast(limit));
-	}
-
-	private Iterable<IModel<T>> internalIterable() {
+	private Collection<T> internalCollection() {
 		C collection = readModel.getObject();
 		if (collection == null) {
-			return ImmutableSet.<IModel<T>>of();
+			return ImmutableSet.<T>of();
 		} else {
-			return Iterables.transform(collection, itemModelFactory);
+			return collection;
 		}
 	}
 	
-	private Iterator<IModel<T>> iterator(Iterable<IModel<T>> iterable) {
-		/* RefreshingView gets this iterator and *then* detaches its items, which may indirectly detach
-		 * this model and hence make changes to the modelMap.
-		 * That's why we must use a deferred iterator here. 
-		 */
-		Iterator<IModel<T>> iterator = Iterators2.deferred(iterable);
-		return Iterators.unmodifiableIterator(iterator);
+	@Override
+	public Iterator<IModel<T>> iterator() {
+		return Iterators.transform(
+				Models.collectionModelIterator(internalCollection()),
+				itemModelFactory
+		);
 	}
 
+	@Override
+	public final Iterator<IModel<T>> iterator(long offset, long limit) {
+		// Transform must be the last operation, in order to let collectionModelIterator() optimize stuff
+		return Iterators.transform(
+				Models.collectionModelIterator(internalCollection(), offset, limit),
+				itemModelFactory
+		);
+	}
+	
 	@Override
 	public long size() {
 		C collection = readModel.getObject();
@@ -118,7 +116,7 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 		private static final long serialVersionUID = 7996314523359141428L;
 		
 		protected WrapModel(Component component) {
-			super(wrap(readModel, component), itemModelFactory);
+			super(Models.wrap(readModel, component), itemModelFactory);
 		}
 		
 		@Override
@@ -127,12 +125,4 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 		}
 	}
 	
-	private static <T> IModel<? extends T> wrap(IModel<? extends T> model, Component component) {
-		if (model instanceof IComponentAssignedModel) {
-			return ((IComponentAssignedModel<? extends T>)model).wrapOnAssignment(component);
-		} else {
-			return model;
-		}
-	}
-
 }

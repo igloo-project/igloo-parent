@@ -5,11 +5,11 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.value.IValueMap;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class ConfirmContentBehavior extends Behavior {
 
@@ -104,10 +104,7 @@ public class ConfirmContentBehavior extends Behavior {
 
 	private String getLabel(Component component, IModel<String> labelModel) {
 		if (labelModel != null) {
-			IModel<String> model = labelModel;
-			if (model instanceof IComponentAssignedModel) {
-				model = ((IComponentAssignedModel<String>)model).wrapOnAssignment(component);
-			}
+			IModel<String> model = Models.wrap(labelModel, component);
 			return model.getObject();
 		} else {
 			return null;

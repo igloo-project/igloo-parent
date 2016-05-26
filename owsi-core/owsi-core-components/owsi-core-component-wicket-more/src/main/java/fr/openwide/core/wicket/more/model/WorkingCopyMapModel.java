@@ -1,10 +1,13 @@
 package fr.openwide.core.wicket.more.model;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
 
 public class WorkingCopyMapModel<K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
@@ -31,13 +34,13 @@ public class WorkingCopyMapModel<K, V, M extends Map<K, V>, MK extends IModel<K>
 	}
 	
 	@Override
-	public Iterator<MK> iterator(long offset, long limit) {
-		return mapWorkingCopy.iterator(offset, limit);
+	public Iterator<MK> iterator() {
+		return mapWorkingCopy.iterator();
 	}
 	
 	@Override
-	public Iterator<MK> iterator() {
-		return mapWorkingCopy.iterator();
+	public Iterator<MK> iterator(long offset, long limit) {
+		return mapWorkingCopy.iterator(offset, limit);
 	}
 	
 	@Override
@@ -46,13 +49,23 @@ public class WorkingCopyMapModel<K, V, M extends Map<K, V>, MK extends IModel<K>
 	}
 	
 	@Override
-	public IModel<V> getValueModel(IModel<? extends K> keyModel) {
-		return mapWorkingCopy.getValueModel(keyModel);
+	public IItemModelAwareCollectionModel<K, Set<K>, MK> keysModel() {
+		return mapWorkingCopy.keysModel();
+	}
+	
+	@Override
+	public IItemModelAwareCollectionModel<V, Collection<V>, MV> valuesModel() {
+		return mapWorkingCopy.valuesModel();
+	}
+	
+	@Override
+	public IModel<V> valueModel(IModel<? extends K> keyModel) {
+		return mapWorkingCopy.valueModel(keyModel);
 	}
 
 	@Override
-	public MV getValueModelForProvidedKeyModel(IModel<K> keyModel) {
-		return mapWorkingCopy.getValueModelForProvidedKeyModel(keyModel);
+	public MV valueModelForProvidedKeyModel(IModel<K> keyModel) {
+		return mapWorkingCopy.valueModelForProvidedKeyModel(keyModel);
 	}
 	
 	@Override

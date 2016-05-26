@@ -14,6 +14,9 @@ public interface IItemModelAwareCollectionModel<T, C extends Collection<T>, M ex
 		extends ICollectionModel<T, C>, Iterable<M> {
 	
 	@Override
-	public Iterator<M> iterator(long offset, long limit);
+	Iterator<M> iterator();
+	
+	@Override
+	Iterator<M> iterator(long offset, long limit);
 
 }

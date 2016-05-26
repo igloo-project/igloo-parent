@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
@@ -11,6 +10,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 /**
  * A base class for implementing ILinkParameterMappingEntry.
@@ -77,11 +77,7 @@ public abstract class AbstractLinkParameterMappingEntry implements ILinkParamete
 	}
 
 	protected <T> IModel<T> wrap(IModel<T> model, Component component) {
-		if (model instanceof IComponentAssignedModel) {
-			return ((IComponentAssignedModel<T>) model).wrapOnAssignment(component);
-		} else {
-			return model;
-		}
+		return Models.wrap(model, component);
 	}
 
 }

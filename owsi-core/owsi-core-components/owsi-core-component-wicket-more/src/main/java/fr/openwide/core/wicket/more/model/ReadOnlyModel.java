@@ -16,6 +16,7 @@ import com.google.common.base.Functions;
 
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
 
@@ -83,20 +84,12 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 		private static final long serialVersionUID = 7996314523359141428L;
 		
 		protected WrapModel(Component component) {
-			super(wrap(readModel, component), function);
+			super(Models.wrap(readModel, component), function);
 		}
 		
 		@Override
 		public IModel<?> getWrappedModel() {
 			return ReadOnlyModel.this;
-		}
-	}
-	
-	private static <T> IModel<? extends T> wrap(IModel<? extends T> model, Component component) {
-		if (model instanceof IComponentAssignedModel) {
-			return ((IComponentAssignedModel<? extends T>)model).wrapOnAssignment(component);
-		} else {
-			return model;
 		}
 	}
 
