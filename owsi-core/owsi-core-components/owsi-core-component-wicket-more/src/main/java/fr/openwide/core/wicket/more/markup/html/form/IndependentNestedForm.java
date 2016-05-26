@@ -24,4 +24,10 @@ public class IndependentNestedForm<T> extends Form<T> {
 		return false;
 	}
 
+	@Override
+	public Form<?> getRootForm() {
+		// Makes sure that only this form will be submitted when using AjaxFormSubmitBehavior (for instance).
+		// Wicket's default behavior would be to submit the whole root form, but only take this subform into account (don't know why).
+		return this;
+	}
 }
