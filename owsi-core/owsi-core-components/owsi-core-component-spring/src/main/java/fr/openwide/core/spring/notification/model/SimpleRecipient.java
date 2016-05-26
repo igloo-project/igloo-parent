@@ -2,7 +2,7 @@ package fr.openwide.core.spring.notification.model;
 
 import java.util.Locale;
 
-public class InactiveRecipient implements INotificationRecipient {
+public class SimpleRecipient implements INotificationRecipient {
 	
 	private final Locale locale;
 	
@@ -10,10 +10,15 @@ public class InactiveRecipient implements INotificationRecipient {
 	
 	private final String fullName;
 	
-	public InactiveRecipient(INotificationRecipient recipient, String inactiveUserEmail) {
-		this.locale = recipient.getLocale();
-		this.email = inactiveUserEmail;
-		this.fullName = recipient.getFullName();
+	public SimpleRecipient(Locale locale, String email, String fullName) {
+		super();
+		this.locale = locale;
+		this.email = email;
+		this.fullName = fullName;
+	}
+	
+	public SimpleRecipient(INotificationRecipient recipient, String overriddenEmail) {
+		this(recipient.getLocale(), overriddenEmail, recipient.getFullName());
 	}
 	
 	@Override

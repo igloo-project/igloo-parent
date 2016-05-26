@@ -19,26 +19,26 @@ import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.Noti
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
 import fr.openwide.core.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
+import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
-import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
-import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextProvider;
 
 @Service("BasicApplicationNotificationPanelRendererService")
 public class BasicApplicationNotificationContentDescriptorFactoryImpl
 		extends AbstractNotificationContentDescriptorFactory
-		implements IBasicApplicationNotificationContentDescriptorFactory<IWicketNotificationDescriptor> {
+		implements IBasicApplicationNotificationContentDescriptorFactory {
 	
 	@Autowired
-	public BasicApplicationNotificationContentDescriptorFactoryImpl(IWicketContextExecutor wicketExecutor) {
-		super(wicketExecutor);
+	public BasicApplicationNotificationContentDescriptorFactoryImpl(IWicketContextProvider contextProvider) {
+		super(contextProvider);
 	}
 
 	@Override
-	public IWicketNotificationDescriptor example(final User user, final Date date) {
+	public INotificationContentDescriptor example(final User user, final Date date) {
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.example") {
 			@Override
 			public Object getSubjectParameter() {
@@ -46,7 +46,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
-				return ImmutableList.of(user.getFullName());
+				return ImmutableList.of(user.getFullName(), date);
 			}
 			@Override
 			public Component createComponent(String wicketId) {
@@ -55,7 +55,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 		};
 	}
 
-	protected final <T> IWicketNotificationDescriptor simpleUserActionNotification(
+	protected final <T> INotificationContentDescriptor simpleUserActionNotification(
 			final INotificationTypeDescriptor typeDescriptor, final String actionMessageKeyPart,
 			final IModel<T> objectModel, final ILinkGenerator linkGenerator) {
 		return new AbstractSimpleWicketNotificationDescriptor(typeDescriptor.notificationRessourceKey(actionMessageKeyPart)) {
@@ -72,7 +72,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 	}
 
 	@Override
-	public IWicketNotificationDescriptor userPasswordRecoveryRequest(User user) {
+	public INotificationContentDescriptor userPasswordRecoveryRequest(User user) {
 		IModel<User> model = GenericEntityModel.of(user);
 		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name() + "." + user.getPasswordRecoveryRequest().getInitiator().name();
 		

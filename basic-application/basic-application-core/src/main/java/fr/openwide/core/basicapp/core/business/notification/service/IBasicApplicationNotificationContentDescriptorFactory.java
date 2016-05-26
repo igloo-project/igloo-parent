@@ -5,10 +5,10 @@ import java.util.Date;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 
-public interface IBasicApplicationNotificationContentDescriptorFactory<TDescriptor extends INotificationContentDescriptor> {
+public interface IBasicApplicationNotificationContentDescriptorFactory {
 
-	TDescriptor example(User user, Date date);
+	INotificationContentDescriptor example(User user, Date date);
 
-	TDescriptor userPasswordRecoveryRequest(User user);
+	INotificationContentDescriptor userPasswordRecoveryRequest(User user);
 
 }

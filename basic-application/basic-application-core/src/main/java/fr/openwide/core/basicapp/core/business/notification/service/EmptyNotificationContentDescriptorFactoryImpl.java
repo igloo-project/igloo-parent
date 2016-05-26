@@ -1,43 +1,28 @@
 package fr.openwide.core.basicapp.core.business.notification.service;
 
 import java.util.Date;
-import java.util.Locale;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
+import fr.openwide.core.spring.notification.util.NotificationContentDescriptors;
 
 
 /**
  * Implémentation bouche-trou, uniquement pour combler la dépendance.
  */
-public class EmptyNotificationContentDescriptorFactoryImpl implements IBasicApplicationNotificationContentDescriptorFactory<INotificationContentDescriptor> {
+public class EmptyNotificationContentDescriptorFactoryImpl implements IBasicApplicationNotificationContentDescriptorFactory {
 	
-	private static final INotificationContentDescriptor NULL_DESCRIPTOR = new INotificationContentDescriptor() {
-		@Override
-		public String renderSubject(Locale locale) {
-			return null;
-		}
-		
-		@Override
-		public String renderHtmlBody(Locale locale) throws NotificationContentRenderingException {
-			return null;
-		}
-		
-		@Override
-		public String renderTextBody(Locale locale) throws NotificationContentRenderingException {
-			return null;
-		}
-	};
+	private static final INotificationContentDescriptor DEFAULT_DESCRIPTOR =
+			NotificationContentDescriptors.explicit("defaultSubject", "defaultTextBody", "defaultHtmlBody");
 
 	@Override
 	public INotificationContentDescriptor example(User user, Date date) {
-		return NULL_DESCRIPTOR;
+		return DEFAULT_DESCRIPTOR;
 	}
 
 	@Override
 	public INotificationContentDescriptor userPasswordRecoveryRequest(User user) {
-		return NULL_DESCRIPTOR;
+		return DEFAULT_DESCRIPTOR;
 	}
 
 }

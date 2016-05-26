@@ -11,7 +11,7 @@ import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationUrlBuilderServiceImpl;
-import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextProvider;
 
 /**
  * This service is used to generate the URL used in the text version of the notification emails.
@@ -23,8 +23,8 @@ public class BasicApplicationNotificationUrlBuilderServiceImpl extends AbstractN
 		implements INotificationUrlBuilderService {
 
 	@Autowired
-	public BasicApplicationNotificationUrlBuilderServiceImpl(IWicketContextExecutor wicketExecutor) {
-		super(wicketExecutor);
+	public BasicApplicationNotificationUrlBuilderServiceImpl(IWicketContextProvider contextProvider) {
+		super(contextProvider);
 	}
 
 	@Override

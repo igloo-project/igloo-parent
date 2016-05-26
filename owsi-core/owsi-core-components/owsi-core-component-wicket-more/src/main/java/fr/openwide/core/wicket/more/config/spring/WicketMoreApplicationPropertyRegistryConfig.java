@@ -6,9 +6,14 @@ import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.CONSOL
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
-import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
-import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
-import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME_TEMPLATE;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME_TEMPLATE;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT_TEMPLATE;
+import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH_TEMPLATE;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_PATH;
@@ -16,21 +21,71 @@ import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET
 import java.util.concurrent.TimeUnit;
 
 import org.apache.lucene.search.BooleanQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import com.google.common.base.Converter;
+import com.google.common.base.Supplier;
+import com.google.common.primitives.Ints;
 
 import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Configuration
 public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+	
+	@Autowired
+	@Lazy
+	private IPropertyService propertyService;
 
 	@Override
 	protected void register(IPropertyRegistry registry) {
 		registry.registerInteger(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT, BooleanQuery.getMaxClauseCount());
 		
-		registry.registerString(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
-		registry.registerString(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
-		registry.registerInteger(WICKET_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);
+		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
+		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
+		registry.registerInteger(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);
+		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH, "/");
+		
+		registry.register(
+				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME_TEMPLATE,
+				Converter.<String>identity(),
+				new Supplier<String>() {
+					@Override
+					public String get() {
+						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME);
+					}
+				});
+		registry.register(
+				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME_TEMPLATE,
+				Converter.<String>identity(),
+				new Supplier<String>() {
+					@Override
+					public String get() {
+						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME);
+					}
+				});
+		registry.register(
+				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT_TEMPLATE,
+				Ints.stringConverter(),
+				new Supplier<Integer>() {
+					@Override
+					public Integer get() {
+						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT);
+					}
+				});
+		registry.register(
+				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH_TEMPLATE,
+				Converter.<String>identity(),
+				new Supplier<String>() {
+					@Override
+					public String get() {
+						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH);
+					}
+				});
+		
 		registry.registerString(WICKET_DISK_DATA_STORE_PATH, "");
 		
 		// Default to 0, see http://markmail.org/message/lq4lkfxi5whb5clr#query:+page:1+mid:m5qzptq24kxvmefo+state:results

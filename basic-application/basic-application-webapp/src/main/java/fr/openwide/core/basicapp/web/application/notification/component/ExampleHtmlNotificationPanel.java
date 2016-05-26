@@ -10,6 +10,7 @@ import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
+import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -29,7 +30,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		
 		// Main link
 		add(
-				LinkFactory.get().userDescription(userModel)
+				BasicApplicationApplication.get().getHomePageLinkDescriptor()
 						.link("mainLink")
 						.setAbsolute(true)
 		);

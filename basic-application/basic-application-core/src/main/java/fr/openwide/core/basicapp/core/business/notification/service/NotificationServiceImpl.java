@@ -16,7 +16,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	private INotificationUrlBuilderService notificationUrlBuilderService;
 	
 	@Autowired
-	private IBasicApplicationNotificationContentDescriptorFactory<?> notificationPanelRendererService;
+	private IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;
 	
 	@Override
 	public void sendExampleNotification(User user) throws ServiceException {
@@ -25,7 +25,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		
 		try {
 			builder().to(user)
-					.content(notificationPanelRendererService.example(user, date))
+					.content(contentDescriptorFactory.example(user, date))
 					.template("example.ftl")
 					.variable("userFullName", user.getFullName())
 					.variable("date", date)
@@ -41,7 +41,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		try {
 			builder()
 					.to(user)
-					.content(notificationPanelRendererService.userPasswordRecoveryRequest(user))
+					.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
 					.send();
 		} catch (Exception e) {
 			throw new ServiceException("Error during send mail process", e);

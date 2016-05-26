@@ -3,20 +3,41 @@ package fr.openwide.core.spring.notification.service.impl;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.collect.Maps;
 
+import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
+import fr.openwide.core.spring.notification.model.INotificationRecipient;
+import fr.openwide.core.spring.property.service.IPropertyService;
 
 public class ExplicitelyDefinedNotificationContentDescriptorImpl implements INotificationContentDescriptor {
 	
-	private Map<Locale, String> subjectByLocale = Maps.newHashMap();
+	private final Locale defaultLocale;
 	
-	private Map<Locale, String> htmlBodyByLocale = Maps.newHashMap();
+	private final Map<Locale, String> subjectByLocale = Maps.newHashMap();
 	
-	private Map<Locale, String> textBodyByLocale = Maps.newHashMap();
+	private final Map<Locale, String> htmlBodyByLocale = Maps.newHashMap();
+	
+	private final Map<Locale, String> textBodyByLocale = Maps.newHashMap();
+	
+	@Autowired
+	private IPropertyService propertyService;
+
+	public ExplicitelyDefinedNotificationContentDescriptorImpl(Locale defaultLocale) {
+		super();
+		this.defaultLocale = defaultLocale;
+	}
 
 	@Override
-	public String renderSubject(Locale locale) {
+	public String renderSubject() {
+		return renderSubject(defaultLocale);
+	}
+	
+	private String renderSubject(Locale locale) {
 		String htmlBody = subjectByLocale.get(locale);
 		if (htmlBody == null) {
 			htmlBody = subjectByLocale.get(null);
@@ -32,7 +53,11 @@ public class ExplicitelyDefinedNotificationContentDescriptorImpl implements INot
 	}
 	
 	@Override
-	public String renderHtmlBody(Locale locale) {
+	public String renderHtmlBody() {
+		return renderHtmlBody(defaultLocale);
+	}
+	
+	private String renderHtmlBody(Locale locale) {
 		String body = htmlBodyByLocale.get(locale);
 		if (body == null) {
 			body = htmlBodyByLocale.get(null);
@@ -48,7 +73,11 @@ public class ExplicitelyDefinedNotificationContentDescriptorImpl implements INot
 	}
 	
 	@Override
-	public String renderTextBody(Locale locale) {
+	public String renderTextBody() {
+		return renderTextBody(defaultLocale);
+	}
+	
+	private String renderTextBody(Locale locale) {
 		String body = textBodyByLocale.get(locale);
 		if (body == null) {
 			body = textBodyByLocale.get(null);
@@ -61,6 +90,70 @@ public class ExplicitelyDefinedNotificationContentDescriptorImpl implements INot
 	 */
 	public void setTextBody(Locale locale, String body) {
 		textBodyByLocale.put(locale, body);
+	}
+
+	
+	@Override
+	public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+		Locale recipientLocale = propertyService.toAvailableLocale(recipient.getLocale());
+		return new Wrapper(this, recipientLocale);
+	}
+	
+	private static class Wrapper implements INotificationContentDescriptor {
+		
+		private final ExplicitelyDefinedNotificationContentDescriptorImpl wrapped;
+		
+		private final Locale locale;
+
+		public Wrapper(ExplicitelyDefinedNotificationContentDescriptorImpl wrapped, Locale locale) {
+			super();
+			this.wrapped = wrapped;
+			this.locale = locale;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Wrapper) {
+				if (obj == this) {
+					return true;
+				}
+				Wrapper other = (Wrapper) obj;
+				return new EqualsBuilder()
+						.append(wrapped, other.wrapped)
+						.append(locale, other.locale)
+						.build();
+			}
+			return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return new HashCodeBuilder()
+					.append(wrapped)
+					.append(locale)
+					.build();
+		}
+
+		@Override
+		public String renderSubject() throws NotificationContentRenderingException {
+			return wrapped.renderSubject(locale);
+		}
+
+		@Override
+		public String renderHtmlBody() throws NotificationContentRenderingException {
+			return wrapped.renderHtmlBody(locale);
+		}
+
+		@Override
+		public String renderTextBody() throws NotificationContentRenderingException {
+			return wrapped.renderTextBody(locale);
+		}
+
+		@Override
+		public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+			return wrapped.withContext(recipient);
+		}
+		
 	}
 
 }

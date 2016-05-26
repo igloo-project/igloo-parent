@@ -9,9 +9,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.javatuples.LabelValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
 
@@ -20,6 +23,8 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
+import fr.openwide.core.spring.notification.model.INotificationRecipient;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
@@ -36,18 +41,29 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 	private final Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<Locale, HashMap<String,Object>>();
 	
 	private final Collection<LabelValue<String, File>> attachments;
+	
+	private final Locale defaultLocale;
+	
+	@Autowired
+	private IPropertyService propertyService;
 
 	public FreemarkerTemplateNotificationContentDescriptorImpl(
 			Configuration templateConfiguration, String templateKey,
-			Collection<LabelValue<String, File>> attachments) {
+			Collection<LabelValue<String, File>> attachments,
+			Locale defaultLocale) {
 		super();
 		this.templateConfiguration = checkNotNull(templateConfiguration);
 		this.templateKey = checkNotNull(templateKey);
 		this.attachments = checkNotNull(attachments);
+		this.defaultLocale = defaultLocale;
 	}
 
 	@Override
-	public String renderSubject(Locale locale) throws NotificationContentRenderingException {
+	public String renderSubject() throws NotificationContentRenderingException {
+		return renderSubject(defaultLocale);
+	}
+	
+	private String renderSubject(Locale locale) throws NotificationContentRenderingException {
 		try {
 			return getMailElement(MailElement.SUBJECT, locale);
 		} catch (TemplateException | IOException e) {
@@ -56,17 +72,84 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 	}
 
 	@Override
-	public String renderHtmlBody(Locale locale) {
+	public String renderHtmlBody() {
 		return null;
 	}
 
 	@Override
-	public String renderTextBody(Locale locale) throws NotificationContentRenderingException {
+	public String renderTextBody() throws NotificationContentRenderingException {
+		return renderTextBody(defaultLocale);
+	}
+
+	private String renderTextBody(Locale locale) throws NotificationContentRenderingException {
 		try {
 			return getMailElement(MailElement.BODY_TEXT, locale);
 		} catch (TemplateException | IOException e) {
 			throw new NotificationContentRenderingException("Exception while rendering notification body from freemarker template", e);
 		}
+	}
+	
+	@Override
+	public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+		Locale recipientLocale = propertyService.toAvailableLocale(recipient.getLocale());
+		return new Wrapper(this, recipientLocale);
+	}
+	
+	private static class Wrapper implements INotificationContentDescriptor {
+		
+		private final FreemarkerTemplateNotificationContentDescriptorImpl wrapped;
+		
+		private final Locale locale;
+
+		public Wrapper(FreemarkerTemplateNotificationContentDescriptorImpl wrapped, Locale locale) {
+			super();
+			this.wrapped = wrapped;
+			this.locale = locale;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Wrapper) {
+				if (obj == this) {
+					return true;
+				}
+				Wrapper other = (Wrapper) obj;
+				return new EqualsBuilder()
+						.append(wrapped, other.wrapped)
+						.append(locale, other.locale)
+						.build();
+			}
+			return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return new HashCodeBuilder()
+					.append(wrapped)
+					.append(locale)
+					.build();
+		}
+
+		@Override
+		public String renderSubject() throws NotificationContentRenderingException {
+			return wrapped.renderSubject(locale);
+		}
+
+		@Override
+		public String renderHtmlBody() throws NotificationContentRenderingException {
+			return wrapped.renderHtmlBody();
+		}
+
+		@Override
+		public String renderTextBody() throws NotificationContentRenderingException {
+			return wrapped.renderTextBody(locale);
+		}
+
+		@Override
+		public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+			return wrapped.withContext(recipient);
+		}
+		
 	}
 
 	/**

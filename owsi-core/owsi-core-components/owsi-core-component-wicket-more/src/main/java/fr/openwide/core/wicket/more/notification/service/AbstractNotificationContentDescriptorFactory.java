@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.notification.service;
 import java.util.Locale;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.util.lang.Args;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,8 +17,14 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import fr.openwide.core.commons.util.context.IExecutionContext;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
+import fr.openwide.core.spring.notification.model.AbstractExecutionContextNotificationContentDescriptorWrapper;
+import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
+import fr.openwide.core.spring.notification.model.INotificationRecipient;
+import fr.openwide.core.spring.property.SpringPropertyIds;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
@@ -36,17 +43,38 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	@Autowired
 	private IHtmlNotificationCssService cssService;
 	
-	public AbstractNotificationContentDescriptorFactory(IWicketContextExecutor wicketContextExecutor) {
-		super(wicketContextExecutor);
+	@Autowired
+	private IPropertyService propertyService;
+	
+	public AbstractNotificationContentDescriptorFactory(IWicketContextProvider wicketContextProvider) {
+		super(wicketContextProvider);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	protected IWicketContextProvider getWicketContextProvider() {
+		return super.getWicketContextProvider();
+	}
+	
+	private Locale getDefaultLocale() {
+		if (Session.exists()) {
+			return Session.get().getLocale();
+		} else {
+			return propertyService.get(SpringPropertyIds.DEFAULT_LOCALE);
+		}
 	}
 	
 	protected abstract class AbstractWicketNotificationDescriptor implements IWicketNotificationDescriptor {
+
+		@Override
+		public final String renderSubject() {
+			return renderSubject(getDefaultLocale());
+		}
+		
+		protected abstract String renderSubject(Locale locale);
 		
 		@Override
-		public abstract String renderSubject(Locale locale);
-		
-		@Override
-		public String renderTextBody(Locale locale) throws NotificationContentRenderingException {
+		public final String renderTextBody() throws NotificationContentRenderingException {
 			return null;
 		}
 		
@@ -55,7 +83,11 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		}
 
 		@Override
-		public final String renderHtmlBody(Locale locale) {
+		public final String renderHtmlBody() {
+			return renderHtmlBody(getDefaultLocale());
+		}
+		
+		private String renderHtmlBody(Locale locale) {
 			return AbstractNotificationContentDescriptorFactory.this.renderComponent(
 					new Supplier<Component>() {
 						@Override
@@ -70,6 +102,22 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		
 		@Override
 		public abstract Component createComponent(String wicketId);
+		
+		@Override
+		public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+			return new Wrapper(getExecutionContext(recipient));
+		}
+		
+		private class Wrapper extends AbstractExecutionContextNotificationContentDescriptorWrapper
+				implements INotificationContentDescriptor {
+			public Wrapper(IExecutionContext excecutionContext) {
+				super(AbstractWicketNotificationDescriptor.this, excecutionContext);
+			}
+			@Override
+			public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+				return AbstractWicketNotificationDescriptor.this.withContext(recipient);
+			}
+		}
 	}
 	
 	protected abstract class AbstractSimpleWicketNotificationDescriptor extends AbstractWicketNotificationDescriptor {
@@ -137,6 +185,10 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		return doc.html();
 	}
 	
+	public IExecutionContext getExecutionContext(INotificationRecipient recipient) {
+		return getWicketContextProvider().context(recipient.getLocale());
+	}
+
 	private class AddStyleAndTargetBlankAttributesNodeVisitor implements NodeVisitor {
 		private final IHtmlNotificationCssRegistry cssRegistry;
 		

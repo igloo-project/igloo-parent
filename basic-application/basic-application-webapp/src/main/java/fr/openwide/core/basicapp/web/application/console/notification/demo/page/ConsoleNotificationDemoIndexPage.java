@@ -3,11 +3,10 @@ package fr.openwide.core.basicapp.web.application.console.notification.demo.page
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -22,10 +21,13 @@ import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.template.ConsoleNotificationDemoTemplate;
 import fr.openwide.core.basicapp.web.application.console.notification.demo.util.NotificationDemoEntry;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.notification.exception.NotificationContentRenderingException;
+import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
+import fr.openwide.core.wicket.more.markup.repeater.collection.SpecificModelCollectionView;
+import fr.openwide.core.wicket.more.util.model.SequenceProviders;
 
 public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTemplate {
 
@@ -63,18 +65,25 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 			}
 		});
 		
-		add(new ListView<NotificationDemoEntry>("notifications", createDemoEntries()) {
+		add(new SpecificModelCollectionView<INotificationContentDescriptor, NotificationDemoEntry>(
+				"notifications", SequenceProviders.fromItemModels(createDemoEntries())) {
 			private static final long serialVersionUID = 1L;
 			@Override
-			protected void populateItem(final ListItem<NotificationDemoEntry> item) {
+			protected void populateItem(SpecificModelItem item) {
+				final NotificationDemoEntry entry = item.getSpecificModel();
 				Link<Void> link = new Link<Void>("link") {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public void onClick() {
-						setResponsePage(new NotificationDemoPage(item.getModelObject().getDescriptor()));
+						try {
+							setResponsePage(new NotificationDemoPage(entry));
+						} catch (NotificationContentRenderingException e) {
+							LOGGER.error("Error while instanciating notification demo page", e);
+							Session.get().error(getString("common.error.unexpected"));
+						}
 					}
 				};
-				link.add(new Label("label", item.getModelObject().getLabelModel()));
+				link.add(new Label("label", entry.getLabelModel()));
 				item.add(link);
 			}
 		});
@@ -93,7 +102,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 				new NotificationDemoEntry("example") {
 					private static final long serialVersionUID = 1L;
 					@Override
-					public IWicketNotificationDescriptor getDescriptor() {
+					public INotificationContentDescriptor getDescriptor() {
 						return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), new Date());
 					}
 				}

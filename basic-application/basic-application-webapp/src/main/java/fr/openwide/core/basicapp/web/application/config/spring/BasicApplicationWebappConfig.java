@@ -20,7 +20,7 @@ import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
-import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextProvider;
 import fr.openwide.core.wicket.more.rendering.BooleanRenderer;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
@@ -48,8 +48,8 @@ public class BasicApplicationWebappConfig extends AbstractWebappConfig {
 	}
 	
 	@Override
-	public IRendererService rendererService(IWicketContextExecutor wicketContextExecutor) {
-		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextExecutor);
+	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
+		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextProvider);
 
 		rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
 		rendererService.registerRenderer(boolean.class, BooleanRenderer.get());

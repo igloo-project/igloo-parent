@@ -8,11 +8,18 @@
 		<wicket:head />
 	</head>
 	<body>
+		<form wicket:id="form">
+			<wicket:message key="console.notifications.demo.recipient" />
+			<input type="hidden" wicket:id="recipient" />
+		</form>
 		<div>
 			<wicket:message key="console.notifications.demo.subject" />
-			<wicket:container wicket:id="subject" />
+			<pre><wicket:container wicket:id="subject" /></pre>
 		</div>
-		<div wicket:id="htmlPanel">
+		<div>
+			<wicket:message key="console.notifications.demo.body" />
+			<div wicket:id="htmlPanel">
+		</div>
 		</div>
 	</body>
 </html>
