@@ -1,8 +1,10 @@
 package fr.openwide.core.wicket.more.model;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -10,15 +12,13 @@ import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Ints;
 
-import fr.openwide.core.commons.util.collections.Iterators2;
+import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 /**
  * An abstract base for implementations of {@link IMapModel} whose content is to be "cloned" (i.e. copied to a new
@@ -50,8 +50,8 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 	@Override
 	public void detach() {
 		if (!isAttached()) {
-			/**
-			 * Make sure the models are given a change to process post-detach changes on their object.
+			/*
+			 * Make sure the models are given a chance to process post-detach changes on their object.
 			 * Useful in particular for GenericEntityModel.detach()
 			 */
 			Detachables.detach(modelMap);
@@ -136,21 +136,63 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 	}
 	
 	@Override
-	public final Iterator<MK> iterator(long offset, long limit) {
-		updateModelsIfExternalChangeIsPossible();
-		Iterable<MK> offsetedIterable = Iterables.skip(
-				modelMap.keySet(), Ints.saturatedCast(offset)
-		);
-		return Iterators.limit(iterator(offsetedIterable), Ints.saturatedCast(limit));
+	public Iterator<MK> iterator() {
+		return keysModel().iterator();
 	}
 	
-	private Iterator<MK> iterator(Iterable<MK> iterable) {
-		/* RefreshingView gets this iterator and *then* detaches its items, which may indirectly detach
-		 * this model and hence make changes to the modelMap.
-		 * That's why we must use a deferred iterator here. 
-		 */
-		Iterator<MK> iterator = Iterators2.deferred(iterable);
-		return Iterators.unmodifiableIterator(iterator);
+	@Override
+	public Iterator<MK> iterator(long offset, long limit) {
+		return keysModel().iterator(offset, limit);
+	}
+
+	@Override
+	public IItemModelAwareCollectionModel<K, Set<K>, MK> keysModel() {
+		return new KeysModel();
+	}
+	
+	protected class KeysModel extends AbstractMapCollectionModel<K, Set<K>, MK> {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void detach() {
+			AbstractMapCopyModel.this.detach();
+		}
+		@Override
+		public Set<K> getObject() {
+			Map<K, ?> map = AbstractMapCopyModel.this.getObject();
+			return map == null ? null : map.keySet();
+		}
+
+		@Override
+		protected Iterable<MK> internalIterable() {
+			updateModelsIfExternalChangeIsPossible();
+			return modelMap.keySet();
+		}
+	}
+	
+	@Override
+	public IItemModelAwareCollectionModel<V, Collection<V>, MV> valuesModel() {
+		return new ValuesModel();
+	}
+	
+	protected class ValuesModel extends AbstractMapCollectionModel<V, Collection<V>, MV> {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void detach() {
+			AbstractMapCopyModel.this.detach();
+		}
+		@Override
+		public Collection<V> getObject() {
+			Map<?, V> map = AbstractMapCopyModel.this.getObject();
+			return map == null ? null : map.values();
+		}
+
+		@Override
+		protected Iterable<MV> internalIterable() {
+			updateModelsIfExternalChangeIsPossible();
+			return modelMap.values();
+		}
 	}
 	
 	@Override
@@ -158,35 +200,14 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 		updateModelsIfExternalChangeIsPossible();
 		return modelMap.size();
 	}
-	
+
 	@Override
-	public final Iterator<MK> iterator() {
-		updateModelsIfExternalChangeIsPossible();
-		return iterator(modelMap.keySet());
+	public final IModel<V> valueModel(final IModel<? extends K> keyModel) {
+		return Models.mapModelValueModel(this, keyModel);
 	}
 
 	@Override
-	public final IModel<V> getValueModel(final IModel<? extends K> keyModel) {
-		return new IModel<V>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void detach() {
-				AbstractMapCopyModel.this.detach();
-				keyModel.detach();
-			}
-			@Override
-			public V getObject() {
-				return AbstractMapCopyModel.this.getObject().get(keyModel.getObject());
-			}
-			@Override
-			public void setObject(V object) {
-				AbstractMapCopyModel.this.put(keyModel.getObject(), object);
-			}
-		};
-	}
-
-	@Override
-	public final MV getValueModelForProvidedKeyModel(final IModel<K> keyModel) {
+	public final MV valueModelForProvidedKeyModel(final IModel<K> keyModel) {
 		// We don't need to update the modelMap here, as the keyModel is supposed to have been provided by this object
 		return modelMap.get(keyModel);
 	}

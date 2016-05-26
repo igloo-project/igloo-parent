@@ -45,7 +45,7 @@ public abstract class MapView<K, V> extends SequenceView<K> {
 
 	@Override
 	protected MapItem<K, V> newItem(String id, int index, IModel<K> model) {
-		return new MapItem<K, V>(id, index, model, getModel().getValueModelForProvidedKeyModel(model));
+		return new MapItem<K, V>(id, index, model, getModel().valueModelForProvidedKeyModel(model));
 	}
 
 }

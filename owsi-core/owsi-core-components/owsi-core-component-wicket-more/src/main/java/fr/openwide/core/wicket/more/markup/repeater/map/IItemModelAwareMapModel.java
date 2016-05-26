@@ -1,9 +1,13 @@
 package fr.openwide.core.wicket.more.markup.repeater.map;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.wicket.model.IModel;
+
+import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 
 /**
  * A {@link IMapModel} that provides a specific type of models for its items (keys and values).
@@ -13,10 +17,16 @@ import org.apache.wicket.model.IModel;
 public interface IItemModelAwareMapModel<K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
 		extends IMapModel<K, V, M>, Iterable<MK> {
 	
-	@Override
-	public Iterator<MK> iterator(long offset, long limit);
+	@Override 
+	Iterator<MK> iterator(long offset, long limit);
 	
 	@Override
-	public MV getValueModelForProvidedKeyModel(IModel<K> keyModel);
+	IItemModelAwareCollectionModel<K, Set<K>, MK> keysModel();
+	
+	@Override
+	IItemModelAwareCollectionModel<V, Collection<V>, MV> valuesModel();
+	
+	@Override
+	MV valueModelForProvidedKeyModel(IModel<K> keyModel);
 
 }
