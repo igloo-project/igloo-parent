@@ -8,11 +8,21 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 /**
  * A {@link ListView} akin to {@link AbstractGenericEntityCollectionView}, which is itself a {@link RefreshingView}.
+ * @deprecated use {@link CollectionView} with {@link GenericEntityModel} instead : 
+ * <pre>
+ * {@code 
+ * GenericEntity*View<T>("id", model);
+ * -> 
+ * new CollectionView<T>("id", model, GenericEntityModel.<T>factory());
+ * }
+ * </pre>
  */
+@Deprecated
 public abstract class GenericEntityListView<T extends GenericEntity<?, ?>> extends PageableListView<T> {
 
 	private static final long serialVersionUID = 1L;

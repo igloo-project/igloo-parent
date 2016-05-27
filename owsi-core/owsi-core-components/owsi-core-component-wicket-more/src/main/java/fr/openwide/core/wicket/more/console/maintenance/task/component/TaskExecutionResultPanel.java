@@ -8,6 +8,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.bindgen.java.util.map.EntryBinding;
@@ -25,8 +26,9 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.BatchReportBeanModel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
-import fr.openwide.core.wicket.more.markup.html.collection.SerializedItemListView;
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class TaskExecutionResultPanel extends GenericPanel<QueuedTaskHolder> {
 	
@@ -73,11 +75,15 @@ public class TaskExecutionResultPanel extends GenericPanel<QueuedTaskHolder> {
 					}
 				});
 				
-				contexteItemsItem.add(new SerializedItemListView<BatchReportItem>("itemListView", itemListModel) {
+				contexteItemsItem.add(new CollectionView<BatchReportItem>(
+						"itemListView",
+						itemListModel,
+						Models.<BatchReportItem>serializableModelFactory()
+				) {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void populateItem(ListItem<BatchReportItem> batchReportItemItem) {
+					protected void populateItem(Item<BatchReportItem> batchReportItemItem) {
 						final IModel<BatchReportItem> batchReportItemModel = batchReportItemItem.getModel();
 						
 						Label message = new CoreLabel("message", BindingModel.of(batchReportItemModel,

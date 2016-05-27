@@ -20,13 +20,14 @@ import fr.openwide.core.showcase.core.util.binding.Bindings;
 import fr.openwide.core.showcase.web.application.portfolio.page.UserDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import fr.openwide.core.wicket.more.markup.html.collection.SerializedItemSortedSetView;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 import fr.openwide.core.wicket.more.markup.html.list.PageablePortfolioPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.multivaluedexpand.MultivaluedExpandBehavior;
+import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
 	
@@ -63,14 +64,20 @@ public class UserPortfolioPanel extends PageablePortfolioPanel<User> {
 		// Multivalued expand sample: please note that the behavior could be used on a ".div" inside the "td" element,
 		// if an other information should be displayed in the same cell, for example.
 		item.add(new WebMarkupContainer("tagsContainer", userModel)
-				.add(new SerializedItemSortedSetView<String>("tags", BindingModel.of(userModel, Bindings.user().tags())) {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					protected void populateItem(Item<String> tagItem) {
-						tagItem.add(new Label("tag", tagItem.getModel()));
-					}
-				})
+				.add(
+						new CollectionView<String>(
+								"tags",
+								BindingModel.of(userModel, Bindings.user().tags()),
+								Models.<String>serializableModelFactory()
+						) {
+							private static final long serialVersionUID = 1L;
+							
+							@Override
+							protected void populateItem(Item<String> tagItem) {
+								tagItem.add(new Label("tag", tagItem.getModel()));
+							}
+						}
+				)
 				.add(new MultivaluedExpandBehavior())
 		);
 	}

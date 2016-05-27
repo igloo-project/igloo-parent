@@ -23,6 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.google.common.base.Predicate;
 
 import fr.openwide.core.commons.util.functional.SerializablePredicate;
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
@@ -33,7 +34,8 @@ import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
-import fr.openwide.core.wicket.more.model.GenericEntityArrayListModel;
+import fr.openwide.core.wicket.more.model.CollectionCopyModel;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class HideableComponentsPage extends MainTemplate {
 
@@ -54,7 +56,7 @@ public class HideableComponentsPage extends MainTemplate {
 		IModel<String> model = new Model<String>(null);
 		
 		List<User> choicesList = userService.list();
-		IModel<List<User>> collectionModel = GenericEntityArrayListModel.of(User.class);
+		IModel<List<User>> collectionModel = CollectionCopyModel.custom(Suppliers2.<User>arrayListAsList(), GenericEntityModel.<User>factory());
 		
 		final MarkupContainer updatedContainer = new WebMarkupContainer("updatedContainer");
 		updatedContainer.setOutputMarkupId(true);

@@ -6,6 +6,17 @@ import java.util.LinkedHashSet;
 import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
+/**
+ * @deprecated use {@link CollectionCopyModel} with {@link Suppliers2} and {@link GenericEntityModel} instead : 
+ * <pre>
+ * {@code 
+ * GenericEntityLinkedHashSetModel.of(Class<E>);
+ * ->
+ * CollectionCopyModel.custom(Suppliers2.<E>linkedHashSet[AsSet](), GenericEntityModel.<E>factory());
+ * }
+ * </pre>
+ */
+@Deprecated
 public class GenericEntityLinkedHashSetModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends AbstractGenericEntityCollectionModel<K, E, LinkedHashSet<E>> {
 	
