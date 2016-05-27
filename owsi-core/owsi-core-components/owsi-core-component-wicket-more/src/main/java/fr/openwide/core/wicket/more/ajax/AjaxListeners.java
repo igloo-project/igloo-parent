@@ -233,14 +233,7 @@ public final class AjaxListeners {
 	@SafeVarargs
 	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
 			Class<? extends Component> first, Class<? extends Component> ... rest) {
-		final IVisitFilter filter = VisitFilters.including(first, rest);
-		return new SerializableListener() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
-				refreshChildren(parent, filter);
-			}
-		};
+		return refreshChildren(parent, VisitFilters.including(first, rest));
 	}
 	
 	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
