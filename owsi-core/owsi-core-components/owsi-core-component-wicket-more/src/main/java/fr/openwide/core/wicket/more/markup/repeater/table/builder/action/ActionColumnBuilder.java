@@ -21,8 +21,8 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDesc
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAction;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.factory.ConditionFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.OneParameterConditionFactory;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnActionFactory;
@@ -226,25 +226,25 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		
 		@Override
 		public NextState when(final Condition condition) {
-			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<IModel<T>>identity(condition));
+			getElementBuilder().addConditionFactory(ConditionFactories.constant(condition));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState when(final Predicate<? super T> predicate) {
-			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<T>predicate(predicate));
+			getElementBuilder().addConditionFactory(ConditionFactories.predicate(predicate));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPermission(final String permission) {
-			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<T>permission(permission));
+			getElementBuilder().addConditionFactory(ConditionFactories.<T>permission(permission));
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPermission(final Permission permission) {
-			getElementBuilder().addConditionFactory(OneParameterConditionFactory.<T>permission(permission));
+			getElementBuilder().addConditionFactory(ConditionFactories.<T>permission(permission));
 			return getNextState();
 		}
 		

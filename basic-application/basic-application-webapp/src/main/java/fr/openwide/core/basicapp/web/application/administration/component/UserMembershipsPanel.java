@@ -30,7 +30,7 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -70,7 +70,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 						.addActionColumn()
 								.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))
 										.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
-										.content(new AbstractOneParameterModelFactory<IModel<UserGroup>, String>() {
+										.content(new AbstractDetachableFactory<IModel<UserGroup>, IModel<String>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public IModel<String> create(IModel<UserGroup> parameter) {

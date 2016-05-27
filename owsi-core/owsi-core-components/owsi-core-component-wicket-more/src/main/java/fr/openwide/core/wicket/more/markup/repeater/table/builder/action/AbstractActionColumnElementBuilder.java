@@ -22,7 +22,7 @@ import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.Bootstr
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.IBootstrapRendererModel;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterConditionFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.column.CoreActionColumnElementPanel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
@@ -45,7 +45,8 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 
 	private Condition showPlaceholderCondition = Condition.alwaysTrue();
 
-	private final List<IOneParameterConditionFactory<IModel<T>>> conditionFactories = Lists.newArrayList();
+	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends Condition>> conditionFactories =
+			Lists.newArrayList();
 
 	private final StringBuilder cssClasses = new StringBuilder();
 
@@ -78,7 +79,7 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 		IBootstrapRendererModel rendererModel = renderer.asModel(rowModel);
 		IModel<String> tooltipModel = rendererModel.getTooltipModel();
 		Condition actionCondition = Condition.alwaysTrue();
-		for (IOneParameterConditionFactory<IModel<T>> conditionFactory : conditionFactories) {
+		for (IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory : conditionFactories) {
 			actionCondition = actionCondition.and(conditionFactory.create(rowModel));
 		}
 		link
@@ -214,7 +215,7 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 		return showPlaceholder(Objects.requireNonNull(hidePlaceholderCondition).negate());
 	}
 
-	public F addConditionFactory(IOneParameterConditionFactory<IModel<T>> conditionFactory) {
+	public F addConditionFactory(IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory) {
 		conditionFactories.add(Objects.requireNonNull(conditionFactory));
 		return thisAsF();
 	}

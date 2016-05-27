@@ -10,9 +10,9 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.markup.html.action.AjaxActions;
 import fr.openwide.core.wicket.more.markup.html.action.IAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.factory.AbstractOneParameterModelFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterModelFactory;
-import fr.openwide.core.wicket.more.markup.html.factory.OneParameterModelFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.ModelFactories;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepContent;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepEndContent;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IAjaxConfirmLinkBuilderStepNo;
@@ -28,9 +28,9 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 
 	private static final long serialVersionUID = 365949870142796149L;
 
-	private IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory;
+	private IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory;
 	
-	private IOneParameterModelFactory<? super IModel<O>, String> contentModelFactory;
+	private IDetachableFactory<? super IModel<O>, ? extends IModel<String>> contentModelFactory;
 	
 	private IModel<String> yesLabelModel;
 	
@@ -47,22 +47,22 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	
 	@Override
 	public IAjaxConfirmLinkBuilderStepContent<O> title(IModel<String> titleModel) {
-		return title(OneParameterModelFactory.<IModel<O>, String>identity(titleModel));
+		return title(ModelFactories.constant(titleModel));
 	}
 	
 	@Override
-	public IAjaxConfirmLinkBuilderStepContent<O> title(IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory) {
+	public IAjaxConfirmLinkBuilderStepContent<O> title(IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory) {
 		this.titleModelFactory = titleModelFactory;
 		return this;
 	}
 	
 	@Override
 	public IAjaxConfirmLinkBuilderStepEndContent<O> content(IModel<String> contentModel) {
-		return content(OneParameterModelFactory.<IModel<O>, String>identity(contentModel));
+		return content(ModelFactories.constant(contentModel));
 	}
 	
 	@Override
-	public IAjaxConfirmLinkBuilderStepEndContent<O> content(IOneParameterModelFactory<? super IModel<O>, String> contentModelFactory) {
+	public IAjaxConfirmLinkBuilderStepEndContent<O> content(IDetachableFactory<? super IModel<O>, ? extends IModel<String>> contentModelFactory) {
 		this.contentModelFactory = contentModelFactory;
 		return this;
 	}
@@ -77,7 +77,7 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	public IAjaxConfirmLinkBuilderStepOnclick<O> deleteConfirmation() {
 		confirm();
 		title(new ResourceModel("common.confirmTitle"));
-		content(new AbstractOneParameterModelFactory<IModel<O>, String>() {
+		content(new AbstractDetachableFactory<IModel<O>, IModel<String>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public IModel<String> create(IModel<O> parameter) {
@@ -167,8 +167,8 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 		private final IOneParameterAjaxAction<? super IModel<O>> onClick;
 		
 		public FunctionalAjaxConfirmLink(String id, IModel<O> model,
-				IOneParameterModelFactory<? super IModel<O>, String> titleModelFactory,
-				IOneParameterModelFactory<? super IModel<O>, String> textModelFactory, IModel<String> yesLabelModel,
+				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory,
+				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> textModelFactory, IModel<String> yesLabelModel,
 				IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape,
 				IOneParameterAjaxAction<? super IModel<O>> onClick) {
 			super(id, model, titleModelFactory.create(model), textModelFactory.create(model), yesLabelModel,
