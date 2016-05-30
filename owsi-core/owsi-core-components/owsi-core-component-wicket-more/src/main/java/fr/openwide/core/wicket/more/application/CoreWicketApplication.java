@@ -112,9 +112,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 		packageResourceGuard.addPattern("+*.ttf");
 		packageResourceGuard.addPattern("+*.css.map");
 		
-		// on autorise l'accès aux .htc pour CSS3PIE
-		packageResourceGuard.addPattern("+*.htc");
-		
 		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
 		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
 		// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
