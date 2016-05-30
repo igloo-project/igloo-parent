@@ -86,7 +86,7 @@ public abstract class PropertyId<T> implements IPropertyRegistryKey<T> {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append("declared by", declaration == null ? null : declaration.getDeclaringClass())
+				.append("declared by", declaration)
 				.append("template", template)
 				.append("key", key)
 				.build();

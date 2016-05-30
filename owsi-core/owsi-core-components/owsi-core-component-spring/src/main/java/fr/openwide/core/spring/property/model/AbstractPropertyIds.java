@@ -11,75 +11,73 @@ import com.google.common.collect.Sets;
 
 public abstract class AbstractPropertyIds {
 	
-	private static ConcurrentMap<Class<?>, PropertyRegistryKeyDeclaration> declarationsByDeclaringClass =
+	private static ConcurrentMap<String, PropertyRegistryKeyClassDeclaration> declarationsByDeclaringClassName =
 			new ConcurrentHashMap<>();
 	
 	protected AbstractPropertyIds() {
 	}
 	
 	public static <T> ImmutablePropertyId<T> immutable(String key) {
-		PropertyRegistryKeyDeclaration declaration = getDeclaration();
+		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
 		ImmutablePropertyId<T> id = new ImmutablePropertyId<T>(declaration, key);
 		declaration.addKey(id);
 		return id;
 	}
 	
 	public static <T> MutablePropertyId<T> mutable(String key) {
-		PropertyRegistryKeyDeclaration declaration = getDeclaration();
+		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
 		MutablePropertyId<T> id = new MutablePropertyId<T>(declaration, key);
 		declaration.addKey(id);
 		return id;
 	}
 	
 	public static <T> ImmutablePropertyIdTemplate<T> immutableTemplate(String key) {
-		PropertyRegistryKeyDeclaration declaration = getDeclaration();
+		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
 		ImmutablePropertyIdTemplate<T> template = new ImmutablePropertyIdTemplate<T>(declaration, key);
 		declaration.addKey(template);
 		return template;
 	}
 	
 	public static <T> MutablePropertyIdTemplate<T> mutableTemplate(String key) {
-		PropertyRegistryKeyDeclaration declaration = getDeclaration();
+		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
 		MutablePropertyIdTemplate<T> template = new MutablePropertyIdTemplate<T>(declaration, key);
 		declaration.addKey(template);
 		return template;
 	}
 
-	private static PropertyRegistryKeyDeclaration getDeclaration() {
-		/* This is not API, but the method still exists in Java 8 and there are discussions about
-		 * adding an API in Java 9.
-		 * In Java 9, we'll have to either use this new API if it exists, or otherwise we'll remove
-		 * the declaring class auto-detection, which will prevent us from checking if every property IDs of
-		 * a given class have been registered (see PropertyServiceImpl). 
-		 */
-		@SuppressWarnings({ "deprecation", "restriction" })
-		Class<?> callingClass = sun.reflect.Reflection.getCallerClass(3);
-		return getDeclaration(callingClass);
+	private static PropertyRegistryKeyClassDeclaration getDeclaration() {
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		String callingClassName = stackTraceElements[3].getClassName();
+		return getDeclaration(callingClassName);
 	}
 
-	private static PropertyRegistryKeyDeclaration getDeclaration(Class<?> declaringClass) {
-		PropertyRegistryKeyDeclaration declaration = new PropertyRegistryKeyDeclaration(declaringClass);
+	private static PropertyRegistryKeyClassDeclaration getDeclaration(String declaringClassName) {
+		PropertyRegistryKeyClassDeclaration declaration = new PropertyRegistryKeyClassDeclaration(declaringClassName);
 		return MoreObjects.firstNonNull(
-				declarationsByDeclaringClass.putIfAbsent(declaringClass, declaration),
+				declarationsByDeclaringClassName.putIfAbsent(declaringClassName, declaration),
 				declaration
 		);
 	}
 	
-	private static final class PropertyRegistryKeyDeclaration implements IPropertyRegistryKeyDeclaration {
+	/*
+	 * No need to override equals: there is only one instance of this class for each declaringClassName, due to
+	 * how instantiation is done and to how serialization/deserialization are done. 
+	 */
+	private static final class PropertyRegistryKeyClassDeclaration implements IPropertyRegistryKeyDeclaration {
 		private static final long serialVersionUID = 1L;
 
-		private final Class<?> declaringClass;
+		private final String declaringClassName;
 		
 		private final Set<IPropertyRegistryKey<?>> declaredKeys = Sets.newLinkedHashSet();
 
-		public PropertyRegistryKeyDeclaration(Class<?> declaringClass) {
+		public PropertyRegistryKeyClassDeclaration(String declaringClass) {
 			super();
-			this.declaringClass = declaringClass;
+			this.declaringClassName = declaringClass;
 		}
-
+		
 		@Override
-		public Class<?> getDeclaringClass() {
-			return declaringClass;
+		public String toString() {
+			return "Properties declared in class " + declaringClassName;
 		}
 
 		@Override
@@ -92,7 +90,7 @@ public abstract class AbstractPropertyIds {
 				declaredKeys.add(key);
 			}
 		}
-
+		
 		protected Object writeReplace() {
 			return new SerializedForm(this);
 		}
@@ -100,15 +98,15 @@ public abstract class AbstractPropertyIds {
 		private static final class SerializedForm implements Serializable {
 			private static final long serialVersionUID = 1L;
 			
-			private Class<?> declaringClass;
+			private String declaringClassName;
 			
-			public SerializedForm(PropertyRegistryKeyDeclaration declaration) {
+			public SerializedForm(PropertyRegistryKeyClassDeclaration declaration) {
 				super();
-				this.declaringClass = declaration.getDeclaringClass();
+				this.declaringClassName = declaration.declaringClassName;
 			}
 			
 			protected Object readResolve() {
-				return getDeclaration(declaringClass);
+				return getDeclaration(declaringClassName);
 			}
 		}
 	}

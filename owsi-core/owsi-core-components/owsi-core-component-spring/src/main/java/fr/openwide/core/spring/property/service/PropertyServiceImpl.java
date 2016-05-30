@@ -98,23 +98,23 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 			declarationsToRegisteredKeys.put(key.getDeclaration(), key);
 		}
 
-		SetMultimap<Class<?>, IPropertyRegistryKey<?>> declaringClassToMissingKeys = LinkedHashMultimap.create();
+		SetMultimap<IPropertyRegistryKeyDeclaration, IPropertyRegistryKey<?>> declarationsToUnregisteredKeys = LinkedHashMultimap.create();
 		for (Map.Entry<IPropertyRegistryKeyDeclaration, Set<IPropertyRegistryKey<?>>> declarationAndRegisteredKeys
 				: Multimaps.asMap(declarationsToRegisteredKeys).entrySet()) {
 			IPropertyRegistryKeyDeclaration declaration = declarationAndRegisteredKeys.getKey();
 			Set<IPropertyRegistryKey<?>> registeredKeys = declarationAndRegisteredKeys.getValue();
-			declaringClassToMissingKeys.putAll(
-					declaration.getDeclaringClass(),
+			declarationsToUnregisteredKeys.putAll(
+					declaration,
 					Sets.difference(declaration.getDeclaredKeys(), registeredKeys)
 			);
 		}
 		
-		if (!declaringClassToMissingKeys.isEmpty()) {
+		if (!declarationsToUnregisteredKeys.isEmpty()) {
 			throw new PropertyServiceIncompleteRegistrationException(
 					String.format(
 							"The registration of property keys is incomplete."
-							+ " Here are the missing keys for each declaring class: %s",
-							declaringClassToMissingKeys
+							+ " Here are the missing keys for each declaration: %s",
+							declarationsToUnregisteredKeys
 					)
 			);
 		}

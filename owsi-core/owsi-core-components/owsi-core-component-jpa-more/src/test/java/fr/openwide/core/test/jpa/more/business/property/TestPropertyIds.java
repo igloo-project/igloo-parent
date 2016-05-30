@@ -1,9 +1,11 @@
 package fr.openwide.core.test.jpa.more.business.property;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,12 +13,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Set;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
 
 import fr.openwide.core.spring.property.model.AbstractPropertyIds;
 import fr.openwide.core.spring.property.model.IPropertyRegistryKey;
+import fr.openwide.core.spring.property.model.IPropertyRegistryKeyDeclaration;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
 import fr.openwide.core.spring.property.model.ImmutablePropertyIdTemplate;
 import fr.openwide.core.spring.property.model.MutablePropertyId;
@@ -29,6 +33,10 @@ public class TestPropertyIds {
 		static final MutablePropertyIdTemplate<String> MUTABLE_TEMPLATE = mutableTemplate("mutable.property.template.%s");
 		static final ImmutablePropertyId<String> IMMUTABLE = immutable("immutable.property");
 		static final ImmutablePropertyIdTemplate<String> IMMUTABLE_TEMPLATE = immutableTemplate("immutable.property.template.%s");
+	}
+
+	private static class OtherPropertyIds extends AbstractPropertyIds {
+		static final ImmutablePropertyId<String> IMMUTABLE = immutable("immutable.property");
 	}
 	
 	private static final Set<IPropertyRegistryKey<?>> ALL_KEYS = ImmutableSet.<IPropertyRegistryKey<?>>of(
@@ -81,17 +89,27 @@ public class TestPropertyIds {
 	}
 	
 	@Test
+	public void declaration() {
+		IPropertyRegistryKeyDeclaration declaration = PropertyIds.MUTABLE.getDeclaration();
+		assertThat(declaration.toString(), CoreMatchers.containsString(PropertyIds.class.getName()));
+		
+		IPropertyRegistryKeyDeclaration otherDeclaration = OtherPropertyIds.IMMUTABLE.getDeclaration();
+		assertTrue(!declaration.equals(otherDeclaration));
+		
+		assertEquals(declaration, PropertyIds.IMMUTABLE.getDeclaration());
+		assertEquals(declaration, PropertyIds.MUTABLE_TEMPLATE.getDeclaration());
+		assertEquals(declaration, PropertyIds.IMMUTABLE_TEMPLATE.getDeclaration());
+		assertEquals(ALL_KEYS, declaration.getDeclaredKeys());
+	}
+	
+	@Test
 	public void mutableProperty() {
 		assertEquals("mutable.property", PropertyIds.MUTABLE.getKey());
-		assertEquals(PropertyIds.class, PropertyIds.MUTABLE.getDeclaration().getDeclaringClass());
-		assertEquals(ALL_KEYS, PropertyIds.MUTABLE.getDeclaration().getDeclaredKeys());
 	}
 
 	@Test
 	public void mutablePropertyTemplate() {
 		assertEquals("mutable.property.template.%s", PropertyIds.MUTABLE_TEMPLATE.getFormat());
-		assertEquals(PropertyIds.class, PropertyIds.MUTABLE_TEMPLATE.getDeclaration().getDeclaringClass());
-		assertEquals(ALL_KEYS, PropertyIds.MUTABLE_TEMPLATE.getDeclaration().getDeclaredKeys());
 		
 		MutablePropertyId<String> generatedProperty = PropertyIds.MUTABLE_TEMPLATE.create("TEST");
 		assertEquals("mutable.property.template.TEST", generatedProperty.getKey());
@@ -101,15 +119,11 @@ public class TestPropertyIds {
 	@Test
 	public void immutableProperty() {
 		assertEquals("immutable.property", PropertyIds.IMMUTABLE.getKey());
-		assertEquals(PropertyIds.class, PropertyIds.IMMUTABLE.getDeclaration().getDeclaringClass());
-		assertEquals(ALL_KEYS, PropertyIds.IMMUTABLE.getDeclaration().getDeclaredKeys());
 	}
 
 	@Test
 	public void immutablePropertyTemplate() {
 		assertEquals("immutable.property.template.%s", PropertyIds.IMMUTABLE_TEMPLATE.getFormat());
-		assertEquals(PropertyIds.class, PropertyIds.IMMUTABLE_TEMPLATE.getDeclaration().getDeclaringClass());
-		assertEquals(ALL_KEYS, PropertyIds.IMMUTABLE_TEMPLATE.getDeclaration().getDeclaredKeys());
 		
 		ImmutablePropertyId<String> generatedProperty = PropertyIds.IMMUTABLE_TEMPLATE.create("TEST");
 		assertEquals("immutable.property.template.TEST", generatedProperty.getKey());

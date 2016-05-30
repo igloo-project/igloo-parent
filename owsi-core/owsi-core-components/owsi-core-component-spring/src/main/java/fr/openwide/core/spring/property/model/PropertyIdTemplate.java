@@ -73,7 +73,7 @@ public abstract class PropertyIdTemplate<T, P extends PropertyId<T>> implements 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append("declared by", declaration == null ? null : declaration.getDeclaringClass())
+				.append("declared by", declaration)
 				.append("format", format)
 				.build();
 	}
