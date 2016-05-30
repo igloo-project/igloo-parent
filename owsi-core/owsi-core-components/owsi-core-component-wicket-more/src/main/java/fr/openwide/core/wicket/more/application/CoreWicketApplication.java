@@ -28,11 +28,11 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.time.Duration;
-import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
@@ -48,7 +48,6 @@ import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap3.fontawes
 import fr.openwide.core.wicket.request.mapper.NoVersionMountedMapper;
 import fr.openwide.core.wicket.request.mapper.PageParameterAwareMountedMapper;
 import fr.openwide.core.wicket.request.mapper.StaticResourceMapper;
-import fr.openwide.core.wicket.resource.JQueryUpdateResourceReference;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -126,9 +125,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// on place les éléments présents dans le wicket:head en premier
 		getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
 		
-		// Update de jQuery : à commenter quand on se remet en ligne avec Wicket
-		getJavaScriptLibrarySettings().setJQueryReference(JQueryUpdateResourceReference.get());
-			
 		// configuration du disk data store de Wicket
 		getStoreSettings().setInmemoryCacheSize(propertyService.get(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE));
 		getStoreSettings().setMaxSizePerSession(Bytes.megabytes(propertyService.get(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION)));
