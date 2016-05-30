@@ -16,6 +16,14 @@
 		
 		<jdk.version>1.7</jdk.version>
 		
+		<!--
+			Should be a valid artifact of type "signature"
+			See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22
+		 -->
+		<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
+		<jdk.signature.artifactId>java17</jdk.signature.artifactId>
+		<jdk.signature.version>1.0</jdk.signature.version>
+		
 		<minimal.maven.version>3.2.5</minimal.maven.version>
 		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
@@ -34,6 +42,7 @@
 		<owsi-core.maven-javadoc-plugin.version>2.10.3</owsi-core.maven-javadoc-plugin.version>
 		<owsi-core.maven-enforcer-plugin.version>1.4.1</owsi-core.maven-enforcer-plugin.version>
 		<owsi-core.maven-dependency-plugin.version>2.10</owsi-core.maven-dependency-plugin.version>
+		<owsi-core.animal-sniffer-maven-plugin.version>1.15</owsi-core.animal-sniffer-maven-plugin.version>
 		
 		<owsi-core.wagon-maven-plugin.version>1.0</owsi-core.wagon-maven-plugin.version>
 		<owsi-core.wagon-ssh-external-plugin.version>2.10</owsi-core.wagon-ssh-external-plugin.version>
@@ -86,6 +95,45 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK.
+				This ensures that none of the newer classes or methods that were not yet defined in the
+				target JRE are referenced in this project.
+				See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html
+				
+				Please be aware that code generation tools may be affected by the JDK used to compile, and thus
+				may trigger a failure (because they automatically referenced newer classes or methods). In this case,
+				the only way to make things work is to use the proper JDK.
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>animal-sniffer-maven-plugin</artifactId>
+				<version>${owsi-core.animal-sniffer-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>check-java-version</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<signature>
+								<groupId>${jdk.signature.groupId}</groupId>
+								<artifactId>${jdk.signature.artifactId}</artifactId>
+								<version>${jdk.signature.version}</version>
+							</signature>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>${jdk.signature.groupId}</groupId>
+						<artifactId>${jdk.signature.artifactId}</artifactId>
+						<version>${jdk.signature.version}</version>
+						<type>signature</type>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>
