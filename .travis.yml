@@ -11,7 +11,7 @@ cache:
     - $HOME/.m2
 env:
   global:
-    MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+    - MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 install:
   - mvn -v
 before_script: 
