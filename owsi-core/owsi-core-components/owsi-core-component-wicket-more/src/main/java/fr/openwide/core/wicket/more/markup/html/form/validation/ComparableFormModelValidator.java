@@ -37,6 +37,11 @@ public class ComparableFormModelValidator<T extends Comparable<T>> implements IF
 		this.comparator = comparator;
 		this.errorRessourceKey = errorKey;
 	}
+	
+	@Override
+	public void detach() {
+		// Nothing to do here
+	}
 
 	@Override
 	public void validate(Form<?> form) {

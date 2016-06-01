@@ -11,6 +11,7 @@ import org.apache.wicket.util.lang.Args;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.markup.html.form.validation.IFormModelValidator;
+import fr.openwide.core.wicket.more.util.model.Detachables;
 
 public class ModelValidatingForm<E> extends Form<E> {
 
@@ -64,6 +65,12 @@ public class ModelValidatingForm<E> extends Form<E> {
 	public ModelValidatingForm<E> addFormModelValidator(Collection<? extends IFormModelValidator> formModelValidators) {
 		this.formModelValidators.addAll(formModelValidators);
 		return this;
+	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(formModelValidators);
 	}
 
 }

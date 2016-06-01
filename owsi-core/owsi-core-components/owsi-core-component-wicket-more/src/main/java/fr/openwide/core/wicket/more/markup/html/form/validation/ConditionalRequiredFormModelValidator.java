@@ -38,6 +38,11 @@ public class ConditionalRequiredFormModelValidator implements IFormModelValidato
 	}
 	
 	@Override
+	public void detach() {
+		condition.detach();
+	}
+	
+	@Override
 	public void validate(Form<?> form) {
 		if (condition.applies()) {
 			for (FormComponent<?> formComponent : formComponents) {

@@ -4,9 +4,9 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.markup.html.form.validation.IFormValidator;
-import org.apache.wicket.util.io.IClusterable;
+import org.apache.wicket.model.IDetachable;
 
-public interface IFormModelValidator extends IClusterable {
+public interface IFormModelValidator extends IDetachable {
 
 	/**
 	 * @return array of {@link FormComponent}s that this validator depends on
