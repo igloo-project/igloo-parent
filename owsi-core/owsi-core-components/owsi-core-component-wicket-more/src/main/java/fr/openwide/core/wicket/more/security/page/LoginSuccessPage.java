@@ -31,12 +31,14 @@ public class LoginSuccessPage extends CoreWebPage {
 	
 	protected void redirectToSavedPage() {
 		AbstractCoreSession<?> session = AbstractCoreSession.get();
-		
+
+		@SuppressWarnings("deprecation")
 		IPageLinkDescriptor pageLinkDescriptor = session.getRedirectPageLinkDescriptor();
 		if (pageLinkDescriptor != null) {
 			throw pageLinkDescriptor.newRestartResponseException();
 		}
 		
+		@SuppressWarnings("deprecation")
 		String redirectUrl = session.consumeRedirectUrl();
 		if (!StringUtils.hasText(redirectUrl)) {
 			redirectUrl = RequestCycleUtils.getSpringSecuritySavedRequest();

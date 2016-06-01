@@ -3,6 +3,8 @@ package fr.openwide.core.wicket.more;
 import java.util.Collection;
 import java.util.Locale;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -12,6 +14,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -283,8 +286,11 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 	
 	/**
-	 * We don't want to remove the redirect url in this case
+	 * @deprecated Only useful when using OWSI-Core's redirection mechanism, which is deprecated.
+	 * 
+	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
 	 */
+	@Deprecated
 	public void signOutWithoutCleaningUpRedirectUrl() {
 		userModel.setObject(null);
 		roles = new Roles();
@@ -298,9 +304,22 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 	
 	/**
-	 * Permet d'enregistrer une url de redirection : l'objectif est de permettre de rediriger après authentification
-	 * sur la page pour laquelle l'utilisateur n'avait pas les droits.
+	 * @deprecated This was OWSI-Core's own redirection mechanism, which is now deprecated in favor of more standard
+	 * mechanisms.
+	 * You may use instead:
+	 * <ul>
+	 *  <li>Wicket's
+	 *  {@link RestartResponseAtInterceptPageException} mechanism
+	 *  ({@link Component#redirectToInterceptPage(org.apache.wicket.Page)},
+	 *  {@link Component#continueToOriginalDestination()}), if redirecting within the same session (without login/logout
+	 *  during the redirection process).
+	 *  <li>Spring Security's saved requests mechanisms, triggered by an {@link AccessDeniedException}, if redirecting
+	 *  after an authentication/authorization error. Beware that most cases are already handled in OWSI-Core through the
+	 *  {@link CoreDefaultExceptionMapper}, so you normally shouldn't have to do this.
+	 *  <li>Or you own implementation with an URL as a page parameter, for the most specific needs.
+	 * </ul>
 	 */
+	@Deprecated
 	public void registerRedirectUrl(String url) {
 		// le bind() est obligatoire pour demander à wicket de persister la session
 		// si on ne le fait pas, la session possède comme durée de vie le temps de
@@ -313,16 +332,18 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 	
 	/**
-	 * Permet de récupérer la dernière url de redirection.
+	 * @deprecated This was OWSI-Core's own redirection mechanism, which is now deprecated in favor of more standard
+	 * mechanisms.
+	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
 	 */
 	public String getRedirectUrl() {
 		return (String) getAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
 	}
 	
 	/**
-	 * Permet de récupérer la dernière url de redirection enregistrée et la supprime de la session.
-	 * 
-	 * @return null si aucune url enregistrée
+	 * @deprecated This was OWSI-Core's own redirection mechanism, which is now deprecated in favor of more standard
+	 * mechanisms.
+	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
 	 */
 	public String consumeRedirectUrl() {
 		String redirectUrl = getRedirectUrl();
@@ -331,8 +352,9 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 	
 	/**
-	 * Permet d'enregistrer une url de redirection : l'objectif est de permettre de rediriger après authentification
-	 * sur la page pour laquelle l'utilisateur n'avait pas les droits.
+	 * @deprecated This was OWSI-Core's own redirection mechanism, which is now deprecated in favor of more standard
+	 * mechanisms.
+	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
 	 */
 	public void registerRedirectPageLinkDescriptor(IPageLinkDescriptor pageLinkDescriptor) {
 		// le bind() est obligatoire pour demander à wicket de persister la session
@@ -346,9 +368,9 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 	
 	/**
-	 * Permet de récupérer la dernière url de redirection enregistrée
-	 * 
-	 * @return null si aucune url enregistrée
+	 * @deprecated This was OWSI-Core's own redirection mechanism, which is now deprecated in favor of more standard
+	 * mechanisms.
+	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
 	 */
 	public IPageLinkDescriptor getRedirectPageLinkDescriptor() {
 		IPageLinkDescriptor pageLinkDescriptor = (IPageLinkDescriptor) getAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
