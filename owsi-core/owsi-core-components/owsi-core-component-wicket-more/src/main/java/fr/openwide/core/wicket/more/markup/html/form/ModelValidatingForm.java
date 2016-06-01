@@ -1,6 +1,5 @@
 package fr.openwide.core.wicket.more.markup.html.form;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.markup.html.form.Form;
@@ -57,13 +56,8 @@ public class ModelValidatingForm<E> extends Form<E> {
 		}
 	}
 
-	public ModelValidatingForm<E> addFormModelValidator(IFormModelValidator firstFormModelValidator, IFormModelValidator... otherFormModelValidators) {
+	public ModelValidatingForm<E> add(IFormModelValidator firstFormModelValidator, IFormModelValidator... otherFormModelValidators) {
 		formModelValidators.addAll(Lists.asList(firstFormModelValidator, otherFormModelValidators));
-		return this;
-	}
-
-	public ModelValidatingForm<E> addFormModelValidator(Collection<? extends IFormModelValidator> formModelValidators) {
-		this.formModelValidators.addAll(formModelValidators);
 		return this;
 	}
 	
