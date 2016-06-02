@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.web.application.common.template.styles;
+package fr.openwide.core.basicapp.web.application.common.template.styles.application_access;
 
 import java.util.List;
 

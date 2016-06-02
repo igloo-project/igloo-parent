@@ -3,12 +3,10 @@ package fr.openwide.core.basicapp.web.application.common.template;
 import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.MAINTENANCE_URL;
 import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -19,7 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.component.EnvironmentPanel;
-import fr.openwide.core.basicapp.web.application.common.template.styles.ApplicationAccessLessCssResourceReference;
+import fr.openwide.core.basicapp.web.application.common.template.styles.application_access.ApplicationAccessLessCssResourceReference;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;

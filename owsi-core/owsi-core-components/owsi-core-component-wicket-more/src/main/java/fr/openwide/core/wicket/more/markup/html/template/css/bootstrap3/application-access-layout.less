@@ -1,16 +1,17 @@
-// This file contains only deprecated classes ; please use application-access-layout.less instead.
-
-.service-page {
+.application-access-page-mixin(
+		@responsive-breakpoint: @application-access-page-responsive-breakpoint,
+		@vertical-align-min-height: @application-access-page-vertical-align-min-height,
+		@vertical-align-padding: @application-access-page-vertical-align-padding) {
 	background-color: #FFFFFF;
 	
 	.container {
 		> .row.content {
-			.service-header {
+			.application-access-header {
 				padding: 10px 20px;
 				font-size: 1.5em;
 			}
 			
-			.service-title {
+			.application-access-title {
 				border-bottom: 1px solid #DDDDDD;
 				border-top: 1px solid #DDDDDD;
 				color: #FFFFFF;
@@ -20,7 +21,7 @@
 				text-shadow: 1px 1px #007AAD;
 			}
 			
-			.service-alert {
+			.application-access-alert {
 				padding: 10px 30px;
 				margin: 0;
 				border-radius: 0;
@@ -29,7 +30,7 @@
 				border-left: none;
 			}
 			
-			.service-content {
+			.application-access-content {
 				padding: 30px;
 				
 				.form-actions {
@@ -41,7 +42,7 @@
 			}
 		}
 		
-		.service-footer {
+		.application-access-footer {
 			color: #888;
 			text-align: center;
 			padding: 30px;
@@ -51,14 +52,12 @@
 			}
 		}
 	}
-}
 
-@media (min-width: @service-page-responsive-breakpoint) {
-	.service-page {
+	@media (min-width: @responsive-breakpoint) {
 		background: #EEEEEE;
 		
 		.container {
-			max-width: @service-page-responsive-breakpoint - @grid-gutter-width;
+			max-width: @responsive-breakpoint - @grid-gutter-width;
 			margin-top: 20px;
 			margin-bottom: 20px;
 			
@@ -69,18 +68,20 @@
 				.box-shadow(0 0 5px #CCCCCC);
 			}
 			
-			.service-footer {
+			.application-access-footer {
 				text-align: right;
 				margin: 3px auto 20px;
 				padding: 0;
 			}
 		}
-	}
-	
-	@media (min-height: @service-page-vertical-align-min-height) {
-		.service-page {
-			padding-top: @service-page-vertical-align-padding;
-			padding-bottom: @service-page-vertical-align-padding;
+		
+		@media (min-height: @vertical-align-min-height) {
+			padding-top: @vertical-align-padding;
+			padding-bottom: @vertical-align-padding;
 		}
 	}
+}
+
+.application-access-page {
+	.application-access-page-mixin();
 }
