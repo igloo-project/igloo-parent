@@ -11,6 +11,11 @@
 	<security:http pattern="/monitoring/**" security="none" />
 	<security:http pattern="/favicon.ico" security="none" />
 	
+	<!-- An entry point to respond with a 403 error if Spring Security wants the user to log in.
+		Useful in situations where loging in is not an option, such as when serving CSS.
+	 -->
+	<bean id="entryPoint403" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
+	
 	<security:http pattern="^/console/.*" authentication-manager-ref="authenticationManager" auto-config="false" request-matcher="regex">
 		<security:headers disabled="true"/>
 		<security:csrf disabled="true"/>
@@ -28,6 +33,20 @@
 		<security:intercept-url pattern="^/console/.*" access="hasRole('ROLE_ADMIN')" />
 	</security:http>
 	
+	<security:http request-matcher="regex"
+			pattern="^/wicket/resource/.*"
+			create-session="never" entry-point-ref="entryPoint403" authentication-manager-ref="authenticationManager"
+			auto-config="false" use-expressions="true">
+		<security:headers disabled="true"/>
+		<security:csrf disabled="true"/>
+		
+		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.js.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.styles.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.images.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.[^/]+.*" access="hasRole('ROLE_AUTHENTICATED')" />
+		<security:intercept-url pattern="^/wicket/resource/.*" access="hasRole('ROLE_ANONYMOUS')" />
+	</security:http>
+	
 	<security:http authentication-manager-ref="authenticationManager" auto-config="false">
 		<security:headers disabled="true"/>
 		<security:csrf disabled="true"/>
@@ -39,11 +58,6 @@
 		<security:access-denied-handler error-page="/access-denied/" />
 		
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
-		
-		<security:intercept-url pattern="/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.js.*/**" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.styles.*/**" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="/wicket/resource/fr.openwide.core.basicapp.web.application.*/**" access="hasRole('ROLE_AUTHENTICATED')" />
-		<security:intercept-url pattern="/wicket/resource/**" access="hasRole('ROLE_ANONYMOUS')" />
 		
 		<security:intercept-url pattern="/login/" access="permitAll" />
 		<security:intercept-url pattern="/login/failure/" access="permitAll" />
