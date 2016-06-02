@@ -29,7 +29,7 @@ public abstract class AbstractLinkParameterMappingEntry implements ILinkParamete
 			try {
 				parameterValue = conversionService.convert(mappedValue, String.class);
 			} catch (ConversionException e) {
-				throw new LinkParameterInjectionException(e);
+				throw new LinkParameterInjectionException("Error converting the value of parameter " + parameterName, e);
 			}
 			
 			if (parameterValue != null) {
@@ -50,7 +50,7 @@ public abstract class AbstractLinkParameterMappingEntry implements ILinkParamete
 			try {
 				mappedValue = conversionService.convert(parameterValue, mappedType);
 			} catch (ConversionException e) {
-				throw new LinkParameterExtractionException(e);
+				throw new LinkParameterExtractionException("Error converting the value of parameter " + parameterName, e);
 			}
 		}
 		
@@ -69,7 +69,7 @@ public abstract class AbstractLinkParameterMappingEntry implements ILinkParamete
 			try {
 				mappedValue = conversionService.convert(parameterValue, TypeDescriptor.valueOf(String.class), mappedTypeDescriptor);
 			} catch (ConversionException e) {
-				throw new LinkParameterExtractionException(e);
+				throw new LinkParameterExtractionException("Error converting the value of parameter " + parameterName, e);
 			}
 		}
 		

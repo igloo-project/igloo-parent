@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.extractor;
 
-import org.springframework.core.NestedRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.LinkRuntimeException;
 
-public class LinkParameterExtractionRuntimeException extends NestedRuntimeException {
+public class LinkParameterExtractionRuntimeException extends LinkRuntimeException {
 
 	private static final long serialVersionUID = -456914851659661424L;
 

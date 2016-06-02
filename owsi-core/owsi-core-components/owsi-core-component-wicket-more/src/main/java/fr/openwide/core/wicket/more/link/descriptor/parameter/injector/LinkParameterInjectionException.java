@@ -1,6 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.parameter.injector;
 
-public class LinkParameterInjectionException extends Exception {
+import fr.openwide.core.wicket.more.link.descriptor.LinkException;
+
+public class LinkParameterInjectionException extends LinkException {
 
 	private static final long serialVersionUID = 1755131619089627896L;
 
@@ -8,8 +10,12 @@ public class LinkParameterInjectionException extends Exception {
 		super(message);
 	}
 
+	/**
+	 * @deprecated Use {@link #LinkParameterInjectionException(String, Throwable)} and provide a meaningful message.
+	 */
+	@Deprecated
 	public LinkParameterInjectionException(Throwable cause) {
-		super(cause);
+		super(null, cause);
 	}
 
 	public LinkParameterInjectionException(String message, Throwable cause) {
