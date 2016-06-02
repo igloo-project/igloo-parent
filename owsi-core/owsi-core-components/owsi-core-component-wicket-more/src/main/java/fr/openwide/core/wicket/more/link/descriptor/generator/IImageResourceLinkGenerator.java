@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor.generator;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.request.resource.ResourceReference;
 
@@ -23,5 +24,8 @@ public interface IImageResourceLinkGenerator extends ILinkGenerator, IDetachable
 	 * @see DynamicImage
 	 */
 	DynamicImage image(String wicketId);
+	
+	@Override
+	public IImageResourceLinkGenerator wrap(Component component);
 
 }

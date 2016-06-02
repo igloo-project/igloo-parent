@@ -76,7 +76,7 @@ public class LinkParametersMapping implements IModel<PageParameters>, IComponent
 	}
 	
 	@Override
-	public IWrapModel<PageParameters> wrapOnAssignment(Component component) {
+	public WrapModel wrapOnAssignment(Component component) {
 		return new WrapModel(component);
 	}
 

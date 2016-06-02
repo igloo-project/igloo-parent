@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor.impl;
 
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
@@ -39,6 +41,28 @@ public abstract class AbstractCoreExplicitelyParameterizedLinkDescriptor impleme
 		} catch (LinkParameterValidationException e) {
 			throw new LinkParameterValidationRuntimeException(e);
 		}
+	}
+
+	@Override
+	public String fullUrl() {
+		return fullUrl(RequestCycle.get());
+	}
+	
+	@Override
+	public String fullUrl(RequestCycle requestCycle) {
+		return requestCycle.getUrlRenderer().renderFullUrl(Url.parse(url(requestCycle)));
+	}
+	
+	@Override
+	public boolean isAccessible() {
+		if (LinkParameterValidators.isModelValid(parametersValidator)) {
+			PageParameters parameters = parametersMapping.getObject();
+			if (LinkParameterValidators.isSerializedValid(parameters, parametersValidator)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	@Override

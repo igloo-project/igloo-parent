@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor.generator;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -27,18 +29,60 @@ public interface ILinkGenerator extends IDetachable {
 	AbstractDynamicBookmarkableLink link(String wicketId);
 	
 	/**
-	 * Renders the full URL for this link generator.
-	 * <p>The resulting string includes protocol ("http://"), host, port, and path, as well as query parameters ("?arg0=true"), if any.
-	 * @return The full URL for this link generator.
+	 * Renders the URL for this link generator.
+	 * <p>The resulting string may be relative to the current request's URL, so it <strong>might not</string> include
+	 * protocol ("http://"), host and port, but includes a path relative to the current request's path, as well as
+	 * query parameters ("?arg0=true"), if any.
+	 * @return The URL (relative if possible, absolute otherwise) for this link generator.
 	 */
-	String fullUrl() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException;
+	String url() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
+			LinkParameterValidationRuntimeException;
 	
 	/**
-	 * Renders the full URL for this link generator.
+	 * Renders the URL for this link generator.
+	 * <p>The resulting string may be relative to the current request's URL, so it <strong>might not</string> include
+	 * protocol ("http://"), host and port, but includes a path relative to the current request's path, as well as
+	 * query parameters ("?arg0=true"), if any.
+	 * 
+	 * @return The URL (relative if possible, absolute otherwise) for this link generator.
+	 * @param requestCycle The {@link RequestCycle} to use in order to generate the URL.
+	 */
+	String url(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
+			LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException;
+	
+	/**
+	 * Renders the full (absolute) URL for this link generator.
 	 * <p>The resulting string includes protocol ("http://"), host, port, and path, as well as query parameters ("?arg0=true"), if any.
 	 * @return The full URL for this link generator.
 	 */
-	String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException;
+	String fullUrl() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
+			LinkParameterValidationRuntimeException;
+	
+	/**
+	 * Renders the full (absolute) URL for this link generator.
+	 * <p>The resulting string includes protocol ("http://"), host, port, and path, as well as query parameters ("?arg0=true"), if any.
+	 * @return The full URL for this link generator.
+	 * @param requestCycle The {@link RequestCycle} to use in order to generate the URL.
+	 */
+	String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
+			LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException;
+
+	/**
+	 * Wraps any underlying {@link IComponentAssignedModel} and return the resulting link generator.
+	 * 
+	 * @see org.apache.wicket.model.IComponentAssignedModel.wrapOnAssignment(Component)
+	 */
+	ILinkGenerator wrap(Component component);
+	
+	/**
+	 * Returns true if the generation methods ({@link #link(String)}, {@link #newRestartResponseException()}, etc.)
+	 * are known not to throw any {@link LinkInvalidTargetRuntimeException} or
+	 * {@link LinkParameterValidationRuntimeException}.
+	 * <p><strong>WARNING:</strong> you should not use this method simply to detect validation errors! If there is no
+	 * particular reason this link generator could be invalid, you should rely on exception handling instead.
+	 * <p>The result of this method may change over time if the underlying data changes.
+	 */
+	boolean isAccessible();
 	
 	ILinkGenerator INVALID = new ILinkGenerator() {
 		private static final long serialVersionUID = 1L;
@@ -55,7 +99,24 @@ public interface ILinkGenerator extends IDetachable {
 				protected CharSequence getRelativeURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException {
 					throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
 				}
+				@Override
+				protected CharSequence getAbsoluteURL() throws LinkInvalidTargetRuntimeException,
+						LinkParameterValidationRuntimeException {
+					throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
+				}
 			};
+		}
+
+		@Override
+		public String url() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
+				LinkParameterValidationRuntimeException {
+			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
+		}
+
+		@Override
+		public String url(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
+				LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
+			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
 		}
 
 		@Override
@@ -68,6 +129,16 @@ public interface ILinkGenerator extends IDetachable {
 		public String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
 				LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
 			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
+		}
+		
+		@Override
+		public ILinkGenerator wrap(Component component) {
+			return this;
+		}
+		
+		@Override
+		public boolean isAccessible() {
+			return false;
 		}
 
 		@Override

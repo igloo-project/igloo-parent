@@ -15,6 +15,6 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.IImageResourceLink
  * @see IResourceLinkDescriptor
  * @see IImageResourceLinkGenerator
  */
-public interface IImageResourceLinkDescriptor extends ILinkDescriptor, IImageResourceLinkGenerator, IDetachable {
+public interface IImageResourceLinkDescriptor extends IResourceLinkDescriptor, IImageResourceLinkGenerator, IDetachable {
 
 }

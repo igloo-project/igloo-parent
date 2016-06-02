@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.link.descriptor.generator;
 
 import java.util.Collection;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -38,6 +39,9 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	 * @see AbstractDynamicBookmarkableLink
 	 */
 	AbstractDynamicBookmarkableLink link(String wicketId, String anchor);
+	
+	@Override
+	public IPageLinkGenerator wrap(Component component);
 
 	/**
 	 * Sets the response page and parameters for the current {@link RequestCycle} to the value of this link descriptor.
@@ -107,12 +111,6 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	 */
 	NavigationMenuItem navigationMenuItem(IModel<String> labelModel, Collection<NavigationMenuItem> subMenuItems)
 			throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
-
-	/**
-	 * Returns true if the target page is accessible by checking it against the authorization strategy defined in Wicket.
-	 * @return
-	 */
-	boolean isAccessible();
 	
 	/**
 	 * Returns true if the page pointed by the page link descriptor is equals to the one passed as parameter.

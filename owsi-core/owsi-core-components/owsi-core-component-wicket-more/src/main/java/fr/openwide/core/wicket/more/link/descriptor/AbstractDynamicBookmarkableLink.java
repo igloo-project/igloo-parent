@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor;
 
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.request.Url;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
@@ -127,15 +126,16 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	
 	@Override
 	protected final CharSequence getURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException {
-		CharSequence relativeUrl = getRelativeURL();
 		if (isAbsolute()) {
-			return getRequestCycle().getUrlRenderer().renderFullUrl(Url.parse(relativeUrl));
+			return getAbsoluteURL();
 		} else {
-			return relativeUrl;
+			return getRelativeURL();
 		}
 	}
 	
 	protected abstract CharSequence getRelativeURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
+	
+	protected abstract CharSequence getAbsoluteURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
 	
 	@Override
 	protected boolean getStatelessHint() {

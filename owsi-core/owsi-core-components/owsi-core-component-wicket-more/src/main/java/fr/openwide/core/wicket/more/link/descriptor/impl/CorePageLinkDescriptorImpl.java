@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.link.descriptor.impl;
 
 import java.util.Collection;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -9,7 +10,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -30,6 +30,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParame
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameterizedLinkDescriptor implements IPageLinkDescriptor {
 	
@@ -50,17 +51,21 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		this.pageClassModel = pageClassModel;
 	}
 
-	protected Class<? extends Page> getNonNullPageClass() throws LinkInvalidTargetRuntimeException {
+	protected Class<? extends Page> getValidPageClass() throws LinkInvalidTargetRuntimeException {
 		Class<? extends Page> pageClass = pageClassModel.getObject();
 		if (pageClass == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page of this ILinkDescriptor was null");
+		}
+		if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
+			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + pageClass
+					+ "' was not authorized when trying to render the URL.");
 		}
 		return pageClass;
 	}
 
 	@Override
 	public AbstractDynamicBookmarkableLink link(String wicketId) {
-		return new DynamicBookmarkablePageLink(wicketId, pageClassModel, parametersMapping, parametersValidator);
+		return new DynamicBookmarkablePageLink(wicketId, this);
 	}
 	
 	@Override
@@ -89,26 +94,34 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 			throw fallbackLink.newRestartResponseException();
 		}
 	}
-
+	
 	@Override
-	public String fullUrl() {
-		return fullUrl(RequestCycle.get());
+	public String url() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
+			LinkParameterValidationRuntimeException {
+		return url(RequestCycle.get());
 	}
 	
 	@Override
-	public String fullUrl(RequestCycle requestCycle) {
-		Class<? extends Page> pageClass = getNonNullPageClass();
+	public String url(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
+			LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
+		Class<? extends Page> pageClass = getValidPageClass();
 		PageParameters parameters = getValidatedParameters();
 		
-		return requestCycle.getUrlRenderer()
-				.renderFullUrl(
-						Url.parse(requestCycle.urlFor(pageClass, parameters))
-				);
+		return requestCycle.urlFor(pageClass, parameters).toString();
+	}
+	
+	@Override
+	public IPageLinkDescriptor wrap(Component component) {
+		return new CorePageLinkDescriptorImpl(
+				Models.wrap(pageClassModel, component),
+				parametersMapping.wrapOnAssignment(component),
+				parametersValidator
+		);
 	}
 	
 	@Override
 	public void setResponsePage() throws LinkParameterValidationRuntimeException {
-		Class<? extends Page> pageClass = getNonNullPageClass();
+		Class<? extends Page> pageClass = getValidPageClass();
 		PageParameters parameters = getValidatedParameters();
 		
 		RequestCycle.get().setResponsePage(pageClass, parameters);
@@ -116,7 +129,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 
 	@Override
 	public RestartResponseException newRestartResponseException() throws LinkParameterValidationRuntimeException {
-		Class<? extends Page> pageClass = getNonNullPageClass();
+		Class<? extends Page> pageClass = getValidPageClass();
 		PageParameters parameters = getValidatedParameters();
 		
 		return new RestartResponseException(pageClass, parameters);
@@ -124,7 +137,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	
 	@Override
 	public RestartResponseAtInterceptPageException newRestartResponseAtInterceptPageException() throws LinkParameterValidationRuntimeException {
-		Class<? extends Page> pageClass = getNonNullPageClass();
+		Class<? extends Page> pageClass = getValidPageClass();
 		PageParameters parameters = getValidatedParameters();
 		
 		return new RestartResponseAtInterceptPageException(pageClass, parameters);
@@ -155,11 +168,8 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	@Override
 	public boolean isAccessible() {
 		Class<? extends Page> pageClass = pageClassModel.getObject();
-		if (pageClass == null) {
-			return false;
-		} else {
-			return Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass);
-		}
+		return pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)
+				&& super.isAccessible();
 	}
 	
 	@Override
@@ -198,7 +208,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 
 	@Override
 	public PageProvider newPageProvider() {
-		return new PageProvider(getNonNullPageClass(), getValidatedParameters());
+		return new PageProvider(getValidPageClass(), getValidatedParameters());
 	}
 	
 }

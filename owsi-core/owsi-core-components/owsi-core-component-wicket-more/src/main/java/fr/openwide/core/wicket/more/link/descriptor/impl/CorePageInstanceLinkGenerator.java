@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.link.descriptor.impl;
 
 import java.util.Collection;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
@@ -25,6 +26,7 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
+import fr.openwide.core.wicket.more.util.model.Models;
 
 public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	
@@ -41,6 +43,18 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	public CorePageInstanceLinkGenerator(IModel<? extends Page> pageInstanceModel, Collection<IModel<? extends Class<? extends Page>>> expectedPageClassModels) {
 		this.pageInstanceModel = pageInstanceModel;
 		this.expectedPageClassModels = expectedPageClassModels;
+	}
+	
+	@Override
+	public IPageLinkGenerator wrap(Component component) {
+		Collection<IModel<? extends Class<? extends Page>>> wrapedPageClassModels = Lists.newArrayList();
+		for (IModel<? extends Class<? extends Page>> expectedPageClassModel : expectedPageClassModels) {
+			wrapedPageClassModels.add(Models.wrap(expectedPageClassModel, component));
+		}
+		return new CorePageInstanceLinkGenerator(
+				Models.wrap(pageInstanceModel, component),
+				wrapedPageClassModels
+		);
 	}
 	
 	protected Class<? extends Page> getValidExpectedPageClass(Page pageInstance) {
@@ -69,18 +83,38 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 					+ " got " + pageInstance.getClass().getName() + ", "
 					+ "expected one of " + Joiner.on(", ").join(Collections2.transform(expectedPageClassModels, GET_NAME_FROM_CLASS_MODEL_FUNCTION)));
 		}
+
+		if (!Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER)) {
+			throw new LinkInvalidTargetRuntimeException("The rendering of the target page instance '" + pageInstance
+					+ "' was not authorized.");
+		}
 		
 		return pageInstance;
 	}
 	
-	public CharSequence relativeUrl() throws LinkInvalidTargetRuntimeException {
-		return relativeUrl(RequestCycle.get());
+	@Override
+	public boolean isAccessible() {
+		Page pageInstance = pageInstanceModel.getObject();
+		if (pageInstance == null) {
+			return false;
+		}
+		Class<? extends Page> validPageClass = getValidExpectedPageClass(pageInstance);
+		if (validPageClass == null) {
+			return false;
+		}
+		return Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER);
 	}
 	
-	public CharSequence relativeUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException {
+	@Override
+	public String url() throws LinkInvalidTargetRuntimeException {
+		return url(RequestCycle.get());
+	}
+	
+	@Override
+	public String url(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException {
 		return requestCycle.urlFor(
-				new RenderPageRequestHandler(new PageProvider(getValidPageInstance()))
-		);
+						new RenderPageRequestHandler(new PageProvider(getValidPageInstance()))
+				).toString();
 	}
 
 	@Override
@@ -90,7 +124,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 
 	@Override
 	public String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException {
-		return requestCycle.getUrlRenderer().renderFullUrl(Url.parse(relativeUrl(requestCycle)));
+		return requestCycle.getUrlRenderer().renderFullUrl(Url.parse(url(requestCycle)));
 	}
 
 	@Override
@@ -143,19 +177,6 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		return new NavigationMenuItem(labelModel, this, subMenuItems);
 	}
 
-	@Override
-	public boolean isAccessible() {
-		Page pageInstance = pageInstanceModel.getObject();
-		if (pageInstance == null) {
-			return false;
-		}
-		Class<? extends Page> validPageClass = getValidExpectedPageClass(pageInstance);
-		if (validPageClass == null) {
-			return false;
-		}
-		return Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER);
-	}
-	
 	@Override
 	public boolean isActive(Class<? extends Page> selectedPage) {
 		throw new IllegalStateException("We may not call isActive on a page instance link.");
