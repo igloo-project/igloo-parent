@@ -1,5 +1,8 @@
 package fr.openwide.core.basicapp.web.application.security.login.component;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -93,6 +96,16 @@ public class SignInContentPanel<U extends User> extends Panel {
 		passwordField.setLabel(new ResourceModel("signIn.password"));
 		passwordField.add(new LabelPlaceholderBehavior());
 		signInForm.add(passwordField);
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+
+		// There's javascript directly in the HTML file
+		response.render(JavaScriptHeaderItem.forReference(
+				Application.get().getJavaScriptLibrarySettings().getJQueryReference()
+		));
 	}
 
 }

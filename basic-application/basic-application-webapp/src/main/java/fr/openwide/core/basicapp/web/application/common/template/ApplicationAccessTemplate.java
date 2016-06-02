@@ -87,9 +87,6 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.render(JavaScriptHeaderItem.forReference(
-				Application.get().getJavaScriptLibrarySettings().getJQueryReference()
-		));
 		response.render(CssHeaderItem.forReference(ApplicationAccessLessCssResourceReference.get()));
 	}
 
