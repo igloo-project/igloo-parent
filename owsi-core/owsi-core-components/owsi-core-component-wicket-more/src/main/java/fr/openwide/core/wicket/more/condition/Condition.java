@@ -365,7 +365,12 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public boolean applies() {
 			Collection<? super T> collection = collectionModel.getObject();
 			T element = elementModel.getObject();
-			return collection != null && collection.contains(element);
+			try {
+				return collection != null && collection.contains(element);
+			} catch (NullPointerException e) {
+				// We need to catch the NPE to deal with collections and maps which don't permit null keys.
+				return false;
+			}
 		}
 		
 		@Override
