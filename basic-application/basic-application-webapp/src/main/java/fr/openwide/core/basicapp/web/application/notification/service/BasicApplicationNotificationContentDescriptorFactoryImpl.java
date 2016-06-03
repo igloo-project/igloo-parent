@@ -13,15 +13,14 @@ import com.google.common.collect.ImmutableList;
 import fr.openwide.core.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
-import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.util.ResourceKeyGenerator;
 import fr.openwide.core.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
 import fr.openwide.core.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
 import fr.openwide.core.spring.notification.model.INotificationContentDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
@@ -55,45 +54,41 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 		};
 	}
 
-	protected final <T> INotificationContentDescriptor simpleUserActionNotification(
-			final INotificationTypeDescriptor typeDescriptor, final String actionMessageKeyPart,
-			final IModel<T> objectModel, final ILinkGenerator linkGenerator) {
-		return new AbstractSimpleWicketNotificationDescriptor(typeDescriptor.notificationRessourceKey(actionMessageKeyPart)) {
-			@Override
-			public IModel<?> getSubjectParameter() {
-				return objectModel;
-			}
-			@Override
-			public Component createComponent(String wicketId) {
-				return new SimpleUserActionHtmlNotificationPanel<>(wicketId, typeDescriptor, actionMessageKeyPart,
-						objectModel, BasicApplicationSession.get().getUserModel(), Model.of(new Date()), linkGenerator);
-			}
-		};
-	}
-
 	@Override
-	public INotificationContentDescriptor userPasswordRecoveryRequest(User user) {
-		IModel<User> model = GenericEntityModel.of(user);
-		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name() + "." + user.getPasswordRecoveryRequest().getInitiator().name();
+	public INotificationContentDescriptor userPasswordRecoveryRequest(final User user) {
 		
-		IPageLinkDescriptor linkDescriptor = null;
+		final ITwoParameterLinkDescriptorMapper<? extends ILinkGenerator, User, String> mapper;
 		switch (user.getPasswordRecoveryRequest().getType()) {
 		case CREATION:
-			linkDescriptor = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordCreationPageLinkDescriptor(model, BindingModel.of(model, Bindings.user().passwordRecoveryRequest().token()));
+			mapper = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordCreationPageLinkDescriptorMapper();
 			break;
 		case RESET:
-			linkDescriptor = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordResetPageLinkDescriptor(model, BindingModel.of(model, Bindings.user().passwordRecoveryRequest().token()));
+			mapper = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordResetPageLinkDescriptorMapper();
 			break;
 		default:
 			throw new IllegalStateException("Recovery request type unknown.");
 		}
-		
-		return simpleUserActionNotification(
-				NotificationUserTypeDescriptor.USER,
-				actionMessageKeyPart,
-				model,
-				linkDescriptor
-		);
+
+		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name()
+				+ "." + user.getPasswordRecoveryRequest().getInitiator().name();
+		final ResourceKeyGenerator keyGenerator = NotificationUserTypeDescriptor.USER.resourceKeyGenerator()
+				.append(actionMessageKeyPart);
+		return new AbstractSimpleWicketNotificationDescriptor(keyGenerator.resourceKey()) {
+			@Override
+			public IModel<?> getSubjectParameter() {
+				return GenericEntityModel.of(user);
+			}
+			@Override
+			public Component createComponent(String wicketId) {
+				IModel<User> userModel = GenericEntityModel.of(user);
+				return new SimpleUserActionHtmlNotificationPanel<>(
+						wicketId,
+						keyGenerator,
+						userModel, userModel, Model.of(new Date()),
+						mapper.map(userModel, BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token()))
+				);
+			}
+		};
 	}
 
 }

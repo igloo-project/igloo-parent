@@ -7,8 +7,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.util.ResourceKeyGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 
@@ -16,41 +15,61 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 
 	private static final long serialVersionUID = -6941290354402094613L;
 
-	public SimpleUserActionHtmlNotificationPanel(String id, INotificationTypeDescriptor typeDescriptor, String actionMessageKeyPart,
-			final IModel<T> objetModel, final IModel<User> auteurModel, final IModel<Date> dateModel,
+	public SimpleUserActionHtmlNotificationPanel(String id,
+			ResourceKeyGenerator resourceKeyGenerator,
+			final IModel<T> objectModel, final IModel<User> authorModel, final IModel<Date> dateModel,
 			ILinkGenerator linkGenerator) {
-		super(id, objetModel);
+		this(id, resourceKeyGenerator, resourceKeyGenerator, objectModel, authorModel, dateModel, linkGenerator);
+	}
+
+	public SimpleUserActionHtmlNotificationPanel(String id,
+			ResourceKeyGenerator resourceKeyGenerator, ResourceKeyGenerator defaultResourceKeyGenerator,
+			final IModel<T> objectModel, final IModel<User> authorModel, final IModel<Date> dateModel,
+			ILinkGenerator linkGenerator) {
+		super(id, objectModel);
 		
 		// Intro
 		StringResourceModel descriptionTextModel = 
-				new StringResourceModel(typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".text"))
-						.setModel(objetModel)
+				new StringResourceModel(
+						resourceKeyGenerator.resourceKey("text"),
+						objectModel
+				)
+						.setParameters(dateModel, authorModel)
 						.setDefaultValue(
-								new StringResourceModel(UserTypeDescriptor.USER.notificationTypeDescriptor().notificationRessourceKey(actionMessageKeyPart + ".text"))
-										.setModel(objetModel)
-										.setParameters(dateModel, auteurModel)
+								new StringResourceModel(
+										defaultResourceKeyGenerator.resourceKey("text"),
+										objectModel
 								)
-						.setParameters(dateModel, auteurModel);
+										.setParameters(dateModel, authorModel)
+						);
 		add(new Label("description", descriptionTextModel).setEscapeModelStrings(false));
 		
 		// Main link
 		if (linkGenerator != null) {
-			StringResourceModel linkIntroModel = new StringResourceModel(typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.intro"))
-					.setModel(objetModel)
+			StringResourceModel linkIntroModel = new StringResourceModel(
+					resourceKeyGenerator.resourceKey("link.intro"),
+					objectModel
+			)
+					.setParameters(dateModel, authorModel)
 					.setDefaultValue(
-							new StringResourceModel(UserTypeDescriptor.USER.notificationTypeDescriptor().notificationRessourceKey(actionMessageKeyPart + ".link.intro"))
-									.setModel(objetModel)
-									.setParameters(dateModel, auteurModel)
-					)
-					.setParameters(dateModel, auteurModel);
-			StringResourceModel linkLabelModel = new StringResourceModel(typeDescriptor.notificationRessourceKey(actionMessageKeyPart + ".link.label"))
-					.setModel(objetModel)
+							new StringResourceModel(
+									defaultResourceKeyGenerator.resourceKey("link.intro"),
+									objectModel
+							)
+									.setParameters(dateModel, authorModel)
+					);
+			StringResourceModel linkLabelModel = new StringResourceModel(
+					resourceKeyGenerator.resourceKey("link.label"),
+					objectModel
+			)
+					.setParameters(dateModel, authorModel)
 					.setDefaultValue(
-							new StringResourceModel(UserTypeDescriptor.USER.notificationTypeDescriptor().notificationRessourceKey(actionMessageKeyPart + ".link.label"))
-									.setModel(objetModel)
-									.setParameters(dateModel, auteurModel)
-					)
-					.setParameters(dateModel, auteurModel);
+							new StringResourceModel(
+									defaultResourceKeyGenerator.resourceKey("link.label"),
+									objectModel
+							)
+									.setParameters(dateModel, authorModel)
+					);
 			add(
 					new Label("linkIntro", linkIntroModel),
 					linkGenerator.link("mainLink")

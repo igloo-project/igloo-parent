@@ -2,10 +2,10 @@ package fr.openwide.core.basicapp.web.application.common.typedescriptor.user;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.AbstractGenericEntityChildTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.common.typedescriptor.INotificationTypeDescriptor;
+import fr.openwide.core.basicapp.web.application.common.util.ResourceKeyGenerator;
 
 public abstract class NotificationUserTypeDescriptor<U extends User> extends
-		AbstractGenericEntityChildTypeDescriptor<UserTypeDescriptor<U>, U> implements INotificationTypeDescriptor {
+		AbstractGenericEntityChildTypeDescriptor<UserTypeDescriptor<U>, U> {
 
 	private static final long serialVersionUID = -349656773642244352L;
 
@@ -21,9 +21,8 @@ public abstract class NotificationUserTypeDescriptor<U extends User> extends
 	private NotificationUserTypeDescriptor(UserTypeDescriptor<U> typeDescriptor) {
 		super(typeDescriptor);
 	}
-
-	@Override
-	public String notificationRessourceKey(String suffix) {
-		return typeDescriptor.resourceKey("notification.panel", suffix);
+	
+	public ResourceKeyGenerator resourceKeyGenerator() {
+		return typeDescriptor.resourceKeyGenerator().withPrefix("notification.panel");
 	}
 }

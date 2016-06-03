@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 
 import org.javatuples.Pair;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
+import fr.openwide.core.basicapp.web.application.common.util.ResourceKeyGenerator;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.util.HibernateUtils;
 
@@ -22,12 +22,12 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 
 	private final Class<E> clazz;
 
-	private final String name;
+	private final ResourceKeyGenerator resourceKeyGenerator;
 
 	protected AbstractGenericEntityTypeDescriptor(Class<?> typeDescriptorClass, Class<E> clazz, String name) {
 		ALL.put(Pair.<Class<?>, Class<?>>with(typeDescriptorClass, clazz), this);
 		this.clazz = checkNotNull(clazz);
-		this.name = checkNotNull(name);
+		this.resourceKeyGenerator = ResourceKeyGenerator.of(checkNotNull(name));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -55,16 +55,12 @@ public abstract class AbstractGenericEntityTypeDescriptor<T extends AbstractGene
 		return clazz;
 	}
 
-	public String getName() {
-		return name;
+	public ResourceKeyGenerator business() {
+		return resourceKeyGenerator.withPrefix("business");
 	}
 
-	public String businessResourceKey(String suffix) {
-		return resourceKey("business", suffix);
-	}
-
-	public String resourceKey(String prefix, String suffix) {
-		return Joiner.on(".").skipNulls().join(prefix, name, suffix);
+	public ResourceKeyGenerator resourceKeyGenerator() {
+		return resourceKeyGenerator;
 	}
 
 	protected abstract Object readResolve();

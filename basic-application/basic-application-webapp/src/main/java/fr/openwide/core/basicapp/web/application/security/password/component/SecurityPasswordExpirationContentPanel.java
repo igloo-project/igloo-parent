@@ -56,9 +56,9 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 						.add(new LabelPlaceholderBehavior()),
 				new CoreLabel("passwordHelp",
 						new ResourceModel(
-								typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
+								typeDescriptor.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"),
 								new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor()
-										.securityRessourceKey("password.help"))
+										.resourceKeyGenerator().resourceKey("password.help"))
 						)
 				),
 				confirmPasswordField

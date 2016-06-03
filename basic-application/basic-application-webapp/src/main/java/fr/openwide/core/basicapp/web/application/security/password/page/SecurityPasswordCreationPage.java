@@ -16,6 +16,7 @@ import fr.openwide.core.basicapp.web.application.security.password.component.Sec
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -23,14 +24,15 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
 	private static final long serialVersionUID = 1L;
-
-	public static final IPageLinkDescriptor linkDescriptor(IModel<User> userModel, IModel<String> tokenModel) {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordCreationPage.class)
-				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.map(CommonParameters.TOKEN, tokenModel, String.class).mandatory()
-				.build();
-	}
+	
+	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, String> MAPPER = 
+			new LinkDescriptorBuilder()
+					.page(SecurityPasswordCreationPage.class)
+					.model(User.class)
+					.model(String.class)
+					.pickFirst().map(CommonParameters.ID).mandatory()
+					.pickSecond().map(CommonParameters.TOKEN).mandatory()
+					.build();
 
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 
@@ -45,7 +47,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 		
 		final IModel<String> tokenModel = Model.of("");
 		
-		linkDescriptor(userModel, tokenModel).extractSafely(
+		MAPPER.map(userModel, tokenModel).extractSafely(
 				parameters, 
 				BasicApplicationApplication.get().getHomePageLinkDescriptor(),
 				getString("common.error.unexpected")

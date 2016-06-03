@@ -147,8 +147,8 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 														),
 												new CoreLabel("passwordHelp",
 														new ResourceModel(
-																typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
-																new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
+																typeDescriptor.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"),
+																new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"))
 														)
 												),
 												confirmPasswordField

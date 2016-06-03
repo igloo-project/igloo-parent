@@ -74,8 +74,8 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 								
 								new CoreLabel("passwordHelp",
 										new ResourceModel(
-												typeDescriptor.securityTypeDescriptor().securityRessourceKey("password.help"),
-												new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().securityRessourceKey("password.help"))
+												typeDescriptor.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"),
+												new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"))
 										)
 								),
 								
