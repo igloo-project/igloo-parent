@@ -13,7 +13,11 @@ import com.google.common.base.Supplier;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 
-public interface IParameterMapperOneChosenParameterMappingState<InitialState, T1> extends IParameterMapperChosenParameterMappingState<InitialState, Unit<IModel<T1>>> {
+public interface IParameterMapperOneChosenParameterMappingState<InitialState, T1>
+		extends IParameterMapperChosenParameterMappingState<
+				InitialState,
+				Unit<IModel<T1>>
+		> {
 
 	<T> IAddedParameterMappingState<InitialState> map(String parameterName);
 

@@ -51,12 +51,12 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 
 	private final String propertyExpression;
 
-	public static final <T, U> IDetachableFactory<IModel<? extends T>, BindingModel<T, U>> factory(BindingRoot<? super T, ? extends U> binding) {
+	public static final <T, U> IDetachableFactory<IModel<T>, BindingModel<T, U>> factory(BindingRoot<? super T, ? extends U> binding) {
 		final String propertyExpression = binding.getPath();
-		return new AbstractDetachableFactory<IModel<? extends T>, BindingModel<T, U>>() {
+		return new AbstractDetachableFactory<IModel<T>, BindingModel<T, U>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public BindingModel<T, U> create(IModel<? extends T> parameter) {
+			public BindingModel<T, U> create(IModel<T> parameter) {
 				return new BindingModel<T, U>(parameter, propertyExpression);
 			}
 			@Override

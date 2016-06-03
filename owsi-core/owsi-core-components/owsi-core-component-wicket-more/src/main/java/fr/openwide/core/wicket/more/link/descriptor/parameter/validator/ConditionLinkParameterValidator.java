@@ -6,6 +6,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
+import org.javatuples.Tuple;
 import org.javatuples.Unit;
 
 import com.google.common.base.Predicate;
@@ -13,6 +14,7 @@ import com.google.common.base.Predicate;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.AbstractLinkParameterValidatorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class ConditionLinkParameterValidator implements ILinkParameterValidator {
@@ -20,6 +22,23 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
 	private static final long serialVersionUID = -6678335084190190566L;
 
 	private final Condition condition;
+	
+	public static <T extends Tuple> ILinkParameterValidatorFactory<T> fromConditionFactory(
+			final IDetachableFactory<T, ? extends Condition> conditionFactory) {
+		Args.notNull(conditionFactory, "conditionFactory");
+		return new AbstractLinkParameterValidatorFactory<T>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ILinkParameterValidator create(T parameters) {
+				return new ConditionLinkParameterValidator(conditionFactory.create(parameters));
+			}
+			@Override
+			public void detach() {
+				super.detach();
+				conditionFactory.detach();
+			}
+		};
+	}
 	
 	public static <R> ILinkParameterValidatorFactory<Unit<IModel<? extends R>>> predicateFactory(final Predicate<? super R> predicate) {
 		Args.notNull(predicate, "predicate");

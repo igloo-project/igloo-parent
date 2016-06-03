@@ -29,7 +29,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private static final long serialVersionUID = -5344972073351010752L;
 
-	private final IDetachableFactory<IModel<? extends T>, ? extends IModel<C>> modelFactory;
+	private final IDetachableFactory<IModel<T>, ? extends IModel<C>> modelFactory;
 
 	private final BootstrapRenderer<? super C> renderer;
 	

@@ -23,6 +23,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLink
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
 @SuppressWarnings("rawtypes")
 public class CoreParameterMapperMappingStateImpl<InitialState>
@@ -144,6 +145,12 @@ public class CoreParameterMapperMappingStateImpl<InitialState>
 	@Override
 	public InitialState validator(ILinkParameterValidatorFactory parameterValidatorFactory) {
 		return (InitialState) doValidator(parameterValidatorFactory);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public InitialState validator(IDetachableFactory conditionFactory) {
+		return (InitialState) doValidator(ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
 	}
 
 }

@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
@@ -23,6 +24,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParamete
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.common.IParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
 public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl<Result, L extends ILinkDescriptor, SelfState, TLast>
 		extends AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L>
@@ -83,7 +85,7 @@ public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderS
 
 	@Override
 	public IAddedParameterMappingState<SelfState> map(
-			ILinkParameterMappingEntryFactory<Unit<IModel<TLast>>> parameterMappingEntryFactory) {
+			ILinkParameterMappingEntryFactory<? super Unit<IModel<TLast>>> parameterMappingEntryFactory) {
 		return pickLast().map(parameterMappingEntryFactory);
 	}
 
@@ -100,8 +102,13 @@ public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderS
 
 	@Override
 	public SelfState validator(
-			ILinkParameterValidatorFactory<Unit<IModel<TLast>>> parameterValidatorFactory) {
+			ILinkParameterValidatorFactory<? super Unit<IModel<TLast>>> parameterValidatorFactory) {
 		return pickLast().validator(parameterValidatorFactory);
+	}
+	
+	@Override
+	public SelfState validator(IDetachableFactory<? super Unit<IModel<TLast>>, ? extends Condition> conditionFactory) {
+		return pickLast().validator(conditionFactory);
 	}
 
 	@Override

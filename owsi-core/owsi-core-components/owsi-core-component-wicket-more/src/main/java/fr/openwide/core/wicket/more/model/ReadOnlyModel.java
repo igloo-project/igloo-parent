@@ -26,11 +26,11 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 	
 	private final Function<? super F, T> function;
 
-	public static final <F, T> IDetachableFactory<IModel<? extends F>, IModel<T>> factory(final Function<? super F, T> function) {
-		return new AbstractDetachableFactory<IModel<? extends F>, IModel<T>>() {
+	public static final <F, T> IDetachableFactory<IModel<F>, IModel<T>> factory(final Function<? super F, T> function) {
+		return new AbstractDetachableFactory<IModel<F>, IModel<T>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public IModel<T> create(IModel<? extends F> parameter) {
+			public IModel<T> create(IModel<F> parameter) {
 				return new ReadOnlyModel<F, T>(parameter, function);
 			}
 			@Override
