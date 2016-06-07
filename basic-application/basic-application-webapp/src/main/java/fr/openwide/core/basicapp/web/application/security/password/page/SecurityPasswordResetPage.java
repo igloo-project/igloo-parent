@@ -53,6 +53,8 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 				getString("common.error.unexpected")
 		);
 		
+		parameters.remove(CommonParameters.TOKEN);
+		
 		if (!tokenModel.getObject().equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {
 			getSession().error(getString("security.password.reset.wrongToken"));
 			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
