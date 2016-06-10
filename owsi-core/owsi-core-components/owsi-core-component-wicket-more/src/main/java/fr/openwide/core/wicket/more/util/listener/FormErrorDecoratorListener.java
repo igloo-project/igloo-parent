@@ -39,10 +39,17 @@ import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
  * 
  * <p>The listener must be initialized in the Wicket application configuration: {@code FormErrorDecoratorListener.init(this);}</p>
  */
-public final class FormErrorDecoratorListener
-		implements IComponentOnBeforeRenderListener, IComponentOnAfterRenderListener, AjaxRequestTarget.IListener {
+public final class FormErrorDecoratorListener {
 	
-	private static final FormErrorDecoratorListener INSTANCE = new FormErrorDecoratorListener();
+	private FormErrorDecoratorListener() { }
+	
+	public static void init(WebApplication application) {
+		application.getComponentPreOnBeforeRenderListeners().add(PRE_ON_BEFORE_RENDER_LISTENER);
+		application.getComponentPostOnBeforeRenderListeners().add(POST_ON_BEFORE_RENDER_LISTENER);
+		application.getComponentOnAfterRenderListeners().add(ON_AFTER_RENDER_LISTENER);
+		application.getAjaxRequestTargetListeners().add(AJAX_LISTENER);
+		FormProcessedListener.init(application);
+	}
 	
 	private static final String HAS_ERROR_CSS_CLASS = "has-error";
 	private static final String HAS_ERROR_REMINDER_CSS_CLASS = "has-error-reminder";
@@ -51,6 +58,14 @@ public final class FormErrorDecoratorListener
 		private static final long serialVersionUID = 1L;
 		@Override
 		public boolean isTemporary(Component component) {
+			/*
+			 * Don't use this Wicket feature.
+			 * "Temporary" behaviors are removed upon detach, and components within a
+			 * RefreshingView are detached as part of the rendering process (when the view's items are all removed,
+			 * then re-added).
+			 * Thus "temporary" behaviors are never executed for components within a RefreshingView.
+			 * Thus we use a IComponentOnAfterRenderListener for cleaning up this behavior.
+			 */
 			return true;
 		}
 		private Object readResolve() {
@@ -60,12 +75,13 @@ public final class FormErrorDecoratorListener
 	
 	private static final Behavior PROPAGATE_HAS_ERROR_BEHAVIOR = new Behavior() {
 		private static final long serialVersionUID = -7997289335427913596L;
-
 		@Override
 		public boolean isTemporary(Component component) {
+			/*
+			 * See HAS_ERROR_BEHAVIOR.isTemporary.
+			 */
 			return true;
 		}
-		
 		@Override
 		public void renderHead(Component component, IHeaderResponse response) {
 			component.setOutputMarkupId(true);
@@ -109,74 +125,97 @@ public final class FormErrorDecoratorListener
 			return FORM_GROUP;
 		}
 	};
-	
-	public static void init(WebApplication application) {
-		application.getComponentPreOnBeforeRenderListeners().add(INSTANCE);
-		application.getComponentOnAfterRenderListeners().add(INSTANCE);
-		application.getAjaxRequestTargetListeners().add(INSTANCE);
-		FormProcessedListener.init(application);
-	}
-	
-	private FormErrorDecoratorListener() { }
 
-	@Override
-	public void onBeforeRender(Component component) {
-		if (component instanceof FormComponent) {
-			FormComponent<?> formComponent = (FormComponent<?>)component;
-			if (hasError(formComponent)) {
-				formComponent.setMetaData(HAS_ERROR, null);
-				markWithError(formComponent);
-			}
-		} else if (component instanceof RefreshingView<?>) {
-			// Dans le cas où une RefreshingView est rendue, on en profite pour marquer tous les FormComponents invalides
-			// comme tels, puisque cette information peut être perdue lors du onBeforeRender de la RefreshingView.
-			// Explications : lors du onBeforeRender de la RefreshingView, les items sont indirectements détachés (detach()),
-			// ce qui a pour conséquence de vider les FeedbackMessages et donc de rendre valides les inputs dans ces items.
-			// Or, le onBeforeRender de la RefreshingView a lieu avant même l'appel des IComponentOnBeforeRenderListener,
-			// voire même des IComponentOnConfigureListeners, sur les items, ce qui fait qu'il est impossible depuis ces
-			// listeners de constater qu'un input dans un item d'une RefreshingView est invalide.
-			RefreshingView<?> form = (RefreshingView<?>)component;
-			form.visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
+	/*
+	 * First pass: make sure we won't lose information due to some RefreshingView weirdness.
+	 * 
+	 * RefreshingView triggers a detach on its children (and grandchildren and so on) when it
+	 * executes onBeforeRender (because it calls onPopulate, which removes all children, which detaches
+	 * each child).
+	 * Since detaching a child very likely will remove temporary behaviors (such as HAS_ERROR_BEHAVIOR)
+	 * and will reset error messages (which will make FormComponents valid again), we have to intervene
+	 * before these detaches and save the information that some components are errored. 
+	 */
+	private static final IComponentOnBeforeRenderListener PRE_ON_BEFORE_RENDER_LISTENER =
+			new IComponentOnBeforeRenderListener() {
 				@Override
-				public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
-					if (hasError(formComponent)) {
-						formComponent.setMetaData(HAS_ERROR, HAS_ERROR);
+				public void onBeforeRender(Component component) {
+					if (component instanceof RefreshingView<?>) {
+						RefreshingView<?> form = (RefreshingView<?>)component;
+						form.visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
+							@Override
+							public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
+								if (hasError(formComponent)) {
+									formComponent.setMetaData(HAS_ERROR, HAS_ERROR);
+								}
+							}
+						});
 					}
 				}
-			});
-		}
-	}
-	
-	@Override
-	public void onAfterRender(Component component) {
-		if (component instanceof RefreshingView<?>) {
-			// Nettoyage des metadonnées ajoutées dans onBeforeRender
-			RefreshingView<?> form = (RefreshingView<?>)component;
-			form.visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
+			};
+
+		/*
+		 * Second pass: add the HAS_ERROR_BEHAVIOR.
+		 * 
+		 * Here we are sure that, even if the components to decorate are nested deep in the current component's
+		 * child hierarchy, and even if these components to decorate have a parent RefreshingView (see above),
+		 * those RefreshingViews already have been populated and thus will not trigger a detach that would remove
+		 * temporary beavhiors.
+		 */
+	private static final IComponentOnBeforeRenderListener POST_ON_BEFORE_RENDER_LISTENER =
+			new IComponentOnBeforeRenderListener() {
 				@Override
-				public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
-					formComponent.setMetaData(HAS_ERROR, null);
+				public void onBeforeRender(Component component) {
+					if (component instanceof FormComponent) {
+						FormComponent<?> formComponent = (FormComponent<?>)component;
+						if (hasError(formComponent)) {
+							formComponent.setMetaData(HAS_ERROR, null);
+							for (Component componentToMarkWithError : getComponentsToDecorateWithCSS(formComponent)) {
+								if (!componentToMarkWithError.getBehaviors().contains(HAS_ERROR_BEHAVIOR)) {
+									componentToMarkWithError.add(HAS_ERROR_BEHAVIOR);
+								}
+							}
+						}
+					}
 				}
-			});
-		}
-	}
+			};
 
-	@Override
-	public void updateAjaxAttributes(AbstractDefaultAjaxBehavior behavior, AjaxRequestAttributes attributes) {
-		// Rien à faire de particulier.
-	}
+	private static final IComponentOnAfterRenderListener ON_AFTER_RENDER_LISTENER =
+			new IComponentOnAfterRenderListener() {
+				@Override
+				public void onAfterRender(Component component) {
+					if (component instanceof RefreshingView<?>) {
+						// Nettoyage des metadonnées ajoutées dans onBeforeRender
+						RefreshingView<?> form = (RefreshingView<?>)component;
+						form.visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
+							@Override
+							public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
+								formComponent.setMetaData(HAS_ERROR, null);
+							}
+						});
+					}
+				}
+			};
 
-	@Override
-	public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
-		target.getPage().visitChildren(FormComponent.class, new AjaxRenderingVisitor(target));
-	}
+	private static final AjaxRequestTarget.IListener AJAX_LISTENER =
+			new AjaxRequestTarget.IListener() {
+				@Override
+				public void updateAjaxAttributes(AbstractDefaultAjaxBehavior behavior, AjaxRequestAttributes attributes) {
+					// Rien à faire de particulier.
+				}
+			
+				@Override
+				public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
+					target.getPage().visitChildren(FormComponent.class, new AjaxRenderingVisitor(target));
+				}
+			
+				@Override
+				public void onAfterRespond(Map<String, Component> map, IJavaScriptResponse response) {
+					// Rien à faire de particulier après la réponse.
+				}
+			};
 
-	@Override
-	public void onAfterRespond(Map<String, Component> map, IJavaScriptResponse response) {
-		// Rien à faire de particulier après la réponse.
-	}
-
-	private static class AjaxRenderingVisitor implements IVisitor<FormComponent<?>, Void> {
+	private static final class AjaxRenderingVisitor implements IVisitor<FormComponent<?>, Void> {
 		private final AjaxRequestTarget target;
 		
 		public AjaxRenderingVisitor(AjaxRequestTarget target) {
@@ -197,23 +236,17 @@ public final class FormErrorDecoratorListener
 				}
 			}
 		}
-
-		
 	}
 
 	private static boolean hasError(FormComponent<?> formComponent) {
-		return !formComponent.isValid() || formComponent.getMetaData(HAS_ERROR) != null;
+		return formComponent.getMetaData(HAS_ERROR) != null || !formComponent.isValid();
 	}
 
 	public static void markWithError(FormComponent<?> formComponent) {
-		for (Component componentToMarkWithError : getComponentsToMarkWithError(formComponent)) {
-			if (!componentToMarkWithError.getBehaviors().contains(HAS_ERROR_BEHAVIOR)) {
-				componentToMarkWithError.add(HAS_ERROR_BEHAVIOR);
-			}
-		}
+		formComponent.setMetaData(HAS_ERROR, HAS_ERROR);
 	}
 
-	private static List<? extends Component> getComponentsToMarkWithError(FormComponent<?> formComponent) {
+	private static List<? extends Component> getComponentsToDecorateWithCSS(FormComponent<?> formComponent) {
 		if (formComponent.getParent().getMetaData(FORM_GROUP) != null) {
 			return ImmutableList.of(formComponent.getParent());
 		} else if (formComponent instanceof RadioGroup) {
