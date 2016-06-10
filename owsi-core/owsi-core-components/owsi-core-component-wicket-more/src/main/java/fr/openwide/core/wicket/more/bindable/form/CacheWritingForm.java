@@ -1,7 +1,10 @@
 package fr.openwide.core.wicket.more.bindable.form;
 
+import com.google.common.collect.ImmutableList;
+
 import fr.openwide.core.wicket.more.bindable.model.IBindableModel;
 import fr.openwide.core.wicket.more.markup.html.form.ModelValidatingForm;
+import fr.openwide.core.wicket.more.util.model.Detachables;
 
 /**
  * A form that automatically write {@link IBindableModel}'s caches to the underlying objects before validation and
@@ -14,17 +17,25 @@ public class CacheWritingForm<E> extends ModelValidatingForm<E> {
 
 	private static final long serialVersionUID = 5036749558996684273L;
 
-	private final IBindableModel<E> rootModel;
+	private final IBindableModel<E> mainRootModel;
 	
-	public CacheWritingForm(String id, IBindableModel<E> rootModel) {
-		super(id, rootModel);
-		this.rootModel = rootModel;
+	private final ImmutableList<IBindableModel<?>> otherRootModels;
+	
+	public CacheWritingForm(String id, IBindableModel<E> mainRootModel) {
+		this(id, mainRootModel, (IBindableModel<E>[]) null);
+	}
+	
+	public CacheWritingForm(String id, IBindableModel<E> mainRootModel, IBindableModel<?> ... otherRootModels) {
+		super(id, mainRootModel);
+		this.mainRootModel = mainRootModel;
+		this.otherRootModels =
+				otherRootModels == null ? ImmutableList.<IBindableModel<?>>of() : ImmutableList.copyOf(otherRootModels);
 	}
 
 	@Override
 	protected void onValidateModelObjects() {
 		// Make sure sub-form models are up-to-date
-		rootModel.writeAll();
+		writeAll();
 		super.onValidateModelObjects();
 	}
 	
@@ -32,6 +43,19 @@ public class CacheWritingForm<E> extends ModelValidatingForm<E> {
 	protected void onError() {
 		super.onError();
 		this.updateFormComponentModels();
-		rootModel.writeAll();
+		writeAll();
+	}
+	
+	protected void writeAll() {
+		mainRootModel.writeAll();
+		for (IBindableModel<?> otherRootModel : otherRootModels) {
+			otherRootModel.writeAll();
+		}
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(otherRootModels);
 	}
 }
