@@ -408,7 +408,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	public final void onConfigure(Component component) {
 		super.onConfigure(component);
 		
-		if (prerequisiteField.determineVisibility()) {
+		if (prerequisiteField.isVisibleInHierarchy()) {
 			if (forceTakeDownConditon != null && forceTakeDownConditon.applies()) {
 				cleanDefaultModelObject(component);
 				takeDownAttachedComponent(component);
