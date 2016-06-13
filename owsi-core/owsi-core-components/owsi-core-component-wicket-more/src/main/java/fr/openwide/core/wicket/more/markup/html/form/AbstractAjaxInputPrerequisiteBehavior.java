@@ -71,7 +71,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private final Collection<Component> attachedComponents = Lists.newArrayList();
 	
-	private boolean defaultWhenPrerequisiteInvisible = true;
+	private Condition defaultWhenPrerequisiteInvisibleCondition = Condition.alwaysTrue();
 	
 	private boolean useWicketValidation = false;
 	
@@ -105,12 +105,22 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	/**
+	 * Sets whether the attached component should be set up (when condition is <code>true</code>) or taken down (when condition
+	 * is <code>false</code>) when the prerequisiteField is invisible.
+	 * <p>Default is <code>Condition.alwaysTrue()</code>.
+	 */
+	public AbstractAjaxInputPrerequisiteBehavior<T> setDefaultWhenPrerequisiteInvisible(Condition setUpCondition) {
+		this.defaultWhenPrerequisiteInvisibleCondition = setUpCondition;
+		return this;
+	}
+	
+	/**
 	 * Sets whether the attached component should be set up (<code>true</code>) or taken down (<code>false</code>)
 	 * when the prerequisiteField is invisible.
 	 * <p>Default is <code>true</code>.
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setDefaultWhenPrerequisiteInvisible(boolean defaultToSetUp) {
-		this.defaultWhenPrerequisiteInvisible = defaultToSetUp;
+		this.defaultWhenPrerequisiteInvisibleCondition = Condition.constant(defaultToSetUp);
 		return this;
 	}
 
@@ -446,7 +456,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 				}
 			}
 		} else {
-			if (defaultWhenPrerequisiteInvisible) {
+			if (defaultWhenPrerequisiteInvisibleCondition.applies()) {
 				setUpAttachedComponent(component);
 			} else {
 				takeDownAttachedComponent(component);
