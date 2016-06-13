@@ -14,6 +14,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.more.util.transaction.exception.TransactionSynchronizationException;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
@@ -190,9 +191,10 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		if (tasks == null) {
 			return;
 		}
-		for (ITransactionSynchronizationTaskRollbackAware beforeClearTask : tasks.getAlreadyExecutedBeforeClearTasks()) {
+		for (ITransactionSynchronizationTaskRollbackAware afterCommitTask
+				: Iterables.filter(Lists.reverse(tasks.getAfterCommitTasks()), ITransactionSynchronizationTaskRollbackAware.class)) {
 			try {
-				beforeClearTask.afterRollback();
+				((ITransactionSynchronizationTaskRollbackAware) afterCommitTask).afterRollback();
 			} catch (Exception e) {
 				if (firstException == null) {
 					firstException = e;
@@ -202,7 +204,7 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			}
 		}
 		for (ITransactionSynchronizationTaskRollbackAware beforeCommitTask
-				: Iterables.filter(tasks.getBeforeCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
+				: Iterables.filter(Lists.reverse(tasks.getBeforeCommitTasks()), ITransactionSynchronizationTaskRollbackAware.class)) {
 			try {
 				((ITransactionSynchronizationTaskRollbackAware) beforeCommitTask).afterRollback();
 			} catch (Exception e) {
@@ -213,10 +215,10 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 				}
 			}
 		}
-		for (ITransactionSynchronizationTaskRollbackAware afterCommitTask
-				: Iterables.filter(tasks.getAfterCommitTasks(), ITransactionSynchronizationTaskRollbackAware.class)) {
+		for (ITransactionSynchronizationTaskRollbackAware beforeClearTask
+				: Lists.reverse(tasks.getAlreadyExecutedBeforeClearTasks())) {
 			try {
-				((ITransactionSynchronizationTaskRollbackAware) afterCommitTask).afterRollback();
+				beforeClearTask.afterRollback();
 			} catch (Exception e) {
 				if (firstException == null) {
 					firstException = e;
