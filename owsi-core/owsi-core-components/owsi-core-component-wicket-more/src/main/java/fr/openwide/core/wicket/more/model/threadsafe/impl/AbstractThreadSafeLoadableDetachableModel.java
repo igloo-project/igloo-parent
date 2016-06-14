@@ -2,13 +2,17 @@ package fr.openwide.core.wicket.more.model.threadsafe.impl;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeDerivedSerializableStateLoadableDetachableModel;
 import fr.openwide.core.wicket.more.model.threadsafe.SessionThreadSafeSimpleLoadableDetachableModel;
+import fr.openwide.core.wicket.more.util.model.LoadableDetachableModelExtendedDebugInformation;
 
 /**
  * An alternative implementation of {@link LoadableDetachableModel} that is thread-safe, and may thus be used in multiple request cycles at the same time.
@@ -22,21 +26,59 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	
 	private static final long serialVersionUID = 6859907414385876596L;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractThreadSafeLoadableDetachableModel.class);
+	
+	private static final boolean EXTENDED_DEBUG_INFO;
+	static {
+		EXTENDED_DEBUG_INFO = LOGGER.isDebugEnabled();
+		if (EXTENDED_DEBUG_INFO) {
+			LOGGER.warn("Extended debug info for AbstractThreadSafeLoadableDetachableModel is enabled."
+					+ " This may cause a significant performance hit.");
+		}
+	}
+	
+	private transient LoadableDetachableModelExtendedDebugInformation extendedDebugInformation;
+	
 	/**
 	 * The loading context, local to each thread.
 	 * <p>Will be null if the model is not currently attached.
 	 */
 	private transient ThreadLocal<TThreadContext> threadLocal = new ThreadLocal<TThreadContext>();
 	
-	public AbstractThreadSafeLoadableDetachableModel() { }
-
-	public AbstractThreadSafeLoadableDetachableModel(T object) {
-		setObject(object);
+	public AbstractThreadSafeLoadableDetachableModel() {
+		if (EXTENDED_DEBUG_INFO) {
+			this.extendedDebugInformation = new LoadableDetachableModelExtendedDebugInformation();
+		}
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	public AbstractThreadSafeLoadableDetachableModel(T object) {
+		this();
+		setObject(object);
+	}
+	
+	private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException {
 		in.defaultReadObject();
 		threadLocal = new ThreadLocal<>();
+		if (EXTENDED_DEBUG_INFO) {
+			this.extendedDebugInformation = new LoadableDetachableModelExtendedDebugInformation();
+		}
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		TThreadContext threadContext = threadLocal.get();
+		if (threadContext != null) {
+			LOGGER.warn(
+					"Serializing an attached AbstractThreadSafeLoadableDetachableModel with threadContext={}",
+					threadContext
+			);
+			if (EXTENDED_DEBUG_INFO) {
+				LOGGER.debug(
+						"StackTrace from the latest attach (setObject() or load()): \n{}",
+						extendedDebugInformation.getLatestAttachInformation()
+				);
+			}
+		}
+		out.defaultWriteObject();
 	}
 	
 	protected abstract TThreadContext newThreadContext();
@@ -48,6 +90,9 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 			threadContext = newThreadContext();
 			threadLocal.set(threadContext); // Attach model
 			threadContext.setTransientModelObject(load(threadContext)); // Populate model value
+			if (EXTENDED_DEBUG_INFO) {
+				extendedDebugInformation.onAttach();
+			}
 		}
 		return threadContext.getTransientModelObject();
 	}
@@ -58,6 +103,9 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 		if (threadContext == null) { // If not attached yet
 			threadContext = newThreadContext();
 			threadLocal.set(threadContext); // Attach model
+			if (EXTENDED_DEBUG_INFO) {
+				extendedDebugInformation.onAttach();
+			}
 		}
 		threadContext.setTransientModelObject(wrap(object)); // Populate model value
 		onSetObject(threadContext);
@@ -84,6 +132,9 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	@Override
 	public final void detach() {
 		try {
+			if (EXTENDED_DEBUG_INFO) {
+				extendedDebugInformation.onDetach();
+			}
 			TThreadContext threadContext = threadLocal.get();
 			if (threadContext != null) { // If attached
 				onDetach(threadContext);

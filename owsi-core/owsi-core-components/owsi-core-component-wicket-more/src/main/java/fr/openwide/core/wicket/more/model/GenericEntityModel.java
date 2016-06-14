@@ -18,6 +18,7 @@
 package fr.openwide.core.wicket.more.model;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
@@ -35,6 +36,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.util.HibernateUtils;
+import fr.openwide.core.wicket.more.util.model.LoadableDetachableModelExtendedDebugInformation;
 
 public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends LoadableDetachableModel<E> {
@@ -42,6 +44,15 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntityModel.class);
+	
+	private static final boolean EXTENDED_DEBUG_INFO;
+	static {
+		EXTENDED_DEBUG_INFO = LOGGER.isDebugEnabled();
+		if (EXTENDED_DEBUG_INFO) {
+			LOGGER.warn("Extended debug info for GenericEntityModel is enabled."
+					+ " This may cause a significant performance hit.");
+		}
+	}
 
 	@SuppressWarnings("unchecked") // SerializableModelFactory works for any T extending GenericEntity<?, ?>
 	public static <E extends GenericEntity<?, ?>>
@@ -63,6 +74,8 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	private IEntityService entityService;
 	
 	private transient boolean attached = false;
+	
+	private transient LoadableDetachableModelExtendedDebugInformation extendedDebugInformation;
 
 	private GenericEntityReference<K, E> persistedEntityReference;
 
@@ -86,6 +99,11 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	 */
 	public GenericEntityModel() {
 		Injector.get().inject(this);
+		if (EXTENDED_DEBUG_INFO) {
+			this.extendedDebugInformation = new LoadableDetachableModelExtendedDebugInformation();
+		} else {
+			this.extendedDebugInformation = null;
+		}
 	}
 	
 	public GenericEntityModel(E entity) {
@@ -103,6 +121,9 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 			result = notYetPersistedEntity;
 		}
 		attached = true;
+		if (EXTENDED_DEBUG_INFO) {
+			extendedDebugInformation.onAttach();
+		}
 		return result;
 	}
 	
@@ -111,6 +132,9 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 		E persistentObject = HibernateUtils.unwrap(entity);
 		super.setObject(persistentObject);
 		attached = true;
+		if (EXTENDED_DEBUG_INFO) {
+			extendedDebugInformation.onAttach();
+		}
 		updateSerializableData(); // Useful to keep equals() and getId() up-to-date and for compatibility with old applications
 	}
 	
@@ -120,6 +144,9 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 
 	@Override
 	public void detach() {
+		if (EXTENDED_DEBUG_INFO) {
+			extendedDebugInformation.onDetach();
+		}
 		if (!attached) {
 			fixSerializableData();
 			return;
@@ -186,12 +213,26 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 				.toHashCode();
 	}
 	
+	private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException {
+		in.defaultReadObject();
+		if (EXTENDED_DEBUG_INFO) {
+			this.extendedDebugInformation = new LoadableDetachableModelExtendedDebugInformation();
+		}
+	}
+
+	
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		if (attached) {
 			LOGGER.warn(
 					"Serializing an attached GenericEntityModel with persistedEntityReference={} and notYetPersistedEntity={}",
 					persistedEntityReference, notYetPersistedEntity
 			);
+			if (EXTENDED_DEBUG_INFO) {
+				LOGGER.debug(
+						"StackTrace from the latest attach (setObject() or load()): \n{}",
+						extendedDebugInformation.getLatestAttachInformation()
+				);
+			}
 		}
 		out.defaultWriteObject();
 	}
