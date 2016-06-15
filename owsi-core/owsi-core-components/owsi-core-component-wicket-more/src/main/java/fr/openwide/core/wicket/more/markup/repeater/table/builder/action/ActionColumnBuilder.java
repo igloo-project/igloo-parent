@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.springframework.security.acls.model.Permission;
 
@@ -107,6 +108,18 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		@Override
 		public IActionColumnConfirmActionBuilderStepStart<T, S> addConfirmAction(BootstrapRenderer<? super T> renderer) {
 			return ActionColumnBuilder.this.addConfirmAction(renderer);
+		}
+		
+		@Override
+		public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
+				IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+			return ActionColumnBuilder.this.addAction(renderer, factory);
+		}
+		
+		@Override
+		public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
+				IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+			return ActionColumnBuilder.this.addLabelledAction(renderer, factory);
 		}
 		
 		@Override
@@ -391,10 +404,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterAction<? super IModel<T>> action) {
-		AbstractActionColumnElementBuilder<T, ?, ?> builder =
-				new ActionColumnSimpleElementBuilder<>(renderer, new ActionColumnActionFactory<T>(action));
-		builders.add(builder);
-		return new ActionColumnAddedActionState(builder);
+		return addAction(renderer, new ActionColumnActionFactory<T>(action));
 	}
 
 	@Override
@@ -414,6 +424,22 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		builders.add(builder);
 		return new ActionColumnAddedConfirmActionState(builder);
 	}
+	
+	@Override
+	public IActionColumnAddedActionState<T, S> addAction(BootstrapRenderer<? super T> renderer,
+			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+		AbstractActionColumnElementBuilder<T, ?, ?> builder =
+				new ActionColumnSimpleElementBuilder<>(renderer, factory);
+		builders.add(builder);
+		return new ActionColumnAddedActionState(builder);
+	}
+	
+	@Override
+	public IActionColumnAddedActionState<T, S> addLabelledAction(BootstrapRenderer<? super T> renderer,
+			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+		return addAction(renderer, factory).showLabel();
+	}
+	
 
 	@Override
 	public IActionColumnBuildState<T, S> withClassOnElements(String cssClassOnElements) {
