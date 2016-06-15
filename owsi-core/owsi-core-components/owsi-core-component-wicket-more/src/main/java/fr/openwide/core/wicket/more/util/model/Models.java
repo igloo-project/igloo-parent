@@ -16,6 +16,7 @@ import org.apache.wicket.model.StringResourceModel;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -178,9 +179,13 @@ public final class Models {
 		}
 	}
 	
-	public static <T, C extends Collection<T>, M extends IModel<T>> IItemModelAwareCollectionModel<T, C, M> filter(
-			IItemModelAwareCollectionModel<T, C, M> unfiltered, Predicate<M> predicate) {
-		return new FilteringItemModelAwareCollectionModel<>(unfiltered, predicate);
+	public static <T, C extends Collection<T>, M extends IModel<T>>
+			IItemModelAwareCollectionModel<T, C, M> filterByModel(
+			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> unfiltered, Predicate<M> modelPredicate,
+			Supplier<? extends C> collectionSupplier) {
+		return new FilterByModelItemModelAwareCollectionModel<T, C, M>(
+				unfiltered, modelPredicate, collectionSupplier
+		);
 	}
 
 	/**

@@ -8,33 +8,40 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 
 import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 
-class FilteringItemModelAwareCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
+class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
 		implements IItemModelAwareCollectionModel<T, C, M> {
 	
 	private static final long serialVersionUID = 3675361542494678205L;
 
-	private final IItemModelAwareCollectionModel<T, C, M> unfiltered;
+	private final IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> unfiltered;
 	
-	private final Predicate<M> predicate;
+	private final Predicate<M> modelPredicate;
 	
-	public FilteringItemModelAwareCollectionModel(IItemModelAwareCollectionModel<T, C, M> delegate, Predicate<M> predicate) {
+	private final Supplier<? extends C> collectionSupplier;
+	
+	public FilterByModelItemModelAwareCollectionModel(
+			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> delegate, Predicate<M> modelPredicate,
+			Supplier<? extends C> collectionSupplier
+			) {
 		super();
 		this.unfiltered = delegate;
-		this.predicate = predicate;
+		this.modelPredicate = modelPredicate;
+		this.collectionSupplier = collectionSupplier;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof FilteringItemModelAwareCollectionModel)) {
+		if (obj == null || !obj.getClass().equals(getClass())) {
 			return false;
 		}
-		FilteringItemModelAwareCollectionModel<?, ?, ?> other = (FilteringItemModelAwareCollectionModel<?, ?, ?>) obj;
+		FilterByModelItemModelAwareCollectionModel<?, ?, ?> other = (FilterByModelItemModelAwareCollectionModel<?, ?, ?>) obj;
 		return new EqualsBuilder()
-				.append(predicate, other.predicate)
+				.append(modelPredicate, other.modelPredicate)
 				.append(unfiltered, other.unfiltered)
 				.build();
 	}
@@ -42,7 +49,7 @@ class FilteringItemModelAwareCollectionModel<T, C extends Collection<T>, M exten
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(predicate)
+				.append(modelPredicate)
 				.append(unfiltered)
 				.build();
 	}
@@ -64,7 +71,11 @@ class FilteringItemModelAwareCollectionModel<T, C extends Collection<T>, M exten
 
 	@Override
 	public C getObject() {
-		return unfiltered.getObject();
+		C result = collectionSupplier.get();
+		for (M model : this) {
+			result.add(model.getObject());
+		}
+		return result;
 	}
 
 	@Override
@@ -83,7 +94,7 @@ class FilteringItemModelAwareCollectionModel<T, C extends Collection<T>, M exten
 	}
 
 	private Iterable<M> getFilteredIterable() {
-		return Iterables.filter(unfiltered, predicate);
+		return Iterables.filter(unfiltered, modelPredicate);
 	}
 
 	@Override
