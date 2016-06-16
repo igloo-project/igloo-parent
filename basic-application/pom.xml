@@ -6,7 +6,7 @@
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-core-project</artifactId>
 		<relativePath>../owsi-core/owsi-core-parents/owsi-core-parent-core-project/pom.xml</relativePath>
-		<version>0.11-SNAPSHOT</version>
+		<version>0.11.4</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.archetype</groupId>
@@ -98,7 +98,7 @@
 	<scm>
 		<developerConnection>scm:git:git@git.projects.openwide.fr:open-wide/${wombatProjectName}.git</developerConnection>
 		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/tree/master</url>
-		<tag>owsi-core-0.11-MAINTENANCE</tag>
+		<tag>owsi-core-parent-0.11.4</tag>
 	</scm>
 	
 </project>
