@@ -29,7 +29,7 @@ public class EnumRenderer extends Renderer<Enum<?>> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static EnumRenderer INSTANCE = new EnumRenderer();
+	private static final EnumRenderer INSTANCE = new EnumRenderer();
 	
 	public static EnumRenderer get() {
 		return INSTANCE;

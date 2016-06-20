@@ -25,7 +25,7 @@ public class LocalizedGenericListItemRenderer extends Renderer<GenericLocalizedG
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static LocalizedGenericListItemRenderer INSTANCE = new LocalizedGenericListItemRenderer();
+	private static final LocalizedGenericListItemRenderer INSTANCE = new LocalizedGenericListItemRenderer();
 	public static LocalizedGenericListItemRenderer get() {
 		return INSTANCE;
 	}

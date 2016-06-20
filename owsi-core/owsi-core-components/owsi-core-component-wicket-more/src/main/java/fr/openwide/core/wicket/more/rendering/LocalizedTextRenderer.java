@@ -25,7 +25,7 @@ public class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
 	
 	private static final long serialVersionUID = -6397339082088737503L;
 	
-	private static LocalizedTextRenderer INSTANCE = new LocalizedTextRenderer();
+	private static final LocalizedTextRenderer INSTANCE = new LocalizedTextRenderer();
 	public static LocalizedTextRenderer get() {
 		return INSTANCE;
 	}

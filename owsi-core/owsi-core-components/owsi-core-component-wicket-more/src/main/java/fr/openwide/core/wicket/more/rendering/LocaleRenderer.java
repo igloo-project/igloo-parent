@@ -8,7 +8,7 @@ public class LocaleRenderer extends Renderer<Locale> {
 
 	private static final long serialVersionUID = 3616234068185075603L;
 	
-	private static LocaleRenderer INSTANCE = new LocaleRenderer();
+	private static final LocaleRenderer INSTANCE = new LocaleRenderer();
 	public static LocaleRenderer get() {
 		return INSTANCE;
 	}
