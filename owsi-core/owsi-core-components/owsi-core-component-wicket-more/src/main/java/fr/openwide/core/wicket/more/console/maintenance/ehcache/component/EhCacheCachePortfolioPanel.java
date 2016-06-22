@@ -136,13 +136,13 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						EhCacheProgressBarComponent progressBarObject = 
 								new EhCacheProgressBarComponent("progressBarObject", 
 										BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio()),
-										true, 70, 90);
+										true, 0.7f, 0.9f);
 						progressBarsContainer.add(progressBarObject);
 						
 						EhCacheProgressBarComponent progressBarHit = 
 								new EhCacheProgressBarComponent("progressBarHit", 
 										BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio()),
-										false, 20, 60);
+										false, 0.2f, 0.6f);
 						progressBarsContainer.add(progressBarHit);
 						
 						IModel<String> viderCacheTextModel = new StringResourceModel(
