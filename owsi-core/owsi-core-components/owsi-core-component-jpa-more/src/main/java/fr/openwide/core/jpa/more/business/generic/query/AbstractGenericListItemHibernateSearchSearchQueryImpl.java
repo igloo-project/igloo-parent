@@ -18,8 +18,14 @@ public abstract class AbstractGenericListItemHibernateSearchSearchQueryImpl
 		>
 		extends AbstractHibernateSearchSearchQuery<T, S> implements IGenericListItemSearchQuery<T, S, Q> {
 
-	protected AbstractGenericListItemHibernateSearchSearchQueryImpl(Class<T> clazz) {
-		super(clazz);
+	@SafeVarargs
+	public AbstractGenericListItemHibernateSearchSearchQueryImpl(Class<? extends T> clazz, S... defaultSorts) {
+		super(clazz, defaultSorts);
+	}
+
+	@SafeVarargs
+	public AbstractGenericListItemHibernateSearchSearchQueryImpl(Class<? extends T>[] classes, S... defaultSorts) {
+		super(classes, defaultSorts);
 	}
 
 	@SuppressWarnings("unchecked")
