@@ -10,6 +10,7 @@ import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
+import fr.openwide.core.wicket.more.link.util.LinkDescriptors;
 
 /**
  * An utility object mapped to {@link IModel models}, that allows for simple link generation using these models to determine the target and parameters of the generated link.
@@ -84,71 +85,10 @@ public interface ILinkGenerator extends IDetachable {
 	 */
 	boolean isAccessible();
 	
-	ILinkGenerator INVALID = new ILinkGenerator() {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public AbstractDynamicBookmarkableLink link(String wicketId) {
-			return new AbstractDynamicBookmarkableLink(wicketId) {
-				private static final long serialVersionUID = 1L;
-				@Override
-				protected boolean isValid() {
-					return false;
-				}
-				@Override
-				protected CharSequence getRelativeURL() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException {
-					throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
-				}
-				@Override
-				protected CharSequence getAbsoluteURL() throws LinkInvalidTargetRuntimeException,
-						LinkParameterValidationRuntimeException {
-					throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
-				}
-			};
-		}
-
-		@Override
-		public String url() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
-				LinkParameterValidationRuntimeException {
-			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
-		}
-
-		@Override
-		public String url(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
-				LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
-			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
-		}
-
-		@Override
-		public String fullUrl() throws LinkInvalidTargetRuntimeException, LinkParameterInjectionRuntimeException,
-				LinkParameterValidationRuntimeException {
-			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
-		}
-
-		@Override
-		public String fullUrl(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
-				LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
-			throw new LinkInvalidTargetRuntimeException("This link will always be invalid.");
-		}
-		
-		@Override
-		public ILinkGenerator wrap(Component component) {
-			return this;
-		}
-		
-		@Override
-		public boolean isAccessible() {
-			return false;
-		}
-
-		@Override
-		public void detach() {
-			// Nothing to do
-		}
-		
-		private Object readResolve() {
-			return INVALID;
-		}
-	};
+	/**
+	 * @deprecated Use {@link LinkDescriptors#invalid()} instead.
+	 */
+	@Deprecated
+	ILinkGenerator INVALID = LinkDescriptors.invalid();
 
 }
