@@ -118,6 +118,6 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	 */
 	boolean isActive(Class<? extends Page> selectedPage);
 
-	PageProvider newPageProvider();
+	PageProvider newPageProvider() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
 
 }
