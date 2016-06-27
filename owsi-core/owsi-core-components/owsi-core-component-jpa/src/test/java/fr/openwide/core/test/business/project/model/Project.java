@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -27,6 +28,9 @@ public class Project extends GenericEntity<Long, Project> {
 
 	@ManyToOne
 	private Company company;
+	
+	@ManyToOne(fetch = FetchType.LAZY) // WARNING: this "laziness" is important to some tests
+	private Person leader;
 
 	@ManyToMany(mappedBy = "workedProjects")
 	private List<Person> team = new LinkedList<Person>();
@@ -62,6 +66,14 @@ public class Project extends GenericEntity<Long, Project> {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	public Person getLeader() {
+		return leader;
+	}
+
+	public void setLeader(Person leader) {
+		this.leader = leader;
 	}
 
 	public List<Person> getTeam() {

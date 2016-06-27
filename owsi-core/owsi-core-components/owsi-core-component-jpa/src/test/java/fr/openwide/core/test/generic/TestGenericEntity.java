@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
+import org.hibernate.proxy.HibernateProxy;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,9 +46,12 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
+import fr.openwide.core.jpa.util.HibernateUtils;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
+import fr.openwide.core.test.business.person.model.PersonSubTypeA;
 import fr.openwide.core.test.business.person.service.IPersonService;
+import fr.openwide.core.test.business.project.model.Project;
 
 public class TestGenericEntity extends AbstractJpaCoreTestCase {
 	
@@ -102,9 +106,15 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 	}
 	
 	@Test
-	public void testLimitedHashCodeAndEqualityConstraints() throws InterruptedException {
+	public void testLimitedHashCodeAndEqualityConstraintsOnPerson() throws InterruptedException {
 		Person person = new Person("TestHashCode", "TestHashCode");
 		assertLimitedHashCodeAndEqualityConstraints(Person.class, person);
+	}
+
+	@Test
+	public void testLimitedHashCodeAndEqualityConstraintsOnPersonSubTypeA() throws InterruptedException {
+		PersonSubTypeA person = new PersonSubTypeA("TestHashCode", "TestHashCode", "TestHashCode");
+		assertLimitedHashCodeAndEqualityConstraints(PersonSubTypeA.class, person);
 	}
 	
 	@Test
@@ -117,7 +127,7 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 	 * Adapted from https://vladmihalcea.com/2016/06/06/how-to-implement-equals-and-hashcode-using-the-entity-identifier/
 	 * with no constraint regarding detached entities or multiple persistence contexts.
 	 */
-	private <T extends GenericEntity<?, ?>> void assertLimitedHashCodeAndEqualityConstraints(
+	private <T extends Person> void assertLimitedHashCodeAndEqualityConstraints(
 			final Class<T> clazz, final T entity)
 			throws InterruptedException {
 		final Set<T> tuples = new HashSet<>();
@@ -126,12 +136,29 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 		tuples.add(entity);
 		assertTrue(tuples.contains(entity));
 
+		final Long projectId = doInJPA(new Function<EntityManager, Long>() {
+			@Override
+			public Long apply(EntityManager entityManager) {
+				entityManager.persist(entity);
+				Project project = new Project("testHash");
+				project.setLeader(entity);
+				entityManager.persist(project);
+				entityManager.flush();
+				assertTrue("The entity is found after it's persisted", tuples.contains(entity));
+				return project.getId();
+			}
+		});
+		
 		doInJPA(new Function<EntityManager, Void>() {
 			@Override
 			public Void apply(EntityManager entityManager) {
-				entityManager.persist(entity);
-				entityManager.flush();
-				assertTrue("The entity is found after it's persisted", tuples.contains(entity));
+				Project project = entityManager.find(Project.class, projectId);
+				Person _entity = project.getLeader();
+				assertTrue("The entity is proxified (this is a prerequisite) for the next assert)",
+						_entity instanceof HibernateProxy);
+				final Set<Person> _tuples = new HashSet<>();
+				_tuples.add(HibernateUtils.unwrap(_entity));
+				assertTrue("The entity is found even if proxified", _tuples.contains(_entity));
 				return null;
 			}
 		});
@@ -209,14 +236,13 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 		thread.join();
 	}
 
-	private void doInJPA(final Function<EntityManager, Void> consumer) {
+	private <T> T doInJPA(final Function<EntityManager, T> function) {
 		final EntityManager entityManager = entityManagerUtils.openEntityManager();
 		try {
-			writeTransactionTemplate.execute(new TransactionCallback<Void>() {
+			return writeTransactionTemplate.execute(new TransactionCallback<T>() {
 				@Override
-				public Void doInTransaction(TransactionStatus status) {
-						consumer.apply(entityManager);
-					return null;
+				public T doInTransaction(TransactionStatus status) {
+					return function.apply(entityManager);
 				}
 			});
 		} finally {
