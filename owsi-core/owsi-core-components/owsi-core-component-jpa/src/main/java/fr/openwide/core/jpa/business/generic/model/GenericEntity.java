@@ -39,7 +39,6 @@ import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
 
 import fr.openwide.core.commons.util.ordering.SerializableCollator;
-import fr.openwide.core.jpa.util.HibernateUtils;
 
 /**
  * <p>Entité racine pour la persistence des objets via JPA.</p>
@@ -135,7 +134,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 
 	@Override
 	public int hashCode() {
-		return System.identityHashCode(HibernateUtils.unwrap(this));
+		return super.hashCode(); // Just use the default Object implementation
 	}
 
 	@Override
