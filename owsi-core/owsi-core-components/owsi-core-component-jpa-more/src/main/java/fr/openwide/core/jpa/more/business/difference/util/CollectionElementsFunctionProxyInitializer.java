@@ -10,6 +10,10 @@ public class CollectionElementsFunctionProxyInitializer<T, T2> implements IProxy
 	private final Function<? super T, ? extends Collection<? extends T2>> function;
 	private final IProxyInitializer<? super T2> delegate;
 
+	public CollectionElementsFunctionProxyInitializer(Function<? super T, ? extends Collection<? extends T2>> function) {
+		this(function, new FunctionProxyInitializer<>());
+	}
+
 	public CollectionElementsFunctionProxyInitializer(Function<? super T, ? extends Collection<? extends T2>> function,
 			IProxyInitializer<? super T2> delegate) {
 		super();
