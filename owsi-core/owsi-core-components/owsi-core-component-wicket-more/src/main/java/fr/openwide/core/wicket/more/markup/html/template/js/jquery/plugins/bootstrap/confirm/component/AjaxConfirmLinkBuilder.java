@@ -10,6 +10,8 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.markup.html.action.AjaxActions;
 import fr.openwide.core.wicket.more.markup.html.action.IAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ModelFactories;
@@ -157,8 +159,15 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 
 	@Override
 	public AjaxConfirmLink<O> create(String wicketId, IModel<O> model) {
-		return new FunctionalAjaxConfirmLink<O>(wicketId, model, titleModelFactory, contentModelFactory,
-				yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup, onClick);
+		AjaxConfirmLink<O> confirmLink = new FunctionalAjaxConfirmLink<O>(
+				wicketId, model, titleModelFactory, contentModelFactory,
+				yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup, onClick
+		);
+		confirmLink.add(
+				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE)
+				.condition(onClick.getActionAvailableCondition(model))
+		);
+		return confirmLink;
 	}
 
 	private static class FunctionalAjaxConfirmLink<O> extends AjaxConfirmLink<O> {
