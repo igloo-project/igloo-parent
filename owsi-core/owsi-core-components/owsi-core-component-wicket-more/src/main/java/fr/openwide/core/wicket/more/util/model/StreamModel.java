@@ -139,4 +139,24 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		}
 	}
 
+	public IModel<T> first() {
+		return new FirstModel();
+	}
+
+	private class FirstModel extends AbstractReadOnlyModel<T> {
+		
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public T getObject() {
+			return Iterables.getFirst(StreamModel.this.getObject(), null);
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			Detachables.detach(StreamModel.this);
+		}
+	}
+
 }
