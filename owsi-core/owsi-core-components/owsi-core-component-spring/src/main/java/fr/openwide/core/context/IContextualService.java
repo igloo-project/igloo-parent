@@ -7,6 +7,7 @@ import fr.openwide.core.commons.util.context.IExecutionContext;
 /**
  * @deprecated Make your service implement a method that returns a {@link IExecutionContext} instead.
  */
+@Deprecated
 public interface IContextualService {
 	
 	/**
