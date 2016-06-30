@@ -8,6 +8,9 @@ public class TableImportEvent {
 	public static final ExcelImportInfoEvent INFO = new ExcelImportInfoEvent("INFO");
 	public static final ExcelImportInfoEvent DEBUG = new ExcelImportInfoEvent("DEBUG");
 	
+	/**
+	 * equals and hashcode are based on this field. It must be immutable.
+	 */
 	private final String name;
 	
 	public static class ExcelImportErrorEvent extends TableImportEvent {
@@ -18,11 +21,6 @@ public class TableImportEvent {
 			this.severity = severity;
 		}
 		
-		@Override
-		public boolean equals(Object object) {
-			return super.equals(object) && (object instanceof ExcelImportErrorEvent);
-		}
-		
 		public boolean isFatal() {
 			return TableImportErrorSeverity.FATAL.equals(severity);
 		}
@@ -31,11 +29,6 @@ public class TableImportEvent {
 	public static class ExcelImportInfoEvent extends TableImportEvent {
 		public ExcelImportInfoEvent(String name) {
 			super(name);
-		}
-		
-		@Override
-		public boolean equals(Object object) {
-			return super.equals(object) && (object instanceof ExcelImportInfoEvent);
 		}
 	}
 	
@@ -61,7 +54,7 @@ public class TableImportEvent {
 		}
 		
 		TableImportEvent other = (TableImportEvent) object;
-		return name.equals(other.name);
+		return getClass().equals(other.getClass()) && name.equals(other.name);
 	}
 	
 	
