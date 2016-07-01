@@ -1,11 +1,13 @@
 package fr.openwide.core.wicket.markup.html.form;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
+
+import com.google.common.collect.Lists;
 
 public class ListMultipleChoice<T> extends
 		org.apache.wicket.markup.html.form.ListMultipleChoice<T> {
@@ -64,12 +66,17 @@ public class ListMultipleChoice<T> extends
 	
 	@Override
 	public void updateModel() {
+		Collection<T> convertedInput = getConvertedInput();
+		if (convertedInput == null) {
+			convertedInput = Collections.emptyList();
+		}
+		
 		if (getModelObject() != null) {
 			modelChanging();
-			setDefaultModelObject(new ArrayList<T>(getConvertedInput()));
+			setModelObject(Lists.newArrayList(convertedInput));
 			modelChanged();
 		} else {
-			setDefaultModelObject(new ArrayList<T>(getConvertedInput()));
+			setModelObject(Lists.newArrayList(convertedInput));
 		}
 	}
 
