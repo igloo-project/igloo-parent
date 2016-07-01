@@ -80,8 +80,8 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 			return null;
 		}
 		
-		HistoryEntityReference reference = value.getEntityReference();
-		if (reference != null && reference.getEntityClass() != null && reference.getEntityId() != null) {
+		HistoryEntityReference reference = value.getReference();
+		if (reference != null && reference.getType() != null && reference.getId() != null) {
 			return entityService.getEntity(reference);
 		}
 		

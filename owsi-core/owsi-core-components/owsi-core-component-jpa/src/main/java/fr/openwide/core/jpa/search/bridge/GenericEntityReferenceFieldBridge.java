@@ -18,8 +18,8 @@ public class GenericEntityReferenceFieldBridge implements FieldBridge, StringBri
 			throw new IllegalArgumentException("This FieldBridge only supports GenericEntityReference properties.");
 		}
 		GenericEntityReference<?, ?> entityReference = (GenericEntityReference<?, ?>) object;
-		Object id = entityReference.getEntityId();
-		Class<?> clazz = entityReference.getEntityClass();
+		Object id = entityReference.getId();
+		Class<?> clazz = entityReference.getType();
 		if (clazz == null) {
 			return null;
 		} else {

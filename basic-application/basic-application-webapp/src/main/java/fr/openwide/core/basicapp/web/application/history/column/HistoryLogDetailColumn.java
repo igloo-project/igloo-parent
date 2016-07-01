@@ -76,11 +76,11 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 	public void populateItem(Item<ICellPopulator<HistoryLog>> cellItem, String componentId, IModel<HistoryLog> rowModel) {
 		Predicate<HistoryDifference> filter = null;
 		if (!fieldsWhiteList.isEmpty()) {
-			GenericEntityReference<?, ?> mainObjectEntityReference = rowModel.getObject().getMainObject().getEntityReference();
+			GenericEntityReference<?, ?> mainObjectEntityReference = rowModel.getObject().getMainObject().getReference();
 			if (mainObjectEntityReference != null) {
-				Collection<FieldPath> whiteList = fieldsWhiteList.get(mainObjectEntityReference.getEntityClass());
+				Collection<FieldPath> whiteList = fieldsWhiteList.get(mainObjectEntityReference.getType());
 				// com.google.common.collect.AbstractMapBasedMultimap$WrappedSet is not serializable...
-				whiteList = Sets.newHashSet(fieldsWhiteList.get(mainObjectEntityReference.getEntityClass()));
+				whiteList = Sets.newHashSet(fieldsWhiteList.get(mainObjectEntityReference.getType()));
 				filter = Predicates.compose(Predicates.in(whiteList), Bindings.historyDifference().path().path());
 			}
 		}

@@ -7,6 +7,11 @@ import org.bindgen.Bindable;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 
+/**
+ * This class is a workaround: it's a subclass of GenericEntityReference with Long IDs
+ * which prevents Bindgen from generating bad bindings due to generics.
+ * <p>For this reason, we <strong>do not</strong> override {@link #equals(Object)} and {@link #hashCode()}.
+ */
 @Embeddable
 @Bindable
 public final class HistoryEntityReference extends GenericEntityReference<Long, GenericEntity<Long,?>> {
@@ -29,7 +34,7 @@ public final class HistoryEntityReference extends GenericEntityReference<Long, G
 	}
 
 	public HistoryEntityReference(GenericEntityReference<Long, ? extends GenericEntity<Long, ?>> genericEntityReference) {
-		super(genericEntityReference.getEntityClass(), genericEntityReference.getEntityId());
+		super(genericEntityReference.getType(), genericEntityReference.getId());
 	}
 
 }

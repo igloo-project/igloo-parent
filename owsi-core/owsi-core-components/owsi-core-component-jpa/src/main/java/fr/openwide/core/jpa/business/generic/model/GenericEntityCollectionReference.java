@@ -59,7 +59,7 @@ public class GenericEntityCollectionReference<K extends Comparable<K> & Serializ
 	}
 	
 	public GenericEntityCollectionReference(GenericEntityReference<K, E> reference) {
-		this(reference.getEntityClass(), ImmutableList.of(reference.getEntityId()));
+		this(reference.getType(), ImmutableList.of(reference.getId()));
 	}
 	
 	public GenericEntityCollectionReference(Class<? extends E> entityClass) {

@@ -46,7 +46,7 @@ public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuer
 	
 	@Override
 	public IHistoryLogSearchQuery subject(User user) {
-		must(matchIfGiven(AbstractHistoryLog.SUBJECT_ENTITY_REFERENCE, GenericEntityReference.of(user)));
+		must(matchIfGiven(AbstractHistoryLog.SUBJECT_REFERENCE, GenericEntityReference.of(user)));
 		return this;
 	}
 	
@@ -63,31 +63,31 @@ public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuer
 
 	@Override
 	public IHistoryLogSearchQuery object(GenericEntity<?, ?> object) {
-		must(matchIfGiven(AbstractHistoryLog.ALL_OBJECTS_ENTITY_REFERENCE, GenericEntityReference.of(object)));
+		must(matchIfGiven(AbstractHistoryLog.ALL_OBJECTS_REFERENCE, GenericEntityReference.of(object)));
 		return this;
 	}
 
 	@Override
 	public IHistoryLogSearchQuery object1(GenericEntity<?, ?> object) {
-		must(matchIfGiven(AbstractHistoryLog.OBJECT1_ENTITY_REFERENCE, GenericEntityReference.of(object)));
+		must(matchIfGiven(AbstractHistoryLog.OBJECT1_REFERENCE, GenericEntityReference.of(object)));
 		return this;
 	}
 
 	@Override
 	public IHistoryLogSearchQuery object2(GenericEntity<?, ?> object) {
-		must(matchIfGiven(AbstractHistoryLog.OBJECT2_ENTITY_REFERENCE, GenericEntityReference.of(object)));
+		must(matchIfGiven(AbstractHistoryLog.OBJECT2_REFERENCE, GenericEntityReference.of(object)));
 		return this;
 	}
 
 	@Override
 	public IHistoryLogSearchQuery object3(GenericEntity<?, ?> object) {
-		must(matchIfGiven(AbstractHistoryLog.OBJECT3_ENTITY_REFERENCE, GenericEntityReference.of(object)));
+		must(matchIfGiven(AbstractHistoryLog.OBJECT3_REFERENCE, GenericEntityReference.of(object)));
 		return this;
 	}
 
 	@Override
 	public IHistoryLogSearchQuery object4(GenericEntity<?, ?> object) {
-		must(matchIfGiven(AbstractHistoryLog.OBJECT4_ENTITY_REFERENCE, GenericEntityReference.of(object)));
+		must(matchIfGiven(AbstractHistoryLog.OBJECT4_REFERENCE, GenericEntityReference.of(object)));
 		return this;
 	}
 }

@@ -25,7 +25,7 @@ public class HistoryValue implements Serializable {
 	
 	private static final long serialVersionUID = 1251495816635000683L;
 
-	public static final String ENTITY_REFERENCE = "entityReference";
+	public static final String REFERENCE = "reference";
 
 	/**
 	 * Human-readable string
@@ -40,8 +40,8 @@ public class HistoryValue implements Serializable {
 	private String serialized;
 	
 	@Embedded
-	@Field(name = ENTITY_REFERENCE, bridge = @FieldBridge(impl = NullEncodingGenericEntityReferenceFieldBridge.class), analyze = Analyze.NO)
-	private HistoryEntityReference entityReference;
+	@Field(name = REFERENCE, bridge = @FieldBridge(impl = NullEncodingGenericEntityReferenceFieldBridge.class), analyze = Analyze.NO)
+	private HistoryEntityReference reference;
 
 	public HistoryValue() {
 		// nothing to do
@@ -63,7 +63,7 @@ public class HistoryValue implements Serializable {
 		super();
 		this.label = label;
 		this.serialized = serialized;
-		this.entityReference = HistoryEntityReference.from(entityValueReference);
+		this.reference = HistoryEntityReference.from(entityValueReference);
 	}
 
 	public String getLabel() {
@@ -74,14 +74,14 @@ public class HistoryValue implements Serializable {
 		return serialized;
 	}
 
-	public HistoryEntityReference getEntityReference() {
-		return entityReference;
+	public HistoryEntityReference getReference() {
+		return reference;
 	}
 	
 	@Override
 	public String toString() {
-		if (entityReference != null) {
-			return entityReference.toString();
+		if (reference != null) {
+			return reference.toString();
 		} else {
 			return label;
 		}
@@ -96,7 +96,7 @@ public class HistoryValue implements Serializable {
 		return new EqualsBuilder()
 				.append(getLabel(), other.getLabel())
 				.append(getSerialized(), other.getSerialized())
-				.append(getEntityReference(), other.getEntityReference())
+				.append(getReference(), other.getReference())
 				.isEquals();
 	}
 	
@@ -105,7 +105,7 @@ public class HistoryValue implements Serializable {
 		return new HashCodeBuilder()
 				.append(getLabel())
 				.append(getSerialized())
-				.append(getEntityReference())
+				.append(getReference())
 				.build();
 	}
 

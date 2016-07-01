@@ -67,12 +67,12 @@ public abstract class AbstractHistoryLog<
 	private static final String OBJECT4 = "object4";
 	private static final String OBJECT4_PREFIX = OBJECT4 + ".";
 	
-	public static final String SUBJECT_ENTITY_REFERENCE = SUBJECT_PREFIX + HistoryValue.ENTITY_REFERENCE;
-	public static final String ALL_OBJECTS_ENTITY_REFERENCE = ALL_OBJECTS_PREFIX + HistoryValue.ENTITY_REFERENCE;
-	public static final String OBJECT1_ENTITY_REFERENCE = OBJECT1_PREFIX + HistoryValue.ENTITY_REFERENCE;
-	public static final String OBJECT2_ENTITY_REFERENCE = OBJECT2_PREFIX + HistoryValue.ENTITY_REFERENCE;
-	public static final String OBJECT3_ENTITY_REFERENCE = OBJECT3_PREFIX + HistoryValue.ENTITY_REFERENCE;
-	public static final String OBJECT4_ENTITY_REFERENCE = OBJECT4_PREFIX + HistoryValue.ENTITY_REFERENCE;
+	public static final String SUBJECT_REFERENCE = SUBJECT_PREFIX + HistoryValue.REFERENCE;
+	public static final String ALL_OBJECTS_REFERENCE = ALL_OBJECTS_PREFIX + HistoryValue.REFERENCE;
+	public static final String OBJECT1_REFERENCE = OBJECT1_PREFIX + HistoryValue.REFERENCE;
+	public static final String OBJECT2_REFERENCE = OBJECT2_PREFIX + HistoryValue.REFERENCE;
+	public static final String OBJECT3_REFERENCE = OBJECT3_PREFIX + HistoryValue.REFERENCE;
+	public static final String OBJECT4_REFERENCE = OBJECT4_PREFIX + HistoryValue.REFERENCE;
 
 	public static final String HAS_DIFFERENCES = "hasDifferences";
 	
@@ -92,27 +92,27 @@ public abstract class AbstractHistoryLog<
 	private HET eventType;
 	
 	@Embedded
-	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue subject;
 	
 	@Embedded
-	@IndexedEmbedded(prefix = MAIN_OBJECT_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = MAIN_OBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue mainObject;
 	
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT1_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT1_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue object1 = new HistoryValue();
 
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT2_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT2_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue object2 = new HistoryValue();
 
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT3_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT3_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue object3 = new HistoryValue();
 
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT4_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT4_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue object4 = new HistoryValue();
 	
 	@Basic
@@ -235,7 +235,7 @@ public abstract class AbstractHistoryLog<
 		this.object4 = object4;
 	}
 	
-	@IndexedEmbedded(prefix = ALL_OBJECTS_PREFIX, includePaths = {HistoryValue.ENTITY_REFERENCE})
+	@IndexedEmbedded(prefix = ALL_OBJECTS_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	public Set<HistoryValue> getAllObjects() {
 		Set<HistoryValue> result = Sets.newLinkedHashSet();
 		for (HistoryValue value : new HistoryValue[] {mainObject, object1, object2, object3, object4}) {

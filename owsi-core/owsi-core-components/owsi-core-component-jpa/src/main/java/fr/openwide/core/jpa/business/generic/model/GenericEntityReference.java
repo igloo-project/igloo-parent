@@ -33,11 +33,11 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 
 	@Column(nullable = true)
 	@Type(type = CLASS_TYPE)
-	private /* final */ Class<? extends E> entityClass;
+	private /* final */ Class<? extends E> type;
 	
 	@Column(nullable = true)
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	private /* final */ K entityId;
+	private /* final */ K id;
 
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(E entity) {
 		return entity == null || entity.isNew() ? null : new GenericEntityReference<K, E>(entity);
@@ -59,24 +59,40 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	public GenericEntityReference(E entity) {
 		Assert.notNull(entity, "The referenced entity must not be null");
 		Assert.state(!entity.isNew(), "The referenced entity must not be transient");
-		this.entityClass = (Class<? extends E>)Hibernate.getClass(entity);
-		this.entityId = entity.getId();
+		this.type = (Class<? extends E>)Hibernate.getClass(entity);
+		this.id = entity.getId();
 	}
 	
 	public GenericEntityReference(Class<? extends E> entityClass, K entityId) {
 		super();
 		Assert.notNull(entityClass, "entityClass must not be null");
 		Assert.notNull(entityId, "entityId must not be null");
-		this.entityClass = entityClass;
-		this.entityId = entityId;
+		this.type = entityClass;
+		this.id = entityId;
 	}
 
+	public Class<? extends E> getType() {
+		return type;
+	}
+
+	public K getId() {
+		return id;
+	}
+
+	/**
+	 * @deprecated Use {@link #getType()} instead.
+	 */
+	@Deprecated
 	public Class<? extends E> getEntityClass() {
-		return entityClass;
+		return getType();
 	}
 
+	/**
+	 * @deprecated Use {@link #getId()} instead.
+	 */
+	@Deprecated
 	public K getEntityId() {
-		return entityId;
+		return getId();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -96,29 +112,33 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 		if (obj == this) {
 			return true;
 		}
+		
+		/* Caution here: we really need an instanceof, not a this.getClass() == other.getClass()
+		 * because some subclasses may simply be workarounds (for instance HistoryEntityReference in JPA-More)
+		 */
 		if (!(obj instanceof GenericEntityReference)) {
 			return false;
 		}
 		GenericEntityReference<?, ? extends GenericEntity<?, ?>> other = (GenericEntityReference<?, ?>) obj;
 		return new EqualsBuilder()
-				.append(getEntityId(), other.getEntityId())
-				.append(getUpperEntityClass(getEntityClass()), getUpperEntityClass(other.getEntityClass()))
+				.append(getId(), other.getId())
+				.append(getUpperEntityClass(getType()), getUpperEntityClass(other.getType()))
 				.build();
 	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(getEntityId())
-				.append(getUpperEntityClass(getEntityClass()))
+				.append(getId())
+				.append(getUpperEntityClass(getType()))
 				.build();
 	}
 	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("class", getEntityClass())
-				.append("id", getEntityId())
+				.append("class", getType())
+				.append("id", getId())
 				.build();
 	}
 

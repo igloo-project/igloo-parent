@@ -42,9 +42,9 @@ public abstract class AbstractHistoryRenderer<T> extends Renderer<T> {
 	}
 
 	private static String getEntityResourceKeyPart(HistoryValue object) {
-		GenericEntityReference<?, ?> reference = object.getEntityReference();
+		GenericEntityReference<?, ?> reference = object.getReference();
 		if (reference != null) {
-			Class<?> objectClass = object.getEntityReference().getEntityClass();
+			Class<?> objectClass = object.getReference().getType();
 			return ENTITY_RESOURCE_KEY_PARTS.get(objectClass);
 		}
 		return null;

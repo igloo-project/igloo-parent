@@ -36,7 +36,7 @@ public class EntityDaoImpl implements IEntityDao {
 	
 	@Override
 	public <E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference) {
-		return entityManager.find(reference.getEntityClass(), reference.getEntityId());
+		return entityManager.find(reference.getType(), reference.getId());
 	}
 	
 	@Override

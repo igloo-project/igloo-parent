@@ -39,8 +39,8 @@ public class TestHistoryDifferenceKey {
 		super();
 		this.fieldPath = input.getPath().getPath();
 		HistoryValue key = input.getPath().getKey();
-		if (key != null && key.getEntityReference() != null) {
-			keyAsGenericEntityReference = key.getEntityReference();
+		if (key != null && key.getReference() != null) {
+			keyAsGenericEntityReference = key.getReference();
 			keyAsString = null;
 		} else {
 			keyAsGenericEntityReference = null;

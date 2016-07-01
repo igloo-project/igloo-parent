@@ -139,7 +139,7 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	}
 	
 	protected K getId() {
-		return persistedEntityReference != null ? persistedEntityReference.getEntityId() : null;
+		return persistedEntityReference != null ? persistedEntityReference.getId() : null;
 	}
 
 	@Override
