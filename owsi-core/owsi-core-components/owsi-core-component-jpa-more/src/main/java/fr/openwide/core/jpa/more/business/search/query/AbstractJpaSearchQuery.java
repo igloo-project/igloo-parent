@@ -55,7 +55,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	
 	protected void mustIfNotNull(JPAQuery<T> jpaQuery, BooleanExpression ... booleanExpressions) {
 		for (BooleanExpression booleanExpression : booleanExpressions) {
-			if (booleanExpressions != null) {
+			if (booleanExpression != null) {
 				jpaQuery.where(booleanExpression);
 			}
 		}
