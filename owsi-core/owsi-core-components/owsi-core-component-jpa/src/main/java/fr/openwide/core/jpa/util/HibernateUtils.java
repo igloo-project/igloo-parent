@@ -6,6 +6,8 @@ import java.util.Map;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
+import com.google.common.base.Optional;
+
 public final class HibernateUtils {
 	
 	public static Class<?> getClass(Object potentiallyProxyfiedObject) {
@@ -19,6 +21,25 @@ public final class HibernateUtils {
 		} else {
 			return potentiallyProxyfiedObject;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> Optional<E> cast(Object potentiallyProxyfiedObject, Class<E> acceptableClass) {
+		return cast(potentiallyProxyfiedObject, acceptableClass, new Class[0]);
+	}
+	
+	@SafeVarargs
+	public static <E> Optional<E> cast(Object potentiallyProxyfiedObject, Class<? extends E> acceptableClass, Class<? extends E> ... otherAcceptableClasses) {
+		Object unwrapped = unwrap(potentiallyProxyfiedObject);
+		if (acceptableClass.isInstance(unwrapped)) {
+			return Optional.of((E)acceptableClass.cast(unwrapped));
+		}
+		for (Class<? extends E> otherAcceptableClass : otherAcceptableClasses) {
+			if (otherAcceptableClass.isInstance(unwrapped)) {
+				return Optional.of((E)otherAcceptableClass.cast(unwrapped));
+			}
+		}
+		return Optional.absent();
 	}
 	
 	public static void initialize(Object potentiallyProxyfiedObject) {
