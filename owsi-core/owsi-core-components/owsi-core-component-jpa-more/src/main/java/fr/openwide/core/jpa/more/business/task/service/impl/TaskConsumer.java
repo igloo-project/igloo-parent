@@ -84,7 +84,10 @@ public final class TaskConsumer {
 				boolean interrupted = false;
 				while ((wait < stopTimeout) && isWorking() && !interrupted) {
 					try {
-						Thread.sleep(3000);
+						Thread.sleep(3000); // NOSONAR findbugs:SWL_SLEEP_WITH_LOCK_HELD
+						// sleep in synchronized method does not harm because there is no
+						// high concurrency on this method (we simply don't want concurrent
+						// execution)
 					} catch (InterruptedException e) {
 						interrupted = true;
 					}
