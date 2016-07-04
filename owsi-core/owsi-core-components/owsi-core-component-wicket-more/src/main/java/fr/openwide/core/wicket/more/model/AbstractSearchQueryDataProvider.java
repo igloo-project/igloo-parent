@@ -21,7 +21,7 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>> ext
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSearchQueryDataProvider.class);
 
-	private boolean errorFlag;
+	private boolean errorFlag = false;
 	
 	protected AbstractSearchQueryDataProvider() {
 	}
@@ -39,7 +39,6 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>> ext
 	@Override
 	protected List<T> loadList(long offset, long limit) {
 		try {
-			errorFlag |= false;
 			return getSearchQuery().list(offset, limit);
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de la recherche : {}", e);
@@ -51,7 +50,6 @@ public abstract class AbstractSearchQueryDataProvider<T, S extends ISort<?>> ext
 	@Override
 	protected long loadSize() {
 		try {
-			errorFlag |= false;
 			return getSearchQuery().count();
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de la recherche : {}", e);
