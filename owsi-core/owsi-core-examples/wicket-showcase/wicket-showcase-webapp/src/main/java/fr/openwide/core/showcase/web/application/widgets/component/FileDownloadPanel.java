@@ -12,6 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.proxy.UndeclaredThrowableException;
 
 import de.schlichtherle.truezip.file.TFile;
 import fr.openwide.core.commons.util.mime.MediaType;
@@ -83,8 +84,8 @@ public class FileDownloadPanel extends Panel {
 				// ---- dossier21 ----
 			TFileRegistry.create(dossier2, "Dossier21").mkdir(true);
 			
-		} catch (Exception e) {
-			LOGGER.error("Erreur lors de la construction d'un Zip.", e);
+		} catch (IOException e) {
+			throw new UndeclaredThrowableException(e);
 		}
 		
 		return archiveFile.toNonArchiveFile();
