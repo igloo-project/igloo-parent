@@ -315,7 +315,7 @@ public final class Functions2 {
 		KEY {
 			@Override
 			public Object apply(Entry<?, ?> entry) {
-				return entry.getKey();
+				return entry == null ? null : entry.getKey();
 			}
 			@Override
 			public String toString() {
@@ -325,7 +325,7 @@ public final class Functions2 {
 		VALUE {
 			@Override
 			public Object apply(Entry<?, ?> entry) {
-				return entry.getValue();
+				return entry == null ? null : entry.getValue();
 			}
 			@Override
 			public String toString() {
@@ -343,7 +343,7 @@ public final class Functions2 {
 		INSTANCE {
 			@Override
 			public Pair<?, ?> apply(Entry<?, ?> entry) {
-				return Pair.with(entry.getKey(), entry.getValue());
+				return entry == null ? null : Pair.with(entry.getKey(), entry.getValue());
 			}
 			@Override
 			public String toString() {
@@ -361,7 +361,7 @@ public final class Functions2 {
 		INSTANCE {
 			@Override
 			public Object apply(IValue0<?> entry) {
-				return entry.getValue0();
+				return entry == null ? null : entry.getValue0();
 			}
 			@Override
 			public String toString() {
@@ -379,7 +379,7 @@ public final class Functions2 {
 		INSTANCE {
 			@Override
 			public Object apply(IValue1<?> entry) {
-				return entry.getValue1();
+				return entry == null ? null : entry.getValue1();
 			}
 			@Override
 			public String toString() {

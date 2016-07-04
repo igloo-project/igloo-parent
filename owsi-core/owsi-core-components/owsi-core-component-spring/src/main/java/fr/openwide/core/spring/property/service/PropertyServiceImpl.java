@@ -161,6 +161,24 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 			protected String doBackward(T b) {
 				throw new IllegalStateException("Unable to update immutable property.");
 			}
+			
+			/**
+			 * Workaround sonar/findbugs - https://github.com/google/guava/issues/1858
+			 * Guava Converter overrides only equals to add javadoc, but findbugs warns about non coherent equals/hashcode
+			 * possible issue.
+			 */
+			@Override
+			public boolean equals(Object object) {
+				return super.equals(object);
+			}
+			
+			/**
+			 * Workaround sonar/findbugs - see #equals(Object)
+			 */
+			@Override
+			public int hashCode() {
+				return super.hashCode();
+			}
 		}, defaultValueSupplier);
 	}
 

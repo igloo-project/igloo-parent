@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -65,7 +67,7 @@ public final class JQPlotDataAdapters {
 		Renderer<E> entryRenderer = percentRenderer.onResultOf(new SerializableFunction<E, Double>() {
 			private static final long serialVersionUID = 595417526944754574L;
 			@Override
-			public Double apply(E entry) {
+			public Double apply(@Nonnull E entry) {
 				V absoluteValue = entry.getValue();
 				if (absoluteValue == null) {
 					return null;

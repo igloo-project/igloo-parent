@@ -100,7 +100,7 @@ public class AnyTldUrlValidator extends UrlValidator implements SerializablePred
 		}
 		
 		String authority = urlMatcher.group(PARSE_URL_AUTHORITY);
-		if ("file".equals(scheme) && "".equals(authority)) {
+		if ("file".equals(scheme) && "".equals(authority)) { // NOSONAR
 			// Special case - file: allows an empty authority
 		} else {
 			// Validate the authority

@@ -251,14 +251,14 @@ public abstract class AbstractTestCase {
 		} else if (attribute instanceof MapAttribute) {
 			MapAttribute<?, ?, ?> mapAttribute = (MapAttribute<?, ?, ?>) attribute;
 			if (Enum.class.isAssignableFrom(mapAttribute.getKeyJavaType())
-					&& (mapKeyEnumerated == null || EnumType.ORDINAL.equals(mapKeyEnumerated))
+					&& (mapKeyEnumerated == null || EnumType.ORDINAL.equals(mapKeyEnumerated.value()))
 					&& mapKey == null /* if @MapKey present, then field format is defined elsewhere and check is useless */) {
 				throw new IllegalStateException(
 						"Map \"" + attribute.getName() + "\" de clés ordinales "
 						+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");
 			}
 			if (Enum.class.isAssignableFrom(mapAttribute.getElementType().getJavaType())
-					&& (enumerated == null || EnumType.ORDINAL.equals(enumerated))) {
+					&& (enumerated == null || EnumType.ORDINAL.equals(enumerated.value()))) {
 				throw new IllegalStateException(
 						"Map \"" + attribute.getName() + "\" de valeurs ordinales "
 						+ ((PluralAttribute<?, ?, ?>) attribute).getElementType().getJavaType().getSimpleName() + " refusée");

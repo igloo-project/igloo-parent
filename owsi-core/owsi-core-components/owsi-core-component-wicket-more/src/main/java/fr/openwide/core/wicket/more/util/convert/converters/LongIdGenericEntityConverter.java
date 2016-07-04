@@ -39,7 +39,10 @@ public class LongIdGenericEntityConverter<E extends GenericEntity<Long, ?>> exte
 		if (entityService == null) { // Late initialization, so that we can use this class for static variables
 			Injector.get().inject(this);
 		}
-		return entityService.getEntity(targetType, convertToId(value, locale));
+		return entityService.getEntity(targetType, convertToId(value, locale)); // NOSONAR findbugs:NP_NULL_ON_SOME_PATH
+		// false positive NP_NULL_ON_SOME_PATH as findbugs can't see that Injector.get().inject(this) solves
+		// entityService null value (NOTA : special path used when converter is a constant so that service binding
+		// cannot be done at construction time.
 	}
 	
 	private String convertToString(Long value) {

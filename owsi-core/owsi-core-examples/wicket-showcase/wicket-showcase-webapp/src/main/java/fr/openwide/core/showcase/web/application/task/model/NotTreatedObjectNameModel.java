@@ -29,7 +29,7 @@ public class NotTreatedObjectNameModel extends LoadableDetachableModel<String> {
 	protected String load() {
 		ShowcaseBatchReportBean showcaseReportBean = reportBeanModel.getObject();
 		Long id = idModel.getObject();
-		if (showcaseReportBean != null || id != null) {
+		if (showcaseReportBean != null && id != null) {
 			return showcaseReportBean.getNotTreatedObjects().get(id);
 		}
 		return null;

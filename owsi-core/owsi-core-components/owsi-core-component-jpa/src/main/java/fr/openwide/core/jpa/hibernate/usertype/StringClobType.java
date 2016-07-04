@@ -62,7 +62,7 @@ public class StringClobType implements UserType, Serializable {
 	}
 
 	@Override
-	public boolean equals(Object x, Object y) throws HibernateException {
+	public boolean equals(Object x, Object y) throws HibernateException { // NOSONAR pmd:SuspiciousEqualsMethodName
 		return ( x == y ) || ( x != null && x.equals( y ) );
 	}
 

@@ -59,7 +59,7 @@ public class EmptyRendererServiceImpl implements IRendererService {
 
 	@Override
 	public String localize(String resourceKey, Object namedParameters, Object... positionalParameters) {
-		return resourceKey + "(" + namedParameters + ", " + positionalParameters + ")";
+		return resourceKey + "(" + namedParameters + ", [" + Joiners.onComma().join(positionalParameters) + "])";
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -24,7 +26,7 @@ public class TestHistoryDifferenceCollectionMatcher<D extends AbstractHistoryDif
 	private static final Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey> HISTORY_DIFFERENCE_TO_DIFFERENCE_KEY =
 			new Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey>() {
 				@Override
-				public TestHistoryDifferenceKey apply(AbstractHistoryDifference<?, ?> input) {
+				public TestHistoryDifferenceKey apply(@Nonnull AbstractHistoryDifference<?, ?> input) {
 					return new TestHistoryDifferenceKey(input);
 				}
 			};
@@ -32,7 +34,7 @@ public class TestHistoryDifferenceCollectionMatcher<D extends AbstractHistoryDif
 	private static final Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription> HISTORY_DIFFERENCE_TO_DESCRIPTION =
 			new Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription>() {
 				@Override
-				public TestHistoryDifferenceDescription apply(AbstractHistoryDifference<?, ?> input) {
+				public TestHistoryDifferenceDescription apply(@Nonnull AbstractHistoryDifference<?, ?> input) {
 					return new TestHistoryDifferenceDescription(
 							input.getEventType(),
 							Multimaps.transformValues(

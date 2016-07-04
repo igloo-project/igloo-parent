@@ -50,7 +50,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 
 	private synchronized IHtmlNotificationCssRegistry getRegistry(LessCssResourceReference cssResourceReference) throws ServiceException {
 		IResourceStream resourceStream = cssResourceReference.getResource().getResourceStream();
-		if (resourceStream == null) {
+		if (resourceStream == null) { // NOSONAR findbugs:RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE
 			throw new ServiceException("Could not retrieve resource stream for resource reference " + cssResourceReference + " when accessing a notification CSS style registry");
 		}
 		
@@ -71,7 +71,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 			LOGGER.warn("Overrding Html notification style registry for component variation " + componentVariation);
 		}
 		registrySpecs.put(componentVariation, cssResourceReference);
-		registryCache.remove(componentVariation);
+		registryCache.remove(cssResourceReference);
 	}
 	
 	private IHtmlNotificationCssRegistry createRegistry(IResourceStream resourceStream) throws ServiceException {

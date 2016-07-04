@@ -1,5 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement;
 
+import javax.annotation.Nonnull;
+
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 import org.wicketstuff.wiquery.core.options.LiteralOption;
 
@@ -13,9 +15,9 @@ public final class BootstrapModalManager implements ChainableStatement {
 
 	private final CharSequence[] args;
 
-	private BootstrapModalManager(CharSequence[] args) {
+	private BootstrapModalManager(@Nonnull CharSequence[] bootstrapArgs) {
 		super();
-		this.args = args;
+		this.args = bootstrapArgs.clone();
 	}
 
 	@Override
