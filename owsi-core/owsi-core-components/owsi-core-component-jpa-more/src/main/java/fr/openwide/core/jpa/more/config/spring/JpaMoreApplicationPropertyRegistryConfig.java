@@ -29,7 +29,7 @@ public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicatio
 		
 		registry.registerBoolean(MIGRATION_LOGGING_MEMORY);
 		
-		registry.register(
+		registry.register( // NOSONAR findbugs:DMI_HARDCODED_ABSOLUTE_FILENAME
 				IMAGE_MAGICK_CONVERT_BINARY_PATH,
 				new Function<String, File>() {
 					@Override
