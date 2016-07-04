@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -110,12 +111,13 @@ public abstract class AbstractMigrationService {
 	protected void preload(List<Long> entityIds, IPreloadAwareMigrationInformation migrationInformation) {
 		Map<Class<? extends GenericEntity<Long, ?>>, String> preloadRequests = migrationInformation.getPreloadRequests();
 		if (preloadRequests != null) {
-			for (Class<? extends GenericEntity<Long, ?>> preloadedClass : preloadRequests.keySet()) {
-				String sqlPreloadRequest = preloadRequests.get(preloadedClass);
+			for (Entry<Class<? extends GenericEntity<Long, ?>>, String> preloadedClassEntry : preloadRequests.entrySet()) {
+				String sqlPreloadRequest = preloadedClassEntry.getValue();
+				Class<? extends GenericEntity<Long, ?>> key = preloadedClassEntry.getKey();
 				if (sqlPreloadRequest == null) {
-					listEntitiesByIds(preloadedClass, entityIds);
+					listEntitiesByIds(key, entityIds);
 				} else {
-					preloadLinkedEntities(preloadedClass,
+					preloadLinkedEntities(key,
 							sqlPreloadRequest,
 							migrationInformation.getParameterIds(),
 							entityIds);
