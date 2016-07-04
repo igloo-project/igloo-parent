@@ -71,7 +71,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 			LOGGER.warn("Overrding Html notification style registry for component variation " + componentVariation);
 		}
 		registrySpecs.put(componentVariation, cssResourceReference);
-		registryCache.remove(componentVariation);
+		registryCache.remove(cssResourceReference);
 	}
 	
 	private IHtmlNotificationCssRegistry createRegistry(IResourceStream resourceStream) throws ServiceException {
