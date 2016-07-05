@@ -6,7 +6,6 @@ import fr.openwide.core.jpa.more.business.history.model.AbstractHistoryLog;
 
 /**
  * Update an object depending on the differences found on it.
- * Met à jour un objet en fonction des différences constatées sur cet objet.
  * <p>At the moment, only refreshes {@link HistoryEvent}.
  */
 public interface IHistoryDifferenceHandler<T,
