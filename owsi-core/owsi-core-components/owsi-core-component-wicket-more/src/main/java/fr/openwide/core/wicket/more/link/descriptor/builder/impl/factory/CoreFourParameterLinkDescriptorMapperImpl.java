@@ -7,19 +7,23 @@ import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.AbstractFourParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IFourParameterLinkDescriptorMapper;
 
-public class CoreFourParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor, T1, T2, T3, T4>
-		extends AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>
-		implements IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4> {
+public class CoreFourParameterLinkDescriptorMapperImpl
+		<
+		TLinkDescriptor extends ILinkDescriptor,
+		TParam1, TParam2, TParam3, TParam4
+		>
+		extends AbstractFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+		implements IFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4> {
 	private static final long serialVersionUID = -4881770003726056213L;
 	
-	private final CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
+	private final CoreLinkDescriptorMapperLinkDescriptorFactory<TLinkDescriptor> factory;
 
-	public CoreFourParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory) {
+	public CoreFourParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<TLinkDescriptor> factory) {
 		this.factory = factory;
 	}
 
 	@Override
-	public L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3, IModel<T4> model4) {
+	public TLinkDescriptor map(IModel<TParam1> model1, IModel<TParam2> model2, IModel<TParam3> model3, IModel<TParam4> model4) {
 		return factory.create(Quartet.with(model1, model2, model3, model4));
 	}
 	

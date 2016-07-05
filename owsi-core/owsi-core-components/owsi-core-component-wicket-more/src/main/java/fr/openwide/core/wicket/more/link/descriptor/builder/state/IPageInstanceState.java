@@ -6,10 +6,10 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 
-public interface IPageInstanceState<L extends IPageLinkGenerator> extends ITerminalState<L> {
+public interface IPageInstanceState<TLinkDescriptor extends IPageLinkGenerator> extends ITerminalState<TLinkDescriptor> {
 	
-	<P extends Page> IPageInstanceState<L> validate(Class<P> expectedPageClass);
+	<P extends Page> IPageInstanceState<TLinkDescriptor> validate(Class<P> expectedPageClass);
 	
-	IPageInstanceState<L> validate(IModel<? extends Class<? extends Page>> expectedPageClassModel);
+	IPageInstanceState<TLinkDescriptor> validate(IModel<? extends Class<? extends Page>> expectedPageClassModel);
 
 }

@@ -4,14 +4,24 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping
 
 
 
-public interface IFourParameterMapperTwoChosenParameterMappingState<InitialState, T1, T2, T3, T4, MT1, MT2> extends IParameterMapperTwoChosenParameterMappingState<InitialState, MT1, MT2> {
+public interface IFourParameterMapperTwoChosenParameterMappingState
+		<
+		InitialState,
+		TParam1, TParam2, TParam3, TParam4,
+		TChosenParam1, TChosenParam2
+		>
+		extends IParameterMapperTwoChosenParameterMappingState
+				<
+				InitialState,
+				TChosenParam1, TChosenParam2
+				> {
 
-	IFourParameterMapperThreeChosenParameterMappingState<InitialState, T1, T2, T3, T4, MT1, MT2, T1> andFirst();
+	IFourParameterMapperThreeChosenParameterMappingState<InitialState, TParam1, TParam2, TParam3, TParam4, TChosenParam1, TChosenParam2, TParam1> andFirst();
 
-	IFourParameterMapperThreeChosenParameterMappingState<InitialState, T1, T2, T3, T4, MT1, MT2, T2> andSecond();
+	IFourParameterMapperThreeChosenParameterMappingState<InitialState, TParam1, TParam2, TParam3, TParam4, TChosenParam1, TChosenParam2, TParam2> andSecond();
 
-	IFourParameterMapperThreeChosenParameterMappingState<InitialState, T1, T2, T3, T4, MT1, MT2, T3> andThird();
+	IFourParameterMapperThreeChosenParameterMappingState<InitialState, TParam1, TParam2, TParam3, TParam4, TChosenParam1, TChosenParam2, TParam3> andThird();
 
-	IFourParameterMapperThreeChosenParameterMappingState<InitialState, T1, T2, T3, T4, MT1, MT2, T4> andFourth();
+	IFourParameterMapperThreeChosenParameterMappingState<InitialState, TParam1, TParam2, TParam3, TParam4, TChosenParam1, TChosenParam2, TParam4> andFourth();
 
 }

@@ -4,10 +4,12 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMapp
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IOneParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 
-public interface IOneParameterMapperState<L, T1>
-		extends IParameterMappingState<IOneParameterLinkDescriptorMapper<L, T1>>,
-				IOneParameterMapperOneChosenParameterMappingState<IOneParameterMapperState<L, T1>, T1, T1> {
+public interface IOneParameterMapperState<TLinkDescriptor, TParam1>
+		extends IParameterMappingState<IOneParameterLinkDescriptorMapper<TLinkDescriptor, TParam1>>,
+				IOneParameterMapperOneChosenParameterMappingState<
+						IOneParameterMapperState<TLinkDescriptor, TParam1>, TParam1, TParam1
+				> {
 	
-	<T2> ITwoParameterMapperState<L, T1, T2> model(Class<? super T2> clazz);
+	<TParam2> ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2> model(Class<? super TParam2> clazz);
 
 }

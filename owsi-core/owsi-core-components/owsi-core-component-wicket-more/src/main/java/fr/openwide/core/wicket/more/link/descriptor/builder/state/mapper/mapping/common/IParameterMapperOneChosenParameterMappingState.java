@@ -13,37 +13,36 @@ import com.google.common.base.Supplier;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 
-public interface IParameterMapperOneChosenParameterMappingState<InitialState, T1>
-		extends IParameterMapperChosenParameterMappingState<
-				InitialState,
-				Unit<IModel<T1>>
-		> {
+public interface IParameterMapperOneChosenParameterMappingState<TInitialState, TChosenParam1>
+		extends IParameterMapperChosenParameterMappingState
+				<
+				TInitialState,
+				Unit<IModel<TChosenParam1>>
+				> {
 
-	<T> IAddedParameterMappingState<InitialState> map(String parameterName);
+	IAddedParameterMappingState<TInitialState> map(String parameterName);
 
-	@SuppressWarnings("rawtypes")
-	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<InitialState> mapCollection(
-			String parameterName, Class<T> elementType);
+	<TElement> IAddedParameterMappingState<TInitialState> mapCollection(
+			String parameterName, Class<TElement> elementType);
 
-	@SuppressWarnings("rawtypes")
-	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<InitialState> mapCollection(
+	IAddedParameterMappingState<TInitialState> mapCollection(
 			String parameterName, TypeDescriptor elementTypeDescriptor);
 
 	@SuppressWarnings("rawtypes")
-	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<InitialState> mapCollection(
+	<C extends Collection> IAddedParameterMappingState<TInitialState> mapCollection(
 			String parameterName, TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier);
 
-	<T> IAddedParameterMappingState<InitialState> renderInUrl(String parameterName);
+	IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName);
 
-	IAddedParameterMappingState<InitialState> renderInUrl(String parameterName, AbstractBinding<? super T1, ?> binding);
+	IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, AbstractBinding<? super TChosenParam1, ?> binding);
 	
-	InitialState validator(Predicate<? super T1> predicate);
+	TInitialState validator(Predicate<? super TChosenParam1> predicate);
 	
-	InitialState permission(String permissionName);
+	TInitialState permission(String permissionName);
 	
-	InitialState permission(String firstPermissionName, String... otherPermissionNames);
+	TInitialState permission(String firstPermissionName, String... otherPermissionNames);
 	
-	InitialState permission(BindingRoot<? super T1, ?> binding,
+	TInitialState permission(BindingRoot<? super TChosenParam1, ?> binding,
 			String firstPermissionName, String... otherPermissionNames);
 
 }

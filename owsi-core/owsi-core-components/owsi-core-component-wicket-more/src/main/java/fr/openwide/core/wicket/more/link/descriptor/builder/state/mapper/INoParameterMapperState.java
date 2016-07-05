@@ -12,10 +12,10 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
  *  by calling the {@link #model(Class)} method.
  * </ul>
  *
- * @param <L>
+ * @param <TLinkDescriptor>
  */
-public interface INoParameterMapperState<L> extends IParameterMappingState<L> {
+public interface INoParameterMapperState<TLinkDescriptor> extends IParameterMappingState<TLinkDescriptor> {
 
-	<T1> IOneParameterMapperState<L, T1> model(Class<? super T1> clazz);
+	<TParam1> IOneParameterMapperState<TLinkDescriptor, TParam1> model(Class<? super TParam1> clazz);
 
 }

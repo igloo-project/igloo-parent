@@ -20,13 +20,22 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
-public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor, T1, T2>
-		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl<
-				ITwoParameterLinkDescriptorMapper<L, T1, T2>, L, ITwoParameterMapperState<L, T1, T2>, T2
+public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl
+		<
+		TLinkDescriptor extends ILinkDescriptor,
+		TParam1, TParam2
 		>
-		implements ITwoParameterMapperState<L, T1, T2> {
+		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl
+				<
+				ITwoParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2>,
+				TLinkDescriptor,
+				ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2>,
+				TParam2
+				>
+		implements ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2> {
 	
-	public CoreTwoParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
+	public CoreTwoParameterLinkDescriptorMapperBuilderStateImpl(
+			CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
 			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType) {
@@ -34,13 +43,13 @@ public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILin
 	}
 	
 	@Override
-	protected IBuilderFactory<ITwoParameterLinkDescriptorMapper<L, T1, T2>> getFactory() {
-		return new IBuilderFactory<ITwoParameterLinkDescriptorMapper<L, T1, T2>>() {
+	protected IBuilderFactory<ITwoParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2>> getFactory() {
+		return new IBuilderFactory<ITwoParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2>>() {
 			@Override
-			public ITwoParameterLinkDescriptorMapper<L, T1, T2> create(
+			public ITwoParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2> create(
 					Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
 					Iterable<? extends ILinkParameterValidator> validators) {
-				return new CoreTwoParameterLinkDescriptorMapperImpl<L, T1, T2>(
+				return new CoreTwoParameterLinkDescriptorMapperImpl<TLinkDescriptor, TParam1, TParam2>(
 						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(
 								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders, validatorFactories
 						)
@@ -51,7 +60,7 @@ public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILin
 	
 	@SuppressWarnings("rawtypes")
 	private class TwoParameterOneChosenParameterMapperMappingStateImpl
-			extends CoreParameterMapperMappingStateImpl<ITwoParameterMapperState<L, T1, T2>>
+			extends CoreParameterMapperMappingStateImpl<ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2>>
 			implements ITwoParameterMapperOneChosenParameterMappingState,
 					ITwoParameterMapperTwoChosenParameterMappingState {
 		public TwoParameterOneChosenParameterMapperMappingStateImpl(int firstChosenIndex) {
@@ -90,8 +99,8 @@ public class CoreTwoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILin
 	}
 	
 	@Override
-	public <T3> IThreeParameterMapperState<L, T1, T2, T3> model(Class<? super T3> clazz) {
-		return new CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L, T1, T2, T3>(
+	public <T3> IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, T3> model(Class<? super T3> clazz) {
+		return new CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<TLinkDescriptor, TParam1, TParam2, T3>(
 				linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, clazz
 		);
 	}

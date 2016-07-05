@@ -8,12 +8,12 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
-public interface IParameterMapperChosenParameterMappingState<InitialState, TupleType extends Tuple> {
+public interface IParameterMapperChosenParameterMappingState<TInitialState, TTuple extends Tuple> {
 
-	IAddedParameterMappingState<InitialState> map(ILinkParameterMappingEntryFactory<? super TupleType> parameterMappingEntryFactory);
+	IAddedParameterMappingState<TInitialState> map(ILinkParameterMappingEntryFactory<? super TTuple> parameterMappingEntryFactory);
 
-	InitialState validator(ILinkParameterValidatorFactory<? super TupleType> parameterValidatorFactory);
+	TInitialState validator(ILinkParameterValidatorFactory<? super TTuple> parameterValidatorFactory);
 	
-	InitialState validator(IDetachableFactory<? super TupleType, ? extends Condition> conditionFactory);
+	TInitialState validator(IDetachableFactory<? super TTuple, ? extends Condition> conditionFactory);
 
 }

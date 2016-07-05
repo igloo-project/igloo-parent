@@ -21,13 +21,22 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
-public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor, T1, T2, T3>
-		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl<
-				IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>, L, IThreeParameterMapperState<L, T1, T2, T3>, T3
+public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl
+		<
+		TLinkDescriptor extends ILinkDescriptor,
+		TParam1, TParam2, TParam3
 		>
-		implements IThreeParameterMapperState<L, T1, T2, T3> {
+		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl
+				<
+				IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>,
+				TLinkDescriptor,
+				IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3>,
+				TParam3
+				>
+		implements IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3> {
 	
-	public CoreThreeParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
+	public CoreThreeParameterLinkDescriptorMapperBuilderStateImpl(
+			CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
 			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType) {
@@ -35,13 +44,14 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 	}
 	
 	@Override
-	protected IBuilderFactory<IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>> getFactory() {
-		return new IBuilderFactory<IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>>() {
+	protected IBuilderFactory<IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>>
+			getFactory() {
+		return new IBuilderFactory<IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>>() {
 			@Override
-			public IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> create(
+			public IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3> create(
 					Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
 					Iterable<? extends ILinkParameterValidator> validators) {
-				return new CoreThreeParameterLinkDescriptorMapperImpl<L, T1, T2, T3>(
+				return new CoreThreeParameterLinkDescriptorMapperImpl<TLinkDescriptor, TParam1, TParam2, TParam3>(
 						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(
 								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders, validatorFactories
 						)
@@ -52,7 +62,10 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 	
 	@SuppressWarnings("rawtypes")
 	private class ThreeParameterMapperMappingStateImpl
-			extends CoreParameterMapperMappingStateImpl<IThreeParameterMapperState<L, T1, T2, T3>>
+			extends CoreParameterMapperMappingStateImpl
+					<
+					IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3>
+					>
 			implements IThreeParameterMapperOneChosenParameterMappingState,
 					IThreeParameterMapperTwoChosenParameterMappingState,
 					IThreeParameterMapperThreeChosenParameterMappingState {
@@ -103,8 +116,8 @@ public class CoreThreeParameterLinkDescriptorMapperBuilderStateImpl<L extends IL
 	}
 
 	@Override
-	public <T4> IFourParameterMapperState<L, T1, T2, T3, T4> model(Class<? super T4> clazz) {
-		return new CoreFourParameterLinkDescriptorMapperBuilderStateImpl<L, T1, T2, T3, T4>(
+	public <T4> IFourParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3, T4> model(Class<? super T4> clazz) {
+		return new CoreFourParameterLinkDescriptorMapperBuilderStateImpl<TLinkDescriptor, TParam1, TParam2, TParam3, T4>(
 				linkDescriptorFactory, entryBuilders, validatorFactories, dynamicParameterTypes, clazz
 		);
 	}

@@ -4,13 +4,17 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMapp
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.ITwoParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 
-public interface ITwoParameterMapperState<L, T1, T2>
-		extends IParameterMappingState<ITwoParameterLinkDescriptorMapper<L, T1, T2>> {
+public interface ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2>
+		extends IParameterMappingState<ITwoParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2>> {
 
-	<T3> IThreeParameterMapperState<L, T1, T2, T3> model(Class<? super T3> clazz);
+	<TParam3> IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3> model(Class<? super TParam3> clazz);
 	
-	ITwoParameterMapperOneChosenParameterMappingState<ITwoParameterMapperState<L, T1, T2>, T1, T2, T1> pickFirst();
+	ITwoParameterMapperOneChosenParameterMappingState<
+			ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2>, TParam1, TParam2, TParam1
+			> pickFirst();
 	
-	ITwoParameterMapperOneChosenParameterMappingState<ITwoParameterMapperState<L, T1, T2>, T1, T2, T2> pickSecond();
+	ITwoParameterMapperOneChosenParameterMappingState<
+			ITwoParameterMapperState<TLinkDescriptor, TParam1, TParam2>, TParam1, TParam2, TParam2
+			> pickSecond();
 
 }

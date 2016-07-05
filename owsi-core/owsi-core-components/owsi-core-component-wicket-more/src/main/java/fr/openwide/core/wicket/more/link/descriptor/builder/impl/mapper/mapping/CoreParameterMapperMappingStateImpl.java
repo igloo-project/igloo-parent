@@ -26,10 +26,10 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
 @SuppressWarnings("rawtypes")
-public class CoreParameterMapperMappingStateImpl<InitialState>
+public class CoreParameterMapperMappingStateImpl<TInitialState>
 		implements IParameterMapperChosenParameterMappingState, IParameterMapperOneChosenParameterMappingState {
 	
-	private final InitialState initialState;
+	private final TInitialState initialState;
 	
 	private final List<Class<?>> dynamicParameterTypes;
 	
@@ -39,7 +39,7 @@ public class CoreParameterMapperMappingStateImpl<InitialState>
 	
 	protected final List<Integer> parameterIndices;
 
-	public CoreParameterMapperMappingStateImpl(InitialState initialState,
+	public CoreParameterMapperMappingStateImpl(TInitialState initialState,
 			List<Class<?>> dynamicParameterTypes, int firstChosenIndex,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
 			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories) {
@@ -58,48 +58,48 @@ public class CoreParameterMapperMappingStateImpl<InitialState>
 		return parameterIndices.get(0);
 	}
 	
-	private <TupleType extends Tuple> IAddedParameterMappingState<InitialState> doMap(ILinkParameterMappingEntryFactory<TupleType> entryFactory) {
-		LinkParameterMappingEntryBuilder<TupleType> builder = new LinkParameterMappingEntryBuilder<TupleType>(entryFactory);
+	private <TTuple extends Tuple> IAddedParameterMappingState<TInitialState> doMap(ILinkParameterMappingEntryFactory<TTuple> entryFactory) {
+		LinkParameterMappingEntryBuilder<TTuple> builder = new LinkParameterMappingEntryBuilder<TTuple>(entryFactory);
 		entryBuilders.putAll(builder, parameterIndices);
-		return new AbstractCoreAddedParameterMapperStateImpl<InitialState, TupleType>(builder) {
+		return new AbstractCoreAddedParameterMapperStateImpl<TInitialState, TTuple>(builder) {
 			@Override
-			protected InitialState toNextState(LinkParameterMappingEntryBuilder<TupleType> builder) {
+			protected TInitialState toNextState(LinkParameterMappingEntryBuilder<TTuple> builder) {
 				return initialState;
 			}
 		};
 	}
 	
-	private <TupleType extends Tuple> InitialState doValidator(ILinkParameterValidatorFactory<TupleType> factory) {
+	private <TTuple extends Tuple> TInitialState doValidator(ILinkParameterValidatorFactory<TTuple> factory) {
 		validatorFactories.putAll(factory, parameterIndices);
 		return initialState;
 	}
 
 	@Override
-	public IAddedParameterMappingState<InitialState> map(String parameterName) {
+	public IAddedParameterMappingState<TInitialState> map(String parameterName) {
 		return doMap(SimpleLinkParameterMappingEntry.factory(parameterName, dynamicParameterTypes.get(getFirstIndex())));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IAddedParameterMappingState<InitialState> map(ILinkParameterMappingEntryFactory parameterMappingEntryFactory) {
+	public IAddedParameterMappingState<TInitialState> map(ILinkParameterMappingEntryFactory parameterMappingEntryFactory) {
 		return doMap(parameterMappingEntryFactory);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IAddedParameterMappingState<InitialState> mapCollection(String parameterName, Class elementType) {
+	public IAddedParameterMappingState<TInitialState> mapCollection(String parameterName, Class elementType) {
 		return doMap(CollectionLinkParameterMappingEntry.factory(parameterName, (Class)dynamicParameterTypes.get(getFirstIndex()), elementType));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IAddedParameterMappingState<InitialState> mapCollection(String parameterName, TypeDescriptor elementTypeDescriptor) {
+	public IAddedParameterMappingState<TInitialState> mapCollection(String parameterName, TypeDescriptor elementTypeDescriptor) {
 		return doMap(CollectionLinkParameterMappingEntry.factory(parameterName, (Class)dynamicParameterTypes.get(getFirstIndex()), elementTypeDescriptor));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IAddedParameterMappingState<InitialState> mapCollection(String parameterName,
+	public IAddedParameterMappingState<TInitialState> mapCollection(String parameterName,
 			TypeDescriptor elementTypeDescriptor, Supplier emptyCollectionSupplier) {
 		return doMap(CollectionLinkParameterMappingEntry.factory(
 				parameterName, (Class)dynamicParameterTypes.get(0), elementTypeDescriptor, emptyCollectionSupplier
@@ -107,50 +107,50 @@ public class CoreParameterMapperMappingStateImpl<InitialState>
 	}
 
 	@Override
-	public IAddedParameterMappingState<InitialState> renderInUrl(String parameterName) {
+	public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName) {
 		return doMap(InjectOnlyLinkParameterMappingEntry.factory(parameterName));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IAddedParameterMappingState<InitialState> renderInUrl(String parameterName, AbstractBinding binding) {
+	public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, AbstractBinding binding) {
 		return doMap(InjectOnlyLinkParameterMappingEntry.factory(parameterName, binding));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public InitialState validator(Predicate predicate) {
-		return (InitialState) doValidator(ConditionLinkParameterValidator.predicateFactory(predicate));
+	public TInitialState validator(Predicate predicate) {
+		return (TInitialState) doValidator(ConditionLinkParameterValidator.predicateFactory(predicate));
 	}
 
 	@Override
-	public InitialState permission(String permissionName) {
+	public TInitialState permission(String permissionName) {
 		return doValidator(ConditionLinkParameterValidator.anyPermissionFactory(ImmutableList.of(permissionName)));
 	}
 
 	@Override
-	public InitialState permission(String firstPermissionName, String... otherPermissionNames) {
+	public TInitialState permission(String firstPermissionName, String... otherPermissionNames) {
 		return doValidator(ConditionLinkParameterValidator.anyPermissionFactory(Lists.asList(firstPermissionName, otherPermissionNames)));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public InitialState permission(BindingRoot binding, String firstPermissionName,
+	public TInitialState permission(BindingRoot binding, String firstPermissionName,
 			String... otherPermissionNames) {
-		return (InitialState) doValidator(ConditionLinkParameterValidator.anyPermissionFactory(binding,
+		return (TInitialState) doValidator(ConditionLinkParameterValidator.anyPermissionFactory(binding,
 				Lists.asList(firstPermissionName, otherPermissionNames)));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public InitialState validator(ILinkParameterValidatorFactory parameterValidatorFactory) {
-		return (InitialState) doValidator(parameterValidatorFactory);
+	public TInitialState validator(ILinkParameterValidatorFactory parameterValidatorFactory) {
+		return (TInitialState) doValidator(parameterValidatorFactory);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public InitialState validator(IDetachableFactory conditionFactory) {
-		return (InitialState) doValidator(ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
+	public TInitialState validator(IDetachableFactory conditionFactory) {
+		return (TInitialState) doValidator(ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
 	}
 
 }

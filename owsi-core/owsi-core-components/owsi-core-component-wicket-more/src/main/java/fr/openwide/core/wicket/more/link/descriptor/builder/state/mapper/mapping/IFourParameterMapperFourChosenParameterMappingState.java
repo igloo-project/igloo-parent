@@ -3,7 +3,16 @@ package fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mappin
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.common.IParameterMapperFourChosenParameterMappingState;
 
 
-public interface IFourParameterMapperFourChosenParameterMappingState<InitialState, T1, T2, T3, T4, MT1, MT2, MT3, MT4>
-		extends IParameterMapperFourChosenParameterMappingState<InitialState, MT1, MT2, MT3, MT4> {
+public interface IFourParameterMapperFourChosenParameterMappingState
+		<
+		InitialState,
+		TParam1, TParam2, TParam3, TParam4,
+		TChosenParam1, TChosenParam2, TChosenParam3, TChosenParam4
+		>
+		extends IParameterMapperFourChosenParameterMappingState
+				<
+				InitialState,
+				TChosenParam1, TChosenParam2, TChosenParam3, TChosenParam4
+				> {
 
 }

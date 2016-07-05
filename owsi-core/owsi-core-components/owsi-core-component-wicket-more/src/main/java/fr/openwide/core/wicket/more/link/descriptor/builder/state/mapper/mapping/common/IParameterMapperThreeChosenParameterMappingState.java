@@ -3,10 +3,15 @@ package fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mappin
 import org.apache.wicket.model.IModel;
 import org.javatuples.Triplet;
 
-public interface IParameterMapperThreeChosenParameterMappingState<InitialState, T1, T2, T3>
-		extends IParameterMapperChosenParameterMappingState<
-				InitialState,
-				Triplet<IModel<T1>, IModel<T2>, IModel<T3>>
-		> {
+public interface IParameterMapperThreeChosenParameterMappingState
+		<
+		TInitialState,
+		TChosenParam1, TChosenParam2, TChosenParam3
+		>
+		extends IParameterMapperChosenParameterMappingState
+				<
+				TInitialState,
+				Triplet<IModel<TChosenParam1>, IModel<TChosenParam2>, IModel<TChosenParam3>>
+				> {
 
 }

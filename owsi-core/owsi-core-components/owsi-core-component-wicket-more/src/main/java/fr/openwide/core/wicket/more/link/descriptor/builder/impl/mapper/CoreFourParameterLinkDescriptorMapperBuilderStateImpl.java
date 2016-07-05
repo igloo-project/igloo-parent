@@ -21,13 +21,22 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
-public class CoreFourParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor, T1, T2, T3, T4>
-		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl<
-				IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>, L, IFourParameterMapperState<L, T1, T2, T3, T4>, T4
+public class CoreFourParameterLinkDescriptorMapperBuilderStateImpl
+		<
+		TLinkDescriptor extends ILinkDescriptor,
+		TParam1, TParam2, TParam3, TParam4
 		>
-		implements IFourParameterMapperState<L, T1, T2, T3, T4> {
+		extends AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl
+				<
+				IFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>,
+				TLinkDescriptor,
+				IFourParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>,
+				TParam4
+				>
+		implements IFourParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4> {
 	
-	public CoreFourParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
+	public CoreFourParameterLinkDescriptorMapperBuilderStateImpl(
+			CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
 			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType) {
@@ -35,13 +44,14 @@ public class CoreFourParameterLinkDescriptorMapperBuilderStateImpl<L extends ILi
 	}
 	
 	@Override
-	protected IBuilderFactory<IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>> getFactory() {
-		return new IBuilderFactory<IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>>() {
+	protected IBuilderFactory<IFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>>
+			getFactory() {
+		return new IBuilderFactory<IFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>>() {
 			@Override
-			public IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4> create(
+			public IFourParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4> create(
 					Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
 					Iterable<? extends ILinkParameterValidator> validators) {
-				return new CoreFourParameterLinkDescriptorMapperImpl<L, T1, T2, T3, T4>(
+				return new CoreFourParameterLinkDescriptorMapperImpl<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>(
 						new CoreLinkDescriptorMapperLinkDescriptorFactory<>(
 								linkDescriptorFactory, parameterMappingEntries, validators, entryBuilders, validatorFactories
 						)
@@ -52,7 +62,10 @@ public class CoreFourParameterLinkDescriptorMapperBuilderStateImpl<L extends ILi
 	
 	@SuppressWarnings("rawtypes")
 	private class FourParameterMapperMappingStateImpl
-			extends CoreParameterMapperMappingStateImpl<IFourParameterMapperState<L, T1, T2, T3, T4>>
+			extends CoreParameterMapperMappingStateImpl
+					<
+					IFourParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4>
+					>
 			implements IFourParameterMapperOneChosenParameterMappingState,
 					IFourParameterMapperTwoChosenParameterMappingState,
 					IFourParameterMapperThreeChosenParameterMappingState,

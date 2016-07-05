@@ -4,15 +4,21 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMapp
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.IThreeParameterMapperOneChosenParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
 
-public interface IThreeParameterMapperState<L, T1, T2, T3>
-		extends IParameterMappingState<IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>> {
+public interface IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3>
+		extends IParameterMappingState<IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>> {
 	
-	<T4> IFourParameterMapperState<L, T1, T2, T3, T4> model(Class<? super T4> clazz);
+	<TParam4> IFourParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3, TParam4> model(Class<? super TParam4> clazz);
 	
-	IThreeParameterMapperOneChosenParameterMappingState<IThreeParameterMapperState<L, T1, T2, T3>, T1, T2, T3, T1> pickFirst();
+	IThreeParameterMapperOneChosenParameterMappingState<
+			IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3>, TParam1, TParam2, TParam3, TParam1
+			> pickFirst();
 	
-	IThreeParameterMapperOneChosenParameterMappingState<IThreeParameterMapperState<L, T1, T2, T3>, T1, T2, T3, T2> pickSecond();
+	IThreeParameterMapperOneChosenParameterMappingState<
+			IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3>, TParam1, TParam2, TParam3, TParam2
+			> pickSecond();
 	
-	IThreeParameterMapperOneChosenParameterMappingState<IThreeParameterMapperState<L, T1, T2, T3>, T1, T2, T3, T3> pickThird();
+	IThreeParameterMapperOneChosenParameterMappingState<
+			IThreeParameterMapperState<TLinkDescriptor, TParam1, TParam2, TParam3>, TParam1, TParam2, TParam3, TParam3
+			> pickThird();
 
 }

@@ -20,7 +20,8 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 
-public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor> implements IBuilderFactory<T>, IDetachable {
+public abstract class CoreLinkDescriptorBuilderFactory<TLinkDescriptor extends ILinkDescriptor>
+		implements IBuilderFactory<TLinkDescriptor>, IDetachable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -37,14 +38,14 @@ public abstract class CoreLinkDescriptorBuilderFactory<T extends ILinkDescriptor
 	}
 	
 	@Override
-	public T create(Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
+	public TLinkDescriptor create(Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
 			Iterable<? extends ILinkParameterValidator> validators) {
 		LinkParametersMapping parametersMapping = new LinkParametersMapping(parameterMappingEntries);
 		ILinkParameterValidator validator = LinkParameterValidators.chain(validators);
 		return create(parametersMapping, validator);
 	}
 	
-	protected abstract T create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator);
+	protected abstract TLinkDescriptor create(LinkParametersMapping parametersMapping, ILinkParameterValidator validator);
 
 	private static class CorePageLinkDescriptorBuilderFactory extends CoreLinkDescriptorBuilderFactory<IPageLinkDescriptor> {
 		private static final long serialVersionUID = 1L;

@@ -6,22 +6,23 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.impl.IBuilderFactory
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IOneParameterMapperState;
 
-public class CoreNoParameterLinkDescriptorMapperBuilderStateImpl<L extends ILinkDescriptor>
-		extends AbstractCoreLinkDescriptorMapperBuilderStateImpl<L, L>
-		implements INoParameterMapperState<L> {
+public class CoreNoParameterLinkDescriptorMapperBuilderStateImpl<TLinkDescriptor extends ILinkDescriptor>
+		extends AbstractCoreLinkDescriptorMapperBuilderStateImpl<TLinkDescriptor, TLinkDescriptor>
+		implements INoParameterMapperState<TLinkDescriptor> {
 	
-	public CoreNoParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory) {
+	public CoreNoParameterLinkDescriptorMapperBuilderStateImpl(
+			CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory) {
 		super(linkDescriptorFactory);
 	}
 	
 	@Override
-	protected IBuilderFactory<L> getFactory() {
+	protected IBuilderFactory<TLinkDescriptor> getFactory() {
 		return linkDescriptorFactory;
 	}
 
 	@Override
-	public <T1> IOneParameterMapperState<L, T1> model(Class<? super T1> clazz) {
-		return new CoreOneParameterLinkDescriptorMapperBuilderStateImpl<L, T1>(linkDescriptorFactory, clazz);
+	public <T1> IOneParameterMapperState<TLinkDescriptor, T1> model(Class<? super T1> clazz) {
+		return new CoreOneParameterLinkDescriptorMapperBuilderStateImpl<TLinkDescriptor, T1>(linkDescriptorFactory, clazz);
 	}
 
 }

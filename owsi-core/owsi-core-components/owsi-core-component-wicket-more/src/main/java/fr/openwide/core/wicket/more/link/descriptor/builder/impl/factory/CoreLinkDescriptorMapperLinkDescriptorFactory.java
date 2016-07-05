@@ -24,17 +24,18 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
-public final class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILinkDescriptor> implements IDetachable {
+public final class CoreLinkDescriptorMapperLinkDescriptorFactory<TLinkDescriptor extends ILinkDescriptor>
+		implements IDetachable {
 
 	private static final long serialVersionUID = 4728523709380372544L;
 	
-	private final CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory;
+	private final CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory;
 	private final Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries;
 	private final Iterable<? extends ILinkParameterValidator> validators;
 	private final ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders;
 	private final ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories;
 
-	public CoreLinkDescriptorMapperLinkDescriptorFactory(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
+	public CoreLinkDescriptorMapperLinkDescriptorFactory(CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory,
 			Iterable<? extends ILinkParameterMappingEntry> parameterMappingEntries,
 			Iterable<? extends ILinkParameterValidator> validators,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
@@ -75,7 +76,7 @@ public final class CoreLinkDescriptorMapperLinkDescriptorFactory<L extends ILink
 		}
 	}
 
-	protected final L create(Tuple parameters) {
+	protected final TLinkDescriptor create(Tuple parameters) {
 		Collection<ILinkParameterMappingEntry> addedParameterMappingEntries = Lists.newArrayList();
 		Collection<ILinkParameterValidator> addedValidators = Lists.newArrayList();
 		

@@ -14,21 +14,21 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParam
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
-public class LinkParameterMappingEntryBuilder<T extends Tuple> implements IDetachable {
+public class LinkParameterMappingEntryBuilder<TTuple extends Tuple> implements IDetachable {
 	private static final long serialVersionUID = -2030460237589017596L;
 	
-	private final ILinkParameterMappingEntryFactory<T> factory;
+	private final ILinkParameterMappingEntryFactory<TTuple> factory;
 
 	private boolean mandatory = false;
 	
 	private final List<ILinkParameterValidator> parameterValidators = Lists.newLinkedList();
 
-	public LinkParameterMappingEntryBuilder(ILinkParameterMappingEntryFactory<T> factory) {
+	public LinkParameterMappingEntryBuilder(ILinkParameterMappingEntryFactory<TTuple> factory) {
 		super();
 		this.factory = factory;
 	}
 
-	public Pair<ILinkParameterMappingEntry, Collection<ILinkParameterValidator>> build(T parameters) {
+	public Pair<ILinkParameterMappingEntry, Collection<ILinkParameterValidator>> build(TTuple parameters) {
 		ILinkParameterMappingEntry entry = factory.create(parameters);
 		ImmutableList.Builder<ILinkParameterValidator> validatorsListBuilder = ImmutableList.<ILinkParameterValidator>builder();
 		if (mandatory) {

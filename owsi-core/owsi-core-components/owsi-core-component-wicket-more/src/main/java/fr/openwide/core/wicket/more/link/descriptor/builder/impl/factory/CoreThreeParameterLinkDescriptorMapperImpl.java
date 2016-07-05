@@ -7,19 +7,23 @@ import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.AbstractThreeParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
 
-public class CoreThreeParameterLinkDescriptorMapperImpl<L extends ILinkDescriptor, T1, T2, T3>
-		extends AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
-		implements IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> {
+public class CoreThreeParameterLinkDescriptorMapperImpl
+		<
+		TLinkDescriptor extends ILinkDescriptor,
+		TParam1, TParam2, TParam3
+		>
+		extends AbstractThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>
+		implements IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3> {
 	private static final long serialVersionUID = -4881770003726056213L;
 	
-	private final CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory;
+	private final CoreLinkDescriptorMapperLinkDescriptorFactory<TLinkDescriptor> factory;
 
-	public CoreThreeParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<L> factory) {
+	public CoreThreeParameterLinkDescriptorMapperImpl(CoreLinkDescriptorMapperLinkDescriptorFactory<TLinkDescriptor> factory) {
 		this.factory = factory;
 	}
 
 	@Override
-	public L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3) {
+	public TLinkDescriptor map(IModel<TParam1> model1, IModel<TParam2> model2, IModel<TParam3> model3) {
 		return factory.create(Triplet.with(model1, model2, model3));
 	}
 	

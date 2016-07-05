@@ -26,9 +26,13 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
-public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl<Result, L extends ILinkDescriptor, SelfState, TLast>
-		extends AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L>
-		implements IParameterMapperOneChosenParameterMappingState<SelfState, TLast> {
+public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl
+		<
+		TResult, TLinkDescriptor extends ILinkDescriptor,
+		TSelfState, TLast
+		>
+		extends AbstractCoreLinkDescriptorMapperBuilderStateImpl<TResult, TLinkDescriptor>
+		implements IParameterMapperOneChosenParameterMappingState<TSelfState, TLast> {
 	
 	protected final List<Class<?>> dynamicParameterTypes;
 	
@@ -37,14 +41,14 @@ public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderS
 	protected final ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories;
 	
 	public AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl(
-			CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory, Class<?> addedParameterType) {
+			CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory, Class<?> addedParameterType) {
 		super(linkDescriptorFactory);
 		this.entryBuilders = LinkedListMultimap.create();
 		this.validatorFactories = LinkedListMultimap.create();
 		this.dynamicParameterTypes = ImmutableList.<Class<?>>of(addedParameterType);
 	}
 	
-	public AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory,
+	public AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory,
 			ListMultimap<LinkParameterMappingEntryBuilder<?>, Integer> entryBuilders,
 			ListMultimap<ILinkParameterValidatorFactory<?>, Integer> validatorFactories,
 			List<Class<?>> dynamicParameterTypes, Class<?> addedParameterType, int expectedNumberOfParameters) {
@@ -55,79 +59,77 @@ public abstract class AbstractCoreOneOrMoreParameterLinkDescriptorMapperBuilderS
 		Args.withinRange(expectedNumberOfParameters-1, expectedNumberOfParameters-1, dynamicParameterTypes.size(), "dynamicParameterTypes.size()");
 	}
 
-	protected abstract IParameterMapperOneChosenParameterMappingState<SelfState, TLast> pickLast();
+	protected abstract IParameterMapperOneChosenParameterMappingState<TSelfState, TLast> pickLast();
 
 	@Override
-	public <T> IAddedParameterMappingState<SelfState> map(String parameterName) {
+	public IAddedParameterMappingState<TSelfState> map(String parameterName) {
 		return pickLast().map(parameterName);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<SelfState> mapCollection(
-			String parameterName, Class<T> elementType) {
+	public <TElement> IAddedParameterMappingState<TSelfState> mapCollection(
+			String parameterName, Class<TElement> elementType) {
 		return pickLast().mapCollection(parameterName, elementType);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<SelfState> mapCollection(
+	public IAddedParameterMappingState<TSelfState> mapCollection(
 			String parameterName, TypeDescriptor elementTypeDescriptor) {
 		return pickLast().mapCollection(parameterName, elementTypeDescriptor);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<SelfState> mapCollection(
+	public <C extends Collection> IAddedParameterMappingState<TSelfState> mapCollection(
 			String parameterName, TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier) {
 		return pickLast().mapCollection(parameterName, elementTypeDescriptor, emptyCollectionSupplier);
 	}
 
 	@Override
-	public IAddedParameterMappingState<SelfState> map(
+	public IAddedParameterMappingState<TSelfState> map(
 			ILinkParameterMappingEntryFactory<? super Unit<IModel<TLast>>> parameterMappingEntryFactory) {
 		return pickLast().map(parameterMappingEntryFactory);
 	}
 
 	@Override
-	public <T> IAddedParameterMappingState<SelfState> renderInUrl(String parameterName) {
+	public IAddedParameterMappingState<TSelfState> renderInUrl(String parameterName) {
 		return pickLast().renderInUrl(parameterName);
 	}
 
 	@Override
-	public IAddedParameterMappingState<SelfState> renderInUrl(String parameterName,
+	public IAddedParameterMappingState<TSelfState> renderInUrl(String parameterName,
 			AbstractBinding<? super TLast, ?> binding) {
 		return pickLast().renderInUrl(parameterName, binding);
 	}
 
 	@Override
-	public SelfState validator(
+	public TSelfState validator(
 			ILinkParameterValidatorFactory<? super Unit<IModel<TLast>>> parameterValidatorFactory) {
 		return pickLast().validator(parameterValidatorFactory);
 	}
 	
 	@Override
-	public SelfState validator(IDetachableFactory<? super Unit<IModel<TLast>>, ? extends Condition> conditionFactory) {
+	public TSelfState validator(IDetachableFactory<? super Unit<IModel<TLast>>, ? extends Condition> conditionFactory) {
 		return pickLast().validator(conditionFactory);
 	}
 
 	@Override
-	public SelfState validator(Predicate<? super TLast> predicate) {
+	public TSelfState validator(Predicate<? super TLast> predicate) {
 		return pickLast().validator(predicate);
 	}
 
 	@Override
-	public SelfState permission(String permissionName) {
+	public TSelfState permission(String permissionName) {
 		return pickLast().permission(permissionName);
 	}
 
 	@Override
-	public SelfState permission(String firstPermissionName, String... otherPermissionNames) {
+	public TSelfState permission(String firstPermissionName, String... otherPermissionNames) {
 		return pickLast().permission(firstPermissionName, otherPermissionNames);
 	}
 
 	@Override
-	public SelfState permission(BindingRoot<? super TLast, ?> binding,
+	public TSelfState permission(BindingRoot<? super TLast, ?> binding,
 			String firstPermissionName, String... otherPermissionNames) {
 		return pickLast().permission(binding, firstPermissionName, otherPermissionNames);
 	}

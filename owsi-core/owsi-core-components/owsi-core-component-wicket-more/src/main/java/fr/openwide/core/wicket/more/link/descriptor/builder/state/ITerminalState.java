@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state;
 
 
-public interface ITerminalState<L> {
+public interface ITerminalState<TResult> {
 
-	L build();
+	TResult build();
 
 }

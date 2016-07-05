@@ -19,94 +19,95 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.IParameterMapp
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 
-public abstract class AbstractCoreLinkDescriptorMapperBuilderStateImpl<Result, L extends ILinkDescriptor>
-		implements IParameterMappingState<Result> {
+public abstract class AbstractCoreLinkDescriptorMapperBuilderStateImpl<TResult, TLinkDescriptor extends ILinkDescriptor>
+		implements IParameterMappingState<TResult> {
 	
-	protected final CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory;
+	protected final CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory;
 	
-	public AbstractCoreLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<L> linkDescriptorFactory) {
+	public AbstractCoreLinkDescriptorMapperBuilderStateImpl(CoreLinkDescriptorBuilderFactory<TLinkDescriptor> linkDescriptorFactory) {
 		super();
 		this.linkDescriptorFactory = linkDescriptorFactory;
 	}
 	
-	protected abstract IBuilderFactory<Result> getFactory();
+	protected abstract IBuilderFactory<TResult> getFactory();
 	
-	private CoreLinkDescriptorBuilderParametersStateImpl<Result> toParametersState() {
-		return new CoreLinkDescriptorBuilderParametersStateImpl<Result>(getFactory());
+	private CoreLinkDescriptorBuilderParametersStateImpl<TResult> toParametersState() {
+		return new CoreLinkDescriptorBuilderParametersStateImpl<TResult>(getFactory());
 	}
 	
 	@Override
-	public final Result build() {
+	public final TResult build() {
 		return toParametersState().build();
 	}
 
 	@Override
-	public <T> IAddedParameterMappingState<IParameterMappingState<Result>> map(String parameterName, IModel<T> valueModel, Class<T> valueType) {
+	public <T> IAddedParameterMappingState<IParameterMappingState<TResult>> map(String parameterName, IModel<T> valueModel, Class<T> valueType) {
 		return toParametersState().map(parameterName, valueModel, valueType);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<Result>> mapCollection(
-			String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType, Class<T> elementType) {
+	public <RawC extends Collection, C extends RawC, TElement> IAddedParameterMappingState<IParameterMappingState<TResult>>
+			mapCollection(String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
+					Class<TElement> elementType) {
 		return toParametersState().mapCollection(parameterName, valueModel, rawCollectionType, elementType);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<Result>> mapCollection(
-			String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
-			TypeDescriptor elementTypeDescriptor) {
+	public <RawC extends Collection, C extends RawC, TElement> IAddedParameterMappingState<IParameterMappingState<TResult>>
+			mapCollection(String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
+					TypeDescriptor elementTypeDescriptor) {
 		return toParametersState().mapCollection(parameterName, valueModel, rawCollectionType, elementTypeDescriptor);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<Result>> mapCollection(
-			String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
-			TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier) {
+	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<IParameterMappingState<TResult>>
+			mapCollection(String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
+					TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier) {
 		return toParametersState().mapCollection(parameterName, valueModel, rawCollectionType, elementTypeDescriptor, emptyCollectionSupplier);
 	}
 
 	@Override
-	public IAddedParameterMappingState<IParameterMappingState<Result>> map(ILinkParameterMappingEntry parameterMappingEntry) {
+	public IAddedParameterMappingState<IParameterMappingState<TResult>> map(ILinkParameterMappingEntry parameterMappingEntry) {
 		return toParametersState().map(parameterMappingEntry);
 	}
 
 	@Override
-	public <T> IAddedParameterMappingState<IParameterMappingState<Result>> renderInUrl(String parameterName, IModel<T> valueModel) {
+	public <T> IAddedParameterMappingState<IParameterMappingState<TResult>> renderInUrl(String parameterName, IModel<T> valueModel) {
 		return toParametersState().renderInUrl(parameterName, valueModel);
 	}
 
 	@Override
-	public <R, T> IAddedParameterMappingState<IParameterMappingState<Result>> renderInUrl(String parameterName, IModel<R> rootModel,
+	public <R, T> IAddedParameterMappingState<IParameterMappingState<TResult>> renderInUrl(String parameterName, IModel<R> rootModel,
 			AbstractBinding<R, T> binding) {
 		return toParametersState().renderInUrl(parameterName, rootModel, binding);
 	}
 
 	@Override
-	public IParameterMappingState<Result> validator(ILinkParameterValidator validator) {
+	public IParameterMappingState<TResult> validator(ILinkParameterValidator validator) {
 		return toParametersState().validator(validator);
 	}
 
 	@Override
-	public IParameterMappingState<Result> validator(Condition condition) {
+	public IParameterMappingState<TResult> validator(Condition condition) {
 		return toParametersState().validator(condition);
 	}
 
 	@Override
-	public IParameterMappingState<Result> permission(IModel<?> model, String permissionName) {
+	public IParameterMappingState<TResult> permission(IModel<?> model, String permissionName) {
 		return toParametersState().permission(model, permissionName);
 	}
 
 	@Override
-	public IParameterMappingState<Result> permission(IModel<?> model, String firstPermissionName,
+	public IParameterMappingState<TResult> permission(IModel<?> model, String firstPermissionName,
 			String... otherPermissionNames) {
 		return toParametersState().permission(model, firstPermissionName, otherPermissionNames);
 	}
 
 	@Override
-	public <R, T> IParameterMappingState<Result> permission(IModel<R> model, BindingRoot<R, T> binding,
+	public <R, T> IParameterMappingState<TResult> permission(IModel<R> model, BindingRoot<R, T> binding,
 			String firstPermissionName, String... otherPermissionNames) {
 		return toParametersState().permission(model, binding, firstPermissionName, otherPermissionNames);
 	}

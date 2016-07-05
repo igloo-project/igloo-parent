@@ -5,24 +5,25 @@ import org.javatuples.Tuple;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.builder.LinkParameterMappingEntryBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
 
-public abstract class AbstractCoreAddedParameterMapperStateImpl<NextState, T extends Tuple> implements IAddedParameterMappingState<NextState> {
+public abstract class AbstractCoreAddedParameterMapperStateImpl<TNextState, TTuple extends Tuple>
+		implements IAddedParameterMappingState<TNextState> {
 	
-	private final LinkParameterMappingEntryBuilder<T> parameterEntryBuilder;
+	private final LinkParameterMappingEntryBuilder<TTuple> parameterEntryBuilder;
 
-	public AbstractCoreAddedParameterMapperStateImpl(LinkParameterMappingEntryBuilder<T> parameterEntryBuilder) {
+	public AbstractCoreAddedParameterMapperStateImpl(LinkParameterMappingEntryBuilder<TTuple> parameterEntryBuilder) {
 		this.parameterEntryBuilder = parameterEntryBuilder;
 	}
 	
-	protected abstract NextState toNextState(LinkParameterMappingEntryBuilder<T> parameterEntryBuilder);
+	protected abstract TNextState toNextState(LinkParameterMappingEntryBuilder<TTuple> parameterEntryBuilder);
 	
 	@Override
-	public NextState mandatory() {
+	public TNextState mandatory() {
 		parameterEntryBuilder.setMandatory(true);
 		return toNextState(parameterEntryBuilder);
 	}
 	
 	@Override
-	public NextState optional() {
+	public TNextState optional() {
 		parameterEntryBuilder.setMandatory(false);
 		return toNextState(parameterEntryBuilder);
 	}
