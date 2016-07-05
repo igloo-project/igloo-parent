@@ -125,6 +125,11 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 	
 	@Override
 	public Optional<Boolean> matches(HistoryValue historyValue, Object value) {
+		if (historyValue == null) {
+			// We never return null from create(...). Thus a null HistoryValue does not match anything.
+			return Optional.of(false);
+		}
+		
 		GenericEntityReference<Long, ?> referenceReference = historyValue.getReference();
 		if (referenceReference != null) {
 			if (!(value instanceof GenericEntity)) {
