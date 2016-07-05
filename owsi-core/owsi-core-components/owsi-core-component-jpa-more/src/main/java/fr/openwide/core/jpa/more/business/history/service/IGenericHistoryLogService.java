@@ -29,7 +29,7 @@ public interface IGenericHistoryLogService<
 	
 	@SuppressWarnings("unchecked")
 	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation, IDifferenceService<T> differenceService,
-			IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers)
+			IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
 	/*
@@ -41,7 +41,7 @@ public interface IGenericHistoryLogService<
 	<T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-			IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers)
+			IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
 	<T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)

@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.bindgen.Binding;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
@@ -169,4 +172,22 @@ public final class DiffUtils {
 		
 		return builder.build();
 	}
+	
+	public static Function<FieldPath, NodePath> toNodePathFunction() {
+		return ToNodePath.INSTANCE;
+	}
+	
+	private static enum ToNodePath implements Function<FieldPath, NodePath> {
+		INSTANCE;
+		
+		@Override
+		public NodePath apply(@Nonnull FieldPath input) {
+			return DiffUtils.toNodePath(input);
+		}
+		
+		@Override
+		public String toString() {
+			return "ToNodePath.INSTANCE";
+		}
+	};
 }

@@ -26,7 +26,8 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 				HET extends Enum<HET>,
 				HD extends AbstractHistoryDifference<HD, HL>,
 				HLAIB extends AbstractHistoryLogAdditionalInformationBean>
-		extends GenericEntityServiceImpl<Long, HL> implements IGenericHistoryLogService<HL, HET, HD, HLAIB> {
+		extends GenericEntityServiceImpl<Long, HL>
+		implements IGenericHistoryLogService<HL, HET, HD, HLAIB> {
 
 	@Autowired
 	protected ITransactionSynchronizationTaskManagerService transactionSynchronizationTaskManagerService;
@@ -99,7 +100,8 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	@Override
 	@SafeVarargs
 	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
-			IDifferenceService<T> differenceService, IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers) throws ServiceException,
+			IDifferenceService<T> differenceService, IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers)
+					throws ServiceException,
 			SecurityServiceException {
 		logWithDifferences(eventType, mainObject, additionalInformation, differenceService.getMainDifferenceGenerator(),
 				differenceService, differenceHandlers);
@@ -109,7 +111,8 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	@SafeVarargs
 	public final <T> void logWithDifferences(HET eventType, T mainObject, HLAIB additionalInformation,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
-			IHistoryDifferenceGenerator<T> historyDifferenceGenerator, IHistoryDifferenceHandler<T, HL, HET, HD>... differenceHandlers) throws ServiceException, SecurityServiceException {
+			IHistoryDifferenceGenerator<T> historyDifferenceGenerator, IHistoryDifferenceHandler<? super T, ? super HL>... differenceHandlers)
+					throws ServiceException, SecurityServiceException {
 		transactionSynchronizationTaskManagerService.push(
 				new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
 						new Date(), eventType,

@@ -11,6 +11,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
  * This class is a workaround: it's a subclass of GenericEntityReference with Long IDs
  * which prevents Bindgen from generating bad bindings due to generics.
  * <p>For this reason, we <strong>do not</strong> override {@link #equals(Object)} and {@link #hashCode()}.
+ * @see fr.openwide.core.jpa.more.business.history.service.AbstractHistoryValueServiceImpl
  */
 @Embeddable
 @Bindable

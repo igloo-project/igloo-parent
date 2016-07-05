@@ -25,7 +25,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 	private Supplier<HD> historyDifferenceSupplier;
 	private IDifferenceFromReferenceGenerator<T> differenceGenerator;
 	private IHistoryDifferenceGenerator<T> historyDifferenceGenerator;
-	private List<IHistoryDifferenceHandler<T, HL, HET, HD>> differenceHandlers;
+	private List<IHistoryDifferenceHandler<? super T, ? super HL>> differenceHandlers;
 	
 	@SafeVarargs
 	public HistoryLogBeforeCommitWithDifferencesTask(
@@ -34,7 +34,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 			Supplier<HD> historyDifferenceSupplier,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
-			IHistoryDifferenceHandler<T, HL, HET, HD> ... differenceHandlers) {
+			IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers) {
 		super(date, eventType, mainObject, additionalInformation);
 		this.historyDifferenceSupplier = historyDifferenceSupplier;
 		this.differenceGenerator = differenceGenerator;
@@ -61,7 +61,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 		List<HD> historyDifferences = historyDifferenceGenerator.toHistoryDifferences(historyDifferenceSupplier, difference);
 		HL historyLog = getHistoryLogService().logNow(date, eventType, historyDifferences, mainObject, additionalInformation);
 		
-		for (IHistoryDifferenceHandler<T, HL, HET, HD> handler : differenceHandlers) {
+		for (IHistoryDifferenceHandler<? super T, ? super HL> handler : differenceHandlers) {
 			handler.handle(mainObject, difference, historyLog);
 		}
 	}

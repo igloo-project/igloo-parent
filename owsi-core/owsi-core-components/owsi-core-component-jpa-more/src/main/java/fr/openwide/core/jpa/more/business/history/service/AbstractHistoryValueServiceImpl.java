@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Optional;
+
 import fr.openwide.core.commons.util.rendering.IRenderer;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
@@ -119,6 +121,21 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
 		}
 		
 		return value.getLabel();
+	}
+	
+	@Override
+	public Optional<Boolean> matches(HistoryValue historyValue, Object value) {
+		GenericEntityReference<Long, ?> referenceReference = historyValue.getReference();
+		if (referenceReference != null) {
+			if (!(value instanceof GenericEntity)) {
+				return Optional.of(false);
+			}
+			GenericEntityReference<?, ?> candidateReference = GenericEntityReference.of((GenericEntity<?, ?>)value);
+			return Optional.of(referenceReference.equals(candidateReference));
+		}
+		
+		// Don't know
+		return Optional.absent();
 	}
 
 }
