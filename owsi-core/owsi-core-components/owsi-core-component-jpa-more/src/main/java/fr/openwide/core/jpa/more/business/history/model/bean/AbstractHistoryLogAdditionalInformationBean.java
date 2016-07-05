@@ -19,7 +19,6 @@ public abstract class AbstractHistoryLogAdditionalInformationBean {
 	private Object[] secondaryObjects;
 
 	/**
-	 * @param mainObject see {@link #mainObject}
 	 * @param secondaryObjects see {@link #secondaryObjects}
 	 */
 	protected AbstractHistoryLogAdditionalInformationBean(Object... secondaryObjects) {
