@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IComponentAssignedModel;
@@ -225,22 +227,55 @@ public final class Models {
 	 * A utility method that provides a sensible default implementation for {@link IMapModel#valueModel(IModel)}.
 	 */
 	public static <K, V> IModel<V> mapModelValueModel(final IMapModel<K, V, ?> mapModel, final IModel<? extends K> keyModel) {
-		return new IModel<V>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void detach() {
-				mapModel.detach();
-				keyModel.detach();
+		return new MapModelValueModel<>(mapModel, keyModel);
+	}
+	
+	private static class MapModelValueModel<K,V> implements IModel<V> {
+		private static final long serialVersionUID = 1L;
+		
+		private IMapModel<K, V, ?> mapModel;
+		private IModel<? extends K> keyModel;
+		
+		public MapModelValueModel(IMapModel<K, V, ?> mapModel, IModel<? extends K> keyModel) {
+			this.mapModel = mapModel;
+			this.keyModel = keyModel;
+		}
+		
+		@Override
+		public void detach() {
+			mapModel.detach();
+			keyModel.detach();
+		}
+		@Override
+		public V getObject() {
+			Map<K, V> map = mapModel.getObject();
+			return map == null ? null : map.get(keyModel.getObject());
+		}
+		@Override
+		public void setObject(V object) {
+			mapModel.put(keyModel.getObject(), object);
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (!(obj instanceof MapModelValueModel<?,?>)) {
+				return false;
 			}
-			@Override
-			public V getObject() {
-				Map<K, V> map = mapModel.getObject();
-				return map == null ? null : map.get(keyModel.getObject());
-			}
-			@Override
-			public void setObject(V object) {
-				mapModel.put(keyModel.getObject(), object);
-			}
-		};
+			
+			MapModelValueModel<?,?> other = (MapModelValueModel<?,?>) obj;
+			
+			return new EqualsBuilder()
+					.append(mapModel, other.mapModel)
+					.append(mapModel, other.keyModel)
+					.build();
+		}
+		
+		@Override
+		public int hashCode() {
+			return new HashCodeBuilder()
+			.append(mapModel)
+			.append(keyModel)
+			.build();
+		}
 	}
 }
