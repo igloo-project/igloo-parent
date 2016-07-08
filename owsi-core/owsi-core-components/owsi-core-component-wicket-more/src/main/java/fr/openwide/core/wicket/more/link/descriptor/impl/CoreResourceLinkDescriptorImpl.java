@@ -41,8 +41,12 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreExplicitelyParam
 		);
 	}
 	
-	protected ResourceReference getResourceReference() {
-		return resourceReferenceModel.getObject();
+	protected ResourceReference getValidResourceReference() throws LinkInvalidTargetRuntimeException {
+		ResourceReference resourceReference = resourceReferenceModel.getObject();
+		if (resourceReference == null) {
+			throw new LinkInvalidTargetRuntimeException("The target resourceReference of this ILinkDescriptor was null");
+		}
+		return resourceReference;
 	}
 	
 	@Override
@@ -60,7 +64,7 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreExplicitelyParam
 	public String url(RequestCycle requestCycle) throws LinkInvalidTargetRuntimeException,
 			LinkParameterInjectionRuntimeException, LinkParameterValidationRuntimeException {
 		PageParameters parameters = getValidatedParameters();
-		ResourceReference resourceReference = getResourceReference();
+		ResourceReference resourceReference = getValidResourceReference();
 		if (resourceReference.canBeRegistered()) {
 			Application.get().getResourceReferenceRegistry().registerResourceReference(resourceReference);
 		}
@@ -69,7 +73,8 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreExplicitelyParam
 	
 	@Override
 	public boolean isAccessible() {
-		return getResourceReference() != null && super.isAccessible();
+		ResourceReference resourceReference = resourceReferenceModel.getObject();
+		return resourceReference != null && super.isAccessible();
 	}
 	
 	@Override
