@@ -11,17 +11,15 @@ import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate
 /**
  * Cf. {@link LinkFactory#testImage(IModel, IModel)}
  */
-public class BooleanIconResourceReferenceModel extends AbstractReadOnlyModel<ResourceReference> {
+public class TestIconResourceReferenceModel extends AbstractReadOnlyModel<ResourceReference> {
 	private static final long serialVersionUID = 1L;
 	
 	private static final ResourceReference IMAGE_TRUE =
-			new PackageResourceReference(AbstractWebPageTemplate.class, "images/icons/tick.png");
-	private static final ResourceReference IMAGE_FALSE =
-			new PackageResourceReference(AbstractWebPageTemplate.class, "images/icons/cross.png");
+			new PackageResourceReference(AbstractWebPageTemplate.class, "images/logo_openwide.png");
 	
 	private final IModel<Boolean> booleanModel;
 	
-	public BooleanIconResourceReferenceModel(IModel<Boolean> booleanModel) {
+	public TestIconResourceReferenceModel(IModel<Boolean> booleanModel) {
 		super();
 		this.booleanModel = booleanModel;
 	}
@@ -30,12 +28,10 @@ public class BooleanIconResourceReferenceModel extends AbstractReadOnlyModel<Res
 	public ResourceReference getObject() {
 		Boolean aBoolean = booleanModel.getObject();
 		
-		if (aBoolean == null) {
-			return null;
-		} else if (aBoolean) {
+		if (aBoolean != null && aBoolean) {
 			return IMAGE_TRUE;
 		} else {
-			return IMAGE_FALSE;
+			return null;
 		}
 	}
 	

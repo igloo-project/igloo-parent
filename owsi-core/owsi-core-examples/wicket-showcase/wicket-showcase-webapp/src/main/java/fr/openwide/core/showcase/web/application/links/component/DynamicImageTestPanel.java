@@ -17,6 +17,7 @@ import org.apache.wicket.model.ResourceModel;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
+import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -59,7 +60,7 @@ public class DynamicImageTestPanel extends GenericPanel<User> {
 					public String getObject() {
 						try {
 							return LinkFactory.get().testImage(booleanModel, userModel).fullUrl();
-						} catch(LinkParameterValidationRuntimeException e) {
+						} catch(LinkInvalidTargetRuntimeException|LinkParameterValidationRuntimeException e) {
 							return e.getMessage();
 						}
 					}
