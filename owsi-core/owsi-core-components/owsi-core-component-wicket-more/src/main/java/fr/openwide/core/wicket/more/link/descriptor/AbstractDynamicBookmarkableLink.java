@@ -3,8 +3,8 @@ package fr.openwide.core.wicket.more.link.descriptor;
 import org.apache.wicket.markup.html.link.Link;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IAddedParameterMappingState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 

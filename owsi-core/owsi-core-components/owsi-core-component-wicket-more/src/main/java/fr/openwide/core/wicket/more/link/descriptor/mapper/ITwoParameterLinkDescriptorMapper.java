@@ -5,14 +5,14 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Function;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IOneParameterMapperState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 
 /**
  * An object that can create a {@link ILinkParametersExtractor} using two {@link IModel}.
- * @see INoParameterMapperState#addDynamicParameter(Class)
- * @see IOneParameterMapperState#addDynamicParameter(Class)
+ * @see INoMappableParameterMainState#addDynamicParameter(Class)
+ * @see IOneMappableParameterMainState#addDynamicParameter(Class)
  */
 public interface ITwoParameterLinkDescriptorMapper<L, T1, T2> extends IDetachable {
 	

@@ -6,7 +6,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.common.base.Predicate;
 
 /**
- * @deprecated Use {@link fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState#validator(fr.openwide.core.wicket.more.condition.Condition)} instead
+ * @deprecated Use {@link fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState#validator(fr.openwide.core.wicket.more.condition.Condition)} instead
  */
 @Deprecated
 public class PredicateLinkParameterValidator<T> implements ILinkParameterValidator {

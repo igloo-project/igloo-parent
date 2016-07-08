@@ -6,16 +6,16 @@ import org.javatuples.Pair;
 
 import com.google.common.base.Function;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IOneParameterMapperState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.ITwoParameterMapperState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.ITwoMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 
 /**
  * An object that can create a {@link ILinkParametersExtractor} using three {@link IModel}.
- * @see INoParameterMapperState#addDynamicParameter(Class)
- * @see IOneParameterMapperState#addDynamicParameter(Class)
- * @see ITwoParameterMapperState#addDynamicParameter(Class)
+ * @see INoMappableParameterMainState#addDynamicParameter(Class)
+ * @see IOneMappableParameterMainState#addDynamicParameter(Class)
+ * @see ITwoMappableParameterMainState#addDynamicParameter(Class)
  */
 public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> extends IDetachable {
 	

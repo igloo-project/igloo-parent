@@ -7,13 +7,19 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IBaseState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IPageInstanceState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.base.IBaseState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.pageinstance.IPageInstanceState;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 
-public abstract class AbstractLinkFactory {
 
+public abstract class AbstractLinkFactory {
+	
+	/**
+	 * @deprecated Use {@link LinkDescriptorBuilder#start()} or {@link LinkDescriptorBuilder#start(Page)} or
+	 * {@link LinkDescriptorBuilder#start(IModel)} instead.
+	 */
+	@Deprecated
 	protected IBaseState builder() {
 		return new LinkDescriptorBuilder();
 	}

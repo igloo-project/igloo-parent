@@ -1,0 +1,51 @@
+package fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen;
+
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.ITwoChosenParameterState;
+
+
+public interface IThreeMappableParameterTwoChosenParameterState
+		<
+		InitialState,
+		TParam1, TParam2, TParam3,
+		TChosenParam1, TChosenParam2,
+		TLateTargetDefinitionPageResult,
+		TLateTargetDefinitionResourceResult,
+		TLateTargetDefinitionImageResourceResult
+		>
+		extends ITwoChosenParameterState
+						<
+						InitialState,
+						TChosenParam1, TChosenParam2,
+						TLateTargetDefinitionPageResult,
+						TLateTargetDefinitionResourceResult,
+						TLateTargetDefinitionImageResourceResult
+						> {
+
+	IThreeMappableParameterThreeChosenParameterState<
+			InitialState,
+			TParam1, TParam2, TParam3,
+			TChosenParam1, TChosenParam2, TParam1,
+			TLateTargetDefinitionPageResult,
+			TLateTargetDefinitionResourceResult,
+			TLateTargetDefinitionImageResourceResult
+			> andFirst();
+
+	IThreeMappableParameterThreeChosenParameterState<
+			InitialState,
+			TParam1, TParam2, TParam3,
+			TChosenParam1, TChosenParam2, TParam2,
+			TLateTargetDefinitionPageResult,
+			TLateTargetDefinitionResourceResult,
+			TLateTargetDefinitionImageResourceResult
+			> andSecond();
+
+	IThreeMappableParameterThreeChosenParameterState<
+			InitialState,
+			TParam1, TParam2, TParam3,
+			TChosenParam1, TChosenParam2, TParam3,
+			TLateTargetDefinitionPageResult,
+			TLateTargetDefinitionResourceResult,
+			TLateTargetDefinitionImageResourceResult
+			> andThird();
+
+}

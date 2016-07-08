@@ -1,0 +1,221 @@
+package fr.openwide.core.wicket.more.link.descriptor.builder.impl.main;
+
+import java.util.List;
+
+import org.apache.wicket.Page;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.javatuples.Tuple;
+
+import com.google.common.collect.ImmutableList;
+
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.mapper.CoreThreeParameterLinkDescriptorMapperImpl;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IThreeMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterOneChosenParameterState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterThreeChosenParameterState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterTwoChosenParameterState;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
+
+final class ThreeMappableParameterMainStateImpl
+		<
+		TParam1, TParam2, TParam3,
+		TEarlyTargetDefinitionLinkDescriptor,
+		TLateTargetDefinitionPageLinkDescriptor,
+		TLateTargetDefinitionResourceLinkDescriptor,
+		TLateTargetDefinitionImageResourceLinkDescriptor
+		>
+		extends AbstractOneOrMoreMappableParameterMainStateImpl
+				<
+				IThreeMappableParameterMainState
+						<
+						TParam1, TParam2, TParam3,
+						TEarlyTargetDefinitionLinkDescriptor,
+						TLateTargetDefinitionPageLinkDescriptor,
+						TLateTargetDefinitionResourceLinkDescriptor,
+						TLateTargetDefinitionImageResourceLinkDescriptor
+						>,
+				TEarlyTargetDefinitionLinkDescriptor,
+				TLateTargetDefinitionPageLinkDescriptor,
+				TLateTargetDefinitionResourceLinkDescriptor,
+				TLateTargetDefinitionImageResourceLinkDescriptor
+				>
+		implements IThreeMappableParameterMainState
+				<
+				TParam1, TParam2, TParam3,
+				TEarlyTargetDefinitionLinkDescriptor,
+				TLateTargetDefinitionPageLinkDescriptor,
+				TLateTargetDefinitionResourceLinkDescriptor,
+				TLateTargetDefinitionImageResourceLinkDescriptor
+				> {
+	
+	ThreeMappableParameterMainStateImpl(
+			AbstractOneOrMoreMappableParameterMainStateImpl
+					<
+					?,
+					TEarlyTargetDefinitionLinkDescriptor,
+					TLateTargetDefinitionPageLinkDescriptor,
+					TLateTargetDefinitionResourceLinkDescriptor,
+					TLateTargetDefinitionImageResourceLinkDescriptor
+					> previousState,
+			Class<?> addedParameterType) {
+		super(previousState, addedParameterType, 3);
+	}
+	
+	@Override
+	public <TParam4> FourMappableParameterMainStateImpl<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz) {
+		return new FourMappableParameterMainStateImpl<>(this, clazz);
+	}
+
+	private <TTarget, TLinkDescriptor> IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>
+			createMapper(IBuilderLinkDescriptorFactory<TTarget, TLinkDescriptor> linkDescriptorFactory,
+					IDetachableFactory<? extends Tuple, ? extends IModel<? extends TTarget>> pageClassFactory,
+					List<Integer> parameterIndices) {
+		return new CoreThreeParameterLinkDescriptorMapperImpl<>(
+				mapperLinkDescriptorFactory(
+						linkDescriptorFactory,
+						pageClassFactory, parameterIndices
+				)
+		);
+	}
+	
+	private <TTarget, TLinkDescriptor> IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>
+			createEarlyTargetDefinitionMapper(
+					BuilderTargetFactories<TLinkDescriptor, TTarget, ?, ?, ?> targetFactories) {
+		return createMapper(
+				targetFactories.getEarlyTargetDefinitionLinkDescriptorFactory(),
+				constantModelFactory(targetFactories.getEarlyTargetDefinitionTargetModel()),
+				ImmutableList.<Integer>of()
+		);
+	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private class ThreeParameterChosenParameterStateImpl
+			extends AbstractInternalChosenParameterStateImpl<ThreeParameterChosenParameterStateImpl>
+			implements IThreeMappableParameterOneChosenParameterState,
+					IThreeMappableParameterTwoChosenParameterState,
+					IThreeMappableParameterThreeChosenParameterState {
+
+		@Override
+		protected ThreeParameterChosenParameterStateImpl thisAsTSelf() {
+			return this;
+		}
+
+		@Override
+		public IThreeParameterLinkDescriptorMapper<
+				TLateTargetDefinitionPageLinkDescriptor,
+				TParam1, TParam2, TParam3
+				> page(IDetachableFactory pageClassFactory) {
+			return createMapper(
+					getTargetFactories().getLateTargetDefinitionPageLinkDescriptorFactory(),
+					pageClassFactory, getParameterIndices()
+			);
+		}
+
+		@Override
+		public IThreeParameterLinkDescriptorMapper<
+				TLateTargetDefinitionResourceLinkDescriptor,
+				TParam1, TParam2, TParam3
+				> resource(IDetachableFactory resourceReferenceFactory) {
+			return createMapper(
+					getTargetFactories().getLateTargetDefinitionResourceLinkDescriptorFactory(),
+					resourceReferenceFactory, getParameterIndices()
+			);
+		}
+
+		@Override
+		public IThreeParameterLinkDescriptorMapper<
+				TLateTargetDefinitionImageResourceLinkDescriptor,
+				TParam1, TParam2, TParam3
+				> imageResource(IDetachableFactory resourceReferenceFactory) {
+			return createMapper(
+					getTargetFactories().getLateTargetDefinitionImageResourceLinkDescriptorFactory(),
+					resourceReferenceFactory, getParameterIndices()
+			);
+		}
+	}
+	
+	private ThreeParameterChosenParameterStateImpl pickNone() {
+		return new ThreeParameterChosenParameterStateImpl();
+	}
+	
+	@Override
+	public ThreeParameterChosenParameterStateImpl pickFirst() {
+		return pickNone().andFirst();
+	}
+
+	@Override
+	public ThreeParameterChosenParameterStateImpl pickSecond() {
+		return pickNone().andSecond();
+	}
+
+	@Override
+	public ThreeParameterChosenParameterStateImpl pickThird() {
+		return pickNone().andThird();
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TEarlyTargetDefinitionLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> build() {
+		return createEarlyTargetDefinitionMapper(getTargetFactories());
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TLateTargetDefinitionPageLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> page(IModel<? extends Class<? extends Page>> pageClassModel) {
+		return pickNone().page(constantModelFactory(pageClassModel));
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> resource(IModel<? extends ResourceReference> resourceReferenceModel) {
+		return pickNone().resource(constantModelFactory(resourceReferenceModel));
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TLateTargetDefinitionImageResourceLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
+		return pickNone().imageResource(constantModelFactory(resourceReferenceModel));
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TLateTargetDefinitionPageLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> page(Class<? extends Page> pageClass) {
+		return page(Model.of(pageClass));
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> resource(ResourceReference resourceReference) {
+		return resource(Model.of(resourceReference));
+	}
+
+	@Override
+	public IThreeParameterLinkDescriptorMapper<
+			TLateTargetDefinitionImageResourceLinkDescriptor,
+			TParam1, TParam2, TParam3
+			> imageResource(ResourceReference resourceReference) {
+		return imageResource(Model.of(resourceReference));
+	}
+}
