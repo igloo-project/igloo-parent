@@ -36,7 +36,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleNotificationDemoIndexPage.class);
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder().page(ConsoleNotificationDemoIndexPage.class).build();
+		return LinkDescriptorBuilder.start().page(ConsoleNotificationDemoIndexPage.class);
 	}
 
 	public static final String DEFAULT_USERNAME = "admin";

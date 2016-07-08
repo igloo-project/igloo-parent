@@ -16,8 +16,8 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 	private static final long serialVersionUID = -4381694964311714573L;
 	
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder().page(ReferenceDataPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ReferenceDataPage.class);
 	}
 
 	public ReferenceDataPage(PageParameters parameters) {

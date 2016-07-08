@@ -12,9 +12,8 @@ public class ButtonsPage extends MainTemplate {
 	private static final long serialVersionUID = -1538563562722555674L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ButtonsPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ButtonsPage.class);
 	}
 
 	public ButtonsPage(PageParameters parameters) {

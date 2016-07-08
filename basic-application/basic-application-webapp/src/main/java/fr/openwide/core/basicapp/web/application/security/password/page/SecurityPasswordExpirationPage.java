@@ -17,9 +17,8 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 	private static final long serialVersionUID = 547223775134254240L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordExpirationPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(SecurityPasswordExpirationPage.class);
 	}
 
 	public SecurityPasswordExpirationPage(PageParameters parameters) {

@@ -29,9 +29,8 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 	private static final long serialVersionUID = 2733071974944289365L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(AdministrationUserGroupPortfolioPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(AdministrationUserGroupPortfolioPage.class);
 	}
 
 	@SpringBean

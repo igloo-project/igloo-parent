@@ -12,9 +12,8 @@ public class FileUploadPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 3280671690404455426L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(FileUploadPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(FileUploadPage.class);
 	}
 
 	public FileUploadPage(PageParameters parameters) {

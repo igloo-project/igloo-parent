@@ -29,9 +29,8 @@ public class ListFilterPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 593301451585725585L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ListFilterPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ListFilterPage.class);
 	}
 	
 	@SpringBean

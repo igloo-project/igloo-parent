@@ -86,9 +86,8 @@ public class StatisticsPage extends WidgetsTemplate {
 	private IStatisticService statisticService;
 	
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(StatisticsPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(StatisticsPage.class);
 	}
 	
 	public StatisticsPage(PageParameters parameters) {

@@ -20,9 +20,8 @@ public class BootstrapJsPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -187415297020105589L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(BootstrapJsPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(BootstrapJsPage.class);
 	}
 	
 	public BootstrapJsPage(PageParameters parameters) {

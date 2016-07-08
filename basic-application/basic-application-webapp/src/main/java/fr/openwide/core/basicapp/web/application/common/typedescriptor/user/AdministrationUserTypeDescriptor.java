@@ -85,7 +85,7 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 	}
 
 	public IPageLinkDescriptor portfolio() {
-		return new LinkDescriptorBuilder().page(portfolioPageClazz).build();
+		return LinkDescriptorBuilder.start().page(portfolioPageClazz);
 	}
 
 	public abstract U newInstance();

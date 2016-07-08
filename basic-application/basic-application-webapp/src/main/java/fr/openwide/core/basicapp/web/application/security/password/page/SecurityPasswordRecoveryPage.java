@@ -18,9 +18,8 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 	private static final long serialVersionUID = 547223775134254240L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SecurityPasswordRecoveryPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(SecurityPasswordRecoveryPage.class);
 	}
 
 	public SecurityPasswordRecoveryPage(PageParameters parameters) {

@@ -38,7 +38,7 @@ public abstract class AbstractLinkFactory {
 	
 	public IPageLinkGenerator linkGenerator(IModel<? extends Page> pageInstanceModel,
 			Collection<? extends Class<? extends Page>> expectedClasses) {
-		IPageInstanceState<?> builder = builder().pageInstance(pageInstanceModel);
+		IPageInstanceState<?> builder = LinkDescriptorBuilder.start(pageInstanceModel);
 		for (Class<? extends Page> expectedClass : expectedClasses) {
 			builder.validate(expectedClass);
 		}

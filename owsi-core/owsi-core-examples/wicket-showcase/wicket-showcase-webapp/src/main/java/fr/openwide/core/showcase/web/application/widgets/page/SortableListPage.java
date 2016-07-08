@@ -23,9 +23,8 @@ public class SortableListPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SortableListPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(SortableListPage.class);
 	}
 
 	@SpringBean

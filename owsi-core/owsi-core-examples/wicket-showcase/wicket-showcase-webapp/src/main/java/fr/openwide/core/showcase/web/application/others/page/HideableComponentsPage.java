@@ -45,9 +45,8 @@ public class HideableComponentsPage extends MainTemplate {
 	private IUserService userService;
 	
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(HideableComponentsPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(HideableComponentsPage.class);
 	}
 
 	public HideableComponentsPage(PageParameters parameters) {

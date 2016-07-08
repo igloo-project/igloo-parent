@@ -33,9 +33,8 @@ public class SelectBoxPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(SelectBoxPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(SelectBoxPage.class);
 	}
 	
 	@SpringBean

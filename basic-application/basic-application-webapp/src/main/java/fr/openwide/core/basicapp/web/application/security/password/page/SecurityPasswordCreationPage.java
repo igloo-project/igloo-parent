@@ -24,13 +24,12 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 	private static final long serialVersionUID = 1L;
 	
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, String> MAPPER = 
-			new LinkDescriptorBuilder()
-					.page(SecurityPasswordCreationPage.class)
+			LinkDescriptorBuilder.start()
 					.model(User.class)
 					.model(String.class)
 					.pickFirst().map(CommonParameters.ID).mandatory()
 					.pickSecond().map(CommonParameters.TOKEN).mandatory()
-					.build();
+					.page(SecurityPasswordCreationPage.class);
 
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 

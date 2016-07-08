@@ -18,7 +18,7 @@ public class SignInPage extends ApplicationAccessTemplate {
 	private static final long serialVersionUID = 7361718534092594202L;
 	
 	public static ILinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder().page(SignInPage.class).build();
+		return LinkDescriptorBuilder.start().page(SignInPage.class);
 	}
 
 	public SignInPage(PageParameters parameters) {

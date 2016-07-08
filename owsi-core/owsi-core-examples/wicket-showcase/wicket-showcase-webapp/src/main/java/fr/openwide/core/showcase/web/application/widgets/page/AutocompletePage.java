@@ -17,9 +17,8 @@ public class AutocompletePage extends WidgetsTemplate {
 	private static final long serialVersionUID = 1019469897091555748L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(AutocompletePage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(AutocompletePage.class);
 	}
 
 	public AutocompletePage(PageParameters parameters) {

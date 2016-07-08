@@ -10,6 +10,7 @@ import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
@@ -43,19 +44,17 @@ public final class LinkFactory extends AbstractLinkFactory {
 	}
 
 	public IPageLinkGenerator userDescription(IModel<User> userModel) {
-		return builder()
-				.page(ReadOnlyModel.of(userModel, USER_TO_FICHE_CLASS_FUNCTION))
+		return LinkDescriptorBuilder.start()
 				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.build();
+				.page(ReadOnlyModel.of(userModel, USER_TO_FICHE_CLASS_FUNCTION));
 	}
 
 	private <U extends User> IPageLinkDescriptor userDescription(IModel<? extends Class<? extends Page>> pageClassModel,
 			IModel<U> userModel, Class<U> userClass, IModel<Page> sourcePageModel) {
-		return builder()
-				.page(pageClassModel)
+		return LinkDescriptorBuilder.start()
 				.map(CommonParameters.ID, userModel, userClass).mandatory()
 				.map(CommonParameters.SOURCE_PAGE_ID, sourcePageModel, Page.class).optional()
-				.build();
+				.page(pageClassModel);
 	}
 	
 	public static final LinkGeneratorFactory<User> userDescriptionLinkGeneratorFactory() {

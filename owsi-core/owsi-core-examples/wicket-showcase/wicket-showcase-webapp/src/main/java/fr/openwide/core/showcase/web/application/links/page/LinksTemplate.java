@@ -24,10 +24,9 @@ public abstract class LinksTemplate extends MainTemplate {
 	private static final long serialVersionUID = -2979443021509594346L;
 	
 	public static final IPageLinkDescriptor linkDescriptor(IModel<? extends Class<? extends Page>> pageModel, IModel<User> userModel) {
-		return new LinkDescriptorBuilder()
-				.page(pageModel)
+		return LinkDescriptorBuilder.start()
 				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.build();
+				.page(pageModel);
 	}
 
 	public LinksTemplate(PageParameters parameters) {
@@ -42,11 +41,11 @@ public abstract class LinksTemplate extends MainTemplate {
 		
 		add(new Label("title", getTitleModel()));
 		
-		Component linkToPage1 = new LinkDescriptorBuilder().pageInstance(this).validate(LinksPage1.class).build()
+		Component linkToPage1 = LinkDescriptorBuilder.start(this).validate(LinksPage1.class).build()
 				.link("linkToThisPageInstanceOnlyIfPage1").hideIfInvalid();
 		add(linkToPage1);
 		
-		add(new LinkDescriptorBuilder().pageInstance(this).validate(LinksTemplate.class).build().link("linkToThisPageInstance")
+		add(LinkDescriptorBuilder.start(this).validate(LinksTemplate.class).build().link("linkToThisPageInstance")
 				.add(new PlaceholderBehavior().component(linkToPage1)));
 		
 		add(new DynamicLinkTestPanel("linkTestPanel", userModel));

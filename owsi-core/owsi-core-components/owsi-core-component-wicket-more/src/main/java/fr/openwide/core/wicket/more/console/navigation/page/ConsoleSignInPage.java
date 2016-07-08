@@ -32,9 +32,8 @@ public class ConsoleSignInPage extends CoreWebPage {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleSignInPage.class);
 	
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ConsoleSignInPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ConsoleSignInPage.class);
 	}
 	
 	private FormComponent<String> userNameField;

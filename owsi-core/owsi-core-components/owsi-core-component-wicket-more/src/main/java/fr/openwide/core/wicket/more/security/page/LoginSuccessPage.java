@@ -16,7 +16,7 @@ public class LoginSuccessPage extends CoreWebPage {
 	public static final String WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT = "IBehaviorListener";
 	
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder().page(LoginSuccessPage.class).build();
+		return LinkDescriptorBuilder.start().page(LoginSuccessPage.class);
 	}
 	
 	public LoginSuccessPage() {
