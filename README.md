@@ -14,7 +14,7 @@ Apart from the framework, we also released a Maven archetype to start a new appl
 
 Sources are licensed under the Apache 2 license.
 
-This framework is developed by Open Wide (http://www.openwide.fr/).
+This framework is developed by Smile http://www.smile.fr (formerly Open Wide - http://www.openwide.fr/).
 
 Architecture
 ------------
