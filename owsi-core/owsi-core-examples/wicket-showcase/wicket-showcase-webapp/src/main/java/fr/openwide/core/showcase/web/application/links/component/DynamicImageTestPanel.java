@@ -33,17 +33,26 @@ public class DynamicImageTestPanel extends GenericPanel<User> {
 		Form<?> form = new Form<Void>("form");
 		add(form);
 		
+		final MarkupContainer testContainer = new WebMarkupContainer("testContainer");
+		testContainer.setOutputMarkupId(true);
+		add(testContainer);
+		
+		UserAutocompleteAjaxComponent autocomplete = new UserAutocompleteAjaxComponent("user", userModel) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				target.add(testContainer);
+			}
+		};
+		autocomplete.setAutoUpdate(true);
+		
 		final IModel<Boolean> booleanModel = Model.of(false);
 		form.add(
 				new CheckBox("boolean", booleanModel)
 						.setLabel(new ResourceModel("links.boolean")),
-				new UserAutocompleteAjaxComponent("user", userModel)
+				autocomplete
 						.setLabel(new ResourceModel("links.imageUnusedUserParameter"))
 		);
-		
-		final MarkupContainer testContainer = new WebMarkupContainer("testContainer");
-		testContainer.setOutputMarkupId(true);
-		add(testContainer);
 		
 		form.add(new AjaxFormSubmitBehavior(OnChangeAjaxBehavior.EVENT_NAME) {
 			private static final long serialVersionUID = 1L;

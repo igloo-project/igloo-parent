@@ -48,19 +48,28 @@ public class DynamicLinkTestPanel extends GenericPanel<User> {
 		Form<?> form = new Form<Void>("form");
 		add(form);
 		
+		final MarkupContainer testContainer = new WebMarkupContainer("testContainer");
+		testContainer.setOutputMarkupId(true);
+		add(testContainer);
+		
+		UserAutocompleteAjaxComponent autocomplete = new UserAutocompleteAjaxComponent("user", userModel) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				target.add(testContainer);
+			}
+		};
+		autocomplete.setAutoUpdate(true);
+		
 		final IModel<Class<? extends WebPage>> pageClassModel = new Model<Class<? extends WebPage>>();
 		form.add(
 				new RadioChoice<Class<? extends WebPage>>("page", pageClassModel,
 						ImmutableList.<Class<? extends WebPage>>of(LinksPage1.class, LinksPage2.class, LinksPage3.class)
 				)
 						.setLabel(new ResourceModel("links.page")),
-				new UserAutocompleteAjaxComponent("user", userModel)
+				autocomplete
 						.setLabel(new ResourceModel("links.user"))
 		);
-		
-		final MarkupContainer testContainer = new WebMarkupContainer("testContainer");
-		testContainer.setOutputMarkupId(true);
-		add(testContainer);
 		
 		form.add(new AjaxFormSubmitBehavior(OnChangeAjaxBehavior.EVENT_NAME) {
 			private static final long serialVersionUID = 1L;
