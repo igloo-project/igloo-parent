@@ -17,10 +17,8 @@ public class DefaultGenericListItemPermissionEvaluatorImpl extends AbstractGener
 			return true;
 		} else if (is(permission, CorePermissionConstants.WRITE)) {
 			return genericListItem.isEditable();
-		} else if (is(permission, CorePermissionConstants.CREATE)) {
-			return true;
 		} else {
-			return false;
+			return is(permission, CorePermissionConstants.CREATE);
 		}
 	}
 }
