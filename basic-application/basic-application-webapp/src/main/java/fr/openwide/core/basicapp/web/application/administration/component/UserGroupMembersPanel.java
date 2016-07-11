@@ -21,6 +21,7 @@ import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.search.UserSort;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.web.application.administration.model.UserDataProvider;
+import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
 import fr.openwide.core.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
 import fr.openwide.core.basicapp.web.application.common.renderer.ActionRenderers;
 import fr.openwide.core.basicapp.web.application.common.util.CssClassConstants;
@@ -28,6 +29,7 @@ import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
@@ -65,7 +67,7 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		DecoratedCoreDataTablePanel<User, UserSort> groupMemberships = 
 				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 					.addLabelColumn(new ResourceModel("administration.usergroup.field.name"))
-							.withLink(LinkFactory.userDescriptionLinkGeneratorFactory())
+							.withLink(AdministrationUserDescriptionTemplate.mapper().setParameter2(new PageModel<>(getPage())))
 							.withClass("text text-md")
 					.addActionColumn()
 							.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))

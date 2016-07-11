@@ -11,7 +11,7 @@ import org.apache.wicket.model.StringResourceModel;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
-import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
+import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
@@ -43,7 +43,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		addTopProperty(propertiesTable, "username",
 				new WebMarkupContainer("usernameValue")
 				.add(
-						LinkFactory.get().userDescription(userModel)
+						AdministrationUserDescriptionTemplate.mapper().ignoreParameter2().map(userModel)
 								.link("userLink")
 								.setAbsolute(true)
 								.setBody(BindingModel.of(userModel, Bindings.user().userName()))

@@ -34,4 +34,8 @@ public final class ActionRenderers {
 		return constant("common.action.disable", "fa fa-fw fa-toggle-off", BootstrapColor.DANGER);
 	}
 
+	public static <T> BootstrapRenderer<T> view() {
+		return constant("common.action.view", "fa fa-fw fa-search", BootstrapColor.PRIMARY);
+	}
+
 }
