@@ -25,17 +25,23 @@ public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> extends IDet
 
 	ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(Function<Pair<T2, T3>, T1> function);
 
+	<U1 extends T1> IThreeParameterLinkDescriptorMapper<L, U1, T2, T3> castParameter1();
+
 	ITwoParameterLinkDescriptorMapper<L, T2, T3> ignoreParameter1();
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(final IModel<T2> model2);
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(Function<Pair<T1, T3>, T2> function);
 
+	<U2 extends T2> IThreeParameterLinkDescriptorMapper<L, T1, U2, T3> castParameter2();
+
 	ITwoParameterLinkDescriptorMapper<L, T1, T3> ignoreParameter2();
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(final IModel<T3> model3);
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(Function<Pair<T1, T2>, T3> function);
+
+	<U3 extends T3> IThreeParameterLinkDescriptorMapper<L, T1, T2, U3> castParameter3();
 
 	ITwoParameterLinkDescriptorMapper<L, T1, T2> ignoreParameter3();
 

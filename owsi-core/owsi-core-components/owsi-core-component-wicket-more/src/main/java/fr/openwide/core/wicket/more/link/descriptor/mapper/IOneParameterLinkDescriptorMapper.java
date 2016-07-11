@@ -14,4 +14,6 @@ public interface IOneParameterLinkDescriptorMapper<L, T> extends IDetachable {
 	
 	L map(IModel<T> model);
 
+	<U1 extends T> IOneParameterLinkDescriptorMapper<L, U1> castParameter1();
+
 }

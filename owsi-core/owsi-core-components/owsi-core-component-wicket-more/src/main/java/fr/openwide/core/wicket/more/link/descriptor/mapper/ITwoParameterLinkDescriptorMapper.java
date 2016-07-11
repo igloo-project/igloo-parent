@@ -22,11 +22,15 @@ public interface ITwoParameterLinkDescriptorMapper<L, T1, T2> extends IDetachabl
 
 	IOneParameterLinkDescriptorMapper<L, T2> setParameter1(Function<T2, T1> function);
 
+	<U1 extends T1> ITwoParameterLinkDescriptorMapper<L, U1, T2> castParameter1();
+
 	IOneParameterLinkDescriptorMapper<L, T2> ignoreParameter1();
 
 	IOneParameterLinkDescriptorMapper<L, T1> setParameter2(final IModel<T2> model2);
 
 	IOneParameterLinkDescriptorMapper<L, T1> setParameter2(Function<T1, T2> function);
+
+	<U2 extends T2> ITwoParameterLinkDescriptorMapper<L, T1, U2> castParameter2();
 
 	IOneParameterLinkDescriptorMapper<L, T1> ignoreParameter2();
 
