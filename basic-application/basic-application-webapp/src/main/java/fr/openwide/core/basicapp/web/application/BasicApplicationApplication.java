@@ -27,6 +27,7 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import fr.openwide.core.basicapp.web.application.common.converter.PostalCodeConverter;
+import fr.openwide.core.basicapp.web.application.common.renderer.AuthorityRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserGroupRenderer;
 import fr.openwide.core.basicapp.web.application.common.renderer.UserRenderer;
 import fr.openwide.core.basicapp.web.application.common.template.MainTemplate;
@@ -52,6 +53,7 @@ import fr.openwide.core.basicapp.web.application.security.password.page.Security
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
@@ -118,6 +120,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	protected IConverterLocator newConverterLocator() {
 		ConverterLocator converterLocator = new ConverterLocator();
 		
+		converterLocator.set(Authority.class, AuthorityRenderer.get());
 		converterLocator.set(User.class, UserRenderer.get());
 		converterLocator.set(TechnicalUser.class, UserRenderer.get());
 		converterLocator.set(BasicUser.class, UserRenderer.get());

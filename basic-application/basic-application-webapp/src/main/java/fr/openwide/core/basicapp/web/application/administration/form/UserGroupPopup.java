@@ -24,7 +24,9 @@ import fr.openwide.core.basicapp.core.business.authority.BasicApplicationAuthori
 import fr.openwide.core.basicapp.core.business.user.model.UserGroup;
 import fr.openwide.core.basicapp.core.business.user.service.IUserGroupService;
 import fr.openwide.core.basicapp.core.util.binding.Bindings;
+import fr.openwide.core.basicapp.web.application.administration.model.RoleDataProvider;
 import fr.openwide.core.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
+import fr.openwide.core.basicapp.web.application.common.renderer.AuthorityRenderer;
 import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.markup.html.form.CheckGroup;
@@ -33,7 +35,7 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
-import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
+import fr.openwide.core.wicket.more.markup.repeater.sequence.SequenceView;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
@@ -93,43 +95,19 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 										Suppliers2.<Authority>hashSet()
 								)
 										.add(
-												new CollectionView<Authority>(
-														"authorities",
-														Model.ofList(authorityUtils.getPublicAuthorities()),
-														GenericEntityModel.<Authority>factory()
-												) {
+												new SequenceView<Authority>("authorities", new RoleDataProvider()) {
 													private static final long serialVersionUID = 1L;
 													@Override
 													protected void populateItem(Item<Authority> item) {
 														item.add(
 																new Check<Authority>("authorityCheck", item.getModel())
-																		.setLabel(new ResourceModel("administration.usergroup.authority." + item.getModelObject().getName()))
+																		.setLabel(AuthorityRenderer.get().asModel(item.getModel()))
 														);
 													}
 												}
 										)
 						)
 		);
-		
-//		
-//		ListView<Authority> authoritiesListView = new ListView<Authority>("authorities",
-//				Model.ofList(authorityUtils.getPublicAuthorities())) {
-//			private static final long serialVersionUID = -7557232825932251026L;
-//			
-//			@Override
-//			protected void populateItem(ListItem<Authority> item) {
-//				Authority authority = item.getModelObject();
-//				
-//				Check<Authority> authorityCheck = new Check<Authority>("authorityCheck",
-//						new GenericEntityModel<Long, Authority>(authority));
-//				
-//				authorityCheck.setLabel();
-//				
-//				authorityCheckGroup.add(authorityCheck);
-//				item.add(authorityCheck);
-//			}
-//		};
-//		authorityCheckGroup.add(authoritiesListView);
 		
 		return body;
 	}
