@@ -1359,30 +1359,9 @@
 			A profile for sources generation. Simply maps the maven-processor-plugin executions to the generate-sources
 			phase (even for test sources), so that we only need to run generate-sources and nothing else.
 			-->
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.bsc.maven</groupId>
-							<artifactId>maven-processor-plugin</artifactId>
-							<executions>
-								<execution>
-									<id>maven-processor-plugin-default</id>
-									<phase>generate-sources</phase>
-									<goals>
-										<goal>process</goal>
-										<goal>process-test</goal>
-									</goals>
-								</execution>
-								<execution>
-									<id>maven-processor-plugin-default-test</id>
-									<phase>none</phase> <!-- Already executed in generate-sources -->
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
+			<properties>
+				<generated-sources-test.directory>${generated-sources.directory}</generated-sources-test.directory>
+			</properties>
 		</profile>
 	</profiles>
 	
