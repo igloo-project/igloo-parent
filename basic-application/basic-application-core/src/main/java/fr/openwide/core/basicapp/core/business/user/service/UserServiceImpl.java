@@ -65,7 +65,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 	
 	@Override
-	protected void updateEntity(User person) throws ServiceException, SecurityServiceException {
+	protected void updateEntity(User person) throws ServiceException, SecurityServiceException { // NOSONAR
 		super.updateEntity(person);
 		
 //		historyLogService.logWithDifferences(HistoryEventType.UPDATE, person, HistoryLogObjectsBean.of(person),
