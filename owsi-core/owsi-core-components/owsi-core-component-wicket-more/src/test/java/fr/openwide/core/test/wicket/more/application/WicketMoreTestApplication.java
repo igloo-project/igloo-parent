@@ -9,20 +9,14 @@ import fr.openwide.core.wicket.more.application.CoreWicketApplication;
  */
 public class WicketMoreTestApplication extends CoreWicketApplication {
 	
-	public static final String NAME = "WicketMoreTestApplication";
-	
-	public WicketMoreTestApplication() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	protected void mountApplicationPages() {
-		// Rien à faire
+		// Nothing to do
 	}
 
 	@Override
 	protected void mountApplicationResources() {
-		// Rien à faire
+		// Nothing to do
 	}
 
 	@Override

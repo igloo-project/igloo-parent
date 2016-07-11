@@ -1,6 +1,13 @@
 package fr.openwide.core.test.wicket.more;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.util.tester.WicketTester;
+import org.javatuples.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -11,11 +18,11 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.test.wicket.more.business.person.service.IPersonService;
-import fr.openwide.core.test.wicket.more.config.spring.WicketMoreTestWebappConfig;
+import fr.openwide.core.test.wicket.more.config.spring.SimpleWicketMoreTestWebappConfig;
 import fr.openwide.core.test.wicket.more.junit.IWicketTestCase;
 import fr.openwide.core.test.wicket.more.junit.WicketTesterTestExecutionListener;
 
-@ContextConfiguration(classes = WicketMoreTestWebappConfig.class)
+@ContextConfiguration(classes = SimpleWicketMoreTestWebappConfig.class)
 @TestExecutionListeners({ WicketTesterTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
 @DirtiesContext
 public abstract class AbstractWicketMoreTestCase extends AbstractTestCase implements IWicketTestCase {
@@ -37,6 +44,42 @@ public abstract class AbstractWicketMoreTestCase extends AbstractTestCase implem
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanEntities(personService);
+	}
+
+	protected static <D extends IDetachable> D serializeAndDeserialize(D object) {
+		object.detach();
+		
+		return doSerializeAndDeserialize(object);
+	}
+
+	protected static <T extends Tuple> T serializeAndDeserialize(T tuple) {
+		for (Object value : tuple) {
+			if (value instanceof IDetachable) {
+				((IDetachable)value).detach();
+			}
+		}
+		return doSerializeAndDeserialize(tuple);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T doSerializeAndDeserialize(T object) {
+		byte[] array;
+		try {
+			ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
+			ObjectOutputStream objectOut = new ObjectOutputStream(arrayOut);
+			objectOut.writeObject(object);
+			array = arrayOut.toByteArray();
+		} catch (Exception e) {
+			throw new RuntimeException("Error while serializing " + object, e);
+		}
+	
+		try {
+			ByteArrayInputStream arrayIn = new ByteArrayInputStream(array);
+			ObjectInputStream objectIn = new ObjectInputStream(arrayIn);
+			return (T) objectIn.readObject();
+		} catch (Exception e) {
+			throw new RuntimeException("Error while deserializing " + object, e);
+		}
 	}
 
 }

@@ -15,7 +15,7 @@ import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 @Import({
 	WicketMoreTestCoreCommonConfig.class
 })
-public class WicketMoreTestWebappConfig extends AbstractWebappConfig {
+public class SimpleWicketMoreTestWebappConfig extends AbstractWebappConfig {
 
 	@Override
 	@Bean
