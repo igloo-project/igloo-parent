@@ -27,7 +27,7 @@ public class HumanReadableEnumConverter extends EnumRenderer {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static HumanReadableEnumConverter INSTANCE = new HumanReadableEnumConverter();
+	private static final HumanReadableEnumConverter INSTANCE = new HumanReadableEnumConverter();
 	public static HumanReadableEnumConverter get() {
 		return INSTANCE;
 	}

@@ -8,7 +8,7 @@ public final class GenericListItemChoiceRenderer extends ChoiceRenderer<GenericL
 	
 	private static final long serialVersionUID = 7703341197679633131L;
 	
-	private static GenericListItemChoiceRenderer INSTANCE = new GenericListItemChoiceRenderer();
+	private static final GenericListItemChoiceRenderer INSTANCE = new GenericListItemChoiceRenderer();
 	public static GenericListItemChoiceRenderer get() {
 		return INSTANCE;
 	}

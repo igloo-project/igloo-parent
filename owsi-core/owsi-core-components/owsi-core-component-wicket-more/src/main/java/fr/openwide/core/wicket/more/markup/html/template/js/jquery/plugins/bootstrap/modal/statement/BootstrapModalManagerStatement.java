@@ -7,19 +7,19 @@ public final class BootstrapModalManagerStatement {
 
 	public static final String MODAL_MANAGER = "modalmanager";
 
-	protected final static JsStatement body() {
+	protected static final JsStatement body() {
 		return new JsStatement().$(null, "body");
 	}
 
-	public final static JsStatement loading() {
+	public static final JsStatement loading() {
 		return body().chain(BootstrapModalManager.loading()).append(";");
 	}
 
-	public final static JsStatement removeLoading() {
+	public static final JsStatement removeLoading() {
 		return body().chain(BootstrapModalManager.removeLoading()).append(";");
 	}
 
-	public final static JsStatement show(Component modal) {
+	public static final JsStatement show(Component modal) {
 		return show(modal, null);
 	}
 

@@ -10,7 +10,7 @@ public class BreadCrumbMarkupTagRenderingBehavior extends Behavior {
 
 	private static final long serialVersionUID = 3956060849411223519L;
 
-	public static BreadCrumbMarkupTagRenderingBehavior HTML_HEAD = new BreadCrumbMarkupTagRenderingBehavior() {
+	public static final BreadCrumbMarkupTagRenderingBehavior HTML_HEAD = new BreadCrumbMarkupTagRenderingBehavior() {
 		private static final long serialVersionUID = -4178004922336641567L;
 		
 		@Override

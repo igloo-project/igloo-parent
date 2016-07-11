@@ -27,7 +27,7 @@ public class HumanReadableLocalizedGenericListItemConverter extends LocalizedGen
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static HumanReadableLocalizedGenericListItemConverter INSTANCE = new HumanReadableLocalizedGenericListItemConverter();
+	private static final HumanReadableLocalizedGenericListItemConverter INSTANCE = new HumanReadableLocalizedGenericListItemConverter();
 	public static HumanReadableLocalizedGenericListItemConverter get() {
 		return INSTANCE;
 	}

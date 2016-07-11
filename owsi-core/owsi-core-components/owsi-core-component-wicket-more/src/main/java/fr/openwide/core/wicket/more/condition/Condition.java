@@ -269,13 +269,13 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	private static class ConstantCondition extends Condition {
 		private static final long serialVersionUID = -7678144550356610455L;
 		
-		private static ConstantCondition ALWAYS_TRUE = new ConstantCondition(true) {
+		private static final ConstantCondition ALWAYS_TRUE = new ConstantCondition(true) {
 			private static final long serialVersionUID = -8786829515620843503L;
 			private Object readResolve() {
 				return ALWAYS_TRUE;
 			}
 		};
-		private static ConstantCondition ALWAYS_FALSE = new ConstantCondition(false) {
+		private static final ConstantCondition ALWAYS_FALSE = new ConstantCondition(false) {
 			private static final long serialVersionUID = -6055735778127387150L;
 			private Object readResolve() {
 				return ALWAYS_FALSE;

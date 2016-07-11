@@ -38,7 +38,7 @@ import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssSer
  */
 public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificationCssRegistry {
 	
-	private static Comparator<String> CSS_PROPERTY_NAME_COLLATOR;
+	private static final Comparator<String> CSS_PROPERTY_NAME_COLLATOR;
 	static {
 		SerializableCollator collator = new SerializableCollator(Locale.ROOT);
 		collator.setStrength(Collator.SECONDARY);

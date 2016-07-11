@@ -27,7 +27,7 @@ public class HumanReadableLocalizedTextConverter extends LocalizedTextRenderer {
 	
 	private static final long serialVersionUID = -6397339082088737503L;
 	
-	private static HumanReadableLocalizedTextConverter INSTANCE = new HumanReadableLocalizedTextConverter();
+	private static final HumanReadableLocalizedTextConverter INSTANCE = new HumanReadableLocalizedTextConverter();
 	public static HumanReadableLocalizedTextConverter get() {
 		return INSTANCE;
 	}

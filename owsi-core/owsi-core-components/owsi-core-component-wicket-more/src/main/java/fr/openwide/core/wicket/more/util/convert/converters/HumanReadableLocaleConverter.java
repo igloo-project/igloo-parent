@@ -10,7 +10,7 @@ public class HumanReadableLocaleConverter extends LocaleRenderer {
 
 	private static final long serialVersionUID = 3616234068185075603L;
 	
-	private static HumanReadableLocaleConverter INSTANCE = new HumanReadableLocaleConverter();
+	private static final HumanReadableLocaleConverter INSTANCE = new HumanReadableLocaleConverter();
 	public static HumanReadableLocaleConverter get() {
 		return INSTANCE;
 	}

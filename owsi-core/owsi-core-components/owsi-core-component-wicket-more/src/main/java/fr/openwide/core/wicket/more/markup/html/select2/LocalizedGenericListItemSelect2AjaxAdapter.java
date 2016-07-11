@@ -20,7 +20,7 @@ public class LocalizedGenericListItemSelect2AjaxAdapter<E extends GenericLocaliz
 
 	private static final long serialVersionUID = -1596052281032908173L;
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(LocalizedGenericListItemSelect2AjaxAdapter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LocalizedGenericListItemSelect2AjaxAdapter.class);
 	
 	@SpringBean
 	private IGenericLocalizedGenericListItemService<? super E, ?> localizedGenericListItemService;
