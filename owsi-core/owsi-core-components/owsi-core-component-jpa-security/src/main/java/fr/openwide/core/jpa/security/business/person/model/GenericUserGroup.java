@@ -69,7 +69,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	@JsonIgnore
 	@ManyToMany(mappedBy = "groups")
 	@SortComparator(AbstractUserComparator.class)
-	private Set<P> persons = Sets.newTreeSet(AbstractUserComparator.get());
+	private Set<P> persons = Sets.newTreeSet(AbstractUserComparator.get()); // NOSONAR
 	
 	@JsonIgnore
 	@ManyToMany

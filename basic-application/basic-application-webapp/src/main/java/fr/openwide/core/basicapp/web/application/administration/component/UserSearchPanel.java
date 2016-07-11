@@ -18,7 +18,6 @@ public class UserSearchPanel<U extends User> extends Panel {
 	
 	private static final long serialVersionUID = -6224313886789870489L;
 	
-	
 	public UserSearchPanel(String id, IPageable pageable, UserTypeDescriptor<U> typeDescriptor,
 			AbstractUserDataProvider<U> dataProvider) {
 		super(id);

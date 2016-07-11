@@ -11,9 +11,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.form.DatePicker;
 import fr.openwide.core.wicket.more.markup.html.form.MonthPicker;
@@ -25,9 +23,6 @@ import fr.openwide.core.wicket.more.util.DatePattern;
 public class CalendarPanel extends Panel {
 
 	private static final long serialVersionUID = -4459381803397055418L;
-	
-	@SpringBean
-	private IUserService userService;
 	
 	private IModel<Date> beginDateModel, endDateModel;
 	

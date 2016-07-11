@@ -4,9 +4,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
@@ -19,9 +17,6 @@ public class LinksPage1 extends LinksTemplate {
 				.page(LinksPage1.class)
 				.build();
 	}
-	
-	@SpringBean
-	private IUserService userService;
 	
 	public LinksPage1(PageParameters parameters) {
 		super(parameters);

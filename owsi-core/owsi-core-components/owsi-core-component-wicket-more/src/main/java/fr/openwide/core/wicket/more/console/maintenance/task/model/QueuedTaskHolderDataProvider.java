@@ -7,13 +7,11 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.jpa.more.business.search.query.ISearchQuery;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.search.IQueuedTaskHolderSearchQuery;
 import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSort;
-import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
@@ -45,9 +43,6 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 			CompositingStrategy.LAST_ONLY,
 			QueuedTaskHolderSort.CREATION_DATE
 	);
-
-	@SpringBean
-	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	public QueuedTaskHolderDataProvider() {
 		super();

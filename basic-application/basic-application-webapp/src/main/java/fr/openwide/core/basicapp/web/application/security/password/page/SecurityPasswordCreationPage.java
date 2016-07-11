@@ -5,10 +5,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.basicapp.core.business.user.model.User;
-import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationApplication;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.security.password.component.SecurityPasswordCreationContentPanel;
@@ -35,9 +33,6 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 					.build();
 
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
-
-	@SpringBean
-	private ISecurityManagementService securityManagementService;
 
 	public SecurityPasswordCreationPage(PageParameters parameters) {
 		super(parameters);

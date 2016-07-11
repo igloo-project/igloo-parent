@@ -3,9 +3,7 @@ package fr.openwide.core.showcase.web.application.portfolio.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserPortfolioPanel;
 import fr.openwide.core.showcase.web.application.portfolio.component.UserSearchPanel;
 import fr.openwide.core.showcase.web.application.portfolio.model.UserDataProvider;
@@ -25,9 +23,6 @@ public class PortfolioMainPage extends MainTemplate {
 				.page(PortfolioMainPage.class)
 				.build();
 	}
-	
-	@SpringBean
-	private IUserService userService;
 	
 	public PortfolioMainPage(PageParameters parameters) {
 		super(parameters);

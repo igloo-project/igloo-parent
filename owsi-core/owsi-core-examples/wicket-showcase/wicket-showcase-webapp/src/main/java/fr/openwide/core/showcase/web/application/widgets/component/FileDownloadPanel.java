@@ -10,15 +10,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.javatuples.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.UndeclaredThrowableException;
 
 import de.schlichtherle.truezip.file.TFile;
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.commons.util.registry.TFileRegistry;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileService;
 import fr.openwide.core.spring.property.SpringPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.common.WorkInProgressPopup;
@@ -28,11 +25,6 @@ public class FileDownloadPanel extends Panel {
 
 	private static final long serialVersionUID = 4147662803478838954L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FileDownloadPanel.class);
-
-	@SpringBean
-	private IShowcaseFileService showcaseFileService;
-	
 	@SpringBean
 	private IPropertyService propertyService;
 

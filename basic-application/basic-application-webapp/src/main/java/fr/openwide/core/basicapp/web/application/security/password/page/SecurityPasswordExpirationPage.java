@@ -4,9 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.security.password.component.SecurityPasswordExpirationContentPanel;
 import fr.openwide.core.basicapp.web.application.security.password.component.SecurityPasswordIntroPanel;
 import fr.openwide.core.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
@@ -23,9 +21,6 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 				.page(SecurityPasswordExpirationPage.class)
 				.build();
 	}
-
-	@SpringBean
-	private ISecurityManagementService securityManagementService;
 
 	public SecurityPasswordExpirationPage(PageParameters parameters) {
 		super(parameters);

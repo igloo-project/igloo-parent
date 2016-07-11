@@ -6,9 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.portfolio.model.AbstractUserDataProvider;
 import fr.openwide.core.wicket.markup.html.form.PageableSearchForm;
@@ -17,9 +15,6 @@ import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 public class UserSearchPanel extends Panel {
 	
 	private static final long serialVersionUID = -6224313886789870489L;
-	
-	@SpringBean
-	private IAuthorityService authorityService;
 	
 	public UserSearchPanel(String id, IPageable pageable, AbstractUserDataProvider<User> dataProvider) {
 		super(id);

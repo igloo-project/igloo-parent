@@ -10,9 +10,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
@@ -24,9 +22,6 @@ public class TaskFilterPanel extends Panel {
 	private static final long serialVersionUID = -3803340118726908397L;
 
 	private final IPageable pageable;
-
-	@SpringBean
-	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	public TaskFilterPanel(String id, final QueuedTaskHolderDataProvider queuedTaskHolderDataProvider,
 			IPageable pageable) {
