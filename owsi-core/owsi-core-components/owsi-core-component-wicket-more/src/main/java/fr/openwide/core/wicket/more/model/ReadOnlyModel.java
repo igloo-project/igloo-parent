@@ -24,7 +24,7 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 	
 	private final IModel<? extends F> readModel;
 	
-	private final Function<? super F, T> function;
+	private final Function<? super F, ? extends T> function;
 
 	public static final <F, T> IDetachableFactory<IModel<F>, IModel<T>> factory(final Function<? super F, T> function) {
 		return new AbstractDetachableFactory<IModel<F>, IModel<T>>() {
@@ -48,15 +48,15 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 		return new ReadOnlyModel<T, T>(Model.of(object), Functions.<T>identity());
 	}
 	
-	public static <F, T> ReadOnlyModel<F, T> of(IModel<? extends F> model, Function<F, T> function) {
+	public static <F, T> ReadOnlyModel<F, T> of(IModel<F> model, Function<? super F, ? extends T> function) {
 		return new ReadOnlyModel<F, T>(model, function);
 	}
 
-	public static <F extends Serializable, T> ReadOnlyModel<F, T> of(F object, Function<F, T> function) {
+	public static <F extends Serializable, T> ReadOnlyModel<F, T> of(F object, Function<? super F, ? extends T> function) {
 		return new ReadOnlyModel<F, T>(Model.of(object), function);
 	}
 
-	protected ReadOnlyModel(IModel<? extends F> readModel, Function<? super F, T> function) {
+	protected ReadOnlyModel(IModel<? extends F> readModel, Function<? super F, ? extends T> function) {
 		super();
 		checkNotNull(readModel);
 		checkNotNull(function);
