@@ -11,11 +11,11 @@ public final class DetachableFactories {
 	private DetachableFactories() {
 	}
 
-	public static final <T, R> IDetachableFactory<Unit<T>, R> forUnit(final IDetachableFactory<T, R> factory) {
-		return new AbstractDetachableFactory<Unit<T>, R>() {
+	public static final <T, R> IDetachableFactory<Unit<? extends T>, R> forUnit(final IDetachableFactory<T, R> factory) {
+		return new AbstractDetachableFactory<Unit<? extends T>, R>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public R create(Unit<T> parameter) {
+			public R create(Unit<? extends T> parameter) {
 				return factory.create(parameter.getValue0());
 			}
 			@Override
