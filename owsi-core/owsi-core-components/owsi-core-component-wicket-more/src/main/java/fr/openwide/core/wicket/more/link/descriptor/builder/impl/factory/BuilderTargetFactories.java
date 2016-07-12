@@ -9,6 +9,9 @@ import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.util.model.Models;
 
+/**
+ * A container object for storing the various {@link IBuilderLinkDescriptorFactory}.
+ */
 public class BuilderTargetFactories
 		<
 		TEarlyTargetDefinitionLinkDescriptor, TEarlyTarget,

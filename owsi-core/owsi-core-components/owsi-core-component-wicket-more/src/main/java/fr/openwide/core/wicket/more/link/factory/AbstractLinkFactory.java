@@ -12,12 +12,11 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.pageinstance.I
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 
-
 public abstract class AbstractLinkFactory {
 	
 	/**
-	 * @deprecated Use {@link LinkDescriptorBuilder#start()} or {@link LinkDescriptorBuilder#start(Page)} or
-	 * {@link LinkDescriptorBuilder#start(IModel)} instead.
+	 * @deprecated Use {@link LinkDescriptorBuilder#start()} or {@link LinkDescriptorBuilder#toPageInstance(Page)} or
+	 * {@link LinkDescriptorBuilder#toPageInstance(IModel)} instead.
 	 */
 	@Deprecated
 	protected IBaseState builder() {
@@ -38,7 +37,7 @@ public abstract class AbstractLinkFactory {
 	
 	public IPageLinkGenerator linkGenerator(IModel<? extends Page> pageInstanceModel,
 			Collection<? extends Class<? extends Page>> expectedClasses) {
-		IPageInstanceState<?> builder = LinkDescriptorBuilder.start(pageInstanceModel);
+		IPageInstanceState<?> builder = LinkDescriptorBuilder.toPageInstance(pageInstanceModel);
 		for (Class<? extends Page> expectedClass : expectedClasses) {
 			builder.validate(expectedClass);
 		}

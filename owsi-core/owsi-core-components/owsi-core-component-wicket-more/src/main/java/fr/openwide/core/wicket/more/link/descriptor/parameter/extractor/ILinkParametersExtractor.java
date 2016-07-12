@@ -9,7 +9,8 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 
 /**
- * An utility object mapped to {@link IModel models}, that allows for simple link parameters extraction to these models.
+ * An object mapped to {@link IModel models}, that allows for simple {@link PageParameters link parameters} extraction
+ * to these models.
  * 
  * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior notice.
  * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before serialization.

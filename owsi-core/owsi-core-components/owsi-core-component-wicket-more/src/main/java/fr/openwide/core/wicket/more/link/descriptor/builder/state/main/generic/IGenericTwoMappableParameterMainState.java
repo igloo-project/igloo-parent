@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.ITwoMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.ITwoOrMoreMappableParameterNoneChosenChoiceState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 
@@ -20,6 +21,7 @@ public interface IGenericTwoMappableParameterMainState
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IMainState<TSelf>,
+				ITwoOrMoreMappableParameterNoneChosenChoiceState,
 				IBackwardCompatibleTerminalState
 						<
 						TEarlyTargetDefinitionResult,
@@ -28,6 +30,7 @@ public interface IGenericTwoMappableParameterMainState
 						TLateTargetDefinitionImageResourceResult
 						> {
 	
+	@Override
 	ITwoMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2,
@@ -37,6 +40,7 @@ public interface IGenericTwoMappableParameterMainState
 			TLateTargetDefinitionImageResourceResult
 			> pickFirst();
 	
+	@Override
 	ITwoMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2,

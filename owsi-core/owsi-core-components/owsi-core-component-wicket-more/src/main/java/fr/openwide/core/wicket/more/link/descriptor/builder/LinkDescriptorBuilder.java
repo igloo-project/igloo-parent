@@ -27,20 +27,28 @@ import fr.openwide.core.wicket.more.link.model.PageModel;
  * <ul>
  * <li>The link target (page or resource)
  * <li>The link parameters (models) and their mapping (HTTP query parameter name)
- * <li>The link validations
+ * <li>The link validations (is a permission required on one of the parameters, ...)
  * </ul>
- * <p><strong>Beware:</strong>Due to backward-compatibility constraints, target definition may get a bit confusing.
- * For new uses of this class, please use late target definition: begin your building code with
- * <code>LinkDescriptorBuilder.start()</code> and finish in with one of the methods in
- * {@link ILateTargetDefinitionTerminalState}. Refrain from calling {@link IEarlyTargetDefinitionTerminalState#build()},
- * since it will only return an unusable link descriptor or mapper.
- * <p>You may encounter legacy code using {@link LinkDescriptorBuilder}'s constructor and
+ * <h1>Backward compatibility regarding target definitions</h1>
+ * <p>Due to backward-compatibility constraints, target definition may get a bit confusing.
+ * <p>For new uses of this class to build links to bookmarkable pages or resources, please use late target definition:
+ * begin your building code with <code>LinkDescriptorBuilder.start()</code> and finish in with one of the methods in
+ * {@link ILateTargetDefinitionTerminalState}. After that, refrain from calling
+ * {@link IEarlyTargetDefinitionTerminalState#build()} since it will only return an unusable link descriptor or mapper.
+ * <p>For building link descriptors to already-instantiated pages, please use {@link #toPageInstance(Page)} or
+ * {@link #toPageInstance(IModel)}
+ * <p>You may encounter legacy code using
+ * {@link LinkDescriptorBuilder#LinkDescriptorBuilder() LinkDescriptorBuilder's constructor} and
  * {@link IEarlyTargetDefinitionTerminalState#build()}. This kind of use is called "early target definition" in this
- * API's javadoc, and is deprecated because it does not allow defining dynamic targets based on parameters.
+ * API's javadoc, and is deprecated because it does not allow defining dynamic targets based on parameters (as in
+ * {@link IChosenParameterState#page(fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory)} for instance).
  */
 @SuppressWarnings("deprecation")
 public class LinkDescriptorBuilder implements IBaseState {
 	
+	/**
+	 * Start building a link descriptor or a link descriptor mapper that will point to a page or to a resource.
+	 */
 	public static INoMappableParameterMainState<
 			Void,
 			IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor
@@ -48,25 +56,34 @@ public class LinkDescriptorBuilder implements IBaseState {
 		return new NoMappableParameterMainStateImpl<>(BuilderTargetFactories.late());
 	}
 	
-	public static IPageInstanceState<IPageLinkGenerator> start(Page page) {
-		return start(new PageModel<>(page));
+	/**
+	 * Start building a link descriptor or a link descriptor mapper that will point to an already-instantiated page.
+	 * <p>This type of link descriptor hasn't got any parameter.
+	 */
+	public static IPageInstanceState<IPageLinkGenerator> toPageInstance(Page page) {
+		return toPageInstance(new PageModel<>(page));
 	}
-	
-	public static IPageInstanceState<IPageLinkGenerator> start(IModel<? extends Page> pageInstanceModel) {
+
+	/**
+	 * Start building a link descriptor or a link descriptor mapper that will point to an already-instantiated page.
+	 * <p>This type of link descriptor hasn't got any parameter.
+	 */
+	public static IPageInstanceState<IPageLinkGenerator> toPageInstance(IModel<? extends Page> pageInstanceModel) {
 		return new CoreLinkDescriptorBuilderPageInstanceStateImpl(pageInstanceModel);
 	}
 	
 	/**
-	 * @deprecated This constructor is the deprecated way of starting the build of a LinkDescriptor or a
-	 * LinkDescriptorMapper.
-	 * Use {@link #start()} instead (or {@link #start(Page)}, or {@link #start(IModel)}, then define your parameters
-	 * (if any), and only when you're done use one of the methods defined in {@link ILateTargetDefinitionTerminalState}
-	 * for defining the link's target and retrieving your link descriptor or link descriptor mapper. Other methods for
-	 * <em>parameterized</em> late target definition are defined in {@link IChosenParameterState}.
+	 * @deprecated This constructor is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
 	 */
 	@Deprecated
 	public LinkDescriptorBuilder() { }
 
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public <P extends Page> INoMappableParameterMainState<
 			IPageLinkDescriptor,
@@ -77,6 +94,11 @@ public class LinkDescriptorBuilder implements IBaseState {
 		);
 	}
 
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public INoMappableParameterMainState<
 			IPageLinkDescriptor,
@@ -86,17 +108,32 @@ public class LinkDescriptorBuilder implements IBaseState {
 				BuilderTargetFactories.early(BuilderLinkDescriptorFactory.page(), pageClassModel)
 		);
 	}
-	
+
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public IPageInstanceState<IPageLinkGenerator> pageInstance(Page page) {
-		return start(page);
-	}
-	
-	@Override
-	public IPageInstanceState<IPageLinkGenerator> pageInstance(IModel<? extends Page> pageInstanceModel) {
-		return start(pageInstanceModel);
+		return toPageInstance(page);
 	}
 
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
+	@Override
+	public IPageInstanceState<IPageLinkGenerator> pageInstance(IModel<? extends Page> pageInstanceModel) {
+		return toPageInstance(pageInstanceModel);
+	}
+
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public INoMappableParameterMainState<
 			IResourceLinkDescriptor,
@@ -107,6 +144,11 @@ public class LinkDescriptorBuilder implements IBaseState {
 		);
 	}
 
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public INoMappableParameterMainState<
 			IResourceLinkDescriptor,
@@ -117,6 +159,11 @@ public class LinkDescriptorBuilder implements IBaseState {
 		);
 	}
 
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public INoMappableParameterMainState<
 			IImageResourceLinkDescriptor,
@@ -127,6 +174,11 @@ public class LinkDescriptorBuilder implements IBaseState {
 		);
 	}
 
+	/**
+	 * @deprecated This method is a deprecated way of starting the build of a LinkDescriptor or a
+	 * LinkDescriptorMapper. Please see the section about backward compatibility in {@link LinkDescriptorBuilder}.
+	 */
+	@Deprecated
 	@Override
 	public INoMappableParameterMainState<
 			IImageResourceLinkDescriptor,

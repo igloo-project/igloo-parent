@@ -8,14 +8,16 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkPar
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
 
 /**
- * A utility object implementing both {@link ILinkDescriptor} and {@link ILinkParametersExtractor}.
- * <p>Object implementing this interface, and its sub-interfaces ({@link IResourceLinkDescriptor}, {@link IPageLinkDescriptor}),
- * can be instantiated using the {@link LinkDescriptorBuilder}.
+ * A object implementing both {@link ILinkGenerator} and {@link ILinkParametersExtractor}.
+ * <p>Object implementing this interface, and its sub-interfaces ({@link IResourceLinkDescriptor},
+ * {@link IPageLinkDescriptor}), can be instantiated using the {@link LinkDescriptorBuilder}.
  * 
- * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior notice.
- * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before serialization.
+ * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior
+ * notice.
+ * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before
+ * serialization.
  * 
- * @see ILinkDescriptor
+ * @see ILinkGenerator
  * @see ILinkParametersExtractor
  */
 public interface ILinkDescriptor extends ILinkParametersExtractor, ILinkGenerator, IDetachable {

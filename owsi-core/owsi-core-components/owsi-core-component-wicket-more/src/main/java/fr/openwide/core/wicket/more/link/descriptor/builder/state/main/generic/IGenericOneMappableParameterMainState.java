@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IOneMappableParameterOneChosenParameterState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 
 /**
@@ -30,7 +30,7 @@ public interface IGenericOneMappableParameterMainState
 				/* For a cleaner syntax, parameter picking is not required when there is only one parameter.
 				 * We provide right away those methods that would have been available after picking.
 				 */
-				IOneMappableParameterOneChosenParameterState
+				IOneChosenParameterState
 						<
 						TSelf,
 						TParam1,

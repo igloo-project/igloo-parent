@@ -14,7 +14,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;
 
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic.IGenericOneMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;

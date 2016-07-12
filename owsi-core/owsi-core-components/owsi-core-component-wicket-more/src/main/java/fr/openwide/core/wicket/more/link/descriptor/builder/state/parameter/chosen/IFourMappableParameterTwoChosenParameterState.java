@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen;
 
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.choice.somechosen.IFourOrMoreMappableParameterSomeChosenChoiceState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.ITwoChosenParameterState;
 
 public interface IFourMappableParameterTwoChosenParameterState
@@ -18,8 +19,10 @@ public interface IFourMappableParameterTwoChosenParameterState
 						TLateTargetDefinitionPageResult,
 						TLateTargetDefinitionResourceResult,
 						TLateTargetDefinitionImageResourceResult
-						> {
+						>,
+				IFourOrMoreMappableParameterSomeChosenChoiceState {
 
+	@Override
 	IFourMappableParameterThreeChosenParameterState<
 			TInitialState,
 			TParam1, TParam2, TParam3, TParam4,
@@ -29,6 +32,7 @@ public interface IFourMappableParameterTwoChosenParameterState
 			TLateTargetDefinitionImageResourceResult
 			> andFirst();
 
+	@Override
 	IFourMappableParameterThreeChosenParameterState<
 			TInitialState,
 			TParam1, TParam2, TParam3, TParam4,
@@ -38,6 +42,7 @@ public interface IFourMappableParameterTwoChosenParameterState
 			TLateTargetDefinitionImageResourceResult
 			> andSecond();
 
+	@Override
 	IFourMappableParameterThreeChosenParameterState<
 			TInitialState,
 			TParam1, TParam2, TParam3, TParam4,
@@ -47,6 +52,7 @@ public interface IFourMappableParameterTwoChosenParameterState
 			TLateTargetDefinitionImageResourceResult
 			> andThird();
 
+	@Override
 	IFourMappableParameterThreeChosenParameterState<
 			TInitialState,
 			TParam1, TParam2, TParam3, TParam4,

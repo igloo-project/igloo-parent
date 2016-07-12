@@ -6,19 +6,19 @@ import org.javatuples.Pair;
 
 import com.google.common.base.Function;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.ITwoMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
+import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 
 /**
- * An object that can create a {@link ILinkParametersExtractor} using three {@link IModel}.
- * @see INoMappableParameterMainState#addDynamicParameter(Class)
- * @see IOneMappableParameterMainState#addDynamicParameter(Class)
- * @see ITwoMappableParameterMainState#addDynamicParameter(Class)
+ * An object that can create a {@link ILinkDescriptor} using three {@link IModel}s.
+ * @see IMappableParameterDeclarationState#model(Class)
  */
 public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> extends IDetachable {
-	
+
+	/**
+	 * Map the given models to a newly-created {@link ILinkDescriptor}.
+	 * @see IOneParameterLinkDescriptorMapper#map(IModel)
+	 */
 	L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3);
 
 	ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(final IModel<T1> model1);

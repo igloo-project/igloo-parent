@@ -24,7 +24,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilde
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderMapperLinkDescriptorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.AbstractCoreAddedParameterMapperStateImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterMappingEntryBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.CollectionLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;

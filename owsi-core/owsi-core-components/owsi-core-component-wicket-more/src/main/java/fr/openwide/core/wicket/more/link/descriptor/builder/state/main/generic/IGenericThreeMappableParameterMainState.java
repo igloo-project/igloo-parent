@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IThreeMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.IThreeOrMoreMappableParameterNoneChosenChoiceState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 
@@ -20,6 +21,7 @@ public interface IGenericThreeMappableParameterMainState
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IMainState<TSelf>,
+				IThreeOrMoreMappableParameterNoneChosenChoiceState,
 				IBackwardCompatibleTerminalState
 						<
 						TEarlyTargetDefinitionResult,
@@ -28,6 +30,7 @@ public interface IGenericThreeMappableParameterMainState
 						TLateTargetDefinitionImageResourceResult
 						> {
 	
+	@Override
 	IThreeMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3,
@@ -37,6 +40,7 @@ public interface IGenericThreeMappableParameterMainState
 			TLateTargetDefinitionImageResourceResult
 			> pickFirst();
 	
+	@Override
 	IThreeMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3,
@@ -46,6 +50,7 @@ public interface IGenericThreeMappableParameterMainState
 			TLateTargetDefinitionImageResourceResult
 			> pickSecond();
 
+	@Override
 	IThreeMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3,

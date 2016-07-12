@@ -1,12 +1,14 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main;
 
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 
 /**
- * A builder state from which one may:
+ * An initial builder state from which one may:
  * <ul>
  *  <li>build a LinkDescriptor directly, by calling any of the {@link IMainState} methods and then any of the
  *  {@link ILateTargetDefinitionTerminalState} method.
@@ -31,6 +33,7 @@ public interface INoMappableParameterMainState
 								TLateTargetDefinitionImageResourceLinkDescriptor
 								>
 						>,
+				IMappableParameterDeclarationState,
 				IBackwardCompatibleTerminalState
 						<
 						TEarlyTargetDefinitionLinkDescriptor,
@@ -39,6 +42,7 @@ public interface INoMappableParameterMainState
 						TLateTargetDefinitionImageResourceLinkDescriptor
 						> {
 
+	@Override
 	<TParam1> IOneMappableParameterMainState<
 			TParam1,
 			TEarlyTargetDefinitionLinkDescriptor,

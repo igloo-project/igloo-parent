@@ -1,7 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IFourMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.IFourOrMoreMappableParameterNoneChosenChoiceState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 
@@ -20,6 +21,7 @@ public interface IGenericFourMappableParameterMainState
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IMainState<TSelf>,
+				IFourOrMoreMappableParameterNoneChosenChoiceState,
 				IBackwardCompatibleTerminalState
 						<
 						TEarlyTargetDefinitionResult,
@@ -28,6 +30,7 @@ public interface IGenericFourMappableParameterMainState
 						TLateTargetDefinitionImageResourceResult
 						> {
 	
+	@Override
 	IFourMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3, TParam4,
@@ -37,6 +40,7 @@ public interface IGenericFourMappableParameterMainState
 			TLateTargetDefinitionImageResourceResult
 			> pickFirst();
 	
+	@Override
 	IFourMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3, TParam4,
@@ -46,6 +50,7 @@ public interface IGenericFourMappableParameterMainState
 			TLateTargetDefinitionImageResourceResult
 			> pickSecond();
 
+	@Override
 	IFourMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3, TParam4,
@@ -55,6 +60,7 @@ public interface IGenericFourMappableParameterMainState
 			TLateTargetDefinitionImageResourceResult
 			> pickThird();
 
+	@Override
 	IFourMappableParameterOneChosenParameterState<
 			TSelf,
 			TParam1, TParam2, TParam3, TParam4,

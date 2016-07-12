@@ -1,4 +1,4 @@
-package fr.openwide.core.wicket.more.link.descriptor.builder.state.main;
+package fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState;
@@ -8,8 +8,6 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IVal
  * <ul>
  *  <li>map already-defined model parameters, by calling methods from {@link IParameterMappingState}.
  *  <li>add link validators, by calling methods from {@link IValidatorState}.
- *  <li>and depending on the actual state ({@link INoMappableParameterMainState}, {@link IOneMappableParameterMainState}, ...), add new
- *  model parameters.
  * </ul>
  */
 public interface IMainState

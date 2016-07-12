@@ -2,17 +2,34 @@ package fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.cho
 
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.javatuples.Tuple;
 
 import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.ITwoOrMoreMappableParameterNoneChosenChoiceState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
+/**
+ * A state where some mappable parameters were {@link IMappableParameterDeclarationState declared} and some were
+ * {@link ITwoOrMoreMappableParameterNoneChosenChoiceState#pickFirst() chosen}.
+ * <p>From this state, one may:
+ * <ul>
+ * <li>map model parameters ({@link IModel}) to link parameters ({@link PageParameters})
+ * <li>add parameter-dependent validation to the link.
+ * <li>build a link descriptor mapper with a parameter-dependent target.
+ * </ul>
+ */
 public interface IChosenParameterState
 		<
 		TInitialState,
@@ -23,20 +40,38 @@ public interface IChosenParameterState
 		> {
 
 	/**
-	 * Maps the chosen <em>model</em> parameters to HTTP query parameters using the given factory.
+	 * Register a {@link ILinkParameterMappingEntry} that will handle the process of mapping HTTP query parameters
+	 * to its internal models.
+	 * <p>The {@link ILinkParameterMappingEntry} will be created by the given factory when the model parameters will be
+	 * fully known.
+	 * @param parameterMappingEntryFactory The factory for creating the object responsible for mapping parameters.
+	 * @return A builder state where you will decide whether the newly created mapping is either mandatory or optional.
 	 */
 	IAddedParameterMappingState<TInitialState> map(
 			ILinkParameterMappingEntryFactory<? super TTuple> parameterMappingEntryFactory);
 
 	/**
-	 * A version of {@link IValidatorState#validator(Condition)} with a parameter-dependent validator.
+	 * Add a validator to the resulting link descriptor.
+	 * <p>The validator will be created by the given factory when the model parameters will be fully known.
+	 * <p>The validator will be executed each time a link will get {@link ILinkGenerator generated} or link parameters
+	 * will get {@link ILinkParametersExtractor extracted}.
 	 * <p>This method has the advantage over {@link #validator(IDetachableFactory)} that it allows for validation
 	 * of raw parameters, not only model parameters.
+	 * @param parameterValidatorFactory The factory for creating the validator.
+	 * @return The original state (without any chosen parameter) for chaining calls.
+	 * @see ILinkParameterValidatorFactory
+	 * @see ILinkParameterValidator
 	 */
 	TInitialState validator(ILinkParameterValidatorFactory<? super TTuple> parameterValidatorFactory);
 
 	/**
-	 * A version of {@link IValidatorState#validator(Condition)} with a parameter-dependent condition.
+	 * {@link #validator(ILinkParameterValidatorFactory) Add a validator to the resulting link descriptor} that will
+	 * pass validation if and only if the given condition is <code>true</code>, and raise an error otherwise.
+	 * <p>The condition, and thus the validator, will be created by the given factory when the model parameters will be
+	 * fully known.
+	 * @param condition The condition on which the validation should pass.
+	 * @return The original state (without any chosen parameter) for chaining calls.
+	 * @see ConditionLinkParameterValidator
 	 */
 	TInitialState validator(IDetachableFactory<? super TTuple, ? extends Condition> conditionFactory);
 	

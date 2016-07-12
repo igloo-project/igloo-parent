@@ -5,17 +5,19 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Function;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
+import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 
 /**
- * An object that can create a {@link ILinkParametersExtractor} using two {@link IModel}.
- * @see INoMappableParameterMainState#addDynamicParameter(Class)
- * @see IOneMappableParameterMainState#addDynamicParameter(Class)
+ * An object that can create a {@link ILinkDescriptor} using two {@link IModel}s.
+ * @see IMappableParameterDeclarationState#model(Class)
  */
 public interface ITwoParameterLinkDescriptorMapper<L, T1, T2> extends IDetachable {
-	
+
+	/**
+	 * Map the given models to a newly-created {@link ILinkDescriptor}.
+	 * @see IOneParameterLinkDescriptorMapper#map(IModel)
+	 */
 	L map(IModel<T1> model1, IModel<T2> model2);
 
 	IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final IModel<T1> model1);

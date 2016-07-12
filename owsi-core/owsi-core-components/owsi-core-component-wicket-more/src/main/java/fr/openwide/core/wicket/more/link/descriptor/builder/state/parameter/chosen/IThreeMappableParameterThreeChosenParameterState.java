@@ -2,7 +2,6 @@ package fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.cho
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IThreeChosenParameterState;
 
-
 public interface IThreeMappableParameterThreeChosenParameterState
 		<
 		InitialState,

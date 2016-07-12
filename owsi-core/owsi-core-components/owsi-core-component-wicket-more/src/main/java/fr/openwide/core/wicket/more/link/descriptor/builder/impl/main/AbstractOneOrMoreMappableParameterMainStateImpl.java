@@ -7,7 +7,7 @@ import org.apache.wicket.util.lang.Args;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.AbstractChosenParameterStateImpl;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
