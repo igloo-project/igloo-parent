@@ -26,6 +26,6 @@ public interface IImageResourceLinkGenerator extends ILinkGenerator, IDetachable
 	DynamicImage image(String wicketId);
 	
 	@Override
-	public IImageResourceLinkGenerator wrap(Component component);
+	IImageResourceLinkGenerator wrap(Component component);
 
 }
