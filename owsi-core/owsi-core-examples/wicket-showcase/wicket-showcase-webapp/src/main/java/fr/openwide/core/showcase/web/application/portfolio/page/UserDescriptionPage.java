@@ -22,10 +22,9 @@ public class UserDescriptionPage extends MainTemplate {
 	private static final long serialVersionUID = -3229942018297644108L;
 
 	public static final IPageLinkDescriptor linkDescriptor(IModel<User> userModel) {
-		return new LinkDescriptorBuilder()
-				.page(UserDescriptionPage.class)
+		return LinkDescriptorBuilder.start()
 				.map(CommonParameters.ID, userModel, User.class).mandatory()
-				.build();
+				.page(UserDescriptionPage.class);
 	}
 	
 	public UserDescriptionPage(PageParameters parameters) {

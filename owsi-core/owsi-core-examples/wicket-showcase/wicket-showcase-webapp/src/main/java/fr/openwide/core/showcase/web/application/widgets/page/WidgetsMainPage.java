@@ -11,9 +11,8 @@ public class WidgetsMainPage extends WidgetsTemplate {
 	private static final long serialVersionUID = 3092941096047935122L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(WidgetsMainPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(WidgetsMainPage.class);
 	}
 	
 	public WidgetsMainPage(PageParameters parameters) {

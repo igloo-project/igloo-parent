@@ -13,10 +13,13 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 import fr.openwide.core.wicket.more.link.util.LinkDescriptors;
 
 /**
- * An utility object mapped to {@link IModel models}, that allows for simple link generation using these models to determine the target and parameters of the generated link.
+ * An object mapped to {@link IModel models}, that allows for simple link generation using these models to determine
+ * the target and parameters of the generated link.
  * 
- * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior notice.
- * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before serialization.
+ * <p>Re-implementing this interface is not recommended, as it may be extended with additional methods without prior
+ * notice.
+ * <p><strong>Warning:</strong> this interface extends {@link IDetachable}. Thus, it <em>must</em> be detached before
+ * serialization.
  */
 public interface ILinkGenerator extends IDetachable {
 

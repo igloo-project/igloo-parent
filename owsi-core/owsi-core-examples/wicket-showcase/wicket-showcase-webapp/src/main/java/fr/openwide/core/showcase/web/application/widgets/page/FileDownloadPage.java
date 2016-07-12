@@ -12,9 +12,8 @@ public class FileDownloadPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -2672872859185908000L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(FileDownloadPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(FileDownloadPage.class);
 	}
 
 	public FileDownloadPage(PageParameters parameters) {

@@ -106,7 +106,7 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 	public abstract Class<? extends WebPage> getSignInPageClass();
 	
 	public final IPageLinkDescriptor getSignInPageLinkDescriptor() {
-		return new LinkDescriptorBuilder().page(getSignInPageClass()).build();
+		return LinkDescriptorBuilder.start().page(getSignInPageClass());
 	}
 	
 	@Override

@@ -34,9 +34,8 @@ public class FileUploadResource extends AbstractFileUploadResource {
 			};
 			
 	public static IResourceLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.resource(REFERENCE)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.resource(REFERENCE);
 	}
 
 	@SpringBean

@@ -5,8 +5,10 @@ import java.util.Locale;
 import org.apache.wicket.model.Model;
 
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 
-public class BooleanRenderer extends Renderer<Boolean> {
+public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
@@ -49,11 +51,26 @@ public class BooleanRenderer extends Renderer<Boolean> {
 	}
 
 	@Override
-	public String render(Boolean value, Locale locale) {
+	protected BootstrapRendererInformation doRender(Boolean value, Locale locale) {
 		if (value == null) {
 			return null;
 		}
-		
+		if (value) {
+			return BootstrapRendererInformation.builder()
+					.label(renderLabel(value, locale))
+					.icon("fa fa-check")
+					// No color
+					.build();
+		} else {
+			return BootstrapRendererInformation.builder()
+					.label(renderLabel(value, locale))
+					.icon("fa fa-times")
+					// No color
+					.build();
+		}
+	}
+
+	private String renderLabel(Boolean value, Locale locale) {
 		StringBuilder key = new StringBuilder();
 		
 		if (StringUtils.hasText(prefix)) {

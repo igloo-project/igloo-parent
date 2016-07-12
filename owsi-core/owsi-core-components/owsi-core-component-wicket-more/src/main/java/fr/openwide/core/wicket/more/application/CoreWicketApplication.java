@@ -221,7 +221,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	}
 	
 	public final IPageLinkDescriptor getHomePageLinkDescriptor() {
-		return new LinkDescriptorBuilder().page(getHomePage()).build();
+		return LinkDescriptorBuilder.start().page(getHomePage());
 	}
 
 	public Locale getNumberFormatLocale() {

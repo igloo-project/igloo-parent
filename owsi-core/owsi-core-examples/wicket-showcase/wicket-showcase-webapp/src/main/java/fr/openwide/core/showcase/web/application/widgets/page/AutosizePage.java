@@ -17,9 +17,8 @@ public class AutosizePage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(AutosizePage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(AutosizePage.class);
 	}
 
 	public AutosizePage(PageParameters parameters) {

@@ -12,9 +12,8 @@ public class TitlesPage extends MainTemplate {
 	private static final long serialVersionUID = 182545144170932682L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(TitlesPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(TitlesPage.class);
 	}
 
 	public TitlesPage(PageParameters parameters) {

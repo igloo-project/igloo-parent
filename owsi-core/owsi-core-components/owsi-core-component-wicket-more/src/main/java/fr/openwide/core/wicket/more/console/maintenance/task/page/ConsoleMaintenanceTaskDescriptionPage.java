@@ -58,10 +58,9 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 			.enable(SerializationFeature.INDENT_OUTPUT);
 
 	public static final IPageLinkDescriptor linkDescriptor(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
-		return new LinkDescriptorBuilder()
-				.page(ConsoleMaintenanceTaskDescriptionPage.class)
+		return LinkDescriptorBuilder.start()
 				.map(CommonParameters.ID, queuedTaskHolderModel, QueuedTaskHolder.class).mandatory()
-				.build();
+				.page(ConsoleMaintenanceTaskDescriptionPage.class);
 	}
 	
 	@SpringBean

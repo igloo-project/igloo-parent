@@ -40,10 +40,10 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	
 	private static final String ANCHOR_ROOT = "#";
 
-	private final IModel<Class<? extends Page>> pageClassModel;
+	private final IModel<? extends Class<? extends Page>> pageClassModel;
 	
 	public CorePageLinkDescriptorImpl(
-			IModel<Class<? extends Page>> pageClassModel,
+			IModel<? extends Class<? extends Page>> pageClassModel,
 			LinkParametersMapping parametersMapping,
 			ILinkParameterValidator validator) {
 		super(parametersMapping, validator);

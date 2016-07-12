@@ -1,9 +1,5 @@
 package fr.openwide.core.basicapp.web.application.common.typedescriptor.user;
 
-import org.apache.wicket.Page;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-
 import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
 import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
@@ -14,10 +10,8 @@ import fr.openwide.core.basicapp.web.application.administration.page.Administrat
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
 import fr.openwide.core.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.AbstractGenericEntityChildTypeDescriptor;
-import fr.openwide.core.basicapp.web.application.navigation.link.LinkFactory;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 		AbstractGenericEntityChildTypeDescriptor<UserTypeDescriptor<U>, U> {
@@ -76,16 +70,8 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 		return portfolioPageClazz;
 	}
 
-	public IPageLinkGenerator description(IModel<U> userModel) {
-		return description(userModel, new Model<Page>(null));
-	}
-
-	public IPageLinkDescriptor description(IModel<U> userModel, IModel<Page> sourcePageModel) {
-		return LinkFactory.get().userDescription(descriptionPageClazz, userModel, typeDescriptor.getEntityClass(), sourcePageModel);
-	}
-
 	public IPageLinkDescriptor portfolio() {
-		return new LinkDescriptorBuilder().page(portfolioPageClazz).build();
+		return LinkDescriptorBuilder.start().page(portfolioPageClazz);
 	}
 
 	public abstract U newInstance();

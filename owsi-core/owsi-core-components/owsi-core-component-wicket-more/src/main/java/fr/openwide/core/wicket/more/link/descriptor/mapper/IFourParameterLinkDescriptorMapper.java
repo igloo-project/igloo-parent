@@ -3,19 +3,19 @@ package fr.openwide.core.wicket.more.link.descriptor.mapper;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.INoParameterMapperState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.IOneParameterMapperState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.ITwoParameterMapperState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
+import fr.openwide.core.wicket.more.link.descriptor.ILinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 
 /**
- * An object that can create a {@link ILinkParametersExtractor} using three {@link IModel}.
- * @see INoParameterMapperState#addDynamicParameter(Class)
- * @see IOneParameterMapperState#addDynamicParameter(Class)
- * @see ITwoParameterMapperState#addDynamicParameter(Class)
+ * An object that can create a {@link ILinkDescriptor} using four {@link IModel}s.
+ * @see IMappableParameterDeclarationState#model(Class)
  */
 public interface IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4> extends IDetachable {
-	
+
+	/**
+	 * Map the given models to a newly-created {@link ILinkDescriptor}.
+	 * @see IOneParameterLinkDescriptorMapper#map(IModel)
+	 */
 	L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3, IModel<T4> model4);
 
 	IThreeParameterLinkDescriptorMapper<L, T2, T3, T4> setParameter1(final IModel<T1> model1);

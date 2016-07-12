@@ -23,9 +23,8 @@ public class ZeroClipboardBehavior extends Behavior {
 	private static final String ZERO_CLIPBOARD_FLASH_URL = "zeroClipboardFlashUrl";
 	
 	public static IResourceLinkDescriptor linkZeroClipboardFlash() {
-		return new LinkDescriptorBuilder()
-						.resource(ZeroClipboardFlashResourceReference.get())
-						.build();
+		return LinkDescriptorBuilder.start()
+						.resource(ZeroClipboardFlashResourceReference.get());
 	}
 
 	@Override

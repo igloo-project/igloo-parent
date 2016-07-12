@@ -33,9 +33,8 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 	private IGenericUserService<U> genericUserService;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ConsoleMaintenanceAuthenticationPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ConsoleMaintenanceAuthenticationPage.class);
 	}
 	
 	private FormComponent<String> userNameField;

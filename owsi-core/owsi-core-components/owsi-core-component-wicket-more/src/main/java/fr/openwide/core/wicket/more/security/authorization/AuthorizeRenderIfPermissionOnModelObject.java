@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.IValidatorState;
-import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping.common.IParameterMapperOneChosenParameterMappingState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState;
 
 /**
  * @deprecated Use validation features in {@link LinkDescriptorBuilder LinkDescriptors} instead.
@@ -19,7 +19,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.mapper.mapping
  * <li>When building a LinkDescriptor directly (legacy syntax): <code>new LinkDescriptorBuilder().page(...).map("id", myParameterModel, MyParameterClass.class).permission(MyPermissionConstants.MY_PERMISSION).build()</code>
  * </ul>
  * @see IValidatorState#permission(org.apache.wicket.model.IModel, String, String...)
- * @see IParameterMapperOneChosenParameterMappingState#permission(String)
+ * @see IOneChosenParameterState#permission(String)
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)

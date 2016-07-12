@@ -52,9 +52,8 @@ public class TaskMainPage extends MainTemplate {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TaskMainPage.class);
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(TaskMainPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(TaskMainPage.class);
 	}
 
 	@SpringBean

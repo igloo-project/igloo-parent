@@ -13,9 +13,8 @@ public class LinksPage3 extends LinksTemplate {
 	private static final long serialVersionUID = 789639308894032436L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(LinksPage3.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(LinksPage3.class);
 	}
 	
 	public LinksPage3(PageParameters parameters) {

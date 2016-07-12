@@ -14,9 +14,8 @@ public class CarouselPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -1589558461083310335L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(CarouselPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(CarouselPage.class);
 	}
 
 	public CarouselPage(PageParameters parameters) {

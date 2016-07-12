@@ -19,9 +19,8 @@ public class PortfolioMainPage extends MainTemplate {
 	private static final long serialVersionUID = 6572019030268485555L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(PortfolioMainPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(PortfolioMainPage.class);
 	}
 	
 	public PortfolioMainPage(PageParameters parameters) {

@@ -32,15 +32,15 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 	private static final long serialVersionUID = -5780326896837623229L;
 
 	public static final IOneParameterLinkDescriptorMapper<IPageLinkDescriptor, UserGroup> MAPPER =
-			new LinkDescriptorBuilder().page(AdministrationUserGroupDescriptionPage.class)
+			LinkDescriptorBuilder.start()
 					.model(UserGroup.class).map(CommonParameters.ID).mandatory()
-					.build();
+					.page(AdministrationUserGroupDescriptionPage.class);
 	
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, UserGroup, Page> MAPPER_SOURCE =
-			new LinkDescriptorBuilder().page(AdministrationUserGroupDescriptionPage.class)
+			LinkDescriptorBuilder.start()
 					.model(UserGroup.class).map(CommonParameters.ID).mandatory()
 					.model(Page.class).pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
-					.build();
+					.page(AdministrationUserGroupDescriptionPage.class);
 	
 	public static final IPageLinkDescriptor linkDescriptor(IModel<UserGroup> userGroupModel, IModel<Page> sourcePageModel) {
 		return MAPPER_SOURCE.map(userGroupModel, sourcePageModel);

@@ -48,6 +48,22 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 	}
 	
 	@Override
+	public <U1 extends T1> ITwoParameterLinkDescriptorMapper<L, U1, T2> castParameter1() {
+		return new AbstractTwoParameterLinkDescriptorMapper<L, U1, T2>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public L map(IModel<U1> model1, IModel<T2> model2) {
+				return AbstractTwoParameterLinkDescriptorMapper.this.map(ReadOnlyModel.<T1>of(model1), model2);
+			}
+			@Override
+			public void detach() {
+				super.detach();
+				AbstractTwoParameterLinkDescriptorMapper.this.detach();
+			}
+		};
+	}
+	
+	@Override
 	public IOneParameterLinkDescriptorMapper<L, T2> ignoreParameter1() {
 		return setParameter1(Models.<T1>placeholder());
 	}
@@ -76,6 +92,22 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 			@Override
 			public L map(IModel<T1> model1) {
 				return AbstractTwoParameterLinkDescriptorMapper.this.map(model1, ReadOnlyModel.of(model1, function));
+			}
+			@Override
+			public void detach() {
+				super.detach();
+				AbstractTwoParameterLinkDescriptorMapper.this.detach();
+			}
+		};
+	}
+	
+	@Override
+	public <U2 extends T2> ITwoParameterLinkDescriptorMapper<L, T1, U2> castParameter2() {
+		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, U2>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public L map(IModel<T1> model1, IModel<U2> model2) {
+				return AbstractTwoParameterLinkDescriptorMapper.this.map(model1, ReadOnlyModel.<T2>of(model2));
 			}
 			@Override
 			public void detach() {

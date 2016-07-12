@@ -5,6 +5,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.web.application.navigation.model.TestIconResourceReferenceModel;
 import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.factory.AbstractLinkFactory;
 
 public final class LinkFactory extends AbstractLinkFactory {
@@ -21,10 +22,9 @@ public final class LinkFactory extends AbstractLinkFactory {
 	 * Juste un bricolage pour tester le IImageResourceLinkDescriptor.
 	 */
 	public IImageResourceLinkDescriptor testImage(final IModel<Boolean> booleanModel, IModel<User> userModel) {
-		return builder()
-				.imageResource(new TestIconResourceReferenceModel(booleanModel))
+		return LinkDescriptorBuilder.start()
 				.map("unusedUserParameter", userModel, User.class).mandatory()
-				.build();
+				.imageResource(new TestIconResourceReferenceModel(booleanModel));
 	}
 
 }

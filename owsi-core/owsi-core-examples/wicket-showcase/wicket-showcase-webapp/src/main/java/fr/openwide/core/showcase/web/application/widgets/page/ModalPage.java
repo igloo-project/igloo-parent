@@ -36,9 +36,8 @@ public class ModalPage extends WidgetsTemplate {
 	private static final long serialVersionUID = -4802009584951257187L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ModalPage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ModalPage.class);
 	}
 
 	public ModalPage(PageParameters parameters) {

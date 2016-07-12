@@ -19,9 +19,8 @@ public class ProfilePage extends ProfileTemplate {
 	private static final long serialVersionUID = -8757939680257114559L;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
-		return new LinkDescriptorBuilder()
-				.page(ProfilePage.class)
-				.build();
+		return LinkDescriptorBuilder.start()
+				.page(ProfilePage.class);
 	}
 
 	protected final IModel<User> userModel = BasicApplicationSession.get().getUserModel();
