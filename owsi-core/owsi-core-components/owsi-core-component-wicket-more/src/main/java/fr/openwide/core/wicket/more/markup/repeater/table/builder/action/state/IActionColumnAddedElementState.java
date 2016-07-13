@@ -5,53 +5,52 @@ import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
 
-import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
 
-public interface IActionColumnAddedElementState<T, S extends ISort<?>> extends IActionColumnBuildState<T, S> {
+public interface IActionColumnAddedElementState<T, I> extends IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 
-	IActionColumnAddedElementState<T, S> showLabel();
+	IActionColumnAddedElementState<T, I> showLabel();
 
-	IActionColumnAddedElementState<T, S> showLabel(Condition showLabelCondition);
+	IActionColumnAddedElementState<T, I> showLabel(Condition showLabelCondition);
 
-	IActionColumnAddedElementState<T, S> hideLabel();
+	IActionColumnAddedElementState<T, I> hideLabel();
 
-	IActionColumnAddedElementState<T, S> hideLabel(Condition hideLabelCondition);
+	IActionColumnAddedElementState<T, I> hideLabel(Condition hideLabelCondition);
 
-	IActionColumnAddedElementState<T, S> showTooltip();
+	IActionColumnAddedElementState<T, I> showTooltip();
 
-	IActionColumnAddedElementState<T, S> showTooltip(Condition showTooltipCondition);
+	IActionColumnAddedElementState<T, I> showTooltip(Condition showTooltipCondition);
 
-	IActionColumnAddedElementState<T, S> hideTooltip();
+	IActionColumnAddedElementState<T, I> hideTooltip();
 
-	IActionColumnAddedElementState<T, S> hideTooltip(Condition hideTooltipCondition);
+	IActionColumnAddedElementState<T, I> hideTooltip(Condition hideTooltipCondition);
 
-	IActionColumnAddedElementState<T, S> showIcon();
+	IActionColumnAddedElementState<T, I> showIcon();
 
-	IActionColumnAddedElementState<T, S> showIcon(Condition showIconCondition);
+	IActionColumnAddedElementState<T, I> showIcon(Condition showIconCondition);
 
-	IActionColumnAddedElementState<T, S> hideIcon();
+	IActionColumnAddedElementState<T, I> hideIcon();
 
-	IActionColumnAddedElementState<T, S> hideIcon(Condition hideIconCondition);
+	IActionColumnAddedElementState<T, I> hideIcon(Condition hideIconCondition);
 
-	IActionColumnAddedElementState<T, S> showPlaceholder();
+	IActionColumnAddedElementState<T, I> showPlaceholder();
 
-	IActionColumnAddedElementState<T, S> showPlaceholder(Condition showPlaceholderCondition);
+	IActionColumnAddedElementState<T, I> showPlaceholder(Condition showPlaceholderCondition);
 
-	IActionColumnAddedElementState<T, S> hidePlaceholder();
+	IActionColumnAddedElementState<T, I> hidePlaceholder();
 
-	IActionColumnAddedElementState<T, S> hidePlaceholder(Condition hidePlaceholderCondition);
+	IActionColumnAddedElementState<T, I> hidePlaceholder(Condition hidePlaceholderCondition);
 
-	IActionColumnAddedElementState<T, S> when(Condition condition);
+	IActionColumnAddedElementState<T, I> when(Condition condition);
 
-	IActionColumnAddedElementState<T, S> when(Predicate<? super T> predicate);
+	IActionColumnAddedElementState<T, I> when(Predicate<? super T> predicate);
 
-	IActionColumnAddedElementState<T, S> whenPermission(String permission);
+	IActionColumnAddedElementState<T, I> whenPermission(String permission);
 
-	IActionColumnAddedElementState<T, S> whenPermission(Permission permission);
+	IActionColumnAddedElementState<T, I> whenPermission(Permission permission);
 
-	IActionColumnAddedElementState<T, S> withClass(String cssClass);
+	IActionColumnAddedElementState<T, I> withClass(String cssClass);
 	
-	IActionColumnAddedElementState<T, S> add(Behavior...behaviors);
+	IActionColumnAddedElementState<T, I> add(Behavior...behaviors);
 
 }

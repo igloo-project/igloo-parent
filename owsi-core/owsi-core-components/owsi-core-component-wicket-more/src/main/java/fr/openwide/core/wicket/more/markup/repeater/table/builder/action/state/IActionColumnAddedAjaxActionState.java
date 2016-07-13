@@ -4,72 +4,71 @@ import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
 
-import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
 
-public interface IActionColumnAddedAjaxActionState<T, S extends ISort<?>> extends IActionColumnAddedElementState<T, S> {
+public interface IActionColumnAddedAjaxActionState<T, I> extends IActionColumnAddedElementState<T, I> {
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showLabel();
+	IActionColumnAddedAjaxActionState<T, I> showLabel();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showLabel(Condition showLabelCondition);
+	IActionColumnAddedAjaxActionState<T, I> showLabel(Condition showLabelCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hideLabel();
+	IActionColumnAddedAjaxActionState<T, I> hideLabel();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hideLabel(Condition hideLabelCondition);
+	IActionColumnAddedAjaxActionState<T, I> hideLabel(Condition hideLabelCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showTooltip();
+	IActionColumnAddedAjaxActionState<T, I> showTooltip();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showTooltip(Condition showTooltipCondition);
+	IActionColumnAddedAjaxActionState<T, I> showTooltip(Condition showTooltipCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hideTooltip();
+	IActionColumnAddedAjaxActionState<T, I> hideTooltip();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hideTooltip(Condition hideTooltipCondition);
+	IActionColumnAddedAjaxActionState<T, I> hideTooltip(Condition hideTooltipCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showIcon();
+	IActionColumnAddedAjaxActionState<T, I> showIcon();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showIcon(Condition showIconCondition);
+	IActionColumnAddedAjaxActionState<T, I> showIcon(Condition showIconCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hideIcon();
+	IActionColumnAddedAjaxActionState<T, I> hideIcon();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hideIcon(Condition hideIconCondition);
+	IActionColumnAddedAjaxActionState<T, I> hideIcon(Condition hideIconCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showPlaceholder();
+	IActionColumnAddedAjaxActionState<T, I> showPlaceholder();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> showPlaceholder(Condition showPlaceholderCondition);
+	IActionColumnAddedAjaxActionState<T, I> showPlaceholder(Condition showPlaceholderCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hidePlaceholder();
+	IActionColumnAddedAjaxActionState<T, I> hidePlaceholder();
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> hidePlaceholder(Condition hidePlaceholderCondition);
+	IActionColumnAddedAjaxActionState<T, I> hidePlaceholder(Condition hidePlaceholderCondition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> when(Condition condition);
+	IActionColumnAddedAjaxActionState<T, I> when(Condition condition);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> when(Predicate<? super T> predicate);
+	IActionColumnAddedAjaxActionState<T, I> when(Predicate<? super T> predicate);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> whenPermission(String permission);
+	IActionColumnAddedAjaxActionState<T, I> whenPermission(String permission);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> whenPermission(Permission permission);
+	IActionColumnAddedAjaxActionState<T, I> whenPermission(Permission permission);
 
 	@Override
-	IActionColumnAddedAjaxActionState<T, S> withClass(String cssClass);
+	IActionColumnAddedAjaxActionState<T, I> withClass(String cssClass);
 
 }

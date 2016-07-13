@@ -2,22 +2,20 @@ package fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state;
 
 import org.apache.wicket.model.IModel;
 
-import fr.openwide.core.jpa.more.business.sort.ISort;
+public interface IActionColumnConfirmActionBuilderStepEndContent<T, I> {
 
-public interface IActionColumnConfirmActionBuilderStepEndContent<T, S extends ISort<?>> {
+	IActionColumnConfirmActionBuilderStepEndContent<T, I> keepMarkup();
 
-	IActionColumnConfirmActionBuilderStepEndContent<T, S> keepMarkup();
+	IActionColumnConfirmActionBuilderStepEndContent<T, I> cssClassNamesModel(IModel<String> cssClassNamesModel);
 
-	IActionColumnConfirmActionBuilderStepEndContent<T, S> cssClassNamesModel(IModel<String> cssClassNamesModel);
+	IActionColumnConfirmActionBuilderStepNo<T, I> yes(IModel<String> yesLabelModel);
 
-	IActionColumnConfirmActionBuilderStepNo<T, S> yes(IModel<String> yesLabelModel);
+	IActionColumnConfirmActionBuilderStepOnclick<T, I> yesNo();
 
-	IActionColumnConfirmActionBuilderStepOnclick<T, S> yesNo();
+	IActionColumnConfirmActionBuilderStepOnclick<T, I> confirm();
 
-	IActionColumnConfirmActionBuilderStepOnclick<T, S> confirm();
+	IActionColumnConfirmActionBuilderStepOnclick<T, I> validate();
 
-	IActionColumnConfirmActionBuilderStepOnclick<T, S> validate();
-
-	IActionColumnConfirmActionBuilderStepOnclick<T, S> save();
+	IActionColumnConfirmActionBuilderStepOnclick<T, I> save();
 
 }

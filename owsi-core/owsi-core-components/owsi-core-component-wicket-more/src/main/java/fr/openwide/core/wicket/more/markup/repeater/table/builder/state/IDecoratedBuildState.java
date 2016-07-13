@@ -8,6 +8,8 @@ import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
 
 public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	
@@ -54,5 +56,9 @@ public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	DecoratedCoreDataTablePanel<T, S> build(String id);
 	
 	DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage);
-	
+
+	<Z> IActionColumnBuildState<Z, IDecoratedBuildState<T, S>> actions(AddInPlacement placement, IModel<Z> model);
+
+	IActionColumnNoParameterBuildState<Void, IDecoratedBuildState<T, S>> actions(AddInPlacement placement);
+
 }

@@ -31,6 +31,7 @@ import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper
 import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.factory.AbstractComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
@@ -49,7 +50,10 @@ import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.CountAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.LabelAddInComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.AbstractActionColumnElementBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedBooleanLabelColumnState;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedBootstrapBadgeColumnState;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.state.IAddedColumnState;
@@ -325,17 +329,21 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public ActionColumnBuilder<T, S> addActionColumn() {
+	public ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn() {
 		return addActionColumn(Model.of(""));
 	}
 	
 	@Override
-	public ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel) {
-		ActionColumnBuilder<T, S> builder = new ActionColumnBuilder<T, S>(this, headerLabelModel);
-		return builder;
+	public ActionColumnBuilder<T,  IAddedCoreColumnState<T, S>> addActionColumn(final IModel<String> headerLabelModel) {
+		return new ActionColumnBuilder<T, IAddedCoreColumnState<T, S>>() {
+			@Override
+			protected IAddedCoreColumnState<T, S> onEnd(List<AbstractActionColumnElementBuilder<T, ?, ?>> builders) {
+				return addActionColumn(new CoreActionColumn<T, S>(headerLabelModel, builders));
+			}
+		};
 	}
 	
-	public IAddedCoreColumnState<T, S> addActionColumn(final CoreActionColumn<T, S> column) {
+	private IAddedCoreColumnState<T, S> addActionColumn(final CoreActionColumn<T, S> column) {
 		columns.put(column, null);
 		return new AddedCoreColumnState<IAddedCoreColumnState<T, S>>() {
 			@Override
@@ -514,12 +522,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
-		public ActionColumnBuilder<T, S> addActionColumn() {
+		public ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn() {
 			return DataTableBuilder.this.addActionColumn();
 		}
 
 		@Override
-		public ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel) {
+		public ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn(IModel<String> headerLabelModel) {
 			return DataTableBuilder.this.addActionColumn(headerLabelModel);
 		}
 
@@ -894,6 +902,48 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		public IDecoratedBuildState<T, S> responsive(Condition responsiveCondition) {
 			this.responsiveCondition = responsiveCondition;
 			return this;
+		}
+		
+		@Override
+		public IActionColumnNoParameterBuildState<Void, IDecoratedBuildState<T, S>> actions(final AddInPlacement placement) {
+			return new ActionColumnBuilder<Void, IDecoratedBuildState<T, S>>() {
+				@Override
+				protected IDecoratedBuildState<T, S> onEnd(List<AbstractActionColumnElementBuilder<Void, ?, ?>> builders) {
+					for (final IOneParameterComponentFactory<?, IModel<Void>> builder : builders) {
+						addIn(placement, ComponentFactories.ignoreParameter(
+								new AbstractComponentFactory<Component>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public Component create(String wicketId) {
+										return builder.create(wicketId, null);
+									}
+								}
+						));
+					}
+					return DecoratedBuildState.this;
+				}
+			};
+		}
+		
+		@Override
+		public <Z> IActionColumnBuildState<Z, IDecoratedBuildState<T, S>> actions(final AddInPlacement placement, final IModel<Z> model) {
+			return new ActionColumnBuilder<Z, IDecoratedBuildState<T, S>>() {
+				@Override
+				protected IDecoratedBuildState<T, S> onEnd(List<AbstractActionColumnElementBuilder<Z, ?, ?>> builders) {
+					for (final IOneParameterComponentFactory<?, IModel<Z>> builder : builders) {
+						addIn(placement, ComponentFactories.ignoreParameter(
+								new AbstractComponentFactory<Component>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public Component create(String wicketId) {
+										return builder.create(wicketId, model);
+									}
+								}
+						));
+					}
+					return DecoratedBuildState.this;
+				}
+			};
 		}
 		
 		@Override

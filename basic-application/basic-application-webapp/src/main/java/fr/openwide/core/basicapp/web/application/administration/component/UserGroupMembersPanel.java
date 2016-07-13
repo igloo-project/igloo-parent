@@ -2,6 +2,8 @@ package fr.openwide.core.basicapp.web.application.administration.component;
 
 import static fr.openwide.core.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
+import java.util.Locale;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -30,8 +32,11 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.link.model.ComponentPageModel;
+import fr.openwide.core.wicket.more.markup.html.action.AbstractAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -106,7 +111,36 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 							.end()
 							.withClass("actions")
 					.bootstrapPanel()
-					.addIn(AddInPlacement.FOOTER_RIGHT,  new AbstractParameterizedComponentFactory<Component, Component>() {
+					.actions(AddInPlacement.HEADING_MAIN, new GenericEntityModel<Long, UserGroup>(new UserGroup()))
+								.addAction(ActionRenderers.add(), new AbstractOneParameterAjaxAction<IModel<UserGroup>>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {
+									}
+								})
+								.end()
+					.actions(AddInPlacement.BODY_BOTTOM)
+							.addAction(ActionRenderers.remove(), new AbstractAjaxAction() {
+								private static final long serialVersionUID = 1L;
+								@Override
+								public void execute(AjaxRequestTarget target) {
+								}
+							})
+							.addAction(new BootstrapRenderer<Void>() {
+								private static final long serialVersionUID = 1L;
+								@Override
+								protected BootstrapRendererInformation doRender(Void value, Locale locale) {
+									return BootstrapRendererInformation.builder().color(BootstrapColor.PRIMARY).label("hi").build();
+								}
+							}, new AbstractAjaxAction() {
+								private static final long serialVersionUID = 1L;
+								@Override
+								public void execute(AjaxRequestTarget target) {
+									System.out.println("");
+								}
+							})
+							.end()
+					.addIn(AddInPlacement.FOOTER_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component create(String wicketId, final Component table ) {

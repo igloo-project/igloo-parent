@@ -54,8 +54,8 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 	<C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			AbstractCoreBinding<? super T, Boolean> binding);
 	
-	ActionColumnBuilder<T, S> addActionColumn();
+	ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn();
 	
-	ActionColumnBuilder<T, S> addActionColumn(IModel<String> headerLabelModel);
+	ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn(IModel<String> headerLabelModel);
 
 }
