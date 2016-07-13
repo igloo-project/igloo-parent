@@ -14,8 +14,10 @@ import org.javatuples.Pair;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.test.wicket.more.business.person.model.Person;
 import fr.openwide.core.test.wicket.more.business.person.service.IPersonService;
 import fr.openwide.core.test.wicket.more.link.descriptor.page.TestLinkDescriptorNoParameterPage;
@@ -31,6 +33,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
+import fr.openwide.core.wicket.more.model.CollectionCopyModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLinkDescriptor {
@@ -271,6 +274,30 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 		ILinkDescriptor deserializedLinkDescriptor = serializeAndDeserialize(linkDescriptor);
 		assertThat(deserializedLinkDescriptor.url(),
 				hasPathAndQuery(getOneParameterTargetPathPrefix() + "1"));
+	}
+
+	/**
+	 * We've had issues in the past with serializing TypeDescriptors of Collection<? extends GenericEntity>
+	 */
+	@Test
+	public void serialization_oneParamOptional_genericEntityCollection() throws Exception {
+		Person person1 = new Person("Jane", "Doe");
+		personService.create(person1);
+		Person person2 = new Person("John", "Doe");
+		personService.create(person2);
+		IModel<List<Person>> model = CollectionCopyModel.custom(
+				Suppliers2.<Person>arrayListAsList(), GenericEntityModel.<Person>factory()
+		);
+		model.setObject(ImmutableList.of(person1, person2));
+		ILinkDescriptor linkDescriptor =
+				buildWithOneParameterTarget(
+						LinkDescriptorBuilder.start()
+						.mapCollection(CommonParameters.ID, model, List.class, Person.class).optional()
+				);
+		Pair<IModel<List<Person>>, ILinkDescriptor> deserialized =
+				serializeAndDeserialize(Pair.with(model, linkDescriptor));
+		assertThat(deserialized.getValue1().url(),
+				hasPathAndQuery(getOneParameterTargetPathPrefix() + person1.getId() + "," + person2.getId()));
 	}
 
 	@Test

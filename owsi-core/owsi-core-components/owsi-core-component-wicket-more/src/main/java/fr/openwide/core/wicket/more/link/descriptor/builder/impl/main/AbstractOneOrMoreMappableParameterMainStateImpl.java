@@ -7,6 +7,7 @@ import org.apache.wicket.util.lang.Args;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.AbstractChosenParameterStateImpl;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
@@ -28,8 +29,8 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
 						> {
-	
-	protected final List<Class<?>> dynamicParameterTypes;
+
+	protected final List<LinkParameterTypeInformation<?>> dynamicParameterTypes;
 	
 	public AbstractOneOrMoreMappableParameterMainStateImpl(
 			NoMappableParameterMainStateImpl<
@@ -38,9 +39,9 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
 					> previousState,
-			Class<?> addedParameterType) {
+			LinkParameterTypeInformation<?> addedParameterType) {
 		super(previousState);
-		this.dynamicParameterTypes = ImmutableList.<Class<?>>of(addedParameterType);
+		this.dynamicParameterTypes = ImmutableList.<LinkParameterTypeInformation<?>>of(addedParameterType);
 	}
 	
 	public AbstractOneOrMoreMappableParameterMainStateImpl(
@@ -51,9 +52,9 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
 					> previousState,
-			Class<?> addedParameterType, int expectedNumberOfParameters) {
+			LinkParameterTypeInformation<?> addedParameterType, int expectedNumberOfParameters) {
 		super(previousState);
-		this.dynamicParameterTypes = ImmutableList.<Class<?>>builder()
+		this.dynamicParameterTypes = ImmutableList.<LinkParameterTypeInformation<?>>builder()
 				.addAll(previousState.dynamicParameterTypes).add(addedParameterType).build();
 		Args.withinRange(
 				expectedNumberOfParameters, expectedNumberOfParameters,
@@ -66,7 +67,7 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 			extends AbstractChosenParameterStateImpl<TSelfChosen, TSelf> {
 		
 		@Override
-		protected Class<?> getParameterType(int index) {
+		protected LinkParameterTypeInformation<?> getParameterTypeInformation(int index) {
 			return dynamicParameterTypes.get(index);
 		}
 		

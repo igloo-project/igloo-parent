@@ -13,8 +13,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.test.wicket.more.business.person.model.Person;
 import fr.openwide.core.test.wicket.more.business.person.service.IPersonService;
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -33,6 +35,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.factory.ConditionFactories;
 import fr.openwide.core.wicket.more.markup.html.factory.DetachableFactories;
+import fr.openwide.core.wicket.more.model.CollectionCopyModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends AbstractTestLinkDescriptor {
@@ -307,7 +310,8 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 		IOneParameterLinkDescriptorMapper<? extends ILinkDescriptor, List<Long>> mapper =
 				buildWithOneParameterTarget(
 						LinkDescriptorBuilder.start()
-						.<List<Long>>model(List.class).mapCollection(CommonParameters.ID, Long.class).optional()
+						.<List<Long>, Long>model(List.class, Long.class)
+						.map(CommonParameters.ID).optional()
 				);
 		assertThat(mapper.map(model).url(),
 				hasPathAndQuery(getOneParameterTargetPathPrefix() + "1,2"));
@@ -319,7 +323,8 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 		IOneParameterLinkDescriptorMapper<? extends ILinkDescriptor, List<Long>> mapper =
 				buildWithOneParameterTarget(
 						LinkDescriptorBuilder.start()
-						.<List<Long>>model(List.class).mapCollection(CommonParameters.ID, Long.class).optional()
+						.<List<Long>, Long>model(List.class, Long.class)
+						.map(CommonParameters.ID).optional()
 				);
 		mapper.map(model).extract(new PageParameters().add(CommonParameters.ID, "1,2"));
 		assertEquals(Lists.newArrayList(1L, 2L), model.getObject());
@@ -351,6 +356,31 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 				serializeAndDeserialize(mapper);
 		deserialized.map(model).extract(new PageParameters().add(CommonParameters.ID, 1L));
 		assertEquals(Long.valueOf(1L), model.getObject());
+	}
+
+	/**
+	 * We've had issues in the past with serializing TypeDescriptors of Collection<? extends GenericEntity>
+	 */
+	@Test
+	public void serialization_oneParamOptional_genericEntityCollection() throws Exception {
+		Person person1 = new Person("Jane", "Doe");
+		personService.create(person1);
+		Person person2 = new Person("John", "Doe");
+		personService.create(person2);
+		IModel<List<Person>> model = CollectionCopyModel.custom(
+				Suppliers2.<Person>arrayListAsList(), GenericEntityModel.<Person>factory()
+		);
+		model.setObject(ImmutableList.of(person1, person2));
+		IOneParameterLinkDescriptorMapper<? extends ILinkDescriptor, List<Person>> mapper =
+				buildWithOneParameterTarget(
+						LinkDescriptorBuilder.start()
+						.<List<Person>, Person>model(List.class, Person.class)
+						.map(CommonParameters.ID).optional()
+				);
+		IOneParameterLinkDescriptorMapper<? extends ILinkDescriptor, List<Person>> deserializedMapper =
+				serializeAndDeserialize(mapper);
+		assertThat(deserializedMapper.map(model).url(),
+				hasPathAndQuery(getOneParameterTargetPathPrefix() + person1.getId() + "," + person2.getId()));
 	}
 
 	@Test

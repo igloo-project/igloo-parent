@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.mapper.CoreFourParameterLinkDescriptorMapperImpl;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IFourMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterFourChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterOneChosenParameterState;
@@ -62,7 +63,7 @@ final class FourMappableParameterMainStateImpl
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
 					> previousState,
-			Class<?> addedParameterType) {
+			LinkParameterTypeInformation<TParam4> addedParameterType) {
 		super(previousState, addedParameterType, 4);
 	}
 

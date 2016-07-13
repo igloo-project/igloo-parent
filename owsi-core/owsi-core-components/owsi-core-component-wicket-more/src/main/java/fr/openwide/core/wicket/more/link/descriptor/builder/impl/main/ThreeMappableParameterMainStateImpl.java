@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl.main;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.Page;
@@ -7,12 +8,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.mapper.CoreThreeParameterLinkDescriptorMapperImpl;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IFourMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IThreeMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterThreeChosenParameterState;
@@ -61,7 +66,7 @@ final class ThreeMappableParameterMainStateImpl
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
 					> previousState,
-			Class<?> addedParameterType) {
+			LinkParameterTypeInformation<TParam3> addedParameterType) {
 		super(previousState, addedParameterType, 3);
 	}
 	
@@ -72,10 +77,52 @@ final class ThreeMappableParameterMainStateImpl
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam4> clazz) {
-		return new FourMappableParameterMainStateImpl<>(this, clazz);
+			> model(Class<TParam4> clazz) {
+		return new FourMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.valueOf(clazz)
+		);
 	}
 
+	@Override
+	public <TParam4 extends Collection<TElement>, TElement> IFourMappableParameterMainState<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz, Class<TElement> elementType) {
+		return new FourMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementType)
+		);
+	}
+	
+	@Override
+	public <TParam4 extends Collection<?>> IFourMappableParameterMainState<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz, TypeDescriptor elementTypeDescriptor) {
+		return new FourMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor)
+		);
+	}
+	
+	@Override
+	public <TParam4 extends Collection<?>> IFourMappableParameterMainState<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam4> emptyCollectionSupplier) {
+		return new FourMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor, emptyCollectionSupplier)
+		);
+	}
+	
 	private <TTarget, TLinkDescriptor> IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>
 			createMapper(IBuilderLinkDescriptorFactory<TTarget, TLinkDescriptor> linkDescriptorFactory,
 					IDetachableFactory<? extends Tuple, ? extends IModel<? extends TTarget>> pageClassFactory,

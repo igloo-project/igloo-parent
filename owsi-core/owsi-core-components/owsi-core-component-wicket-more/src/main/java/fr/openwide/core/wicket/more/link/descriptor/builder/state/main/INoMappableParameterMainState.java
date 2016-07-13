@@ -1,5 +1,11 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main;
 
+import java.util.Collection;
+
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
+
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
@@ -49,6 +55,34 @@ public interface INoMappableParameterMainState
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam1> clazz);
+			> model(Class<TParam1> clazz);
+	
+	@Override
+	<TParam1 extends Collection<TElement>, TElement> IOneMappableParameterMainState<
+			TParam1,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam1> clazz, Class<TElement> elementType);
+	
+	@Override
+	<TParam1 extends Collection<?>> IOneMappableParameterMainState<
+			TParam1,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor);
+	
+	@Override
+	<TParam1 extends Collection<?>> IOneMappableParameterMainState<
+			TParam1,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam1> emptyCollectionSupplier);
 
 }
