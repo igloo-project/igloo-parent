@@ -15,6 +15,10 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.Visits;
@@ -84,8 +88,15 @@ public final class AjaxListeners {
 	 * Adds or remove items of the given refreshing view using javascript, without refreshing any of the existing items
 	 * that were not removed nor added during this request.
 	 * 
-	 * <p><strong>WARNING:</strong> removing markup of removed items will only work for ListViews and RefreshingViews.
-	 * Instances of RepeatingView (not a subclass) do not allow detection of the removed items.
+	 * <p><strong>WARNING:</strong> the repeater must ensure that its items are reused after a refresh. This means in
+	 * particular that callers should make sure to call
+	 * {@link RefreshingView#setItemReuseStrategy(org.apache.wicket.markup.repeater.IItemReuseStrategy)} on their
+	 * {@link RefreshingView} with something like {@link ReuseIfModelsEqualStrategy#getInstance()} as a parameter, or
+	 * to call {@link ListView#setReuseItems(boolean)} on their {@link ListView}.
+	 * 
+	 * <p><strong>WARNING:</strong> removing markup of removed items will only work for {@link ListView}s and
+	 * {@link RefreshingView}. Instances of {@link RepeatingView} (or subclasses) do not allow detection of the
+	 * removed items.
 	 * 
 	 * <p><strong>WARNING:</strong> added items will be added as last child of the repeater's parent. If it's
 	 * not what you want, you may simply wrap the repeater in a {@link WebMarkupContainer} whose single child is
