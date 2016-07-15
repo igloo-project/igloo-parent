@@ -158,6 +158,12 @@ public final class AjaxListeners {
 			 * existed in the first place.
 			 */
 			for (Component removedItem : Sets.difference(itemsBefore, itemsAfter)) {
+				if (!removedItem.getOutputMarkupId()) {
+					LOGGER.warn("Trying to remove a repeater item that does not"
+							+ " output its markup id. This is likely to fail on the client side."
+							+ " Repeater: {}, removed item : {}",
+							repeater, removedItem);
+				}
 				target.prependJavaScript(
 						String.format(
 								"Wicket.$('%s').remove();",
