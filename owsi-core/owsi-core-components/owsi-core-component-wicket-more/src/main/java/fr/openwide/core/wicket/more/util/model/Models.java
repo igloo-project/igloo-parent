@@ -230,11 +230,11 @@ public final class Models {
 		return new MapModelValueModel<>(mapModel, keyModel);
 	}
 	
-	private static class MapModelValueModel<K,V> implements IModel<V> {
+	private static final class MapModelValueModel<K,V> implements IModel<V> {
 		private static final long serialVersionUID = 1L;
 		
-		private IMapModel<K, V, ?> mapModel;
-		private IModel<? extends K> keyModel;
+		private final IMapModel<K, V, ?> mapModel;
+		private final IModel<? extends K> keyModel;
 		
 		public MapModelValueModel(IMapModel<K, V, ?> mapModel, IModel<? extends K> keyModel) {
 			this.mapModel = mapModel;
@@ -266,7 +266,7 @@ public final class Models {
 			
 			return new EqualsBuilder()
 					.append(mapModel, other.mapModel)
-					.append(mapModel, other.keyModel)
+					.append(keyModel, other.keyModel)
 					.build();
 		}
 		
