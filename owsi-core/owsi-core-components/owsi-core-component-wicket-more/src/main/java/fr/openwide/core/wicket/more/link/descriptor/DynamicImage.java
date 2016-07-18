@@ -9,6 +9,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -17,18 +18,23 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkPara
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 
 /**
- * A {@link Image} whose targeted {@link ResourceReference} and {@link PageParameters} may change during the page life cycle (for instance on an Ajax refresh).
- * <p><strong>WARNING:</strong> if this image is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
- * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target ResourceReference is invalid,
- * then a {@link LinkInvalidTargetRuntimeException} will be thrown.
- * This is an expected behavior: you should either ensure that your target and parameters are always valid, or that this link is hidden when they are not.
- * The latter can be obtained by either using {@link #hideIfInvalid()}, or adding custom {@link Behavior behaviors}
- * using the {@link #setVisibilityAllowed(boolean)} method.
+ * A {@link Image} whose targeted {@link ResourceReference} and {@link PageParameters} may change during the page life
+ * cycle (for instance on an Ajax refresh).
+ * <p><strong>WARNING:</strong> if this image is rendered while its parameters are invalid, then a
+ * {@link LinkParameterValidationRuntimeException} will be thrown when executing
+ * {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target
+ * {@link ResourceReference} is invalid, then a {@link LinkInvalidTargetRuntimeException} will be thrown.
+ * <br/>This is an expected behavior: you should either ensure that your target and parameters are always valid,
+ * or that this image is hidden when they are not.
+ * <br />The latter can be obtained by either using {@link #hideIfInvalid()}, or adding custom
+ * {@link Behavior behaviors} that would use the {@link #setVisibilityAllowed(boolean)} method.
  * @see LinkInvalidTargetRuntimeException
  * @see LinkParameterValidationRuntimeException
  * @see LinkDescriptorBuilder
  * @see IAddedParameterMappingState#mandatory()
  * @see IAddedParameterMappingState#optional()
+ * @see IChosenParameterState#validator(fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory)
+ * @see IChosenParameterState#validator(fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory)
  * @see IValidatorState#validator(fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator)
  */
 public class DynamicImage extends Image {

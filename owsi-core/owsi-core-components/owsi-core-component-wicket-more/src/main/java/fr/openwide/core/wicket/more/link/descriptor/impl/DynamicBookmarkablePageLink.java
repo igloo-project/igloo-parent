@@ -9,8 +9,11 @@ import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator
 
 
 /**
- * An {@link AbstractDynamicBookmarkableLink} whose targeted {@link Page} and {@link PageParameters} may change during the page life cycle.
- * <p>This implementation could not derive from {@link BookmarkablePageLink}, whose target Page class is inherently static.
+ * An {@link AbstractDynamicBookmarkableLink} whose targeted {@link Page} and {@link PageParameters} may change during
+ * the page life cycle.
+ * <p>This implementation could not derive from {@link BookmarkablePageLink}, whose target Page class is inherently
+ * static.
+ * @see AbstractDynamicBookmarkableLink
  * @see BookmarkablePageLink
  */
 public class DynamicBookmarkablePageLink extends DynamicBookmarkableLink {

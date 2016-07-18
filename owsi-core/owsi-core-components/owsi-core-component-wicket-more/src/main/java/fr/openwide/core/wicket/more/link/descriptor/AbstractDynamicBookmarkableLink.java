@@ -3,23 +3,27 @@ package fr.openwide.core.wicket.more.link.descriptor;
 import org.apache.wicket.markup.html.link.Link;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.validator.IValidatorState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 
 /**
  * A {@link Link} whose parameters may change during the page life cycle (for instance on an Ajax refresh).
- * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a {@link LinkParameterValidationRuntimeException}
- * will be thrown when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target is invalid, then a
- * {@link LinkInvalidTargetRuntimeException} will be thrown.
- * By default, this should not happen as the link will be disabled unless it is completely valid. See
- * {@link #disableIfInvalid()} (the default), {@link #hideIfInvalid()} and {@link #throwExceptionIfInvalid()} for more information. 
+ * <p><strong>WARNING:</strong> if this link is rendered while its parameters are invalid, then a
+ * {@link LinkParameterValidationRuntimeException} will be thrown when executing
+ * {@link #onComponentTag(org.apache.wicket.markup.ComponentTag) onComponentTag}. Similarly, if the target is invalid,
+ * then a {@link LinkInvalidTargetRuntimeException} will be thrown.
+ * <br />By default, this should not happen as the link will be disabled unless it is completely valid. See
+ * {@link #disableIfInvalid()} (the default), {@link #hideIfInvalid()} and {@link #throwExceptionIfInvalid()} for more
+ * information. 
  * @see LinkInvalidTargetRuntimeException
- * @see LinkParameterSerializedFormValidationException
+ * @see LinkParameterValidationRuntimeException
  * @see LinkDescriptorBuilder
  * @see IAddedParameterMappingState#mandatory()
  * @see IAddedParameterMappingState#optional()
+ * @see IChosenParameterState#validator(fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory)
+ * @see IChosenParameterState#validator(fr.openwide.core.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory)
  * @see IValidatorState#validator(fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator)
  */
 public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
