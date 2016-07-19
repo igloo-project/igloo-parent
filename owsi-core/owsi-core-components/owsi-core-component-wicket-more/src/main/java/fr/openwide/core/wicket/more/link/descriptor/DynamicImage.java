@@ -8,6 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
 
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
@@ -47,6 +48,15 @@ public class DynamicImage extends Image {
 	private boolean autoHideIfInvalid = false;
 	
 	private final IModel<? extends ResourceReference> resourceReferenceModel;
+	
+	/*
+	 * Defaults to false, since Wicket's default to true:
+	 * 1. Causes performance issues: if the same image is on a given page multiple times, the browser is forced to
+	 *    download it multiple times anyway.
+	 * 2. Is useless most of the time, as usage is to add the date of last modification to the query parameter, so
+	 *    that cache is used only if the image has not been changed since last download.
+	 */
+	private Condition shouldAddAntiCacheParameterCondition = Condition.alwaysFalse();
 
 	public DynamicImage(
 			String wicketId,
@@ -134,6 +144,23 @@ public class DynamicImage extends Image {
 		setImageResourceReference(resourceReference, parameters);
 		
 		super.onComponentTag(tag);
+	}
+	
+	/**
+	 * Sets whether Wicket should automatically add a timestamp parameter so as to bypass browser cache.
+	 * <strong>Warning:</strong> use with caution, since this bypasses browser cache completely. If there are multiple
+	 * references to the same image in a single page, the browser will have to download the image once for each
+	 * reference.
+	 * @param shouldAddAntiCacheParameterCondition The condition on which to add the anticache parameter automatically.
+	 */
+	public DynamicImage setShouldAddAntiCacheParameterCondition(Condition shouldAddAntiCacheParameterCondition) {
+		this.shouldAddAntiCacheParameterCondition = shouldAddAntiCacheParameterCondition;
+		return this;
+	}
+	
+	@Override
+	protected final boolean shouldAddAntiCacheParameter() {
+		return shouldAddAntiCacheParameterCondition.applies();
 	}
 	
 	@Override
