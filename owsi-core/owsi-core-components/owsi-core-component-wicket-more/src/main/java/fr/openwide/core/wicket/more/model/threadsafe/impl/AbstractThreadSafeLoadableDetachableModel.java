@@ -66,7 +66,9 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		TThreadContext threadContext = threadLocal.get();
-		if (threadContext != null) {
+		if (threadContext == null) {
+			threadLocal.remove(); // Revert the side-effet of the call to get()
+		} else {
 			LOGGER.warn(
 					"Serializing an attached AbstractThreadSafeLoadableDetachableModel with threadContext={}",
 					threadContext
