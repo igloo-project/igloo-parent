@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,7 +26,7 @@ import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class GenericEntityReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
-		implements Serializable {
+		implements IReference<E>, Serializable {
 	
 	private static final long serialVersionUID = 1357434247523209721L;
 	
@@ -39,7 +40,8 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private /* final */ K id;
 
-	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(E entity) {
+	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
+			GenericEntityReference<K, E> of(E entity) {
 		return entity == null || entity.isNew() ? null : new GenericEntityReference<K, E>(entity);
 	}
 
@@ -48,8 +50,8 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 		return entity == null || entity.isNew() ? null : (GenericEntityReference<?, E>) new GenericEntityReference(entity);
 	}
 
-	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E> of(
-			Class<? extends E> entityClass, K entityId) {
+	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E>
+			of(Class<? extends E> entityClass, K entityId) {
 		return new GenericEntityReference<K, E>(entityClass, entityId);
 	}
 	
@@ -71,10 +73,12 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 		this.id = entityId;
 	}
 
+	@Override
 	public Class<? extends E> getType() {
 		return type;
 	}
 
+	@Override
 	public K getId() {
 		return id;
 	}
@@ -140,6 +144,18 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 				.append("class", getType())
 				.append("id", getId())
 				.build();
+	}
+	
+	@Override
+	@Transient
+	public GenericEntityReference<K, E> asReference() {
+		return this;
+	}
+	
+	@Override
+	@Transient
+	public boolean matches(E referenceable) {
+		return referenceable != null && equals(referenceable.asReference());
 	}
 
 }

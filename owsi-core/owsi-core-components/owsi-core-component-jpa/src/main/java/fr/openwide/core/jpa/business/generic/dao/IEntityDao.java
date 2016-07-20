@@ -6,13 +6,13 @@ import java.util.List;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
 
 public interface IEntityDao {
 	
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(Class<E> clazz, K id);
 	
-	<E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference);
+	<E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference);
 
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids);
 	

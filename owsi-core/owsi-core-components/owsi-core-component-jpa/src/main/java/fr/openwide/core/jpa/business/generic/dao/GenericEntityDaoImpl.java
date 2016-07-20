@@ -27,7 +27,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.querydsl.core.types.dsl.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
 import fr.openwide.core.jpa.business.generic.util.GenericEntityUtils;
 
 /**
@@ -83,8 +83,9 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	}
 	
 	@Override
-	public <T extends E> T getById(GenericEntityReference<K, T> reference) {
-		return getById(reference.getType(), reference.getId());
+	@SuppressWarnings("unchecked")
+	public <T extends E> T getById(IReference<T> reference) {
+		return reference == null ? null : getById(reference.getType(), (K) reference.getId());
 	}
 	
 	@Override

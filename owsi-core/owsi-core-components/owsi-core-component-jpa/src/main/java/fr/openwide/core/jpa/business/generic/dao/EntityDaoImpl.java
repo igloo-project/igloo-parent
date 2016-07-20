@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
 
 @Repository("entityDao")
 public class EntityDaoImpl implements IEntityDao {
@@ -35,8 +35,8 @@ public class EntityDaoImpl implements IEntityDao {
 	}
 	
 	@Override
-	public <E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference) {
-		return entityManager.find(reference.getType(), reference.getId());
+	public <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference) {
+		return reference == null ? null : entityManager.find(reference.getType(), reference.getId());
 	}
 	
 	@Override

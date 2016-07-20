@@ -22,7 +22,7 @@ import java.util.List;
 
 import fr.openwide.core.commons.util.security.PermissionObject;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
@@ -111,7 +111,7 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	 * @param reference
 	 * @return entité
 	 */
-	<T extends E> T getById(GenericEntityReference<K, T> reference);
+	<T extends E> T getById(IReference<T> reference);
 	
 	/**
 	 * Renvoie la liste de l'ensemble des entités de ce type.

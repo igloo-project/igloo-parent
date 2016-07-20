@@ -49,7 +49,7 @@ import fr.openwide.core.commons.util.ordering.SerializableCollator;
  */
 @MappedSuperclass
 public abstract class GenericEntity<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
-		implements Serializable, Comparable<E>, IGenericEntityBindingInterface {
+		implements Serializable, Comparable<E>, IReferenceable<E>, IGenericEntityBindingInterface {
 
 	private static final long serialVersionUID = -3988499137919577054L;
 	
@@ -69,6 +69,13 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 		DEFAULT_STRING_COLLATOR = collator.nullsLast();
 	}
 	
+	@Override
+	@Transient
+	@SuppressWarnings("unchecked")
+	public GenericEntityReference<K, E> asReference() {
+		return GenericEntityReference.of((E)this);
+	}
+
 	/**
 	 * Retourne la valeur de l'identifiant unique.
 	 * 
