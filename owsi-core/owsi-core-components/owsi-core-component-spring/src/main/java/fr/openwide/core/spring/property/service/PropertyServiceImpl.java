@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.annotation.Lazy;
 
 import com.google.common.base.Converter;
 import com.google.common.base.Enums;
@@ -79,6 +80,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 			Maps.newLinkedHashMap();
 
 	@Autowired
+	@Lazy // Mutable properties may require a more complex infrastructure, whose setup may require access to immutable properties
 	private IMutablePropertyDao mutablePropertyDao;
 	
 	@Autowired
