@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.more.business.parameter.dao;
 
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 /**
@@ -9,7 +10,7 @@ import fr.openwide.core.spring.property.service.IPropertyService;
  * @see IPropertyService
  */
 @Deprecated
-public interface IParameterDao extends IGenericEntityDao<Long, Parameter> {
+public interface IParameterDao extends IGenericEntityDao<Long, Parameter>, IMutablePropertyDao {
 
 	Parameter getByName(String name);
 
