@@ -1349,6 +1349,29 @@
 								</execution>
 							</executions>
 						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>animal-sniffer-maven-plugin</artifactId>
+							<version>${owsi-core.animal-sniffer-maven-plugin.version}</version>
+							<executions>
+								<execution>
+									<id>check-java-version</id>
+									<phase>compile</phase>
+									<goals>
+										<goal>check</goal>
+									</goals>
+									<configuration>
+										<ignores>
+											<!-- Test bindings are generated in the main code, but they reference
+											test classes that are absent from the main code, which makes animal-sniffer
+											cry. We tell him not to mind about that.
+											-->)
+											<ignore>fr.openwide.core.test.*</ignore>
+										</ignores>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
 					</plugins>
 				</pluginManagement>
 			</build>
