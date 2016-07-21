@@ -22,8 +22,9 @@ public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends Dec
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
 			long rowsPerPage,
-			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
-		super(id, factory, columns, sequenceProvider, rowsPerPage, addInComponentFactories);
+			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
+			Condition responsiveCondition) {
+		super(id, factory, columns, sequenceProvider, rowsPerPage, addInComponentFactories, responsiveCondition);
 	}
 	
 }

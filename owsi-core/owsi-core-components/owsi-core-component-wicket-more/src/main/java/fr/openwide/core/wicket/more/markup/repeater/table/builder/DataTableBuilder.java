@@ -877,6 +877,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		protected String countResourceKey = null;
 		
+		protected Condition responsiveCondition = Condition.alwaysTrue();
+		
 		protected final Multimap<AddInPlacement, IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>>
 				addInComponentFactories = ArrayListMultimap.create();
 		
@@ -886,6 +888,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		protected String getPaginationCssClass() {
 			return "add-in-pagination";
+		}
+		
+		@Override
+		public IDecoratedBuildState<T, S> responsive(Condition responsiveCondition) {
+			this.responsiveCondition = responsiveCondition;
+			return this;
 		}
 		
 		@Override
@@ -985,12 +993,22 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<T, S>(id, factory, columns,
-					sequenceProvider, rowsPerPage, addInComponentFactories);
+			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<T, S>(
+					id,
+					factory,
+					columns,
+					sequenceProvider,
+					rowsPerPage,
+					addInComponentFactories,
+					responsiveCondition
+			);
+			
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}
+			
 			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
+			
 			return panel;
 		}
 	}
@@ -1010,7 +1028,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
 			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, factory,
-					columns, sequenceProvider, rowsPerPage, addInComponentFactories);
+					columns, sequenceProvider, rowsPerPage, addInComponentFactories, responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}

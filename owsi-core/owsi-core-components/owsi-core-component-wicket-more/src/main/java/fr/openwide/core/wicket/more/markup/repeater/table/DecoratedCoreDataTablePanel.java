@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
@@ -53,13 +54,20 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
 			long rowsPerPage,
-			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories) {
+			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
+			Condition responsiveCondition) {
 		super(id);
 		
 		this.sequenceProvider = sequenceProvider;
 		
 		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowsPerPage);
-		add(dataTable);
+		
+		add(
+				new WebMarkupContainer("dataTableContainer")
+						.add(dataTable)
+						.setRenderBodyOnly(responsiveCondition.negate().applies())
+		);
+		
 		dataTable.setComponentToRefresh(this);
 		
 		FactoryRepeatingView headingMainAddins = new FactoryRepeatingView("mainAddIn");

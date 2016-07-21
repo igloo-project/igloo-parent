@@ -3,12 +3,15 @@ package fr.openwide.core.wicket.more.markup.repeater.table.builder.state;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.factory.IComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 
 public interface IDecoratedBuildState<T, S extends ISort<?>> {
+	
+	IDecoratedBuildState<T, S> responsive(Condition responsiveCondition);
 	
 	IDecoratedBuildState<T, S> title(String resourceKey);
 	
