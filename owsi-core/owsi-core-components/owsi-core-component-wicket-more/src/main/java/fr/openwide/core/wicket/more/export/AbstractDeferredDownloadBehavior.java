@@ -24,6 +24,8 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
+import fr.openwide.core.wicket.more.util.model.Detachables;
+
 /**
  * @author Sven Meier
  * @author Ernesto Reinaldo Barreiro (reiern70@gmail.com)
@@ -41,21 +43,17 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior {
 
 	protected final IModel<File> tempFileModel;
 	
-	protected final IModel<String> extensionModel;
-	
 	private final boolean addAntiCache;
 	
 	private final ResourceDownloadBehavior resourceDownloadBehavior;
 	
-	public AbstractDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<String> extensionModel) {
-		this(tempFileModel, extensionModel, true);
+	public AbstractDeferredDownloadBehavior(IModel<File> tempFileModel) {
+		this(tempFileModel, true);
 	}
 	
-	public AbstractDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<String> extensionModel,
-			boolean addAntiCache) {
+	public AbstractDeferredDownloadBehavior(IModel<File> tempFileModel, boolean addAntiCache) {
 		super();
 		this.tempFileModel = checkNotNull(tempFileModel);
-		this.extensionModel = checkNotNull(extensionModel);
 		this.addAntiCache = addAntiCache;
 		this.resourceDownloadBehavior = new ResourceDownloadBehavior();
 	}
@@ -172,7 +170,6 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior {
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		tempFileModel.detach();
-		extensionModel.detach();
+		Detachables.detach(tempFileModel);
 	}
 }

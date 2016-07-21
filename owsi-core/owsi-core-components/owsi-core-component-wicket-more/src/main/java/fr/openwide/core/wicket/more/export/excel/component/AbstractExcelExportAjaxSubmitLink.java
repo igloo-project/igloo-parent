@@ -25,6 +25,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.util.model.Detachables;
 
 public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	
@@ -44,9 +45,13 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	private final IModel<MediaType> mediaTypeModel = new Model<MediaType>();
 	
 	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, ExcelExportWorkInProgressModalPopupPanel loadingPopup, String fileNamePrefix) {
+		this(id, form, loadingPopup, Model.of(fileNamePrefix));
+	}
+
+	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, ExcelExportWorkInProgressModalPopupPanel loadingPopup, IModel<String> fileNamePrefixModel) {
 		super(id, form);
 		this.loadingPopup = loadingPopup;
-		this.ajaxDownload = new FileDeferredDownloadBehavior(tempFileModel, mediaTypeModel, fileNamePrefix);
+		this.ajaxDownload = FileDeferredDownloadBehavior.withMediaType(tempFileModel, fileNamePrefixModel, mediaTypeModel);
 		
 		add(ajaxDownload);
 	}
@@ -127,7 +132,6 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		tempFileModel.detach();
-		mediaTypeModel.detach();
+		Detachables.detach(tempFileModel, mediaTypeModel);
 	}
 }

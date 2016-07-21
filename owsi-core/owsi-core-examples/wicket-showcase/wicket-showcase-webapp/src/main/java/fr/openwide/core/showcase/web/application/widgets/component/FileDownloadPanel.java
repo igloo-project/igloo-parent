@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.javatuples.Pair;
 import org.springframework.cglib.proxy.UndeclaredThrowableException;
 
 import de.schlichtherle.truezip.file.TFile;
@@ -37,14 +37,11 @@ public class FileDownloadPanel extends Panel {
 		
 		add(
 				loadingPopup,
-				new AbstractFileDownloadAjaxLink("exportZip", loadingPopup, "export-showcase-") {
+				new AbstractFileDownloadAjaxLink("exportZip", loadingPopup, Model.of("export-showcase-"), Model.of(MediaType.APPLICATION_ZIP)) {
 					private static final long serialVersionUID = 1L;
 					@Override
-					protected Pair<File, MediaType> generateFile() throws ServiceException {
-						File file = generateTFile();
-						MediaType type = MediaType.APPLICATION_ZIP;
-						
-						return Pair.with(file, type); 
+					protected File generateFile() throws ServiceException {
+						return generateTFile();
 					}
 				}
 		);
