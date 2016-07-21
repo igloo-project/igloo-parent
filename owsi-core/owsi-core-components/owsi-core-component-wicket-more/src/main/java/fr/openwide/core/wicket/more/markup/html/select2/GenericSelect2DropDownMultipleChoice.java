@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.select2;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -89,11 +88,6 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	
 	protected final Select2Settings getSettings() {
 		return select2Behavior.getSettings();
-	}
-	
-	@Override
-	public IModel<? extends List<? extends T>> getChoicesModel() {
-		return choicesWrapperModel;
 	}
 	
 	public GenericSelect2DropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {
