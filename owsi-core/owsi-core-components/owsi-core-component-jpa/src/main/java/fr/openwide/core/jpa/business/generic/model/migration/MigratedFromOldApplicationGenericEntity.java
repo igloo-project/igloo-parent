@@ -17,7 +17,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
  * @see MigratedFromOldApplicationSequenceGenerator
  */
 @MappedSuperclass
-public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
+public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
 		extends GenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
 
 	private static final long serialVersionUID = 2034570162020079499L;

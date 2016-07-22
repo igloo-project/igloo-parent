@@ -7,22 +7,24 @@ import java.util.List;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
+import fr.openwide.core.jpa.business.generic.model.IReferenceable;
 
 public interface IEntityService extends ITransactionalAspectAwareService {
 	
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(Class<E> clazz, K id);
 	
-	<E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference);
+	<E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference);
 
 	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids);
 
 	<E extends GenericEntity<?, ?>> List<E> listEntity(GenericEntityCollectionReference<?, E> reference);
 	
 	/**
-	 * @param entity An object representing an entity that may have been detached from the session
-	 * @return An object representing the same entity, but which is attached to the session
+	 * @param entity A {@link GenericEntity} (that may have been detached from the session) or a {@link GenericEntityReference}
+	 * @return An object representing the same entity, but which is guaranteed to be attached to the session
 	 */
-	<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(E entity);
+	<E extends GenericEntity<?, ?>> E getEntity(IReferenceable<E> referenceOrEntity);
 	
 	void flush();
 	

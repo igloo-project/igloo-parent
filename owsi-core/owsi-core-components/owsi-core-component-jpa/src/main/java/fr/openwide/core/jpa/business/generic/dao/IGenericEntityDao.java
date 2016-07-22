@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
 
 /**
  * <p>DAO racine pour la gestion des entités.</p>
@@ -73,7 +73,7 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * @param reference
 	 * @return entité
 	 */
-	<T extends E> T getById(GenericEntityReference<K, T> reference);
+	<T extends E> T getById(IReference<T> reference);
 	
 	/**
 	 * Retourne une entité à partir de son id naturelle (si elle a été déclarée avec @NaturalId)

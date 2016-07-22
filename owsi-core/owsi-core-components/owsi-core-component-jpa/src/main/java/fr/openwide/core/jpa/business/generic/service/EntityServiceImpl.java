@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import fr.openwide.core.jpa.business.generic.dao.IEntityDao;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
-import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
+import fr.openwide.core.jpa.business.generic.model.IReference;
+import fr.openwide.core.jpa.business.generic.model.IReferenceable;
 
 @Service("entityService")
 public class EntityServiceImpl implements IEntityService {
@@ -24,7 +25,7 @@ public class EntityServiceImpl implements IEntityService {
 	}
 	
 	@Override
-	public <E extends GenericEntity<?, ?>> E getEntity(GenericEntityReference<?, E> reference) {
+	public <E extends GenericEntity<?, ?>> E getEntity(IReference<E> reference) {
 		return entityDao.getEntity(reference);
 	}
 	
@@ -39,8 +40,8 @@ public class EntityServiceImpl implements IEntityService {
 	}
 	
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> E getEntity(E entity) {
-		return entityDao.getEntity(GenericEntityReference.of(entity));
+	public <E extends GenericEntity<?, ?>> E getEntity(IReferenceable<E> referenceable) {
+		return entityDao.getEntity(referenceable.asReference());
 	}
 	
 
