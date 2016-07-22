@@ -22,7 +22,6 @@
 
 		<owsi-core.hibernate-core.version>5.1.0.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
-		<owsi-core.hibernate-jpamodelgen.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-jpamodelgen.version>
 		<owsi-core.hibernate-commons-annotations.version>5.0.1.Final</owsi-core.hibernate-commons-annotations.version>
 		<owsi-core.jboss-logging.version>3.3.0.Final</owsi-core.jboss-logging.version>
 		<owsi-core.tomcat-jdbc.version>7.0.69</owsi-core.tomcat-jdbc.version>
@@ -1276,11 +1275,6 @@
 					<artifactId>maven-processor-plugin</artifactId>
 					<dependencies>
 						<dependency>
-							<groupId>org.hibernate</groupId>
-							<artifactId>hibernate-jpamodelgen</artifactId>
-							<version>${owsi-core.hibernate-jpamodelgen.version}</version>
-						</dependency>
-						<dependency>
 							<groupId>com.querydsl</groupId>
 							<artifactId>querydsl-apt</artifactId>
 							<version>${owsi-core.querydsl.version}</version>
@@ -1298,7 +1292,6 @@
 							<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
 						</options>
 						<processors>
-							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 							<processor>org.bindgen.processor.Processor</processor>
 						</processors>

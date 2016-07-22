@@ -27,11 +27,6 @@ package fr.openwide.core.jpa.business.generic.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Order;
-import javax.persistence.metamodel.SingularAttribute;
-
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityReference;
 
@@ -145,70 +140,5 @@ public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E ext
 	 * Clear la session.
 	 */
 	void clear();
-
-	/**
-	 * @deprecated Utiliser QueryDSL.
-	 * 
-	 * Compte le nombre d'entités respectant la condition attribut = valeur
-	 * 
-	 * @param <V> le type de la valeur
-	 * @param attribute
-	 * @param fieldValue
-	 * @return le nombre d'entités
-	 */
-	@Deprecated
-	<V extends Comparable<?>> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue);
-
-	/**
-	 * @deprecated Utiliser QueryDSL.
-	 * 
-	 * Liste les entités respectant la condition de recherche attribut = valeur
-	 * 
-	 * @param <V> le type de la valeur
-	 * @param attribute
-	 * @param fieldValue
-	 * @return
-	 */
-	@Deprecated
-	<V extends Comparable<?>> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue);
-
-	/**
-	 * @deprecated Utiliser QueryDSL.
-	 * 
-	 * Obtient un objet par la condition attribut = valeur
-	 * 
-	 * @param <V>
-	 * @param attribute
-	 * @param fieldValue
-	 * @return
-	 * @throws NonUniqueResultException
-	 */
-	@Deprecated
-	<V extends Comparable<?>> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue);
-
-	/**
-	 * @deprecated Utiliser QueryDSL.
-	 * 
-	 * Obtient un objet par la condition lower(attribut) = lower(valeur)
-	 * 
-	 * @param attribute
-	 * @param fieldValue
-	 * @return
-	 * @throws NonUniqueResultException
-	 */
-	@Deprecated
-	E getByFieldIgnoreCase(SingularAttribute<? super E, String> attribute, String fieldValue);
-
-	/**
-	 * @deprecated Utiliser QueryDSL.
-	 */
-	@Deprecated
-	<T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders);
-
-	/**
-	 * @deprecated Utiliser QueryDSL.
-	 */
-	@Deprecated
-	Long count(Expression<Boolean> filter);
 
 }

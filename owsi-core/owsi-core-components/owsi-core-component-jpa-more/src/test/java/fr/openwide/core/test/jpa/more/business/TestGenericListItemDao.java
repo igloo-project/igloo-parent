@@ -12,7 +12,6 @@ import fr.openwide.core.jpa.more.business.generic.dao.GenericListItemDaoImpl;
 import fr.openwide.core.jpa.more.business.generic.model.GenericListItem;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditActionEnum;
-import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditAction_;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeature;
 import fr.openwide.core.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
 import fr.openwide.core.test.jpa.more.business.audit.model.QMockAuditAction;
@@ -65,16 +64,8 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 		
 		{
 			MockAuditAction mockAuditAction1 = genericListItemDao.getById(MockAuditAction.class, mockAuditAction.getId());
-			MockAuditAction mockAuditAction2 = genericListItemDao.getByField(MockAuditAction.class, MockAuditAction_.position, 2);
-			MockAuditAction mockAuditAction3 = genericListItemDao.getByField(MockAuditAction.class, MockAuditAction_.auditActionEnum, MockAuditActionEnum.TEST_ACTION_1);
-			MockAuditAction mockAuditAction4 = genericListItemDao.getByFieldIgnoreCase(MockAuditAction.class, MockAuditAction_.label, "Mockauditaction");
-			MockAuditAction mockAuditAction5 = genericListItemDao.getByField(MockAuditAction.class, MockAuditAction_.label, "Mockauditaction");
 			
 			Assert.assertEquals(mockAuditAction, mockAuditAction1);
-			Assert.assertEquals(mockAuditAction, mockAuditAction2);
-			Assert.assertEquals(mockAuditAction, mockAuditAction3);
-			Assert.assertEquals(mockAuditAction, mockAuditAction4);
-			Assert.assertEquals(null, mockAuditAction5);
 		}
 		
 		{
@@ -99,14 +90,6 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 	@Test
 	public void testCount() throws ServiceException, SecurityServiceException {
 		Assert.assertEquals(new Long(3), genericListItemDao.count(MockAuditAction.class));
-		Assert.assertEquals(new Long(1), genericListItemDao.countByField(
-				MockAuditAction.class, MockAuditAction_.auditActionEnum, MockAuditActionEnum.TEST_ACTION_1));
-		Assert.assertEquals(new Long(1), genericListItemDao.countByField(
-				MockAuditAction.class, MockAuditAction_.auditActionEnum, MockAuditActionEnum.TEST_ACTION_2));
-		Assert.assertEquals(new Long(1), genericListItemDao.countByField(
-				MockAuditAction.class, MockAuditAction_.auditActionEnum, MockAuditActionEnum.TEST_ACTION_3));
-		Assert.assertEquals(new Long(3), genericListItemDao.countByField(MockAuditAction.class, MockAuditAction_.position, 1));
-		Assert.assertEquals(new Long(0), genericListItemDao.countByField(MockAuditAction.class, MockAuditAction_.position, 2));
 		
 		Assert.assertEquals(new Long(3), genericListItemDao.count(QMockAuditAction.mockAuditAction));
 		Assert.assertEquals(new Long(1), genericListItemDao.countByField(
@@ -134,11 +117,6 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 		{
 			List<MockAuditAction> emptyList = genericListItemDao.list(QMockAuditAction.mockAuditAction);
 			Assert.assertEquals(0, emptyList.size());
-		}
-		
-		{
-			List<MockAuditAction> emptyListByField = genericListItemDao.listByField(MockAuditAction.class, MockAuditAction_.position, 1);
-			Assert.assertEquals(0, emptyListByField.size());
 		}
 		
 		{
@@ -184,26 +162,10 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 		
 		{
 			List<MockAuditAction> list2 = genericListItemDao.listByField(
-					MockAuditAction.class, MockAuditAction_.auditActionEnum, MockAuditActionEnum.TEST_ACTION_1);
-			Assert.assertEquals(2, list2.size());
-			Assert.assertTrue(list2.contains(mockAuditAction1));
-			Assert.assertTrue(list2.contains(mockAuditAction2));
-		}
-		
-		{
-			List<MockAuditAction> list2 = genericListItemDao.listByField(
 					QMockAuditAction.mockAuditAction, QMockAuditAction.mockAuditAction.auditActionEnum, MockAuditActionEnum.TEST_ACTION_1, QMockAuditAction.mockAuditAction.position.asc());
 			Assert.assertEquals(2, list2.size());
 			Assert.assertEquals(list2.get(0), mockAuditAction1);
 			Assert.assertEquals(list2.get(1), mockAuditAction2);
-		}
-		
-		{
-			List<MockAuditAction> list3 = genericListItemDao.listByField(MockAuditAction.class, MockAuditAction_.position, 1);
-			Assert.assertEquals(3, list3.size());
-			Assert.assertTrue(list3.contains(mockAuditAction1));
-			Assert.assertTrue(list3.contains(mockAuditAction3));
-			Assert.assertTrue(list3.contains(mockAuditAction5));
 		}
 		
 		{
@@ -213,12 +175,6 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 			Assert.assertTrue(list3.contains(mockAuditAction1));
 			Assert.assertTrue(list3.contains(mockAuditAction3));
 			Assert.assertTrue(list3.contains(mockAuditAction5));
-		}
-		
-		{
-			List<MockAuditAction> list4 = genericListItemDao.listByField(
-					MockAuditAction.class, MockAuditAction_.auditActionEnum, MockAuditActionEnum.TEST_ACTION_3);
-			Assert.assertEquals(0, list4.size());
 		}
 		
 		{

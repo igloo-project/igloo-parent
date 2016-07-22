@@ -20,10 +20,6 @@ package fr.openwide.core.jpa.business.generic.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Order;
-import javax.persistence.metamodel.SingularAttribute;
-
 import com.querydsl.core.types.dsl.PathBuilder;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -92,24 +88,6 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		return super.getEntityByNaturalId(getObjectClass(), naturalId);
 	}
 	
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
-	@Deprecated
-	@Override
-	public <V extends Comparable<?>> E getByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
-		return super.getEntityByField(getObjectClass(), attribute, fieldValue);
-	}
-	
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
-	@Deprecated
-	@Override
-	public E getByFieldIgnoreCase(SingularAttribute<? super E, String> attribute, String fieldValue) {
-		return super.getEntityByFieldIgnoreCase(getObjectClass(), attribute, fieldValue);
-	}
-	
 	@Override
 	public void update(E entity) { // NOSONAR
 		super.update(entity);
@@ -141,44 +119,8 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 		return super.list(pathBuilder, limit, offset);
 	}
 	
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
-	@Deprecated
-	@Override
-	public <V extends Comparable<?>> List<E> listByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
-		return super.listEntityByField(getObjectClass(), attribute, fieldValue);
-	}
-	
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
-	@Deprecated
-	@Override
-	public <T extends E> List<T> list(Class<T> objectClass, Expression<Boolean> filter, Integer limit, Integer offset, Order... orders) {
-		return super.listEntity(objectClass, filter, limit, offset, orders);
-	}
-	
 	@Override
 	public Long count() {
 		return super.countEntity(getObjectClass());
-	}
-	
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
-	@Deprecated
-	@Override
-	public <V extends Comparable<?>> Long countByField(SingularAttribute<? super E, V> attribute, V fieldValue) {
-		return super.countEntityByField(getObjectClass(), attribute, fieldValue);
-	}
-	
-	/**
-	 * @deprecated Utiliser QueryDSL
-	 */
-	@Deprecated
-	@Override
-	public Long count(Expression<Boolean> filter) {
-		return super.countEntity(getObjectClass(), filter);
 	}
 }
