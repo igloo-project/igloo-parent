@@ -55,7 +55,6 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testGet() throws ServiceException, SecurityServiceException {
 		cleanAll();
@@ -104,7 +103,6 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 				QMockAuditAction.mockAuditAction, QMockAuditAction.mockAuditAction.position, 2));
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testList() throws ServiceException, SecurityServiceException {
 		cleanAll();
