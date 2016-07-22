@@ -56,7 +56,26 @@
 		
 		<owsi-core.javatuples.version>1.2</owsi-core.javatuples.version>
 		
-		<owsi-core.commons-io.version>2.5</owsi-core.commons-io.version>
+		<!--
+			We're stuck at version 2.4 because of an incompatibility with TrueZip from commons-io 2.5 on.
+			
+			In commit 1721:f836922f4de2 in TrueZip, released in version 7.2, the developer decided *not* to implement
+			part of the standard Java API, namely File.toPath(), which throws an exception as of this commit.
+			This decision causes commons-io to fail miserably when performing operations on TFiles, for instance 
+			org.apache.commons.io.FileUtils.deleteDirectory, which calls Java7Support.isSymlink, which calls
+			TFile.toPath, which throws an exception. Unfortunately, we have no control over this code and cannot decide
+			not to use File.toPath, so we can't do a thing to solve this issue.
+			
+			This call to `toPath` in commons-io has been introduced in revision `r1686472` (released in version 2.5).
+			There was no issue that we know of before.
+			
+			Rolling back to TrueZip 7.1 is not an option: it's really old and missing features that we're using right
+			now.
+			Thus, for now, we'll stick with commons-io 2.4, until we migrate from TrueZip to its successor, TrueVFS,
+			which seems to have solved the issue. 
+		 -->
+		<owsi-core.commons-io.version>2.4</owsi-core.commons-io.version>
+		
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
 		<owsi-core.commons-lang3.version>3.4</owsi-core.commons-lang3.version>
 		<owsi-core.commons-math3.version>3.6.1</owsi-core.commons-math3.version>
@@ -101,7 +120,10 @@
 		<owsi-core.jackson2-databind.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
 		<owsi-core.jackson2-dataformat-xml.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-dataformat-xml.version>
+		
+		<!-- See comments on property owsi-core.commons-io.version -->
 		<owsi-core.truezip.version>7.7.9</owsi-core.truezip.version>
+		
 		<owsi-core.flying-saucer.version>9.0.9</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.19</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
