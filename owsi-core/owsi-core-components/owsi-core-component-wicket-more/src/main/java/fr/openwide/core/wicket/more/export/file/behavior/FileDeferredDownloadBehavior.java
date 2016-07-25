@@ -1,64 +1,78 @@
 package fr.openwide.core.wicket.more.export.file.behavior;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Objects;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.javatuples.LabelValue;
 
-import fr.openwide.core.commons.util.mime.MediaType;
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.export.AbstractDeferredDownloadBehavior;
-import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
 public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavior {
 
 	private static final long serialVersionUID = -2564879404137129896L;
 
-	public static final String FILE_NAME_DATE_PATTERN_KEY = "common.action.export.file.datePattern";
+	private final IModel<LabelValue<String, File>> fileInformationModel;
 
-	private final IModel<String> fileDisplayNamePrefixModel;
-
-	private final IModel<String> extensionModel;
-
-	public static FileDeferredDownloadBehavior with(IModel<File> tempFileModel, IModel<String> fileDisplayNamePrefixModel, IModel<String> extensionModel) {
-		return with(tempFileModel, fileDisplayNamePrefixModel, extensionModel, true);
+	public FileDeferredDownloadBehavior(IModel<File> fileModel, IModel<String> fileNameModel) {
+		this(fileModel, fileNameModel, true);
 	}
 
-	public static FileDeferredDownloadBehavior with(IModel<File> tempFileModel, IModel<String> fileDisplayNamePrefixModel, IModel<String> extensionModel, boolean addAntiCache) {
-		return new FileDeferredDownloadBehavior(tempFileModel, fileDisplayNamePrefixModel, extensionModel, addAntiCache);
+	public FileDeferredDownloadBehavior(final IModel<File> fileModel, final IModel<String> fileNameModel, boolean addAntiCache) {
+		this(
+				new AbstractReadOnlyModel<LabelValue<String, File>>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public LabelValue<String, File> getObject() {
+						return LabelValue.with(fileNameModel.getObject(), fileModel.getObject());
+					}
+					@Override
+					public void detach() {
+						super.detach();
+						Detachables.detach(fileModel, fileNameModel);
+					}
+				},
+				addAntiCache
+		);
+		Objects.requireNonNull(fileModel);
+		Objects.requireNonNull(fileNameModel);
 	}
 
-	public static FileDeferredDownloadBehavior withMediaType(IModel<File> tempFileModel, IModel<String> fileDisplayNamePrefixModel, IModel<MediaType> mediaTypeModel) {
-		return withMediaType(tempFileModel, fileDisplayNamePrefixModel, mediaTypeModel, true);
+	public FileDeferredDownloadBehavior(IModel<LabelValue<String, File>> fileInformationModel) {
+		this(fileInformationModel, true);
 	}
 
-	public static FileDeferredDownloadBehavior withMediaType(IModel<File> tempFileModel, IModel<String> fileDisplayNamePrefixModel, IModel<MediaType> mediaTypeModel, boolean addAntiCache) {
-		return new FileDeferredDownloadBehavior(tempFileModel, fileDisplayNamePrefixModel, BindingModel.of(mediaTypeModel, CoreWicketMoreBindings.mediaType().extension()), addAntiCache);
-	}
-
-	private FileDeferredDownloadBehavior(IModel<File> tempFileModel, IModel<String> fileDisplayNamePrefixModel, IModel<String> extensionModel, boolean addAntiCache) {
-		super(tempFileModel, addAntiCache);
-		this.fileDisplayNamePrefixModel = fileDisplayNamePrefixModel;
-		this.extensionModel = extensionModel;
+	public FileDeferredDownloadBehavior(IModel<LabelValue<String, File>> fileInformationModel, boolean addAntiCache) {
+		super(
+				ReadOnlyModel.of(
+						fileInformationModel,
+						new SerializableFunction<LabelValue<String, File>, File>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public File apply(LabelValue<String, File> input) {
+								return input != null ? input.getValue() : null;
+							}
+						}
+				),
+				addAntiCache
+		);
+		this.fileInformationModel = Objects.requireNonNull(fileInformationModel);
 	}
 
 	@Override
 	protected String getFileDisplayName() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(getComponent().getString(FILE_NAME_DATE_PATTERN_KEY));
-		return new StringBuilder(fileDisplayNamePrefixModel.getObject())
-				.append(dateFormat.format(new Date()))
-				.append(".")
-				.append(extensionModel.getObject())
-				.toString();
+		return fileInformationModel.getObject().getLabel();
 	}
 
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		Detachables.detach(fileDisplayNamePrefixModel, extensionModel);
+		Detachables.detach(fileInformationModel);
 	}
 
 }
