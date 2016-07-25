@@ -9,6 +9,7 @@ import org.apache.wicket.model.Model;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
 import fr.openwide.core.wicket.more.util.model.Models;
 
@@ -39,7 +40,7 @@ public final class MapCopyModel<K, V, M extends Map<K, V>, MK extends IModel<K>,
 	private final Function<? super V, ? extends MV> valueModelFunction;
 
 	/**
-	 * A map copy model suitable for keys and values that may be safely serialized as is, such as enums.
+	 * Creates a map copy model suitable for keys and values that may be safely serialized as is, such as enums.
 	 * <p>This <strong>should not</strong> be used when your elements are database entities.
 	 */
 	public static <K extends Serializable, V extends Serializable, M extends Map<K, V>>
@@ -49,13 +50,32 @@ public final class MapCopyModel<K, V, M extends Map<K, V>, MK extends IModel<K>,
 	}
 
 	/**
-	 * A map copy model suitable for keys and values that must be serialized through a custom model, such as entities.
+	 * Creates a map copy model suitable for keys and values that must be serialized through a custom model, such as entities.
 	 */
 	public static <K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
 			MapCopyModel<K, V, M, MK, MV>
 			custom(Supplier<? extends M> newMapSupplier, Function<? super K, ? extends MK> keyModelFunction,
 					Function<? super V, ? extends MV> valueModelFunction) {
 		return new MapCopyModel<>(newMapSupplier, keyModelFunction, valueModelFunction);
+	}
+
+	/**
+	 * @return A factory that will call {@link #custom(Supplier, Function, Function)} and put the input object in it.
+	 */
+	public static <K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
+			Function<M, MapCopyModel<K, V, M, MK, MV>>
+			factory(final Supplier<? extends M> newMapSupplier,
+					final Function<? super K, ? extends MK> keyModelFunction,
+					final Function<? super V, ? extends MV> valueModelFunction) {
+		return new SerializableFunction<M, MapCopyModel<K, V, M, MK, MV>>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public MapCopyModel<K, V, M, MK, MV> apply(M input) {
+				MapCopyModel<K, V, M, MK, MV> result = custom(newMapSupplier, keyModelFunction, valueModelFunction);
+				result.setObject(input);
+				return result;
+			}
+		};
 	}
 	
 	private MapCopyModel(Supplier<? extends M> newMapSupplier, Function<? super K, ? extends MK> keyModelFunction,
