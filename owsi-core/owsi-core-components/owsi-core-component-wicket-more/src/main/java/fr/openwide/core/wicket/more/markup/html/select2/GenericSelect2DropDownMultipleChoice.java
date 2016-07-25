@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.markup.html.select2;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -25,7 +26,7 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	
 	private IDropDownChoiceWidth width = DropDownChoiceWidth.AUTO;
 	
-	private final MultipleChoicesWrapperModel<T> choicesWrapperModel;
+	private MultipleChoicesWrapperModel<T> choicesWrapperModel;
 	
 	private final Select2Behavior<T, T> select2Behavior;
 	
@@ -53,8 +54,27 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		add(select2Behavior);
 	}
 	
+	@SuppressWarnings("unchecked")
+	protected void ensureChoicesModelIsWrapped() {
+		/*
+		 * Ideally this wrapping should be done in setChoices(IModel) or in wrap(IModel),
+		 * but those methods cannot be overriden...
+		 */
+		IModel<? extends List<? extends T>> choicesModel = getChoicesModel();
+		if (choicesModel != choicesWrapperModel) {
+			if (choicesModel instanceof MultipleChoicesWrapperModel) {
+				this.choicesWrapperModel = (MultipleChoicesWrapperModel<T>) choicesModel;
+			} else {
+				this.choicesWrapperModel = new MultipleChoicesWrapperModel<>(getModel(), choicesModel);
+				setChoices(choicesWrapperModel);
+			}
+		}
+	}
+	
 	@Override
 	protected void onInitialize() {
+		ensureChoicesModelIsWrapped();
+		
 		super.onInitialize();
 		
 		add(new AttributeModifier("style", new LoadableDetachableModel<String>() {
@@ -76,12 +96,14 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	
 	@Override
 	protected void onConfigure() {
+		ensureChoicesModelIsWrapped();
+		
 		super.onConfigure();
 		if (isRequired()) {
 			Select2Utils.setRequiredSettings(getSettings());
 		}
 	}
-	
+
 	protected void fillSelect2Settings(Select2Settings settings) {
 		Select2Utils.setDefaultSettings(settings);
 	}
