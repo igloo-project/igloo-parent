@@ -79,7 +79,7 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		}
 	}
 
-	public <S> StreamModel<S> map(Function<T, S> function) {
+	public <S> StreamModel<S> map(Function<? super T, S> function) {
 		return new MapStreamModel<>(function);
 	}
 
@@ -87,9 +87,9 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		
 		private static final long serialVersionUID = 1L;
 		
-		private final Function<T, S> function;
+		private final Function<? super T, S> function;
 		
-		public MapStreamModel(Function<T, S> function) {
+		public MapStreamModel(Function<? super T, S> function) {
 			super();
 			this.function = Objects.requireNonNull(function);
 		}
