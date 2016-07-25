@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.cglib.proxy.UndeclaredThrowableException;
@@ -15,11 +14,10 @@ import org.springframework.cglib.proxy.UndeclaredThrowableException;
 import de.schlichtherle.truezip.file.TFile;
 import fr.openwide.core.commons.util.mime.MediaType;
 import fr.openwide.core.commons.util.registry.TFileRegistry;
-import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.property.SpringPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.common.WorkInProgressPopup;
-import fr.openwide.core.wicket.more.export.file.component.AbstractFileDownloadAjaxLink;
+import fr.openwide.core.wicket.more.export.file.component.SimpleFileDownloadAjaxLink;
 
 public class FileDownloadPanel extends Panel {
 
@@ -37,10 +35,10 @@ public class FileDownloadPanel extends Panel {
 		
 		add(
 				loadingPopup,
-				new AbstractFileDownloadAjaxLink("exportZip", loadingPopup, Model.of("export-showcase-"), Model.of(MediaType.APPLICATION_ZIP)) {
+				new SimpleFileDownloadAjaxLink("exportZip", loadingPopup, "export-showcase-", MediaType.APPLICATION_ZIP) {
 					private static final long serialVersionUID = 1L;
 					@Override
-					protected File generateFile() throws ServiceException {
+					protected File generateFile() {
 						return generateTFile();
 					}
 				}
