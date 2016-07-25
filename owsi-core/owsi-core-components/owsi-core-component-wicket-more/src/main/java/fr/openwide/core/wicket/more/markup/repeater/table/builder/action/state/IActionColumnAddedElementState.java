@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state;
 
+import org.apache.wicket.behavior.Behavior;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
@@ -50,5 +51,7 @@ public interface IActionColumnAddedElementState<T, S extends ISort<?>> extends I
 	IActionColumnAddedElementState<T, S> whenPermission(Permission permission);
 
 	IActionColumnAddedElementState<T, S> withClass(String cssClass);
+	
+	IActionColumnAddedElementState<T, S> add(Behavior...behaviors);
 
 }

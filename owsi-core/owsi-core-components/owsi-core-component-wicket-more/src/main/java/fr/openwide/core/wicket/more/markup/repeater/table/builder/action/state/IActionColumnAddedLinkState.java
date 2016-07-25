@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.markup.repeater.table.builder.action.state;
 
+import org.apache.wicket.behavior.Behavior;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
@@ -71,6 +72,9 @@ public interface IActionColumnAddedLinkState<T, S extends ISort<?>> extends IAct
 
 	@Override
 	IActionColumnAddedLinkState<T, S> withClass(String cssClass);
+	
+	@Override
+	IActionColumnAddedLinkState<T, S> add(Behavior...behaviors);
 
 	IActionColumnAddedLinkState<T, S> hideIfInvalid();
 

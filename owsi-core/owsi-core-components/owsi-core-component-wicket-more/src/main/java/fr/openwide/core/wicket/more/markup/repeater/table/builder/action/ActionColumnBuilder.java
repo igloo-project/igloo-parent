@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.springframework.security.acls.model.Permission;
@@ -264,6 +265,12 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		@Override
 		public NextState withClass(String cssClass) {
 			getElementBuilder().addCssClass(cssClass);
+			return getNextState();
+		}
+		
+		@Override
+		public NextState add(Behavior...behaviors) {
+			getElementBuilder().addBehaviors(behaviors);
 			return getNextState();
 		}
 	}

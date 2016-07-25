@@ -2,15 +2,18 @@ package fr.openwide.core.wicket.more.markup.repeater.table.builder.action;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
@@ -21,8 +24,8 @@ import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.IBootstrapRendererModel;
-import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
+import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.column.CoreActionColumnElementPanel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
@@ -50,6 +53,8 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 
 	private final StringBuilder cssClasses = new StringBuilder();
 
+	private final Set<Behavior> behaviors = Sets.newHashSet();
+			
 	public AbstractActionColumnElementBuilder(BootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<? extends L, IModel<T>> factory) {
 		this.factory = factory;
@@ -98,6 +103,9 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 						new ClassAttributeAppender(cssClasses.toString()),
 						new EnclosureBehavior().condition(actionCondition)
 				);
+		for (Behavior behavior : behaviors) {
+			link.add(behavior);
+		}
 	}
 
 	protected void decoratePlaceholder(PlaceholderContainer placeholder, IModel<T> rowModel) {
@@ -225,6 +233,11 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 			cssClasses.append(' ');
 		}
 		cssClasses.append(cssClass);
+		return thisAsF();
+	}
+	
+	public F addBehaviors(Behavior...behaviorsToAdd) {
+		behaviors.addAll(Sets.newHashSet(behaviorsToAdd));
 		return thisAsF();
 	}
 
