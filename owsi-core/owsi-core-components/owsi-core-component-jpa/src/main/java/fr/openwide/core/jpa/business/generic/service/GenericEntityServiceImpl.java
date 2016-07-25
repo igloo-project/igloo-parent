@@ -20,8 +20,6 @@ package fr.openwide.core.jpa.business.generic.service;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.IReference;
