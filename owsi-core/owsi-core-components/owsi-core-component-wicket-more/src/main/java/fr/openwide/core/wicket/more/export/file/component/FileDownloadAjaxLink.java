@@ -19,8 +19,12 @@ public class FileDownloadAjaxLink extends AbstractFileDownloadAjaxLink {
 		this.fileInformationModel = fileInformationModel;
 	}
 
+	/**
+	 * This method is final. If you need to override it, extend AbstractFileDownloadLink or use
+	 * SimpleFileDownloadAjaxLink instead.
+	 */
 	@Override
-	protected LabelValue<String, File> generateFileInformation() {
+	protected final LabelValue<String, File> generateFileInformation() {
 		return fileInformationModel.getObject();
 	}
 
