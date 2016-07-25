@@ -127,19 +127,9 @@ public final class TaskConsumer {
 					working.set(true);
 					
 					entityManagerUtils.openEntityManager();
-					// We are in a different transaction so we need to check that the 
-					// transaction which created the queued task holder has already been commited.
-					// If not, we sleep for a while and we try again
-					int counter = 0;
-					while(active.get() && !Thread.currentThread().isInterrupted() && counter < 4) {
-						queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-						if(queuedTaskHolder != null) {
-							tryConsumeTask(queuedTaskHolder);
-							break;
-						} else {
-							Thread.sleep((2 + counter * 10) * 1000L);
-							counter ++;
-						}
+					queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+					if(queuedTaskHolder != null) {
+						tryConsumeTask(queuedTaskHolder);
 					}
 					entityManagerUtils.closeEntityManager();
 					/*

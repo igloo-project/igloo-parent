@@ -41,6 +41,8 @@ import fr.openwide.core.jpa.more.business.task.service.impl.TaskConsumer;
 import fr.openwide.core.jpa.more.business.task.service.impl.TaskQueue;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
+import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
+import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.SpringBeanUtils;
@@ -60,6 +62,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	@Autowired
 	private IPropertyService propertyService;
+	
+	@Autowired
+	private ITransactionSynchronizationTaskManagerService synchronizationManager;
 	
 	@Resource
 	private Collection<? extends IQueueId> queueIds;
@@ -210,13 +215,13 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	}
 
 	@Override
-	public QueuedTaskHolder submit(AbstractTask task) throws ServiceException {
+	public final QueuedTaskHolder submit(AbstractTask task) throws ServiceException {
 		QueuedTaskHolder newQueuedTaskHolder = null;
-		String serializedTask;
-		String selectedQueueId = selectQueue(task);
-		TaskQueue selectedQueue = getQueue(selectedQueueId);
+		final String selectedQueueId;
 		
 		try {
+			String serializedTask;
+			selectedQueueId = selectQueue(task);
 			serializedTask = queuedTaskHolderObjectMapper.writeValueAsString(task);
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Serialized task: " + serializedTask);
@@ -226,6 +231,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 					task.getTaskName(), selectedQueueId /* May differ from selectedQueue.getId() */,
 					task.getTaskType(), serializedTask
 			);
+			
 			queuedTaskHolderService.create(newQueuedTaskHolder);
 		} catch (IOException e) {
 			throw new ServiceException("Error while trying to serialize task " + task, e);
@@ -233,14 +239,25 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 			throw new ServiceException("Error while creating and saving task " + task, e);
 		}
 		
-		if (active.get()) {
-			boolean status = selectedQueue.offer(newQueuedTaskHolder.getId());
-			if (!status) {
-				LOGGER.error("Unable to offer the task " + newQueuedTaskHolder.getId() + " to the queue");
+		final Long newQueuedTaskHolderId = newQueuedTaskHolder.getId();
+		synchronizationManager.push(new ITransactionSynchronizationAfterCommitTask() {
+			@Override
+			public void run() throws Exception {
+				doSubmit(selectedQueueId, newQueuedTaskHolderId);
 			}
-		}
+		});
 		
 		return newQueuedTaskHolder;
+	}
+	
+	protected void doSubmit(String queueId, Long newQueuedTaskHolderId) throws ServiceException {
+		if (active.get()) {
+			TaskQueue selectedQueue = getQueue(queueId);
+			boolean status = selectedQueue.offer(newQueuedTaskHolderId);
+			if (!status) {
+				LOGGER.error("Unable to offer the task " + newQueuedTaskHolderId + " to the queue");
+			}
+		}
 	}
 	
 	@Override
