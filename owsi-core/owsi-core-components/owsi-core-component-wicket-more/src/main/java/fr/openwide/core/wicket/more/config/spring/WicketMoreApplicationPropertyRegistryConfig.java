@@ -5,7 +5,6 @@ import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.CONSOL
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
-import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
@@ -20,7 +19,6 @@ import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.lucene.search.BooleanQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -42,8 +40,6 @@ public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplica
 
 	@Override
 	protected void register(IPropertyRegistry registry) {
-		registry.registerInteger(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT, BooleanQuery.getMaxClauseCount());
-		
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
 		registry.registerInteger(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);

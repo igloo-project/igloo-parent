@@ -23,8 +23,6 @@ public final class WicketMorePropertyIds extends AbstractPropertyIds {
 	 * Immutable Properties
 	 */
 	
-	public static final ImmutablePropertyId<Integer> LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT = immutable("lucene.booleanQuery.maxClauseCount");
-	
 	public static final ImmutablePropertyId<String> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME = immutable("wicket.backgroundThreadContextBuilder.url.scheme");
 	public static final ImmutablePropertyId<String> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME = immutable("wicket.backgroundThreadContextBuilder.url.serverName");
 	public static final ImmutablePropertyId<Integer> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT = immutable("wicket.backgroundThreadContextBuilder.url.serverPort");

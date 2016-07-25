@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.application;
 
 import static fr.openwide.core.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
-import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
 import static fr.openwide.core.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_PATH;
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -151,8 +149,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 		registerLessImportScopes();
 		// TODO SCSS
 //		registerScssImportScopes();
-		
-		BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
 	}
 	
 	protected void registerLessImportScopes() {
