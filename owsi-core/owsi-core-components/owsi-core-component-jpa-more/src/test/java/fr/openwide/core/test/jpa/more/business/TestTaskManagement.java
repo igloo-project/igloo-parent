@@ -7,8 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.ConcurrentMap;
 
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -114,7 +113,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		@Override
 		protected TaskExecutionResult doTask() throws Exception {
 			if (timeToWaitMs != 0) {
-				Thread.sleep(0);
+				Thread.sleep(timeToWaitMs);
 			}
 			valueAccessor.set(expectedValue);
 			return expectedResult;
@@ -144,11 +143,11 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 			this.expectedResult = expectedResult;
 		}
 
-		protected int getTimeToWaitMs() {
+		public int getTimeToWaitMs() {
 			return timeToWaitMs;
 		}
 
-		protected void setTimeToWaitMs(int timeToWaitMs) {
+		public void setTimeToWaitMs(int timeToWaitMs) {
 			this.timeToWaitMs = timeToWaitMs;
 		}
 	}
@@ -157,10 +156,13 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		transactionTemplate = new TransactionTemplate(transactionManager);
 	}
-
-	@Before
-	public void setup() throws ServiceException, SecurityServiceException {
-		manager.start();
+	
+	/*
+	 * See TaskConsumer.ConsumerRunnable.run()
+	 */
+	@BeforeClass
+	public static void waitForTaskConsumersToStart() throws Exception {
+		Thread.sleep(10000);
 	}
 
 	@Override
@@ -276,13 +278,13 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		
 		@Override
 		protected TaskExecutionResult doTask() throws Exception {
+			// Stop the manager, then wait for it to interrupt us (waiting duration specified through setTimeToWait())
 			manager.stop();
 			return super.doTask();
 		}
 	}
 	
 	@Test
-	@Ignore // Interruption handling is broken right now, should be addressed soon
 	public void interrupt() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
@@ -305,11 +307,11 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		entityService.flush();
 		entityService.clear();
 		
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 		
 		QueuedTaskHolder taskHolder = taskHolderService.getById(taskHolderId.get());
 		assertEquals(TaskStatus.INTERRUPTED, taskHolder.getStatus());
-		assertNull(taskHolder.getResult());
+		assertEquals(TaskResult.FATAL, taskHolder.getResult());
 		assertNull(result.get());
 	}
 

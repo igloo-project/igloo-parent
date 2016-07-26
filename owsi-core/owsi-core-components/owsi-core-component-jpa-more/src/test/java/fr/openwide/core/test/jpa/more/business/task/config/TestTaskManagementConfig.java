@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Configuration;
 
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
+import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 import fr.openwide.core.test.jpa.more.business.task.model.TestQueueId;
 
 @Configuration
+@ConfigurationLocations(locations = "jpa-more-test-task-management.properties")
 public class TestTaskManagementConfig extends AbstractTaskManagementConfig {
 
 	@Override
