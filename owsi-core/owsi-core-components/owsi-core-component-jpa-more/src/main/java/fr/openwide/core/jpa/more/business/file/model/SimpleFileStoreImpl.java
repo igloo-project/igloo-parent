@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.more.business.file.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,12 +65,8 @@ public class SimpleFileStoreImpl implements IFileStore {
 			// manipulation spécifique.
 			fileInputStream = new TFileInputStream(file);
 			return addFile(fileInputStream, fileKey, extension);
-		} catch (Exception e) {
-			if (!(e instanceof ServiceException)) {
-				throw new ServiceException(e);
-			} else {
-				throw (ServiceException) e;
-			}
+		} catch (RuntimeException | FileNotFoundException e) {
+			throw new ServiceException(e);
 		} finally {
 			if (fileInputStream != null) {
 				try {
@@ -100,7 +97,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 			outputFile = new File(filePath);
 			outputStream = createOutputStream(outputFile);
 			IOUtils.copy(inputStream, outputStream);
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException e) {
 			throw new ServiceException(e);
 		} finally {
 			if (inputStream != null) {
@@ -156,7 +153,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 		if (!directory.isDirectory()) {
 			try {
 				FileUtils.forceMkdir(directory);
-			} catch (Exception e) {
+			} catch (RuntimeException | IOException e) {
 				throw new IllegalStateException("The directory " + rootDirectoryPath + " does not exist and we are unable to create it.");
 			}
 		}

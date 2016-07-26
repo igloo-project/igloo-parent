@@ -101,7 +101,7 @@ public abstract class AbstractFileUploadResource extends AbstractResource {
 			
 			String responseContent = generateJsonResponse(resourceResponse, webRequest, fileItems, successFiles, errorFiles);
 			prepareResponse(resourceResponse, webRequest, responseContent);
-		} catch (Exception fux) {
+		} catch (RuntimeException | FileUploadException | IOException fux) {
 			LOGGER.error("An error occurred while uploading a file", fux);
 			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, fux.getMessage());
 		}

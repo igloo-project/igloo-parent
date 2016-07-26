@@ -11,6 +11,8 @@ import org.apache.wicket.util.lang.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.showcase.core.business.fileupload.model.ShowcaseFile;
 import fr.openwide.core.showcase.core.business.fileupload.service.IShowcaseFileService;
 import fr.openwide.core.wicket.more.fileapi.model.FileApiFile;
@@ -60,7 +62,7 @@ public class FileUploadResource extends AbstractFileUploadResource {
 						showcaseFileService.addFile(showcaseFile, fileItem.getInputStream());
 						successFiles.add(fileApiFile);
 						found = true;
-					} catch (Exception e) {
+					} catch (RuntimeException | IOException | ServiceException | SecurityServiceException e) {
 						LOGGER.error("Error uploading file.", e);
 						fileApiFile.setErrorMessage(e.getMessage());
 						errorFiles.add(fileApiFile);

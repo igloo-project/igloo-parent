@@ -26,7 +26,7 @@ public class AbstractFileStoreServiceImpl {
 			SpringBeanUtils.autowireBean(applicationContext, fileStore);
 			
 			fileStores.put(fileStore.getKey(), fileStore);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ApplicationContextException("Unable to initialize the FileStore service: " + fileStore.getKey(), e);
 		}
 	}

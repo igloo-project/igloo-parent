@@ -231,7 +231,8 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	}
 	
 	@Override
-	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> toHistoryDifferences(final Supplier<HD> historyDifferenceSupplier, final Difference<T> rootDifference) {
+	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> toHistoryDifferences(
+			final Supplier<HD> historyDifferenceSupplier, final Difference<T> rootDifference) {
 		final Multimap<IHistoryDifferenceFactory<T>, DiffNode> factoriesToNodes = LinkedHashMultimap.create();
 		
 		// Lists the leaf nodes and attributes the nodes to specific factories if needed.
@@ -266,7 +267,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 				Collection<DiffNode> nodes = entry.getValue();
 				historyDifferences.addAll(factory.create(historyDifferenceSupplier, rootDifference, nodes));
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new IllegalStateException("Unexpected exception while computing HistoryDifferences", e);
 		}
 		return historyDifferences;

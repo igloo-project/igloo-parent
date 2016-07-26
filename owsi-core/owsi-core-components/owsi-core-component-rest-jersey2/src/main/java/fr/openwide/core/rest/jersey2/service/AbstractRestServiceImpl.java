@@ -1,6 +1,7 @@
 package fr.openwide.core.rest.jersey2.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,7 +54,7 @@ public abstract class AbstractRestServiceImpl {
 							OBJECT_MAPPER.constructType(valueClass)
 					)
 			);
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException e) {
 			LOGGER.error(CoreRemoteApiError.UNSERIALIZATION_ERROR.getMessage(), e);
 			
 			throw(getException(CoreRemoteApiError.UNSERIALIZATION_ERROR, e));
@@ -68,7 +69,7 @@ public abstract class AbstractRestServiceImpl {
 							OBJECT_MAPPER.constructType(valueClass)
 					)
 			);
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException e) {
 			LOGGER.error(CoreRemoteApiError.UNSERIALIZATION_ERROR.getMessage(), e);
 			
 			throw(getException(CoreRemoteApiError.UNSERIALIZATION_ERROR, e));
@@ -78,7 +79,7 @@ public abstract class AbstractRestServiceImpl {
 	protected <V> V getObjectFromJsonString(String jsonString, Class<V> valueClass) {
 		try {
 			return OBJECT_MAPPER.readValue(jsonString, valueClass);
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException e) {
 			LOGGER.error("Unserialization error", e);
 			
 			throw(getException(CoreRemoteApiError.UNSERIALIZATION_ERROR, e));

@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -152,7 +153,7 @@ public final class TaskConsumer {
 			AbstractTask runnableTask;
 			try {
 				runnableTask = queuedTaskHolderObjectMapper.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
-			} catch (Exception e) {
+			} catch (RuntimeException | IOException e) {
 				LOGGER.error("Error while trying to deserialize a task before run (holder: " + queuedTaskHolder + ").", e);
 				return;
 			}
@@ -160,14 +161,14 @@ public final class TaskConsumer {
 			try {
 				runnableTask.setQueuedTaskHolderId(queuedTaskHolder.getId());
 				SpringBeanUtils.autowireBean(applicationContext, runnableTask);
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.error("Error while trying to initialize a task before run (holder: " + queuedTaskHolder + ").", e);
 				return;
 			}
 			
 			try {
 				runnableTask.run();
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.error("Error while trying to consume a task (holder: " + queuedTaskHolder + "); the task holder was probably left in a stale state.", e);
 			}
 		}

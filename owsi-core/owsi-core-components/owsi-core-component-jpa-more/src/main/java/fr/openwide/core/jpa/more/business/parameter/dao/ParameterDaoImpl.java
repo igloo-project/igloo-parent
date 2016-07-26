@@ -45,7 +45,7 @@ public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter> impl
 					protected void doInTransactionWithoutResult(TransactionStatus status) {
 						try {
 							set(key, value);
-						} catch (Exception e) {
+						} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 							throw new IllegalStateException(String.format("Error while updating property '%1s'.", key), e);
 						}
 					}

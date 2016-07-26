@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class TestPropertyIds {
 			ObjectOutputStream objectOut = new ObjectOutputStream(arrayOut);
 			objectOut.writeObject(object);
 			array = arrayOut.toByteArray();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new RuntimeException("Error while serializing " + object, e);
 		}
 
@@ -61,7 +62,7 @@ public class TestPropertyIds {
 			ByteArrayInputStream arrayIn = new ByteArrayInputStream(array);
 			ObjectInputStream objectIn = new ObjectInputStream(arrayIn);
 			return (T) objectIn.readObject();
-		} catch (Exception e) {
+		} catch (IOException | ClassNotFoundException  e) {
 			throw new RuntimeException("Error while deserializing " + object, e);
 		}
 	}

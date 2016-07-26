@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.migration.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,8 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractListResultRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractMapResultRowMapper;
@@ -97,7 +100,9 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 				}
 			}
 			
-		} catch (Exception e) {
+		} catch (RuntimeException | InstantiationException | IllegalAccessException
+				| InvocationTargetException | NoSuchMethodException
+				| ServiceException | SecurityServiceException e) {
 			getLogger().error("Erreur lors de la persistence d'un paquet de {}. {} créations annulées.",
 					getMigrationInformation().getEntityClass().getSimpleName(), entityIds.size(), e);
 			ProcessorMonitorContext.get().getDoneItems().addAndGet(-1 * entityIds.size());

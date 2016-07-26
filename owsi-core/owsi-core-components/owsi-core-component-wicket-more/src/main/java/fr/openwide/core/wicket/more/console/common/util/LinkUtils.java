@@ -76,7 +76,7 @@ public final class LinkUtils {
 		try {
 			K entityId = parameters.get(parameterKey).to(keyClass);
 			entity = entityService.getById(entityId);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			entity = null;
 		}
 

@@ -59,10 +59,10 @@ public class FailedWithBusinessExceptionTask extends AbstractTask {
 		try {
 			try {
 				doSomethingWichFail();
-			} catch (Exception e) {
+			} catch (RuntimeException | IOException e) {
 				throw new IllegalStateException("No way.", e);
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new MyBusinessException("Expected business exception wich must cancel the task.", e);
 		}
 		

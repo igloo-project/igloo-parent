@@ -31,6 +31,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.jpa.security.business.person.model.GenericUser;
 import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
@@ -167,7 +169,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 				// automatiquement par le navigateur.
 				userService.updateLocale(user, getLocale());
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 			LOGGER.error(String.format("Unable to update the user information on sign in: %1$s", user), e);
 		}
 		

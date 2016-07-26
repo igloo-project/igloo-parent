@@ -136,7 +136,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 					queuedTaskHolderService.update(queuedTaskHolder);
 
 					return null;
-				} catch (Exception e) {
+				} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 					status.setRollbackOnly();
 					return TaskExecutionResult.failed(e);
 				}
@@ -158,7 +158,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskExecutionResult);
 						
 						endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
-					} catch (Exception e) {
+					} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
 						throw new RuntimeException(e);
 					}
 				}
@@ -204,7 +204,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 					try {
 						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 						endTask(queuedTaskHolder, TaskStatus.COMPLETED);
-					} catch (Exception e) {
+					} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
 						throw new RuntimeException(e);
 					}
 				}
@@ -220,7 +220,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskExecutionResult.getStackTrace());
 						
 						endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
-					} catch (Exception e) {
+					} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
 						throw new RuntimeException(e);
 					}
 				}

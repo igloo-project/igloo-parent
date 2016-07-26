@@ -14,6 +14,7 @@ import org.apache.wicket.util.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.css.WicketCssPrecompilationException;
 import fr.openwide.core.wicket.more.css.scss.model.ScssStylesheetInformation;
 import fr.openwide.core.wicket.more.css.scss.service.IScssService;
@@ -75,7 +76,7 @@ public class ScssResource extends PackageResource {
 			scssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
 			
 			return scssResourceStream;
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException e) {
 			throw new WicketCssPrecompilationException(String.format("Error reading SCSS source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);
 		} finally {

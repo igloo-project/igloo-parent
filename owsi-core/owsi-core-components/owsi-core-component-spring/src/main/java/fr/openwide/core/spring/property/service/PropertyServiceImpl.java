@@ -461,7 +461,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 							for (IMutablePropertyValueMap.Entry<?> idToValueEntry : valueMap) {
 								set(idToValueEntry);
 							}
-						} catch (Exception e) {
+						} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 							throw new IllegalStateException(String.format("Error while updating properties"), e);
 						}
 					}

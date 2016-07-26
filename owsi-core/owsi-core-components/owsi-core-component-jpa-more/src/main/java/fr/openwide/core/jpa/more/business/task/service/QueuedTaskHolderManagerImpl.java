@@ -208,7 +208,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 						LOGGER.error("Unable to offer the task " + taskId + " to the queue");
 					}
 				}
-			} catch (Exception e) {
+			} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 				LOGGER.error("Error while trying to init queue " + queue + " from database", e);
 			}
 		}
@@ -235,7 +235,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 			queuedTaskHolderService.create(newQueuedTaskHolder);
 		} catch (IOException e) {
 			throw new ServiceException("Error while trying to serialize task " + task, e);
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 			throw new ServiceException("Error while creating and saving task " + task, e);
 		}
 		
@@ -310,7 +310,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 					for (TaskConsumer consumer : consumersByQueue.get(queue)) {
 						try {
 							consumer.stop(stopTimeout);
-						} catch (Exception e) {
+						} catch (RuntimeException e) {
 							LOGGER.error("Error while trying to stop consumer " + consumer, e);
 						}
 					}
@@ -335,7 +335,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 					queuedTaskHolder.setEndDate(new Date());
 					queuedTaskHolder.resetExecutionInformation();
 					queuedTaskHolderService.update(queuedTaskHolder);
-				} catch (Exception e) {
+				} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 					throw new RuntimeException(e);
 				}
 			}

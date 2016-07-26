@@ -10,11 +10,13 @@ import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.apache.wicket.util.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.css.WicketCssPrecompilationException;
 import fr.openwide.core.wicket.more.css.lesscss.model.LessCssStylesheetInformation;
 import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
@@ -79,7 +81,7 @@ public class LessCssResource extends PackageResource {
 			lessCssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
 			
 			return lessCssResourceStream;
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException | IOException | ResourceStreamNotFoundException e) {
 			throw new WicketCssPrecompilationException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);
 		} finally {

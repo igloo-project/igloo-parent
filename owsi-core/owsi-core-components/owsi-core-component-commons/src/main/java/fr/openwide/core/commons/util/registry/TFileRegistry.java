@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 
 import de.schlichtherle.truezip.file.TFile;
 import de.schlichtherle.truezip.file.TVFS;
+import de.schlichtherle.truezip.fs.FsSyncException;
 import de.schlichtherle.truezip.fs.FsSyncOptions;
 
 /**
@@ -142,7 +143,7 @@ public final class TFileRegistry {
 			for (TFile tFile : registeredFiles) {
 				try {
 					TVFS.sync(tFile, FsSyncOptions.SYNC);
-				} catch (Exception e) {
+				} catch (RuntimeException | FsSyncException e) {
 					LOGGER.error("Error while trying to sync the truezip filesystem on '" + tFile + "'", e);
 				}
 			}

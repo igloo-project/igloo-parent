@@ -199,7 +199,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			return (List<T>) hibernateQuery.getResultList();
 		} catch(ParseException e) {
 			throw new ServiceException(String.format("Error parsing request: %1$s", searchPattern), e);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(String.format("Error executing search: %1$s for classes: %2$s", searchPattern, classes), e);
 		}
 	}
@@ -216,13 +216,13 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			
 			reindexClasses(fullTextEntityManager, getIndexedRootEntities(fullTextEntityManager.getSearchFactory(),
 					classes.length > 0 ? classes : new Class<?>[] { Object.class }));
-		} catch (Exception e) {
+		} catch (RuntimeException | InterruptedException e) {
 			throw new ServiceException(e);
 		}
 	}
 	
 	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
-			throws Exception {
+			throws InterruptedException {
 		int batchSize = propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
 		int loadThreads = propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
 		
@@ -377,7 +377,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 							break;
 						}
 					}
-				} catch (Exception e) {
+				} catch (RuntimeException | InterruptedException e) {
 					if (!stopped) {
 						LOGGER.error("Error ; massindexer monitor stopped", e);
 					}

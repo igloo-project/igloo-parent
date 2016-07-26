@@ -97,7 +97,7 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 		public void initializeReference() {
 			try {
 				task.getDifferenceGenerator().initializeReference(reference);
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				throw new IllegalStateException("Error initializing a reference object for a diff", e);
 			}
 		}

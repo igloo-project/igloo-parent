@@ -28,6 +28,8 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLin
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterModelValidationException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.util.model.Models;
@@ -86,7 +88,8 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 			throws RestartResponseException {
 		try {
 			extract(parameters);
-		} catch (Exception e) {
+		} catch (RuntimeException | LinkParameterSerializedFormValidationException |
+				LinkParameterModelValidationException e) {
 			EXTRACTOR_INTERFACE_LOGGER.error("Error while extracting page parameters", e);
 			if (StringUtils.hasText(errorMessage)) {
 				Session.get().error(errorMessage);
@@ -197,7 +200,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	public void checkModelsSafely(IPageLinkGenerator fallbackLink, String errorMessage) {
 		try {
 			checkModels();
-		} catch (Exception e) {
+		} catch (RuntimeException | LinkParameterModelValidationException e) {
 			EXTRACTOR_INTERFACE_LOGGER.error("Error while extracting page parameters", e);
 			if (StringUtils.hasText(errorMessage)) {
 				Session.get().error(errorMessage);

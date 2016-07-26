@@ -141,7 +141,7 @@ public class LessCssServiceImpl implements ILessCssService {
 				lessSource.addImportedStylesheet(importedStylesheet);
 				
 				lessSource.setSource(StringUtils.replace(lessSource.getSource(), matcher.group(), importedStylesheet.getSource()));
-			} catch (Exception e) {
+			} catch (RuntimeException | IOException e) {
 				throw new ServiceException(String.format("Error reading lesscss source for %1$s in %2$s (scope: %3$s)",
 					importedResourceFilename, lessSource.getName(), scope), e);
 			} finally {
