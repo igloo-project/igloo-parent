@@ -39,6 +39,7 @@ public class RendererServiceImpl
 	}
 
 	@Override
+	@Deprecated
 	public <T> T runWithContext(Callable<T> callable) throws Exception {
 		return context().run(callable);
 	}
@@ -91,15 +92,8 @@ public class RendererServiceImpl
 	
 	private <T> Renderer<? super T> findDefaultRenderer(final Class<T> valueType) {
 		IConverter<T> converter;
-		try {
-			converter = runWithContext(new Callable<IConverter<T>>() {
-				@Override
-				public IConverter<T> call() throws Exception {
-					return Application.get().getConverterLocator().getConverter(valueType);
-				}
-			});
-		} catch (Exception e) {
-			throw new IllegalStateException("Unexpected exception", e);
+		try (ITearDownHandle handle = context().open()) {
+			converter = Application.get().getConverterLocator().getConverter(valueType);
 		}
 		return new BackgroundWicketThreadContextRenderer<T>(converter).nullsAsNull();
 	}
@@ -117,15 +111,8 @@ public class RendererServiceImpl
 		}
 		@Override
 		public String render(final T value, final Locale locale) {
-			try {
-				return runWithContext(new Callable<String>() {
-					@Override
-					public String call() throws Exception {
-						return delegate.convertToString(value, locale);
-					}
-				});
-			} catch (Exception e) {
-				throw new IllegalStateException("Unexpected exception", e);
+			try (ITearDownHandle handle = context().open()) {
+				return delegate.convertToString(value, locale);
 			}
 		}
 	}
