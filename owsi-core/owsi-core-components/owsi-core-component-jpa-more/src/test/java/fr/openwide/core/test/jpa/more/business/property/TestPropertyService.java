@@ -15,7 +15,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -25,8 +25,10 @@ import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 import fr.openwide.core.spring.property.exception.PropertyServiceDuplicateRegistrationException;
 import fr.openwide.core.spring.property.exception.PropertyServiceIncompleteRegistrationException;
 import fr.openwide.core.spring.property.model.AbstractPropertyIds;
+import fr.openwide.core.spring.property.model.IMutablePropertyValueMap;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
 import fr.openwide.core.spring.property.model.MutablePropertyId;
+import fr.openwide.core.spring.property.model.MutablePropertyValueMap;
 import fr.openwide.core.spring.property.service.PropertyServiceImpl;
 
 public class TestPropertyService {
@@ -38,10 +40,7 @@ public class TestPropertyService {
 	private IMutablePropertyDao mutablePropertyDao;
 
 	@Mock
-	private TransactionTemplate readOnlyTransactionTemplate;
-
-	@Mock
-	private TransactionTemplate writeTransactionTemplate;
+	private PlatformTransactionManager platformTransactionManager;
 	
 	@Mock
 	private ApplicationEventPublisher publisher;
@@ -65,6 +64,7 @@ public class TestPropertyService {
 	
 	private void initPropertyService(Answer<Void> registrationCallback) {
 		propertyService.setApplicationEventPublisher(publisher);
+		propertyService.setPlatformTransactionManager(platformTransactionManager);
 		doAnswer(registrationCallback).when(publisher).publishEvent(Matchers.any(PropertyRegistryInitEvent.class));
 		propertyService.init();
 	}
@@ -105,6 +105,31 @@ public class TestPropertyService {
 		propertyService.set(PropertyIds.MUTABLE_STRING, "MyValue2");
 		propertyService.set(PropertyIds.MUTABLE_LONG, 2L);
 		propertyService.set(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyValue3");
+		
+		verify(mutablePropertyDao).setInTransaction("mutable.property.string", "MyValue2");
+		verify(mutablePropertyDao).setInTransaction("mutable.property.long", "2");
+		verify(mutablePropertyDao).setInTransaction("mutable.property.string.default", "MyValue3");
+	}
+
+	@Test
+	public void mutablePropertySetAll() throws ServiceException, SecurityServiceException {
+		initPropertyService(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				propertyService.registerString(PropertyIds.MUTABLE_STRING);
+				propertyService.registerLong(PropertyIds.MUTABLE_LONG);
+				propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
+				return null;
+			}
+		});
+		
+		IMutablePropertyValueMap propertyValueMap = new MutablePropertyValueMap();
+		
+		propertyValueMap.put(PropertyIds.MUTABLE_STRING, "MyValue2");
+		propertyValueMap.put(PropertyIds.MUTABLE_LONG, 2L);
+		propertyValueMap.put(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyValue3");
+		
+		propertyService.setAll(propertyValueMap);
 		
 		verify(mutablePropertyDao).setInTransaction("mutable.property.string", "MyValue2");
 		verify(mutablePropertyDao).setInTransaction("mutable.property.long", "2");
