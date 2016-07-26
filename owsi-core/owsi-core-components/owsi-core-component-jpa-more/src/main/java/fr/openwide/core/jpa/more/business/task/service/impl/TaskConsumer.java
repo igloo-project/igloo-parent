@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.primitives.Longs;
 
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
@@ -71,30 +72,36 @@ public final class TaskConsumer {
 
 	public synchronized void stop(int stopTimeout) {
 		/*
-		 * signal the process consumer that it will be asked to stop in
+		 * Signal the process consumer that it will be asked to stop in
 		 * a few moment
 		 */
 		active.set(false);
 		
 		try {
 			/*
-			 * if a queued task holder is currently active, we wait for it
+			 * If a queued task holder is currently active, we wait for it
 			 */
-			if (isWorking()) {
-				long wait = 0;
-				boolean interrupted = false;
-				while ((wait < stopTimeout) && isWorking() && !interrupted) {
-					try {
-						Thread.sleep(3000); // NOSONAR findbugs:SWL_SLEEP_WITH_LOCK_HELD
-						// sleep in synchronized method does not harm because there is no
-						// high concurrency on this method (we simply don't want concurrent
-						// execution)
-					} catch (InterruptedException e) {
-						interrupted = true;
-					}
-					wait += 3000;
-				}
+			long timeRemaining = stopTimeout;
+			while (timeRemaining > 0 && isWorking()) {
+				/*
+				 * Wait for small durations of time, so that we'll stop waiting as
+				 * soon as the working thread stops even if the timeout is huge.
+				 */
+				long step = Longs.min(100L, timeRemaining);
+				Thread.sleep(step); // NOSONAR findbugs:SWL_SLEEP_WITH_LOCK_HELD
+				/*
+				 * Sleep in synchronized method does not harm because there is no
+				 * high concurrency on this method (we simply don't want concurrent
+				 * execution)
+				 */
+				timeRemaining -= step;
 			}
+		} catch (InterruptedException e) {
+			/*
+			 * The current thread (the one waiting for the working thread) was interrupted
+			 * Just put back the interrupt marker on the current thread before we interrupt the working thread
+			 */
+			Thread.currentThread().interrupt();
 		} finally {
 			if (thread != null) {
 				thread.interrupt();
@@ -141,7 +148,9 @@ public final class TaskConsumer {
 					queuedTaskHolder = null;
 					working.set(false);
 				}
-			} catch (InterruptedException ex) {
+			} catch (InterruptedException ignored) {
+				// Do nothing, just stop taking tasks
+			} finally {
 				working.set(false);
 			}
 		}

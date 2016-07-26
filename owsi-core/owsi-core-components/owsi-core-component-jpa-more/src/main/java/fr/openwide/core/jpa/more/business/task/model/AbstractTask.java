@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,113 +122,153 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	
 	@Override
 	public void run() {
-		taskExecutionResult = taskManagementTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
-			@Override
-			public TaskExecutionResult doInTransaction(TransactionStatus status) {
-				try {
-					QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-
-					if (queuedTaskHolder == null) {
-						throw new IllegalArgumentException("No task found with id " + queuedTaskHolderId);
-					}
-
-					queuedTaskHolder.setStartDate(new Date());
-					queuedTaskHolder.setStatus(TaskStatus.RUNNING);
-					queuedTaskHolderService.update(queuedTaskHolder);
-
-					return null;
-				} catch (RuntimeException | ServiceException | SecurityServiceException e) {
-					status.setRollbackOnly();
-					return TaskExecutionResult.failed(e);
-				}
-			}
-		});
-
-		if (taskExecutionResult != null && TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
-			taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		/*
+		 * Stores the "this thread was interrupted" information.
+		 * For some reason, the Thread.isInterrupted() flag is not properly preserved after using
+		 * a transaction template. Maybe some code does a Thread.sleep, then catches InterruptedException but never
+		 * resets the flag. Anyway, using this mutable boolean works around the problem.
+		 */
+		final MutableBoolean interruptedFlag = new MutableBoolean(false);
+		try {
+			taskExecutionResult = taskManagementTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
 				@Override
-				protected void doInTransactionWithoutResult(TransactionStatus status) {
+				public TaskExecutionResult doInTransaction(TransactionStatus status) {
 					try {
 						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-
+	
 						if (queuedTaskHolder == null) {
-							LOGGER.error("An error has occured while executing task " + queuedTaskHolderId, taskExecutionResult);
-							return;
+							throw new IllegalArgumentException("No task found with id " + queuedTaskHolderId);
+						}
+	
+						queuedTaskHolder.setStartDate(new Date());
+						queuedTaskHolder.setStatus(TaskStatus.RUNNING);
+						queuedTaskHolderService.update(queuedTaskHolder);
+	
+						return null;
+					} catch (RuntimeException | ServiceException | SecurityServiceException e) {
+						status.setRollbackOnly();
+						return TaskExecutionResult.failed(e);
+					} finally {
+						if (Thread.currentThread().isInterrupted()) {
+							// Save the information (seems to be cleared by the transaction template)
+							interruptedFlag.setTrue();
+						}
+					}
+				}
+			});
+	
+			if (taskExecutionResult != null && TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
+				taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus status) {
+						try {
+							QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+	
+							if (queuedTaskHolder == null) {
+								LOGGER.error("Task {} could not be found; skipped execution.", queuedTaskHolderId, taskExecutionResult);
+								return;
+							}
+							
+							if (interruptedFlag.isTrue()) {
+								LOGGER.error("An interrupt has occured while starting task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
+								endTask(queuedTaskHolder, onInterruptStatus(taskExecutionResult));
+							} else {
+								LOGGER.error("An error has occured while starting task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
+								endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
+							}
+						} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
+							throw new RuntimeException(e);
+						}
+					}
+				});
+				
+				// If we could not switch to "RUNNING", stop right now.
+				return;
+			}
+	
+			taskExecutionResult = taskExecutionTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
+				@Override
+				public TaskExecutionResult doInTransaction(TransactionStatus status) {
+					try {
+						/*
+						 * The result may contain a business exception, caught in doTask.
+						 * We don't have to propagate it, the task will be considered in error and onFailStatus()
+						 * will be called.
+						 */
+						TaskExecutionResult executionResult = doTask();
+						Objects.requireNonNull(executionResult, "executionResult must not be null");
+						
+						/*
+						 * If the task execution caught a business exception in doTask without propagating it
+						 * (so as to preserve a batch report), we roll back the transaction.
+						 */
+						if (TaskResult.FATAL.equals(executionResult.getResult())) {
+							status.setRollbackOnly();
 						}
 						
-						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskExecutionResult);
-						
-						endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
-					} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
-						throw new RuntimeException(e);
+						return executionResult;
+					} catch (InterruptedException e) {
+						status.setRollbackOnly();
+						Thread.currentThread().interrupt();
+						return TaskExecutionResult.failed(e);
+					} catch (Exception e) {
+						status.setRollbackOnly();
+						return TaskExecutionResult.failed(e);
+					} finally {
+						if (Thread.currentThread().isInterrupted()) {
+							// Save the information (seems to be cleared by the transaction template)
+							interruptedFlag.setTrue();
+						}
 					}
 				}
 			});
 			
-			// Si on n'a pas pu passer en RUNNING, on arrête tout de suite.
-			return;
-		}
-
-		taskExecutionResult = taskExecutionTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
-			@Override
-			public TaskExecutionResult doInTransaction(TransactionStatus status) {
-				try {
-					// Le résultat peut contenir une exception métier, interceptée dans doTask. On n'est pas obligé
-					// de la propager, la tâche passera en erreur et dans onFailStatus().
-					TaskExecutionResult executionResult = doTask();
-					Objects.requireNonNull(executionResult, "executionResult must not be null");
-					
-					// Si l'execution de la tâche a intercepté une exception métier dans doTask sans la propager
-					// pour conserver le rapport, on fait un rollback sur la transaction.
-					if (TaskResult.FATAL.equals(executionResult.getResult())) {
-						status.setRollbackOnly();
-					}
-					
-					return executionResult;
-				} catch (Exception e) {
-					status.setRollbackOnly();
-					return TaskExecutionResult.failed(e);
-				}
+			// Should not happen, but just in case...
+			if (taskExecutionResult == null) {
+				throw new RuntimeException();
 			}
-		});
-		
-		// Ne devrait pas arriver mais on vérifie, au cas où.
-		if (taskExecutionResult == null) {
-			throw new RuntimeException();
-		}
-		
-		if (!TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
-			// Cas du succès
-			taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				@Override
-				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					try {
-						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-						endTask(queuedTaskHolder, TaskStatus.COMPLETED);
-					} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
-						throw new RuntimeException(e);
+			
+			if (!TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
+				// Success case
+				taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus status) {
+						try {
+							QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+							endTask(queuedTaskHolder, TaskStatus.COMPLETED);
+						} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
+							throw new RuntimeException(e);
+						}
 					}
-				}
-			});
-		} else {
-			// Cas de l'erreur
-			taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				@Override
-				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					try {
-						QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-						
-						LOGGER.error("An error has occured while executing task " + queuedTaskHolder, taskExecutionResult.getStackTrace());
-						
-						endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
-					} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
-						throw new RuntimeException(e);
+				});
+			} else {
+				// Error case
+				taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus status) {
+						try {
+							QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+							
+							if (interruptedFlag.isTrue()) {
+								LOGGER.error("An interrupt has occured while executing task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
+								endTask(queuedTaskHolder, onInterruptStatus(taskExecutionResult));
+							} else {
+								LOGGER.error("An error has occured while executing task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
+								endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
+							}
+						} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
+							throw new RuntimeException(e);
+						}
 					}
-				}
-			});
+				});
+			}
+			
+			taskExecutionResult = null;
+		} finally {
+			if (interruptedFlag.isTrue()) {
+				Thread.currentThread().interrupt();
+			}
 		}
-		
-		taskExecutionResult = null;
 	}
 
 	private void endTask(QueuedTaskHolder queuedTaskHolder, TaskStatus endingStatus)
@@ -295,5 +336,17 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	@JsonIgnore
 	public TaskStatus onFailStatus(TaskExecutionResult executionResult) {
 		return TaskStatus.FAILED;
+	}
+
+	/**
+	 * Permet principalement de définir si une tâche ayant été interrompue doit être passée au statut
+	 * CANCELLED (ne se relance pas automatiquement si on redémarre la file), INTERRUPTED ou FAILED.
+	 * 
+	 * @param executionResult permet de choisir le statut en fonction du résultat d'exécution
+	 * (ex : CANCELLED si exception métier, FAILED si exception autre).
+	 */
+	@JsonIgnore
+	public TaskStatus onInterruptStatus(TaskExecutionResult executionResult) {
+		return TaskStatus.INTERRUPTED;
 	}
 }
