@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -22,6 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.interceptor.TransactionAttribute;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.base.Converter;
 import com.google.common.base.Enums;
@@ -59,6 +66,7 @@ import fr.openwide.core.spring.property.exception.PropertyServiceDuplicateRegist
 import fr.openwide.core.spring.property.exception.PropertyServiceIncompleteRegistrationException;
 import fr.openwide.core.spring.property.model.IImmutablePropertyRegistryKey;
 import fr.openwide.core.spring.property.model.IMutablePropertyRegistryKey;
+import fr.openwide.core.spring.property.model.IMutablePropertyValueMap;
 import fr.openwide.core.spring.property.model.IPropertyRegistryKey;
 import fr.openwide.core.spring.property.model.IPropertyRegistryKeyDeclaration;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
@@ -87,6 +95,17 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	private IImmutablePropertyDao immutablePropertyDao;
 
 	private ApplicationEventPublisher applicationEventPublisher;
+
+	private TransactionTemplate writeTransactionTemplate;
+
+	@Autowired
+	@Lazy // Mutable properties may require a more complex infrastructure, whose setup may require access to immutable properties
+	public void setPlatformTransactionManager(PlatformTransactionManager transactionManager) {
+		DefaultTransactionAttribute writeTransactionAttribute =
+				new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
+		writeTransactionAttribute.setReadOnly(false);
+		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
+	}
 
 	@PostConstruct
 	public void init() throws PropertyServiceIncompleteRegistrationException {
@@ -425,6 +444,29 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
 		
 		mutablePropertyDao.setInTransaction(propertyId.getKey(), information.getValue0().reverse().convert(value));
+	}
+
+	private <T> void set(IMutablePropertyValueMap.Entry<T> idToValueEntry) throws ServiceException, SecurityServiceException {
+		set(idToValueEntry.getKey(), idToValueEntry.getValue());
+	}
+
+	@Override
+	public void setAll(final IMutablePropertyValueMap valueMap) throws ServiceException, SecurityServiceException {
+		Objects.requireNonNull(valueMap);
+		writeTransactionTemplate.execute(
+				new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus status) {
+						try {
+							for (IMutablePropertyValueMap.Entry<?> idToValueEntry : valueMap) {
+								set(idToValueEntry);
+							}
+						} catch (Exception e) {
+							throw new IllegalStateException(String.format("Error while updating properties"), e);
+						}
+					}
+				}
+		);
 	}
 
 	private <T> Pair<Converter<String, T>, Supplier<T>> getRegistrationInformation(PropertyId<T> propertyId) {

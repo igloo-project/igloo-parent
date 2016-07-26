@@ -10,10 +10,12 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import fr.openwide.core.spring.property.model.AbstractPropertyIds;
+import fr.openwide.core.spring.property.model.IMutablePropertyValueMap;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
 import fr.openwide.core.spring.property.model.ImmutablePropertyIdTemplate;
 import fr.openwide.core.spring.property.model.MutablePropertyId;
 import fr.openwide.core.spring.property.model.MutablePropertyIdTemplate;
+import fr.openwide.core.spring.property.model.MutablePropertyValueMap;
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 import fr.openwide.core.test.jpa.more.business.AbstractJpaMoreTestCase;
 import fr.openwide.core.test.jpa.more.business.property.TestPropertyServiceAndDao.TestPropertyServiceAndDaoConfig;
@@ -51,8 +53,14 @@ public class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 	@Test
 	public void mutableProperty() throws ServiceException, SecurityServiceException {
 		Assert.assertEquals("MyDefaultValue", propertyService.get(PropertyIds.MUTABLE_STRING));
+		
 		propertyService.set(PropertyIds.MUTABLE_STRING, "MyValue");
 		Assert.assertEquals("MyValue", propertyService.get(PropertyIds.MUTABLE_STRING));
+		
+		IMutablePropertyValueMap propertyValueMap = new MutablePropertyValueMap();
+		propertyValueMap.put(PropertyIds.MUTABLE_STRING, "MyValue2");
+		propertyService.setAll(propertyValueMap);
+		Assert.assertEquals("MyValue2", propertyService.get(PropertyIds.MUTABLE_STRING));
 	}
 
 	@Test
