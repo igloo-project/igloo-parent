@@ -14,7 +14,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -120,8 +119,14 @@ public abstract class AbstractTask implements Runnable, Serializable {
 		return new TaskExecutionTransactionTemplateConfig();
 	}
 	
+	/**
+	 * This method is final. If you need to customize its behavior, check out one of the onXX() methods.
+	 * @see #onBeforeStart()
+	 * @see #onBeforeExecute()
+	 * @see #onAfterExecute(TaskExecutionResult, TaskStatus)
+	 */
 	@Override
-	public void run() {
+	public final void run() {
 		/*
 		 * Stores the "this thread was interrupted" information.
 		 * For some reason, the Thread.isInterrupted() flag is not properly preserved after using
@@ -130,6 +135,8 @@ public abstract class AbstractTask implements Runnable, Serializable {
 		 */
 		final MutableBoolean interruptedFlag = new MutableBoolean(false);
 		try {
+			onBeforeStart();
+			
 			taskExecutionResult = taskManagementTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
 				@Override
 				public TaskExecutionResult doInTransaction(TransactionStatus status) {
@@ -158,33 +165,39 @@ public abstract class AbstractTask implements Runnable, Serializable {
 			});
 	
 			if (taskExecutionResult != null && TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
-				taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				final TaskStatus status = taskManagementTransactionTemplate.execute(new TransactionCallback<TaskStatus>() {
 					@Override
-					protected void doInTransactionWithoutResult(TransactionStatus status) {
+					public TaskStatus doInTransaction(TransactionStatus status) {
 						try {
 							QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+							final TaskStatus taskStatus;
 	
 							if (queuedTaskHolder == null) {
 								LOGGER.error("Task {} could not be found; skipped execution.", queuedTaskHolderId, taskExecutionResult);
-								return;
+								return null;
 							}
 							
 							if (interruptedFlag.isTrue()) {
 								LOGGER.error("An interrupt has occured while starting task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
-								endTask(queuedTaskHolder, onInterruptStatus(taskExecutionResult));
+								taskStatus = onInterruptStatus(taskExecutionResult);
 							} else {
 								LOGGER.error("An error has occured while starting task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
-								endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
+								taskStatus = onFailStatus(taskExecutionResult);
 							}
+							endTask(queuedTaskHolder, taskStatus);
+							return taskStatus;
 						} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
 							throw new RuntimeException(e);
 						}
 					}
 				});
-				
+
 				// If we could not switch to "RUNNING", stop right now.
+				onAfterRun(status);
 				return;
 			}
+			
+			onBeforeExecute();
 	
 			taskExecutionResult = taskExecutionTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
 				@Override
@@ -228,14 +241,17 @@ public abstract class AbstractTask implements Runnable, Serializable {
 				throw new RuntimeException();
 			}
 			
+			final TaskStatus status;
+			
 			if (!TaskResult.FATAL.equals(taskExecutionResult.getResult())) {
 				// Success case
-				taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				status = taskManagementTransactionTemplate.execute(new TransactionCallback<TaskStatus>() {
 					@Override
-					protected void doInTransactionWithoutResult(TransactionStatus status) {
+					public TaskStatus doInTransaction(TransactionStatus status) {
 						try {
 							QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 							endTask(queuedTaskHolder, TaskStatus.COMPLETED);
+							return TaskStatus.COMPLETED;
 						} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
 							throw new RuntimeException(e);
 						}
@@ -243,19 +259,22 @@ public abstract class AbstractTask implements Runnable, Serializable {
 				});
 			} else {
 				// Error case
-				taskManagementTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				status = taskManagementTransactionTemplate.execute(new TransactionCallback<TaskStatus>() {
 					@Override
-					protected void doInTransactionWithoutResult(TransactionStatus status) {
+					public TaskStatus doInTransaction(TransactionStatus status) {
 						try {
 							QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+							final TaskStatus taskStatus;
 							
 							if (interruptedFlag.isTrue()) {
 								LOGGER.error("An interrupt has occured while executing task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
-								endTask(queuedTaskHolder, onInterruptStatus(taskExecutionResult));
+								taskStatus = onInterruptStatus(taskExecutionResult);
 							} else {
 								LOGGER.error("An error has occured while executing task {}", queuedTaskHolder, taskExecutionResult.getThrowable());
-								endTask(queuedTaskHolder, onFailStatus(taskExecutionResult));
+								taskStatus = onFailStatus(taskExecutionResult);
 							}
+							endTask(queuedTaskHolder, taskStatus);
+							return taskStatus;
 						} catch (RuntimeException | JsonProcessingException | ServiceException | SecurityServiceException e) {
 							throw new RuntimeException(e);
 						}
@@ -263,12 +282,59 @@ public abstract class AbstractTask implements Runnable, Serializable {
 				});
 			}
 			
+			onAfterExecute(taskExecutionResult, status);
+			onAfterRun(status);
+			
 			taskExecutionResult = null;
 		} finally {
 			if (interruptedFlag.isTrue()) {
 				Thread.currentThread().interrupt();
 			}
 		}
+	}
+
+	/**
+	 * Called before starting a task, i.e. before marking it "RUNNING".
+	 * <p>This method is not executed in a transaction. If the implementor requires one, he should use
+	 * {@link #getTaskExecutionTransactionTemplate()} or {@link #getTaskManagementTransactionTemplate()}.
+	 */
+	protected void onBeforeStart() {
+		// Default: do nothing. Override this if necessary.
+	}
+	
+
+	/**
+	 * Called before executing a task, i.e. when it's marked <code>RUNNING</code>, but <code>doTask()</code>
+	 * hasn't been called yet.
+	 * <p>This method is not executed in a transaction. If the implementor requires one, he should use
+	 * {@link #getTaskExecutionTransactionTemplate()} or {@link #getTaskManagementTransactionTemplate()}.
+	 */
+	protected void onBeforeExecute() {
+		// Default: do nothing. Override this if necessary.
+	}
+
+	/**
+	 * Called after having executed a task, i.e. when <code>doTask()</code> has been called and the task has been marked
+	 * with its post-execution status.
+	 * <p><strong>WARNING:</strong> This method is <strong>not</strong> called if the task could not be started.
+	 * <p>Altering <code>result</code> will have no effect on the persisted {@link QueuedTaskHolder}.
+	 * <p>This method is not executed in a transaction. If the implementor requires one, he should use
+	 * {@link #getTaskExecutionTransactionTemplate()} or {@link #getTaskManagementTransactionTemplate()}.
+	 * @see #onAfterRun(TaskStatus)
+	 */
+	protected void onAfterExecute(TaskExecutionResult result, TaskStatus status) {
+		// Default: do nothing. Override this if necessary.
+	}
+
+	/**
+	 * Called after having executed <code>run()</code> and after having the task marked with the given status.
+	 * <p>This method is executed either when a task failed to start, or when the task has actually been executed. It is
+	 * always executed after all other <code>onXX()</code> methods.
+	 * <p>This method is not executed in a transaction. If the implementor requires one, he should use
+	 * {@link #getTaskExecutionTransactionTemplate()} or {@link #getTaskManagementTransactionTemplate()}.
+	 */
+	protected void onAfterRun(TaskStatus status) {
+		// Default: do nothing. Override this if necessary.
 	}
 
 	private void endTask(QueuedTaskHolder queuedTaskHolder, TaskStatus endingStatus)
