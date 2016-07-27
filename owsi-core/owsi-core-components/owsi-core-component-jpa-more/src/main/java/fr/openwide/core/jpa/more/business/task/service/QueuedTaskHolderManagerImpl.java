@@ -90,11 +90,16 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	@PostConstruct
 	private void init() {
 		stopTimeout = propertyService.get(STOP_TIMEOUT);
-		
+
 		initQueues();
-		
 		if (TaskQueueStartMode.auto.equals(propertyService.get(START_MODE))) {
-			start();
+			/*
+			 * The start delay is needed because server startup can hangs during bean initialization at these places :
+			 * org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanDefinitionNames()
+			 * org.springframework.beans.factory.support.DefaultSingletonBeanRegistry (somewhere)
+			 * By delaying the queue startup, no hang.
+			 */
+			start(10000L);
 		} else {
 			LOGGER.warn("Task queue start configured in \"manual\" mode.");
 		}
@@ -179,14 +184,21 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 	}
 
 	@Override
-	public synchronized void start() {
+	public void start() {
+		start(0L);
+	}
+
+	/**
+	 * @param startDelay A length of time the consumer threads will wait before their first access to their task queue.
+	 */
+	protected synchronized void start(long startDelay) {
 		if (!active.get()) {
 			availableForAction.set(false);
 			
 			try {
 				initQueuesFromDatabase();
 				for (TaskConsumer consumer : consumersByQueue.values()) {
-					consumer.start();
+					consumer.start(startDelay);
 				}
 			} finally {
 				active.set(true);

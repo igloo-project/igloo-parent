@@ -1,7 +1,6 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +25,8 @@ public final class TaskConsumer {
 
 	private static final String THREAD_NAME_FORMAT = "TaskConsumer-%1$s-%2$s";
 
+	private static final long MAX_STOP_TIMEOUT_WAIT_INCREMENT_MS = 100L;
+
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -43,11 +44,7 @@ public final class TaskConsumer {
 	
 	private final int threadIdForThisQueue;
 	
-	private Thread thread;
-
-	private AtomicBoolean active = new AtomicBoolean(false);
-
-	private AtomicBoolean working = new AtomicBoolean(false);
+	private ConsumerThread thread;
 
 	public TaskConsumer(TaskQueue queue, int threadIdForThisQueue) {
 		super();
@@ -56,109 +53,147 @@ public final class TaskConsumer {
 		this.threadIdForThisQueue = threadIdForThisQueue;
 	}
 
-	public boolean isWorking() {
-		return working.get();
+	public void start() {
+		start(0L);
 	}
 
-	public synchronized void start() {
-		if (!active.get()) {
-			if (thread == null) {
-				thread = new Thread(new ConsumerRunnable(), String.format(THREAD_NAME_FORMAT, queue.getId(), threadIdForThisQueue));
-			}
-			active.set(true);
+	/**
+	 * @param startDelay A length of time the consumer thread will wait before its first access to the task queue.
+	 */
+	public synchronized void start(long startDelay) {
+		if (thread == null || !thread.isAlive()) { // synchronized access
+			thread = new ConsumerThread(
+					String.format(THREAD_NAME_FORMAT, queue.getId(), threadIdForThisQueue),
+					startDelay
+			);
 			thread.start();
 		}
 	}
 
-	public synchronized void stop(int stopTimeout) {
-		/*
-		 * Signal the process consumer that it will be asked to stop in
-		 * a few moment
-		 */
-		active.set(false);
-		
-		try {
-			/*
-			 * If a queued task holder is currently active, we wait for it
-			 */
-			long timeRemaining = stopTimeout;
-			while (timeRemaining > 0 && isWorking()) {
-				/*
-				 * Wait for small durations of time, so that we'll stop waiting as
-				 * soon as the working thread stops even if the timeout is huge.
-				 */
-				long step = Longs.min(100L, timeRemaining);
-				Thread.sleep(step); // NOSONAR findbugs:SWL_SLEEP_WITH_LOCK_HELD
-				/*
-				 * Sleep in synchronized method does not harm because there is no
-				 * high concurrency on this method (we simply don't want concurrent
-				 * execution)
-				 */
-				timeRemaining -= step;
-			}
-		} catch (InterruptedException e) {
-			/*
-			 * The current thread (the one waiting for the working thread) was interrupted
-			 * Just put back the interrupt marker on the current thread before we interrupt the working thread
-			 */
-			Thread.currentThread().interrupt();
-		} finally {
-			if (thread != null) {
-				thread.interrupt();
-				thread = null;
-				working.set(false);
-			}
+	public synchronized void stop(long stopTimeout) {
+		if (thread != null) { // synchronized access
+			thread.stop(stopTimeout);
+			thread = null;
 		}
 	}
 	
-	private class ConsumerRunnable implements Runnable {
+	/**
+	 * A consumer thread with the ability to try stopping gracefully.
+	 * @see #stop(int)
+	 */
+	private class ConsumerThread extends Thread {
+		/**
+		 * A flag indicating whether new tasks should be consumed.
+		 */
+		private volatile boolean active = false;
+		/**
+		 * A flag indicating whether the thread is currently executing a task.
+		 * <p>Differs from <code>isAlive()</code> in that <code>isAlive()</code> returns true even if the thread is
+		 * only waiting for a task to be offered in the queue.
+		 */
+		private volatile boolean working = false;
+		
+		private final long startDelay;
+
+		public ConsumerThread(String name, long startDelay) {
+			super(name);
+			this.startDelay = startDelay;
+		}
+		
 		@Override
-		public void run() {
-			Long queuedTaskHolderId = null;
-			QueuedTaskHolder queuedTaskHolder = null;
+		public synchronized void start() {
+			active = true;
+			try {
+				super.start();
+			} catch (RuntimeException e) {
+				active = false;
+				throw e;
+			}
+		}
+
+		public void stop(long stopTimeout) {
+			/*
+			 * Signal the run() method that it should not consume any more tasks.
+			 */
+			active = false;
 			
 			try {
 				/*
-				 * Needed because server startup can hangs during bean initialization at these places :
-				 * org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanDefinitionNames()
-				 * org.springframework.beans.factory.support.DefaultSingletonBeanRegistry (somewhere)
-				 * By delaying the queue startup, no hang
+				 * If a task is currently being handled, we wait for it to complete within the given time limit.
 				 */
-				Thread.sleep(10000);
+				long timeRemaining = stopTimeout;
+				while (timeRemaining > 0 && working) {
+					/*
+					 * Wait for small durations of time, so that we'll stop waiting as
+					 * soon as the consumer thread stops even if the timeout is huge.
+					 */
+					long step = Longs.min(MAX_STOP_TIMEOUT_WAIT_INCREMENT_MS, timeRemaining);
+					Thread.sleep(step); // NOSONAR findbugs:SWL_SLEEP_WITH_LOCK_HELD
+					/*
+					 * Sleep in synchronized method does not harm because there is no
+					 * high concurrency on this method (we simply don't want concurrent
+					 * execution)
+					 */
+					timeRemaining -= step;
+				}
+			} catch (InterruptedException e) {
+				/*
+				 * The current thread (the one waiting for the consumer thread) was interrupted
+				 * Just put back the interrupt marker on the current thread before we interrupt the consumer thread
+				 */
+				Thread.currentThread().interrupt();
+			} finally {
+				/*
+				 * If the current thread (the one waiting for the consumer thread) was interrupted, or if the timeout
+				 * was reached when waiting for the task to complete, or if the task completed in time, we order the
+				 * consumer thread to stop ASAP.
+				 */
+				this.interrupt();
+			}
+		}
+		
+		@Override
+		public void run() {
+			try {
+				if (startDelay > 0) {
+					Thread.sleep(startDelay);
+				}
 				/*
 				 * condition: permits thread to finish gracefully (stop was
 				 * signaled, last taken element had been consumed, we can
 				 * stop without any other action)
 				 */
-				while (active.get() && !Thread.currentThread().isInterrupted()) {
-					queuedTaskHolderId = queue.take();
-					working.set(true);
-					
-					entityManagerUtils.openEntityManager();
-					queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
-					if(queuedTaskHolder != null) {
-						tryConsumeTask(queuedTaskHolder);
+				while (active && !Thread.currentThread().isInterrupted()) {
+					Long queuedTaskHolderId = queue.take();
+					this.working = true;
+					try {
+						entityManagerUtils.openEntityManager();
+						try {
+							tryConsumeTask(queuedTaskHolderId);
+						} finally {
+							entityManagerUtils.closeEntityManager();
+						}
+					} finally {
+						this.working = false;
 					}
-					entityManagerUtils.closeEntityManager();
-					/*
-					 * dereferencing queued task holder else it will be marked
-					 * interrupted by catch block if InterruptedException is
-					 * thrown during the next take()
-					 */
-					queuedTaskHolder = null;
-					working.set(false);
 				}
 			} catch (InterruptedException ignored) {
 				// Do nothing, just stop taking tasks
-			} finally {
-				working.set(false);
 			}
 		}
 		
 		/**
 		 * TOTALLY safe, NEVER throws any exception.
 		 */
-		private void tryConsumeTask(QueuedTaskHolder queuedTaskHolder) {
+		private void tryConsumeTask(Long queuedTaskHolderId) {
+			QueuedTaskHolder queuedTaskHolder;
+			try {
+				queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
+			} catch (RuntimeException e) {
+				LOGGER.error("Error while trying to fetch a task from database before run (holder: " + queuedTaskHolderId + ").", e);
+				return;
+			}
+			
 			AbstractTask runnableTask;
 			try {
 				runnableTask = queuedTaskHolderObjectMapper.readValue(queuedTaskHolder.getSerializedTask(), AbstractTask.class);
@@ -179,6 +214,7 @@ public final class TaskConsumer {
 				runnableTask.run();
 			} catch (RuntimeException e) {
 				LOGGER.error("Error while trying to consume a task (holder: " + queuedTaskHolder + "); the task holder was probably left in a stale state.", e);
+				return;
 			}
 		}
 	}
