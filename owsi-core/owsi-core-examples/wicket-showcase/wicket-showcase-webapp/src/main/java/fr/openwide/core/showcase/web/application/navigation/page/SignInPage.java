@@ -53,7 +53,7 @@ public class SignInPage extends CoreWebPage {
 					session.error(getString("signIn.error.authentication"));
 				} catch (DisabledException e) {
 					session.error(getString("signIn.error.userDisabled"));
-				} catch (Exception e) {
+				} catch (RuntimeException e) {
 					LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
 					session.error(getString("signIn.error.unknown"));
 				}

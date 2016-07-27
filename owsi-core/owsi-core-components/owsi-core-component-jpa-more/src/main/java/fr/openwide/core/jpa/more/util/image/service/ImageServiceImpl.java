@@ -168,7 +168,7 @@ public class ImageServiceImpl implements IImageService {
 			ExecuteWatchdog watchdog = new ExecuteWatchdog(IMAGE_MAGICK_CONVERT_TIMEOUT);
 			executor.setWatchdog(watchdog);
 			executor.execute(commandLine);
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException e) {
 			throw new ImageThumbnailGenerationException(String.format("Unable to generate a thumbnail for file %1$s",
 					source.getAbsolutePath()), e);
 		}
@@ -230,7 +230,7 @@ public class ImageServiceImpl implements IImageService {
 					IIOImage image = new IIOImage(resizedImage, null, null);
 					writer.write(null, image, iwp);
 					writer.dispose();
-				} catch (Exception e) {
+				} catch (RuntimeException | IOException e) {
 					throw new ServiceException(e);
 				} finally {
 					if (outputStream != null) {
@@ -240,7 +240,7 @@ public class ImageServiceImpl implements IImageService {
 			} else {
 				FileUtils.copyFile(source, destination);
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException | ServiceException e) {
 			throw new ImageThumbnailGenerationException(String.format("Unable to generate a thumbnail for file %1$s",
 					source.getAbsolutePath()), e);
 		}

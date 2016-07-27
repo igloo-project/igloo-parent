@@ -31,7 +31,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 					.variable("date", date)
 					.variable("url", url)
 					.send();
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException("Error during send mail process", e);
 		}
 	}
@@ -43,7 +43,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 					.to(user)
 					.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
 					.send();
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException("Error during send mail process", e);
 		}
 	}

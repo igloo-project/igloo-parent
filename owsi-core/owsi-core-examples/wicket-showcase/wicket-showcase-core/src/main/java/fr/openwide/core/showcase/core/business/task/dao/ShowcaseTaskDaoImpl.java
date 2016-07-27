@@ -49,7 +49,7 @@ public class ShowcaseTaskDaoImpl extends GenericEntityDaoImpl<Long, QueuedTaskHo
 			fullTextQuery.initializeObjectsWith(ObjectLookupMethod.SECOND_LEVEL_CACHE, DatabaseRetrievalMethod.QUERY);
 			
 			return (List<QueuedTaskHolder>) fullTextQuery.getResultList();
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException("Error while searching tasks.", e);
 		}
 	}
@@ -58,7 +58,7 @@ public class ShowcaseTaskDaoImpl extends GenericEntityDaoImpl<Long, QueuedTaskHo
 	public long count(TaskSearchQueryParameters searchParameters) throws ServiceException {
 		try {
 			return getSearchTaskQuery(searchParameters).getResultSize();
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException("Error while counting tasks.", e);
 		}
 	}

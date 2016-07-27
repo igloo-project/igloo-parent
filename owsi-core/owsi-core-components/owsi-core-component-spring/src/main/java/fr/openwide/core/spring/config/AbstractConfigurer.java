@@ -1,6 +1,7 @@
 package fr.openwide.core.spring.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -190,7 +191,7 @@ public abstract class AbstractConfigurer {
 		}
 		try {
 			bigDecimalProperty = new BigDecimal(stringProperty);
-		} catch(Exception e) {
+		} catch(RuntimeException e) {
 			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas un bigDecimalProperty valide : utilisation de la valeur par défaut.", e);
 		}
 		
@@ -223,7 +224,7 @@ public abstract class AbstractConfigurer {
 		}
 		try {
 			enumProperty = Enum.valueOf(enumType, stringProperty);
-		} catch(Exception e) {
+		} catch(RuntimeException e) {
 			throw new IllegalStateException("La valeur de la propriété " + key + " n'est pas une enum valide : utilisation de la valeur par défaut.", e);
 		}
 		return enumProperty;
@@ -249,7 +250,7 @@ public abstract class AbstractConfigurer {
 				try {
 					FileUtils.forceMkdir(directory);
 					return directory;
-				} catch (Exception e) {
+				} catch (RuntimeException | IOException e) {
 					throw new IllegalStateException("The directory " + key + " - " + path + " does not exist and it is impossible to create it.");
 				}
 			}

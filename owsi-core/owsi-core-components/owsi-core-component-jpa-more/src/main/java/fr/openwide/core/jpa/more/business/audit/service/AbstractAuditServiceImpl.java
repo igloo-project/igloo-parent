@@ -53,7 +53,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit<?>> exten
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit.getContextClass());
 			return auditDao.getGenericEntity(clazz, audit.getContextId());
-		} catch (Exception e) {
+		} catch (RuntimeException | ClassNotFoundException e) {
 			return null;
 		}
 	}
@@ -76,7 +76,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit<?>> exten
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit.getSubjectClass());
 			return auditDao.getGenericEntity(clazz, audit.getSubjectId());
-		} catch (Exception e) {
+		} catch (RuntimeException | ClassNotFoundException e) {
 			return null;
 		}
 	}
@@ -99,7 +99,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit<?>> exten
 		try {
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit.getObjectClass());
 			return auditDao.getGenericEntity(clazz, audit.getObjectId());
-		} catch (Exception e) {
+		} catch (RuntimeException | ClassNotFoundException e) {
 			return null;
 		}
 	}
@@ -123,7 +123,7 @@ public abstract class AbstractAuditServiceImpl<T extends AbstractAudit<?>> exten
 			Class<GenericEntity<?, ?>> clazz = (Class<GenericEntity<?, ?>>) Class.forName(audit
 					.getSecondaryObjectClass());
 			return auditDao.getGenericEntity(clazz, audit.getSecondaryObjectId());
-		} catch (Exception e) {
+		} catch (RuntimeException | ClassNotFoundException e) {
 			return null;
 		}
 	}

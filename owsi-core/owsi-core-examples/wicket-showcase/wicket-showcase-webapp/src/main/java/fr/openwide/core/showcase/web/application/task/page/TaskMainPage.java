@@ -2,6 +2,7 @@ package fr.openwide.core.showcase.web.application.task.page;
 
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -193,11 +194,17 @@ public class TaskMainPage extends MainTemplate {
 
 		AjaxLink<Void> startManager = new AjaxLink<Void>("start") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				add(new ClassAttributeAppender(queuedTaskHolderManager.isActive() ? "disabled" : ""));
+			protected void onInitialize() {
+				super.onInitialize();
+				add(new ClassAttributeAppender("disabled") {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public boolean isEnabled(Component component) {
+						return queuedTaskHolderManager.isActive();
+					}
+				});
 			}
 
 			@Override
@@ -224,11 +231,17 @@ public class TaskMainPage extends MainTemplate {
 
 		AjaxLink<Void> stopManager = new AjaxLink<Void>("stop") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				add(new ClassAttributeAppender(queuedTaskHolderManager.isActive() ? "" : "disabled"));
+			protected void onInitialize() {
+				super.onInitialize();
+				add(new ClassAttributeAppender("disabled") {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public boolean isEnabled(Component component) {
+						return !queuedTaskHolderManager.isActive();
+					}
+				});
 			}
 
 			@Override
@@ -245,7 +258,7 @@ public class TaskMainPage extends MainTemplate {
 					target.add(getPage());
 				} catch (Exception e) {
 					LOGGER.error("Unexpected error while trying to stop the queue.", e);
-					Session.get().error(getString("common.error.unexpectedr"));
+					Session.get().error(getString("common.error.unexpected"));
 				}
 
 				FeedbackUtils.refreshFeedback(target, getPage());

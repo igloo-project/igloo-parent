@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.application;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
@@ -87,7 +88,8 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 	public Session newSession(Request request, Response response) {
 		try {
 			return webSessionClassRef.get().getDeclaredConstructor(Request.class).newInstance(request); // NOSONAR
-		} catch (Exception e) {
+		} catch (RuntimeException | InstantiationException | IllegalAccessException
+				| InvocationTargetException | NoSuchMethodException e) {
 			throw new WicketRuntimeException("Unable to instantiate web session " +
 				webSessionClassRef.get(), e);
 		}

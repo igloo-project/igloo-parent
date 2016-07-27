@@ -1,6 +1,7 @@
 package fr.openwide.core.commons.util.functional.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +31,7 @@ public class StringDirectoryFileCreatingConverter extends Converter<String, File
 				try {
 					FileUtils.forceMkdir(directory);
 					return directory;
-				} catch (Exception e) {
+				} catch (IOException e) {
 					throw new IllegalStateException("The directory " + path + " does not exist and it is impossible to create it.");
 				}
 			}

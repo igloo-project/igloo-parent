@@ -176,7 +176,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 		if (parameter != null) {
 			try {
 				return new BigDecimal(parameter.getStringValue());
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.error("Error while retrieving BigDecimal from String", e);
 				return null;
 			}
@@ -204,7 +204,7 @@ public class AbstractParameterServiceImpl extends GenericEntityServiceImpl<Long,
 			try {
 				LOGGER.info("Loading properties into the database.");
 				doOnApplicationEvent();
-			} catch (Exception e) {
+			} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 				LOGGER.error("Unable to load the properties into the database.", e);
 			}
 		}

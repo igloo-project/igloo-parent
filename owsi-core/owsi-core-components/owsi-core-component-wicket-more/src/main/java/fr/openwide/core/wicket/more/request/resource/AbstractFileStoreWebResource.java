@@ -103,7 +103,7 @@ public abstract class AbstractFileStoreWebResource extends AbstractResource {
 					}
 				});
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 			LOGGER.error("Unable to open the FileStoreResourceStream", e);
 		}
 

@@ -42,12 +42,12 @@ public class OpenTFileRegistryFilter implements Filter {
 		} finally {
 			try {
 				TFileRegistry.close();
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.error("Error while trying to sync truezip filesystem (TFileRegistry.sync())", e);
 			}
 			try {
 				TConfig.pop();
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.error("Error while trying to pop truezip config (TConfig.pop())", e);
 			}
 		}

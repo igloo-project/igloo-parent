@@ -16,6 +16,8 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 import fr.openwide.core.jpa.migration.util.IBatchAssociationMigrationInformation;
@@ -82,7 +84,7 @@ public abstract class AbstractBatchAssociationMigrationService<Owning extends Ge
 				}
 			}
 			
-		} catch (Exception e) {
+		} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 			getLogger().error("Error during the persistence of {} items. {} cancelled creations.",
 					getMigrationInformation().getAssociationName(), entityIds.size(), e);
 			ProcessorMonitorContext.get().getDoneItems().addAndGet(-1 * entityIds.size());

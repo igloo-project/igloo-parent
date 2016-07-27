@@ -21,6 +21,8 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractListResultRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractMapResultRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
@@ -106,7 +108,7 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
 						}
 						
 					}
-				} catch (Exception e) {
+				} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 					LOGGER.error("Erreur lors de la persistence d'un(e) "
 							+ entityInformation.getEntityClass().getSimpleName()
 							+ ". {} créations annulées.", entities.size(), e);

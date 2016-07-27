@@ -15,6 +15,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.spring.util.SpringBeanUtils;
@@ -67,7 +69,7 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 						Collection<ExternalLinkWrapper> links = externalLinkWrapperService.listByIds(urlToIdsEntry.getValue());
 						linkCheckerService.checkLinksWithSameUrl(url, links);
 						count += links.size();
-					} catch (Exception e) {
+					} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 						LOGGER.error("An error occurred while checking links", e);
 					}
 				}

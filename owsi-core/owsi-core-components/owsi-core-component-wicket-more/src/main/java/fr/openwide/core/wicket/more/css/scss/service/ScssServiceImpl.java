@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.css.scss.service;
 
+import io.bit3.jsass.CompilationException;
 import io.bit3.jsass.Compiler;
 import io.bit3.jsass.Options;
 import io.bit3.jsass.Output;
@@ -7,7 +8,9 @@ import io.bit3.jsass.OutputStyle;
 import io.bit3.jsass.context.Context;
 import io.bit3.jsass.context.StringContext;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,7 +77,7 @@ public class ScssServiceImpl implements IScssService {
 			}
 			
 			return compiledStylesheet;
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException | URISyntaxException | CompilationException e) {
 			throw new ServiceException(String.format("Error compiling %1$s", scssPath), e);
 		}
 	}

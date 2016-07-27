@@ -87,7 +87,7 @@ public class DatabaseInitializationService {
 				jdbcTemplate.execute("BEGIN");
 				executeQueriesFromFile(sqlInitFile, false);
 				jdbcTemplate.execute("COMMIT");
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.error("Initialization problem", e);
 				jdbcTemplate.execute("ROLLBACK");
 			} finally {
@@ -138,7 +138,7 @@ public class DatabaseInitializationService {
 							jdbcTemplate.execute("BEGIN");
 						}
 						jdbcTemplate.execute(sqlQuery);
-					} catch (Exception err) {
+					} catch (RuntimeException err) {
 						if (doCommit) {
 							jdbcTemplate.execute("ROLLBACK");
 						}
@@ -151,7 +151,7 @@ public class DatabaseInitializationService {
 					sql.delete(0, sql.length());
 				}
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} finally {
 			try {

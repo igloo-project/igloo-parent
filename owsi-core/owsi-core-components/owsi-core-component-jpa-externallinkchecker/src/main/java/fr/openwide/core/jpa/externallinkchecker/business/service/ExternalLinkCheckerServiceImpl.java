@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -260,7 +261,7 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 					domainToUrlToIds.put(domain, urlToIds);
 				}
 				urlToIds.put(url, link.getId());
-			} catch (Exception e) {
+			} catch (RuntimeException | GalimatiasParseException e) {
 				// if we cannot parse the URI, there's no need to go further, we mark it as invalid and we ignore it
 				markAsInvalid(link);
 			}
@@ -368,7 +369,8 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 		}
 	}
 	
-	private void runTasksInParallel(Collection<? extends Callable<Void>> tasks, long timeout, TimeUnit timeoutUnit) throws ServiceException {
+	private void runTasksInParallel(Collection<? extends Callable<Void>> tasks, long timeout, TimeUnit timeoutUnit)
+			throws ServiceException {
 		final int threadPoolSize = propertyService.get(THREAD_POOL_SIZE);
 		final ThreadPoolExecutor executor = new ThreadPoolExecutor(
 				threadPoolSize, threadPoolSize,
@@ -382,12 +384,12 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 			for (Future<Void> future : futures) {
 				future.get(); // Check that no error has occurred
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | InterruptedException | ExecutionException e) {
 			throw new ServiceException("Interrupted request", e);
 		} finally {
 			try {
 				executor.shutdown();
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				LOGGER.warn("An error occurred while shutting down threads", e);
 			}
 		}

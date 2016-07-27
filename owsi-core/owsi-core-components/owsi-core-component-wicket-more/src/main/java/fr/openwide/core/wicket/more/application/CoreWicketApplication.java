@@ -134,7 +134,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 				FileUtils.forceMkdir(wicketDiskDataStoreFolder);
 				
 				getStoreSettings().setFileStoreFolder(wicketDiskDataStoreFolder);
-			} catch (Exception e) {
+			} catch (RuntimeException | IOException e) {
 				LOGGER.error(String.format("Unable to define a specific path (%1$s) for wicket data store. Using the default one.",
 						wicketDiskDataStorePath), e);
 			}

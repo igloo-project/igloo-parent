@@ -74,7 +74,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 				for (String localeAsString : Splitter.on(" ").omitEmptyStrings().split(input)) {
 					try {
 						locales.add(StringLocaleConverter.get().convert(localeAsString));
-					} catch (Exception e) {
+					} catch (RuntimeException e) {
 						LOGGER.error(String.format(
 								"%1$s string from locale.availableLocales cannot be mapped to Locale, ignored",
 								localeAsString
