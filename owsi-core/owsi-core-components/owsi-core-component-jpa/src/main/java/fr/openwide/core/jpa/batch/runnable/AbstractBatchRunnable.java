@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.batch.runnable;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * An abstract base for batch runnables.
@@ -39,8 +40,8 @@ import java.util.List;
 	}
 	
 	@Override
-	public void onError(Exception exception) {
-		throw new IllegalStateException(String.format("Unhandled error when running %s", this), exception);
+	public void onError(ExecutionException exception) {
+		throw new IllegalStateException(String.format("Unhandled exception when running %s", this), exception);
 	}
 
 }

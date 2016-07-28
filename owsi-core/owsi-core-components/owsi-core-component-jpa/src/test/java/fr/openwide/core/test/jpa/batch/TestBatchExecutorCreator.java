@@ -328,11 +328,11 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		assertTrue("postExecute was not run.", postExecuteWasRun.booleanValue());
 	}
 	
-	private static class SequentialFailingRunnable<T> extends ReadWriteBatchRunnable<T> {
-		private final AtomicInteger taskCount = new AtomicInteger(0);
+	private static class PartitionCountingRunnable<T> extends ReadWriteBatchRunnable<T> {
+		private final AtomicInteger executedPartitionCount = new AtomicInteger(0);
 		
-		public int getExecutedTaskCount() {
-			return taskCount.get();
+		public int getExecutedPartitionCount() {
+			return executedPartitionCount.get();
 		}
 		
 		@Override
@@ -341,14 +341,39 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		}
 		
 		@Override
-		public void executePartition(List<T> partition) {
-			int taskNumber = taskCount.getAndIncrement();
-			switch (taskNumber) {
-			case 0: // First task: succeed
-				LOGGER.warn("Task#{}: Succeeding", taskNumber);
+		public final void executePartition(List<T> partition) {
+			int partitionIndex = executedPartitionCount.getAndIncrement();
+			executePartition(partition, partitionIndex);
+		}
+		
+		public void executePartition(List<T> partition, int partitionIndex) {
+			super.executePartition(partition);
+		}
+	}
+	
+	private static class PreExecuteFailingRunnable<T> extends PartitionCountingRunnable<T> {
+		@Override
+		public void preExecute() {
+			super.preExecute();
+			throw new TestBatchException1();
+		}
+	}
+	
+	private static class SequentialFailingRunnable<T> extends PartitionCountingRunnable<T> {
+		@Override
+		public void preExecutePartition(List<T> partition) {
+			LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
+		}
+		
+		@Override
+		public void executePartition(List<T> partition, int partitionIndex) {
+			super.executePartition(partition, partitionIndex);
+			switch (partitionIndex) {
+			case 0: // First executePartition: succeed
+				LOGGER.warn("executePartition#{}: Succeeding", partitionIndex);
 				break;
-			case 1: // Second task: fail
-				LOGGER.warn("Task#{}: Failing", taskNumber);
+			case 1: // Second executePartition: fail
+				LOGGER.warn("executePartition#{}: Failing", partitionIndex);
 				throw new TestBatchException1();
 			default: // Should not happen
 				Assert.fail();
@@ -356,59 +381,92 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		}
 	}
 	
-	private static class ConcurrentFailingRunnable<T> extends ReadWriteBatchRunnable<T> {
+	private static class ConcurrentFailingRunnable<T> extends PartitionCountingRunnable<T> {
 		private final Semaphore afterFailureSemaphore = new Semaphore(0);
 		private final Semaphore beforeFailureSemaphore = new Semaphore(0);
-		private final AtomicInteger taskCount = new AtomicInteger(0);
-
-		public int getExecutedTaskCount() {
-			return taskCount.get();
-		}
 		
 		@Override
-		public void preExecutePartition(List<T> partition) {
-			LOGGER.warn("Executing partition: " + Joiners.onComma().join(partition));
-		}
-		
-		@Override
-		public void executePartition(List<T> partition) {
+		public void executePartition(List<T> partition, int partitionIndex) {
 			try {
-				int taskNumber = taskCount.getAndIncrement();
-				switch (taskNumber) {
-				case 0: // First task: succeed
-					LOGGER.warn("Task#{}: Succeeding", taskNumber);
+				switch (partitionIndex) {
+				case 0: // First executePartition: succeed
+					LOGGER.warn("executePartition#{}: Succeeding", partitionIndex);
 					break;
-				case 1: // Second task: wait for third task to start, then fail
-					LOGGER.warn("Task#{}: Waiting for next failing task to start", taskNumber);
+				case 1: // Second executePartition: wait for third task to start, then fail
+					LOGGER.warn("executePartition#{}: Waiting for next failing task to start", partitionIndex);
 					beforeFailureSemaphore.acquire();
-					LOGGER.warn("Task#{}: Failing", taskNumber);
+					LOGGER.warn("executePartition#{}: Failing", partitionIndex);
 					afterFailureSemaphore.release();
 					throw new TestBatchException1();
-				case 2: // Third task: just fail
-					LOGGER.warn("Task#{}: Allowing previous task to fail", taskNumber);
+				case 2: // Third executePartition: just fail
+					LOGGER.warn("executePartition#{}: Allowing previous task to fail", partitionIndex);
 					beforeFailureSemaphore.release();
-					LOGGER.warn("Task#{}: Failing", taskNumber);
+					LOGGER.warn("executePartition#{}: Failing", partitionIndex);
 					afterFailureSemaphore.release();
 					throw new TestBatchException1();
-				case 3:// Fourth task: wait for failure, then last long enough for the failing thread to shut down
-					LOGGER.warn("Task#{}: Waiting for another task's failure...", taskNumber);
+				case 3:// Fourth executePartition: wait for failure, then last long enough for the failing thread to shut down
+					LOGGER.warn("executePartition#{}: Waiting for another task's failure...", partitionIndex);
 					afterFailureSemaphore.acquire();
-					LOGGER.warn("Task#{}: Another task failed. Succeeding.", taskNumber);
+					LOGGER.warn("executePartition#{}: Another task failed. Succeeding.", partitionIndex);
 					Thread.sleep(1000);
 					break;
-				default: // Other tasks: just make sure there will still be tasks pending upon shutdown
+				default: // Other executePartition's: just make sure there will still be tasks pending upon shutdown
 					Thread.sleep(2000);
-					LOGGER.warn("Task#{}: Succeeding (after a short wait)", taskNumber);
+					LOGGER.warn("executePartition#{}: Succeeding (after a short wait)", partitionIndex);
 					break;
 				}
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				throw new IllegalStateException(e);
 			}
 		}
 	}
 	
 	@Test
-	public void testSimpleHibernateBatchErrorDefaultBehavior() {
+	public void testSimpleHibernateBatchPreExecuteErrorDefaultBehavior() {
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		
+		Exception runException = null;
+		PreExecuteFailingRunnable<Person> runnable = new PreExecuteFailingRunnable<>();
+		try {
+			executor.run(Person.class, personIds, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+
+		assertThat(runException, instanceOf(IllegalStateException.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(0, runnable.getExecutedPartitionCount());
+	}
+	
+	@Test
+	public void testSimpleHibernateBatchPreExecuteErrorCustomBehavior() {
+		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
+		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
+		
+		Exception runException = null;
+		PreExecuteFailingRunnable<Person> runnable = new PreExecuteFailingRunnable<Person>() {
+			@Override
+			public void onError(ExecutionException exception) {
+				throw new TestBatchException2(exception);
+			}
+		};
+		try {
+			executor.run(Person.class, personIds, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		
+		assertThat(runException, instanceOf(TestBatchException2.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(0, runnable.getExecutedPartitionCount());
+	}
+	
+	@Test
+	public void testSimpleHibernateBatchExecutePartitionErrorDefaultBehavior() {
 		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
 		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
 		
@@ -421,19 +479,20 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		}
 
 		assertThat(runException, instanceOf(IllegalStateException.class));
-		assertThat(runException.getCause(), instanceOf(TestBatchException1.class));
-		assertEquals(2, runnable.getExecutedTaskCount());
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(2, runnable.getExecutedPartitionCount());
 	}
 	
 	@Test
-	public void testSimpleHibernateBatchErrorCustomBehavior() {
+	public void testSimpleHibernateBatchExecutePartitionErrorCustomBehavior() {
 		SimpleHibernateBatchExecutor executor = executorCreator.newSimpleHibernateBatchExecutor();
 		executor.batchSize(10).flushToIndexes(true).reindexClasses(Person.class);
 		
 		Exception runException = null;
 		SequentialFailingRunnable<Person> runnable = new SequentialFailingRunnable<Person>() {
 			@Override
-			public void onError(Exception exception) {
+			public void onError(ExecutionException exception) {
 				throw new TestBatchException2(exception);
 			}
 		};
@@ -444,12 +503,57 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		}
 		
 		assertThat(runException, instanceOf(TestBatchException2.class));
-		assertThat(runException.getCause(), instanceOf(TestBatchException1.class));
-		assertEquals(2, runnable.getExecutedTaskCount());
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(2, runnable.getExecutedPartitionCount());
 	}
 	
 	@Test
-	public void testMultithreadedBatchErrorDefaultBehavior() {
+	public void testMultithreadedBatchPreExecuteErrorDefaultBehavior() {
+		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+		executor.batchSize(10).threads(4);
+
+		Exception runException = null;
+		PreExecuteFailingRunnable<Long> runnable = new PreExecuteFailingRunnable<Long>();
+		try {
+			executor.run("FailingProcess", personIds, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		
+		assertThat(runException, instanceOf(IllegalStateException.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(0, runException.getCause().getSuppressed().length);
+		assertEquals(0, runnable.getExecutedPartitionCount());
+	}
+	
+	@Test
+	public void testMultithreadedBatchPreExecuteErrorCustomException() {
+		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
+		executor.batchSize(10).threads(4);
+
+		Exception runException = null;
+		PreExecuteFailingRunnable<Long> runnable = new PreExecuteFailingRunnable<Long>() {
+			@Override
+			public void onError(ExecutionException exception) {
+				throw new TestBatchException2(exception);
+			}
+		};
+		try {
+			executor.run("FailingProcess", personIds, runnable);
+		} catch (Exception e) {
+			runException = e;
+		}
+		assertThat(runException, instanceOf(TestBatchException2.class));
+		assertThat(runException.getCause(), instanceOf(ExecutionException.class));
+		assertThat(runException.getCause().getCause(), instanceOf(TestBatchException1.class));
+		assertEquals(0, runException.getCause().getSuppressed().length);
+		assertEquals(0, runnable.getExecutedPartitionCount());
+	}
+	
+	@Test
+	public void testMultithreadedBatchExecutePartitionErrorDefaultBehavior() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 
@@ -467,18 +571,18 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		assertEquals(1, runException.getCause().getSuppressed().length);
 		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
 				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
-		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedTaskCount());
+		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedPartitionCount());
 	}
 	
 	@Test
-	public void testMultithreadedBatchErrorCustomException() {
+	public void testMultithreadedBatchExecutePartitionErrorCustomException() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 
 		Exception runException = null;
 		ConcurrentFailingRunnable<Long> runnable = new ConcurrentFailingRunnable<Long>() { // Requires at least 2 threads
 			@Override
-			public void onError(Exception exception) {
+			public void onError(ExecutionException exception) {
 				throw new TestBatchException2(exception);
 			}
 		};
@@ -493,11 +597,11 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		assertEquals(1, runException.getCause().getSuppressed().length);
 		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
 				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
-		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedTaskCount());
+		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedPartitionCount());
 	}
 	
 	@Test
-	public void testMultithreadedBatchErrorNoAbort() {
+	public void testMultithreadedBatchExecutePartitionErrorNoAbort() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 		executor.abortAllOnExecutionError(false);
@@ -515,6 +619,6 @@ public class TestBatchExecutorCreator extends AbstractJpaCoreTestCase {
 		assertEquals(1, runException.getCause().getSuppressed().length);
 		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
 				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
-		assertEquals("The executor did abort (this was unexpected)", 10, runnable.getExecutedTaskCount());
+		assertEquals("The executor did abort (this was unexpected)", 10, runnable.getExecutedPartitionCount());
 	}
 }

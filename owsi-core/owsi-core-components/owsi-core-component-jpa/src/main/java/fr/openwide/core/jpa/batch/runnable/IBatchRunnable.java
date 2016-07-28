@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.batch.runnable;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface IBatchRunnable<E> {
 
@@ -10,7 +11,7 @@ public interface IBatchRunnable<E> {
 
 	void postExecute();
 	
-	void onError(Exception exception);
+	void onError(ExecutionException exception);
 	
 	Writeability getWriteability();
 

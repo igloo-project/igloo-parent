@@ -66,14 +66,18 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 
 		try {
 			LOGGER.info("    preExecute start");
-		
-			transactionTemplate.execute(new TransactionCallback<Void>() {
-				@Override
-				public Void doInTransaction(TransactionStatus status) {
-					batchRunnable.preExecute();
-					return null;
-				}
-			});
+			
+			try {
+				transactionTemplate.execute(new TransactionCallback<Void>() {
+					@Override
+					public Void doInTransaction(TransactionStatus status) {
+						batchRunnable.preExecute();
+						return null;
+					}
+				});
+			} catch (RuntimeException e) {
+				throw new ExecutionException("Exception on preExecute()", e);
+			}
 			
 			LOGGER.info("    preExecute end");
 	
@@ -98,13 +102,17 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 	
 			LOGGER.info("    postExecute start");
 			
-			transactionTemplate.execute(new TransactionCallback<Void>() {
-				@Override
-				public Void doInTransaction(TransactionStatus status) {
-					batchRunnable.postExecute();
-					return null;
-				}
-			});
+			try {
+				transactionTemplate.execute(new TransactionCallback<Void>() {
+					@Override
+					public Void doInTransaction(TransactionStatus status) {
+						batchRunnable.postExecute();
+						return null;
+					}
+				});
+			} catch (RuntimeException e) {
+				throw new ExecutionException("Exception on postExecute()", e);
+			}
 			
 			LOGGER.info("    postExecute end");
 			
@@ -114,9 +122,10 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 			try {
 				LOGGER.info("    onError start");
 				batchRunnable.onError(e);
-				LOGGER.info("    onError end (exception was NOT re-thrown)");
-			} finally {
-				LOGGER.info("    onError end (exception WAS re-thrown)");
+				LOGGER.info("    onError end (exception was NOT propagated)");
+			} catch (RuntimeException e2) {
+				LOGGER.info("    onError end (exception WAS propagated)");
+				throw e2;
 			}
 		}
 	}

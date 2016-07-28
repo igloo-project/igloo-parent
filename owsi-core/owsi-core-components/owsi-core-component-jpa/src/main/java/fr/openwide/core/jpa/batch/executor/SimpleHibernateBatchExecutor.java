@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.batch.executor;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,58 +117,70 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 		try {
 			LOGGER.info("    preExecute start");
 			
-			transactionTemplate.execute(new TransactionCallback<Void>() {
-				@Override
-				public Void doInTransaction(TransactionStatus status) {
-					batchRunnable.preExecute();
-					return null;
-				}
-			});
+			try {
+				transactionTemplate.execute(new TransactionCallback<Void>() {
+					@Override
+					public Void doInTransaction(TransactionStatus status) {
+						batchRunnable.preExecute();
+						return null;
+					}
+				});
+			} catch (RuntimeException e) {
+				throw new ExecutionException("Exception on preExecute", e);
+			}
 			
 			LOGGER.info("    preExecute end");
 			
 			LOGGER.info("    starting batch executions");
 			
-			List<E> entityPartition = query.list(0, batchSize);
-			while (entityPartition.size() > 0) {
-				final List<E> entityPartitionToExecute = entityPartition;
-				transactionTemplate.execute(new TransactionCallback<Void>() {
-					@Override
-					public Void doInTransaction(TransactionStatus status) {
-						batchRunnable.executePartition(entityPartitionToExecute);
-						
-						if (!isReadOnly) {
-							entityService.flush();
+			try {
+				List<E> entityPartition = query.list(0, batchSize);
+				while (entityPartition.size() > 0) {
+					final List<E> entityPartitionToExecute = entityPartition;
+					transactionTemplate.execute(new TransactionCallback<Void>() {
+						@Override
+						public Void doInTransaction(TransactionStatus status) {
+							batchRunnable.executePartition(entityPartitionToExecute);
+							
+							if (!isReadOnly) {
+								entityService.flush();
+							}
+							for (IBeforeClearListener beforeClearListener : clearListeners) {
+								beforeClearListener.beforeClear();
+							}
+							if (!isReadOnly && flushToIndexes) {
+								hibernateSearchService.flushToIndexes();
+							}
+							entityService.clear();
+							return null;
 						}
-						for (IBeforeClearListener beforeClearListener : clearListeners) {
-							beforeClearListener.beforeClear();
-						}
-						if (!isReadOnly && flushToIndexes) {
-							hibernateSearchService.flushToIndexes();
-						}
-						entityService.clear();
-						return null;
-					}
-				});
-				
-				offset += entityPartition.size();
-				LOGGER.info("        treated %1$d/%2$d objects", offset, totalCount);
-				
-				// Don't use the offset if the runnable is consuming the query's results
-				entityPartition = query.list(consuming ? 0 : offset, batchSize);
+					});
+					
+					offset += entityPartition.size();
+					LOGGER.info("        treated %1$d/%2$d objects", offset, totalCount);
+					
+					// Don't use the offset if the runnable is consuming the query's results
+					entityPartition = query.list(consuming ? 0 : offset, batchSize);
+				}
+			} catch (RuntimeException e) {
+				throw new ExecutionException("Exception on executePartition", e);
 			}
 			
 			LOGGER.info("    end of batch executions");
 	
 			LOGGER.info("    postExecute start");
 			
-			transactionTemplate.execute(new TransactionCallback<Void>() {
-				@Override
-				public Void doInTransaction(TransactionStatus status) {
-					batchRunnable.postExecute();
-					return null;
-				}
-			});
+			try {
+				transactionTemplate.execute(new TransactionCallback<Void>() {
+					@Override
+					public Void doInTransaction(TransactionStatus status) {
+						batchRunnable.postExecute();
+						return null;
+					}
+				});
+			} catch (RuntimeException e) {
+				throw new ExecutionException("Exception on postExecute", e);
+			}
 			
 			LOGGER.info("    postExecute end");
 			
@@ -182,15 +195,16 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 			}
 			
 			LOGGER.info("End of batch for %1$s: %2$d/%3$d objects treated", loggerContext, offset, totalCount);
-		} catch (RuntimeException e) {
+		} catch (ExecutionException e) {
 			LOGGER.info("End of batch for %1$s: %2$d/%3$d objects treated, but caught exception '%s'",
 					loggerContext, offset, totalCount, e);
 			try {
 				LOGGER.info("    onError start");
 				batchRunnable.onError(e);
-				LOGGER.info("    onError end (exception was NOT re-thrown)");
-			} finally {
-				LOGGER.info("    onError end (exception WAS re-thrown)");
+				LOGGER.info("    onError end (exception was NOT propagated)");
+			} catch (RuntimeException e2) {
+				LOGGER.info("    onError end (exception WAS propagated)");
+				throw e2;
 			}
 		}
 	}
