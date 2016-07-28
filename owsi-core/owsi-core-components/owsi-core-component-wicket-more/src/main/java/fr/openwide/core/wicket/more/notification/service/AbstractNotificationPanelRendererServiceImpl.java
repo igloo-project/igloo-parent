@@ -54,6 +54,9 @@ public abstract class AbstractNotificationPanelRendererServiceImpl
 						try {
 							return componentTask.call();
 						} catch (Exception e) {
+							if (e instanceof InterruptedException) {
+								Thread.currentThread().interrupt();
+							}
 							throw new RuntimeException(e); // Do wrap
 						}
 					}

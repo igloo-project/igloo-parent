@@ -51,6 +51,9 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl implements ICont
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
+			if (e instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new RuntimeException(e);
 		}
 	}

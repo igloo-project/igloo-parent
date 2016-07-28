@@ -90,6 +90,9 @@ public class FactoredHistoryLogBeforeCommitWithDifferencesTask implements ITrans
 			try {
 				this.reference = referenceProvider.call();
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				}
 				throw new IllegalStateException("Error retrieving a reference object for a diff", e);
 			}
 		}
