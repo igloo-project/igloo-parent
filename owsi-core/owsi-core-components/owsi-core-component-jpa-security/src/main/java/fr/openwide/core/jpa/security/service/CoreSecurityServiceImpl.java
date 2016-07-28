@@ -176,6 +176,9 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		try {
 			return task.call();
 		} catch (Exception e) {
+			if (e instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new RuntimeException(e);
 		} finally {
 			AuthenticationUtil.setAuthentication(originalAuthentication);
@@ -189,6 +192,9 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		try {
 			return task.call();
 		} catch (Exception e) {
+			if (e instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new RuntimeException(e);
 		} finally {
 			AuthenticationUtil.setAuthentication(originalAuthentication);

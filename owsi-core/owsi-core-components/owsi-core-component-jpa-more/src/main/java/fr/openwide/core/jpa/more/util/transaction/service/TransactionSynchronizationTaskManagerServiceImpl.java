@@ -124,6 +124,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 					beforeCommitTask.run();
 					entityManagerUtils.getCurrentEntityManager().flush();
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) {
+						Thread.currentThread().interrupt();
+					}
 					// This exception MUST be thrown, as we want to rollback if anything goes wrong.
 					// We better ignore other tasks, as they will have no effect on the current transaction.
 					throw new TransactionSynchronizationException("Error while executing a 'before clear' task.", e);
@@ -155,6 +158,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			try {
 				beforeCommitTask.run();
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				}
 				// This exception MUST be thrown, as we want to rollback if anything goes wrong.
 				// We better ignore other tasks, as they will have no effect on the current transaction.
 				throw new TransactionSynchronizationException("Error while executing a 'before commit' task.", e);
@@ -172,6 +178,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			try {
 				afterCommitTask.run();
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				}
 				if (firstException == null) {
 					firstException = e;
 				} else {
@@ -196,6 +205,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			try {
 				((ITransactionSynchronizationTaskRollbackAware) afterCommitTask).afterRollback();
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				}
 				if (firstException == null) {
 					firstException = e;
 				} else {
@@ -208,6 +220,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			try {
 				((ITransactionSynchronizationTaskRollbackAware) beforeCommitTask).afterRollback();
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				}
 				if (firstException == null) {
 					firstException = e;
 				} else {
@@ -220,6 +235,9 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 			try {
 				beforeClearTask.afterRollback();
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				}
 				if (firstException == null) {
 					firstException = e;
 				} else {

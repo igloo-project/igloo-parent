@@ -44,6 +44,9 @@ public class TransactionScopeIndependantRunnerServiceImpl implements ITransactio
 				try {
 					return callable.call();
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) {
+						Thread.currentThread().interrupt();
+					}
 					throw new IllegalStateException(String.format("Erreur durant l'execution du callable %s", callable), e);
 				}
 			}

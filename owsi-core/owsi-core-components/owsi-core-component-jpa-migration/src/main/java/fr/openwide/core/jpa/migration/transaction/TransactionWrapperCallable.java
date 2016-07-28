@@ -30,6 +30,9 @@ public class TransactionWrapperCallable<T> implements Callable<T> {
 				try {
 					return callable.call();
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) {
+						Thread.currentThread().interrupt();
+					}
 					LOGGER.error("L'erreur suivante n'est pas traitée ; il faut obligatoirement traiter toutes les erreurs. Rollback de la transaction.", e);
 					transactionStatus.setRollbackOnly();
 					return null;
