@@ -1,5 +1,6 @@
 package fr.openwide.core.jpa.batch.util;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.Callable;
 
 import org.springframework.transaction.TransactionStatus;
@@ -26,28 +27,15 @@ public class TransactionWrapperCallable<T> implements Callable<T> {
 				try {
 					return callable.call();
 				} catch (RuntimeException e) {
-					/* RuntimeException will be handled by the TransactionTemplate itself,
-					 * and will be propagated to the  caller unchanged.
-					 */
 					throw e;
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {
 						Thread.currentThread().interrupt();
 					}
-					/* Hack: we just want the stack trace to be clean (without unnecessary wrappers), and the
-					 * exception to be propagated to the caller unchanged.
-					 * It's ugly, but safe: TransactionTemplate already handles the case
-					 * of an unexpected checked exception because of Spring proxies.
-					 */
-					throw TransactionWrapperCallable.<RuntimeException>checkedExceptionCastHack(e);
+					throw new UndeclaredThrowableException(e);
 				}
 			}
 		});
-	}
-
-	@SuppressWarnings("unchecked")
-	private static final <E extends Throwable> E checkedExceptionCastHack(Throwable e) {
-		return (E) e;
 	}
 
 }
