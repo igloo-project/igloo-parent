@@ -32,7 +32,7 @@ import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
 	excludeFilters = @Filter(Configuration.class)
 )
 // fonctionnement de l'annotation @Transactional
-@EnableTransactionManagement
+@EnableTransactionManagement(order = BasicApplicationAdviceOrder.TRANSACTION)
 public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig {
 
 	public static final String APPLICATION_NAME = "basic-application";

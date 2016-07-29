@@ -11,7 +11,12 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
-	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" run-as-manager-ref="runAsManager">
+	<!--
+		order=0 (instead of the default "lowest precedence") means that security is applied before caching, for instance,
+		unless otherwise specified. This prevents cache hits to bypass security.
+	 -->
+	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"
+			run-as-manager-ref="runAsManager" order="0">
 		<security:expression-handler ref="expressionHandler"/>
 	</security:global-method-security>
 	
