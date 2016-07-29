@@ -24,15 +24,16 @@ final class AuthenticationUtil {
 	}
 
 	static String getUserName() {
-		String userName = null;
-
 		Authentication authentication = getAuthentication();
-		if (authentication != null && (authentication.getPrincipal() instanceof UserDetails)) {
-			UserDetails details = (UserDetails) authentication.getPrincipal();
-			userName = details.getUsername();
+		if (authentication != null) {
+			Object principal = authentication.getPrincipal();
+			if (principal instanceof String) {
+				return (String) principal;
+			} else if (principal instanceof UserDetails) {
+				return ((UserDetails) principal).getUsername();
+			}
 		}
-
-		return userName;
+		return null;
 	}
 
 	static Collection<? extends GrantedAuthority> getAuthorities() {
