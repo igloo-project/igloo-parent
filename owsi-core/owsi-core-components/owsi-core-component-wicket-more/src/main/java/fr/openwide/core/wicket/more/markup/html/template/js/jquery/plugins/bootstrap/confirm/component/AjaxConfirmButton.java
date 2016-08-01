@@ -25,29 +25,33 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 
 	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
-		this(id, titleModel, textModel, yesLabelModel, noLabelModel, null, false, null);
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel) {
+		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false, null);
 	}
 
 	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel,
-			Form<?> form) {
-		this(id, titleModel, textModel, yesLabelModel, noLabelModel, null, false, form);
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel, Form<?> form) {
+		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false, form);
 	}
 
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
-			boolean textNoEscape) {
-		this(id, titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape, null);
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel,
+			IModel<String> cssClassNamesModel, boolean textNoEscape) {
+		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
+				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape, null);
 	}
 
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
-			boolean textNoEscape,
-			Form<?> form) {
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel,
+			IModel<String> cssClassNamesModel, boolean textNoEscape, Form<?> form) {
 		super(id, null, form);
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
+				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape));
 
 		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
 		// on délenche un évènement 'confirm'.

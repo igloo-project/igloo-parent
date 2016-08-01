@@ -13,6 +13,10 @@
 			var title = $this.data("modal-confirm-title");
 			var yesLabel = $this.data("modal-confirm-yes-label");
 			var noLabel = $this.data("modal-confirm-no-label");
+			var yesIcon = $this.data("modal-confirm-yes-icon");
+			var noIcon = $this.data("modal-confirm-no-icon");
+			var yesButton = $this.data("modal-confirm-yes-button");
+			var noButton = $this.data("modal-confirm-no-button");
 			var noEscape = $this.data("modal-confirm-text-noescape");
 			var cssClassNames = $this.data("modal-confirm-css-class-names");
 			var $content = $("<div class='modal confirm fade'></div>");
@@ -49,14 +53,14 @@
 				$content.append(
 						$("<div class='modal-footer'></div>")
 							.append(
-								$("<button class='btn btn-default' href='#' data-dismiss='modal'></a>")
-									.append($("<span class='icon-ban-circle fa fa-ban'></span>"))
+								$("<button class='" + noButton + "' href='#' data-dismiss='modal'></a>")
+									.append($("<span class='" + noIcon +"'></span>"))
 									.append(document.createTextNode(" " + noLabel))
 									.click(onCancel)
 							)
 							.append(
-								$("<button class='btn btn-success' href='#'></a>")
-									.append($("<span class='icon-ok icon-white fa fa-check'></span>"))
+								$("<button class='" + yesButton + "' href='#'></a>")
+									.append($("<span class='" + yesIcon + "'></span>"))
 									.append(document.createTextNode(" " + yesLabel))
 									.click(onConfirm)
 							)

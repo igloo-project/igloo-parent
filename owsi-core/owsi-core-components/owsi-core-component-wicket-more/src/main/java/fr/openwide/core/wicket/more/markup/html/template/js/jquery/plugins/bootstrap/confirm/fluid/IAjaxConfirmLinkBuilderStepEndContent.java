@@ -10,6 +10,10 @@ public interface IAjaxConfirmLinkBuilderStepEndContent<O> {
 	
 	IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel);
 	
+	IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel, IModel<String> yesIconModel);
+	
+	IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel, IModel<String> yesIconModel, IModel<String> yesButtonModel);
+	
 	IAjaxConfirmLinkBuilderStepOnclick<O> yesNo();
 	
 	IAjaxConfirmLinkBuilderStepOnclick<O> confirm();

@@ -19,6 +19,10 @@ public class ConfirmContentBehavior extends Behavior {
 	private static final String ATTRIBUTE_TEXT = "data-modal-confirm-text";
 	private static final String ATTRIBUTE_YES_LABEL = "data-modal-confirm-yes-label";
 	private static final String ATTRIBUTE_NO_LABEL = "data-modal-confirm-no-label";
+	private static final String ATTRIBUTE_YES_ICON = "data-modal-confirm-yes-icon";
+	private static final String ATTRIBUTE_NO_ICON = "data-modal-confirm-no-icon";
+	private static final String ATTRIBUTE_YES_BUTTON = "data-modal-confirm-yes-button";
+	private static final String ATTRIBUTE_NO_BUTTON = "data-modal-confirm-no-button";
 	private static final String ATTRIBUTE_TEXT_NO_ESCAPE = "data-modal-confirm-text-noescape";
 	private static final String ATTRIBUTE_CSS_CLASS_NAMES = "data-modal-confirm-css-class-names";
 
@@ -29,6 +33,14 @@ public class ConfirmContentBehavior extends Behavior {
 	private final IModel<String> yesLabelModel;
 
 	private final IModel<String> noLabelModel;
+	
+	private final IModel<String> yesIconModel;
+
+	private final IModel<String> noIconModel;
+	
+	private final IModel<String> yesButtonModel;
+
+	private final IModel<String> noButtonModel;
 
 	private final IModel<String> cssClassNamesModel;
 
@@ -42,13 +54,18 @@ public class ConfirmContentBehavior extends Behavior {
 	 * @param cssClassNamesModel - ignoré si null
 	 * @param textNoEscape - utiliser true si votre texte est du HTML
 	 */
-	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
-			IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
+	public ConfirmContentBehavior(IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel,IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		super();
 		this.titleModel = titleModel;
 		this.textModel = textModel;
 		this.yesLabelModel = yesLabelModel;
 		this.noLabelModel = noLabelModel;
+		this.yesIconModel = yesIconModel;
+		this.noIconModel = noIconModel;
+		this.yesButtonModel = yesButtonModel;
+		this.noButtonModel = noButtonModel;
 		this.textNoEscape = textNoEscape;
 		this.cssClassNamesModel = cssClassNamesModel;
 	}
@@ -67,6 +84,10 @@ public class ConfirmContentBehavior extends Behavior {
 		addAttribute(component, attributes, ATTRIBUTE_TEXT, textModel);
 		addAttribute(component, attributes, ATTRIBUTE_YES_LABEL, yesLabelModel);
 		addAttribute(component, attributes, ATTRIBUTE_NO_LABEL, noLabelModel);
+		addAttribute(component, attributes, ATTRIBUTE_YES_ICON, yesIconModel);
+		addAttribute(component, attributes, ATTRIBUTE_NO_ICON, noIconModel);
+		addAttribute(component, attributes, ATTRIBUTE_YES_BUTTON, yesButtonModel);
+		addAttribute(component, attributes, ATTRIBUTE_NO_BUTTON, noButtonModel);
 		addAttribute(component, attributes, ATTRIBUTE_CSS_CLASS_NAMES, cssClassNamesModel);
 		
 		if (textNoEscape) {
@@ -89,6 +110,18 @@ public class ConfirmContentBehavior extends Behavior {
 		}
 		if (noLabelModel != null) {
 			noLabelModel.detach();
+		}
+		if (yesIconModel != null) {
+			yesIconModel.detach();
+		}
+		if (noIconModel != null) {
+			noIconModel.detach();
+		}
+		if (yesButtonModel != null) {
+			yesButtonModel.detach();
+		}
+		if (noButtonModel != null) {
+			noButtonModel.detach();
 		}
 		if (cssClassNamesModel != null) {
 			cssClassNamesModel.detach();

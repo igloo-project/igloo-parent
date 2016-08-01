@@ -25,16 +25,18 @@ public abstract class ConfirmLink<O> extends Link<O> {
 
 	@Deprecated
 	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
-		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, null, false);
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel) {
+		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false);
 	}
 
 	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
-			boolean textNoEscape) {
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		super(id, model);
 		setOutputMarkupId(true);
-		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, cssClassNamesModel, textNoEscape));
+		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
+				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape));
 	}
 
 	@Override

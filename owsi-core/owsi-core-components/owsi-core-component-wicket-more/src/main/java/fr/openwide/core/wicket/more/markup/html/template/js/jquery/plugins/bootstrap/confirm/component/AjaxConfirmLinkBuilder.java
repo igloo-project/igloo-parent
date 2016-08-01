@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -37,6 +38,14 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	private IModel<String> yesLabelModel;
 	
 	private IModel<String> noLabelModel;
+	
+	private IModel<String> yesIconModel;
+	
+	private IModel<String> noIconModel;
+	
+	private IModel<String> yesButtonModel;
+	
+	private IModel<String> noButtonModel;
 	
 	private IModel<String> cssClassNamesModel;
 	
@@ -103,19 +112,59 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	@Override
 	public IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel) {
 		this.yesLabelModel = yesLabelModel;
+		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
+		this.yesButtonModel = new Model<String>("btn btn-success");
+		return this;
+	}
+	
+	@Override
+	public IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel, IModel<String> yesIconModel) {
+		this.yesLabelModel = yesLabelModel;
+		this.yesIconModel = yesIconModel;
+		this.yesButtonModel = new Model<String>("btn btn-success");
+		return this;
+	}
+	
+	@Override
+	public IAjaxConfirmLinkBuilderStepNo<O> yes(IModel<String> yesLabelModel, IModel<String> yesIconModel, IModel<String> yesButtonModel) {
+		this.yesLabelModel = yesLabelModel;
+		this.yesIconModel = yesIconModel;
+		this.yesButtonModel = yesButtonModel;
 		return this;
 	}
 	
 	@Override
 	public IAjaxConfirmLinkBuilderStepOnclick<O> no(IModel<String> noLabelModel) {
 		this.noLabelModel = noLabelModel;
+		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
+		this.noButtonModel = new Model<String>("btn btn-default");
 		return this;
 	}
-
+	
+	@Override
+	public IAjaxConfirmLinkBuilderStepOnclick<O> no(IModel<String> noLabelModel, IModel<String> noIconModel) {
+		this.noLabelModel = noLabelModel;
+		this.noIconModel = noIconModel;
+		this.noButtonModel = new Model<String>("btn btn-default");
+		return this;
+	}
+	
+	@Override
+	public IAjaxConfirmLinkBuilderStepOnclick<O> no(IModel<String> noLabelModel, IModel<String> noIconModel, IModel<String> noButtonModel) {
+		this.noLabelModel = noLabelModel;
+		this.noIconModel = noIconModel;
+		this.noButtonModel = noButtonModel;
+		return this;
+	}
+	
 	@Override
 	public IAjaxConfirmLinkBuilderStepOnclick<O> yesNo() {
 		this.yesLabelModel = new ResourceModel("common.yes");
 		this.noLabelModel = new ResourceModel("common.no");
+		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
+		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
+		this.yesButtonModel = new Model<String>("btn btn-success");
+		this.noButtonModel = new Model<String>("btn btn-default");
 		return this;
 	}
 
@@ -123,6 +172,10 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	public IAjaxConfirmLinkBuilderStepOnclick<O> confirm() {
 		this.yesLabelModel = new ResourceModel("common.confirm");
 		this.noLabelModel = new ResourceModel("common.cancel");
+		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
+		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
+		this.yesButtonModel = new Model<String>("btn btn-success");
+		this.noButtonModel = new Model<String>("btn btn-default");
 		return this;
 	}
 
@@ -130,6 +183,10 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	public IAjaxConfirmLinkBuilderStepOnclick<O> validate() {
 		this.yesLabelModel = new ResourceModel("common.validate");
 		this.noLabelModel = new ResourceModel("common.cancel");
+		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
+		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
+		this.yesButtonModel = new Model<String>("btn btn-success");
+		this.noButtonModel = new Model<String>("btn btn-default");
 		return this;
 	}
 
@@ -137,6 +194,10 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	public IAjaxConfirmLinkBuilderStepOnclick<O> save() {
 		this.yesLabelModel = new ResourceModel("common.save");
 		this.noLabelModel = new ResourceModel("common.cancel");
+		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
+		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
+		this.yesButtonModel = new Model<String>("btn btn-success");
+		this.noButtonModel = new Model<String>("btn btn-default");
 		return this;
 	}
 
@@ -161,7 +222,8 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 	public AjaxConfirmLink<O> create(String wicketId, IModel<O> model) {
 		AjaxConfirmLink<O> confirmLink = new FunctionalAjaxConfirmLink<O>(
 				wicketId, model, titleModelFactory, contentModelFactory,
-				yesLabelModel, noLabelModel, cssClassNamesModel, keepMarkup, onClick
+				yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel,
+				cssClassNamesModel, keepMarkup, onClick
 		);
 		confirmLink.add(
 				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE)
@@ -177,11 +239,13 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 		
 		public FunctionalAjaxConfirmLink(String id, IModel<O> model,
 				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory,
-				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> textModelFactory, IModel<String> yesLabelModel,
-				IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape,
+				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> textModelFactory,
+				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+				IModel<String> yesButtonModel, IModel<String> noButtonModel,
+				IModel<String> cssClassNamesModel, boolean textNoEscape,
 				IOneParameterAjaxAction<? super IModel<O>> onClick) {
 			super(id, model, titleModelFactory.create(model), textModelFactory.create(model), yesLabelModel,
-					noLabelModel, cssClassNamesModel, textNoEscape);
+					noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape);
 			this.onClick = onClick;
 		}
 		
@@ -206,7 +270,18 @@ public class AjaxConfirmLinkBuilder<O> implements IAjaxConfirmLinkBuilderStepSta
 
 	@Override
 	public void detach() {
-		Detachables.detach(titleModelFactory, contentModelFactory, yesLabelModel, noLabelModel, cssClassNamesModel, onClick);
+		Detachables.detach(
+				titleModelFactory,
+				contentModelFactory,
+				yesLabelModel,
+				noLabelModel,
+				yesIconModel,
+				noIconModel,
+				yesButtonModel,
+				noButtonModel,
+				cssClassNamesModel,
+				onClick
+		);
 	}
 
 }

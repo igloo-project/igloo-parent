@@ -6,4 +6,8 @@ public interface IAjaxConfirmLinkBuilderStepNo<O> {
 
 	IAjaxConfirmLinkBuilderStepOnclick<O> no(IModel<String> noLabelModel);
 	
+	IAjaxConfirmLinkBuilderStepOnclick<O> no(IModel<String> noLabelModel, IModel<String> noIconModel);
+	
+	IAjaxConfirmLinkBuilderStepOnclick<O> no(IModel<String> noLabelModel, IModel<String> noIconModel, IModel<String> noButtonModel);
+	
 }

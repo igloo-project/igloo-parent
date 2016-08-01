@@ -110,6 +110,10 @@ public class ModalPage extends WidgetsTemplate {
 				new ResourceModel("widgets.modal.confirmLink.body"),
 				new ResourceModel("widgets.modal.confirmLink.yes"),
 				new ResourceModel("widgets.modal.confirmLink.no"),
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
 				null, false) {
 			private static final long serialVersionUID = 3980878234185635872L;
 
@@ -157,6 +161,10 @@ public class ModalPage extends WidgetsTemplate {
 				new ResourceModel("widgets.modal.ajaxConfirmButton.body"),
 				new ResourceModel("widgets.modal.ajaxConfirmButton.yes"),
 				new ResourceModel("widgets.modal.ajaxConfirmButton.no"),
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
 				null, false, null) {
 			private static final long serialVersionUID = -914995462538909927L;
 
@@ -181,6 +189,10 @@ public class ModalPage extends WidgetsTemplate {
 				new ResourceModel("widgets.modal.ajaxConfirmButton.body"),
 				new ResourceModel("widgets.modal.ajaxConfirmButton.yes"),
 				new ResourceModel("widgets.modal.ajaxConfirmButton.no"),
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
 				null, false, null) {
 			private static final long serialVersionUID = -914995462538909927L;
 
