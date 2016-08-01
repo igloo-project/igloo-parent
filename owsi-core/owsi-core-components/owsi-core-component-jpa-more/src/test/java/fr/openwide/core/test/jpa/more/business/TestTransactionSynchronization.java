@@ -28,6 +28,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import fr.openwide.core.jpa.more.util.transaction.service.TransactionSynchronizationTaskManagerServiceImpl;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.test.jpa.more.business.entity.model.TestEntity;
 import fr.openwide.core.test.jpa.more.business.entity.service.ITestEntityService;
 import fr.openwide.core.test.jpa.more.business.util.transaction.model.TestCreateAfterCommitTask;
@@ -44,6 +45,9 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private ITestEntityService testEntityService;
+	
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
 	
 	@Autowired
 	private BatchExecutorCreator batchExecutorCreator;
@@ -228,9 +232,11 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		testEntityService.create(entity2);
 		final Long entityId2 = entity2.getId();
 		
+		hibernateSearchService.flushToIndexes();
+		
 		final Collection<TestUseEntityBeforeCommitOrClearTask> tasks = Lists.newArrayList();
 		
-		batchExecutorCreator.newSimpleHibernateBatchExecutor().batchSize(1)
+		batchExecutorCreator.newSimpleHibernateBatchExecutor().commitOnEnd().batchSize(1)
 				.run(TestEntity.class, ImmutableList.of(entityId1, entityId2), new ReadWriteBatchRunnable<TestEntity>() {
 					@Override
 					protected void executeUnit(TestEntity unit) {
