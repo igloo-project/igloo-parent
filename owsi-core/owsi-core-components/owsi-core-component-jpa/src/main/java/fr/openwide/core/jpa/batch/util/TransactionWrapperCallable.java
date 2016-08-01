@@ -5,15 +5,15 @@ import java.util.concurrent.Callable;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.support.TransactionOperations;
 
 public class TransactionWrapperCallable<T> implements Callable<T> {
 
-	private final TransactionTemplate transactionTemplate;
+	private final TransactionOperations transactionTemplate;
 
 	private final Callable<T> callable;
 
-	public TransactionWrapperCallable(TransactionTemplate transactionTemplate, Callable<T> callable) {
+	public TransactionWrapperCallable(TransactionOperations transactionTemplate, Callable<T> callable) {
 		super();
 		this.transactionTemplate = transactionTemplate;
 		this.callable = callable;

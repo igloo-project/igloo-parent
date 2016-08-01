@@ -19,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.support.TransactionOperations;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -107,9 +107,9 @@ public class ThreadedProcessor {
 	}
 
 	public <T> void runWithTransaction(final String loggerContext, Collection<? extends Runnable> runnables,
-			TransactionTemplate transactionTemplate, Integer totalItems) throws ExecutionException {
+			TransactionOperations TransactionOperations, Integer totalItems) throws ExecutionException {
 		callWithTransaction(loggerContext, Collections2.transform(runnables, RUNNABLE_TO_CALLABLE),
-				transactionTemplate, totalItems);
+				TransactionOperations, totalItems);
 	}
 
 	public <T> List<T> callWithoutTransaction(String loggerContext, Collection<? extends Callable<T>> callables)
@@ -123,7 +123,7 @@ public class ThreadedProcessor {
 	}
 
 	public <T> List<T> callWithTransaction(final String loggerContext, Collection<? extends Callable<T>> callables,
-			TransactionTemplate transactionTemplate, Integer totalItems) throws ExecutionException {
+			TransactionOperations TransactionOperations, Integer totalItems) throws ExecutionException {
 		List<ListenableFuture<T>> futures = Lists.newArrayList();
 		
 		// ThreadedPoolExecutor cannot be reused after shutdown, so we must instantiate it on each call.
@@ -156,10 +156,10 @@ public class ThreadedProcessor {
 				for (Callable<T> callable : callables) {
 					Callable<T> wrappedCallable = new ThreadLocalInitializingCallable<>(callable,
 							ProcessorMonitorContext.getThreadLocal(), monitorContext);
-					if (transactionTemplate != null) {
+					if (TransactionOperations != null) {
 						// All executions are wrapped in a separate transaction
 						// (if the template was provided)
-						wrappedCallable = new TransactionWrapperCallable<>(transactionTemplate, wrappedCallable);
+						wrappedCallable = new TransactionWrapperCallable<>(TransactionOperations, wrappedCallable);
 					}
 
 					ListenableFuture<T> future = executor.submit(wrappedCallable);
