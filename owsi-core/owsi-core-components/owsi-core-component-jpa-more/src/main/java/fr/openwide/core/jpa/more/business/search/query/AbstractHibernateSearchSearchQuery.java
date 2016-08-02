@@ -28,6 +28,7 @@ import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
+import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 	
@@ -42,6 +43,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private IHibernateSearchLuceneQueryFactory factory;
 	
 	private FullTextQuery fullTextQuery;
+	
+	private SearchQueryDefaultResult defaultResult = SearchQueryDefaultResult.EVERYTHING;
 	
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
@@ -60,8 +63,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private void init() {
 		this.fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		this.factory.setDefaultClass(mainClass);
-		QueryBuilder defaultQueryBuilder = this.factory.getDefaultQueryBuilder();
-		this.junction = defaultQueryBuilder.bool().must(defaultQueryBuilder.all().createQuery());
+		
+		this.junction = getDefaultQueryBuilder().bool();
 	}
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
@@ -90,6 +93,14 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 
 	protected FullTextEntityManager getFullTextEntityManager() {
 		return fullTextEntityManager;
+	}
+	
+	protected final SearchQueryDefaultResult getDefaultResult() {
+		return defaultResult;
+	}
+	
+	protected final void setDefaultResult(SearchQueryDefaultResult defaultResult) {
+		this.defaultResult = defaultResult;
 	}
 
 	// Junction appender
@@ -144,6 +155,18 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private FullTextQuery getFullTextQuery() {
 		if (fullTextQuery == null) {
 			addFilterBeforeCreateQuery();
+			
+			if (junction.isEmpty()) {
+				switch (getDefaultResult()) {
+				case EVERYTHING:
+					junction.must(getDefaultQueryBuilder().all().createQuery());
+					break;
+				case NOTHING:
+					junction.must(LuceneUtils.NO_RESULT_QUERY);
+					break;
+				}
+			}
+			
 			fullTextQuery = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
 		}
 		return fullTextQuery;
