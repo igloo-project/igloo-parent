@@ -18,7 +18,7 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
@@ -33,9 +33,9 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private final BootstrapRenderer<? super C> renderer;
 	
-	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper;
+	private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper;
 	
-	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorMapper;
+	private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> sideLinkGeneratorMapper;
 	
 	private enum LinkBehaviorIfInvalid {
 		THROW_EXCEPTION,
@@ -119,11 +119,11 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 		return link;
 	}
 
-	public IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> getLinkGeneratorMapper() {
+	public ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> getLinkGeneratorMapper() {
 		return linkGeneratorMapper;
 	}
 
-	public CoreBootstrapBadgeColumn<T, S, C> setLinkGeneratorMapper(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorFactory) {
+	public CoreBootstrapBadgeColumn<T, S, C> setLinkGeneratorMapper(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorFactory) {
 		if (sideLinkGeneratorMapper != null) {
 			throw new IllegalStateException("link and side link cannot be both set.");
 		}
@@ -131,11 +131,11 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 		return this;
 	}
 
-	public IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> getSideLinkGeneratorMapper() {
+	public ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> getSideLinkGeneratorMapper() {
 		return sideLinkGeneratorMapper;
 	}
 
-	public CoreBootstrapBadgeColumn<T, S, C> setSideLinkGeneratorMapper(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorFactory) {
+	public CoreBootstrapBadgeColumn<T, S, C> setSideLinkGeneratorMapper(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> sideLinkGeneratorFactory) {
 		if (linkGeneratorMapper != null) {
 			throw new IllegalStateException("link and side link cannot be both set.");
 		}

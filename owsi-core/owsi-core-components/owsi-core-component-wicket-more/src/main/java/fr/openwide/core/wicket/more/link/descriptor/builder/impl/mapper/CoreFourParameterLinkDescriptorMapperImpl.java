@@ -21,10 +21,11 @@ public class CoreFourParameterLinkDescriptorMapperImpl
 	public CoreFourParameterLinkDescriptorMapperImpl(IBuilderMapperLinkDescriptorFactory<TLinkDescriptor> factory) {
 		this.factory = factory;
 	}
-
+	
 	@Override
-	public TLinkDescriptor map(IModel<TParam1> model1, IModel<TParam2> model2, IModel<TParam3> model3, IModel<TParam4> model4) {
-		return factory.create(Quartet.with(model1, model2, model3, model4));
+	public TLinkDescriptor map(
+			Quartet<? extends IModel<TParam1>, ? extends IModel<TParam2>, ? extends IModel<TParam3>, ? extends IModel<TParam4>> param) {
+		return factory.create(param);
 	}
 	
 	@Override

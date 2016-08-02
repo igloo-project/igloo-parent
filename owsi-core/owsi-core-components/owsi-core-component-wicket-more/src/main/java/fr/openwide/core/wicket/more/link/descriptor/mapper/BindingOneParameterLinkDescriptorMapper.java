@@ -11,23 +11,24 @@ public class BindingOneParameterLinkDescriptorMapper<L, R, T> extends AbstractOn
 
 	private final BindingRoot<? super R, T> binding;
 	
-	private final IOneParameterLinkDescriptorMapper<L, T> mapper;
+	private final ILinkDescriptorMapper<L, ? super IModel<T>> delegate;
 
-	public BindingOneParameterLinkDescriptorMapper(BindingRoot<? super R, T> binding, IOneParameterLinkDescriptorMapper<L, T> mapper) {
+	public BindingOneParameterLinkDescriptorMapper(BindingRoot<? super R, T> binding,
+			ILinkDescriptorMapper<L, ? super IModel<T>> delegate) {
 		super();
 		this.binding = binding;
-		this.mapper = mapper;
+		this.delegate = delegate;
 	}
 
 	@Override
 	public L map(IModel<R> model) {
-		return mapper.map(BindingModel.of(model, binding));
+		return delegate.map(BindingModel.of(model, binding));
 	}
 	
 	@Override
 	public void detach() {
 		super.detach();
-		mapper.detach();
+		delegate.detach();
 	}
 
 }

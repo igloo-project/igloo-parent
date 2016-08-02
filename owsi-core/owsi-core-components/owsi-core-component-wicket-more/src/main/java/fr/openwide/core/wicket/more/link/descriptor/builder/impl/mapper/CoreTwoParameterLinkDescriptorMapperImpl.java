@@ -17,10 +17,10 @@ public class CoreTwoParameterLinkDescriptorMapperImpl<TLinkDescriptor, TParam1, 
 	public CoreTwoParameterLinkDescriptorMapperImpl(IBuilderMapperLinkDescriptorFactory<TLinkDescriptor> factory) {
 		this.factory = factory;
 	}
-
+	
 	@Override
-	public TLinkDescriptor map(IModel<TParam1> model1, IModel<TParam2> model2) {
-		return factory.create(Pair.with(model1, model2));
+	public TLinkDescriptor map(Pair<? extends IModel<TParam1>, ? extends IModel<TParam2>> param) {
+		return factory.create(param);
 	}
 	
 	@Override

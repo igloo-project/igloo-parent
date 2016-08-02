@@ -14,7 +14,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IM
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 
@@ -23,7 +23,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParam
  * <p><strong>Note:</strong> instead of using methods from this interface, please consider declaring your model
  * parameters using {@link IMappableParameterDeclarationState#model(Class)} and then map those declared parameters using
  * one of the methods defined in {@link IChosenParameterState} or {@link IOneChosenParameterState}. This will allow you
- * to build a {@link IOneParameterLinkDescriptorMapper link descriptor mapper}, suitable for use in declarative builders
+ * to build a {@link ILinkDescriptorMapper link descriptor mapper}, suitable for use in declarative builders
  * such as {@link fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder}.
  */
 public interface IParameterMappingState

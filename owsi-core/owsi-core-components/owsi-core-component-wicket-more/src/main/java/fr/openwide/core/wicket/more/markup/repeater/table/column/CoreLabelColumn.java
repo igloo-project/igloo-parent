@@ -18,7 +18,7 @@ import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.InvisiblePanel;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.rendering.Renderer;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
@@ -33,9 +33,9 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 	
 	private Renderer<? super T> tooltipRenderer;
 	
-	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper;
+	private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper;
 	
-	private IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorMapper;
+	private ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> sideLinkGeneratorMapper;
 	
 	private boolean hideIfInvalid = false;
 	
@@ -144,11 +144,11 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		this.tooltipRenderer = tooltipRenderer;
 	}
 
-	public IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> getLinkGeneratorMapper() {
+	public ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> getLinkGeneratorMapper() {
 		return linkGeneratorMapper;
 	}
 
-	public CoreLabelColumn<T, S> setLinkGeneratorMapper(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorFactory) {
+	public CoreLabelColumn<T, S> setLinkGeneratorMapper(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorFactory) {
 		if (sideLinkGeneratorMapper != null) {
 			throw new IllegalStateException("link and side link cannot be both set.");
 		}
@@ -156,11 +156,11 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 		return this;
 	}
 
-	public IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> getSideLinkGeneratorMapper() {
+	public ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> getSideLinkGeneratorMapper() {
 		return sideLinkGeneratorMapper;
 	}
 
-	public CoreLabelColumn<T, S> setSideLinkGeneratorMapper(IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> sideLinkGeneratorFactory) {
+	public CoreLabelColumn<T, S> setSideLinkGeneratorMapper(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> sideLinkGeneratorFactory) {
 		if (linkGeneratorMapper != null) {
 			throw new IllegalStateException("link and side link cannot be both set.");
 		}

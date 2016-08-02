@@ -21,10 +21,11 @@ public class CoreThreeParameterLinkDescriptorMapperImpl
 	public CoreThreeParameterLinkDescriptorMapperImpl(IBuilderMapperLinkDescriptorFactory<TLinkDescriptor> factory) {
 		this.factory = factory;
 	}
-
+	
 	@Override
-	public TLinkDescriptor map(IModel<TParam1> model1, IModel<TParam2> model2, IModel<TParam3> model3) {
-		return factory.create(Triplet.with(model1, model2, model3));
+	public TLinkDescriptor map(
+			Triplet<? extends IModel<TParam1>, ? extends IModel<TParam2>, ? extends IModel<TParam3>> param) {
+		return factory.create(param);
 	}
 	
 	@Override

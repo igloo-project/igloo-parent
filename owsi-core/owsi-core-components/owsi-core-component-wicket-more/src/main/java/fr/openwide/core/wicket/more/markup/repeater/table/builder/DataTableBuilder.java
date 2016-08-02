@@ -27,7 +27,7 @@ import fr.openwide.core.wicket.more.link.descriptor.factory.LinkGeneratorFactory
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import fr.openwide.core.wicket.more.markup.html.basic.TargetBlankBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
@@ -696,39 +696,39 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IAddedLabelColumnState<T, S> withLink(
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper) {
 			getColumn().setLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
 		}
 		
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withLink(Function<? super T, C> function,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper) {
 			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
 
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper) {
 			return withLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
 		}
 
 		@Override
 		public IAddedLabelColumnState<T, S> withSideLink(
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper) {
 			getColumn().setSideLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
 		}
 		
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> function,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper) {
 			return withSideLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
 
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper) {
 			return withSideLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
 		}
 
@@ -778,39 +778,39 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IAddedBootstrapBadgeColumnState<T, S, C> withLink(
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper) {
 			getColumn().setLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
 		}
 		
 		@Override
 		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(Function<? super T, E> function,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
 			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
 
 		@Override
 		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(AbstractCoreBinding<? super T, E> binding,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
 			return withLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
 		}
 
 		@Override
 		public IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper) {
 			getColumn().setSideLinkGeneratorMapper(linkGeneratorMapper);
 			return this;
 		}
 		
 		@Override
 		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(Function<? super T, E> function,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
 			return withSideLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
 
 		@Override
 		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(AbstractCoreBinding<? super T, E> binding,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, E> linkGeneratorMapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
 			return withSideLink(new BindingOneParameterLinkDescriptorMapper<>(binding, linkGeneratorMapper));
 		}
 
