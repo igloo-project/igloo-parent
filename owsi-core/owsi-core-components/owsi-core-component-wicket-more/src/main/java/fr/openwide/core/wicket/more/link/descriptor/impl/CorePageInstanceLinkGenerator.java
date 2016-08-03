@@ -18,10 +18,12 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
@@ -103,6 +105,19 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 			return false;
 		}
 		return Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER);
+	}
+	
+	@Override
+	public ILinkGenerator chain(ILinkGenerator other) {
+		if (other instanceof IPageLinkGenerator) {
+			return chain((IPageLinkGenerator) other);
+		}
+		return new ChainedLinkGeneratorImpl(ImmutableList.of(this, other));
+	}
+	
+	@Override
+	public IPageLinkGenerator chain(IPageLinkGenerator other) {
+		return new ChainedPageLinkGeneratorImpl(ImmutableList.of(this, other));
 	}
 	
 	@Override

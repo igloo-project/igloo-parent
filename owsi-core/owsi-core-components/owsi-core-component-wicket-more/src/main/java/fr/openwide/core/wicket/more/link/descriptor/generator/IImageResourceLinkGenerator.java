@@ -25,7 +25,15 @@ public interface IImageResourceLinkGenerator extends ILinkGenerator, IDetachable
 	 */
 	DynamicImage image(String wicketId);
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	IImageResourceLinkGenerator wrap(Component component);
+
+	/**
+	 * @see #chain(ILinkGenerator)
+	 */
+	IImageResourceLinkGenerator chain(IImageResourceLinkGenerator other);
 
 }

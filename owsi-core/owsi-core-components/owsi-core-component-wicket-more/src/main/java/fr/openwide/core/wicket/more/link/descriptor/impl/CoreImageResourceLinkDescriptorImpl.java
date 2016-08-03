@@ -4,8 +4,11 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 
+import com.google.common.collect.ImmutableList;
+
 import fr.openwide.core.wicket.more.link.descriptor.DynamicImage;
 import fr.openwide.core.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.generator.IImageResourceLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import fr.openwide.core.wicket.more.util.model.Models;
@@ -32,6 +35,14 @@ public class CoreImageResourceLinkDescriptorImpl extends CoreResourceLinkDescrip
 				parametersMapping.wrapOnAssignment(component),
 				parametersValidator
 		);
+	}
+	
+	@Override
+	public IImageResourceLinkGenerator chain(IImageResourceLinkGenerator other) {
+		if (other instanceof IImageResourceLinkGenerator) {
+			return chain((IImageResourceLinkGenerator) other);
+		}
+		return new ChainedImageResourceLinkGeneratorImpl(ImmutableList.of(this, other));
 	}
 
 }

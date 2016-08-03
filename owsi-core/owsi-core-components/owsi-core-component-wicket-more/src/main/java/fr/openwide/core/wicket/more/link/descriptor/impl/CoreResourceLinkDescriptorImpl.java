@@ -8,9 +8,12 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
 
+import com.google.common.collect.ImmutableList;
+
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -75,6 +78,11 @@ public class CoreResourceLinkDescriptorImpl extends AbstractCoreExplicitelyParam
 	public boolean isAccessible() {
 		ResourceReference resourceReference = resourceReferenceModel.getObject();
 		return resourceReference != null && super.isAccessible();
+	}
+
+	@Override
+	public ILinkGenerator chain(ILinkGenerator other) {
+		return new ChainedLinkGeneratorImpl(ImmutableList.of(this, other));
 	}
 	
 	@Override

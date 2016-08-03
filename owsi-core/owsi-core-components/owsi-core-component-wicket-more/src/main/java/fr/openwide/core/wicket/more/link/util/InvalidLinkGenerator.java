@@ -18,6 +18,7 @@ import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import fr.openwide.core.wicket.more.link.descriptor.DynamicImage;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IImageResourceLinkGenerator;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
@@ -159,5 +160,20 @@ class InvalidLinkGenerator implements IPageLinkGenerator, IImageResourceLinkGene
 				Models.<PageParameters>placeholder(),
 				new ConditionLinkParameterValidator(Condition.alwaysFalse())
 		);
+	}
+
+	@Override
+	public ILinkGenerator chain(ILinkGenerator other) {
+		return other;
+	}
+
+	@Override
+	public IImageResourceLinkGenerator chain(IImageResourceLinkGenerator other) {
+		return other;
+	}
+
+	@Override
+	public IPageLinkGenerator chain(IPageLinkGenerator other) {
+		return other;
 	}
 }

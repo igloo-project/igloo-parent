@@ -17,12 +17,14 @@ import org.apache.wicket.util.lang.Args;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.IPageLinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
@@ -173,6 +175,19 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		Class<? extends Page> pageClass = pageClassModel.getObject();
 		return pageClass != null && Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)
 				&& super.isAccessible();
+	}
+	
+	@Override
+	public ILinkGenerator chain(ILinkGenerator other) {
+		if (other instanceof IPageLinkGenerator) {
+			return chain((IPageLinkGenerator) other);
+		}
+		return new ChainedLinkGeneratorImpl(ImmutableList.of(this, other));
+	}
+	
+	@Override
+	public IPageLinkGenerator chain(IPageLinkGenerator other) {
+		return new ChainedPageLinkGeneratorImpl(ImmutableList.of(this, other));
 	}
 	
 	@Override
