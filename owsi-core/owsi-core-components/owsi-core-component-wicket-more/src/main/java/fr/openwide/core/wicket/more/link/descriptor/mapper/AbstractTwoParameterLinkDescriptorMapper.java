@@ -1,6 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
+import org.javatuples.Pair;
 
 import com.google.common.base.Function;
 
@@ -13,6 +14,14 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 	
 	@Override
 	public void detach() { }
+	
+	@Override
+	public abstract L map(Pair<? extends IModel<T1>, ? extends IModel<T2>> param);
+	
+	@Override
+	public final L map(IModel<T1> model1, IModel<T2> model2) {
+		return map(Pair.with(model1, model2));
+	}
 	
 	@Override
 	public IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final IModel<T1> model1) {
@@ -52,8 +61,8 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, U1, T2>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<U1> model1, IModel<T2> model2) {
-				return AbstractTwoParameterLinkDescriptorMapper.this.map(ReadOnlyModel.<T1>of(model1), model2);
+			public L map(Pair<? extends IModel<U1>, ? extends IModel<T2>> param) {
+				return AbstractTwoParameterLinkDescriptorMapper.this.map(param.setAt0(ReadOnlyModel.<T1>of(param.getValue0())));
 			}
 			@Override
 			public void detach() {
@@ -106,8 +115,8 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, U2>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<U2> model2) {
-				return AbstractTwoParameterLinkDescriptorMapper.this.map(model1, ReadOnlyModel.<T2>of(model2));
+			public L map(Pair<? extends IModel<T1>, ? extends IModel<U2>> param) {
+				return AbstractTwoParameterLinkDescriptorMapper.this.map(param.setAt1(ReadOnlyModel.<T2>of(param.getValue1())));
 			}
 			@Override
 			public void detach() {

@@ -6,7 +6,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.repeater.FactoryRepeatingView;
 
 public final class ComponentFactories {
@@ -51,7 +51,7 @@ public final class ComponentFactories {
 	}
 	
 	public static <T> IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>
-			fromLinkDescriptorMapper(final IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+			fromLinkDescriptorMapper(final ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 		return new IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>() {
 			private static final long serialVersionUID = 1L;
 			

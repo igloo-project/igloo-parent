@@ -4,7 +4,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.factory.ComponentFactories;
 
@@ -16,7 +16,7 @@ public class ActionColumnLinkBuilder<T>
 	private boolean hideIfInvalid = false;
 	
 	public ActionColumnLinkBuilder(BootstrapRenderer<? super T> renderer,
-			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 		super(renderer, ComponentFactories.fromLinkDescriptorMapper(mapper));
 	}
 	

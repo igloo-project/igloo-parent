@@ -1,7 +1,7 @@
 package fr.openwide.core.wicket.more.link.descriptor.mapper;
 
-import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.javatuples.Pair;
 
 import com.google.common.base.Function;
 
@@ -10,13 +10,24 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IM
 
 /**
  * An object that can create a {@link ILinkDescriptor} using two {@link IModel}s.
+ * @see ILinkDescriptorMapper
  * @see IMappableParameterDeclarationState#model(Class)
  */
-public interface ITwoParameterLinkDescriptorMapper<L, T1, T2> extends IDetachable {
+public interface ITwoParameterLinkDescriptorMapper<L, T1, T2>
+		extends ILinkDescriptorMapper<L, Pair<? extends IModel<T1>, ? extends IModel<T2>>> {
+	
+	/**
+	 * {@inheritDoc}
+	 * @deprecated Provided in order to implement {@link ILinkDescriptorMapper}. When you're using a
+	 * {@link ITwoParameterLinkDescriptorMapper}, please use {@link #map(IModel, IModel)} instead.
+	 */
+	@Override
+	@Deprecated
+	L map(Pair<? extends IModel<T1>, ? extends IModel<T2>> param);
 
 	/**
 	 * Map the given models to a newly-created {@link ILinkDescriptor}.
-	 * @see IOneParameterLinkDescriptorMapper#map(IModel)
+	 * @see #map(Pair)
 	 */
 	L map(IModel<T1> model1, IModel<T2> model2);
 

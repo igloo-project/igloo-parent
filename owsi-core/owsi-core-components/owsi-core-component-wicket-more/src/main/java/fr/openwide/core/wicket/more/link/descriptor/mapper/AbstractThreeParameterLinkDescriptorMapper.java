@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.link.descriptor.mapper;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import com.google.common.base.Function;
 
@@ -16,20 +17,26 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 	@Override
 	public void detach() { }
 	
+	@Override
+	public abstract L map(Triplet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<T3>> param);
+	
+	@Override
+	public final L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3) {
+		return map(Triplet.with(model1, model2, model3));
+	}
+	
 	private static final class DerivingModel<U1, U2, U> extends AbstractReadOnlyModel<U> {
 		private static final long serialVersionUID = 1L;
-		private final IModel<U1> model1;
-		private final IModel<U2> model2;
+		private final Pair<? extends IModel<U1>, ? extends IModel<U2>> models;
 		private final Function<Pair<U1, U2>, U> function;
-		public DerivingModel(IModel<U1> model1, IModel<U2> model2, Function<Pair<U1, U2>, U> function) {
+		public DerivingModel(Pair<? extends IModel<U1>, ? extends IModel<U2>> models, Function<Pair<U1, U2>, U> function) {
 			super();
-			this.model1 = model1;
-			this.model2 = model2;
+			this.models = models;
 			this.function = function;
 		}
 		@Override
 		public U getObject() {
-			return function.apply(Pair.with(model1.getObject(), model2.getObject()));
+			return function.apply(Pair.with(models.getValue0().getObject(), models.getValue1().getObject()));
 		}
 	}
 
@@ -38,8 +45,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T2, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T2> model2, IModel<T3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, model2, model3);
+			public L map(Pair<? extends IModel<T2>, ? extends IModel<T3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.addAt0(model1));
 			}
 			@Override
 			public void detach() {
@@ -55,8 +62,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T2, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T2> model2, IModel<T3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(new DerivingModel<>(model2, model3, function), model2, model3);
+			public L map(Pair<? extends IModel<T2>, ? extends IModel<T3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.addAt0(new DerivingModel<>(param, function)));
 			}
 			@Override
 			public void detach() {
@@ -71,8 +78,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractThreeParameterLinkDescriptorMapper<L, U1, T2, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<U1> model1, IModel<T2> model2, IModel<T3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(ReadOnlyModel.<T1>of(model1), model2, model3);
+			public L map(Triplet<? extends IModel<U1>, ? extends IModel<T2>, ? extends IModel<T3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.setAt0(ReadOnlyModel.<T1>of(param.getValue0())));
 			}
 			@Override
 			public void detach() {
@@ -92,8 +99,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, model2, model3);
+			public L map(Pair<? extends IModel<T1>, ? extends IModel<T3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.addAt1(model2));
 			}
 			@Override
 			public void detach() {
@@ -109,8 +116,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, new DerivingModel<>(model1, model3, function), model3);
+			public L map(Pair<? extends IModel<T1>, ? extends IModel<T3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.addAt1(new DerivingModel<>(param, function)));
 			}
 			@Override
 			public void detach() {
@@ -125,8 +132,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractThreeParameterLinkDescriptorMapper<L, T1, U2, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<U2> model2, IModel<T3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, ReadOnlyModel.<T2>of(model2), model3);
+			public L map(Triplet<? extends IModel<T1>, ? extends IModel<U2>, ? extends IModel<T3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.setAt1(ReadOnlyModel.<T2>of(param.getValue1())));
 			}
 			@Override
 			public void detach() {
@@ -146,8 +153,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T2> model2) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, model2, model3);
+			public L map(Pair<? extends IModel<T1>, ? extends IModel<T2>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.addAt2(model3));
 			}
 			@Override
 			public void detach() {
@@ -163,8 +170,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T2> model2) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, model2, new DerivingModel<>(model1, model2, function));
+			public L map(Pair<? extends IModel<T1>, ? extends IModel<T2>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.addAt2(new DerivingModel<>(param, function)));
 			}
 			@Override
 			public void detach() {
@@ -179,8 +186,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return new AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, U3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T2> model2, IModel<U3> model3) {
-				return AbstractThreeParameterLinkDescriptorMapper.this.map(model1, model2, ReadOnlyModel.<T3>of(model3));
+			public L map(Triplet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<U3>> param) {
+				return AbstractThreeParameterLinkDescriptorMapper.this.map(param.setAt2(ReadOnlyModel.<T3>of(param.getValue2())));
 			}
 			@Override
 			public void detach() {

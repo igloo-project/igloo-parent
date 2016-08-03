@@ -1,8 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.mapper;
 
-import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import com.google.common.base.Function;
 
@@ -11,13 +11,24 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IM
 
 /**
  * An object that can create a {@link ILinkDescriptor} using three {@link IModel}s.
+ * @see ILinkDescriptorMapper
  * @see IMappableParameterDeclarationState#model(Class)
  */
-public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> extends IDetachable {
+public interface IThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
+		extends ILinkDescriptorMapper<L, Triplet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<T3>>> {
+
+	/**
+	* {@inheritDoc}
+	* @deprecated Provided in order to implement {@link ILinkDescriptorMapper}. When you're using a
+	* {@link IThreeParameterLinkDescriptorMapper}, please use {@link #map(IModel, IModel, IModel)} instead.
+	*/
+	@Override
+	@Deprecated
+	L map(Triplet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<T3>> param);
 
 	/**
 	 * Map the given models to a newly-created {@link ILinkDescriptor}.
-	 * @see IOneParameterLinkDescriptorMapper#map(IModel)
+	 * @see #map(Triplet)
 	 */
 	L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3);
 

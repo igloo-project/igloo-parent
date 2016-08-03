@@ -87,6 +87,12 @@ public interface ILinkGenerator extends IDetachable {
 	 * <p>The result of this method may change over time if the underlying data changes.
 	 */
 	boolean isAccessible();
+
+	/**
+	 * Returns a link generator that will fall back to <code>other</code> when this link generator is not
+	 * {@link #isAccessible() accessible}.
+	 */
+	ILinkGenerator chain(ILinkGenerator other);
 	
 	/**
 	 * @deprecated Use {@link LinkDescriptors#invalid()} instead.

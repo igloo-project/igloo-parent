@@ -39,9 +39,17 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	 * @see AbstractDynamicBookmarkableLink
 	 */
 	AbstractDynamicBookmarkableLink link(String wicketId, String anchor);
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	IPageLinkGenerator wrap(Component component);
+
+	/**
+	 * @see #chain(ILinkGenerator)
+	 */
+	IPageLinkGenerator chain(IPageLinkGenerator other);
 
 	/**
 	 * Sets the response page and parameters for the current {@link RequestCycle} to the value of this link descriptor.

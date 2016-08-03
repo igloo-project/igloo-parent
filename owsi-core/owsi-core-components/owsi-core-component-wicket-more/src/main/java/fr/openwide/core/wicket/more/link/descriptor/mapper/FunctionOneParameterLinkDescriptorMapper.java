@@ -13,23 +13,24 @@ public class FunctionOneParameterLinkDescriptorMapper<R, T> extends AbstractOneP
 
 	private final Function<? super R, T> function;
 	
-	private final IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper;
+	private final ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> delegate;
 
-	public FunctionOneParameterLinkDescriptorMapper(Function<? super R, T> function, IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+	public FunctionOneParameterLinkDescriptorMapper(Function<? super R, T> function,
+			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> delegate) {
 		super();
 		this.function = function;
-		this.mapper = mapper;
+		this.delegate = delegate;
 	}
 
 	@Override
 	public ILinkGenerator map(IModel<R> model) {
-		return mapper.map(ReadOnlyModel.of(model, function));
+		return delegate.map(ReadOnlyModel.of(model, function));
 	}
 	
 	@Override
 	public void detach() {
 		super.detach();
-		mapper.detach();
+		delegate.detach();
 	}
 
 }

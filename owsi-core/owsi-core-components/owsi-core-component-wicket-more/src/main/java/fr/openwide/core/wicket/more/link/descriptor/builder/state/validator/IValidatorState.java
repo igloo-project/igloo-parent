@@ -8,7 +8,7 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IM
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -22,7 +22,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkPar
  * model parameters using {@link IMappableParameterDeclarationState#model(Class)}, mapping those declared parameters
  * using one of the methods defined in {@link IChosenParameterState} or {@link IOneChosenParameterState} and adding
  * validation using the same interfaces. This will allow you to build a
- * {@link IOneParameterLinkDescriptorMapper link descriptor mapper}, suitable for use in declarative builders such
+ * {@link ILinkDescriptorMapper link descriptor mapper}, suitable for use in declarative builders such
  * as {@link fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder}.
  */
 public interface IValidatorState<TSelf extends IValidatorState<TSelf>> {
@@ -32,7 +32,7 @@ public interface IValidatorState<TSelf extends IValidatorState<TSelf>> {
 	 * <p>The validator will be executed each time a link will get {@link ILinkGenerator generated} or link parameters
 	 * will get {@link ILinkParametersExtractor extracted}.
 	 * <p><strong>Note:</strong> if your validator depends on one of the parameters, and you're building a
-	 * {@link IOneParameterLinkDescriptorMapper link descriptor mapper}, please consider calling
+	 * {@link ILinkDescriptorMapper link descriptor mapper}, please consider calling
 	 * {@link IChosenParameterState#validator(fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory)}
 	 * instead.
 	 * @param validator
@@ -45,7 +45,7 @@ public interface IValidatorState<TSelf extends IValidatorState<TSelf>> {
 	 * {@link #validator(ILinkParameterValidator) Add a validator to the resulting link descriptor} that will pass
 	 * validation if and only if the given condition is <code>true</code>, and raise an error otherwise.
 	 * <p><strong>Note:</strong> if your condition depends on one of the parameters, and you're building a
-	 * {@link IOneParameterLinkDescriptorMapper link descriptor mapper}, please consider calling
+	 * {@link ILinkDescriptorMapper link descriptor mapper}, please consider calling
 	 * {@link IChosenParameterState#validator(fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory)}
 	 * instead.
 	 * @param condition The condition on which the validation should pass.
@@ -59,7 +59,7 @@ public interface IValidatorState<TSelf extends IValidatorState<TSelf>> {
 	 * validation if and only if the authenticated user has the given permission on the object contained in the
 	 * given model, and raise an error otherwise.
 	 * <p><strong>Note:</strong> if the given model is one of the link parameters, and you're building a
-	 * {@link IOneParameterLinkDescriptorMapper link descriptor mapper}, please consider calling
+	 * {@link ILinkDescriptorMapper link descriptor mapper}, please consider calling
 	 * {@link IOneChosenParameterState#permission(String)} instead.
 	 * @param model The object on which the permission should be granted.
 	 * @param permissionName The name of the permission that should be granted.
@@ -73,7 +73,7 @@ public interface IValidatorState<TSelf extends IValidatorState<TSelf>> {
 	 * validation if and only if the authenticated user has <strong>any</strong> of the given permissions on the object
 	 * contained in the given model, and raise an error otherwise.
 	 * <p><strong>Note:</strong> if the given model is one of the link parameters, and you're building a
-	 * {@link IOneParameterLinkDescriptorMapper link descriptor mapper}, please consider calling
+	 * {@link ILinkDescriptorMapper link descriptor mapper}, please consider calling
 	 * {@link IOneChosenParameterState#permission(String, String...)} instead.
 	 * @param model The object on which one of the permissions should be granted.
 	 * @param firstPermissionName The name of a permission that is sufficient to pass validation.

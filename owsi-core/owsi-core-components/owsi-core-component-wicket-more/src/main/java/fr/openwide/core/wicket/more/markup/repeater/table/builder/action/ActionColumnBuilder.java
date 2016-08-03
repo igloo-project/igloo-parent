@@ -19,7 +19,7 @@ import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
-import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import fr.openwide.core.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAction;
 import fr.openwide.core.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
@@ -58,27 +58,27 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 		
 		@Override
 		public IActionColumnAddedLinkState<T, S> addLink(BootstrapRenderer<? super T> renderer,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 			return ActionColumnBuilder.this.addLink(renderer, mapper);
 		}
 		
 		@Override
 		public <C> IActionColumnAddedLinkState<T, S> addLink(BootstrapRenderer<? super T> renderer,
 				AbstractCoreBinding<? super T, C> binding,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> mapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 			return ActionColumnBuilder.this.addLink(renderer, binding, mapper);
 		}
 		
 		@Override
 		public IActionColumnAddedLinkState<T, S> addLabelledLink(BootstrapRenderer<? super T> renderer,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 			return ActionColumnBuilder.this.addLabelledLink(renderer, mapper);
 		}
 		
 		@Override
 		public <C> IActionColumnAddedLinkState<T, S> addLabelledLink(BootstrapRenderer<? super T> renderer,
 				AbstractCoreBinding<? super T, C> binding,
-				IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> mapper) {
+				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 			return ActionColumnBuilder.this.addLabelledLink(renderer, binding, mapper);
 		}
 		
@@ -367,7 +367,7 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 
 	@Override
 	public IActionColumnAddedLinkState<T, S> addLink(BootstrapRenderer<? super T> renderer,
-			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 		ActionColumnLinkBuilder<T> factory = new ActionColumnLinkBuilder<>(renderer, mapper);
 		builders.add(factory);
 		return new ActionColumnAddedLinkState(factory);
@@ -376,20 +376,20 @@ public class ActionColumnBuilder<T, S extends ISort<?>> implements IActionColumn
 	@Override
 	public <C> IActionColumnAddedLinkState<T, S> addLink(BootstrapRenderer<? super T> renderer,
 			AbstractCoreBinding<? super T, C> binding,
-			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> mapper) {
+			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 		return addLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
 	}
 
 	@Override
 	public IActionColumnAddedLinkState<T, S> addLabelledLink(BootstrapRenderer<? super T> renderer,
-			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, T> mapper) {
+			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 		return addLink(renderer, mapper).showLabel();
 	}
 
 	@Override
 	public <C> IActionColumnAddedLinkState<T, S> addLabelledLink(BootstrapRenderer<? super T> renderer,
 			AbstractCoreBinding<? super T, C> binding,
-			IOneParameterLinkDescriptorMapper<? extends ILinkGenerator, C> mapper) {
+			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 		return addLabelledLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
 	}
 

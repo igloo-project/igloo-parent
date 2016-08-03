@@ -1,6 +1,8 @@
 package fr.openwide.core.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
+import org.javatuples.Quartet;
+import org.javatuples.Triplet;
 
 import fr.openwide.core.wicket.more.util.model.Models;
 
@@ -10,14 +12,22 @@ public abstract class AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T
 
 	@Override
 	public void detach() { }
-
+	
+	@Override
+	public abstract L map(Quartet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<T3>, ? extends IModel<T4>> param);
+	
+	@Override
+	public final L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3, IModel<T4> model4) {
+		return map(Quartet.with(model1, model2, model3, model4));
+	}
+	
 	@Override
 	public IThreeParameterLinkDescriptorMapper<L, T2, T3, T4> setParameter1(final IModel<T1> model1) {
 		return new AbstractThreeParameterLinkDescriptorMapper<L, T2, T3, T4>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T2> model2, IModel<T3> model3, IModel<T4> model4) {
-				return AbstractFourParameterLinkDescriptorMapper.this.map(model1, model2, model3, model4);
+			public L map(Triplet<? extends IModel<T2>, ? extends IModel<T3>, ? extends IModel<T4>> param) {
+				return AbstractFourParameterLinkDescriptorMapper.this.map(param.addAt0(model1));
 			}
 			@Override
 			public void detach() {
@@ -38,8 +48,8 @@ public abstract class AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T
 		return new AbstractThreeParameterLinkDescriptorMapper<L, T1, T3, T4>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T3> model3, IModel<T4> model4) {
-				return AbstractFourParameterLinkDescriptorMapper.this.map(model1, model2, model3, model4);
+			public L map(Triplet<? extends IModel<T1>, ? extends IModel<T3>, ? extends IModel<T4>> param) {
+				return AbstractFourParameterLinkDescriptorMapper.this.map(param.addAt1(model2));
 			}
 			@Override
 			public void detach() {
@@ -60,8 +70,8 @@ public abstract class AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T
 		return new AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T4>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T2> model2, IModel<T4> model4) {
-				return AbstractFourParameterLinkDescriptorMapper.this.map(model1, model2, model3, model4);
+			public L map(Triplet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<T4>> param) {
+				return AbstractFourParameterLinkDescriptorMapper.this.map(param.addAt2(model3));
 			}
 			@Override
 			public void detach() {
@@ -82,8 +92,8 @@ public abstract class AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T
 		return new AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public L map(IModel<T1> model1, IModel<T2> model2, IModel<T3> model3) {
-				return AbstractFourParameterLinkDescriptorMapper.this.map(model1, model2, model3, model4);
+			public L map(Triplet<? extends IModel<T1>, ? extends IModel<T2>, ? extends IModel<T3>> param) {
+				return AbstractFourParameterLinkDescriptorMapper.this.map(param.addAt3(model4));
 			}
 			@Override
 			public void detach() {
