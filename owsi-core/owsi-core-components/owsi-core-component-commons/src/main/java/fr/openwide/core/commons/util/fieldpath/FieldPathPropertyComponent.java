@@ -7,7 +7,9 @@ public class FieldPathPropertyComponent extends FieldPathComponent {
 
 	private static final long serialVersionUID = 2111693502794024737L;
 
-	public static final String PROPERTY_SEPARATOR = ".";
+	public static final char PROPERTY_SEPARATOR_CHAR = '.';
+
+	public static final String PROPERTY_SEPARATOR = String.valueOf(PROPERTY_SEPARATOR_CHAR);
 	
 	private final String propertyName;
 

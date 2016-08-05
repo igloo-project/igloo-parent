@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.bindgen.BindingRoot;
 
 import com.google.common.base.Function;
@@ -16,8 +18,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
+import fr.openwide.core.commons.util.fieldpath.FieldPathPropertyComponent;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.bindable.exception.NoSuchModelException;
-import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.WorkingCopyModel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
@@ -60,16 +63,6 @@ public class BindableModel<E> implements IBindableModel<E> {
 	 * a {@link BindableMapModel}.
 	 * 
 	 * <p>This attribute is lazily-initialized in {@link #getPropertyModels()}.
-	 * 
-	 * <p>We use a {@link java.util.LinkedHashMap}, so that when we have to run through the properties
-	 * (in {@link #writeAll()} or {@link #readAll()} for instance), we do it in the same order they were declared.
-	 * This allows users to first declare <pre>.a</pre> and then <pre>.a.b</pre>, so that <pre>.a</pre> is
-	 * read/written <em>before</em> <pre>.a.b</pre>.
-	 * <p>TODO YRO: fix this. We should simply ensure that we create a model for a non-direct property (<pre>.a.b</pre>),
-	 * then we first (implicitely) create the model for the intermediate properties (<pre>.a</pre> in this example),
-	 * and ask <em>this</em> new model to provide the model for <pre>.a.b</pre>.
-	 * That way, {@link #writeAll()} and {@link #readAll()} would always take the hierarchical order of the properties
-	 * into account.
 	 */
 	private Map<FieldPath, BindableModel<?>> propertyModels;
 	
@@ -206,11 +199,25 @@ public class BindableModel<E> implements IBindableModel<E> {
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
 		FieldPath path = FieldPath.fromBinding(binding);
+		return bindCollectionWithCache(path, newCollectionSupplier, itemModelFunction);
+	}
+
+	private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
+			FieldPath path,
+			Supplier<? extends C> newCollectionSupplier,
+			Function<? super T, ? extends IModel<T>> itemModelFunction) {
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		if (owner != this) {
+			return owner.bindCollectionWithCache(
+					path.relativeToParent().get(), newCollectionSupplier, itemModelFunction
+			);
+		}
+		
 		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		BindableModel<C> propertyModel = (BindableModel<C>) getPropertyModels().get(path);
 		if (propertyModel == null) {
 			BindableCollectionModel<T, C> collectionPropertyModel = new BindableCollectionModel<>(
-					BindingModel.of(getDelegateModel(), binding),
+					this.<C>createBindingModel(getDelegateModel(), path),
 					newCollectionSupplier, itemModelFunction
 			);
 			getPropertyModels().put(path, collectionPropertyModel);
@@ -240,6 +247,14 @@ public class BindableModel<E> implements IBindableModel<E> {
 	@Override
 	public <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionAlreadyAdded(BindingRoot<? super E, C> binding) {
 		FieldPath path = FieldPath.fromBinding(binding);
+		return bindCollectionAlreadyAdded(path);
+	}
+	
+	private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionAlreadyAdded(FieldPath path) {
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		if (owner != this) {
+			return owner.bindCollectionAlreadyAdded(path.relativeToParent().get());
+		}
 		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		BindableModel<C> propertyModel = (BindableModel<C>) getPropertyModels().get(path);
 		if (propertyModel == null) {
@@ -259,11 +274,23 @@ public class BindableModel<E> implements IBindableModel<E> {
 			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
 			Function<? super V, ? extends IModel<V>> valueModelFunction) {
 		FieldPath path = FieldPath.fromBinding(binding);
+		return bindMapWithCache(path, newMapSupplier, keyModelFunction, valueModelFunction);
+	}
+	
+	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(FieldPath path,
+			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
+			Function<? super V, ? extends IModel<V>> valueModelFunction) {
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		if (owner != this) {
+			return owner.bindMapWithCache(
+					path.relativeToParent().get(), newMapSupplier, keyModelFunction, valueModelFunction
+			);
+		}
 		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		BindableModel<M> propertyModel = (BindableModel<M>) getPropertyModels().get(path);
 		if (propertyModel == null) {
 			BindableMapModel<K, V, M> mapPropertyModel = new BindableMapModel<>(
-					BindingModel.of(getDelegateModel(), binding),
+					this.<M>createBindingModel(getDelegateModel(), path),
 					newMapSupplier, keyModelFunction, valueModelFunction
 			);
 			getPropertyModels().put(path, mapPropertyModel);
@@ -280,7 +307,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 			return mapPropertyModel;
 		}
 	}
-	
+
 	private static IllegalStateException newNotMapModelException(FieldPath path) {
 		return new IllegalStateException(
 				"The model bound to property '" + path + "' was registered using bind() or bindWithCache(). Thus, it"
@@ -293,6 +320,14 @@ public class BindableModel<E> implements IBindableModel<E> {
 	@Override
 	public <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapAlreadyAdded(BindingRoot<? super E, M> binding) {
 		FieldPath path = FieldPath.fromBinding(binding);
+		return bindMapAlreadyAdded(path);
+	}
+
+	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapAlreadyAdded(FieldPath path) {
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		if (owner != this) {
+			return owner.bindMapAlreadyAdded(path.relativeToParent().get());
+		}
 		@SuppressWarnings("unchecked") // Generic parameters are known, by construction
 		IBindableModel<M> propertyModel = (IBindableModel<M>) getPropertyModels().get(path);
 		if (propertyModel == null) {
@@ -312,14 +347,41 @@ public class BindableModel<E> implements IBindableModel<E> {
 	 * <p>If creation is necessary, the created model will be an instance of {@link BindableModel},
 	 * not {@link BindableCollectionModel} or {@link BindableMapModel}.
 	 */
-	@SuppressWarnings("unchecked")
 	private <T> BindableModel<T> getOrCreateSimpleModel(BindingRoot<? super E, T> binding, FieldPath path) {
-		BindableModel<T> propertyModel = (BindableModel<T>) getPropertyModels().get(path);
-		if (propertyModel == null) {
-			propertyModel = new BindableModel<>(BindingModel.of(getDelegateModel(), binding));
-			getPropertyModels().put(path, propertyModel);
+		return getOrCreateSimpleModel(path);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> BindableModel<T> getOrCreateSimpleModel(FieldPath path) {
+		if (path.isRoot()) {
+			// Binding the root, i.e. this
+			return (BindableModel<T>) this;
+		} else if (path.parent().get().isRoot()) {
+			// Binding a direct child property
+			BindableModel<T> propertyModel = (BindableModel<T>) getPropertyModels().get(path);
+			if (propertyModel == null) {
+				propertyModel = new BindableModel<>(this.<T>createBindingModel(getDelegateModel(), path));
+				getPropertyModels().put(path, propertyModel);
+			}
+			return propertyModel;
+		} else {
+			/*
+			 * Binding an indirect child property
+			 * We make sure to never create a "shortcut" that would skip an intermediary model, because
+			 * it would allow users to create multiple BindableModels pointing to the same property.
+			 */
+			FieldPath parentPath = path.parent().get();
+			FieldPath relativePropertyPath = path.relativeTo(parentPath).get();
+			return getOrCreateSimpleModel(parentPath)
+					.getOrCreateSimpleModel(relativePropertyPath);
 		}
-		return propertyModel;
+	}
+	
+	private <T> AbstractPropertyModel<T> createBindingModel(IModel<E> delegateModel, FieldPath path) {
+		final String propertyExpression = StringUtils.trimLeadingCharacter(
+				path.toString(), FieldPathPropertyComponent.PROPERTY_SEPARATOR_CHAR
+		);
+		return new PropertyModel<T>(delegateModel, propertyExpression);
 	}
 
 	@Override

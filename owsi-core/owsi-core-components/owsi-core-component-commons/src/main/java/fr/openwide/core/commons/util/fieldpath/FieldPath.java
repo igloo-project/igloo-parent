@@ -176,6 +176,14 @@ public class FieldPath implements Iterable<FieldPathComponent>, Serializable { /
 		}
 	}
 	
+	public Optional<FieldPath> relativeToParent() {
+		if (isRoot()) {
+			return Optional.absent();
+		} else {
+			return relativeTo(parent().get());
+		}
+	}
+	
 	public FieldPath append(FieldPath other) {
 		return new FieldPath(components, other.components);
 	}
