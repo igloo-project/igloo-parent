@@ -31,6 +31,34 @@ public class TestBindableMapModel extends AbstractTestBindableModel {
 		);
 		IBindableModel<?> secondCall = bindableModel.bindMapAlreadyAdded(rootBinding().mapProperty());
 		assertSame(firstCall, secondCall);
+		IBindableModel<?> thirdCall = bindableModel.bindMapWithCache(
+				rootBinding().mapProperty(),
+				Suppliers2.<MapPropertyItemKey, MapPropertyItemValue>linkedHashMap(),
+				StubModel.<MapPropertyItemKey>factory(), StubModel.<MapPropertyItemValue>factory()
+		);
+		assertSame(firstCall, thirdCall);
+	}
+	
+	@Test
+	public void alwaysReturnsSameModelInstanceEvenIfChained() {
+		doReturn(rootValue).when(rootModel).getObject();
+		
+		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
+		IBindableModel<?> directCall = bindableModel.bindMapWithCache(
+				rootBinding().compositeProperty().mapProperty(),
+				Suppliers2.<MapPropertyItemKey, MapPropertyItemValue>linkedHashMap(),
+				StubModel.<MapPropertyItemKey>factory(), StubModel.<MapPropertyItemValue>factory()
+		);
+		IBindableModel<?> chainedCall = bindableModel.bind(rootBinding().compositeProperty())
+				.bindMapAlreadyAdded(rootBinding().mapProperty());
+		assertSame(directCall, chainedCall);
+		IBindableModel<?> chainedCallWithCache = bindableModel.bind(rootBinding().compositeProperty())
+				.bindMapWithCache(
+						rootBinding().mapProperty(),
+						Suppliers2.<MapPropertyItemKey, MapPropertyItemValue>linkedHashMap(),
+						StubModel.<MapPropertyItemKey>factory(), StubModel.<MapPropertyItemValue>factory()
+				);
+		assertSame(directCall, chainedCallWithCache);
 	}
 
 	@Test

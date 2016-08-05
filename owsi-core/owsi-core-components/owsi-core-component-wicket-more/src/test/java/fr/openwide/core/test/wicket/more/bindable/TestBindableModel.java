@@ -49,6 +49,20 @@ public class TestBindableModel extends AbstractTestBindableModel {
 		IBindableModel<?> thirdCall = bindableModel.bindWithCache(rootBinding().simpleProperty(), new StubModel<SimplePropertyValue>());
 		assertSame(firstCall, thirdCall);
 	}
+	
+	@Test
+	public void alwaysReturnsSameModelInstanceEvenIfChained() {
+		doReturn(rootValue).when(rootModel).getObject();
+		
+		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
+		IBindableModel<?> directCall = bindableModel.bind(rootBinding().compositeProperty().simpleProperty());
+		IBindableModel<?> chainedCall = bindableModel.bind(rootBinding().compositeProperty()).bind(rootBinding().simpleProperty());
+		assertSame(directCall, chainedCall);
+		IBindableModel<?> chainedCallWithCache =
+				bindableModel.bind(rootBinding().compositeProperty())
+				.bindWithCache(rootBinding().simpleProperty(), new StubModel<SimplePropertyValue>());
+		assertSame(directCall, chainedCallWithCache);
+	}
 
 	@Test
 	public void simpleCacheUsage() {
