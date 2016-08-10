@@ -1,16 +1,11 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common;
 
-import java.util.Collection;
-import java.util.TreeSet;
-
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
 import org.bindgen.binding.AbstractBinding;
 import org.javatuples.Unit;
-import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import fr.openwide.core.wicket.more.link.descriptor.generator.ILinkGenerator;
