@@ -8,6 +8,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
@@ -27,6 +28,24 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 		return new AjaxConfirmLinkBuilder<O>();
 	}
 
+	protected AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
+		this(
+				id,
+				model,
+				titleModel,
+				textModel,
+				yesLabelModel,
+				noLabelModel,
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
+				cssClassNamesModel,
+				textNoEscape
+		);
+	}
+	
 	protected AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
 			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
