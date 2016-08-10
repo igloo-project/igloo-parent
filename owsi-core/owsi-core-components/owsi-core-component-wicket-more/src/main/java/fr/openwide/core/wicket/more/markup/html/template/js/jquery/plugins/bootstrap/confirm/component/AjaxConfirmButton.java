@@ -9,6 +9,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
@@ -25,11 +26,49 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 
 	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
+		this(
+				id,
+				titleModel,
+				textModel,
+				yesLabelModel,
+				noLabelModel,
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
+				null,
+				false,
+				null
+		);
+	}
+	
+	@Deprecated
+	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
 			IModel<String> yesButtonModel, IModel<String> noButtonModel) {
 		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false, null);
 	}
 
+	@Deprecated
+	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, Form<?> form) {
+		this(
+				id,
+				titleModel,
+				textModel,
+				yesLabelModel,
+				noLabelModel,
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
+				null,
+				false,
+				form
+		);
+	}
+	
 	@Deprecated
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
@@ -38,6 +77,25 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 	}
 
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel,
+			IModel<String> cssClassNamesModel, boolean textNoEscape) {
+		this(
+				id,
+				titleModel,
+				textModel,
+				yesLabelModel,
+				noLabelModel,
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
+				cssClassNamesModel,
+				textNoEscape,
+				null
+		);
+	}
+	
+	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
 			IModel<String> yesButtonModel, IModel<String> noButtonModel,
 			IModel<String> cssClassNamesModel, boolean textNoEscape) {
@@ -45,6 +103,24 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape, null);
 	}
 
+	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel,
+			IModel<String> cssClassNamesModel, boolean textNoEscape, Form<?> form) {
+		this(
+				id,
+				titleModel,
+				textModel,
+				yesLabelModel,
+				noLabelModel,
+				new Model<String>("icon-ok icon-white fa fa-check"),
+				new Model<String>("icon-ban-circle fa fa-ban"),
+				new Model<String>("btn btn-success"),
+				new Model<String>("btn btn-default"),
+				cssClassNamesModel,
+				textNoEscape,
+				form
+		);
+	}
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
 			IModel<String> yesButtonModel, IModel<String> noButtonModel,
