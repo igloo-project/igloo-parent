@@ -14,6 +14,7 @@ import fr.openwide.core.commons.util.collections.CollectionUtils;
 class RootValue {
 	
 	private SimplePropertyValue simpleProperty;
+	private RootValue compositeProperty;
 	private Collection<CollectionPropertyItemValue> collectionProperty = Lists.newArrayList();
 	private Map<MapPropertyItemKey, MapPropertyItemValue> mapProperty = Maps.newLinkedHashMap();
 	
@@ -25,6 +26,14 @@ class RootValue {
 		this.simpleProperty = simpleProperty;
 	}
 	
+	public RootValue getCompositeProperty() {
+		return compositeProperty;
+	}
+
+	public void setCompositeProperty(RootValue compositeProperty) {
+		this.compositeProperty = compositeProperty;
+	}
+
 	public Collection<CollectionPropertyItemValue> getCollectionProperty() {
 		return collectionProperty;
 	}

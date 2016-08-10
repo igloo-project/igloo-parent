@@ -30,6 +30,31 @@ public class TestBindableCollectionModel extends AbstractTestBindableModel {
 		);
 		IBindableModel<?> secondCall = bindableModel.bindCollectionAlreadyAdded(rootBinding().collectionProperty());
 		assertSame(firstCall, secondCall);
+		IBindableModel<?> thirdCall = bindableModel.bindCollectionWithCache(
+				rootBinding().collectionProperty(),
+				Suppliers2.<CollectionPropertyItemValue>arrayList(), StubModel.<CollectionPropertyItemValue>factory()
+		);
+		assertSame(firstCall, thirdCall);
+	}
+	
+	@Test
+	public void alwaysReturnsSameModelInstanceEvenIfChained() {
+		doReturn(rootValue).when(rootModel).getObject();
+		
+		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
+		IBindableModel<?> directCall = bindableModel.bindCollectionWithCache(
+				rootBinding().compositeProperty().collectionProperty(),
+				Suppliers2.<CollectionPropertyItemValue>arrayList(), StubModel.<CollectionPropertyItemValue>factory()
+		);
+		IBindableModel<?> chainedCall = bindableModel.bind(rootBinding().compositeProperty())
+				.bindCollectionAlreadyAdded(rootBinding().collectionProperty());
+		assertSame(directCall, chainedCall);
+		IBindableModel<?> chainedCallWithCache = bindableModel.bind(rootBinding().compositeProperty())
+				.bindCollectionWithCache(
+						rootBinding().collectionProperty(),
+						Suppliers2.<CollectionPropertyItemValue>arrayList(), StubModel.<CollectionPropertyItemValue>factory()
+				);
+		assertSame(directCall, chainedCallWithCache);
 	}
 
 	@Test
