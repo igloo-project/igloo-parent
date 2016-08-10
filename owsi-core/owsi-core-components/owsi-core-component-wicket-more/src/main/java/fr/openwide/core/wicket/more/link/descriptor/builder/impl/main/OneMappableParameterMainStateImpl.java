@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl.main;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.Page;
@@ -7,13 +8,17 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.mapper.CoreOneParameterLinkDescriptorMapperImpl;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.ITwoMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.IOneMappableParameterOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
@@ -78,7 +83,7 @@ final class OneMappableParameterMainStateImpl
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
 					> previousState,
-			Class<?> addedParameterType) {
+			LinkParameterTypeInformation<TParam1> addedParameterType) {
 		super(previousState, addedParameterType);
 	}
 
@@ -89,8 +94,50 @@ final class OneMappableParameterMainStateImpl
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam2> clazz) {
-		return new TwoMappableParameterMainStateImpl<>(this, clazz);
+			> model(Class<TParam2> clazz) {
+		return new TwoMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.valueOf(clazz)
+		);
+	}
+
+	@Override
+	public <TParam2 extends Collection<TElement>, TElement> ITwoMappableParameterMainState<
+			TParam1, TParam2,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam2> clazz, Class<TElement> elementType) {
+		return new TwoMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementType)
+		);
+	}
+	
+	@Override
+	public <TParam2 extends Collection<?>> ITwoMappableParameterMainState<
+			TParam1, TParam2,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam2> clazz, TypeDescriptor elementTypeDescriptor) {
+		return new TwoMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor)
+		);
+	}
+	
+	@Override
+	public <TParam2 extends Collection<?>> ITwoMappableParameterMainState<
+			TParam1, TParam2,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam2> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam2> emptyCollectionSupplier) {
+		return new TwoMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor, emptyCollectionSupplier)
+		);
 	}
 	
 	private <TTarget, TLinkDescriptor> IOneParameterLinkDescriptorMapper<TLinkDescriptor, TParam1>

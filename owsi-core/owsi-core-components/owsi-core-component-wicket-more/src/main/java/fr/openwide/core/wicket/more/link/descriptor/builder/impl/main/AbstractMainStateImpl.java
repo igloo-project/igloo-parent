@@ -24,12 +24,13 @@ import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilde
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderMapperLinkDescriptorFactory;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.AbstractCoreAddedParameterMapperStateImpl;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterMappingEntryBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.mapping.CollectionLinkParameterMappingEntry;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.mapping.SimpleLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.CollectionLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.InjectOnlyLinkParameterMappingEntry;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.SimpleLinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -92,13 +93,14 @@ abstract class AbstractMainStateImpl
 	}
 
 	@Override
-	public <T> IAddedParameterMappingState<TSelf> map(String name, IModel<T> valueModel,
-			Class<T> valueType) {
+	public <T> IAddedParameterMappingState<TSelf> map(String name, IModel<T> valueModel, Class<T> valueType) {
 		Args.notNull(name, "name");
 		Args.notNull(valueModel, "valueModel");
 		Args.notNull(valueType, "valueType");
 	
-		return map(new SimpleLinkParameterMappingEntry<T>(name, valueModel, valueType));
+		return map(new SimpleLinkParameterMappingEntry<T>(
+				name, valueModel, LinkParameterTypeInformation.valueOf(valueType).getTypeDescriptorSupplier()
+		));
 	}
 	
 	@Override
@@ -114,9 +116,11 @@ abstract class AbstractMainStateImpl
 	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<TSelf>
 			mapCollection(String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
 					TypeDescriptor elementTypeDescriptor) {
-		return map(new CollectionLinkParameterMappingEntry<RawC, C>(
-				parameterName, valueModel, rawCollectionType, elementTypeDescriptor
-				));
+		return map(new CollectionLinkParameterMappingEntry<>(
+				parameterName, valueModel,
+				LinkParameterTypeInformation.collection(rawCollectionType, elementTypeDescriptor)
+						.getTypeDescriptorSupplier()
+		));
 	}
 	
 	@Override
@@ -124,9 +128,12 @@ abstract class AbstractMainStateImpl
 	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<TSelf>
 			mapCollection(String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
 					TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier) {
-		return map(new CollectionLinkParameterMappingEntry<RawC, C>(
-				parameterName, valueModel, rawCollectionType, elementTypeDescriptor, emptyCollectionSupplier
-				));
+		return map(new CollectionLinkParameterMappingEntry<>(
+				parameterName, valueModel,
+				LinkParameterTypeInformation.collection(rawCollectionType, elementTypeDescriptor)
+						.getTypeDescriptorSupplier(),
+				emptyCollectionSupplier
+		));
 	}
 	
 	protected final <TTuple extends Tuple> IAddedParameterMappingState<TSelf>

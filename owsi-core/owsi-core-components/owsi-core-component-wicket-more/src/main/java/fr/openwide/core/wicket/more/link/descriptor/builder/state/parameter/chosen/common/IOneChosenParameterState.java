@@ -56,37 +56,6 @@ public interface IOneChosenParameterState
 	IAddedParameterMappingState<TInitialState> map(String parameterName);
 
 	/**
-	 * Map the HTTP query parameter with the given name to the currently selected model.
-	 * <p>This method should be used when the model is expected to contain a collection, since it enables implementors
-	 * to convert collection elements as well as the collection itself.
-	 * @param parameterName The HTTP query parameter name.
-	 * @param elementType The expected type of elements stored in the collection (for use during conversion).
-	 * @see #map(String, IModel, Class)
-	 */
-	<TElement> IAddedParameterMappingState<TInitialState> mapCollection(
-			String parameterName, Class<TElement> elementType);
-
-	/**
-	 * Map the HTTP query parameter with the given name to the currently selected model.
-	 * <p>This method should be used when the model is expected to contain a <strong>collection of collections</strong>,
-	 * since it enables implementors to convert collection elements as well as the collection itself.
-	 * @param parameterName The HTTP query parameter name.
-	 * @param elementType The expected type of elements stored in the collection (for use during conversion).
-	 * @see #map(String, IModel, Class)
-	 */
-	IAddedParameterMappingState<TInitialState> mapCollection(
-			String parameterName, TypeDescriptor elementTypeDescriptor);
-
-	/**
-	 * Similar to {@link #mapCollection(String, TypeDescriptor)}, but additionally allows to define the
-	 * exact collection implementation to use (for instance a {@link TreeSet} even if the raw type is simply
-	 * {@link Collection}).
-	 */
-	@SuppressWarnings("rawtypes")
-	<C extends Collection> IAddedParameterMappingState<TInitialState> mapCollection(
-			String parameterName, TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier);
-
-	/**
 	 * Map HTTP query parameter with the given name to the currently selected model, making sure that:
 	 * <ul>
 	 * <li>when {@link ILinkParametersExtractor extracting parameters} from a HTTP query, the parameter

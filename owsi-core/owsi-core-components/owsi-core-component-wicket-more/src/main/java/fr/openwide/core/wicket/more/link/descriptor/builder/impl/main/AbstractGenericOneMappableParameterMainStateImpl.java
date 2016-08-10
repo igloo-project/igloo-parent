@@ -1,19 +1,16 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl.main;
 
-import java.util.Collection;
-
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.bindgen.BindingRoot;
 import org.bindgen.binding.AbstractBinding;
 import org.javatuples.Unit;
-import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 
 import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic.IGenericOneMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
@@ -67,7 +64,7 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
 					> previousState,
-			Class<?> addedParameterType) {
+			LinkParameterTypeInformation<?> addedParameterType) {
 		super(previousState, addedParameterType);
 	}
 
@@ -82,25 +79,6 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 	@Override
 	public IAddedParameterMappingState<TSelf> map(String parameterName) {
 		return pickLast().map(parameterName);
-	}
-
-	@Override
-	public <TElement> IAddedParameterMappingState<TSelf> mapCollection(
-			String parameterName, Class<TElement> elementType) {
-		return pickLast().mapCollection(parameterName, elementType);
-	}
-
-	@Override
-	public IAddedParameterMappingState<TSelf> mapCollection(
-			String parameterName, TypeDescriptor elementTypeDescriptor) {
-		return pickLast().mapCollection(parameterName, elementTypeDescriptor);
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public <C extends Collection> IAddedParameterMappingState<TSelf> mapCollection(
-			String parameterName, TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier) {
-		return pickLast().mapCollection(parameterName, elementTypeDescriptor, emptyCollectionSupplier);
 	}
 
 	@Override

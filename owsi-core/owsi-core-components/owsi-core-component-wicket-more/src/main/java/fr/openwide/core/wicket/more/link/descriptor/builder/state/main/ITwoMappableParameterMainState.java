@@ -1,5 +1,11 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main;
 
+import java.util.Collection;
+
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
+
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic.IGenericTwoMappableParameterMainState;
@@ -67,6 +73,34 @@ public interface ITwoMappableParameterMainState
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam3> clazz);
+			> model(Class<TParam3> clazz);
+	
+	@Override
+	<TParam3 extends Collection<TElement>, TElement> IThreeMappableParameterMainState<
+			TParam1, TParam2, TParam3,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam3> clazz, Class<TElement> elementType);
+	
+	@Override
+	<TParam3 extends Collection<?>> IThreeMappableParameterMainState<
+			TParam1, TParam2, TParam3,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam3> clazz, TypeDescriptor elementTypeDescriptor);
+	
+	@Override
+	<TParam3 extends Collection<?>> IThreeMappableParameterMainState<
+			TParam1, TParam2, TParam3,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam3> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam3> emptyCollectionSupplier);
 
 }

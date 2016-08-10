@@ -1,15 +1,20 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.impl.main;
 
+import java.util.Collection;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import fr.openwide.core.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
+import fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
 import fr.openwide.core.wicket.more.markup.html.factory.ModelFactories;
@@ -60,8 +65,50 @@ public final class NoMappableParameterMainStateImpl
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam1> clazz) {
-		return new OneMappableParameterMainStateImpl<>(this, clazz);
+			> model(Class<TParam1> clazz) {
+		return new OneMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.valueOf(clazz)
+		);
+	}
+	
+	@Override
+	public <TParam1 extends Collection<TElement>, TElement> IOneMappableParameterMainState<
+			TParam1,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam1> clazz, Class<TElement> elementType) {
+		return new OneMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementType)
+		);
+	}
+	
+	@Override
+	public <TParam1 extends Collection<?>> IOneMappableParameterMainState<
+			TParam1,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor) {
+		return new OneMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor)
+		);
+	}
+	
+	@Override
+	public <TParam1 extends Collection<?>> IOneMappableParameterMainState<
+			TParam1,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam1> emptyCollectionSupplier) {
+		return new OneMappableParameterMainStateImpl<>(
+				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor, emptyCollectionSupplier)
+		);
 	}
 	
 	private <TTarget, TLinkDescriptor> TLinkDescriptor createLinkDescriptor(

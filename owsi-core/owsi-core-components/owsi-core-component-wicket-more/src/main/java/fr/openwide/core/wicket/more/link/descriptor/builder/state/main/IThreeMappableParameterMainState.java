@@ -1,5 +1,11 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main;
 
+import java.util.Collection;
+
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
+
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic.IGenericThreeMappableParameterMainState;
@@ -67,6 +73,34 @@ public interface IThreeMappableParameterMainState
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam4> clazz);
+			> model(Class<TParam4> clazz);
+	
+	@Override
+	<TParam4 extends Collection<TElement>, TElement> IFourMappableParameterMainState<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz, Class<TElement> elementType);
+	
+	@Override
+	<TParam4 extends Collection<?>> IFourMappableParameterMainState<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz, TypeDescriptor elementTypeDescriptor);
+	
+	@Override
+	<TParam4 extends Collection<?>> IFourMappableParameterMainState<
+			TParam1, TParam2, TParam3, TParam4,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam4> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam4> emptyCollectionSupplier);
 
 }

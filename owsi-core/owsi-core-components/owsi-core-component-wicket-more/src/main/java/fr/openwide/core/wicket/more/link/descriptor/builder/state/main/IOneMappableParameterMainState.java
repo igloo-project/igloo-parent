@@ -1,8 +1,15 @@
 package fr.openwide.core.wicket.more.link.descriptor.builder.state.main;
 
+import java.util.Collection;
+
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
+
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.main.generic.IGenericOneMappableParameterMainState;
+import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
 import fr.openwide.core.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 import fr.openwide.core.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
@@ -66,6 +73,34 @@ public interface IOneMappableParameterMainState
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam2> clazz);
+			> model(Class<TParam2> clazz);
+	
+	@Override
+	<TParam2 extends Collection<TElement>, TElement> ITwoMappableParameterMainState<
+			TParam1, TParam2,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam2> clazz, Class<TElement> elementType);
+	
+	@Override
+	<TParam2 extends Collection<?>> ITwoMappableParameterMainState<
+			TParam1, TParam2,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam2> clazz, TypeDescriptor elementTypeDescriptor);
+	
+	@Override
+	<TParam2 extends Collection<?>> ITwoMappableParameterMainState<
+			TParam1, TParam2,
+			TEarlyTargetDefinitionLinkDescriptor,
+			TLateTargetDefinitionPageLinkDescriptor,
+			TLateTargetDefinitionResourceLinkDescriptor,
+			TLateTargetDefinitionImageResourceLinkDescriptor
+			> model(Class<? super TParam2> clazz, TypeDescriptor elementTypeDescriptor,
+						Supplier<? extends TParam2> emptyCollectionSupplier);
 
 }

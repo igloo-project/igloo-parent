@@ -1,5 +1,6 @@
-package fr.openwide.core.wicket.more.link.descriptor.parameter.mapping;
+package fr.openwide.core.wicket.more.link.descriptor.builder.impl.parameter.mapping;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
@@ -18,6 +19,8 @@ import com.google.common.base.Supplier;
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.AbstractLinkParameterMappingEntry;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.AbstractLinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
@@ -25,44 +28,22 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMa
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 
 @SuppressWarnings("rawtypes")
-public class CollectionLinkParameterMappingEntry<RawC extends Collection, C extends RawC>
+public class CollectionLinkParameterMappingEntry<C extends Collection>
 		extends AbstractLinkParameterMappingEntry {
 
 	private static final long serialVersionUID = 2126702467532153474L;
 	
-	public static <RawC extends Collection, C extends RawC, T> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
-			factory(final String parameterName, final Class<RawC> rawCollectionType, final Class<T> elementType) {
-		return factory(parameterName, rawCollectionType, TypeDescriptor.valueOf(elementType));
-	}
-	
-	public static <RawC extends Collection, C extends RawC> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
-			factory(final String parameterName, final Class<RawC> rawCollectionType, final TypeDescriptor elementTypeDescriptor) {
+	public static <C extends Collection> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
+			factory(final String parameterName, final Supplier<? extends TypeDescriptor> typeDescriptorSupplier,
+					final Supplier<C> emptyCollectionSupplier) {
 		Args.notNull(parameterName, "parameterName");
-		Args.notNull(rawCollectionType, "rawCollectionType");
-		Args.notNull(elementTypeDescriptor, "elementTypeDescriptor");
 		
 		return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<C>>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public ILinkParameterMappingEntry create(Unit<IModel<C>> parameters) {
-				return new CollectionLinkParameterMappingEntry<RawC, C>(parameterName, parameters.getValue0(), rawCollectionType, elementTypeDescriptor);
-			}
-		};
-	}
-	
-	public static <RawC extends Collection, C extends RawC> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
-			factory(final String parameterName, final Class<RawC> rawCollectionType, final TypeDescriptor elementTypeDescriptor, final Supplier<C> emptyCollectionSupplier) {
-		Args.notNull(parameterName, "parameterName");
-		Args.notNull(rawCollectionType, "rawCollectionType");
-		Args.notNull(elementTypeDescriptor, "elementTypeDescriptor");
-		Args.notNull(emptyCollectionSupplier, "emptyCollectionSupplier");
-		
-		return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<C>>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public ILinkParameterMappingEntry create(Unit<IModel<C>> parameters) {
-				return new CollectionLinkParameterMappingEntry<RawC, C>(
-						parameterName, parameters.getValue0(), rawCollectionType, elementTypeDescriptor, emptyCollectionSupplier
+				return new CollectionLinkParameterMappingEntry<>(
+						parameterName, parameters.getValue0(), typeDescriptorSupplier, emptyCollectionSupplier
 				);
 			}
 		};
@@ -70,13 +51,12 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	
 	protected final String parameterName;
 	protected final IModel<C> mappedModel;
-	protected final Class<RawC> rawCollectionType;
-	protected final TypeDescriptor elementTypeDescriptor;
+	protected final Supplier<? extends TypeDescriptor> typeDescriptorSupplier;
 	protected final Function<? super C, ? extends C> collectionCustomizerFunction;
 
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
-			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor) {
-		this(parameterName, mappedModel, rawCollectionType, elementTypeDescriptor, Functions.<C>identity());
+			Supplier<? extends TypeDescriptor> typeDescriptorSupplier) {
+		this(parameterName, mappedModel, typeDescriptorSupplier, Functions.<C>identity());
 	}
 	
 	/**
@@ -84,9 +64,12 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	 *                                the conversionService itself (for example, instantiation of TreeSet with a specific comparator)
 	 */
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
-			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor, final Supplier<? extends C> emptyCollectionSupplier) {
-		this(parameterName, mappedModel, rawCollectionType, elementTypeDescriptor,
-				new SerializableFunction<C, C>() {
+			Supplier<? extends TypeDescriptor> typeDescriptorSupplier,
+			final Supplier<? extends C> emptyCollectionSupplier) {
+		this(parameterName, mappedModel, typeDescriptorSupplier,
+				emptyCollectionSupplier == null
+				? Functions.<C>identity()
+				: new SerializableFunction<C, C>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					@SuppressWarnings("unchecked")
@@ -99,26 +82,29 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	}
 	
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
-			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor, Function<? super C, ? extends C> collectionCustomizerFunction) {
+			Supplier<? extends TypeDescriptor> typeDescriptorSupplier,
+			Function<? super C, ? extends C> collectionCustomizerFunction) {
 		checkNotNull(parameterName);
 		checkNotNull(mappedModel);
-		checkNotNull(rawCollectionType);
-		checkNotNull(elementTypeDescriptor);
+		checkNotNull(typeDescriptorSupplier);
+		checkNotNull(typeDescriptorSupplier.get());
 		checkNotNull(collectionCustomizerFunction);
+		checkArgument(
+				typeDescriptorSupplier.get().isCollection(), "typeDescriptorSupplier must be a collection type"
+		);
+		checkNotNull(
+				typeDescriptorSupplier.get().getElementTypeDescriptor(),
+				"typeDescriptorSupplier's element type must be defined"
+		);
 		this.parameterName = parameterName;
 		this.mappedModel = mappedModel;
-		this.rawCollectionType = rawCollectionType;
-		this.elementTypeDescriptor = elementTypeDescriptor;
+		this.typeDescriptorSupplier = typeDescriptorSupplier;
 		this.collectionCustomizerFunction = collectionCustomizerFunction;
 	}
 	
-	// NOTE: we cannot store the collection type descriptor, since it is not Serializable.
-	protected TypeDescriptor getMappedTypeDescriptor() {
-		return TypeDescriptor.collection(rawCollectionType, elementTypeDescriptor);
-	}
-	
 	@Override
-	public void inject(PageParameters targetParameters, ILinkParameterConversionService conversionService) throws LinkParameterInjectionException {
+	public void inject(PageParameters targetParameters, ILinkParameterConversionService conversionService)
+			throws LinkParameterInjectionException {
 		C collection = mappedModel.getObject();
 		if (collection != null && collection.isEmpty()) {
 			collection = null; // Just make sure that the default spring converter for collections won't translate this to an empty string.
@@ -127,10 +113,12 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	}
 	
 	@Override
-	public void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService) throws LinkParameterExtractionException {
-		Object extractedCollection = extract(sourceParameters, conversionService, parameterName, getMappedTypeDescriptor());
+	public void extract(PageParameters sourceParameters, ILinkParameterConversionService conversionService)
+			throws LinkParameterExtractionException {
+		TypeDescriptor typeDescriptor = typeDescriptorSupplier.get();
+		Object extractedCollection = extract(sourceParameters, conversionService, parameterName, typeDescriptor);
 		@SuppressWarnings("unchecked")
-		C castedCollection = (C)rawCollectionType.cast(extractedCollection);
+		C castedCollection = (C)typeDescriptor.getType().cast(extractedCollection);
 		C finalCollection = collectionCustomizerFunction.apply(castedCollection);
 		mappedModel.setObject(finalCollection);
 	}
@@ -138,8 +126,8 @@ public class CollectionLinkParameterMappingEntry<RawC extends Collection, C exte
 	@Override
 	public ILinkParameterMappingEntry wrap(Component component) {
 		IModel<C> wrappedModel = wrap(mappedModel, component);
-		return new CollectionLinkParameterMappingEntry<RawC, C>(parameterName, wrappedModel, rawCollectionType,
-				elementTypeDescriptor, collectionCustomizerFunction);
+		return new CollectionLinkParameterMappingEntry<>(parameterName, wrappedModel,
+				typeDescriptorSupplier, collectionCustomizerFunction);
 	}
 	
 	@Override
