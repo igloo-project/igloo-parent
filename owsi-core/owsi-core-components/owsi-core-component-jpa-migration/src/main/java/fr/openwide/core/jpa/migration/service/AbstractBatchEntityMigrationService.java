@@ -2,13 +2,12 @@ package fr.openwide.core.jpa.migration.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.hibernate.PropertyValueException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,43 +16,40 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import fr.openwide.core.jpa.batch.executor.BatchExecutorCreator;
+import fr.openwide.core.jpa.batch.executor.MultithreadedBatchExecutor;
+import fr.openwide.core.jpa.batch.monitor.ProcessorMonitorContext;
+import fr.openwide.core.jpa.batch.runnable.ReadWriteBatchRunnable;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.migration.monitor.ProcessorMonitorContext;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractListResultRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractMapResultRowMapper;
 import fr.openwide.core.jpa.migration.rowmapper.AbstractResultRowMapper;
 import fr.openwide.core.jpa.migration.util.IBatchEntityMigrationInformation;
 
 public abstract class AbstractBatchEntityMigrationService<T extends GenericEntity<Long, T>> extends AbstractMigrationService {
+	
+	@Autowired
+	private BatchExecutorCreator batchCreator;
 
 	public void importAllEntities() {
-		Date startTime = new Date();
-		
-		Long rowCount = countRows(getMigrationInformation().getSqlCountRows());
-		
 		List<Long> entityIds = ImmutableList.copyOf(getJdbcTemplate().queryForList(getMigrationInformation().getSqlAllIds(), Long.class));
-		List<List<Long>> entityIdsPartitions = Lists.partition(entityIds, getPartitionSize());
-		List<Callable<Void>> callables = Lists.newArrayList();
-		for (final List<Long> entityPartition : entityIdsPartitions) {
-			Callable<Void> callable = new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					importBatch(entityPartition);
-					return null;
-				}
-			};
-			callables.add(callable);
-		}
-		createThreadedProcessor(100).runWithTransaction(
-				getMigrationInformation().getEntityClass().getSimpleName(),
-				callables, getWriteTransactionTemplate(), rowCount.intValue());
 		
-		updateSequence(getMigrationInformation().getEntityClass());
-		
-		logMigrationEnd(getMigrationInformation().getEntityClass().getSimpleName(), startTime);
+		MultithreadedBatchExecutor executor = batchCreator.newMultithreadedBatchExecutor();
+		executor.threads(4).batchSize(100);
+		executor.run(getMigrationInformation().getEntityClass().getSimpleName(), entityIds, new ReadWriteBatchRunnable<Long>() {
+			@Override
+			public void executePartition(List<Long> partition) {
+				importBatch(partition);
+			}
+			
+			@Override
+			public void postExecute() {
+				updateSequence(getMigrationInformation().getEntityClass());
+			}
+		});
 	}
 
 	private void importBatch(List<Long> entityIds) throws PropertyValueException {
@@ -124,9 +120,5 @@ public abstract class AbstractBatchEntityMigrationService<T extends GenericEntit
 	 */
 	protected IGenericEntityService<Long, T> getEntityService() {
 		return null;
-	}
-
-	protected Integer getPartitionSize() {
-		return 100;
 	}
 }

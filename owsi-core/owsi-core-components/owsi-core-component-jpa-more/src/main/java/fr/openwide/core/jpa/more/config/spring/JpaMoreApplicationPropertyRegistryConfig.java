@@ -4,7 +4,6 @@ import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.DATABASE_INI
 import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.DATA_UPGRADE_DONE_TEMPLATE;
 import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
 import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
-import static fr.openwide.core.jpa.more.property.JpaMorePropertyIds.MIGRATION_LOGGING_MEMORY;
 
 import java.io.File;
 
@@ -26,8 +25,6 @@ public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicatio
 		registry.registerBoolean(DATABASE_INITIALIZED, false);
 		registry.registerBoolean(DATA_UPGRADE_DONE_TEMPLATE, false);
 		registry.registerBoolean(MAINTENANCE, false);
-		
-		registry.registerBoolean(MIGRATION_LOGGING_MEMORY);
 		
 		registry.register( // NOSONAR findbugs:DMI_HARDCODED_ABSOLUTE_FILENAME
 				IMAGE_MAGICK_CONVERT_BINARY_PATH,

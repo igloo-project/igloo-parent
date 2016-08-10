@@ -2,25 +2,23 @@ package fr.openwide.core.jpa.business.generic.dao;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
-import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.model.GenericEntityCollectionReference;
 import fr.openwide.core.jpa.business.generic.model.IReference;
+import fr.openwide.core.jpa.business.generic.model.QGenericEntity;
 
 @Repository("entityDao")
 public class EntityDaoImpl implements IEntityDao {
@@ -40,31 +38,31 @@ public class EntityDaoImpl implements IEntityDao {
 	}
 	
 	@Override
-	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E> listEntity(Class<E> clazz, Collection<K> ids) {
-		return doListEntity(clazz, ids);
+	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> List<E>
+			listEntity(Class<E> clazz, Collection<K> ids) {
+		return listEntityUnsafe(clazz, ids);
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public <E extends GenericEntity<?, ?>> List<E> listEntity(GenericEntityCollectionReference<?, E> reference) {
-		return doListEntity((Class<E>)reference.getEntityClass(), reference.getEntityIdList());
+		return listEntityUnsafe(reference.getEntityClass(), reference.getEntityIdList());
 	}
 	
-	private <E extends GenericEntity<?, ?>> List<E> doListEntity(Class<E> clazz, Collection<?> ids) {
+	@SuppressWarnings("unchecked")
+	private <K extends Serializable & Comparable<K>, E extends GenericEntity<?, ?>>
+			List<E> listEntityUnsafe(Class<? extends E> clazz, Collection<?> ids) {
 		if (ids == null || ids.isEmpty()) {
 			return Lists.newArrayListWithCapacity(0);
 		}
 		
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<E> criteria = builder.createQuery(clazz);
-		Root<E> root = criteria.from(clazz);
-		criteria.where(((CriteriaBuilderImpl)builder).in(root.get("id"), ids.toArray()));
+		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
+		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
-		List<E> entities = entityManager.createQuery(criteria).getResultList();
-		
-		Collections.sort(entities, null);
-		
-		return entities;
+		return new JPAQuery<E>(entityManager).select(path)
+				.from(path)
+				.where(qGenericEntity.id.in((Collection<? extends K>)ids))
+				.orderBy(qGenericEntity.id.asc())
+				.fetch();
 	}
 	
 	@Override

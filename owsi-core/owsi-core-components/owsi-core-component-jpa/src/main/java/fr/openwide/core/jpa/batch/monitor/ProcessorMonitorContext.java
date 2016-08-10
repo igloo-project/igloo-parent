@@ -1,4 +1,4 @@
-package fr.openwide.core.jpa.migration.monitor;
+package fr.openwide.core.jpa.batch.monitor;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

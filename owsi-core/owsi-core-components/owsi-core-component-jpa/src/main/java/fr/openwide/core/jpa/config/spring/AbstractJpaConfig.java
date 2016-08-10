@@ -19,6 +19,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import fr.openwide.core.jpa.batch.CoreJpaBatchPackage;
 import fr.openwide.core.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.search.CoreJpaSearchPackage;
@@ -29,7 +30,12 @@ import fr.openwide.core.spring.property.service.IPropertyService;
  * L'implémentation de cette classe doit être annotée {@link EnableAspectJAutoProxy}
  */
 @ComponentScan(
-	basePackageClasses = { CoreJpaBusinessGenericPackage.class, CoreJpaSearchPackage.class, CoreJpaUtilPackage.class },
+	basePackageClasses = {
+			CoreJpaBatchPackage.class,
+			CoreJpaBusinessGenericPackage.class,
+			CoreJpaSearchPackage.class,
+			CoreJpaUtilPackage.class
+	},
 	excludeFilters = @Filter(Configuration.class)
 )
 public abstract class AbstractJpaConfig {

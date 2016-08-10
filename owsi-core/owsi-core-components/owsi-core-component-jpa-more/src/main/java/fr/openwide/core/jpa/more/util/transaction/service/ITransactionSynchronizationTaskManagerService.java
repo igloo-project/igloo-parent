@@ -1,10 +1,11 @@
 package fr.openwide.core.jpa.more.util.transaction.service;
 
+import fr.openwide.core.jpa.batch.util.IBeforeClearListener;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 import fr.openwide.core.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
 
-public interface ITransactionSynchronizationTaskManagerService {
+public interface ITransactionSynchronizationTaskManagerService extends IBeforeClearListener {
 
 	/**
 	 * Push a task to be executed <strong>before</strong> commit.
@@ -35,5 +36,6 @@ public interface ITransactionSynchronizationTaskManagerService {
 	 * 	<li>If you (or a class you use) does warn the {@link ITransactionSynchronizationTaskManagerService} but does not
 	 * perform the clear, the resulting behavior is unexpected.
 	 */
+	@Override
 	void beforeClear();
 }
