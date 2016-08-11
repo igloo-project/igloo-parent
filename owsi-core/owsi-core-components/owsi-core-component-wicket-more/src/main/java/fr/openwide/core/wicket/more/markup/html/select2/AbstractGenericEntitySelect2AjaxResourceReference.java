@@ -1,7 +1,6 @@
 package fr.openwide.core.wicket.more.markup.html.select2;
 
 import org.apache.wicket.util.convert.IConverter;
-import org.retzlaff.select2.resource.AjaxSearchResourceReference;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.wicket.more.util.convert.converters.LongIdGenericEntityConverter;
