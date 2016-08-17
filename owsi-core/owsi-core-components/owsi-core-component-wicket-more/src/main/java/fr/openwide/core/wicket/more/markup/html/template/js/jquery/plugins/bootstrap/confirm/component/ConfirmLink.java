@@ -12,6 +12,7 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.behavior.ConfirmContentBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.fluid.IConfirmLinkBuilderStepStart;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.statement.BootstrapConfirmEvent;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.statement.BootstrapConfirmStatement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
@@ -23,14 +24,11 @@ public abstract class ConfirmLink<O> extends Link<O> {
 
 	private static final long serialVersionUID = -4124927130129944090L;
 
-	@Deprecated
-	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel) {
-		this(id, model, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false);
+	public static <O> IConfirmLinkBuilderStepStart<ConfirmLink<O>, O> build() {
+		return new ConfirmLinkBuilder<O>();
 	}
 
-	public ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
+	protected ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
 			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		super(id, model);
