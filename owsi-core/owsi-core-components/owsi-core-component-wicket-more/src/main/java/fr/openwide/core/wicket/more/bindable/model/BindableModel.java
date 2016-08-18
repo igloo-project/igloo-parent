@@ -199,16 +199,19 @@ public class BindableModel<E> implements IBindableModel<E> {
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		return bindCollectionWithCache(path, newCollectionSupplier, itemModelFunction);
+		return bindCollectionWithCache(this, path, path, newCollectionSupplier, itemModelFunction);
 	}
 
 	private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
+			BindableModel<?> rootBindableModel,
+			FieldPath originalPath,
 			FieldPath path,
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
 		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
 		if (owner != this) {
 			return owner.bindCollectionWithCache(
+					rootBindableModel, originalPath,
 					path.relativeToParent().get(), newCollectionSupplier, itemModelFunction
 			);
 		}
@@ -222,7 +225,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 			);
 			getPropertyModels().put(path, collectionPropertyModel);
 			
-			registerImpactingPaths(path, collectionPropertyModel);
+			rootBindableModel.registerImpactingPaths(originalPath, collectionPropertyModel);
 			
 			return collectionPropertyModel;
 		} else if (!(propertyModel instanceof IBindableCollectionModel)) {
@@ -274,15 +277,16 @@ public class BindableModel<E> implements IBindableModel<E> {
 			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
 			Function<? super V, ? extends IModel<V>> valueModelFunction) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		return bindMapWithCache(path, newMapSupplier, keyModelFunction, valueModelFunction);
+		return bindMapWithCache(this, path, path, newMapSupplier, keyModelFunction, valueModelFunction);
 	}
 	
-	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(FieldPath path,
-			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
+	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(BindableModel<?> rootBindableModel,
+			FieldPath originalPath, FieldPath path, Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
 			Function<? super V, ? extends IModel<V>> valueModelFunction) {
 		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
 		if (owner != this) {
 			return owner.bindMapWithCache(
+					rootBindableModel, originalPath,
 					path.relativeToParent().get(), newMapSupplier, keyModelFunction, valueModelFunction
 			);
 		}
@@ -295,7 +299,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 			);
 			getPropertyModels().put(path, mapPropertyModel);
 			
-			registerImpactingPaths(path, mapPropertyModel);
+			rootBindableModel.registerImpactingPaths(originalPath, mapPropertyModel);
 			
 			return mapPropertyModel;
 		} else if (!(propertyModel instanceof IBindableMapModel)) {
