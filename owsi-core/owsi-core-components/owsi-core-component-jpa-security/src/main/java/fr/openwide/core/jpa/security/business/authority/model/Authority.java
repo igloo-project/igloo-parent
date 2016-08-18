@@ -65,11 +65,11 @@ public class Authority extends GenericEntity<Long, Authority> {
 		CollectionUtils.replaceAll(this.customPermissionNames, customPermissionNames);
 	}
 
-	public boolean addCustonPermissionName(String customPermissionName) {
+	public boolean addCustomPermissionName(String customPermissionName) {
 		return customPermissionNames.add(customPermissionName);
 	}
 
-	public boolean removeCustonPermissionName(String customPermissionName) {
+	public boolean removeCustomPermissionName(String customPermissionName) {
 		return customPermissionNames.remove(customPermissionName);
 	}
 
