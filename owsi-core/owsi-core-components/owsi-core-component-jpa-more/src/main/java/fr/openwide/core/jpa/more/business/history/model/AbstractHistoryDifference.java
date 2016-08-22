@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import org.bindgen.Bindable;
 
 import com.google.common.collect.Lists;
+import com.querydsl.core.annotations.QueryInit;
 
 import fr.openwide.core.commons.util.collections.CollectionUtils;
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
@@ -48,6 +49,7 @@ public abstract class AbstractHistoryDifference<HD extends AbstractHistoryDiffer
 	private HD parentDifference;
 	
 	@Embedded
+	@QueryInit({"*.*.*"})
 	private HistoryDifferencePath path;
 	
 	@Basic(optional = false)
@@ -55,9 +57,11 @@ public abstract class AbstractHistoryDifference<HD extends AbstractHistoryDiffer
 	private HistoryDifferenceEventType eventType;
 	
 	@Embedded
+	@QueryInit({"*.*.*"})
 	private HistoryValue before;
 
 	@Embedded
+	@QueryInit({"*.*.*"})
 	private HistoryValue after;
 	
 	@OneToMany(mappedBy = "parentDifference", cascade = CascadeType.ALL, orphanRemoval = true)
