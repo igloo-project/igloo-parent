@@ -162,6 +162,6 @@
 
 $(document).ready(function() {
   if (window.location.hash) {
-    $('ul a[href=' + window.location.hash.replace('/', '') + ']').tab('show');
+    $('ul a[href="' + window.location.hash.replace('/', '') + '"]').tab('show');
   }
 });

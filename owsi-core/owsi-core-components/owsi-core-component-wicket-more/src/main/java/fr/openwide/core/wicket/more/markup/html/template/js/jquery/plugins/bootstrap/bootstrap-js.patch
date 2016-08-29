@@ -54,7 +54,7 @@ Index: src/main/java/fr/openwide/core/wicket/more/markup/html/template/js/jquery
 +
 +$(document).ready(function() {
 +	if (window.location.hash) {
-+		$('ul a[href=' + window.location.hash.replace('/', '') + ']').tab('show');
++		$('ul a[href="' + window.location.hash.replace('/', '') + '"]').tab('show');
 +	}
 +});
 \ No newline at end of file
