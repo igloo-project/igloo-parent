@@ -209,7 +209,7 @@ public class VisitFilters {
 				return false;
 			}
 			Component component = (Component) object;
-			if (!component.hasBeenRendered()) {
+			if (!component.hasBeenRendered() && !component.getOutputMarkupPlaceholderTag()) {
 				return false;
 			}
 			Component parent = component.getParent();
