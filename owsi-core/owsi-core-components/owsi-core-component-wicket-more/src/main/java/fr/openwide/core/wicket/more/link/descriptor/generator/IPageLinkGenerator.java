@@ -15,7 +15,6 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
-import fr.openwide.core.wicket.more.link.descriptor.impl.ChainedPageLinkGeneratorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
