@@ -39,9 +39,11 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	private static final GetNameFromClassModelFunction GET_NAME_FROM_CLASS_MODEL_FUNCTION = new GetNameFromClassModelFunction();
 	
 	private final IModel<? extends Page> pageInstanceModel;
-
+	
+	private boolean bypassPermissions = false;
+	
 	private final Collection<IModel<? extends Class<? extends Page>>> expectedPageClassModels;
-
+	
 	public CorePageInstanceLinkGenerator(IModel<? extends Page> pageInstanceModel, Collection<IModel<? extends Class<? extends Page>>> expectedPageClassModels) {
 		this.pageInstanceModel = pageInstanceModel;
 		this.expectedPageClassModels = expectedPageClassModels;
@@ -85,10 +87,12 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 					+ " got " + pageInstance.getClass().getName() + ", "
 					+ "expected one of " + Joiner.on(", ").join(Collections2.transform(expectedPageClassModels, GET_NAME_FROM_CLASS_MODEL_FUNCTION)));
 		}
-
-		if (!Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER)) {
-			throw new LinkInvalidTargetRuntimeException("The rendering of the target page instance '" + pageInstance
-					+ "' was not authorized.");
+		
+		if (! bypassPermissions) {
+			if (!Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER)) {
+				throw new LinkInvalidTargetRuntimeException("The rendering of the target page instance '" + pageInstance
+						+ "' was not authorized.");
+			}
 		}
 		
 		return pageInstance;
@@ -219,6 +223,16 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	@Override
 	public PageProvider newPageProvider() {
 		return new PageProvider(getValidPageInstance());
+	}
+	
+	/**
+	 * @see IPageLinkGenerator#bypassPermissions()
+	 */
+	@Deprecated
+	@Override
+	public IPageLinkGenerator bypassPermissions() {
+		bypassPermissions = true;
+		return this;
 	}
 
 }

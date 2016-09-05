@@ -43,8 +43,10 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	private static final Logger EXTRACTOR_INTERFACE_LOGGER = LoggerFactory.getLogger(IPageLinkParametersExtractor.class);
 	
 	private static final String ANCHOR_ROOT = "#";
-
+	
 	private final IModel<? extends Class<? extends Page>> pageClassModel;
+	
+	private boolean bypassPermissions = false;
 	
 	public CorePageLinkDescriptorImpl(
 			IModel<? extends Class<? extends Page>> pageClassModel,
@@ -60,9 +62,11 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		if (pageClass == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page of this ILinkDescriptor was null");
 		}
-		if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
-			throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + pageClass
-					+ "' was not authorized when trying to render the URL.");
+		if (! bypassPermissions) {
+			if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
+				throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + pageClass
+						+ "' was not authorized when trying to render the URL.");
+			}
 		}
 		return pageClass;
 	}
@@ -229,4 +233,13 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		return new PageProvider(getValidPageClass(), getValidatedParameters());
 	}
 	
+	/**
+	 * @see IPageLinkGenerator#bypassPermissions()
+	 */
+	@Deprecated
+	@Override
+	public IPageLinkGenerator bypassPermissions() {
+		bypassPermissions = true;
+		return this;
+	}
 }

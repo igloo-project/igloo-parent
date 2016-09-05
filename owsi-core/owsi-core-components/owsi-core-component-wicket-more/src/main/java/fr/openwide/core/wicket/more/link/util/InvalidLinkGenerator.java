@@ -176,4 +176,13 @@ class InvalidLinkGenerator implements IPageLinkGenerator, IImageResourceLinkGene
 	public IPageLinkGenerator chain(IPageLinkGenerator other) {
 		return other;
 	}
+
+	/**
+	 * Not implemented
+	 */
+	@Override
+	@Deprecated
+	public IPageLinkGenerator bypassPermissions() {
+		throw new IllegalStateException("No backward compatibility available");
+	}
 }

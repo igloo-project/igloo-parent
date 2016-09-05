@@ -15,6 +15,7 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import fr.openwide.core.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import fr.openwide.core.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import fr.openwide.core.wicket.more.link.descriptor.impl.ChainedPageLinkGeneratorImpl;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -127,5 +128,18 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	boolean isActive(Class<? extends Page> selectedPage);
 
 	PageProvider newPageProvider() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
+
+	/**
+	 * Provided as a backward compatibility workaround for application that relies on the fact that fullUrl
+	 * bypasses permissions. This method disables permission checking for this generator.
+	 * 
+	 * Not available on newer implementations (>= 0.12) as no backward compatibility is needed.
+	 * 
+	 * {@link IPageLinkGenerator#isAccessible()} keeps permission processing even if bypassPermissions is called.
+	 * 
+	 * @return this (chainable method)
+	 */
+	@Deprecated
+	IPageLinkGenerator bypassPermissions();
 
 }

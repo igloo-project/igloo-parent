@@ -114,4 +114,13 @@ public class ChainedPageLinkGeneratorImpl extends AbstractChainedLinkGenerator<I
 		return delegate().newPageProvider();
 	}
 
+	/**
+	 * Not implemented
+	 */
+	@Override
+	@Deprecated
+	public IPageLinkGenerator bypassPermissions() {
+		throw new IllegalStateException("No backward compatibility available");
+	}
+
 }
