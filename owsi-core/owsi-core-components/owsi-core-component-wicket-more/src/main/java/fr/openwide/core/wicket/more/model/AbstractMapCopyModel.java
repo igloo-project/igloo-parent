@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.wicket.model.IModel;
@@ -101,7 +102,13 @@ abstract class AbstractMapCopyModel<K, V, M extends Map<K, V>, MK extends IModel
 				// Re-use existing models
 				keyModel = existingPair.getValue0();
 				valueModel = existingPair.getValue1();
-				valueModel.setObject(item.getValue());
+				
+				V oldValue = valueModel.getObject();
+				V newValue = item.getValue();
+				
+				if (!Objects.equals(oldValue, newValue)) {
+					valueModel.setObject(newValue);
+				}
 			} else {
 				// Otherwise, create new models
 				keyModel = createKeyModel(item.getKey());
