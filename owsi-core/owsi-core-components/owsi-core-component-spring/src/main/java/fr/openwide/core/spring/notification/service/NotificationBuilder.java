@@ -10,6 +10,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TE
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.mail.Address;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -474,14 +477,21 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 				continue;
 			}
 			
+			MimeMessage message;
+			Address[] effectiveTo;
+			Address[] effectiveCc;
+			Address[] effectiveBcc;
+			Address[] from;
+			Address[] replyTo;
+			
 			try {
-				MimeMessage message = buildMessage(contentDescriptor, targets, charset.name());
-				
-				if (message == null) {
-					continue;
-				}
-				
-				mailSender.send(message);
+				// Step 1 : Build message. Effective recipients could be different than expected ones, we store.
+				message = buildMessage(contentDescriptor, targets, charset.name());
+				effectiveTo = message.getRecipients(RecipientType.TO);
+				effectiveCc = message.getRecipients(RecipientType.CC);
+				effectiveBcc = message.getRecipients(RecipientType.BCC);
+				replyTo = message.getReplyTo();
+				from = message.getFrom();
 			} catch (NotificationContentRenderingException e) {
 				throw new ServiceException("Error while rendering email notification", e);
 			} catch (MessagingException e) {
@@ -489,9 +499,20 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 						String.format("Error building the MIME message (to:%s, cc:%s, bcc:%s)", targets.to, targets.cc, targets.bcc),
 						e
 				);
+			}
+			
+			try {
+				// Step 2 : Send message.
+				mailSender.send(message);
 			} catch (MailException e) {
 				throw new ServiceException(
-						String.format("Error sending email notification (to:%s, cc:%s, bcc:%s)", targets.to, targets.cc, targets.bcc),
+						String.format("Error sending email notification "
+								+ "(from:%s, reply-to: %s; "
+								+ "original to:%s, cc:%s, bcc:%s; "
+								+ "effective to:%s, cc:%s, bcc:%s)",
+								Arrays.toString(from), Arrays.toString(replyTo),
+								targets.to, targets.cc, targets.bcc, 
+								Arrays.toString(effectiveTo), Arrays.toString(effectiveCc), Arrays.toString(effectiveBcc)),
 						e
 				);
 			}
