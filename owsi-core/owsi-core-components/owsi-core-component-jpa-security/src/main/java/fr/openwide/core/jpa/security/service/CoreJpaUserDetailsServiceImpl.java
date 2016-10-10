@@ -58,7 +58,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		IGroupedUser<?> user = getUserByUsername(userName);
 		
 		if (user == null) {
-			throw new UsernameNotFoundException("CoreHibernateUserDetailsServiceImpl: User not found: " + userName);
+			throw new UsernameNotFoundException("CoreJpaUserDetailsServiceImpl: User not found: " + userName);
 		}
 		
 		if (!user.isActive()) {
