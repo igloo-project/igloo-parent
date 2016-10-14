@@ -101,11 +101,6 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 				}
 				
 				@Override
-				protected void onEvent(AjaxRequestTarget target) {
-					onClick(target);
-				}
-				
-				@Override
 				protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 					super.updateAjaxAttributes(attributes);
 					AjaxConfirmLink.this.updateAjaxAttributes(attributes);
