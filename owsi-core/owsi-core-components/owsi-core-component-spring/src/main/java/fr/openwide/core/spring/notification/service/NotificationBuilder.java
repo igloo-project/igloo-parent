@@ -57,8 +57,9 @@ import fr.openwide.core.spring.util.SpringBeanUtils;
 import fr.openwide.core.spring.util.StringUtils;
 import freemarker.template.Configuration;
 
-public class NotificationBuilder implements INotificationBuilderInitState, INotificationBuilderBaseState, INotificationBuilderBuildState,
-		INotificationBuilderBodyState, INotificationBuilderContentState, INotificationBuilderTemplateState, INotificationBuilderSendState {
+public class NotificationBuilder implements INotificationBuilderInitState, INotificationBuilderBaseState,
+		INotificationBuilderBuildState, INotificationBuilderBodyState, INotificationBuilderContentState,
+		INotificationBuilderTemplateState, INotificationBuilderSendState {
 	
 	private static final Charset DEFAULT_MAIL_CHARSET = Charsets.UTF_8;
 	
@@ -100,6 +101,8 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	private ApplicationContext applicationContext;
 	
 	private String from;
+	
+	private NotificationTarget replyTo;
 	
 	private final Map<NotificationTarget, INotificationRecipient> toByAddress = Maps.newLinkedHashMap();
 	
@@ -161,9 +164,29 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderBaseState from(String from) {
+	public INotificationBuilderReplyToState from(String from) {
 		Assert.hasText(from, "Sender's email address must contain text");
 		this.from = from;
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderToState replyToAddress(String replyTo) {
+		if (StringUtils.hasText(replyTo)) {
+			this.replyTo = NotificationTarget.of(replyTo);
+		} else {
+			this.replyTo = null;
+		}
+		return this;
+	}
+	
+	@Override
+	public INotificationBuilderToState replyTo(INotificationRecipient replyTo) {
+		if (replyTo != null) {
+			this.replyTo = NotificationTarget.of(replyTo, charset);
+		} else {
+			this.replyTo = null;
+		}
 		return this;
 	}
 	
@@ -643,6 +666,9 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		}
 		
 		helper.setFrom(from);
+		if (replyTo != null) {
+			helper.setReplyTo(replyTo.getAddress());
+		}
 		for (NotificationTarget to : filteredTos) {
 			helper.addTo(to.getAddress());
 		}

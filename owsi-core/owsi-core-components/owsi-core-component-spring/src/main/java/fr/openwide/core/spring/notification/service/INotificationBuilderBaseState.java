@@ -1,7 +1,7 @@
 package fr.openwide.core.spring.notification.service;
 
-
-public interface INotificationBuilderBaseState extends INotificationBuilderToState {
+public interface INotificationBuilderBaseState extends INotificationBuilderReplyToState {
 	
-	INotificationBuilderToState from(String from);
+	INotificationBuilderReplyToState from(String from);
+	
 }
