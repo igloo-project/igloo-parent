@@ -14,11 +14,11 @@ public interface INotificationBuilderBuildState extends INotificationBuilderToSt
 	@Deprecated
 	INotificationBuilderBuildState cc(String... cc);
 	
-	INotificationBuilderBuildState ccAddress(String toFirst, String... toOthers);
+	INotificationBuilderBuildState ccAddress(String ccFirst, String... ccOthers);
 	
-	INotificationBuilderBuildState ccAddress(Collection<String> to);
+	INotificationBuilderBuildState ccAddress(Collection<String> cc);
 	
-	INotificationBuilderBuildState cc(INotificationRecipient toFirst, INotificationRecipient ... toOthers);
+	INotificationBuilderBuildState cc(INotificationRecipient ccFirst, INotificationRecipient ... ccOthers);
 	
 	INotificationBuilderBuildState cc(Collection<? extends INotificationRecipient> cc);
 
@@ -28,11 +28,11 @@ public interface INotificationBuilderBuildState extends INotificationBuilderToSt
 	@Deprecated
 	INotificationBuilderBuildState bcc(String... cc);
 	
-	INotificationBuilderBuildState bccAddress(String toFirst, String... toOthers);
+	INotificationBuilderBuildState bccAddress(String bccFirst, String... bccOthers);
 	
-	INotificationBuilderBuildState bccAddress(Collection<String> to);
+	INotificationBuilderBuildState bccAddress(Collection<String> bcc);
 	
-	INotificationBuilderBuildState bcc(INotificationRecipient toFirst, INotificationRecipient ... toOthers);
+	INotificationBuilderBuildState bcc(INotificationRecipient bccFirst, INotificationRecipient ... bccOthers);
 	
 	INotificationBuilderBuildState bcc(Collection<? extends INotificationRecipient> bcc);
 
