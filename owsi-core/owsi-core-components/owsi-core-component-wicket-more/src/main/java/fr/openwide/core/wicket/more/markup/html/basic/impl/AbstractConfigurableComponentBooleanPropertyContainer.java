@@ -39,7 +39,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	protected abstract T thisAsT();
 	
 	/**
-	 * @deprecated Use {@link Condition}.collectionModelNotEmpty instead.
+	 * @deprecated Use {@link Condition#collectionModelNotEmpty(IModel)} instead.
 	 */
 	@Deprecated
 	@Override
@@ -49,7 +49,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * @deprecated Use {@link Condition}.modelNotNull instead.
+	 * @deprecated Use {@link Condition#modelNotNull(IModel)} instead.
 	 */
 	@Deprecated
 	@Override
@@ -59,7 +59,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * @deprecated Use {@link Condition}.predicate instead
+	 * @deprecated Use {@link Condition#predicate(IModel, Predicate)} instead
 	 */
 	@Deprecated
 	@Override
@@ -69,7 +69,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * @deprecated Use {@link Condition}.modelsAnyNotNull instead
+	 * @deprecated Use {@link Condition#modelsAnyNotNull(IModel, IModel...)} instead
 	 */
 	@Deprecated
 	@Override
@@ -79,7 +79,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * Use {@link Condition}.predicateAnyTrue
+	 * Use {@link Condition#predicateAnyTrue(Predicate, IModel, IModel...)}
 	 */
 	@Deprecated
 	@Override
@@ -91,7 +91,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * @deprecated Use {@link Condition}.componentVisible instead
+	 * @deprecated Use {@link Condition#componentVisible(Component)} instead
 	 */
 	@Deprecated
 	@Override
@@ -101,7 +101,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * @deprecated Use {@link Condition}.componentsAnyVisible instead
+	 * @deprecated Use {@link Condition#componentsAnyVisible(Component, Component...)} instead
 	 */
 	@Deprecated
 	@Override
@@ -111,7 +111,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	}
 	
 	/**
-	 * @deprecated Use {@link Condition}.componentsAnyVisible instead
+	 * @deprecated Use {@link Condition#componentsAnyVisible(Collection)} instead
 	 */
 	@Deprecated
 	@Override

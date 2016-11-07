@@ -35,7 +35,7 @@ public class ActionColumnAjaxActionFactory<T> implements IOneParameterComponentF
 		};
 		
 		link.add(
-				action.getActionAvailableCondition(parameter).thenShow()
+				action.getActionAvailableCondition(parameter).thenShowInternal()
 		);
 		
 		return link;

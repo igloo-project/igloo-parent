@@ -164,8 +164,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 									public boolean applies() {
 										return queuedTaskHolderService.isReloadable(queuedTaskHolderModel.getObject());
 									}
-								}
-										.thenShowInternal()
+								}.thenShowInternal()
 						)
 		);
 		

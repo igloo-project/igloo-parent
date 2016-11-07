@@ -872,32 +872,80 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		return condition;
 	}
 	
+	/**
+	 * Toggle component's visibilityAllowed property.
+	 * 
+	 * @see #thenHide()
+	 * @see #thenShowInternal()
+	 */
 	public Behavior thenShow() {
 		return thenProperty(ComponentBooleanProperty.VISIBILITY_ALLOWED);
 	}
 	
+	/**
+	 * Toggle component's visibilityAllowed property.
+	 * 
+	 * @see #thenShow()
+	 * @see #thenHideInternal()
+	 */
 	public Behavior thenHide() {
 		return thenPropertyNegate(ComponentBooleanProperty.VISIBILITY_ALLOWED);
 	}
 	
+	/**
+	 * Toggle component's visible property.
+	 * 
+	 * Recommended way to manipulate component visibility is to use {@link #thenShow()}. This method may be used
+	 * for compatibility needs or if {@link #thenShow()} is already used and cannot be overriden.
+	 * 
+	 * @see #thenShow()
+	 */
 	public Behavior thenShowInternal() {
 		return thenProperty(ComponentBooleanProperty.VISIBLE);
 	}
 	
+	/**
+	 * Toggle component's visible property.
+	 * 
+	 * Recommended way to manipulate component visibility is to use {@link #thenHide()}. This method may be used
+	 * for compatibility needs or if {@link #thenHide()} is already used and cannot be overriden.
+	 * 
+	 * @see #thenHide()
+	 */
 	public Behavior thenHideInternal() {
 		return thenPropertyNegate(ComponentBooleanProperty.VISIBLE);
 	}
 	
+	/**
+	 * Toggle component's enabled property.
+	 */
 	public Behavior thenEnable() {
 		return thenProperty(ComponentBooleanProperty.ENABLE);
 	}
 	
-	public Behavior thenProperty(ComponentBooleanProperty property) {
+	/**
+	 * Toggle component's enabled property.
+	 */
+	public Behavior thenDisable() {
 		return thenPropertyNegate(ComponentBooleanProperty.ENABLE);
 	}
 	
+	/**
+	 * Toggle component's provided property.
+	 * 
+	 * @see #thenShow()
+	 * @see #thenHide()
+	 * @see #thenShowInternal()
+	 * @see #thenHideInternal()
+	 * @see #thenEnable()
+	 * @see #thenDisable()
+	 */
+	public Behavior thenProperty(ComponentBooleanProperty property) {
+		return thenPropertyNegate(property);
+	}
+	
 	public Behavior thenPropertyNegate(ComponentBooleanProperty property) {
-		return new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.ENABLE, Operator.WHEN_ALL_TRUE)
+		return new ComponentBooleanPropertyBehavior(property, Operator.WHEN_ALL_TRUE)
 				.condition(this.negate());
 	}
 }

@@ -47,8 +47,7 @@ public class ProfileInformationPanel extends GenericPanel<User> {
 								Condition.predicate(
 										Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()),
 										isTrue()
-								)
-										.thenShow()
+								).thenShow()
 						),
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),

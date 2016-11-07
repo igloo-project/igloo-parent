@@ -76,8 +76,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 								Condition.predicate(
 										Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()),
 										isTrue()
-								)
-										.thenShow()
+								).thenShow()
 						),
 				
 				AjaxConfirmLink.<U>build()
@@ -108,8 +107,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 								Condition.predicate(
 										Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminRecoveryEnabled()),
 										isTrue()
-								)
-										.thenShow()
+								).thenShow()
 						),
 				
 				new Link<U>("enable", userModel) {
@@ -162,8 +160,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 										User currentUser = BasicApplicationSession.get().getUser();
 										return !displayedUser.equals(currentUser) && displayedUser.isActive();
 									}
-								}
-										.thenShowInternal()
+								}.thenShowInternal()
 						),
 				
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
