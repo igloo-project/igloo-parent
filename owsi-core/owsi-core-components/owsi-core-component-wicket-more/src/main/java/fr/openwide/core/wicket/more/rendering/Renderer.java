@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.MissingResourceException;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -548,6 +549,57 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
+	public static <K, V> Renderer<Map<? extends K, ? extends V>> mapRenderer(
+			Function<? super Locale, ? extends Joiner> joinerFunction,
+			Function<? super Locale, ? extends Joiner> joinerKeyValueFunction,
+			Renderer<K> keyRenderer,
+			Renderer<V> valueRenderer
+	) {
+		return new MapRenderer<>(joinerFunction, joinerKeyValueFunction, keyRenderer, valueRenderer);
+	}
+
+	private static class MapRenderer<K, V> extends Renderer<Map<? extends K, ? extends V>> {
+		private static final long serialVersionUID = 200989454412696381L;
+
+		private final Function<? super Locale, ? extends Joiner> joinerFunction;
+		private final Function<? super Locale, ? extends Joiner> joinerKeyValueFunction;
+		private final Renderer<K> keyRenderer;
+		private final Renderer<V> valueRenderer;
+
+		public MapRenderer(
+				Function<? super Locale, ? extends Joiner> joinerFunction,
+				Function<? super Locale, ? extends Joiner> joinerKeyValueFunction,
+				Renderer<K> keyRenderer,
+				Renderer<V> valueRenderer
+		) {
+			super();
+			this.joinerFunction = checkNotNull(joinerFunction);
+			this.joinerKeyValueFunction = checkNotNull(joinerKeyValueFunction);
+			this.keyRenderer = checkNotNull(keyRenderer);
+			this.valueRenderer = checkNotNull(valueRenderer);
+		}
+
+		@Override
+		public String render(Map<? extends K, ? extends V> value, final Locale locale) {
+			checkNotNull(locale);
+			Joiner joiner = joinerFunction.apply(locale);
+			final Joiner joinerKeyValue = joinerKeyValueFunction.apply(locale);
+
+			Iterable<String> renderedEntries = Iterables.transform(value.entrySet(), new SerializableFunction<Entry<? extends K, ? extends V>, String>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public String apply(Entry<? extends K, ? extends V> input) {
+					return joinerKeyValue.join(
+							keyRenderer.render(input.getKey(), locale),
+							valueRenderer.render(input.getValue(), locale)
+					);
+				}
+			});
+
+			return joiner.join(renderedEntries);
+		}
+	}
+
 	public static <T> Renderer<T> fromResourceKey(String resourceKey) {
 		return new FromResourceKeyRenderer<>(resourceKey);
 	}
