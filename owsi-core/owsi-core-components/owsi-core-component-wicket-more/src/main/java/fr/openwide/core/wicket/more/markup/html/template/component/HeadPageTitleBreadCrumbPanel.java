@@ -8,8 +8,7 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
 
@@ -38,7 +37,7 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 		);
 		
 		add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).collectionModel(getModel())
+				Condition.collectionModelNotEmpty(getModel()).thenShowInternal()
 		);
 	}
 

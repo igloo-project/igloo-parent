@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.spring.property.service.IPropertyService;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 
 public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
@@ -42,9 +42,9 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 		
 		add(
 				new EnclosureContainer("introMaintenanceActivee")
-						.model(Predicates2.isTrue(), maintenanceModel),
+						.condition(Condition.predicate(maintenanceModel, Predicates2.isTrue())),
 				new EnclosureContainer("introMaintenanceDesactivee")
-						.model(Predicates2.isFalse(), maintenanceModel),
+						.condition(Condition.predicate(maintenanceModel, Predicates2.isFalse())),
 				new Link<Void>("activerMaintenance") {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -58,7 +58,7 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 						}
 					}
 				}
-						.add(new EnclosureBehavior().model(Predicates2.isFalse(), maintenanceModel)),
+						.add(Condition.predicate(maintenanceModel, Predicates2.isFalse()).thenShow()),
 				new Link<Void>("desactiverMaintenance") {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -72,7 +72,7 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 						}
 					}
 				}
-						.add(new EnclosureBehavior().model(Predicates2.isTrue(), maintenanceModel))
+						.add(Condition.predicate(maintenanceModel, Predicates2.isTrue()).thenShow())
 		);
 	}
 

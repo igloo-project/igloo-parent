@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.CoreDataTable;
@@ -186,7 +185,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(table, builders);
 		if (hideIfEmpty) {
 			component.add(
-					new EnclosureBehavior().condition(Condition.isNotEmpty(table.getSequenceProvider()))
+					Condition.isNotEmpty(table.getSequenceProvider()).thenShow()
 			);
 		}
 		return component;

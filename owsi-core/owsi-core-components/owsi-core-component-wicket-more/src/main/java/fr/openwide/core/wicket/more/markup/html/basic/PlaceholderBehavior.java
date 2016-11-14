@@ -2,6 +2,7 @@ package fr.openwide.core.wicket.more.markup.html.basic;
 
 import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior;
 
+@Deprecated
 public class PlaceholderBehavior extends AbstractConfigurableComponentBooleanPropertyBehavior<PlaceholderBehavior> {
 
 	private static final long serialVersionUID = -4321921413728629980L;

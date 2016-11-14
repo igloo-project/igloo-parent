@@ -6,7 +6,7 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 
 public abstract class CoreLabelLinkColumnPanel<T, S extends ISort<?>> extends GenericPanel<T> {
 
@@ -18,7 +18,7 @@ public abstract class CoreLabelLinkColumnPanel<T, S extends ISort<?>> extends Ge
 		MarkupContainer link = getLink("link", rowModel);
 		add(
 				link.add(getLabel("label", rowModel)),
-				getLabel("label", rowModel).add(new PlaceholderBehavior().component(link)),
+				getLabel("label", rowModel).add(Condition.componentVisible(link).thenHide()),
 				getSideLink("sideLink", rowModel)
 		);
 	}

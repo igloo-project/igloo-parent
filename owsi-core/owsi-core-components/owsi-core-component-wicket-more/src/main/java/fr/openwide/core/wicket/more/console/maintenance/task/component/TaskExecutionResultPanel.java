@@ -23,6 +23,7 @@ import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.BatchReportBeanModel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
@@ -115,16 +116,19 @@ public class TaskExecutionResultPanel extends GenericPanel<QueuedTaskHolder> {
 								}
 								tag.append("class", classAttribute, " ");
 							}
-						}.component(message));
+						}.condition(Condition.componentVisible(message)));
 					}
 				});
 				
-				contexteItemsItem.add(new PlaceholderContainer("itemListViewPlaceholder").collectionModel(itemListModel));
+				contexteItemsItem.add(
+						new PlaceholderContainer("itemListViewPlaceholder")
+								.condition(Condition.collectionModelNotEmpty(itemListModel))
+				);
 			}
 		});
 		
 		add(new PlaceholderContainer("contexteItemsListViewPlaceholder")
-				.model(Predicates2.mapNotEmpty(), BindingModel.of(batchReportBeanModel, CoreJpaMoreBindings.batchReportBean().items())));
+				.condition(Condition.predicate(BindingModel.of(batchReportBeanModel, CoreJpaMoreBindings.batchReportBean().items()), Predicates2.mapNotEmpty())));
 	}
 	
 	@Override

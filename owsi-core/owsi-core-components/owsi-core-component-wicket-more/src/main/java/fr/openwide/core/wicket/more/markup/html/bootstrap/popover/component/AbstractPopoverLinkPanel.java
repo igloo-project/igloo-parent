@@ -12,8 +12,7 @@ import org.apache.wicket.model.Model;
 
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
@@ -63,21 +62,21 @@ public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> {
 				contentComponent,
 				link
 						.add(
-								new EnclosureContainer("icon").model(hasText(), iconCssClassModel)
+								new EnclosureContainer("icon").condition(Condition.predicate(iconCssClassModel, hasText()))
 										.add(new AttributeModifier("class", iconCssClassModel)),
 								new CoreLabel("label", getModel())
 										.hideIfEmpty()
-										.add(new EnclosureBehavior().model(isTrue(), showLabelModel))
+										.add(Condition.predicate(showLabelModel, isTrue()).thenShow())
 						)
 						.add(
-								new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(anyChildVisible(link)),
+								anyChildVisible(link).thenShowInternal(),
 								new AttributeModifier("class", linkCssClassModel),
 								new BootstrapPopoverBehavior(options)
 						)
 		);
 		
 		add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).component(contentComponent)
+				Condition.componentVisible(contentComponent).thenShowInternal()
 		);
 	}
 

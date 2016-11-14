@@ -19,7 +19,6 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import fr.openwide.core.wicket.more.markup.repeater.table.CoreDataTable;
 import fr.openwide.core.wicket.more.util.model.Detachables;
@@ -89,12 +88,7 @@ public class CustomizableToolbarElementBuilder<T, S extends ISort<?>>
 		return factory.create(wicketId, dataTable)
 				.add(
 						new AttributeModifier("colspan", computedColspanModel),
-						new EnclosureBehavior().condition(
-								condition
-								.and(
-										Condition.predicate(computedColspanModel, Range.atLeast(1))
-								)
-						),
+						condition.and(Condition.predicate(computedColspanModel, Range.atLeast(1))).thenShow(),
 						new AttributeModifier("class", Joiner.on(" ").join(cssClasses))
 				);
 	}

@@ -7,8 +7,7 @@ import org.apache.wicket.model.ResourceModel;
 import fr.openwide.core.basicapp.core.business.user.model.User;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 
 public class SecurityPasswordIntroPanel extends GenericPanel<User> {
 
@@ -20,7 +19,7 @@ public class SecurityPasswordIntroPanel extends GenericPanel<User> {
 		IModel<String> introModel = new ResourceModel(resourceKey);
 		Component introLabel = new CoreLabel("introLabel", introModel).hideIfEmpty();
 		add(introLabel);
-		add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).component(introLabel));
+		add(Condition.componentVisible(introLabel).thenShowInternal());
 	}
 
 }

@@ -28,11 +28,10 @@ import fr.openwide.core.showcase.core.business.user.model.User;
 import fr.openwide.core.showcase.core.business.user.service.IUserService;
 import fr.openwide.core.showcase.web.application.util.template.MainTemplate;
 import fr.openwide.core.showcase.web.application.widgets.component.UserSelect2ListMultipleChoice;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
-import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.model.CollectionCopyModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -88,15 +87,15 @@ public class HideableComponentsPage extends MainTemplate {
 		// Model-based hideable components
 		
 		Component enclosureContainer = new EnclosureContainer("enclosureContainer")
-				.model(model).collectionModel(collectionModel);
+				.condition(Condition.modelNotNull(model).or(Condition.collectionModelNotEmpty(collectionModel)));
 		Component enclosureBehaviorComponent = new Label("enclosureBehaviorComponent", new ResourceModel("hideableComponents.model.enclosureBehavior"))
-				.add(new EnclosureBehavior().model(model).collectionModel(collectionModel));
+				.add(Condition.modelNotNull(model).or(Condition.collectionModelNotEmpty(collectionModel)).thenShow());
 		
 		updatedContainer.add(
 				new PlaceholderContainer("placeholderContainer")
-						.model(model).collectionModel(collectionModel),
+						.condition(Condition.modelNotNull(model).or(Condition.collectionModelNotEmpty(collectionModel))),
 				new Label("placeholderBehaviorComponent", new ResourceModel("hideableComponents.model.placeholderBehavior"))
-						.add(new PlaceholderBehavior().model(model).collectionModel(collectionModel)),
+						.add(Condition.modelNotNull(model).and(Condition.collectionModelNotEmpty(collectionModel)).thenHide()),
 				enclosureContainer,
 				enclosureBehaviorComponent
 		);
@@ -111,15 +110,17 @@ public class HideableComponentsPage extends MainTemplate {
 		};
 		
 		updatedContainer.add(
-				new EnclosureContainer("moreThanOneElementEnclosureContainer").model(moreThanOneElementPredicate, collectionModel),
-				new PlaceholderContainer("moreThanOneElementPlaceholderContainer").model(moreThanOneElementPredicate, collectionModel)
+				new EnclosureContainer("moreThanOneElementEnclosureContainer").condition(Condition.predicate(collectionModel, moreThanOneElementPredicate)),
+				new PlaceholderContainer("moreThanOneElementPlaceholderContainer").condition(Condition.predicate(collectionModel, moreThanOneElementPredicate))
 		);
 		
 		// Component-based hideable components
 		
 		updatedContainer.add(
-				new EnclosureContainer("enclosuresVisibleContainer").components(enclosureContainer, enclosureBehaviorComponent),
-				new PlaceholderContainer("enclosuresInvisibleContainer").components(enclosureContainer, enclosureBehaviorComponent)
+				new EnclosureContainer("enclosuresVisibleContainer")
+						.condition(Condition.componentsAnyVisible(enclosureContainer, enclosureBehaviorComponent)),
+				new PlaceholderContainer("enclosuresInvisibleContainer")
+						.condition(Condition.componentsAnyVisible(enclosureContainer, enclosureBehaviorComponent))
 		);
 	}
 

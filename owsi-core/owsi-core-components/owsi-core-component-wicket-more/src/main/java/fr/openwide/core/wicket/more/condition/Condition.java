@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -31,6 +32,9 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanPropertyBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
 import fr.openwide.core.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.Detach;
@@ -65,20 +69,36 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	@Override
 	public void detach() { }
 	
+	public static Condition or(Condition firstCondition, Condition ... otherConditions) {
+		return composite(BooleanOperator.OR, Lists.asList(firstCondition, otherConditions));
+	}
+	
 	public Condition or(Condition operand) {
-		return composite(BooleanOperator.OR, this, operand);
+		return or(this, operand);
+	}
+	
+	public static Condition nor(Condition firstCondition, Condition ... otherConditions) {
+		return composite(BooleanOperator.NOR, Lists.asList(firstCondition, otherConditions));
 	}
 	
 	public Condition nor(Condition operand) {
-		return composite(BooleanOperator.NOR, this, operand);
+		return nor(this, operand);
+	}
+	
+	public static Condition and(Condition firstCondition, Condition ... otherConditions) {
+		return composite(BooleanOperator.AND, Lists.asList(firstCondition, otherConditions));
 	}
 	
 	public Condition and(Condition operand) {
-		return composite(BooleanOperator.AND, this, operand);
+		return and(this, operand);
+	}
+	
+	public static Condition nand(Condition firstCondition, Condition ... otherConditions) {
+		return composite(BooleanOperator.NAND, Lists.asList(firstCondition, otherConditions));
 	}
 	
 	public Condition nand(Condition operand) {
-		return composite(BooleanOperator.NAND, this, operand);
+		return nand(this, operand);
 	}
 	
 	public Condition negate() {
@@ -803,5 +823,129 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public String toString() {
 			return "anyObjectPermission(" + securedObjectModel + "," + COMMA_JOINER.join(permissions) + ")";
 		}
+	}
+	
+	public static Condition modelNotNull(IModel<?> model) {
+		return predicate(model, Predicates.notNull());
+	}
+	
+	public static <C extends Collection<?>> Condition collectionModelNotEmpty(IModel<C> collectionModel) {
+		return predicate(collectionModel, Predicates2.notEmpty());
+	}
+	
+	public static Condition modelsAnyNotNull(IModel<?> firstModel, IModel<?>... otherModels) {
+		Condition condition = Condition.alwaysFalse();
+		
+		for (IModel<?> model : Lists.asList(firstModel, otherModels)) {
+			condition.or(modelNotNull(model));
+		}
+		return condition;
+	}
+
+	@SafeVarargs
+	public final <T> Condition predicateAnyTrue(Predicate<? super T> predicate, IModel<? extends T> firstModel,
+			IModel<? extends T>... otherModels) {
+		Condition condition = Condition.alwaysFalse();
+		
+		for (IModel<? extends T> model : Lists.asList(firstModel, otherModels)) {
+			condition.or(predicate(model, predicate));
+		}
+		
+		return condition;
+	}
+	
+	public static Condition componentVisible(Component component) {
+		return visible(component);
+	}
+	
+	public static Condition componentsAnyVisible(Component firstComponent, Component... otherComponents) {
+		return componentsAnyVisible(Lists.asList(firstComponent, otherComponents));
+	}
+	
+	public static Condition componentsAnyVisible(Collection<? extends Component> targetComponents) {
+		Condition condition = Condition.alwaysFalse();
+		
+		for (Component component : targetComponents) {
+			condition.or(visible(component));
+		}
+		
+		return condition;
+	}
+	
+	/**
+	 * Toggle component's visibilityAllowed property.
+	 * 
+	 * @see #thenHide()
+	 * @see #thenShowInternal()
+	 */
+	public Behavior thenShow() {
+		return thenProperty(ComponentBooleanProperty.VISIBILITY_ALLOWED);
+	}
+	
+	/**
+	 * Toggle component's visibilityAllowed property.
+	 * 
+	 * @see #thenShow()
+	 * @see #thenHideInternal()
+	 */
+	public Behavior thenHide() {
+		return thenPropertyNegate(ComponentBooleanProperty.VISIBILITY_ALLOWED);
+	}
+	
+	/**
+	 * Toggle component's visible property.
+	 * 
+	 * Recommended way to manipulate component visibility is to use {@link #thenShow()}. This method may be used
+	 * for compatibility needs or if {@link #thenShow()} is already used and cannot be overriden.
+	 * 
+	 * @see #thenShow()
+	 */
+	public Behavior thenShowInternal() {
+		return thenProperty(ComponentBooleanProperty.VISIBLE);
+	}
+	
+	/**
+	 * Toggle component's visible property.
+	 * 
+	 * Recommended way to manipulate component visibility is to use {@link #thenHide()}. This method may be used
+	 * for compatibility needs or if {@link #thenHide()} is already used and cannot be overriden.
+	 * 
+	 * @see #thenHide()
+	 */
+	public Behavior thenHideInternal() {
+		return thenPropertyNegate(ComponentBooleanProperty.VISIBLE);
+	}
+	
+	/**
+	 * Toggle component's enabled property.
+	 */
+	public Behavior thenEnable() {
+		return thenProperty(ComponentBooleanProperty.ENABLE);
+	}
+	
+	/**
+	 * Toggle component's enabled property.
+	 */
+	public Behavior thenDisable() {
+		return thenPropertyNegate(ComponentBooleanProperty.ENABLE);
+	}
+	
+	/**
+	 * Toggle component's provided property.
+	 * 
+	 * @see #thenShow()
+	 * @see #thenHide()
+	 * @see #thenShowInternal()
+	 * @see #thenHideInternal()
+	 * @see #thenEnable()
+	 * @see #thenDisable()
+	 */
+	public Behavior thenProperty(ComponentBooleanProperty property) {
+		return thenPropertyNegate(property);
+	}
+	
+	public Behavior thenPropertyNegate(ComponentBooleanProperty property) {
+		return new ComponentBooleanPropertyBehavior(property, Operator.WHEN_ALL_TRUE)
+				.condition(this.negate());
 	}
 }

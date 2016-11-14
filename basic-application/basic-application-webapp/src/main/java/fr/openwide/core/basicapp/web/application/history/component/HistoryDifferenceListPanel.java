@@ -10,10 +10,9 @@ import fr.openwide.core.basicapp.core.business.history.model.HistoryDifference;
 import fr.openwide.core.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import fr.openwide.core.basicapp.web.application.history.renderer.HistoryDifferencePathRenderer;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.condition.Condition;
 
 public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDifference>> {
 
@@ -25,7 +24,7 @@ public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDiffere
 			IHistoryComponentFactory historyComponentFactory) {
 		super(id, model);
 		this.historyComponentFactory = historyComponentFactory;
-		add(new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).collectionModel(getModel()));
+		add(Condition.collectionModelNotEmpty(getModel()).thenShowInternal());
 	}
 
 	@Override

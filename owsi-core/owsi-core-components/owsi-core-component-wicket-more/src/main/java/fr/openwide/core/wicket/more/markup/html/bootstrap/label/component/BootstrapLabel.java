@@ -8,8 +8,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.commons.util.functional.Predicates2;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.renderer.IBootstrapRendererModel;
@@ -27,13 +26,13 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		add(
 				new WebMarkupContainer("icon")
 						.add(new ClassAttributeAppender(iconCssClassModel))
-						.add(new EnclosureBehavior().model(iconCssClassModel)),
+						.add(Condition.modelNotNull(iconCssClassModel).thenShow()),
 				new Label("label", labelModel)
 		);
 		
 		add(
 				BootstrapColorBehavior.label(labelModel.getColorModel()),
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).model(Predicates2.hasText(), labelModel),
+				Condition.predicate(labelModel, Predicates2.hasText()).thenShowInternal(),
 				new AttributeAppender("title", labelModel.getTooltipModel())
 		);
 		

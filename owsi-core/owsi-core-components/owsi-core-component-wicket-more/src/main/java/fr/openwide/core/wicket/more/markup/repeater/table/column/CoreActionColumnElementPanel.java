@@ -4,6 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 
 public abstract class CoreActionColumnElementPanel<T> extends Panel {
@@ -15,7 +16,7 @@ public abstract class CoreActionColumnElementPanel<T> extends Panel {
 		
 		Component link = getLink("link", rowModel);
 		add(link);
-		add(getPlaceholder("placeholder", rowModel).component(link));
+		add(getPlaceholder("placeholder", rowModel).condition(Condition.componentVisible(link)));
 	}
 
 	protected abstract Component getLink(String string, IModel<T> rowModel);

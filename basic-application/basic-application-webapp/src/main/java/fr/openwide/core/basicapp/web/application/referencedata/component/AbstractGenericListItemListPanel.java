@@ -21,7 +21,6 @@ import fr.openwide.core.jpa.security.model.CorePermissionConstants;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.condition.Condition;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.sort.model.CompositeSortModel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -155,7 +154,7 @@ public abstract class AbstractGenericListItemListPanel<
 		public ItemActionsFragment(String id, final IModel<T> itemModel) {
 			super(id, "itemActionsFragment", AbstractGenericListItemListPanel.this, itemModel);
 			
-			add(new EnclosureBehavior().condition(Condition.permission(itemModel, getPermissionEdit())));
+			add(Condition.permission(itemModel, getPermissionEdit()).thenShow());
 			
 			add(
 				new WebMarkupContainer("updateButton")
@@ -188,7 +187,7 @@ public abstract class AbstractGenericListItemListPanel<
 								getPopup().setUpAdd(getNewInstance());
 							}
 						})
-				.add(new EnclosureBehavior().condition(Condition.permission(getPermissionAdd())))
+				.add(Condition.permission(getPermissionAdd()).thenShow())
 			);
 		}
 	}

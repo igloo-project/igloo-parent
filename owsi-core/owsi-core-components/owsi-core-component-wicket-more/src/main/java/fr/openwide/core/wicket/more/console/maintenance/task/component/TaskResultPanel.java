@@ -8,7 +8,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Classes;
 
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanPropertyBehavior;
+import fr.openwide.core.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
 
 public class TaskResultPanel extends Panel {
 
@@ -50,11 +53,11 @@ public class TaskResultPanel extends Panel {
 						}
 					}
 				}
-				.add(new EnclosureBehavior().model(resultModel))
+				.add(Condition.modelNotNull(resultModel).thenShow())
 		);
 		
 		add(
-				new EnclosureBehavior() {
+				new ComponentBooleanPropertyBehavior(ComponentBooleanProperty.VISIBILITY_ALLOWED, Operator.WHEN_ANY_TRUE) {
 					private static final long serialVersionUID = 1L;
 					
 					@Override

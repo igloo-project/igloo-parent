@@ -9,6 +9,7 @@ import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
@@ -39,7 +40,7 @@ public class TaskResultsPanel extends AbstractGenericItemListPanel<QueuedTaskHol
 						.link("nameLink")
 						.setBody(BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().name())),
 				queue,
-				new PlaceholderContainer("defaultQueue").component(queue),
+				new PlaceholderContainer("defaultQueue").condition(Condition.componentVisible(queue)),
 				new DateLabel("creationDate", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()),
 						DatePattern.SHORT_DATETIME),
 				new DateLabel("startDate", BindingModel.of(itemModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()),

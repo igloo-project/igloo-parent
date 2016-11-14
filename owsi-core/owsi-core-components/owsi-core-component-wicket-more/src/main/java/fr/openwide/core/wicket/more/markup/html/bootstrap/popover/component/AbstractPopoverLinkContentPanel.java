@@ -7,8 +7,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.PopoverPlacement;
@@ -51,13 +50,13 @@ public abstract class AbstractPopoverLinkContentPanel<T> extends GenericPanel<T>
 								linkContentComponent
 						)
 						.add(
-								new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).condition(anyChildVisible(link)),
+								anyChildVisible(link).thenShowInternal(),
 								new BootstrapPopoverBehavior(options)
 						)
 		);
 		
 		add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE).component(contentComponent)
+				Condition.componentVisible(contentComponent).thenShowInternal()
 		);
 	}
 

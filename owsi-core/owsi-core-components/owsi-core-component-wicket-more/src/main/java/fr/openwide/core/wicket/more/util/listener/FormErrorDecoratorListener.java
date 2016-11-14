@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 
 /**
@@ -278,7 +279,7 @@ public final class FormErrorDecoratorListener {
 	public static Component wrapFormGroup(FormComponent<?> formComponent) {
 		EnclosureContainer formGroup = new EnclosureContainer(formComponent.getId() + "FormGroup");
 		formGroup.add(formComponent);
-		formGroup.component(formComponent);
+		formGroup.condition(Condition.componentVisible(formComponent));
 		formGroup.setMetaData(FORM_GROUP, FORM_GROUP);
 		return formGroup;
 	}
