@@ -125,6 +125,7 @@
 		
 		<!-- See comments on property owsi-core.commons-io.version -->
 		<owsi-core.truezip.version>7.7.10</owsi-core.truezip.version>
+		<owsi-core.bouncycastle.version>2.55</owsi-core.bouncycastle.version>
 		
 		<owsi-core.flying-saucer.version>9.0.9</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.19</owsi-core.jfreechart.version>
@@ -976,6 +977,19 @@
 					<groupId>de.schlichtherle.truezip</groupId>
 					<artifactId>truezip-driver-zip</artifactId>
 					<version>${owsi-core.truezip.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>bouncycastle</groupId>
+							<artifactId>bcprov-jdk15on</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+			<!-- Explicit bouncycastle dependency (excluded from transitive) -->
+				<dependency>
+					<groupId>bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+					<version>${owsi-core.bouncycastle.version}</version>
 				</dependency>
 			
 			<!-- Wicket -->
