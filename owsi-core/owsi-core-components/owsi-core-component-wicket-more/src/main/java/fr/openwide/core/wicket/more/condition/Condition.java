@@ -941,11 +941,10 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	 * @see #thenDisable()
 	 */
 	public Behavior thenProperty(ComponentBooleanProperty property) {
-		return thenPropertyNegate(property);
+		return new ComponentBooleanPropertyBehavior(property, Operator.WHEN_ALL_TRUE).condition(this);
 	}
 	
 	public Behavior thenPropertyNegate(ComponentBooleanProperty property) {
-		return new ComponentBooleanPropertyBehavior(property, Operator.WHEN_ALL_TRUE)
-				.condition(this.negate());
+		return new ComponentBooleanPropertyBehavior(property, Operator.WHEN_ALL_TRUE).condition(this.negate());
 	}
 }
