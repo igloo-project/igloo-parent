@@ -837,7 +837,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		Condition condition = Condition.alwaysFalse();
 		
 		for (IModel<?> model : Lists.asList(firstModel, otherModels)) {
-			condition.or(modelNotNull(model));
+			condition = condition.or(modelNotNull(model));
 		}
 		return condition;
 	}
@@ -848,7 +848,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		Condition condition = Condition.alwaysFalse();
 		
 		for (IModel<? extends T> model : Lists.asList(firstModel, otherModels)) {
-			condition.or(predicate(model, predicate));
+			condition = condition.or(predicate(model, predicate));
 		}
 		
 		return condition;
@@ -866,7 +866,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		Condition condition = Condition.alwaysFalse();
 		
 		for (Component component : targetComponents) {
-			condition.or(visible(component));
+			condition = condition.or(visible(component));
 		}
 		
 		return condition;
