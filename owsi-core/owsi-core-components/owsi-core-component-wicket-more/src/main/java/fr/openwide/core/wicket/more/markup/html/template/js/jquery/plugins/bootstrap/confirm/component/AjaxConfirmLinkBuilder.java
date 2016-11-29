@@ -3,8 +3,6 @@ package fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.markup.html.action.IAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 
 public class AjaxConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<AjaxConfirmLink<O>, O> {
 	private static final long serialVersionUID = 5629930352899730245L;
@@ -19,10 +17,7 @@ public class AjaxConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<AjaxCo
 				yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel,
 				cssClassNamesModel, keepMarkup, onAjaxClick
 		);
-		ajaxConfirmLink.add(
-				new EnclosureBehavior(ComponentBooleanProperty.VISIBLE)
-				.condition(onAjaxClick.getActionAvailableCondition(model))
-		);
+		ajaxConfirmLink.add(onAjaxClick.getActionAvailableCondition(model).thenShow());
 		return ajaxConfirmLink;
 	}
 

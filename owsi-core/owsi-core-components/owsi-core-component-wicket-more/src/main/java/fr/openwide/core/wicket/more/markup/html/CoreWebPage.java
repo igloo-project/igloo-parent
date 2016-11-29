@@ -10,7 +10,6 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 
 public abstract class CoreWebPage extends WebPage {
 

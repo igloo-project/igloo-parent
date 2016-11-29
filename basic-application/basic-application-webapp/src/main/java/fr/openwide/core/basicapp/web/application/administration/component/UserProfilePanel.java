@@ -166,7 +166,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 				new EmailLink("email", emailModel),
-				new DefaultPlaceholderPanel("emailPlaceholder").model(emailModel),
+				new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
 				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
 						DatePattern.SHORT_DATETIME).showPlaceholder(),
 				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),

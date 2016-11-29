@@ -36,7 +36,6 @@ import fr.openwide.core.wicket.more.export.excel.component.AbstractExcelExportAj
 import fr.openwide.core.wicket.more.export.excel.component.ExcelExportWorkInProgressModalPopupPanel;
 import fr.openwide.core.wicket.more.link.model.PageModel;
 import fr.openwide.core.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
-import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.factory.ModelFactories;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
@@ -129,7 +128,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 										super.onComponentTag(tag);
 									}
 								}
-								.add(new EnclosureBehavior().model(Predicates2.hasText(), emailModel))
+								.add(Condition.predicate(emailModel, Predicates2.hasText()).thenShow())
 						);
 					}
 				})
