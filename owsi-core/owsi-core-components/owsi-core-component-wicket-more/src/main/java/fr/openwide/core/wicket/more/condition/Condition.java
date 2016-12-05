@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -831,6 +832,10 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	public static <C extends Collection<?>> Condition collectionModelNotEmpty(IModel<C> collectionModel) {
 		return predicate(collectionModel, Predicates2.notEmpty());
+	}
+	
+	public static <M extends Map<?, ?>> Condition mapModelNotEmpty(IModel<M> mapModel) {
+		return predicate(mapModel, Predicates2.mapNotEmpty());
 	}
 	
 	public static Condition modelsAnyNotNull(IModel<?> firstModel, IModel<?>... otherModels) {
