@@ -27,7 +27,6 @@ public class TestFileUtils {
 		File directoryFile = new File(DIRECTORY);
 		
 		assertTrue(directoryFile.exists());
-		assertTrue(directoryFile.length() > 0);
 		assertTrue(directoryFile.isDirectory());
 		
 		file = FileUtils.getFile(directoryFile, "test1.txt");
@@ -70,7 +69,6 @@ public class TestFileUtils {
 		File directoryFile = new File(DIRECTORY);
 		
 		assertTrue(directoryFile.exists());
-		assertTrue(directoryFile.length() > 0);
 		assertTrue(directoryFile.isDirectory());
 		
 		files = FileUtils.list(directoryFile, new NameFileFilter("test1.txt"));
