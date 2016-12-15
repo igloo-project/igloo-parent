@@ -29,6 +29,7 @@
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
 		
+		<owsi-core.maven-jgitflow-plugin.version>1.0-m5.1</owsi-core.maven-jgitflow-plugin.version>
 		<owsi-core.maven-compiler-plugin.version>3.5.1</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>3.0.0</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.19.1</owsi-core.maven-surefire-plugin.version>
@@ -59,6 +60,22 @@
 	
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>${owsi-core.maven-jgitflow-plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<flowInitContext>
+						<masterBranchName>master</masterBranchName>
+						<developBranchName>develop</developBranchName>
+						<featureBranchPrefix>feature-</featureBranchPrefix>
+						<releaseBranchPrefix>release-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>

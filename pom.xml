@@ -14,6 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<owsi-core.maven-release-plugin.version>2.5.2</owsi-core.maven-release-plugin.version>
+		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -44,6 +45,24 @@
 	</profiles>
 	
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>${maven-jgitflow-plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<flowInitContext>
+						<masterBranchName>master</masterBranchName>
+						<developBranchName>develop</developBranchName>
+						<featureBranchPrefix>feature-</featureBranchPrefix>
+						<releaseBranchPrefix>release-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+				</configuration>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
