@@ -15,6 +15,7 @@
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
 		<jdk.version>1.7</jdk.version>
+		<minimal.jdk.version>1.7</minimal.jdk.version>
 		
 		<!--
 			Should be a valid artifact of type "signature"
@@ -29,8 +30,9 @@
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
 		
+		<owsi-core.maven-toolchains-plugin.version>1.1</owsi-core.maven-toolchains-plugin.version>
 		<owsi-core.maven-jgitflow-plugin.version>1.0-m5.1</owsi-core.maven-jgitflow-plugin.version>
-		<owsi-core.maven-compiler-plugin.version>3.5.1</owsi-core.maven-compiler-plugin.version>
+		<owsi-core.maven-compiler-plugin.version>3.6.0</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>3.0.0</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.19.1</owsi-core.maven-surefire-plugin.version>
 		<owsi-core.maven-install-plugin.version>2.5.2</owsi-core.maven-install-plugin.version>
@@ -107,7 +109,7 @@
 									<version>[${minimal.maven.version},)</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
-									<version>${jdk.version}</version>
+									<version>${minimal.jdk.version}</version>
 								</requireJavaVersion>
 							</rules>
 						</configuration>
@@ -156,6 +158,18 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>${owsi-core.maven-toolchains-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>toolchain</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -453,6 +467,64 @@
 					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
+		</profile>
+		<profile>
+			<id>jdk7</id>
+			<activation>
+				<property>
+					<name>jdk7</name>
+				</property>
+			</activation>
+			<properties>
+				<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
+				<jdk.signature.artifactId>java17</jdk.signature.artifactId>
+				<jdk.signature.version>1.0</jdk.signature.version>
+				<jdk.version>1.7</jdk.version>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>1.7</version>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>jdk8</id>
+			<activation>
+				<property>
+					<name>jdk8</name>
+				</property>
+			</activation>
+			<properties>
+				<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
+				<jdk.signature.artifactId>java18</jdk.signature.artifactId>
+				<jdk.signature.version>1.0</jdk.signature.version>
+				<jdk.version>1.8</jdk.version>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>1.8</version>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 	

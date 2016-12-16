@@ -23,6 +23,11 @@
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>bindgen-java</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		
 		<!-- Apache Commons -->
 		
