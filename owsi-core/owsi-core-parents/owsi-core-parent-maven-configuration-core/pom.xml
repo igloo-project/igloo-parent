@@ -42,7 +42,8 @@
 		<owsi-core.cglib.version>3.2.2</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.20.0-GA</owsi-core.javassist.version>
 		
-		<owsi-core.bindgen.version>2.29-ow-SNAPSHOT</owsi-core.bindgen.version>
+		<owsi-core.bindgen.version>3.0.0-SNAPSHOT</owsi-core.bindgen.version>
+		<owsi-core.bindgen-java.version>0.1.0-SNAPSHOT</owsi-core.bindgen-java.version>
 		
 		<owsi-core.spring-security.version>4.1.0.RELEASE</owsi-core.spring-security.version>
 		
@@ -1399,6 +1400,18 @@
 			-->
 			<properties>
 				<generated-sources-test.directory>${generated-sources.directory}</generated-sources-test.directory>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk7</id>
+			<activation>
+				<property>
+					<name>jdk7</name>
+				</property>
+			</activation>
+			<properties>
+				<!-- override bindgen-java version to handle jdk7 compatible build -->
+				<owsi-core.bindgen-java.version>0.1.0-jdk-7-SNAPSHOT</owsi-core.bindgen-java.version>
 			</properties>
 		</profile>
 	</profiles>
