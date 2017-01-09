@@ -14,15 +14,15 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
-		<jdk.version>1.7</jdk.version>
-		<minimal.jdk.version>1.7</minimal.jdk.version>
+		<jdk.version>1.8</jdk.version>
+		<minimal.jdk.version>1.8</minimal.jdk.version>
 		
 		<!--
 			Should be a valid artifact of type "signature"
 			See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22
 		 -->
 		<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
-		<jdk.signature.artifactId>java17</jdk.signature.artifactId>
+		<jdk.signature.artifactId>java18</jdk.signature.artifactId>
 		<jdk.signature.version>1.0</jdk.signature.version>
 		
 		<minimal.maven.version>3.2.5</minimal.maven.version>
