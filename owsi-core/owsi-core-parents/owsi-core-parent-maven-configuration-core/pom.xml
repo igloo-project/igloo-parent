@@ -1341,6 +1341,28 @@
 				<pluginManagement>
 					<plugins>
 						<plugin>
+							<groupId>org.bsc.maven</groupId>
+							<artifactId>maven-processor-plugin</artifactId>
+							<configuration>
+								<excludes>
+									<exclude>**/*</exclude><!-- Disable source generation -->
+								</excludes>
+							</configuration>
+							<executions>
+								<execution>
+									<id>maven-processor-plugin-default</id>
+									<phase>generate-sources</phase><!-- Still run the processor to update sourcepaths -->
+									<goals>
+										<goal>process</goal>
+									</goals>
+								</execution>
+								<execution>
+									<id>maven-processor-plugin-default-test</id>
+									<phase>none</phase> <!-- Already executed in generate-sources -->
+								</execution>
+							</executions>
+						</plugin>
+						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>animal-sniffer-maven-plugin</artifactId>
 							<version>${owsi-core.animal-sniffer-maven-plugin.version}</version>
