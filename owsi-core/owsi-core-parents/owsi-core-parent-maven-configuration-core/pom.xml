@@ -1356,7 +1356,6 @@
 									<phase>generate-sources</phase><!-- Still run the processor to update sourcepaths -->
 									<goals>
 										<goal>process</goal>
-										<goal>process-test</goal>
 									</goals>
 								</execution>
 								<execution>
