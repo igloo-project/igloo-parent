@@ -73,11 +73,25 @@ public class BindableModel<E> implements IBindableModel<E> {
 	 */
 	private Multimap<FieldPath, BindableModel<?>> propertyModelsByImpactingPaths;
 
+	private final FieldPath propertyPath;
+
+	private final FieldPath itemsParentPath;
+
 	public BindableModel(IModel<E> mainModel) {
+		this(mainModel, FieldPath.ROOT);
+	}
+
+	public BindableModel(IModel<E> mainModel, FieldPath propertyPath) {
+		this(mainModel, propertyPath, null);
+	}
+
+	public BindableModel(IModel<E> mainModel, FieldPath propertyPath, FieldPath itemsParentPath) {
 		super();
 		this.mainModel = mainModel;
+		this.propertyPath = propertyPath;
+		this.itemsParentPath = itemsParentPath;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -110,7 +124,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 		readAllExceptMainModel();
 	}
 	
-	private IModel<E> getDelegateModel() {
+	public IModel<E> getDelegateModel() {
 		return mainModel;
 	}
 	
@@ -153,13 +167,23 @@ public class BindableModel<E> implements IBindableModel<E> {
 	
 	@Override
 	public <T> IBindableModel<T> bind(BindingRoot<? super E, T> binding) {
-		return getOrCreateSimpleModel(binding, FieldPath.fromBinding(binding));
+		return bind(binding, FieldPath.ROOT);
+	}
+
+	@Override
+	public <T> IBindableModel<T> bind(BindingRoot<? super E, T> binding, FieldPath itemsParentPath) {
+		return getOrCreateSimpleModel(FieldPath.fromBinding(binding), itemsParentPath);
 	}
 
 	@Override
 	public <T> IBindableModel<T> bindWithCache(BindingRoot<? super E, T> binding, IModel<T> workingCopyProposal) {
+		return bindWithCache(binding, workingCopyProposal, FieldPath.ROOT);
+	}
+
+	@Override
+	public <T> IBindableModel<T> bindWithCache(BindingRoot<? super E, T> binding, IModel<T> workingCopyProposal, FieldPath itemsParentPath) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		BindableModel<T> propertyModel = getOrCreateSimpleModel(binding, path);
+		BindableModel<T> propertyModel = getOrCreateSimpleModel(path, itemsParentPath);
 		if (propertyModel.hasCache()) {
 			return propertyModel;
 		} else {
@@ -198,8 +222,17 @@ public class BindableModel<E> implements IBindableModel<E> {
 			BindingRoot<? super E, C> binding,
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
+		return bindCollectionWithCache(binding, newCollectionSupplier, itemModelFunction, FieldPath.ROOT);
+	}
+
+	@Override
+	public <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
+			BindingRoot<? super E, C> binding,
+			Supplier<? extends C> newCollectionSupplier,
+			Function<? super T, ? extends IModel<T>> itemModelFunction,
+			FieldPath itemsParentPath) {
 		FieldPath path = FieldPath.fromBinding(binding);
-		return bindCollectionWithCache(this, path, path, newCollectionSupplier, itemModelFunction);
+		return bindCollectionWithCache(this, path, path, newCollectionSupplier, itemModelFunction, itemsParentPath);
 	}
 
 	private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
@@ -207,12 +240,13 @@ public class BindableModel<E> implements IBindableModel<E> {
 			FieldPath originalPath,
 			FieldPath path,
 			Supplier<? extends C> newCollectionSupplier,
-			Function<? super T, ? extends IModel<T>> itemModelFunction) {
-		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+			Function<? super T, ? extends IModel<T>> itemModelFunction,
+			FieldPath itemsParentPath) {
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get(), FieldPath.ROOT);
 		if (owner != this) {
 			return owner.bindCollectionWithCache(
 					rootBindableModel, originalPath,
-					path.relativeToParent().get(), newCollectionSupplier, itemModelFunction
+					path.relativeToParent().get(), newCollectionSupplier, itemModelFunction, itemsParentPath
 			);
 		}
 		
@@ -221,7 +255,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 		if (propertyModel == null) {
 			BindableCollectionModel<T, C> collectionPropertyModel = new BindableCollectionModel<>(
 					this.<C>createBindingModel(getDelegateModel(), path),
-					newCollectionSupplier, itemModelFunction
+					newCollectionSupplier, itemModelFunction, itemsParentPath
 			);
 			getPropertyModels().put(path, collectionPropertyModel);
 			
@@ -254,7 +288,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 	}
 	
 	private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionAlreadyAdded(FieldPath path) {
-		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get(), FieldPath.ROOT);
 		if (owner != this) {
 			return owner.bindCollectionAlreadyAdded(path.relativeToParent().get());
 		}
@@ -283,7 +317,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(BindableModel<?> rootBindableModel,
 			FieldPath originalPath, FieldPath path, Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
 			Function<? super V, ? extends IModel<V>> valueModelFunction) {
-		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get(), FieldPath.ROOT);
 		if (owner != this) {
 			return owner.bindMapWithCache(
 					rootBindableModel, originalPath,
@@ -328,7 +362,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 	}
 
 	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapAlreadyAdded(FieldPath path) {
-		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
+		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get(), FieldPath.ROOT);
 		if (owner != this) {
 			return owner.bindMapAlreadyAdded(path.relativeToParent().get());
 		}
@@ -346,17 +380,18 @@ public class BindableModel<E> implements IBindableModel<E> {
 		}
 	}
 	
+	
+	private <T> BindableModel<T> getOrCreateSimpleModel(FieldPath path, FieldPath itemsParentPath) {
+		return getOrCreateSimpleModel(path, path, itemsParentPath);
+	}
+
 	/**
 	 * Retrieves a pre-existing BindableModel, or create it if necessary.
 	 * <p>If creation is necessary, the created model will be an instance of {@link BindableModel},
 	 * not {@link BindableCollectionModel} or {@link BindableMapModel}.
 	 */
-	private <T> BindableModel<T> getOrCreateSimpleModel(BindingRoot<? super E, T> binding, FieldPath path) {
-		return getOrCreateSimpleModel(path);
-	}
-
 	@SuppressWarnings("unchecked")
-	private <T> BindableModel<T> getOrCreateSimpleModel(FieldPath path) {
+	private <T> BindableModel<T> getOrCreateSimpleModel(FieldPath path, FieldPath propertyPath, FieldPath itemsParentPath) {
 		if (path.isRoot()) {
 			// Binding the root, i.e. this
 			return (BindableModel<T>) this;
@@ -364,7 +399,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 			// Binding a direct child property
 			BindableModel<T> propertyModel = (BindableModel<T>) getPropertyModels().get(path);
 			if (propertyModel == null) {
-				propertyModel = new BindableModel<>(this.<T>createBindingModel(getDelegateModel(), path));
+				propertyModel = new BindableModel<>(this.<T>createBindingModel(getDelegateModel(), path), propertyPath, itemsParentPath);
 				getPropertyModels().put(path, propertyModel);
 			}
 			return propertyModel;
@@ -376,8 +411,8 @@ public class BindableModel<E> implements IBindableModel<E> {
 			 */
 			FieldPath parentPath = path.parent().get();
 			FieldPath relativePropertyPath = path.relativeTo(parentPath).get();
-			return getOrCreateSimpleModel(parentPath)
-					.getOrCreateSimpleModel(relativePropertyPath);
+			return getOrCreateSimpleModel(parentPath, parentPath, itemsParentPath)
+					.getOrCreateSimpleModel(relativePropertyPath, propertyPath, itemsParentPath);
 		}
 	}
 	
@@ -386,6 +421,16 @@ public class BindableModel<E> implements IBindableModel<E> {
 				path.toString(), FieldPathPropertyComponent.PROPERTY_SEPARATOR_CHAR
 		);
 		return new PropertyModel<T>(delegateModel, propertyExpression);
+	}
+
+	public FieldPath getFieldPath() {
+		if (propertyPath == null) {
+			return null;
+		}
+		if (itemsParentPath != null) {
+			return itemsParentPath.append(propertyPath);
+		}
+		return propertyPath;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.bindgen.BindingRoot;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.wicket.more.bindable.exception.NoSuchModelException;
 import fr.openwide.core.wicket.more.markup.repeater.collection.ICollectionModel;
 import fr.openwide.core.wicket.more.markup.repeater.map.IMapModel;
@@ -32,6 +33,11 @@ public interface IBindableModel<T> extends IModel<T> {
 	<T2> IBindableModel<T2> bind(BindingRoot<? super T, T2> binding);
 	
 	/**
+	 * @see {@link #bind(BindingRoot)}
+	 */
+	<T2> IBindableModel<T2> bind(BindingRoot<? super T, T2> binding, FieldPath itemsParentPath);
+	
+	/**
 	 * Returns a model bound to <code>binding</code>, with an internal cache, using the <code>workingCopyProposal</code>.
 	 * <p>If {@link #bindWithCache(BindingRoot, IModel)} or {@link #bind(BindingRoot)} has already been called for
 	 * the same property, the exact same model will be returned.
@@ -43,6 +49,11 @@ public interface IBindableModel<T> extends IModel<T> {
 	 * be called on the returned model.
 	 */
 	<T2> IBindableModel<T2> bindWithCache(BindingRoot<? super T, T2> binding, IModel<T2> workingCopyProposal);
+	
+	/**
+	 * @see {@link #bindWithCache(BindingRoot, IModel)}
+	 */
+	<T2> IBindableModel<T2> bindWithCache(BindingRoot<? super T, T2> binding, IModel<T2> workingCopyProposal, FieldPath parentFieldPath);
 
 	/**
 	 * Returns a {@link ICollectionModel} which caches the content of the collection, and whose items models are
@@ -56,6 +67,15 @@ public interface IBindableModel<T> extends IModel<T> {
 			BindingRoot<? super T, C> binding,
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T2, ? extends IModel<T2>> itemModelFunction);
+	
+	/**
+	 * @see {@link #bindWithCache(BindingRoot, IModel)}
+	 */
+	<T2, C extends Collection<T2>> IBindableCollectionModel<T2, C> bindCollectionWithCache(
+			BindingRoot<? super T, C> binding,
+			Supplier<? extends C> newCollectionSupplier,
+			Function<? super T2, ? extends IModel<T2>> itemModelFunction,
+			FieldPath itemsParentPath);
 	
 	/**
 	 * @return A previously created model collection tied to the given binding.

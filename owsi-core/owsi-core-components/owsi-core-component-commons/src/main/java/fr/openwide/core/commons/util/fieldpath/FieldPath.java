@@ -168,9 +168,25 @@ public class FieldPath implements Iterable<FieldPathComponent>, Serializable { /
 		}
 	}
 	
+	public boolean endsWith(FieldPath other) {
+		if (other.components.size() > components.size()) {
+			return false;
+		} else {
+			return components.subList(components.size() - other.components.size(), components.size()).equals(other.components);
+		}
+	}
+	
 	public Optional<FieldPath> relativeTo(FieldPath other) {
 		if (startsWith(other)) {
 			return Optional.of(new FieldPath(components.subList(other.components.size(), components.size())));
+		} else {
+			return Optional.absent();
+		}
+	}
+	
+	public Optional<FieldPath> relativeFrom(FieldPath other) {
+		if (endsWith(other)) {
+			return Optional.of(new FieldPath(components.subList(0, components.size() - other.components.size())));
 		} else {
 			return Optional.absent();
 		}

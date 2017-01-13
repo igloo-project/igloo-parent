@@ -22,6 +22,7 @@ import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
 
+import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 
@@ -51,6 +52,8 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 
 	private final String propertyExpression;
 
+	private final FieldPath parentFieldPath;
+
 	public static final <T, U> IDetachableFactory<IModel<T>, BindingModel<T, U>> factory(BindingRoot<? super T, ? extends U> binding) {
 		final String propertyExpression = binding.getPath();
 		return new AbstractDetachableFactory<IModel<T>, BindingModel<T, U>>() {
@@ -66,13 +69,22 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 		};
 	}
 	
-	private BindingModel(Object root, String propertyExpression) {
+	private BindingModel(Object root, String propertyExpression, FieldPath parentFieldPath) {
 		super(root);
 		if (ROOT.equals(propertyExpression)) {
 			this.propertyExpression = null;
 		} else {
 			this.propertyExpression = propertyExpression;
 		}
+		this.parentFieldPath = parentFieldPath;
+	}
+	
+	private BindingModel(Object root, String propertyExpression) {
+		this(root, propertyExpression, null);
+	}
+	
+	public static <R, T> BindingModel<R, T> of(IModel<? extends R> root, BindingRoot<R, T> binding, FieldPath fullFieldPath) {
+		return new BindingModel<R, T>(root, binding.getPath(), fullFieldPath);
 	}
 	
 	/**
@@ -103,7 +115,15 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	protected String propertyExpression() {
 		return propertyExpression;
 	}
-	
+
+	public FieldPath getFieldPath() {
+		FieldPath fieldPath = FieldPath.fromString(propertyExpression);
+		if (parentFieldPath != null) {
+			fieldPath = fieldPath.compose(parentFieldPath);
+		}
+		return fieldPath;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
