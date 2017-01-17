@@ -44,6 +44,7 @@
 		
 		<owsi-core.bindgen.version>3.0.0-SNAPSHOT</owsi-core.bindgen.version>
 		<owsi-core.bindgen-java.version>0.1.0-SNAPSHOT</owsi-core.bindgen-java.version>
+		<owsi-core.bindgen-java-jdk7.version>0.1.0-jdk-7-SNAPSHOT</owsi-core.bindgen-java-jdk7.version>
 		
 		<owsi-core.spring-security.version>4.1.0.RELEASE</owsi-core.spring-security.version>
 		
@@ -173,6 +174,13 @@
 	
 	<dependencyManagement>
 		<dependencies>
+
+				<dependency>
+					<groupId>fr.openwide.core.components</groupId>
+					<artifactId>bindgen-java</artifactId>
+					<version>${owsi-core.bindgen-java.version}</version>
+				</dependency>
+
 			<!-- Logging -->
 				
 				<dependency>
@@ -1410,7 +1418,7 @@
 			</activation>
 			<properties>
 				<!-- override bindgen-java version to handle jdk7 compatible build -->
-				<owsi-core.bindgen-java.version>0.1.0-jdk-7-SNAPSHOT</owsi-core.bindgen-java.version>
+				<owsi-core.bindgen-java.version>${owsi-core.bindgen-java-jdk7.version}</owsi-core.bindgen-java.version>
 			</properties>
 		</profile>
 	</profiles>

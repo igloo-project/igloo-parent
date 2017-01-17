@@ -9,9 +9,19 @@
 		<relativePath>../owsi-core-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>owsi-core-parent-core-project</artifactId>
+	<artifactId>owsi-core-parent-core-project-jdk7</artifactId>
 	<packaging>pom</packaging>
 	
-	<name>OWSI Core - Parent - Core project</name>
+	<name>OWSI Core - Parent - Core project (JDK7)</name>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>fr.openwide.core.components</groupId>
+				<artifactId>bindgen-java</artifactId>
+				<version>${owsi-core.bindgen-java-jdk7.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
 </project>

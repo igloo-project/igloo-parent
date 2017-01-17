@@ -26,7 +26,6 @@
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>bindgen-java</artifactId>
-			<version>${owsi-core.bindgen-java.version}</version>
 		</dependency>
 		
 		<!-- Apache Commons -->
