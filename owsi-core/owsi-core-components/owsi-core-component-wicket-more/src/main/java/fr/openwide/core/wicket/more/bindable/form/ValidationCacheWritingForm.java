@@ -17,31 +17,38 @@ import org.apache.wicket.util.visit.IVisitor;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.javatuples.KeyValue;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.Multimaps;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.validator.constraint.util.ConstraintViolationUtils;
 import fr.openwide.core.wicket.more.bindable.model.BindableModel;
 import fr.openwide.core.wicket.more.bindable.model.IBindableModel;
+import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.WorkingCopyModel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
-public class ValidationCacheWritingForm<T> extends CacheWritingForm<T> {
+public class ValidationCacheWritingForm<M extends IBindableModel<T>, T, V> extends CacheWritingForm<T> {
 
 	private static final long serialVersionUID = -3052046009127345521L;
 
+	private final M bindableModel;
+
+	private final IDetachableFactory<M, V> validationBeanFactory;
+
 	private final IModel<Class<?>[]> groupsModel;
 
-	public ValidationCacheWritingForm(String id, IBindableModel<T> bindableModel) {
-		this(id, bindableModel, new GroupsModel());
+	public ValidationCacheWritingForm(String id, M bindableModel, IDetachableFactory<M, V> validationBeanFactory) {
+		this(id, bindableModel, validationBeanFactory, new GroupsModel());
 	}
 
-	public ValidationCacheWritingForm(String id, IBindableModel<T> bindableModel, IModel<Class<?>[]> groupsModel) {
+	public ValidationCacheWritingForm(String id, M bindableModel, IDetachableFactory<M, V> validationBeanFactory, IModel<Class<?>[]> groupsModel) {
 		super(id, bindableModel);
+		this.bindableModel = Objects.requireNonNull(bindableModel);
+		this.validationBeanFactory = Objects.requireNonNull(validationBeanFactory);
 		this.groupsModel = Objects.requireNonNull(groupsModel);
 	}
 
@@ -49,15 +56,19 @@ public class ValidationCacheWritingForm<T> extends CacheWritingForm<T> {
 	protected void onValidateModelObjects() {
 		super.onValidateModelObjects();
 		
-		Validator validator = BeanValidationConfiguration.get().getValidator();
-		Set<ConstraintViolation<T>> violations = validator.validate(getModelObject(), groupsModel.getObject());
+		V validationBean = validationBeanFactory.create(bindableModel);
 		
-		final ImmutableListMultimap<FieldPath, ConstraintViolation<T>> violationsByFieldPath = Multimaps.index(violations, new Function<ConstraintViolation<T>, FieldPath>() {
-			@Override
-			public FieldPath apply(ConstraintViolation<T> input) {
-				return ConstraintViolationUtils.getFieldPath(input);
-			}
-		});
+		Validator validator = BeanValidationConfiguration.get().getValidator();
+		Set<ConstraintViolation<V>> violations = validate(validator, validationBean, groupsModel.getObject());
+		
+		if (violations.isEmpty()) {
+			return; // success \o/
+		}
+		
+		Multimap<FieldPath, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>>> violationsByFieldPath =
+				ConstraintViolationUtils.getInfo(getModelObject(), validationBean, violations);
+		
+		Set<ConstraintViolation<V>> violationsOnForm = Sets.newLinkedHashSet(violations);
 		
 		visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
 			@Override
@@ -78,20 +89,31 @@ public class ValidationCacheWritingForm<T> extends CacheWritingForm<T> {
 				}
 				
 				if (violationsByFieldPath.containsKey(completeFieldPath)) {
-					for (ConstraintViolation<T> constraintViolation : violationsByFieldPath.get(completeFieldPath)) {
-						if (isMatchingPath(model, (ConstraintViolationImpl<T>) constraintViolation, completeFieldPath)) {
-							object.error(constraintViolation.getMessage());
+					for (KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>> constraintViolationInfo : violationsByFieldPath.get(completeFieldPath)) {
+						if (isMatchingPath(model, constraintViolationInfo, completeFieldPath)) {
+							object.error(constraintViolationInfo.getKey().getMessage());
+							violationsOnForm.remove(constraintViolationInfo.getKey());
 						}
 					}
 				}
 			}
 		});
+		
+		for (ConstraintViolation<V> violationOnForm : violationsOnForm) {
+			error(violationOnForm.getMessage());
+		}
+		
+		error("error");
 	}
 
-	private boolean isMatchingPath(IModel<?> model, ConstraintViolationImpl<T> constraintViolation, FieldPath completeFieldPath) {
+	protected Set<ConstraintViolation<V>> validate(Validator validator, V validationBean, Class<?>[] groups) {
+		return validator.validate(validationBean, groups);
+	}
+
+	private boolean isMatchingPath(IModel<?> model, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>> constraintViolationInfo, FieldPath completeFieldPath) {
 		FieldPath fieldPath = FieldPath.of(completeFieldPath);
 		
-		List<KeyValue<FieldPath, Object>> nodes = ConstraintViolationUtils.listNodes(getModelObject(), constraintViolation);
+		List<KeyValue<FieldPath, Object>> nodes = Lists.newArrayList(constraintViolationInfo.getValue());
 		
 		IModel<?> currentModel = model;
 		
@@ -208,7 +230,7 @@ public class ValidationCacheWritingForm<T> extends CacheWritingForm<T> {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(groupsModel);
+		Detachables.detach(bindableModel, validationBeanFactory, groupsModel);
 	}
 
 }
