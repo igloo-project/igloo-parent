@@ -52,7 +52,7 @@ public class ConstraintViolationUtils {
 		ConstraintViolationImpl<?> constraintViolationImpl = (ConstraintViolationImpl<?>) constraintViolation;
 		
 		FieldPath fieldPath = Optional.fromNullable(
-				FieldPath.fromString(constraintViolationImpl.getPropertyPath().toString().replaceAll("\\[.*\\]", "\\[\\*\\]"))
+				FieldPath.fromString(constraintViolationImpl.getPropertyPath().toString().replaceAll("\\[[^\\]]*\\]", "\\[\\*\\]"))
 		).or(FieldPath.ROOT);
 		
 		if (constraintViolationImpl.getExpressionVariables().get(CLASS_LEVEL_CONSTRAINT_PROPERTY_PATH) != null) {
@@ -83,6 +83,7 @@ public class ConstraintViolationUtils {
 						newRootFieldPath.append(fieldPathEntry.getKey());
 					}
 					fieldPath = fieldPath.relativeTo(entry.getKey()).get().compose(newRootFieldPath);
+					break;
 				}
 			}
 		}

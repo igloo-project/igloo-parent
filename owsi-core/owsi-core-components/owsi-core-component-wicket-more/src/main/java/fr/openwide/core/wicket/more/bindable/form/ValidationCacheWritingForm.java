@@ -1,5 +1,6 @@
 package fr.openwide.core.wicket.more.bindable.form;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -10,14 +11,12 @@ import javax.validation.Validator;
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
 import org.apache.wicket.bean.validation.GroupsModel;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.javatuples.KeyValue;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
@@ -27,8 +26,6 @@ import fr.openwide.core.jpa.validator.constraint.util.ConstraintViolationUtils;
 import fr.openwide.core.wicket.more.bindable.model.BindableModel;
 import fr.openwide.core.wicket.more.bindable.model.IBindableModel;
 import fr.openwide.core.wicket.more.markup.html.factory.IDetachableFactory;
-import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.model.WorkingCopyModel;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 
 public class ValidationCacheWritingForm<M extends IBindableModel<T>, T, V> extends CacheWritingForm<T> {
@@ -74,23 +71,18 @@ public class ValidationCacheWritingForm<M extends IBindableModel<T>, T, V> exten
 			@Override
 			public void component(FormComponent<?> object, IVisit<Void> visit) {
 				IModel<?> model = object.getModel();
-				if (model == null) {
+				
+				if (model == null || !(model instanceof BindableModel)) {
 					return;
 				}
 				
-				FieldPath completeFieldPath;
+				BindableModel<?> bindableModel = (BindableModel<?>) model;
 				
-				if (model instanceof BindingModel) {
-					completeFieldPath = ((BindingModel<?, ?>) object.getModel()).getFieldPath();
-				} else if (model instanceof BindableModel) {
-					completeFieldPath = ((BindableModel<?>) object.getModel()).getFieldPath();
-				} else {
-					return;
-				}
+				FieldPath fieldPath = bindableModel.getFieldPath();
 				
-				if (violationsByFieldPath.containsKey(completeFieldPath)) {
-					for (KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>> constraintViolationInfo : violationsByFieldPath.get(completeFieldPath)) {
-						if (isMatchingPath(model, constraintViolationInfo, completeFieldPath)) {
+				if (violationsByFieldPath.containsKey(fieldPath)) {
+					for (KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>> constraintViolationInfo : violationsByFieldPath.get(fieldPath)) {
+						if (isMatchingPath(bindableModel, constraintViolationInfo)) {
 							object.error(constraintViolationInfo.getKey().getMessage());
 							violationsOnForm.remove(constraintViolationInfo.getKey());
 						}
@@ -102,113 +94,34 @@ public class ValidationCacheWritingForm<M extends IBindableModel<T>, T, V> exten
 		for (ConstraintViolation<V> violationOnForm : violationsOnForm) {
 			error(violationOnForm.getMessage());
 		}
-		
-		error("error");
 	}
 
 	protected Set<ConstraintViolation<V>> validate(Validator validator, V validationBean, Class<?>[] groups) {
 		return validator.validate(validationBean, groups);
 	}
 
-	private boolean isMatchingPath(IModel<?> model, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>> constraintViolationInfo, FieldPath completeFieldPath) {
-		FieldPath fieldPath = FieldPath.of(completeFieldPath);
+	private boolean isMatchingPath(BindableModel<?> bindableModel, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>> constraintViolationInfo) {
+		Iterator<KeyValue<FieldPath, Object>> nodesFromConstraint = constraintViolationInfo.getValue().iterator();
+		Iterator<KeyValue<FieldPath, Object>> nodesFromBindableModel = bindableModel.listNodes().iterator();
 		
-		List<KeyValue<FieldPath, Object>> nodes = Lists.newArrayList(constraintViolationInfo.getValue());
-		
-		IModel<?> currentModel = model;
-		
-		// for a field.child.grandchildren, we check the model:
-		// - does the model target same object than constraintValidation ?
-		// - does the model target same path than constraintValidation ?
-		// we try to test this 2 conditions for each step in the field path
-		// 1. is constraintValidation.value == grandchildren and model targets a field.child.grandchildren element
-		// 1b. if yes, node = node.parent, path = field.child
-		// 2. is node.value == child and model targets a field.child element
-		// 2b. if yes, node = node.parent, path = field
-		// 3. is node.value == field and model targets a field element
-		// 3b. if yes, node = node.parent, path = field
-		// 4. is node.value == ROOT and model targets a ROOT path
-		// 4b. if yes, bingo!
-		
-		// NOTA: currentModel == null is encountered:
-		// 1. When a collection item is encountered during path traversal, model cannot provide parent model (i.e. model
-		// that provides collection item). In this case,
-		// result = collectionItem.getObject() == node.value and path == node.path
-		// 2. ROOT model is encountered
-		while (currentModel != null) {
-			if (nodes == null || fieldPath == null) {
+		while (nodesFromConstraint.hasNext() && nodesFromBindableModel.hasNext()) {
+			KeyValue<FieldPath, Object> nodeFormConstraint = nodesFromConstraint.next();
+			KeyValue<FieldPath, Object> nodeFromBindableModel = nodesFromBindableModel.next();
+			
+			if (
+					nodeFormConstraint == null
+				||	nodeFromBindableModel == null
+				||	nodeFormConstraint.getKey() == null
+				||	nodeFromBindableModel.getKey() == null
+				||	!Objects.equals(nodeFormConstraint.getKey(), nodeFromBindableModel.getKey())
+				||	!isEquals(nodeFormConstraint.getValue(), nodeFromBindableModel.getValue())
+			) {
 				return false;
 			}
-			
-			// unwrap model to access a model container that provides field path information (if possible)
-			if (currentModel instanceof BindableModel) {
-				currentModel = ((BindableModel<?>) model).getDelegateModel();
-				
-				if (currentModel instanceof WorkingCopyModel) {
-					currentModel = ((WorkingCopyModel<?>) currentModel).getReferenceModel();
-				}
-			}
-			
-			// get IModel as a PropertyModel if possible
-			AbstractPropertyModel<?> currentModelAsPropertyModel = null;
-			if (currentModel instanceof AbstractPropertyModel) {
-				currentModelAsPropertyModel = (AbstractPropertyModel<?>) currentModel;
-			}
-			
-			// get path from PropertyModel (root.fieldName)
-			FieldPath expressionFieldPath = FieldPath.ROOT;
-			if (currentModelAsPropertyModel != null) {
-				expressionFieldPath = FieldPath.fromString(currentModelAsPropertyModel.getPropertyExpression());
-			} else if (fieldPath != null && !fieldPath.isRoot()) {
-				expressionFieldPath = ConstraintViolationUtils.getCurrentFieldPath(fieldPath);
-			}
-			
-			// if no path, introspection is not possible
-			if (expressionFieldPath == null) {
-				return false;
-			}
-			
-			Object currentModelObject = currentModel.getObject();
-			// pass from field1.children.grandchildren to field1.children and keep and check grandchildren (=node)
-			KeyValue<FieldPath, Object> node = nodes.remove(0);
-			
-			// consistency check
-			if (!node.getKey().equals(ConstraintViolationUtils.getCurrentFieldPath(expressionFieldPath))) {
-				return false;
-			}
-			
-			if (!isEquals(currentModelObject, node.getValue())) {
-				return false;
-			}
-			
-			// mimic nodes.remove(0) operation on the other context variables
-			// in case we continue while loop
-			fieldPath = fieldPath.relativeFrom(node.getKey()).orNull();
-			expressionFieldPath = expressionFieldPath.relativeFrom(node.getKey()).orNull();
-			
-			if (currentModelAsPropertyModel != null) {
-				// Deal with parent paths from BindingModel without models to check: as binding model can stack
-				// multiple field step (example: field.child.grandchildren), we need to cut more fieldPath,
-				// expressionFieldPath and nodes levels.
-				while (expressionFieldPath != null && !expressionFieldPath.isRoot() && !nodes.isEmpty() && fieldPath !=  null) {
-					KeyValue<FieldPath, Object> currentNode = nodes.remove(0);
-					
-					// consistency check
-					if (!currentNode.getKey().equals(ConstraintViolationUtils.getCurrentFieldPath(expressionFieldPath))) {
-						return false;
-					}
-					
-					fieldPath = fieldPath.relativeFrom(currentNode.getKey()).orNull();
-					expressionFieldPath = expressionFieldPath.relativeFrom(currentNode.getKey()).orNull();
-				}
-			}
-			
-			// we step a model higher in the path to continue iteration
-			if (currentModelAsPropertyModel != null) {
-				currentModel = currentModelAsPropertyModel.getChainedModel();
-			} else {
-				currentModel = null;
-			}
+		}
+		
+		if (nodesFromConstraint.hasNext() || nodesFromBindableModel.hasNext()) {
+			return false;
 		}
 		
 		return true;

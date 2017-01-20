@@ -10,7 +10,6 @@ import org.apache.wicket.model.IModel;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
-import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import fr.openwide.core.wicket.more.model.CollectionCopyModel;
 import fr.openwide.core.wicket.more.model.WorkingCopyCollectionModel;
@@ -23,11 +22,6 @@ public class BindableCollectionModel<T, C extends Collection<T>> extends Bindabl
 
 	public BindableCollectionModel(IModel<C> referenceModel, Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
-		this(referenceModel, newCollectionSupplier, itemModelFunction, FieldPath.ROOT);
-	}
-
-	public BindableCollectionModel(IModel<C> referenceModel, Supplier<? extends C> newCollectionSupplier,
-			Function<? super T, ? extends IModel<T>> itemModelFunction, FieldPath itemsParentPath) {
 		this(
 				new WorkingCopyCollectionModel<>(
 						referenceModel,
