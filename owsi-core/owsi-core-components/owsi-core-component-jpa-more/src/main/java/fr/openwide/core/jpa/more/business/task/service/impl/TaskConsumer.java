@@ -105,6 +105,7 @@ public final class TaskConsumer {
 		return queue;
 	}
 	
+	
 	/**
 	 * A consumer thread with the ability to try stopping gracefully.
 	 * @see #stop(int)
