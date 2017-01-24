@@ -183,50 +183,6 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<executions>
-						<execution>
-							<!--
-							Clean target/generated-sources and similar before each generation, so that files
-							that will not be generated anymore won't stay in place (they may not compile anymore)
-							This execution must be attached to the initalize phase, not to the generate-sources phase,
-							in order to ensure it's executed *before*, and not after, the generation.
-							-->
-							<id>clean-generated-sources</id>
-							<phase>initialize</phase>
-							<goals>
-								<goal>clean</goal>
-							</goals>
-							<configuration>
-								<excludeDefaultDirectories>true</excludeDefaultDirectories>
-								<filesets>
-									<fileset>
-										<directory>${generated-sources.directory}</directory>
-									</fileset>
-								</filesets>
-							</configuration>
-						</execution>
-						<execution>
-							<!--
-							Same as clean-generated-sources, but for tests.
-							-->
-							<id>clean-generated-test-sources</id>
-							<phase>initialize</phase>
-							<goals>
-								<goal>clean</goal>
-							</goals>
-							<configuration>
-								<excludeDefaultDirectories>true</excludeDefaultDirectories>
-								<filesets>
-									<fileset>
-										<directory>${generated-sources-test.directory}</directory>
-									</fileset>
-								</filesets>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${owsi-core.maven-resources-plugin.version}</version>
@@ -416,24 +372,6 @@
 										<versionRange>[1.0,)</versionRange>
 										<goals>
 											<goal>copy-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<!--
-										This does not mean that we prevent "cleans" on Eclipse, just that the
-										custom maven-clean-plugin executions explicitly mapped to lifecycle phases are
-										not executed on Eclipse.
-										-->
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-clean-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>clean</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
