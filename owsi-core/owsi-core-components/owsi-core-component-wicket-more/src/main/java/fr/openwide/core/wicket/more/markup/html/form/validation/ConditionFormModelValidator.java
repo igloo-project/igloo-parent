@@ -23,6 +23,8 @@ public class ConditionFormModelValidator implements IFormModelValidator {
 
 	private final IModel<String> errorMessageModel;
 
+	private FormComponent<?> formComponentOnError;
+
 	public ConditionFormModelValidator(String errorRessourceKey, Condition condition, FormComponent<?> ... formComponents) {
 		this(errorRessourceKey, condition, ImmutableList.<FormComponent<?>>builder().add(formComponents).build());
 	}
@@ -44,8 +46,13 @@ public class ConditionFormModelValidator implements IFormModelValidator {
 	@Override
 	public void validate(Form<?> form) {
 		if (!condition.applies()) {
-			form.error(Models.wrap(errorMessageModel, form).getObject());
+			(formComponentOnError != null ? formComponentOnError : form).error(Models.wrap(errorMessageModel, form).getObject());
 		}
+	}
+
+	public ConditionFormModelValidator formComponentOnError(FormComponent<?> formComponentOnError) {
+		this.formComponentOnError = formComponentOnError;
+		return this;
 	}
 
 	@Override
