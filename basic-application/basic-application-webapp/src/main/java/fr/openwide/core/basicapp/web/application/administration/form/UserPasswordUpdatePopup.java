@@ -16,12 +16,17 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.basicapp.core.business.user.model.BasicUser;
+import fr.openwide.core.basicapp.core.business.user.model.TechnicalUser;
 import fr.openwide.core.basicapp.core.business.user.model.User;
+import fr.openwide.core.basicapp.core.business.user.service.IUserService;
+import fr.openwide.core.basicapp.core.security.model.BasicApplicationAuthorityConstants;
 import fr.openwide.core.basicapp.core.security.service.ISecurityManagementService;
 import fr.openwide.core.basicapp.web.application.BasicApplicationSession;
 import fr.openwide.core.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import fr.openwide.core.basicapp.web.application.common.validator.UserPasswordValidator;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -33,19 +38,38 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordUpdatePopup.class);
 
 	@SpringBean
+	private IUserService userService;
+	
+	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
 	private Form<?> passwordForm;
 
+	private final IModel<String> oldPasswordModel = Model.of("");
 	private final IModel<String> newPasswordModel = Model.of("");
 
 	private final UserTypeDescriptor<U> typeDescriptor;
 
+	private final Condition isOldPasswordRequired;
+	
 	public UserPasswordUpdatePopup(String id, IModel<U> model) {
 		super(id, model);
 		setStatic();
 		
 		this.typeDescriptor = UserTypeDescriptor.get(model.getObject());
+		
+		this.isOldPasswordRequired = new Condition() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean applies() {
+				User user = userService.getAuthenticatedUser();
+				if (BasicUser.class.equals(user.getClass())) {
+					return user.getAuthorities().contains(BasicApplicationAuthorityConstants.ROLE_ADMIN);
+				} else {
+					return TechnicalUser.class.equals(user.getClass());
+				}
+			}
+		}.negate();
 	}
 
 	@Override
@@ -58,12 +82,17 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
 		
 		passwordForm = new Form<Void>("form");
+		TextField<String> oldPasswordField = new PasswordTextField("oldPassword", oldPasswordModel);
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
 		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
 		
 		body.add(
 				passwordForm
 						.add(
+								oldPasswordField
+										.setLabel(new ResourceModel("business.user.oldPassword"))
+										.setRequired(true)
+										.add(isOldPasswordRequired.thenShow()),
 								newPasswordField
 										.setLabel(new ResourceModel("business.user.newPassword"))
 										.setRequired(true)
@@ -101,13 +130,18 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
 					User user = UserPasswordUpdatePopup.this.getModelObject();
+					String oldPassword = oldPasswordModel.getObject();
 					String newPassword = newPasswordModel.getObject();
 					
-					securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
-					
-					getSession().success(getString("administration.user.password.update.success"));
-					closePopup(target);
-					target.add(getPage());
+					if (!isOldPasswordRequired.applies() || securityManagementService.checkPassword(oldPassword, user)) {
+						securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
+						
+						getSession().success(getString("administration.user.password.update.success"));
+						closePopup(target);
+						target.add(getPage());
+					} else {
+						getSession().error(getString("administration.user.password.update.error.oldPassword"));
+					}
 				} catch (Exception e) {
 					LOGGER.error("Error occured while changing password.", e);
 					getSession().error(getString("common.error.unexpected"));
@@ -135,7 +169,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	@Override
 	protected void onDetach() {
 		super.onDetach();
+		oldPasswordModel.detach();
 		newPasswordModel.detach();
 	}
-
 }

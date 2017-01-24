@@ -29,5 +29,6 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 
 	void updatePassword(User user, String password, User author) throws ServiceException, SecurityServiceException;
 
+	boolean checkPassword(String password, User user) throws ServiceException, SecurityServiceException;
 
 }

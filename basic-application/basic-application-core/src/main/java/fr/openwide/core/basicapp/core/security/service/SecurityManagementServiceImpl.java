@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Lists;
@@ -51,6 +52,9 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	@Autowired
 	private IHistoryLogService historyLogService;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	public SecurityManagementServiceImpl setOptions(Class<? extends User> clazz, SecurityOptions options) {
 		checkNotNull(clazz);
 		checkNotNull(options);
@@ -175,4 +179,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		historyLogService.log(HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
 	}
 
+	@Override
+	public boolean checkPassword(String password, User user) throws ServiceException, SecurityServiceException {
+		return passwordEncoder.matches(password, user.getPasswordHash());
+	}
 }
