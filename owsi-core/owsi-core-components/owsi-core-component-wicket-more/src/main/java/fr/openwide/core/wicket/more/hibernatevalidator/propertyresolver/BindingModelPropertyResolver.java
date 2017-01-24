@@ -3,7 +3,6 @@ package fr.openwide.core.wicket.more.hibernatevalidator.propertyresolver;
 import org.apache.wicket.bean.validation.IPropertyResolver;
 import org.apache.wicket.bean.validation.Property;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.model.IModel;
 
 import fr.openwide.core.wicket.more.model.BindingModel;
 
@@ -18,23 +17,17 @@ public class BindingModelPropertyResolver implements IPropertyResolver {
 
 	@Override
 	public Property resolveProperty(FormComponent<?> component) {
-		BindingModel<?, ?> bindingModel = getBindingModel(component);
+		if (!(component.getModel() instanceof BindingModel)) {
+			return null;
+		}
+		
+		BindingModel<?, ?> bindingModel = (BindingModel<?, ?>) component.getModel();
 		
 		if (bindingModel == null || bindingModel.getChainedModel() == null || bindingModel.getChainedModel().getObject() == null) {
 			return null;
 		}
 		
 		return new Property(bindingModel.getChainedModel().getObject().getClass(), bindingModel.getPropertyExpression());
-	}
-
-	private BindingModel<?, ?> getBindingModel(FormComponent<?> component) {
-		IModel<?> model = component.getModel();
-		
-		if (model instanceof BindingModel) {
-			return (BindingModel<?, ?>) model;
-		}
-		
-		return null;
 	}
 
 }

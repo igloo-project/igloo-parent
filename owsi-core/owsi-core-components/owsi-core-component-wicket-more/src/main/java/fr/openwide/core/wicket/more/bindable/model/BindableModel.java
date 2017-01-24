@@ -115,7 +115,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 		this.fieldPath = fieldPath;
 		return this;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -261,17 +261,17 @@ public class BindableModel<E> implements IBindableModel<E> {
 					this.<C>createBindingModel(getDelegateModel(), path),
 					newCollectionSupplier,
 					Functions.compose(
-							new SerializableFunction<IModel<T>, IModel<T>>() {
+							new SerializableFunction<IBindableModel<T>, IBindableModel<T>>() {
 								private static final long serialVersionUID = 1L;
 								@Override
-								public IModel<T> apply(IModel<T> input) {
+								public IBindableModel<T> apply(IBindableModel<T> input) {
 									if (input instanceof BindableModel) {
 										((BindableModel<T>) input).setUpChained(BindableModel.this, originalPath.relativeToParent().get().item());
 									}
 									return input;
 								}
 							},
-							itemModelFunction
+							BindableModel.factory(itemModelFunction)
 					)
 			);
 			getPropertyModels().put(path, collectionPropertyModel);
@@ -346,7 +346,21 @@ public class BindableModel<E> implements IBindableModel<E> {
 		if (propertyModel == null) {
 			BindableMapModel<K, V, M> mapPropertyModel = new BindableMapModel<>(
 					this.<M>createBindingModel(getDelegateModel(), path),
-					newMapSupplier, keyModelFunction, valueModelFunction
+					newMapSupplier,
+					keyModelFunction,
+					Functions.compose(
+							new SerializableFunction<IBindableModel<V>, IBindableModel<V>>() {
+								private static final long serialVersionUID = 1L;
+								@Override
+								public IBindableModel<V> apply(IBindableModel<V> input) {
+									if (input instanceof BindableModel) {
+										((BindableModel<V>) input).setUpChained(BindableModel.this, originalPath.relativeToParent().get().item());
+									}
+									return input;
+								}
+							},
+							BindableModel.factory(valueModelFunction)
+					)
 			);
 			getPropertyModels().put(path, mapPropertyModel);
 			

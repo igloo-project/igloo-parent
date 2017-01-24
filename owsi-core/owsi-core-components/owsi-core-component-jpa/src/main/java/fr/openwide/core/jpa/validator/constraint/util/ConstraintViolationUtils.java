@@ -21,12 +21,14 @@ import com.google.common.collect.Multimap;
 
 import fr.openwide.core.commons.util.fieldpath.FieldPath;
 import fr.openwide.core.commons.util.fieldpath.FieldPathComponent;
+import fr.openwide.core.commons.util.fieldpath.FieldPathPropertyComponent;
 import fr.openwide.core.commons.util.functional.SerializablePredicate;
 
 public class ConstraintViolationUtils {
 
 	public static final String CLASS_LEVEL_CONSTRAINT_PROPERTY_PATH = "__OW__CLASS_LEVEL_CONSTRAINT_PROPERTY_PATH";
 
+	public static final String COLLECTION_ELEMENT_NODE_NAME = "<collection element>"; // See NodeImpl COLLECTION_ELEMENT_NODE_NAME
 
 	public static <T, V> Multimap<FieldPath, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>>> getInfo(
 			T rootBean,
@@ -52,7 +54,11 @@ public class ConstraintViolationUtils {
 		ConstraintViolationImpl<?> constraintViolationImpl = (ConstraintViolationImpl<?>) constraintViolation;
 		
 		FieldPath fieldPath = Optional.fromNullable(
-				FieldPath.fromString(constraintViolationImpl.getPropertyPath().toString().replaceAll("\\[[^\\]]*\\]", "\\[\\*\\]"))
+				FieldPath.fromString(
+						constraintViolationImpl.getPropertyPath().toString()
+								.replaceAll("\\[[^\\]]*\\]", "\\[\\*\\]")
+								.replaceAll(FieldPathPropertyComponent.PROPERTY_SEPARATOR + COLLECTION_ELEMENT_NODE_NAME, "")
+				)
 		).or(FieldPath.ROOT);
 		
 		if (constraintViolationImpl.getExpressionVariables().get(CLASS_LEVEL_CONSTRAINT_PROPERTY_PATH) != null) {
@@ -109,7 +115,7 @@ public class ConstraintViolationUtils {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public boolean apply(Node input) {
-						return ElementKind.BEAN.equals(input.getKind());
+						return ElementKind.BEAN.equals(input.getKind()) || COLLECTION_ELEMENT_NODE_NAME.equals(input.getName());
 					}
 				}
 		);

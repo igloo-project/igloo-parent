@@ -20,11 +20,11 @@ public class BindableModelPropertyResolver implements IPropertyResolver {
 
 	@Override
 	public Property resolveProperty(FormComponent<?> component) {
-		BindableModel<?> bindableModel = getBindableModel(component);
-		
-		if (bindableModel == null) {
+		if (!(component.getModel() instanceof BindableModel)) {
 			return null;
 		}
+		
+		BindableModel<?> bindableModel = (BindableModel<?>) component.getModel();
 		
 		IModel<?> model = bindableModel.getDelegateModel();
 		
@@ -40,16 +40,6 @@ public class BindableModelPropertyResolver implements IPropertyResolver {
 		AbstractPropertyModel<?> propertyModel = (AbstractPropertyModel<?>) model;
 		
 		return new Property(propertyModel.getChainedModel().getObject().getClass(), propertyModel.getPropertyExpression());
-	}
-
-	private BindableModel<?> getBindableModel(FormComponent<?> component) {
-		IModel<?> model = component.getModel();
-		
-		if (model instanceof BindableModel) {
-			return (BindableModel<?>) model;
-		}
-		
-		return null;
 	}
 
 }
