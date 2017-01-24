@@ -1,6 +1,7 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.primitives.Longs;
+import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
@@ -39,6 +41,14 @@ public final class TaskConsumer {
 
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
+
+	/**
+	 * Used so that consume / switch to working is an atomic state
+	 * 
+	 * Without this lock, working may be false between the moment element is taken from the queue and
+	 * working is changed whereas it is known that there will be work to be done even if queue is empty.
+	 */
+	private final Object workingLock = new Object();
 
 	private final TaskQueue queue;
 	
@@ -77,6 +87,10 @@ public final class TaskConsumer {
 		}
 	}
 	
+	public boolean isWorking() {
+		return thread != null && thread.isWorking();
+	}
+	
 	/**
 	 * A consumer thread with the ability to try stopping gracefully.
 	 * @see #stop(int)
@@ -94,7 +108,12 @@ public final class TaskConsumer {
 		private volatile boolean working = false;
 		
 		private final long startDelay;
-
+		
+		/**
+		 * task consumption take some time, so rateLimiter only limit rate when there is no task to consume.
+		 */
+		private final RateLimiter rateLimiter = RateLimiter.create(0.5);
+		
 		public ConsumerThread(String name, long startDelay) {
 			super(name);
 			this.startDelay = startDelay;
@@ -122,7 +141,7 @@ public final class TaskConsumer {
 				 * If a task is currently being handled, we wait for it to complete within the given time limit.
 				 */
 				long timeRemaining = stopTimeout;
-				while (timeRemaining > 0 && working) {
+				while (timeRemaining > 0 && isWorking()) {
 					/*
 					 * Wait for small durations of time, so that we'll stop waiting as
 					 * soon as the consumer thread stops even if the timeout is huge.
@@ -152,6 +171,12 @@ public final class TaskConsumer {
 			}
 		}
 		
+		public boolean isWorking() {
+			synchronized (workingLock) {
+				return working;
+			}
+		}
+		
 		@Override
 		public void run() {
 			try {
@@ -164,14 +189,24 @@ public final class TaskConsumer {
 				 * stop without any other action)
 				 */
 				while (active && !Thread.currentThread().isInterrupted()) {
-					Long queuedTaskHolderId = queue.take();
-					this.working = true;
+					Long queuedTaskHolderId;
+					// if there are tasks to consume, rateLimiter is not limiting due to task consumption's duration
+					// this allow to have a chance to
+					rateLimiter.acquire();
 					try {
-						entityManagerUtils.openEntityManager();
-						try {
-							tryConsumeTask(queuedTaskHolderId);
-						} finally {
-							entityManagerUtils.closeEntityManager();
+						synchronized (workingLock) {
+							queuedTaskHolderId = queue.poll(100, TimeUnit.MILLISECONDS);
+							if (queuedTaskHolderId != null) {
+								this.working = true;
+							}
+						}
+						if (queuedTaskHolderId != null) {
+							entityManagerUtils.openEntityManager();
+							try {
+								tryConsumeTask(queuedTaskHolderId);
+							} finally {
+								entityManagerUtils.closeEntityManager();
+							}
 						}
 					} finally {
 						this.working = false;

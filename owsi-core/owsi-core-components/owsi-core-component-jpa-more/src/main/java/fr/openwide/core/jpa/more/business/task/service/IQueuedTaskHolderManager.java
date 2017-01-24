@@ -19,6 +19,8 @@ public interface IQueuedTaskHolderManager {
 
 	int getNumberOfWaitingTasks();
 
+	int getNumberOfRunningTasks();
+
 	Collection<IQueueId> getQueueIds();
 	
 	void start();
