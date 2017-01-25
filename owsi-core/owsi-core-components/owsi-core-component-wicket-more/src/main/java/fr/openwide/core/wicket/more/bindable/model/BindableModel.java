@@ -242,7 +242,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 
 	private <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
 			BindableModel<?> rootBindableModel,
-			FieldPath originalPath,
+			final FieldPath originalPath,
 			FieldPath path,
 			Supplier<? extends C> newCollectionSupplier,
 			Function<? super T, ? extends IModel<T>> itemModelFunction) {
@@ -331,8 +331,11 @@ public class BindableModel<E> implements IBindableModel<E> {
 		return bindMapWithCache(this, path, path, newMapSupplier, keyModelFunction, valueModelFunction);
 	}
 	
-	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(BindableModel<?> rootBindableModel,
-			FieldPath originalPath, FieldPath path, Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
+	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(
+			BindableModel<?> rootBindableModel,
+			final FieldPath originalPath,
+			FieldPath path,
+			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
 			Function<? super V, ? extends IModel<V>> valueModelFunction) {
 		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
 		if (owner != this) {

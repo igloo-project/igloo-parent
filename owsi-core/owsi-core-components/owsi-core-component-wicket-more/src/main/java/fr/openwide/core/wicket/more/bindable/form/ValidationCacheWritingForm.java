@@ -65,7 +65,7 @@ public class ValidationCacheWritingForm<M extends IBindableModel<T>, T, V> exten
 		final Multimap<FieldPath, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>>> violationsByFieldPath =
 				ConstraintViolationUtils.getInfo(getModelObject(), validationBean, violations);
 		
-		Set<ConstraintViolation<V>> violationsOnForm = Sets.newLinkedHashSet(violations);
+		final Set<ConstraintViolation<V>> violationsOnForm = Sets.newLinkedHashSet(violations);
 		
 		visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
 			@Override
