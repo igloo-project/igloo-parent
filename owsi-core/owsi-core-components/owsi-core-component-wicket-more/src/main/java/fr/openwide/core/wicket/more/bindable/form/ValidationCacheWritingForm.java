@@ -62,7 +62,7 @@ public class ValidationCacheWritingForm<M extends IBindableModel<T>, T, V> exten
 			return; // success \o/
 		}
 		
-		Multimap<FieldPath, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>>> violationsByFieldPath =
+		final Multimap<FieldPath, KeyValue<ConstraintViolationImpl<V>, List<KeyValue<FieldPath, Object>>>> violationsByFieldPath =
 				ConstraintViolationUtils.getInfo(getModelObject(), validationBean, violations);
 		
 		Set<ConstraintViolation<V>> violationsOnForm = Sets.newLinkedHashSet(violations);
