@@ -31,6 +31,7 @@ public final class HistoryValueRenderer extends Renderer<HistoryValue> {
 	public String render(HistoryValue value, Locale locale) {
 		if (!initialized) {
 			Injector.get().inject(this);
+			initialized = true;
 		}
 		return historyValueService.render(value, locale);
 	}
