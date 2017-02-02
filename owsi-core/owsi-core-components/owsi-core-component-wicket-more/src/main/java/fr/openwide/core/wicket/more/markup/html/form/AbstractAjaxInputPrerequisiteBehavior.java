@@ -27,6 +27,7 @@ import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import fr.openwide.core.wicket.more.markup.html.form.observer.impl.FormComponentChangeAjaxEventBehavior;
+import fr.openwide.core.wicket.more.util.visit.VisitFilters;
 
 /**
  * Performs abstract actions on the attached component according to the actual, client-side content of a given {@link FormComponent}.<br>
@@ -304,7 +305,10 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		T convertedInput = getPrerequisiteFieldConvertedInput();
 		
 		for (Component attachedComponent : attachedComponents) {
-			target.add(getAjaxTarget(attachedComponent));
+			if (VisitFilters.renderedComponents().visitObject(attachedComponent)) {
+				target.add(getAjaxTarget(attachedComponent));
+			}
+			
 			boolean hasReset = false;
 			if (resetAttachedModelPredicate.apply(convertedInput)) {
 				attachedComponent.setDefaultModelObject(null);
