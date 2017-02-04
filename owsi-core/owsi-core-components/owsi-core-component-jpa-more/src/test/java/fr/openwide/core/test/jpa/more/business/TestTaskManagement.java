@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,11 +238,17 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		assertEquals("success", result.get());
 	}
 	
+	/**
+	 * Queue submit is transaction-aware ; we test here that task is pushed to queue after transaction commit.
+	 */
 	@Test
 	public void submitInLongTransaction() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
 		final StaticValueAccessor<String> result2 = new StaticValueAccessor<>();
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
+		// concurrency mechanism to ensure that task 1 is pushed to queue before task 2
+		// for each step, offer then take must be done
+		final LinkedBlockingQueue<Boolean> concurrentLinkedQueue = new LinkedBlockingQueue<Boolean>(1);
 		
 		Runnable runnable = new Runnable() {
 			@Override
@@ -253,26 +260,16 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 							QueuedTaskHolder taskHolder = manager.submit(
 									new SimpleTestTask<>(result, "success", TaskExecutionResult.completed())
 							);
+							// signal that submit is called for task 1
+							concurrentLinkedQueue.offer(true); // STEP 1 signal
 							
 							taskHolderId.set(taskHolder.getId());
 							
-							// wait for task 2 to start and complete
-							RateLimiter rateLimiter = RateLimiter.create(0.5);
-							int tryCount = 0;
-							while (true) {
-								tryCount++;
-								rateLimiter.acquire();
-								
-								if (result2.get() != null && result2.get().equals("success")) {
-									break;
-								}
-								
-								if (tryCount > 10) {
-									throw new IllegalStateException(MessageFormat.format("Task 2 not found done after {0} tries.", tryCount));
-								}
-							}
+							// wait for task 2 to be pushed and committed
+							concurrentLinkedQueue.offer(true); // STEP 2 wait
 							
-							// Check that the task has not been consumed during this transaction (which could be aborted)
+							// Check that the task has not been consumed during this transaction
+							// (which could be aborted)
 							// and that task 2 is allowed to be done
 							assertNull(result.get());
 						} catch (ServiceException e) {
@@ -285,6 +282,9 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		// thread needed so that second task can be run and completed before the above transaction
 		Thread t = new Thread(runnable);
 		t.start();
+		
+		// wait task 1 submit (submitted but not committed, so task not in queue)
+		concurrentLinkedQueue.take(); // STEP 1 wait
 		
 		// push another task
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -300,11 +300,19 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 			}
 		});
 		
-		entityService.flush();
-		entityService.clear();
+		// signal that task 2 submit transaction is completed
+		concurrentLinkedQueue.offer(true); // STEP 2 signal
+		
+		// wait for task 2 transaction & post-transaction completion
+		while (t.isAlive()) {
+			t.join();
+		}
 		
 		waitTaskConsumption();
 		
+		entityManagerClear();
+		
+		// finally, task 2 is done
 		QueuedTaskHolder taskHolder = taskHolderService.getById(taskHolderId.get());
 		assertEquals(TaskStatus.COMPLETED, taskHolder.getStatus());
 		assertEquals(TaskResult.SUCCESS, taskHolder.getResult());
