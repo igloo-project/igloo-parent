@@ -399,6 +399,9 @@
 					<value>owsi-core-release</value>
 				</property>
 			</activation>
+			<properties>
+				<performRelease>true</performRelease>
+			</properties>
 			<distributionManagement>
 				<repository>
 					<id>nexus-owsi-core</id>
