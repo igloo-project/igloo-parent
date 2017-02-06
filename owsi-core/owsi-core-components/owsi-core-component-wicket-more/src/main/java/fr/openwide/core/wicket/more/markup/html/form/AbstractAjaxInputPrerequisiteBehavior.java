@@ -305,8 +305,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		T convertedInput = getPrerequisiteFieldConvertedInput();
 		
 		for (Component attachedComponent : attachedComponents) {
-			if (VisitFilters.renderedComponents().visitObject(attachedComponent)) {
-				target.add(getAjaxTarget(attachedComponent));
+			Component reloadedComponent = getAjaxTarget(attachedComponent);
+			if (VisitFilters.renderedComponents().visitObject(reloadedComponent)) {
+				target.add(reloadedComponent);
 			}
 			
 			boolean hasReset = false;
