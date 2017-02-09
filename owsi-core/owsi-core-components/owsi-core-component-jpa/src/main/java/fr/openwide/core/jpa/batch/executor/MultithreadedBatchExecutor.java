@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.batch.processor.ThreadedProcessor;
 import fr.openwide.core.jpa.batch.runnable.IBatchRunnable;
 import fr.openwide.core.jpa.batch.util.ProcessorProgressLogger;
-import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -31,9 +29,6 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 	private static final Logger LOGGER = LoggerFactory.getLogger(MultithreadedBatchExecutor.class);
 	
 	private static final Logger PROGRESS_LOGGER = LoggerFactory.getLogger(ProcessorProgressLogger.class);
-	
-	@Autowired
-	private IPropertyService propertyService;
 	
 	private int threads = 2;
 	

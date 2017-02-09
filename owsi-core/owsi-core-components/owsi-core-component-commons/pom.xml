@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.12-SNAPSHOT</version>
+		<version>0.13-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>owsi-core-component-commons</artifactId>
@@ -22,6 +22,10 @@
 			<artifactId>owsi-core-dependency-core-logging</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>bindgen-java</artifactId>
 		</dependency>
 		
 		<!-- Apache Commons -->

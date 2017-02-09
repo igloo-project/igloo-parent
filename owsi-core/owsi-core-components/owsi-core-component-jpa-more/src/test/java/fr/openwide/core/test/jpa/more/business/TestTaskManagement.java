@@ -4,10 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,6 +20,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.jpa.business.generic.service.IEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -34,7 +36,7 @@ import fr.openwide.core.test.jpa.more.business.task.config.TestTaskManagementCon
 
 @ContextConfiguration(classes = TestTaskManagementConfig.class)
 public class TestTaskManagement extends AbstractJpaMoreTestCase {
-	
+
 	@Autowired
 	private IEntityService entityService;
 	
@@ -156,19 +158,37 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		transactionTemplate = new TransactionTemplate(transactionManager);
 	}
-	
-	/*
-	 * See TaskConsumer.ConsumerRunnable.run()
-	 */
-	@BeforeClass
-	public static void waitForTaskConsumersToStart() throws Exception {
-		Thread.sleep(10000);
-	}
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		cleanEntities(taskHolderService);
 		super.cleanAll();
+	}
+	
+	protected void waitTaskConsumption() {
+		waitTaskConsumption(false, true);
+	}
+	
+	protected void waitTaskConsumption(boolean returnIfStopped, boolean waitForRunning) {
+		RateLimiter rateLimiter = RateLimiter.create(1);
+		int tryCount = 0;
+		while (true) {
+			tryCount++;
+			rateLimiter.acquire();
+			
+			if (
+					// if returnIfStopped == true, we consider that wait is done
+					(returnIfStopped || manager.isActive())
+					&& manager.getNumberOfWaitingTasks() == 0
+					// if we don't wait for running, ignore manager.getNumberOfRunningTasks()
+					&& (!waitForRunning || manager.getNumberOfRunningTasks() == 0)) {
+				break;
+			}
+			
+			if (tryCount > 10) {
+				throw new IllegalStateException(MessageFormat.format("Task queue not empty after {0} tries.", tryCount));
+			}
+		}
 	}
 	
 	@Test
@@ -192,8 +212,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		entityService.flush();
 		entityService.clear();
 		
-		// Wait for the task to be consumed
-		Thread.sleep(10000);
+		waitTaskConsumption();
 		
 		QueuedTaskHolder taskHolder = taskHolderService.getById(taskHolderId.get());
 		assertEquals(TaskStatus.COMPLETED, taskHolder.getStatus());
@@ -211,8 +230,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		entityService.flush();
 		entityService.clear();
 		
-		// Wait for the task to be consumed
-		Thread.sleep(10000);
+		waitTaskConsumption();
 		
 		taskHolder = taskHolderService.getById(taskHolder.getId());
 		assertEquals(TaskStatus.COMPLETED, taskHolder.getStatus());
@@ -220,41 +238,81 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		assertEquals("success", result.get());
 	}
 	
+	/**
+	 * Queue submit is transaction-aware ; we test here that task is pushed to queue after transaction commit.
+	 */
 	@Test
 	public void submitInLongTransaction() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
+		final StaticValueAccessor<String> result2 = new StaticValueAccessor<>();
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
+		// concurrency mechanism to ensure that task 1 is pushed to queue before task 2
+		// for each step, offer then take must be done
+		final LinkedBlockingQueue<Boolean> concurrentLinkedQueue = new LinkedBlockingQueue<Boolean>(1);
+		
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					@Override
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						try {
+							QueuedTaskHolder taskHolder = manager.submit(
+									new SimpleTestTask<>(result, "success", TaskExecutionResult.completed())
+							);
+							// signal that submit is called for task 1
+							concurrentLinkedQueue.offer(true); // STEP 1 signal
+							
+							taskHolderId.set(taskHolder.getId());
+							
+							// wait for task 2 to be pushed and committed
+							concurrentLinkedQueue.offer(true); // STEP 2 wait
+							
+							// Check that the task has not been consumed during this transaction
+							// (which could be aborted)
+							// and that task 2 is allowed to be done
+							assertNull(result.get());
+						} catch (ServiceException e) {
+							throw new IllegalStateException(e);
+						}
+					}
+				});
+			}
+		};
+		// thread needed so that second task can be run and completed before the above transaction
+		Thread t = new Thread(runnable);
+		t.start();
+		
+		// wait task 1 submit (submitted but not committed, so task not in queue)
+		concurrentLinkedQueue.take(); // STEP 1 wait
+		
+		// push another task
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				try {
-					QueuedTaskHolder taskHolder = manager.submit(
-							new SimpleTestTask<>(result, "success", TaskExecutionResult.completed())
+					manager.submit(
+							new SimpleTestTask<>(result2, "success", TaskExecutionResult.completed())
 					);
-					
-					taskHolderId.set(taskHolder.getId());
-					
-					/*
-					 * The old implementation waited 2+3×10+2+2×10+2+1×10 = 66s for the TaskHolder to be persisted
-					 * to the database, and then simply aborted.
-					 * This checks that there will be no such issue anymore.
-					 */
-					Thread.sleep(70000);
-					
-					// Check that the task has not been consumed during this transaction (which could be aborted)
-					assertNull(result.get());
-				} catch (ServiceException | InterruptedException e) {
+				} catch (ServiceException e) {
 					throw new IllegalStateException(e);
 				}
 			}
 		});
 		
-		entityService.flush();
-		entityService.clear();
+		// signal that task 2 submit transaction is completed
+		concurrentLinkedQueue.offer(true); // STEP 2 signal
 		
-		// Wait for the task to be consumed
-		Thread.sleep(10000);
+		// wait for task 2 transaction & post-transaction completion
+		while (t.isAlive()) {
+			t.join();
+		}
 		
+		waitTaskConsumption();
+		
+		entityManagerClear();
+		
+		// finally, task 2 is done
 		QueuedTaskHolder taskHolder = taskHolderService.getById(taskHolderId.get());
 		assertEquals(TaskStatus.COMPLETED, taskHolder.getStatus());
 		assertEquals(TaskResult.SUCCESS, taskHolder.getResult());
@@ -295,6 +353,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 					// This task will stop the manager during its execution
 					SelfInterruptingTask<String> testTask =
 							new SelfInterruptingTask<>(result, "success", TaskExecutionResult.completed());
+					// we want to force an interruption
 					testTask.setTimeToWaitMs(2000);
 					QueuedTaskHolder taskHolder = manager.submit(testTask);
 					taskHolderId.set(taskHolder.getId());
@@ -307,7 +366,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		entityService.flush();
 		entityService.clear();
 		
-		Thread.sleep(5000);
+		waitTaskConsumption(true, true);
 		
 		QueuedTaskHolder taskHolder = taskHolderService.getById(taskHolderId.get());
 		assertEquals(TaskStatus.INTERRUPTED, taskHolder.getStatus());

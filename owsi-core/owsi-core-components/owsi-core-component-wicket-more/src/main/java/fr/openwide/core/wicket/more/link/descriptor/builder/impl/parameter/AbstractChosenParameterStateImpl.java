@@ -89,7 +89,8 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 	@SuppressWarnings("unchecked")
 	@Override
 	public TInitialState validator(Predicate predicate) {
-		return validator(ConditionLinkParameterValidator.predicateFactory(predicate));
+		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
+		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.predicateFactory(predicate));
 	}
 
 	@Override
@@ -106,7 +107,8 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 	@Override
 	public TInitialState permission(BindingRoot binding, String firstPermissionName,
 			String... otherPermissionNames) {
-		return validator(ConditionLinkParameterValidator.anyPermissionFactory(binding,
+		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
+		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.anyPermissionFactory(binding,
 				Lists.asList(firstPermissionName, otherPermissionNames)));
 	}
 
@@ -116,7 +118,8 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 	@SuppressWarnings("unchecked")
 	@Override
 	public TInitialState validator(IDetachableFactory conditionFactory) {
-		return validator(ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
+		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
+		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
 	}
 
 	@Override

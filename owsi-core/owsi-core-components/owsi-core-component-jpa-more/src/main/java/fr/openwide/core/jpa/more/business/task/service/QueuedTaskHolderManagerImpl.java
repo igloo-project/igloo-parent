@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
@@ -23,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,8 +47,8 @@ import fr.openwide.core.jpa.more.util.transaction.service.ITransactionSynchroniz
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.SpringBeanUtils;
-
-public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
+	
+public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
 
 	@Autowired
@@ -87,19 +88,17 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 
 	private AtomicBoolean availableForAction = new AtomicBoolean(true);
 
-	@PostConstruct
+	@Override
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+		init();
+	}
+
 	private void init() {
 		stopTimeout = propertyService.get(STOP_TIMEOUT);
 
 		initQueues();
 		if (TaskQueueStartMode.auto.equals(propertyService.get(START_MODE))) {
-			/*
-			 * The start delay is needed because server startup can hangs during bean initialization at these places :
-			 * org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanDefinitionNames()
-			 * org.springframework.beans.factory.support.DefaultSingletonBeanRegistry (somewhere)
-			 * By delaying the queue startup, no hang.
-			 */
-			start(10000L);
+			start();
 		} else {
 			LOGGER.warn("Task queue start configured in \"manual\" mode.");
 		}
@@ -174,6 +173,20 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager {
 		int total = 0;
 		for (TaskQueue queue : queuesById.values()) {
 			total += queue.size();
+		}
+		return total;
+	}
+
+	@Override
+	public int getNumberOfRunningTasks() {
+		int total = 0;
+		for (TaskQueue queue : queuesById.values()) {
+			Collection<TaskConsumer> consumers = consumersByQueue.get(queue);
+			for (TaskConsumer consumer : consumers) {
+				if (consumer.isWorking()) {
+					total++;
+				}
+			}
 		}
 		return total;
 	}

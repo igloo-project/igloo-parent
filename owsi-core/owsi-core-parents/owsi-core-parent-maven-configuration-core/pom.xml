@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-maven-configuration-common</artifactId>
-		<version>0.12-SNAPSHOT</version>
+		<version>0.13-SNAPSHOT</version>
 		<relativePath>../owsi-core-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 	
@@ -42,7 +42,9 @@
 		<owsi-core.cglib.version>3.2.2</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.20.0-GA</owsi-core.javassist.version>
 		
-		<owsi-core.bindgen.version>2.28-ow</owsi-core.bindgen.version>
+		<owsi-core.bindgen.version>3.0.1</owsi-core.bindgen.version>
+		<owsi-core.bindgen-java.version>0.1.6</owsi-core.bindgen-java.version>
+		<owsi-core.bindgen-java-jdk7.version>0.1.6.jdk7</owsi-core.bindgen-java-jdk7.version>
 		
 		<owsi-core.spring-security.version>4.1.0.RELEASE</owsi-core.spring-security.version>
 		
@@ -172,6 +174,13 @@
 	
 	<dependencyManagement>
 		<dependencies>
+
+				<dependency>
+					<groupId>fr.openwide.core.components</groupId>
+					<artifactId>bindgen-java</artifactId>
+					<version>${owsi-core.bindgen-java.version}</version>
+				</dependency>
+
 			<!-- Logging -->
 				
 				<dependency>
@@ -1275,22 +1284,18 @@
 					<artifactId>maven-processor-plugin</artifactId>
 					<dependencies>
 						<dependency>
-							<groupId>com.querydsl</groupId>
-							<artifactId>querydsl-apt</artifactId>
-							<version>${owsi-core.querydsl.version}</version>
-						</dependency>
-						<dependency>
 							<groupId>org.bindgen</groupId>
 							<artifactId>bindgen</artifactId>
 							<version>${owsi-core.bindgen.version}</version>
 						</dependency>
+						<dependency>
+							<groupId>com.querydsl</groupId>
+							<artifactId>querydsl-apt</artifactId>
+							<classifier>jpa</classifier>
+							<version>${owsi-core.querydsl.version}</version>
+						</dependency>
 					</dependencies>
 					<configuration>
-						<outputDirectory>${generated-sources.directory}</outputDirectory>
-						<options>
-							<fullyAnnotationConfigured>true</fullyAnnotationConfigured>
-							<addSuppressWarningsAnnotation>true</addSuppressWarningsAnnotation>
-						</options>
 						<processors>
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 							<processor>org.bindgen.processor.Processor</processor>
@@ -1303,9 +1308,6 @@
 							<goals>
 								<goal>process</goal>
 							</goals>
-							<configuration>
-								<outputDirectory>${generated-sources.directory}</outputDirectory>
-							</configuration>
 						</execution>
 						<execution>
 							<id>maven-processor-plugin-default-test</id>
@@ -1313,9 +1315,6 @@
 							<goals>
 								<goal>process-test</goal>
 							</goals>
-							<configuration>
-								<outputDirectory>${generated-sources-test.directory}</outputDirectory>
-							</configuration>
 						</execution>
 					</executions>
 				</plugin>
@@ -1341,29 +1340,6 @@
 			<build>
 				<pluginManagement>
 					<plugins>
-						<plugin>
-							<groupId>org.bsc.maven</groupId>
-							<artifactId>maven-processor-plugin</artifactId>
-							<configuration>
-								<excludes>
-									<exclude>**/*</exclude><!-- Disable source generation -->
-								</excludes>
-							</configuration>
-							<executions>
-								<execution>
-									<id>maven-processor-plugin-default</id>
-									<phase>generate-sources</phase><!-- Still run the processor to update sourcepaths -->
-									<goals>
-										<goal>process</goal>
-										<goal>process-test</goal>
-									</goals>
-								</execution>
-								<execution>
-									<id>maven-processor-plugin-default-test</id>
-									<phase>none</phase> <!-- Already executed in generate-sources -->
-								</execution>
-							</executions>
-						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>animal-sniffer-maven-plugin</artifactId>
@@ -1399,6 +1375,18 @@
 			-->
 			<properties>
 				<generated-sources-test.directory>${generated-sources.directory}</generated-sources-test.directory>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk7</id>
+			<activation>
+				<property>
+					<name>jdk7</name>
+				</property>
+			</activation>
+			<properties>
+				<!-- override bindgen-java version to handle jdk7 compatible build -->
+				<owsi-core.bindgen-java.version>${owsi-core.bindgen-java-jdk7.version}</owsi-core.bindgen-java.version>
 			</properties>
 		</profile>
 	</profiles>
