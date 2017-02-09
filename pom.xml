@@ -53,7 +53,8 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
+						<!-- work on a maintenance branch -->
+						<masterBranchName>mt-0.12</masterBranchName>
 						<developBranchName>dev</developBranchName>
 						<featureBranchPrefix>ft-</featureBranchPrefix>
 						<releaseBranchPrefix>rl-</releaseBranchPrefix>
