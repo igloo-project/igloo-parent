@@ -13,7 +13,16 @@
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Core project (JDK7)</name>
-
+	
+	<properties>
+		<!-- force jdk7 profile properties -->
+		<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
+		<jdk.signature.artifactId>java17</jdk.signature.artifactId>
+		<jdk.signature.version>1.0</jdk.signature.version>
+		<jdk.version>1.7</jdk.version>
+		<minimal.maven.version>1.7</minimal.maven.version>
+	</properties>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
