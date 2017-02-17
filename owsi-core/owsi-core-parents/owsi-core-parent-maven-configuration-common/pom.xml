@@ -71,10 +71,10 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<flowInitContext>
 						<masterBranchName>master</masterBranchName>
-						<developBranchName>develop</developBranchName>
-						<featureBranchPrefix>feature-</featureBranchPrefix>
-						<releaseBranchPrefix>release-</releaseBranchPrefix>
-						<hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+						<developBranchName>dev</developBranchName>
+						<featureBranchPrefix>ft-</featureBranchPrefix>
+						<releaseBranchPrefix>rl-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
