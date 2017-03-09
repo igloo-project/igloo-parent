@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.12-SNAPSHOT</version>
+		<version>0.13.0</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa</artifactId>
@@ -14,12 +14,6 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>000-owsi-core-components-jpa-hibernate-override</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
 		<!-- OWSI Core dependencies -->
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
