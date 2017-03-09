@@ -39,6 +39,7 @@
 				</property>
 			</activation>
 			<modules>
+				<module>owsi-core-parent-core-project-jdk7</module>
 				<module>owsi-core-parent-core-project</module>
 			</modules>
 		</profile>
