@@ -17,7 +17,7 @@ public class AjaxConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<AjaxCo
 				yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel,
 				cssClassNamesModel, keepMarkup, onAjaxClick
 		);
-		ajaxConfirmLink.add(onAjaxClick.getActionAvailableCondition(model).thenShow());
+		ajaxConfirmLink.add(onAjaxClick.getActionAvailableCondition(model).thenShowInternal());
 		return ajaxConfirmLink;
 	}
 
