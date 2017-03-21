@@ -161,11 +161,8 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 										dataProvider.detach();
 										FeedbackUtils.refreshFeedback(target, getPage());
 									}
-									@Override
-									public Condition getActionAvailableCondition(IModel<U> parameter) {
-										return Condition.permission(parameter, BasicApplicationPermissionConstants.DELETE);
-									}
 								})
+								.whenPermission(BasicApplicationPermissionConstants.DELETE)
 								.hidePlaceholder()
 						.withClassOnElements("btn-xs")
 						.end()
