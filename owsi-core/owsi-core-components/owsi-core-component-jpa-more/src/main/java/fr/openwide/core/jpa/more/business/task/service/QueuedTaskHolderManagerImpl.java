@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +91,15 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		init();
+		/* 
+		 * onApplicationEvent is called for every context initialization, including potential child contexts.
+		 * We avoid starting queues multiple times, by calling init() only on the root application context initialization.
+		 */
+		if (event != null && event.getSource() != null
+				&& AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
+				&& ((AbstractApplicationContext) event.getSource()).getParent() == null) {
+			init();
+		}
 	}
 
 	private void init() {
