@@ -52,5 +52,10 @@ public interface IExecutionContext {
 	 * <p>The implementation must tear down the context even if the runnable throws an exception.
 	 */
 	<T> T run(Callable<T> callable) throws Exception;
+	
+	/**
+	 * Test if the context is ready to be opened
+	 */
+	boolean isReady();
 
 }
