@@ -2,7 +2,7 @@ package fr.openwide.core.jpa.more.business.task.service;
 
 import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
 import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
-import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.queueNumberOfThreads;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -207,26 +207,31 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Override
 	public void start() {
-		start(0L);
+		startConsumers();
 	}
 
-	/**
-	 * @param startDelay A length of time the consumer threads will wait before their first access to their task queue.
-	 */
-	protected synchronized void start(long startDelay) {
+	protected synchronized void startConsumers() {
 		if (!active.get()) {
 			availableForAction.set(false);
 			
 			try {
 				initQueuesFromDatabase();
 				for (TaskConsumer consumer : consumersByQueue.values()) {
-					consumer.start(startDelay);
+					Long configurationStartDelay = getStartDelay(consumer.getQueue().getId());
+					consumer.start(configurationStartDelay);
 				}
 			} finally {
 				active.set(true);
 				availableForAction.set(true);
 			}
 		}
+	}
+
+	/**
+	 *  The length of time the consumer threads will wait before their first access to their task queue.
+	 */
+	protected Long getStartDelay(String queueId) {
+		return propertyService.get(queueStartDelay(queueId));
 	}
 
 	private void initQueuesFromDatabase() {
