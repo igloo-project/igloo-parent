@@ -58,7 +58,7 @@ public class FailedWithBusinessExceptionTask extends AbstractTask {
 		
 		try {
 			try {
-				doSomethingWichFail();
+				doSomethingWhichFail();
 			} catch (RuntimeException | IOException e) {
 				throw new IllegalStateException("No way.", e);
 			}
@@ -69,7 +69,7 @@ public class FailedWithBusinessExceptionTask extends AbstractTask {
 		// Rest of the task...
 	}
 	
-	protected void doSomethingWichFail() throws IOException {
+	protected void doSomethingWhichFail() throws IOException {
 		throw new IOException("IO error.");
 	}
 
