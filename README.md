@@ -1,7 +1,7 @@
 OWSI-Core framework
 ===================
 
-[![Build Status](https://travis-ci.org/openwide-java/owsi-core-parent.svg?branch=master)](https://travis-ci.org/openwide-java/owsi-core-parent)[![Documentation Status](https://readthedocs.org/projects/owsi-core-doc/badge/?version=latest)](http://owsi-core-doc.readthedocs.io/en/latest/)
+[![Build Status](https://travis-ci.org/openwide-java/owsi-core-parent.svg?branch=master)](https://travis-ci.org/openwide-java/owsi-core-parent)   [![Documentation Status](https://readthedocs.org/projects/owsi-core-doc/badge/?version=latest)](http://owsi-core-doc.readthedocs.io/en/latest/)
 
 
 About
