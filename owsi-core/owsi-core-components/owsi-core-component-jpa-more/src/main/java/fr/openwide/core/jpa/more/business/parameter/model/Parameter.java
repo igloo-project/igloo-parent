@@ -85,12 +85,14 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 			filters = {
 					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
 					@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-					@TokenFilterDef(factory = PatternReplaceFilterFactory.class, params = {
+					@TokenFilterDef(name = "text_sort_replace_punctuations",
+							factory = PatternReplaceFilterFactory.class, params = {
 						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "('-&\\.,\\(\\))"),
 						@org.hibernate.search.annotations.Parameter(name = "replacement", value = " "),
 						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
 					}),
-					@TokenFilterDef(factory = PatternReplaceFilterFactory.class, params = {
+					@TokenFilterDef(name = "text_sort_replace_numbers",
+							factory = PatternReplaceFilterFactory.class, params = {
 						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "([^0-9\\p{L} ])"),
 						@org.hibernate.search.annotations.Parameter(name = "replacement", value = ""),
 						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
