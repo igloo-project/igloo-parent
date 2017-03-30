@@ -1,7 +1,8 @@
 OWSI-Core framework
 ===================
 
-[![Build Status](https://travis-ci.org/openwide-java/owsi-core-parent.svg?branch=master)](https://travis-ci.org/openwide-java/owsi-core-parent)
+[![Build Status](https://travis-ci.org/openwide-java/owsi-core-parent.svg?branch=master)](https://travis-ci.org/openwide-java/owsi-core-parent)[![Documentation Status](https://readthedocs.org/projects/owsi-core-doc/badge/?version=latest)](http://owsi-core-doc.readthedocs.io/en/latest/)
+
 
 About
 -----
@@ -27,3 +28,8 @@ OWSI-Core is standing on the shoulders of giants:
 - jQuery
 - Bootstrap
 - Font-Awesome
+
+Documentation
+-------------
+
+Find the OWSI-Core documentation [here](http://owsi-core-doc.readthedocs.io/en/latest/index.html).
