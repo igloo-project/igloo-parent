@@ -126,7 +126,7 @@ public class TestLuceneUtils {
 		
 		QueryParser parser = new QueryParser("", new StandardAnalyzer());
 		Query parsedQuery = parser.parse(stringQuery);
-		assertEquals(finalQueryBuilder.build(), parsedQuery);
+		assertEquals(parser.parse(finalQueryBuilder.build().toString()), parsedQuery);
 	}
 	
 	@Test
