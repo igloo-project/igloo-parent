@@ -9,4 +9,3 @@
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1g -XX:MaxPermSize=256m "/>
 <stringAttribute key="server-id" value="tomcat7"/>
 </launchConfiguration>
-
