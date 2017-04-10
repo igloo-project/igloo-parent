@@ -14,6 +14,13 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<dependencies>
+
+		<!-- Http Client -->	
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		
 		<!-- OWSI Core dependencies -->
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
