@@ -13,6 +13,12 @@
 	<name>OWSI Core - Component - JPA - More JPA fun</name>
 
 	<dependencies>
+	
+		<!-- hibernate-search -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-elasticsearch</artifactId>
+		</dependency>
 		
 		<!-- OWSI Core dependencies -->
 		

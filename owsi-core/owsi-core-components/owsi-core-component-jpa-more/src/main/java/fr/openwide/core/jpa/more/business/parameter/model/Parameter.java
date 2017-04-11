@@ -21,6 +21,7 @@ import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.AnalyzerDefs;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.elasticsearch.analyzer.ElasticsearchTokenFilterFactory;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
@@ -77,7 +78,8 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 						}
 				),
 				@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-				@TokenFilterDef(factory = CoreFrenchMinimalStemFilterFactory.class)
+				@TokenFilterDef(factory = ElasticsearchTokenFilterFactory.class, name = "corefrenchminimalstem")
+//				@TokenFilterDef(factory = CoreFrenchMinimalStemFilterFactory.class)
 		}
 	),
 	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT_SORT,
