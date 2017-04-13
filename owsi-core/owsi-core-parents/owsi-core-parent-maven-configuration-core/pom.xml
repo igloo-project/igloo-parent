@@ -1189,7 +1189,14 @@
 					<artifactId>elasticsearch</artifactId>
 					<version>${owsi-core.elasticsearch.version}</version>
 				</dependency>
-			
+				
+				<!-- Hibernate-search -->
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-search-elasticsearch</artifactId>
+					<version>${owsi-core.hibernate-search.version}</version>
+				</dependency>
+		
 			<!-- Test dependencies -->
 			
 				<dependency>
