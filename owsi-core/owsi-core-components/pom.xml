@@ -35,6 +35,8 @@
 		<module>owsi-core-component-web-security</module>
 		<module>owsi-core-component-rest-jersey2</module>
 		<module>owsi-core-component-jpa-migration</module>
+		
+		<module>owsi-core-component-infinispan</module>
 	</modules>
 	
 	<!-- Project information -->
