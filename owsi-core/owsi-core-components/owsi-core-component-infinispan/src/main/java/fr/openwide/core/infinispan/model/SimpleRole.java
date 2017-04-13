@@ -1,8 +1,6 @@
 package fr.openwide.core.infinispan.model;
 
-import java.io.Serializable;
-
-public class SimpleRole implements IRole, Serializable {
+public class SimpleRole implements IRole {
 
 	private static final long serialVersionUID = -2703012259547691866L;
 

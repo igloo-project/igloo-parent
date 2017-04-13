@@ -3,6 +3,7 @@ package fr.openwide.core.infinispan.service;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -15,9 +16,11 @@ import org.infinispan.remoting.transport.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
@@ -36,7 +39,7 @@ import fr.openwide.core.infinispan.model.impl.LeaveEvent;
 import fr.openwide.core.infinispan.model.impl.LockAttribution;
 import fr.openwide.core.infinispan.model.impl.Node;
 import fr.openwide.core.infinispan.model.impl.RoleAttribution;
-import infinispan.com.google.common.collect.Lists;
+import infinispan.com.google.common.collect.ImmutableSet;
 
 public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
@@ -95,11 +98,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		String address = String.format("[%s]", getAddress());
 		if ( ! initialized) {
 			LOGGER.debug("{} Initializing {}", address, toStringClusterNode());
-			LOGGER.debug("{} Viewed members {}", address, Joiner.on(",").join(cacheManager.getMembers()));
-			Node node = Node.from(getAddress(), nodeName);
-			LOGGER.debug("{} Register node informations {}", address, node);
-			getNodesCache().put(getAddress(), node);
-
+			
 			LOGGER.debug("{} Starting caches", address);
 			for (String cacheName : CACHES) {
 				if ( ! cacheManager.isRunning(cacheName)) {
@@ -110,6 +109,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				}
 			}
 			LOGGER.debug("{} Caches started", address);
+			
+			LOGGER.debug("{} Viewed members {}", address, Joiner.on(",").join(cacheManager.getMembers()));
+			Node node = Node.from(getAddress(), nodeName);
+			LOGGER.debug("{} Register node informations {}", address, node);
+			getNodesCache().put(getAddress(), node);
 			
 			LOGGER.debug("{} Register listeners", address);
 			// view change
@@ -140,6 +144,44 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
+	public List<INode> getNodes() {
+		return ImmutableList.copyOf(Lists.transform(
+				getMembers(),
+				new Function<Address, INode>() {
+					@Override
+					public INode apply(Address input) {
+						return getNodesCache().get(input);
+					}
+				}
+		));
+	}
+
+	@Override
+	public List<INode> getAllNodes() {
+		return ImmutableList.copyOf(getNodesCache().values());
+	}
+	
+	@Override
+	public Set<ILock> getLocks(){
+		return ImmutableSet.copyOf(getLocksCache().keySet());
+	}
+	
+	@Override
+	public ILockAttribution getLockAttribution(ILock iLock){
+		return getLocksCache().get(iLock);
+	}
+	
+	@Override
+	public Set<IRole> getRoles(){
+		return ImmutableSet.copyOf(getRolesCache().keySet());
+	}
+	
+	@Override
+	public IRoleAttribution getRoleAttribution(IRole iRole){
+		return getRolesCache().get(iRole);
+	}
+
+	@Override
 	public synchronized void stop() {
 		String address = String.format("[%s]", getAddress());
 		if (initialized) {
@@ -148,7 +190,14 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				LOGGER.warn("{} Stop seems be called twice on {}", address, toStringClusterNode());
 			}
 			
-			getLeaveCache().put(getAddress(), LeaveEvent.from(new Date()));
+			Date leaveDate = new Date();
+			
+			INode previousNode = getNodesCache().get(getAddress());
+			Node node = Node.from(previousNode, leaveDate);
+			
+			getLeaveCache().put(getAddress(), LeaveEvent.from(leaveDate));
+			getNodesCache().put(getAddress(), node);
+			
 			cacheManager.stop();
 			// stop accepting new tasks
 			executor.shutdown();
@@ -364,6 +413,16 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 		
 		rebalanceRoles();
+	}
+	
+	@Override
+	public void deleteRole(IRole iRole){
+		//TODO
+	}
+	
+	@Override
+	public void assignRole(IRole iRole, INode iNode){
+		//TODO
 	}
 
 	public void onRebalanceRoles() {

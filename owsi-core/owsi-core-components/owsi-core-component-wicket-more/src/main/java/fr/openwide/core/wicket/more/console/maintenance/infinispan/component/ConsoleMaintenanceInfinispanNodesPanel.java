@@ -21,23 +21,23 @@ import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
 
-public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
+public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
 
-	private static final long serialVersionUID = -3170379589959735719L;
-
+	private static final long serialVersionUID = 5155655164189659661L;
+	
 	@SpringBean
 	private IInfinispanClusterService infinispanClusterService;
-
+	
 	private final IModel<List<INode>> nodesModel;
 
-	public ConsoleMaintenanceInfinispanClusterPanel(String id) {
+	public ConsoleMaintenanceInfinispanNodesPanel(String id) {
 		super(id);
 		
 		nodesModel = new LoadableDetachableModel<List<INode>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected List<INode> load() {
-				return infinispanClusterService.getNodes();
+				return infinispanClusterService.getAllNodes();
 			}
 		};
 		
@@ -63,10 +63,20 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 								Functions.identity(),
 								INodeRenderer.anonymous()
 						)
+						.addLabelColumn(
+								new ResourceModel("business.infinispan.node.leaveDate"),
+								CoreWicketMoreBindings.iNode().leaveDate(),
+								DatePattern.REALLY_SHORT_DATETIME
+						)
+						.addBootstrapBadgeColumn(
+								new ResourceModel("business.infinispan.node.status"),
+								Functions.identity(),
+								INodeRenderer.status()
+						)
 								.bootstrapPanel()
-										.title("console.maintenance.infinispan.cluster")
+										.title("console.maintenance.infinispan.nodes")
 										.responsive(Condition.alwaysTrue())
-										.build("cluster")
+										.build("nodes")
 		);
 	}
 

@@ -1,13 +1,18 @@
 package fr.openwide.core.infinispan.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
 import org.infinispan.remoting.transport.Address;
 
 import fr.openwide.core.infinispan.model.ILock;
+import fr.openwide.core.infinispan.model.ILockAttribution;
 import fr.openwide.core.infinispan.model.ILockRequest;
+import fr.openwide.core.infinispan.model.INode;
+import fr.openwide.core.infinispan.model.IRole;
+import fr.openwide.core.infinispan.model.IRoleAttribution;
 
 public interface IInfinispanClusterService {
 
@@ -58,5 +63,21 @@ public interface IInfinispanClusterService {
 	void onViewChangedEvent(ViewChangedEvent viewChangedEvent);
 
 	List<Address> getMembers();
+
+	List<INode> getNodes();
+	
+	List<INode> getAllNodes();
+
+	Set<ILock> getLocks();
+	
+	ILockAttribution getLockAttribution(ILock iLock);
+	
+	Set<IRole> getRoles();
+	
+	IRoleAttribution getRoleAttribution(IRole iRole);
+	
+	void deleteRole(IRole iRole);
+	
+	void assignRole(IRole iRole, INode iNode);
 
 }
