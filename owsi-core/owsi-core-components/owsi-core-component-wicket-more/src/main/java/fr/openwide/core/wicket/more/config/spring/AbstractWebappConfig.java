@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.rendering.service.IRendererService;
+import fr.openwide.core.spring.infinispan.config.spring.CoreInfinispanConfig;
 import fr.openwide.core.wicket.more.link.service.DefaultLinkParameterConversionService;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 import fr.openwide.core.wicket.more.notification.service.IHtmlNotificationCssService;
@@ -22,7 +23,8 @@ import fr.openwide.core.wicket.more.rendering.service.RendererServiceImpl;
 @Configuration
 @Import({
 	WicketMoreServiceConfig.class,
-	WicketMoreApplicationPropertyRegistryConfig.class
+	WicketMoreApplicationPropertyRegistryConfig.class,
+	CoreInfinispanConfig.class
 })
 public abstract class AbstractWebappConfig {
 

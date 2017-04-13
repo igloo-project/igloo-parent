@@ -39,6 +39,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-infinispan</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>fr.openwide.core.dependencies</groupId>
 			<artifactId>owsi-core-dependency-web-spring-security</artifactId>
 			<version>${project.version}</version>
