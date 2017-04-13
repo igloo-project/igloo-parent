@@ -20,6 +20,7 @@ import fr.openwide.core.wicket.more.console.maintenance.authentication.page.Cons
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import fr.openwide.core.wicket.more.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import fr.openwide.core.wicket.more.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.page.ConsoleMaintenanceInfinispanPage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
@@ -82,6 +83,9 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem fileMenuItem = new ConsoleMenuItem("fileMenuItem",
 					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
 			maintenanceMenuSection.addMenuItem(fileMenuItem);
+			ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
+					"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
+			maintenanceMenuSection.addMenuItem(infinispanMenuItem);
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 			INSTANCE.addCssResourceReference(ConsoleLessCssResourceReference.get());
