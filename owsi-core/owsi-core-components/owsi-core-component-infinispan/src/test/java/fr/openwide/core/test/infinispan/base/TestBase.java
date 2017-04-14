@@ -162,7 +162,7 @@ public class TestBase {
 				// shutdown caches last (so that other processes terminates gracefully)
 				LOGGER.debug("cache stop {}", cacheManager);
 				cacheManager.stop();
-				LOGGER.debug("cache stopped {}", cacheManager);
+				LOGGER.warn("cache stopped {}", cacheManager);
 			}
 		}
 	}

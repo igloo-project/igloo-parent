@@ -12,7 +12,8 @@ public class GlobalDefaultReplicatedTransientConfigurationBuilder extends Global
 		super();
 		// not planned to use JBoss, so we use directly PlatformMBeanServerLookup
 		globalJmxStatistics().mBeanServerLookup(new PlatformMBeanServerLookup());
-		transport().defaultTransport();
+		// file available in classpath
+		transport().defaultTransport().addProperty("configurationFile", "default-configs/default-jgroups-udp.xml");
 	}
 
 	/**

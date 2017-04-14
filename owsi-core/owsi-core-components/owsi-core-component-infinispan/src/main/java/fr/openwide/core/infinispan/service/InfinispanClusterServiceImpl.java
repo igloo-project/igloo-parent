@@ -84,6 +84,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		this.nodeName = nodeName;
 		this.cacheManager = cacheManager;
 		this.rolesProvider = rolesProvider;
+		// don't wait for delayed tasks after shutdown (even if already planned)
+		this.executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+		this.executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
 		this.executor.prestartAllCoreThreads();
 	}
 
@@ -140,14 +143,27 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	public synchronized void stop() {
 		String address = String.format("[%s]", getAddress());
 		if (initialized) {
+			LOGGER.warn("Stopping {}", InfinispanClusterServiceImpl.class.getSimpleName());
 			if (stopped) {
 				LOGGER.warn("{} Stop seems be called twice on {}", address, toStringClusterNode());
 			}
 			
 			getLeaveCache().put(getAddress(), LeaveEvent.from(new Date()));
 			cacheManager.stop();
+			// stop accepting new tasks
+			executor.shutdown();
+			
+			try {
+				executor.awaitTermination(3, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {} // NOSONAR
+			
+			List<Runnable> runnables = executor.shutdownNow();
+			if ( ! runnables.isEmpty()) {
+				LOGGER.warn("{} tasks dropped by {}.executor", runnables.size(), InfinispanClusterServiceImpl.class.getSimpleName());
+			}
 			
 			stopped = true;
+			LOGGER.warn("Stopped {}", InfinispanClusterServiceImpl.class.getSimpleName());
 		} else {
 			LOGGER.warn("{} Ignored stop event as cluster not initialized {}", address, toStringClusterNode());
 		}
