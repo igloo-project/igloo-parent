@@ -421,8 +421,22 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 
 	@Override
 	public <T> String getAsString(final PropertyId<T> propertyId) {
-		getRegistrationInformation(propertyId); // Just check that this property was actually registered
-		return getAsStringUnsafe(propertyId);
+		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
+		
+		String valueAsString = getAsStringUnsafe(propertyId);
+		
+		if (valueAsString == null) {
+			T defaultValue = information.getValue1().get();
+			
+			if (defaultValue != null) {
+				valueAsString = information.getValue0().reverse().convert(defaultValue);
+				LOGGER.debug(String.format("Property '%1s' has no value, fallback on default value.", propertyId));
+			} else {
+				LOGGER.info(String.format("Property '%1s' has no value and default value is undefined.", propertyId));
+			}
+		}
+		
+		return valueAsString;
 	}
 	
 	private String getAsStringUnsafe(PropertyId<?> propertyId) {
@@ -467,6 +481,13 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 					}
 				}
 		);
+	}
+
+	@Override
+	public <T> void setAsString(final MutablePropertyId<T> propertyId, final String valueAsString) throws ServiceException, SecurityServiceException {
+		Preconditions.checkNotNull(propertyId);
+		getRegistrationInformation(propertyId);
+		mutablePropertyDao.setInTransaction(propertyId.getKey(), valueAsString);
 	}
 
 	private <T> Pair<Converter<String, T>, Supplier<T>> getRegistrationInformation(PropertyId<T> propertyId) {
