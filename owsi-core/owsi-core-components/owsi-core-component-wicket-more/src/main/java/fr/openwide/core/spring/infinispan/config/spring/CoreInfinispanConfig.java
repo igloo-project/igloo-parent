@@ -1,5 +1,7 @@
 package fr.openwide.core.spring.infinispan.config.spring;
 
+import java.util.Properties;
+
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
@@ -43,8 +45,12 @@ public class CoreInfinispanConfig {
 	public IInfinispanClusterService infinispanCluster(IPropertyService propertyService, IRolesProvider rolesProvider) {
 		if (propertyService.get(InfinispanPropertyIds.INFINISPAN_ENABLED)) {
 			String nodeName = propertyService.get(InfinispanPropertyIds.INFINISPAN_NODE_NAME);
+			Properties properties = new Properties();
+			for (String key : propertyService.get(InfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTIES)) {
+				properties.put(key, propertyService.getAsString(InfinispanPropertyIds.transportProperty(key)));
+			}
 			GlobalConfiguration globalConfiguration =
-					new GlobalDefaultReplicatedTransientConfigurationBuilder().nodeName(nodeName).build();
+					new GlobalDefaultReplicatedTransientConfigurationBuilder(properties).nodeName(nodeName).build();
 			org.infinispan.configuration.cache.Configuration configuration =
 					new DefaultReplicatedTransientConfigurationBuilder().build();
 			EmbeddedCacheManager cacheManager = new DefaultCacheManager(globalConfiguration, configuration, false);
