@@ -378,7 +378,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		List<Address> added = Lists.newArrayList(newMembers);
 		added.removeAll(oldMembers);
 		List<Address> removed = Lists.newArrayList(oldMembers);
-		removed.retainAll(newMembers);
+		removed.removeAll(newMembers);
 		
 		LOGGER.debug("Processing view removed nodes ({}) {}", removed.size(), toStringClusterNode());
 		for (Address removedItem : removed) {
