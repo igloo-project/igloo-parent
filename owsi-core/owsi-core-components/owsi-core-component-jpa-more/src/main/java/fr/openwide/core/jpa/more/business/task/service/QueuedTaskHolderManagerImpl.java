@@ -2,7 +2,7 @@ package fr.openwide.core.jpa.more.business.task.service;
 
 import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
 import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
-import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.queueNumberOfThreads;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +91,15 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		init();
+		/* 
+		 * onApplicationEvent is called for every context initialization, including potential child contexts.
+		 * We avoid starting queues multiple times, by calling init() only on the root application context initialization.
+		 */
+		if (event != null && event.getSource() != null
+				&& AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
+				&& ((AbstractApplicationContext) event.getSource()).getParent() == null) {
+			init();
+		}
 	}
 
 	private void init() {
@@ -198,26 +207,31 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Override
 	public void start() {
-		start(0L);
+		startConsumers();
 	}
 
-	/**
-	 * @param startDelay A length of time the consumer threads will wait before their first access to their task queue.
-	 */
-	protected synchronized void start(long startDelay) {
+	protected synchronized void startConsumers() {
 		if (!active.get()) {
 			availableForAction.set(false);
 			
 			try {
 				initQueuesFromDatabase();
 				for (TaskConsumer consumer : consumersByQueue.values()) {
-					consumer.start(startDelay);
+					Long configurationStartDelay = getStartDelay(consumer.getQueue().getId());
+					consumer.start(configurationStartDelay);
 				}
 			} finally {
 				active.set(true);
 				availableForAction.set(true);
 			}
 		}
+	}
+
+	/**
+	 *  The length of time the consumer threads will wait before their first access to their task queue.
+	 */
+	protected Long getStartDelay(String queueId) {
+		return propertyService.get(queueStartDelay(queueId));
 	}
 
 	private void initQueuesFromDatabase() {

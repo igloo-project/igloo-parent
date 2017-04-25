@@ -2,7 +2,12 @@ package fr.openwide.core.commons.util.context;
 
 import java.util.concurrent.Callable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class AbstractExecutionContext implements IExecutionContext {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExecutionContext.class);
 
 	@Override
 	public abstract ITearDownHandle open();
@@ -21,4 +26,13 @@ public abstract class AbstractExecutionContext implements IExecutionContext {
 		}
 	}
 
+	@Override
+	public boolean isReady() {
+		try (ITearDownHandle openContext = open()) {
+			return true;
+		} catch (Exception e) {
+			LOGGER.debug(getClass().getSimpleName() + " is not ready to be opened.", e);
+			return false;
+		}
+	}
 }

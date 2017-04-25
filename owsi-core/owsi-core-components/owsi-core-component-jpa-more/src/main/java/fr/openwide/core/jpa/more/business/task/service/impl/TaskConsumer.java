@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.*;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +20,9 @@ import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
+import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.jpa.util.EntityManagerUtils;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public final class TaskConsumer {
@@ -41,6 +45,12 @@ public final class TaskConsumer {
 
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
+
+	@Autowired
+	private IRendererService rendererService;
+
+	@Autowired
+	private IPropertyService propertyService;
 
 	/**
 	 * Used so that consume / switch to working is an atomic state
@@ -89,6 +99,10 @@ public final class TaskConsumer {
 	
 	public boolean isWorking() {
 		return thread != null && thread.isWorking();
+	}
+	
+	public TaskQueue getQueue() {
+		return queue;
 	}
 	
 	/**
@@ -183,6 +197,16 @@ public final class TaskConsumer {
 				if (startDelay > 0) {
 					Thread.sleep(startDelay);
 				}
+				
+				/*
+				 * Before starting tasks consumption we check that required execution context can be opened if needed
+				 */
+				if (propertyService.get(queueStartExecutionContextWaitReady(queue.getId()))) {
+					while (!rendererService.context().isReady()) {
+						Thread.sleep(5000l);
+					}
+				}
+				
 				/*
 				 * condition: permits thread to finish gracefully (stop was
 				 * signaled, last taken element had been consumed, we can
