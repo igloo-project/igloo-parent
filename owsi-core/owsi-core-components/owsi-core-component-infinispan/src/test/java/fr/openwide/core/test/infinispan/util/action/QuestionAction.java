@@ -6,6 +6,8 @@ import fr.openwide.core.infinispan.model.impl.SimpleAction;
 
 public class QuestionAction extends SimpleAction<String> {
 
+	private static final long serialVersionUID = -114956100337528031L;
+
 	private final String question;
 
 	public QuestionAction(Address target, String question) {

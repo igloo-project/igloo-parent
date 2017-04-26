@@ -1,12 +1,13 @@
 package fr.openwide.core.infinispan.model;
 
+import java.io.Serializable;
 import java.util.concurrent.Future;
 
 import org.infinispan.remoting.transport.Address;
 
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 
-public interface IAction<V> extends Future<V> {
+public interface IAction<V> extends Future<V>, Serializable {
 
 	void run();
 

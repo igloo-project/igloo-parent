@@ -14,6 +14,8 @@ import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 
 public abstract class SimpleAction<V> implements IAction<V> {
 
+	private static final long serialVersionUID = 2478882549352256098L;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleAction.class);
 
 	protected transient IInfinispanClusterService infinispanClusterService;
