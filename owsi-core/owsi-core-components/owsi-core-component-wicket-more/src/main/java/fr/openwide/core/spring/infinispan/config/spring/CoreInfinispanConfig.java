@@ -11,12 +11,14 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.infinispan.service.IActionFactory;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.infinispan.service.IRolesProvider;
 import fr.openwide.core.infinispan.service.InfinispanClusterServiceImpl;
 import fr.openwide.core.infinispan.utils.DefaultReplicatedTransientConfigurationBuilder;
 import fr.openwide.core.infinispan.utils.GlobalDefaultReplicatedTransientConfigurationBuilder;
 import fr.openwide.core.infinispan.utils.role.RolesFromStringSetProvider;
+import fr.openwide.core.spring.infinispan.config.spring.util.SpringActionFactory;
 import fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.WicketMorePackage;
@@ -41,8 +43,14 @@ public class CoreInfinispanConfig {
 		}
 	}
 
+	@Bean
+	public IActionFactory actionFactory() {
+		return new SpringActionFactory();
+	}
+
 	@Bean(destroyMethod="stop")
-	public IInfinispanClusterService infinispanCluster(IPropertyService propertyService, IRolesProvider rolesProvider) {
+	public IInfinispanClusterService infinispanCluster(IPropertyService propertyService, IRolesProvider rolesProvider,
+			IActionFactory springActionFactory) {
 		if (propertyService.get(InfinispanPropertyIds.INFINISPAN_ENABLED)) {
 			String nodeName = propertyService.get(InfinispanPropertyIds.INFINISPAN_NODE_NAME);
 			Properties properties = new Properties();
@@ -56,7 +64,7 @@ public class CoreInfinispanConfig {
 			EmbeddedCacheManager cacheManager = new DefaultCacheManager(globalConfiguration, configuration, false);
 			
 			InfinispanClusterServiceImpl cluster =
-					new InfinispanClusterServiceImpl(nodeName, cacheManager, rolesProvider);
+					new InfinispanClusterServiceImpl(nodeName, cacheManager, rolesProvider, springActionFactory);
 			cluster.init();
 			return cluster;
 		} else {

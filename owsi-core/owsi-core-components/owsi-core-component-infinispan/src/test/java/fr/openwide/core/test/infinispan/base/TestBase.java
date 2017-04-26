@@ -170,7 +170,7 @@ public class TestBase {
 	public void waitForEvent(Object monitor, Callable<Boolean> testEvent, long delay, TimeUnit unit)
 			throws InterruptedException, TimeoutException, ExecutionException {
 		Stopwatch stopwatch = Stopwatch.createUnstarted();
-		while ( ! Thread.interrupted() && stopwatch.elapsed(unit) < delay) {
+		while ( ! Thread.currentThread().isInterrupted() && stopwatch.elapsed(unit) < delay) {
 			if ( ! stopwatch.isRunning()) {
 				stopwatch.start();
 			}

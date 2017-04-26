@@ -4,11 +4,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.infinispan.Cache;
+import org.infinispan.filter.CollectionKeyFilter;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
@@ -18,13 +23,17 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
 
+import fr.openwide.core.infinispan.action.RebalanceAction;
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
 import fr.openwide.core.infinispan.listener.ViewChangedEventListener;
+import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.model.IAttribution;
 import fr.openwide.core.infinispan.model.ILeaveEvent;
 import fr.openwide.core.infinispan.model.ILock;
@@ -46,6 +55,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfinispanClusterServiceImpl.class);
 
 	private static final String CACHE_ACTIONS = "__ACTIONS__";
+	private static final String CACHE_ACTIONS_RESULTS = "__ACTIONS_RESULTS__";
 	private static final String CACHE_LEAVE = "__LEAVE__";
 	private static final String CACHE_LOCKS = "__LOCKS__";
 	private static final String CACHE_NODES = "__NODES__";
@@ -76,17 +86,22 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 	// 1 rebalance each 15s. max
 	private final RateLimiter rebalanceRateLimiter = RateLimiter.create(1.0/15);
+	private final IActionFactory actionFactory;
+
+	private final ConcurrentMap<String, Object> actionMonitors = Maps.<String, Object>newConcurrentMap();
 
 	private boolean initialized = false;
 	private boolean stopped = false;
 
 	public InfinispanClusterServiceImpl(String nodeName,
 			EmbeddedCacheManager cacheManager,
-			IRolesProvider rolesProvider) {
+			IRolesProvider rolesProvider,
+			IActionFactory actionFactory) {
 		super();
 		this.nodeName = nodeName;
 		this.cacheManager = cacheManager;
 		this.rolesProvider = rolesProvider;
+		this.actionFactory = actionFactory;
 		// don't wait for delayed tasks after shutdown (even if already planned)
 		this.executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 		this.executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
@@ -120,10 +135,18 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			cacheManager.addListener(new ViewChangedEventListener(this));
 			
 			// action queue
-			getActionsCache().addListener(new CacheEntryEventListener<Object>() {
+			getActionsCache().addListener(new CacheEntryEventListener<IAction<?>>() {
 				@Override
-				public void onAction(CacheEntryEvent<String, Object> value) {
+				public void onAction(CacheEntryEvent<String, IAction<?>> value) {
 					InfinispanClusterServiceImpl.this.onAction(value);
+				}
+			});
+			
+			// result queue
+			getActionsResultsCache().addListener(new CacheEntryEventListener<IAction<?>>() {
+				@Override
+				public void onAction(CacheEntryEvent<String, IAction<?>> value) {
+					InfinispanClusterServiceImpl.this.onResult(value);
 				}
 			});
 			
@@ -361,12 +384,17 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		return cacheManager.<Address, INode>getCache(CACHE_NODES);
 	}
 
-	private Cache<String, Object> getActionsCache() {
-		return cacheManager.<String, Object>getCache(CACHE_ACTIONS);
+	private Cache<String, IAction<?>> getActionsCache() {
+		return cacheManager.<String, IAction<?>>getCache(CACHE_ACTIONS);
+	}
+
+	private Cache<String, IAction<?>> getActionsResultsCache() {
+		return cacheManager.<String, IAction<?>>getCache(CACHE_ACTIONS_RESULTS);
 	}
 
 	public void rebalanceRoles() {
-		getActionsCache().put(CACHE_KEY_ACTION_ROLES_REBALANCE, "__whatever__");
+		// TODO refactor
+		getActionsCache().put(CACHE_KEY_ACTION_ROLES_REBALANCE, RebalanceAction.rebalance(getAddress()));
 	}
 
 	@Override
@@ -421,15 +449,22 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 	
 	@Override
-	public void assignRole(IRole iRole, INode iNode){
-		//TODO
+	public void assignRole(IRole iRole, INode iNode) {
+		Stopwatch stopWatch = Stopwatch.createStarted();
+		try {
+			Boolean result = syncedAction(RebalanceAction.rebalance(iNode.getAddress()), -1, TimeUnit.MILLISECONDS);
+			LOGGER.warn("Action - result {} in {} ms.", result, stopWatch.elapsed(TimeUnit.MILLISECONDS));
+		} catch (Exception e) {
+			LOGGER.warn("Action - error {} in {} ms.", e.getMessage(), stopWatch.elapsed(TimeUnit.MILLISECONDS));
+		}
 	}
 
-	public void onRebalanceRoles() {
-		onRebalanceRoles(1000);
+	@Override
+	public void doRebalanceRoles() {
+		doRebalanceRoles(1000);
 	}
 
-	public synchronized void onRebalanceRoles(int waitWeight) {
+	public synchronized void doRebalanceRoles(int waitWeight) {
 		List<IRole> roles = Lists.newArrayList(rolesProvider.getRoles());
 		
 		LOGGER.debug("Starting role rebalance {}", toStringClusterNode());
@@ -510,7 +545,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 	}
 
-	protected void onAction(CacheEntryEvent<String, Object> value) {
+	protected void onAction(CacheEntryEvent<String, IAction<?>> value) {
 		if (CACHE_KEY_ACTION_ROLES_REBALANCE.equals(value.getKey())) {
 			LOGGER.debug("Rebalance action received");
 			if (rebalanceRateLimiter.tryAcquire()) {
@@ -518,14 +553,84 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				executor.submit(new Runnable() {
 					@Override
 					public void run() {
-						onRebalanceRoles();
+						doRebalanceRoles();
 						LOGGER.debug("Rebalance action performed");
 					}
 				});
 			} else {
 				LOGGER.debug("Rebalance action skipped due to rate limiter");
 			}
+		} else {
+			if (getAddress().equals(value.getValue().getTarget())) {
+				final IAction<?> action = value.getValue();
+				executor.submit(new Runnable() {
+					@Override
+					public void run() {
+						if (actionFactory != null) {
+							actionFactory.prepareAction(action);
+						}
+						action.run();
+						getActionsResultsCache().put(value.getKey(), action);
+						// TODO logging
+					}
+				});
+			}
 		}
+	}
+
+	protected void onResult(CacheEntryEvent<String, IAction<?>> value) {
+		if (actionMonitors.containsKey(value.getKey())) {
+			Object monitor = actionMonitors.get(value.getKey());
+			synchronized (monitor){
+				monitor.notifyAll();
+			}
+		}
+		actionMonitors.remove(value.getKey());
+	}
+
+	@SuppressWarnings("unchecked")
+	private <K> void addListener(String cacheName, Object listener, K... keys) {
+		addListener(cacheName, listener, true, keys);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <K> void addListener(String cacheName, Object listener, boolean includeKeys, K... keys) {
+		cacheManager.<K, Object>getCache(cacheName).addListener(listener, new CollectionKeyFilter<K>(ImmutableList.<K>copyOf(keys), includeKeys));
+	}
+
+	private <A extends IAction<V>, V> V syncedAction(A action, int timeout, TimeUnit unit) throws ExecutionException, TimeoutException {
+		String uniqueID = UUID.randomUUID().toString();
+		
+		// actionMonitors allow to optimize wakeup when we wait for a result.
+		Object monitor = new Object();
+		actionMonitors.putIfAbsent(uniqueID, monitor);
+		
+		getActionsCache().put(uniqueID, action);
+		
+		Stopwatch stopwatch = Stopwatch.createUnstarted();
+		while (timeout == -1 || stopwatch.elapsed(TimeUnit.MILLISECONDS) < unit.toMillis(timeout)) {
+			if (!stopwatch.isRunning()) {
+				stopwatch.start();
+			}
+			@SuppressWarnings("unchecked")
+			A result = (A) getActionsResultsCache().remove(uniqueID);
+			if (result != null && result.isDone()) {
+				try {
+					return result.get();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			} else if (result != null && result.isCancelled()) {
+				throw new CancellationException();
+			}
+			synchronized (this) {
+				try {
+					unit.timedWait(this, timeout);
+				} catch (InterruptedException e) {} // NOSONAR
+			}
+		}
+		
+		throw new TimeoutException();
 	}
 
 }
