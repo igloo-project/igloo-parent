@@ -10,6 +10,8 @@ import fr.openwide.core.infinispan.model.IAttribution;
 
 public class AbstractAttribution implements IAttribution {
 
+	private static final long serialVersionUID = 138189627869759402L;
+
 	private final Address owner;
 
 	private final Date attributionDate;
