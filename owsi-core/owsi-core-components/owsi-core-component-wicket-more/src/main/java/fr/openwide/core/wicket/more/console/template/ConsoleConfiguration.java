@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
@@ -48,11 +50,16 @@ public final class ConsoleConfiguration {
 		return INSTANCE;
 	}
 	
-	public static ConsoleConfiguration build(String baseUrl) {
-		return build(baseUrl, "console.pageTitle", true);
+	public static ConsoleConfiguration build(String baseUrl, IPropertyService propertyService) {
+		return build(baseUrl, "console.pageTitle", true, propertyService);
 	}
 	
-	public static ConsoleConfiguration build(String baseUrl, String consolePageTitleKey, boolean buildDefault) {
+	public static ConsoleConfiguration build(
+			String baseUrl,
+			String consolePageTitleKey,
+			boolean buildDefault,
+			IPropertyService propertyService
+	) {
 		INSTANCE.setBaseUrl(UrlUtils.normalizePath(baseUrl));
 		INSTANCE.setConsolePageTitleKey(consolePageTitleKey);
 		
@@ -83,9 +90,12 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem fileMenuItem = new ConsoleMenuItem("fileMenuItem",
 					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
 			maintenanceMenuSection.addMenuItem(fileMenuItem);
-			ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
-					"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
-			maintenanceMenuSection.addMenuItem(infinispanMenuItem);
+			
+			if (Boolean.TRUE.equals(propertyService.get(InfinispanPropertyIds.INFINISPAN_ENABLED))) {
+				ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
+						"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
+				maintenanceMenuSection.addMenuItem(infinispanMenuItem);
+			}
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 			INSTANCE.addCssResourceReference(ConsoleLessCssResourceReference.get());

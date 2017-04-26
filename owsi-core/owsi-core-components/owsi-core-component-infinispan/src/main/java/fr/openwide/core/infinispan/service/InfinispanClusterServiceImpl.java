@@ -26,6 +26,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
@@ -48,7 +49,6 @@ import fr.openwide.core.infinispan.model.impl.LeaveEvent;
 import fr.openwide.core.infinispan.model.impl.LockAttribution;
 import fr.openwide.core.infinispan.model.impl.Node;
 import fr.openwide.core.infinispan.model.impl.RoleAttribution;
-import infinispan.com.google.common.collect.ImmutableSet;
 
 public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 

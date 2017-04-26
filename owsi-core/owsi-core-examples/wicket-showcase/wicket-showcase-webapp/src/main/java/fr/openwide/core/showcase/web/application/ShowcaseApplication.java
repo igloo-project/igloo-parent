@@ -5,6 +5,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.openwide.core.showcase.web.application.links.page.LinksPage1;
 import fr.openwide.core.showcase.web.application.links.page.LinksPage2;
@@ -31,6 +32,7 @@ import fr.openwide.core.showcase.web.application.widgets.page.SelectBoxPage;
 import fr.openwide.core.showcase.web.application.widgets.page.SortableListPage;
 import fr.openwide.core.showcase.web.application.widgets.page.StatisticsPage;
 import fr.openwide.core.showcase.web.application.widgets.page.WidgetsMainPage;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -40,6 +42,9 @@ import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
 public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 	
 	public static final String NAME = "ShowcaseApplication";
+
+	@Autowired
+	IPropertyService propertyService;
 
 	public static ShowcaseApplication get() {
 		final Application application = Application.get();
@@ -100,7 +105,7 @@ public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 		mountPage("/task/", TaskMainPage.class);
 		
 		// Console
-		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");
+		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
 		consoleConfiguration.mountPages(this);
 	}
 

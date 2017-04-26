@@ -174,7 +174,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/reference-data/", ReferenceDataPage.class);
 		
 		// Console
-		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");
+		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
 		consoleConfiguration.mountPages(this);
 		
 		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection("notificationsMenuSection", "console.notifications",

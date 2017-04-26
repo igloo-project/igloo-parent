@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.infinispan</groupId>
-			<artifactId>infinispan-embedded</artifactId>
+			<artifactId>infinispan-core</artifactId>
 			<version>${owsi-core.infinispan.version}</version>
 		</dependency>
 		

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.infinispan.model.INode;
 import fr.openwide.core.infinispan.model.IRole;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
-import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
