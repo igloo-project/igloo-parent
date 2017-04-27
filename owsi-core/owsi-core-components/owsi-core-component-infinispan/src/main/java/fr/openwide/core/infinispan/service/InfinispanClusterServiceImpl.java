@@ -39,7 +39,6 @@ import fr.openwide.core.infinispan.action.RoleCaptureAction;
 import fr.openwide.core.infinispan.action.RoleReleaseAction;
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.listener.CacheEntryCreateEventListener;
-import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
 import fr.openwide.core.infinispan.listener.ViewChangedEventCoordinatorListener;
 import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.model.IAttribution;
