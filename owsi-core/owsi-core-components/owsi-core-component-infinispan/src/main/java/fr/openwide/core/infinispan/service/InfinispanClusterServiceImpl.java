@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.infinispan.action.RebalanceAction;
+import fr.openwide.core.infinispan.action.RoleCaptureAction;
 import fr.openwide.core.infinispan.action.RoleReleaseAction;
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
@@ -500,7 +501,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		{
 			Stopwatch captureWatch = Stopwatch.createStarted();
 			try {
-				stepResult = syncedAction(RoleReleaseAction.release(iNode.getAddress(), iRole), 10, TimeUnit.SECONDS);
+				stepResult = syncedAction(RoleCaptureAction.capture(iNode.getAddress(), iRole), 10, TimeUnit.SECONDS);
 			} catch (ExecutionException e) {
 				return Pair.with(SwitchRoleResult.SWITCH_UNKNOWN_ERROR, String.format("Unknown exception during capture - %s", e.getCause().getMessage()));
 			} catch (TimeoutException e) {
@@ -728,9 +729,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			} else if (result != null && result.isCancelled()) {
 				throw new CancellationException();
 			}
-			synchronized (this) {
+			synchronized (monitor) {
 				try {
-					unit.timedWait(this, timeout);
+					unit.timedWait(monitor, timeout);
 				} catch (InterruptedException e) {} // NOSONAR
 			}
 		}

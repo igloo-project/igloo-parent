@@ -84,7 +84,7 @@ public class ConsoleMaintenanceInfinispanRoleAssignPopup extends AbstractAjaxMod
 							closePopup(target);
 							target.addChildren(getPage(), ConsoleMaintenanceInfinispanRolesPanel.class);
 						} catch (Exception e) {
-							LOGGER.error("Erreur lors de l'affectation d'un rôle.");
+							LOGGER.error("Erreur lors de l'affectation d'un rôle.", e);
 							Session.get().error(getString("common.error.unexpected"));
 						}
 						FeedbackUtils.refreshFeedback(target, getPage());
