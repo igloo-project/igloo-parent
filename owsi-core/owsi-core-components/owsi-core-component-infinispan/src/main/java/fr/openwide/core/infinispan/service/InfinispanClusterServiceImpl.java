@@ -207,8 +207,13 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 	
 	@Override
-	public Set<IRole> getRoles() {
-		return ImmutableSet.copyOf(rolesProvider.getRoles());
+	public Set<IRole> getAllRolesForAssignation() {
+		return ImmutableSet.<IRole>builder().addAll(rolesProvider.getRoles()).addAll(getRolesCache().keySet()).build();
+	}
+	
+	@Override
+	public Set<IRole> getAllRolesForRolesRequests() {
+		return ImmutableSet.<IRole>builder().addAll(rolesProvider.getRoles()).addAll(getRolesRequestsCache().keySet()).build();
 	}
 	
 	@Override
@@ -465,8 +470,13 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 	
 	@Override
-	public void deleteRole(IRole iRole){
+	public void unassignRole(IRole iRole){
 		getRolesCache().remove(iRole);
+	}
+	
+	@Override
+	public void removeRoleRequest(IRole iRole){
+		getRolesRequestsCache().remove(iRole);
 	}
 	
 	@Override

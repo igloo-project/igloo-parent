@@ -58,7 +58,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected Set<IRole> load() {
-				return infinispanClusterService.getRoles();
+				return infinispanClusterService.getAllRolesForAssignation();
 			}
 			
 		};
@@ -125,7 +125,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 													@Override
 													public void execute(AjaxRequestTarget target, IModel<IRole> model) {
 														try {
-															infinispanClusterService.deleteRole(model.getObject());
+															infinispanClusterService.unassignRole(model.getObject());
 															Session.get().success(getString("console.maintenance.infinispan.roles.actions.delete.success"));
 															target.add(ConsoleMaintenanceInfinispanRolesPanel.this);
 														} catch (Exception e) {

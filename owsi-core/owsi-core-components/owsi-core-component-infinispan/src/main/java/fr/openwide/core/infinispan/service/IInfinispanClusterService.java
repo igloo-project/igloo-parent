@@ -74,11 +74,19 @@ public interface IInfinispanClusterService {
 	
 	ILockAttribution getLockAttribution(ILock iLock);
 	
-	Set<IRole> getRoles();
+	/**
+	 * List both known roles (from rolesProvider) and assigned roles (from current role assignation).
+	 */
+	Set<IRole> getAllRolesForAssignation();
+	
+	/**
+	 * List both known roles (from rolesProvider) and requested roles (from current role requests).
+	 */
+	Set<IRole> getAllRolesForRolesRequests();
 	
 	IRoleAttribution getRoleAttribution(IRole iRole);
 	
-	void deleteRole(IRole iRole);
+	void unassignRole(IRole iRole);
 	
 	Pair<SwitchRoleResult, String> assignRole(IRole iRole, INode iNode);
 
@@ -89,5 +97,7 @@ public interface IInfinispanClusterService {
 	Pair<SwitchRoleResult, String> doReleaseRole(IRole role);
 
 	Pair<SwitchRoleResult, String> doCaptureRole(IRole role);
+
+	void removeRoleRequest(IRole iRole);
 
 }
