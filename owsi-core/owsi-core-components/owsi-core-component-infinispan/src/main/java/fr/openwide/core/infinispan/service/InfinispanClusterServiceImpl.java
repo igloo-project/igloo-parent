@@ -40,7 +40,7 @@ import fr.openwide.core.infinispan.action.RoleReleaseAction;
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.listener.CacheEntryCreateEventListener;
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
-import fr.openwide.core.infinispan.listener.ViewChangedEventListener;
+import fr.openwide.core.infinispan.listener.ViewChangedEventCoordinatorListener;
 import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.model.IAttribution;
 import fr.openwide.core.infinispan.model.ILeaveEvent;
@@ -145,7 +145,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			
 			LOGGER.debug("{} Register listeners", address);
 			// view change
-			cacheManager.addListener(new ViewChangedEventListener(this));
+			cacheManager.addListener(new ViewChangedEventCoordinatorListener(this));
 			
 			// action queue
 			getActionsCache().addListener(new CacheEntryCreateEventListener<IAction<?>>() {
@@ -467,6 +467,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			}
 		}
 		
+		// if view change is due to a split, roles kept assigned
+		// rebalance should be safe as only unassigned roles may be rebalanced
 		rebalanceRoles();
 	}
 	

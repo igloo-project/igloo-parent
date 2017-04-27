@@ -7,11 +7,11 @@ import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 
 @Listener(sync = false)
-public class ViewChangedEventListener {
+public class ViewChangedEventCoordinatorListener {
 
 	private final IInfinispanClusterService infinispanClusterService;
 
-	public ViewChangedEventListener(IInfinispanClusterService infinispanClusterService) {
+	public ViewChangedEventCoordinatorListener(IInfinispanClusterService infinispanClusterService) {
 		super();
 		this.infinispanClusterService = infinispanClusterService;
 	}
