@@ -2,7 +2,10 @@ package fr.openwide.core.wicket.more.console.maintenance.infinispan.component;
 
 import java.util.List;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
@@ -12,9 +15,15 @@ import com.google.common.base.Functions;
 
 import fr.openwide.core.infinispan.model.INode;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
+import fr.openwide.core.jpa.more.business.sort.ISort;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.renderer.INodeRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyCollectionModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
@@ -45,9 +54,16 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 				DataTableBuilder.start(
 						ReadOnlyCollectionModel.of(nodesModel, Models.serializableModelFactory())
 				)
-						.addLabelColumn(
-								new ResourceModel("business.infinispan.node.address"),
-								CoreWicketMoreBindings.iNode().address()
+						.addColumn(
+								new AbstractCoreColumn<INode, ISort<?>>(new ResourceModel("business.infinispan.node.address")) {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public void populateItem(Item<ICellPopulator<INode>> cellItem, String componentId, IModel<INode> rowModel) {
+										cellItem.add(
+												new NodeAddressFragment(componentId, rowModel)
+										);
+									}
+								}
 						)
 						.addLabelColumn(
 								new ResourceModel("business.infinispan.node.name"),
@@ -63,11 +79,26 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 								Functions.identity(),
 								INodeRenderer.anonymous()
 						)
-								.bootstrapPanel()
-										.title("console.maintenance.infinispan.cluster")
-										.responsive(Condition.alwaysTrue())
-										.build("cluster")
+						.bootstrapPanel()
+								.title("console.maintenance.infinispan.cluster")
+								.responsive(Condition.alwaysTrue())
+								.build("cluster")
 		);
+	}
+
+	private class NodeAddressFragment extends Fragment {
+		
+		private static final long serialVersionUID = 1L;
+		
+		public NodeAddressFragment(String id, IModel<INode> nodeModel) {
+			super(id, "nodeAddress", ConsoleMaintenanceInfinispanClusterPanel.this, nodeModel);
+			
+			add(
+					new CoreLabel("address", BindingModel.of(nodeModel, CoreWicketMoreBindings.iNode().address())),
+					new BootstrapBadge<>("local", BindingModel.of(nodeModel, CoreWicketMoreBindings.iNode()), INodeRenderer.local())
+			);
+		}
+		
 	}
 
 	@Override

@@ -173,6 +173,19 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	public List<Address> getMembers() {
 		return ImmutableList.<Address>copyOf(Lists.transform(cacheManager.getMembers(), JGROUPS_ADDRESS_TO_ADDRESS));
 	}
+	
+	@Override
+	public List<INode> getNodes() {
+		return ImmutableList.copyOf(Lists.transform(
+				getMembers(),
+				new Function<Address, INode>() {
+					@Override
+					public INode apply(Address input) {
+						return getNodesCache().get(input);
+					}
+				}
+		));
+	}
 
 	@Override
 	public List<INode> getAllNodes() {
@@ -350,10 +363,15 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			return false;
 		}
 	}
+	
+	@Override
+	public Address getLocalAddress() {
+		return JGROUPS_ADDRESS_TO_ADDRESS.apply(cacheManager.getAddress());
+	}
 
 	private Address getAddress() {
 		if (cacheManager.getAddress() != null) {
-			return ((JGroupsAddress) cacheManager.getAddress()).getJGroupsAddress();
+			return JGROUPS_ADDRESS_TO_ADDRESS.apply(cacheManager.getAddress());
 		} else {
 			return null;
 		}
@@ -648,19 +666,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		public org.infinispan.remoting.transport.Address apply(Address input) {
 			return new JGroupsAddress(input);
 		}
-	}
-
-	@Override
-	public List<INode> getNodes() {
-		return ImmutableList.copyOf(Lists.transform(
-				getMembers(),
-				new Function<Address, INode>() {
-					@Override
-					public INode apply(Address input) {
-						return getNodesCache().get(input);
-					}
-				}
-		));
 	}
 
 	private static final JGroupsAddressToAddress JGROUPS_ADDRESS_TO_ADDRESS = new JGroupsAddressToAddress();

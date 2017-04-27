@@ -81,5 +81,7 @@ public interface IInfinispanClusterService {
 	void assignRole(IRole iRole, INode iNode);
 
 	void doRebalanceRoles();
+	
+	Address getLocalAddress();
 
 }

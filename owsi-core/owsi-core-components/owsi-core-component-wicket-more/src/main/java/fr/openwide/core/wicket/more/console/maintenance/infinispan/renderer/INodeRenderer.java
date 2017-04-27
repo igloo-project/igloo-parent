@@ -17,12 +17,18 @@ public class INodeRenderer {
 
 	private static final INodeStatusRenderer STATUS = new INodeStatusRenderer();
 	
+	private static final INodeLocalRenderer LOCAL = new INodeLocalRenderer();
+	
 	public static INodeAnonymousRenderer anonymous() {
 		return ANONYMOUS;
 	}
 	
 	public static INodeStatusRenderer status() {
 		return STATUS;
+	}
+	
+	public static INodeLocalRenderer local(){
+		return LOCAL;
 	}
 	
 	private static class INodeAnonymousRenderer extends BootstrapRenderer<INode> {
@@ -75,6 +81,29 @@ public class INodeRenderer {
 					.build();
 		}
 		
+	}
+	
+	private static class INodeLocalRenderer extends BootstrapRenderer<INode> {
+		private static final long serialVersionUID = 1L;
+		
+		@SpringBean
+		private IInfinispanClusterService infinispanClusterService;
+		
+		public INodeLocalRenderer() {
+			Injector.get().inject(this);
+		}
+		
+		@Override
+		protected BootstrapRendererInformation doRender(INode value, Locale locale) {
+			if (infinispanClusterService.getLocalAddress().equals(value.getAddress())) {
+				return BootstrapRendererInformation.builder()
+						.icon("fa fa-user")
+						.label(getString("business.infinispan.node.local", locale))
+						.build();
+			}
+			
+			return BootstrapRendererInformation.builder().build();
+		}
 	}
 
 }
