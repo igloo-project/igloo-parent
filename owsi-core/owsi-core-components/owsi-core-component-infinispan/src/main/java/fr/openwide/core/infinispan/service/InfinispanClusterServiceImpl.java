@@ -207,8 +207,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 	
 	@Override
-	public Set<IRole> getRoles(){
-		return ImmutableSet.copyOf(getRolesCache().keySet());
+	public Set<IRole> getRoles() {
+		return ImmutableSet.copyOf(rolesProvider.getRoles());
 	}
 	
 	@Override
@@ -466,7 +466,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	
 	@Override
 	public void deleteRole(IRole iRole){
-		//TODO
+		getRolesCache().remove(iRole);
 	}
 	
 	@Override
@@ -491,10 +491,10 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			} catch (TimeoutException e) {
 				return Pair.with(SwitchRoleResult.SWITCH_RELEASE_TIMEOUT, String.format("Timeout during release (%d ms. elapsed)", releaseWatch.elapsed(TimeUnit.MILLISECONDS)));
 			}
-		}
-		
-		if ( ! SwitchRoleResult.SWITCH_STEP_SUCCESS.equals(stepResult.getValue0())) {
-			return stepResult;
+			
+			if ( ! SwitchRoleResult.SWITCH_STEP_SUCCESS.equals(stepResult.getValue0())) {
+				return stepResult;
+			}
 		}
 		
 		// capture
