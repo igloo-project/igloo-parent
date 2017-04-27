@@ -3,6 +3,7 @@ package fr.openwide.core.infinispan.service;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
@@ -235,8 +236,50 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			INode previousNode = getNodesCache().get(getAddress());
 			Node node = Node.from(previousNode, leaveDate);
 			
+			// signal normal leave event
 			getLeaveCache().put(getAddress(), LeaveEvent.from(leaveDate));
+			// update to last known status
 			getNodesCache().put(getAddress(), node);
+			
+			for (Entry<IRole, IRoleAttribution> role : getRolesCache().entrySet()) {
+				if (role.getValue() != null && role.getValue().match(getAddress())) {
+					// race condition; we can remove an third-party assignation
+					getRolesCache().remove(role);
+				}
+			}
+			for (Entry<IRole, IAttribution> role : getRolesRequestsCache().entrySet()) {
+				if (role.getValue() != null && role.getValue().match(getAddress())) {
+					// race condition; we can remove an third-party assignation
+					getRolesRequestsCache().remove(role);
+				}
+			}
+			
+			// priority queue · clean asked priority
+			for (Entry<IPriorityQueue, List<IAttribution>> priorityQueue : getPriorityQueuesCache().entrySet()) {
+				boolean commitPriorityQueue = true;
+				try {
+					// lock entry
+					getPriorityQueuesCache().startBatch();
+					getPriorityQueuesCache().getAdvancedCache().lock(priorityQueue.getKey());
+					
+					// build new cleaned new value
+					List<IAttribution> updatedPriorityQueue = Lists.newArrayList();
+					for (IAttribution attribution : priorityQueue.getValue()) {
+						if ( ! attribution.match(getAddress())) {
+							updatedPriorityQueue.add(attribution);
+						}
+					}
+					
+					// put
+					getPriorityQueuesCache().put(priorityQueue.getKey(), updatedPriorityQueue);
+				} finally {
+					getPriorityQueuesCache().endBatch(commitPriorityQueue);
+				}
+			}
+			
+			// actions: kept for debugging
+			// actions result: kept for debugging
+			// locks: kept for history (finally block must remove remaining locks)
 			
 			cacheManager.stop();
 			// stop accepting new tasks
