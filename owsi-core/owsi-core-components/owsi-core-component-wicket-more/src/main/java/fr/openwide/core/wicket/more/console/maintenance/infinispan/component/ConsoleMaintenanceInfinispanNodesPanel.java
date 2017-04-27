@@ -32,6 +32,7 @@ public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
 
 	public ConsoleMaintenanceInfinispanNodesPanel(String id) {
 		super(id);
+		setOutputMarkupId(true);
 		
 		nodesModel = new LoadableDetachableModel<List<INode>>() {
 			private static final long serialVersionUID = 1L;

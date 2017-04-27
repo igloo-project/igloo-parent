@@ -17,6 +17,7 @@ import fr.openwide.core.spring.property.model.MutablePropertyId;
 import fr.openwide.core.spring.property.model.PropertyId;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
+import fr.openwide.core.wicket.more.console.common.component.PropertyIdListPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.link.BlankLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
@@ -75,7 +76,7 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
 							propertyService.setAsString(PropertyIdEditPopup.this.getModelObject(), valueModel.getObject());
 							Session.get().success(getString("common.propertyId.actions.edit.success"));
 							closePopup(target);
-//							target.addChildren(getPage(), PropertyIdListPanel.class);
+							target.addChildren(getPage(), PropertyIdListPanel.class);
 						} catch (Exception e) {
 							LOGGER.error("Erreur lors la modification de la valeur d'une propriété.");
 							Session.get().error(getString("common.error.unexpected"));

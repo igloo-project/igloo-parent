@@ -52,6 +52,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 
 	public ConsoleMaintenanceInfinispanRolesPanel(String id) {
 		super(id);
+		setOutputMarkupId(true);
 		
 		rolesModel = new LoadableDetachableModel<Set<IRole>>() {
 			private static final long serialVersionUID = 1L;

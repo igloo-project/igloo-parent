@@ -20,7 +20,6 @@ import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.renderer.INodeRenderer;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
-import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -41,6 +40,7 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 
 	public ConsoleMaintenanceInfinispanClusterPanel(String id) {
 		super(id);
+		setOutputMarkupId(true);
 		
 		nodesModel = new LoadableDetachableModel<List<INode>>() {
 			private static final long serialVersionUID = 1L;

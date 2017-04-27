@@ -4,7 +4,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.google.common.collect.ImmutableSet;
 
-import fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds;
+import fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import fr.openwide.core.spring.property.model.PropertyId;
 import fr.openwide.core.wicket.more.console.common.component.PropertyIdListPanel;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanClusterPanel;
@@ -29,10 +29,10 @@ public class ConsoleMaintenanceInfinispanPage extends ConsoleMaintenanceTemplate
 				new PropertyIdListPanel("propertyIds", 
 											ImmutableSet.<PropertyId<?>>builder()
 													.add(
-																InfinispanPropertyIds.INFINISPAN_ENABLED, 
-																InfinispanPropertyIds.INFINISPAN_CLUSTER_NAME, 
-																InfinispanPropertyIds.INFINISPAN_NODE_NAME,
-																InfinispanPropertyIds.INFINISPAN_ROLES
+																JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED, 
+																JpaMoreInfinispanPropertyIds.INFINISPAN_CLUSTER_NAME, 
+																JpaMoreInfinispanPropertyIds.INFINISPAN_NODE_NAME,
+																JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES
 													)
 													.build()
 				)

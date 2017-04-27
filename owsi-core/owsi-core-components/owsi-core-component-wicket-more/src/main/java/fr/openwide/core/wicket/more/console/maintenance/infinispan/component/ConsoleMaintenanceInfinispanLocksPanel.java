@@ -40,6 +40,7 @@ public class ConsoleMaintenanceInfinispanLocksPanel extends Panel {
 	
 	public ConsoleMaintenanceInfinispanLocksPanel(String id) {
 		super(id);
+		setOutputMarkupId(true);
 		
 		locksModel = new LoadableDetachableModel<Set<ILock>>() {
 			private static final long serialVersionUID = 1L;

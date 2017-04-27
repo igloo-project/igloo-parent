@@ -46,6 +46,7 @@ public class PropertyIdListPanel extends Panel {
 
 	public PropertyIdListPanel(String id, IModel<? extends Collection<? extends PropertyId<?>>> propertyIdsModel) {
 		super(id, propertyIdsModel);
+		setOutputMarkupId(true);
 		
 		PropertyIdEditPopup modifyPopup = new PropertyIdEditPopup("editPopup");
 		add(modifyPopup);
