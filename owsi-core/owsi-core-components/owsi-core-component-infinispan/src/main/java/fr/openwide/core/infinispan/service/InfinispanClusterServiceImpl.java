@@ -17,7 +17,8 @@ import org.infinispan.filter.CollectionKeyFilter;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
-import org.infinispan.remoting.transport.Address;
+import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
+import org.jgroups.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
 
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.infinispan.action.RebalanceAction;
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
 import fr.openwide.core.infinispan.listener.ViewChangedEventListener;
@@ -110,6 +112,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public synchronized void init() {
+		LOGGER.debug("Starting cacheManager");
+		cacheManager.start();
+		LOGGER.debug("cacheManager started");
 		String address = String.format("[%s]", getAddress());
 		if ( ! initialized) {
 			LOGGER.debug("{} Initializing {}", address, toStringClusterNode());
@@ -118,6 +123,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			for (String cacheName : CACHES) {
 				if ( ! cacheManager.isRunning(cacheName)) {
 					cacheManager.getCache(cacheName);
+					if (address == null) {
+						address = String.format("[%s]", getAddress());
+					}
 					LOGGER.debug("{} Cache {} started", address, cacheName);
 				} else {
 					LOGGER.debug("{} Cache {} already running", address, cacheName);
@@ -163,20 +171,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public List<Address> getMembers() {
-		return cacheManager.getMembers();
-	}
-
-	@Override
-	public List<INode> getNodes() {
-		return ImmutableList.copyOf(Lists.transform(
-				getMembers(),
-				new Function<Address, INode>() {
-					@Override
-					public INode apply(Address input) {
-						return getNodesCache().get(input);
-					}
-				}
-		));
+		return ImmutableList.<Address>copyOf(Lists.transform(cacheManager.getMembers(), JGROUPS_ADDRESS_TO_ADDRESS));
 	}
 
 	@Override
@@ -247,7 +242,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public String getClusterIdentifier() {
-		List<Address> members = Lists.newArrayList(cacheManager.getMembers());
+		List<Address> members = getMembers();
 		Collections.sort(members);
 		return Joiner.on(",").join(members);
 	}
@@ -357,7 +352,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	private Address getAddress() {
-		return cacheManager.getAddress();
+		if (cacheManager.getAddress() != null) {
+			return ((JGroupsAddress) cacheManager.getAddress()).getJGroupsAddress();
+		} else {
+			return null;
+		}
 	}
 
 	private Cache<IRole, IRoleAttribution> getRolesCache() {
@@ -400,8 +399,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	@Override
 	public void onViewChangedEvent(ViewChangedEvent viewChangedEvent) {
 		// NOTE : lists cannot be null
-		List<Address> newMembers = viewChangedEvent.getNewMembers();
-		List<Address> oldMembers = viewChangedEvent.getOldMembers();
+		List<Address> newMembers = Lists.transform(viewChangedEvent.getNewMembers(), JGROUPS_ADDRESS_TO_ADDRESS);
+		List<Address> oldMembers = Lists.transform(viewChangedEvent.getOldMembers(), JGROUPS_ADDRESS_TO_ADDRESS);
 		
 		List<Address> added = Lists.newArrayList(newMembers);
 		added.removeAll(oldMembers);
@@ -632,5 +631,39 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		
 		throw new TimeoutException();
 	}
+
+	private static final class JGroupsAddressToAddress implements SerializableFunction<org.infinispan.remoting.transport.Address, Address> {
+		private static final long serialVersionUID = -6249484113042442830L;
+
+		@Override
+		public Address apply(org.infinispan.remoting.transport.Address input) {
+			return ((JGroupsAddress) input).getJGroupsAddress();
+		}
+	}
+
+	private static final class JGroupsToJgroupsAddress implements SerializableFunction<Address, org.infinispan.remoting.transport.Address> {
+		private static final long serialVersionUID = -6249484113042442830L;
+
+		@Override
+		public org.infinispan.remoting.transport.Address apply(Address input) {
+			return new JGroupsAddress(input);
+		}
+	}
+
+	@Override
+	public List<INode> getNodes() {
+		return ImmutableList.copyOf(Lists.transform(
+				getMembers(),
+				new Function<Address, INode>() {
+					@Override
+					public INode apply(Address input) {
+						return getNodesCache().get(input);
+					}
+				}
+		));
+	}
+
+	private static final JGroupsAddressToAddress JGROUPS_ADDRESS_TO_ADDRESS = new JGroupsAddressToAddress();
+	private static final JGroupsToJgroupsAddress ADDRESS_TO_GROUPS_ADDRESS = new JGroupsToJgroupsAddress();
 
 }

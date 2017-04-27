@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.bindgen.Bindable;
-import org.infinispan.remoting.transport.Address;
+import org.jgroups.Address;
 
 @Bindable
 public interface INode extends Serializable {

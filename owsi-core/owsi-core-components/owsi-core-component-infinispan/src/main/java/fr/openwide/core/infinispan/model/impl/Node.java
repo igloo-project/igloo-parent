@@ -2,7 +2,7 @@ package fr.openwide.core.infinispan.model.impl;
 
 import java.util.Date;
 
-import org.infinispan.remoting.transport.Address;
+import org.jgroups.Address;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.infinispan.model.INode;

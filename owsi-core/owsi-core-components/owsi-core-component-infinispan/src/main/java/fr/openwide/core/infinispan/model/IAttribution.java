@@ -3,7 +3,7 @@ package fr.openwide.core.infinispan.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.infinispan.remoting.transport.Address;
+import org.jgroups.Address;
 
 public interface IAttribution extends Serializable {
 

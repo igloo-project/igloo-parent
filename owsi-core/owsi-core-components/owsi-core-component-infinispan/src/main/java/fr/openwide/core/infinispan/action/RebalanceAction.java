@@ -1,6 +1,6 @@
 package fr.openwide.core.infinispan.action;
 
-import org.infinispan.remoting.transport.Address;
+import org.jgroups.Address;
 
 import fr.openwide.core.infinispan.model.impl.SimpleAction;
 

@@ -2,7 +2,7 @@ package fr.openwide.core.infinispan.model.impl;
 
 import java.util.Date;
 
-import org.infinispan.remoting.transport.Address;
+import org.jgroups.Address;
 
 import com.google.common.base.Objects;
 
@@ -44,7 +44,7 @@ public class AbstractAttribution implements IAttribution {
 
 	@Override
 	public String toString() {
-		return String.format("%s<%s (at %tF %tT %tz)>", getClass().getSimpleName(), getOwner(), getAttributionDate());
+		return String.format("%s<%s (at %tF %<tT %<tz)>", getClass().getSimpleName(), getOwner(), getAttributionDate());
 	}
 
 }

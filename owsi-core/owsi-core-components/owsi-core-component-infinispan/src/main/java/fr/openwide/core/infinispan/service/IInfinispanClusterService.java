@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
-import org.infinispan.remoting.transport.Address;
+import org.jgroups.Address;
 
 import fr.openwide.core.infinispan.model.ILock;
 import fr.openwide.core.infinispan.model.ILockAttribution;
