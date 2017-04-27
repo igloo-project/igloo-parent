@@ -38,6 +38,7 @@ import fr.openwide.core.infinispan.action.RebalanceAction;
 import fr.openwide.core.infinispan.action.RoleCaptureAction;
 import fr.openwide.core.infinispan.action.RoleReleaseAction;
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
+import fr.openwide.core.infinispan.listener.CacheEntryCreateEventListener;
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
 import fr.openwide.core.infinispan.listener.ViewChangedEventListener;
 import fr.openwide.core.infinispan.model.IAction;
@@ -147,7 +148,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			cacheManager.addListener(new ViewChangedEventListener(this));
 			
 			// action queue
-			getActionsCache().addListener(new CacheEntryEventListener<IAction<?>>() {
+			getActionsCache().addListener(new CacheEntryCreateEventListener<IAction<?>>() {
 				@Override
 				public void onAction(CacheEntryEvent<String, IAction<?>> value) {
 					InfinispanClusterServiceImpl.this.onAction(value);
@@ -155,7 +156,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			});
 			
 			// result queue
-			getActionsResultsCache().addListener(new CacheEntryEventListener<IAction<?>>() {
+			getActionsResultsCache().addListener(new CacheEntryCreateEventListener<IAction<?>>() {
 				@Override
 				public void onAction(CacheEntryEvent<String, IAction<?>> value) {
 					InfinispanClusterServiceImpl.this.onResult(value);
@@ -662,6 +663,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	protected void onAction(CacheEntryEvent<String, IAction<?>> value) {
+		final String key = value.getKey();
+		final IAction<?> action = value.getValue();
 		if (CACHE_KEY_ACTION_ROLES_REBALANCE.equals(value.getKey())) {
 			LOGGER.debug("Rebalance action received");
 			if (rebalanceRateLimiter.tryAcquire()) {
@@ -669,8 +672,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				executor.submit(new Runnable() {
 					@Override
 					public void run() {
-						doRebalanceRoles();
-						LOGGER.debug("Rebalance action performed");
+						try {
+							doRebalanceRoles();
+							LOGGER.debug("Rebalance action performed");
+						} finally {
+							getActionsCache().remove(key);
+						}
 					}
 				});
 			} else {
@@ -678,16 +685,18 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			}
 		} else {
 			if (getAddress().equals(value.getValue().getTarget())) {
-				final IAction<?> action = value.getValue();
 				executor.submit(new Runnable() {
 					@Override
 					public void run() {
-						if (actionFactory != null) {
-							actionFactory.prepareAction(action);
+						try {
+							if (actionFactory != null) {
+								actionFactory.prepareAction(action);
+							}
+							action.run();
+							getActionsResultsCache().put(value.getKey(), action);
+						} finally {
+							getActionsCache().remove(key);
 						}
-						action.run();
-						getActionsResultsCache().put(value.getKey(), action);
-						// TODO logging
 					}
 				});
 			}
