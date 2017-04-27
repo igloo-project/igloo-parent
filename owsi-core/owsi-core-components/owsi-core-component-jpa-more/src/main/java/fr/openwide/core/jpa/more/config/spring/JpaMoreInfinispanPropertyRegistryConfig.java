@@ -1,12 +1,12 @@
-package fr.openwide.core.spring.infinispan.config.spring;
+package fr.openwide.core.jpa.more.config.spring;
 
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_CLUSTER_NAME;
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_ENABLED;
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_NODE_NAME;
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_ROLES;
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_TRANSPORT_CONFIGURATION_FILE;
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTIES;
-import static fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTY;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_CLUSTER_NAME;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_NODE_NAME;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_TRANSPORT_CONFIGURATION_FILE;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTIES;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTY;
 
 import java.util.Collections;
 import java.util.Set;
@@ -21,7 +21,7 @@ import fr.openwide.core.spring.config.spring.AbstractApplicationPropertyRegistry
 import fr.openwide.core.spring.property.service.IPropertyRegistry;
 
 @Configuration
-public class InfinispanPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+public class JpaMoreInfinispanPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 	
 	@Override
 	protected void register(IPropertyRegistry registry) {

@@ -29,6 +29,12 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-infinispan</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- Jackson est utilisé pour sérialiser les tâches avant persistence -->
 		
 		<dependency>

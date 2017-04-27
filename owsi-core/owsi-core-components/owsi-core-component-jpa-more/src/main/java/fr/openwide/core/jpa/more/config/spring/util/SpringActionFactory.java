@@ -1,4 +1,4 @@
-package fr.openwide.core.spring.infinispan.config.spring.util;
+package fr.openwide.core.jpa.more.config.spring.util;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package fr.openwide.core.spring.infinispan.property;
+package fr.openwide.core.jpa.more.property;
 
 import java.util.Objects;
 import java.util.Set;
@@ -7,9 +7,9 @@ import fr.openwide.core.spring.property.model.AbstractPropertyIds;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
 import fr.openwide.core.spring.property.model.ImmutablePropertyIdTemplate;
 
-public final class InfinispanPropertyIds extends AbstractPropertyIds {
+public final class JpaMoreInfinispanPropertyIds extends AbstractPropertyIds {
 	
-	private InfinispanPropertyIds() {
+	private JpaMoreInfinispanPropertyIds() {
 	}
 
 	/*

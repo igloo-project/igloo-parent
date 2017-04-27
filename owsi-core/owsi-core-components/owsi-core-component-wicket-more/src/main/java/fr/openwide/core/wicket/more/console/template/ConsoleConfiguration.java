@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fr.openwide.core.spring.infinispan.property.InfinispanPropertyIds;
+import fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
@@ -91,7 +91,7 @@ public final class ConsoleConfiguration {
 					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
 			maintenanceMenuSection.addMenuItem(fileMenuItem);
 			
-			if (Boolean.TRUE.equals(propertyService.get(InfinispanPropertyIds.INFINISPAN_ENABLED))) {
+			if (Boolean.TRUE.equals(propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED))) {
 				ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
 						"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
 				maintenanceMenuSection.addMenuItem(infinispanMenuItem);
