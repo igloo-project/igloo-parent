@@ -9,9 +9,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.model.INode;
 import fr.openwide.core.infinispan.model.IRole;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
@@ -73,8 +75,12 @@ public class ConsoleMaintenanceInfinispanRoleAssignPopup extends AbstractAjaxMod
 					@Override
 					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 						try {
-							infinispanClusterService.assignRole(ConsoleMaintenanceInfinispanRoleAssignPopup.this.getModelObject(), nodeModel.getObject());
-							Session.get().success(getString("console.maintenance.infinispan.roles.actions.assign.success"));
+							Pair<SwitchRoleResult, String> result = infinispanClusterService.assignRole(ConsoleMaintenanceInfinispanRoleAssignPopup.this.getModelObject(), nodeModel.getObject());
+							if (SwitchRoleResult.SWITCH_SUCCESS.equals(result.getValue0())) {
+								Session.get().success(getString("console.maintenance.infinispan.roles.actions.assign.success"));
+							} else {
+								Session.get().error(String.format("Erreur : %s", result.getValue1()));
+							}
 							closePopup(target);
 							target.addChildren(getPage(), ConsoleMaintenanceInfinispanRolesPanel.class);
 						} catch (Exception e) {

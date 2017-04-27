@@ -5,8 +5,10 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
+import org.javatuples.Pair;
 import org.jgroups.Address;
 
+import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.model.ILock;
 import fr.openwide.core.infinispan.model.ILockAttribution;
 import fr.openwide.core.infinispan.model.ILockRequest;
@@ -78,10 +80,14 @@ public interface IInfinispanClusterService {
 	
 	void deleteRole(IRole iRole);
 	
-	void assignRole(IRole iRole, INode iNode);
+	Pair<SwitchRoleResult, String> assignRole(IRole iRole, INode iNode);
 
 	void doRebalanceRoles();
 	
 	Address getLocalAddress();
+
+	Pair<SwitchRoleResult, String> doReleaseRole(IRole role);
+
+	Pair<SwitchRoleResult, String> doCaptureRole(IRole role);
 
 }

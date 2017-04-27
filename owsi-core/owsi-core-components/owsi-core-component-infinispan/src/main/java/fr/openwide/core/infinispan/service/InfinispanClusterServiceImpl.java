@@ -18,6 +18,7 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
 import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
+import org.javatuples.Pair;
 import org.jgroups.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.infinispan.action.RebalanceAction;
+import fr.openwide.core.infinispan.action.RoleReleaseAction;
+import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
 import fr.openwide.core.infinispan.listener.ViewChangedEventListener;
 import fr.openwide.core.infinispan.model.IAction;
@@ -466,19 +469,104 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 	
 	@Override
-	public void assignRole(IRole iRole, INode iNode) {
-		Stopwatch stopWatch = Stopwatch.createStarted();
-		try {
-			Boolean result = syncedAction(RebalanceAction.rebalance(iNode.getAddress()), -1, TimeUnit.MILLISECONDS);
-			LOGGER.warn("Action - result {} in {} ms.", result, stopWatch.elapsed(TimeUnit.MILLISECONDS));
-		} catch (Exception e) {
-			LOGGER.warn("Action - error {} in {} ms.", e.getMessage(), stopWatch.elapsed(TimeUnit.MILLISECONDS));
+	public Pair<SwitchRoleResult, String> assignRole(IRole iRole, INode iNode) {
+		// push request, ask for release, ask for capture, return
+		Stopwatch switchWatch = Stopwatch.createStarted();
+		
+		// request (replace old element is allowed)
+		getRolesRequestsCache().put(iRole, RoleAttribution.from(iNode.getAddress(), new Date()));
+		IRoleAttribution roleAttribution = getRolesCache().get(iRole);
+		
+		Pair<SwitchRoleResult, String> stepResult = null;
+		
+		// release
+		if (roleAttribution != null) {
+			Stopwatch releaseWatch = Stopwatch.createStarted();
+			
+			try {
+				stepResult = syncedAction(RoleReleaseAction.release(roleAttribution.getOwner(), iRole), 10, TimeUnit.SECONDS);
+			} catch (ExecutionException e) {
+				return Pair.with(SwitchRoleResult.SWITCH_UNKNOWN_ERROR, String.format("Unknown exception during release - %s", e.getCause().getMessage()));
+			} catch (TimeoutException e) {
+				return Pair.with(SwitchRoleResult.SWITCH_RELEASE_TIMEOUT, String.format("Timeout during release (%d ms. elapsed)", releaseWatch.elapsed(TimeUnit.MILLISECONDS)));
+			}
+		}
+		
+		if ( ! SwitchRoleResult.SWITCH_STEP_SUCCESS.equals(stepResult.getValue0())) {
+			return stepResult;
+		}
+		
+		// capture
+		{
+			Stopwatch captureWatch = Stopwatch.createStarted();
+			try {
+				stepResult = syncedAction(RoleReleaseAction.release(iNode.getAddress(), iRole), 10, TimeUnit.SECONDS);
+			} catch (ExecutionException e) {
+				return Pair.with(SwitchRoleResult.SWITCH_UNKNOWN_ERROR, String.format("Unknown exception during capture - %s", e.getCause().getMessage()));
+			} catch (TimeoutException e) {
+				return Pair.with(SwitchRoleResult.SWITCH_CAPTURE_TIMEOUT, String.format("Timeout during release (%d ms. elapsed)", captureWatch.elapsed(TimeUnit.MILLISECONDS)));
+			}
+		}
+		
+		// return
+		if ( ! SwitchRoleResult.SWITCH_STEP_SUCCESS.equals(stepResult.getValue0())) {
+			return stepResult;
+		} else {
+			return Pair.with(SwitchRoleResult.SWITCH_SUCCESS, String.format("Switch done in %d ms.", switchWatch.elapsed(TimeUnit.MILLISECONDS)));
 		}
 	}
 
 	@Override
 	public void doRebalanceRoles() {
 		doRebalanceRoles(1000);
+	}
+
+	@Override
+	public Pair<SwitchRoleResult, String> doReleaseRole(IRole role) {
+		if ( ! getRolesCache().getAdvancedCache().startBatch()) {
+			throw new IllegalStateException("Nested batch detected!");
+		}
+		boolean commit = true;
+		boolean releaseDone = false;
+		getRolesCache().getAdvancedCache().lock(role);
+		try {
+			IRoleAttribution attribution = getRolesCache().get(role);
+			if (attribution != null && attribution.match(getAddress())) {
+				getRolesCache().remove(role);
+				releaseDone = true;
+			}
+		} finally {
+			getRolesCache().getAdvancedCache().endBatch(commit);
+		}
+		
+		if (getRolesCache().get(role) == null) {
+			return Pair.with(SwitchRoleResult.SWITCH_STEP_SUCCESS, "OK");
+		} else if (releaseDone) {
+			return Pair.with(SwitchRoleResult.SWITCH_STEP_INCONSISTENCY, "Map remove done, but role not released !");
+		} else {
+			return Pair.with(SwitchRoleResult.SWITCH_STEP_INCONSISTENCY, "Map remove cannot be done !");
+		}
+	}
+
+	@Override
+	public Pair<SwitchRoleResult, String> doCaptureRole(IRole role) {
+		// role request checked in a insecure way (but role capture is safe)
+		if (getRolesRequestsCache().get(role) != null && ! getRolesRequestsCache().get(role).match(getAddress())) {
+			return Pair.with(SwitchRoleResult.SWITCH_STEP_INCONSISTENCY, "Role is already requested by another node");
+		}
+		
+		getRolesCache().putIfAbsent(role, RoleAttribution.from(getAddress(), new Date()));
+		
+		// request release not safe as it can conflict with another capture
+		getRolesRequestsCache().remove(role);
+		
+		if (getRolesCache().get(role) == null) {
+			return Pair.with(SwitchRoleResult.SWITCH_STEP_INCONSISTENCY, "Role is available but was not captured");
+		} else if ( ! getRolesCache().get(role).match(getAddress())) {
+			return Pair.with(SwitchRoleResult.SWITCH_CAPTURE_NOT_AVAILABLE, "Role is not available at capture time");
+		} else {
+			return Pair.with(SwitchRoleResult.SWITCH_STEP_SUCCESS, "OK");
+		}
 	}
 
 	public synchronized void doRebalanceRoles(int waitWeight) {
