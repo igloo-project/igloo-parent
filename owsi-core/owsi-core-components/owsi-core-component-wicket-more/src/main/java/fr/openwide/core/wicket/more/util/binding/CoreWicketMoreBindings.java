@@ -3,6 +3,7 @@ package fr.openwide.core.wicket.more.util.binding;
 import org.bindgen.java.util.ListBinding;
 
 import fr.openwide.core.commons.util.mime.MediaTypeBinding;
+import fr.openwide.core.infinispan.model.IAttributionBinding;
 import fr.openwide.core.infinispan.model.ILockAttributionBinding;
 import fr.openwide.core.infinispan.model.ILockBinding;
 import fr.openwide.core.infinispan.model.INodeBinding;
@@ -28,6 +29,8 @@ public final class CoreWicketMoreBindings {
 	
 	private static final IRoleBinding I_ROLE = new IRoleBinding();
 	private static final IRoleAttributionBinding I_ROLE_ATTRIBUTION = new IRoleAttributionBinding();
+	
+	private static final IAttributionBinding I_ATTRIBUTION = new IAttributionBinding();
 	
 	public static EhCacheCacheInformationBinding ehCacheCacheInformation() {
 		return EH_CACHE_CACHE_INFORMATION;
@@ -63,6 +66,10 @@ public final class CoreWicketMoreBindings {
 	
 	public static IRoleAttributionBinding iRoleAttribution() {
 		return I_ROLE_ATTRIBUTION;
+	}
+	
+	public static IAttributionBinding iAttribution(){
+		return I_ATTRIBUTION;
 	}
 	
 	private CoreWicketMoreBindings() {

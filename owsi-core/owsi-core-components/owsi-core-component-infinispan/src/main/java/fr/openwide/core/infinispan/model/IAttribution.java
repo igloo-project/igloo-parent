@@ -5,6 +5,9 @@ import java.util.Date;
 
 import org.jgroups.Address;
 
+import org.bindgen.Bindable;
+
+@Bindable
 public interface IAttribution extends Serializable {
 
 	Address getOwner();

@@ -223,6 +223,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
+	public IAttribution getRoleRequestAttribution(IRole iRole){
+		return getRolesRequestsCache().get(iRole);
+	}
+
+	@Override
 	public synchronized void stop() {
 		String address = String.format("[%s]", getAddress());
 		if (initialized) {
@@ -326,7 +331,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		// try to retrieve lock
 		IRoleAttribution roleAttribution = getRolesCache().getOrDefault(lockRequest.getRole(), null);
 		try {
-			if (roleAttribution.match(getAddress())) {
+			if (roleAttribution != null && roleAttribution.match(getAddress())) {
 				// if lock is owned, we can run
 				if (lockRequest.getLock() != null) {
 					return doWithLock(lockRequest.getLock(), runnable);

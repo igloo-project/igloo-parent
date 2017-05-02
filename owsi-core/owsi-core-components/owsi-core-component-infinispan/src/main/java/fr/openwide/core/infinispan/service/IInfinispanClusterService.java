@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import org.jgroups.Address;
 
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
+import fr.openwide.core.infinispan.model.IAttribution;
 import fr.openwide.core.infinispan.model.ILock;
 import fr.openwide.core.infinispan.model.ILockAttribution;
 import fr.openwide.core.infinispan.model.ILockRequest;
@@ -85,6 +86,8 @@ public interface IInfinispanClusterService {
 	Set<IRole> getAllRolesForRolesRequests();
 	
 	IRoleAttribution getRoleAttribution(IRole iRole);
+	
+	IAttribution getRoleRequestAttribution(IRole iRole);
 	
 	void unassignRole(IRole iRole);
 	

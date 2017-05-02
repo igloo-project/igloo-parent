@@ -11,6 +11,7 @@ import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.Con
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanLocksPanel;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanNodesPanel;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesPanel;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesRequestsPanel;
 import fr.openwide.core.wicket.more.console.maintenance.template.ConsoleMaintenanceTemplate;
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 
@@ -26,6 +27,7 @@ public class ConsoleMaintenanceInfinispanPage extends ConsoleMaintenanceTemplate
 				new ConsoleMaintenanceInfinispanRolesPanel("roles"),
 				new ConsoleMaintenanceInfinispanLocksPanel("locks"),
 				new ConsoleMaintenanceInfinispanNodesPanel("nodes"),
+				new ConsoleMaintenanceInfinispanRolesRequestsPanel("rolesRequests"),
 				new PropertyIdListPanel("propertyIds", 
 											ImmutableSet.<PropertyId<?>>builder()
 													.add(
