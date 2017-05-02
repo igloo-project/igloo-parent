@@ -1,13 +1,19 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
 import fr.openwide.core.infinispan.model.ILock;
 import fr.openwide.core.infinispan.model.IPriorityQueue;
+import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public final class TaskConsumer {
 
 	private static final String THREAD_NAME_FORMAT = "TaskConsumer-%1$s-%2$s";
+
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	private final TaskQueue queue;
 	
@@ -45,18 +51,19 @@ public final class TaskConsumer {
 		if (thread == null || !thread.isAlive()) { // synchronized access
 			String id = String.format(THREAD_NAME_FORMAT, queue.getId(), threadIdForThisQueue);
 			if (lock != null) {
-				thread = new ConsumerThread(
-						id,
-						startDelay,
-						queue
-				);
-			} else {
 				thread = new ConsumerInfinispanAwareThread(
 						id,
 						startDelay,
 						queue,
 						lock, priorityQueue);
+			} else {
+				thread = new ConsumerThread(
+						id,
+						startDelay,
+						queue
+				);
 			}
+			SpringBeanUtils.autowireBean(applicationContext, thread);
 			thread.start();
 		}
 	}
