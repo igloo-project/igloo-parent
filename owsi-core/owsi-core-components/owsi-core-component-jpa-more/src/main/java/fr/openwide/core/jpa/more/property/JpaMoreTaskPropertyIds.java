@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.more.property;
 
 import java.util.Objects;
 
+import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.spring.config.util.TaskQueueStartMode;
 import fr.openwide.core.spring.property.model.AbstractPropertyIds;
 import fr.openwide.core.spring.property.model.ImmutablePropertyId;
@@ -16,9 +17,9 @@ public final class JpaMoreTaskPropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<TaskQueueStartMode> START_MODE = immutable("task.startMode");
 	
 	public static final ImmutablePropertyIdTemplate<Integer> QUEUE_NUMBER_OF_THREADS_TEMPLATE = immutableTemplate("task.queues.config.%1s.threads");
-	public static final ImmutablePropertyId<Integer> queueNumberOfThreads(String queueId) {
+	public static final ImmutablePropertyId<Integer> queueNumberOfThreads(IQueueId queueId) {
 		Objects.requireNonNull(queueId);
-		return QUEUE_NUMBER_OF_THREADS_TEMPLATE.create(queueId);
+		return QUEUE_NUMBER_OF_THREADS_TEMPLATE.create(queueId.getUniqueStringId());
 	}
 	
 	public static final ImmutablePropertyIdTemplate<Long> QUEUE_START_DELAY_TEMPLATE = immutableTemplate("task.queues.config.%1s.start.delay");

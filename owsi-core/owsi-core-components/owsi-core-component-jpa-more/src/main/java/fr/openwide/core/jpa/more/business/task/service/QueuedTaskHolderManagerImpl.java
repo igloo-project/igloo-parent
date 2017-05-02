@@ -37,6 +37,7 @@ import com.google.common.collect.Multimaps;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
+import fr.openwide.core.jpa.more.business.task.model.IInfinispanQueue;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.impl.TaskConsumer;
@@ -114,7 +115,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 	
 	private final void initQueues() {
-		Collection<String> queueIdsAsStrings = Lists.newArrayList();
+		Collection<IQueueId> queueIdsAsStrings = Lists.newArrayList();
 		
 		// Sanity checks
 		for (IQueueId queueId : queueIds) {
@@ -122,28 +123,37 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			Assert.state(!IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING.equals(queueIdAsString),
 					"Queue ID '" + IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING + "' is reserved for implementation purposes. Please choose another ID.");
 			Assert.state(!queueIdsAsStrings.contains(queueIdAsString), "Queue ID '" + queueIdAsString + "' was defined more than once. Queue IDs must be unique.");
-			queueIdsAsStrings.add(queueIdAsString);
+			queueIdsAsStrings.add(queueId);
 		}
 
 		defaultQueue = initQueue(IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING, 1);
-		for (String queueIdAsString : queueIdsAsStrings) {
-			int numberOfThreads = propertyService.get(queueNumberOfThreads(queueIdAsString));
+		for (IQueueId queueId : queueIdsAsStrings) {
+			int numberOfThreads = propertyService.get(queueNumberOfThreads(queueId));
 			if (numberOfThreads < 1) {
-				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueIdAsString, numberOfThreads);
+				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueId.getUniqueStringId(), numberOfThreads);
 				numberOfThreads = 1;
 			}
-			initQueue(queueIdAsString, numberOfThreads);
+			initQueue(queueId, numberOfThreads);
 		}
 	}
 	
-	private TaskQueue initQueue(String queueId, int numberOfThreads) {
-		TaskQueue queue = new TaskQueue(queueId);
+	private TaskQueue initQueue(IQueueId queueId, int numberOfThreads) {
+		TaskQueue queue = new TaskQueue(queueId.getUniqueStringId());
 		for (int i = 0 ; i < numberOfThreads ; ++i) {
-			TaskConsumer consumer = new TaskConsumer(queue, i);
+			TaskConsumer consumer;
+			if (queueId instanceof IInfinispanQueue && ((IInfinispanQueue) queueId).handleInfinispan()) {
+				IInfinispanQueue infinispanQueue = (IInfinispanQueue) queueId;
+				if (numberOfThreads != 1) {
+					throw new IllegalStateException("If you want to manage infinispan in queue, you must use only one thread");
+				}
+				consumer = new TaskConsumer(queue, i, infinispanQueue.getLock(), infinispanQueue.getPriorityQueue());
+			} else {
+				consumer = new TaskConsumer(queue, i);
+			}
 			SpringBeanUtils.autowireBean(applicationContext, consumer);
 			consumersByQueue.put(queue, consumer);
 		}
-		queuesById.put(queueId, queue);
+		queuesById.put(queueId.getUniqueStringId(), queue);
 		return queue;
 	}
 	

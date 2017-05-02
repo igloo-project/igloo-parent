@@ -12,6 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.jpa.more.business.task.model.DefaultQueueId;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 
@@ -19,7 +20,7 @@ public class TaskQueueIdListMultipleChoice extends ListMultipleChoice<String> {
 
 	private static final long serialVersionUID = 3147073422245294521L;
 	
-	private static final String DEFAULT_QUEUE_ID_VALUE = IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING;
+	private static final String DEFAULT_QUEUE_ID_VALUE = DefaultQueueId.DEFAULT.getUniqueStringId();
 
 	public TaskQueueIdListMultipleChoice(String id, IModel<? extends Collection<String>> typeListModel) {
 		super(id, typeListModel, new QueueIdsChoicesModel());
