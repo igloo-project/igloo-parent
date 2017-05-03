@@ -404,7 +404,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			IAttribution previous = getCache().putIfAbsent(taskId.toString(), Attribution.from(infinispanClusterService.getLocalAddress(), new Date()));
 			if (previous != null) {
 				// if already loaded, stop processing
-				LOGGER.warn("Task {} already loaded in cluster and ignored");
+				LOGGER.warn("Task {} already loaded in cluster and ignored", taskId);
 				return false;
 			}
 		}
@@ -434,5 +434,19 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	 */
 	private void initializeCache() {
 		infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
+	}
+
+	@Override
+	public void onTaskFinish(Long taskId) {
+		if (getCache() != null) {
+			IAttribution previous = getCache().remove(taskId.toString());
+			if (previous == null) {
+				// if already loaded, stop processing
+				LOGGER.warn("Task {} finished but not in cache map", taskId);
+			}
+			if (previous != null && ! previous.match(infinispanClusterService.getLocalAddress())) {
+				LOGGER.warn("Task {} finished but attribution does not match", taskId);
+			}
+		}
 	}
 }

@@ -36,4 +36,6 @@ public interface IQueuedTaskHolderManager {
 	@Transactional
 	void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
 
+	void onTaskFinish(Long id);
+
 }

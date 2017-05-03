@@ -15,6 +15,7 @@ import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
+import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderService;
 import fr.openwide.core.jpa.more.config.spring.AbstractTaskManagementConfig;
 import fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds;
@@ -48,6 +49,9 @@ class ConsumerThread extends Thread {
 
 	@Autowired
 	private IPropertyService propertyService;
+
+	@Autowired
+	private IQueuedTaskHolderManager queuedTaskHolderManager;
 
 	@Autowired
 	private IRendererService rendererService;
@@ -220,6 +224,12 @@ class ConsumerThread extends Thread {
 		} catch (RuntimeException e) {
 			LOGGER.error("Error while trying to consume a task (holder: " + queuedTaskHolder + "); the task holder was probably left in a stale state.", e);
 			return;
+		}
+		
+		try {
+			queuedTaskHolderManager.onTaskFinish(queuedTaskHolder.getId());
+		} catch (RuntimeException e) {
+			LOGGER.error("Error while signaling task finish for {}", queuedTaskHolderId);
 		}
 	}
 }
