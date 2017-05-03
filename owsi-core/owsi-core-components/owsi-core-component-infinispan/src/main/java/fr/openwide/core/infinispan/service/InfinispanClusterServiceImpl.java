@@ -175,6 +175,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
+	public EmbeddedCacheManager getCacheManager() {
+		return cacheManager;
+	}
+
+	@Override
 	public List<Address> getMembers() {
 		return ImmutableList.<Address>copyOf(Lists.transform(cacheManager.getMembers(), JGROUPS_ADDRESS_TO_ADDRESS));
 	}
@@ -545,7 +550,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			Stopwatch releaseWatch = Stopwatch.createStarted();
 			
 			try {
-				stepResult = syncedAction(RoleReleaseAction.release(roleAttribution.getOwner(), iRole), 10, TimeUnit.SECONDS);
+				stepResult = syncedAction(RoleReleaseAction.release(roleAttribution.getOwner(), iRole), 1, TimeUnit.SECONDS);
 			} catch (ExecutionException e) {
 				return Pair.with(SwitchRoleResult.SWITCH_UNKNOWN_ERROR, String.format("Unknown exception during release - %s", e.getCause().getMessage()));
 			} catch (TimeoutException e) {
