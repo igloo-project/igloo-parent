@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import fr.openwide.core.infinispan.service.IActionFactory;
+import fr.openwide.core.infinispan.service.IInfinispanClusterCheckerService;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.infinispan.service.IRolesProvider;
 import fr.openwide.core.infinispan.service.InfinispanClusterServiceImpl;
@@ -17,6 +18,7 @@ import fr.openwide.core.infinispan.utils.DefaultReplicatedTransientConfiguration
 import fr.openwide.core.infinispan.utils.GlobalDefaultReplicatedTransientConfigurationBuilder;
 import fr.openwide.core.infinispan.utils.role.RolesFromStringSetProvider;
 import fr.openwide.core.jpa.more.config.spring.util.SpringActionFactory;
+import fr.openwide.core.jpa.more.infinispan.service.InfinispanClusterJdbcCheckerServiceImpl;
 import fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
@@ -41,9 +43,17 @@ public class JpaMoreInfinispanConfig {
 		return new SpringActionFactory();
 	}
 
+	@Bean
+	public IInfinispanClusterCheckerService infinispanClusterCheckerService(IPropertyService propertyService) {
+		if (propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED)) {
+			return new InfinispanClusterJdbcCheckerServiceImpl();
+		}
+		return null;
+	}
+
 	@Bean(destroyMethod="stop")
-	public IInfinispanClusterService infinispanCluster(IPropertyService propertyService, IRolesProvider rolesProvider,
-			IActionFactory springActionFactory) {
+	public IInfinispanClusterService infinispanClusterService(IPropertyService propertyService, IRolesProvider rolesProvider,
+			IActionFactory springActionFactory, IInfinispanClusterCheckerService infinispanClusterCheckerService) {
 		if (propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED)) {
 			String nodeName = propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_NODE_NAME);
 			Properties properties = new Properties();
@@ -57,7 +67,8 @@ public class JpaMoreInfinispanConfig {
 			EmbeddedCacheManager cacheManager = new DefaultCacheManager(globalConfiguration, configuration, false);
 			
 			InfinispanClusterServiceImpl cluster =
-					new InfinispanClusterServiceImpl(nodeName, cacheManager, rolesProvider, springActionFactory);
+					new InfinispanClusterServiceImpl(nodeName, cacheManager, rolesProvider, springActionFactory,
+							infinispanClusterCheckerService);
 			cluster.init();
 			return cluster;
 		} else {

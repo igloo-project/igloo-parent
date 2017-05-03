@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.infinispan.Cache;
-import org.infinispan.filter.CollectionKeyFilter;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
@@ -27,12 +26,14 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.infinispan.action.RebalanceAction;
@@ -90,10 +91,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	private final String nodeName;
 	private final EmbeddedCacheManager cacheManager;
 	private final IRolesProvider rolesProvider;
-	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1, new ThreadFactoryBuilder().setNameFormat("infinispan-%d").build());
+	private final ScheduledThreadPoolExecutor checkerExecutor = new ScheduledThreadPoolExecutor(1, new ThreadFactoryBuilder().setNameFormat("infinispan-checker-%d").build());
 	// 1 rebalance each 15s. max
 	private final RateLimiter rebalanceRateLimiter = RateLimiter.create(1.0/15);
 	private final IActionFactory actionFactory;
+	private final IInfinispanClusterCheckerService infinispanClusterCheckerService;
 
 	private final ConcurrentMap<String, Object> actionMonitors = Maps.<String, Object>newConcurrentMap();
 
@@ -103,7 +106,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	public InfinispanClusterServiceImpl(String nodeName,
 			EmbeddedCacheManager cacheManager,
 			IRolesProvider rolesProvider,
-			IActionFactory actionFactory) {
+			IActionFactory actionFactory,
+			IInfinispanClusterCheckerService infinispanClusterCheckerService) {
 		super();
 		this.nodeName = nodeName;
 		this.cacheManager = cacheManager;
@@ -113,6 +117,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		this.executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 		this.executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
 		this.executor.prestartAllCoreThreads();
+		this.infinispanClusterCheckerService = infinispanClusterCheckerService;
+		if (infinispanClusterCheckerService != null) {
+			this.checkerExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+			this.checkerExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+			this.checkerExecutor.prestartAllCoreThreads();
+		}
 	}
 
 	@Override
@@ -163,12 +173,24 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				}
 			});
 			
+			if (cacheManager.isCoordinator() && infinispanClusterCheckerService != null) {
+				infinispanClusterCheckerService.updateCoordinator(getLocalAddress(), Collections.emptyList());
+			}
+			
 			executor.schedule(new Runnable() {
 				@Override
 				public void run() {
 					InfinispanClusterServiceImpl.this.rebalanceRoles();
 				}
 			}, 5, TimeUnit.SECONDS);
+			if (checkerExecutor != null) {
+				checkerExecutor.scheduleAtFixedRate(new Runnable() {
+					@Override
+					public void run() {
+						InfinispanClusterServiceImpl.this.updateCoordinator();
+					}
+				}, 1, 1, TimeUnit.MINUTES);
+			}
 			
 			initialized = true;
 		}
@@ -181,7 +203,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public List<Address> getMembers() {
-		return ImmutableList.<Address>copyOf(Lists.transform(cacheManager.getMembers(), JGROUPS_ADDRESS_TO_ADDRESS));
+		return ImmutableList.<Address>copyOf(Lists.transform(cacheManager.getMembers(), INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS));
 	}
 	
 	@Override
@@ -291,17 +313,33 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			// actions result: kept for debugging
 			// locks: kept for history (finally block must remove remaining locks)
 			
+			{
+				// unset in cluster checker
+				if (cacheManager.isCoordinator() && infinispanClusterCheckerService != null) {
+					infinispanClusterCheckerService.unsetCoordinator(getLocalAddress());
+				}
+				if (checkerExecutor != null) {
+					// stop accepting new tasks
+					checkerExecutor.shutdown();
+					try {
+						checkerExecutor.awaitTermination(3, TimeUnit.SECONDS);
+					} catch (InterruptedException e) {} // NOSONAR
+				}
+				checkerExecutor.shutdownNow();
+			}
+			
 			cacheManager.stop();
-			// stop accepting new tasks
-			executor.shutdown();
 			
-			try {
-				executor.awaitTermination(3, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {} // NOSONAR
-			
-			List<Runnable> runnables = executor.shutdownNow();
-			if ( ! runnables.isEmpty()) {
-				LOGGER.warn("{} tasks dropped by {}.executor", runnables.size(), InfinispanClusterServiceImpl.class.getSimpleName());
+			{
+				// stop accepting new tasks
+				executor.shutdown();
+				try {
+					executor.awaitTermination(3, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {} // NOSONAR
+				List<Runnable> runnables = executor.shutdownNow();
+				if ( ! runnables.isEmpty()) {
+					LOGGER.warn("{} tasks dropped by {}.executor", runnables.size(), InfinispanClusterServiceImpl.class.getSimpleName());
+				}
 			}
 			
 			stopped = true;
@@ -324,11 +362,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public boolean isClusterActive() {
-		// TODO Auto-generated method stub
-		// check database for actives clusters
-		// order active clusters
-		// true if first active
-		return true;
+		if (infinispanClusterCheckerService == null) {
+			// no consistency check
+			return true;
+		} else {
+			return infinispanClusterCheckerService.isClusterActive(Collections2.transform(cacheManager.getMembers(), INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS));
+		}
 	}
 
 	@Override
@@ -428,12 +467,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	
 	@Override
 	public Address getLocalAddress() {
-		return JGROUPS_ADDRESS_TO_ADDRESS.apply(cacheManager.getAddress());
+		return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(cacheManager.getAddress());
 	}
 
 	private Address getAddress() {
 		if (cacheManager.getAddress() != null) {
-			return JGROUPS_ADDRESS_TO_ADDRESS.apply(cacheManager.getAddress());
+			return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(cacheManager.getAddress());
 		} else {
 			return null;
 		}
@@ -479,13 +518,16 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	@Override
 	public void onViewChangedEvent(ViewChangedEvent viewChangedEvent) {
 		// NOTE : lists cannot be null
-		List<Address> newMembers = Lists.transform(viewChangedEvent.getNewMembers(), JGROUPS_ADDRESS_TO_ADDRESS);
-		List<Address> oldMembers = Lists.transform(viewChangedEvent.getOldMembers(), JGROUPS_ADDRESS_TO_ADDRESS);
+		List<Address> newMembers = Lists.transform(viewChangedEvent.getNewMembers(), INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS);
+		List<Address> oldMembers = Lists.transform(viewChangedEvent.getOldMembers(), INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS);
 		
 		List<Address> added = Lists.newArrayList(newMembers);
 		added.removeAll(oldMembers);
 		List<Address> removed = Lists.newArrayList(oldMembers);
 		removed.removeAll(newMembers);
+		
+		// all known nodes, either currently in cluster or that leave gracefully
+		List<Address> knownNodes = Lists.newArrayList();
 		
 		LOGGER.debug("Processing view removed nodes ({}) {}", removed.size(), toStringClusterNode());
 		for (Address removedItem : removed) {
@@ -505,6 +547,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				if (node == null) {
 					LOGGER.warn("Unknown node {} left cluster with leave event {} (elapsed {})", removedItem, toStringClusterNode(), timing);
 				} else {
+					knownNodes.add(node.getAddress());
 					LOGGER.info("Node {} left cluster without leave event {} (elapsed {})", node, toStringClusterNode(), timing);
 				}
 			}
@@ -512,10 +555,18 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		
 		LOGGER.debug("Processing view added items ({}) {}", added.size(), toStringClusterNode());
 		for (Address addedItem : added) {
+			knownNodes.add(addedItem);
 			if (viewChangedEvent.isMergeView()) {
 				LOGGER.warn("Merge node {} {}", addedItem, toStringClusterNode());
 			} else {
 				LOGGER.debug("New node {} {}", addedItem, toStringClusterNode());
+			}
+		}
+		
+		if (infinispanClusterCheckerService != null) {
+			boolean status = infinispanClusterCheckerService.updateCoordinator(getLocalAddress(), knownNodes);
+			if (!status) {
+				LOGGER.error("Cluster JDBC status update failed on view change !");
 			}
 		}
 		
@@ -635,18 +686,22 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 	}
 
-	public synchronized void doRebalanceRoles(int waitWeight) {
-		List<IRole> roles = Lists.newArrayList(rolesProvider.getRoles());
-		
+	public void doRebalanceRoles(int waitWeight) {
 		LOGGER.debug("Starting role rebalance {}", toStringClusterNode());
+		if ( ! isClusterActive()) {
+			LOGGER.error("Cluster is marked as inactive (split detected); ignore rebalance");
+			return;
+		}
+		
+		List<IRole> roles = Lists.newArrayList(rolesProvider.getRoles());
 		List<IRole> acquiredRoles = Lists.newArrayList();
 		List<IRole> newRoles = Lists.newArrayList();
-		while (roles.size() > 0) {
+		while (roles.size() > 0 && !Thread.currentThread().isInterrupted()) {
 			try {
 				// we wait rand(0-1s) + (aquiredRoles number s. * waitWeight)
 				// the most roles we acquire, the more we wait (to let other nodes a chance to acquire new roles)
 				TimeUnit.MILLISECONDS.sleep((waitWeight * acquiredRoles.size()) + Math.round(Math.random() * 10));
-			} catch(InterruptedException e) {
+			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				LOGGER.debug("Interrupted while rebalancing {}", toStringClusterNode());
 				return;
@@ -767,16 +822,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		actionMonitors.remove(value.getKey());
 	}
 
-	@SuppressWarnings("unchecked")
-	private <K> void addListener(String cacheName, Object listener, K... keys) {
-		addListener(cacheName, listener, true, keys);
-	}
-
-	@SuppressWarnings("unchecked")
-	private <K> void addListener(String cacheName, Object listener, boolean includeKeys, K... keys) {
-		cacheManager.<K, Object>getCache(cacheName).addListener(listener, new CollectionKeyFilter<K>(ImmutableList.<K>copyOf(keys), includeKeys));
-	}
-
 	private <A extends IAction<V>, V> V syncedAction(A action, int timeout, TimeUnit unit) throws ExecutionException, TimeoutException {
 		String uniqueID = UUID.randomUUID().toString();
 		
@@ -812,7 +857,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		throw new TimeoutException();
 	}
 
-	private static final class JGroupsAddressToAddress implements SerializableFunction<org.infinispan.remoting.transport.Address, Address> {
+	private static final class ToJgroupsAddress implements SerializableFunction<org.infinispan.remoting.transport.Address, Address> {
 		private static final long serialVersionUID = -6249484113042442830L;
 
 		@Override
@@ -821,7 +866,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 	}
 
-	private static final class JGroupsToJgroupsAddress implements SerializableFunction<Address, org.infinispan.remoting.transport.Address> {
+	private static final class ToInfinispanAddress implements SerializableFunction<Address, org.infinispan.remoting.transport.Address> {
 		private static final long serialVersionUID = -6249484113042442830L;
 
 		@Override
@@ -830,7 +875,24 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 	}
 
-	private static final JGroupsAddressToAddress JGROUPS_ADDRESS_TO_ADDRESS = new JGroupsAddressToAddress();
-	private static final JGroupsToJgroupsAddress ADDRESS_TO_GROUPS_ADDRESS = new JGroupsToJgroupsAddress();
+	private void updateCoordinator() {
+		try {
+			if (infinispanClusterCheckerService != null && cacheManager.isCoordinator()) {
+				boolean updated = infinispanClusterCheckerService.updateCoordinatorTimestamp(getLocalAddress());
+				if ( ! updated) {
+					LOGGER.warn("Infinispan checker coordinator update failed by {}", getLocalAddress());
+					updated = infinispanClusterCheckerService.tryForceUpdate(getLocalAddress(), 3, TimeUnit.MINUTES);
+					if (updated) {
+						LOGGER.warn("Infinispan checker coordinator update forced by {}", getLocalAddress());
+					}
+				}
+			}
+		} catch (RuntimeException e) {
+			LOGGER.error("Unknown error updating infinispan checker coordinator", e);
+		}
+	}
+
+	private static final ToJgroupsAddress INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS = new ToJgroupsAddress();
+	private static final ToInfinispanAddress JGROUPS_ADDRESS_TO_INFINISPAN_ADDRESS = new ToInfinispanAddress();
 
 }
