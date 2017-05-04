@@ -22,6 +22,10 @@ public abstract class SimpleAction<V> implements IAction<V> {
 
 	private final Address target;
 
+	private final boolean broadcast;
+
+	private final boolean needsResult;
+
 	private V value;
 
 	private Throwable exception;
@@ -30,13 +34,33 @@ public abstract class SimpleAction<V> implements IAction<V> {
 
 	private boolean done = false;
 
-	protected SimpleAction(Address target) {
+	/**
+	 * WARNING: broadcast = true with needResults = true is not functional !
+	 * 
+	 * @param target
+	 * @param broadcast
+	 * @param needsResult
+	 */
+	protected SimpleAction(Address target, boolean broadcast, boolean needsResult) {
 		super();
 		this.target = target;
+		this.broadcast = broadcast;
+		this.needsResult = needsResult;
 	}
 
+	@Override
 	public Address getTarget() {
 		return target;
+	}
+
+	@Override
+	public boolean isBroadcast() {
+		return broadcast;
+	}
+
+	@Override
+	public boolean needsResult() {
+		return needsResult;
 	}
 
 	@Override

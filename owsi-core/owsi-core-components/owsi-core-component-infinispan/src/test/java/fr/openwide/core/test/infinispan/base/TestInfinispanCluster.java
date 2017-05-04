@@ -27,7 +27,7 @@ public class TestInfinispanCluster extends TestBase {
 		// start other nodes
 		prepareCluster(nodeNumber, null);
 		
-		Thread.sleep(TimeUnit.SECONDS.toMillis(30));
+		TimeUnit.SECONDS.sleep(30);
 	}
 
 	@Override

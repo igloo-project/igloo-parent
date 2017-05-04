@@ -13,7 +13,7 @@ public class RoleReleaseAction extends SimpleAction<Pair<SwitchRoleResult, Strin
 	private final IRole role;
 
 	public RoleReleaseAction(Address target, IRole role) {
-		super(target);
+		super(target, false, true);
 		this.role = role;
 	}
 

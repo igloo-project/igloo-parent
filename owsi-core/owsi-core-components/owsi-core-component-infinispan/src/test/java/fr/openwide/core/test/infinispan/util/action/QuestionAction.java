@@ -11,7 +11,7 @@ public class QuestionAction extends SimpleAction<String> {
 	private final String question;
 
 	public QuestionAction(Address target, String question) {
-		super(target);
+		super(target, false, true);
 		this.question = question;
 	}
 

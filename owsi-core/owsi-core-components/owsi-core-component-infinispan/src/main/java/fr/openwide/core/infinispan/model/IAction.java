@@ -13,6 +13,10 @@ public interface IAction<V> extends Future<V>, Serializable {
 
 	Address getTarget();
 
+	boolean isBroadcast();
+
+	boolean needsResult();
+
 	void setInfinispanClusterService(IInfinispanClusterService infinispanClusterService);
 
 }

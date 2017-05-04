@@ -32,7 +32,6 @@ import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.RateLimiter;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
@@ -93,8 +92,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	private final IRolesProvider rolesProvider;
 	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1, new ThreadFactoryBuilder().setNameFormat("infinispan-%d").build());
 	private final ScheduledThreadPoolExecutor checkerExecutor = new ScheduledThreadPoolExecutor(1, new ThreadFactoryBuilder().setNameFormat("infinispan-checker-%d").build());
-	// 1 rebalance each 15s. max
-	private final RateLimiter rebalanceRateLimiter = RateLimiter.create(1.0/15);
 	private final IActionFactory actionFactory;
 	private final IInfinispanClusterCheckerService infinispanClusterCheckerService;
 
@@ -511,8 +508,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	public void rebalanceRoles() {
-		// TODO refactor
-		getActionsCache().put(CACHE_KEY_ACTION_ROLES_REBALANCE, RebalanceAction.rebalance(getAddress()));
+		resultLessAction(RebalanceAction.rebalance(getAddress()));
 	}
 
 	@Override
@@ -774,45 +770,27 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	protected void onAction(CacheEntryEvent<String, IAction<?>> value) {
 		final String key = value.getKey();
 		final IAction<?> action = value.getValue();
-		if (CACHE_KEY_ACTION_ROLES_REBALANCE.equals(value.getKey())) {
-			LOGGER.debug("Rebalance action received");
-			if (rebalanceRateLimiter.tryAcquire()) {
-				// perform asynchronously
-				executor.submit(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							doRebalanceRoles();
-							LOGGER.debug("Rebalance action performed");
-						} catch (RuntimeException e) {
-							LOGGER.error("Error during rebalance", e);
-						} finally {
-							getActionsCache().remove(key);
+		if (value.getValue().isBroadcast() || getAddress().equals(value.getValue().getTarget())) {
+			executor.submit(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						LOGGER.debug("action {} on {}", action.getClass().getSimpleName(), getLocalAddress());
+						action.setInfinispanClusterService(InfinispanClusterServiceImpl.this);
+						if (actionFactory != null) {
+							actionFactory.prepareAction(action);
 						}
-					}
-				});
-			} else {
-				LOGGER.warn("Rebalance action skipped due to rate limiter");
-			}
-		} else {
-			if (getAddress().equals(value.getValue().getTarget())) {
-				executor.submit(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							if (actionFactory != null) {
-								actionFactory.prepareAction(action);
-							}
-							action.run();
+						action.run();
+						if (action.needsResult()) {
 							getActionsResultsCache().put(value.getKey(), action);
-						} catch (RuntimeException e) {
-							LOGGER.error("Error during action {}", action.getClass().getSimpleName(), e);
-						} finally {
-							getActionsCache().remove(key);
 						}
+					} catch (RuntimeException e) {
+						LOGGER.error("Error during action {}", action.getClass().getSimpleName(), e);
+					} finally {
+						getActionsCache().remove(key);
 					}
-				});
-			}
+				}
+			});
 		}
 	}
 
@@ -824,6 +802,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			}
 		}
 		actionMonitors.remove(value.getKey());
+	}
+
+	private <A extends IAction<?>> String resultLessAction(A action) {
+		String uniqueID = UUID.randomUUID().toString();
+		getActionsCache().put(uniqueID, action);
+		return uniqueID;
 	}
 
 	private <A extends IAction<V>, V> V syncedAction(A action, int timeout, TimeUnit unit) throws ExecutionException, TimeoutException {

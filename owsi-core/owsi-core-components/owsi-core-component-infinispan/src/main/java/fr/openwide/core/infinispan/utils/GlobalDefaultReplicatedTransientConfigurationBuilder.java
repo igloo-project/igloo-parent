@@ -29,7 +29,7 @@ public class GlobalDefaultReplicatedTransientConfigurationBuilder extends Global
 		}
 		transport().defaultTransport().addProperty("configurationFile", jgroupsConfigurationFile);
 		// Jgroups needs to lookup placeholder values in system properties
-		System.getProperties().putAll(transportProperties);
+		System.getProperties().putAll(properties);
 	}
 
 	/**

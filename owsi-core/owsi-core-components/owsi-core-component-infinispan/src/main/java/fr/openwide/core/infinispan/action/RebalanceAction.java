@@ -9,7 +9,7 @@ public class RebalanceAction extends SimpleAction<Boolean> {
 	private static final long serialVersionUID = -276444744888760127L;
 
 	public RebalanceAction(Address target) {
-		super(target);
+		super(target, true, false);
 	}
 
 	@Override
