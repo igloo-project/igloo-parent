@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.PreDestroy;
@@ -30,14 +33,19 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import fr.openwide.core.infinispan.model.IAttribution;
+import fr.openwide.core.infinispan.model.SimpleLock;
+import fr.openwide.core.infinispan.model.SimpleRole;
 import fr.openwide.core.infinispan.model.impl.Attribution;
+import fr.openwide.core.infinispan.model.impl.LockRequest;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -233,6 +241,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		if (!active.get()) {
 			availableForAction.set(false);
 			
+			// load infinispan backend if needed
+			getCache();
+			
 			try {
 				initQueuesFromDatabase();
 				for (TaskConsumer consumer : consumersByQueue.values()) {
@@ -254,18 +265,48 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	private void initQueuesFromDatabase() {
-		for (TaskQueue queue : queuesById.values()) {
-			try {
-				List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
-				if (queue == defaultQueue) {
-					taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
+		// NOTE : infinispanClusterService is initialized @PostConstruct, so infinispan subsystem is initialized at
+		// this time.
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				for (TaskQueue queue : queuesById.values()) {
+					try {
+						List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
+						
+						// remove already loaded keys
+						if (infinispanClusterService != null) {
+							taskIds.removeAll(getCache().keySet());
+						}
+						if (! taskIds.isEmpty()) {
+							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", taskIds.size());
+							LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
+						}
+						
+						if (queue == defaultQueue) {
+							taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
+						}
+						for (Long taskId : taskIds) {
+							queueOffer(queue, taskId);
+						}
+					} catch (RuntimeException | ServiceException | SecurityServiceException e) {
+						LOGGER.error("Error while trying to init queue " + queue + " from database", e);
+					}
 				}
-				for (Long taskId : taskIds) {
-					queueOffer(queue, taskId);
-				}
-			} catch (RuntimeException | ServiceException | SecurityServiceException e) {
-				LOGGER.error("Error while trying to init queue " + queue + " from database", e);
 			}
+		};
+		if (infinispanClusterService != null) {
+			LockRequest lockRequest = LockRequest.with(
+					SimpleRole.from("QueueTaskHolder#initQueuesFromDatabase"),
+					SimpleLock.from("QueueTaskHolder#initQueuesFromDatabase", "QueueTaskHolder")
+			);
+			try {
+				infinispanClusterService.doIfRoleWithLock(lockRequest, runnable);
+			} catch (ExecutionException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			runnable.run();
 		}
 	}
 
@@ -432,8 +473,22 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	/**
 	 * This method MUST NOT be called if cache is disabled
 	 */
-	private void initializeCache() {
+	private synchronized void initializeCache() {
+		if (infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
+			return;
+		}
 		infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
+		ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(1,
+				new ThreadFactoryBuilder().setDaemon(true).setNameFormat("QueueTaskHolder#initQueuesFromDatabase-%d").build());
+		pool.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+		pool.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+		pool.prestartAllCoreThreads();
+		pool.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				initQueuesFromDatabase();
+			}
+		}, 1, 1, TimeUnit.MINUTES);
 	}
 
 	@Override
