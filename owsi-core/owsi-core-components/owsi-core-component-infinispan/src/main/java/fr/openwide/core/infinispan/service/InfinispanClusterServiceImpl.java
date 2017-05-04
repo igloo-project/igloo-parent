@@ -784,13 +784,15 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 						try {
 							doRebalanceRoles();
 							LOGGER.debug("Rebalance action performed");
+						} catch (RuntimeException e) {
+							LOGGER.error("Error during rebalance", e);
 						} finally {
 							getActionsCache().remove(key);
 						}
 					}
 				});
 			} else {
-				LOGGER.debug("Rebalance action skipped due to rate limiter");
+				LOGGER.warn("Rebalance action skipped due to rate limiter");
 			}
 		} else {
 			if (getAddress().equals(value.getValue().getTarget())) {
@@ -803,6 +805,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 							}
 							action.run();
 							getActionsResultsCache().put(value.getKey(), action);
+						} catch (RuntimeException e) {
+							LOGGER.error("Error during action {}", action.getClass().getSimpleName(), e);
 						} finally {
 							getActionsCache().remove(key);
 						}
