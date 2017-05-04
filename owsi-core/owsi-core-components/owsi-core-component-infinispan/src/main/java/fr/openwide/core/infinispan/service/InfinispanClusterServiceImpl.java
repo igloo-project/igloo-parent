@@ -70,8 +70,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	private static final String CACHE_ROLES = "__ROLES__";
 	private static final String CACHE_ROLES_REQUESTS = "__ROLES_REQUESTS__";
 
-	private static final String CACHE_KEY_ACTION_ROLES_REBALANCE = "ROLES_REBALANCE";
-
 	private static final List<String> CACHES;
 	static {
 		Builder<String> builder = ImmutableList.builder();
