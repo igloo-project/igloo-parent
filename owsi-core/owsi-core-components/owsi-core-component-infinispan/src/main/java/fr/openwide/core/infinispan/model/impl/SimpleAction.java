@@ -89,7 +89,9 @@ public abstract class SimpleAction<V> implements IAction<V> {
 		} else if (isCancelled()) {
 			throw new CancellationException();
 		} else {
-			// TODO LAL
+			// This is not currently a true future object.
+			// If SimpleAction is available in results,
+			// then it is considered job is done.
 			throw new IllegalStateException();
 		}
 	}
