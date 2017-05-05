@@ -16,7 +16,10 @@ import fr.openwide.core.infinispan.model.INode;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.jpa.more.business.task.service.IQueuedTaskHolderManager;
+import fr.openwide.core.jpa.more.infinispan.action.QueueTaskManagerStartAction;
 import fr.openwide.core.jpa.more.infinispan.action.QueueTaskManagerStatusAction;
+import fr.openwide.core.jpa.more.infinispan.action.QueueTaskManagerStopAction;
+import fr.openwide.core.jpa.more.infinispan.action.SwitchStatusQueueTaskManagerResult;
 import fr.openwide.core.jpa.more.infinispan.model.QueueTaskManagerStatus;
 import fr.openwide.core.jpa.more.infinispan.model.TaskQueueStatus;
 
@@ -75,6 +78,60 @@ public class InfinispanQueueTaskManagerServiceImpl implements IInfinispanQueueTa
 		queueTaskManagerStatus.setTaskQueueStatusById(taskQueueStatusById);
 
 		return queueTaskManagerStatus;
+	}
+
+	@Override
+	public SwitchStatusQueueTaskManagerResult startQueueManager(INode node){
+		SwitchStatusQueueTaskManagerResult result = null;
+
+		try {
+			result = infinispanClusterService.syncedAction(
+					QueueTaskManagerStartAction.get(node.getAddress()),
+					10,
+					TimeUnit.SECONDS);
+		} catch (ExecutionException e) {
+			LOGGER.error("Erreur lors de la récupération du QueueTaskManagerStatus", e);
+		} catch (TimeoutException e) {
+			LOGGER.error("Timeout lors de la récupération du QueueTaskManagerStatus");
+			result = SwitchStatusQueueTaskManagerResult.TIME_OUT;
+		}
+		return result;
+	}
+
+	@Override
+	public SwitchStatusQueueTaskManagerResult stopQueueManager(INode node){
+		SwitchStatusQueueTaskManagerResult result = null;
+
+		try {
+			result = infinispanClusterService.syncedAction(
+					QueueTaskManagerStopAction.get(node.getAddress()),
+					10,
+					TimeUnit.SECONDS);
+		} catch (ExecutionException e) {
+			LOGGER.error("Erreur lors de la récupération du QueueTaskManagerStatus", e);
+		} catch (TimeoutException e) {
+			LOGGER.error("Timeout lors de la récupération du QueueTaskManagerStatus");
+			result = SwitchStatusQueueTaskManagerResult.TIME_OUT;
+		}
+		return result;
+	}
+
+	@Override
+	public SwitchStatusQueueTaskManagerResult start() {
+		if(queuedTaskHolderManager.isActive()){
+			return SwitchStatusQueueTaskManagerResult.ALREADY_STARTED;
+		}
+		queuedTaskHolderManager.start();
+		return SwitchStatusQueueTaskManagerResult.STARTED;
+	}
+
+	@Override
+	public SwitchStatusQueueTaskManagerResult stop() {
+		if(!queuedTaskHolderManager.isActive()){
+			return SwitchStatusQueueTaskManagerResult.ALREADY_STOPPED;
+		}
+		queuedTaskHolderManager.stop();
+		return SwitchStatusQueueTaskManagerResult.STOPPED;
 	}
 
 }
