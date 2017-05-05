@@ -3,6 +3,8 @@ package fr.openwide.core.infinispan.service;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
@@ -10,6 +12,7 @@ import org.javatuples.Pair;
 import org.jgroups.Address;
 
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
+import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.model.IAttribution;
 import fr.openwide.core.infinispan.model.ILock;
 import fr.openwide.core.infinispan.model.ILockAttribution;
@@ -105,5 +108,7 @@ public interface IInfinispanClusterService {
 	void removeRoleRequest(IRole iRole);
 
 	EmbeddedCacheManager getCacheManager();
+
+	<A extends IAction<V>, V> V syncedAction(A action, int timeout, TimeUnit unit) throws ExecutionException, TimeoutException;
 
 }

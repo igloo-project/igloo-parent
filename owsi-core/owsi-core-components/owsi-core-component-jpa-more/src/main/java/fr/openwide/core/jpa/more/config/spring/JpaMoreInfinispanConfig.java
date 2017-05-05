@@ -20,7 +20,9 @@ import fr.openwide.core.infinispan.utils.DefaultReplicatedTransientConfiguration
 import fr.openwide.core.infinispan.utils.GlobalDefaultReplicatedTransientConfigurationBuilder;
 import fr.openwide.core.infinispan.utils.role.RolesFromStringSetProvider;
 import fr.openwide.core.jpa.more.config.spring.util.SpringActionFactory;
+import fr.openwide.core.jpa.more.infinispan.service.IInfinispanQueueTaskManagerService;
 import fr.openwide.core.jpa.more.infinispan.service.InfinispanClusterJdbcCheckerServiceImpl;
+import fr.openwide.core.jpa.more.infinispan.service.InfinispanQueueTaskManagerServiceImpl;
 import fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
@@ -77,6 +79,14 @@ public class JpaMoreInfinispanConfig {
 		} else {
 			return null;
 		}
+	}
+
+	@Bean
+	public IInfinispanQueueTaskManagerService infinispanQueueTaskManagerService(IPropertyService propertyService) {
+		if (propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED)) {
+			return new InfinispanQueueTaskManagerServiceImpl();
+		}
+		return null;
 	}
 
 }

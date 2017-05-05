@@ -130,7 +130,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			LOGGER.warn("Task queue start configured in \"manual\" mode.");
 		}
 	}
-	
+
 	private final void initQueues() {
 		Collection<IQueueId> queueIdsAsStrings = Lists.newArrayList();
 		
@@ -153,7 +153,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			initQueue(queueId, numberOfThreads);
 		}
 	}
-	
+
 	private TaskQueue initQueue(IQueueId queueId, int numberOfThreads) {
 		TaskQueue queue = new TaskQueue(queueId.getUniqueStringId());
 		for (int i = 0 ; i < numberOfThreads ; ++i) {
@@ -173,14 +173,14 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		queuesById.put(queueId.getUniqueStringId(), queue);
 		return queue;
 	}
-	
+
 	private String selectQueue(AbstractTask task) {
 		SpringBeanUtils.autowireBean(applicationContext, task);
 		IQueueId queueId = task.selectQueue();
 		String queueIdString = queueId == null ? null : queueId.getUniqueStringId();
 		return queueIdString;
 	}
-	
+
 	private TaskQueue getQueue(String queueId) {
 		if (queueId == null) {
 			return defaultQueue;
@@ -205,12 +205,33 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	@Override
+	public boolean isTaskQueueActive(String queueId){
+		TaskQueue queue = queuesById.get(queueId);
+		Collection<TaskConsumer> consumers= consumersByQueue.get(queue);
+		if(consumers.isEmpty()){
+			return false;
+		}
+		return consumers.iterator().next().isWorking();
+	}
+
+	@Override
+	public int getNumberOfTaskConsumer(String queueId){
+		TaskQueue queue = queuesById.get(queueId);
+		return consumersByQueue.get(queue).size();
+	}
+
+	@Override
 	public int getNumberOfWaitingTasks() {
 		int total = 0;
 		for (TaskQueue queue : queuesById.values()) {
 			total += queue.size();
 		}
 		return total;
+	}
+
+	@Override
+	public int getNumberOfWaitingTasks(String queueId){
+		return queuesById.get(queueId).size();
 	}
 
 	@Override
@@ -226,7 +247,20 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		}
 		return total;
 	}
-	
+
+	@Override
+	public int getNumberOfRunningTasks(String queueId){
+		int total = 0;
+		TaskQueue queue = queuesById.get(queueId);
+		Collection<TaskConsumer> consumers = consumersByQueue.get(queue);
+		for (TaskConsumer consumer : consumers) {
+			if (consumer.isWorking()) {
+				total++;
+			}
+		}
+		return total; 
+	}
+
 	@Override
 	public Collection<IQueueId> getQueueIds() {
 		return Collections.unmodifiableCollection(queueIds);
@@ -345,14 +379,14 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		
 		return newQueuedTaskHolder;
 	}
-	
+
 	protected void doSubmit(String queueId, Long newQueuedTaskHolderId) throws ServiceException {
 		if (active.get()) {
 			TaskQueue selectedQueue = getQueue(queueId);
 			queueOffer(selectedQueue, newQueuedTaskHolderId);
 		}
 	}
-	
+
 	@Override
 	public void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
@@ -368,7 +402,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			}
 		}
 	}
-	
+
 	@Override
 	public void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);

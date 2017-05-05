@@ -23,6 +23,7 @@ import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMain
 import fr.openwide.core.wicket.more.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import fr.openwide.core.wicket.more.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.page.ConsoleMaintenanceInfinispanPage;
+import fr.openwide.core.wicket.more.console.maintenance.queuemanager.page.ConsoleMaintenanceQueueManagerPage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
@@ -95,6 +96,9 @@ public final class ConsoleConfiguration {
 				ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
 						"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
 				maintenanceMenuSection.addMenuItem(infinispanMenuItem);
+				ConsoleMenuItem queueManagerMenuItem = new ConsoleMenuItem("queuemanagerMenuItem", 
+						"console.maintenance.queuemanager", "queuemanager", ConsoleMaintenanceQueueManagerPage.class);
+				maintenanceMenuSection.addMenuItem(queueManagerMenuItem);
 			}
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
