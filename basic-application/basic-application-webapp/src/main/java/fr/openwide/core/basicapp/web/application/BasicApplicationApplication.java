@@ -52,11 +52,13 @@ import fr.openwide.core.basicapp.web.application.security.password.page.Security
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
+import fr.openwide.core.infinispan.model.impl.Node;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.renderer.INodeRenderer;
 import fr.openwide.core.wicket.more.console.navigation.page.ConsoleAccessDeniedPage;
 import fr.openwide.core.wicket.more.console.navigation.page.ConsoleLoginFailurePage;
 import fr.openwide.core.wicket.more.console.navigation.page.ConsoleLoginSuccessPage;
@@ -133,6 +135,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(HistoryEventType.class, EnumRenderer.get());
 		
 		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
+		
+		converterLocator.set(Node.class, INodeRenderer.get());
 		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}
