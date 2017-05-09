@@ -7,12 +7,12 @@ import fr.openwide.core.infinispan.model.impl.SimpleAction;
 import fr.openwide.core.jpa.more.infinispan.model.QueueTaskManagerStatus;
 import fr.openwide.core.jpa.more.infinispan.service.IInfinispanQueueTaskManagerService;
 
-public class QueueTaskManagerStatusAction extends SimpleAction<QueueTaskManagerStatus>{
+public class QueueTaskManagerStatusAction extends SimpleAction<QueueTaskManagerStatus> {
 
 	private static final long serialVersionUID = 1740511274735773773L;
 
 	@Autowired
-	private IInfinispanQueueTaskManagerService infinispanQueueTaskManagerService;
+	private transient IInfinispanQueueTaskManagerService infinispanQueueTaskManagerService;
 
 	public QueueTaskManagerStatusAction(Address target) {
 		super(target, false, true);

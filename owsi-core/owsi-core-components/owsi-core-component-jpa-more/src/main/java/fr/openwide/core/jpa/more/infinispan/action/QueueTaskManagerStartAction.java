@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fr.openwide.core.infinispan.model.impl.SimpleAction;
 import fr.openwide.core.jpa.more.infinispan.service.IInfinispanQueueTaskManagerService;
 
-public class QueueTaskManagerStartAction extends SimpleAction<SwitchStatusQueueTaskManagerResult>{
+public class QueueTaskManagerStartAction extends SimpleAction<SwitchStatusQueueTaskManagerResult> {
 
 	private static final long serialVersionUID = 1854734111545990917L;
 
 	@Autowired
-	private IInfinispanQueueTaskManagerService infinispanQueueTaskManagerService;
+	private transient IInfinispanQueueTaskManagerService infinispanQueueTaskManagerService;
 
 	protected QueueTaskManagerStartAction(Address target) {
 		super(target, false, true);
