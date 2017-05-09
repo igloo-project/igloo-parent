@@ -390,10 +390,10 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	@Override
 	public boolean doWithLock(ILock withLock, Runnable runnable) throws ExecutionException {
 		// try to retrieve lock
-		ILockAttribution lockAttribution = getLocksCache().putIfAbsent(withLock,
+		ILockAttribution previousLockAttribution = getLocksCache().putIfAbsent(withLock,
 				LockAttribution.from(getAddress(), new Date()));
 		try {
-			if (lockAttribution == null) {
+			if (previousLockAttribution == null) {
 				// if lock was absent we can run
 				runnable.run();
 				return true;
@@ -407,12 +407,15 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			}
 			throw new ExecutionException(e);
 		} finally {
-			ILockAttribution removedAttribution = getLocksCache().remove(withLock);
-			if (removedAttribution == null || !removedAttribution.match(getAddress())) {
-				// as we put value only if absent, we must not retrieve another
-				// value than `Address` here
-				LOGGER.warn("Inconsistent address removal: expected `{}` ; removed `{}`", getAddress(),
-						removedAttribution != null ? removedAttribution.getOwner() : "null");
+			// if lock was attributed, we need to clear status
+			if (previousLockAttribution == null) {
+				ILockAttribution removedAttribution = getLocksCache().remove(withLock);
+				if (removedAttribution == null || !removedAttribution.match(getAddress())) {
+					// as we put value only if absent, we must not retrieve another
+					// value than `Address` here
+					LOGGER.warn("Inconsistent address removal: expected `{}` ; removed `{}`", getAddress(),
+							removedAttribution != null ? removedAttribution.getOwner() : "null");
+				}
 			}
 		}
 	}
