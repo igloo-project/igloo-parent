@@ -30,8 +30,10 @@ import fr.openwide.core.jpa.more.infinispan.model.TaskQueueStatus;
 import fr.openwide.core.jpa.more.infinispan.service.IInfinispanQueueTaskManagerService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.renderer.INodeRenderer;
 import fr.openwide.core.wicket.more.console.maintenance.queuemanager.renderer.QueueManagerRenderer;
 import fr.openwide.core.wicket.more.console.maintenance.queuemanager.renderer.QueueTaskRenderer;
+import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
 import fr.openwide.core.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
 import fr.openwide.core.wicket.more.markup.html.factory.AbstractComponentFactory;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -39,6 +41,7 @@ import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyCollectionModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 import fr.openwide.core.wicket.more.util.model.Detachables;
@@ -278,6 +281,7 @@ public class ConsoleMaintenanceQueueManagerNodePanel extends Panel {
 
 			add(
 					new CoreLabel("node", nodeModel),
+					new BootstrapBadge<>("local", BindingModel.of(nodeModel, CoreWicketMoreBindings.iNode()), INodeRenderer.local()),
 					new BootstrapLabel<>("status", queueTaskManagerStatusModel, QueueManagerRenderer.status())
 			);
 		}
