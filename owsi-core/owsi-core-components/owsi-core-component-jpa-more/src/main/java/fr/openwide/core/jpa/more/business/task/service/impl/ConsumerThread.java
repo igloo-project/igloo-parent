@@ -139,6 +139,10 @@ class ConsumerThread extends Thread {
 		return working;
 	}
 	
+	public synchronized boolean isActive() {
+		return active;
+	}
+	
 	public synchronized boolean setWorking(boolean working) {
 		return working;
 	}

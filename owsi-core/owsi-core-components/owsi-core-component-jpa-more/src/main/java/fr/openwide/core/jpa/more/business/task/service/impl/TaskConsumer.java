@@ -78,4 +78,8 @@ public final class TaskConsumer {
 	public boolean isWorking() {
 		return thread != null && thread.isWorking();
 	}
+	
+	public boolean isActive(){
+		return thread != null && thread.isActive();
+	}
 }

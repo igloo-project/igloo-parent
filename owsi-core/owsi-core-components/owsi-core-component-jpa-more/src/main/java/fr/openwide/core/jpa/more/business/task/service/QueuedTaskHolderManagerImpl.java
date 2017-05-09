@@ -211,7 +211,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		if(consumers.isEmpty()){
 			return false;
 		}
-		return consumers.iterator().next().isWorking();
+		return consumers.iterator().next().isActive();
 	}
 
 	@Override

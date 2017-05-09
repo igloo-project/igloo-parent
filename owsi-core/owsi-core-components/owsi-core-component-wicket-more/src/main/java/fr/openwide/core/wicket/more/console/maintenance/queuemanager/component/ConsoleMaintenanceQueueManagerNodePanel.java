@@ -39,7 +39,6 @@ import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
 import fr.openwide.core.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import fr.openwide.core.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
-import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyCollectionModel;
 import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 import fr.openwide.core.wicket.more.util.model.Detachables;
@@ -278,7 +277,7 @@ public class ConsoleMaintenanceQueueManagerNodePanel extends Panel {
 			setOutputMarkupId(true);
 
 			add(
-					new CoreLabel("title", BindingModel.of(nodeModel, CoreWicketMoreBindings.iNode().name())),
+					new CoreLabel("node", nodeModel),
 					new BootstrapLabel<>("status", queueTaskManagerStatusModel, QueueManagerRenderer.status())
 			);
 		}
