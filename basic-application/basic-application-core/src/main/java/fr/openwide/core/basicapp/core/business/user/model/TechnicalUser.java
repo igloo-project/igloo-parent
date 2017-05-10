@@ -1,6 +1,5 @@
 package fr.openwide.core.basicapp.core.business.user.model;
 
-import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 
