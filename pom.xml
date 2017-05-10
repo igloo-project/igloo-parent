@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>0.13.4</version>
+	<version>0.14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent</name>
@@ -100,6 +100,18 @@
 	
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<version>${maven-toolchains-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>external.atlassian.jgitflow</groupId>
 				<artifactId>jgitflow-maven-plugin</artifactId>
