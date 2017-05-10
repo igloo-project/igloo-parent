@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>owsi-core-packages</artifactId>
 		<groupId>fr.openwide.core.packages</groupId>
-		<version>0.13.4</version>
+		<version>0.14-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>owsi-core-package-web-wicket-app</artifactId>
