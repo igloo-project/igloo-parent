@@ -4,6 +4,7 @@ import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.IN
 import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED;
 import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_NODE_NAME;
 import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES;
+import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES_REBALANCE;
 import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_TRANSPORT_CONFIGURATION_FILE;
 import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTIES;
 import static fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds.INFINISPAN_TRANSPORT_PROPERTY;
@@ -30,6 +31,8 @@ public class JpaMoreInfinispanPropertyRegistryConfig extends AbstractApplication
 		registry.registerString(INFINISPAN_CLUSTER_NAME, "cluster");
 		// Set of roles, separated by ','
 		registry.register(INFINISPAN_ROLES, new StringCollectionConverter<String, Set<String>>(Converter.identity(), Suppliers2.hashSet()).separator(","), Collections.emptySet());
+		// Set of roles, separated by ','
+		registry.register(INFINISPAN_ROLES_REBALANCE, new StringCollectionConverter<String, Set<String>>(Converter.identity(), Suppliers2.hashSet()).separator(","), (Set<String>) null);
 		// this file is available in infinispan classpath
 		registry.registerString(INFINISPAN_TRANSPORT_CONFIGURATION_FILE, "default-configs/default-jgroups-udp.xml");
 		// Properties to import for transport configuration, separated by ','

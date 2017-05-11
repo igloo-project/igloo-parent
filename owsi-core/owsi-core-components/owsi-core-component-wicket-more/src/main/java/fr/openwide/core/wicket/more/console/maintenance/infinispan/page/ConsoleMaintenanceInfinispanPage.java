@@ -34,7 +34,8 @@ public class ConsoleMaintenanceInfinispanPage extends ConsoleMaintenanceTemplate
 																JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED, 
 																JpaMoreInfinispanPropertyIds.INFINISPAN_CLUSTER_NAME, 
 																JpaMoreInfinispanPropertyIds.INFINISPAN_NODE_NAME,
-																JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES
+																JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES,
+																JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES_REBALANCE
 													)
 													.build()
 				)

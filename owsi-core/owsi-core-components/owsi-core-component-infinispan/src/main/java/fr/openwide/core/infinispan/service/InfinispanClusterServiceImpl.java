@@ -694,7 +694,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			return;
 		}
 
-		List<IRole> roles = Lists.newArrayList(rolesProvider.getRoles());
+		List<IRole> roles = Lists.newArrayList(rolesProvider.getRebalanceRoles());
 		List<IRole> acquiredRoles = Lists.newArrayList();
 		List<IRole> newRoles = Lists.newArrayList();
 		while (roles.size() > 0 && !Thread.currentThread().isInterrupted()) {
@@ -702,7 +702,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				// we wait rand(0-1s) + (aquiredRoles number s. * waitWeight)
 				// the most roles we acquire, the more we wait (to let other
 				// nodes a chance to acquire new roles)
-				TimeUnit.MILLISECONDS.sleep((waitWeight * acquiredRoles.size()) + Math.round(Math.random() * 10));
+				TimeUnit.MILLISECONDS.sleep((waitWeight * acquiredRoles.size()) + Math.round(Math.random() * 1000));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				LOGGER.debug("Interrupted while rebalancing {}", toStringClusterNode());

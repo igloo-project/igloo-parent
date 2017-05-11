@@ -26,6 +26,7 @@ public final class JpaMoreInfinispanPropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<String> INFINISPAN_CLUSTER_NAME = immutable("infinispan.clusterName");
 	public static final ImmutablePropertyId<String> INFINISPAN_NODE_NAME = immutable("infinispan.nodeName");
 	public static final ImmutablePropertyId<Set<String>> INFINISPAN_ROLES = immutable("infinispan.roles");
+	public static final ImmutablePropertyId<Set<String>> INFINISPAN_ROLES_REBALANCE = immutable("infinispan.rolesRebalance");
 	public static final ImmutablePropertyId<String> INFINISPAN_TRANSPORT_CONFIGURATION_FILE = immutable("infinispan.transport.configurationFile");
 	public static final ImmutablePropertyId<Set<String>> INFINISPAN_TRANSPORT_PROPERTIES = immutable("infinispan.transport.properties");
 	public static final ImmutablePropertyIdTemplate<String> INFINISPAN_TRANSPORT_PROPERTY = immutableTemplate("infinispan.transport.property.%1s");

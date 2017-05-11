@@ -36,7 +36,9 @@ public class JpaMoreInfinispanConfig {
 	public IRolesProvider rolesProvider(IPropertyService propertyService) {
 		// FT - allow bean override
 		if (propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED)) {
-			return new RolesFromStringSetProvider(propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES));
+			return new RolesFromStringSetProvider(
+					propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES),
+					propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ROLES_REBALANCE));
 		} else {
 			return null;
 		}

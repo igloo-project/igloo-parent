@@ -24,6 +24,11 @@ public class SimpleRolesProvider implements IRolesProvider {
 		return ImmutableList.<IRole>copyOf(ROLES);
 	}
 
+	@Override
+	public List<IRole> getRebalanceRoles() {
+		return getRoles();
+	}
+
 	private static final SimpleRole[] ROLES = new SimpleRole[] {
 		ROLE_1,
 		ROLE_2,
