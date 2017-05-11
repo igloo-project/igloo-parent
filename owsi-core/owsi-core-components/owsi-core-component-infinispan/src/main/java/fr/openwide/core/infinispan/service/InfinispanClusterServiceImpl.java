@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
@@ -358,6 +359,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public boolean doIfRoleWithLock(ILockRequest lockRequest, Runnable runnable) throws ExecutionException {
+		if (!isClusterActive()) {
+			return false;
+		}
 		// try to retrieve lock
 		IRoleAttribution roleAttribution = getRolesCache().getOrDefault(lockRequest.getRole(), null);
 		try {
@@ -383,6 +387,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public boolean doWithLock(ILock withLock, Runnable runnable) throws ExecutionException {
+		if (!isClusterActive()) {
+			return false;
+		}
 		// try to retrieve lock
 		ILockAttribution previousLockAttribution = getLocksCache().putIfAbsent(withLock,
 				LockAttribution.from(getAddress(), new Date()));
@@ -416,31 +423,47 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public boolean doWithLockPriority(ILockRequest lockRequest, Runnable runnable) throws ExecutionException {
-		Cache<IPriorityQueue, List<IAttribution>> cache = getPriorityQueuesCache();
-		// if startBatch returns false, then there is already a batch running
-		if (!cache.startBatch()) {
-			throw new IllegalStateException("Nested batch detected!");
+		if (!isClusterActive()) {
+			return false;
 		}
+		Cache<IPriorityQueue, List<IAttribution>> cache = getPriorityQueuesCache();
 		boolean commit = true;
 		boolean priorityAllowed = true;
+		
+		if (!cache.startBatch()) {
+			LOGGER.error("Batch attempt on {} failed", lockRequest.getPriorityQueue());
+		}
 		try {
 			// get lock values
-			cache.getAdvancedCache().lock(lockRequest.getPriorityQueue());
+			if (!cache.getAdvancedCache().lock(lockRequest.getPriorityQueue())) {
+				LOGGER.error("Lock attempt on {} failed", lockRequest.getPriorityQueue());
+				commit = false;
+				return false;
+			}
 			List<IAttribution> values = cache.getOrDefault(lockRequest.getPriorityQueue(),
 					Lists.<IAttribution> newArrayList());
-			if (!values.contains(cacheManager.getAddress())) {
+			// check if a slot is already kept
+			boolean prioritySlotFound = false;
+			for (IAttribution attribution : values) {
+				if (attribution.match(getAddress())) {
+					prioritySlotFound = true;
+				}
+			}
+			
+			// if no slot, add it
+			if (!prioritySlotFound) {
 				// get a priority slot if absent
 				values.add(Attribution.from(getAddress(), new Date()));
 				cache.put(lockRequest.getPriorityQueue(), values);
 			}
-
+			
+			// if slot is first, we can do our job
 			if (values.size() > 0 && values.get(0).match(getAddress())) {
 				// priority is allowed (first slot taken)
 				// allow second phase and remove priority slot
 				priorityAllowed = true;
-				values.remove(0);
 			} else {
-				// priority is not allowed
+				// priority is not allowed, retry later when it is our slot turn
 				priorityAllowed = false;
 			}
 		} finally {
@@ -448,11 +471,44 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 
 		if (priorityAllowed) {
-			// return doWithLock result (true - job done ; false - job not
-			// launch)
-			return doWithLock(lockRequest.getLock(), runnable);
+			// return doWithLock result (true - job done ; false - job not launch)
+			try {
+				return doWithLock(lockRequest.getLock(), runnable);
+			} finally {
+				// get rid of this node slot
+				filterPriorityQueue(lockRequest.getPriorityQueue(),
+						new Predicate<IAttribution>() {
+							@Override
+							public boolean apply(IAttribution input) {
+								// keep all attribution of other nodes
+								return !input.match(getAddress());
+							}
+					
+				});
+			}
 		} else {
 			return false;
+		}
+	}
+
+	private void filterPriorityQueue(IPriorityQueue priorityQueue, Predicate<IAttribution> attributionPredicate) {
+		Cache<IPriorityQueue, List<IAttribution>> cache = getPriorityQueuesCache();
+		boolean commit = false;
+		if (!cache.getAdvancedCache().startBatch()) {
+			LOGGER.error("Batch attempt on {} failed", priorityQueue);
+		}
+		try {
+			// get lock values
+			if (!cache.getAdvancedCache().lock(priorityQueue)) {
+				LOGGER.error("Lock attempt on {} failed", priorityQueue);
+				commit = false;
+				return;
+			}
+			List<IAttribution> values = cache.getOrDefault(priorityQueue, Lists.<IAttribution> newArrayList());
+			List<IAttribution> newValues = Lists.newArrayList(Collections2.filter(values, attributionPredicate));
+			cache.put(priorityQueue, newValues);
+		} finally {
+			cache.endBatch(commit);
 		}
 	}
 
@@ -786,7 +842,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 						if (actionFactory != null) {
 							actionFactory.prepareAction(action);
 						}
-						action.run();
+						action.doRun();
 						if (action.needsResult()) {
 							getActionsResultsCache().put(value.getKey(), action);
 						}
@@ -820,37 +876,41 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	public <A extends IAction<V>, V> V syncedAction(A action, int timeout, TimeUnit unit)
 			throws ExecutionException, TimeoutException {
 		String uniqueID = UUID.randomUUID().toString();
-
+		
 		// actionMonitors allow to optimize wakeup when we wait for a result.
 		Object monitor = new Object();
 		actionMonitors.putIfAbsent(uniqueID, monitor);
-
+		
 		getActionsCache().put(uniqueID, action);
-
-		Stopwatch stopwatch = Stopwatch.createUnstarted();
-		while (timeout == -1 || stopwatch.elapsed(TimeUnit.MILLISECONDS) < unit.toMillis(timeout)) {
-			if (!stopwatch.isRunning()) {
-				stopwatch.start();
-			}
-			@SuppressWarnings("unchecked")
-			A result = (A) getActionsResultsCache().remove(uniqueID);
-			if (result != null && result.isDone()) {
-				try {
-					return result.get();
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
+		
+		if (action.needsResult()) {
+			Stopwatch stopwatch = Stopwatch.createUnstarted();
+			while (timeout == -1 || stopwatch.elapsed(TimeUnit.MILLISECONDS) < unit.toMillis(timeout)) {
+				if (!stopwatch.isRunning()) {
+					stopwatch.start();
 				}
-			} else if (result != null && result.isCancelled()) {
-				throw new CancellationException();
+				@SuppressWarnings("unchecked")
+				A result = (A) getActionsResultsCache().remove(uniqueID);
+				if (result != null && result.isDone()) {
+					try {
+						return result.get();
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				} else if (result != null && result.isCancelled()) {
+					throw new CancellationException();
+				}
+				synchronized (monitor) {
+					try {
+						unit.timedWait(monitor, timeout);
+					} catch (InterruptedException e) {
+					} // NOSONAR
+				}
 			}
-			synchronized (monitor) {
-				try {
-					unit.timedWait(monitor, timeout);
-				} catch (InterruptedException e) {
-				} // NOSONAR
-			}
+		} else {
+			return null;
 		}
-
+		
 		throw new TimeoutException();
 	}
 
@@ -885,9 +945,88 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 						LOGGER.warn("Infinispan checker coordinator update forced by {}", getLocalAddress());
 					}
 				}
+				
+				if (updated) {
+					cleanCachesByCoordinator();
+				}
 			}
 		} catch (RuntimeException e) {
 			LOGGER.error("Unknown error updating infinispan checker coordinator", e);
+		}
+	}
+
+	private void cleanCachesByCoordinator() {
+		if (isClusterActive()) {
+			// FT - race condition are not handled in a clean way.
+			{
+				List<Entry<IRole, IRoleAttribution>> roleEntries = Lists.newArrayList(getRolesCache().entrySet());
+				for (Entry<IRole, IRoleAttribution> roleEntry : roleEntries) {
+					if (! getMembers().contains(roleEntry.getValue().getOwner())) {
+						IRoleAttribution roleAttribution = getRolesCache().remove(roleEntry.getKey());
+						LOGGER.warn("Remove {} as {} is absent", roleEntry.getKey(), roleEntry.getValue());
+						// check if removed attribution is the right one
+						if (! roleAttribution.match(roleEntry.getValue().getOwner())) {
+							// if not, put back removed element
+							getRolesCache().put(roleEntry.getKey(),
+									RoleAttribution.from(roleAttribution.getOwner(), new Date()));
+							LOGGER.warn("Reput {} as removed is linked to {}", roleEntry.getKey(), roleAttribution);
+						}
+					}
+				}
+			}
+	
+			{
+				List<Entry<IRole, IAttribution>> roleEntries = Lists.newArrayList(getRolesRequestsCache().entrySet());
+				for (Entry<IRole, IAttribution> roleEntry : roleEntries) {
+					if (! getMembers().contains(roleEntry.getValue().getOwner())) {
+						getRolesRequestsCache().remove(roleEntry.getKey());
+						LOGGER.warn("Remove request on {} as {} is absent", roleEntry.getKey(), roleEntry.getValue());
+						// no check as role request is not critical
+					}
+				}
+			}
+	
+			{
+				List<Entry<ILock, ILockAttribution>> lockEntries = Lists.newArrayList(getLocksCache().entrySet());
+				for (Entry<ILock, ILockAttribution> lockEntry : lockEntries) {
+					if (! getMembers().contains(lockEntry.getValue().getOwner())) {
+						ILockAttribution lockAttribution = getLocksCache().remove(lockEntry.getKey());
+						LOGGER.warn("Remove {} as {} is absent", lockEntry.getKey(), lockEntry.getValue());
+						// check if removed attribution is the right one
+						if (! lockAttribution.match(lockEntry.getValue().getOwner())) {
+							// if not, put back removed element
+							getLocksCache().put(lockEntry.getKey(),
+									LockAttribution.from(lockAttribution.getOwner(), new Date()));
+							LOGGER.warn("Reput {} as removed is linked to {}", lockEntry.getKey(), lockAttribution);
+						}
+					}
+				}
+			}
+	
+			{
+				List<Entry<IPriorityQueue, List<IAttribution>>> priorityQueueEntries = Lists.newArrayList(getPriorityQueuesCache().entrySet());
+				for (Entry<IPriorityQueue, List<IAttribution>> priorityQueueEntry : priorityQueueEntries) {
+					// lazily check if items need to be removed
+					boolean foundToDelete = false;
+					for (IAttribution attribution : priorityQueueEntry.getValue()) {
+						if (! getMembers().contains(attribution.getOwner())) {
+							foundToDelete = true;
+							break;
+						}
+					}
+					
+					if (foundToDelete) {
+						LOGGER.warn("Cleaning priority queue for {}", priorityQueueEntry.getKey());
+						// found orphan items, we lock and securely remove orphans
+						filterPriorityQueue(priorityQueueEntry.getKey(), new Predicate<IAttribution>() {
+							@Override
+							public boolean apply(IAttribution input) {
+								return getMembers().contains(input.getOwner());
+							}
+						});
+					}
+				}
+			}
 		}
 	}
 

@@ -102,7 +102,7 @@ public abstract class SimpleAction<V> implements IAction<V> {
 	}
 
 	@Override
-	public synchronized void run() {
+	public synchronized void doRun() {
 		if (isDone()) {
 			LOGGER.warn("{} already done ; run() ignored", getClass().getSimpleName());
 			return;

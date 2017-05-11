@@ -9,8 +9,6 @@ import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 
 public interface IAction<V> extends Future<V>, Serializable {
 
-	void run();
-
 	Address getTarget();
 
 	boolean isBroadcast();
@@ -18,5 +16,7 @@ public interface IAction<V> extends Future<V>, Serializable {
 	boolean needsResult();
 
 	void setInfinispanClusterService(IInfinispanClusterService infinispanClusterService);
+
+	void doRun();
 
 }
