@@ -102,15 +102,17 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		this.rolesProvider = rolesProvider;
 		this.actionFactory = actionFactory;
 		// don't wait for delayed tasks after shutdown (even if already planned)
-		this.executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-		this.executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-		this.executor.prestartAllCoreThreads();
+		initExecutor(this.executor);
 		this.infinispanClusterCheckerService = infinispanClusterCheckerService;
 		if (infinispanClusterCheckerService != null) {
-			this.checkerExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-			this.checkerExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-			this.checkerExecutor.prestartAllCoreThreads();
+			initExecutor(this.checkerExecutor);
 		}
+	}
+
+	private void initExecutor(ScheduledThreadPoolExecutor executor) {
+		executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+		executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+		executor.prestartAllCoreThreads();
 	}
 
 	@Override
@@ -171,14 +173,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 					InfinispanClusterServiceImpl.this.rebalanceRoles();
 				}
 			}, 5, TimeUnit.SECONDS);
-			if (checkerExecutor != null) {
-				checkerExecutor.scheduleAtFixedRate(new Runnable() {
-					@Override
-					public void run() {
-						InfinispanClusterServiceImpl.this.updateCoordinator();
-					}
-				}, 1, 1, TimeUnit.MINUTES);
-			}
+			checkerExecutor.scheduleAtFixedRate(new Runnable() {
+				@Override
+				public void run() {
+					InfinispanClusterServiceImpl.this.updateCoordinator();
+				}
+			}, 1, 1, TimeUnit.MINUTES);
 
 			initialized = true;
 		}
@@ -303,40 +303,34 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 			{
 				// unset in cluster checker
+				stopExecutor(checkerExecutor, "checkerExecutor");
 				if (cacheManager.isCoordinator() && infinispanClusterCheckerService != null) {
 					infinispanClusterCheckerService.unsetCoordinator(getLocalAddress());
 				}
-				if (checkerExecutor != null) {
-					// stop accepting new tasks
-					checkerExecutor.shutdown();
-					try {
-						checkerExecutor.awaitTermination(3, TimeUnit.SECONDS);
-					} catch (InterruptedException e) {
-					} // NOSONAR
-				}
-				checkerExecutor.shutdownNow();
 			}
-
+			
 			cacheManager.stop();
-
-			{
-				// stop accepting new tasks
-				executor.shutdown();
-				try {
-					executor.awaitTermination(3, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
-				} // NOSONAR
-				List<Runnable> runnables = executor.shutdownNow();
-				if (!runnables.isEmpty()) {
-					LOGGER.warn("{} tasks dropped by {}.executor", runnables.size(),
-							InfinispanClusterServiceImpl.class.getSimpleName());
-				}
-			}
-
+			
+			stopExecutor(executor, "executor");
+			
 			stopped = true;
 			LOGGER.warn("Stopped {}", InfinispanClusterServiceImpl.class.getSimpleName());
 		} else {
 			LOGGER.warn("{} Ignored stop event as cluster not initialized {}", address, toStringClusterNode());
+		}
+	}
+
+	private void stopExecutor(ScheduledThreadPoolExecutor executor, String executorName) {
+		// stop accepting new tasks
+		executor.shutdown();
+		try {
+			executor.awaitTermination(3, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+		} // NOSONAR
+		List<Runnable> runnables = executor.shutdownNow();
+		if (!runnables.isEmpty()) {
+			LOGGER.warn("{} tasks dropped by {}.{}", runnables.size(),
+					InfinispanClusterServiceImpl.class.getSimpleName(), executorName);
 		}
 	}
 
