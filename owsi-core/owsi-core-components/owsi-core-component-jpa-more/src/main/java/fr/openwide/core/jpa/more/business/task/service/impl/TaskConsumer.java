@@ -68,7 +68,7 @@ public final class TaskConsumer {
 
 	public TaskConsumer(TaskQueue queue, int threadIdForThisQueue) {
 		super();
-		Assert.notNull(queue);
+		Assert.notNull(queue, "[Assertion failed] - this argument is required; it must not be null");
 		this.queue = queue;
 		this.threadIdForThisQueue = threadIdForThisQueue;
 	}

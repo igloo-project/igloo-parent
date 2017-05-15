@@ -209,7 +209,7 @@ public final class LuceneUtils {
 		List<String> searchPatternFragments = Lists.newArrayList();
 		
 		if(StringUtils.hasText(searchPattern)) {
-			searchPatternFragments = Splitter.on(CharMatcher.WHITESPACE.or(CharMatcher.is('-')))
+			searchPatternFragments = Splitter.on(CharMatcher.whitespace().or(CharMatcher.is('-')))
 					.trimResults().omitEmptyStrings().splitToList(searchPattern);
 		}
 		

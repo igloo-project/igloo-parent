@@ -16,7 +16,7 @@ public final class TaskQueue extends ForwardingBlockingQueue<Long> {
 	private final BlockingQueue<Long> delegate = Queues.newLinkedBlockingQueue();
 
 	public TaskQueue(String id) {
-		Assert.notNull(id);
+		Assert.notNull(id, "[Assertion failed] - this argument is required; it must not be null");
 		this.id = id;
 	}
 	

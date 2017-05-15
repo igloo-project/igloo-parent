@@ -222,7 +222,6 @@ public class StatisticsPage extends WidgetsTemplate {
 		}
 		
 		// Build JQPlot object with given series
-		@SuppressWarnings("unchecked")
 		JQPlot defaultChart = new JQPlot(wicketId, new ListModel<SimpleNumberSeries<Integer>>(Lists.newArrayList(accountsCreated)));
 		
 		// Select few options
@@ -253,7 +252,6 @@ public class StatisticsPage extends WidgetsTemplate {
 		product3series.addEntry(SALES_P3_STATS.get(3));
 		
 		// Build JQPlot object with given series
-		@SuppressWarnings("unchecked")
 		JQPlot salesChart = new JQPlot(wicketId, new ListModel<SimpleNumberSeries<Integer>>(
 				Lists.newArrayList(product1series, product2series, product3series)));
 		
@@ -306,7 +304,6 @@ public class StatisticsPage extends WidgetsTemplate {
 		line.addEntry("ground hogs", 4.0);
 		
 		// Build JQPlot object with given series
-		@SuppressWarnings("unchecked")
 		JQPlot pieChart = new JQPlot(wicketId, new ListModel<BaseSeries<String, Double>>(Lists.newArrayList(line)));
 		
 		// Chart options
@@ -354,7 +351,6 @@ public class StatisticsPage extends WidgetsTemplate {
 		}
 		
 		// Build JQPlot object with given series
-		@SuppressWarnings("unchecked")
 		JQPlot stackedLinesChart = new JQPlot(wicketId, new ListModel<BaseSeries<Date, Double>>(
 				Lists.newArrayList(product1series, product2series, product3series)));
 		

@@ -62,7 +62,7 @@ abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P extends Com
 	}
 
 	@Override
-	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) 
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
 			throws HibernateException, SQLException {
 		if (value == null) {
 			delegateType.nullSafeSet(st, null, index, session);

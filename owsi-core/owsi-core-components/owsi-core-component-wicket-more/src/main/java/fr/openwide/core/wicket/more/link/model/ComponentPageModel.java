@@ -13,7 +13,7 @@ public class ComponentPageModel extends AbstractReadOnlyModel<Page> {
 
 	public ComponentPageModel(Component component) {
 		this.component = component;
-		Assert.notNull(component);
+		Assert.notNull(component, "[Assertion failed] - this argument is required; it must not be null");
 	}
 	
 	@Override
