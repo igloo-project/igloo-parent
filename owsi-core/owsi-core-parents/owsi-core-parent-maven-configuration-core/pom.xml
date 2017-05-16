@@ -46,7 +46,7 @@
 		<owsi-core.bindgen-java.version>0.2.1</owsi-core.bindgen-java.version>
 		<owsi-core.bindgen-java-jdk7.version>0.2.1.jdk7</owsi-core.bindgen-java-jdk7.version>
 		
-		<owsi-core.spring-security.version>4.1.4.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>4.2.2.RELEASE</owsi-core.spring-security.version>
 		
 		<owsi-core.spring-ldap.version>2.3.1.RELEASE</owsi-core.spring-ldap.version>
 		
