@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>0.12.6</version>
+	<version>0.12.7</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent</name>

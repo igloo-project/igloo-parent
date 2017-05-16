@@ -19,7 +19,7 @@ simpleProject {
 	// build use toolchains to handle jdk 7 builds
 	config.jdk = 'JDK 1.7'
 	config.buildTarget = 'install'
-	config.defaultMavenArgs = '-Dmanipulation.disable=true -Ptest -Ddistribution=owsi-core-release -Dmaven.repo.local="${WORKSPACE}/m2-repository/"'
+	config.defaultMavenArgs = '-Dmanipulation.disable=true -Ptest -DperformRelease=true -Ddistribution=owsi-core-release -Dmaven.repo.local="${WORKSPACE}/m2-repository/"'
 	config.beforeNotification = {
 		util_sh 'rm -rf "${WORKSPACE}/m2-repository/"'
 	}
