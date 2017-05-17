@@ -12,6 +12,7 @@ import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PrefixQuery;
@@ -256,14 +257,15 @@ public final class LuceneUtils {
 			sb.append(formatNumericRangeQuery((NumericRangeQuery<? extends Number>) luceneQuery));
 		} else if (luceneQuery instanceof IToQueryStringAwareLuceneQuery) {
 			sb.append(((IToQueryStringAwareLuceneQuery) luceneQuery).toQueryString());
+		} else if (luceneQuery instanceof BoostQuery) {
+			sb.append(queryToString(((BoostQuery) luceneQuery).getQuery()));
+			sb.append(BOOST_PARAMETER_PREFIX);
+			sb.append(((BoostQuery) luceneQuery).getBoost());
 		} else {
 			throw new IllegalStateException(String.format("Query of type %1$s not supported",
 					luceneQuery.getClass().getName()));
 		}
-		if (StringUtils.hasText(sb) && Float.compare(1.0f, luceneQuery.getBoost()) != 0) {
-			sb.append(BOOST_PARAMETER_PREFIX);
-			sb.append(luceneQuery.getBoost());
-		}
+		
 		return sb.toString();
 	}
 	
