@@ -26,7 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hibernate.jpa.internal.metamodel.EmbeddableTypeImpl;
+import org.hibernate.metamodel.internal.EmbeddableTypeImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
