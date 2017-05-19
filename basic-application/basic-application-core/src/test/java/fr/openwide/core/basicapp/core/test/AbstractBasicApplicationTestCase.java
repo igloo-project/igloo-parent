@@ -12,10 +12,14 @@ import fr.openwide.core.jpa.junit.AbstractTestCase;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
+import fr.openwide.core.spring.config.ExtendedTestApplicationContextInitializer;
 import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
-@ContextConfiguration(classes = BasicApplicationCoreTestCommonConfig.class)
+@ContextConfiguration(
+		classes = BasicApplicationCoreTestCommonConfig.class,
+		initializers = ExtendedTestApplicationContextInitializer.class
+)
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
 
 	@Autowired
