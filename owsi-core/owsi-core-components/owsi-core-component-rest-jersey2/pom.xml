@@ -56,7 +56,17 @@
 					<groupId>org.glassfish.hk2.external</groupId>
 					<artifactId>bean-validator</artifactId>
 				</exclusion>
+				<exclusion>
+					<!-- outdated version -->
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		
 		<dependency>
