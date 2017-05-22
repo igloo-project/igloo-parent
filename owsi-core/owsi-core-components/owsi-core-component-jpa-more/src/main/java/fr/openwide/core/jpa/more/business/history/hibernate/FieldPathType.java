@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -39,7 +39,7 @@ public class FieldPathType implements UserType {
 	}
 
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner)
+	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
 			throws HibernateException, SQLException {
 		String value = (String) delegateType.nullSafeGet(rs, names, session, owner);
 		if (value == null) {
@@ -54,7 +54,7 @@ public class FieldPathType implements UserType {
 	}
 
 	@Override
-	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) 
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) 
 			throws HibernateException, SQLException {
 		if (value == null) {
 			delegateType.nullSafeSet(st, null, index, session);

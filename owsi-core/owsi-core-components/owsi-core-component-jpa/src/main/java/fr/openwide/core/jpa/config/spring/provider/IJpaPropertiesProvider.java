@@ -42,4 +42,6 @@ public interface IJpaPropertiesProvider {
 
 	Boolean isNewGeneratorMappingsEnabled();
 
+	String getDefaultSchema();
+
 }

@@ -40,7 +40,7 @@ public abstract class AbstractGenericEntityComparator<K extends Comparable<K> & 
 	 */
 	public AbstractGenericEntityComparator(boolean nullIsLow, Comparator<? super K> keyComparator) {
 		super(nullIsLow);
-		Assert.notNull(keyComparator);
+		Assert.notNull(keyComparator, "[Assertion failed] - this argument is required; it must not be null");
 		this.keyComparator = keyComparator;
 	}
 	

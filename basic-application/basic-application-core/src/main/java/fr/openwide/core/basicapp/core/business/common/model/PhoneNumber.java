@@ -15,7 +15,7 @@ public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String
 	
 	public static final int TAILLE_FR = 10;
 
-	private static final CharMatcher SEPARATOR_MATCHER = CharMatcher.WHITESPACE.or(CharMatcher.anyOf(".-"));
+	private static final CharMatcher SEPARATOR_MATCHER = CharMatcher.whitespace().or(CharMatcher.anyOf(".-"));
 	
 	private static final Pattern LOCAL_FRENCH_NUMBER_PATTERN = Pattern.compile("^\\d{10}$");
 	private static final Pattern INTERNATIONAL_FRENCH_NUMBER_PATTERN = Pattern.compile("^(\\((00|\\+33)\\)0|(00|\\+)33)(?=\\d{9}$)");

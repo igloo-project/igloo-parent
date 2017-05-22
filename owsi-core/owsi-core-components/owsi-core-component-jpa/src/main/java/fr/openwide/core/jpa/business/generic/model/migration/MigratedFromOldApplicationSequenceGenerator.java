@@ -2,7 +2,7 @@ package fr.openwide.core.jpa.business.generic.model.migration;
 
 import java.io.Serializable;
 
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLSequenceStyleGenerator;
 
@@ -24,7 +24,7 @@ public class MigratedFromOldApplicationSequenceGenerator extends PostgreSQLSeque
 	public static final String CLASS_NAME = "fr.openwide.core.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator";
 	
 	@Override
-	public Serializable generate(SessionImplementor session, Object obj) {
+	public Serializable generate(SharedSessionContractImplementor session, Object obj) {
 		if (obj instanceof IMigratedFromOldApplicationEntity) {
 			IMigratedFromOldApplicationEntity<?> migratedEntity = (IMigratedFromOldApplicationEntity<?>) obj;
 			Serializable oldApplicationId = migratedEntity.getOldApplicationId();

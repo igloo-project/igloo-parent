@@ -10,6 +10,7 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
@@ -82,8 +83,9 @@ public class TestLuceneUtils {
 	@Test
 	public void testBooleanQueryToString() throws ParseException {
 		BooleanQuery.Builder bq1Builder = new BooleanQuery.Builder();
-		TermQuery query = new TermQuery(new Term("field1", "text1"));
-		query.setBoost(2.0f);
+		TermQuery queryTerm = new TermQuery(new Term("field1", "text1"));
+		BoostQuery query = new BoostQuery(queryTerm, 2.0f);
+		
 		bq1Builder.add(query, Occur.MUST);
 		bq1Builder.add(new TermQuery(new Term("field2", "text2")), Occur.MUST_NOT);
 		
@@ -109,8 +111,8 @@ public class TestLuceneUtils {
 		bq6Builder.add(new TermQuery(new Term("", "text11")), Occur.MUST_NOT);
 		bq6Builder.add(new TermQuery(new Term("", "text12")), Occur.MUST);
 		
-		BooleanQuery bq6 = bq6Builder.build();
-		bq6.setBoost(0.8f);
+		BooleanQuery bq6Boolean = bq6Builder.build();
+		BoostQuery bq6 = new BoostQuery(bq6Boolean, 0.8f);
 		
 		BooleanQuery.Builder finalQueryBuilder = new BooleanQuery.Builder();
 		finalQueryBuilder.add(bq1Builder.build(), Occur.MUST);

@@ -19,8 +19,8 @@ import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.jpa.AvailableSettings;
 import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
 import org.hibernate.search.store.impl.RAMDirectoryProvider;
@@ -72,6 +72,7 @@ public final class JpaConfigUtils {
 
 	public static Properties getJpaProperties(IJpaPropertiesProvider configuration) {
 		Properties properties = new Properties();
+		properties.setProperty(Environment.DEFAULT_SCHEMA, configuration.getDefaultSchema());
 		properties.setProperty(Environment.DIALECT, configuration.getDialect().getName());
 		properties.setProperty(Environment.HBM2DDL_AUTO, configuration.getHbm2Ddl());
 		properties.setProperty(Environment.SHOW_SQL, Boolean.FALSE.toString());
@@ -104,7 +105,7 @@ public final class JpaConfigUtils {
 					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
 				}
 			}
-			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
+			properties.setProperty(AvailableSettings.JPA_SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
 			if (queryCacheEnabled) {
@@ -149,7 +150,7 @@ public final class JpaConfigUtils {
 
 		String validationMode = configuration.getValidationMode();
 		if (StringUtils.hasText(validationMode)) {
-			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
+			properties.setProperty(AvailableSettings.JPA_VALIDATION_MODE, validationMode);
 		}
 		
 		Class<? extends ImplicitNamingStrategy> implicitNamingStrategy = configuration.getImplicitNamingStrategy();
@@ -172,7 +173,7 @@ public final class JpaConfigUtils {
 		
 		Boolean isNewGeneratorMappingsEnabled = configuration.isNewGeneratorMappingsEnabled();
 		if (isNewGeneratorMappingsEnabled != null) {
-			properties.setProperty(org.hibernate.cfg.AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
+			properties.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
 		}
 		
 		return properties;

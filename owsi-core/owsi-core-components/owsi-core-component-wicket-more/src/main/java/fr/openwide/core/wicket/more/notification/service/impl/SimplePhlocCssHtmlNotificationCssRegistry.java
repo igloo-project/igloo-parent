@@ -55,7 +55,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 	
 	public SimplePhlocCssHtmlNotificationCssRegistry(CascadingStyleSheet styleSheet) {
 		super();
-		Assert.notNull(styleSheet);
+		Assert.notNull(styleSheet, "[Assertion failed] - this argument is required; it must not be null");
 		this.styleSheet = styleSheet;
 	}
 

@@ -21,6 +21,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Value("${${db.type}.db.dialect}")
 	private Class<Dialect> dialect;
 
+	@Value("${hibernate.defaultSchema:${db.user}}")
+	private String defaultSchema;
+
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hbm2Ddl;
 
@@ -173,6 +176,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public boolean isCreateEmptyCompositesEnabled() {
 		return createEmptyCompositesEnabled;
+	}
+
+	@Override
+	public String getDefaultSchema() {
+		return defaultSchema;
 	}
 
 }

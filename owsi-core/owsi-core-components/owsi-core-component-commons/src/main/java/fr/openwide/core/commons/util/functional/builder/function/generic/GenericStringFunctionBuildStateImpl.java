@@ -39,7 +39,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 		if (charSequence == null) {
 			return null;
 		}
-		return Strings.emptyToNull(CharMatcher.WHITESPACE.trimFrom(charSequence));
+		return Strings.emptyToNull(CharMatcher.whitespace().trimFrom(charSequence));
 	}
 	
 	@Override

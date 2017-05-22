@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import org.hibernate.HibernateException;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SingleColumnType;
 import org.hibernate.usertype.UserType;
 
@@ -50,7 +50,7 @@ abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P extends Com
 	}
 
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner)
+	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
 			throws HibernateException, SQLException {
 		@SuppressWarnings("unchecked")
 		P value = (P) delegateType.nullSafeGet(rs, names, session, owner);
@@ -62,7 +62,7 @@ abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P extends Com
 	}
 
 	@Override
-	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) 
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
 			throws HibernateException, SQLException {
 		if (value == null) {
 			delegateType.nullSafeSet(st, null, index, session);

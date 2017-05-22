@@ -19,7 +19,7 @@ public class PhlocCssMatchableHtmlTag {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhlocCssMatchableHtmlTag.class);
 	
-	private static final Splitter CSS_CLASSES_SPLITTER = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
+	private static final Splitter CSS_CLASSES_SPLITTER = Splitter.on(CharMatcher.whitespace()).omitEmptyStrings().trimResults();
 	
 	private final String name;
 	private final String id;
