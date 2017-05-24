@@ -171,6 +171,7 @@
 		<owsi-core.passay.version>1.1.0</owsi-core.passay.version>
 		<owsi-core.java-object-diff.version>0.92</owsi-core.java-object-diff.version>
 		<owsi-core.elasticsearch.version>2.4.4</owsi-core.elasticsearch.version>
+		<owsi-core.gson.version>2.6.2</owsi-core.gson.version>
 		
 		<owsi-core.localization-properties-consistency-maven-plugin.version>1.0.0</owsi-core.localization-properties-consistency-maven-plugin.version>
 	</properties>
@@ -784,6 +785,11 @@
 							<groupId>commons-logging</groupId>
 							<artifactId>commons-logging</artifactId>
 						</exclusion>
+						<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
+						<exclusion>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+						</exclusion>
 					</exclusions>
 				</dependency>
 				
@@ -1195,6 +1201,23 @@
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-search-elasticsearch</artifactId>
 					<version>${owsi-core.hibernate-search.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+						<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
+						<exclusion>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.google.code.gson</groupId>
+					<artifactId>gson</artifactId>
+					<version>${owsi-core.gson.version}</version>
 				</dependency>
 		
 			<!-- Test dependencies -->

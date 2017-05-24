@@ -74,6 +74,10 @@
 			<groupId>com.github.sommeri</groupId>
 			<artifactId>less4j</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
 		
 		<!-- SCSS -->
 		
