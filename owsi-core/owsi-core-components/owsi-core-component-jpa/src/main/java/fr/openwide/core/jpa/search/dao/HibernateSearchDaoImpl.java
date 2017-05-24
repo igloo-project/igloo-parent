@@ -338,15 +338,15 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	}
 
 	private Class<?> getClazzIndexed(Class<?> clazz) {
-		Class<?> clazzTemp = clazz;	
-		Class<?> clazzIndexed = clazz;	
+		Class<?> clazzTemp = clazz;
+		Class<?> clazzIndexed = clazz;
 		while (clazzTemp != null) {
 			boolean indexed = clazzTemp.isAnnotationPresent(Indexed.class);
 			if(indexed){
 				clazzIndexed = clazzTemp;
 			}
 			clazzTemp = clazzTemp.getSuperclass();
-        }
+		}
 		
 		return clazzIndexed;
 	}
