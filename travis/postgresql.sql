@@ -5,3 +5,9 @@ CREATE USER owsiexample_test WITH PASSWORD 'owsiexample_test';
 CREATE DATABASE basic_application_test WITH OWNER basic_application_test;
 CREATE DATABASE owsicore_test WITH OWNER owsicore_test;
 CREATE DATABASE owsiexample_test WITH OWNER owsiexample_test;
+
+\c owsicore_test
+CREATE SCHEMA owsicore OWNER owsicore_test;
+
+\c basic_application_test
+CREATE SCHEMA basic_application_test OWNER basic_application_test;
