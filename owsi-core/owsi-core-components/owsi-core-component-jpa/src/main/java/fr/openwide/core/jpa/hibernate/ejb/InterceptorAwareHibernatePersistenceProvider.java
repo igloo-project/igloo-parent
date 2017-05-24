@@ -2,13 +2,15 @@ package fr.openwide.core.jpa.hibernate.ejb;
 
 import java.util.Map;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.spi.PersistenceUnitInfo;
+
 import org.hibernate.Interceptor;
 import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
-import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
-import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
+import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,11 +29,16 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 	@Autowired
 	private Interceptor interceptor;
 
+	/**
+	 * 2017-05-24 · reworked from SpringHibernateJpaPersistenceProvider so that we can inject a custom
+	 * {@link EntityManagerFactoryBuilderImpl}; previous implementation that overrides
+	 * {@link InterceptorAwareHibernatePersistenceProvider#getEntityManagerFactoryBuilder} no longer works
+	 * as there are several paths with various arguments and the overloaded one was no longer called.
+	 */
 	@Override
 	@SuppressWarnings("rawtypes")
-	public EntityManagerFactoryBuilder getEntityManagerFactoryBuilder(
-			PersistenceUnitDescriptor persistenceUnitDescriptor, Map integration, ClassLoader providedClassLoader) {
-		return new EntityManagerFactoryBuilderImpl(persistenceUnitDescriptor, integration, providedClassLoader) {
+	public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo info, Map properties) {
+		return new EntityManagerFactoryBuilderImpl(new PersistenceUnitInfoDescriptor(info), properties) {
 			@Override
 			protected void populate(SessionFactoryBuilder sfBuilder, StandardServiceRegistry ssr) {
 				super.populate(sfBuilder, ssr);
@@ -41,7 +48,7 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 					sfBuilder.applyInterceptor(InterceptorAwareHibernatePersistenceProvider.this.interceptor);
 				}
 			}
-		};
+		}.build();
 	}
 
 }
