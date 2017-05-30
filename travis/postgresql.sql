@@ -7,7 +7,7 @@ CREATE DATABASE owsicore_test WITH OWNER owsicore_test;
 CREATE DATABASE owsiexample_test WITH OWNER owsiexample_test;
 
 \c owsicore_test
-CREATE SCHEMA owsicore OWNER owsicore_test;
+CREATE SCHEMA owsicore AUTHORIZATION owsicore_test;
 
 \c basic_application_test
-CREATE SCHEMA basic_application_test OWNER basic_application_test;
+CREATE SCHEMA basic_application_test AUTHORIZATION basic_application_test;
