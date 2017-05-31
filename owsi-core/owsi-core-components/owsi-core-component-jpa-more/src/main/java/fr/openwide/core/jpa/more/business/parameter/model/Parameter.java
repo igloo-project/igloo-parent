@@ -7,102 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.apache.lucene.analysis.core.KeywordTokenizerFactory;
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
-import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
-import org.apache.lucene.analysis.miscellaneous.TrimFilterFactory;
-import org.apache.lucene.analysis.miscellaneous.WordDelimiterFilterFactory;
-import org.apache.lucene.analysis.pattern.PatternReplaceFilterFactory;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.AnalyzerDefs;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
-import org.hibernate.search.elasticsearch.analyzer.ElasticsearchTokenFilterFactory;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.more.business.parameter.service.AbstractParameterServiceImpl;
-import fr.openwide.core.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
-import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 @SuppressWarnings("deprecation")
 @Entity
 @Bindable
-@AnalyzerDefs({
-	@AnalyzerDef(name = HibernateSearchAnalyzer.KEYWORD,
-			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class)
-	),
-	@AnalyzerDef(name = HibernateSearchAnalyzer.KEYWORD_CLEAN,
-		tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class),
-		filters = {
-			@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
-			@TokenFilterDef(factory = LowerCaseFilterFactory.class)
-		}
-	),
-	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT,
-			tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-			filters = {
-					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
-					@TokenFilterDef(factory = WordDelimiterFilterFactory.class, params = {
-									@org.hibernate.search.annotations.Parameter(name = "generateWordParts", value = "1"),
-									@org.hibernate.search.annotations.Parameter(name = "generateNumberParts", value = "1"),
-									@org.hibernate.search.annotations.Parameter(name = "catenateWords", value = "0"),
-									@org.hibernate.search.annotations.Parameter(name = "catenateNumbers", value = "0"),
-									@org.hibernate.search.annotations.Parameter(name = "catenateAll", value = "0"),
-									@org.hibernate.search.annotations.Parameter(name = "splitOnCaseChange", value = "0"),
-									@org.hibernate.search.annotations.Parameter(name = "splitOnNumerics", value = "0"),
-									@org.hibernate.search.annotations.Parameter(name = "preserveOriginal", value = "1")
-							}
-					),
-					@TokenFilterDef(factory = LowerCaseFilterFactory.class)
-			}
-	),
-	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT_STEMMING,
-		tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-		filters = {
-				@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
-				@TokenFilterDef(factory = WordDelimiterFilterFactory.class, params = {
-								@org.hibernate.search.annotations.Parameter(name = "generateWordParts", value = "1"),
-								@org.hibernate.search.annotations.Parameter(name = "generateNumberParts", value = "1"),
-								@org.hibernate.search.annotations.Parameter(name = "catenateWords", value = "0"),
-								@org.hibernate.search.annotations.Parameter(name = "catenateNumbers", value = "0"),
-								@org.hibernate.search.annotations.Parameter(name = "catenateAll", value = "0"),
-								@org.hibernate.search.annotations.Parameter(name = "splitOnCaseChange", value = "0"),
-								@org.hibernate.search.annotations.Parameter(name = "splitOnNumerics", value = "0"),
-								@org.hibernate.search.annotations.Parameter(name = "preserveOriginal", value = "1")
-						}
-				),
-				@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-				@TokenFilterDef(factory = ElasticsearchTokenFilterFactory.class, name = "corefrenchminimalstem")
-//				@TokenFilterDef(factory = CoreFrenchMinimalStemFilterFactory.class)
-		}
-	),
-	@AnalyzerDef(name = HibernateSearchAnalyzer.TEXT_SORT,
-			tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class),
-			filters = {
-					@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
-					@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-					@TokenFilterDef(name = "text_sort_replace_punctuations",
-							factory = PatternReplaceFilterFactory.class, params = {
-						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "('-&\\.,\\(\\))"),
-						@org.hibernate.search.annotations.Parameter(name = "replacement", value = " "),
-						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
-					}),
-					@TokenFilterDef(name = "text_sort_replace_numbers",
-							factory = PatternReplaceFilterFactory.class, params = {
-						@org.hibernate.search.annotations.Parameter(name = "pattern", value = "([^0-9\\p{L} ])"),
-						@org.hibernate.search.annotations.Parameter(name = "replacement", value = ""),
-						@org.hibernate.search.annotations.Parameter(name = "replace", value = "all")
-					}),
-					@TokenFilterDef(factory = TrimFilterFactory.class)
-			}
-	)
-})
 public class Parameter extends GenericEntity<Long, Parameter> {
 	
 	private static final long serialVersionUID = 4739408616523513971L;
