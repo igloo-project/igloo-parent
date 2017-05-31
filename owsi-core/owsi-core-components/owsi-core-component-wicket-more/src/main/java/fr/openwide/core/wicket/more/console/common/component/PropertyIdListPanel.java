@@ -31,20 +31,20 @@ public class PropertyIdListPanel extends Panel {
 	@SpringBean
 	private IPropertyService propertyService;
 	
-	public PropertyIdListPanel(String id, Collection<? extends PropertyId<?>> propertyIds){
+	public PropertyIdListPanel(String id, Collection<PropertyId<?>> propertyIds){
 		this(
 				id,
-				new LoadableDetachableModel<Collection<? extends PropertyId<?>>>() {
+				new LoadableDetachableModel<Collection<PropertyId<?>>>() {
 					private static final long serialVersionUID = 1L;
 					@Override
-					protected Collection<? extends PropertyId<?>> load() {
+					protected Collection<PropertyId<?>> load() {
 						return propertyIds;
 					}
 				}
 		);
 	}
 
-	public PropertyIdListPanel(String id, IModel<? extends Collection<? extends PropertyId<?>>> propertyIdsModel) {
+	public PropertyIdListPanel(String id, IModel<? extends Collection<PropertyId<?>>> propertyIdsModel) {
 		super(id, propertyIdsModel);
 		setOutputMarkupId(true);
 		
@@ -82,6 +82,7 @@ public class PropertyIdListPanel extends Panel {
 										BootstrapRenderer.constant("common.propertyId.actions.edit", "fa fa-pencil fa-fw", BootstrapColor.PRIMARY),
 										new OneParameterModalOpenAjaxAction<IModel<? extends PropertyId<?>>>(modifyPopup) {
 											private static final long serialVersionUID = 1L;
+											@Override
 											protected void onShow(AjaxRequestTarget target, IModel<? extends PropertyId<?>> parameter) {
 												modifyPopup.init(parameter);
 											}
