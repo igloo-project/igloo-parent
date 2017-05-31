@@ -14,12 +14,6 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<dependencies>
-
-		<!-- Http Client -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
 		
 		<!-- OWSI Core dependencies -->
 		<dependency>
@@ -55,11 +49,27 @@
 			<groupId>net.sf.ehcache.internal</groupId>
 			<artifactId>ehcache-core</artifactId>
 		</dependency>
+	
+		<!-- hibernate-search -->
 		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search-orm</artifactId>
 			<version>${owsi-core.hibernate-search.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<!-- Http Client -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
 		</dependency>
 		
 		<dependency>
