@@ -45,6 +45,7 @@ import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import fr.openwide.core.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 
 public final class JpaConfigUtils {
@@ -152,6 +153,10 @@ public final class JpaConfigUtils {
 		if (StringUtils.hasText(validationMode)) {
 			properties.setProperty(AvailableSettings.JPA_VALIDATION_MODE, validationMode);
 		}
+		
+		// custom generator strategy provider that handles one sequence by entity
+		properties.setProperty(org.hibernate.jpa.AvailableSettings.IDENTIFIER_GENERATOR_STRATEGY_PROVIDER,
+				PerTableSequenceStrategyProvider.class.getName());
 		
 		Class<? extends ImplicitNamingStrategy> implicitNamingStrategy = configuration.getImplicitNamingStrategy();
 		if (implicitNamingStrategy != null) {

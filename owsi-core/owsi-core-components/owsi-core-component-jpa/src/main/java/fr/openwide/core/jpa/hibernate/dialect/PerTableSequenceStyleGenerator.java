@@ -11,7 +11,13 @@ import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.internal.util.config.ConfigurationHelper;
 
-public class PostgreSQLSequenceStyleGenerator extends SequenceStyleGenerator {
+/**
+ * Customized sequence generator with one sequence by entity. Generated sequence name includes table and primary key's
+ * names, following this pattern: {@code <TABLE>_<PK>_seq}.
+ * 
+ * @author Laurent Almeras
+ */
+public class PerTableSequenceStyleGenerator extends SequenceStyleGenerator {
 	
 	/**
 	 * Séparateur utilisé entre les différentes parties du nom d'une séquence.

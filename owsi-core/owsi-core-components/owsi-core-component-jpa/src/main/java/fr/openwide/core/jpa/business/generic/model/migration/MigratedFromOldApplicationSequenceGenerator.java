@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
-import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLSequenceStyleGenerator;
+import fr.openwide.core.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
 
 /**
  * Sequence generator used to define the new id from the id used in an old application.
@@ -19,7 +19,7 @@ import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLSequenceStyleGenerator;
  * }
  * </pre>
  */
-public class MigratedFromOldApplicationSequenceGenerator extends PostgreSQLSequenceStyleGenerator {
+public class MigratedFromOldApplicationSequenceGenerator extends PerTableSequenceStyleGenerator {
 	
 	public static final String CLASS_NAME = "fr.openwide.core.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator";
 	

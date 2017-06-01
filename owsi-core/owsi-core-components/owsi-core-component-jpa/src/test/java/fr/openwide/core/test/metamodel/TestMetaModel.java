@@ -1,21 +1,99 @@
 package fr.openwide.core.test.metamodel;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.beanutils.ResultSetDynaClass;
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.impossibl.postgres.utils.guava.Joiner;
 
+import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
+import fr.openwide.core.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
+import fr.openwide.core.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
+import fr.openwide.core.jpa.util.EntityManagerUtils;
 import fr.openwide.core.test.AbstractJpaCoreTestCase;
 import fr.openwide.core.test.business.person.model.Person;
 import fr.openwide.core.test.business.person.model.PersonSubTypeA;
 import fr.openwide.core.test.business.person.model.QPerson;
+import fr.openwide.core.test.util.bean.DynaBeanConverter;
+import fr.openwide.core.test.util.jdbc.model.JdbcDatabaseMetaDataConstants;
+import fr.openwide.core.test.util.jdbc.model.JdbcRelation;
 
 public class TestMetaModel extends AbstractJpaCoreTestCase {
+	
+	@Autowired
+	protected EntityManagerUtils entityManagerUtils;
+
+	@Autowired
+	protected IJpaConfigurationProvider configurationProvider;
+
+	/**
+	 * <p>Check table and sequence naming. Important because sequence handling is customized through
+	 * {@link PerTableSequenceStyleGenerator} and {@link PerTableSequenceStrategyProvider}.</p>
+	 * 
+	 * <p>We check that {@link Person} entity creates a {@code person} table and a {@code person_id_seq} sequence.</p>
+	 */
+	@Test
+	public void testTablesAndSequences() {
+		EntityManager entityManager = entityManagerUtils.getEntityManager();
+		((Session) entityManager.getDelegate()).doWork(new Work() {
+			@Override
+			public void execute(Connection connection) throws SQLException {
+				String expectedTableName = Person.class.getSimpleName().toLowerCase(); // person
+				String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
+				
+				JdbcRelation table = getRelation(connection, configurationProvider.getDefaultSchema(),
+						expectedTableName, JdbcDatabaseMetaDataConstants.REL_TYPE_TABLE);
+				Assert.assertEquals(expectedTableName, table.getTable_name());
+				
+				JdbcRelation sequence = getRelation(connection, configurationProvider.getDefaultSchema(),
+						expectedSequenceName, JdbcDatabaseMetaDataConstants.REL_TYPE_SEQUENCE);
+				Assert.assertEquals(expectedSequenceName, sequence.getTable_name());
+			}
+		});
+	}
+
+	private JdbcRelation getRelation(Connection connection, String schemaPattern, String relationPattern, String... types) {
+		return Iterables.getOnlyElement(getRelations(connection, schemaPattern, relationPattern, types));
+	}
+
+	private Collection<JdbcRelation> getRelations(Connection connection, String schemaPattern, String relationPattern, String... types) {
+		org.springframework.util.Assert.notNull(connection, "connection must be provided");
+		try {
+			Iterator<DynaBean> tablesResultSet =
+					new ResultSetDynaClass(
+						connection.getMetaData().getTables(null, schemaPattern, relationPattern, types),
+						false,
+						true
+					).iterator();
+			Iterator<JdbcRelation> tables =
+					Iterators.transform(tablesResultSet, new DynaBeanConverter<>(JdbcRelation.class));
+			return ImmutableList.copyOf(tables);
+		} catch (SQLException e) {
+			throw new IllegalStateException(
+					String.format("error retrieving relation list for <%s-%s-%s>",
+							schemaPattern, relationPattern, Joiner.on(", ").join(types)),
+					e
+			);
+		}
+	}
 
 	@Test
 	public void testMetaModel() throws NoSuchFieldException, SecurityException {
