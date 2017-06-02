@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 
@@ -153,4 +154,8 @@ public interface IHibernateSearchService extends ITransactionalAspectAwareServic
 	 */
 	@Deprecated
 	<T> List<T> searchAutocomplete(Class<T> clazz, String[] fields, String searchPattern, String analyzerName, Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException;
+
+	Analyzer getAnalyzer(String analyzerName);
+
+	Analyzer getAnalyzer(Class<?> entityType);
 }

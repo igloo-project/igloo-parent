@@ -4,9 +4,11 @@ import org.hibernate.search.analyzer.definition.LuceneAnalyzerDefinitionRegistry
 
 public class CoreLuceneClientAnalyzersDefinitionProvider extends CoreLuceneAnalyzersDefinitionProvider {
 
+	public static final String ANALYZER_NAME_PREFIX = "ES_";
+
 	@Override
 	public void register(LuceneAnalyzerDefinitionRegistryBuilder builder) {
-		registerWithPrefix("ES_", builder);
+		registerWithPrefix(ANALYZER_NAME_PREFIX, builder);
 	}
 
 }
