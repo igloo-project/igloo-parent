@@ -22,6 +22,17 @@ import fr.openwide.core.test.infinispan.util.tasks.LockTask;
 
 public class TestTransaction extends TestBase {
 
+	/**
+	 * Test {@link AdvancedCache#startBatch()} (to handle concurrent read / update).
+	 * We lock to keys (A and B) and asks for second nodes (using message) to confirm that these keys cannot be locked
+	 * concurrently.
+	 * After keys' release, confirm that second node can now lock these keys.
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws TimeoutException
+	 * @throws ExecutionException
+	 */
 	@Test
 	public void testBatch() throws IOException, InterruptedException, TimeoutException, ExecutionException {
 		// start infinispan

@@ -16,9 +16,7 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachemanagerlistener.annotation.ViewChanged;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,37 +25,16 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.test.infinispan.util.TestCacheManagerBuilder;
 import fr.openwide.core.test.infinispan.util.listener.MonitorNotifyListener;
 import fr.openwide.core.test.infinispan.util.process.SimpleProcess;
 import fr.openwide.core.test.infinispan.util.tasks.AbstractTask;
 
-public class TestBase {
+public abstract class TestBase {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestBase.class);
 
 	protected Collection<Process> processesRegistry = Lists.newArrayList();
 	protected EmbeddedCacheManager cacheManager = null;
-
-	/**
-	 * Run multiple instances and check that all instances are online.
-	 */
-	@Test
-	public void testStart() throws IOException, InterruptedException {
-		int nodeNumber = 3;
-		prepareCluster(nodeNumber, null);
-		
-		// start test instance
-		EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", null).build();
-		this.cacheManager = cacheManager;
-		cacheManager.start();
-		
-		LOGGER.debug("waiting nodes");
-		Thread.sleep(TimeUnit.SECONDS.toMillis(10));
-		LOGGER.debug("testing nodes");
-		
-		Assert.assertEquals(nodeNumber + 1, cacheManager.getMembers().size());
-	}
 
 	protected Collection<Process> prepareCluster(int nodeNumber, Class<? extends AbstractTask> taskName) throws IOException {
 		Collection<Process> processes = Lists.newArrayListWithExpectedSize(nodeNumber);
@@ -187,6 +164,29 @@ public class TestBase {
 		}
 		// fails with timeout
 		throw new TimeoutException();
+	}
+
+	/**
+	 * Wait for {@code delay} {@code unit} (otherwise TimeoutException) that {@code nodeNumber} nodes connect to
+	 * cluster.
+	 * 
+	 * @param nodeNumber expected nodes' count
+	 * @param delay maximum time to wait for nodes
+	 * @param unit unit used to {@code delay} parameter
+	 * @throws ExecutionException 
+	 * @throws TimeoutException if {@code nodeNumber} not reached before {@code delay}
+	 * @throws InterruptedException 
+	 */
+	public void waitNodes(EmbeddedCacheManager cacheManager, int nodeNumber, int delay, TimeUnit unit)
+			throws InterruptedException, TimeoutException, ExecutionException {
+		Object monitor = new Object();
+		waitForEvent(monitor, new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return cacheManager.getMembers().size() == nodeNumber;
+			}
+			
+		}, delay, TimeUnit.SECONDS);
 	}
 
 	private boolean test(Callable<Boolean> testEvent) throws ExecutionException {

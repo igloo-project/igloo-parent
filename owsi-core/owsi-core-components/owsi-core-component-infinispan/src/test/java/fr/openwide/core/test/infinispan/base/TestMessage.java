@@ -20,6 +20,14 @@ import fr.openwide.core.test.infinispan.util.tasks.SimpleMessagingTask;
 
 public class TestMessage extends TestBase {
 
+	/**
+	 * Simple messaging test.
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws TimeoutException
+	 */
 	@Test
 	public void testMessage() throws IOException, InterruptedException, ExecutionException, TimeoutException {
 		final int nodeNumber = 3;
@@ -44,10 +52,11 @@ public class TestMessage extends TestBase {
 		
 		prepareCluster(nodeNumber, SimpleMessagingTask.class);
 		
+		// wait for n (n=nodeNumber) messages
 		Callable<Boolean> test = new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return messages.keySet().size() >= 3;
+				return messages.keySet().size() >= nodeNumber;
 			}
 		};
 		waitForEvent(monitor, test, 10, TimeUnit.SECONDS);

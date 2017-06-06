@@ -20,6 +20,14 @@ import fr.openwide.core.test.infinispan.util.tasks.SimpleMessagingTask;
 
 public class TestRestart extends TestBase {
 
+	/**
+	 * Simple messaging test with other nodes' restart.
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws TimeoutException
+	 */
 	@Test
 	public void testMessage() throws IOException, InterruptedException, ExecutionException, TimeoutException {
 		final int nodeNumber = 3;
@@ -42,20 +50,23 @@ public class TestRestart extends TestBase {
 			}
 		});
 		
+		// SimpleMessagingTask: on connect, each node send a message
 		prepareCluster(nodeNumber, SimpleMessagingTask.class);
 		
+		// wait for n (n=nodeNumber) messages
 		Callable<Boolean> testOne = new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return messages.keySet().size() == 3;
+				return messages.keySet().size() == nodeNumber;
 			}
 		};
+		// wait for messages from other nodes
 		waitForEvent(monitor, testOne, 10, TimeUnit.SECONDS);
 		
 		// shutdown all nodes
 		shutdownProcesses(false);
 		
-		// wait alone state
+		// wait alone state (1 node)
 		Callable<Boolean> aloneTest = new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
