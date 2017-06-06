@@ -1,11 +1,13 @@
 package fr.openwide.core.infinispan.model.impl;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import fr.openwide.core.infinispan.model.IPriorityQueue;
 
-public class SimplePriorityQueue implements IPriorityQueue {
+public class SimplePriorityQueue implements Serializable, IPriorityQueue {
 
 	private static final long serialVersionUID = -2703012259547691866L;
 

@@ -1,10 +1,11 @@
 package fr.openwide.core.infinispan.model.impl;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import fr.openwide.core.infinispan.model.ILeaveEvent;
 
-public class LeaveEvent implements ILeaveEvent {
+public class LeaveEvent implements Serializable, ILeaveEvent {
 
 	private final Date leaveDate;
 

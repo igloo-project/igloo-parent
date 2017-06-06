@@ -1,5 +1,6 @@
 package fr.openwide.core.infinispan.model.impl;
 
+import java.io.Serializable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 
-public abstract class SimpleAction<V> implements IAction<V> {
+public abstract class SimpleAction<V> implements Serializable, IAction<V> {
 
 	private static final long serialVersionUID = 2478882549352256098L;
 

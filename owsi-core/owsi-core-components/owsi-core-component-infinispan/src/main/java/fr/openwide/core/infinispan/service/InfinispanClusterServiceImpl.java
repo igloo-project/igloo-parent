@@ -26,11 +26,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -198,12 +200,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public List<INode> getNodes() {
-		return ImmutableList.copyOf(Lists.transform(getMembers(), new Function<Address, INode>() {
+		return ImmutableList.copyOf(Iterables.filter(Iterables.transform(getMembers(), new Function<Address, INode>() {
 			@Override
 			public INode apply(Address input) {
 				return getNodesCache().get(input);
 			}
-		}));
+		}), Predicates.notNull()));
 	}
 
 	@Override

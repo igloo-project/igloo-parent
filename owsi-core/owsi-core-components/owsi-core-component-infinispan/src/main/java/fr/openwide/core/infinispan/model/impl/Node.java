@@ -1,5 +1,6 @@
 package fr.openwide.core.infinispan.model.impl;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.jgroups.Address;
@@ -7,7 +8,7 @@ import org.jgroups.Address;
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.infinispan.model.INode;
 
-public class Node implements INode {
+public class Node implements Serializable, INode {
 
 	private static final long serialVersionUID = 5121676759539404734L;
 
