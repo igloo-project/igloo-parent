@@ -2,6 +2,7 @@ package fr.openwide.core.test.infinispan.util;
 
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
+import java.util.Properties;
 
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.global.GlobalConfiguration;
@@ -29,8 +30,12 @@ public class TestCacheManagerBuilder {
 		PROCESS_ID = ManagementFactory.getRuntimeMXBean().getName().replaceAll("@.*", "");
 		MDC.put("PID", PROCESS_ID);
 		
+		// udp + multicast is difficult to obtain in test environment
+		Properties properties = new Properties();
+		properties.put("configurationFile", "test-jgroups-tcp.xml");
+		
 		GlobalConfiguration globalConfiguration =
-				new GlobalDefaultReplicatedTransientConfigurationBuilder().nodeName(name).build();
+				new GlobalDefaultReplicatedTransientConfigurationBuilder(properties).nodeName(name).build();
 		Configuration configuration =
 				new DefaultReplicatedTransientConfigurationBuilder().build();
 		EmbeddedCacheManager cacheManager = new DefaultCacheManager(globalConfiguration, configuration, false);
