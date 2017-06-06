@@ -57,6 +57,14 @@
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- ipv6 local network not available on travis - https://github.com/travis-ci/travis-ci/issues/4964 -->
+					<argLine>${owsi-core.maven-surefire-plugin.argLine} -Djava.net.preferIPv4Stack=true</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

@@ -35,6 +35,7 @@
 		<owsi-core.maven-compiler-plugin.version>3.6.1</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>3.0.2</owsi-core.maven-resources-plugin.version>
 		<owsi-core.maven-surefire-plugin.version>2.20</owsi-core.maven-surefire-plugin.version>
+		<owsi-core.maven-surefire-plugin.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</owsi-core.maven-surefire-plugin.argLine>
 		<owsi-core.maven-install-plugin.version>2.5.2</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.5.3</owsi-core.maven-release-plugin.version>
 		<owsi-core.maven-war-plugin.version>3.1.0</owsi-core.maven-war-plugin.version>
@@ -222,7 +223,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${owsi-core.maven-surefire-plugin.version}</version>
 					<configuration>
-						<argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</argLine>
+						<argLine>${owsi-core.maven-surefire-plugin.argLine}</argLine>
 					</configuration>
 				</plugin>
 				<plugin>
