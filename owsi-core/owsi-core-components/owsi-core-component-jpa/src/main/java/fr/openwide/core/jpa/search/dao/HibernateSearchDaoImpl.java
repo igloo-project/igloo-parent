@@ -163,7 +163,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
+				getAnalyzer(analyzerName),
 				null, limit, offset, sort);
 	}
 
@@ -200,7 +200,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		classes.add(clazz);
 		
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz),
+				getAnalyzer(clazz),
 				additionalLuceneQuery, limit, offset, sort);
 	}
 
@@ -216,7 +216,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
+				getAnalyzer(analyzerName),
 				additionalLuceneQuery, limit, offset, sort);
 	}
 
