@@ -306,7 +306,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 				MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
 				indexer.batchSizeToLoadObjects(batchSize)
 						.threadsToLoadObjects(loadThreads)
-						.purgeAllOnStart(false) // necessary to disable DeleteByQuery plugin
+						.purgeAllOnStart(true) // necessary to disable DeleteByQuery plugin
 						.cacheMode(CacheMode.NORMAL)
 						.progressMonitor(progressMonitor)
 						.startAndWait();
