@@ -1,11 +1,8 @@
 package fr.openwide.core.jpa.search.dao;
 
-import static fr.openwide.core.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_ELASTICSEARCH_HOST;
-import static fr.openwide.core.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_INDEXMANAGER;
 import static fr.openwide.core.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
 import static fr.openwide.core.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,12 +19,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.protocol.HTTP;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -40,7 +31,6 @@ import org.hibernate.CacheMode;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
 import org.hibernate.search.analyzer.impl.ScopedLuceneAnalyzer;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
 import org.hibernate.search.batchindexing.impl.MassIndexerImpl;
 import org.hibernate.search.elasticsearch.analyzer.impl.ElasticsearchAnalyzer;
@@ -289,7 +279,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			throws InterruptedException {
 		int batchSize = propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
 		int loadThreads = propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
-		String indexmanager = propertyService.get(HIBERNATE_SEARCH_INDEXMANAGER);
 		
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("Targets for indexing job: {}", entityClasses);
@@ -298,111 +287,18 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		for (Class<?> clazz : entityClasses) {
 			ProgressMonitor progressMonitor = new ProgressMonitor();
 			Thread t = new Thread(progressMonitor);
-			if(indexmanager.equals("elasticsearch")){
-				LOGGER.info(String.format("Deleting %1$s.", clazz));
-				deleteIndexBeforeStart(clazz);
-				LOGGER.info(String.format("Reindexing %1$s.", clazz));
-				t.start();
-				MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
-				indexer.batchSizeToLoadObjects(batchSize)
-						.threadsToLoadObjects(loadThreads)
-						.purgeAllOnStart(true) // necessary to disable DeleteByQuery plugin
-						.cacheMode(CacheMode.NORMAL)
-						.progressMonitor(progressMonitor)
-						.startAndWait();
-			} else {
-				LOGGER.info(String.format("Reindexing %1$s.", clazz));
-				t.start();
-				MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
-				indexer.batchSizeToLoadObjects(batchSize)
-						.threadsToLoadObjects(loadThreads)
-						.cacheMode(CacheMode.NORMAL)
-						.progressMonitor(progressMonitor)
-						.startAndWait();
-			}
+			LOGGER.info(String.format("Reindexing %1$s.", clazz));
+			t.start();
+			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
+			indexer.batchSizeToLoadObjects(batchSize)
+					.threadsToLoadObjects(loadThreads)
+					.cacheMode(CacheMode.NORMAL)
+					.progressMonitor(progressMonitor)
+					.startAndWait();
 			progressMonitor.stop();
 			t.interrupt();
 			LOGGER.info(String.format("Reindexing %1$s done.", clazz));
 		}
-	}
-	
-	private void deleteIndexBeforeStart(Class<?> clazz) {
-		Class<?> clazzIndexed = getClazzIndexed(clazz);
-		String elasticsearch_host = propertyService.get(HIBERNATE_SEARCH_ELASTICSEARCH_HOST);
-		String url = elasticsearch_host + "/" + clazzIndexed.getName().toLowerCase();
-		
-		CloseableHttpClient httpClient = null;
-		HttpDelete httpDelete = null;
-		CloseableHttpResponse httpResponse = null;
-		
-		try {
-			RequestConfig requestConfig = RequestConfig.custom()
-					.setSocketTimeout(30000)
-					.setConnectionRequestTimeout(30000)
-					.setConnectTimeout(30000)
-					.build();
-			
-			httpClient = HttpClientBuilder.create()
-					.setDefaultRequestConfig(requestConfig)
-					.build();			
-			
-			httpDelete = new HttpDelete(url);
-			httpDelete.addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
-			
-			httpResponse = httpClient.execute(httpDelete);
-			int responseCode = httpResponse.getStatusLine().getStatusCode();
-			
-			// 200 : succès
-			if (responseCode > 199 && responseCode < 300) {
-				LOGGER.info(String.format("Deleting %1$s done.", clazzIndexed));
-				
-			// 400 : erreur client
-			} else if (responseCode > 399 && responseCode < 500) {
-				LOGGER.info(String.format("Deleting %1$s failed : Code " + responseCode + ", erreur client.", clazzIndexed));
-				
-			// 500 : erreur serveur
-			} else {
-				LOGGER.info(String.format("Deleting %1$s failed : Code " + responseCode + ", erreur serveur.", clazzIndexed));
-				
-			}
-			
-		} catch (Exception e) {
-			LOGGER.error(String.format("Error deleting index %1$s", clazzIndexed), e);
-			
-		} finally {
-			if (httpDelete != null) {
-				httpDelete.reset();
-			}
-			if (httpResponse != null) {
-				try {
-					httpResponse.close();
-				} catch (IOException e) {
-					LOGGER.error("Erreur sur la fermeture de la réponse HTTP", e);
-				}
-			}
-			if (httpClient != null) {
-				try {
-					httpClient.close();
-				} catch (IOException e) {
-					LOGGER.error("Erreur sur la fermeture du client HTTP", e);
-				}
-			}
-		}
-		
-	}
-
-	private Class<?> getClazzIndexed(Class<?> clazz) {
-		Class<?> clazzTemp = clazz;
-		Class<?> clazzIndexed = clazz;
-		while (clazzTemp != null) {
-			boolean indexed = clazzTemp.isAnnotationPresent(Indexed.class);
-			if(indexed){
-				clazzIndexed = clazzTemp;
-			}
-			clazzTemp = clazzTemp.getSuperclass();
-		}
-		
-		return clazzIndexed;
 	}
 
 	@Override
