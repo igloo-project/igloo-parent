@@ -266,13 +266,15 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 							taskHolderId.set(taskHolder.getId());
 							
 							// wait for task 2 to be pushed and committed
-							concurrentLinkedQueue.offer(true); // STEP 2 wait
+							concurrentLinkedQueue.take(); // STEP 2 wait
 							
 							// Check that the task has not been consumed during this transaction
 							// (which could be aborted)
 							// and that task 2 is allowed to be done
 							assertNull(result.get());
 						} catch (ServiceException e) {
+							throw new IllegalStateException(e);
+						} catch (InterruptedException e) {
 							throw new IllegalStateException(e);
 						}
 					}
