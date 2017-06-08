@@ -43,7 +43,7 @@
 		<owsi-core.cglib.version>3.2.5</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.20.0-GA</owsi-core.javassist.version>
 		
-		<owsi-core.bindgen.version>3.0.1</owsi-core.bindgen.version>
+		<owsi-core.bindgen.version>3.1.0</owsi-core.bindgen.version>
 		<owsi-core.bindgen-java.version>0.2.1</owsi-core.bindgen-java.version>
 		<owsi-core.bindgen-java-jdk7.version>0.2.1.jdk7</owsi-core.bindgen-java-jdk7.version>
 		
