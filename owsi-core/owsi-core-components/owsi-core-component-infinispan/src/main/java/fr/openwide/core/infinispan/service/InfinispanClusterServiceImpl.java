@@ -44,6 +44,7 @@ import fr.openwide.core.infinispan.action.RoleReleaseAction;
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.listener.CacheEntryCreateEventListener;
 import fr.openwide.core.infinispan.listener.ViewChangedEventCoordinatorListener;
+import fr.openwide.core.infinispan.model.DoIfRoleWithLock;
 import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.model.IAttribution;
 import fr.openwide.core.infinispan.model.ILeaveEvent;
@@ -360,9 +361,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
-	public boolean doIfRoleWithLock(ILockRequest lockRequest, Runnable runnable) throws ExecutionException {
+	public DoIfRoleWithLock doIfRoleWithLock(ILockRequest lockRequest, Runnable runnable) throws ExecutionException {
 		if (!isClusterActive()) {
-			return false;
+			return DoIfRoleWithLock.NOT_RUN_CLUSTER_UNAVAILABLE;
 		}
 		// try to retrieve lock
 		IRoleAttribution roleAttribution = getRolesCache().getOrDefault(lockRequest.getRole(), null);
@@ -370,19 +371,17 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			if (roleAttribution != null && roleAttribution.match(getAddress())) {
 				// if lock is owned, we can run
 				if (lockRequest.getLock() != null) {
-					return doWithLock(lockRequest.getLock(), runnable);
+					return doWithLock(lockRequest.getLock(), runnable) ?
+							DoIfRoleWithLock.RUN : DoIfRoleWithLock.NOT_RUN_LOCK_NOT_AVAILABLE;
 				} else {
 					runnable.run();
+					return DoIfRoleWithLock.RUN;
 				}
-				return true;
 			} else {
 				// else return false
-				return false;
+				return DoIfRoleWithLock.NOT_RUN_ROLE_NOT_OWNED;
 			}
-		} catch (Exception e) {
-			if (e instanceof InterruptedException) {
-				Thread.currentThread().interrupt();
-			}
+		} catch (RuntimeException e) {
 			throw new ExecutionException(e);
 		}
 	}

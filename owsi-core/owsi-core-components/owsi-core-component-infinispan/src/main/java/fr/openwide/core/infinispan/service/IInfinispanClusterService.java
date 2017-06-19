@@ -14,6 +14,7 @@ import org.jgroups.Address;
 
 import fr.openwide.core.infinispan.action.SwitchRoleResult;
 import fr.openwide.core.infinispan.listener.ViewChangedEventCoordinatorListener;
+import fr.openwide.core.infinispan.model.DoIfRoleWithLock;
 import fr.openwide.core.infinispan.model.IAction;
 import fr.openwide.core.infinispan.model.IAttribution;
 import fr.openwide.core.infinispan.model.ILock;
@@ -51,10 +52,10 @@ public interface IInfinispanClusterService {
 	 * Perform a runnable if owned role and lock available (not-owned)
 	 * @param lockRequest needed role - must be already owned, and optional lock to be taken
 	 * @param runnable
-	 * @return true if {@link Runnable} is run, false otherwise (if role is not owned, or if lock is already taken)
+	 * @return see {@link DoIfRoleWithLock}
 	 * @throws ExecutionException if runnable throw an exception
 	 */
-	boolean doIfRoleWithLock(ILockRequest lockRequest, Runnable runnable) throws ExecutionException;
+	DoIfRoleWithLock doIfRoleWithLock(ILockRequest lockRequest, Runnable runnable) throws ExecutionException;
 
 	/**
 	 * Check a priority queue ; return true if identifier can run its task now, false if it must wait.
